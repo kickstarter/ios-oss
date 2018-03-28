@@ -51,7 +51,8 @@ internal final class BackingCellViewModelTests: TestCase {
     let reward = .template |> Reward.lens.estimatedDeliveryOn .~ Date().timeIntervalSince1970
     let backing = .template |> Backing.lens.reward .~ reward
 
-    withEnvironment(isVoiceOverRunning: const(true)) {
+    let isVoiceOverRunning = { true }
+    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
       self.vm.inputs.configureWith(backing: backing, project: Project.template, isFromBacking: true)
 
       self.rootStackViewAlignment.assertValues([UIStackViewAlignment.fill])

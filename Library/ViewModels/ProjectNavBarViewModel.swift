@@ -237,7 +237,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     self.projectAndRefTagProperty.value = (project, refTag)
   }
 
-  fileprivate let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
   }
@@ -252,12 +252,12 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     self.projectPageDidScrollToTopProperty.value = didScrollToTop
   }
 
-  fileprivate let projectVideoDidFinishProperty = MutableProperty()
+  fileprivate let projectVideoDidFinishProperty = MutableProperty(())
   public func projectVideoDidFinish() {
     self.projectVideoDidFinishProperty.value = ()
   }
 
-  fileprivate let projectVideoDidStartProperty = MutableProperty()
+  fileprivate let projectVideoDidStartProperty = MutableProperty(())
   public func projectVideoDidStart() {
     self.projectVideoDidStartProperty.value = ()
   }
@@ -265,22 +265,22 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public func categoryButtonTapped() {
   }
 
-  fileprivate let saveButtonTappedProperty = MutableProperty()
+  fileprivate let saveButtonTappedProperty = MutableProperty(())
   public func saveButtonTapped() {
     self.saveButtonTappedProperty.value = ()
   }
 
-  fileprivate let userSessionEndedProperty = MutableProperty()
+  fileprivate let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
 
-  fileprivate let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

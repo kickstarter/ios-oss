@@ -14,7 +14,7 @@
     }
 
     public override func activityViewController(_ activityViewController: UIActivityViewController,
-                                                itemForActivityType activityType: UIActivityType) -> Any? {
+                                                itemForActivityType activityType: UIActivityType?) -> Any? {
 
       if let liveStreamEvent = self.liveStreamEvent {
         if activityType == .mail || activityType == .message {

@@ -325,7 +325,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     }
   }
 
-  fileprivate let cancelButtonTappedProperty = MutableProperty()
+  fileprivate let cancelButtonTappedProperty = MutableProperty(())
   public func cancelButtonTapped() { self.cancelButtonTappedProperty.value = () }
 
   fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
@@ -340,7 +340,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
                                                applePayCapable: applePayCapable)
   }
 
-  fileprivate let failureAlertButtonTappedProperty = MutableProperty()
+  fileprivate let failureAlertButtonTappedProperty = MutableProperty(())
   public func failureAlertButtonTapped() { self.failureAlertButtonTappedProperty.value = () }
 
   fileprivate let didAuthorizePaymentProperty = MutableProperty<PaymentData?>(nil)
@@ -348,12 +348,12 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     self.didAuthorizePaymentProperty.value = payment
   }
 
-  fileprivate let paymentAuthorizationFinishedProperty = MutableProperty()
+  fileprivate let paymentAuthorizationFinishedProperty = MutableProperty(())
   public func paymentAuthorizationDidFinish() {
     self.paymentAuthorizationFinishedProperty.value = ()
   }
 
-  fileprivate let paymentAuthorizationWillAuthorizeProperty = MutableProperty()
+  fileprivate let paymentAuthorizationWillAuthorizeProperty = MutableProperty(())
   public func paymentAuthorizationWillAuthorizePayment() {
     self.paymentAuthorizationWillAuthorizeProperty.value = ()
   }
@@ -366,7 +366,7 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     return self.shouldStartLoadResponseProperty.value
   }
 
-  fileprivate let stripeTokenAndErrorProperty = MutableProperty(String?.none, Error?.none)
+  fileprivate let stripeTokenAndErrorProperty = MutableProperty((String?.none, Error?.none))
   fileprivate let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.failure)
   public func stripeCreatedToken(stripeToken: String?, error: Error?)
     -> PKPaymentAuthorizationStatus {
@@ -375,10 +375,10 @@ public final class CheckoutViewModel: CheckoutViewModelType {
       return self.paymentAuthorizationStatusProperty.value
   }
 
-  fileprivate let userSessionStartedProperty = MutableProperty()
+  fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() { self.userSessionStartedProperty.value = () }
 
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

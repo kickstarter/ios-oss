@@ -95,7 +95,8 @@ MessagesViewModelOutputs {
       backingOrThread,
       backingOrThread.takeWhen(self.messageSentProperty.signal)
       )
-      .switchMap { backingOrThread -> SignalProducer<Event<MessageThreadEnvelope?, ErrorEnvelope>, NoError> in
+      .switchMap { backingOrThread
+        -> SignalProducer<Signal<MessageThreadEnvelope?, ErrorEnvelope>.Event, NoError> in
         switch backingOrThread {
         case let .left(backing):
           return AppEnvironment.current.apiService.fetchMessageThread(backing: backing)
@@ -188,7 +189,7 @@ MessagesViewModelOutputs {
   }
   // swiftlint:enable function_body_length
 
-  private let backingInfoPressedProperty = MutableProperty()
+  private let backingInfoPressedProperty = MutableProperty(())
   public func backingInfoPressed() {
     self.backingInfoPressedProperty.value = ()
   }
@@ -201,15 +202,15 @@ MessagesViewModelOutputs {
   public func messageSent(_ message: Message) {
     self.messageSentProperty.value = message
   }
-  private let projectBannerTappedProperty = MutableProperty()
+  private let projectBannerTappedProperty = MutableProperty(())
   public func projectBannerTapped() {
     self.projectBannerTappedProperty.value = ()
   }
-  private let replyButtonPressedProperty = MutableProperty()
+  private let replyButtonPressedProperty = MutableProperty(())
   public func replyButtonPressed() {
     self.replyButtonPressedProperty.value = ()
   }
-  private let viewDidLoadProperty = MutableProperty()
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

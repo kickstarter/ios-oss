@@ -9,30 +9,34 @@ private let defaultFont = UIFont.systemFont(ofSize: 12)
 private let defaultColor = UIColor.ksr_text_dark_grey_900
 
 public protocol SimpleHTMLLabelProtocol: UILabelProtocol {
-  var baseAttributes: [String: AnyObject] { get set }
+  var baseAttributes: [NSAttributedStringKey: AnyObject] { get set }
   var baseColor: UIColor { get set }
   var baseFont: UIFont { get set }
-  var boldAttributes: [String: AnyObject] { get set }
+  var boldAttributes: [NSAttributedStringKey: AnyObject] { get set }
   var boldColor: UIColor { get set }
   var boldFont: UIFont { get set }
   var html: String { get set }
-  var italicAttributes: [String: AnyObject] { get set }
+  var italicAttributes: [NSAttributedStringKey: AnyObject] { get set }
   var italicColor: UIColor { get set }
   var italicFont: UIFont { get set }
 }
 
 public final class SimpleHTMLLabel: UILabel, SimpleHTMLLabelProtocol {
-  public var baseAttributes: [String: AnyObject] = [NSFontAttributeName: defaultFont] {
+
+  public var baseAttributes: [NSAttributedStringKey: AnyObject] = [NSAttributedStringKey.font: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }
   }
-  public var boldAttributes: [String: AnyObject] = [NSFontAttributeName: defaultFont] {
+
+  public var boldAttributes: [NSAttributedStringKey: AnyObject] = [NSAttributedStringKey.font: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }
   }
-  public var italicAttributes: [String: AnyObject] = [NSFontAttributeName: defaultFont] {
+
+  public var italicAttributes: [NSAttributedStringKey: AnyObject] =
+    [NSAttributedStringKey.font: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }
@@ -40,56 +44,68 @@ public final class SimpleHTMLLabel: UILabel, SimpleHTMLLabelProtocol {
 
   public var baseFont: UIFont {
     get {
-      return (self.baseAttributes[NSFontAttributeName] as? UIFont) ?? defaultFont
+      return (self.baseAttributes[NSAttributedStringKey.font] as? UIFont) ?? defaultFont
     }
     set {
-      self.baseAttributes = self.baseAttributes.withAllValuesFrom([NSFontAttributeName: newValue])
+      self.baseAttributes = self.baseAttributes.withAllValuesFrom(
+        [NSAttributedStringKey.font: newValue]
+      )
     }
   }
 
   public var baseColor: UIColor {
     get {
-      return (self.baseAttributes[NSForegroundColorAttributeName] as? UIColor) ?? defaultColor
+      return (self.baseAttributes[NSAttributedStringKey.foregroundColor] as? UIColor) ?? defaultColor
     }
     set {
-      self.baseAttributes = self.baseAttributes.withAllValuesFrom([NSForegroundColorAttributeName: newValue])
+      self.baseAttributes = self.baseAttributes.withAllValuesFrom(
+        [NSAttributedStringKey.foregroundColor: newValue]
+      )
     }
   }
 
   public var boldFont: UIFont {
     get {
-      return (self.boldAttributes[NSFontAttributeName] as? UIFont) ?? defaultFont
+      return (self.boldAttributes[NSAttributedStringKey.font] as? UIFont) ?? defaultFont
     }
     set {
-      self.boldAttributes = self.boldAttributes.withAllValuesFrom([NSFontAttributeName: newValue])
+      self.boldAttributes = self.boldAttributes.withAllValuesFrom(
+        [NSAttributedStringKey.font: newValue]
+      )
     }
   }
 
   public var boldColor: UIColor {
     get {
-      return (self.boldAttributes[NSForegroundColorAttributeName] as? UIColor) ?? defaultColor
+      return (self.boldAttributes[NSAttributedStringKey.foregroundColor] as? UIColor) ?? defaultColor
     }
     set {
-      self.boldAttributes = self.boldAttributes.withAllValuesFrom([NSForegroundColorAttributeName: newValue])
+      self.boldAttributes = self.boldAttributes.withAllValuesFrom(
+        [NSAttributedStringKey.foregroundColor: newValue]
+      )
     }
   }
 
   public var italicFont: UIFont {
     get {
-      return (self.italicAttributes[NSFontAttributeName] as? UIFont) ?? defaultFont
+      return (self.italicAttributes[NSAttributedStringKey.font] as? UIFont) ?? defaultFont
     }
     set {
-      self.italicAttributes = self.italicAttributes.withAllValuesFrom([NSFontAttributeName: newValue])
+      self.italicAttributes = self.italicAttributes.withAllValuesFrom(
+        [NSAttributedStringKey.font: newValue]
+      )
     }
   }
 
   public var italicColor: UIColor {
     get {
-      return (self.italicAttributes[NSForegroundColorAttributeName] as? UIColor) ?? defaultColor
+      return (
+        self.italicAttributes[NSAttributedStringKey.foregroundColor] as? UIColor
+        ) ?? defaultColor
     }
     set {
       self.italicAttributes = self.italicAttributes.withAllValuesFrom(
-        [NSForegroundColorAttributeName: newValue]
+        [NSAttributedStringKey.foregroundColor: newValue]
       )
     }
   }
@@ -116,7 +132,7 @@ public final class SimpleHTMLLabel: UILabel, SimpleHTMLLabelProtocol {
 
 extension LensHolder where Object: SimpleHTMLLabelProtocol {
 
-  public var baseAttributes: Lens<Object, [String: AnyObject]> {
+  public var baseAttributes: Lens<Object, [NSAttributedStringKey: AnyObject]> {
     return Lens(
       view: { $0.baseAttributes },
       set: { $1.baseAttributes = $0; return $1 }
@@ -137,7 +153,7 @@ extension LensHolder where Object: SimpleHTMLLabelProtocol {
     )
   }
 
-  public var boldAttributes: Lens<Object, [String: AnyObject]> {
+  public var boldAttributes: Lens<Object, [NSAttributedStringKey: AnyObject]> {
     return Lens(
       view: { $0.boldAttributes },
       set: { $1.boldAttributes = $0; return $1 }
@@ -165,7 +181,7 @@ extension LensHolder where Object: SimpleHTMLLabelProtocol {
     )
   }
 
-  public var italicAttributes: Lens<Object, [String: AnyObject]> {
+  public var italicAttributes: Lens<Object, [NSAttributedStringKey: AnyObject]> {
     return Lens(
       view: { $0.italicAttributes },
       set: { $1.italicAttributes = $0; return $1 }

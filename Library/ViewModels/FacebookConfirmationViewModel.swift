@@ -55,7 +55,7 @@ FacebookConfirmationViewModelErrors {
   public var errors: FacebookConfirmationViewModelErrors { return self }
 
   // MARK: FacebookConfirmationViewModelInputs
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -75,17 +75,17 @@ FacebookConfirmationViewModelErrors {
     self.facebookTokenProperty.value = token
   }
 
-  fileprivate let createAccountButtonProperty = MutableProperty()
+  fileprivate let createAccountButtonProperty = MutableProperty(())
   public func createAccountButtonPressed() {
     self.createAccountButtonProperty.value = ()
   }
 
-  fileprivate let loginButtonPressedProperty = MutableProperty()
+  fileprivate let loginButtonPressedProperty = MutableProperty(())
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
   }
 
-  fileprivate let environmentLoggedInProperty = MutableProperty()
+  fileprivate let environmentLoggedInProperty = MutableProperty(())
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }

@@ -7,5 +7,6 @@ extension Project.Video: Argo.Decodable {
     return curry(Project.Video.init)
       <^> json <| "id"
       <*> json <| "high"
+      <*> json <|? "hls"
   }
 }

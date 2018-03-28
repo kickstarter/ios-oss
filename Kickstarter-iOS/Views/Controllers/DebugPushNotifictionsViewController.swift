@@ -59,14 +59,14 @@ internal final class DebugPushNotificationsViewController: UIViewController {
     inAppButtons.enumerated().forEach { idx, button in
       _ = button
         |> UIButton.lens.tag .~ idx
-        |> UIButton.lens.title(forState: .normal) .~ "In-app"
+        |> UIButton.lens.title(for: .normal) .~ "In-app"
         |> UIButton.lens.targets .~ [(self, #selector(inAppButtonTapped(_:)), .touchUpInside)]
     }
 
     delayedButtons.enumerated().forEach { idx, button in
       _ = button
         |> UIButton.lens.tag .~ idx
-        |> UIButton.lens.title(forState: .normal) .~ "Delayed"
+        |> UIButton.lens.title(for: .normal) .~ "Delayed"
         |> UIButton.lens.targets .~ [(self, #selector(delayedButtonTapped(_:)), .touchUpInside)]
     }
 

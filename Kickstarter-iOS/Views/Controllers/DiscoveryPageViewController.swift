@@ -8,7 +8,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate var emptyStatesController: EmptyStatesViewController?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
   fileprivate let loadingIndicatorView = UIActivityIndicatorView()
-
+  private var sessionEndedObserver: Any?
+  private var sessionStartedObserver: Any?
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
@@ -29,13 +30,13 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
 
-    NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
+    self.sessionEndedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
@@ -51,6 +52,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
       emptyVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
       ])
     emptyVC.didMove(toParentViewController: self)
+  }
+
+  deinit {
+    self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   internal override func viewWillAppear(_ animated: Bool) {

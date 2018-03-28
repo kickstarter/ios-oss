@@ -128,7 +128,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
           : .init(top: Styles.grid(4), left: Styles.grid(4), bottom: Styles.grid(3), right: Styles.grid(4))
       }
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.conversionLabel
@@ -191,10 +191,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.readMoreButton
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_dark_grey_900
-      |> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_text_dark_grey_500
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(3) - 1,
                                                   left: 0,
                                                   bottom: Styles.grid(4) - 1,

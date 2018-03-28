@@ -167,7 +167,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
-      let parts = string.characters.split(separator: "\n").map(String.init)
+      let parts = string.split(separator: "\n").map(String.init)
       return (parts.first, parts.last)
     }
 
@@ -245,7 +245,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     )
   }
 
-  private let awakeFromNibProperty = MutableProperty()
+  private let awakeFromNibProperty = MutableProperty(())
   public func awakeFromNib() {
     self.awakeFromNibProperty.value = ()
   }
@@ -255,27 +255,27 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.projectProperty.value = project
   }
 
-  fileprivate let creatorButtonTappedProperty = MutableProperty()
+  fileprivate let creatorButtonTappedProperty = MutableProperty(())
   public func creatorButtonTapped() {
     self.creatorButtonTappedProperty.value = ()
   }
 
-  fileprivate let delegateDidSetProperty = MutableProperty()
+  fileprivate let delegateDidSetProperty = MutableProperty(())
   public func delegateDidSet() {
     self.delegateDidSetProperty.value = ()
   }
 
-  fileprivate let readMoreButtonTappedProperty = MutableProperty()
+  fileprivate let readMoreButtonTappedProperty = MutableProperty(())
   public func readMoreButtonTapped() {
     self.readMoreButtonTappedProperty.value = ()
   }
 
-  fileprivate let videoDidFinishProperty = MutableProperty()
+  fileprivate let videoDidFinishProperty = MutableProperty(())
   public func videoDidFinish() {
     self.videoDidFinishProperty.value = ()
   }
 
-  fileprivate let videoDidStartProperty = MutableProperty()
+  fileprivate let videoDidStartProperty = MutableProperty(())
   public func videoDidStart() {
     self.videoDidStartProperty.value = ()
   }

@@ -7,7 +7,7 @@ import UIKit
 internal final class RewardPledgeViewController: UIViewController {
   internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
 
-  fileprivate var applePayButton = PKPaymentButton(type: .plain, style: .black)
+  fileprivate var applePayButton = PKPaymentButton()
   @IBOutlet fileprivate weak var applePayButtonContainerView: UIStackView!
   @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var cancelPledgeButton: UIButton!
@@ -64,6 +64,8 @@ internal final class RewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate weak var topStackView: UIStackView!
   @IBOutlet fileprivate weak var updatePledgeButton: UIButton!
 
+  private var sessionStartedObserver: Any?
+
   internal static func configuredWith(
     project: Project,
     reward: Reward,
@@ -73,6 +75,10 @@ internal final class RewardPledgeViewController: UIViewController {
       let vc = Storyboard.RewardPledge.instantiate(RewardPledgeViewController.self)
       vc.viewModel.inputs.configureWith(project: project, reward: reward, applePayCapable: applePayCapable)
       return vc
+  }
+
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   fileprivate var statusBarHidden = true
@@ -137,7 +143,7 @@ internal final class RewardPledgeViewController: UIViewController {
       self, action: #selector(updatePledgeButtonTapped), for: .touchUpInside
     )
 
-    NotificationCenter
+    self.sessionStartedObserver = NotificationCenter
       .default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -159,7 +165,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.cancelPledgeButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Cancel_your_pledge() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
     _ = self.cardInnerView
       |> cardStyle()
@@ -175,7 +181,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.changePaymentMethodButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Change_payment_method() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Change_payment_method() }
 
     _ = self.checkmarkBadgeView
       |> UIView.lens.layer.cornerRadius %~~ { _, badge in badge.frame.width / 2 }
@@ -190,13 +196,13 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.continueToPaymentButton
       |> greenButtonStyle
-      |> UIButton.lens.backgroundColor(forState: .normal) .~ .ksr_green_700
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Continue_to_payment() }
+      |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_green_700
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue_to_payment() }
       |> UIButton.lens.layer.borderColor .~ UIColor.clear.cgColor
 
     _ = self.updatePledgeButton
       |> greenButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Update_pledge() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Update_pledge() }
 
     _ = self.conversionLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1().italicized
@@ -212,15 +218,15 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.numberOfLines .~ 3
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
-      |> UILabel.lens.userInteractionEnabled .~ true
+      |> UILabel.lens.isUserInteractionEnabled .~ true
 
     _ = self.differentPaymentMethodButton
       |> baseButtonStyle
       |> roundedStyle(cornerRadius: 0)
       |> UIButton.lens.layer.borderWidth .~ 1
       |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
-      |> UIButton.lens.titleColor(forState: .normal) .~ .ksr_green_700
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.Other_payment_methods() }
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_700
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Other_payment_methods() }
 
     _ = self.disclaimerButton
       |> UIButton.lens.accessibilityLabel %~ { _ in
@@ -254,7 +260,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.attributedText %~ { _ in
         NSAttributedString(
           string: Strings.Learn_more_about_accountability(),
-          attributes: [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
+          attributes: [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
         )
     }
 
@@ -285,7 +291,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.middleStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.minimumAndConversionStackView
@@ -302,7 +308,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.readMoreContainerView
       |> UIView.lens.backgroundColor .~ .clear
-      |> UIView.lens.userInteractionEnabled .~ true
+      |> UIView.lens.isUserInteractionEnabled .~ true
 
     _ = self.readMoreGradientView.backgroundColor = .clear
     _ = self.readMoreGradientView.startPoint = .zero
@@ -355,7 +361,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.rootStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(4) + Styles.grid(2),
                                                  leftRight: Styles.grid(2) + 1)
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.scrollView
@@ -372,7 +378,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.shippingAmountLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
-      |> UILabel.lens.contentCompressionResistancePriorityForAxis(.horizontal) .~ UILayoutPriorityRequired
+      |> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriority.required
 
     _ = self.shippingInputStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -385,7 +391,7 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.shippingMenuStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.alignment .~ .center
-      |> UIStackView.lens.userInteractionEnabled .~ false
+      |> UIStackView.lens.isUserInteractionEnabled .~ false
 
     _ = self.shippingContainerView
       |> UIView.lens.layoutMargins .~
@@ -395,7 +401,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UIView.lens.layer.borderWidth .~ 1
 
     _ = self.shippingDestinationButton
-      |> UIButton.lens.backgroundColor(forState: .highlighted) .~ UIColor.ksr_navy_200
+      |> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_navy_200
       |> UIButton.lens.isAccessibilityElement .~ true
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_shipping_options() }
 
@@ -403,11 +409,11 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_900
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.userInteractionEnabled .~ true
+      |> UILabel.lens.isUserInteractionEnabled .~ true
 
     _ = self.topStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     self.navigationItem.leftBarButtonItem?.image = image(named: "icon--cross", tintColor: .ksr_navy_600)
@@ -557,7 +563,7 @@ internal final class RewardPledgeViewController: UIViewController {
   }
 
   fileprivate func goToPaymentAuthorization(request: PKPaymentRequest) {
-    let vc = PKPaymentAuthorizationViewController(paymentRequest: request)
+    guard let vc = PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
     vc.delegate = self
     self.present(vc, animated: true, completion: nil)
   }

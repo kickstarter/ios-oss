@@ -37,8 +37,7 @@ extension PKPaymentRequest: Argo.Decodable {
   }
 
   public static func decode(_ json: JSON) -> Decoded<PKPaymentRequest> {
-    let create = curry(PKPaymentRequest.init)
-    let tmp = create
+    let tmp = curry(PKPaymentRequest.init)
       <^> json <|  "country_code"
       <*> json <|  "currency_code"
       <*> (json <| "merchant_capabilities" <|> .success(.capability3DS))
@@ -49,7 +48,7 @@ extension PKPaymentRequest: Argo.Decodable {
       <*> json <|| "supported_networks"
 
     let camelCase = { () -> Decoded<PKPaymentRequest> in
-      let tmp = create
+      let tmp = curry(PKPaymentRequest.init)
         <^> json <|  "countryCode"
         <*> json <|  "currencyCode"
         <*> (json <| "merchantCapabilities" <|> .success(.capability3DS))

@@ -125,7 +125,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.goToDiscovery = self.categoryCellTappedProperty.signal.skipNil()
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
-    let rootCategory = project
+    let rootCategory: Signal<KsApi.Category, NoError> = project
       .map { toBase64($0.category) }
       .flatMap {
         return AppEnvironment.current.apiService.fetchGraphCategory(query: categoryBy(id: $0))
@@ -136,7 +136,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     }
 
     let projects = Signal.combineLatest(project, rootCategory)
-      .flatMap(relatedProjects(toProject:inCategory:))
+      .flatMap { relatedProjects(toProject: $0.0, inCategory: $0.1) }
       .filter { projects in !projects.isEmpty }
 
     self.showRecommendations = Signal.zip(projects, rootCategory)
@@ -215,12 +215,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public var outputs: ThanksViewModelOutputs { return self }
 
   // MARK: ThanksViewModelInputs
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     viewDidLoadProperty.value = ()
   }
 
-  fileprivate let closeButtonTappedProperty = MutableProperty()
+  fileprivate let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() {
     closeButtonTappedProperty.value = ()
   }
@@ -240,27 +240,27 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     projectTappedProperty.value = project
   }
 
-  fileprivate let gamesNewsletterSignupButtonTappedProperty = MutableProperty()
+  fileprivate let gamesNewsletterSignupButtonTappedProperty = MutableProperty(())
   public func gamesNewsletterSignupButtonTapped() {
     gamesNewsletterSignupButtonTappedProperty.value = ()
   }
 
-  fileprivate let rateNowButtonTappedProperty = MutableProperty()
+  fileprivate let rateNowButtonTappedProperty = MutableProperty(())
   public func rateNowButtonTapped() {
     rateNowButtonTappedProperty.value = ()
   }
 
-  fileprivate let rateRemindLaterButtonTappedProperty = MutableProperty()
+  fileprivate let rateRemindLaterButtonTappedProperty = MutableProperty(())
   public func rateRemindLaterButtonTapped() {
     rateRemindLaterButtonTappedProperty.value = ()
   }
 
-  fileprivate let rateNoThanksButtonTappedProperty = MutableProperty()
+  fileprivate let rateNoThanksButtonTappedProperty = MutableProperty(())
   public func rateNoThanksButtonTapped() {
     rateNoThanksButtonTappedProperty.value = ()
   }
 
-  fileprivate let userUpdatedProperty = MutableProperty()
+  fileprivate let userUpdatedProperty = MutableProperty(())
   public func userUpdated() {
     userUpdatedProperty.value = ()
   }

@@ -10,6 +10,7 @@ import UIKit
 internal final class CheckoutViewController: DeprecatedWebViewController {
   fileprivate weak var loginToutViewController: UIViewController?
   fileprivate let viewModel: CheckoutViewModelType = CheckoutViewModel()
+  private var sessionStartedObserver: Any?
 
   internal static func configuredWith(initialRequest: URLRequest,
                                       project: Project,
@@ -37,7 +38,11 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-    internal override func bindViewModel() {
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
+  }
+
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.closeLoginTout
@@ -98,14 +103,14 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
         self?.dismiss(animated: true, completion: nil)
     }
 
-    NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
   }
 
   internal func webView(_ webView: UIWebView,
-                        shouldStartLoadWithRequest request: URLRequest,
+                        shouldStartLoadWith request: URLRequest,
                         navigationType: UIWebViewNavigationType) -> Bool {
     return self.viewModel.inputs.shouldStartLoad(withRequest: request, navigationType: navigationType)
   }
@@ -119,7 +124,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
   }
 
   fileprivate func goToPaymentAuthorization(request: PKPaymentRequest) {
-    let vc = PKPaymentAuthorizationViewController(paymentRequest: request)
+    guard let vc = PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
     vc.delegate = self
     self.present(vc, animated: true, completion: nil)
   }

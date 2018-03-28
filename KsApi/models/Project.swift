@@ -35,6 +35,7 @@ public struct Project {
   public struct Video {
     public let id: Int
     public let high: String
+    public let hls: String?
   }
 
   public enum State: String, Argo.Decodable {
@@ -157,8 +158,7 @@ extension Project: CustomDebugStringConvertible {
 
 extension Project: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<Project> {
-    let create = curry(Project.init)
-    let tmp1 = create
+    let tmp1 = curry(Project.init)
       <^> json <| "blurb"
       <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> Project.Country.decode(json)
@@ -199,8 +199,7 @@ extension Project.UrlsEnvelope.WebEnvelope: Argo.Decodable {
 
 extension Project.Stats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Stats> {
-    let create = curry(Project.Stats.init)
-    let tmp1 = create
+    let tmp1 = curry(Project.Stats.init)
       <^> json <| "backers_count"
       <*> json <|? "comments_count"
       <*> json <|? "current_currency"
@@ -215,8 +214,7 @@ extension Project.Stats: Argo.Decodable {
 
 extension Project.MemberData: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.MemberData> {
-    let create = curry(Project.MemberData.init)
-    return create
+    return curry(Project.MemberData.init)
       <^> json <|? "last_update_published_at"
       <*> (removeUnknowns <^> (json <|| "permissions") <|> .success([]))
       <*> json <|? "unread_messages_count"
@@ -246,14 +244,13 @@ extension Project.Personalization: Argo.Decodable {
 
 extension Project.Photo: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<Project.Photo> {
-    let create = curry(Project.Photo.init)
 
     let url1024: Decoded<String?> = ((json <| "1024x768") <|> (json <| "1024x576"))
       // swiftlint:disable:next syntactic_sugar
       .map(Optional<String>.init)
       <|> .success(nil)
 
-    return create
+    return curry(Project.Photo.init)
       <^> json <| "full"
       <*> json <| "med"
       <*> url1024

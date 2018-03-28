@@ -21,7 +21,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
   @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var backersTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var creatorNameLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
   @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
@@ -45,26 +44,36 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var socialLabel: UILabel!
   @IBOutlet fileprivate weak var socialStackView: UIStackView!
 
+  private var projectSavedObserver: Any?
+  private var sessionEndedObserver: Any?
+  private var sessionStartedObserver: Any?
+
     internal override func awakeFromNib() {
     super.awakeFromNib()
 
     self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
 
-    NotificationCenter.default
+    self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    NotificationCenter.default
+    self.sessionEndedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
-    NotificationCenter.default
+    self.projectSavedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
         notification in
         self?.viewModel.inputs.projectFromNotification(project: notification.userInfo?["project"] as? Project)
       }
+  }
+
+  deinit {
+    self.projectSavedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   internal override func bindStyles() {
@@ -101,10 +110,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self.backersSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
-
-    _ = self.creatorNameLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
 
     _ = self.fundingTitleLabel
       |> postcardStatsTitleStyle
@@ -173,7 +178,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMargins
         .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
-      |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
   }
 
   internal override func bindViewModel() {
@@ -182,8 +187,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
     self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
     self.backersTitleLabel.rac.text = self.viewModel.outputs.backersTitleLabelText
-    self.creatorNameLabel.rac.text = self.viewModel.outputs.creatorNameLabelText
-    self.creatorNameLabel.rac.hidden = self.viewModel.outputs.creatorNameLabelHidden
     self.backersSubtitleLabel.rac.text = self.viewModel.outputs.backersSubtitleLabelText
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText

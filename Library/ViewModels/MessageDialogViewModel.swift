@@ -138,7 +138,7 @@ MessageDialogViewModelOutputs {
   public func bodyTextChanged(_ body: String) {
     self.bodyTextChangedProperty.value = body
   }
-  fileprivate let cancelButtonPressedProperty = MutableProperty()
+  fileprivate let cancelButtonPressedProperty = MutableProperty(())
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
   }
@@ -149,11 +149,11 @@ MessageDialogViewModelOutputs {
     self.messageSubjectProperty.value = messageSubject
     self.contextProperty.value = context
   }
-  fileprivate let postButtonPressedProperty = MutableProperty()
+  fileprivate let postButtonPressedProperty = MutableProperty(())
   public func postButtonPressed() {
     self.postButtonPressedProperty.value = ()
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }

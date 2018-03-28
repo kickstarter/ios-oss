@@ -34,6 +34,9 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits when the filters view controller should be dismissed.
   var dismissDiscoveryFilters: Signal<(), NoError> { get }
 
+  /// Emits when the Explore label should be shown/hidden after filter is selected.
+  var exploreLabelIsHidden: Signal<Bool, NoError> { get }
+
   /// Emits a11y label for favorite button.
   var favoriteButtonAccessibilityLabel: Signal<String, NoError> { get }
 
@@ -110,6 +113,10 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
     self.dividerIsHidden = strings
       .map { $0.subcategory == nil }
       .skipRepeats()
+
+      self.exploreLabelIsHidden = self.filtersSelectedRowProperty.signal.map {
+        return shouldHideLabel($0?.params)
+      }
 
     self.favoriteViewIsHidden = paramsAndFiltersAreHidden.map(first)
       .map { $0.category == nil }
@@ -224,7 +231,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public func configureWith(params: DiscoveryParams) {
     self.paramsProperty.value = params
   }
-  fileprivate let favoriteButtonTappedProperty = MutableProperty()
+  fileprivate let favoriteButtonTappedProperty = MutableProperty(())
   public func favoriteButtonTapped() {
     self.favoriteButtonTappedProperty.value = ()
   }
@@ -232,11 +239,11 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public func filtersSelected(row: SelectableRow) {
     self.filtersSelectedRowProperty.value = row
   }
-  fileprivate let titleButtonTappedProperty = MutableProperty()
+  fileprivate let titleButtonTappedProperty = MutableProperty(())
   public func titleButtonTapped() {
     self.titleButtonTappedProperty.value = ()
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -245,6 +252,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError>
   public let dividerIsHidden: Signal<Bool, NoError>
   public let dismissDiscoveryFilters: Signal<(), NoError>
+  public let exploreLabelIsHidden: Signal<Bool, NoError>
   public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
   public let favoriteViewIsDimmed: Signal<Bool, NoError>
   public let favoriteViewIsHidden: Signal<Bool, NoError>
@@ -262,6 +270,12 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
   public var inputs: DiscoveryNavigationHeaderViewModelInputs { return self }
   public var outputs: DiscoveryNavigationHeaderViewModelOutputs { return self }
+}
+
+private func shouldHideLabel(_ params: DiscoveryParams?) -> Bool {
+  guard let params = params else { return true }
+
+  return stringsForTitle(params: params).0 != Strings.All_Projects()
 }
 
 private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcategory: String?) {

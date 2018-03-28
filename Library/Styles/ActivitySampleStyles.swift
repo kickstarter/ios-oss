@@ -36,14 +36,14 @@ public let activitySampleProjectTitleLabelStyle =
 public let activitySampleSeeAllActivityButtonStyle =
   borderButtonStyle
     <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 13)
-    <> UIButton.lens.title(forState: .normal) %~ { _ in
+    <> UIButton.lens.title(for: .normal) %~ { _ in
       Strings.discovery_activity_sample_button_see_all_activity()
 }
 
 public let activitySampleStackViewStyle =
   UIStackView.lens.spacing .~ Styles.grid(3)
     <> UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(4))
-    <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
 public let activitySampleTitleLabelStyle =
   UILabel.lens.font .~ .ksr_footnote()

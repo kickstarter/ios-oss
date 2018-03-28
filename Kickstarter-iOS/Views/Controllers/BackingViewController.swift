@@ -145,7 +145,7 @@ internal final class BackingViewController: UIViewController {
 
     _ = self.viewMessagesButton
       |> borderButtonStyle
-      |> UIButton.lens.title(forState: .normal) %~ { _ in Strings.backer_modal_view_messages() }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.backer_modal_view_messages() }
       |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_messages_hint() }
 

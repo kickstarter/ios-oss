@@ -35,7 +35,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
-        ubiquitousStore: NSUbiquitousKeyValueStore.default(),
+        ubiquitousStore: NSUbiquitousKeyValueStore.default,
         userDefaults: UserDefaults.standard
       )
     )
@@ -194,6 +194,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.findRedirectUrl($0) }
 
+    //swiftlint:disable discarded_notification_center_observer
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -203,6 +204,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
+    //swiftlint:enable discarded_notification_center_observer
 
     self.window?.tintColor = .ksr_dark_grey_500
 

@@ -5,7 +5,8 @@ import Runes
 public enum Experiment {
 
   public enum Name: String {
-    case iosTest = "ios_test_test"
+    case creatorsNameDiscovery = "show_created_by_discovery"
+    case defaultToRecs = "default_rec_projects"
   }
 
   public enum Variant: String {
@@ -35,8 +36,7 @@ public struct Config {
 
 extension Config: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Config> {
-    let create = curry(Config.init)
-    let tmp = create
+    let tmp = curry(Config.init)
       <^> decodeDictionary(json <| "ab_experiments")
       <*> json <| "app_id"
       <*> json <|| "apple_pay_countries"

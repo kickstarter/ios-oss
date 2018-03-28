@@ -418,7 +418,8 @@ public final class Koala {
    - parameter page: The number of pages that have been loaded.
    */
   public func trackDiscovery(params: DiscoveryParams, page: Int) {
-    let props = properties(params: params).withAllValuesFrom(["page": page])
+    var props = properties(params: params).withAllValuesFrom(["page": page])
+    props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
 
     self.track(event: "Loaded Discovery Results", properties: props)
 
@@ -1172,6 +1173,7 @@ public final class Koala {
     props["referrer_credit"] = cookieRefTag?.stringTag
     props["live_stream_type"] = prioritizedLiveStreamState(
       fromLiveStreamEvents: liveStreamEvents)?.trackingString
+    props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
 
     // Deprecated event
     self.track(event: "Project Page", properties: props.withAllValuesFrom(deprecatedProps))
@@ -1935,7 +1937,7 @@ private func properties(comment: Comment, prefix: String = "comment_") -> [Strin
 
   var properties: [String: Any] = [:]
 
-  properties["body_length"] = comment.body.characters.count
+  properties["body_length"] = comment.body.count
 
   return properties.prefixedKeys(prefix)
 }

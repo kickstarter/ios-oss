@@ -9,6 +9,7 @@ import Prelude
 internal final class CommentsViewController: UITableViewController {
   fileprivate let viewModel: CommentsViewModelType = CommentsViewModel()
   fileprivate let dataSource = CommentsDataSource()
+  private var sessionStartedObserver: Any?
 
   // This button needs to store a strong reference so as to not get wiped when setting hidden state.
   @IBOutlet fileprivate var commentBarButton: UIBarButtonItem!
@@ -27,7 +28,7 @@ internal final class CommentsViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
 
-    NotificationCenter.default
+    self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
@@ -39,6 +40,10 @@ internal final class CommentsViewController: UITableViewController {
     }
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   internal override func viewWillAppear(_ animated: Bool) {

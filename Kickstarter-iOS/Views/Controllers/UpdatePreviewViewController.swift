@@ -49,8 +49,8 @@ internal final class UpdatePreviewViewController: WebViewController {
   }
 
   internal func webView(_ webView: WKWebView,
-                        decidePolicyForNavigationAction navigationAction: WKNavigationAction,
-                        decisionHandler: (WKNavigationActionPolicy) -> Void) {
+                        decidePolicyFor navigationAction: WKNavigationAction,
+                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 
     decisionHandler(
       self.viewModel.inputs.decidePolicyFor(navigationAction: .init(navigationAction: navigationAction))

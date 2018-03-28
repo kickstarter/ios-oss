@@ -11,6 +11,8 @@ public protocol ProjectNavBarViewControllerDelegate: class {
 public final class ProjectNavBarViewController: UIViewController {
   internal weak var delegate: ProjectNavBarViewControllerDelegate?
   fileprivate let viewModel: ProjectNavBarViewModelType = ProjectNavBarViewModel()
+  private var sessionEndedObserver: Any?
+  private var sessionStartedObserver: Any?
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
   @IBOutlet fileprivate weak var backgroundView: UIView!
@@ -51,22 +53,27 @@ public final class ProjectNavBarViewController: UIViewController {
       UITapGestureRecognizer(target: self, action: #selector(projectNameTapped))
     )
 
-    NotificationCenter
+    self.sessionStartedObserver = NotificationCenter
       .default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
     }
 
-    NotificationCenter
+    self.sessionEndedObserver = NotificationCenter
       .default
-      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
 
     self.viewModel.inputs.viewDidLoad()
   }
 
-    public override func bindStyles() {
+  deinit {
+    self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
+  }
+
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self.backgroundView
@@ -76,8 +83,8 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UIView.lens.layer.shadowColor .~ UIColor.ksr_grey_500.cgColor
 
     _ = self.closeButton
-      |> UIButton.lens.title(forState: .normal) .~ nil
-      |> UIButton.lens.image(forState: .normal) .~ image(named: "icon--cross")
+      |> UIButton.lens.title(for: .normal) .~ nil
+      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
       |> UIButton.lens.tintColor .~ .ksr_dark_grey_900
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
@@ -92,7 +99,7 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.minimumScaleFactor .~ 0.8
       |> UILabel.lens.adjustsFontSizeToFitWidth .~ true
-      |> UILabel.lens.userInteractionEnabled .~ true
+      |> UILabel.lens.isUserInteractionEnabled .~ true
 
     _ = self.shareButton
       |> shareButtonStyle

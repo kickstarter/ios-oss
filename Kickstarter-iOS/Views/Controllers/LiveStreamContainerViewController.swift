@@ -20,6 +20,8 @@ public final class LiveStreamContainerViewController: UIViewController {
 
   private var liveVideoViewController: LiveVideoViewController?
   internal weak var liveStreamContainerPageViewController: LiveStreamContainerPageViewController?
+  private var deviceOrientationChangedObserver: Any?
+  private var sessionStartedObserver: Any?
   private let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let viewModel: LiveStreamContainerViewModelType = LiveStreamContainerViewModel()
 
@@ -54,19 +56,24 @@ public final class LiveStreamContainerViewController: UIViewController {
       .flatMap { $0 as? LiveStreamContainerPageViewController }
       .first
 
-    NotificationCenter.default
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+
+    self.deviceOrientationChangedObserver = NotificationCenter.default
       .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
         )
     }
 
-    NotificationCenter.default
-      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionStarted()
-    }
-
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.deviceOrientationChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   public override func bindStyles() {

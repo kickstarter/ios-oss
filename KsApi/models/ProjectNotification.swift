@@ -17,8 +17,7 @@ public struct ProjectNotification {
 
 extension ProjectNotification: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectNotification> {
-    let create = curry(ProjectNotification.init)
-    return create
+    return curry(ProjectNotification.init)
       <^> json <| "email"
       <*> json <| "id"
       <*> json <| "mobile"

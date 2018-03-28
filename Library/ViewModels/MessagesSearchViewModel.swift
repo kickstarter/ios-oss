@@ -116,7 +116,7 @@ MessagesSearchViewModelOutputs {
       .observeValues { AppEnvironment.current.koala.trackClearedMessageSearchTerm(project: $0) }
   }
 
-  fileprivate let clearSearchTextProperty = MutableProperty()
+  fileprivate let clearSearchTextProperty = MutableProperty(())
   public func clearSearchText() {
     self.clearSearchTextProperty.value = ()
   }
@@ -132,15 +132,15 @@ MessagesSearchViewModelOutputs {
   public func tappedMessageThread(_ messageThread: MessageThread) {
     self.tappedMessageThreadProperty.value = messageThread
   }
-  fileprivate let viewDidLoadProperty = MutableProperty()
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  fileprivate let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
-  fileprivate let viewWillDisappearProperty = MutableProperty()
+  fileprivate let viewWillDisappearProperty = MutableProperty(())
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()
   }

@@ -144,7 +144,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
       .skipRepeats()
   }
 
-  fileprivate let backingButtonPressedProperty = MutableProperty()
+  fileprivate let backingButtonPressedProperty = MutableProperty(())
   public func backingButtonPressed() {
     self.backingButtonPressedProperty.value = ()
   }
@@ -154,7 +154,7 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  fileprivate let sendMessageButtonPressedProperty = MutableProperty()
+  fileprivate let sendMessageButtonPressedProperty = MutableProperty(())
   public func sendMessageButtonPressed() {
     self.sendMessageButtonPressedProperty.value = ()
   }

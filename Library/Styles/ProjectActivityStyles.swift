@@ -8,18 +8,18 @@ public let projectActivityBulletSeparatorViewStyle = roundedStyle(cornerRadius: 
 public let projectActivityDividerViewStyle = UIView.lens.backgroundColor .~ .ksr_navy_300
 
 public let projectActivityFooterButton =
-  UIButton.lens.titleColor(forState: .normal) .~ .ksr_text_green_700
+  UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
     <> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote(size: 12).bolded
-    <> UIButton.lens.titleColor(forState: .highlighted) .~ .ksr_grey_100
+    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_grey_100
 
 public let projectActivityFooterStackViewStyle =
   UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
-    <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
     <> UIStackView.lens.spacing .~ Styles.grid(2)
 
 public let projectActivityHeaderStackViewStyle =
   UIStackView.lens.layoutMargins .~ .init(all: Styles.grid(2))
-    <> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
     <> UIStackView.lens.spacing .~ Styles.grid(1)
 
 public let projectActivityRegularRegularLeftRight = Styles.grid(30)

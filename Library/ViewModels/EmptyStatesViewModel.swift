@@ -94,14 +94,14 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
   public func configureWith(emptyState: EmptyState?) {
     self.emptyStateProperty.value = emptyState
   }
-  fileprivate let mainButtonTappedProperty = MutableProperty()
+  fileprivate let mainButtonTappedProperty = MutableProperty(())
   public func mainButtonTapped() {
     self.mainButtonTappedProperty.value = ()
   }
   public func setEmptyState(_ emptyState: EmptyState) {
     self.emptyStateProperty.value = emptyState
   }
-  fileprivate let viewWillAppearProperty = MutableProperty()
+  fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }

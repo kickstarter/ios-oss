@@ -84,17 +84,17 @@ CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
     self.goBackToProject = self.backProjectTappedProperty.signal
   }
 
-  fileprivate let backProjectTappedProperty = MutableProperty()
+  fileprivate let backProjectTappedProperty = MutableProperty(())
   public func backProjectTapped() {
     self.backProjectTappedProperty.value = ()
   }
 
-  fileprivate let leaveACommentTappedProperty = MutableProperty()
+  fileprivate let leaveACommentTappedProperty = MutableProperty(())
   public func leaveACommentTapped() {
     self.leaveACommentTappedProperty.value = ()
   }
 
-  fileprivate let loginTappedProperty = MutableProperty()
+  fileprivate let loginTappedProperty = MutableProperty(())
   public func loginTapped() {
     self.loginTappedProperty.value = ()
   }

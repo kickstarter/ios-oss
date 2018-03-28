@@ -12,8 +12,7 @@ public struct Comment {
 
 extension Comment: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Comment> {
-    let create = curry(Comment.init)
-    let tmp = create
+    let tmp = curry(Comment.init)
       <^> json <| "author"
       <*> json <| "body"
       <*> json <| "created_at"
