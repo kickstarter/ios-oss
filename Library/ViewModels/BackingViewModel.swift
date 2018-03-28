@@ -39,6 +39,9 @@ public protocol BackingViewModelOutputs {
   /// Emits a bool to animate the loader.
   var loaderIsAnimating: Signal<Bool, NoError> { get }
 
+  /// Emits a bool whether to hide the mark as received section.
+  var markAsReceivedSectionIsHidden: Signal<Bool, NoError> { get }
+
   /// Emits the button title for messaging a backer or creator.
   var messageButtonTitleText: Signal<String, NoError> { get }
 
@@ -53,6 +56,9 @@ public protocol BackingViewModelOutputs {
 
   /// Emits the backer reward description to display.
   var rewardDescription: Signal<String, NoError> { get }
+
+  /// Emits a bool to mark reward received.
+  var rewardMarkedReceived: Signal<Bool, NoError> { get }
 
   /// Emits a bool whether to hide the reward section if it's No Reward.
   var rewardSectionAndShippingIsHidden: Signal<Bool, NoError> { get }
@@ -75,8 +81,6 @@ public protocol BackingViewModelOutputs {
   /// Emits text for total pledge amount label.
   var totalPledgeAmount: Signal<String, NoError> { get }
 
-  /// Emits the value for reward received.
-  var rewardReceivedState: Signal<Bool, NoError> { get }
 }
 
 public protocol BackingViewModelType {
@@ -86,7 +90,7 @@ public protocol BackingViewModelType {
 
 public final class BackingViewModel: BackingViewModelType, BackingViewModelInputs, BackingViewModelOutputs {
 
-    public init() {
+  public init() {
     let projectAndBackerAndBackerIsCurrentUser = Signal.combineLatest(
       self.projectAndBackerProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
@@ -118,23 +122,31 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     let reward = backing.map { $0.reward }.skipNil()
     let basicBacker = projectAndBackerAndBackerIsCurrentUser.map(second)
     let emptyStringOnLoad = self.viewDidLoadProperty.signal.mapConst("")
-    let projectAndBacking = Signal.combineLatest(project, backing)
+    let projectAndBacker = Signal.combineLatest(project, basicBacker)
 
-    let receivedEvent = projectAndBacking
+    let rewardReceivedEvent = projectAndBacker
       .takePairWhen(self.rewardReceivedTappedProperty.signal)
-      .switchMap { project in
+      .map(unpack)
+      .switchMap { project, backer, received in
         AppEnvironment.current.apiService.backingUpdate(
-          forProject: project.0.0, forUser: project.0.1.backer!,
-                                                        received: project.1)
+          forProject: project, forUser: backer, received: received)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
-    let markedReceived = receivedEvent.values().map { $0 }
+    let markedReceived = rewardReceivedEvent.values().map { $0 }
 
-    self.rewardReceivedState = Signal.merge(backing, markedReceived)
+    self.rewardMarkedReceived = Signal.merge(backing, markedReceived)
       .map { $0.backerCompleted ?? false }
       .skipRepeats()
+
+    self.markAsReceivedSectionIsHidden = Signal.merge (
+      self.viewDidLoadProperty.signal.mapConst(true),
+      projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
+          shouldHideMarkReceived(backing: backing, project: project)
+      }
+    )
+    .skip(first: 1)
 
     self.backerSequence = Signal.merge(
       self.viewDidLoadProperty.signal
@@ -241,7 +253,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .map { _ in AppEnvironment.current.language == .en ? .horizontal : .vertical }
 
     project.observeValues { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
-  }
+}
 
   fileprivate let messageCreatorTappedProperty = MutableProperty()
   public func messageCreatorTapped() {
@@ -274,11 +286,13 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let goToMessageCreator: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
   public let goToMessages: Signal<(Project, Backing), NoError>
   public let loaderIsAnimating: Signal<Bool, NoError>
+  public let markAsReceivedSectionIsHidden: Signal<Bool, NoError>
   public let messageButtonTitleText: Signal<String, NoError>
   public let opacityForContainers: Signal<CGFloat, NoError>
   public let pledgeAmount: Signal<String, NoError>
   public let pledgeSectionTitle: Signal<NSAttributedString, NoError>
   public let rewardDescription: Signal<String, NoError>
+  public let rewardMarkedReceived: Signal<Bool, NoError>
   public let rewardSectionAndShippingIsHidden: Signal<Bool, NoError>
   public var rewardTitleWithAmount: Signal<String, NoError>
   public var rewardSectionTitle: Signal<NSAttributedString, NoError>
@@ -287,30 +301,22 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let statusDescription: Signal<NSAttributedString, NoError>
   public let totalPledgeAmount: Signal<String, NoError>
 
-  public let rewardReceivedState: Signal<Bool, NoError>
-
   public var inputs: BackingViewModelInputs { return self }
   public var outputs: BackingViewModelOutputs { return self }
 }
 
-//private func cached(backing: Backing) -> Backing {
-//  if let backingCache = AppEnvironment.current.cache[KSCache.ksr_markedReceived] as? [Int: Bool] {
-//    let markedReceived = backingCache[backing.id] ?? backing.completed
-//    return backing |> Backing.lens.completed .~ markedReceived
-//  } else {
-//    return backing
-//  }
-//}
-//
-//private func cache(backing: Backing, shouldToggle: Bool) {
-//  AppEnvironment.current.cache[KSCache.ksr_markedReceived] =
-//    AppEnvironment.current.cache[KSCache.ksr_markedReceived] ?? [Int: Bool]()
-//
-//  var cache = AppEnvironment.current.cache[KSCache.ksr_markedReceived] as? [Int: Bool]
-//  cache?[backing.id] = shouldToggle
-//
-//  AppEnvironment.current.cache[KSCache.ksr_markedReceived] = cache
-//}
+private func shouldHideMarkReceived(backing: Backing, project: Project) -> Bool {
+
+  if !project.memberData.permissions.isEmpty {
+    return true
+  } else if backing.reward?.isNoReward == .some(true) {
+    return true
+  } else if backing.status != .collected {
+    return true
+  } else {
+    return false
+  }
+}
 
 private func statusDescString(for backing: Backing, project: Project, backerIsCurrentUser: Bool)
   -> NSAttributedString {

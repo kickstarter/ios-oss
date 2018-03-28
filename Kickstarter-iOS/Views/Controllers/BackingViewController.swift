@@ -24,7 +24,7 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var pledgeSectionTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rewardContainerView: UIView!
   @IBOutlet fileprivate weak var rewardDeliveredLabel: UILabel!
-  @IBOutlet fileprivate weak var useThisToKeepTrackLabel: UILabel!
+  @IBOutlet fileprivate weak var rewardReceivedSwitch: UISwitch!
   @IBOutlet fileprivate weak var rewardSectionTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rewardTitleWithAmountLabel: UILabel!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
@@ -33,8 +33,8 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var statusDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var totalPledgedAmountLabel: UILabel!
   @IBOutlet fileprivate weak var totalPledgedLabel: UILabel!
+  @IBOutlet fileprivate weak var useThisToKeepTrackLabel: UILabel!
   @IBOutlet fileprivate weak var viewMessagesButton: UIButton!
-  @IBOutlet fileprivate weak var rewardReceivedSwitch: UISwitch!
 
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
 
@@ -83,10 +83,8 @@ internal final class BackingViewController: UIViewController {
     self.totalPledgedAmountLabel.rac.text = self.viewModel.outputs.totalPledgeAmount
     self.shippingStackView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
-    self.markAsReceivedStackView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
-
-    self.rewardReceivedSwitch.rac.on = self.viewModel.outputs.rewardReceivedState
-
+    self.markAsReceivedStackView.rac.hidden = self.viewModel.outputs.markAsReceivedSectionIsHidden
+    self.rewardReceivedSwitch.rac.on = self.viewModel.outputs.rewardMarkedReceived
     self.backerAvatarImageView.rac.imageUrl = self.viewModel.outputs.backerAvatarURL
 
     self.viewModel.outputs.goToMessages
@@ -114,7 +112,7 @@ internal final class BackingViewController: UIViewController {
             _self.rewardContainerView.alpha = alpha
           },
           completion: nil)
-  }
+    }
   }
 
   internal override func bindStyles() {
