@@ -239,6 +239,7 @@
 "Reward_Surveys.one" = "リワードサーベイ";
 "Reward_Surveys.two" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.zero" = "%{reward_survey_count} リワードのサーベイ";
+"Reward_delivered" = "Reward delivered?";
 "Reward_estimated_for_delivery_in_date" = "<b>リワード</b>の配達予定日は%{delivery_date}";
 "Reward_selected" = "選択中のリワード";
 "Rewards_count_rewards.few" = "%{rewards_count} 種類のリワード";
@@ -312,6 +313,7 @@
 "Upcoming_live_streams" = "ライブ配信が開始します";
 "Upcoming_with_creator_name" = "<br/><b>%{creator_name}</b>が近日配信";
 "Update_pledge" = "プレッジをアップデートする";
+"Use_this_to_keep_track_of_which_rewards_youve_received" = "Use this to keep track of which rewards you've received.";
 "Video_disabled_until_the_internet_connection_improves" = "インターネット通信状態が向上するまでビデオはご利用いいただけません。";
 "View" = "みる";
 "View_your_pledge" = "プレッジをみる";

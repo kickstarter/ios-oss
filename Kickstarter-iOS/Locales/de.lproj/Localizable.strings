@@ -239,6 +239,7 @@
 "Reward_Surveys.one" = "Befragung";
 "Reward_Surveys.two" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.zero" = "%{reward_survey_count} Befragungen";
+"Reward_delivered" = "Reward delivered?";
 "Reward_estimated_for_delivery_in_date" = "Voraussichtliche Lieferung der <b>Belohnung</b> im %{delivery_date}";
 "Reward_selected" = "Ausgewählte Belohnung";
 "Rewards_count_rewards.few" = "%{rewards_count} Belohnungen";
@@ -312,6 +313,7 @@
 "Upcoming_live_streams" = "Zukünftige Live-Streams";
 "Upcoming_with_creator_name" = "Demnächst: Video von <br/><b>%{creator_name}</b>";
 "Update_pledge" = "Beitrag aktualisieren";
+"Use_this_to_keep_track_of_which_rewards_youve_received" = "Use this to keep track of which rewards you've received.";
 "Video_disabled_until_the_internet_connection_improves" = "Video bis zur Wiederherstellung der Internetverbindung deaktiviert";
 "View" = "Anzeigen";
 "View_your_pledge" = "Deinen Finanzierungsbeitrag ansehen";
