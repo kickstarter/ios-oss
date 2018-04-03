@@ -377,7 +377,7 @@ internal final class BackingViewModelTests: TestCase {
       self.rewardMarkedReceived.assertValues([true])
 
       let newBacking = .template
-        |> Backing.lens.backerCompletedAt .~ false
+        |> Backing.lens.backerCompleted .~ false
 
       withEnvironment(apiService: MockService(fetchBackingResponse: newBacking) ) {
         self.vm.inputs.rewardReceivedTapped(on: false)

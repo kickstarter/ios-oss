@@ -138,7 +138,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     let markedReceivedBacking = rewardReceivedEvent.values().map { $0 }
 
     self.rewardMarkedReceived = Signal.merge(backing, markedReceivedBacking)
-      .map { $0.backerCompletedAt ?? false }
+      .map { $0.backerCompleted ?? false }
       .skipRepeats()
 
     self.markAsReceivedSectionIsHidden = Signal.merge (
