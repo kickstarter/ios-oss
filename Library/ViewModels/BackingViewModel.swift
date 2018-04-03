@@ -17,6 +17,7 @@ public protocol BackingViewModelInputs {
   /// Call when the "View messages" button is pressed.
   func viewMessagesTapped()
 
+  /// Call when user taps reward received.
   func rewardReceivedTapped(on: Bool)
 }
 
@@ -134,16 +135,16 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
           .materialize()
     }
 
-    let markedReceived = rewardReceivedEvent.values().map { $0 }
+    let markedReceivedBacking = rewardReceivedEvent.values().map { $0 }
 
-    self.rewardMarkedReceived = Signal.merge(backing, markedReceived)
-      .map { $0.backerCompleted ?? false }
+    self.rewardMarkedReceived = Signal.merge(backing, markedReceivedBacking)
+      .map { $0.backerCompletedAt ?? false }
       .skipRepeats()
 
     self.markAsReceivedSectionIsHidden = Signal.merge (
       self.viewDidLoadProperty.signal.mapConst(true),
-      projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-          shouldHideMarkReceived(backing: backing, project: project)
+      projectAndBackingAndBackerIsCurrentUser.map { project, backing, backer in
+        shouldHideMarkReceived(backing: backing, project: project, backer: backer )
       }
     )
     .skip(first: 1)
@@ -305,13 +306,15 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public var outputs: BackingViewModelOutputs { return self }
 }
 
-private func shouldHideMarkReceived(backing: Backing, project: Project) -> Bool {
+private func shouldHideMarkReceived(backing: Backing, project: Project, backer: Bool) -> Bool {
 
-  if !project.memberData.permissions.isEmpty {
-    return true
-  } else if backing.reward?.isNoReward == .some(true) {
+  if backing.reward?.isNoReward == .some(true) {
     return true
   } else if backing.status != .collected {
+    return true
+  } else if !project.memberData.permissions.isEmpty && backer {
+    return false
+  } else if !project.memberData.permissions.isEmpty {
     return true
   } else {
     return false

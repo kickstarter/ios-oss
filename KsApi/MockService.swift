@@ -594,7 +594,7 @@ internal struct MockService: ServiceType {
           |> Backing.lens.backer .~ user
           |> Backing.lens.backerId .~ user.id
           |> Backing.lens.projectId .~ project.id
-          |> Backing.lens.completed .~ received
+          |> Backing.lens.backerCompletedAt .~ received
       )
   }
 

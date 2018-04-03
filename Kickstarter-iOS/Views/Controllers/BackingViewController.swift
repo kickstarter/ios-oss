@@ -193,14 +193,16 @@ internal final class BackingViewController: UIViewController {
     _ = self.loadingIndicatorView
       |> baseActivityIndicatorStyle
 
-    _ = [self.rewardDeliveredLabel, self.useThisToKeepTrackLabel]
-      ||> UILabel.lens.font .~ .ksr_body(size: 14)
-      ||> UILabel.lens.textColor .~ .ksr_dark_grey_900
+    _ = self.useThisToKeepTrackLabel
+      |> UILabel.lens.font .~ .ksr_body(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
 
     _ = self.rewardDeliveredLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.text %~ { _ in Strings.Reward_delivered() }
 
     _ = self.useThisToKeepTrackLabel
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.text %~ { _ in Strings.Use_this_to_keep_track_of_which_rewards_youve_received() }
 
     _ = self.rewardSectionTitleLabel

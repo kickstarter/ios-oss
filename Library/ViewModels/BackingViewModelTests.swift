@@ -316,6 +316,53 @@ internal final class BackingViewModelTests: TestCase {
     }
   }
 
+  func testMarkReceivedSectionNotHidden_UserIsCollaboratorAndBacker() {
+    let backer = .template |> User.lens.id .~ 20
+
+    let backing = .template
+      |> Backing.lens.status .~ .collected
+
+    let project = .template
+      |> Project.lens.memberData.permissions .~ [.editProject, .editFaq, .post, .comment, .viewPledges,
+    .fulfillment]
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: backer) {
+      self.vm.inputs.configureWith(project: project, backer: backer)
+
+      self.markAsReceivedSectionIsHidden.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.markAsReceivedSectionIsHidden.assertValues([])
+
+      self.scheduler.advance()
+
+      self.markAsReceivedSectionIsHidden.assertValues([false])
+    }
+  }
+
+  func testMarkReceivedSectionHidden_UserIsCollaborator() {
+    let collaborator = .template |> User.lens.id .~ 20
+    let backer = .template |> User.lens.id .~ 10
+    let backing = .template
+      |> Backing.lens.backer .~ backer
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: collaborator) {
+      self.vm.inputs.configureWith(project: .template, backer: backer)
+
+      self.markAsReceivedSectionIsHidden.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.markAsReceivedSectionIsHidden.assertValues([])
+
+      self.scheduler.advance()
+
+      self.markAsReceivedSectionIsHidden.assertValues([true])
+    }
+  }
+
+
   func testRewardMarkedReceived() {
     let backer = .template |> User.lens.id .~ 20
     let backing = Backing.template
@@ -331,7 +378,7 @@ internal final class BackingViewModelTests: TestCase {
       self.rewardMarkedReceived.assertValues([true])
 
       let newBacking = .template
-        |> Backing.lens.backerCompleted .~ false
+        |> Backing.lens.backerCompletedAt .~ false
 
       withEnvironment(apiService: MockService(fetchBackingResponse: newBacking) ) {
         self.vm.inputs.rewardReceivedTapped(on: false)
