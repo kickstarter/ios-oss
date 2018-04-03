@@ -362,7 +362,6 @@ internal final class BackingViewModelTests: TestCase {
     }
   }
 
-
   func testRewardMarkedReceived() {
     let backer = .template |> User.lens.id .~ 20
     let backing = Backing.template
