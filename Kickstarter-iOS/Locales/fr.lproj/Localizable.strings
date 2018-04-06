@@ -168,7 +168,7 @@
 "Message_backer" = "Envoyer un message au contributeur";
 "Message_creator" = "Envoyer un message au créateur";
 "Message_user_name" = "Envoyer un message à %{user_name}";
-"Name" = "Name";
+"Name" = "Nom";
 "New_pledge_activity" = "Nouveaux engagements";
 "No_Results" = "Pas de résultats";
 "No_comments_yet" = "Pas de commentaires.";

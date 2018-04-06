@@ -2704,10 +2704,10 @@ with friends."
   /**
    "Name"
 
-   - **es**: "Name"
+   - **es**: "Nombre"
    - **ja**: "Name"
    - **de**: "Name"
-   - **fr**: "Name"
+   - **fr**: "Nom"
    - **en**: "Name"
   */
   public static func Name() -> String {
