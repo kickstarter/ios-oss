@@ -407,6 +407,12 @@ extension ServiceType {
     headers["Authorization"] = self.authorizationHeader
     headers["Kickstarter-App-Id"] = self.appId
     headers["Kickstarter-iOS-App"] = self.buildVersion
+    headers["User-Agent"] = Self.userAgent
+
+    return headers
+  }
+
+  public static var userAgent: String {
 
     let executable = Bundle.main.infoDictionary?["CFBundleExecutable"] as? String
     let bundleIdentifier = Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String
@@ -416,9 +422,7 @@ extension ServiceType {
     let systemVersion = UIDevice.current.systemVersion
     let scale = UIScreen.main.scale
 
-    headers["User-Agent"] = "\(app)/\(bundleVersion) (\(model); iOS \(systemVersion) Scale/\(scale))"
-
-    return headers
+    return "\(app)/\(bundleVersion) (\(model); iOS \(systemVersion) Scale/\(scale))"
   }
 
   fileprivate var authorizationHeader: String? {
