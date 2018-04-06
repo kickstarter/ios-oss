@@ -14,7 +14,7 @@ internal class WebViewController: UIViewController {
     self.webView.configuration.allowsInlineMediaPlayback = true
     self.webView.configuration.applicationNameForUserAgent = "Kickstarter-iOS"
     self.webView.customUserAgent = Service.userAgent
-    
+
     self.view.addSubview(self.webView)
     NSLayoutConstraint.activate(
       [
