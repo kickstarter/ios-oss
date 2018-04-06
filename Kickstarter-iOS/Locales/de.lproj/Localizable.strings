@@ -66,6 +66,7 @@
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} wird in %{in_duration} live auf Kickstarter streamen";
 "Creator_tips" = "Tpps für Projektgründer";
 "Daily_digest" = "Tägliche Zusammenfassung";
+"Data_will_appear_here_once" = "Info wird hier angezeigt, sobald jemand dein Projekt unterstützt.";
 "Delivered" = "Verschickt";
 "Discover_more_projects" = "Erkunde mehr Projekte.";
 "Dismiss" = "Verwerfen";
@@ -130,6 +131,7 @@
 "Got_it" = "Alles klar!";
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
 "Home" = "Home";
+"How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
 "Individual_Emails" = "Individuelle E-Mails";
 "Info" = "Info";
@@ -166,6 +168,7 @@
 "Message_backer" = "Nachricht an Unterstützer senden";
 "Message_creator" = "Nachricht an Projektgründer senden";
 "Message_user_name" = "Nachricht senden an %{user_name}…";
+"Name" = "Name";
 "New_pledge_activity" = "Neue Finanzierungsbeiträge";
 "No_Results" = "Keine Ergebnisse";
 "No_comments_yet" = "Bisher noch keine Kommentare.";
@@ -239,7 +242,7 @@
 "Reward_Surveys.one" = "Befragung";
 "Reward_Surveys.two" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.zero" = "%{reward_survey_count} Befragungen";
-"Reward_delivered" = "Reward delivered?";
+"Reward_delivered" = "Belohnung versandt?";
 "Reward_estimated_for_delivery_in_date" = "Voraussichtliche Lieferung der <b>Belohnung</b> im %{delivery_date}";
 "Reward_selected" = "Ausgewählte Belohnung";
 "Rewards_count_rewards.few" = "%{rewards_count} Belohnungen";
@@ -300,7 +303,11 @@
 "Time_left_left" = "%{time_left} übrig";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Für schnellen Zugriff auf deine meist besuchten Kategorien, tippe auf das Dropdown-Menü oben.";
 "To_read_this_project_update_you_must_be_a_backer" = "Um diesen Update zum Projekt lesen zu können, musst du ein Unterstützer dieses Projekts sein. Bitte melde dich an oder registriere dich.";
+"To_see_all_rewards_view_your_project" = "Um alle Belohnungen zu sehen, gehe zu deinem Projekt.";
 "Toggle_saving_this_project" = "Umschalten zu Projekt speichern";
+"Top_pledge_sources" = "Woher deine Unterstützungen kommen";
+"Top_ten_pledge_sources" = "Top 10 Quellen deiner Beiträge";
+"Top_ten_rewards" = "Top 10-Belohnungen";
 "Total_pledged" = "Anzahl der Beiträge insgesamt";
 "Unfollow_friend_name" = "%{friend_name} nicht mehr folgen";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
@@ -313,9 +320,10 @@
 "Upcoming_live_streams" = "Zukünftige Live-Streams";
 "Upcoming_with_creator_name" = "Demnächst: Video von <br/><b>%{creator_name}</b>";
 "Update_pledge" = "Beitrag aktualisieren";
-"Use_this_to_keep_track_of_which_rewards_youve_received" = "Use this to keep track of which rewards you've received.";
+"Use_this_to_keep_track_of_which_rewards_youve_received" = "Hier kannst du nachverfolgen, welche Belohnungen du bereits erhalten hast.";
 "Video_disabled_until_the_internet_connection_improves" = "Video bis zur Wiederherstellung der Internetverbindung deaktiviert";
 "View" = "Anzeigen";
+"View_project" = "Projekt ansehen";
 "View_your_pledge" = "Deinen Finanzierungsbeitrag ansehen";
 "View_your_reward" = "Belohnung ansehen";
 "Watch_live" = "Live ansehen";
@@ -1026,12 +1034,14 @@
 "profile.settings.navbar_title" = "Einstellungen";
 "profile.settings.navbar_title_notifications" = "Benachrichtigungen";
 "profile.settings.newsletter.arts" = "Kunst & Kultur News";
+"profile.settings.newsletter.film" = "Kickstarter Films";
 "profile.settings.newsletter.games" = "Wir lieben Spiele";
 "profile.settings.newsletter.happening" = "Happening Now";
 "profile.settings.newsletter.invent" = "Kreativ & Erfinderisch";
 "profile.settings.newsletter.opt_in.message" = "Wir haben eine Bestätigung an die mit deinem Konto verbundene E-Mail-Adresse geschickt! Bitte sieh in deinem Posteingang nach und bestätige dein Abo von %{newsletter}.";
 "profile.settings.newsletter.opt_in.title" = "Nur noch ein letzter Schritt!";
 "profile.settings.newsletter.promo" = "Kickstarter Neuigkeiten und Events";
+"profile.settings.newsletter.publishing" = "Kickstarter Reads";
 "profile.settings.newsletter.title" = "Newsletter";
 "profile.settings.newsletter.weekly" = "Unsere Lieblingsprojekte";
 "profile.settings.rating.message" = "Danke für die Nutzung der Kickstarter App.\nFalls du einen Moment Zeit hast, könntest du deine Erfahrung bewerten?\nWir würden uns sehr darüber freuen!";
@@ -1287,3 +1297,6 @@
 "updates_count_updates.one" = "%{updates_count} Update";
 "updates_count_updates.two" = "%{updates_count} Updates";
 "updates_count_updates.zero" = "%{updates_count} Updates";
+"via_custom" = "Benutzerdefiniert";
+"via_external" = "Extern";
+"via_kickstarter" = "über Kickstarter";
