@@ -211,6 +211,12 @@ extension RootTabBarViewController: UITabBarControllerDelegate {
                                didSelect viewController: UIViewController) {
     self.viewModel.inputs.didSelectIndex(tabBarController.selectedIndex)
   }
+
+  public func tabBarController(_ tabBarController: UITabBarController,
+                               animationControllerForTransitionFrom fromVC: UIViewController,
+                               to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    return ScrollingTransitionAnimator(tabBarController: tabBarController, lastIndex: tabBarController.selectedIndex)
+  }
 }
 
 private func scrollToTop(_ viewController: UIViewController) {
