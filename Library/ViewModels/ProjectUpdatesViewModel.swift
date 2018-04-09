@@ -1,16 +1,24 @@
 import KsApi
+import MessageUI
 import Prelude
 import ReactiveSwift
 import Result
 import WebKit
 
 public protocol ProjectUpdatesViewModelInputs {
+
+  /// Call to set whether Mail can be composed.
+  func canSendEmail(_ canSend: Bool)
+
   /// Call with the project given to the view.
   func configureWith(project: Project)
 
   /// Call with the navigation action given to the webview's delegate method. Returns the policy that can
   /// be returned from the delegate method.
   func decidePolicy(forNavigationAction action: WKNavigationActionData) -> WKNavigationActionPolicy
+
+  /// Call when mail compose view controller has closed with a result.
+  func mailComposeCompletion(result: MFMailComposeResult)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -35,6 +43,9 @@ public protocol ProjectUpdatesViewModelOutputs {
   /// Emits when the webview content is loading.
   var isActivityIndicatorHidden: Signal<Bool, NoError> { get }
 
+  /// Emits when to show a MFMailComposeViewController to contact support.
+  var showMailCompose: Signal<String, NoError> { get }
+
   /// Emits a request that should be loaded into the web view.
   var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
@@ -49,6 +60,8 @@ ProjectUpdatesViewModelOutputs {
 
   public init() {
     let navigationAction = self.navigationAction.signal.skipNil()
+
+    let canSendEmail = self.canSendEmailProperty.signal.skipNil()
 
     let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
@@ -86,10 +99,32 @@ ProjectUpdatesViewModelOutputs {
         $0.navigationType == .linkActivated &&
         !isGoToCommentsRequest(request: $0.request) &&
         !isGoToUpdateRequest(request: $0.request) &&
-        !isUpdatesRequest(request: $0.request)
+        !isUpdatesRequest(request: $0.request) &&
+        $0.request.url?.absoluteString.contains("mailto:") == false
       }
       .map { $0.request.url }
       .skipNil()
+
+    let isMailLink = navigationAction
+      .filter { url in
+        url.navigationType == .linkActivated &&
+          !isGoToCommentsRequest(request: url.request) &&
+          !isGoToUpdateRequest(request: url.request) &&
+          !isUpdatesRequest(request: url.request) &&
+          url.request.url?.absoluteString.contains("mailto:") == true
+      }
+      .map { $0.request.url?.absoluteString.replacingOccurrences(of: "mailto:", with: "") }
+      .skipNil()
+
+    self.showMailCompose = canSendEmail
+      .takePairWhen(isMailLink)
+      .filter { canSend, _ in canSend == true }
+      .map { $0.1 }
+
+    self.showNoEmailError = canSendEmail
+      .takePairWhen(isMailLink)
+      .filter { canSend, _ in !canSend }
+      .map { _ in noEmailError() }
 
     self.goToUpdate = project.takePairWhen(goToUpdateRequest)
 
@@ -114,6 +149,15 @@ ProjectUpdatesViewModelOutputs {
     }
   }
 
+  fileprivate let mailComposeCompletionProperty = MutableProperty<MFMailComposeResult?>(nil)
+  public func mailComposeCompletion(result: MFMailComposeResult) {
+    self.mailComposeCompletionProperty.value = result
+  }
+
+  fileprivate let canSendEmailProperty = MutableProperty<Bool?>(nil)
+  public func canSendEmail(_ canSend: Bool) {
+    self.canSendEmailProperty.value = canSend
+  }
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
     self.projectProperty.value = project
@@ -140,6 +184,8 @@ ProjectUpdatesViewModelOutputs {
   public let goToSafariBrowser: Signal<URL, NoError>
   public let goToUpdate: Signal<(Project, Update), NoError>
   public let goToUpdateComments: Signal<Update, NoError>
+  public let showMailCompose: Signal<String, NoError>
+  public let showNoEmailError: Signal<UIAlertController, NoError>
   public let webViewLoadRequest: Signal<URLRequest, NoError>
   public let isActivityIndicatorHidden: Signal<Bool, NoError>
 
@@ -173,4 +219,21 @@ private func isGoToUpdateRequest(request: URLRequest) -> Bool {
 private func isUpdatesRequest(request: URLRequest) -> Bool {
   if let nav = Navigation.match(request), case .project(_, .updates, _) = nav { return true }
   return false
+}
+
+private func noEmailError() -> UIAlertController {
+  let alertController = UIAlertController(
+    title: Strings.support_email_noemail_title(),
+    message: Strings.support_email_noemail_message(),
+    preferredStyle: .alert
+  )
+  alertController.addAction(
+    UIAlertAction(
+      title: Strings.general_alert_buttons_ok(),
+      style: .cancel,
+      handler: nil
+    )
+  )
+
+  return alertController
 }
