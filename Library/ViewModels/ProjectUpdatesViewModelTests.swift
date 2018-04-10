@@ -15,6 +15,8 @@ final class ProjectUpdatesViewModelTests: TestCase {
   fileprivate let goToUpdateId = TestObserver<Int, NoError>()
   fileprivate let goToUpdateCommentId = TestObserver<Int, NoError>()
   fileprivate let isActivityIndicatorHidden = TestObserver<Bool, NoError>()
+  fileprivate let makePhoneCall = TestObserver<URL, NoError>()
+  fileprivate let showMailCompose = TestObserver<String, NoError>()
   fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
 
   internal override func setUp() {
@@ -23,6 +25,8 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.outputs.goToUpdate.map { _, update in update.id }.observe(self.goToUpdateId.observer)
     self.vm.outputs.goToUpdateComments.map { $0.id }.observe(self.goToUpdateCommentId.observer)
     self.vm.outputs.isActivityIndicatorHidden.observe(self.isActivityIndicatorHidden.observer)
+    self.vm.outputs.makePhoneCall.observe(self.makePhoneCall.observer)
+    self.vm.outputs.showMailCompose.observe(self.showMailCompose.observer)
     self.vm.outputs.webViewLoadRequest.observe(self.webViewLoadRequest.observer)
   }
 
@@ -103,6 +107,37 @@ final class ProjectUpdatesViewModelTests: TestCase {
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.goToUpdateCommentId.assertValues([updateId])
+  }
+
+  func testShowMailComposeEmits_WhenEmailLinkIsTapped() {
+
+    let updateRequest = URLRequest(url: URL(string: "mailto:dead@beef.com")!)
+    let navigationActionData = WKNavigationActionData(
+    navigationType: .linkActivated,
+    request: updateRequest,
+    sourceFrame: WKFrameInfoData.init(mainFrame: true, request: updateRequest),
+    targetFrame: WKFrameInfoData.init(mainFrame: false, request: updateRequest)
+    )
+
+    self.vm.inputs.viewDidLoad()
+    _ = self.vm.inputs.decidePolicy(forNavigationAction: .init(navigationAction: navigationActionData.navigationAction))
+    self.showMailCompose.assertValues(["dead@beef.com"])
+  }
+
+  func testMakePhoneCallEmits_WhenPhoneLinkIsTapped() {
+
+    let phoneUrl = URL(string: "tel://5551234567")!
+    let updateRequest = URLRequest(url: phoneUrl)
+    let navigationActionData = WKNavigationActionData(
+      navigationType: .linkActivated,
+      request: updateRequest,
+      sourceFrame: WKFrameInfoData.init(mainFrame: true, request: updateRequest),
+      targetFrame: WKFrameInfoData.init(mainFrame: false, request: updateRequest)
+    )
+
+    self.vm.inputs.viewDidLoad()
+    _ = self.vm.inputs.decidePolicy(forNavigationAction: .init(navigationAction: navigationActionData.navigationAction))
+    self.makePhoneCall.assertValues([phoneUrl])
   }
 
   func testWebViewLoadRequests() {
