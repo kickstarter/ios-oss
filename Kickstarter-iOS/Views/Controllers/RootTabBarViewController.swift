@@ -204,6 +204,18 @@ public final class RootTabBarViewController: UITabBarController {
     }
     return nil
   }
+
+  public override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+
+    item.titlePositionAdjustment.vertical = 0
+
+      UIView.animate(withDuration: 2.0, delay: 0,
+                     options: .curveEaseOut,
+                     animations: {
+
+        item.titlePositionAdjustment.vertical -= self.tabBar.subviews[1].bounds.height
+      }, completion: nil)
+  }
 }
 
 extension RootTabBarViewController: UITabBarControllerDelegate {

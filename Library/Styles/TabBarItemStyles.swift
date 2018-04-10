@@ -18,6 +18,7 @@ public func activityTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBa
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-activity")
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-activity-selected")
     <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_activity() }
+    <> UITabBarItem.lens.tag .~ 1
 }
 
 public let dashboardTabBarItemStyle = baseTabBarItemStyle
@@ -25,6 +26,7 @@ public let dashboardTabBarItemStyle = baseTabBarItemStyle
   <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-dashboard")
   <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-dashboard-selected")
   <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
+  <> UITabBarItem.lens.tag .~ 3
 
 public func homeTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
 
@@ -33,6 +35,7 @@ public func homeTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarIte
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-home")
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-home-selected")
     <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.Explore() }
+    <> UITabBarItem.lens.tag .~ 0
 }
 
 public func profileTabBarItemStyle(isLoggedIn: Bool, isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
@@ -45,6 +48,7 @@ public func profileTabBarItemStyle(isLoggedIn: Bool, isMember: Bool) -> (UITabBa
     <> UITabBarItem.lens.image .~ image(named: imageName)
     <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-profile-selected")
     <> UITabBarItem.lens.accessibilityLabel .~ accLabel
+    <> UITabBarItem.lens.tag .~ 4
 }
 
 public let searchTabBarItemStyle = baseTabBarItemStyle
@@ -52,3 +56,5 @@ public let searchTabBarItemStyle = baseTabBarItemStyle
   <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-search")
   <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-search-selected")
   <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_search() }
+  <> UITabBarItem.lens.tag .~ 2
+
