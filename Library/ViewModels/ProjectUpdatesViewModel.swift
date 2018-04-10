@@ -43,6 +43,9 @@ public protocol ProjectUpdatesViewModelOutputs {
   /// Emits when the webview content is loading.
   var isActivityIndicatorHidden: Signal<Bool, NoError> { get }
 
+  /// Emits when app should make phone call.
+  var makePhoneCall: Signal<URL, NoError> { get }
+
   /// Emits when to show a MFMailComposeViewController to contact support.
   var showMailCompose: Signal<String, NoError> { get }
 
@@ -60,6 +63,8 @@ ProjectUpdatesViewModelOutputs {
 
   public init() {
     let navigationAction = self.navigationAction.signal.skipNil()
+
+    let canMakePhoneCall = self.canMakePhoneCallProperty.signal.skipNil()
 
     let canSendEmail = self.canSendEmailProperty.signal.skipNil()
 
@@ -100,29 +105,45 @@ ProjectUpdatesViewModelOutputs {
         !isGoToCommentsRequest(request: $0.request) &&
         !isGoToUpdateRequest(request: $0.request) &&
         !isUpdatesRequest(request: $0.request) &&
-        $0.request.url?.absoluteString.contains("mailto:") == false
+        !isPhoneLink(action: $0) &&
+        !isEmailLink(action: $0)
       }
       .map { $0.request.url }
       .skipNil()
 
-    let isMailLink = navigationAction
-      .filter { url in
-        url.navigationType == .linkActivated &&
-          !isGoToCommentsRequest(request: url.request) &&
-          !isGoToUpdateRequest(request: url.request) &&
-          !isUpdatesRequest(request: url.request) &&
-          url.request.url?.absoluteString.contains("mailto:") == true
+    let emailLink = navigationAction
+      .filter { (action: WKNavigationActionData) in
+        action.navigationType == .linkActivated &&
+          !isGoToCommentsRequest(request: action.request) &&
+          !isGoToUpdateRequest(request: action.request) &&
+          !isUpdatesRequest(request: action.request) &&
+          isEmailLink(action: action)
       }
-      .map { $0.request.url?.absoluteString.replacingOccurrences(of: "mailto:", with: "") }
+      .map(formattedEmailAddress)
+
+    let phoneNumberLink = navigationAction
+      .filter { (action: WKNavigationActionData) in
+        action.navigationType == .linkActivated &&
+          !isGoToCommentsRequest(request: action.request) &&
+          !isGoToUpdateRequest(request: action.request) &&
+          !isUpdatesRequest(request: action.request) &&
+          !isEmailLink(action: action) &&
+          isPhoneLink(action: action)
+      }
+      .map { $0.request.url }
       .skipNil()
 
+    self.makePhoneCall = canMakePhoneCall
+      .takePairWhen(phoneNumberLink)
+      .map { $0.1 }
+
     self.showMailCompose = canSendEmail
-      .takePairWhen(isMailLink)
+      .takePairWhen(emailLink)
       .filter { canSend, _ in canSend == true }
       .map { $0.1 }
 
     self.showNoEmailError = canSendEmail
-      .takePairWhen(isMailLink)
+      .takePairWhen(emailLink)
       .filter { canSend, _ in !canSend }
       .map { _ in noEmailError() }
 
@@ -149,48 +170,64 @@ ProjectUpdatesViewModelOutputs {
     }
   }
 
+  fileprivate let canSendEmailProperty = MutableProperty<Bool?>(nil)
+  public func canSendEmail(_ canSend: Bool) {
+    self.canSendEmailProperty.value = canSend
+  }
+
   fileprivate let mailComposeCompletionProperty = MutableProperty<MFMailComposeResult?>(nil)
   public func mailComposeCompletion(result: MFMailComposeResult) {
     self.mailComposeCompletionProperty.value = result
   }
 
-  fileprivate let canSendEmailProperty = MutableProperty<Bool?>(nil)
-  public func canSendEmail(_ canSend: Bool) {
-    self.canSendEmailProperty.value = canSend
+  fileprivate let navigationAction = MutableProperty<WKNavigationActionData?>(nil)
+  fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.cancel)
+  public func decidePolicy(forNavigationAction action: WKNavigationActionData)
+          -> WKNavigationActionPolicy {
+    self.navigationAction.value = action
+    return self.decidedPolicy.value
   }
+
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
-  fileprivate let navigationAction = MutableProperty<WKNavigationActionData?>(nil)
-  fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.cancel)
-  public func decidePolicy(forNavigationAction action: WKNavigationActionData)
-    -> WKNavigationActionPolicy {
-      self.navigationAction.value = action
-      return self.decidedPolicy.value
-  }
+
+  fileprivate let canMakePhoneCallProperty = MutableProperty<Bool?>(nil)
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+    self.canMakePhoneCallProperty.value = canMakePhoneCall()
   }
+
   fileprivate let webViewDidFinishNavigationProperty = MutableProperty(())
   public func webViewDidFinishNavigation() {
     self.webViewDidFinishNavigationProperty.value = ()
   }
+
   fileprivate let webViewDidStartProvisionalNavigationProperty = MutableProperty(())
   public func webViewDidStartProvisionalNavigation() {
     self.webViewDidStartProvisionalNavigationProperty.value = ()
   }
+
   public let goToSafariBrowser: Signal<URL, NoError>
   public let goToUpdate: Signal<(Project, Update), NoError>
   public let goToUpdateComments: Signal<Update, NoError>
+  public let isActivityIndicatorHidden: Signal<Bool, NoError>
+  public let makePhoneCall: Signal<URL, NoError>
   public let showMailCompose: Signal<String, NoError>
   public let showNoEmailError: Signal<UIAlertController, NoError>
   public let webViewLoadRequest: Signal<URLRequest, NoError>
-  public let isActivityIndicatorHidden: Signal<Bool, NoError>
 
   public var inputs: ProjectUpdatesViewModelInputs { return self }
   public var outputs: ProjectUpdatesViewModelOutputs { return self }
+}
+
+private func canMakePhoneCall() -> Bool {
+  guard let url = URL(string: "tel://") else {
+    return false
+  }
+  return UIApplication.shared.canOpenURL(url)
 }
 
 // Returns project and update params for update and comments requests.
@@ -206,6 +243,14 @@ private func projectUpdateParams(fromRequest request: URLRequest) -> (projectPar
   }
 }
 
+private func formattedEmailAddress(_ action: WKNavigationActionData) -> String {
+  return action.request.url?.absoluteString.replacingOccurrences(of: "mailto:", with: "") ?? ""
+}
+
+private func isEmailLink(action: WKNavigationActionData) -> Bool {
+  return action.request.url?.scheme == "mailto:"
+}
+
 private func isGoToCommentsRequest(request: URLRequest) -> Bool {
   if let nav = Navigation.match(request), case .project(_, .update(_, .comments), _) = nav { return true }
   return false
@@ -214,6 +259,10 @@ private func isGoToCommentsRequest(request: URLRequest) -> Bool {
 private func isGoToUpdateRequest(request: URLRequest) -> Bool {
   if let nav = Navigation.match(request), case .project(_, .update(_, .root), _) = nav { return true }
   return false
+}
+
+private func isPhoneLink(action: WKNavigationActionData) -> Bool {
+  return action.request.url?.scheme == "tel:" ? true : false
 }
 
 private func isUpdatesRequest(request: URLRequest) -> Bool {

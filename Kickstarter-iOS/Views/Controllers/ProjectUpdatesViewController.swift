@@ -50,6 +50,12 @@ internal final class ProjectUpdatesViewController: WebViewController {
         self?.goToSafariBrowser(url: $0)
     }
 
+    self.viewModel.outputs.makePhoneCall
+      .observeForUI()
+      .observeValues { [weak self] number in
+        self?.call(number: number)
+      }
+
     self.viewModel.outputs.showMailCompose
       .observeForUI()
       .observeValues { [weak self] recipient in
@@ -108,6 +114,14 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
     controller.mailComposeDelegate = self
     self.present(controller, animated: true, completion: nil)
+  }
+
+  fileprivate func call(number url: URL) {
+    if #available(iOS 10, *) {
+      UIApplication.shared.open(url)
+    } else {
+      UIApplication.shared.openURL(url)
+    }
   }
 
   internal func webView(_ webView: WKWebView,
