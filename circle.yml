@@ -6,39 +6,25 @@ base_job: &base_job
   working_directory: ~/kickstarter
   environment:
     CIRCLE_ARTIFACTS: /tmp
-
-# install_fastlane: &install_fastlane
-#   <<: *base_job
-#   environment:
-#     BUNDLE_PATH: vendor/bundle
-#
-#   steps:
-#     - restore_cache:
-#         keys:
-#         - v1-gems-{{ checksum "Gemfile.lock" }}
-#     - run:
-#         name: Bundle install
-#         command: bundle check || bundle install
-#         environment:
-#           BUNDLE_JOBS: 4
-#           BUNDLE_RETRY: 3
-#     - save_cache:
-#         key: v1-gems-{{ checksum "Gemfile.lock" }}
-#         paths:
-#           - vendor/bundle
+    BUNDLE_PATH: vendor/bundle
 
 jobs:
   build-and-test:
     <<: *base_job
     steps:
+      - restore_cache:
+          keys:
+            - source-cache
+
       - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
 
-      - run:
-          name: Pre-load simulator
-          command: xcrun instruments -w 'iPhone 8 (11.3) [5FEDB80B-4688-4334-8B56-77D413CF00DC]' || true
+      - save_cache:
+          key: source-cache
+          paths:
+            - ".git"
 
       - run:
           name: Install SwiftLint
@@ -55,10 +41,19 @@ jobs:
   kickstarter-tests:
     <<: *base_job
     steps:
+      - restore_cache:
+          keys:
+            - source-cache
+
       - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - save_cache:
+          key: source-cache
+          paths:
+            - ".git"
 
       - run:
           name: Kickstarter tests
@@ -73,10 +68,19 @@ jobs:
   library-tests:
     <<: *base_job
     steps:
+      - restore_cache:
+          keys:
+            - source-cache
+
       - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - save_cache:
+          key: source-cache
+          paths:
+            - ".git"
 
       - run:
           name: Library tests
@@ -89,10 +93,19 @@ jobs:
   livestream-tests:
     <<: *base_job
     steps:
+      - restore_cache:
+          keys:
+            - source-cache
+
       - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - save_cache:
+          key: source-cache
+          paths:
+            - ".git"
 
       - run:
           name: LiveStream tests
@@ -105,10 +118,19 @@ jobs:
   ksapi-tests:
     <<: *base_job
     steps:
+      - restore_cache:
+          keys:
+            - source-cache
+
       - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - save_cache:
+          key: source-cache
+          paths:
+            - ".git"
 
       - run:
           name: KsApi tests
@@ -120,8 +142,35 @@ jobs:
   # Hockey
   beta:
     <<: *base_job
-    # <<: install_fastlane
     steps:
+      - restore_cache:
+          keys:
+            - source-cache
+
+      - checkout
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
+      - save_cache:
+          key: source-cache
+          paths:
+            - ".git"
+
+      - restore_cache:
+          keys:
+          - v1-gems-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Bundle install
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+      - save_cache:
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
       - run:
           name: Increment build number
           command: agvtool new-version -all $(($(date +%s)/100))
@@ -140,8 +189,35 @@ jobs:
   # iTunes
   itunes:
     <<: *base_job
-    # <<: install_fastlane
     steps:
+      - restore_cache:
+          keys:
+            - source-cache
+
+      - checkout
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
+      - save_cache:
+          key: source-cache
+          paths:
+            - ".git"
+
+      - restore_cache:
+          keys:
+          - v1-gems-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Bundle install
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+      - save_cache:
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
       - run:
           name: Increment build number
           command: agvtool new-version -all $(($(date +%s)/100))
@@ -160,8 +236,35 @@ jobs:
   # iTunes
   itunes-hockey:
     <<: *base_job
-    # <<: install_fastlane
     steps:
+      - restore_cache:
+          keys:
+            - source-cache
+
+      - checkout
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
+      - save_cache:
+          key: source-cache
+          paths:
+            - ".git"
+
+      - restore_cache:
+          keys:
+          - v1-gems-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Bundle install
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+      - save_cache:
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
       - run:
           name: Submit binary to iTunes
           command: bundle exec fastlane itunes_hockey --verbose
@@ -175,42 +278,30 @@ workflows:
   build:
     jobs:
       - build-and-test
-      - kickstarter-tests:
-          requires:
-            - build-and-test
-      - library-tests:
-          requires:
-            - build-and-test
-      - livestream-tests:
-          requires:
-            - build-and-test
-      - ksapi-tests:
-          requires:
-            - build-and-test
-      - install-fastlane:
+      - kickstarter-tests
+      - library-tests
+      - livestream-tests
+      - ksapi-tests
+      - beta:
           filters:
             branches:
-              only:
-                - beta-dist
-                - itunes-dist
+              only: beta-dist
           requires:
             - build-and-test
             - kickstarter-tests
             - library-tests
             - livestream-tests
             - ksapi-tests
-      - beta:
-          filters:
-            branches:
-              only: beta-dist
-          requires:
-            - install-fastlane
       - itunes:
           filters:
             branches:
               only: itunes-dist
           requires:
-            - install-fastlane
+            - build-and-test
+            - kickstarter-tests
+            - library-tests
+            - livestream-tests
+            - ksapi-tests
       - itunes-hockey:
           filters:
             branches:
