@@ -7,14 +7,33 @@ base_job: &base_job
   environment:
     CIRCLE_ARTIFACTS: /tmp
 
+# install_fastlane: &install_fastlane
+#   <<: *base_job
+#   environment:
+#     BUNDLE_PATH: vendor/bundle
+#
+#   steps:
+#     - restore_cache:
+#         keys:
+#         - v1-gems-{{ checksum "Gemfile.lock" }}
+#     - run:
+#         name: Bundle install
+#         command: bundle check || bundle install
+#         environment:
+#           BUNDLE_JOBS: 4
+#           BUNDLE_RETRY: 3
+#     - save_cache:
+#         key: v1-gems-{{ checksum "Gemfile.lock" }}
+#         paths:
+#           - vendor/bundle
+
 jobs:
   build-and-test:
     <<: *base_job
     steps:
       - checkout
-
       - run:
-          name: Make Bootstrap
+          name: Make bootstrap
           command: make bootstrap
 
       - run:
@@ -36,6 +55,11 @@ jobs:
   kickstarter-tests:
     <<: *base_job
     steps:
+      - checkout
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
       - run:
           name: Kickstarter tests
           command: PLATFORM=iOS make test
@@ -49,6 +73,11 @@ jobs:
   library-tests:
     <<: *base_job
     steps:
+      - checkout
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
       - run:
           name: Library tests
           command: PLATFORM=iOS TARGET=Library make test
@@ -60,6 +89,11 @@ jobs:
   livestream-tests:
     <<: *base_job
     steps:
+      - checkout
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
       - run:
           name: LiveStream tests
           command: SCHEME=LiveStream make test
@@ -71,6 +105,11 @@ jobs:
   ksapi-tests:
     <<: *base_job
     steps:
+      - checkout
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
       - run:
           name: KsApi tests
           command: SCHEME=KsApi make test
@@ -78,30 +117,10 @@ jobs:
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
-  # Install Fastlane
-  install-fastlane:
-    <<: *base_job
-    environment:
-      BUNDLE_PATH: vendor/bundle
-
-    steps:
-      - restore_cache:
-          keys:
-          - v1-gems-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Bundle install
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-      - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
   # Hockey
   beta:
     <<: *base_job
+    # <<: install_fastlane
     steps:
       - run:
           name: Increment build number
@@ -121,6 +140,7 @@ jobs:
   # iTunes
   itunes:
     <<: *base_job
+    # <<: install_fastlane
     steps:
       - run:
           name: Increment build number
@@ -140,6 +160,7 @@ jobs:
   # iTunes
   itunes-hockey:
     <<: *base_job
+    # <<: install_fastlane
     steps:
       - run:
           name: Submit binary to iTunes
