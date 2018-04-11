@@ -102,7 +102,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     let navigationAction = self.navigationAction(with: URL(string: "mailto:dead@beef.com")!)
 
     self.vm.inputs.canSendEmail(true)
-    
+
     _ = self.vm.inputs.decidePolicy(forNavigationAction: navigationAction)
     self.showMailCompose.assertValues(["dead@beef.com"])
   }
