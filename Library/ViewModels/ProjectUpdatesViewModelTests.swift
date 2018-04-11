@@ -17,6 +17,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
   fileprivate let isActivityIndicatorHidden = TestObserver<Bool, NoError>()
   fileprivate let makePhoneCall = TestObserver<URL, NoError>()
   fileprivate let showMailCompose = TestObserver<String, NoError>()
+  fileprivate let showNoMailError = TestObserver<UIAlertController, NoError>()
   fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
 
   internal override func setUp() {
@@ -27,6 +28,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.outputs.isActivityIndicatorHidden.observe(self.isActivityIndicatorHidden.observer)
     self.vm.outputs.makePhoneCall.observe(self.makePhoneCall.observer)
     self.vm.outputs.showMailCompose.observe(self.showMailCompose.observer)
+    self.vm.outputs.showNoError
     self.vm.outputs.webViewLoadRequest.observe(self.webViewLoadRequest.observer)
   }
 
@@ -119,8 +121,9 @@ final class ProjectUpdatesViewModelTests: TestCase {
     targetFrame: WKFrameInfoData.init(mainFrame: false, request: updateRequest)
     )
 
-    self.vm.inputs.viewDidLoad()
-    _ = self.vm.inputs.decidePolicy(forNavigationAction: .init(navigationAction: navigationActionData.navigationAction))
+    self.vm.inputs.canSendEmail(true)
+    
+    _ = self.vm.inputs.decidePolicy(forNavigationAction: navigationActionData)
     self.showMailCompose.assertValues(["dead@beef.com"])
   }
 
@@ -128,6 +131,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
     let phoneUrl = URL(string: "tel://5551234567")!
     let updateRequest = URLRequest(url: phoneUrl)
+
     let navigationActionData = WKNavigationActionData(
       navigationType: .linkActivated,
       request: updateRequest,
@@ -136,7 +140,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     )
 
     self.vm.inputs.viewDidLoad()
-    _ = self.vm.inputs.decidePolicy(forNavigationAction: .init(navigationAction: navigationActionData.navigationAction))
+    _ = self.vm.inputs.decidePolicy(forNavigationAction: navigationActionData)
     self.makePhoneCall.assertValues([phoneUrl])
   }
 

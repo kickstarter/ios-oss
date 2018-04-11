@@ -248,7 +248,7 @@ private func formattedEmailAddress(_ action: WKNavigationActionData) -> String {
 }
 
 private func isEmailLink(action: WKNavigationActionData) -> Bool {
-  return action.request.url?.scheme == "mailto:"
+  return action.request.url?.scheme == "mailto"
 }
 
 private func isGoToCommentsRequest(request: URLRequest) -> Bool {
@@ -262,7 +262,7 @@ private func isGoToUpdateRequest(request: URLRequest) -> Bool {
 }
 
 private func isPhoneLink(action: WKNavigationActionData) -> Bool {
-  return action.request.url?.scheme == "tel:" ? true : false
+  return action.request.url?.scheme == "tel" ? true : false
 }
 
 private func isUpdatesRequest(request: URLRequest) -> Bool {
