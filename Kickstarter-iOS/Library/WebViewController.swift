@@ -1,4 +1,5 @@
 import Library
+import KsApi
 import Prelude
 import Prelude_UIKit
 import UIKit
@@ -12,6 +13,7 @@ internal class WebViewController: UIViewController {
     self.webView.configuration.suppressesIncrementalRendering = true
     self.webView.configuration.allowsInlineMediaPlayback = true
     self.webView.configuration.applicationNameForUserAgent = "Kickstarter-iOS"
+    self.webView.customUserAgent = Service.userAgent
 
     self.view.addSubview(self.webView)
     NSLayoutConstraint.activate(
