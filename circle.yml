@@ -63,8 +63,8 @@ jobs:
           name: Library tests
           command: PLATFORM=iOS TARGET=Library make test
 
-    - store_artifacts:
-        path: /tmp/xcode_raw.log
+      - store_artifacts:
+          path: /tmp/xcode_raw.log
 
   # LiveStream tests
   livestream-tests:
@@ -79,8 +79,8 @@ jobs:
           name: LiveStream tests
           command: SCHEME=LiveStream make test
 
-    - store_artifacts:
-        path: /tmp/xcode_raw.log
+      - store_artifacts:
+          path: /tmp/xcode_raw.log
 
   # KsApi tests
   ksapi-tests:
@@ -95,8 +95,8 @@ jobs:
           name: KsApi tests
           command: SCHEME=KsApi make test
 
-    - store_artifacts:
-        path: /tmp/xcode_raw.log
+      - store_artifacts:
+          path: /tmp/xcode_raw.log
 
   # Install Fastlane
   install-fastlane:
