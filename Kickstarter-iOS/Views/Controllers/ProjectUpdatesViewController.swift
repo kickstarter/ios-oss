@@ -54,7 +54,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
       .observeForUI()
       .observeValues { [weak self] number in
         self?.call(number: number)
-      }
+    }
 
     self.viewModel.outputs.showMailCompose
       .observeForUI()
@@ -66,7 +66,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
       .observeForUI()
       .observeValues { [weak self] alertController in
         self?.present(alertController, animated: true)
-      }
+    }
 
     self.viewModel.outputs.goToUpdate
       .observeForControllerAction()

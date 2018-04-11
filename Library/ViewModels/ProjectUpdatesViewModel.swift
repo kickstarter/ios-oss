@@ -46,10 +46,10 @@ public protocol ProjectUpdatesViewModelOutputs {
   /// Emits when app should make phone call.
   var makePhoneCall: Signal<URL, NoError> { get }
 
-  /// Emits when to show a MFMailComposeViewController to contact support.
+  /// Emits to show a MFMailComposeViewController.
   var showMailCompose: Signal<String, NoError> { get }
 
-  /// Emits to show an alert when Mail is not available.
+  /// Emits to show an alert when device can not send emails.
   var showNoEmailError: Signal<UIAlertController, NoError> { get }
 
   /// Emits a request that should be loaded into the web view.
