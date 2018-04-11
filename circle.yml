@@ -45,10 +45,10 @@ jobs:
           name: Kickstarter tests
           command: PLATFORM=iOS make test
 
-    - store_artifacts:
-        path: /tmp/xcode_raw.log
-    - store_artifacts:
-        path: /tmp/FailureDiffs
+      - store_artifacts:
+          path: /tmp/xcode_raw.log
+      - store_artifacts:
+          path: /tmp/FailureDiffs
 
   # Library tests
   library-tests:
