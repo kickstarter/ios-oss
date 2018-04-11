@@ -45,16 +45,6 @@ jobs:
           keys:
             - source-cache
 
-      - checkout
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - save_cache:
-          key: source-cache
-          paths:
-            - ".git"
-
       - run:
           name: Kickstarter tests
           command: PLATFORM=iOS make test
@@ -72,16 +62,6 @@ jobs:
           keys:
             - source-cache
 
-      - checkout
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - save_cache:
-          key: source-cache
-          paths:
-            - ".git"
-
       - run:
           name: Library tests
           command: PLATFORM=iOS TARGET=Library make test
@@ -97,16 +77,6 @@ jobs:
           keys:
             - source-cache
 
-      - checkout
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - save_cache:
-          key: source-cache
-          paths:
-            - ".git"
-
       - run:
           name: LiveStream tests
           command: SCHEME=LiveStream make test
@@ -121,16 +91,6 @@ jobs:
       - restore_cache:
           keys:
             - source-cache
-
-      - checkout
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - save_cache:
-          key: source-cache
-          paths:
-            - ".git"
 
       - run:
           name: KsApi tests
@@ -151,11 +111,6 @@ jobs:
       - run:
           name: Make bootstrap
           command: make bootstrap
-
-      - save_cache:
-          key: source-cache
-          paths:
-            - ".git"
 
       - restore_cache:
           keys:
@@ -199,11 +154,6 @@ jobs:
           name: Make bootstrap
           command: make bootstrap
 
-      - save_cache:
-          key: source-cache
-          paths:
-            - ".git"
-
       - restore_cache:
           keys:
           - v1-gems-{{ checksum "Gemfile.lock" }}
@@ -245,11 +195,6 @@ jobs:
       - run:
           name: Make bootstrap
           command: make bootstrap
-
-      - save_cache:
-          key: source-cache
-          paths:
-            - ".git"
 
       - restore_cache:
           keys:
