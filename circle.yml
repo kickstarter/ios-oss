@@ -1,56 +1,295 @@
-machine:
-  xcode:
-    version: "9.2"
-dependencies:
-  cache_directories:
-    - "Frameworks/OpenTok"
-  pre:
-    - make bootstrap
-    - ls /Applications/ | grep "Xcode"
-    - system_profiler SPSoftwareDataType
-    - security list-keychains
-    - security find-identity -p codesigning
-    - instruments -s devices
-    - xcodebuild -showsdks
-test:
-  pre:
-    - xcrun instruments -w 'iPhone 8 (11.2) [9F8B48EF-912E-499E-9874-4CCF692178B3]' || true
-    - sleep 15
-  override:
-    - make lint
-    - PLATFORM=iOS make test
-    - PLATFORM=iOS TARGET=Library make test
-    - SCHEME=LiveStream make test
-    - SCHEME=KsApi make test
-  post:
-    - cp -rf Screenshots/FailureDiffs $CIRCLE_ARTIFACTS || true
-experimental:
-  notify:
-    branches:
-      only:
-        - master
-        - beta-dist
-        - itunes-dist
-deployment:
-  ios_alpha:
-    branch: alpha-dist
-    commands:
-      - agvtool new-version -all $(($(date +%s)/100))
-      - fastlane alpha_gym --verbose:
-          timeout: 1800
-      - fastlane alpha_hockey --verbose
-  ios_beta:
-    branch: beta-dist
-    commands:
-      - agvtool new-version -all $(($(date +%s)/100))
-      - fastlane beta_gym --verbose:
-          timeout: 1800
-      - fastlane beta_hockey --verbose
-  ios_itc:
-    branch: itunes-dist
-    commands:
-      - agvtool new-version -all $(($(date +%s)/100))
-      - fastlane itunes_gym --verbose:
-          timeout: 1800
-      - fastlane itunes_hockey --verbose
-      - fastlane itunes_deliver --verbose
+version: 2
+
+jobs:
+  build-and-test:
+    macos:
+      xcode: "9.3.0"
+    working_directory: ~/kickstarter
+    environment:
+      CIRCLE_ARTIFACTS: /tmp
+
+    steps:
+      - checkout
+      - run: git submodule sync --recursive
+      - run: git submodule update --init --recursive
+
+      - run:
+          name: Make Bootstrap
+          command: make bootstrap
+
+      - run:
+          name: Pre-load simulator
+          command: xcrun instruments -w 'iPhone 8 (11.3) [5FEDB80B-4688-4334-8B56-77D413CF00DC]' || true
+
+      - run:
+          name: Install SwiftLint
+          command: HOMEBREW_NO_AUTO_UPDATE=1 brew install swiftlint
+
+      - run:
+          name: SwiftLint
+          command: set -o pipefail && swiftlint lint --strict --reporter json | tee $CIRCLE_ARTIFACTS/swiftlint-report.json
+
+      - store_artifacts:
+          path: /tmp/swiftlint-report.json
+
+  # Kickstarter tests
+  kickstarter-tests:
+    macos:
+      xcode: "9.3.0"
+    working_directory: ~/kickstarter
+    environment:
+      CIRCLE_ARTIFACTS: /tmp
+
+    steps:
+      - run:
+          name: Kickstarter tests
+          command: PLATFORM=iOS make test
+
+    - store_artifacts:
+        path: /tmp/xcode_raw.log
+    - store_artifacts:
+        path: /tmp/FailureDiffs
+
+  # Library tests
+  library-tests:
+    macos:
+      xcode: "9.3.0"
+    working_directory: ~/kickstarter
+    environment:
+      CIRCLE_ARTIFACTS: /tmp
+
+    steps:
+      - run:
+          name: Library tests
+          command: PLATFORM=iOS TARGET=Library make test
+
+    - store_artifacts:
+        path: /tmp/xcode_raw.log
+
+  # LiveStream tests
+  livestream-tests:
+    macos:
+      xcode: "9.3.0"
+    working_directory: ~/kickstarter
+    environment:
+      CIRCLE_ARTIFACTS: /tmp
+
+    steps:
+      - run:
+          name: LiveStream tests
+          command: SCHEME=LiveStream make test
+
+    - store_artifacts:
+        path: /tmp/xcode_raw.log
+
+  # KsApi tests
+  ksapi-tests:
+    macos:
+      xcode: "9.3.0"
+    working_directory: ~/kickstarter
+    environment:
+      CIRCLE_ARTIFACTS: /tmp
+
+    steps:
+      - run:
+          name: KsApi tests
+          command: SCHEME=KsApi make test
+
+    - store_artifacts:
+        path: /tmp/xcode_raw.log
+
+  # Install Fastlane
+  install-fastlane:
+    macos:
+      xcode: "9.3.0"
+    working_directory: ~/kickstarter
+    environment:
+      CIRCLE_ARTIFACTS: /tmp
+      BUNDLE_PATH: vendor/bundle
+
+    steps:
+      - restore_cache:
+          keys:
+          - v1-gems-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Bundle install
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+      - save_cache:
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+  # Hockey
+  beta:
+    macos:
+      xcode: "9.3.0"
+    working_directory: ~/kickstarter
+    environment:
+      CIRCLE_ARTIFACTS: /tmp
+
+    steps:
+      - run:
+          name: Increment build number
+          command: agvtool new-version -all $(($(date +%s)/100))
+
+      - run:
+          name: Build app
+          command: bundle exec fastlane beta_gym --verbose
+
+      - run:
+          name: Submit binary to Hockey
+          command: bundle exec fastlane beta_hockey --verbose
+
+      - store_artifacts:
+          path: /tmp/xcode_raw.log
+
+  # iTunes
+  itunes:
+    macos:
+      xcode: "9.3.0"
+    working_directory: ~/kickstarter
+    environment:
+      CIRCLE_ARTIFACTS: /tmp
+
+    steps:
+      - run:
+          name: Increment build number
+          command: agvtool new-version -all $(($(date +%s)/100))
+
+      - run:
+          name: Build app
+          command: bundle exec fastlane itunes_gym --verbose
+
+      - run:
+          name: Submit binary to iTunes Connect
+          command: bundle exec fastlane itunes_deliver --verbose
+
+      - store_artifacts:
+          path: /tmp/xcode_raw.log
+
+  # iTunes
+  itunes-hockey:
+    macos:
+      xcode: "9.3.0"
+    working_directory: ~/kickstarter
+    environment:
+      CIRCLE_ARTIFACTS: /tmp
+
+    steps:
+      - run:
+          name: Submit binary to iTunes
+          command: bundle exec fastlane itunes_hockey --verbose
+
+      - store_artifacts:
+          path: /tmp/xcode_raw.log
+
+# Workflows
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-and-test
+      - kickstarter-tests:
+          requires:
+            - build-and-test
+      - library-tests:
+          requires:
+            - build-and-test
+      - livestream-tests:
+          requires:
+            - build-and-test
+      - ksapi-tests:
+          requires:
+            - build-and-test
+      - install-fastlane:
+          filters:
+            branches:
+              only:
+                - beta-dist
+                - itunes-dist
+          requires:
+            - build-and-test
+            - kickstarter-tests
+            - library-tests
+            - livestream-tests
+            - ksapi-tests
+      - beta:
+          filters:
+            branches:
+              only: beta-dist
+          requires:
+            - install-fastlane
+      - itunes:
+          filters:
+            branches:
+              only: itunes-dist
+          requires:
+            - install-fastlane
+      - itunes-hockey:
+          filters:
+            branches:
+              only: itunes-dist
+          requires:
+            - itunes
+
+
+
+# machine:
+#   xcode:
+#     version: "9.2"
+# dependencies:
+#   cache_directories:
+#     - "Frameworks/OpenTok"
+#   pre:
+#     - make bootstrap
+#     - ls /Applications/ | grep "Xcode"
+#     - system_profiler SPSoftwareDataType
+#     - security list-keychains
+#     - security find-identity -p codesigning
+#     - instruments -s devices
+#     - xcodebuild -showsdks
+# test:
+#   pre:
+#     - xcrun instruments -w 'iPhone 8 (11.2) [9F8B48EF-912E-499E-9874-4CCF692178B3]' || true
+#     - sleep 15
+#   override:
+#     - make lint
+#     - PLATFORM=iOS make test
+#     - PLATFORM=iOS TARGET=Library make test
+#     - SCHEME=LiveStream make test
+#     - SCHEME=KsApi make test
+#   post:
+#     - cp -rf Screenshots/FailureDiffs $CIRCLE_ARTIFACTS || true
+# experimental:
+#   notify:
+#     branches:
+#       only:
+#         - master
+#         - beta-dist
+#         - itunes-dist
+# deployment:
+#   ios_alpha:
+#     branch: alpha-dist
+#     commands:
+#       - agvtool new-version -all $(($(date +%s)/100))
+#       - fastlane alpha_gym --verbose:
+#           timeout: 1800
+#       - fastlane alpha_hockey --verbose
+#   ios_beta:
+#     branch: beta-dist
+#     commands:
+#       - agvtool new-version -all $(($(date +%s)/100))
+#       - fastlane beta_gym --verbose:
+#           timeout: 1800
+#       - fastlane beta_hockey --verbose
+#   ios_itc:
+#     branch: itunes-dist
+#     commands:
+#       - agvtool new-version -all $(($(date +%s)/100))
+#       - fastlane itunes_gym --verbose:
+#           timeout: 1800
+#       - fastlane itunes_hockey --verbose
+#       - fastlane itunes_deliver --verbose
