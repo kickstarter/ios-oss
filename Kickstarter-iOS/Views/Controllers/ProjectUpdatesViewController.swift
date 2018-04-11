@@ -109,12 +109,11 @@ internal final class ProjectUpdatesViewController: WebViewController {
     guard MFMailComposeViewController.canSendMail() else { return }
 
     let userName = AppEnvironment.current.currentUser?.name ?? "Logged out user"
-    let userId = AppEnvironment.current.currentUser?.id ?? 0
 
     let controller = MFMailComposeViewController()
     controller.setToRecipients([recipient])
     controller.setMessageBody(
-      "\(userName) | \(userId)\n\n",
+      "\(userName)\n\n",
       isHTML: false
     )
 
