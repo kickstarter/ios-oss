@@ -62,6 +62,12 @@ internal final class ProjectUpdatesViewController: WebViewController {
         self?.openMailComposer(recipient: recipient)
     }
 
+    self.viewModel.outputs.showNoEmailError
+      .observeForUI()
+      .observeValues { [weak self] alertController in
+        self?.present(alertController, animated: true)
+      }
+
     self.viewModel.outputs.goToUpdate
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToUpdate(forProject: $0, update: $1) }

@@ -49,6 +49,9 @@ public protocol ProjectUpdatesViewModelOutputs {
   /// Emits when to show a MFMailComposeViewController to contact support.
   var showMailCompose: Signal<String, NoError> { get }
 
+  /// Emits to show an alert when Mail is not available.
+  var showNoEmailError: Signal<UIAlertController, NoError> { get }
+
   /// Emits a request that should be loaded into the web view.
   var webViewLoadRequest: Signal<URLRequest, NoError> { get }
 }
@@ -127,7 +130,6 @@ ProjectUpdatesViewModelOutputs {
           !isGoToCommentsRequest(request: action.request) &&
           !isGoToUpdateRequest(request: action.request) &&
           !isUpdatesRequest(request: action.request) &&
-          !isEmailLink(action: action) &&
           isPhoneLink(action: action)
       }
       .map { $0.request.url }

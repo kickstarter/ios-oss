@@ -17,7 +17,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
   fileprivate let isActivityIndicatorHidden = TestObserver<Bool, NoError>()
   fileprivate let makePhoneCall = TestObserver<URL, NoError>()
   fileprivate let showMailCompose = TestObserver<String, NoError>()
-  fileprivate let showNoMailError = TestObserver<UIAlertController, NoError>()
+  fileprivate let showNoEmailError = TestObserver<UIAlertController, NoError>()
   fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
 
   internal override func setUp() {
@@ -28,7 +28,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.outputs.isActivityIndicatorHidden.observe(self.isActivityIndicatorHidden.observer)
     self.vm.outputs.makePhoneCall.observe(self.makePhoneCall.observer)
     self.vm.outputs.showMailCompose.observe(self.showMailCompose.observer)
-    self.vm.outputs.showNoError
+    self.vm.outputs.showNoEmailError.observe(self.showNoEmailError.observer)
     self.vm.outputs.webViewLoadRequest.observe(self.webViewLoadRequest.observer)
   }
 
@@ -41,13 +41,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
     self.goToSafariBrowser.assertValues([])
 
-    let request = URLRequest(url: googleURL)
-    let navigationAction = WKNavigationActionData(
-      navigationType: .linkActivated,
-      request: request,
-      sourceFrame: WKFrameInfoData.init(mainFrame: true, request: request),
-      targetFrame: WKFrameInfoData.init(mainFrame: true, request: request)
-    )
+    let navigationAction = self.navigationAction(with: googleURL)
 
     XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
@@ -67,12 +61,8 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
-    let request = URLRequest(url: URL(string: "\(project.urls.web.updates!)/\(updateId)")!)
-    let navigationAction = WKNavigationActionData(
-      navigationType: .linkActivated,
-      request: request,
-      sourceFrame: WKFrameInfoData.init(mainFrame: true, request: request),
-      targetFrame: WKFrameInfoData.init(mainFrame: true, request: request)
+    let navigationAction = self.navigationAction(with:
+      URL(string: "\(project.urls.web.updates!)/\(updateId)")!
     )
 
     XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
@@ -97,12 +87,8 @@ final class ProjectUpdatesViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
-    let request = URLRequest(url: URL(string: "\(project.urls.web.updates!)/\(updateId)/comments")!)
-    let navigationAction = WKNavigationActionData(
-      navigationType: .linkActivated,
-      request: request,
-      sourceFrame: WKFrameInfoData.init(mainFrame: true, request: request),
-      targetFrame: WKFrameInfoData.init(mainFrame: true, request: request)
+    let navigationAction = self.navigationAction(with:
+      URL(string: "\(project.urls.web.updates!)/\(updateId)/comments")!
     )
 
     XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
@@ -113,34 +99,31 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
   func testShowMailComposeEmits_WhenEmailLinkIsTapped() {
 
-    let updateRequest = URLRequest(url: URL(string: "mailto:dead@beef.com")!)
-    let navigationActionData = WKNavigationActionData(
-    navigationType: .linkActivated,
-    request: updateRequest,
-    sourceFrame: WKFrameInfoData.init(mainFrame: true, request: updateRequest),
-    targetFrame: WKFrameInfoData.init(mainFrame: false, request: updateRequest)
-    )
+    let navigationAction = self.navigationAction(with: URL(string: "mailto:dead@beef.com")!)
 
     self.vm.inputs.canSendEmail(true)
     
-    _ = self.vm.inputs.decidePolicy(forNavigationAction: navigationActionData)
+    _ = self.vm.inputs.decidePolicy(forNavigationAction: navigationAction)
     self.showMailCompose.assertValues(["dead@beef.com"])
+  }
+
+  func testShowEmailErrorEmits_WhenEmailLinkIsTapped_AndCantSendEmail() {
+
+    let navigationAction = self.navigationAction(with: URL(string: "mailto:dead@beef.com")!)
+
+    self.vm.inputs.canSendEmail(false)
+
+    _ = self.vm.inputs.decidePolicy(forNavigationAction: navigationAction)
+    self.showNoEmailError.assertDidEmitValue()
   }
 
   func testMakePhoneCallEmits_WhenPhoneLinkIsTapped() {
 
     let phoneUrl = URL(string: "tel://5551234567")!
-    let updateRequest = URLRequest(url: phoneUrl)
-
-    let navigationActionData = WKNavigationActionData(
-      navigationType: .linkActivated,
-      request: updateRequest,
-      sourceFrame: WKFrameInfoData.init(mainFrame: true, request: updateRequest),
-      targetFrame: WKFrameInfoData.init(mainFrame: false, request: updateRequest)
-    )
+    let navigationAction = self.navigationAction(with: phoneUrl)
 
     self.vm.inputs.viewDidLoad()
-    _ = self.vm.inputs.decidePolicy(forNavigationAction: navigationActionData)
+    _ = self.vm.inputs.decidePolicy(forNavigationAction: navigationAction)
     self.makePhoneCall.assertValues([phoneUrl])
   }
 
@@ -185,5 +168,16 @@ final class ProjectUpdatesViewModelTests: TestCase {
                    self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
 
     self.webViewLoadRequest.assertValues([updatesIndexRequest], "Update loaded in VC, not web view.")
+  }
+
+  private func navigationAction(with url: URL) -> WKNavigationActionData {
+
+    let request = URLRequest(url: url)
+    return WKNavigationActionData(
+      navigationType: .linkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData.init(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData.init(mainFrame: true, request: request)
+    )
   }
 }
