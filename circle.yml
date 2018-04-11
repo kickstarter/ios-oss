@@ -1,17 +1,17 @@
 version: 2
 
+base_job: &base_job
+  macos:
+    xcode: "9.3.0"
+  working_directory: ~/kickstarter
+  environment:
+    CIRCLE_ARTIFACTS: /tmp
+
 jobs:
   build-and-test:
-    macos:
-      xcode: "9.3.0"
-    working_directory: ~/kickstarter
-    environment:
-      CIRCLE_ARTIFACTS: /tmp
-
+    <<: *base_job
     steps:
       - checkout
-      - run: git submodule sync --recursive
-      - run: git submodule update --init --recursive
 
       - run:
           name: Make Bootstrap
@@ -34,12 +34,7 @@ jobs:
 
   # Kickstarter tests
   kickstarter-tests:
-    macos:
-      xcode: "9.3.0"
-    working_directory: ~/kickstarter
-    environment:
-      CIRCLE_ARTIFACTS: /tmp
-
+    <<: *base_job
     steps:
       - run:
           name: Kickstarter tests
@@ -52,12 +47,7 @@ jobs:
 
   # Library tests
   library-tests:
-    macos:
-      xcode: "9.3.0"
-    working_directory: ~/kickstarter
-    environment:
-      CIRCLE_ARTIFACTS: /tmp
-
+    <<: *base_job
     steps:
       - run:
           name: Library tests
@@ -68,12 +58,7 @@ jobs:
 
   # LiveStream tests
   livestream-tests:
-    macos:
-      xcode: "9.3.0"
-    working_directory: ~/kickstarter
-    environment:
-      CIRCLE_ARTIFACTS: /tmp
-
+    <<: *base_job
     steps:
       - run:
           name: LiveStream tests
@@ -84,12 +69,7 @@ jobs:
 
   # KsApi tests
   ksapi-tests:
-    macos:
-      xcode: "9.3.0"
-    working_directory: ~/kickstarter
-    environment:
-      CIRCLE_ARTIFACTS: /tmp
-
+    <<: *base_job
     steps:
       - run:
           name: KsApi tests
@@ -100,11 +80,8 @@ jobs:
 
   # Install Fastlane
   install-fastlane:
-    macos:
-      xcode: "9.3.0"
-    working_directory: ~/kickstarter
+    <<: *base_job
     environment:
-      CIRCLE_ARTIFACTS: /tmp
       BUNDLE_PATH: vendor/bundle
 
     steps:
@@ -124,12 +101,7 @@ jobs:
 
   # Hockey
   beta:
-    macos:
-      xcode: "9.3.0"
-    working_directory: ~/kickstarter
-    environment:
-      CIRCLE_ARTIFACTS: /tmp
-
+    <<: *base_job
     steps:
       - run:
           name: Increment build number
@@ -148,12 +120,7 @@ jobs:
 
   # iTunes
   itunes:
-    macos:
-      xcode: "9.3.0"
-    working_directory: ~/kickstarter
-    environment:
-      CIRCLE_ARTIFACTS: /tmp
-
+    <<: *base_job
     steps:
       - run:
           name: Increment build number
@@ -172,12 +139,7 @@ jobs:
 
   # iTunes
   itunes-hockey:
-    macos:
-      xcode: "9.3.0"
-    working_directory: ~/kickstarter
-    environment:
-      CIRCLE_ARTIFACTS: /tmp
-
+    <<: *base_job
     steps:
       - run:
           name: Submit binary to iTunes
@@ -234,3 +196,11 @@ workflows:
               only: itunes-dist
           requires:
             - itunes
+
+experimental:
+  notify:
+    branches:
+      only:
+        - master
+        - beta-dist
+        - itunes-dist
