@@ -108,15 +108,8 @@ internal final class ProjectUpdatesViewController: WebViewController {
   fileprivate func openMailComposer(recipient: String) {
     guard MFMailComposeViewController.canSendMail() else { return }
 
-    let userName = AppEnvironment.current.currentUser?.name ?? "Logged out user"
-
     let controller = MFMailComposeViewController()
     controller.setToRecipients([recipient])
-    controller.setMessageBody(
-      "\(userName)\n\n",
-      isHTML: false
-    )
-
     controller.mailComposeDelegate = self
     self.present(controller, animated: true, completion: nil)
   }
