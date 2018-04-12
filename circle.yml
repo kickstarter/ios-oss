@@ -18,26 +18,48 @@ base_job: &base_job
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
 
+restore_source: &restore_source
+  - restore_cache:
+      keys:
+        - source-v1-{{ .Branch }}-{{ .Revision }}
+        - source-v1-{{ .Branch }}-
+        - source-v1-
+
+  - checkout
+
+  - restore_cache:
+      keys:
+        - opentok-cache-{{ checksum "Opentok.lock" }}
+
+  - run:
+      name: Make bootstrap
+      command: make bootstrap
+
+preload_simulator: &preload_simulator
+  - run:
+      name: Pre-load simulator
+      command: xcrun instruments -w *simulator_version || true
+
+install_fastlane: &install_fastlane
+  - restore_cache:
+      keys:
+        - v1-gems-{{ checksum "Gemfile.lock" }}
+  - run:
+      name: Bundle install
+      command: bundle check || bundle install
+      environment:
+        BUNDLE_JOBS: 4
+        BUNDLE_RETRY: 3
+  - save_cache:
+      key: v1-gems-{{ checksum "Gemfile.lock" }}
+      paths:
+        - vendor/bundle
+
 jobs:
   swiftlint:
     <<: *base_job
+    steps: *restore_source
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "Opentok.lock" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
       - save_cache:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
@@ -58,27 +80,9 @@ jobs:
   # Kickstarter tests
   kickstarter-tests:
     <<: *base_job
+    steps: *restore_source
+    steps: *preload_simulator
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "Opentok.lock" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: xcrun instruments -w *simulator_version || true
-
       - run:
           name: Kickstarter tests
           command: PLATFORM=iOS make test
@@ -91,27 +95,9 @@ jobs:
   # Library tests
   library-tests:
     <<: *base_job
+    steps: *restore_source
+    steps: *preload_simulator
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "Opentok.lock" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: xcrun instruments -w *simulator_version || true
-
       - run:
           name: Library tests
           command: PLATFORM=iOS TARGET=Library make test
@@ -122,27 +108,9 @@ jobs:
   # LiveStream tests
   livestream-tests:
     <<: *base_job
+    steps: *restore_source
+    steps: *preload_simulator
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "Opentok.lock" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: xcrun instruments -w *simulator_version || true
-
       - run:
           name: LiveStream tests
           command: SCHEME=LiveStream make test
@@ -153,27 +121,9 @@ jobs:
   # KsApi tests
   ksapi-tests:
     <<: *base_job
+    steps: *restore_source
+    steps: *preload_simulator
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "Opentok.lock" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: xcrun instruments -w *simulator_version || true
-
       - run:
           name: KsApi tests
           command: SCHEME=KsApi make test
@@ -184,37 +134,9 @@ jobs:
   # Hockey
   beta:
     <<: *base_job
+    steps: *restore_source
+    steps: *install_fastlane
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "Opentok.lock" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - restore_cache:
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Bundle install
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-      - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
       - run:
           name: Increment build number
           command: agvtool new-version -all $(($(date +%s)/100))
@@ -233,37 +155,9 @@ jobs:
   # iTunes
   itunes:
     <<: *base_job
+    steps: *restore_source
+    steps: *install_fastlane
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "Opentok.lock" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - restore_cache:
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Bundle install
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-      - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
       - run:
           name: Increment build number
           command: agvtool new-version -all $(($(date +%s)/100))
@@ -282,37 +176,9 @@ jobs:
   # iTunes
   itunes-hockey:
     <<: *base_job
+    steps: *restore_source
+    steps: *install_fastlane
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "Opentok.lock" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - restore_cache:
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Bundle install
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-      - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
       - run:
           name: Submit binary to iTunes
           command: bundle exec fastlane itunes_hockey --verbose
