@@ -1,4 +1,5 @@
 import KsApi
+import MessageUI
 import Library
 import Prelude
 import SafariServices
@@ -14,6 +15,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+    self.viewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
     self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
     self.view.addSubview(self.activityIndicator)
     NSLayoutConstraint.activate([
@@ -44,7 +46,27 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.goToSafariBrowser(url: $0) }
+      .observeValues { [weak self] in
+        self?.goToSafariBrowser(url: $0)
+    }
+
+    self.viewModel.outputs.makePhoneCall
+      .observeForUI()
+      .observeValues { [weak self] number in
+        self?.call(number: number)
+    }
+
+    self.viewModel.outputs.showMailCompose
+      .observeForUI()
+      .observeValues { [weak self] recipient in
+        self?.openMailComposer(recipient: recipient)
+    }
+
+    self.viewModel.outputs.showNoEmailError
+      .observeForUI()
+      .observeValues { [weak self] alertController in
+        self?.present(alertController, animated: true)
+    }
 
     self.viewModel.outputs.goToUpdate
       .observeForControllerAction()
@@ -83,6 +105,23 @@ internal final class ProjectUpdatesViewController: WebViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
+  fileprivate func openMailComposer(recipient: String) {
+    guard MFMailComposeViewController.canSendMail() else { return }
+
+    let controller = MFMailComposeViewController()
+    controller.setToRecipients([recipient])
+    controller.mailComposeDelegate = self
+    self.present(controller, animated: true, completion: nil)
+  }
+
+  fileprivate func call(number url: URL) {
+    if #available(iOS 10, *) {
+      UIApplication.shared.open(url)
+    } else {
+      UIApplication.shared.openURL(url)
+    }
+  }
+
   internal func webView(_ webView: WKWebView,
                         decidePolicyFor navigationAction: WKNavigationAction,
                         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -97,5 +136,14 @@ internal final class ProjectUpdatesViewController: WebViewController {
 
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     self.viewModel.inputs.webViewDidFinishNavigation()
+  }
+}
+
+extension ProjectUpdatesViewController: MFMailComposeViewControllerDelegate {
+  internal func mailComposeController(_ controller: MFMailComposeViewController,
+                                      didFinishWith result: MFMailComposeResult,
+                                      error: Error?) {
+    self.viewModel.inputs.mailComposeCompletion(result: result)
+    controller.dismiss(animated: true, completion: nil)
   }
 }
