@@ -13,6 +13,7 @@ base_job: &base_job
   environment:
     CIRCLE_ARTIFACTS: /tmp
     BUNDLE_PATH: vendor/bundle
+    FL_OUTPUT_DIR: output
     OPENTOK_VERSION: *opentok_version
     IOS_VERSION: *ios_version
     IPHONE_NAME: *iphone_name
@@ -230,6 +231,9 @@ jobs:
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
+      - store_artifacts:
+          path: output
+
   # iTunes
   itunes:
     <<: *base_job
@@ -276,8 +280,16 @@ jobs:
           name: Submit binary to iTunes Connect
           command: bundle exec fastlane itunes_deliver --verbose
 
+      - persist_to_workspace:
+          root: output
+          paths:
+            - Kickstarter.ipa
+
       - store_artifacts:
           path: /tmp/xcode_raw.log
+
+      - store_artifacts:
+          path: output
 
   # iTunes
   itunes-hockey:
@@ -313,12 +325,18 @@ jobs:
           paths:
             - vendor/bundle
 
+      - attach_workspace:
+          at: output
+
       - run:
           name: Submit binary to iTunes
           command: bundle exec fastlane itunes_hockey --verbose
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
+
+      - store_artifacts:
+          path: output
 
 # Workflows
 workflows:
