@@ -1,5 +1,9 @@
 version: 2
 
+xcode_version: &xcode_version 9.3
+iphone_name: &iphone_name iPhone 8
+ios_version: &ios_version 11.3
+opentok_version: &opentok_version 2.10.2
 simulator_version: &simulator_version 'iPhone 8 (11.3) [5FEDB80B-4688-4334-8B56-77D413CF00DC]'
 
 base_job: &base_job
@@ -9,6 +13,10 @@ base_job: &base_job
   environment:
     CIRCLE_ARTIFACTS: /tmp
     BUNDLE_PATH: vendor/bundle
+    OPENTOK_VERSION: *opentok_version
+    IOS_VERSION: *ios_version
+    IPHONE_NAME: *iphone_name
+    XCODE_VERSION: *xcode_version
 
 jobs:
   swiftlint:
@@ -20,6 +28,10 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - restore_cache:
+          keys:
+            - opentok-*opentok_version
+
       - checkout
       - run:
           name: Make bootstrap
@@ -29,6 +41,11 @@ jobs:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
+
+      - save_cache:
+          key: opentok-*opentok_version
+          paths:
+            - "Frameworks/OpenTok"
 
       - run:
           name: SwiftLint
@@ -46,6 +63,10 @@ jobs:
             - source-v1-{{ .Branch }}-{{ .Revision }}
             - source-v1-{{ .Branch }}-
             - source-v1-
+
+      - restore_cache:
+          keys:
+            - opentok-*opentok_version
 
       - checkout
       - run:
@@ -75,6 +96,10 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - restore_cache:
+          keys:
+            - opentok-*opentok_version
+
       - checkout
       - run:
           name: Make bootstrap
@@ -100,6 +125,10 @@ jobs:
             - source-v1-{{ .Branch }}-{{ .Revision }}
             - source-v1-{{ .Branch }}-
             - source-v1-
+
+      - restore_cache:
+          keys:
+            - opentok-*opentok_version
 
       - checkout
       - run:
@@ -127,6 +156,10 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - restore_cache:
+          keys:
+            - opentok-*opentok_version
+
       - checkout
       - run:
           name: Make bootstrap
@@ -152,6 +185,10 @@ jobs:
             - source-v1-{{ .Branch }}-{{ .Revision }}
             - source-v1-{{ .Branch }}-
             - source-v1-
+
+      - restore_cache:
+          keys:
+            - opentok-*opentok_version
 
       - checkout
       - run:
@@ -197,6 +234,10 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - restore_cache:
+          keys:
+            - opentok-*opentok_version
+
       - checkout
       - run:
           name: Make bootstrap
@@ -240,6 +281,10 @@ jobs:
             - source-v1-{{ .Branch }}-{{ .Revision }}
             - source-v1-{{ .Branch }}-
             - source-v1-
+
+      - restore_cache:
+          keys:
+            - opentok-*opentok_version
 
       - checkout
       - run:
