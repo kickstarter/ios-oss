@@ -28,11 +28,12 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - checkout
+
       - restore_cache:
           keys:
-            - opentok-{{ .Environment.OPENTOK_VERSION }}
+            - opentok-cache-{{ checksum "Opentok.lock" }}
 
-      - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -64,11 +65,12 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - checkout
+
       - restore_cache:
           keys:
-            - opentok-{{ .Environment.OPENTOK_VERSION }}
+            - opentok-cache-{{ checksum "Opentok.lock" }}
 
-      - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -96,11 +98,12 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - checkout
+
       - restore_cache:
           keys:
-            - opentok-{{ .Environment.OPENTOK_VERSION }}
+            - opentok-cache-{{ checksum "Opentok.lock" }}
 
-      - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -126,11 +129,12 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - checkout
+
       - restore_cache:
           keys:
-            - opentok-{{ .Environment.OPENTOK_VERSION }}
+            - opentok-cache-{{ checksum "Opentok.lock" }}
 
-      - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -156,11 +160,12 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - checkout
+
       - restore_cache:
           keys:
-            - opentok-{{ .Environment.OPENTOK_VERSION }}
+            - opentok-cache-{{ checksum "Opentok.lock" }}
 
-      - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -186,11 +191,12 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - checkout
+
       - restore_cache:
           keys:
-            - opentok-{{ .Environment.OPENTOK_VERSION }}
+            - opentok-cache-{{ checksum "Opentok.lock" }}
 
-      - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -234,11 +240,12 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - checkout
+
       - restore_cache:
           keys:
-            - opentok-{{ .Environment.OPENTOK_VERSION }}
+            - opentok-cache-{{ checksum "Opentok.lock" }}
 
-      - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -282,11 +289,12 @@ jobs:
             - source-v1-{{ .Branch }}-
             - source-v1-
 
+      - checkout
+
       - restore_cache:
           keys:
-            - opentok-{{ .Environment.OPENTOK_VERSION }}
+            - opentok-cache-{{ checksum "Opentok.lock" }}
 
-      - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
