@@ -1,5 +1,7 @@
 version: 2
 
+simulator_version: &simulator_version 'iPhone 8 (11.3) [5FEDB80B-4688-4334-8B56-77D413CF00DC]'
+
 base_job: &base_job
   macos:
     xcode: "9.3.0"
@@ -51,6 +53,10 @@ jobs:
           command: make bootstrap
 
       - run:
+          name: Pre-load simulator
+          command: xcrun instruments -w *simulator_version || true
+
+      - run:
           name: Kickstarter tests
           command: PLATFORM=iOS make test
 
@@ -75,6 +81,10 @@ jobs:
           command: make bootstrap
 
       - run:
+          name: Pre-load simulator
+          command: xcrun instruments -w *simulator_version || true
+
+      - run:
           name: Library tests
           command: PLATFORM=iOS TARGET=Library make test
 
@@ -97,6 +107,10 @@ jobs:
           command: make bootstrap
 
       - run:
+          name: Pre-load simulator
+          command: xcrun instruments -w *simulator_version || true
+
+      - run:
           name: LiveStream tests
           command: SCHEME=LiveStream make test
 
@@ -117,6 +131,10 @@ jobs:
       - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - run:
+          name: Pre-load simulator
+          command: xcrun instruments -w *simulator_version || true
 
       - run:
           name: KsApi tests
