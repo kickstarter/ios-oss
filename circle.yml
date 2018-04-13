@@ -20,7 +20,7 @@ base_job: &base_job
     XCODE_VERSION: *xcode_version
 
 jobs:
-  swiftlint:
+  swiftlint-and-cache:
     <<: *base_job
     steps:
       - restore_cache:
@@ -45,7 +45,7 @@ jobs:
             - ".git"
 
       - save_cache:
-          key: opentok-{{ .Environment.OPENTOK_VERSION }}
+          key: opentok-cache-{{ checksum "Opentok.lock" }}
           paths:
             - "Frameworks/OpenTok"
 
@@ -329,7 +329,7 @@ jobs:
           at: output
 
       - run:
-          name: Submit binary to iTunes
+          name: Submit binary to Hockey
           command: bundle exec fastlane itunes_hockey --verbose
 
       - store_artifacts:
@@ -343,7 +343,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - swiftlint
+      - swiftlint-and-cache
       - kickstarter-tests
       - library-tests
       - livestream-tests
@@ -353,7 +353,7 @@ workflows:
             branches:
               only: beta-dist
           requires:
-            - swiftlint
+            - swiftlint-and-cache
             - kickstarter-tests
             - library-tests
             - livestream-tests
@@ -363,7 +363,7 @@ workflows:
             branches:
               only: itunes-dist
           requires:
-            - swiftlint
+            - swiftlint-and-cache
             - kickstarter-tests
             - library-tests
             - livestream-tests
