@@ -224,9 +224,9 @@ jobs:
           name: Build app
           command: bundle exec fastlane beta_gym --verbose
 
-      - run:
-          name: Submit binary to Hockey
-          command: bundle exec fastlane beta_hockey --verbose
+      # - run:
+      #     name: Submit binary to Hockey
+      #     command: bundle exec fastlane beta_hockey --verbose
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
