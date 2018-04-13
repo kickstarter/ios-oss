@@ -4,7 +4,7 @@ xcode_version: &xcode_version 9.3
 iphone_name: &iphone_name iPhone 8
 ios_version: &ios_version 11.3
 opentok_version: &opentok_version 2.10.2
-simulator_version: &simulator_version 'iPhone 8 (11.3) [5FEDB80B-4688-4334-8B56-77D413CF00DC]'
+preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.3) [5FEDB80B-4688-4334-8B56-77D413CF00DC]' || true
 
 base_job: &base_job
   macos:
@@ -78,7 +78,7 @@ jobs:
 
       - run:
           name: Pre-load simulator
-          command: xcrun instruments -w *simulator_version || true
+          command: *preload_simulator
 
       - run:
           name: Kickstarter tests
@@ -111,7 +111,7 @@ jobs:
 
       - run:
           name: Pre-load simulator
-          command: xcrun instruments -w *simulator_version || true
+          command: *preload_simulator
 
       - run:
           name: Library tests
@@ -142,7 +142,7 @@ jobs:
 
       - run:
           name: Pre-load simulator
-          command: xcrun instruments -w *simulator_version || true
+          command: *preload_simulator
 
       - run:
           name: LiveStream tests
@@ -173,7 +173,7 @@ jobs:
 
       - run:
           name: Pre-load simulator
-          command: xcrun instruments -w *simulator_version || true
+          command: *preload_simulator
 
       - run:
           name: KsApi tests
