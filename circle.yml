@@ -14,8 +14,6 @@ base_job: &base_job
     CIRCLE_ARTIFACTS: /tmp
     BUNDLE_PATH: vendor/bundle
     FL_OUTPUT_DIR: output
-    MATCH_KEYCHAIN_NAME: "circle"
-    MATCH_KEYCHAIN_PASSWORD: "circle"
     LC_ALL: en_US.UTF-8
     LANG: en_US.UTF-8
     OPENTOK_VERSION: *opentok_version
