@@ -5945,7 +5945,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickBeta;
-				PROVISIONING_PROFILE_SPECIFIER = circleci;
+				PROVISIONING_PROFILE = "2ad68a87-f62d-4a67-90b0-f61aa58a0c77";
+				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.kickstarter.kickstarter.beta";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -6465,8 +6466,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.alpha;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickDebug;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Alpha Development";
+				PROVISIONING_PROFILE = "69279e62-4e96-4dff-bc4a-c28d65b2f409";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.kickstarter.kickstarter.alpha";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -6498,7 +6499,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
-				PROVISIONING_PROFILE_SPECIFIER = AppStore;
+				PROVISIONING_PROFILE = "3c40f886-5ce9-4b75-84d1-214176a5e8fb";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.kickstarter.kickstarter";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";

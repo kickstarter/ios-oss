@@ -11,116 +11,51 @@ platform :ios do
 
   desc "Fastlane Match"
   lane :match_all do
-    match_drip
-    match_kickstarter
+    match_appstore
+    match_development
+    match_enterprise
   end
 
-  lane :match_drip do
-    drip_match_appstore
-    drip_match_development
-    drip_match_debug_development
-    drip_match_enterprise
-  end
-
-  lane :match_kickstarter do
-    kickstarter_match_appstore
-    kickstarter_match_development
-    kickstarter_match_debug_development
-    kickstarter_match_enterprise
-  end
-
-  desc "Fastlane Match - Drip App Store"
-  private_lane :drip_match_appstore do
+  desc "Fastlane Match - App Store"
+  private_lane :match_appstore do
     match(
-      app_identifier: "com.kickstarter.drip",
+      app_identifier: ["com.kickstarter.drip", "com.kickstarter.kickstarter"],
       type: "appstore",
       git_url: "https://github.com/kickstarter/ios-certificates",
       team_id: "48YBP49Y5N",
-      git_branch: "drip",
+      git_branch: "ksr",
       username: "appledev@kickstarter.com"
     )
   end
 
-  desc "Fastlane Match - Drip Development"
-  private_lane :drip_match_development do
+  desc "Fastlane Match - Development"
+  private_lane :match_development do
     match(
-      app_identifier: "com.kickstarter.drip",
+      app_identifier: [
+        "com.kickstarter.drip",
+        "com.kickstarter.drip.debug",
+        "com.kickstarter.kickstarter",
+        "com.kickstarter.kickstarter.alpha",
+        "com.kickstarter.kickstarter.debug"
+      ],
       type: "development",
       git_url: "https://github.com/kickstarter/ios-certificates",
       team_id: "48YBP49Y5N",
-      git_branch: "drip",
+      git_branch: "ksr",
       username: "appledev@kickstarter.com"
     )
   end
 
-  desc "Fastlane Match - Drip Debug Development"
-  private_lane :drip_match_debug_development do
+  desc "Fastlane Match - Enterprise"
+  private_lane :match_enterprise do
     match(
-      app_identifier: "com.kickstarter.drip.debug",
-      type: "development",
-      git_url: "https://github.com/kickstarter/ios-certificates",
-      team_id: "48YBP49Y5N",
-      git_branch: "drip",
-      username: "appledev@kickstarter.com"
-    )
-  end
-
-  desc "Fastlane Match - Drip Enterprise"
-  private_lane :drip_match_enterprise do
-    match(
-      app_identifier: "com.kickstarter.drip.beta",
+      app_identifier: [
+        "com.kickstarter.drip.beta", "com.kickstarter.kickstarter.beta"
+      ],
       type: "enterprise",
       git_url: "https://github.com/kickstarter/ios-certificates",
       team_id: "5DAN4UM3NC",
-      git_branch: "drip-enterprise",
-      username: "appledev@kickstarter.com"
-    )
-  end
-
-  desc "Fastlane Match - Kickstarter App Store"
-  private_lane :kickstarter_match_appstore do
-    match(
-      app_identifier: "com.kickstarter.kickstarter",
-      type: "appstore",
-      git_url: "https://github.com/kickstarter/ios-certificates",
-      team_id: "48YBP49Y5N",
-      git_branch: "kickstarter",
-      username: "appledev@kickstarter.com"
-    )
-  end
-
-  desc "Fastlane Match - Kickstarter Development"
-  private_lane :kickstarter_match_development do
-    match(
-      app_identifier: "com.kickstarter.kickstarter",
-      type: "development",
-      git_url: "https://github.com/kickstarter/ios-certificates",
-      team_id: "48YBP49Y5N",
-      git_branch: "kickstarter",
-      username: "appledev@kickstarter.com"
-    )
-  end
-
-  desc "Fastlane Match - Kickstarter Debug Development"
-  private_lane :kickstarter_match_debug_development do
-    match(
-      app_identifier: "com.kickstarter.kickstarter.alpha",
-      type: "development",
-      git_url: "https://github.com/kickstarter/ios-certificates",
-      team_id: "48YBP49Y5N",
-      git_branch: "kickstarter",
-      username: "appledev@kickstarter.com"
-    )
-  end
-
-  desc "Fastlane Match - Kickstarter Enterprise"
-  private_lane :kickstarter_match_enterprise do
-    match(
-      app_identifier: "com.kickstarter.kickstarter.beta",
-      type: "enterprise",
-      git_url: "https://github.com/kickstarter/ios-certificates",
-      team_id: "5DAN4UM3NC",
-      git_branch: "kickstarter-enterprise",
+      git_branch: "ksr-enterprise",
       username: "appledev@kickstarter.com"
     )
   end
