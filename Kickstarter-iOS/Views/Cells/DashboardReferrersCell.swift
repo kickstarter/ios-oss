@@ -17,8 +17,6 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var averagePledgeAmountTitleLabel: UILabel!
   @IBOutlet fileprivate weak var averageStackView: UIStackView!
   @IBOutlet fileprivate weak var backersColumnTitleButton: UIButton!
-  @IBOutlet fileprivate weak var chartHeightConstraint: NSLayoutConstraint!
-  @IBOutlet fileprivate weak var chartTopConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var cumulativeStackView: UIStackView!
   @IBOutlet fileprivate weak var customPercentLabel: UILabel!
   @IBOutlet fileprivate weak var customPercentIndicatorLabel: UILabel!
@@ -150,9 +148,6 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     _ = self.averageStackView
       |> dashboardReferrersCumulativeStackViewStyle
 
-      self.chartHeightConstraint.constant = 0
-      self.chartTopConstraint.constant -= 20
-
     self.separatorViews.forEach { _ = $0 |> separatorStyle }
   }
 
@@ -164,12 +159,6 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     self.externalPledgedAmountTitleLabel.rac.text = self.viewModel.outputs.externalPledgedText
     self.internalPercentLabel.rac.text = self.viewModel.outputs.internalPercentText
     self.internalPledgedAmountTitleLabel.rac.text = self.viewModel.outputs.internalPledgedText
-
-    self.viewModel.outputs.chartIsHidden
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.hideChart($0)
-    }
 
     self.viewModel.outputs.notifyDelegateAddedReferrerRows
       .observeForUI()
@@ -218,17 +207,17 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     }
   }
 
-  private func hideChart(_ hidden: Bool) {
-    if hidden == true {
-      self.chartHeightConstraint.constant = 0
-      self.chartTopConstraint.constant -= 20
-    }
-  }
+//  private func hideChart(_ hidden: Bool) {
+//    if hidden == true {
+//      self.chartHeightConstraint.constant = 0
+//      self.chartTopConstraint.constant -= 20
+//    }
+//  }
 
   internal func configureWith(value: (ProjectStatsEnvelope.CumulativeStats,
                                             Project,
-                                            [ProjectStatsEnvelope.ReferrerStats])) {
-    self.viewModel.inputs.configureWith(cumulative: value.0, project: value.1, referrers: value.2)
+                                            ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats])) {
+    self.viewModel.inputs.configureWith(cumulative: value.0, project: value.1, referralAggregates: value.2, referrers: value.3 )
   }
 
   @objc fileprivate func backersButtonTapped() {

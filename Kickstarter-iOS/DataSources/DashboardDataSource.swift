@@ -31,9 +31,10 @@ internal final class DashboardDataSource: ValueCellDataSource {
 
   internal func load(cumulative: ProjectStatsEnvelope.CumulativeStats,
                      project: Project,
+                     aggregate: ProjectStatsEnvelope.ReferralAggregateStats,
                      referrers: [ProjectStatsEnvelope.ReferrerStats]) {
 
-    self.set(values: [(cumulative, project, referrers)], cellClass: DashboardReferrersCell.self,
+    self.set(values: [(cumulative, project, aggregate, referrers)], cellClass: DashboardReferrersCell.self,
              inSection: Section.referrers.rawValue)
   }
 
@@ -56,7 +57,7 @@ internal final class DashboardDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as DashboardFundingCell, value as ([ProjectStatsEnvelope.FundingDateStats], Project)):
       cell.configureWith(value: value)
-    case let (cell as DashboardReferrersCell, value as (ProjectStatsEnvelope.CumulativeStats, Project,
+    case let (cell as DashboardReferrersCell, value as (ProjectStatsEnvelope.CumulativeStats, Project, ProjectStatsEnvelope.ReferralAggregateStats,
       [ProjectStatsEnvelope.ReferrerStats])):
         cell.configureWith(value: value)
     case let (cell as DashboardVideoCell, value as ProjectStatsEnvelope.VideoStats):

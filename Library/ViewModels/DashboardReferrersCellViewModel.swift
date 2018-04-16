@@ -25,6 +25,7 @@ public protocol DashboardReferrersCellViewModelInputs {
   /// Call to configure cell with cumulative and referral stats.
   func configureWith(cumulative: ProjectStatsEnvelope.CumulativeStats,
                      project: Project,
+                     referralAggregates: ProjectStatsEnvelope.ReferralAggregateStats,
                      referrers: [ProjectStatsEnvelope.ReferrerStats])
 
   /// Call when the Percent button is tapped.
@@ -43,9 +44,6 @@ public protocol DashboardReferrersCellViewModelInputs {
 public protocol DashboardReferrersCellViewModelOutputs {
   /// Emits the average pledge text to be displayed.
   var averagePledgeText: Signal<String, NoError> { get }
-
-  /// Emits when should hide chart.
-  var chartIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits the custom percent text to be displayed.
   var customPercentText: Signal<String, NoError> { get }
@@ -92,55 +90,45 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
     public init() {
       let cumulativeProjectStats = cumulativeProjectStatsProperty.signal.skipNil()
 
-      let country = cumulativeProjectStats.map { _, project, _ in project.country }
+      let country = cumulativeProjectStats.map { _, project, _, _ in project.country }
 
-      let referrers = cumulativeProjectStats.map { _, _, stats in stats }
+      let referralAggregates = cumulativeProjectStats.map { _, _, aggregates, _ in aggregates }
+
+      let referrers = cumulativeProjectStats.map { _, _, _, stats in stats }
 
       self.averagePledgeText = cumulativeProjectStats
-        .map { cumulative, project, _ in
+        .map { cumulative, project, _, _ in
           Format.currency(cumulative.averagePledge, country: project.country)
       }
 
-      self.chartIsHidden = self.awakeFromNibProperty.signal
-        .map { _ in
-          return AppEnvironment.current.config?.features[Features.creatorChartHidden.rawValue] != nil
-      }
+      let customPledgedAmount = referralAggregates
+        .map { $0.custom }
 
-      let customReferrers = referrers
-        .map { referrers in referrers.filter { $0.referrerType == .custom } }
+      let externalPledgedAmount = referralAggregates
+        .map { $0.external }
 
-      let customPledgedAmount = customReferrers
-        .map { $0.reduce(0.0) { accum, referrer in accum + referrer.pledged } }
+      let internalPledgedAmount = referralAggregates
+        .map { $0.kickstarter }
 
-      let externalReferrers = referrers
-        .map { referrers in referrers.filter { $0.referrerType == .external } }
+      let pledge = cumulativeProjectStats
+        .map { cumulative, _, _, _ in cumulative.pledged }
 
-      let externalPledgedAmount = externalReferrers
-        .map { $0.reduce(0.0) { accum, referrer in accum + referrer.pledged } }
-
-      let internalReferrers = referrers
-        .map { referrers in referrers.filter { $0.referrerType == .internal } }
-
-      let internalPledgedAmount = internalReferrers
-        .map { $0.reduce(0.0) { accum, referrer in accum + referrer.pledged } }
-
-      self.customPercentText = customReferrers
-        .map { $0.reduce(0.0) { accum, referrer in accum + referrer.percentageOfDollars } }
+      self.customPercentText = customPledgedAmount
         .map { Format.percentage($0) }
 
       self.customPledgedText = Signal.combineLatest(customPledgedAmount, country)
         .map { pledged, country in Format.currency(Int(pledged), country: country) }
 
-      self.externalPercentage = externalReferrers
-        .map { $0.reduce(0.0) { accum, referrer in accum + referrer.percentageOfDollars } }
+      self.externalPercentage = Signal.combineLatest(externalPledgedAmount, pledge)
+        .map { externalAmount, pledged in externalAmount / Double(pledged) }
 
       self.externalPercentText = self.externalPercentage.map { Format.percentage($0) }
 
       self.externalPledgedText = Signal.combineLatest(externalPledgedAmount, country)
         .map { pledged, country in Format.currency(Int(pledged), country: country) }
 
-      self.internalPercentage = internalReferrers
-        .map { $0.reduce(0.0) { accum, referrer in accum + referrer.percentageOfDollars } }
+      self.internalPercentage = Signal.combineLatest(internalPledgedAmount, pledge)
+        .map { internalAmount, pledged in internalAmount / Double(pledged) }
 
       self.internalPercentText = self.internalPercentage.map { Format.percentage($0) }
 
@@ -196,7 +184,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
       cumulativeProjectStats
         .takeWhen(self.showMoreReferrersTappedProperty.signal)
-        .observeValues { _, project, _ in
+        .observeValues { _, project, _, _ in
           AppEnvironment.current.koala.trackDashboardSeeMoreReferrers(project: project)
     }
   }
@@ -213,11 +201,11 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
   private let cumulativeProjectStatsProperty = MutableProperty<(ProjectStatsEnvelope.CumulativeStats,
                                                                 Project,
-                                                                [ProjectStatsEnvelope.ReferrerStats])?>(nil)
+                                                                ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats])?>(nil)
   public func configureWith(cumulative: ProjectStatsEnvelope.CumulativeStats,
                             project: Project,
-                            referrers: [ProjectStatsEnvelope.ReferrerStats]) {
-    self.cumulativeProjectStatsProperty.value = (cumulative, project, referrers)
+                            referralAggregates: ProjectStatsEnvelope.ReferralAggregateStats, referrers: [ProjectStatsEnvelope.ReferrerStats]) {
+    self.cumulativeProjectStatsProperty.value = (cumulative, project, referralAggregates, referrers)
   }
 
   fileprivate let percentButtonTappedProperty = MutableProperty(())
@@ -241,7 +229,6 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
   }
 
   public let averagePledgeText: Signal<String, NoError>
-  public let chartIsHidden: Signal<Bool, NoError>
   public let customPercentText: Signal<String, NoError>
   public let customPledgedText: Signal<String, NoError>
   public let externalPercentage: Signal<Double, NoError>

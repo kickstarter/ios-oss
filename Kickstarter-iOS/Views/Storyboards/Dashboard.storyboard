@@ -525,7 +525,7 @@
                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9HY-KG-FMz" userLabel="Chart card">
                                             <rect key="frame" x="8" y="73" width="384" height="325"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="R35-3D-IAX" userLabel="Cell stack view">
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="R35-3D-IAX" userLabel="Cell stack view">
                                                     <rect key="frame" x="8" y="8" width="344" height="257"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Bpa-35-kKP" userLabel="Cumulative stack view">
@@ -627,13 +627,13 @@
                                                                                     <rect key="frame" x="0.0" y="11.5" width="0.0" height="20.5"/>
                                                                                     <subviews>
                                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="•" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rva-9h-kve">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="7.5" height="20.5"/>
+                                                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="20.5"/>
                                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                             <nil key="highlightedColor"/>
                                                                                         </label>
                                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YZ5-P5-SZd">
-                                                                                            <rect key="frame" x="9.5" y="0.0" width="0.0" height="20.5"/>
+                                                                                            <rect key="frame" x="-124" y="0.0" width="0.0" height="20.5"/>
                                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                             <nil key="highlightedColor"/>
@@ -725,8 +725,6 @@
                                     <outlet property="averageStackView" destination="oC2-v1-c06" id="SBd-F8-0Zc"/>
                                     <outlet property="backersColumnTitleButton" destination="7ar-qE-sll" id="eMd-8C-cE8"/>
                                     <outlet property="chartCardView" destination="9HY-KG-FMz" id="17U-Pb-Q5J"/>
-                                    <outlet property="chartHeightConstraint" destination="gbk-bl-Y0J" id="zEm-Xj-h5Z"/>
-                                    <outlet property="chartTopConstraint" destination="NwJ-n8-A9o" id="UOF-jK-CvC"/>
                                     <outlet property="cumulativeStackView" destination="Bpa-35-kKP" id="yQc-wr-PhW"/>
                                     <outlet property="customPercentIndicatorLabel" destination="rva-9h-kve" id="IIM-83-UcW"/>
                                     <outlet property="customPercentLabel" destination="YZ5-P5-SZd" id="mbX-da-w45"/>

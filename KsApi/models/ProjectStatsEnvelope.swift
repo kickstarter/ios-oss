@@ -5,6 +5,7 @@ import Runes
 public struct ProjectStatsEnvelope {
   public let cumulativeStats: CumulativeStats
   public let fundingDistribution: [FundingDateStats]
+  public let referralAggregateStats: ReferralAggregateStats
   public let referralDistribution: [ReferrerStats]
   public let rewardDistribution: [RewardStats]
   public let videoStats: VideoStats?
@@ -23,6 +24,12 @@ public struct ProjectStatsEnvelope {
     public let cumulativeBackersCount: Int
     public let date: TimeInterval
     public let pledged: Int
+  }
+
+  public struct ReferralAggregateStats {
+    public let custom: Double
+    public let external: Double
+    public let kickstarter: Double
   }
 
   public struct ReferrerStats {
@@ -63,6 +70,7 @@ extension ProjectStatsEnvelope: Argo.Decodable {
     return curry(ProjectStatsEnvelope.init)
       <^> json <| "cumulative"
       <*> decodedJSON(json, forKey: "funding_distribution").flatMap(decodeSuccessfulFundingStats)
+      <*> json <| "referral_aggregates"
       <*> json <|| "referral_distribution"
       <*> json <|| "reward_distribution"
       <*> json <|? "video_stats"
@@ -102,6 +110,23 @@ public func == (lhs: ProjectStatsEnvelope.FundingDateStats, rhs: ProjectStatsEnv
   -> Bool {
     return lhs.date == rhs.date
 }
+
+extension ProjectStatsEnvelope.ReferralAggregateStats: Argo.Decodable {
+  public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferralAggregateStats> {
+    return curry(ProjectStatsEnvelope.ReferralAggregateStats.init)
+    <^> json <| "custom"
+    <*> (json <| "external" >>- stringToDouble)
+    <*> json <| "internal"
+  }
+}
+
+extension ProjectStatsEnvelope.ReferralAggregateStats: Equatable {}
+public func == (lhs: ProjectStatsEnvelope.ReferralAggregateStats, rhs: ProjectStatsEnvelope.ReferralAggregateStats) -> Bool {
+  return lhs.custom == rhs.custom &&
+  lhs.external == rhs.external &&
+  lhs.kickstarter == rhs.kickstarter
+}
+
 
 extension ProjectStatsEnvelope.ReferrerStats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferrerStats> {
