@@ -218,7 +218,7 @@ jobs:
 
       - run:
           name: Fastlane match
-          command: bundle exec fastlane match_kickstarter --verbose
+          command: bundle exec fastlane match_all --verbose
 
       - run:
           name: Increment build number
@@ -274,7 +274,7 @@ jobs:
 
       - run:
           name: Fastlane match
-          command: bundle exec fastlane match_kickstarter --verbose
+          command: bundle exec fastlane match_all --verbose
 
       - run:
           name: Increment build number
