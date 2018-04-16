@@ -1,6 +1,6 @@
 version: 2
 
-xcode_version: &xcode_version 9.3.0
+xcode_version: &xcode_version 9.3
 iphone_name: &iphone_name iPhone 8
 ios_version: &ios_version 11.3
 opentok_version: &opentok_version 2.10.2
