@@ -371,11 +371,11 @@ workflows:
             branches:
               only: itunes-dist
           requires:
-            - swiftlint-and-cache
-            - kickstarter-tests
-            - library-tests
-            - livestream-tests
-            - ksapi-tests
+            # - swiftlint-and-cache
+            # - kickstarter-tests
+            # - library-tests
+            # - livestream-tests
+            # - ksapi-tests
       - itunes-hockey:
           filters:
             branches:
