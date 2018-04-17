@@ -57,8 +57,6 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     self.customPercentText.assertValues(["33%"])
     self.internalPledgedText.assertValues(["$100"])
     self.internalPercentText.assertValues(["33%" ])
-
-
   }
 
   func testCumulativeDataEmits() {
@@ -91,7 +89,6 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     let project = .template |> Project.lens.country .~ country
     let referrers = [stats1, stats2, stats3, stats4, stats5, stats6, stats7, stats8, stats9, stats10]
     let referralAggregates = ProjectStatsEnvelope.ReferralAggregateStats.template
-
 
     self.vm.inputs.configureWith(cumulative: cumulative, project: project,
                                  referralAggregates: referralAggregates, referrers: referrers)
@@ -151,7 +148,6 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
 
     let referrers = [stats1, stats2, stats3, stats4, stats5]
     let referralAggregates = ProjectStatsEnvelope.ReferralAggregateStats.template
-
 
     self.vm.inputs.configureWith(cumulative: cumulative, project: project,
                                  referralAggregates: referralAggregates, referrers: referrers)
