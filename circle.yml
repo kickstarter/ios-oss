@@ -225,6 +225,7 @@ jobs:
       - run:
           name: Fastlane
           command: bundle exec fastlane beta_match_gym_hockey --verbose
+          no_output_timeout: "30m" # 30 minutes
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
@@ -267,24 +268,13 @@ jobs:
             - vendor/bundle
 
       - run:
-          name: Fastlane setup
-          command: bundle exec fastlane setup --verbose
-
-      - run:
-          name: Fastlane match
-          command: bundle exec fastlane match_all --verbose
-
-      - run:
           name: Increment build number
           command: agvtool new-version -all $(($(date +%s)/100))
 
       - run:
-          name: Build app
-          command: bundle exec fastlane itunes_gym --verbose
-
-      - run:
-          name: Submit binary to iTunes Connect
-          command: bundle exec fastlane itunes_deliver --verbose
+          name: Fastlane
+          command: bundle exec fastlane itunes_match_gym_deliver_hockey --verbose
+          no_output_timeout: "30m" # 30 minutes
 
       - persist_to_workspace:
           root: output
@@ -390,5 +380,5 @@ experimental:
     branches:
       only:
         - master
-        - beta-dist
+        # - beta-dist
         - itunes-dist

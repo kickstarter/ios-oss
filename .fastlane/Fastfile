@@ -5,7 +5,7 @@ default_platform :ios
 platform :ios do
   before_all do
     setup_circle_ci
-    xcversion(version: "9.3") # Match version in circle.yml
+    xcversion(version: ENV["XCODE_VERSION"])
   end
 
   ### MATCH
@@ -88,6 +88,13 @@ platform :ios do
   end
 
   ### PRODUCTION
+
+  lane :itunes_match_gym_deliver_hockey do
+    match_all
+    itunes_gym
+    itunes_deliver
+    itunes_hockey
+  end
 
   desc "Build Production"
   lane :itunes_gym do
