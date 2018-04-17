@@ -207,17 +207,10 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     }
   }
 
-//  private func hideChart(_ hidden: Bool) {
-//    if hidden == true {
-//      self.chartHeightConstraint.constant = 0
-//      self.chartTopConstraint.constant -= 20
-//    }
-//  }
-
-  internal func configureWith(value: (ProjectStatsEnvelope.CumulativeStats,
-                                            Project,
-                                            ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats])) {
-    self.viewModel.inputs.configureWith(cumulative: value.0, project: value.1, referralAggregates: value.2, referrers: value.3 )
+  internal func configureWith(value: (ProjectStatsEnvelope.CumulativeStats, Project,
+    ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats])) {
+    self.viewModel.inputs.configureWith(cumulative: value.0, project: value.1,
+                                        referralAggregates: value.2, referrers: value.3 )
   }
 
   @objc fileprivate func backersButtonTapped() {

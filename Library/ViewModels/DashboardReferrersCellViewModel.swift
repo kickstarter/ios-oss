@@ -201,10 +201,12 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
 
   private let cumulativeProjectStatsProperty = MutableProperty<(ProjectStatsEnvelope.CumulativeStats,
                                                                 Project,
-                                                                ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats])?>(nil)
+                                                                ProjectStatsEnvelope.ReferralAggregateStats,
+                                                                [ProjectStatsEnvelope.ReferrerStats])?>(nil)
   public func configureWith(cumulative: ProjectStatsEnvelope.CumulativeStats,
                             project: Project,
-                            referralAggregates: ProjectStatsEnvelope.ReferralAggregateStats, referrers: [ProjectStatsEnvelope.ReferrerStats]) {
+                            referralAggregates: ProjectStatsEnvelope.ReferralAggregateStats,
+                            referrers: [ProjectStatsEnvelope.ReferrerStats]) {
     self.cumulativeProjectStatsProperty.value = (cumulative, project, referralAggregates, referrers)
   }
 

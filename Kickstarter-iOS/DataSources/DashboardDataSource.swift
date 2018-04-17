@@ -57,8 +57,8 @@ internal final class DashboardDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as DashboardFundingCell, value as ([ProjectStatsEnvelope.FundingDateStats], Project)):
       cell.configureWith(value: value)
-    case let (cell as DashboardReferrersCell, value as (ProjectStatsEnvelope.CumulativeStats, Project, ProjectStatsEnvelope.ReferralAggregateStats,
-      [ProjectStatsEnvelope.ReferrerStats])):
+    case let (cell as DashboardReferrersCell, value as (ProjectStatsEnvelope.CumulativeStats, Project,
+      ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats])):
         cell.configureWith(value: value)
     case let (cell as DashboardVideoCell, value as ProjectStatsEnvelope.VideoStats):
       cell.configureWith(value: value)

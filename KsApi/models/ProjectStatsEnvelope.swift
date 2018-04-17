@@ -121,12 +121,12 @@ extension ProjectStatsEnvelope.ReferralAggregateStats: Argo.Decodable {
 }
 
 extension ProjectStatsEnvelope.ReferralAggregateStats: Equatable {}
-public func == (lhs: ProjectStatsEnvelope.ReferralAggregateStats, rhs: ProjectStatsEnvelope.ReferralAggregateStats) -> Bool {
+public func == (lhs: ProjectStatsEnvelope.ReferralAggregateStats,
+                rhs: ProjectStatsEnvelope.ReferralAggregateStats) -> Bool {
   return lhs.custom == rhs.custom &&
   lhs.external == rhs.external &&
   lhs.kickstarter == rhs.kickstarter
 }
-
 
 extension ProjectStatsEnvelope.ReferrerStats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferrerStats> {

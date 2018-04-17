@@ -93,7 +93,8 @@ public protocol DashboardViewModelOutputs {
   var loaderIsAnimating: Signal<Bool, NoError> { get }
 
   /// Emits the cumulative, project, and referreral distribution data to display in the referrers cell.
-  var referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats, project: Project, aggregates: ProjectStatsEnvelope.ReferralAggregateStats,
+  var referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats,
+    project: Project, aggregates: ProjectStatsEnvelope.ReferralAggregateStats,
     stats: [ProjectStatsEnvelope.ReferrerStats]), NoError> { get }
 
   /// Emits the project, reward stats, and cumulative pledges to display in the rewards cell.
@@ -214,7 +215,8 @@ DashboardViewModelType {
 
     self.referrerData = selectedProjectAndStats
       .map { project, stats in
-        (cumulative: stats.cumulativeStats, project: project, aggregates: stats.referralAggregateStats, stats: stats.referralDistribution)
+        (cumulative: stats.cumulativeStats, project: project,
+         aggregates: stats.referralAggregateStats, stats: stats.referralDistribution)
     }
 
     self.videoStats = selectedProjectAndStats.map { _, stats in stats.videoStats }.skipNil()
@@ -373,7 +375,8 @@ DashboardViewModelType {
   public let project: Signal<Project, NoError>
   public let loaderIsAnimating: Signal<Bool, NoError>
   public let presentProjectsDrawer: Signal<[ProjectsDrawerData], NoError>
-  public let referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats, project: Project, aggregates: ProjectStatsEnvelope.ReferralAggregateStats,
+  public let referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats,
+    project: Project, aggregates: ProjectStatsEnvelope.ReferralAggregateStats,
     stats: [ProjectStatsEnvelope.ReferrerStats]), NoError>
   public let rewardData: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError>
   public let videoStats: Signal<ProjectStatsEnvelope.VideoStats, NoError>
