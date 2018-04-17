@@ -276,62 +276,6 @@ jobs:
           command: bundle exec fastlane itunes_match_gym_deliver_hockey --verbose
           no_output_timeout: "30m" # 30 minutes
 
-      - persist_to_workspace:
-          root: output
-          paths:
-            - Kickstarter.ipa
-
-      - store_artifacts:
-          path: /tmp/xcode_raw.log
-
-      - store_artifacts:
-          path: output
-
-  # iTunes
-  itunes-hockey:
-    <<: *base_job
-    steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "Opentok.lock" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - restore_cache:
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Bundle install
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-      - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
-      - attach_workspace:
-          at: output
-
-      - run:
-          name: Fastlane setup
-          command: bundle exec fastlane setup --verbose
-
-      - run:
-          name: Submit binary to Hockey
-          command: bundle exec fastlane itunes_hockey --verbose
-
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
@@ -368,12 +312,6 @@ workflows:
             - library-tests
             - livestream-tests
             - ksapi-tests
-      - itunes-hockey:
-          filters:
-            branches:
-              only: itunes-dist
-          requires:
-            - itunes
 
 experimental:
   notify:
