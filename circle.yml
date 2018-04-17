@@ -219,6 +219,10 @@ jobs:
             - vendor/bundle
 
       - run:
+          name: Fastlane setup
+          command: bundle exec fastlane setup --verbose
+
+      - run:
           name: Fastlane match
           command: bundle exec fastlane match_all --verbose
 
@@ -273,6 +277,10 @@ jobs:
           key: v1-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
+
+      - run:
+          name: Fastlane setup
+          command: bundle exec fastlane setup --verbose
 
       - run:
           name: Fastlane match
@@ -337,6 +345,10 @@ jobs:
 
       - attach_workspace:
           at: output
+
+      - run:
+          name: Fastlane setup
+          command: bundle exec fastlane setup --verbose
 
       - run:
           name: Submit binary to Hockey

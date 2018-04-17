@@ -3,7 +3,9 @@ fastlane_version "2.28.3"
 default_platform :ios
 
 platform :ios do
-  before_all do
+  desc "Setup"
+  lane :setup do
+    setup_circle_ci
     xcversion(version: ENV.fetch("XCODE_VERSION").to_s)
   end
 
