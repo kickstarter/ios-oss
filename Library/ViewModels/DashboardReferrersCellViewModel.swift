@@ -113,8 +113,8 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
       let pledge = cumulativeProjectStats
         .map { cumulative, _, _, _ in cumulative.pledged }
 
-      self.customPercentText = customPledgedAmount
-        .map { Format.percentage($0) }
+      self.customPercentText = Signal.combineLatest(customPledgedAmount, pledge)
+        .map { customAmount, pledged in Format.percentage(customAmount / Double(pledged)) }
 
       self.customPledgedText = Signal.combineLatest(customPledgedAmount, country)
         .map { pledged, country in Format.currency(Int(pledged), country: country) }

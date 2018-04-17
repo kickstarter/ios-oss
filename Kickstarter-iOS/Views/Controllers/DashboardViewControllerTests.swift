@@ -7,7 +7,6 @@ internal final class DashboardViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.recordMode = true
     let project = cosmicSurgery
       |> Project.lens.dates.launchedAt .~ (self.dateType.init().timeIntervalSince1970 - 60 * 60 * 24 * 14)
       |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 14)
@@ -102,8 +101,9 @@ private let videoStats = .template
   |> ProjectStatsEnvelope.VideoStats.lens.internalStarts .~ 1000
 
 private let referralAggregateStats = .template
-  |> ProjectStatsEnvelope.ReferralAggregateStats.lens.external .~ 25.00
-  |> ProjectStatsEnvelope.ReferralAggregateStats.lens.kickstarter .~ 40.00
+  |> ProjectStatsEnvelope.ReferralAggregateStats.lens.external .~ 455.00
+  |> ProjectStatsEnvelope.ReferralAggregateStats.lens.kickstarter .~ 728.00
+  |> ProjectStatsEnvelope.ReferralAggregateStats.lens.custom .~ 637.00
 
 private let cumulativeStats = .template
   |> ProjectStatsEnvelope.CumulativeStats.lens.pledged .~ rewardStats.reduce(0) { $0 + $1.pledged }
