@@ -3,10 +3,9 @@ fastlane_version "2.28.3"
 default_platform :ios
 
 platform :ios do
-  desc "Setup"
-  lane :setup do
+  before_all do
     setup_circle_ci
-    xcversion(version: ENV.fetch("XCODE_VERSION").to_s)
+    xcversion(version: "9.3") # Match version in circle.yml
   end
 
   ### MATCH
@@ -63,6 +62,12 @@ platform :ios do
   end
 
   ### BETA
+
+  lane :beta_match_gym_hockey do
+    match_all
+    beta_gym
+    # beta_hockey
+  end
 
   desc "Build Beta"
   lane :beta_gym do

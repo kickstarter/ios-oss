@@ -219,24 +219,12 @@ jobs:
             - vendor/bundle
 
       - run:
-          name: Fastlane setup
-          command: bundle exec fastlane setup --verbose
-
-      - run:
-          name: Fastlane match
-          command: bundle exec fastlane match_all --verbose
-
-      - run:
           name: Increment build number
           command: agvtool new-version -all $(($(date +%s)/100))
 
       - run:
-          name: Build app
-          command: bundle exec fastlane beta_gym --verbose
-
-      # - run:
-      #     name: Submit binary to Hockey
-      #     command: bundle exec fastlane beta_hockey --verbose
+          name: Fastlane
+          command: bundle exec fastlane beta_match_gym_hockey --verbose
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
