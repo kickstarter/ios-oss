@@ -8,7 +8,7 @@ preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.3) [5FE
 
 base_job: &base_job
   macos:
-    xcode: "9.3.0"
+    xcode: "9.3"
   working_directory: ~/kickstarter
   environment:
     CIRCLE_ARTIFACTS: /tmp
