@@ -25,7 +25,8 @@ platform :ios do
       git_url: "https://github.com/kickstarter/ios-certificates",
       team_id: "48YBP49Y5N",
       git_branch: "ksr",
-      username: "appledev@kickstarter.com"
+      username: "appledev@kickstarter.com",
+      force_for_new_devices: true
     )
   end
 
@@ -43,7 +44,8 @@ platform :ios do
       git_url: "https://github.com/kickstarter/ios-certificates",
       team_id: "48YBP49Y5N",
       git_branch: "ksr",
-      username: "appledev@kickstarter.com"
+      username: "appledev@kickstarter.com",
+      force_for_new_devices: true
     )
   end
 
@@ -57,7 +59,8 @@ platform :ios do
       git_url: "https://github.com/kickstarter/ios-certificates",
       team_id: "5DAN4UM3NC",
       git_branch: "ksr-enterprise",
-      username: "appledev@kickstarter.com"
+      username: "appledev@kickstarter.com",
+      force_for_new_devices: true
     )
   end
 
