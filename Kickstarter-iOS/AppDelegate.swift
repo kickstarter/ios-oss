@@ -153,6 +153,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           }
       }
 
+    self.viewModel.outputs.showAlert
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.presentRemoteNotificationAlert($0)
+    }
+
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
@@ -196,8 +202,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     //swiftlint:disable discarded_notification_center_observer
     NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionStarted()
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] notification in
+        self?.viewModel.inputs.userSessionStarted(notification: notification)
     }
 
     NotificationCenter.default
@@ -286,7 +292,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       UIAlertAction(title: Strings.Dismiss(), style: .cancel, handler: nil)
     )
 
-    self.rootTabBarController?.present(alert, animated: true, completion: nil)
+    DispatchQueue.main.async {
+      self.rootTabBarController?.present(alert, animated: true, completion: nil)
+    }
   }
 
   private func goToLiveStream(project: Project,

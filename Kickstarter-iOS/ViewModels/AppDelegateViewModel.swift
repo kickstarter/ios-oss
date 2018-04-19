@@ -79,7 +79,7 @@ public protocol AppDelegateViewModelInputs {
   func userSessionEnded()
 
   /// Call when the controller has received a user session started notification.
-  func userSessionStarted()
+  func userSessionStarted(notification: Notification)
 
   /// Call when the app has crashed
   func crashManagerDidFinishSendingCrashReport()
@@ -161,6 +161,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits an array of short cut items to put into the shared application.
   var setApplicationShortcutItems: Signal<[ShortcutItem], NoError> { get }
 
+  /// Emits when an alert should be shown.
+  var showAlert: Signal<String, NoError> { get }
+
   /// Emits to synchronize iCloud on app launch.
   var synchronizeUbiquitousStore: Signal<(), NoError> { get }
 
@@ -189,7 +192,7 @@ AppDelegateViewModelOutputs {
         self.applicationWillEnterForegroundProperty.signal,
         self.applicationLaunchOptionsProperty.signal.ignoreValues(),
         self.userSessionEndedProperty.signal,
-        self.userSessionStartedProperty.signal
+        self.userSessionStartedProperty.signal.ignoreValues()
       )
       .ksr_debounce(.seconds(5), on: AppEnvironment.current.scheduler)
       .switchMap { _ -> SignalProducer<Signal<User?, ErrorEnvelope>.Event, NoError> in
@@ -242,7 +245,7 @@ AppDelegateViewModelOutputs {
     let applicationIsReadyForRegisteringNotifications = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.userSessionStartedProperty.signal
+      self.userSessionStartedProperty.signal.ignoreValues()
       )
       .filter { AppEnvironment.current.currentUser != nil }
 
@@ -259,13 +262,24 @@ AppDelegateViewModelOutputs {
       self.registerForRemoteNotifications = applicationIsReadyForRegisteringNotifications
     }
 
-    self.authorizeForRemoteNotifications = applicationIsReadyForRegisteringNotifications
+    let authorize = applicationIsReadyForRegisteringNotifications
         .takeWhen(
           self.notificationAuthorizationStatusProperty.signal
           .skipNil()
           .filter { $0 == .notDetermined }
           .ignoreValues()
       )
+
+    self.showAlert = self.userSessionStartedProperty.signal.skipNil()
+      .takeWhen(authorize)
+
+    self.authorizeForRemoteNotifications = .empty//applicationIsReadyForRegisteringNotifications
+    //        .takeWhen(
+    //          self.notificationAuthorizationStatusProperty.signal
+    //          .skipNil()
+    //          .filter { $0 == .notDetermined }
+    //          .ignoreValues()
+    //      )
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
@@ -555,7 +569,7 @@ AppDelegateViewModelOutputs {
 
     self.configureHockey = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.userSessionStartedProperty.signal,
+      self.userSessionStartedProperty.signal.ignoreValues(),
       self.userSessionEndedProperty.signal
       )
       .map { _ in
@@ -736,9 +750,9 @@ AppDelegateViewModelOutputs {
     self.userSessionEndedProperty.value = ()
   }
 
-  fileprivate let userSessionStartedProperty = MutableProperty(())
-  public func userSessionStarted() {
-    self.userSessionStartedProperty.value = ()
+  fileprivate let userSessionStartedProperty = MutableProperty<String?>(nil)
+  public func userSessionStarted(notification: Notification) {
+    self.userSessionStartedProperty.value = notification.userInfo?.values.first as? String
   }
 
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
@@ -782,6 +796,7 @@ AppDelegateViewModelOutputs {
   public let pushTokenSuccessfullyRegistered: Signal<(), NoError>
   public let registerForRemoteNotifications: Signal<(), NoError>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], NoError>
+  public let showAlert: Signal<String, NoError>
   public let synchronizeUbiquitousStore: Signal<(), NoError>
   public let unregisterForRemoteNotifications: Signal<(), NoError>
   public let updateCurrentUserInEnvironment: Signal<User, NoError>
