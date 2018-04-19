@@ -202,8 +202,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     //swiftlint:disable discarded_notification_center_observer
     NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] notification in
-        self?.viewModel.inputs.userSessionStarted(notification: notification)
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] in
+        self?.viewModel.inputs.userSessionStarted(notification: $0)
     }
 
     NotificationCenter.default
