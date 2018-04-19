@@ -33,7 +33,7 @@ public final class VideoViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.playerController = self.childViewControllers.flatMap { $0 as? AVPlayerViewController }.first
+    self.playerController = self.childViewControllers.compactMap { $0 as? AVPlayerViewController }.first
 
     self.playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
 

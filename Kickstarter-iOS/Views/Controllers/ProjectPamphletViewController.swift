@@ -33,11 +33,11 @@ public final class ProjectPamphletViewController: UIViewController {
     super.viewDidLoad()
 
     self.navBarController = self.childViewControllers
-      .flatMap { $0 as? ProjectNavBarViewController }.first
+      .compactMap { $0 as? ProjectNavBarViewController }.first
     self.navBarController.delegate = self
 
     self.contentController = self.childViewControllers
-      .flatMap { $0 as? ProjectPamphletContentViewController }.first
+      .compactMap { $0 as? ProjectPamphletContentViewController }.first
     self.contentController.delegate = self
 
     self.viewModel.inputs.initial(topConstraint: initialTopConstraint)
