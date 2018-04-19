@@ -53,7 +53,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.navigationItem.titleView = self.navBarTitleView
 
     self.liveStreamContainerPageViewController = self.childViewControllers
-      .flatMap { $0 as? LiveStreamContainerPageViewController }
+      .compactMap { $0 as? LiveStreamContainerPageViewController }
       .first
 
     self.sessionStartedObserver = NotificationCenter.default
