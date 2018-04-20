@@ -83,8 +83,8 @@ platform :ios do
   desc "Upload Beta to HockeyApp"
   lane :beta_hockey do
     upload_hockey(
-      ipa: "KickBeta.ipa",
-      dsym: "KickBeta.app.dSYM.zip",
+      ipa: "./output/gym/KickBeta.ipa",
+      dsym: "./output/gym/KickBeta.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_BETA_APP_ID"]
     )
   end
@@ -110,8 +110,8 @@ platform :ios do
   desc "Upload Production to HockeyApp"
   lane :itunes_hockey do
     upload_hockey(
-      ipa: "Kickstarter.ipa",
-      dsym: "Kickstarter.app.dSYM.zip",
+      ipa: "./output/gym/Kickstarter.ipa",
+      dsym: "./output/gym/Kickstarter.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_RELEASE_APP_ID"]
     )
   end
@@ -124,7 +124,7 @@ platform :ios do
       username: ENV["ITUNES_CONNECT_ACCOUNT"],
       app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
       app: ENV["ITUNES_APP_ID"],
-      ipa: "Kickstarter.ipa",
+      ipa: "./output/gym/Kickstarter.ipa",
       team_id: ENV["ITUNES_TEAM_ID"],
       skip_screenshots: true,
       skip_metadata: true
@@ -153,8 +153,8 @@ platform :ios do
   desc "Upload Alpha to HockeyApp"
   lane :alpha_hockey do
     upload_hockey(
-      ipa: "KickAlpha.ipa",
-      dsym: "KickAlpha.app.dSYM.zip",
+      ipa: "./output/gym/KickAlpha.ipa",
+      dsym: "./output/gym/KickAlpha.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_ALPHA_APP_ID"]
     )
   end
