@@ -75,6 +75,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the user taps "OK" from the notification alert.
   func openRemoteNotificationTappedOk()
 
+  /// Call when the user taps "OK" from the contextual alert.
+  func didAcceptReceivingRemoteNotifications()
+
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
 
@@ -273,13 +276,7 @@ AppDelegateViewModelOutputs {
     self.showAlert = self.userSessionStartedProperty.signal.skipNil()
       .takeWhen(authorize)
 
-    self.authorizeForRemoteNotifications = .empty//applicationIsReadyForRegisteringNotifications
-    //        .takeWhen(
-    //          self.notificationAuthorizationStatusProperty.signal
-    //          .skipNil()
-    //          .filter { $0 == .notDetermined }
-    //          .ignoreValues()
-    //      )
+    self.authorizeForRemoteNotifications = self.didAcceptReceivingRemoteNotificationsProperty.signal
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
@@ -713,6 +710,11 @@ AppDelegateViewModelOutputs {
   fileprivate let deviceTokenDataProperty = MutableProperty(Data())
   public func didRegisterForRemoteNotifications(withDeviceTokenData data: Data) {
     self.deviceTokenDataProperty.value = data
+  }
+
+  fileprivate let didAcceptReceivingRemoteNotificationsProperty = MutableProperty(())
+  public func didAcceptReceivingRemoteNotifications() {
+    self.didAcceptReceivingRemoteNotificationsProperty.value = ()
   }
 
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)

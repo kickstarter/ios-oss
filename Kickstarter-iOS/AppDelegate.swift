@@ -156,7 +156,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.showAlert
       .observeForUI()
       .observeValues { [weak self] in
-        self?.presentRemoteNotificationAlert($0)
+        self?.presentContextualPermissionAlert($0)
     }
 
     self.viewModel.outputs.unregisterForRemoteNotifications
@@ -277,6 +277,25 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
     completionHandler(true)
+  }
+
+  fileprivate func presentContextualPermissionAlert(_ message: String) {
+
+    let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+
+    alert.addAction(
+      UIAlertAction(title: Strings.project_star_ok(), style: .default) { [weak self] _ in
+        self?.viewModel.inputs.didAcceptReceivingRemoteNotifications()
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: Strings.Dismiss(), style: .cancel, handler: nil)
+    )
+
+    DispatchQueue.main.async {
+      self.rootTabBarController?.present(alert, animated: true, completion: nil)
+    }
   }
 
   fileprivate func presentRemoteNotificationAlert(_ message: String) {
