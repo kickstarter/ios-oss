@@ -88,7 +88,7 @@ extension Config: EncodableType {
 // Turns out using `>>-` or `flatMap` on a `Decoded` fails to compile with optimizations on, so this
 // function does it manually.
 private func decodeDictionary<T: Argo.Decodable>(_ j: Decoded<JSON>)
-  -> Decoded<[String:T]> where T.DecodedType == T {
+  -> Decoded<[String: T]> where T.DecodedType == T {
   switch j {
   case let .success(json): return [String: T].decode(json)
   case let .failure(e): return .failure(e)

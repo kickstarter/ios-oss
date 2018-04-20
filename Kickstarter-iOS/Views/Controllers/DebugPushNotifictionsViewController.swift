@@ -15,14 +15,14 @@ internal final class DebugPushNotificationsViewController: UIViewController {
     _ = self
       |> baseControllerStyle()
 
-    let rowsStackViews = self.rootStackView.arrangedSubviews.flatMap { $0 as? UIStackView }
+    let rowsStackViews = self.rootStackView.arrangedSubviews.compactMap { $0 as? UIStackView }
     let rowStackViews = rowsStackViews.flatMap { rows in
-      rows.arrangedSubviews.flatMap { $0 as? UIStackView }
+      rows.arrangedSubviews.compactMap { $0 as? UIStackView }
     }
-    let buttonStackViews = rowStackViews.flatMap { $0.arrangedSubviews.last as? UIStackView }
-    let titleLabels = self.rootStackView.arrangedSubviews.flatMap { $0 as? UILabel }
+    let buttonStackViews = rowStackViews.compactMap { $0.arrangedSubviews.last as? UIStackView }
+    let titleLabels = self.rootStackView.arrangedSubviews.compactMap { $0 as? UILabel }
     let buttons = buttonStackViews
-      .flatMap { stackView in stackView.arrangedSubviews.flatMap { $0 as? UIButton } }
+      .flatMap { stackView in stackView.arrangedSubviews.compactMap { $0 as? UIButton } }
     let inAppButtons = buttons.enumerated().filter { idx, _ in idx % 2 == 0 }.map(second)
     let delayedButtons = buttons.enumerated().filter { idx, _ in idx % 2 == 1 }.map(second)
 
@@ -46,7 +46,7 @@ internal final class DebugPushNotificationsViewController: UIViewController {
       ||> UILabel.lens.textColor .~ .ksr_text_navy_600
       ||> UILabel.lens.font .~ .ksr_title1(size: 22)
 
-    _ = rowStackViews.flatMap { $0.arrangedSubviews.first as? UILabel }
+    _ = rowStackViews.compactMap { $0.arrangedSubviews.first as? UILabel }
       ||> UILabel.lens.textColor .~ .ksr_dark_grey_900
       ||> UILabel.lens.font .~ .ksr_body()
 

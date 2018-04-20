@@ -12,7 +12,7 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
 
   internal func load(filter: DiscoveryParams) {
     self.viewControllers
-      .flatMap { $0 as? DiscoveryPageViewController }
+      .compactMap { $0 as? DiscoveryPageViewController }
       .forEach { $0.change(filter: filter) }
   }
 

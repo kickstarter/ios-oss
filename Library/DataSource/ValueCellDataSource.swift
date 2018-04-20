@@ -281,7 +281,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
    - parameter item:    An item index.
    - parameter section: A section index.
 
-   - returns: The resuableId associated with an (item, section) pair. Marked as internal as it's
+   - returns: The reusableId associated with an (item, section) pair. Marked as internal as it's
               only useful for testing.
    */
   internal final func reusableId(item: Int, section: Int) -> String? {

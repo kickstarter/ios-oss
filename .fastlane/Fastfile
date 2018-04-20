@@ -4,14 +4,76 @@ default_platform :ios
 
 platform :ios do
   before_all do
-    xcversion(version: "9.2")
+    setup_circle_ci
+    xcversion(version: ENV["XCODE_VERSION"])
+  end
+
+  ### MATCH
+
+  desc "Fastlane Match"
+  lane :match_all do
+    match_appstore
+    match_development
+    match_enterprise
+  end
+
+  desc "Fastlane Match - App Store"
+  private_lane :match_appstore do
+    match(
+      app_identifier: ["com.kickstarter.drip", "com.kickstarter.kickstarter"],
+      type: "appstore",
+      git_url: "https://github.com/kickstarter/ios-certificates",
+      team_id: "48YBP49Y5N",
+      git_branch: "ksr",
+      username: "appledev@kickstarter.com"
+    )
+  end
+
+  desc "Fastlane Match - Development"
+  private_lane :match_development do
+    match(
+      app_identifier: [
+        "com.kickstarter.drip",
+        "com.kickstarter.drip.debug",
+        "com.kickstarter.kickstarter",
+        "com.kickstarter.kickstarter.alpha",
+        "com.kickstarter.kickstarter.debug"
+      ],
+      type: "development",
+      git_url: "https://github.com/kickstarter/ios-certificates",
+      team_id: "48YBP49Y5N",
+      git_branch: "ksr",
+      username: "appledev@kickstarter.com",
+      force_for_new_devices: true
+    )
+  end
+
+  desc "Fastlane Match - Enterprise"
+  private_lane :match_enterprise do
+    match(
+      app_identifier: [
+        "com.kickstarter.drip.beta", "com.kickstarter.kickstarter.beta"
+      ],
+      type: "enterprise",
+      git_url: "https://github.com/kickstarter/ios-certificates",
+      team_id: "5DAN4UM3NC",
+      git_branch: "ksr-enterprise",
+      username: "appledev@kickstarter.com",
+      force_for_new_devices: true
+    )
   end
 
   ### BETA
 
+  lane :beta_match_gym_hockey do
+    match_all
+    beta_gym
+    beta_hockey
+  end
+
   desc "Build Beta"
   lane :beta_gym do
-    build_app(
+    build_the_app(
       output_name: "KickBeta",
       export_method: "enterprise",
       configuration: "Hockey Beta"
@@ -29,9 +91,16 @@ platform :ios do
 
   ### PRODUCTION
 
+  lane :itunes_match_gym_deliver_hockey do
+    match_all
+    itunes_gym
+    itunes_deliver
+    itunes_hockey
+  end
+
   desc "Build Production"
   lane :itunes_gym do
-    build_app(
+    build_the_app(
       output_name: "Kickstarter",
       export_method: "app-store",
       configuration: "Release"
@@ -74,7 +143,7 @@ platform :ios do
 
   desc "Build Alpha"
   lane :alpha_gym do
-    build_app(
+    build_the_app(
       output_name: "KickAlpha",
       export_method: "enterprise",
       configuration: "Hockey Alpha"
@@ -92,7 +161,7 @@ platform :ios do
 
   ### SHARED
 
-  private_lane :build_app do |options|
+  private_lane :build_the_app do |options|
     gym(
       output_name: options[:output_name],
       export_method: options[:export_method],

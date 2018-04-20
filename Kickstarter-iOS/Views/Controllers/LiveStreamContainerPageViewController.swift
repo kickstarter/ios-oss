@@ -35,7 +35,7 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
     self.infoPagerButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
 
     self.pageViewController = self.childViewControllers
-      .flatMap { $0 as? UIPageViewController }
+      .compactMap { $0 as? UIPageViewController }
       .first
     self.pageViewController?.setViewControllers(
       [.init()],
