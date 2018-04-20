@@ -23,6 +23,11 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
       ["date": 555444335]
     ]
     let json: [String: Any] = [
+      "referral_aggregates" : [
+        "custom": 1.0,
+        "external": "15.0",
+        "internal": 14.0
+      ],
       "referral_distribution": [
         [
           "code": "my_wonderful_referrer_code",
@@ -85,6 +90,11 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
 
     XCTAssertEqual(5, stats.value?.videoStats?.externalCompletions)
     XCTAssertEqual(14, stats.value?.videoStats?.internalStarts)
+
+    XCTAssertEqual(1.0, stats.value?.referralAggregateStats.custom)
+    XCTAssertEqual(15.0, stats.value?.referralAggregateStats.external)
+    XCTAssertEqual(14.0, stats.value?.referralAggregateStats.kickstarter)
+
 
     let fundingDistribution = stats.value?.fundingDistribution ?? []
     let rewardDistribution = stats.value?.rewardDistribution ?? []
