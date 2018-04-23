@@ -5,7 +5,7 @@ default_platform :ios
 platform :ios do
   before_all do
     setup_circle_ci
-    xcversion(version: ENV["XCODE_VERSION"])
+    xcversion(version: ENV["XCODE_VERSION"] || "9.3")
   end
 
   ### MATCH
