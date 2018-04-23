@@ -133,7 +133,7 @@ platform :ios do
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
       message: "Successfully uploaded" +
-        " v" + get_version_number(xcodeproj: "Kickstarter.xcodeproj") +
+        " v" + get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS") +
         " (" + get_build_number(xcodeproj: "Kickstarter.xcodeproj") + ")" +
         " of the Kickstarter iOS app to iTunes Connect 🚀"
     )
