@@ -64,6 +64,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.loginLabel |> fbWrongAccountLabelStyle
     _ = self.navigationItem.title = Strings.signup_navbar_title()
     _ = self.newsletterLabel |> newsletterLabelStyle
+    _ = self.newsletterSwitch |> newsletterSwitchStyle
     _ = self.rootStackView |> loginRootStackViewStyle
   }
 

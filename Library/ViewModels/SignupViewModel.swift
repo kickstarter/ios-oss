@@ -85,7 +85,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     )
 
     let newsletter = Signal.merge(
-      self.viewDidLoadProperty.signal.map { false },
+      self.viewDidLoadProperty.signal.mapConst(false),
       self.weeklyNewsletterChangedProperty.signal.skipNil()
     )
 
