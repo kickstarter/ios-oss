@@ -18,7 +18,6 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     vm.outputs.displayEmail.observe(displayEmail.observer)
     vm.outputs.sendNewsletters.observe(sendNewsletters.observer)
     vm.outputs.showLogin.observe(showLogin.observer)
@@ -44,7 +43,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
     vm.inputs.viewDidLoad()
 
-    sendNewsletters.assertValues([true], "Newsletter toggle emits true")
+    sendNewsletters.assertValues([false], "Newsletter toggle emits false")
     XCTAssertEqual(["Facebook Confirm", "Viewed Facebook Signup"], trackingClient.events,
                    "Newsletter toggle is not tracked on intital state")
 
@@ -78,7 +77,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
     vm.inputs.viewDidLoad()
     vm.inputs.sendNewslettersToggled(false)
 
-    sendNewsletters.assertValues([true, false], "Newsletter is toggled off")
+    sendNewsletters.assertValues([false, false], "Newsletter is toggled off")
     XCTAssertEqual(
       ["Facebook Confirm", "Viewed Facebook Signup", "Unsubscribed From Newsletter",
        "Signup Newsletter Toggle"],
@@ -89,7 +88,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
     vm.inputs.sendNewslettersToggled(true)
 
-    sendNewsletters.assertValues([true, false, true], "Newsletter is toggled on")
+    sendNewsletters.assertValues([false, false, true], "Newsletter is toggled on")
     XCTAssertEqual(
       ["Facebook Confirm", "Viewed Facebook Signup", "Unsubscribed From Newsletter",
        "Signup Newsletter Toggle", "Subscribed To Newsletter", "Signup Newsletter Toggle"],

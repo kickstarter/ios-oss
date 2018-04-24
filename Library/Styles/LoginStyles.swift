@@ -84,6 +84,8 @@ public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
   <> UILabel.lens.text %~ { _ in Strings.signup_newsletter_full() }
 
+public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
+
 public let passwordFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_password() }
   <> UITextField.lens.secureTextEntry .~ true
