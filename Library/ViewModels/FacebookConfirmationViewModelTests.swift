@@ -18,7 +18,6 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    
     vm.outputs.displayEmail.observe(displayEmail.observer)
     vm.outputs.sendNewsletters.observe(sendNewsletters.observer)
     vm.outputs.showLogin.observe(showLogin.observer)
