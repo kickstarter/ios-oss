@@ -74,3 +74,5 @@ Screenshots/FailureDiffs/*
 
 Frameworks/OpenTok/*
 Frameworks/native-secrets
+.fastlane/report.xml
+.fastlane/README.md
