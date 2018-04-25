@@ -275,6 +275,8 @@ AppDelegateViewModelOutputs {
 
     self.showAlert = self.userSessionStartedProperty.signal.skipNil()
       .takeWhen(authorize)
+      .filter { PushNotificationDialog.canShowDialog(for: $0) }
+      
 
     self.authorizeForRemoteNotifications = self.didAcceptReceivingRemoteNotificationsProperty.signal
 
@@ -754,7 +756,7 @@ AppDelegateViewModelOutputs {
 
   fileprivate let userSessionStartedProperty = MutableProperty<String?>(nil)
   public func userSessionStarted(notification: Notification) {
-    self.userSessionStartedProperty.value = notification.userInfo?.values.first as? String
+    self.userSessionStartedProperty.value = notification.userInfo?.values.first as? PushNotificationDialog.Context
   }
 
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
