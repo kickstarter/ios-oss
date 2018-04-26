@@ -278,7 +278,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
     completionHandler(true)
   }
- 
+  
   fileprivate func presentContextualPermissionAlert(_ context: PushNotificationDialog.Context) {
 
     let alert = UIAlertController(title: context.title, message: context.message, preferredStyle: .alert)
