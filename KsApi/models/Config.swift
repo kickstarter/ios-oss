@@ -2,10 +2,6 @@ import Argo
 import Curry
 import Runes
 
-public enum Features: String {
-  case creatorChartHidden = "native_creator_breakdown_chart"
-}
-
 public enum Experiment {
 
   public enum Name: String {
