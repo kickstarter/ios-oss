@@ -42,7 +42,6 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.viewModel.inputs.awakeFromNib()
 
     self.backersColumnTitleButton.addTarget(
       self,
@@ -67,6 +66,8 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       action: #selector(sourceButtonTapped),
       for: .touchUpInside
     )
+
+    self.viewModel.inputs.awakeFromNib()
   }
 
     internal override func bindStyles() {
