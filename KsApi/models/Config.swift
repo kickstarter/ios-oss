@@ -11,6 +11,7 @@ public enum Experiment {
   public enum Name: String {
     case creatorsNameDiscovery = "show_created_by_discovery"
     case defaultToRecs = "default_rec_projects"
+    case showProjectCardCategory = "native_show_project_card_category"
   }
 
   public enum Variant: String {
