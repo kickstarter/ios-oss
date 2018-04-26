@@ -229,7 +229,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
   }
 
-  func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+  func application(_ app: UIApplication, open url: URL,
+                   options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
     guard let sourceApplication = options[.sourceApplication] as? String else { return false }
 
     return self.viewModel.inputs.applicationOpenUrl(application: app,
