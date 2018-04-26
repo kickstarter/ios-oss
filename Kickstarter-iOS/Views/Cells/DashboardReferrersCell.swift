@@ -42,7 +42,6 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-
     self.backersColumnTitleButton.addTarget(
       self,
       action: #selector(backersButtonTapped),
