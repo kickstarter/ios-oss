@@ -165,7 +165,7 @@ public protocol AppDelegateViewModelOutputs {
   var setApplicationShortcutItems: Signal<[ShortcutItem], NoError> { get }
 
   /// Emits when an alert should be shown.
-  var showAlert: Signal<String, NoError> { get }
+  var showAlert: Signal<PushNotificationDialog.Context, NoError> { get }
 
   /// Emits to synchronize iCloud on app launch.
   var synchronizeUbiquitousStore: Signal<(), NoError> { get }
@@ -276,7 +276,6 @@ AppDelegateViewModelOutputs {
     self.showAlert = self.userSessionStartedProperty.signal.skipNil()
       .takeWhen(authorize)
       .filter { PushNotificationDialog.canShowDialog(for: $0) }
-      
 
     self.authorizeForRemoteNotifications = self.didAcceptReceivingRemoteNotificationsProperty.signal
 
@@ -754,9 +753,10 @@ AppDelegateViewModelOutputs {
     self.userSessionEndedProperty.value = ()
   }
 
-  fileprivate let userSessionStartedProperty = MutableProperty<String?>(nil)
+  fileprivate let userSessionStartedProperty = MutableProperty<PushNotificationDialog.Context?>(nil)
   public func userSessionStarted(notification: Notification) {
-    self.userSessionStartedProperty.value = notification.userInfo?.values.first as? PushNotificationDialog.Context
+    self.userSessionStartedProperty.value =
+      notification.userInfo?.values.first as? PushNotificationDialog.Context
   }
 
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
@@ -800,7 +800,7 @@ AppDelegateViewModelOutputs {
   public let pushTokenSuccessfullyRegistered: Signal<(), NoError>
   public let registerForRemoteNotifications: Signal<(), NoError>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], NoError>
-  public let showAlert: Signal<String, NoError>
+  public let showAlert: Signal<PushNotificationDialog.Context, NoError>
   public let synchronizeUbiquitousStore: Signal<(), NoError>
   public let unregisterForRemoteNotifications: Signal<(), NoError>
   public let updateCurrentUserInEnvironment: Signal<User, NoError>

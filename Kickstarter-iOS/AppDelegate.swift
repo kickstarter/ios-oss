@@ -278,10 +278,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
     completionHandler(true)
   }
+ 
+  fileprivate func presentContextualPermissionAlert(_ context: PushNotificationDialog.Context) {
 
-  fileprivate func presentContextualPermissionAlert(_ message: String) {
-
-    let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+    let alert = UIAlertController(title: context.title, message: context.message, preferredStyle: .alert)
 
     alert.addAction(
       UIAlertAction(title: Strings.project_star_ok(), style: .default) { [weak self] _ in
@@ -290,7 +290,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     alert.addAction(
-      UIAlertAction(title: Strings.Dismiss(), style: .cancel, handler: nil)
+      UIAlertAction(title: Strings.Dismiss(), style: .cancel, handler: { _ in
+        PushNotificationDialog.didDenyAccess(for: context)
+      })
     )
 
     DispatchQueue.main.async {
@@ -298,8 +300,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
   }
 
-  fileprivate func presentRemoteNotificationAlert(_ context: PushNotificationDialog.Context) {
-    let alert = UIAlertController(title: context.title, message: context.message, preferredStyle: .alert)
+  fileprivate func presentRemoteNotificationAlert(_ message: String) {
+    let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
     alert.addAction(
       UIAlertAction(title: Strings.View(), style: .default) { [weak self] _ in
