@@ -4,6 +4,7 @@ import Prelude
 extension Project {
   internal static let template = Project(
     blurb: "A fun project.",
+    staffPick: false,
     category: .template,
     country: .us,
     creator: .template |> User.lens.stats.createdProjectsCount .~ 1,

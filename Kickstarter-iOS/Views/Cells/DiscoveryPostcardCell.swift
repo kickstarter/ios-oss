@@ -36,6 +36,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectInfoStackView: UIStackView!
   @IBOutlet fileprivate weak var projectNameAndBlurbLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateSubtitleLabel: UILabel!
+  @IBOutlet fileprivate weak var projectCategoriesStackView: UIStackView!
+  @IBOutlet fileprivate weak var projectCategoryLabel: UILabel!
+  @IBOutlet fileprivate weak var projectIsStaffPickLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateStackView: UIStackView!
   @IBOutlet fileprivate weak var projectStatsStackView: UIStackView!
@@ -48,7 +51,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
 
-    internal override func awakeFromNib() {
+  internal override func awakeFromNib() {
     super.awakeFromNib()
 
     self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
@@ -207,6 +210,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
     self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
+    self.projectIsStaffPickLabel.rac.hidden = viewModel.outputs.projectIsStaffPickLabelHidden
+    self.projectCategoryLabel.rac.text = viewModel.outputs.projectCategoryLabelText
+    self.projectIsStaffPickLabel.text = Strings.Projects_We_Love()
 
     self.viewModel.outputs.metadataIcon
       .observeForUI()
