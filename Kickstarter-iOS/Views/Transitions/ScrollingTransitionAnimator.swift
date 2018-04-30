@@ -12,7 +12,7 @@ internal final class ScrollingTransitionAnimator: NSObject, UIViewControllerAnim
 
   internal func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?)
     -> TimeInterval {
-    return 0.25
+    return 0.15
   }
 
   internal func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
