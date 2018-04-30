@@ -18,6 +18,7 @@ internal final class DashboardViewControllerTests: TestCase {
         fetchProjectStatsResponse: .template
           |> ProjectStatsEnvelope.lens.cumulativeStats .~ cumulativeStats
           |> ProjectStatsEnvelope.lens.referralDistribution .~ referrerStats
+          |> ProjectStatsEnvelope.lens.referralAggregateStats .~ referralAggregateStats
           |> ProjectStatsEnvelope.lens.rewardDistribution .~ rewardStats
           |> ProjectStatsEnvelope.lens.videoStats .~ videoStats
           |> ProjectStatsEnvelope.lens.fundingDistribution .~ fundingStats
@@ -98,6 +99,11 @@ private let videoStats = .template
   |> ProjectStatsEnvelope.VideoStats.lens.externalStarts .~ 212
   |> ProjectStatsEnvelope.VideoStats.lens.internalCompletions .~ 751
   |> ProjectStatsEnvelope.VideoStats.lens.internalStarts .~ 1000
+
+private let referralAggregateStats = .template
+  |> ProjectStatsEnvelope.ReferralAggregateStats.lens.external .~ 455.00
+  |> ProjectStatsEnvelope.ReferralAggregateStats.lens.kickstarter .~ 728.00
+  |> ProjectStatsEnvelope.ReferralAggregateStats.lens.custom .~ 637.00
 
 private let cumulativeStats = .template
   |> ProjectStatsEnvelope.CumulativeStats.lens.pledged .~ rewardStats.reduce(0) { $0 + $1.pledged }
