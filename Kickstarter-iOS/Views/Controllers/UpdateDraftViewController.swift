@@ -80,7 +80,7 @@ internal final class UpdateDraftViewController: UIViewController {
       .observeValues { [weak self] attachments in
         guard let attachmentsStackView = self?.attachmentsStackView else { return }
         _ = attachmentsStackView |>
-          UIStackView.lens.arrangedSubviews .~ attachments.flatMap { self?.imageView(forAttachment: $0) }
+          UIStackView.lens.arrangedSubviews .~ attachments.compactMap { self?.imageView(forAttachment: $0) }
     }
 
     self.viewModel.outputs.notifyPresenterViewControllerWantsDismissal

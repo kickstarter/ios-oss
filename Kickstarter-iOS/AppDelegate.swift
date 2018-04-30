@@ -229,6 +229,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
   }
 
+  func application(_ app: UIApplication, open url: URL,
+                   options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+    guard let sourceApplication = options[.sourceApplication] as? String else { return false }
+
+    return self.viewModel.inputs.applicationOpenUrl(application: app,
+                                                    url: url,
+                                                    sourceApplication: sourceApplication,
+                                                    annotation: options[.annotation] as Any)
+  }
+
   func application(_ application: UIApplication,
                    open url: URL,
                    sourceApplication: String?,

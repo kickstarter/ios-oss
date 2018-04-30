@@ -16,11 +16,15 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var contentView: UIView!
   @IBOutlet fileprivate weak var dividerView: UIView!
   @IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
+  @IBOutlet fileprivate weak var markAsReceivedStackView: UIStackView!
+  @IBOutlet fileprivate weak var markAsReceivedLabelStackView: UIStackView!
   @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
   @IBOutlet fileprivate weak var pledgeContainerView: UIView!
   @IBOutlet fileprivate weak var pledgeLabel: UILabel!
   @IBOutlet fileprivate weak var pledgeSectionTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rewardContainerView: UIView!
+  @IBOutlet fileprivate weak var rewardDeliveredLabel: UILabel!
+  @IBOutlet fileprivate weak var rewardReceivedSwitch: UISwitch!
   @IBOutlet fileprivate weak var rewardSectionTitleLabel: UILabel!
   @IBOutlet fileprivate weak var rewardTitleWithAmountLabel: UILabel!
   @IBOutlet fileprivate weak var shippingLabel: UILabel!
@@ -29,6 +33,7 @@ internal final class BackingViewController: UIViewController {
   @IBOutlet fileprivate weak var statusDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var totalPledgedAmountLabel: UILabel!
   @IBOutlet fileprivate weak var totalPledgedLabel: UILabel!
+  @IBOutlet fileprivate weak var useThisToKeepTrackLabel: UILabel!
   @IBOutlet fileprivate weak var viewMessagesButton: UIButton!
 
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
@@ -78,7 +83,8 @@ internal final class BackingViewController: UIViewController {
     self.totalPledgedAmountLabel.rac.text = self.viewModel.outputs.totalPledgeAmount
     self.shippingStackView.rac.hidden = self.viewModel.outputs.rewardSectionAndShippingIsHidden
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
-
+    self.markAsReceivedStackView.rac.hidden = self.viewModel.outputs.markAsReceivedSectionIsHidden
+    self.rewardReceivedSwitch.rac.on = self.viewModel.outputs.rewardMarkedReceived
     self.backerAvatarImageView.rac.imageUrl = self.viewModel.outputs.backerAvatarURL
 
     self.viewModel.outputs.goToMessages
@@ -106,7 +112,7 @@ internal final class BackingViewController: UIViewController {
             _self.rewardContainerView.alpha = alpha
           },
           completion: nil)
-  }
+    }
   }
 
   internal override func bindStyles() {
@@ -187,8 +193,27 @@ internal final class BackingViewController: UIViewController {
     _ = self.loadingIndicatorView
       |> baseActivityIndicatorStyle
 
+    _ = self.useThisToKeepTrackLabel
+      |> UILabel.lens.font .~ .ksr_body(size: 14)
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
+
+    _ = self.rewardDeliveredLabel
+      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.text %~ { _ in Strings.Reward_delivered() }
+
+    _ = self.useThisToKeepTrackLabel
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.text %~ { _ in Strings.Use_this_to_keep_track_of_which_rewards_youve_received() }
+
     _ = self.rewardSectionTitleLabel
       |> UILabel.lens.numberOfLines .~ 2
+
+    _ = self.markAsReceivedStackView
+      |> UIStackView.lens.alignment .~ .top
+      |> UIStackView.lens.distribution .~ .fill
+
+    _ = self.markAsReceivedLabelStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.rewardTitleWithAmountLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
@@ -230,6 +255,10 @@ internal final class BackingViewController: UIViewController {
     nav.modalPresentationStyle = .formSheet
     vc.delegate = self
     self.present(nav, animated: true, completion: nil)
+  }
+
+  @IBAction fileprivate func rewardReceivedTapped(_ receivedSwitch: UISwitch) {
+    self.viewModel.inputs.rewardReceivedTapped(on: receivedSwitch.isOn)
   }
 
   @objc fileprivate func closeButtonTapped() {

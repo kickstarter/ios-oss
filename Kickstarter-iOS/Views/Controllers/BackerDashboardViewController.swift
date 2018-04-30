@@ -39,7 +39,7 @@ internal final class BackerDashboardViewController: UIViewController {
     super.viewDidLoad()
 
     self.pageViewController = self.childViewControllers
-      .flatMap { $0 as? UIPageViewController }.first
+      .compactMap { $0 as? UIPageViewController }.first
     self.pageViewController.setViewControllers(
       [.init()],
       direction: .forward,

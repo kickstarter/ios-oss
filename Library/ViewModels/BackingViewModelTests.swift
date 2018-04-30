@@ -18,11 +18,13 @@ internal final class BackingViewModelTests: TestCase {
   private let goToMessagesBacking = TestObserver<Backing, NoError>()
   private let goToMessagesProject = TestObserver<Project, NoError>()
   private let loaderIsAnimating = TestObserver<Bool, NoError>()
+  private let markAsReceivedSectionIsHidden = TestObserver<Bool, NoError>()
   private let messageButtonTitleText = TestObserver<String, NoError>()
   private let opacityForContainers = TestObserver<CGFloat, NoError>()
   private let pledgeAmount = TestObserver<String, NoError>()
   private let pledgeSectionTitle = TestObserver<String, NoError>()
   private let rewardDescription = TestObserver<String, NoError>()
+  private let rewardMarkedReceived = TestObserver<Bool, NoError>()
   private let rewardSectionAndShippingIsHidden = TestObserver<Bool, NoError>()
   private let rewardSectionTitle = TestObserver<String, NoError>()
   private let rewardTitleWithAmount = TestObserver<String, NoError>()
@@ -42,11 +44,13 @@ internal final class BackingViewModelTests: TestCase {
     self.vm.outputs.goToMessages.map(first).observe(goToMessagesProject.observer)
     self.vm.outputs.goToMessages.map(second).observe(goToMessagesBacking.observer)
     self.vm.outputs.loaderIsAnimating.observe(loaderIsAnimating.observer)
+    self.vm.outputs.markAsReceivedSectionIsHidden.observe(markAsReceivedSectionIsHidden.observer)
     self.vm.outputs.messageButtonTitleText.observe(messageButtonTitleText.observer)
     self.vm.outputs.opacityForContainers.observe(opacityForContainers.observer)
     self.vm.outputs.pledgeAmount.observe(pledgeAmount.observer)
     self.vm.outputs.pledgeSectionTitle.map { $0.string }.observe(pledgeSectionTitle.observer)
     self.vm.outputs.rewardDescription.observe(rewardDescription.observer)
+    self.vm.outputs.rewardMarkedReceived.observe(rewardMarkedReceived.observer)
     self.vm.outputs.rewardSectionAndShippingIsHidden.observe(rewardSectionAndShippingIsHidden.observer)
     self.vm.outputs.rewardSectionTitle.map { $0.string }.observe(rewardSectionTitle.observer)
     self.vm.outputs.rewardTitleWithAmount.observe(rewardTitleWithAmount.observer)
@@ -268,6 +272,120 @@ internal final class BackingViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.rewardSectionAndShippingIsHidden.assertValues([true])
+    }
+  }
+
+  func testMarkReceivedSection_Hidden() {
+    let reward = .template
+      |> Reward.lens.id .~ Reward.noReward.id
+
+    let backing = .template
+      |> Backing.lens.reward .~ reward
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: .template) {
+      self.vm.inputs.configureWith(project: .template, backer: .template)
+
+      self.markAsReceivedSectionIsHidden.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.markAsReceivedSectionIsHidden.assertValues([])
+
+      self.scheduler.advance()
+
+      self.markAsReceivedSectionIsHidden.assertValues([true])
+    }
+  }
+
+  func testMarkReceivedSection_NotHidden() {
+    let backing = .template
+      |> Backing.lens.status .~ .collected
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: .template) {
+      self.vm.inputs.configureWith(project: .template, backer: .template)
+
+      self.markAsReceivedSectionIsHidden.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.markAsReceivedSectionIsHidden.assertValues([])
+
+      self.scheduler.advance()
+
+      self.markAsReceivedSectionIsHidden.assertValues([false])
+    }
+  }
+
+  func testMarkReceivedSectionNotHidden_UserIsCollaboratorAndBacker() {
+    let backer = .template |> User.lens.id .~ 20
+
+    let backing = .template
+      |> Backing.lens.status .~ .collected
+
+    let project = .template
+      |> Project.lens.memberData.permissions .~ [.editProject, .editFaq, .post, .comment, .viewPledges,
+    .fulfillment]
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: backer) {
+      self.vm.inputs.configureWith(project: project, backer: backer)
+
+      self.markAsReceivedSectionIsHidden.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.markAsReceivedSectionIsHidden.assertValues([])
+
+      self.scheduler.advance()
+
+      self.markAsReceivedSectionIsHidden.assertValues([false])
+    }
+  }
+
+  func testMarkReceivedSectionHidden_UserIsCollaborator() {
+    let collaborator = .template |> User.lens.id .~ 20
+    let backer = .template |> User.lens.id .~ 10
+    let backing = .template
+      |> Backing.lens.backer .~ backer
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: collaborator) {
+      self.vm.inputs.configureWith(project: .template, backer: backer)
+
+      self.markAsReceivedSectionIsHidden.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.markAsReceivedSectionIsHidden.assertValues([])
+
+      self.scheduler.advance()
+
+      self.markAsReceivedSectionIsHidden.assertValues([true])
+    }
+  }
+
+  func testRewardMarkedReceived() {
+    let backer = .template |> User.lens.id .~ 20
+    let backing = Backing.template
+
+    withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: backer) {
+      self.vm.inputs.configureWith(project: .template, backer: backer)
+      self.vm.inputs.viewDidLoad()
+
+      self.rewardMarkedReceived.assertValues([])
+
+      self.scheduler.advance()
+
+      self.rewardMarkedReceived.assertValues([true])
+
+      let newBacking = .template
+        |> Backing.lens.backerCompleted .~ false
+
+      withEnvironment(apiService: MockService(fetchBackingResponse: newBacking) ) {
+        self.vm.inputs.rewardReceivedTapped(on: false)
+
+        self.scheduler.advance()
+
+        self.rewardMarkedReceived.assertValues([true, false])
+      }
     }
   }
 

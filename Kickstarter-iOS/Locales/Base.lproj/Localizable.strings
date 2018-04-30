@@ -66,6 +66,7 @@
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} will be streaming live on Kickstarter %{in_duration}";
 "Creator_tips" = "Creator tips";
 "Daily_digest" = "Daily digest";
+"Data_will_appear_here_once" = "Data will appear here once somebody backs your project.";
 "Delivered" = "Delivered";
 "Discover_more_projects" = "Discover more projects.";
 "Dismiss" = "Dismiss";
@@ -130,6 +131,7 @@
 "Got_it" = "Got it.";
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
 "Home" = "Home";
+"How_backers_found_your_project" = "How backers found your project";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
 "Individual_Emails" = "Individual emails";
 "Info" = "Info";
@@ -166,6 +168,7 @@
 "Message_backer" = "Message backer";
 "Message_creator" = "Message creator";
 "Message_user_name" = "Message %{user_name}…";
+"Name" = "Name";
 "New_pledge_activity" = "New pledge activity";
 "No_Results" = "No Results";
 "No_comments_yet" = "No comments yet.";
@@ -239,6 +242,7 @@
 "Reward_Surveys.one" = "Reward Survey";
 "Reward_Surveys.two" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.zero" = "%{reward_survey_count} Reward Surveys";
+"Reward_delivered" = "Reward delivered?";
 "Reward_estimated_for_delivery_in_date" = "<b>Reward</b> estimated for delivery in %{delivery_date}";
 "Reward_selected" = "Reward selected";
 "Rewards_count_rewards.few" = "%{rewards_count} rewards";
@@ -299,7 +303,11 @@
 "Time_left_left" = "%{time_left} left";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
 "To_read_this_project_update_you_must_be_a_backer" = "To read this project update, you must be a backer. Please log in or sign up to continue.";
+"To_see_all_rewards_view_your_project" = "To see all rewards, view your project.";
 "Toggle_saving_this_project" = "Toggle saving this project";
+"Top_pledge_sources" = "Top pledge sources";
+"Top_ten_pledge_sources" = "Top 10 pledge sources";
+"Top_ten_rewards" = "Top 10 rewards";
 "Total_pledged" = "Total pledged";
 "Unfollow_friend_name" = "Unfollow %{friend_name}";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
@@ -312,8 +320,10 @@
 "Upcoming_live_streams" = "Upcoming live streams";
 "Upcoming_with_creator_name" = "Upcoming with<br/><b>%{creator_name}</b>";
 "Update_pledge" = "Update pledge";
+"Use_this_to_keep_track_of_which_rewards_youve_received" = "Use this to keep track of which rewards you've received.";
 "Video_disabled_until_the_internet_connection_improves" = "Video disabled until the internet connection improves";
 "View" = "View";
+"View_project" = "View project";
 "View_your_pledge" = "View your pledge";
 "View_your_reward" = "View your reward";
 "Watch_live" = "Watch live";
@@ -1024,12 +1034,14 @@
 "profile.settings.navbar_title" = "Settings";
 "profile.settings.navbar_title_notifications" = "Notifications";
 "profile.settings.newsletter.arts" = "Arts & Culture News";
+"profile.settings.newsletter.film" = "Kickstarter Films";
 "profile.settings.newsletter.games" = "Kickstarter Loves Games";
 "profile.settings.newsletter.happening" = "Happening Now";
 "profile.settings.newsletter.invent" = "Invent";
 "profile.settings.newsletter.opt_in.message" = "We've sent a confirmation email to the address associated with your account! Please check your email in order to confirm that you'd like to subscribe to %{newsletter}.";
 "profile.settings.newsletter.opt_in.title" = "One final step!";
 "profile.settings.newsletter.promo" = "Kickstarter News and Events";
+"profile.settings.newsletter.publishing" = "Kickstarter Reads";
 "profile.settings.newsletter.title" = "Newsletters";
 "profile.settings.newsletter.weekly" = "Projects We Love";
 "profile.settings.rating.message" = "Thanks for using the Kickstarter app.\nIf you have a moment, would you mind rating your experience?\nWe'd appreciate it!";
@@ -1285,3 +1297,6 @@
 "updates_count_updates.one" = "%{updates_count} update";
 "updates_count_updates.two" = "%{updates_count} updates";
 "updates_count_updates.zero" = "%{updates_count} updates";
+"via_custom" = "via custom";
+"via_external" = "via external";
+"via_kickstarter" = "via Kickstarter";

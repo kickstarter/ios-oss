@@ -5,6 +5,7 @@ extension Backing {
     amount: 10,
     backer: .template,
     backerId: 1,
+    backerCompleted: true,
     id: 1,
     locationId: 1,
     pledgedAt: Date(timeIntervalSince1970: 1475361315).timeIntervalSince1970,

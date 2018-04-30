@@ -83,8 +83,9 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       self.passwordChangedProperty.signal,
       initialText
     )
+
     let newsletter = Signal.merge(
-      self.viewDidLoadProperty.signal.map { AppEnvironment.current.config?.countryCode == "US" },
+      self.viewDidLoadProperty.signal.mapConst(false),
       self.weeklyNewsletterChangedProperty.signal.skipNil()
     )
 

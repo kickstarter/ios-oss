@@ -70,7 +70,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
     _ = self.nameTextField
       |> UITextField.lens.returnKeyType .~ .next
-      |> UITextField.lens.placeholder %~ { _ in Strings.signup_input_fields_full_name() }
+      |> UITextField.lens.placeholder %~ { _ in Strings.Name() }
 
     _ = self.emailTextField
       |> emailFieldStyle
