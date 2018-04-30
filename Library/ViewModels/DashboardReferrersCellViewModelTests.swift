@@ -59,6 +59,29 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     self.internalPercentText.assertValues(["33%" ])
   }
 
+  func testZeroPledges() {
+    let country = Project.Country.us
+    let cumulative = .template
+      |> ProjectStatsEnvelope.CumulativeStats.lens.pledged .~ 0
+    let project = .template |> Project.lens.country .~ country
+    let referrers = [ProjectStatsEnvelope.ReferrerStats.template]
+
+    let referralAggregates = .template
+      |> ProjectStatsEnvelope.ReferralAggregateStats.lens.kickstarter .~ 0.0
+      |> ProjectStatsEnvelope.ReferralAggregateStats.lens.external .~ 0.0
+      |> ProjectStatsEnvelope.ReferralAggregateStats.lens.custom .~ 0.0
+
+    self.vm.inputs.configureWith(cumulative: cumulative, project: project,
+                                 referralAggregates: referralAggregates, referrers: referrers)
+
+    self.externalPledgedText.assertValues(["$0"])
+    self.externalPercentText.assertValues(["0%" ])
+    self.customPledgedText.assertValues(["$0"])
+    self.customPercentText.assertValues(["0%"])
+    self.internalPledgedText.assertValues(["$0"])
+    self.internalPercentText.assertValues(["0%" ])
+  }
+
   func testCumulativeDataEmits() {
     let country = Project.Country.us
     let cumulative = .template

@@ -114,13 +114,15 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
         .map { cumulative, _, _, _ in cumulative.pledged }
 
       self.customPercentText = Signal.combineLatest(customPledgedAmount, pledge)
-        .map { customAmount, pledged in Format.percentage(customAmount / Double(pledged)) }
+        .map { customAmount, pledged in
+          pledged == 0 ? Format.percentage(0.0) : Format.percentage(customAmount / Double(pledged))
+      }
 
       self.customPledgedText = Signal.combineLatest(customPledgedAmount, country)
         .map { pledged, country in Format.currency(Int(pledged), country: country) }
 
       self.externalPercentage = Signal.combineLatest(externalPledgedAmount, pledge)
-        .map { externalAmount, pledged in externalAmount / Double(pledged) }
+        .map { externalAmount, pledged in pledged == 0 ? 0.0 : externalAmount / Double(pledged) }
 
       self.externalPercentText = self.externalPercentage.map { Format.percentage($0) }
 
@@ -128,7 +130,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
         .map { pledged, country in Format.currency(Int(pledged), country: country) }
 
       self.internalPercentage = Signal.combineLatest(internalPledgedAmount, pledge)
-        .map { internalAmount, pledged in internalAmount / Double(pledged) }
+        .map { internalAmount, pledged in pledged == 0 ? 0.0 : internalAmount / Double(pledged) }
 
       self.internalPercentText = self.internalPercentage.map { Format.percentage($0) }
 
