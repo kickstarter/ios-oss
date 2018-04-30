@@ -132,6 +132,9 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
         self?.goToProject(project, projects: projects, refTag: refTag)
     }
 
+    self.viewModel.outputs.postContextualNotification
+      .observeValues(NotificationCenter.default.post)
+
     self.viewModel.outputs.showRatingAlert
       .observeForControllerAction()
       .observeValues { [weak self] in

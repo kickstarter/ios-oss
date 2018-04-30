@@ -207,6 +207,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_showNotificationsDialog, object: nil, queue: nil) { [weak self] _ in
+
+    }
+
+    NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
@@ -290,7 +295,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     alert.addAction(
-      UIAlertAction(title: Strings.Dismiss(), style: .cancel, handler: { _ in
+      UIAlertAction(title: PushNotificationDialog.titleForDismissal, style: .cancel, handler: { _ in
         PushNotificationDialog.didDenyAccess(for: context)
       })
     )
