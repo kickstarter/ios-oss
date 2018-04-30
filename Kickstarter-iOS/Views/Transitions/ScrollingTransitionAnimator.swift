@@ -16,17 +16,21 @@ internal final class ScrollingTransitionAnimator: NSObject, UIViewControllerAnim
   }
 
   internal func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    guard
+      let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
+      let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)
+    else {
+      return
+    }
 
-    let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)
-    toVC?.view.alpha = 0.0
-    let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)
-    transitionContext.containerView.addSubview(fromVC!.view)
-    transitionContext.containerView.addSubview(toVC!.view)
+    toVC.view.alpha = 0.0
+    transitionContext.containerView.addSubview(fromVC.view)
+    transitionContext.containerView.addSubview(toVC.view)
 
-    UIView.animate(withDuration:self.transitionDuration(using: (self.transitionContext)), animations: {
-      toVC?.view.alpha = 1.0
-    }) { (completed) in
-      fromVC?.view.removeFromSuperview()
+    UIView.animate(withDuration: self.transitionDuration(using: (self.transitionContext)), animations: {
+      toVC.view.alpha = 1.0
+    }) { _ in
+      fromVC.view.removeFromSuperview()
       transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
     }
   }

@@ -204,18 +204,6 @@ public final class RootTabBarViewController: UITabBarController {
     }
     return nil
   }
-
-  public override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-
-    item.titlePositionAdjustment.vertical = 0
-
-      UIView.animate(withDuration: 2.0, delay: 0,
-                     options: .curveEaseOut,
-                     animations: {
-
-        item.titlePositionAdjustment.vertical -= self.tabBar.subviews[1].bounds.height
-      }, completion: nil)
-  }
 }
 
 extension RootTabBarViewController: UITabBarControllerDelegate {
@@ -227,7 +215,8 @@ extension RootTabBarViewController: UITabBarControllerDelegate {
   public func tabBarController(_ tabBarController: UITabBarController,
                                animationControllerForTransitionFrom fromVC: UIViewController,
                                to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    return ScrollingTransitionAnimator(tabBarController: tabBarController, lastIndex: tabBarController.selectedIndex)
+    return ScrollingTransitionAnimator(tabBarController: tabBarController,
+                                       lastIndex: tabBarController.selectedIndex)
   }
 }
 

@@ -57,4 +57,3 @@ public let searchTabBarItemStyle = baseTabBarItemStyle
   <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-search-selected")
   <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_search() }
   <> UITabBarItem.lens.tag .~ 2
-
