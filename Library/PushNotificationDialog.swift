@@ -9,23 +9,22 @@ public struct PushNotificationDialog {
     case save
   }
 
-  private static var contexts: [String] = AppEnvironment.current.userDefaults.deniedNotificationDialogContexts
-
   static public func canShowDialog(`for` context: PushNotificationDialog.Context) -> Bool {
-    return AppEnvironment.current.userDefaults.deniedNotificationDialogContexts.contains(context.rawValue) &&
-            AppEnvironment.current.userDefaults.deniedNotificationDialogContexts.count < 3
+
+    return !AppEnvironment.current.userDefaults.deniedNotificationContexts.contains(context.rawValue) &&
+            AppEnvironment.current.userDefaults.deniedNotificationContexts.count < 3
   }
 
   static public func didDenyAccess(`for` context: Context) {
 
-    guard AppEnvironment.current.userDefaults.deniedNotificationDialogContexts.contains(context.rawValue) else {
+    guard !AppEnvironment.current.userDefaults.deniedNotificationContexts.contains(context.rawValue) else {
       return
     }
-    AppEnvironment.current.userDefaults.deniedNotificationDialogContexts.append(context.rawValue)
+    AppEnvironment.current.userDefaults.deniedNotificationContexts.append(context.rawValue)
   }
 
   static public var titleForDismissal: String {
-    return AppEnvironment.current.userDefaults.deniedNotificationDialogContexts.count < 2 ? "Not Now" : "Never"
+    return AppEnvironment.current.userDefaults.deniedNotificationContexts.count < 2 ? "Not Now" : "Never"
   }
 }
 

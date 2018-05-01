@@ -207,8 +207,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_showNotificationsDialog, object: nil, queue: nil) { [weak self] _ in
-
+      .addObserver(
+        forName: Notification.Name.ksr_showNotificationsDialog, object: nil, queue: nil) { [weak self] in
+        self?.viewModel.inputs.showNotificationDialog(notification: $0)
     }
 
     NotificationCenter.default

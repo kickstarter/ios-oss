@@ -3,7 +3,7 @@ import Foundation
 public enum AppKeys: String {
   case closedFacebookConnectInActivity = "com.kickstarter.KeyValueStoreType.closedFacebookConnectInActivity"
   case closedFindFriendsInActivity = "com.kickstarter.KeyValueStoreType.closedFindFriendsInActivity"
-  case deniedNotificationDialogContexts = "com.kickstarter.KeyValueStoreType.deniedNotificationDialogContexts"
+  case deniedNotificationContexts = "com.kickstarter.KeyValueStoreType.deniedNotificationContexts"
   case favoriteCategoryIds = "favorite_category_ids"
   case hasSeenFavoriteCategoryAlert = "com.kickstarter.KeyValueStoreType.hasSeenFavoriteCategoryAlert"
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
@@ -25,7 +25,7 @@ public protocol KeyValueStoreType: class {
   func synchronize() -> Bool
 
   func removeObject(forKey defaultName: String)
-  var deniedNotificationDialogContexts: [String] { get set }
+  var deniedNotificationContexts: [String] { get set }
   var favoriteCategoryIds: [Int] { get set }
   var hasClosedFacebookConnectInActivity: Bool { get set }
   var hasClosedFindFriendsInActivity: Bool { get set }
@@ -46,12 +46,12 @@ extension KeyValueStoreType {
     }
   }
 
-  public var deniedNotificationDialogContexts: [String] {
+  public var deniedNotificationContexts: [String] {
     get {
-      return self.object(forKey: AppKeys.deniedNotificationDialogContexts.rawValue) as? [String] ?? []
+      return self.object(forKey: AppKeys.deniedNotificationContexts.rawValue) as? [String] ?? []
     }
     set {
-      self.set(newValue, forKey: AppKeys.deniedNotificationDialogContexts.rawValue)
+      self.set(newValue, forKey: AppKeys.deniedNotificationContexts.rawValue)
     }
   }
 

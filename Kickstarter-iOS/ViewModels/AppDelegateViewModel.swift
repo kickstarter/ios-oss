@@ -53,8 +53,14 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
 
+  /// Call when the app has crashed
+  func crashManagerDidFinishSendingCrashReport()
+
   /// Call after having invoked AppEnvironemt.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
+
+  /// Call when the user taps "OK" from the contextual alert.
+  func didAcceptReceivingRemoteNotifications()
 
   /// Call when the app delegate receives a remote notification.
   func didReceive(remoteNotification notification: [AnyHashable: Any], applicationIsActive: Bool)
@@ -75,17 +81,14 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the user taps "OK" from the notification alert.
   func openRemoteNotificationTappedOk()
 
-  /// Call when the user taps "OK" from the contextual alert.
-  func didAcceptReceivingRemoteNotifications()
+  /// Call when the contextual PushNotification dialog should be presented.
+  func showNotificationDialog(notification: Notification)
 
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
 
   /// Call when the controller has received a user session started notification.
   func userSessionStarted(notification: Notification)
-
-  /// Call when the app has crashed
-  func crashManagerDidFinishSendingCrashReport()
 }
 
 public protocol AppDelegateViewModelOutputs {
@@ -248,7 +251,7 @@ AppDelegateViewModelOutputs {
     let applicationIsReadyForRegisteringNotifications = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.userSessionStartedProperty.signal.ignoreValues()
+      self.showNotificationDialogProperty.signal.ignoreValues()
       )
       .filter { AppEnvironment.current.currentUser != nil }
 
@@ -273,9 +276,11 @@ AppDelegateViewModelOutputs {
           .ignoreValues()
       )
 
-    self.showAlert = self.userSessionStartedProperty.signal.skipNil()
+    self.showAlert = self.showNotificationDialogProperty.signal.skipNil()
       .takeWhen(authorize)
-      .filter { PushNotificationDialog.canShowDialog(for: $0) }
+      .filter { n in
+        PushNotificationDialog.canShowDialog(for: n)
+    }
 
     self.authorizeForRemoteNotifications = self.didAcceptReceivingRemoteNotificationsProperty.signal
 
@@ -746,6 +751,12 @@ AppDelegateViewModelOutputs {
   fileprivate let openRemoteNotificationTappedOkProperty = MutableProperty(())
   public func openRemoteNotificationTappedOk() {
     self.openRemoteNotificationTappedOkProperty.value = ()
+  }
+
+  fileprivate let showNotificationDialogProperty = MutableProperty<PushNotificationDialog.Context?>(nil)
+  public func showNotificationDialog(notification: Notification) {
+    self.showNotificationDialogProperty.value =
+      notification.userInfo?.values.first as? PushNotificationDialog.Context
   }
 
   fileprivate let userSessionEndedProperty = MutableProperty(())
