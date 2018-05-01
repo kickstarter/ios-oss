@@ -9,6 +9,7 @@ public final class RootTabBarViewController: UITabBarController {
   private var sessionStartedObserver: Any?
   private var userUpdatedObserver: Any?
 
+  fileprivate let transitionCrossDissolve = ScrollingTransitionAnimator()
   fileprivate let viewModel: RootViewModelType = RootViewModel()
 
   override public func viewDidLoad() {
@@ -215,8 +216,8 @@ extension RootTabBarViewController: UITabBarControllerDelegate {
   public func tabBarController(_ tabBarController: UITabBarController,
                                animationControllerForTransitionFrom fromVC: UIViewController,
                                to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    return ScrollingTransitionAnimator(tabBarController: tabBarController,
-                                       lastIndex: tabBarController.selectedIndex)
+
+    return self.transitionCrossDissolve
   }
 }
 

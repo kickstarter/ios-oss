@@ -28,7 +28,7 @@ internal final class ScrollingTransitionAnimator: NSObject, UIViewControllerAnim
     transitionContext.containerView.addSubview(toVC.view)
 
     UIView.animate(
-      withDuration: self.transitionDuration(using: (self.transitionContext)),
+      withDuration: self.transitionDuration(using: transitionContext),
       animations: {
       toVC.view.alpha = 1.0
     },
