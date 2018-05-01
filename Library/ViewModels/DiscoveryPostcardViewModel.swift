@@ -119,7 +119,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits the text for the project state title label.
   var projectStateTitleLabelText: Signal<String, NoError> { get }
   
-  var projectCategoryLabelText: Signal<String, NoError> { get }
+  var projectCategoryName: Signal<String, NoError> { get }
   var projectIsStaffPickLabelHidden: Signal<Bool, NoError> { get }
   
   /// Emits a boolean that determines if the project categories should be hidden.
@@ -225,7 +225,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectStateTitleLabelText = configuredProject
       .map(fundingStatusText(forProject:))
     
-    self.projectCategoryLabelText = configuredProject
+    self.projectCategoryName = configuredProject
       .map { $0.category.name }
     
     self.projectIsStaffPickLabelHidden = configuredProject
@@ -382,7 +382,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let projectStatsStackViewHidden: Signal<Bool, NoError>
   public let projectStateSubtitleLabelText: Signal<String, NoError>
   public let projectStateTitleLabelText: Signal<String, NoError>
-  public var projectCategoryLabelText: Signal<String, NoError>
+  public var projectCategoryName: Signal<String, NoError>
   public let projectIsStaffPickLabelHidden: Signal<Bool, NoError>
 //  public var projectCategoriesViewHidden: Signal<Bool, NoError>
   public let projectStateTitleLabelColor: Signal<UIColor, NoError>

@@ -37,8 +37,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectNameAndBlurbLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateSubtitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectCategoriesStackView: UIStackView!
-  @IBOutlet fileprivate weak var projectCategoryLabel: UILabel!
-  @IBOutlet fileprivate weak var projectIsStaffPickLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectStateStackView: UIStackView!
   @IBOutlet fileprivate weak var projectStatsStackView: UIStackView!
@@ -47,13 +45,32 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var socialLabel: UILabel!
   @IBOutlet fileprivate weak var socialStackView: UIStackView!
 
+  fileprivate weak var projectCategoryView: DiscoveryProjectCategoryView!
+  fileprivate weak var projectIsStaffPickView: DiscoveryProjectCategoryView!
+
   private var projectSavedObserver: Any?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
-
+  
   internal override func awakeFromNib() {
-    super.awakeFromNib()
+    if let categoryView = DiscoveryProjectCategoryView.fromNib(nib: Nib.DiscoveryProjectCategoryView) {
+      projectCategoryView = categoryView
 
+      projectCategoryView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+      projectCategoryView.setContentHuggingPriority(.required, for: .horizontal)
+
+      projectCategoriesStackView.addArrangedSubview(projectCategoryView)
+    }
+
+    if let staffPickView = DiscoveryProjectCategoryView.fromNib(nib: Nib.DiscoveryProjectCategoryView) {
+      projectIsStaffPickView = staffPickView
+
+      projectIsStaffPickView.setContentCompressionResistancePriority(.required, for: .horizontal)
+      projectCategoryView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+      projectCategoriesStackView.addArrangedSubview(projectIsStaffPickView)
+    }
+    
     self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -71,6 +88,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         notification in
         self?.viewModel.inputs.projectFromNotification(project: notification.userInfo?["project"] as? Project)
       }
+    
+    super.awakeFromNib()
   }
 
   deinit {
@@ -210,10 +229,17 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
     self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
-    self.projectIsStaffPickLabel.rac.hidden = viewModel.outputs.projectIsStaffPickLabelHidden
-    self.projectCategoryLabel.rac.text = viewModel.outputs.projectCategoryLabelText
-    self.projectIsStaffPickLabel.text = Strings.Projects_We_Love()
-
+    self.projectIsStaffPickView.rac.hidden = viewModel.outputs.projectIsStaffPickLabelHidden
+    
+    projectIsStaffPickView.configureWith(name: Strings.Projects_We_Love(), imageNameString: "icon--small-k")
+    
+    viewModel.outputs.projectCategoryName
+      .signal
+      .observeForUI()
+      .observeValues { (name) in
+      self.projectCategoryView.configureWith(name: name, imageNameString: "icon--compass")
+    }
+    
     self.viewModel.outputs.metadataIcon
       .observeForUI()
       .observeValues { [weak self] icon in
@@ -271,11 +297,13 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   internal override func layoutSubviews() {
     super.layoutSubviews()
-
-    DispatchQueue.main.async {
-      self.cardView.layer.shadowPath = UIBezierPath.init(rect: self.cardView.bounds).cgPath
-      self.metadataBackgroundView.layer.shadowPath =
-        UIBezierPath.init(rect: self.metadataBackgroundView.bounds).cgPath
+    
+    DispatchQueue.main.async { [weak self] in
+      guard let strongSelf = self else { return }
+      
+      strongSelf.cardView.layer.shadowPath = UIBezierPath.init(rect: strongSelf.cardView.bounds).cgPath
+      strongSelf.metadataBackgroundView.layer.shadowPath =
+        UIBezierPath.init(rect: strongSelf.metadataBackgroundView.bounds).cgPath
     }
   }
 
