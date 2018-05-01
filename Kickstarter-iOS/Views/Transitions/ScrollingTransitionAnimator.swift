@@ -1,14 +1,6 @@
 import UIKit
 
 internal final class ScrollingTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-  weak var transitionContext: UIViewControllerContextTransitioning?
-  var tabBarController: UITabBarController!
-  var lastIndex = 0
-
-  public init(tabBarController: UITabBarController, lastIndex: Int) {
-    self.tabBarController = tabBarController
-    self.lastIndex = lastIndex
-  }
 
   internal func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?)
     -> TimeInterval {
