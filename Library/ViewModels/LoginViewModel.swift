@@ -134,7 +134,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
          Notification(name: .ksr_showNotificationsDialog,
                       userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]))
       )
-      
+
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 
