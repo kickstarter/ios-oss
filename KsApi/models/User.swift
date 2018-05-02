@@ -78,6 +78,7 @@ extension User: Argo.Decodable {
     let tmp1 = pure(curry(User.init))
       <*> json <| "avatar"
       <*> json <|? "facebook_connected"
+      <*> json <|? "generate_recommendations"
       <*> json <| "id"
     let tmp2 = tmp1
       <*> json <|? "is_friend"
