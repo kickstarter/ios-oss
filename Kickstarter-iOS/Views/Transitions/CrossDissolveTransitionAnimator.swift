@@ -1,6 +1,6 @@
 import UIKit
 
-internal final class ScrollingTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+internal final class CrossDissolveTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
   internal func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?)
     -> TimeInterval {

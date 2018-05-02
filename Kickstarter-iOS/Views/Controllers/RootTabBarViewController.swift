@@ -216,7 +216,7 @@ extension RootTabBarViewController: UITabBarControllerDelegate {
                                animationControllerForTransitionFrom fromVC: UIViewController,
                                to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
-    return ScrollingTransitionAnimator()
+    return CrossDissolveTransitionAnimator()
   }
 }
 
