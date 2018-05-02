@@ -285,12 +285,12 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
 
   if user != nil {
     filters.append(.defaults |> DiscoveryParams.lens.starred .~ true)
-    filters.append(
-      .defaults
-        |> DiscoveryParams.lens.recommended .~ true
-        |> DiscoveryParams.lens.backed .~ false
-    )
+    filters.append(.defaults |> DiscoveryParams.lens.backed .~ false)
     filters.append(.defaults |> DiscoveryParams.lens.social .~ true)
+
+    if user.generateRecommendations {
+      filters.append(.defaults |> DiscoveryParams.lens.recommended .~ false)
+    }
   }
 
   return filters

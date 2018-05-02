@@ -168,7 +168,7 @@
 "Message_backer" = "バッカーにメッセージする";
 "Message_creator" = "クリエーターにメッセージする";
 "Message_user_name" = "%{user_name} にメッセージ";
-"Name" = "Name";
+"Name" = "名前";
 "New_pledge_activity" = "新しいプレッジ";
 "No_Results" = "該当結果なし";
 "No_comments_yet" = "まだコメントはありません。";

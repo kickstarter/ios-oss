@@ -5,6 +5,7 @@ import Runes
 public struct User {
   public let avatar: Avatar
   public let facebookConnected: Bool?
+  public let generateRecommendations: Bool?
   public let id: Int
   public let isFriend: Bool?
   public let liveAuthToken: String?

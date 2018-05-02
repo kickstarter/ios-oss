@@ -2705,7 +2705,7 @@ with friends."
    "Name"
 
    - **es**: "Nombre"
-   - **ja**: "Name"
+   - **ja**: "名前"
    - **de**: "Name"
    - **fr**: "Nom"
    - **en**: "Name"
