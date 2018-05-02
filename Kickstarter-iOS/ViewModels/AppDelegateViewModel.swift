@@ -278,9 +278,7 @@ AppDelegateViewModelOutputs {
 
     self.showAlert = self.showNotificationDialogProperty.signal.skipNil()
       .takeWhen(authorize)
-      .filter { n in
-        PushNotificationDialog.canShowDialog(for: n)
-    }
+      .filter { PushNotificationDialog.canShowDialog(for: $0) }
 
     self.authorizeForRemoteNotifications = self.didAcceptReceivingRemoteNotificationsProperty.signal
 

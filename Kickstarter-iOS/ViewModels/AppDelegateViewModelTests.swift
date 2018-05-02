@@ -38,6 +38,7 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
   fileprivate let registerForRemoteNotifications = TestObserver<(), NoError>()
   fileprivate let setApplicationShortcutItems = TestObserver<[ShortcutItem], NoError>()
+  fileprivate let showAlert = TestObserver<PushNotificationDialog.Context, NoError>()
   fileprivate let unregisterForRemoteNotifications = TestObserver<(), NoError>()
   fileprivate let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
   fileprivate let updateConfigInEnvironment = TestObserver<Config, NoError>()
@@ -69,6 +70,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
     self.vm.outputs.registerForRemoteNotifications.observe(self.registerForRemoteNotifications.observer)
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
+    self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
@@ -1440,6 +1442,50 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(result)
 
     self.presentViewController.assertValues([1])
+  }
+
+  @available(iOS 10.0, *)
+  func testShowAlertEmitIf_CanShowDialog() {
+
+    let notification = Notification(name: Notification.Name(rawValue: "deadbeef"), userInfo: ["context": PushNotificationDialog.Context.login])
+
+    userDefaults.set(["message"], forKey: "com.kickstarter.KeyValueStoreType.deniedNotificationContexts")
+
+    withEnvironment(currentUser: .template, userDefaults: userDefaults) {
+
+      self.vm.inputs.applicationWillEnterForeground()
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: updatePushData]
+      )
+      self.vm.inputs.showNotificationDialog(notification: notification)
+
+      self.vm.inputs.notificationAuthorizationStatusReceived(.notDetermined)
+
+      self.showAlert.assertValue(PushNotificationDialog.Context.login)
+    }
+  }
+
+  @available(iOS 10.0, *)
+  func testShowAlertDoesNotEmitIf_CanNotShowDialog() {
+
+    let notification = Notification(name: Notification.Name(rawValue: "deadbeef"),
+                                    userInfo: ["context": PushNotificationDialog.Context.login])
+
+    userDefaults.set(["login"], forKey: "com.kickstarter.KeyValueStoreType.deniedNotificationContexts")
+
+    withEnvironment(currentUser: .template, userDefaults: userDefaults) {
+
+      self.vm.inputs.applicationWillEnterForeground()
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: updatePushData]
+      )
+      self.vm.inputs.showNotificationDialog(notification: notification)
+      self.vm.inputs.notificationAuthorizationStatusReceived(.notDetermined)
+
+      self.showAlert.assertDidNotEmitValue()
+    }
   }
 }
 
