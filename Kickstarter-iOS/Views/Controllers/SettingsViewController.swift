@@ -60,6 +60,7 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var newPledgesLabel: UILabel!
   @IBOutlet fileprivate weak var newslettersTitleLabel: UILabel!
   @IBOutlet fileprivate weak var postLikesButton: UIButton!
+  @IBOutlet fileprivate weak var privacyTitleLabel: UILabel!
   @IBOutlet fileprivate weak var privacyPolicyButton: UIButton!
   @IBOutlet fileprivate weak var privacyPolicyLabel: UILabel!
   @IBOutlet fileprivate weak var projectNotificationsCountView: CountBadgeView!
@@ -69,6 +70,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var promoNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var rateUsButton: UIButton!
   @IBOutlet fileprivate weak var rateUsLabel: UILabel!
+  @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
+  @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
   @IBOutlet fileprivate weak var socialNotificationsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var termsOfUseButton: UIButton!
   @IBOutlet fileprivate weak var termsOfUseLabel: UILabel!
@@ -280,6 +283,10 @@ internal final class SettingsViewController: UIViewController {
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_title() }
 
+    _ = self.privacyTitleLabel
+      |> settingsTitleLabelStyle
+      |> UILabel.lens.text %~ { _ in "Privacy" }
+
     _ = self.privacyPolicyButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_privacy() }
@@ -315,6 +322,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.rateUsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Rate_us_in_the_App_Store() }
+
+    _ = self.recommendationsLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in "Show recommendations" }
 
     _ = self.separatorViews
       ||> separatorStyle
