@@ -9,7 +9,7 @@ extension User {
         liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name, newsletters: $1.newsletters,
         notifications: $1.notifications, social: $1.social, stats: $1.stats) }
     )
-    
+
     public static let facebookConnected = Lens<User, Bool?>(
       view: { $0.facebookConnected },
       set: { User(avatar: $1.avatar, facebookConnected: $0,
@@ -37,7 +37,7 @@ extension User {
     public static let isFriend = Lens<User, Bool?>(
       view: { $0.isFriend },
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected,
-        generateRecommendations:$1.generateRecommendations, id: $1.id, isFriend: $0,
+        generateRecommendations: $1.generateRecommendations, id: $1.id, isFriend: $0,
         liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name, newsletters: $1.newsletters,
         notifications: $1.notifications, social: $1.social, stats: $1.stats) }
     )
@@ -53,7 +53,7 @@ extension User {
     public static let location = Lens<User, Location?>(
       view: { $0.location },
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected,
-        generateRecommendations:$1.generateRecommendations, id: $1.id, isFriend: $1.isFriend,
+        generateRecommendations: $1.generateRecommendations, id: $1.id, isFriend: $1.isFriend,
         liveAuthToken: $1.liveAuthToken, location: $0, name: $1.name, newsletters: $1.newsletters,
         notifications: $1.notifications, social: $1.social, stats: $1.stats) }
     )
@@ -61,7 +61,7 @@ extension User {
     public static let name = Lens<User, String>(
       view: { $0.name },
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected,
-        generateRecommendations:$1.generateRecommendations, id: $1.id, isFriend: $1.isFriend,
+        generateRecommendations: $1.generateRecommendations, id: $1.id, isFriend: $1.isFriend,
         liveAuthToken: $1.liveAuthToken, location: $1.location, name: $0,
         newsletters: $1.newsletters, notifications: $1.notifications, social: $1.social, stats: $1.stats) }
     )
