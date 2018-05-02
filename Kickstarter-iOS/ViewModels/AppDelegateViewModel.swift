@@ -88,7 +88,7 @@ public protocol AppDelegateViewModelInputs {
   func userSessionEnded()
 
   /// Call when the controller has received a user session started notification.
-  func userSessionStarted(notification: Notification)
+  func userSessionStarted()
 }
 
 public protocol AppDelegateViewModelOutputs {
@@ -198,7 +198,7 @@ AppDelegateViewModelOutputs {
         self.applicationWillEnterForegroundProperty.signal,
         self.applicationLaunchOptionsProperty.signal.ignoreValues(),
         self.userSessionEndedProperty.signal,
-        self.userSessionStartedProperty.signal.ignoreValues()
+        self.userSessionStartedProperty.signal
       )
       .ksr_debounce(.seconds(5), on: AppEnvironment.current.scheduler)
       .switchMap { _ -> SignalProducer<Signal<User?, ErrorEnvelope>.Event, NoError> in
@@ -572,7 +572,7 @@ AppDelegateViewModelOutputs {
 
     self.configureHockey = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.userSessionStartedProperty.signal.ignoreValues(),
+      self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal
       )
       .map { _ in
@@ -764,10 +764,9 @@ AppDelegateViewModelOutputs {
     self.userSessionEndedProperty.value = ()
   }
 
-  fileprivate let userSessionStartedProperty = MutableProperty<PushNotificationDialog.Context?>(nil)
-  public func userSessionStarted(notification: Notification) {
-    self.userSessionStartedProperty.value =
-      notification.userInfo?.values.first as? PushNotificationDialog.Context
+  fileprivate let userSessionStartedProperty = MutableProperty(())
+  public func userSessionStarted() {
+    self.userSessionStartedProperty.value = ()
   }
 
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
