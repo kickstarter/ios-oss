@@ -1447,7 +1447,8 @@ final class AppDelegateViewModelTests: TestCase {
   @available(iOS 10.0, *)
   func testShowAlertEmitIf_CanShowDialog() {
 
-    let notification = Notification(name: Notification.Name(rawValue: "deadbeef"), userInfo: ["context": PushNotificationDialog.Context.login])
+    let notification = Notification(name: Notification.Name(rawValue: "deadbeef"),
+                                    userInfo: ["context": PushNotificationDialog.Context.login])
 
     userDefaults.set(["message"], forKey: "com.kickstarter.KeyValueStoreType.deniedNotificationContexts")
 
