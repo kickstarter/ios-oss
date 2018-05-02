@@ -117,7 +117,7 @@ ActivitiesViewModelOutputs {
     let requestFirstPage = Signal
       .merge(
         self.userSessionStartedProperty.signal,
-        self.viewWillAppearProperty.signal.skipNil().filter(isFalse).ignoreValues(),
+        self.viewWillAppearProperty.signal.skipNil().filter(isTrue).ignoreValues(),
         self.refreshProperty.signal
       )
         .filter { AppEnvironment.current.currentUser != nil }

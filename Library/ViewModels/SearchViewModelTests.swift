@@ -56,7 +56,7 @@ internal final class SearchViewModelTests: TestCase {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
       self.vm.inputs.tapped(project: projects[0])
 
@@ -69,7 +69,7 @@ internal final class SearchViewModelTests: TestCase {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
       self.vm.inputs.tapped(project: projects[8])
 
@@ -84,7 +84,7 @@ internal final class SearchViewModelTests: TestCase {
     let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ searchProjects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
@@ -105,7 +105,7 @@ internal final class SearchViewModelTests: TestCase {
     let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ searchProjects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
@@ -120,7 +120,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testCancelSearchField_WithTextChange() {
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.searchTextChanged("a")
     self.vm.inputs.cancelButtonPressed()
@@ -136,7 +136,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testCancelSearchField_WithFocusChange() {
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.searchTextChanged("a")
 
@@ -161,7 +161,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testCancelSearchField_WithoutTextChange() {
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.cancelButtonPressed()
 
@@ -171,7 +171,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testChangeSearchFieldFocus() {
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
 
     self.changeSearchFieldFocusFocused.assertValues([false])
     self.changeSearchFieldFocusAnimated.assertValues([false])
@@ -190,7 +190,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testClearSearchText() {
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.searchTextChanged("b")
     self.vm.inputs.clearSearchText()
@@ -200,7 +200,7 @@ internal final class SearchViewModelTests: TestCase {
 
   func testPopularLoaderIndicatorIsAnimating() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
     self.popularLoaderIndicatorIsAnimating.assertValues([true])
 
     self.scheduler.advance()
@@ -217,7 +217,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchLoaderIndicatorIsAnimating() {
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
     self.searchLoaderIndicatorIsAnimating.assertDidNotEmitValue()
 
     self.scheduler.advance()
@@ -239,7 +239,7 @@ internal final class SearchViewModelTests: TestCase {
     self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
     XCTAssertEqual([], self.trackingClient.events, "No events tracked before view is visible.")
 
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
 
     self.isPopularTitleVisible.assertValues([])
 
@@ -298,7 +298,7 @@ internal final class SearchViewModelTests: TestCase {
       ],
       self.trackingClient.events)
 
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
 
     self.hasProjects.assertValues([true, false, true, false, true],
                              "Leaving view and coming back doesn't load more projects.")
@@ -326,7 +326,7 @@ internal final class SearchViewModelTests: TestCase {
       self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
       XCTAssertEqual([], self.trackingClient.events, "No events tracked before view is visible.")
 
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: true)
 
       self.isPopularTitleVisible.assertValues([])
 
@@ -402,7 +402,7 @@ internal final class SearchViewModelTests: TestCase {
       let projects = TestObserver<[Int], NoError>()
       self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects emit immediately.")
@@ -441,7 +441,7 @@ internal final class SearchViewModelTests: TestCase {
       let projects = TestObserver<[Int], NoError>()
       self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects load immediately.")
@@ -494,7 +494,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchFieldText() {
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
 
     self.searchFieldText.assertValueCount(0)
@@ -510,7 +510,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchFieldEditingDidEnd() {
-    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewWillAppear(animated: true)
     self.vm.inputs.searchFieldDidBeginEditing()
 
     self.resignFirstResponder.assertValueCount(0)
@@ -525,7 +525,7 @@ internal final class SearchViewModelTests: TestCase {
     let debounceDelay = DispatchTimeInterval.seconds(1)
 
     withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance(by: apiDelay)
 
       self.vm.inputs.searchFieldDidBeginEditing()
@@ -583,7 +583,7 @@ internal final class SearchViewModelTests: TestCase {
       |> DiscoveryEnvelope.lens.projects .~ playlist2
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
-      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewWillAppear(animated: true)
 
       self.scheduler.advance()
 
