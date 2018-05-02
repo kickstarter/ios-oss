@@ -121,7 +121,10 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     self.viewModel.outputs.postNotification
       .observeForUI()
-      .observeValues(NotificationCenter.default.post)
+      .observeValues {
+        NotificationCenter.default.post($0.0)
+        NotificationCenter.default.post($0.1)
+      }
 
     self.viewModel.outputs.startFacebookConfirmation
       .observeForControllerAction()

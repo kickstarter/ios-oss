@@ -309,8 +309,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .ignoreValues()
       .map { _ in
         Notification(name: .ksr_showNotificationsDialog,
-                          object: nil,
-                          userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.save])
+                     userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.save])
     }
 
     self.notifyDelegateShowSaveAlert = project
