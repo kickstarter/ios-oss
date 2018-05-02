@@ -314,7 +314,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.notifyDelegateShowSaveAlert = project
       .takeWhen(self.saveButtonTappedProperty.signal)
-      .filter { _ in shouldShowNotificationDialog() == false }
+      .filter { _ in
+        shouldShowNotificationDialog() == false
+      }
       .filter { $0.personalization.isStarred == false && !$0.endsIn48Hours(
         today: AppEnvironment.current.dateType.init().date) }
       .filter { _ in
@@ -425,8 +427,8 @@ private func cache(project: Project, shouldToggle: Bool) -> Bool {
 }
 
 private func shouldShowNotificationDialog() -> Bool {
-  return true //PushNotificationDialog.canShowDialog(for: .save) &&
-    //AppEnvironment.current.currentUser?.stats.starredProjectsCount == 0
+  return PushNotificationDialog.canShowDialog(for: .save) &&
+    AppEnvironment.current.currentUser?.stats.starredProjectsCount == 0
 }
 
 private func socialText(forFriends friends: [User]) -> String? {

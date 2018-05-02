@@ -33,7 +33,7 @@ final class LoginViewModelTests: TestCase {
       .observe(self.passwordTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.isFormValid.observe(self.isFormValid.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
-    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
+    self.vm.outputs.postNotification.map { $0.0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
     self.vm.outputs.showError.observe(self.showError.observer)
     self.vm.outputs.tfaChallenge.map { $0.email }.observe(self.tfaChallenge.observer)

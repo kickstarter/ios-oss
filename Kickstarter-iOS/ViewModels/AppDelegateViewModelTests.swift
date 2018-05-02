@@ -17,6 +17,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   fileprivate let authorizeForRemoteNotifications = TestObserver<(), NoError>()
   fileprivate let configureHockey = TestObserver<HockeyConfigData, NoError>()
+  fileprivate let didAcceptReceivingRemoteNotifications = TestObserver<(), NoError>()
   private let findRedirectUrl = TestObserver<URL, NoError>()
   fileprivate let forceLogout = TestObserver<(), NoError>()
   fileprivate let getNotificationAuthorizationStatus = TestObserver<(), NoError>()
@@ -578,6 +579,9 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.userSessionStarted()
 
+      let notification = Notification.init(name: Notification.Name(rawValue: "deadbeef"))
+
+      self.vm.inputs.showNotificationDialog(notification: notification)
       self.getNotificationAuthorizationStatus.assertValueCount(1)
       self.authorizeForRemoteNotifications.assertValueCount(0)
       self.registerForRemoteNotifications.assertValueCount(0)
@@ -607,6 +611,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       //Simulate initial notification authorization
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.notDetermined)
+      self.vm.inputs.didAcceptReceivingRemoteNotifications()
 
       self.getNotificationAuthorizationStatus.assertValueCount(2)
       self.authorizeForRemoteNotifications.assertValueCount(1)

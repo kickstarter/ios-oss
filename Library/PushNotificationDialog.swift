@@ -10,7 +10,7 @@ public struct PushNotificationDialog {
   }
 
   static public func canShowDialog(`for` context: PushNotificationDialog.Context) -> Bool {
-
+    let c = AppEnvironment.current.userDefaults.deniedNotificationContexts
     return !AppEnvironment.current.userDefaults.deniedNotificationContexts.contains(context.rawValue) &&
             AppEnvironment.current.userDefaults.deniedNotificationContexts.count < 3
   }

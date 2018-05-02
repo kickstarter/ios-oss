@@ -23,7 +23,7 @@ final class TwoFactorViewModelTests: TestCase {
     vm.outputs.isFormValid.observe(isFormValid.observer)
     vm.outputs.isLoading.observe(isLoading.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-    vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
+    vm.outputs.postNotification.map { $0.0.name }.observe(postNotificationName.observer)
     vm.outputs.resendSuccess.observe(resendSuccess.observer)
     vm.outputs.showError.observe(showError.observer)
   }

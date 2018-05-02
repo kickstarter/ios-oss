@@ -35,7 +35,7 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
-    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotification.observer)
+    self.vm.outputs.postNotification.map { $0.0.name }.observe(self.postNotification.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
     self.vm.outputs.startFacebookConfirmation.map { _, token in token }
       .observe(self.startFacebookConfirmation.observer)
