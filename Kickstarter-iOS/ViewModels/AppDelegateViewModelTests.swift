@@ -1445,7 +1445,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   @available(iOS 10.0, *)
-  func testShowAlertEmitIf_CanShowDialog() {
+  func testShowAlertEmitsIf_CanShowDialog() {
 
     let notification = Notification(name: Notification.Name(rawValue: "deadbeef"),
                                     userInfo: ["context": PushNotificationDialog.Context.login])
@@ -1460,7 +1460,6 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: updatePushData]
       )
       self.vm.inputs.showNotificationDialog(notification: notification)
-
       self.vm.inputs.notificationAuthorizationStatusReceived(.notDetermined)
 
       self.showAlert.assertValue(PushNotificationDialog.Context.login)

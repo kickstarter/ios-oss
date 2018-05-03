@@ -128,6 +128,7 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean that determines if the save button should be selected.
   var saveButtonSelected: Signal<Bool, NoError> { get }
 
+  /// Emits when a contextual Push Notification dialog should be shown.
   var showNotificationDialog: Signal<Notification, NoError> { get }
 
   /// Emits the URL to be loaded into the social avatar's image view.
