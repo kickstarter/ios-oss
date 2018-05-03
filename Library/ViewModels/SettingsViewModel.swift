@@ -22,10 +22,12 @@ public protocol SettingsViewModelInputs {
   func logoutConfirmed()
   func logoutTapped()
   func manageProjectNotificationsTapped()
+  func messagesTapped(selected: Bool)
   func mobileBackingsTapped(selected: Bool)
   func mobileCommentsTapped(selected: Bool)
   func mobileFollowerTapped(selected: Bool)
   func mobileFriendActivityTapped(selected: Bool)
+  func mobileMessagesTapped(selected: Bool)
   func mobilePostLikesTapped(selected: Bool)
   func mobileUpdatesTapped(selected: Bool)
   func postLikesTapped(selected: Bool)
@@ -56,10 +58,12 @@ public protocol SettingsViewModelOutputs {
   var inventNewsletterOn: Signal<Bool, NoError> { get }
   var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
   var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
+  var messagesSelected: Signal<Bool, NoError> { get }
   var mobileBackingsSelected: Signal<Bool, NoError> { get }
   var mobileCommentsSelected: Signal<Bool, NoError> { get }
   var mobileFollowerSelected: Signal<Bool, NoError> { get }
   var mobileFriendActivitySelected: Signal<Bool, NoError> { get }
+  var mobileMessagesSelected: Signal<Bool, NoError> { get }
   var mobilePostLikesSelected: Signal<Bool, NoError> { get }
   var mobileUpdatesSelected: Signal<Bool, NoError> { get }
   var postLikesSelected: Signal<Bool, NoError> { get }
@@ -91,6 +95,9 @@ SettingsViewModelOutputs {
           .demoteErrors()
       }
       .skipNil()
+
+    self.messagesSelected = .empty
+    self.mobileMessagesSelected = .empty
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
       self.artsAndCultureNewsletterTappedProperty.signal.map { (.arts, $0) },
@@ -390,6 +397,10 @@ SettingsViewModelOutputs {
   public func manageProjectNotificationsTapped() {
     self.manageProjectNotificationsTappedProperty.value = ()
   }
+  fileprivate let messagesTappedProperty = MutableProperty(false)
+  public func messagesTapped(selected: Bool) {
+    self.messagesTappedProperty.value = selected
+  }
   fileprivate let mobileBackingsTappedProperty = MutableProperty(false)
   public func mobileBackingsTapped(selected: Bool) {
     self.mobileBackingsTappedProperty.value = selected
@@ -405,6 +416,10 @@ SettingsViewModelOutputs {
   fileprivate let mobileFriendActivityTappedProperty = MutableProperty(false)
   public func mobileFriendActivityTapped(selected: Bool) {
     self.mobileFriendActivityTappedProperty.value = selected
+  }
+  fileprivate let mobileMessagesTappedProperty = MutableProperty(false)
+  public func mobileMessagesTapped(selected: Bool) {
+    self.mobileMessagesTappedProperty.value = selected
   }
   fileprivate let mobilePostLikesTappedProperty = MutableProperty(false)
   public func mobilePostLikesTapped(selected: Bool) {
@@ -458,10 +473,12 @@ SettingsViewModelOutputs {
   public let inventNewsletterOn: Signal<Bool, NoError>
   public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
+  public let messagesSelected: Signal<Bool, NoError>
   public let mobileBackingsSelected: Signal<Bool, NoError>
   public let mobileCommentsSelected: Signal<Bool, NoError>
   public let mobileFollowerSelected: Signal<Bool, NoError>
   public let mobileFriendActivitySelected: Signal<Bool, NoError>
+  public let mobileMessagesSelected: Signal<Bool, NoError>
   public let mobilePostLikesSelected: Signal<Bool, NoError>
   public let mobileUpdatesSelected: Signal<Bool, NoError>
   public let postLikesSelected: Signal<Bool, NoError>
