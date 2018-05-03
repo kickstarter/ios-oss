@@ -66,7 +66,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       projectIsStaffPickView = staffPickView
 
       projectIsStaffPickView.setContentCompressionResistancePriority(.required, for: .horizontal)
-      projectCategoryView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+      projectIsStaffPickView.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
       projectCategoriesStackView.addArrangedSubview(projectIsStaffPickView)
     }
@@ -230,15 +230,17 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
     self.projectIsStaffPickView.rac.hidden = viewModel.outputs.projectIsStaffPickLabelHidden
+    self.projectCategoryView.rac.hidden = viewModel.outputs.projectCategoryStackViewHidden
+    self.projectCategoriesStackView.rac.hidden = viewModel.outputs.projectCategoryStackViewHidden
     
     projectIsStaffPickView.configureWith(name: Strings.Projects_We_Love(), imageNameString: "icon--small-k")
     
     viewModel.outputs.projectCategoryName
       .signal
       .observeForUI()
-      .observeValues { (name) in
-      self.projectCategoryView.configureWith(name: name, imageNameString: "icon--compass")
-    }
+      .observeValues { [weak self] (name) in
+        self?.projectCategoryView.configureWith(name: name, imageNameString: "icon--compass")
+      }
     
     self.viewModel.outputs.metadataIcon
       .observeForUI()
@@ -291,8 +293,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     }
   }
 
-  internal func configureWith(value: Project) {
-    self.viewModel.inputs.configureWith(project: value)
+  internal func configureWith(value: DiscoveryProjectCellRowValue) {
+    self.viewModel.inputs.configureWith(project: value.project)
+    self.viewModel.inputs.configureWith(category: value.category)
   }
 
   internal override func layoutSubviews() {

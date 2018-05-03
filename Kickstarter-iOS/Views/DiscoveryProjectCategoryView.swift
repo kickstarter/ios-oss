@@ -14,11 +14,10 @@ import UIKit
 @IBDesignable internal final class DiscoveryProjectCategoryView: UIView, NibLoading {
   private let viewModel: DiscoveryProjectCategoryViewModelType = DiscoveryProjectCategoryViewModel()
   
+  @IBOutlet weak var blurView: UIImageView!
   @IBOutlet weak var categoryStackView: UIStackView!
   @IBOutlet weak var categoryViewImageView: UIImageView!
   @IBOutlet weak var categoryViewLabel: UILabel!
-  
-  private let categoryBlurLayer = CALayer()
   
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -32,20 +31,11 @@ import UIKit
   override func bindStyles() {
     super.bindStyles()
     
+    _ = blurView
+      |> UIImageView.lens.image .~ UIImage(named: "white--gradient--layer")
+    
     _ = categoryViewLabel
       |> postcardCategoryLabelStyle
-    
-    _ = categoryBlurLayer
-      |> CALayer.lens.borderWidth .~ 2
-      |> CALayer.lens.masksToBounds .~ false
-      |> CALayer.lens.shadowRadius .~ 3
-      |> CALayer.lens.shadowOpacity .~ 0.98
-      |> CALayer.lens.shadowOffset .~ CGSize(width: -5, height: 0)
-      |> CALayer.lens.shadowColor .~ UIColor.gray.cgColor
-    
-    self.layer.addSublayer(categoryBlurLayer)
-    
-    categoryBlurLayer.frame = CGRect(x: self.frame.width, y: 0, width: 1.0, height: self.frame.height)
   }
   
   internal override func bindViewModel() {
@@ -55,20 +45,10 @@ import UIKit
     
     viewModel.outputs.categoryImage.signal
       .observeForUI()
-      .observeValues { (image) in
-      _ = self.categoryViewImageView
+      .observeValues { [weak self] (image) in
+        guard let strongSelf = self else { return }
+      _ = strongSelf.categoryViewImageView
         |> UIImageView.lens.image .~ image
     }
-  }
-  
-  internal override func layoutSubviews() {
-    super.layoutSubviews()
-    
-//    DispatchQueue.main.async { [weak self] in
-//      guard let strongSelf = self else { return }
-//
-//      let frame = strongSelf.frame
-//      strongSelf.categoryBlurLayer.frame = CGRect(x: frame.width, y: 0, width: 1.0, height: frame.height)
-//    }
   }
 }

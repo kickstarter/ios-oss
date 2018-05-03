@@ -121,19 +121,22 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.goToProjectPlaylist
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.goTo(project: $0, initialPlaylist: $1, refTag: $2) }
+      .observeValues { [weak self] in
+        self?.goTo(project: $0, initialPlaylist: $1, refTag: $2)
+      }
 
     self.viewModel.outputs.goToProjectUpdate
       .observeForControllerAction()
       .observeValues { [weak self] project, update in self?.goTo(project: project, update: update) }
 
-    self.viewModel.outputs.projects
+      
+    self.viewModel.outputs.projectsLoaded
       .observeForUI()
-      .observeValues { [weak self] projects in
-        self?.dataSource.load(projects: projects)
+      .observeValues { [weak self] in
+        self?.dataSource.load(projects: $0, params: $1)
         self?.tableView.reloadData()
-        self?.updateProjectPlaylist(projects)
-    }
+        self?.updateProjectPlaylist($0)
+      }
 
     self.viewModel.outputs.showOnboarding
       .observeForUI()

@@ -2,6 +2,11 @@ import Library
 import KsApi
 import UIKit
 
+struct DiscoveryProjectCellRowValue {
+  let project: Project
+  let category: KsApi.Category?
+}
+
 internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case onboarding
@@ -26,12 +31,14 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  func load(projects: [Project]) {
+  func load(projects: [Project], params: DiscoveryParams? = nil) {
     self.clearValues(section: Section.projects.rawValue)
-
+    
     projects.forEach { project in
-      self.appendRow(
-        value: project,
+      let value = DiscoveryProjectCellRowValue(project: project, category: params?.category)
+
+      _ = self.appendRow(
+        value: value,
         cellClass: DiscoveryPostcardCell.self,
         toSection: Section.projects.rawValue
       )
@@ -49,7 +56,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   }
 
   internal func projectAtIndexPath(_ indexPath: IndexPath) -> Project? {
-    return self[indexPath] as? Project
+    return (self[indexPath] as? DiscoveryProjectCellRowValue)?.project
   }
 
   internal func indexPath(forProjectRow row: Int) -> IndexPath {
@@ -65,7 +72,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as ActivitySampleProjectCell, value as Activity):
       cell.configureWith(value: value)
-    case let (cell as DiscoveryPostcardCell, value as Project):
+    case let (cell as DiscoveryPostcardCell, value as DiscoveryProjectCellRowValue):
       cell.configureWith(value: value)
     case let (cell as DiscoveryOnboardingCell, value as Void):
       cell.configureWith(value: value)

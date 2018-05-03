@@ -32,6 +32,9 @@ private enum PostcardMetadataType {
 public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
   func configureWith(project: Project)
+  
+  /// Call with the filter category provided to the view controller
+  func configureWith(category: KsApi.Category?)
 
   /// Call when the cell has received a project notification.
   func projectFromNotification(project: Project?)
@@ -119,11 +122,17 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits the text for the project state title label.
   var projectStateTitleLabelText: Signal<String, NoError> { get }
   
+  /// Emits a string for the project category label
   var projectCategoryName: Signal<String, NoError> { get }
+  
+  /// Emits a boolean that determines if the "Projects We Love" label should be hidden
   var projectIsStaffPickLabelHidden: Signal<Bool, NoError> { get }
   
   /// Emits a boolean that determines if the project categories should be hidden.
-//  var projectCategoriesViewHidden: Signal<Bool, NoError> { get }
+  var projectCategoryViewHidden: Signal<Bool, NoError> { get }
+  
+  /// Emits a boolean that determines if the category stack view should be hidden.
+  var projectCategoryStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits a boolean that determines if the project stats should be hidden.
   var projectStatsStackViewHidden: Signal<Bool, NoError> { get }
@@ -228,8 +237,26 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectCategoryName = configuredProject
       .map { $0.category.name }
     
+    self.projectCategoryViewHidden = Signal.combineLatest(
+      self.projectProperty.signal.skipNil(),
+      self.categoryProperty.signal.skipNil()
+      ).map { (project, category) in
+        // if we are in a subcategory, compare categories
+        if !category.isRoot {
+          return Int(project.category.id) == category.intID
+        }
+        
+        // otherwise, always show category
+        return false
+      }
+    
     self.projectIsStaffPickLabelHidden = configuredProject
       .map { $0.staffPick }.negate()
+    
+    self.projectCategoryStackViewHidden = Signal.combineLatest(
+      self.projectCategoryViewHidden.signal,
+      self.projectIsStaffPickLabelHidden.signal
+      ).map { $0 && $1 }
 
     self.projectStatsStackViewHidden = self.projectStateStackViewHidden.map(negate)
 
@@ -332,6 +359,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.cellAccessibilityValue = Signal.zip(configuredProject, self.projectStateTitleLabelText)
       .map { project, projectState in "\(project.blurb). \(projectState)" }
   }
+  
+  fileprivate let categoryProperty = MutableProperty<KsApi.Category?>(nil)
+  public func configureWith(category: KsApi.Category?) {
+    self.categoryProperty.value = category
+  }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
@@ -384,7 +416,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let projectStateTitleLabelText: Signal<String, NoError>
   public var projectCategoryName: Signal<String, NoError>
   public let projectIsStaffPickLabelHidden: Signal<Bool, NoError>
-//  public var projectCategoriesViewHidden: Signal<Bool, NoError>
+  public var projectCategoryViewHidden: Signal<Bool, NoError>
+  public var projectCategoryStackViewHidden: Signal<Bool, NoError>
   public let projectStateTitleLabelColor: Signal<UIColor, NoError>
   public let saveButtonEnabled: Signal<Bool, NoError>
   public let saveButtonSelected: Signal<Bool, NoError>

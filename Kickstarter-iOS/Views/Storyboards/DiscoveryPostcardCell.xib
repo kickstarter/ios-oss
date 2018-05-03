@@ -135,7 +135,7 @@
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Qkj-c0-qEA" userLabel="Project Categories Stack View">
+                                            <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Qkj-c0-qEA" userLabel="Project Categories Stack View">
                                                 <rect key="frame" x="24" y="180" width="312" height="128"/>
                                             </stackView>
                                         </subviews>

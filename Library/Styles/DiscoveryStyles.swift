@@ -123,7 +123,7 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort: Discovery
 }
 
 public let postcardCategoryLabelStyle =
-  UILabel.lens.font .~ .ksr_body(size: 14.0)
+  UILabel.lens.font .~ .ksr_body(size: 13.0)
     <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
     <> UILabel.lens.textAlignment .~ .left
     <> UILabel.lens.lineBreakMode .~ .byClipping
