@@ -48,10 +48,13 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var logoutButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsLabel: UILabel!
+  @IBOutlet fileprivate weak var messagesLabel: UILabel!
+  @IBOutlet fileprivate weak var messagesButton: UIButton!
   @IBOutlet fileprivate weak var mobileBackingsButton: UIButton!
   @IBOutlet fileprivate weak var mobileCommentsButton: UIButton!
   @IBOutlet fileprivate weak var mobileFollowerButton: UIButton!
   @IBOutlet fileprivate weak var mobileFriendActivityButton: UIButton!
+  @IBOutlet fileprivate weak var mobileMessagesButton: UIButton!
   @IBOutlet fileprivate weak var mobilePostLikesButton: UIButton!
   @IBOutlet fileprivate weak var mobileUpdatesButton: UIButton!
   @IBOutlet fileprivate weak var newCommentsLabel: UILabel!
@@ -259,6 +262,12 @@ internal final class SettingsViewController: UIViewController {
     _ = self.manageProjectNotificationsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_notifications() }
+
+    _ = messagesLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in
+        "Messages"
+      }
 
     _ = self.newCommentsLabel
       |> settingsSectionLabelStyle
@@ -608,6 +617,9 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.manageProjectNotificationsTapped()
   }
 
+  @IBAction fileprivate func messagesTapped(_ button: UIButton) {
+  }
+
   @IBAction fileprivate func mobileBackingsTapped(_ button: UIButton) {
     self.viewModel.inputs.mobileBackingsTapped(selected: !button.isSelected)
   }
@@ -622,6 +634,9 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func mobileFriendActivityTapped(_ button: UIButton) {
     self.viewModel.inputs.mobileFriendActivityTapped(selected: !button.isSelected)
+  }
+
+  @IBAction fileprivate func mobileMessagesTapped(_ button: UIButton) {
   }
 
   @IBAction fileprivate func mobilePostLikesTapped(_ button: UIButton) {
