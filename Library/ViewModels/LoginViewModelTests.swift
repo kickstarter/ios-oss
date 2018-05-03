@@ -33,7 +33,8 @@ final class LoginViewModelTests: TestCase {
       .observe(self.passwordTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.isFormValid.observe(self.isFormValid.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
-    self.vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }.observe(self.postNotificationName.observer)
+    self.vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }
+      .observe(self.postNotificationName.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
     self.vm.outputs.showError.observe(self.showError.observer)
     self.vm.outputs.tfaChallenge.map { $0.email }.observe(self.tfaChallenge.observer)
@@ -216,7 +217,8 @@ final class LoginViewModelTests: TestCase {
       "Triggered 1Password"], self.trackingClient.events, "Koala login is tracked")
 
     self.vm.inputs.environmentLoggedIn()
-    XCTAssertEqual(self.postNotificationName.values.first?.0, .ksr_sessionStarted, "Login notification posted.")
+    XCTAssertEqual(self.postNotificationName.values.first?.0, .ksr_sessionStarted,
+                   "Login notification posted.")
     XCTAssertEqual(self.postNotificationName.values.first?.1, .ksr_showNotificationsDialog,
                    "Contextual Dialog notification posted.")
 
