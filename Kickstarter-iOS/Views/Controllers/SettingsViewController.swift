@@ -70,6 +70,7 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var promoNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var rateUsButton: UIButton!
   @IBOutlet fileprivate weak var rateUsLabel: UILabel!
+  @IBOutlet fileprivate weak var recommendationsInfoButton: UIButton!
   @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
   @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
   @IBOutlet fileprivate weak var socialNotificationsTitleLabel: UILabel!
@@ -322,6 +323,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.rateUsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Rate_us_in_the_App_Store() }
+
+    _ = self.recommendationsInfoButton
+      |> UIButton.lens.image(for: .normal)
+        .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
 
     _ = self.recommendationsLabel
       |> settingsSectionLabelStyle

@@ -790,7 +790,7 @@
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Dl-Hh-OoE">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Dl-Hh-OoE">
                                                                 <rect key="frame" x="251" y="0.0" width="44" height="31"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="OHv-SL-UTF"/>
@@ -1059,6 +1059,7 @@
                         <outlet property="promoNewsletterSwitch" destination="hEJ-DK-xvp" id="KJl-wF-1tr"/>
                         <outlet property="rateUsButton" destination="uhM-6M-CXD" id="Ozw-pY-qJO"/>
                         <outlet property="rateUsLabel" destination="9lG-r8-s3c" id="u7j-KM-blN"/>
+                        <outlet property="recommendationsInfoButton" destination="9Dl-Hh-OoE" id="PT9-mQ-HJ4"/>
                         <outlet property="recommendationsLabel" destination="WyP-Yu-qTY" id="dJy-OV-kUM"/>
                         <outlet property="recommendationsSwitch" destination="m5w-Tk-Ina" id="X9h-aU-xna"/>
                         <outlet property="socialNotificationsTitleLabel" destination="uNC-qv-Q2T" id="blM-mc-ybz"/>
