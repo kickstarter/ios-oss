@@ -5,6 +5,7 @@ import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
+/* swiftlint:disable force_unwrapping */
 internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let vm = DiscoveryPostcardViewModel()
   internal let backersTitleLabelText = TestObserver<String, NoError>()

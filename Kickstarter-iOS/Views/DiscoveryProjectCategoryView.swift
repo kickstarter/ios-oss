@@ -14,10 +14,10 @@ import UIKit
 @IBDesignable internal final class DiscoveryProjectCategoryView: UIView, NibLoading {
   private let viewModel: DiscoveryProjectCategoryViewModelType = DiscoveryProjectCategoryViewModel()
 
-  @IBOutlet weak var blurView: UIImageView!
-  @IBOutlet weak var categoryStackView: UIStackView!
-  @IBOutlet weak var categoryViewImageView: UIImageView!
-  @IBOutlet weak var categoryViewLabel: UILabel!
+  @IBOutlet private weak var blurView: UIImageView!
+  @IBOutlet private weak var categoryStackView: UIStackView!
+  @IBOutlet private weak var categoryViewImageView: UIImageView!
+  @IBOutlet private weak var categoryViewLabel: UILabel!
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)

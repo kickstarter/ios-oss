@@ -27,7 +27,9 @@ public protocol DiscoveryProjectCategoryViewModelType {
   var outputs: DiscoveryProjectCategoryViewModelOutputs { get }
 }
 
-public final class DiscoveryProjectCategoryViewModel: DiscoveryProjectCategoryViewModelType, DiscoveryProjectCategoryViewModelInputs, DiscoveryProjectCategoryViewModelOutputs {
+public final class DiscoveryProjectCategoryViewModel: DiscoveryProjectCategoryViewModelType,
+DiscoveryProjectCategoryViewModelInputs,
+DiscoveryProjectCategoryViewModelOutputs {
   public var inputs: DiscoveryProjectCategoryViewModelInputs { return self }
   public var outputs: DiscoveryProjectCategoryViewModelOutputs { return self }
 
