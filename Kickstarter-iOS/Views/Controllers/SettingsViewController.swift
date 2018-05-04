@@ -140,7 +140,9 @@ internal final class SettingsViewController: UIViewController {
 
     self.rateUsButton.addTarget(self, action: #selector(rateUsTapped), for: .touchUpInside)
 
-    self.recommendationsInfoButton.addTarget(self, action: #selector(recommendationsInfoTapped), for: .touchUpInside)
+    self.recommendationsInfoButton.addTarget(self,
+                                             action: #selector(recommendationsInfoTapped),
+                                             for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
