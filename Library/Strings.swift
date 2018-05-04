@@ -2122,6 +2122,23 @@ backers"
     )
   }
   /**
+   "Help Center"
+
+   - **es**: "Help Center"
+   - **ja**: "Help Center"
+   - **de**: "Help Center"
+   - **fr**: "Help Center"
+   - **en**: "Help Center"
+  */
+  public static func Help_center() -> String {
+    return localizedString(
+      key: "Help_center",
+      defaultValue: "Help Center",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Home"
 
    - **es**: "Inicio"
@@ -2705,7 +2722,7 @@ with friends."
    "Name"
 
    - **es**: "Nombre"
-   - **ja**: "Name"
+   - **ja**: "名前"
    - **de**: "Name"
    - **fr**: "Nom"
    - **en**: "Name"
@@ -3470,6 +3487,23 @@ from friends yet."
     )
   }
   /**
+   "Privacy"
+
+   - **es**: "Privacy"
+   - **ja**: "Privacy"
+   - **de**: "Privacy"
+   - **fr**: "Privacy"
+   - **en**: "Privacy"
+  */
+  public static func Privacy() -> String {
+    return localizedString(
+      key: "Privacy",
+      defaultValue: "Privacy",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project Cancelled."
 
    - **es**: "Proyecto cancelado."
@@ -3706,6 +3740,23 @@ daring ideas."
     return localizedString(
       key: "Recent_live_stream",
       defaultValue: "Recent live stream",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Recommendations"
+
+   - **es**: "Recommendations"
+   - **ja**: "Recommendations"
+   - **de**: "Recommendations"
+   - **fr**: "Recommendations"
+   - **en**: "Recommendations"
+  */
+  public static func Recommendations() -> String {
+    return localizedString(
+      key: "Recommendations",
+      defaultValue: "Recommendations",
       count: nil,
       substitutions: [:]
     )

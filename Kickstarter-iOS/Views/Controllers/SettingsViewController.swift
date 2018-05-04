@@ -285,7 +285,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.privacyTitleLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in "Privacy" }
+      |> UILabel.lens.text %~ { _ in Strings.Privacy() }
 
     _ = self.privacyPolicyButton
       |> settingsSectionButtonStyle
@@ -325,7 +325,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.recommendationsLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in "Show recommendations" }
+      |> UILabel.lens.text %~ { _ in Strings.Recommendations() }
 
     _ = self.separatorViews
       ||> separatorStyle
@@ -433,7 +433,7 @@ internal final class SettingsViewController: UIViewController {
     self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
-      self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
+    self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn

@@ -781,15 +781,21 @@
                                                             <constraint firstAttribute="height" constant="1" id="oaO-Gv-Z9o"/>
                                                         </constraints>
                                                     </view>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="xRP-YC-Dgw">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="xRP-YC-Dgw">
                                                         <rect key="frame" x="0.0" y="45.5" width="368" height="31"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arts &amp; Culture News" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WyP-Yu-qTY" userLabel="Recommendations">
-                                                                <rect key="frame" x="0.0" y="0.0" width="301" height="31"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="227" height="31"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Dl-Hh-OoE">
+                                                                <rect key="frame" x="251" y="0.0" width="44" height="31"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="44" id="OHv-SL-UTF"/>
+                                                                </constraints>
+                                                            </button>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m5w-Tk-Ina">
                                                                 <rect key="frame" x="319" y="0.0" width="51" height="31"/>
                                                                 <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

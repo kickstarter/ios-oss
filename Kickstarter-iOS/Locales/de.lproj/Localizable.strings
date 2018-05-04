@@ -130,6 +130,7 @@
 "Go_to_project_page" = "Zu Projektseite";
 "Got_it" = "Alles klar!";
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
+"Help_center" = "Help Center";
 "Home" = "Home";
 "How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
@@ -213,6 +214,7 @@
 "Pledged_on_date" = "<b>Beitrag geleistet</b> am %{pledge_date}";
 "Popular" = "Beliebt";
 "Popular_Projects" = "Beliebte Projekte";
+"Privacy" = "Privacy";
 "Project_Cancelled" = "Projekt abgebrochen.";
 "Project_Suspended" = "Projekt ausgesetzt.";
 "Project_cancelled" = "Projekt abgebrochen";
@@ -227,6 +229,7 @@
 "Read_more_about_the_campaign" = "Mehr über diese Kampagne lesen";
 "Read_more_about_the_campaign_arrow" = "Mehr über diese Kampagne lesen  →";
 "Recent_live_stream" = "Kürzlich gesendeter Live-Stream";
+"Recommendations" = "Recommendations";
 "Recommended" = "Empfehlungen";
 "Recommended_For_You" = "Empfehlungen für dich";
 "Recorded_Live" = "Live aufgenommen";
