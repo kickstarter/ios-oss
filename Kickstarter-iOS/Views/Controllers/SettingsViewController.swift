@@ -140,6 +140,8 @@ internal final class SettingsViewController: UIViewController {
 
     self.rateUsButton.addTarget(self, action: #selector(rateUsTapped), for: .touchUpInside)
 
+    self.recommendationsInfoButton.addTarget(self, action: #selector(recommendationsInfoTapped), for: .touchUpInside)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -630,6 +632,23 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func mobileCommentsTapped(_ button: UIButton) {
     self.viewModel.inputs.mobileCommentsTapped(selected: !button.isSelected)
+  }
+
+  @objc fileprivate func recommendationsInfoTapped() {
+    let alertController = UIAlertController(
+      title: "Info",
+      message: "GDPR Blah blah blah...",
+      preferredStyle: .alert)
+
+    alertController.addAction(
+      UIAlertAction(
+        title: "OK",
+        style: .default,
+        handler: nil
+      )
+    )
+
+    self.present(alertController, animated: true, completion: nil)
   }
 
   @IBAction fileprivate func mobileFollowerTapped(_ button: UIButton) {
