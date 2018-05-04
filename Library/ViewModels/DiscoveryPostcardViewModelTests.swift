@@ -36,6 +36,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let socialImageURL = TestObserver<String?, NoError>()
   internal let socialLabelText = TestObserver<String, NoError>()
   internal let socialStackViewHidden = TestObserver<Bool, NoError>()
+  internal let projectCategoryName = TestObserver<String, NoError>()
+  internal let projectCategoryViewHidden = TestObserver<Bool, NoError>()
+  internal let projectCategoryStackViewHidden = TestObserver<Bool, NoError>()
+  internal let projectIsStaffPickViewHidden = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -70,6 +74,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.socialImageURL.map { $0?.absoluteString }.observe(self.socialImageURL.observer)
     self.vm.outputs.socialLabelText.observe(self.socialLabelText.observer)
     self.vm.outputs.socialStackViewHidden.observe(self.socialStackViewHidden.observer)
+    
+    self.vm.outputs.projectCategoryName.observe(self.projectCategoryName.observer)
+    self.vm.outputs.projectCategoryViewHidden.observe(self.projectCategoryViewHidden.observer)
+    self.vm.outputs.projectCategoryStackViewHidden.observe(self.projectCategoryStackViewHidden.observer)
+    self.vm.outputs.projectIsStaffPickLabelHidden.observe(self.projectIsStaffPickViewHidden.observer)
   }
 
   func testCellAccessibility() {
@@ -482,5 +491,36 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectStatsStackViewHidden.assertValues([false, true])
     self.fundingProgressBarViewHidden.assertValues([false, false, true, false, false])
     self.fundingProgressContainerViewHidden.assertValues([false, true, false, false, true])
+  }
+  
+  func testShowsCategoryLabels() {
+    let staffPickProject = Project.template
+      |> Project.lens.staffPick .~ true
+      |> Project.lens.category .~ .illustration
+    
+    self.vm.inputs.configureWith(project: staffPickProject)
+    self.vm.inputs.configureWith(category: .art)
+    
+    self.projectIsStaffPickViewHidden.assertValue(false)
+    self.projectCategoryStackViewHidden.assertValue(false)
+    self.projectCategoryName.assertValue(KsApi.Category.illustration.name)
+    self.projectCategoryViewHidden.assertValue(false)
+  }
+  
+  func testHidesCategoryLabel() {
+    // Workaround for discrepancy between category ids from graphQL and category ids from the legacy API
+    let categoryId = KsApi.Category.illustration.intID
+    let illustrationCategory = KsApi.Category(id: String(categoryId!), name: KsApi.Category.illustration.name)
+    
+    let illustrationProject = Project.template
+      |> Project.lens.category .~ illustrationCategory
+    
+    self.vm.inputs.configureWith(project: illustrationProject)
+    self.vm.inputs.configureWith(category: .illustration)
+    
+    self.projectIsStaffPickViewHidden.assertValue(true)
+    self.projectCategoryStackViewHidden.assertValue(true)
+    self.projectCategoryName.assertValue(KsApi.Category.illustration.name)
+    self.projectCategoryViewHidden.assertValue(true)
   }
 }

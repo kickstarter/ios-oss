@@ -19,7 +19,7 @@ public protocol DiscoveryProjectCategoryViewModelInputs {
 
 public protocol DiscoveryProjectCategoryViewModelOutputs {
   var categoryNameText: Signal<String, NoError> { get }
-  var categoryImage: Signal<UIImage, NoError> { get }
+  var categoryImage: Signal<UIImage?, NoError> { get }
 }
 
 public protocol DiscoveryProjectCategoryViewModelType {
@@ -31,15 +31,13 @@ public final class DiscoveryProjectCategoryViewModel: DiscoveryProjectCategoryVi
   public var inputs: DiscoveryProjectCategoryViewModelInputs { return self }
   public var outputs: DiscoveryProjectCategoryViewModelOutputs { return self }
   
-  init() {
-    self.categoryNameText = categoryNameTextProperty.signal.skipNil().map{ $0 }
-    self.categoryImage = imageStringProperty.signal.skipNil().map{ (imageString) -> UIImage in
-      return UIImage(named: imageString)!
-    }
+  public init() {
+    self.categoryNameText = categoryNameTextProperty.signal.skipNil().map { $0 }
+    self.categoryImage = imageStringProperty.signal.skipNil().map { UIImage(named: $0) }
   }
   
   public var categoryNameText: Signal<String, NoError>
-  public var categoryImage: Signal<UIImage, NoError>
+  public var categoryImage: Signal<UIImage?, NoError>
   
   private let categoryNameTextProperty = MutableProperty<String?>(nil)
   public func updateCategoryName(name: String) {

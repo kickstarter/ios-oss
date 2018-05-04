@@ -141,10 +141,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       concater: { ($0 + $1).distincts() })
       
     self.projectsLoaded = Signal.combineLatest(
-        paginatedProjects..skip { $0.isEmpty }.skipRepeats(==),
+        paginatedProjects,
         self.selectedFilterProperty.signal.skipNil().skipRepeats()
-    )
-
+      ).skip { projects, _ in projects.isEmpty }
+      .skipRepeats(==).logEvents(identifier: "projectLoaded")
+      
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
     self.showEmptyState = Signal.combineLatest(paramsChanged, self.projectsAreLoading, paginatedProjects)
