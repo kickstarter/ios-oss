@@ -1,35 +1,29 @@
-//
-//  DiscoveryProjectCategoryViewModelTests.swift
-//  Library-iOSTests
-//
-//  Created by Isabel Barrera on 5/4/18.
-//  Copyright © 2018 Kickstarter. All rights reserved.
-//
-
 import XCTest
+import Prelude
+import Result
+import Library
+@testable import KsApi
+@testable import Library
+@testable import ReactiveExtensions_TestHelpers
 
 class DiscoveryProjectCategoryViewModelTests: XCTestCase {
-    
+    internal let vm = DiscoveryProjectCategoryViewModel()
+    internal let categoryViewLabelText = TestObserver<String, NoError>()
+    internal let categoryImage = TestObserver<UIImage?, NoError>()
+  
     override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+      super.setUp()
+      
+      
+      self.vm.outputs.categoryNameText.observe(self.categoryViewLabelText.observer)
+      self.vm.outputs.categoryImage.observe(self.categoryImage.observer)
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testCategoryNameImage() {
+      self.vm.inputs.updateCategoryName(name: "Art")
+      self.vm.inputs.updateImageString(imageString: "icon-some")
+      
+      self.categoryImage.assertValue(nil)
+      self.categoryViewLabelText.assertValue("Art")
     }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-    
 }
