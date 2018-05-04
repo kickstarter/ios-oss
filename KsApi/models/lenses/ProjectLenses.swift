@@ -10,14 +10,14 @@ extension Project {
         rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
         video: $1.video) }
     )
-    
+
     public static let staffPick = Lens<Project, Bool>(
       view: { $0.staffPick },
       set: { Project(blurb: $1.blurb, staffPick: $0, category: $1.category, country: $1.country,
                      creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
-                     location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-                     rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-                     video: $1.video) }
+                     location: $1.location, name: $1.name, personalization: $1.personalization,
+                     photo: $1.photo, rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats,
+                     urls: $1.urls, video: $1.video) }
     )
 
     public static let category = Lens<Project, Category>(
