@@ -133,7 +133,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     }
 
     self.viewModel.outputs.postContextualNotification
-      .observeValues(NotificationCenter.default.post)
+      .observeForUI()
+      .observeValues { n in
+        NotificationCenter.default.post(n)
+      }
 
     self.viewModel.outputs.showRatingAlert
       .observeForControllerAction()

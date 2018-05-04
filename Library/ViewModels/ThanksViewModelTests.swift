@@ -324,7 +324,7 @@ final class ThanksViewModelTests: TestCase {
 
   func testContextualNotificationEmitsWhen_userPledgedFirstProject() {
 
-    let user = .template |> User.lens.stats.backedProjectsCount .~ 1
+    let user = .template |> User.lens.stats.backedProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
       vm.inputs.viewDidLoad()

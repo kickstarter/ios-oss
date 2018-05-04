@@ -114,7 +114,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .filter {
         $0 == false &&
         !AppEnvironment.current.userDefaults.hasSeenAppRating &&
-        AppEnvironment.current.config?.iTunesLink != nil
+        AppEnvironment.current.config?.iTunesLink != nil && shouldShowPledgeDialog() == false
       }
       .takeWhen(self.viewDidLoadProperty.signal)
       .ignoreValues()
@@ -343,8 +343,8 @@ private func relatedProjects(toProject project: Project,
 }
 
 private func shouldShowPledgeDialog() -> Bool {
-  return PushNotificationDialog.canShowDialog(for: .pledge) &&
-    AppEnvironment.current.currentUser?.stats.backedProjectsCount == 1
+  return true//PushNotificationDialog.canShowDialog(for: .pledge) //&&
+    //AppEnvironment.current.currentUser?.stats.backedProjectsCount == 0
 }
 
 // Shuffle an array without mutating the input argument.

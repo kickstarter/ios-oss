@@ -41,7 +41,7 @@ extension PushNotificationDialog.Context {
     case .login: return "login title"
     case .message: return "message title"
     case .pledge: return "pledge title"
-    case .save: return "save title"
+    case .save: return "Get reminded about this project?"
     }
   }
 
@@ -50,7 +50,7 @@ extension PushNotificationDialog.Context {
     case .login: return "login message"
     case .message: return "message message"
     case .pledge: return "pledge message"
-    case .save: return "save message"
+    case .save: return "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
     }
   }
 }
