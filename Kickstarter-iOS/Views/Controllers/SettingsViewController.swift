@@ -26,6 +26,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var creatorStackView: UIStackView!
   @IBOutlet fileprivate weak var creatorTips: UILabel!
   @IBOutlet fileprivate weak var creatorTipsButton: UIButton!
+  @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
+  @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
   @IBOutlet fileprivate weak var faqButton: UIButton!
@@ -112,6 +114,10 @@ internal final class SettingsViewController: UIViewController {
                                       action: #selector(cookiePolicyTapped),
                                       for: .touchUpInside)
 
+    self.deleteAccountButton.addTarget(self,
+                                    action: #selector(deleteAccountTapped),
+                                    for: .touchUpInside)
+
     self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
 
     self.faqButton.addTarget(self, action: #selector(faqTapped), for: .touchUpInside)
@@ -196,6 +202,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.creatorTips
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Creator_tips() }
+
+    _ = self.deleteAccountLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in "Delete my Kickstarter Account" }
 
     _ = self.emailFrequencyLabel
       |> UILabel.lens.font .~ .ksr_body()
@@ -586,6 +596,9 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func creatorTipsTapped(_ button: UIButton) {
     self.viewModel.inputs.creatorTipsTapped(selected: !button.isSelected)
+  }
+
+  @objc fileprivate func deleteAccountTapped() {
   }
 
   @objc fileprivate func emailFrequencyTapped() {
