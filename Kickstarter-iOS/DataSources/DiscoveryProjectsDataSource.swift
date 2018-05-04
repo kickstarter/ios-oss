@@ -33,7 +33,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
 
   func load(projects: [Project], params: DiscoveryParams? = nil) {
     self.clearValues(section: Section.projects.rawValue)
-    
+
     projects.forEach { project in
       let value = DiscoveryProjectCellRowValue(project: project, category: params?.category)
 

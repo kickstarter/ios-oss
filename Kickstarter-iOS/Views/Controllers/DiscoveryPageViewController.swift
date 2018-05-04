@@ -29,7 +29,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.tableView.addSubview(self.loadingIndicatorView)
 
     self.tableView.dataSource = self.dataSource
-    
+
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
 
     self.sessionStartedObserver = NotificationCenter.default

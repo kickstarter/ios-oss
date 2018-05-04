@@ -63,7 +63,7 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a project and update when should go to update.
   var goToProjectUpdate: Signal<(Project, Update), NoError> { get }
-  
+
   /// Emits a list of projects that should be shown, and the corresponding filter request params
   var projectsLoaded: Signal<([Project], DiscoveryParams), NoError> { get }
 
@@ -139,13 +139,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) },
       concater: { ($0 + $1).distincts() })
-      
+
     self.projectsLoaded = Signal.combineLatest(
         paginatedProjects,
         self.selectedFilterProperty.signal.skipNil().skipRepeats()
       ).skip { projects, _ in projects.isEmpty }
       .skipRepeats(==).logEvents(identifier: "projectLoaded")
-      
+
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
     self.showEmptyState = Signal.combineLatest(paramsChanged, self.projectsAreLoading, paginatedProjects)
@@ -240,7 +240,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
   }
-  
+
   fileprivate let sortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
   public func configureWith(sort: DiscoveryParams.Sort) {
     self.sortProperty.value = sort

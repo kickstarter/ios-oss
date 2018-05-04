@@ -51,7 +51,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   private var projectSavedObserver: Any?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
-  
+
   internal override func awakeFromNib() {
     if let categoryView = DiscoveryProjectCategoryView.fromNib(nib: Nib.DiscoveryProjectCategoryView) {
       projectCategoryView = categoryView
@@ -70,7 +70,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
       projectCategoriesStackView.addArrangedSubview(projectIsStaffPickView)
     }
-    
+
     self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -88,7 +88,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         notification in
         self?.viewModel.inputs.projectFromNotification(project: notification.userInfo?["project"] as? Project)
       }
-    
+
     super.awakeFromNib()
   }
 
@@ -232,16 +232,16 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.projectIsStaffPickView.rac.hidden = viewModel.outputs.projectIsStaffPickLabelHidden
     self.projectCategoryView.rac.hidden = viewModel.outputs.projectCategoryStackViewHidden
     self.projectCategoriesStackView.rac.hidden = viewModel.outputs.projectCategoryStackViewHidden
-    
+
     projectIsStaffPickView.configureWith(name: Strings.Projects_We_Love(), imageNameString: "icon--small-k")
-    
+
     viewModel.outputs.projectCategoryName
       .signal
       .observeForUI()
       .observeValues { [weak self] (name) in
         self?.projectCategoryView.configureWith(name: name, imageNameString: "icon--compass")
       }
-    
+
     self.viewModel.outputs.metadataIcon
       .observeForUI()
       .observeValues { [weak self] icon in
@@ -300,10 +300,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   internal override func layoutSubviews() {
     super.layoutSubviews()
-    
+
     DispatchQueue.main.async { [weak self] in
       guard let strongSelf = self else { return }
-      
+
       strongSelf.cardView.layer.shadowPath = UIBezierPath.init(rect: strongSelf.cardView.bounds).cgPath
       strongSelf.metadataBackgroundView.layer.shadowPath =
         UIBezierPath.init(rect: strongSelf.metadataBackgroundView.bounds).cgPath

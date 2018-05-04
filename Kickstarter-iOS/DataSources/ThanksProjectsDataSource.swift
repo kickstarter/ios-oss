@@ -7,7 +7,7 @@ internal final class ThanksProjectsDataSource: ValueCellDataSource {
     let values = projects.map { (project) -> DiscoveryProjectCellRowValue in
       return DiscoveryProjectCellRowValue(project: project, category: category)
     }
-    
+
     self.set(values: values, cellClass: DiscoveryPostcardCell.self, inSection: 0)
 
     self.appendRow(

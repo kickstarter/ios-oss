@@ -18,7 +18,7 @@ extension UITableView {
 
 protocol NibLoading {
   associatedtype CustomNibType
-  
+
   static func fromNib(nib: Nib) -> CustomNibType?
 }
 
@@ -30,7 +30,7 @@ extension NibLoading {
         assertionFailure("Nib not found")
         return nil
     }
-    
+
     return view
   }
 }

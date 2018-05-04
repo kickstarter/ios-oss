@@ -13,12 +13,12 @@ import UIKit
 
 @IBDesignable internal final class DiscoveryProjectCategoryView: UIView, NibLoading {
   private let viewModel: DiscoveryProjectCategoryViewModelType = DiscoveryProjectCategoryViewModel()
-  
+
   @IBOutlet weak var blurView: UIImageView!
   @IBOutlet weak var categoryStackView: UIStackView!
   @IBOutlet weak var categoryViewImageView: UIImageView!
   @IBOutlet weak var categoryViewLabel: UILabel!
-  
+
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
@@ -27,22 +27,22 @@ import UIKit
     viewModel.inputs.updateImageString(imageString: imageNameString)
     viewModel.inputs.updateCategoryName(name: name)
   }
-  
+
   override func bindStyles() {
     super.bindStyles()
-    
+
     _ = blurView
       |> UIImageView.lens.image .~ UIImage(named: "white--gradient--layer")
-    
+
     _ = categoryViewLabel
       |> postcardCategoryLabelStyle
   }
-  
+
   internal override func bindViewModel() {
     super.bindViewModel()
-    
+
     categoryViewLabel.rac.text = viewModel.outputs.categoryNameText
-    
+
     viewModel.outputs.categoryImage.signal
       .observeForUI()
       .observeValues { [weak self] (image) in
