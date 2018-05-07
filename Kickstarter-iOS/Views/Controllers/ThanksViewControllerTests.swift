@@ -32,7 +32,8 @@ class ThanksViewControllerTests: TestCase {
     func testThanksViewController() {
       let discoveryEnvelope = DiscoveryEnvelope.template
       let rootCategories = RootCategoriesEnvelope(rootCategories: [Category.art])
-      let mockService = MockService(fetchGraphCategoriesResponse: rootCategories, fetchDiscoveryResponse: discoveryEnvelope)
+      let mockService = MockService(fetchGraphCategoriesResponse: rootCategories,
+                                    fetchDiscoveryResponse: discoveryEnvelope)
 
       combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
         withEnvironment(apiService: mockService, language: language) {
