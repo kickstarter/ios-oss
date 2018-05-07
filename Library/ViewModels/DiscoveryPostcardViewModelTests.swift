@@ -526,7 +526,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectCategoryName.assertValue(KsApi.Category.illustration.name)
     self.projectCategoryViewHidden.assertValue(true)
   }
-  
+
   /* Experiment control should hide stack
     view regardless of whether category/staff pick labels should be shown
  */
@@ -534,11 +534,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let staffPickProject = Project.template
       |> Project.lens.staffPick .~ true
       |> Project.lens.category .~ .illustration
-    
+
     self.vm.inputs.configureWith(project: staffPickProject)
     self.vm.inputs.configureWith(category: .art)
     self.vm.inputs.enableProjectCategoryExperiment(false)
-    
+
     self.projectCategoryStackViewHidden.assertValue(true)
   }
 }

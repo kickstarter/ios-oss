@@ -139,14 +139,14 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) },
       concater: { ($0 + $1).distincts() })
-      
+
       let projects = Signal.merge(
         paginatedProjects,
         self.selectedFilterProperty.signal.skipNil().skipRepeats().mapConst([])
       )
       .skip { $0.isEmpty }
       .skipRepeats(==)
-      
+
       self.projectsLoaded =  self.selectedFilterProperty.signal
         .takePairWhen(projects)
         .map { ($1, $0) }

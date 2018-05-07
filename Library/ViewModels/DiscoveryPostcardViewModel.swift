@@ -38,7 +38,7 @@ public protocol DiscoveryPostcardViewModelInputs {
 
   /// Call when the cell has received a project notification.
   func projectFromNotification(project: Project?)
-  
+
   /// Call to set the project category experiment variable
   func enableProjectCategoryExperiment(_ shouldEnable: Bool)
 
@@ -255,7 +255,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.projectIsStaffPickLabelHidden = configuredProject
       .map { $0.staffPick }.negate()
-    
+
     let projectCategoryViewsHidden = Signal.combineLatest(
       self.projectCategoryViewHidden.signal,
       self.projectIsStaffPickLabelHidden.signal)
@@ -266,10 +266,10 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
         if experimentEnabled {
           return projectCategoryViews.0 && projectCategoryViews.1
         }
-        
+
         return true
       }
-    
+
     self.projectStatsStackViewHidden = self.projectStateStackViewHidden.map(negate)
 
     self.socialImageURL = configuredProject
@@ -401,7 +401,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
-  
+
   fileprivate let enableProjectCategoryExperiment = MutableProperty<Bool>(false)
   public func enableProjectCategoryExperiment(_ shouldEnable: Bool) {
     self.enableProjectCategoryExperiment.value = shouldEnable
