@@ -287,7 +287,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   fileprivate func presentContextualPermissionAlert(_ notification: Notification) {
 
-    guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else { return }
+    guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else {
+      return
+    }
     
     let alert = UIAlertController(title: context.title, message: context.message, preferredStyle: .alert)
 

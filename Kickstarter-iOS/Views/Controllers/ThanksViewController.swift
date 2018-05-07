@@ -134,7 +134,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.viewModel.outputs.postContextualNotification
       .observeForUI()
-      .observeValues { n in
+      .observeValues {
         NotificationCenter.default.post(
           Notification(
             name: .ksr_showNotificationsDialog,
