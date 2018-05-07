@@ -160,7 +160,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       .observeValues(NotificationCenter.default.post)
 
     self.viewModel.outputs.showRecommendations
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] projects, category in
         self?.dataSource.loadData(projects: projects, category: category)
         self?.projectsTableView.reloadData()
