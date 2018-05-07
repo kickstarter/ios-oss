@@ -35,8 +35,8 @@
                     </subviews>
                     <color key="backgroundColor" red="0.97556585073471069" green="0.032535631209611893" blue="0.018401686102151871" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </stackView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QQz-Fr-vLT" customClass="UIImageView">
-                    <rect key="frame" x="360" y="20" width="15" height="647"/>
+                <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="QQz-Fr-vLT" customClass="UIImageView">
+                    <rect key="frame" x="370" y="20" width="5" height="647"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="20" id="o1S-LV-cjj"/>
@@ -45,13 +45,13 @@
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="QQz-Fr-vLT" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="3Ty-NO-Etk"/>
-                <constraint firstItem="NgN-c7-cxN" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="5Rz-ax-21R"/>
-                <constraint firstItem="NgN-c7-cxN" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" constant="-5" id="8c8-pf-rqS"/>
-                <constraint firstItem="NgN-c7-cxN" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Htk-hZ-tU6"/>
-                <constraint firstItem="QQz-Fr-vLT" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="TBh-Vi-Z6T"/>
-                <constraint firstItem="NgN-c7-cxN" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="Vha-MG-uki"/>
-                <constraint firstItem="QQz-Fr-vLT" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="eOe-fO-QFj"/>
+                <constraint firstItem="QQz-Fr-vLT" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" constant="5" id="3Ty-NO-Etk"/>
+                <constraint firstItem="NgN-c7-cxN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5Rz-ax-21R"/>
+                <constraint firstItem="NgN-c7-cxN" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="8c8-pf-rqS"/>
+                <constraint firstItem="NgN-c7-cxN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Htk-hZ-tU6"/>
+                <constraint firstItem="QQz-Fr-vLT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="TBh-Vi-Z6T"/>
+                <constraint firstItem="NgN-c7-cxN" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="Vha-MG-uki"/>
+                <constraint firstItem="QQz-Fr-vLT" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="eOe-fO-QFj"/>
                 <constraint firstItem="QQz-Fr-vLT" firstAttribute="leading" secondItem="NgN-c7-cxN" secondAttribute="trailing" priority="400" id="qv1-qy-5cb"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
