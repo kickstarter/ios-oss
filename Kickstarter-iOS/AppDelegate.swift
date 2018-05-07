@@ -290,7 +290,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else {
       return
     }
-    
+
     let alert = UIAlertController(title: context.title, message: context.message, preferredStyle: .alert)
 
     alert.addAction(
