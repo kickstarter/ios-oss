@@ -65,7 +65,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var goToProjectUpdate: Signal<(Project, Update), NoError> { get }
 
   /// Emits a list of projects that should be shown, and the corresponding filter request params
-  var projectsLoaded: Signal<([Project], DiscoveryParams), NoError> { get }
+  var projectsLoaded: Signal<([Project], DiscoveryParams?), NoError> { get }
 
   /// Emits a boolean that determines if projects are currently loading or not.
   var projectsAreLoading: Signal<Bool, NoError> { get }
@@ -139,12 +139,17 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) },
       concater: { ($0 + $1).distincts() })
-
-    self.projectsLoaded = Signal.combineLatest(
+      
+      let projects = Signal.merge(
         paginatedProjects,
-        self.selectedFilterProperty.signal.skipNil().skipRepeats()
-      ).skip { projects, _ in projects.isEmpty }
-      .skipRepeats(==).logEvents(identifier: "projectLoaded")
+        self.selectedFilterProperty.signal.skipNil().skipRepeats().mapConst([])
+      )
+      .skip { $0.isEmpty }
+      .skipRepeats(==)
+      
+      self.projectsLoaded =  self.selectedFilterProperty.signal
+        .takePairWhen(projects)
+        .map { ($1, $0) }
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
@@ -183,10 +188,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.goToActivityProject = activitySampleTapped
 
-    self.goToProjectPlaylist = self.projectsLoaded
+    self.goToProjectPlaylist = projects
       .takePairWhen(projectCardTapped)
       .map(unpack)
-      .map { projects, _, project, refTag in (project, projects, refTag) }
+      .map { projects, project, refTag in (project, projects, refTag) }
 
     self.goToProjectUpdate = self.tappedActivity.signal.skipNil()
       .filter { $0.category == .update }
@@ -292,7 +297,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public var goToActivityProject: Signal<(Project, RefTag), NoError>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), NoError>
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
-  public let projectsLoaded: Signal<([Project], DiscoveryParams), NoError>
+  public let projectsLoaded: Signal<([Project], DiscoveryParams?), NoError>
   public let projectsAreLoading: Signal<Bool, NoError>
   public let setScrollsToTop: Signal<Bool, NoError>
   public let scrollToProjectRow: Signal<Int, NoError>

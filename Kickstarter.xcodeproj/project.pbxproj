@@ -119,6 +119,7 @@
 		59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */; };
 		59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
+		77556F5420A099B3008CEA57 /* Config+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F1C20A09993008CEA57 /* Config+Helpers.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
 		77758157209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */; };
@@ -1671,6 +1672,7 @@
 		59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCell.swift; sourceTree = "<group>"; };
 		59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModel.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
+		77556F1C20A09993008CEA57 /* Config+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+Helpers.swift"; sourceTree = "<group>"; };
 		7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryView.swift; sourceTree = "<group>"; };
 		7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModel.swift; sourceTree = "<group>"; };
 		7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryProjectCategoryView.xib; sourceTree = "<group>"; };
@@ -3149,6 +3151,7 @@
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7ED1F131E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift */,
 				D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */,
+				77556F1C20A09993008CEA57 /* Config+Helpers.swift */,
 				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
 				A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
@@ -5058,6 +5061,7 @@
 				9D2F4BE01D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */,
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,
 				A721DF651C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
+				77556F5420A099B3008CEA57 /* Config+Helpers.swift in Sources */,
 				A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
 				D764DB341F71958B00DC32AE /* CreatorDigestSettingsViewModel.swift in Sources */,
 				9D9F58191D13243900CE81DE /* ProjectActivitiesViewModel.swift in Sources */,

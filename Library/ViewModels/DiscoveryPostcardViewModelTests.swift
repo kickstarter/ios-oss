@@ -494,13 +494,14 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.fundingProgressContainerViewHidden.assertValues([false, true, false, false, true])
   }
 
-  func testShowsCategoryLabels() {
+  func testShowsCategoryLabelsExperimental() {
     let staffPickProject = Project.template
       |> Project.lens.staffPick .~ true
       |> Project.lens.category .~ .illustration
 
     self.vm.inputs.configureWith(project: staffPickProject)
     self.vm.inputs.configureWith(category: .art)
+    self.vm.inputs.enableProjectCategoryExperiment(true)
 
     self.projectIsStaffPickViewHidden.assertValue(false)
     self.projectCategoryStackViewHidden.assertValue(false)
@@ -508,7 +509,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectCategoryViewHidden.assertValue(false)
   }
 
-  func testHidesCategoryLabel() {
+  func testHidesCategoryLabelExperimental() {
     // Workaround for discrepancy between category ids from graphQL and category ids from the legacy API
     let categoryId = KsApi.Category.illustration.intID
     let illustrationCategory = KsApi.Category(id: String(categoryId!), name: KsApi.Category.illustration.name)
@@ -518,10 +519,26 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: illustrationProject)
     self.vm.inputs.configureWith(category: .illustration)
+    self.vm.inputs.enableProjectCategoryExperiment(true)
 
     self.projectIsStaffPickViewHidden.assertValue(true)
     self.projectCategoryStackViewHidden.assertValue(true)
     self.projectCategoryName.assertValue(KsApi.Category.illustration.name)
     self.projectCategoryViewHidden.assertValue(true)
+  }
+  
+  /* Experiment control should hide stack
+    view regardless of whether category/staff pick labels should be shown
+ */
+  func testHidesCategoryLabelControl() {
+    let staffPickProject = Project.template
+      |> Project.lens.staffPick .~ true
+      |> Project.lens.category .~ .illustration
+    
+    self.vm.inputs.configureWith(project: staffPickProject)
+    self.vm.inputs.configureWith(category: .art)
+    self.vm.inputs.enableProjectCategoryExperiment(false)
+    
+    self.projectCategoryStackViewHidden.assertValue(true)
   }
 }
