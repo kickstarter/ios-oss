@@ -29,8 +29,11 @@ public struct PushNotificationDialog {
   }
 
   static public var titleForDismissal: String {
-    return (AppEnvironment.current.userDefaults.deniedNotificationContexts.count < 2 ||
-            AppEnvironment.current.ubiquitousStore.deniedNotificationContexts.count < 2) ? "Not Now" : "Never"
+    return (
+        AppEnvironment.current.userDefaults.deniedNotificationContexts.count < 2 ||
+        AppEnvironment.current.ubiquitousStore.deniedNotificationContexts.count < 2
+      ) ? Strings.Not_now() : Strings.Never()
+
   }
 }
 
@@ -38,19 +41,19 @@ extension PushNotificationDialog.Context {
 
   public var title: String {
     switch self {
-    case .login: return "login title"
-    case .message: return "message title"
-    case .pledge: return "pledge title"
-    case .save: return "Get reminded about this project?"
+    case .login: return Strings.Stay_up_to_date()
+    case .message: return Strings.Get_notified_about_new_messages()
+    case .pledge: return Strings.Stay_updated_on_this_project()
+    case .save: return Strings.Get_reminded_about_this_project()
     }
   }
 
   public var message: String {
     switch self {
-    case .login: return "login message"
-    case .message: return "message message"
-    case .pledge: return "pledge message"
-    case .save: return "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
+    case .login: return Strings.Receive_project_updates_messages_and_more()
+    case .message: return  Strings.Know_when_creators_and_backers_message_you()
+    case .pledge: return Strings.Receive_project_updates_and_more()
+    case .save: return  Strings.Receive_a_reminder_forty_eight_hours_before_this_project_ends()
     }
   }
 }

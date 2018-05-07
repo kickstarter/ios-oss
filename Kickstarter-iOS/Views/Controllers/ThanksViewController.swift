@@ -135,7 +135,13 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.viewModel.outputs.postContextualNotification
       .observeForUI()
       .observeValues { n in
-        NotificationCenter.default.post(n)
+        NotificationCenter.default.post(
+          Notification(
+            name: .ksr_showNotificationsDialog,
+            userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.pledge,
+                       UserInfoKeys.viewController: self]
+         )
+        )
       }
 
     self.viewModel.outputs.showRatingAlert

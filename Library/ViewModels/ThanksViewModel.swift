@@ -53,7 +53,7 @@ public protocol ThanksViewModelOutputs {
   var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
 
   /// Emits when a user pledges a project for the first time.
-  var postContextualNotification: Signal<Notification, NoError> { get }
+  var postContextualNotification: Signal<(), NoError> { get }
 
   /// Emits when a user updated notification should be posted
   var postUserUpdatedNotification: Signal<Notification, NoError> { get }
@@ -160,10 +160,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.postContextualNotification = self.viewDidLoadProperty.signal
       .filter { shouldShowPledgeDialog() }
-      .mapConst(
-        Notification(name: .ksr_showNotificationsDialog,
-                     userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.pledge])
-    )
 
     self.postUserUpdatedNotification = self.userUpdatedProperty.signal
       .mapConst(Notification(name: .ksr_userUpdated))
@@ -281,7 +277,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let goToAppStoreRating: Signal<String, NoError>
   public let backedProjectText: Signal<NSAttributedString, NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
-  public let postContextualNotification: Signal<Notification, NoError>
+  public let postContextualNotification: Signal<(), NoError>
   public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let showRatingAlert: Signal<(), NoError>
   public let showGamesNewsletterAlert: Signal<(), NoError>
@@ -343,8 +339,8 @@ private func relatedProjects(toProject project: Project,
 }
 
 private func shouldShowPledgeDialog() -> Bool {
-  return true//PushNotificationDialog.canShowDialog(for: .pledge) //&&
-    //AppEnvironment.current.currentUser?.stats.backedProjectsCount == 0
+  return PushNotificationDialog.canShowDialog(for: .pledge) &&
+    AppEnvironment.current.currentUser?.stats.backedProjectsCount == 0
 }
 
 // Shuffle an array without mutating the input argument.

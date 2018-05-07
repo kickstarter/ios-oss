@@ -168,7 +168,7 @@ public protocol AppDelegateViewModelOutputs {
   var setApplicationShortcutItems: Signal<[ShortcutItem], NoError> { get }
 
   /// Emits when an alert should be shown.
-  var showAlert: Signal<PushNotificationDialog.Context, NoError> { get }
+  var showAlert: Signal<Notification, NoError> { get }
 
   /// Emits to synchronize iCloud on app launch.
   var synchronizeUbiquitousStore: Signal<(), NoError> { get }
@@ -278,7 +278,12 @@ AppDelegateViewModelOutputs {
 
     self.showAlert = self.showNotificationDialogProperty.signal.skipNil()
       .takeWhen(authorize)
-      .filter { PushNotificationDialog.canShowDialog(for: $0) }
+      .filter {
+        if let context = $0.userInfo?.values.first as? PushNotificationDialog.Context {
+          return PushNotificationDialog.canShowDialog(for: context)
+        }
+        return false
+    }
 
     self.authorizeForRemoteNotifications = self.didAcceptReceivingRemoteNotificationsProperty.signal
 
@@ -751,10 +756,9 @@ AppDelegateViewModelOutputs {
     self.openRemoteNotificationTappedOkProperty.value = ()
   }
 
-  fileprivate let showNotificationDialogProperty = MutableProperty<PushNotificationDialog.Context?>(nil)
+  fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
   public func showNotificationDialog(notification: Notification) {
-    self.showNotificationDialogProperty.value =
-      notification.userInfo?.values.first as? PushNotificationDialog.Context
+    self.showNotificationDialogProperty.value = notification
   }
 
   fileprivate let userSessionEndedProperty = MutableProperty(())
@@ -808,7 +812,7 @@ AppDelegateViewModelOutputs {
   public let pushTokenSuccessfullyRegistered: Signal<(), NoError>
   public let registerForRemoteNotifications: Signal<(), NoError>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], NoError>
-  public let showAlert: Signal<PushNotificationDialog.Context, NoError>
+  public let showAlert: Signal<Notification, NoError>
   public let synchronizeUbiquitousStore: Signal<(), NoError>
   public let unregisterForRemoteNotifications: Signal<(), NoError>
   public let updateCurrentUserInEnvironment: Signal<User, NoError>

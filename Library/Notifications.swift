@@ -10,6 +10,7 @@ public enum CurrentUserNotifications {
 
 public enum UserInfoKeys {
   public static let context = "UserInfoKeys.context"
+  public static let viewController = "UserInfoKeys.viewController"
 }
 
 extension Notification.Name {

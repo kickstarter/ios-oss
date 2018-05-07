@@ -22,7 +22,7 @@ final class ThanksViewModelTests: TestCase {
   let showGamesNewsletterOptInAlert = TestObserver<String, NoError>()
   let showRecommendations = TestObserver<[Project], NoError>()
   let dismissToRootViewController = TestObserver<(), NoError>()
-  let postContextualNotification = TestObserver<Notification.Name, NoError>()
+  let postContextualNotification = TestObserver<(), NoError>()
   let postUserUpdatedNotification = TestObserver<Notification.Name, NoError>()
   let updateUserInEnvironment = TestObserver<User, NoError>()
   let facebookButtonIsHidden = TestObserver<Bool, NoError>()
@@ -38,7 +38,7 @@ final class ThanksViewModelTests: TestCase {
     vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
     vm.outputs.goToProject.map { $0.1 }.observe(goToProjects.observer)
     vm.outputs.goToProject.map { $0.2 }.observe(goToRefTag.observer)
-    vm.outputs.postContextualNotification.map { $0.name }.observe(postContextualNotification.observer)
+    vm.outputs.postContextualNotification.observe(postContextualNotification.observer)
     vm.outputs.postUserUpdatedNotification.map { $0.name }.observe(postUserUpdatedNotification.observer)
     vm.outputs.showGamesNewsletterAlert.observe(showGamesNewsletterAlert.observer)
     vm.outputs.showGamesNewsletterOptInAlert.observe(showGamesNewsletterOptInAlert.observer)
@@ -328,8 +328,7 @@ final class ThanksViewModelTests: TestCase {
 
     withEnvironment(currentUser: user) {
       vm.inputs.viewDidLoad()
-      postContextualNotification.assertValue(.ksr_showNotificationsDialog,
-                                             "Contextual Notification emits")
+      postContextualNotification.assertDidEmitValue()
     }
   }
 

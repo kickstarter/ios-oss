@@ -38,7 +38,7 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
   fileprivate let registerForRemoteNotifications = TestObserver<(), NoError>()
   fileprivate let setApplicationShortcutItems = TestObserver<[ShortcutItem], NoError>()
-  fileprivate let showAlert = TestObserver<PushNotificationDialog.Context, NoError>()
+  fileprivate let showAlert = TestObserver<Notification, NoError>()
   fileprivate let unregisterForRemoteNotifications = TestObserver<(), NoError>()
   fileprivate let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
   fileprivate let updateConfigInEnvironment = TestObserver<Config, NoError>()
@@ -1462,7 +1462,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.showNotificationDialog(notification: notification)
       self.vm.inputs.notificationAuthorizationStatusReceived(.notDetermined)
 
-      self.showAlert.assertValue(PushNotificationDialog.Context.login)
+      self.showAlert.assertValue(notification)
     }
   }
 

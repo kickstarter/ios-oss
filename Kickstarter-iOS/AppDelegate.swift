@@ -285,8 +285,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     completionHandler(true)
   }
 
-  fileprivate func presentContextualPermissionAlert(_ context: PushNotificationDialog.Context) {
+  fileprivate func presentContextualPermissionAlert(_ notification: Notification) {
 
+    guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else { return }
+    
     let alert = UIAlertController(title: context.title, message: context.message, preferredStyle: .alert)
 
     alert.addAction(
@@ -302,7 +304,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     DispatchQueue.main.async {
-      self.rootTabBarController?.present(alert, animated: true, completion: nil)
+      if let viewController = notification.userInfo?[UserInfoKeys.viewController] as? UIViewController {
+        viewController.present(alert, animated: true, completion: nil)
+      } else {
+        self.rootTabBarController?.present(alert, animated: true, completion: nil)
+      }
     }
   }
 
