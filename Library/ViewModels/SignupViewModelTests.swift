@@ -41,7 +41,7 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
-    self.setWeeklyNewsletterState.assertValues([true], "Selected when view loads.")
+    self.setWeeklyNewsletterState.assertValues([false], "Unselected when view loads.")
     self.isSignupButtonEnabled.assertValues([false], "Disabled when view loads.")
     self.nameTextFieldBecomeFirstResponder
       .assertValueCount(1, "Name field is first responder when view loads.")
@@ -108,20 +108,13 @@ internal final class SignupViewModelTests: TestCase {
     self.passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
   }
 
-  func testSetWeeklyNewsletterStateNonUSUser() {
+  func testSetWeeklyNewsletterStateFalseOnViewDidLoad() {
     self.setWeeklyNewsletterState.assertDidNotEmitValue("Should not emit until view loads")
 
     self.withEnvironment(config: Config.deConfig) {
       self.vm.inputs.viewDidLoad()
       self.setWeeklyNewsletterState.assertValues([false], "False by default for non-US users.")
     }
-  }
-
-  func testSetWeeklyNewsletterUSUser() {
-    self.setWeeklyNewsletterState.assertDidNotEmitValue("Should not emit until view loads.")
-
-    self.vm.inputs.viewDidLoad()
-    self.setWeeklyNewsletterState.assertValues([true], "True by default for users outside EU.")
   }
 
   func testShowError() {
@@ -169,7 +162,7 @@ internal final class SignupViewModelTests: TestCase {
     XCTAssertEqual(["User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle"],
                    self.trackingClient.events)
     XCTAssertEqual([true],
-                   self.trackingClient.properties.flatMap { $0["send_newsletters"] as? Bool })
+                   self.trackingClient.properties.compactMap { $0["send_newsletters"] as? Bool })
 
     self.vm.inputs.weeklyNewsletterChanged(false)
     XCTAssertEqual(
@@ -178,6 +171,6 @@ internal final class SignupViewModelTests: TestCase {
       self.trackingClient.events
     )
     XCTAssertEqual([true, false],
-                   self.trackingClient.properties.flatMap { $0["send_newsletters"] as? Bool })
+                   self.trackingClient.properties.compactMap { $0["send_newsletters"] as? Bool })
   }
 }

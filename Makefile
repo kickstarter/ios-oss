@@ -4,13 +4,15 @@ BUILD_FLAGS = -scheme $(SCHEME) -destination $(DESTINATION)
 SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
-OS ?= 11.2
 RELEASE ?= beta
+IOS_VERSION ?= 11.3
+IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
+OPENTOK_VERSION ?= 2.10.2
 
 ifeq ($(PLATFORM),iOS)
-	DESTINATION ?= 'platform=iOS Simulator,name=iPhone 8,OS=$(OS)'
+	DESTINATION ?= 'platform=iOS Simulator,name=$(IPHONE_NAME),OS=$(IOS_VERSION)'
 endif
 
 XCPRETTY :=
@@ -113,7 +115,6 @@ secrets:
 		|| true; \
 	fi
 
-OPENTOK_VERSION = 2.10.2
 VERSION_FILE = Frameworks/OpenTok/version
 CURRENT_OPENTOK_VERSION = $(shell cat $(VERSION_FILE))
 ifeq ($(CURRENT_OPENTOK_VERSION),)

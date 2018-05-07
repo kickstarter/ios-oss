@@ -101,8 +101,9 @@ internal final class DashboardViewController: UITableViewController {
 
     self.viewModel.outputs.referrerData
       .observeForUI()
-      .observeValues { [weak self] (cumulative, project, referrers) in
-        self?.dataSource.load(cumulative: cumulative, project: project, referrers: referrers)
+      .observeValues { [weak self] (cumulative, project, aggregates, referrers) in
+        self?.dataSource.load(cumulative: cumulative, project: project,
+                              aggregate: aggregates, referrers: referrers)
         self?.tableView.reloadData()
     }
 

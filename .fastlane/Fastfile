@@ -3,15 +3,73 @@ fastlane_version "2.28.3"
 default_platform :ios
 
 platform :ios do
-  before_all do
-    xcversion(version: "9.2")
+  ### MATCH
+
+  desc "Fastlane Match"
+  lane :match_all do
+    setup_circle_ci
+    match_appstore
+    match_development
+    match_enterprise
+  end
+
+  desc "Fastlane Match - App Store"
+  private_lane :match_appstore do
+    match(
+      app_identifier: ["com.kickstarter.drip", "com.kickstarter.kickstarter"],
+      type: "appstore",
+      git_url: "https://github.com/kickstarter/ios-certificates",
+      team_id: "48YBP49Y5N",
+      git_branch: "ksr",
+      username: "appledev@kickstarter.com"
+    )
+  end
+
+  desc "Fastlane Match - Development"
+  private_lane :match_development do
+    match(
+      app_identifier: [
+        "com.kickstarter.drip",
+        "com.kickstarter.drip.debug",
+        "com.kickstarter.kickstarter",
+        "com.kickstarter.kickstarter.alpha",
+        "com.kickstarter.kickstarter.debug"
+      ],
+      type: "development",
+      git_url: "https://github.com/kickstarter/ios-certificates",
+      team_id: "48YBP49Y5N",
+      git_branch: "ksr",
+      username: "appledev@kickstarter.com",
+      force_for_new_devices: true
+    )
+  end
+
+  desc "Fastlane Match - Enterprise"
+  private_lane :match_enterprise do
+    match(
+      app_identifier: [
+        "com.kickstarter.drip.beta", "com.kickstarter.kickstarter.beta"
+      ],
+      type: "enterprise",
+      git_url: "https://github.com/kickstarter/ios-certificates",
+      team_id: "5DAN4UM3NC",
+      git_branch: "ksr-enterprise",
+      username: "appledev@kickstarter.com",
+      force_for_new_devices: true
+    )
   end
 
   ### BETA
 
+  lane :beta_match_gym_hockey do
+    match_all
+    beta_gym
+    beta_hockey
+  end
+
   desc "Build Beta"
   lane :beta_gym do
-    build_app(
+    build_the_app(
       output_name: "KickBeta",
       export_method: "enterprise",
       configuration: "Hockey Beta"
@@ -21,17 +79,24 @@ platform :ios do
   desc "Upload Beta to HockeyApp"
   lane :beta_hockey do
     upload_hockey(
-      ipa: "KickBeta.ipa",
-      dsym: "KickBeta.app.dSYM.zip",
+      ipa: "./output/gym/KickBeta.ipa",
+      dsym: "./output/gym/KickBeta.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_BETA_APP_ID"]
     )
   end
 
   ### PRODUCTION
 
+  lane :itunes_match_gym_deliver_hockey do
+    match_all
+    itunes_gym
+    itunes_deliver
+    itunes_hockey
+  end
+
   desc "Build Production"
   lane :itunes_gym do
-    build_app(
+    build_the_app(
       output_name: "Kickstarter",
       export_method: "app-store",
       configuration: "Release"
@@ -41,8 +106,8 @@ platform :ios do
   desc "Upload Production to HockeyApp"
   lane :itunes_hockey do
     upload_hockey(
-      ipa: "Kickstarter.ipa",
-      dsym: "Kickstarter.app.dSYM.zip",
+      ipa: "./output/gym/Kickstarter.ipa",
+      dsym: "./output/gym/Kickstarter.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_RELEASE_APP_ID"]
     )
   end
@@ -55,7 +120,7 @@ platform :ios do
       username: ENV["ITUNES_CONNECT_ACCOUNT"],
       app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
       app: ENV["ITUNES_APP_ID"],
-      ipa: "Kickstarter.ipa",
+      ipa: "./output/gym/Kickstarter.ipa",
       team_id: ENV["ITUNES_TEAM_ID"],
       skip_screenshots: true,
       skip_metadata: true
@@ -64,7 +129,7 @@ platform :ios do
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
       message: "Successfully uploaded" +
-        " v" + get_version_number(xcodeproj: "Kickstarter.xcodeproj") +
+        " v" + get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS") +
         " (" + get_build_number(xcodeproj: "Kickstarter.xcodeproj") + ")" +
         " of the Kickstarter iOS app to iTunes Connect 🚀"
     )
@@ -74,7 +139,7 @@ platform :ios do
 
   desc "Build Alpha"
   lane :alpha_gym do
-    build_app(
+    build_the_app(
       output_name: "KickAlpha",
       export_method: "enterprise",
       configuration: "Hockey Alpha"
@@ -84,15 +149,15 @@ platform :ios do
   desc "Upload Alpha to HockeyApp"
   lane :alpha_hockey do
     upload_hockey(
-      ipa: "KickAlpha.ipa",
-      dsym: "KickAlpha.app.dSYM.zip",
+      ipa: "./output/gym/KickAlpha.ipa",
+      dsym: "./output/gym/KickAlpha.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_ALPHA_APP_ID"]
     )
   end
 
   ### SHARED
 
-  private_lane :build_app do |options|
+  private_lane :build_the_app do |options|
     gym(
       output_name: options[:output_name],
       export_method: options[:export_method],

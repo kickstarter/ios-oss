@@ -137,6 +137,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
         userDefaults: MockKeyValueStore()
       ) {
         let vc = ActivitiesViewController.instantiate()
+        vc.viewWillAppear(true)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 2360
 

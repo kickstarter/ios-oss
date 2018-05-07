@@ -38,6 +38,7 @@ internal final class SearchViewContollerTests: TestCase {
           apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
 
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
+          controller.viewWillAppear(true)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
           self.scheduler.run()
@@ -87,6 +88,7 @@ internal final class SearchViewContollerTests: TestCase {
         apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
 
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
+          controller.viewWillAppear(true)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
           controller.viewModel.inputs.searchTextChanged("abcdefgh")

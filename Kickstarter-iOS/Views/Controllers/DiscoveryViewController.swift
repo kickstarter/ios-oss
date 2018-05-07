@@ -19,7 +19,7 @@ internal final class DiscoveryViewController: UIViewController {
     super.viewDidLoad()
 
     self.pageViewController = self.childViewControllers
-      .flatMap { $0 as? UIPageViewController }.first
+      .compactMap { $0 as? UIPageViewController }.first
     self.pageViewController.setViewControllers(
       [.init()],
       direction: .forward,
@@ -29,15 +29,15 @@ internal final class DiscoveryViewController: UIViewController {
     self.pageViewController.delegate = self
 
     self.sortPagerViewController = self.childViewControllers
-      .flatMap { $0 as? SortPagerViewController }.first
+      .compactMap { $0 as? SortPagerViewController }.first
     self.sortPagerViewController.delegate = self
 
     self.navigationHeaderViewController = self.childViewControllers
-      .flatMap { $0 as? DiscoveryNavigationHeaderViewController }.first
+      .compactMap { $0 as? DiscoveryNavigationHeaderViewController }.first
     self.navigationHeaderViewController.delegate = self
 
     self.liveStreamDiscoveryViewController = self.childViewControllers
-      .flatMap { $0 as? LiveStreamDiscoveryViewController }.first
+      .compactMap { $0 as? LiveStreamDiscoveryViewController }.first
 
     self.viewModel.inputs.viewDidLoad()
   }
