@@ -61,5 +61,7 @@ private func urlForHelpType(_ helpType: HelpType, baseUrl: URL) -> URL? {
     return baseUrl.appendingPathComponent("terms-of-use")
   case .trust:
     return baseUrl.appendingPathComponent("trust")
+  case .delete:
+    return baseUrl.appendingPathComponent("/profile/destroy")
   }
 }

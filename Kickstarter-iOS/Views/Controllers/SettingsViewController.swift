@@ -375,6 +375,10 @@ internal final class SettingsViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
 
+    self.viewModel.outputs.goToDeleteAccount
+      .observeForControllerAction()
+      .observeValues { [weak self] link in self?.goToDeleteAccount(link: link) }
+
     self.viewModel.outputs.goToManageProjectNotifications
       .observeForControllerAction()
       .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
@@ -477,6 +481,11 @@ internal final class SettingsViewController: UIViewController {
   // swiftlint:enable function_body_length
 
   fileprivate func goToAppStore(link: String) {
+    guard let url = URL(string: link) else { return }
+    UIApplication.shared.openURL(url)
+  }
+
+  fileprivate func goToDeleteAccount(link: String) {
     guard let url = URL(string: link) else { return }
     UIApplication.shared.openURL(url)
   }
@@ -599,6 +608,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @objc fileprivate func deleteAccountTapped() {
+    self.helpViewModel.inputs.helpTypeButtonTapped(.delete)
   }
 
   @objc fileprivate func emailFrequencyTapped() {
