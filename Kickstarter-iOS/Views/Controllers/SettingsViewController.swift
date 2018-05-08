@@ -375,10 +375,6 @@ internal final class SettingsViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
 
-    self.viewModel.outputs.goToDeleteAccount
-      .observeForControllerAction()
-      .observeValues { [weak self] link in self?.goToDeleteAccount(link: link) }
-
     self.viewModel.outputs.goToManageProjectNotifications
       .observeForControllerAction()
       .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
