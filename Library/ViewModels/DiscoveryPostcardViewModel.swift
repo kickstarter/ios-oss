@@ -260,8 +260,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       self.projectCategoryViewHidden.signal,
       self.projectIsStaffPickLabelHidden.signal)
 
-    self.projectCategoryStackViewHidden = projectCategoryViewsHidden
-      .takePairWhen(self.enableProjectCategoryExperiment.signal)
+    self.projectCategoryStackViewHidden = Signal.combineLatest(
+      projectCategoryViewsHidden,
+      self.enableProjectCategoryExperiment.signal)
       .map { projectCategoryViews, experimentEnabled in
         if experimentEnabled {
           return projectCategoryViews.0 && projectCategoryViews.1

@@ -230,7 +230,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
     self.projectIsStaffPickView.rac.hidden = viewModel.outputs.projectIsStaffPickLabelHidden
-    self.projectCategoryView.rac.hidden = viewModel.outputs.projectCategoryStackViewHidden
+    self.projectCategoryView.rac.hidden = viewModel.outputs.projectCategoryViewHidden
     self.projectCategoriesStackView.rac.hidden = viewModel.outputs.projectCategoryStackViewHidden
 
     projectIsStaffPickView.configureWith(name: Strings.Projects_We_Love(), imageNameString: "icon--small-k")
