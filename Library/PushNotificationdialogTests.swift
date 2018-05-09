@@ -2,7 +2,7 @@ import XCTest
 @testable import Library
 @testable import KsApi
 
-class PushNotificationdialogTests: XCTestCase {
+class PushNotificationDialogTests: XCTestCase {
 
   let userDefaults = MockKeyValueStore()
   let ubiquitousStore = MockKeyValueStore()

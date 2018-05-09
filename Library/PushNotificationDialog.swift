@@ -9,12 +9,14 @@ public struct PushNotificationDialog {
     case save
   }
 
+  static private let maxDeniedContexts: Int = 3
+
   static public func canShowDialog(`for` context: PushNotificationDialog.Context) -> Bool {
 
     return (!AppEnvironment.current.userDefaults.deniedNotificationContexts.contains(context.rawValue) &&
-            AppEnvironment.current.userDefaults.deniedNotificationContexts.count < 3) &&
+            AppEnvironment.current.userDefaults.deniedNotificationContexts.count < maxDeniedContexts) &&
            (!AppEnvironment.current.ubiquitousStore.deniedNotificationContexts.contains(context.rawValue) &&
-            AppEnvironment.current.ubiquitousStore.deniedNotificationContexts.count < 3)
+            AppEnvironment.current.ubiquitousStore.deniedNotificationContexts.count < maxDeniedContexts)
   }
 
   static public func didDenyAccess(`for` context: Context) {
@@ -33,7 +35,6 @@ public struct PushNotificationDialog {
         AppEnvironment.current.userDefaults.deniedNotificationContexts.count < 2 ||
         AppEnvironment.current.ubiquitousStore.deniedNotificationContexts.count < 2
       ) ? Strings.Not_now() : Strings.Never()
-
   }
 }
 
