@@ -224,7 +224,7 @@ private func expandableRows(selectedRow: SelectableRow,
                            params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
                            selectableRows: ([rootCategory] + (rootCategory.subcategories?.nodes ?? []))
                             .sorted()
-                            .flatMap { node in
+                            .compactMap { node in
                               return SelectableRow(isSelected: node == selectedRow.params.category,
                                                    params: .defaults
                                                     |> DiscoveryParams.lens.category .~ node)
@@ -304,7 +304,7 @@ private func favorites(selectedRow: SelectableRow, categories: [KsApi.Category])
       .flatMap { category in ([category] + (category.subcategories?.nodes ?? [])) }
 
     let faves: [SelectableRow] = subcategories
-      .flatMap { subcategory in
+      .compactMap { subcategory in
         guard let id = subcategory.intID else {
           return nil
         }

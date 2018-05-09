@@ -130,7 +130,7 @@ extension PKMerchantCapability: Argo.Decodable {
     case let .array(array):
       return .success(
         array
-          .flatMap { PKMerchantCapability.decode($0).value }
+          .compactMap { PKMerchantCapability.decode($0).value }
           .reduce([]) { $0.union($1) }
       )
 

@@ -22,6 +22,7 @@ final class ThanksViewModelTests: TestCase {
   let showGamesNewsletterOptInAlert = TestObserver<String, NoError>()
   let showRecommendations = TestObserver<[Project], NoError>()
   let dismissToRootViewController = TestObserver<(), NoError>()
+  let postContextualNotification = TestObserver<(), NoError>()
   let postUserUpdatedNotification = TestObserver<Notification.Name, NoError>()
   let updateUserInEnvironment = TestObserver<User, NoError>()
   let facebookButtonIsHidden = TestObserver<Bool, NoError>()
@@ -30,19 +31,19 @@ final class ThanksViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
     vm.outputs.backedProjectText.map { $0.string }.observe(backedProjectText.observer)
+    vm.outputs.dismissToRootViewController.observe(dismissToRootViewController.observer)
+    vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
     vm.outputs.goToDiscovery.map { params in params.category ?? Category.filmAndVideo }
       .observe(goToDiscovery.observer)
     vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
     vm.outputs.goToProject.map { $0.1 }.observe(goToProjects.observer)
     vm.outputs.goToProject.map { $0.2 }.observe(goToRefTag.observer)
-    vm.outputs.showRatingAlert.observe(showRatingAlert.observer)
-    vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
+    vm.outputs.postContextualNotification.observe(postContextualNotification.observer)
+    vm.outputs.postUserUpdatedNotification.map { $0.name }.observe(postUserUpdatedNotification.observer)
     vm.outputs.showGamesNewsletterAlert.observe(showGamesNewsletterAlert.observer)
     vm.outputs.showGamesNewsletterOptInAlert.observe(showGamesNewsletterOptInAlert.observer)
+    vm.outputs.showRatingAlert.observe(showRatingAlert.observer)
     vm.outputs.showRecommendations.map { projects, _ in projects }.observe(showRecommendations.observer)
-    vm.outputs.dismissToRootViewController.observe(dismissToRootViewController.observer)
-    vm.outputs.postUserUpdatedNotification.map { $0.name }
-      .observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
   }
 
@@ -318,6 +319,26 @@ final class ThanksViewModelTests: TestCase {
 
       postUserUpdatedNotification.assertValues([Notification.Name.ksr_userUpdated],
                                                "User updated notification emits")
+    }
+  }
+
+  func testContextualNotificationEmitsWhen_userPledgedFirstProject() {
+
+    let user = .template |> User.lens.stats.backedProjectsCount .~ 0
+
+    withEnvironment(currentUser: user) {
+      vm.inputs.viewDidLoad()
+      postContextualNotification.assertDidEmitValue()
+    }
+  }
+
+  func testContextualNotificationDoesNotEmitWhen_userPledgedMoreThanOneProject() {
+
+    let user = .template |> User.lens.stats.backedProjectsCount .~ 2
+
+    withEnvironment(currentUser: user) {
+      vm.inputs.viewDidLoad()
+      postContextualNotification.assertDidNotEmitValue()
     }
   }
 
