@@ -18,11 +18,17 @@ class DiscoveryProjectCategoryViewModelTests: XCTestCase {
       self.vm.outputs.categoryImage.observe(self.categoryImage.observer)
     }
 
-    func testCategoryNameImage() {
-      self.vm.inputs.updateCategoryName(name: "Art")
-      self.vm.inputs.updateImageString(imageString: "icon-some")
+    func testCategoryImageIsNil_IfImageStringIsNilImage() {
+      self.vm.inputs.configureWith(name: "Art", imageNameString: "icon-some")
 
       self.categoryImage.assertValue(nil)
       self.categoryViewLabelText.assertValue("Art")
     }
+  
+  func testCategoryView() {
+    self.vm.inputs.configureWith(name: "Art", imageNameString: "icon--compass")
+
+    self.categoryImage.assertValue(UIImage(named: "icon--compass"))
+    self.categoryViewLabelText.assertValue("Art")
+  }
 }

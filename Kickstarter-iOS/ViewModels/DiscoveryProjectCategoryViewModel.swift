@@ -5,8 +5,7 @@ import ReactiveSwift
 import ReactiveExtensions
 
 public protocol DiscoveryProjectCategoryViewModelInputs {
-  func updateImageString(imageString: String)
-  func updateCategoryName(name: String)
+  func configureWith(name: String, imageNameString: String)
 }
 
 public protocol DiscoveryProjectCategoryViewModelOutputs {
@@ -34,12 +33,10 @@ DiscoveryProjectCategoryViewModelOutputs {
   public var categoryImage: Signal<UIImage?, NoError>
 
   private let categoryNameTextProperty = MutableProperty<String?>(nil)
-  public func updateCategoryName(name: String) {
-    categoryNameTextProperty.value = name
-  }
-
   private let imageStringProperty = MutableProperty<String?>(nil)
-  public func updateImageString(imageString: String) {
-    imageStringProperty.value = imageString
+
+  public func configureWith(name: String, imageNameString: String) {
+    categoryNameTextProperty.value = name
+    imageStringProperty.value = imageNameString
   }
 }

@@ -31,10 +31,7 @@ private enum PostcardMetadataType {
 
 public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
-  func configureWith(project: Project)
-
-  /// Call with the filter category provided to the view controller
-  func configureWith(category: KsApi.Category?)
+  func configureWith(project: Project, category: KsApi.Category?)
 
   /// Call when the cell has received a project notification.
   func projectFromNotification(project: Project?)
@@ -262,7 +259,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.projectCategoryStackViewHidden = Signal.combineLatest(
       projectCategoryViewsHidden,
-      self.enableProjectCategoryExperiment.signal)
+      self.enableProjectCategoryExperimentProperty.signal)
       .map { projectCategoryViews, experimentEnabled in
         if experimentEnabled {
           return projectCategoryViews.0 && projectCategoryViews.1
@@ -373,14 +370,12 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { project, projectState in "\(project.blurb). \(projectState)" }
   }
 
-  fileprivate let categoryProperty = MutableProperty<KsApi.Category?>(nil)
-  public func configureWith(category: KsApi.Category?) {
-    self.categoryProperty.value = category
-  }
-
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
+  fileprivate let categoryProperty = MutableProperty<KsApi.Category?>(nil)
+
+  public func configureWith(project: Project, category: KsApi.Category? = nil) {
     self.projectProperty.value = project
+    self.categoryProperty.value = category
   }
 
   fileprivate let projectFromNotificationProperty = MutableProperty<Project?>(nil)
@@ -403,9 +398,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.userSessionEndedProperty.value = ()
   }
 
-  fileprivate let enableProjectCategoryExperiment = MutableProperty<Bool>(false)
+  fileprivate let enableProjectCategoryExperimentProperty = MutableProperty<Bool>(false)
   public func enableProjectCategoryExperiment(_ shouldEnable: Bool) {
-    self.enableProjectCategoryExperiment.value = shouldEnable
+    self.enableProjectCategoryExperimentProperty.value = shouldEnable
   }
 
   public let backersTitleLabelText: Signal<String, NoError>

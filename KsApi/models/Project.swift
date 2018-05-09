@@ -6,7 +6,6 @@ import Prelude
 public struct Project {
 
   public private(set) var blurb: String
-  public private(set) var staffPick: Bool
   public private(set) var category: Category
   public private(set) var country: Country
   public private(set) var creator: User
@@ -19,6 +18,7 @@ public struct Project {
   public private(set) var photo: Photo
   public private(set) var rewards: [Reward]
   public private(set) var slug: String
+  public private(set) var staffPick: Bool
   public private(set) var state: State
   public private(set) var stats: Stats
   public private(set) var urls: UrlsEnvelope
@@ -161,7 +161,6 @@ extension Project: Argo.Decodable {
   static public func decode(_ json: JSON) -> Decoded<Project> {
     let tmp1 = curry(Project.init)
       <^> json <| "blurb"
-      <*> json <| "staff_pick"
       <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> Project.Country.decode(json)
       <*> json <| "creator"
@@ -177,6 +176,7 @@ extension Project: Argo.Decodable {
       <*> (json <|| "rewards" <|> .success([]))
       <*> json <| "slug"
     return tmp3
+      <*> json <| "staff_pick"
       <*> json <| "state"
       <*> Project.Stats.decode(json)
       <*> json <| "urls"

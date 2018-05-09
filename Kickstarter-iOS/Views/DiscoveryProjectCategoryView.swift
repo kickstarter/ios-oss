@@ -1,11 +1,3 @@
-//
-//  DiscoveryProjectCategoryView.swift
-//  Kickstarter-iOS
-//
-//  Created by Isabel Barrera on 4/30/18.
-//  Copyright © 2018 Kickstarter. All rights reserved.
-//
-
 import KsApi
 import Library
 import Prelude
@@ -24,8 +16,7 @@ import UIKit
   }
 
   internal func configureWith(name: String, imageNameString: String) {
-    viewModel.inputs.updateImageString(imageString: imageNameString)
-    viewModel.inputs.updateCategoryName(name: name)
+    viewModel.inputs.configureWith(name: name, imageNameString: imageNameString)
   }
 
   override func bindStyles() {
