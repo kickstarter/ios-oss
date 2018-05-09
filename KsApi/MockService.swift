@@ -506,6 +506,10 @@ internal struct MockService: ServiceType {
     return SignalProducer(value: VoidEnvelope())
   }
 
+  internal func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+    return SignalProducer(value: VoidEnvelope())
+  }
+
   internal func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope> {
     if let error = followFriendError {
       return SignalProducer(error: error)

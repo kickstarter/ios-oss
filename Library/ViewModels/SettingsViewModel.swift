@@ -12,6 +12,7 @@ public protocol SettingsViewModelInputs {
   func commentsTapped(selected: Bool)
   func creatorTipsTapped(selected: Bool)
   func emailFrequencyTapped()
+  func exportDataTapped()
   func findFriendsTapped()
   func followerTapped(selected: Bool)
   func friendActivityTapped(selected: Bool)
@@ -65,6 +66,7 @@ public protocol SettingsViewModelOutputs {
   var postLikesSelected: Signal<Bool, NoError> { get }
   var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
+  var requestExportData: Signal<(), NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
@@ -272,6 +274,13 @@ SettingsViewModelOutputs {
         return "\(versionString)\(build)"
     }
 
+    self.requestExportData = self.exportDataTappedProperty.signal
+      .flatMap { _ in
+        AppEnvironment.current.apiService.exportData()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+      } .ignoreValues()
+
     self.betaToolsHidden = self.viewDidLoadProperty.signal
       .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }
 
@@ -349,6 +358,10 @@ SettingsViewModelOutputs {
   fileprivate let emailFrequencyTappedProperty = MutableProperty(())
   public func emailFrequencyTapped() {
     self.emailFrequencyTappedProperty.value = ()
+  }
+  fileprivate let exportDataTappedProperty = MutableProperty(())
+  public func exportDataTapped() {
+    self.exportDataTappedProperty.value = ()
   }
   fileprivate let findFriendsTappedProperty = MutableProperty(())
   public func findFriendsTapped() {
@@ -467,6 +480,7 @@ SettingsViewModelOutputs {
   public let postLikesSelected: Signal<Bool, NoError>
   public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
+  public let requestExportData: Signal<(), NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
   public let showOptInPrompt: Signal<String, NoError>
   public let unableToSaveError: Signal<String, NoError>

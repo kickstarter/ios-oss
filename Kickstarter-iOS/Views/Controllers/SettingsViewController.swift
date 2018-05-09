@@ -30,6 +30,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
+  @IBOutlet fileprivate weak var exportDataLabel: UILabel!
+  @IBOutlet fileprivate weak var exportDataButton: UIButton!
   @IBOutlet fileprivate weak var faqButton: UIButton!
   @IBOutlet fileprivate weak var faqLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
@@ -120,6 +122,8 @@ internal final class SettingsViewController: UIViewController {
 
     self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
 
+    self.exportDataButton.addTarget(self, action: #selector(exportDataTapped), for: .touchUpInside)
+
     self.faqButton.addTarget(self, action: #selector(faqTapped), for: .touchUpInside)
 
     self.findFriendsButton.addTarget(self,
@@ -206,6 +210,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.deleteAccountLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in "Delete my Kickstarter Account" }
+
+    _ = self.exportDataLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in "Request my Personal Data" }
 
     _ = self.emailFrequencyLabel
       |> UILabel.lens.font .~ .ksr_body()
@@ -609,6 +617,23 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func emailFrequencyTapped() {
     self.viewModel.inputs.emailFrequencyTapped()
+  }
+
+  @objc fileprivate func exportDataTapped() {
+    let exportDataSheet = UIAlertController(title: nil, message: "export instructions to email",
+                                            preferredStyle: .actionSheet)
+    let startTheRequest = UIAlertAction(title: "Start the request",
+                                        style: .default,
+                                        handler: { [weak self] _ in
+                                          self?.viewModel.inputs.exportDataTapped()
+    })
+
+    let dismiss = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+    exportDataSheet.addAction(startTheRequest)
+    exportDataSheet.addAction(dismiss)
+
+    self.present(exportDataSheet, animated: true, completion: nil)
   }
 
   @objc fileprivate func faqTapped() {

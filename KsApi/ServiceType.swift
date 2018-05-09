@@ -60,6 +60,10 @@ public protocol ServiceType {
   func delete(video: UpdateDraft.Video, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Video, ErrorEnvelope>
 
+  func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope>
+
+  func exportDataState(state: String, downloadUrl: String) -> SignalProducer<VoidEnvelope, ErrorEnvelope>
+
   /// Fetch a page of activities.
   func fetchActivities(count: Int?) -> SignalProducer<ActivityEnvelope, ErrorEnvelope>
 

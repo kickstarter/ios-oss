@@ -102,6 +102,14 @@ public struct Service: ServiceType {
       return request(.deleteVideo(video, fromDraft: draft))
   }
 
+  public func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+    return request(.exportData)
+  }
+
+  public func exportDataState(state: String, downloadUrl: String) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+    return request(.exportDataState(state: state, downloadUrl: downloadUrl))
+  }
+
   public func previewUrl(forDraft draft: UpdateDraft) -> URL? {
     return self.serverConfig.apiBaseUrl
       .appendingPathComponent("/v1/projects/\(draft.update.projectId)/updates/draft/preview")
