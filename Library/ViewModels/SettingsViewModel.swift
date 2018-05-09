@@ -275,11 +275,12 @@ SettingsViewModelOutputs {
     }
 
     self.requestExportData = self.exportDataTappedProperty.signal
-      .flatMap { _ in
+      .switchMap {
         AppEnvironment.current.apiService.exportData()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
-      } .ignoreValues()
+          .demoteErrors()
+      }
+      .ignoreValues()
 
     self.betaToolsHidden = self.viewDidLoadProperty.signal
       .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }

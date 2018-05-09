@@ -1018,6 +1018,10 @@ internal struct MockService: ServiceType {
     return SignalProducer(value: VoidEnvelope())
   }
 
+  func exportDataState(state: String, downloadUrl: String) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+    return SignalProducer(value: VoidEnvelope())
+  }
+
   internal func searchMessages(query: String, project: Project?)
     -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
       return SignalProducer(value:
