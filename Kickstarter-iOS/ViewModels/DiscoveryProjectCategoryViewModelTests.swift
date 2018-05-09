@@ -24,7 +24,7 @@ class DiscoveryProjectCategoryViewModelTests: XCTestCase {
       self.categoryImage.assertValue(nil)
       self.categoryViewLabelText.assertValue("Art")
     }
-  
+
   func testCategoryView() {
     self.vm.inputs.configureWith(name: "Art", imageNameString: "icon--compass")
 
