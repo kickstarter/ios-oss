@@ -53,8 +53,14 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
 
+  /// Call when the app has crashed
+  func crashManagerDidFinishSendingCrashReport()
+
   /// Call after having invoked AppEnvironemt.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
+
+  /// Call when the user taps "OK" from the contextual alert.
+  func didAcceptReceivingRemoteNotifications()
 
   /// Call when the app delegate receives a remote notification.
   func didReceive(remoteNotification notification: [AnyHashable: Any], applicationIsActive: Bool)
@@ -75,14 +81,14 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the user taps "OK" from the notification alert.
   func openRemoteNotificationTappedOk()
 
+  /// Call when the contextual PushNotification dialog should be presented.
+  func showNotificationDialog(notification: Notification)
+
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
 
   /// Call when the controller has received a user session started notification.
   func userSessionStarted()
-
-  /// Call when the app has crashed
-  func crashManagerDidFinishSendingCrashReport()
 }
 
 public protocol AppDelegateViewModelOutputs {
@@ -160,6 +166,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits an array of short cut items to put into the shared application.
   var setApplicationShortcutItems: Signal<[ShortcutItem], NoError> { get }
+
+  /// Emits when an alert should be shown.
+  var showAlert: Signal<Notification, NoError> { get }
 
   /// Emits to synchronize iCloud on app launch.
   var synchronizeUbiquitousStore: Signal<(), NoError> { get }
@@ -242,7 +251,7 @@ AppDelegateViewModelOutputs {
     let applicationIsReadyForRegisteringNotifications = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.userSessionStartedProperty.signal
+      self.showNotificationDialogProperty.signal.ignoreValues()
       )
       .filter { AppEnvironment.current.currentUser != nil }
 
@@ -259,13 +268,24 @@ AppDelegateViewModelOutputs {
       self.registerForRemoteNotifications = applicationIsReadyForRegisteringNotifications
     }
 
-    self.authorizeForRemoteNotifications = applicationIsReadyForRegisteringNotifications
+    let authorize = applicationIsReadyForRegisteringNotifications
         .takeWhen(
           self.notificationAuthorizationStatusProperty.signal
           .skipNil()
           .filter { $0 == .notDetermined }
           .ignoreValues()
       )
+
+    self.showAlert = self.showNotificationDialogProperty.signal.skipNil()
+      .takeWhen(authorize)
+      .filter {
+        if let context = $0.userInfo?.values.first as? PushNotificationDialog.Context {
+          return PushNotificationDialog.canShowDialog(for: context)
+        }
+        return false
+    }
+
+    self.authorizeForRemoteNotifications = self.didAcceptReceivingRemoteNotificationsProperty.signal
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
@@ -701,6 +721,11 @@ AppDelegateViewModelOutputs {
     self.deviceTokenDataProperty.value = data
   }
 
+  fileprivate let didAcceptReceivingRemoteNotificationsProperty = MutableProperty(())
+  public func didAcceptReceivingRemoteNotifications() {
+    self.didAcceptReceivingRemoteNotificationsProperty.value = ()
+  }
+
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
   public func foundRedirectUrl(_ url: URL) {
     self.foundRedirectUrlProperty.value = url
@@ -729,6 +754,11 @@ AppDelegateViewModelOutputs {
   fileprivate let openRemoteNotificationTappedOkProperty = MutableProperty(())
   public func openRemoteNotificationTappedOk() {
     self.openRemoteNotificationTappedOkProperty.value = ()
+  }
+
+  fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
+  public func showNotificationDialog(notification: Notification) {
+    self.showNotificationDialogProperty.value = notification
   }
 
   fileprivate let userSessionEndedProperty = MutableProperty(())
@@ -782,6 +812,7 @@ AppDelegateViewModelOutputs {
   public let pushTokenSuccessfullyRegistered: Signal<(), NoError>
   public let registerForRemoteNotifications: Signal<(), NoError>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], NoError>
+  public let showAlert: Signal<Notification, NoError>
   public let synchronizeUbiquitousStore: Signal<(), NoError>
   public let unregisterForRemoteNotifications: Signal<(), NoError>
   public let updateCurrentUserInEnvironment: Signal<User, NoError>

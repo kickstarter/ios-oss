@@ -146,7 +146,11 @@
 "Keep_up_with_future_live_streams" = "ライブ配信を通知";
 "Kickstarter_if_funded" = "Kickstarter (達成した時)";
 "Kickstarter_is_not_a_store" = "Kickstarterはオンラインストアではありません。";
+<<<<<<< HEAD
 "Know_when_creators_and_backers_message_you" = "クリエイターやバッカ―からメッセージが届いた場合にすぐ分かるように、通知機能を有効にしましょう。";
+=======
+"Know_when_creators_and_backers_message_you" = "Know when creators and backers message you by enabling notifications.";
+>>>>>>> master
 "Learn_more_about_accountability" = "報告義務に関してさらに詳しく";
 "Left_count_left.few" = "残り%{left_count}";
 "Left_count_left.many" = "残り%{left_count}";
@@ -173,7 +177,11 @@
 "Message_creator" = "クリエーターにメッセージする";
 "Message_user_name" = "%{user_name} にメッセージ";
 "Name" = "名前";
+<<<<<<< HEAD
 "Never" = "通知を受けない";
+=======
+"Never" = "Never";
+>>>>>>> master
 "New_pledge_activity" = "新しいプレッジ";
 "No_Results" = "該当結果なし";
 "No_comments_yet" = "まだコメントはありません。";
@@ -184,7 +192,11 @@
 "No_unread_messages" = "未読メッセージはありません";
 "Not_delivered" = "未配送";
 "Not_followed" = "フォローしてない";
+<<<<<<< HEAD
 "Not_now" = "後で";
+=======
+"Not_now" = "Not Now";
+>>>>>>> master
 "Once_you_back_a_project_well_share" = "プロジェクトをバックするとこのスペースにあなたへのオススメを表示します";
 "Only_amount_of_time_left_to_watch_this" = "あと%{amount_of_time} のみ視聴可能";
 "Opens_comments" = "コメントをみる";
@@ -219,7 +231,11 @@
 "Pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "Popular" = "人気";
 "Popular_Projects" = "人気のプロジェクト";
+<<<<<<< HEAD
 "Privacy" = "プライバシー";
+=======
+"Privacy" = "Privacy";
+>>>>>>> master
 "Project_Cancelled" = "プロジェクトが取り消されました。";
 "Project_Suspended" = "中止プロジェクト";
 "Project_cancelled" = "プロジェクトが取り消されました。";
@@ -233,11 +249,19 @@
 "Rate_us_in_the_App_Store" = "Appストアで評価する";
 "Read_more_about_the_campaign" = "キャンペーンの詳細をみる";
 "Read_more_about_the_campaign_arrow" = "キャンペーンの詳細をみる  →";
+<<<<<<< HEAD
 "Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "通知を有効にして、このプロジェクトやその他の保存済みプロジェクトが終了する48時間前にリマインダーを受け取ります。";
 "Receive_project_updates_and_more" = "通知を有効にして、プロジェクトの更新情報等を受け取ります。";
 "Receive_project_updates_messages_and_more" = "通知を有効にして、プロジェクトの更新情報、メッセージ等を受け取ります。";
 "Recent_live_stream" = "最近のライブ配信";
 "Recommendations" = "おすすめ";
+=======
+"Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications.";
+"Receive_project_updates_and_more" = "Receive project updates and more by enabling notifications.";
+"Receive_project_updates_messages_and_more" = "Receive project updates, messages, and more by enabling notifications.";
+"Recent_live_stream" = "最近のライブ配信";
+"Recommendations" = "Recommendations";
+>>>>>>> master
 "Recommended" = "おすすめ";
 "Recommended_For_You" = "あなたへのおすすめ";
 "Recorded_Live" = "配信済ライブ";
@@ -292,8 +316,13 @@
 "Something_went_wrong_please_try_again" = "なにかが間違っています。もう一度お試しください。";
 "Starting_soon" = "もう少しで始まります。";
 "Status" = "ステータス";
+<<<<<<< HEAD
 "Stay_up_to_date" = "最新情報を常に把握したい？";
 "Stay_updated_on_this_project" = "このプロジェクトの最新情報を受け取りたい？";
+=======
+"Stay_up_to_date" = "Stay up to date?";
+"Stay_updated_on_this_project" = "Stay updated on this project?";
+>>>>>>> master
 "Subscribe" = "購読する";
 "Subscribed" = "購読済";
 "Subscribes_to_upcoming_lives_streams" = "ライブ配信を購読";
