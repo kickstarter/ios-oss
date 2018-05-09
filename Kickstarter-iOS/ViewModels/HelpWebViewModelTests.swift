@@ -14,7 +14,7 @@ internal final class HelpWebViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.webViewLoadRequest.map { $0.url?.relativePath ?? "" }
+    self.vm.outputs.webViewLoadRequest.map(urlFrom(request:))
       .observe(self.webViewLoadRequest.observer)
   }
 
@@ -27,25 +27,34 @@ internal final class HelpWebViewModelTests: TestCase {
 
     self.webViewLoadRequest.assertValues(["/cookies"])
 
-    self.vm.inputs.configureWith(helpType: .faq)
+    self.vm.inputs.configureWith(helpType: .helpCenter)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", "/help/faq/kickstarter+basics"])
+    self.webViewLoadRequest.assertValues(["/cookies", "https://help.kickstarter.com/hc"])
 
     self.vm.inputs.configureWith(helpType: .howItWorks)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", "/help/faq/kickstarter+basics", "/about"])
+    self.webViewLoadRequest.assertValues(["/cookies", "https://help.kickstarter.com/hc", "/about"])
 
     self.vm.inputs.configureWith(helpType: .privacy)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", "/help/faq/kickstarter+basics", "/about", "/privacy"])
+    self.webViewLoadRequest.assertValues(
+      ["/cookies", "https://help.kickstarter.com/hc", "/about", "/privacy"]
+    )
 
     self.vm.inputs.configureWith(helpType: .terms)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", "/help/faq/kickstarter+basics", "/about", "/privacy",
+    self.webViewLoadRequest.assertValues(["/cookies", "https://help.kickstarter.com/hc", "/about", "/privacy",
       "/terms-of-use"])
+  }
+
+  private func urlFrom(request: URLRequest) -> String {
+    guard let relativePath = request.url?.relativePath else { return "" }
+
+    let helpCenterUrl = request.url?.absoluteString.components(separatedBy: "?").first ?? ""
+    return relativePath == "/hc" ? helpCenterUrl : relativePath
   }
 }
