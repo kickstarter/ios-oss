@@ -541,7 +541,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     self.projectCategoryStackViewHidden.assertValue(true)
   }
-  
   func testShowNotificationDialogEmits_IfStarredProjectsCountIsZero() {
 
     let project = Project.template
