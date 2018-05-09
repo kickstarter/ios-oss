@@ -153,6 +153,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           }
       }
 
+    self.viewModel.outputs.showAlert
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.presentContextualPermissionAlert($0)
+    }
+
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
@@ -201,6 +207,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     NotificationCenter.default
+      .addObserver(
+        forName: Notification.Name.ksr_showNotificationsDialog, object: nil, queue: nil) { [weak self] in
+        self?.viewModel.inputs.showNotificationDialog(notification: $0)
+    }
+
+    NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
@@ -227,6 +239,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
                    restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
 
     return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
+  }
+
+  func application(_ app: UIApplication, open url: URL,
+                   options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+    guard let sourceApplication = options[.sourceApplication] as? String else { return false }
+
+    return self.viewModel.inputs.applicationOpenUrl(application: app,
+                                                    url: url,
+                                                    sourceApplication: sourceApplication,
+                                                    annotation: options[.annotation] as Any)
   }
 
   func application(_ application: UIApplication,
@@ -273,6 +295,35 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     completionHandler(true)
   }
 
+  fileprivate func presentContextualPermissionAlert(_ notification: Notification) {
+
+    guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else {
+      return
+    }
+
+    let alert = UIAlertController(title: context.title, message: context.message, preferredStyle: .alert)
+
+    alert.addAction(
+      UIAlertAction(title: Strings.project_star_ok(), style: .default) { [weak self] _ in
+        self?.viewModel.inputs.didAcceptReceivingRemoteNotifications()
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: PushNotificationDialog.titleForDismissal, style: .cancel, handler: { _ in
+        PushNotificationDialog.didDenyAccess(for: context)
+      })
+    )
+
+    DispatchQueue.main.async {
+      if let viewController = notification.userInfo?[UserInfoKeys.viewController] as? UIViewController {
+        viewController.present(alert, animated: true, completion: nil)
+      } else {
+        self.rootTabBarController?.present(alert, animated: true, completion: nil)
+      }
+    }
+  }
+
   fileprivate func presentRemoteNotificationAlert(_ message: String) {
     let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
@@ -286,7 +337,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       UIAlertAction(title: Strings.Dismiss(), style: .cancel, handler: nil)
     )
 
-    self.rootTabBarController?.present(alert, animated: true, completion: nil)
+    DispatchQueue.main.async {
+      self.rootTabBarController?.present(alert, animated: true, completion: nil)
+    }
   }
 
   private func goToLiveStream(project: Project,

@@ -267,6 +267,12 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         self?.projectImageView.ksr_setImageWithURL(url)
     }
 
+    self.viewModel.outputs.showNotificationDialog
+      .observeForUI()
+      .observeValues { n in
+        NotificationCenter.default.post(n)
+    }
+
     self.viewModel.outputs.socialImageURL
       .observeForUI()
       .on(event: { [weak self] _ in

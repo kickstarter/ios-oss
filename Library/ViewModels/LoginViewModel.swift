@@ -72,7 +72,7 @@ public protocol LoginViewModelOutputs {
   var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
 
   /// Emits when a login success notification should be posted.
-  var postNotification: Signal<Notification, NoError> { get }
+  var postNotification: Signal<(Notification, Notification), NoError> { get }
 
   /// Emits when a login error has occurred and a message should be displayed.
   var showError: Signal<String, NoError> { get }
@@ -129,7 +129,12 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       .map { (email: $0, password: $1) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: .ksr_sessionStarted))
+      .mapConst(
+        (Notification(name: .ksr_sessionStarted),
+         Notification(name: .ksr_showNotificationsDialog,
+                      userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]))
+      )
+
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
 
@@ -225,7 +230,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public let onePasswordFindLoginForURLString: Signal<String, NoError>
   public let passwordText: Signal<String, NoError>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let postNotification: Signal<Notification, NoError>
+  public let postNotification: Signal<(Notification, Notification), NoError>
   public let showError: Signal<String, NoError>
   public let showResetPassword: Signal<(), NoError>
   public let tfaChallenge: Signal<(email: String, password: String), NoError>

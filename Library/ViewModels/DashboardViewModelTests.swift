@@ -39,9 +39,9 @@ internal final class DashboardViewModelTests: TestCase {
     self.vm.outputs.presentProjectsDrawer.observe(self.presentProjectsDrawer.observer)
     self.vm.outputs.project.observe(self.project.observer)
     self.vm.outputs.referrerData
-      .map { cumulative, _, _ in cumulative }
+      .map { cumulative, _, _, _ in cumulative }
       .observe(self.referrerCumulativeStats.observer)
-    self.vm.outputs.referrerData.map { _, _, stats in stats }.observe(self.referrerStats.observer)
+    self.vm.outputs.referrerData.map { _, _, _, stats in stats }.observe(self.referrerStats.observer)
     self.vm.outputs.rewardData.map { stats, _ in stats }.observe(self.rewardStats.observer)
     self.vm.outputs.videoStats.observe(self.videoStats.observer)
     self.vm.outputs.updateTitleViewData.observe(self.updateTitleViewData.observer)

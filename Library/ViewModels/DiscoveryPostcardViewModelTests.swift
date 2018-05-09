@@ -34,6 +34,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let projectStatsStackViewHidden = TestObserver<Bool, NoError>()
   internal let saveButtonEnabled = TestObserver<Bool, NoError>()
   internal let saveButtonSelected = TestObserver<Bool, NoError>()
+  private let showNotificationDialog = TestObserver<Notification.Name, NoError>()
   internal let socialImageURL = TestObserver<String?, NoError>()
   internal let socialLabelText = TestObserver<String, NoError>()
   internal let socialStackViewHidden = TestObserver<Bool, NoError>()
@@ -72,6 +73,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.projectStatsStackViewHidden.observe(self.projectStatsStackViewHidden.observer)
     self.vm.outputs.saveButtonEnabled.observe(self.saveButtonEnabled.observer)
     self.vm.outputs.saveButtonSelected.observe(self.saveButtonSelected.observer)
+    self.vm.outputs.showNotificationDialog.map { $0.name }.observe(self.showNotificationDialog.observer)
     self.vm.outputs.socialImageURL.map { $0?.absoluteString }.observe(self.socialImageURL.observer)
     self.vm.outputs.socialLabelText.observe(self.socialLabelText.observer)
     self.vm.outputs.socialStackViewHidden.observe(self.socialStackViewHidden.observer)
@@ -538,5 +540,32 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.enableProjectCategoryExperiment(false)
 
     self.projectCategoryStackViewHidden.assertValue(true)
+  }
+  func testShowNotificationDialogEmits_IfStarredProjectsCountIsZero() {
+
+    let project = Project.template
+    let user = User.template |> User.lens.stats.starredProjectsCount .~ 0
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.saveButtonTapped()
+      self.scheduler.advance()
+
+      self.showNotificationDialog.assertDidEmitValue()
+    }
+  }
+
+  func testShowNotificationDialogDoesNotEmits_IfStarredProjectsCountIsNotZero() {
+
+    let project = Project.template
+    let user = User.template |> User.lens.stats.starredProjectsCount .~ 3
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.saveButtonTapped()
+      self.scheduler.advance()
+
+      self.showNotificationDialog.assertDidNotEmitValue()
+    }
   }
 }

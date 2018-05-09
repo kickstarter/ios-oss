@@ -65,6 +65,8 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       action: #selector(sourceButtonTapped),
       for: .touchUpInside
     )
+
+    self.viewModel.inputs.awakeFromNib()
   }
 
     internal override func bindStyles() {
@@ -205,10 +207,10 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     }
   }
 
-  internal func configureWith(value: (ProjectStatsEnvelope.CumulativeStats,
-                                            Project,
-                                            [ProjectStatsEnvelope.ReferrerStats])) {
-    self.viewModel.inputs.configureWith(cumulative: value.0, project: value.1, referrers: value.2)
+  internal func configureWith(value: (ProjectStatsEnvelope.CumulativeStats, Project,
+    ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats])) {
+    self.viewModel.inputs.configureWith(cumulative: value.0, project: value.1,
+                                        referralAggregates: value.2, referrers: value.3 )
   }
 
   @objc fileprivate func backersButtonTapped() {

@@ -9,6 +9,11 @@ extension ProjectStatsEnvelope {
       pledged: 0
     ),
     fundingDistribution: [.template],
+    referralAggregateStats: ProjectStatsEnvelope.ReferralAggregateStats(
+      custom: 0,
+      external: 0,
+      kickstarter: 0
+    ),
     referralDistribution: [.template],
     rewardDistribution: [.template],
     videoStats: .template

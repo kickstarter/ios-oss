@@ -126,10 +126,13 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> a soutenu un projet de <i>théâtre</i>.";
 "Friend_name_launched_a_project" = "%{friend_name} a lancé un projet !";
 "Funding_successful" = "Intégralement financé";
+"Get_notified_about_new_messages" = "Get notified about new messages?";
 "Get_notified_about_this_creators_live_streams" = "Envoyez-moi des notifications au sujet des diffusions en direct de ce créateur.";
+"Get_reminded_about_this_project" = "Get reminded about this project?";
 "Go_to_project_page" = "Accéder à la page de projet";
 "Got_it" = "Super.";
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
+"Help_center" = "Help Center";
 "Home" = "Accueil";
 "How_backers_found_your_project" = "Comment les contributeurs ont découvert votre projet";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
@@ -143,6 +146,7 @@
 "Keep_up_with_future_live_streams" = "Soyez informé des prochaines diffusions en direct";
 "Kickstarter_if_funded" = "Kickstarter (si le projet est financé)";
 "Kickstarter_is_not_a_store" = "Kickstarter n'est pas un magasin.";
+"Know_when_creators_and_backers_message_you" = "Know when creators and backers message you by enabling notifications.";
 "Learn_more_about_accountability" = "En savoir plus sur la responsabilité";
 "Left_count_left.few" = "%{left_count} restantes";
 "Left_count_left.many" = "%{left_count} restantes";
@@ -169,6 +173,7 @@
 "Message_creator" = "Envoyer un message au créateur";
 "Message_user_name" = "Envoyer un message à %{user_name}";
 "Name" = "Nom";
+"Never" = "Never";
 "New_pledge_activity" = "Nouveaux engagements";
 "No_Results" = "Pas de résultats";
 "No_comments_yet" = "Pas de commentaires.";
@@ -179,6 +184,7 @@
 "No_unread_messages" = "Pas de messages non lus";
 "Not_delivered" = "Non distribué";
 "Not_followed" = "Non abonné";
+"Not_now" = "Not Now";
 "Once_you_back_a_project_well_share" = "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici.";
 "Only_amount_of_time_left_to_watch_this" = "Plus que %{amount_of_time} pour regarder cette diffusion.";
 "Opens_comments" = "Ouvre les commentaires.";
@@ -213,6 +219,7 @@
 "Pledged_on_date" = "<b>Engagement</b> du %{pledge_date}";
 "Popular" = "Tendances";
 "Popular_Projects" = "Les tendances";
+"Privacy" = "Privacy";
 "Project_Cancelled" = "Projet annulé.";
 "Project_Suspended" = "Projet suspendu.";
 "Project_cancelled" = "Projet annulé";
@@ -226,7 +233,11 @@
 "Rate_us_in_the_App_Store" = "Évaluez-nous dans l'App Store";
 "Read_more_about_the_campaign" = "En savoir plus sur la campagne";
 "Read_more_about_the_campaign_arrow" = "En savoir plus sur la campagne →";
+"Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications.";
+"Receive_project_updates_and_more" = "Receive project updates and more by enabling notifications.";
+"Receive_project_updates_messages_and_more" = "Receive project updates, messages, and more by enabling notifications.";
 "Recent_live_stream" = "Diffusion en direct récente";
+"Recommendations" = "Recommendations";
 "Recommended" = "Rien que pour vous";
 "Recommended_For_You" = "Rien que pour vous";
 "Recorded_Live" = "Enregistré en direct";
@@ -281,6 +292,8 @@
 "Something_went_wrong_please_try_again" = "Un problème est survenu. Veuillez réessayer.";
 "Starting_soon" = "Bientôt en direct";
 "Status" = "État :";
+"Stay_up_to_date" = "Stay up to date?";
+"Stay_updated_on_this_project" = "Stay updated on this project?";
 "Subscribe" = "S'abonner";
 "Subscribed" = "Abonné ";
 "Subscribes_to_upcoming_lives_streams" = "Abonnement aux diffusions en direct à venir.";
