@@ -126,15 +126,9 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> hat ein <i>Theater-Projekt</i> unterstützt.";
 "Friend_name_launched_a_project" = "%{friend_name} hat ein Projekt veröffentlicht!";
 "Funding_successful" = "Finanzierung erfolgreich";
-<<<<<<< HEAD
 "Get_notified_about_new_messages" = "Möchtest du benachrichtigt werden bei neuen Nachrichten?";
 "Get_notified_about_this_creators_live_streams" = "Benachrichtigungen zu den Live-Streams dieses Projektgründers erhalten.";
 "Get_reminded_about_this_project" = "Möchtest du an dieses Projekt erinnert werden?";
-=======
-"Get_notified_about_new_messages" = "Get notified about new messages?";
-"Get_notified_about_this_creators_live_streams" = "Benachrichtigungen zu den Live-Streams dieses Projektgründers erhalten.";
-"Get_reminded_about_this_project" = "Get reminded about this project?";
->>>>>>> master
 "Go_to_project_page" = "Zu Projektseite";
 "Got_it" = "Alles klar!";
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
@@ -152,11 +146,7 @@
 "Keep_up_with_future_live_streams" = "Zeitnahe Info zu zukünftigen Live-Streams";
 "Kickstarter_if_funded" = "Kickstarter (bei Finanzierung)";
 "Kickstarter_is_not_a_store" = "Kickstarter ist kein Geschäft.";
-<<<<<<< HEAD
 "Know_when_creators_and_backers_message_you" = "Aktiviere Benachrichtigungen, damit du über eingehende Nachrichten von Projektgründern und Unterstützern Bescheid weißt.";
-=======
-"Know_when_creators_and_backers_message_you" = "Know when creators and backers message you by enabling notifications.";
->>>>>>> master
 "Learn_more_about_accountability" = "Weitere Informationen zur Rechenschaftspflicht";
 "Left_count_left.few" = "%{left_count} übrig";
 "Left_count_left.many" = "%{left_count} übrig";
@@ -183,11 +173,7 @@
 "Message_creator" = "Nachricht an Projektgründer senden";
 "Message_user_name" = "Nachricht senden an %{user_name}…";
 "Name" = "Name";
-<<<<<<< HEAD
 "Never" = "Niemals";
-=======
-"Never" = "Never";
->>>>>>> master
 "New_pledge_activity" = "Neue Finanzierungsbeiträge";
 "No_Results" = "Keine Ergebnisse";
 "No_comments_yet" = "Bisher noch keine Kommentare.";
@@ -198,11 +184,7 @@
 "No_unread_messages" = "Keine ungelesenen Nachrichten";
 "Not_delivered" = "Nicht verschickt";
 "Not_followed" = "Nicht abonniert";
-<<<<<<< HEAD
 "Not_now" = "Nicht jetzt";
-=======
-"Not_now" = "Not Now";
->>>>>>> master
 "Once_you_back_a_project_well_share" = "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen.";
 "Only_amount_of_time_left_to_watch_this" = "Nur noch %{amount_of_time} live!";
 "Opens_comments" = "Öffnet Kommentare.";
@@ -251,15 +233,9 @@
 "Rate_us_in_the_App_Store" = "Bewerte uns im App Store!";
 "Read_more_about_the_campaign" = "Mehr über diese Kampagne lesen";
 "Read_more_about_the_campaign_arrow" = "Mehr über diese Kampagne lesen  →";
-<<<<<<< HEAD
 "Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Aktiviere Benachrichtigungen - wir schicken dir eine Erinnerung 48 Stunden, bevor dieses und andere gespeicherte Projekte abläuft.";
 "Receive_project_updates_and_more" = "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen Bescheid.";
 "Receive_project_updates_messages_and_more" = "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen, neue Nachrichten und ähnliches Bescheid.";
-=======
-"Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications.";
-"Receive_project_updates_and_more" = "Receive project updates and more by enabling notifications.";
-"Receive_project_updates_messages_and_more" = "Receive project updates, messages, and more by enabling notifications.";
->>>>>>> master
 "Recent_live_stream" = "Kürzlich gesendeter Live-Stream";
 "Recommendations" = "Empfehlungen";
 "Recommended" = "Empfehlungen";
@@ -316,13 +292,8 @@
 "Something_went_wrong_please_try_again" = "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal.";
 "Starting_soon" = "Beginnt in Kürze";
 "Status" = "Status:";
-<<<<<<< HEAD
 "Stay_up_to_date" = "Möchtest du auf dem Laufenden bleiben?";
 "Stay_updated_on_this_project" = "Möchtest du bei diesem Projekt auf dem Laufenden bleiben?";
-=======
-"Stay_up_to_date" = "Stay up to date?";
-"Stay_updated_on_this_project" = "Stay updated on this project?";
->>>>>>> master
 "Subscribe" = "Abonnieren";
 "Subscribed" = "Abo aktiviert";
 "Subscribes_to_upcoming_lives_streams" = "Zukünftige Live-Streams abonnieren.";
