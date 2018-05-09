@@ -128,6 +128,9 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean that determines if the save button should be selected.
   var saveButtonSelected: Signal<Bool, NoError> { get }
 
+  /// Emits when a contextual Push Notification dialog should be shown.
+  var showNotificationDialog: Signal<Notification, NoError> { get }
+
   /// Emits the URL to be loaded into the social avatar's image view.
   var socialImageURL: Signal<URL?, NoError> { get }
 
@@ -297,8 +300,24 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.notifyDelegateShowLoginTout = loggedOutUserTappedSaveButton
 
+    self.showNotificationDialog = project
+      .takeWhen(self.saveButtonTappedProperty.signal)
+      .filter { _ in shouldShowNotificationDialog() }
+      .on(value: { _ in
+        AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert = true
+        AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert = true
+      })
+      .ignoreValues()
+      .map { _ in
+        Notification(name: .ksr_showNotificationsDialog,
+                     userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.save])
+    }
+
     self.notifyDelegateShowSaveAlert = project
       .takeWhen(self.saveButtonTappedProperty.signal)
+      .filter { _ in
+        shouldShowNotificationDialog() == false
+      }
       .filter { $0.personalization.isStarred == false && !$0.endsIn48Hours(
         today: AppEnvironment.current.dateType.init().date) }
       .filter { _ in
@@ -373,6 +392,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let projectStateTitleLabelColor: Signal<UIColor, NoError>
   public let saveButtonEnabled: Signal<Bool, NoError>
   public let saveButtonSelected: Signal<Bool, NoError>
+  public let showNotificationDialog: Signal<Notification, NoError>
   public let socialImageURL: Signal<URL?, NoError>
   public let socialLabelText: Signal<String, NoError>
   public let socialStackViewHidden: Signal<Bool, NoError>
@@ -405,6 +425,11 @@ private func cache(project: Project, shouldToggle: Bool) -> Bool {
 
   AppEnvironment.current.cache[KSCache.ksr_projectSaved] = cache
   return cache?[project.id] ?? false
+}
+
+private func shouldShowNotificationDialog() -> Bool {
+  return PushNotificationDialog.canShowDialog(for: .save) &&
+    AppEnvironment.current.currentUser?.stats.starredProjectsCount == 0
 }
 
 private func socialText(forFriends friends: [User]) -> String? {

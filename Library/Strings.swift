@@ -2054,6 +2054,23 @@ backers"
     )
   }
   /**
+   "Get notified about new messages?"
+
+   - **es**: "Get notified about new messages?"
+   - **ja**: "Get notified about new messages?"
+   - **de**: "Get notified about new messages?"
+   - **fr**: "Get notified about new messages?"
+   - **en**: "Get notified about new messages?"
+  */
+  public static func Get_notified_about_new_messages() -> String {
+    return localizedString(
+      key: "Get_notified_about_new_messages",
+      defaultValue: "Get notified about new messages?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Get notified about this creator’s live streams"
 
    - **es**: "Recibe notificaciones sobre los Live Streams de este creador"
@@ -2066,6 +2083,23 @@ backers"
     return localizedString(
       key: "Get_notified_about_this_creators_live_streams",
       defaultValue: "Get notified about this creator’s live streams",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Get reminded about this project?"
+
+   - **es**: "Get reminded about this project?"
+   - **ja**: "Get reminded about this project?"
+   - **de**: "Get reminded about this project?"
+   - **fr**: "Get reminded about this project?"
+   - **en**: "Get reminded about this project?"
+  */
+  public static func Get_reminded_about_this_project() -> String {
+    return localizedString(
+      key: "Get_reminded_about_this_project",
+      defaultValue: "Get reminded about this project?",
       count: nil,
       substitutions: [:]
     )
@@ -2117,6 +2151,23 @@ backers"
     return localizedString(
       key: "Got_it_your_survey_response_has_been_submitted",
       defaultValue: "Got it! Your survey response has been submitted.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Help Center"
+
+   - **es**: "Help Center"
+   - **ja**: "Help Center"
+   - **de**: "Hilfe-Center"
+   - **fr**: "Help Center"
+   - **en**: "Help Center"
+  */
+  public static func Help_center() -> String {
+    return localizedString(
+      key: "Help_center",
+      defaultValue: "Help Center",
       count: nil,
       substitutions: [:]
     )
@@ -2340,6 +2391,23 @@ with friends."
     return localizedString(
       key: "Kickstarter_is_not_a_store",
       defaultValue: "Kickstarter is not a store.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Know when creators and backers message you by enabling notifications."
+
+   - **es**: "Know when creators and backers message you by enabling notifications."
+   - **ja**: "Know when creators and backers message you by enabling notifications."
+   - **de**: "Know when creators and backers message you by enabling notifications."
+   - **fr**: "Know when creators and backers message you by enabling notifications."
+   - **en**: "Know when creators and backers message you by enabling notifications."
+  */
+  public static func Know_when_creators_and_backers_message_you() -> String {
+    return localizedString(
+      key: "Know_when_creators_and_backers_message_you",
+      defaultValue: "Know when creators and backers message you by enabling notifications.",
       count: nil,
       substitutions: [:]
     )
@@ -2705,7 +2773,7 @@ with friends."
    "Name"
 
    - **es**: "Nombre"
-   - **ja**: "Name"
+   - **ja**: "名前"
    - **de**: "Name"
    - **fr**: "Nom"
    - **en**: "Name"
@@ -2714,6 +2782,23 @@ with friends."
     return localizedString(
       key: "Name",
       defaultValue: "Name",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Never"
+
+   - **es**: "Never"
+   - **ja**: "Never"
+   - **de**: "Never"
+   - **fr**: "Never"
+   - **en**: "Never"
+  */
+  public static func Never() -> String {
+    return localizedString(
+      key: "Never",
+      defaultValue: "Never",
       count: nil,
       substitutions: [:]
     )
@@ -2887,6 +2972,23 @@ from friends yet."
     return localizedString(
       key: "Not_followed",
       defaultValue: "Not followed",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Not Now"
+
+   - **es**: "Not Now"
+   - **ja**: "Not Now"
+   - **de**: "Not Now"
+   - **fr**: "Not Now"
+   - **en**: "Not Now"
+  */
+  public static func Not_now() -> String {
+    return localizedString(
+      key: "Not_now",
+      defaultValue: "Not Now",
       count: nil,
       substitutions: [:]
     )
@@ -3470,6 +3572,23 @@ from friends yet."
     )
   }
   /**
+   "Privacy"
+
+   - **es**: "Privacy"
+   - **ja**: "Privacy"
+   - **de**: "Datenschutz"
+   - **fr**: "Privacy"
+   - **en**: "Privacy"
+  */
+  public static func Privacy() -> String {
+    return localizedString(
+      key: "Privacy",
+      defaultValue: "Privacy",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project Cancelled."
 
    - **es**: "Proyecto cancelado."
@@ -3694,6 +3813,57 @@ daring ideas."
     )
   }
   /**
+   "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
+
+   - **es**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
+   - **ja**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
+   - **de**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
+   - **fr**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
+   - **en**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
+  */
+  public static func Receive_a_reminder_forty_eight_hours_before_this_project_ends() -> String {
+    return localizedString(
+      key: "Receive_a_reminder_forty_eight_hours_before_this_project_ends",
+      defaultValue: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Receive project updates and more by enabling notifications."
+
+   - **es**: "Receive project updates and more by enabling notifications."
+   - **ja**: "Receive project updates and more by enabling notifications."
+   - **de**: "Receive project updates and more by enabling notifications."
+   - **fr**: "Receive project updates and more by enabling notifications."
+   - **en**: "Receive project updates and more by enabling notifications."
+  */
+  public static func Receive_project_updates_and_more() -> String {
+    return localizedString(
+      key: "Receive_project_updates_and_more",
+      defaultValue: "Receive project updates and more by enabling notifications.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Receive project updates, messages, and more by enabling notifications."
+
+   - **es**: "Receive project updates, messages, and more by enabling notifications."
+   - **ja**: "Receive project updates, messages, and more by enabling notifications."
+   - **de**: "Receive project updates, messages, and more by enabling notifications."
+   - **fr**: "Receive project updates, messages, and more by enabling notifications."
+   - **en**: "Receive project updates, messages, and more by enabling notifications."
+  */
+  public static func Receive_project_updates_messages_and_more() -> String {
+    return localizedString(
+      key: "Receive_project_updates_messages_and_more",
+      defaultValue: "Receive project updates, messages, and more by enabling notifications.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Recent live stream"
 
    - **es**: "Live-Stream reciente"
@@ -3706,6 +3876,23 @@ daring ideas."
     return localizedString(
       key: "Recent_live_stream",
       defaultValue: "Recent live stream",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Recommendations"
+
+   - **es**: "Recommendations"
+   - **ja**: "Recommendations"
+   - **de**: "Empfehlungen"
+   - **fr**: "Recommendations"
+   - **en**: "Recommendations"
+  */
+  public static func Recommendations() -> String {
+    return localizedString(
+      key: "Recommendations",
+      defaultValue: "Recommendations",
       count: nil,
       substitutions: [:]
     )
@@ -4422,6 +4609,40 @@ catch your eye?"
     return localizedString(
       key: "Status",
       defaultValue: "Status",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Stay up to date?"
+
+   - **es**: "Stay up to date?"
+   - **ja**: "Stay up to date?"
+   - **de**: "Stay up to date?"
+   - **fr**: "Stay up to date?"
+   - **en**: "Stay up to date?"
+  */
+  public static func Stay_up_to_date() -> String {
+    return localizedString(
+      key: "Stay_up_to_date",
+      defaultValue: "Stay up to date?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Stay updated on this project?"
+
+   - **es**: "Stay updated on this project?"
+   - **ja**: "Stay updated on this project?"
+   - **de**: "Stay updated on this project?"
+   - **fr**: "Stay updated on this project?"
+   - **en**: "Stay updated on this project?"
+  */
+  public static func Stay_updated_on_this_project() -> String {
+    return localizedString(
+      key: "Stay_updated_on_this_project",
+      defaultValue: "Stay updated on this project?",
       count: nil,
       substitutions: [:]
     )
