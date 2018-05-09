@@ -541,13 +541,14 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     self.projectCategoryStackViewHidden.assertValue(true)
   }
+  
   func testShowNotificationDialogEmits_IfStarredProjectsCountIsZero() {
 
     let project = Project.template
     let user = User.template |> User.lens.stats.starredProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.configureWith(project: project, category: nil)
       self.vm.inputs.saveButtonTapped()
       self.scheduler.advance()
 
@@ -561,7 +562,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let user = User.template |> User.lens.stats.starredProjectsCount .~ 3
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.configureWith(project: project, category: nil)
       self.vm.inputs.saveButtonTapped()
       self.scheduler.advance()
 
