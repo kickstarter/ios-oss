@@ -1,4 +1,5 @@
 @testable import Library
+@testable import KsApi
 @testable import Kickstarter_Framework
 @testable import ReactiveExtensions_TestHelpers
 import Prelude
@@ -8,6 +9,8 @@ import XCTest
 
 internal final class HelpWebViewModelTests: TestCase {
   fileprivate let vm: HelpWebViewModelType = HelpWebViewModel()
+
+  private let helpCenterUrl = AppEnvironment.current.apiService.serverConfig.helpCenterUrl
 
   fileprivate let webViewLoadRequest = TestObserver<String, NoError>()
 
@@ -19,6 +22,7 @@ internal final class HelpWebViewModelTests: TestCase {
   }
 
   func testWebRequestURLString() {
+
     self.vm.inputs.configureWith(helpType: .cookie)
 
     self.webViewLoadRequest.assertValueCount(0)
@@ -30,31 +34,32 @@ internal final class HelpWebViewModelTests: TestCase {
     self.vm.inputs.configureWith(helpType: .helpCenter)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", "https://help.kickstarter.com/hc"])
+    self.webViewLoadRequest.assertValues(["/cookies", helpCenterUrl.absoluteString])
 
     self.vm.inputs.configureWith(helpType: .howItWorks)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", "https://help.kickstarter.com/hc", "/about"])
+    self.webViewLoadRequest.assertValues(["/cookies", helpCenterUrl.absoluteString, "/about"])
 
     self.vm.inputs.configureWith(helpType: .privacy)
     self.vm.inputs.viewDidLoad()
 
     self.webViewLoadRequest.assertValues(
-      ["/cookies", "https://help.kickstarter.com/hc", "/about", "/privacy"]
+      ["/cookies", helpCenterUrl.absoluteString, "/about", "/privacy"]
     )
 
     self.vm.inputs.configureWith(helpType: .terms)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", "https://help.kickstarter.com/hc", "/about", "/privacy",
+    self.webViewLoadRequest.assertValues(["/cookies", helpCenterUrl.absoluteString, "/about", "/privacy",
       "/terms-of-use"])
   }
 
   private func urlFrom(request: URLRequest) -> String {
-    guard let relativePath = request.url?.relativePath else { return "" }
 
-    let helpCenterUrl = request.url?.absoluteString.components(separatedBy: "?").first ?? ""
-    return relativePath == "/hc" ? helpCenterUrl : relativePath
+    guard let url = request.url else { return "" }
+
+    let relativePath = request.url?.relativePath ?? ""
+    return url.absoluteString.contains("help") ? helpCenterUrl.absoluteString : relativePath
   }
 }
