@@ -50,7 +50,8 @@ class ThanksViewControllerTests: TestCase {
     let mockService = MockService(fetchGraphCategoriesResponse: rootCategories,
                                   fetchDiscoveryResponse: discoveryEnvelope)
     let config = AppEnvironment.current.config ?? Config.template
-      |> Config.lens.abExperiments .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
+      |> Config.lens.abExperiments
+      .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, config: config, language: language) {
