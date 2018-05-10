@@ -73,8 +73,7 @@ extension User {
         newsletters: $1.newsletters, notifications: $0,
         optedOutOfRecommendations: $1.optedOutOfRecommendations, social: $1.social, stats: $1.stats) }
     )
-    
-    
+
     public static let optedOutOfRecommendations = Lens<User, Bool?>(
       view: { $0.optedOutOfRecommendations },
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,

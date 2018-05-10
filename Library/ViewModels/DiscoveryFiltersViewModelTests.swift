@@ -268,18 +268,19 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     )
     self.loadTopRowsInitialId.assertValues([nil])
   }
-  
+
   func testTopFilters_Logged_In_OptedOutOfRecommendations() {
     AppEnvironment.login(
-      AccessTokenEnvelope(accessToken: "deadbeef", user: .template |> User.lens.optedOutOfRecommendations .~ true)
+      AccessTokenEnvelope(accessToken: "deadbeef", user: .template
+        |> User.lens.optedOutOfRecommendations .~ true)
     )
-    
+
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear()
-    
+
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
-    
+
     self.loadTopRows.assertValues(
       [
         [
