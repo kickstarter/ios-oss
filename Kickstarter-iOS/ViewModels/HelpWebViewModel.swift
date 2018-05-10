@@ -51,8 +51,8 @@ private func urlForHelpType(_ helpType: HelpType, baseUrl: URL) -> URL? {
     return baseUrl.appendingPathComponent("cookies")
   case .contact:
     return nil
-  case .faq:
-    return baseUrl.appendingPathComponent("help/faq/kickstarter+basics")
+  case .helpCenter:
+    return AppEnvironment.current.apiService.serverConfig.helpCenterUrl
   case .howItWorks:
     return baseUrl.appendingPathComponent("about")
   case .privacy:
