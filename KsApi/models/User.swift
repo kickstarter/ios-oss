@@ -5,7 +5,6 @@ import Runes
 public struct User {
   public let avatar: Avatar
   public let facebookConnected: Bool?
-  public let generateRecommendations: Bool?
   public let id: Int
   public let isFriend: Bool?
   public let liveAuthToken: String?
@@ -13,6 +12,7 @@ public struct User {
   public let name: String
   public let newsletters: NewsletterSubscriptions
   public let notifications: Notifications
+  public let optedOutOfRecommendations: Bool?
   public let social: Bool?
   public let stats: Stats
 
@@ -78,7 +78,6 @@ extension User: Argo.Decodable {
     let tmp1 = pure(curry(User.init))
       <*> json <| "avatar"
       <*> json <|? "facebook_connected"
-      <*> json <|? "generate_recommendations"
       <*> json <| "id"
     let tmp2 = tmp1
       <*> json <|? "is_friend"
@@ -88,6 +87,7 @@ extension User: Argo.Decodable {
       <*> json <| "name"
       <*> User.NewsletterSubscriptions.decode(json)
       <*> User.Notifications.decode(json)
+      <*> json <|? "opted_out_of_recommendations"
     return tmp3
       <*> json <|? "social"
       <*> User.Stats.decode(json)

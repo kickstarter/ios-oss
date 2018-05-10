@@ -291,8 +291,8 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
     filters.append(.defaults |> DiscoveryParams.lens.backed .~ false)
     filters.append(.defaults |> DiscoveryParams.lens.social .~ true)
 
-    if let recommendations = user?.generateRecommendations {
-      filters.append(.defaults |> DiscoveryParams.lens.recommended .~ recommendations)
+    if user?.optedOutOfRecommendations == false {
+      filters.append(.defaults |> DiscoveryParams.lens.recommended .~ true)
     }
 
   return filters

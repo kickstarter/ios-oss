@@ -5,7 +5,6 @@ extension User {
   internal static let template = User(
     avatar: .template,
     facebookConnected: nil,
-    generateRecommendations: nil,
     id: 1,
     isFriend: nil,
     liveAuthToken: "deadbeef",
@@ -13,6 +12,7 @@ extension User {
     name: "Blob",
     newsletters: .template,
     notifications: .template,
+    optedOutOfRecommendations: nil,
     social: nil,
     stats: .template
   )
