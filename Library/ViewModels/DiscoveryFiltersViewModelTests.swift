@@ -261,7 +261,34 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
           liveStreamRow,
           starredRow,
           recommendedRow,
-          socialRow,
+          socialRow
+        ]
+      ],
+      "The top filter rows load immediately with the first one selected."
+    )
+    self.loadTopRowsInitialId.assertValues([nil])
+  }
+  
+  func testTopFilters_Logged_In_OptedOutOfRecommendations() {
+    AppEnvironment.login(
+      AccessTokenEnvelope(accessToken: "deadbeef", user: .template |> User.lens.optedOutOfRecommendations .~ true)
+    )
+    
+    self.vm.inputs.configureWith(selectedRow: allProjectsRow)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidAppear()
+    
+    self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+    
+    self.loadTopRows.assertValues(
+      [
+        [
+          allProjectsRow
+            |> SelectableRow.lens.isSelected .~ true,
+          staffPicksRow,
+          liveStreamRow,
+          starredRow,
+          socialRow
         ]
       ],
       "The top filter rows load immediately with the first one selected."
