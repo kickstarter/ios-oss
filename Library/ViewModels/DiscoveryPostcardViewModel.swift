@@ -31,10 +31,13 @@ private enum PostcardMetadataType {
 
 public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
-  func configureWith(project: Project)
+  func configureWith(project: Project, category: KsApi.Category?)
 
   /// Call when the cell has received a project notification.
   func projectFromNotification(project: Project?)
+
+  /// Call to set the project category experiment variable
+  func enableProjectCategoryExperiment(_ shouldEnable: Bool)
 
   /// Call when save button is tapped.
   func saveButtonTapped()
@@ -118,6 +121,18 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits the text for the project state title label.
   var projectStateTitleLabelText: Signal<String, NoError> { get }
+
+  /// Emits a string for the project category label
+  var projectCategoryName: Signal<String, NoError> { get }
+
+  /// Emits a boolean that determines if the "Projects We Love" label should be hidden
+  var projectIsStaffPickLabelHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean that determines if the project categories should be hidden.
+  var projectCategoryViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean that determines if the category stack view should be hidden.
+  var projectCategoryStackViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits a boolean that determines if the project stats should be hidden.
   var projectStatsStackViewHidden: Signal<Bool, NoError> { get }
@@ -221,6 +236,40 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.projectStateTitleLabelText = configuredProject
       .map(fundingStatusText(forProject:))
+
+    self.projectCategoryName = configuredProject
+      .map { $0.category.name }
+
+    self.projectCategoryViewHidden = Signal.combineLatest(
+      self.projectProperty.signal.skipNil(),
+      self.categoryProperty.signal.skipNil()
+      ).map { (project, category) in
+        // if we are in a subcategory, compare categories
+        if !category.isRoot {
+          return Int(project.category.id) == category.intID
+        }
+
+        // otherwise, always show category
+        return false
+      }
+
+    self.projectIsStaffPickLabelHidden = configuredProject
+      .map { $0.staffPick }.negate()
+
+    let projectCategoryViewsHidden = Signal.combineLatest(
+      self.projectCategoryViewHidden.signal,
+      self.projectIsStaffPickLabelHidden.signal)
+
+    self.projectCategoryStackViewHidden = Signal.combineLatest(
+      projectCategoryViewsHidden,
+      self.enableProjectCategoryExperimentProperty.signal)
+      .map { projectCategoryViews, experimentEnabled in
+        if experimentEnabled {
+          return projectCategoryViews.0 && projectCategoryViews.1
+        }
+
+        return true
+      }
 
     self.projectStatsStackViewHidden = self.projectStateStackViewHidden.map(negate)
 
@@ -341,8 +390,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
+  fileprivate let categoryProperty = MutableProperty<KsApi.Category?>(nil)
+
+  public func configureWith(project: Project, category: KsApi.Category? = nil) {
     self.projectProperty.value = project
+    self.categoryProperty.value = category
   }
 
   fileprivate let projectFromNotificationProperty = MutableProperty<Project?>(nil)
@@ -363,6 +415,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   fileprivate let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
+  }
+
+  fileprivate let enableProjectCategoryExperimentProperty = MutableProperty<Bool>(false)
+  public func enableProjectCategoryExperiment(_ shouldEnable: Bool) {
+    self.enableProjectCategoryExperimentProperty.value = shouldEnable
   }
 
   public let backersTitleLabelText: Signal<String, NoError>
@@ -389,6 +446,10 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let projectStatsStackViewHidden: Signal<Bool, NoError>
   public let projectStateSubtitleLabelText: Signal<String, NoError>
   public let projectStateTitleLabelText: Signal<String, NoError>
+  public var projectCategoryName: Signal<String, NoError>
+  public let projectIsStaffPickLabelHidden: Signal<Bool, NoError>
+  public var projectCategoryViewHidden: Signal<Bool, NoError>
+  public var projectCategoryStackViewHidden: Signal<Bool, NoError>
   public let projectStateTitleLabelColor: Signal<UIColor, NoError>
   public let saveButtonEnabled: Signal<Bool, NoError>
   public let saveButtonSelected: Signal<Bool, NoError>

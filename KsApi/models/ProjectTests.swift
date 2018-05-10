@@ -57,6 +57,7 @@ final class ProjectTests: XCTestCase {
       "id": 1,
       "name": "Project",
       "blurb": "The project blurb",
+      "staff_pick": false,
       "pledged": 1_000,
       "goal": 2_000,
       "category": [
@@ -141,6 +142,7 @@ final class ProjectTests: XCTestCase {
       "id": 1,
       "name": "Project",
       "blurb": "The project blurb",
+      "staff_pick": false,
       "pledged": 1_000,
       "goal": 2_000,
       "category": [

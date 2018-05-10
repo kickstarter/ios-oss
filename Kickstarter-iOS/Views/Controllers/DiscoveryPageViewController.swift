@@ -30,6 +30,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
 
+    self.tableView.register(nib: Nib.DiscoveryPostcardCell)
+
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -119,19 +121,21 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.goToProjectPlaylist
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.goTo(project: $0, initialPlaylist: $1, refTag: $2) }
+      .observeValues { [weak self] in
+        self?.goTo(project: $0, initialPlaylist: $1, refTag: $2)
+      }
 
     self.viewModel.outputs.goToProjectUpdate
       .observeForControllerAction()
       .observeValues { [weak self] project, update in self?.goTo(project: project, update: update) }
 
-    self.viewModel.outputs.projects
+    self.viewModel.outputs.projectsLoaded
       .observeForUI()
-      .observeValues { [weak self] projects in
-        self?.dataSource.load(projects: projects)
+      .observeValues { [weak self] projects, params in
+        self?.dataSource.load(projects: projects, params: params)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
-    }
+      }
 
     self.viewModel.outputs.showOnboarding
       .observeForUI()
