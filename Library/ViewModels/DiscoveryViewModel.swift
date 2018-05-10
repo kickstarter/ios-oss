@@ -74,15 +74,15 @@ private func initialParam() -> DiscoveryParams {
     $0.key == Experiment.Name.defaultToRecs.rawValue
   }
 
-//  if AppEnvironment.current.currentUser != nil && recExperiment?.first?.value ==
-//    Experiment.Variant.experimental.rawValue {
-//    return DiscoveryParams.defaults
-//      |> DiscoveryParams.lens.backed .~ false
-//      |> DiscoveryParams.lens.recommended .~ true
-//  } else {
+  if AppEnvironment.current.currentUser != nil && recExperiment?.first?.value ==
+    Experiment.Variant.experimental.rawValue {
+    return DiscoveryParams.defaults
+      |> DiscoveryParams.lens.backed .~ false
+      |> DiscoveryParams.lens.recommended .~ true
+  } else {
     return DiscoveryParams.defaults
       |> DiscoveryParams.lens.includePOTD .~ true
-//  }
+  }
 }
 
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
