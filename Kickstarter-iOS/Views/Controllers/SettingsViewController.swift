@@ -28,8 +28,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var creatorTipsButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
-  @IBOutlet fileprivate weak var faqButton: UIButton!
-  @IBOutlet fileprivate weak var faqLabel: UILabel!
+  @IBOutlet fileprivate weak var helpCenterButton: UIButton!
+  @IBOutlet fileprivate weak var helpCenterLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
@@ -110,11 +110,11 @@ internal final class SettingsViewController: UIViewController {
 
     self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
 
-    self.faqButton.addTarget(self, action: #selector(faqTapped), for: .touchUpInside)
-
     self.findFriendsButton.addTarget(self,
                                      action: #selector(findFriendsTapped),
                                      for: .touchUpInside)
+
+    self.helpCenterButton.addTarget(self, action: #selector(helpCenterTapped), for: .touchUpInside)
 
     self.howKsrWorksButton.addTarget(self,
                                      action: #selector(howKickstarterWorksTapped),
@@ -202,14 +202,6 @@ internal final class SettingsViewController: UIViewController {
         .~ image(named: "email-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
-    _ = self.faqButton
-      |> settingsSectionButtonStyle
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_faq() }
-
-    _ = self.faqLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_faq() }
-
     _ = self.findFriendsButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_social_find_friends() }
@@ -225,6 +217,14 @@ internal final class SettingsViewController: UIViewController {
     _ = self.happeningNowLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_happening() }
+
+    _ = self.helpCenterButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Help_center() }
+
+    _ = self.helpCenterLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Help_center() }
 
     _ = self.helpTitleLabel
       |> settingsTitleLabelStyle
@@ -572,8 +572,8 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.emailFrequencyTapped()
   }
 
-  @objc fileprivate func faqTapped() {
-    self.helpViewModel.inputs.helpTypeButtonTapped(.faq)
+  @objc fileprivate func helpCenterTapped() {
+    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
   }
 
   @objc fileprivate func findFriendsTapped() {

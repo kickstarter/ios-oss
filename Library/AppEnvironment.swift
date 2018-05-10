@@ -238,7 +238,8 @@ public struct AppEnvironment {
           webBaseUrl: service.serverConfig.webBaseUrl,
           apiClientAuth: ClientAuth(clientId: clientId),
           basicHTTPAuth: service.serverConfig.basicHTTPAuth,
-          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl
+          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl,
+          helpCenterUrl: service.serverConfig.helpCenterUrl
         ),
         oauthToken: service.oauthToken,
         language: current.language.rawValue,
@@ -258,7 +259,8 @@ public struct AppEnvironment {
           webBaseUrl: webBaseUrl,
           apiClientAuth: service.serverConfig.apiClientAuth,
           basicHTTPAuth: service.serverConfig.basicHTTPAuth,
-          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl
+          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl,
+          helpCenterUrl: service.serverConfig.helpCenterUrl
         ),
         oauthToken: service.oauthToken,
         language: current.language.rawValue,
@@ -276,7 +278,8 @@ public struct AppEnvironment {
           webBaseUrl: service.serverConfig.webBaseUrl,
           apiClientAuth: service.serverConfig.apiClientAuth,
           basicHTTPAuth: BasicHTTPAuth(username: username, password: password),
-          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl
+          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl,
+          helpCenterUrl: service.serverConfig.helpCenterUrl
         ),
         oauthToken: service.oauthToken,
         language: current.language.rawValue,

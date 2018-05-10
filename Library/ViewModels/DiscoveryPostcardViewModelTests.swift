@@ -5,6 +5,7 @@ import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
+/* swiftlint:disable force_unwrapping */
 internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let vm = DiscoveryPostcardViewModel()
   internal let backersTitleLabelText = TestObserver<String, NoError>()
@@ -37,6 +38,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let socialImageURL = TestObserver<String?, NoError>()
   internal let socialLabelText = TestObserver<String, NoError>()
   internal let socialStackViewHidden = TestObserver<Bool, NoError>()
+  internal let projectCategoryName = TestObserver<String, NoError>()
+  internal let projectCategoryViewHidden = TestObserver<Bool, NoError>()
+  internal let projectCategoryStackViewHidden = TestObserver<Bool, NoError>()
+  internal let projectIsStaffPickViewHidden = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -72,6 +77,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.socialImageURL.map { $0?.absoluteString }.observe(self.socialImageURL.observer)
     self.vm.outputs.socialLabelText.observe(self.socialLabelText.observer)
     self.vm.outputs.socialStackViewHidden.observe(self.socialStackViewHidden.observer)
+
+    self.vm.outputs.projectCategoryName.observe(self.projectCategoryName.observer)
+    self.vm.outputs.projectCategoryViewHidden.observe(self.projectCategoryViewHidden.observer)
+    self.vm.outputs.projectCategoryStackViewHidden.observe(self.projectCategoryStackViewHidden.observer)
+    self.vm.outputs.projectIsStaffPickLabelHidden.observe(self.projectIsStaffPickViewHidden.observer)
   }
 
   func testCellAccessibility() {
@@ -79,7 +89,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.name .~ "Hammocks for All"
       |> Project.lens.blurb .~ "Let's make hammocks universal for all creatures!"
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, category: nil)
     self.cellAccessibilityLabel.assertValues([project.name])
     self.cellAccessibilityValue.assertValues([project.blurb + ". "])
   }
@@ -90,7 +100,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.blurb .~ "Let's make hammocks universal for all creatures!"
       |> Project.lens.state .~ .canceled
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, category: nil)
     self.cellAccessibilityLabel.assertValues([project.name])
     self.cellAccessibilityValue.assertValues([project.blurb + ". " + "Project cancelled"])
   }
@@ -98,7 +108,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   func testSaveAlertNotification() {
     let project = .template |> Project.lens.personalization.isStarred .~ false
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, category: nil)
     self.vm.inputs.saveButtonTapped()
     self.scheduler.advance()
     self.notifyDelegateShowSaveAlert.assertValueCount(1)
@@ -116,7 +126,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(toggleStarError: error), currentUser: .template) {
 
-      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.configureWith(project: project, category: nil)
 
       self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
       self.saveButtonEnabled.assertValueCount(0)
@@ -144,7 +154,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse),
                     currentUser: .template) {
 
-        self.vm.inputs.configureWith(project: project)
+        self.vm.inputs.configureWith(project: project, category: nil)
 
         self.saveButtonSelected.assertValues([true], "Save button is selected at first.")
         self.saveButtonEnabled.assertValueCount(0)
@@ -169,7 +179,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
       withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
 
-        self.vm.inputs.configureWith(project: project)
+        self.vm.inputs.configureWith(project: project, category: nil)
 
         self.saveButtonSelected.assertValues([false], "Save button is not selected for logged out user.")
         self.saveButtonEnabled.assertValueCount(0)
@@ -226,7 +236,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.personalization.isStarred .~ true
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
-      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.configureWith(project: project, category: nil)
 
       self.saveButtonSelected.assertValues([false])
 
@@ -254,13 +264,13 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let featuredImage = image(named: "metadata-featured")
 
     withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(project: Project.template)
+      self.vm.inputs.configureWith(project: Project.template, category: nil)
 
       self.metadataLabelText.assertValueCount(0, "No metadata shown for logged out user.")
       self.metadataViewHidden.assertValues([true])
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeeef", user: User.template))
-      self.vm.inputs.configureWith(project: backedProject)
+      self.vm.inputs.configureWith(project: backedProject, category: nil)
 
       self.metadataLabelText.assertValues([Strings.discovery_baseball_card_metadata_backer()])
       self.metadataViewHidden.assertValues([true, false])
@@ -278,7 +288,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataTextColor.assertValues([backedColor])
       self.metadataIconTintColor.assertValues([backedColor])
 
-      self.vm.inputs.configureWith(project: featuredProject)
+      self.vm.inputs.configureWith(project: featuredProject, category: nil)
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
@@ -302,7 +312,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   func testProjectStatsEmit() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, category: nil)
 
     self.backersTitleLabelText.assertValues([Format.wholeNumber(project.stats.backersCount)])
 
@@ -325,7 +335,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let project = .template
       |> Project.lens.name .~ "The Turtle Hat. Helping people come out of their shells!"
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(project: project, category: nil)
 
     self.projectNameAndBlurbLabelText.assertValues(
       ["\(project.name) \(project.blurb)"]
@@ -362,24 +372,24 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let projectManyFriends = .template
       |> Project.lens.personalization.friends .~ manyFriends
 
-    self.vm.inputs.configureWith(project: projectNoSocial)
+    self.vm.inputs.configureWith(project: projectNoSocial, category: nil)
     self.socialImageURL.assertValues([nil])
     self.socialLabelText.assertValues([""])
     self.socialStackViewHidden.assertValues([true])
 
-    self.vm.inputs.configureWith(project: projectNoFriends)
+    self.vm.inputs.configureWith(project: projectNoFriends, category: nil)
     self.socialImageURL.assertValues([nil, nil])
     self.socialLabelText.assertValues(["", ""])
     self.socialStackViewHidden.assertValues([true])
 
-    self.vm.inputs.configureWith(project: projectOneFriend)
+    self.vm.inputs.configureWith(project: projectOneFriend, category: nil)
     self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium])
     self.socialLabelText.assertValues(
       [ "", "", Strings.project_social_friend_is_backer(friend_name: oneFriend[0].name) ]
     )
     self.socialStackViewHidden.assertValues([true, false])
 
-    self.vm.inputs.configureWith(project: projectTwoFriends)
+    self.vm.inputs.configureWith(project: projectTwoFriends, category: nil)
     self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium],
                                      "First friend's avatar emits.")
     self.socialLabelText.assertValues(
@@ -391,7 +401,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     )
     self.socialStackViewHidden.assertValues([true, false])
 
-    self.vm.inputs.configureWith(project: projectManyFriends)
+    self.vm.inputs.configureWith(project: projectManyFriends, category: nil)
     self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium,
       manyFriends[0].avatar.medium], "First friend's avatar emits.")
     self.socialLabelText.assertValues(
@@ -416,14 +426,14 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let greenColor = UIColor.ksr_green_700
     let navyColor = UIColor.ksr_text_dark_grey_900
 
-    self.vm.inputs.configureWith(project: live)
+    self.vm.inputs.configureWith(project: live, category: nil)
     self.projectStateStackViewHidden.assertValues([true])
     self.projectStateSubtitleLabelText.assertValueCount(1, "Empty subtitle string emits.")
     self.projectStatsStackViewHidden.assertValues([false])
     self.fundingProgressContainerViewHidden.assertValues([false])
     self.fundingProgressBarViewHidden.assertValues([false])
 
-    self.vm.inputs.configureWith(project: canceled)
+    self.vm.inputs.configureWith(project: canceled, category: nil)
     self.projectStateIconHidden.assertValues([true, true])
     self.projectStateSubtitleLabelText.assertValueCount(2)
     self.projectStateTitleLabelText.assertValues(["",
@@ -434,7 +444,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.fundingProgressBarViewHidden.assertValues([false, false])
     self.fundingProgressContainerViewHidden.assertValues([false, true])
 
-    self.vm.inputs.configureWith(project: failed)
+    self.vm.inputs.configureWith(project: failed, category: nil)
     self.projectStateIconHidden.assertValues([true, true, true])
     self.projectStateSubtitleLabelText.assertValueCount(3)
     self.projectStateTitleLabelText.assertValues(
@@ -450,7 +460,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.fundingProgressBarViewHidden.assertValues([false, false, true])
     self.fundingProgressContainerViewHidden.assertValues([false, true, false])
 
-    self.vm.inputs.configureWith(project: successful)
+    self.vm.inputs.configureWith(project: successful, category: nil)
     self.projectStateIconHidden.assertValues([true, true, true, false])
     self.projectStateSubtitleLabelText.assertValueCount(4)
     self.projectStateTitleLabelText.assertValues(
@@ -467,7 +477,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.fundingProgressBarViewHidden.assertValues([false, false, true, false])
     self.fundingProgressContainerViewHidden.assertValues([false, true, false, false])
 
-    self.vm.inputs.configureWith(project: suspended)
+    self.vm.inputs.configureWith(project: suspended, category: nil)
     self.projectStateIconHidden.assertValues([true, true, true, false, true])
     self.projectStateSubtitleLabelText.assertValueCount(5)
     self.projectStateTitleLabelText.assertValues(
@@ -486,13 +496,58 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.fundingProgressContainerViewHidden.assertValues([false, true, false, false, true])
   }
 
+  func testShowsCategoryLabelsExperimental() {
+    let staffPickProject = Project.template
+      |> Project.lens.staffPick .~ true
+      |> Project.lens.category .~ .illustration
+
+    self.vm.inputs.configureWith(project: staffPickProject, category: .art)
+    self.vm.inputs.enableProjectCategoryExperiment(true)
+
+    self.projectIsStaffPickViewHidden.assertValue(false)
+    self.projectCategoryStackViewHidden.assertValue(false)
+    self.projectCategoryName.assertValue(KsApi.Category.illustration.name)
+    self.projectCategoryViewHidden.assertValue(false)
+  }
+
+  func testHidesCategoryLabelExperimental() {
+    // Workaround for discrepancy between category ids from graphQL and category ids from the legacy API
+    let categoryId = KsApi.Category.illustration.intID
+    let illustrationCategory = KsApi.Category.illustration
+      |> KsApi.Category.lens.id .~ String(categoryId!)
+
+    let illustrationProject = Project.template
+      |> Project.lens.category .~ illustrationCategory
+
+    self.vm.inputs.configureWith(project: illustrationProject, category: .illustration)
+    self.vm.inputs.enableProjectCategoryExperiment(true)
+
+    self.projectIsStaffPickViewHidden.assertValue(true)
+    self.projectCategoryStackViewHidden.assertValue(true)
+    self.projectCategoryName.assertValue(KsApi.Category.illustration.name)
+    self.projectCategoryViewHidden.assertValue(true)
+  }
+
+  /* Experiment control should hide stack
+    view regardless of whether category/staff pick labels should be shown
+ */
+  func testHidesCategoryLabelControl() {
+    let staffPickProject = Project.template
+      |> Project.lens.staffPick .~ true
+      |> Project.lens.category .~ .illustration
+
+    self.vm.inputs.configureWith(project: staffPickProject, category: .art)
+    self.vm.inputs.enableProjectCategoryExperiment(false)
+
+    self.projectCategoryStackViewHidden.assertValue(true)
+  }
   func testShowNotificationDialogEmits_IfStarredProjectsCountIsZero() {
 
     let project = Project.template
     let user = User.template |> User.lens.stats.starredProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.configureWith(project: project, category: nil)
       self.vm.inputs.saveButtonTapped()
       self.scheduler.advance()
 
@@ -506,7 +561,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let user = User.template |> User.lens.stats.starredProjectsCount .~ 3
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(project: project)
+      self.vm.inputs.configureWith(project: project, category: nil)
       self.vm.inputs.saveButtonTapped()
       self.scheduler.advance()
 
