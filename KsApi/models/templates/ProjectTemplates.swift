@@ -32,6 +32,7 @@ extension Project {
     photo: .template,
     rewards: [],
     slug: "a-fun-project",
+    staffPick: false,
     state: .live,
     stats: Project.Stats(
       backersCount: 10,

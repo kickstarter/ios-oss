@@ -637,10 +637,10 @@
                                                             <constraint firstAttribute="height" constant="1" id="EFi-jd-qNV"/>
                                                         </constraints>
                                                     </view>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="pTc-FU-Lz5" userLabel="FAQ Stack View">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="pTc-FU-Lz5" userLabel="HelpCenter Stack View">
                                                         <rect key="frame" x="0.0" y="45.5" width="368" height="30"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iaG-Jw-zJo" userLabel="Frequently asked questions">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iaG-Jw-zJo" userLabel="Help center">
                                                                 <rect key="frame" x="0.0" y="5" width="341" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -890,7 +890,7 @@
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jjr-6S-aZV">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jjr-6S-aZV" userLabel="Help Center Button">
                                         <rect key="frame" x="16" y="1232" width="368" height="30"/>
                                         <state key="normal">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1017,8 +1017,6 @@
                         <outlet property="emailFrequencyArrow" destination="sHL-Gt-Phv" id="hbc-NJ-nTq"/>
                         <outlet property="emailFrequencyButton" destination="Jfz-QX-Izu" id="7jq-ko-iPf"/>
                         <outlet property="emailFrequencyLabel" destination="Ahi-Hx-9ab" id="blc-ri-ih6"/>
-                        <outlet property="faqButton" destination="Jjr-6S-aZV" id="qGk-Ho-kjs"/>
-                        <outlet property="faqLabel" destination="iaG-Jw-zJo" id="qST-55-Syp"/>
                         <outlet property="findFriendsButton" destination="hEp-CW-Yrn" id="Jx3-uc-1Ke"/>
                         <outlet property="findFriendsLabel" destination="03Y-07-t4n" id="AGb-OR-2kh"/>
                         <outlet property="followerButton" destination="uwd-RZ-59n" id="3fo-NK-ARN"/>
@@ -1027,6 +1025,8 @@
                         <outlet property="gamesNewsletterSwitch" destination="DvH-64-jw9" id="iCW-zV-FEP"/>
                         <outlet property="happeningNewsletterSwitch" destination="ibP-Ow-QOL" id="TQI-Xn-j6n"/>
                         <outlet property="happeningNowLabel" destination="8xx-yq-J5V" id="zTs-2y-z1V"/>
+                        <outlet property="helpCenterButton" destination="Jjr-6S-aZV" id="CqU-oc-H76"/>
+                        <outlet property="helpCenterLabel" destination="iaG-Jw-zJo" id="FAV-qI-CPe"/>
                         <outlet property="helpTitleLabel" destination="k1a-uu-6d9" id="eeV-Aw-6QH"/>
                         <outlet property="howKsrWorksButton" destination="0ni-He-iMI" id="v0O-5l-ocI"/>
                         <outlet property="howKsrWorksLabel" destination="OUh-9X-yx3" id="5Sx-Tn-tDf"/>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,42 +20,36 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCx-XZ-do1" userLabel="Card View">
-                        <rect key="frame" x="12" y="11.5" width="384" height="366.5"/>
+                        <rect key="frame" x="12" y="11.5" width="360" height="534.5"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="F2z-2v-QEy" userLabel="Project And Social Stack View">
-                        <rect key="frame" x="12" y="11.5" width="384" height="735"/>
+                        <rect key="frame" x="12" y="11.5" width="360" height="571"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="id4-Zl-Ohh" userLabel="Project Stack View">
-                                <rect key="frame" x="0.0" y="0.0" width="384" height="366.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="360" height="534.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nhT-Ll-gUJ" userLabel="Project Image View">
-                                        <rect key="frame" x="0.0" y="0.0" width="384" height="216"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="360" height="202.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="nhT-Ll-gUJ" secondAttribute="height" multiplier="16:9" id="pXb-Ff-xKh"/>
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="P6a-bA-zHj" userLabel="Project Info Stack View">
-                                        <rect key="frame" x="0.0" y="411.5" width="384" height="272.5"/>
+                                        <rect key="frame" x="0.0" y="202.5" width="360" height="332"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AuD-Ht-Qmn" userLabel="Project Name And Blurb Label">
-                                                <rect key="frame" x="24" y="0.0" width="384" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EqW-8v-JwK">
-                                                <rect key="frame" x="24" y="20.5" width="384" height="20.5"/>
+                                                <rect key="frame" x="24" y="24" width="312" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OPY-xb-MtF" userLabel="Funding Progress Container View">
-                                                <rect key="frame" x="24" y="41" width="384" height="50"/>
+                                                <rect key="frame" x="24" y="62.5" width="312" height="2"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x89-Lb-Kwd" userLabel="Funding Progress Bar View">
-                                                        <rect key="frame" x="0.0" y="0.0" width="384" height="50"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="312" height="2"/>
                                                         <color key="backgroundColor" red="0.16862745100000001" green="0.87058823529999996" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </view>
                                                 </subviews>
@@ -69,16 +63,16 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="Azd-aw-56B" userLabel="Project State Stack View">
-                                                <rect key="frame" x="24" y="89" width="384" height="20.5"/>
+                                                <rect key="frame" x="24" y="82.5" width="312" height="20.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3B-Nb-GBg" userLabel="Project State Title Label">
-                                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="4.5" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAd-Br-SMX" userLabel="Project State Subtitle Label">
-                                                        <rect key="frame" x="-8" y="0.0" width="384" height="20.5"/>
+                                                        <rect key="frame" x="10.5" y="0.0" width="301.5" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -86,7 +80,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="qYw-F3-aZl" userLabel="Project Stats Stack View">
-                                                <rect key="frame" x="24" y="109.5" width="384" height="41"/>
+                                                <rect key="frame" x="24" y="121" width="312" height="41"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="80l-4V-VQw">
                                                         <rect key="frame" x="0.0" y="0.0" width="4.5" height="41"/>
@@ -123,16 +117,16 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="dYJ-PN-NC7">
-                                                        <rect key="frame" x="57" y="0.0" width="375" height="41"/>
+                                                        <rect key="frame" x="57" y="0.0" width="255" height="41"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vnf-dW-sgK" userLabel="Deadline Title Label">
-                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="255" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ROm-1k-k3E" userLabel="Deadline Subtitle Label">
-                                                                <rect key="frame" x="0.0" y="20.5" width="375" height="20.5"/>
+                                                                <rect key="frame" x="0.0" y="20.5" width="255" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -141,23 +135,26 @@
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
+                                            <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Qkj-c0-qEA" userLabel="Project Categories Stack View">
+                                                <rect key="frame" x="24" y="180" width="312" height="128"/>
+                                            </stackView>
                                         </subviews>
                                         <edgeInsets key="layoutMargins" top="24" left="24" bottom="24" right="24"/>
                                     </stackView>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="PUL-Kg-8AR" userLabel="Social Stack View">
-                                <rect key="frame" x="0.0" y="562" width="384" height="30"/>
+                                <rect key="frame" x="0.0" y="534.5" width="360" height="36.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3kE-Jg-fp9" userLabel="Social Avatar Image View">
-                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                        <rect key="frame" x="0.0" y="3.5" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="3kE-Jg-fp9" secondAttribute="height" multiplier="1:1" id="02a-Uq-adj"/>
                                             <constraint firstAttribute="height" constant="30" id="YRl-zr-NWr"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Pi-Hj-7EO" userLabel="Social Label">
-                                        <rect key="frame" x="31" y="0.0" width="384" height="30"/>
+                                        <rect key="frame" x="31" y="3.5" width="329" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -174,11 +171,11 @@
                         </constraints>
                     </stackView>
                     <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeI-Am-gHH" userLabel="Project image overlay">
-                        <rect key="frame" x="12" y="11.5" width="384" height="216"/>
+                        <rect key="frame" x="12" y="11.5" width="360" height="202.5"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3C-Yu-Ais" customClass="GradientView" customModule="Library">
-                        <rect key="frame" x="12" y="11.5" width="384" height="51"/>
+                        <rect key="frame" x="12" y="11.5" width="360" height="51"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="51" id="KJJ-Mm-bu4"/>
@@ -226,7 +223,7 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIL-Rt-9Tk">
-                        <rect key="frame" x="412" y="11.5" width="52" height="52"/>
+                        <rect key="frame" x="320" y="11.5" width="52" height="52"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="52" id="9pP-ce-B17"/>
                             <constraint firstAttribute="height" constant="52" id="rlz-Z5-lHQ"/>
@@ -275,6 +272,7 @@
                 <outlet property="metadataLabel" destination="fzb-XH-e79" id="xYa-U5-J9H"/>
                 <outlet property="metadataStackView" destination="5L7-6D-yfg" id="4kp-XU-wjX"/>
                 <outlet property="metadataView" destination="rwx-so-2g9" id="ttm-a7-HMe"/>
+                <outlet property="projectCategoriesStackView" destination="Qkj-c0-qEA" id="u5g-hS-5NQ"/>
                 <outlet property="projectImageView" destination="nhT-Ll-gUJ" id="eZB-Qj-Jdb"/>
                 <outlet property="projectInfoStackView" destination="P6a-bA-zHj" id="jhm-G2-lv5"/>
                 <outlet property="projectNameAndBlurbLabel" destination="AuD-Ht-Qmn" id="BWN-3k-WXC"/>

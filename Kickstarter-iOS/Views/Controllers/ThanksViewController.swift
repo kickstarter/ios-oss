@@ -132,6 +132,18 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
         self?.goToProject(project, projects: projects, refTag: refTag)
     }
 
+    self.viewModel.outputs.postContextualNotification
+      .observeForUI()
+      .observeValues {
+        NotificationCenter.default.post(
+          Notification(
+            name: .ksr_showNotificationsDialog,
+            userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.pledge,
+                       UserInfoKeys.viewController: self]
+         )
+        )
+      }
+
     self.viewModel.outputs.showRatingAlert
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -160,7 +172,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       .observeValues(NotificationCenter.default.post)
 
     self.viewModel.outputs.showRecommendations
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] projects, category in
         self?.dataSource.loadData(projects: projects, category: category)
         self?.projectsTableView.reloadData()

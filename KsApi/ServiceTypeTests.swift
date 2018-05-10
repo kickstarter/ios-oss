@@ -15,7 +15,8 @@ final class ServiceTypeTests: XCTestCase {
         username: "username",
         password: "password"
       ),
-      graphQLEndpointUrl: URL(string: "http://www.ksr.com")!
+      graphQLEndpointUrl: URL(string: "http://www.ksr.com")!,
+      helpCenterUrl: URL(string: Secrets.HelpCenter.endpoint)!
     ),
     oauthToken: OauthToken(
       token: "cafebeef"
@@ -36,7 +37,8 @@ final class ServiceTypeTests: XCTestCase {
         username: "username",
         password: "password"
       ),
-      graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
+      graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!,
+      helpCenterUrl: URL(string: Secrets.HelpCenter.endpoint)!
     )
   )
 
@@ -49,7 +51,8 @@ final class ServiceTypeTests: XCTestCase {
         clientId: "deadbeef"
       ),
       basicHTTPAuth: nil,
-      graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
+      graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!,
+      helpCenterUrl: URL(string: Secrets.HelpCenter.endpoint)!
     )
   )
 
@@ -195,7 +198,8 @@ final class ServiceTypeTests: XCTestCase {
           username: "username",
           password: "password"
         ),
-        graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
+        graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!,
+        helpCenterUrl: URL(string: Secrets.HelpCenter.endpoint)!
       )
     )
 

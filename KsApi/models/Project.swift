@@ -18,6 +18,7 @@ public struct Project {
   public private(set) var photo: Photo
   public private(set) var rewards: [Reward]
   public private(set) var slug: String
+  public private(set) var staffPick: Bool
   public private(set) var state: State
   public private(set) var stats: Stats
   public private(set) var urls: UrlsEnvelope
@@ -175,6 +176,7 @@ extension Project: Argo.Decodable {
       <*> (json <|| "rewards" <|> .success([]))
       <*> json <| "slug"
     return tmp3
+      <*> json <| "staff_pick"
       <*> json <| "state"
       <*> Project.Stats.decode(json)
       <*> json <| "urls"
