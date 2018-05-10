@@ -13,7 +13,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   @IBOutlet fileprivate weak var emailTextField: UITextField!
   @IBOutlet fileprivate weak var formBackgroundView: UIView!
   @IBOutlet fileprivate weak var nameTextField: UITextField!
-  @IBOutlet fileprivate weak var newsletterLabel: UILabel!
+  @IBOutlet fileprivate weak var newsletterButton: UIButton!
   @IBOutlet fileprivate weak var newsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var passwordTextField: UITextField!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
@@ -55,7 +55,9 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldChanged(_:)),
                                      for: [.editingChanged])
-
+    self.newsletterButton.addTarget(self,
+                                    action: #selector(newsletterButtonTapped),
+                                    for: .touchUpInside)
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -79,8 +81,8 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     _ = self.formBackgroundView
       |> cardStyle()
 
-    _ = self.newsletterLabel
-      |> newsletterLabelStyle
+    _ = self.newsletterButton
+      |> newsletterButtonStyle
 
     _ = self.passwordTextField
       |> passwordFieldStyle
@@ -184,6 +186,10 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   }
 
   @objc fileprivate func disclaimerButtonPressed() {
+    self.helpViewModel.inputs.showHelpSheetButtonTapped()
+  }
+
+  @objc fileprivate func newsletterButtonTapped() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
