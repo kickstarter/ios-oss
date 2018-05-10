@@ -136,7 +136,7 @@ internal enum Route {
 
     case let .exportDataState(state, downloadUrl):
       let params: [String: Any] = [
-         "state" : state,
+         "state": state,
          "download_url": downloadUrl
       ]
       return (.GET, "/v1/users/self/download_export_data", params, nil)
