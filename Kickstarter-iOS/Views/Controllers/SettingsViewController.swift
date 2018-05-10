@@ -639,7 +639,7 @@ internal final class SettingsViewController: UIViewController {
   @objc fileprivate func recommendationsInfoTapped() {
     let alertController = UIAlertController(
       title: "Info",
-      message: "GDPR Blah blah blah...",
+      message: "Recommendation Copy",
       preferredStyle: .alert)
 
     alertController.addAction(
