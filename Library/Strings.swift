@@ -2056,15 +2056,9 @@ backers"
   /**
    "Get notified about new messages?"
 
-<<<<<<< HEAD
    - **es**: "¿Deseas recibir notificaciones sobre nuevos mensajes?"
    - **ja**: "新規メッセージについて通知の受信を希望しますか？"
    - **de**: "Möchtest du benachrichtigt werden bei neuen Nachrichten?"
-=======
-   - **es**: "Get notified about new messages?"
-   - **ja**: "Get notified about new messages?"
-   - **de**: "Get notified about new messages?"
->>>>>>> master
    - **fr**: "Get notified about new messages?"
    - **en**: "Get notified about new messages?"
   */
@@ -2096,15 +2090,9 @@ backers"
   /**
    "Get reminded about this project?"
 
-<<<<<<< HEAD
    - **es**: "¿Deseas recibir recordatorios sobre este proyecto?"
    - **ja**: "このプロジェクトについてリマインダーを希望しますか？"
    - **de**: "Möchtest du an dieses Projekt erinnert werden?"
-=======
-   - **es**: "Get reminded about this project?"
-   - **ja**: "Get reminded about this project?"
-   - **de**: "Get reminded about this project?"
->>>>>>> master
    - **fr**: "Get reminded about this project?"
    - **en**: "Get reminded about this project?"
   */
@@ -2170,17 +2158,10 @@ backers"
   /**
    "Help Center"
 
-<<<<<<< HEAD
    - **es**: "Centro de ayuda"
    - **ja**: "ヘルプセンター"
    - **de**: "Hilfe-Center"
    - **fr**: "Centre d'aide"
-=======
-   - **es**: "Help Center"
-   - **ja**: "Help Center"
-   - **de**: "Hilfe-Center"
-   - **fr**: "Help Center"
->>>>>>> master
    - **en**: "Help Center"
   */
   public static func Help_center() -> String {
@@ -2417,17 +2398,10 @@ with friends."
   /**
    "Know when creators and backers message you by enabling notifications."
 
-<<<<<<< HEAD
    - **es**: "Entérate cuando los creadores y patrocinadores te envíen mensajes habilitando las notificaciones."
    - **ja**: "クリエイターやバッカ―からメッセージが届いた場合にすぐ分かるように、通知機能を有効にしましょう。"
    - **de**: "Aktiviere Benachrichtigungen, damit du über eingehende Nachrichten von Projektgründern und Unterstützern Bescheid weißt."
    - **fr**: "Activez vos notifications pour savoir quand un créateur ou un contributeur vous envoie un message."
-=======
-   - **es**: "Know when creators and backers message you by enabling notifications."
-   - **ja**: "Know when creators and backers message you by enabling notifications."
-   - **de**: "Know when creators and backers message you by enabling notifications."
-   - **fr**: "Know when creators and backers message you by enabling notifications."
->>>>>>> master
    - **en**: "Know when creators and backers message you by enabling notifications."
   */
   public static func Know_when_creators_and_backers_message_you() -> String {
@@ -2815,17 +2789,10 @@ with friends."
   /**
    "Never"
 
-<<<<<<< HEAD
    - **es**: "Nunca"
    - **ja**: "通知を受けない"
    - **de**: "Niemals"
    - **fr**: "Jamais"
-=======
-   - **es**: "Never"
-   - **ja**: "Never"
-   - **de**: "Never"
-   - **fr**: "Never"
->>>>>>> master
    - **en**: "Never"
   */
   public static func Never() -> String {
@@ -3012,17 +2979,10 @@ from friends yet."
   /**
    "Not Now"
 
-<<<<<<< HEAD
    - **es**: "Ahora no"
    - **ja**: "後で"
    - **de**: "Nicht jetzt"
    - **fr**: "Pas maintenant"
-=======
-   - **es**: "Not Now"
-   - **ja**: "Not Now"
-   - **de**: "Not Now"
-   - **fr**: "Not Now"
->>>>>>> master
    - **en**: "Not Now"
   */
   public static func Not_now() -> String {
@@ -3614,17 +3574,10 @@ from friends yet."
   /**
    "Privacy"
 
-<<<<<<< HEAD
    - **es**: "Privacidad"
    - **ja**: "プライバシー"
    - **de**: "Datenschutz"
    - **fr**: "Vie privée"
-=======
-   - **es**: "Privacy"
-   - **ja**: "Privacy"
-   - **de**: "Datenschutz"
-   - **fr**: "Privacy"
->>>>>>> master
    - **en**: "Privacy"
   */
   public static func Privacy() -> String {
@@ -3862,15 +3815,9 @@ daring ideas."
   /**
    "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
 
-<<<<<<< HEAD
    - **es**: "Recibe un recordatorio 48 horas antes de que este o cualquier otro proyecto guardado finalice habilitando las notificaciones."
    - **ja**: "通知を有効にして、このプロジェクトやその他の保存済みプロジェクトが終了する48時間前にリマインダーを受け取ります。"
    - **de**: "Aktiviere Benachrichtigungen - wir schicken dir eine Erinnerung 48 Stunden, bevor dieses und andere gespeicherte Projekte abläuft."
-=======
-   - **es**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
-   - **ja**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
-   - **de**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
->>>>>>> master
    - **fr**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
    - **en**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
   */
@@ -3885,15 +3832,9 @@ daring ideas."
   /**
    "Receive project updates and more by enabling notifications."
 
-<<<<<<< HEAD
    - **es**: "Recibe actualizaciones de proyectos y más habilitando las notificaciones."
    - **ja**: "通知を有効にして、プロジェクトの更新情報等を受け取ります。"
    - **de**: "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen Bescheid."
-=======
-   - **es**: "Receive project updates and more by enabling notifications."
-   - **ja**: "Receive project updates and more by enabling notifications."
-   - **de**: "Receive project updates and more by enabling notifications."
->>>>>>> master
    - **fr**: "Receive project updates and more by enabling notifications."
    - **en**: "Receive project updates and more by enabling notifications."
   */
@@ -3908,15 +3849,9 @@ daring ideas."
   /**
    "Receive project updates, messages, and more by enabling notifications."
 
-<<<<<<< HEAD
    - **es**: "Recibe actualizaciones de proyectos, mensajes y más habilitando las notificaciones."
    - **ja**: "通知を有効にして、プロジェクトの更新情報、メッセージ等を受け取ります。"
    - **de**: "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen, neue Nachrichten und ähnliches Bescheid."
-=======
-   - **es**: "Receive project updates, messages, and more by enabling notifications."
-   - **ja**: "Receive project updates, messages, and more by enabling notifications."
-   - **de**: "Receive project updates, messages, and more by enabling notifications."
->>>>>>> master
    - **fr**: "Receive project updates, messages, and more by enabling notifications."
    - **en**: "Receive project updates, messages, and more by enabling notifications."
   */
@@ -3948,17 +3883,10 @@ daring ideas."
   /**
    "Recommendations"
 
-<<<<<<< HEAD
    - **es**: "Recomendaciones"
    - **ja**: "おすすめ"
    - **de**: "Empfehlungen"
    - **fr**: "Recommandations"
-=======
-   - **es**: "Recommendations"
-   - **ja**: "Recommendations"
-   - **de**: "Empfehlungen"
-   - **fr**: "Recommendations"
->>>>>>> master
    - **en**: "Recommendations"
   */
   public static func Recommendations() -> String {
@@ -4688,15 +4616,9 @@ catch your eye?"
   /**
    "Stay up to date?"
 
-<<<<<<< HEAD
    - **es**: "¿Deseas mantenerte actualizado?"
    - **ja**: "最新情報を常に把握したい？"
    - **de**: "Möchtest du auf dem Laufenden bleiben?"
-=======
-   - **es**: "Stay up to date?"
-   - **ja**: "Stay up to date?"
-   - **de**: "Stay up to date?"
->>>>>>> master
    - **fr**: "Stay up to date?"
    - **en**: "Stay up to date?"
   */
@@ -4711,15 +4633,9 @@ catch your eye?"
   /**
    "Stay updated on this project?"
 
-<<<<<<< HEAD
    - **es**: "¿Deseas mantenerte actualizado sobre este proyecto?"
    - **ja**: "このプロジェクトの最新情報を受け取りたい？"
    - **de**: "Möchtest du bei diesem Projekt auf dem Laufenden bleiben?"
-=======
-   - **es**: "Stay updated on this project?"
-   - **ja**: "Stay updated on this project?"
-   - **de**: "Stay updated on this project?"
->>>>>>> master
    - **fr**: "Stay updated on this project?"
    - **en**: "Stay updated on this project?"
   */
