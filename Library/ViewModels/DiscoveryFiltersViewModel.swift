@@ -283,15 +283,20 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
     filters.append(.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true)
   }
 
-  if user != nil {
+  guard user != nil else {
+    return filters
+  }
+
     filters.append(.defaults |> DiscoveryParams.lens.starred .~ true)
-    filters.append(
-      .defaults
+
+    if user?.optedOutOfRecommendations != true {
+      filters.append(.defaults
         |> DiscoveryParams.lens.recommended .~ true
         |> DiscoveryParams.lens.backed .~ false
-    )
+      )
+    }
+
     filters.append(.defaults |> DiscoveryParams.lens.social .~ true)
-  }
 
   return filters
 }
