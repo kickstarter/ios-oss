@@ -37,4 +37,4 @@ custom_rules:
     name: "Record Mode Prohibited"
     regex: "recordMode = true"
     message: "Do not use `recordMode = true`."
-    severity: error
+    severity: warning
