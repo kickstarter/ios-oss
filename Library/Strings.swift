@@ -17455,18 +17455,18 @@ saved"
     )
   }
   /**
-   "Receive our weekly newsletter and other occasional updates."
+   "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
 
-   - **es**: "Descubre nuevos proyectos con nuestro boletín semanal."
-   - **ja**: "ニュースレターやアップデートを受け取ろう"
-   - **de**: "Endecke neue Projekte in unserem wöchentlichen Newsletter."
-   - **fr**: "Découvrez de nouveaux projets grâce à notre lettre d'informations hebdomadaire."
-   - **en**: "Receive our weekly newsletter and other occasional updates."
+   - **es**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
+   - **ja**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
+   - **de**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
+   - **fr**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
+   - **en**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
   */
-  public static func signup_newsletter_full() -> String {
+  public static func signup_newsletter_full_opt_out() -> String {
     return localizedString(
-      key: "signup.newsletter_full",
-      defaultValue: "Receive our weekly newsletter and other occasional updates.",
+      key: "signup.newsletter_full_opt_out",
+      defaultValue: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy.",
       count: nil,
       substitutions: [:]
     )

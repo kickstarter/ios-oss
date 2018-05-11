@@ -1230,7 +1230,7 @@
 "signup.input_fields.password" = "パスワード";
 "signup.input_fields.password_min_characters" = "パスワード(６文字以上)";
 "signup.navbar_title" = "サインアップ";
-"signup.newsletter_full" = "ニュースレターやアップデートを受け取ろう";
+"signup.newsletter_full_opt_out" = "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy.";
 "social.buttons.cancel" = "キャンセル";
 "social.buttons.post" = "投稿する";
 "social.buttons.send" = "送信";

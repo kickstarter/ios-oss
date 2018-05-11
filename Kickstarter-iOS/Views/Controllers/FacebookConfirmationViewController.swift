@@ -46,6 +46,10 @@ internal final class FacebookConfirmationViewController: UIViewController,
 
     self.newsletterSwitch.addTarget(self, action: #selector(newsletterSwitchChanged),
                                     for: .valueChanged)
+    
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(newsletterLabelTapped))
+    
+    self.newsletterLabel.addGestureRecognizer(tapGestureRecognizer)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -179,6 +183,10 @@ internal final class FacebookConfirmationViewController: UIViewController,
   }
 
   @objc private func helpButtonPressed() {
+    self.helpViewModel.inputs.showHelpSheetButtonTapped()
+  }
+  
+  @objc fileprivate func newsletterLabelTapped() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 

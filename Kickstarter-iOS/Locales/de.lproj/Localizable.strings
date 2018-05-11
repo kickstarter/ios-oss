@@ -1230,7 +1230,7 @@
 "signup.input_fields.password" = "Passwort";
 "signup.input_fields.password_min_characters" = "Passwort (mindestens 6 Zeichen)";
 "signup.navbar_title" = "Registrieren";
-"signup.newsletter_full" = "Endecke neue Projekte in unserem wöchentlichen Newsletter.";
+"signup.newsletter_full_opt_out" = "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy.";
 "social.buttons.cancel" = "Abbrechen";
 "social.buttons.post" = "Posten";
 "social.buttons.send" = "Senden";

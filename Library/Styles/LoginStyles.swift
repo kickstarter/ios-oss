@@ -21,17 +21,6 @@ public let disclaimerButtonStyle =
     }
     <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
-public let newsletterButtonStyle = UIButton.lens.titleLabel.font .~ .ksr_footnote()
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
-  <> UIButton.lens.title(for: .normal) %~ { _ in
-      Strings.signup_newsletter_full()
-  }
-  <> UIButton.lens.accessibilityValue %~ { _ in Strings.signup_newsletter_full() }
-  <> UIButton.lens.accessibilityLabel %~ { _ in
-    Strings.signup_newsletter_full()
-  }
-  <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
-
 public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }
   <> UITextField.lens.keyboardType .~ .emailAddress
@@ -124,7 +113,9 @@ public let signupWithEmailButtonStyle = borderButtonStyle
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
-  <> UILabel.lens.text %~ { _ in Strings.signup_newsletter_full() }
+  <> UILabel.lens.lineBreakMode .~ .byWordWrapping
+  <> UILabel.lens.numberOfLines .~ 0
+  <> UILabel.lens.text %~ { _ in Strings.signup_newsletter_full_opt_out() }
 
 public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.textAlignment .~ .center
