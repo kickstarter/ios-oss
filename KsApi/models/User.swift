@@ -12,7 +12,7 @@ public struct User {
   public let name: String
   public let newsletters: NewsletterSubscriptions
   public let notifications: Notifications
-  public let optedOutOfRecommendations: Bool?
+  public let optedOutOfRecommendations: Bool
   public let social: Bool?
   public let stats: Stats
 
@@ -87,7 +87,7 @@ extension User: Argo.Decodable {
       <*> json <| "name"
       <*> User.NewsletterSubscriptions.decode(json)
       <*> User.Notifications.decode(json)
-      <*> json <|? "opted_out_of_recommendations"
+      <*> (json <| "opted_out_of_recommendations" <|> .success(false))
     return tmp3
       <*> json <|? "social"
       <*> User.Stats.decode(json)

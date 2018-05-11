@@ -12,7 +12,7 @@ extension User {
     name: "Blob",
     newsletters: .template,
     notifications: .template,
-    optedOutOfRecommendations: nil,
+    optedOutOfRecommendations: false,
     social: nil,
     stats: .template
   )
