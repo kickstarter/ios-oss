@@ -50,7 +50,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(helpButtonPressed))
-    
+
     let disclaimerTapGestureRecognizer = UITapGestureRecognizer(target: self,
                                                                 action: #selector(helpButtonPressed))
 
