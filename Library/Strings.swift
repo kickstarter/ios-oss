@@ -2059,7 +2059,7 @@ backers"
    - **es**: "¿Deseas recibir notificaciones sobre nuevos mensajes?"
    - **ja**: "新規メッセージについて通知の受信を希望しますか？"
    - **de**: "Möchtest du benachrichtigt werden bei neuen Nachrichten?"
-   - **fr**: "Get notified about new messages?"
+   - **fr**: "Envie d'être informé des messages entrants ?"
    - **en**: "Get notified about new messages?"
   */
   public static func Get_notified_about_new_messages() -> String {
@@ -2093,7 +2093,7 @@ backers"
    - **es**: "¿Deseas recibir recordatorios sobre este proyecto?"
    - **ja**: "このプロジェクトについてリマインダーを希望しますか？"
    - **de**: "Möchtest du an dieses Projekt erinnert werden?"
-   - **fr**: "Get reminded about this project?"
+   - **fr**: "Envie de recevoir un rappel à propos de ce projet ?"
    - **en**: "Get reminded about this project?"
   */
   public static func Get_reminded_about_this_project() -> String {
@@ -3818,7 +3818,7 @@ daring ideas."
    - **es**: "Recibe un recordatorio 48 horas antes de que este o cualquier otro proyecto guardado finalice habilitando las notificaciones."
    - **ja**: "通知を有効にして、このプロジェクトやその他の保存済みプロジェクトが終了する48時間前にリマインダーを受け取ります。"
    - **de**: "Aktiviere Benachrichtigungen - wir schicken dir eine Erinnerung 48 Stunden, bevor dieses und andere gespeicherte Projekte abläuft."
-   - **fr**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
+   - **fr**: "Si vous activez vos notifications, vous recevrez un rappel 48 heures avant la fin de ce projet et de tous les autres que vous enregistrez."
    - **en**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
   */
   public static func Receive_a_reminder_forty_eight_hours_before_this_project_ends() -> String {
@@ -3835,7 +3835,7 @@ daring ideas."
    - **es**: "Recibe actualizaciones de proyectos y más habilitando las notificaciones."
    - **ja**: "通知を有効にして、プロジェクトの更新情報等を受け取ります。"
    - **de**: "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen Bescheid."
-   - **fr**: "Receive project updates and more by enabling notifications."
+   - **fr**: "Si vous activez vos notifications, vous recevrez des actus de projet et plus."
    - **en**: "Receive project updates and more by enabling notifications."
   */
   public static func Receive_project_updates_and_more() -> String {
@@ -3852,7 +3852,7 @@ daring ideas."
    - **es**: "Recibe actualizaciones de proyectos, mensajes y más habilitando las notificaciones."
    - **ja**: "通知を有効にして、プロジェクトの更新情報、メッセージ等を受け取ります。"
    - **de**: "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen, neue Nachrichten und ähnliches Bescheid."
-   - **fr**: "Receive project updates, messages, and more by enabling notifications."
+   - **fr**: "Si vous activez vos notifications, vous recevrez des actus de projet, vos messages et plus."
    - **en**: "Receive project updates, messages, and more by enabling notifications."
   */
   public static func Receive_project_updates_messages_and_more() -> String {
@@ -4619,7 +4619,7 @@ catch your eye?"
    - **es**: "¿Deseas mantenerte actualizado?"
    - **ja**: "最新情報を常に把握したい？"
    - **de**: "Möchtest du auf dem Laufenden bleiben?"
-   - **fr**: "Stay up to date?"
+   - **fr**: "Envie d'être informé ?"
    - **en**: "Stay up to date?"
   */
   public static func Stay_up_to_date() -> String {
@@ -4636,7 +4636,7 @@ catch your eye?"
    - **es**: "¿Deseas mantenerte actualizado sobre este proyecto?"
    - **ja**: "このプロジェクトの最新情報を受け取りたい？"
    - **de**: "Möchtest du bei diesem Projekt auf dem Laufenden bleiben?"
-   - **fr**: "Stay updated on this project?"
+   - **fr**: "Envie de suivre ce projet ?"
    - **en**: "Stay updated on this project?"
   */
   public static func Stay_updated_on_this_project() -> String {
@@ -17457,10 +17457,10 @@ saved"
   /**
    "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
 
-   - **es**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
-   - **ja**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
-   - **de**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
-   - **fr**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
+   - **es**: "Recibe el boletín semanal de Kickstarter y otras actualizaciones ocasionales por correo electrónico. Puedes optar por dejar de recibir estos mensajes en cualquier momento utilizando el enlace incluido en el correo electrónico y según lo establecido en nuestra Política de privacidad."
+   - **ja**: "Kickstarter の週刊ニュースレーターや更新情報をメールでお届けします。このような Kickstarter からのお知らせメールを受け取りたくない場合は、そのメール内に記載されているリンクを使うか、プライバシーポリシーに記載されている方法で、いつでも配信を停止することができます。"
+   - **de**: "Du erhältst den wöchentlichen Kickstarter Newsletter und sporadische Updates per E-Mail. Du kannst diese E-Mails jederzeit über den in der E-Mail enthaltenen Link oder wie in unseren Datenschutzrichtlinien dargelegt abwählen."
+   - **fr**: "Vous recevrez la lettre d'information hebdomadaire de Kickstarter et d'autres actualités, par e-mail. Vous pouvez vous désabonner de ces messages à tout moment en cliquant sur le lien contenu dans chaque e-mail ou en suivant les instructions de notre Politique de confidentialité."
    - **en**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
   */
   public static func signup_newsletter_full_opt_out() -> String {
