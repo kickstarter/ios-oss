@@ -8,7 +8,6 @@ import Prelude
 import FBSDKLoginKit
 
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
-  @IBOutlet fileprivate weak var fbDisclaimer: UILabel!
   @IBOutlet fileprivate weak var contextLabel: UILabel!
   @IBOutlet fileprivate weak var bringCreativeProjectsToLifeLabel: UILabel!
   @IBOutlet fileprivate weak var fbLoginButton: UIButton!
@@ -67,7 +66,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     super.bindStyles()
 
     _ = self |> baseControllerStyle()
-    _ = self.fbDisclaimer |> fbDisclaimerLabelStyle
     _ = self.fbLoginButton |> fbLoginButtonStyle
     _ = self.helpButton |> disclaimerButtonStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
