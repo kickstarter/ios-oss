@@ -10,7 +10,6 @@ public let disclaimerButtonStyle =   UIButton.lens.titleColor(for: .normal) .~ .
       label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
   }
   <> UIButton.lens.titleLabel.textAlignment .~ .center
-  <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 0, leftRight: Styles.grid(3))
   <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_disclaimer_agree_to_terms()
   }
