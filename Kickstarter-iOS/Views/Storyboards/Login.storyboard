@@ -146,8 +146,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uSk-gc-no0">
-                                <rect key="frame" x="20" y="88" width="360" height="512"/>
+                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uSk-gc-no0">
+                                <rect key="frame" x="20" y="88" width="360" height="488"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sOV-mG-ODT">
                                         <rect key="frame" x="0.0" y="0.0" width="360" height="625"/>
@@ -324,7 +324,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="uSk-gc-no0" firstAttribute="top" secondItem="E27-lb-1hH" secondAttribute="topMargin" constant="24" id="Rm8-5j-53f"/>
-                            <constraint firstItem="ZfQ-Dw-htn" firstAttribute="top" secondItem="uSk-gc-no0" secondAttribute="bottom" id="Upf-p0-WDn"/>
+                            <constraint firstItem="uSk-gc-no0" firstAttribute="bottom" secondItem="ZfQ-Dw-htn" secondAttribute="top" constant="-24" id="Upf-p0-WDn"/>
                             <constraint firstItem="uSk-gc-no0" firstAttribute="leading" secondItem="E27-lb-1hH" secondAttribute="leadingMargin" id="W2Y-AT-qJR"/>
                             <constraint firstItem="uSk-gc-no0" firstAttribute="trailing" secondItem="E27-lb-1hH" secondAttribute="trailingMargin" id="quc-ox-Ky8"/>
                         </constraints>
@@ -333,7 +333,6 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="600"/>
                     <connections>
-                        <outlet property="bottomConstraint" destination="Upf-p0-WDn" id="Ve9-6H-gJp"/>
                         <outlet property="disclaimerButton" destination="oGE-sx-XVa" id="Qlt-3E-6Bx"/>
                         <outlet property="emailTextField" destination="GFK-DU-V4K" id="HlQ-zL-u8b"/>
                         <outlet property="formBackgroundView" destination="694-m2-31k" id="eSR-OX-NgE"/>
