@@ -933,10 +933,9 @@
 "login_tout.default_intent.traditional_login_button" = "ログイン";
 "login_tout.default_intent.traditional_signup_button" = "サインアップ";
 "login_tout.default_intent.traditional_title" = "メールアドレスを使用：";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms" = "サインアップは、利用規約とプライバシーポリシー、Cookieポリシーへの同意とみなされます。";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms_html" = "サインアップは、<u>利用方法</u>、<u>プライバシーポリシー</u>、<u>または<u>Cookieポリシーへの同意とみなします。</u>";
+"login_tout.disclaimer.agree_to_terms" = "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
 "login_tout.disclaimer.read_more" = "さらに読む";
-"login_tout.disclaimer.we_never_post_anything_without_permission" = "Kickstarterが勝手に投稿することはありません。";
 "login_tout.errors.button.ok" = "OK";
 "login_tout.errors.facebook.authorization_exception.button" = "もう一度お試しください";
 "login_tout.errors.facebook.authorization_exception.message" = "ログイン時に問題が発生";

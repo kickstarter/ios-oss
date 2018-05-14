@@ -13,7 +13,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
   @IBOutlet private weak var confirmationLabel: UILabel!
   @IBOutlet private weak var createAccountButton: UIButton!
   @IBOutlet private weak var emailLabel: UILabel!
-  @IBOutlet private weak var helpButton: UIButton!
+  @IBOutlet private weak var disclaimerButton: UILabel!
   @IBOutlet private weak var loginButton: UIButton!
   @IBOutlet private weak var loginLabel: UILabel!
   @IBOutlet private weak var newsletterLabel: UILabel!
@@ -40,8 +40,6 @@ internal final class FacebookConfirmationViewController: UIViewController,
     self.createAccountButton.addTarget(self, action: #selector(createAccountButtonPressed),
                                        for: .touchUpInside)
 
-    self.helpButton.addTarget(self, action: #selector(helpButtonPressed), for: .touchUpInside)
-
     self.loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
 
     self.newsletterSwitch.addTarget(self, action: #selector(newsletterSwitchChanged),
@@ -50,6 +48,9 @@ internal final class FacebookConfirmationViewController: UIViewController,
     let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(newsletterLabelTapped))
     
     self.newsletterLabel.addGestureRecognizer(tapGestureRecognizer)
+    
+    let disclaimerTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(helpButtonPressed))
+    self.disclaimerButton.addGestureRecognizer(disclaimerTapGestureRecognizer)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -63,7 +64,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.confirmationLabel |> fbConfirmationMessageLabelStyle
     _ = self.createAccountButton |> createNewAccountButtonStyle
     _ = self.emailLabel |> fbConfirmEmailLabelStyle
-    _ = self.helpButton |> disclaimerButtonStyle
+    _ = self.disclaimerButton |> disclaimerLabelStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.loginLabel |> fbWrongAccountLabelStyle
     _ = self.navigationItem.title = Strings.signup_navbar_title()

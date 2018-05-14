@@ -933,10 +933,9 @@
 "login_tout.default_intent.traditional_login_button" = "Connexion";
 "login_tout.default_intent.traditional_signup_button" = "Inscription";
 "login_tout.default_intent.traditional_title" = "Utilisez votre adresse e-mail :";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms" = "En vous inscrivant, vous acceptez les Conditions d'utilisation, notre Politique de confidentialité et notre Politique en matière de cookies.";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms_html" = "En vous inscrivant, vous acceptez nos <u>Conditions d'utilisation</u>, notre <u>Politique de confidentialité</u> et notre <u>Politique en matière de cookies</u>.";
+"login_tout.disclaimer.agree_to_terms" = "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
 "login_tout.disclaimer.read_more" = "En savoir plus";
-"login_tout.disclaimer.we_never_post_anything_without_permission" = "Rien ne sera publié sans votre permission.";
 "login_tout.errors.button.ok" = "OK";
 "login_tout.errors.facebook.authorization_exception.button" = "Réessayons";
 "login_tout.errors.facebook.authorization_exception.message" = "Nous avons du mal à ouvrir votre compte.";

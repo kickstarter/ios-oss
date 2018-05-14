@@ -13104,35 +13104,35 @@ Please try again later."
     )
   }
   /**
-   "By signing up, you agree to our terms of use, privacy policy, and cookie policy."
+   "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
 
-   - **es**: "Al registrarte, estás aceptando nuestros términos de uso, nuestra política de privacidad y de cookies."
-   - **ja**: "サインアップは、利用規約とプライバシーポリシー、Cookieポリシーへの同意とみなされます。"
-   - **de**: "Mit der Registrierung stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu."
-   - **fr**: "En vous inscrivant, vous acceptez les Conditions d'utilisation, notre Politique de confidentialité et notre Politique en matière de cookies."
-   - **en**: "By signing up, you agree to our terms of use, privacy policy, and cookie policy."
+   - **es**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **ja**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **de**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **fr**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **en**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
   */
-  public static func login_tout_disclaimer_by_signing_up_you_agree_to_terms() -> String {
+  public static func login_tout_disclaimer_agree_to_terms() -> String {
     return localizedString(
-      key: "login_tout.disclaimer.by_signing_up_you_agree_to_terms",
-      defaultValue: "By signing up, you agree to our terms of use, privacy policy, and cookie policy.",
+      key: "login_tout.disclaimer.agree_to_terms",
+      defaultValue: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "By signing up, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>."
+   "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
 
-   - **es**: "Con la registración confirmas tu conformidad con nuestros <u>terms of use</u>, <u>privacy policy</u>, y <u>cookie policy</u>."
-   - **ja**: "サインアップは、<u>利用方法</u>、<u>プライバシーポリシー</u>、<u>または<u>Cookieポリシーへの同意とみなします。</u>"
-   - **de**: "Durch deine Anmeldung erklärst du dich mir unseren <u>terms of use</u>, <u>privacy policy</u>, und <u>cookie policy</u> einverstanden."
-   - **fr**: "En vous inscrivant, vous acceptez nos <u>Conditions d'utilisation</u>, notre <u>Politique de confidentialité</u> et notre <u>Politique en matière de cookies</u>."
-   - **en**: "By signing up, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>."
+   - **es**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **ja**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **de**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **fr**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **en**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
   */
-  public static func login_tout_disclaimer_by_signing_up_you_agree_to_terms_html() -> String {
+  public static func login_tout_disclaimer_agree_to_terms_html() -> String {
     return localizedString(
-      key: "login_tout.disclaimer.by_signing_up_you_agree_to_terms_html",
-      defaultValue: "By signing up, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>.",
+      key: "login_tout.disclaimer.agree_to_terms_html",
+      defaultValue: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.",
       count: nil,
       substitutions: [:]
     )
@@ -13150,23 +13150,6 @@ Please try again later."
     return localizedString(
       key: "login_tout.disclaimer.read_more",
       defaultValue: "Read more",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "We'll never post anything without your permission."
-
-   - **es**: "Nunca publicaremos nada sin tu consentimiento."
-   - **ja**: "Kickstarterが勝手に投稿することはありません。"
-   - **de**: "Wir veröffentlichen niemals etwas ohne deine Zustimmung."
-   - **fr**: "Rien ne sera publié sans votre permission."
-   - **en**: "We'll never post anything without your permission."
-  */
-  public static func login_tout_disclaimer_we_never_post_anything_without_permission() -> String {
-    return localizedString(
-      key: "login_tout.disclaimer.we_never_post_anything_without_permission",
-      defaultValue: "We'll never post anything without your permission.",
       count: nil,
       substitutions: [:]
     )
