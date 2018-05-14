@@ -34,6 +34,8 @@ public let disclaimerLabelStyle =
     <> UILabel.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
     <> UILabel.lens.lineBreakMode .~ .byWordWrapping
     <> UILabel.lens.numberOfLines .~ 0
+    <> UILabel.lens.adjustsFontSizeToFitWidth .~ true
+    <> UILabel.lens.minimumScaleFactor .~ 0.5
 
 public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }
