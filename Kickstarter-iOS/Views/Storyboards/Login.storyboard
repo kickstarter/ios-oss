@@ -150,7 +150,7 @@
                                 <rect key="frame" x="20" y="88" width="360" height="512"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sOV-mG-ODT">
-                                        <rect key="frame" x="0.0" y="0.0" width="360" height="600"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="360" height="625"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="c1T-P7-B9x" userLabel="Root Stack View">
                                                 <rect key="frame" x="0.0" y="0.0" width="360" height="625"/>
@@ -306,6 +306,7 @@
                                         <constraints>
                                             <constraint firstItem="c1T-P7-B9x" firstAttribute="top" secondItem="sOV-mG-ODT" secondAttribute="top" id="31V-6f-Ihi"/>
                                             <constraint firstItem="c1T-P7-B9x" firstAttribute="trailing" secondItem="sOV-mG-ODT" secondAttribute="trailing" id="6TS-gm-2Wp"/>
+                                            <constraint firstItem="c1T-P7-B9x" firstAttribute="bottom" secondItem="sOV-mG-ODT" secondAttribute="bottom" id="jZa-RR-H3c"/>
                                             <constraint firstItem="c1T-P7-B9x" firstAttribute="leading" secondItem="sOV-mG-ODT" secondAttribute="leading" id="x7t-NN-766"/>
                                         </constraints>
                                     </view>
@@ -325,7 +326,6 @@
                             <constraint firstItem="uSk-gc-no0" firstAttribute="top" secondItem="E27-lb-1hH" secondAttribute="topMargin" constant="24" id="Rm8-5j-53f"/>
                             <constraint firstItem="ZfQ-Dw-htn" firstAttribute="top" secondItem="uSk-gc-no0" secondAttribute="bottom" id="Upf-p0-WDn"/>
                             <constraint firstItem="uSk-gc-no0" firstAttribute="leading" secondItem="E27-lb-1hH" secondAttribute="leadingMargin" id="W2Y-AT-qJR"/>
-                            <constraint firstItem="sOV-mG-ODT" firstAttribute="height" secondItem="E27-lb-1hH" secondAttribute="height" id="iEi-VH-UZz"/>
                             <constraint firstItem="uSk-gc-no0" firstAttribute="trailing" secondItem="E27-lb-1hH" secondAttribute="trailingMargin" id="quc-ox-Ky8"/>
                         </constraints>
                     </view>

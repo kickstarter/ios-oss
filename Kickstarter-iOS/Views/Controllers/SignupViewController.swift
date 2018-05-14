@@ -8,7 +8,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   fileprivate let viewModel: SignupViewModelType = SignupViewModel()
   fileprivate let helpViewModel = HelpViewModel()
 
-  @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var scrollView: UIScrollView!
   @IBOutlet fileprivate weak var disclaimerButton: UIButton!
   @IBOutlet fileprivate weak var emailTextField: UITextField!
   @IBOutlet fileprivate weak var formBackgroundView: UIView!
@@ -99,7 +99,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
   internal override func bindViewModel() {
     self.emailTextField.rac.becomeFirstResponder = self.viewModel.outputs.emailTextFieldBecomeFirstResponder
-    self.nameTextField.rac.becomeFirstResponder = self.viewModel.outputs.nameTextFieldBecomeFirstResponder
     self.newsletterSwitch.rac.on = self.viewModel.outputs.setWeeklyNewsletterState
     self.passwordTextField.rac.becomeFirstResponder =
       self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
@@ -204,7 +203,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
   fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
     UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
-      self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
+      self.scrollView.contentInset.bottom = change.frame.height
       }, completion: nil)
   }
 
