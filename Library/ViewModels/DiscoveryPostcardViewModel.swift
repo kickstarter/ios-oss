@@ -248,7 +248,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
           // Always show category when filter category is nil
           return false
         }
-        
+
         // if we are in a subcategory, compare categories
         if !category.isRoot {
           return Int(project.category.id) == category.intID
@@ -265,7 +265,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     let projectCategoryViewsHidden = Signal.combineLatest(
       self.projectCategoryViewHidden.signal,
       self.projectIsStaffPickLabelHidden.signal)
-    
+
     self.projectCategoryStackViewHidden = Signal.combineLatest(
       projectCategoryViewsHidden,
       self.enableProjectCategoryExperimentProperty.signal)
