@@ -125,6 +125,7 @@
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
 		77758157209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */; };
 		7775818E209CBF7700EE357F /* DiscoveryProjectCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */; };
+		77E4BBA220AA33C7006BFC46 /* TextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E4BBA020AA3299006BFC46 /* TextButton.swift */; };
 		7DD8EE241F02DBED0070B63D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD8EE231F02DBED0070B63D /* Bolts.framework */; };
 		7DD8EE4F1F02DD2C0070B63D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD8EE231F02DBED0070B63D /* Bolts.framework */; };
 		7DD8EE501F02DD560070B63D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD8EE231F02DBED0070B63D /* Bolts.framework */; };
@@ -1684,6 +1685,7 @@
 		7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModel.swift; sourceTree = "<group>"; };
 		7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryProjectCategoryView.xib; sourceTree = "<group>"; };
 		77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModelTests.swift; sourceTree = "<group>"; };
+		77E4BBA020AA3299006BFC46 /* TextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextButton.swift; sourceTree = "<group>"; };
 		7DD8EE231F02DBED0070B63D /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/FBSDK/iOS/Bolts.framework; sourceTree = "<group>"; };
 		8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftStyles.swift; sourceTree = "<group>"; };
 		8016BFE71D0F582D00067956 /* String+Whitespace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Whitespace.swift"; sourceTree = "<group>"; };
@@ -2621,6 +2623,14 @@
 			name = Library;
 			sourceTree = "<group>";
 		};
+		77E4BB6920AA3276006BFC46 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				77E4BBA020AA3299006BFC46 /* TextButton.swift */,
+			);
+			path = Custom;
+			sourceTree = "<group>";
+		};
 		802800561C88F62500141235 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2835,6 +2845,7 @@
 				D0D2AB1A1E96444B008D298A /* VideoGridView.swift */,
 				A751A51C1C85EAD8009C5DEA /* Cells */,
 				A751A51D1C85EAD8009C5DEA /* Controllers */,
+				77E4BB6920AA3276006BFC46 /* Custom */,
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
 			);
@@ -5321,6 +5332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77E4BBA220AA33C7006BFC46 /* TextButton.swift in Sources */,
 				5993DEBF1CE296F000925494 /* ProfileHeaderView.swift in Sources */,
 				A7D8B6B61DCCD4DE009BF854 /* ProjectNavigatorTransitionAnimator.swift in Sources */,
 				A77DA9651E4D1F4D00DB3A66 /* Storyboard.swift in Sources */,

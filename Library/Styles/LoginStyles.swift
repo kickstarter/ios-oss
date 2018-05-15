@@ -5,7 +5,7 @@ import UIKit
 public let createNewAccountButtonStyle = greenButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.facebook_confirmation_button() }
 
-public let disclaimerButtonStyle =   UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_400
+public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_400
   <> UIButton.lens.titleLabel.font %~~ { _, label in
       label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
   }
@@ -18,6 +18,9 @@ public let disclaimerButtonStyle =   UIButton.lens.titleColor(for: .normal) .~ .
     Strings.login_tout_disclaimer_agree_to_terms()
     }
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
+  <> UIButton.lens.backgroundColor(for: .normal) %~ { _ in
+      UIColor.red
+  }
 
 public let disclaimerLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_dark_grey_400
