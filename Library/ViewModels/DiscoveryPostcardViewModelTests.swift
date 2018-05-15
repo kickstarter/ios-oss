@@ -495,7 +495,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.fundingProgressBarViewHidden.assertValues([false, false, true, false, false])
     self.fundingProgressContainerViewHidden.assertValues([false, true, false, false, true])
   }
-
+  
+  // MARK: Project Category View
   func testShowsCategoryLabelsExperimental() {
     let staffPickProject = Project.template
       |> Project.lens.staffPick .~ true
@@ -509,8 +510,15 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectCategoryName.assertValue(KsApi.Category.illustration.name)
     self.projectCategoryViewHidden.assertValue(false)
   }
+  
+  func testShowsCategoryLabelsExperimental_AlwaysIfFilterCategoryIsNil() {
+    self.vm.inputs.configureWith(project: Project.template, category: nil)
+    self.vm.inputs.enableProjectCategoryExperiment(true)
+    
+    self.projectCategoryStackViewHidden.assertValue(false)
+  }
 
-  func testHidesCategoryLabelExperimental() {
+  func testHidesCategoryLabelExperimental_IfFilterCategoryIsEqualToProjectCategory() {
     // Workaround for discrepancy between category ids from graphQL and category ids from the legacy API
     let categoryId = KsApi.Category.illustration.intID
     let illustrationCategory = KsApi.Category.illustration
@@ -541,6 +549,15 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     self.projectCategoryStackViewHidden.assertValue(true)
   }
+  
+  func testHidesCategoryLabelControl_IfFilterCategoryIsNil() {
+    self.vm.inputs.configureWith(project: Project.template, category: nil)
+    self.vm.inputs.enableProjectCategoryExperiment(false)
+    
+    self.projectCategoryStackViewHidden.assertValue(true)
+  }
+  
+  // MARK: Notification Dialog
   func testShowNotificationDialogEmits_IfStarredProjectsCountIsZero() {
 
     let project = Project.template

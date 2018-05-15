@@ -242,8 +242,13 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.projectCategoryViewHidden = Signal.combineLatest(
       self.projectProperty.signal.skipNil(),
-      self.categoryProperty.signal.skipNil()
+      self.categoryProperty.signal
       ).map { (project, category) in
+        guard let category = category else {
+          // Always show category when filter category is nil
+          return false
+        }
+        
         // if we are in a subcategory, compare categories
         if !category.isRoot {
           return Int(project.category.id) == category.intID
@@ -254,12 +259,13 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       }
 
     self.projectIsStaffPickLabelHidden = configuredProject
-      .map { $0.staffPick }.negate()
+      .map { $0.staffPick }
+      .negate()
 
     let projectCategoryViewsHidden = Signal.combineLatest(
       self.projectCategoryViewHidden.signal,
       self.projectIsStaffPickLabelHidden.signal)
-
+    
     self.projectCategoryStackViewHidden = Signal.combineLatest(
       projectCategoryViewsHidden,
       self.enableProjectCategoryExperimentProperty.signal)
