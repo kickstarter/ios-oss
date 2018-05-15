@@ -383,6 +383,10 @@ internal final class SettingsViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
 
+    self.viewModel.outputs.goToSafariBrowser
+      .observeForControllerAction()
+      .observeValues { [weak self] url in self?.goToDeleteAccount(url: url) }
+
     self.viewModel.outputs.goToManageProjectNotifications
       .observeForControllerAction()
       .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
@@ -489,10 +493,12 @@ internal final class SettingsViewController: UIViewController {
     UIApplication.shared.openURL(url)
   }
 
-  fileprivate func goToDeleteAccount(link: String) {
-    guard let url = URL(string: link) else { return }
-    UIApplication.shared.openURL(url)
+  fileprivate func goToDeleteAccount(url: URL) {
+    let controller = SFSafariViewController(url: url)
+    controller.modalPresentationStyle = .overFullScreen
+    self.present(controller, animated: true, completion: nil)
   }
+
 
   fileprivate func goToBetaFeedback() {
     guard MFMailComposeViewController.canSendMail() else { return }
@@ -611,10 +617,6 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.creatorTipsTapped(selected: !button.isSelected)
   }
 
-  @objc fileprivate func deleteAccountTapped() {
-    self.helpViewModel.inputs.helpTypeButtonTapped(.delete)
-  }
-
   @objc fileprivate func emailFrequencyTapped() {
     self.viewModel.inputs.emailFrequencyTapped()
   }
@@ -727,6 +729,10 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func rateUsTapped() {
     self.viewModel.inputs.rateUsTapped()
+  }
+
+  @objc fileprivate func deleteAccountTapped() {
+    self.viewModel.inputs.deleteAccountTapped()
   }
 
   @objc fileprivate func termsOfUseTapped() {

@@ -11,6 +11,7 @@ public protocol SettingsViewModelInputs {
   func betaFeedbackButtonTapped()
   func commentsTapped(selected: Bool)
   func creatorTipsTapped(selected: Bool)
+  func deleteAccountTapped()
   func emailFrequencyTapped()
   func exportDataTapped()
   func findFriendsTapped()
@@ -74,6 +75,8 @@ public protocol SettingsViewModelOutputs {
   var updateCurrentUser: Signal<User, NoError> { get }
   var versionText: Signal<String, NoError> { get }
   var weeklyNewsletterOn: Signal<Bool, NoError> { get }
+
+  var goToSafariBrowser: Signal<URL, NoError> { get }
 }
 
 public protocol SettingsViewModelType {
@@ -198,6 +201,9 @@ SettingsViewModelOutputs {
 
     self.goToAppStoreRating = self.rateUsTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
+
+    self.goToSafariBrowser = self.deleteAccountTappedProperty.signal
+      .map { _ in AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy") }
 
     self.goToBetaFeedback = self.betaFeedbackButtonTappedProperty.signal
 
@@ -352,6 +358,10 @@ SettingsViewModelOutputs {
   public func creatorDigestTapped(on: Bool) {
     self.creatorDigestTappedProperty.value = on
   }
+  fileprivate let deleteAccountTappedProperty = MutableProperty(())
+  public func deleteAccountTapped() {
+    self.deleteAccountTappedProperty.value = ()
+  }
   fileprivate let individualEmailTappedProperty = MutableProperty(false)
   public func individualEmailTapped(on: Bool) {
     self.individualEmailTappedProperty.value = on
@@ -489,6 +499,8 @@ SettingsViewModelOutputs {
   public let updateCurrentUser: Signal<User, NoError>
   public let weeklyNewsletterOn: Signal<Bool, NoError>
   public let versionText: Signal<String, NoError>
+
+  public let goToSafariBrowser: Signal<URL, NoError>
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }
