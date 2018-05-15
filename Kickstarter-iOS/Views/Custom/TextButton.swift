@@ -4,16 +4,20 @@ import Foundation
 final class TextButton: UIButton {
   init() {
     super.init(frame: .zero)
-  
+
     configure()
   }
-  
+
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    
+  
+    guard self.buttonType == .system else {
+      fatalError("TextButton must have type .system")
+    }
+  
     configure()
   }
-  
+
   override var intrinsicContentSize: CGSize {
     if let titleLabel = titleLabel {
       return CGSize(width: titleLabel.frame.width + contentEdgeInsets.left + contentEdgeInsets.right,
@@ -22,7 +26,7 @@ final class TextButton: UIButton {
       return super.intrinsicContentSize
     }
   }
-  
+
   private func configure() {
     titleLabel?.setContentCompressionResistancePriority(.required, for: .vertical)
     titleLabel?.setContentCompressionResistancePriority(.required, for: .horizontal)

@@ -11,7 +11,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   @IBOutlet fileprivate weak var contextLabel: UILabel!
   @IBOutlet fileprivate weak var bringCreativeProjectsToLifeLabel: UILabel!
   @IBOutlet fileprivate weak var fbLoginButton: UIButton!
-  @IBOutlet fileprivate weak var disclaimerButton: UILabel!
+  @IBOutlet fileprivate weak var disclaimerButton: TextButton!
   @IBOutlet fileprivate weak var loginButton: UIButton!
   @IBOutlet fileprivate weak var signupButton: UIButton!
   @IBOutlet fileprivate weak var loginContextStackView: UIStackView!
@@ -51,10 +51,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     }
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(helpButtonPressed))
 
-    let disclaimerTapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                                action: #selector(helpButtonPressed))
-
-    self.disclaimerButton.addGestureRecognizer(disclaimerTapGestureRecognizer)
+    self.disclaimerButton.addTarget(self, action: #selector(helpButtonPressed), for: .touchUpInside)
   }
 
   deinit {
@@ -72,7 +69,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     _ = self |> baseControllerStyle()
     _ = self.fbLoginButton |> fbLoginButtonStyle
-    _ = self.disclaimerButton |> disclaimerLabelStyle
+    _ = self.disclaimerButton |> disclaimerButtonStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.rootStackView
       |> loginRootStackViewStyle
