@@ -95,7 +95,7 @@
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Q6Z-wy-WZo" customClass="TextButton" customModule="Kickstarter_Framework" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="186" width="360" height="30"/>
-                                                        <state key="normal" title="Button"/>
+                                                        <state key="normal" title="Legal"/>
                                                     </button>
                                                 </subviews>
                                             </stackView>

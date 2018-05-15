@@ -21,8 +21,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   private var sessionStartedObserver: Any?
   fileprivate let viewModel: LoginToutViewModelType = LoginToutViewModel()
   
-  private var disclaimer2Button = TextButton()
-
   fileprivate lazy var fbLoginManager: FBSDKLoginManager = {
     let manager = FBSDKLoginManager()
     manager.loginBehavior = .systemAccount
@@ -54,8 +52,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(helpButtonPressed))
 
     self.disclaimerButton.addTarget(self, action: #selector(helpButtonPressed), for: .touchUpInside)
-    
-    rootStackView.addArrangedSubview(disclaimer2Button)
   }
 
   deinit {
@@ -81,9 +77,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       self.disclaimerButton.setNeedsLayout()
       self.disclaimerButton.setNeedsDisplay()
     }
-    
-    _ = self.disclaimer2Button |> disclaimerButtonStyle
-    
+        
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.rootStackView
       |> loginRootStackViewStyle

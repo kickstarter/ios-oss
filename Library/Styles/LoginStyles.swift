@@ -18,9 +18,6 @@ public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
     Strings.login_tout_disclaimer_agree_to_terms()
     }
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
-  <> UIButton.lens.backgroundColor(for: .normal) %~ { _ in
-      UIColor.red
-  }
 
 public let disclaimerLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_dark_grey_400
