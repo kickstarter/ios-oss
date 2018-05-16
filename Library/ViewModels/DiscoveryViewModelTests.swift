@@ -85,34 +85,6 @@ internal final class DiscoveryViewModelTests: TestCase {
                                                "New params load into data source after selecting.")
   }
 
-  func testDefaultedToRecs_WhenExperimentDisabled() {
-    let config = Config.template
-      |> Config.lens.abExperiments
-      .~ [Experiment.Name.defaultToRecs.rawValue: Experiment.Variant.control.rawValue]
-
-    withEnvironment(config: config) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-
-      self.configureNavigationHeader.assertValues([initialParams])
-    }
-  }
-
-  func testDefaultedToRecs_WhenExperimentEnabled() {
-    let conf = Config.template
-      |> Config.lens.abExperiments
-      .~ [Experiment.Name.defaultToRecs.rawValue: Experiment.Variant.experimental.rawValue]
-
-    let user = User.template
-
-    withEnvironment(config: conf, currentUser: user) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-
-      self.configureNavigationHeader.assertValues([recsInitialParams])
-    }
-  }
-
   func testConfigureNavigationHeader() {
     self.configureNavigationHeader.assertValueCount(0)
 

@@ -933,10 +933,9 @@
 "login_tout.default_intent.traditional_login_button" = "Log in";
 "login_tout.default_intent.traditional_signup_button" = "Sign up";
 "login_tout.default_intent.traditional_title" = "Use your email address:";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms" = "By signing up, you agree to our terms of use, privacy policy, and cookie policy.";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms_html" = "By signing up, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>.";
+"login_tout.disclaimer.agree_to_terms" = "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
 "login_tout.disclaimer.read_more" = "Read more";
-"login_tout.disclaimer.we_never_post_anything_without_permission" = "We'll never post anything without your permission.";
 "login_tout.errors.button.ok" = "OK";
 "login_tout.errors.facebook.authorization_exception.button" = "Let's try that again";
 "login_tout.errors.facebook.authorization_exception.message" = "We're having some trouble getting you logged in.";
@@ -1230,7 +1229,7 @@
 "signup.input_fields.password" = "Password";
 "signup.input_fields.password_min_characters" = "Password (minimum 6 characters)";
 "signup.navbar_title" = "Sign up";
-"signup.newsletter_full" = "Receive our weekly newsletter and other occasional updates.";
+"signup.newsletter_full_opt_out" = "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy.";
 "social.buttons.cancel" = "Cancel";
 "social.buttons.post" = "Post";
 "social.buttons.send" = "Send";
