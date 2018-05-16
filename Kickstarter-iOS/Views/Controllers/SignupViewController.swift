@@ -54,8 +54,8 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
                                      for: [.editingChanged])
 
     self.disclaimerButton.addTarget(self, action: #selector(disclaimerButtonPressed), for: .touchUpInside)
-
-    let newsletterLabelTapGesture = UITapGestureRecognizer(target: self, action: #selector(newsletterLabelTapped))
+    let newsletterLabelTapGesture = UITapGestureRecognizer(target: self,
+                                                           action: #selector(newsletterLabelTapped))
     self.newsletterLabel.addGestureRecognizer(newsletterLabelTapGesture)
 
     self.viewModel.inputs.viewDidLoad()
