@@ -203,7 +203,9 @@ SettingsViewModelOutputs {
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
     self.goToSafariBrowser = self.deleteAccountTappedProperty.signal
-      .map { _ in AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy") }
+      .map {
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy")
+      }
 
     self.goToBetaFeedback = self.betaFeedbackButtonTappedProperty.signal
 

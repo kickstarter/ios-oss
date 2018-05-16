@@ -761,6 +761,7 @@ internal final class SettingsViewController: UIViewController {
       animated: true
     )
   }
+
 }
 
 extension SettingsViewController: MFMailComposeViewControllerDelegate {
