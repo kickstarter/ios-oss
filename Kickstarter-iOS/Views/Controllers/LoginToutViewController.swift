@@ -20,7 +20,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   fileprivate let helpViewModel = HelpViewModel()
   private var sessionStartedObserver: Any?
   fileprivate let viewModel: LoginToutViewModelType = LoginToutViewModel()
-  
+
   fileprivate lazy var fbLoginManager: FBSDKLoginManager = {
     let manager = FBSDKLoginManager()
     manager.loginBehavior = .systemAccount
