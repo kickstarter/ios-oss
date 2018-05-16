@@ -9,7 +9,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   fileprivate let helpViewModel = HelpViewModel()
 
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
-  @IBOutlet fileprivate weak var disclaimerButton: UILabel!
+  @IBOutlet fileprivate weak var disclaimerButton: UIButton!
   @IBOutlet fileprivate weak var emailTextField: UITextField!
   @IBOutlet fileprivate weak var formBackgroundView: UIView!
   @IBOutlet fileprivate weak var nameTextField: UITextField!
@@ -53,13 +53,10 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
                                      action: #selector(passwordTextFieldChanged(_:)),
                                      for: [.editingChanged])
 
+    self.disclaimerButton.addTarget(self, action: #selector(disclaimerButtonPressed), for: .touchUpInside)
+    
     let newsletterLabelTapGesture = UITapGestureRecognizer(target: self, action: #selector(newsletterLabelTapped))
-
     self.newsletterLabel.addGestureRecognizer(newsletterLabelTapGesture)
-
-    let disclaimerTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(disclaimerButtonPressed))
-
-    self.disclaimerButton.addGestureRecognizer(disclaimerTapGestureRecognizer)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -71,7 +68,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       |> signupControllerStyle
 
     _ = self.disclaimerButton
-      |> disclaimerLabelStyle
+      |> disclaimerButtonStyle
 
     _ = self.nameTextField
       |> UITextField.lens.returnKeyType .~ .next

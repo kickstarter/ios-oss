@@ -167,10 +167,10 @@
                                 <rect key="frame" x="20" y="88" width="360" height="512"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sOV-mG-ODT">
-                                        <rect key="frame" x="0.0" y="0.0" width="360" height="709"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="360" height="701"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="c1T-P7-B9x" userLabel="Root Stack View">
-                                                <rect key="frame" x="0.0" y="0.0" width="360" height="709"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="360" height="701"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Pl5-Tj-kxT" userLabel="Form Stack View">
                                                         <rect key="frame" x="0.0" y="0.0" width="360" height="557"/>
@@ -310,24 +310,13 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LSa-NX-EJr" userLabel="Disclaimer button container">
-                                                        <rect key="frame" x="0.0" y="581" width="360" height="128"/>
-                                                        <subviews>
-                                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xva-Ko-hd9">
-                                                                <rect key="frame" x="5" y="0.0" width="350" height="128"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="9S8-OL-QoV">
+                                                        <rect key="frame" x="0.0" y="581" width="360" height="120"/>
                                                         <constraints>
-                                                            <constraint firstItem="Xva-Ko-hd9" firstAttribute="leading" secondItem="LSa-NX-EJr" secondAttribute="leading" constant="5" id="F5Z-fH-men"/>
-                                                            <constraint firstItem="Xva-Ko-hd9" firstAttribute="top" secondItem="LSa-NX-EJr" secondAttribute="top" id="Mub-3U-PNf"/>
-                                                            <constraint firstAttribute="trailing" secondItem="Xva-Ko-hd9" secondAttribute="trailing" constant="5" id="cpl-SH-4og"/>
-                                                            <constraint firstAttribute="bottom" secondItem="Xva-Ko-hd9" secondAttribute="bottom" id="eqo-7P-Rkb"/>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="a7j-yx-6DV"/>
                                                         </constraints>
-                                                    </view>
+                                                        <state key="normal" title="Button"/>
+                                                    </button>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
@@ -362,7 +351,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="600"/>
                     <connections>
-                        <outlet property="disclaimerButton" destination="Xva-Ko-hd9" id="6cb-g0-P35"/>
+                        <outlet property="disclaimerButton" destination="9S8-OL-QoV" id="W1D-aB-Gug"/>
                         <outlet property="emailTextField" destination="GFK-DU-V4K" id="HlQ-zL-u8b"/>
                         <outlet property="formBackgroundView" destination="694-m2-31k" id="eSR-OX-NgE"/>
                         <outlet property="nameTextField" destination="XVh-38-OnS" id="Twf-sT-ypZ"/>
