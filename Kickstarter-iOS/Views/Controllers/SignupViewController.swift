@@ -8,7 +8,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   fileprivate let viewModel: SignupViewModelType = SignupViewModel()
   fileprivate let helpViewModel = HelpViewModel()
 
-  @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var scrollView: UIScrollView!
   @IBOutlet fileprivate weak var disclaimerButton: UIButton!
   @IBOutlet fileprivate weak var emailTextField: UITextField!
   @IBOutlet fileprivate weak var formBackgroundView: UIView!
@@ -28,9 +28,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-
-    self.disclaimerButton.addTarget(self, action: #selector(disclaimerButtonPressed),
-                                    for: .touchUpInside)
 
     self.nameTextField.addTarget(self,
                                  action: #selector(nameTextFieldReturn),
@@ -55,6 +52,11 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.passwordTextField.addTarget(self,
                                      action: #selector(passwordTextFieldChanged(_:)),
                                      for: [.editingChanged])
+
+    self.disclaimerButton.addTarget(self, action: #selector(disclaimerButtonPressed), for: .touchUpInside)
+    let newsletterLabelTapGesture = UITapGestureRecognizer(target: self,
+                                                           action: #selector(newsletterLabelTapped))
+    self.newsletterLabel.addGestureRecognizer(newsletterLabelTapGesture)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -95,7 +97,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
   internal override func bindViewModel() {
     self.emailTextField.rac.becomeFirstResponder = self.viewModel.outputs.emailTextFieldBecomeFirstResponder
-    self.nameTextField.rac.becomeFirstResponder = self.viewModel.outputs.nameTextFieldBecomeFirstResponder
     self.newsletterSwitch.rac.on = self.viewModel.outputs.setWeeklyNewsletterState
     self.passwordTextField.rac.becomeFirstResponder =
       self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
@@ -187,6 +188,10 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
+  @objc fileprivate func newsletterLabelTapped() {
+    self.helpViewModel.inputs.showHelpSheetButtonTapped()
+  }
+
   @objc internal func mailComposeController(_ controller: MFMailComposeViewController,
                                             didFinishWith result: MFMailComposeResult,
                                             error: Error?) {
@@ -196,7 +201,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
   fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
     UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
-      self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
+      self.scrollView.contentInset.bottom = change.frame.height
       }, completion: nil)
   }
 
