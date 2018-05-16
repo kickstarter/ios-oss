@@ -136,6 +136,11 @@ platform :ios do
   end
 
   ### ALPHA
+  lane :alpha_match_gym_hockey do
+    match_all
+    alpha_gym
+    alpha_hockey
+  end
 
   desc "Build Alpha"
   lane :alpha_gym do
