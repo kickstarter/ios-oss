@@ -933,10 +933,9 @@
 "login_tout.default_intent.traditional_login_button" = "Anmelden";
 "login_tout.default_intent.traditional_signup_button" = "Registrieren";
 "login_tout.default_intent.traditional_title" = "Benutze deine E-Mail-Adresse:";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms" = "Mit der Registrierung stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu.";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms_html" = "Durch deine Anmeldung erklärst du dich mir unseren <u>terms of use</u>, <u>privacy policy</u>, und <u>cookie policy</u> einverstanden.";
+"login_tout.disclaimer.agree_to_terms" = "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
 "login_tout.disclaimer.read_more" = "Weiterlesen";
-"login_tout.disclaimer.we_never_post_anything_without_permission" = "Wir veröffentlichen niemals etwas ohne deine Zustimmung.";
 "login_tout.errors.button.ok" = "OK";
 "login_tout.errors.facebook.authorization_exception.button" = "Versuche es noch einmal!";
 "login_tout.errors.facebook.authorization_exception.message" = "Fehler beim Einloggen aufgetreten.";
@@ -1230,7 +1229,7 @@
 "signup.input_fields.password" = "Passwort";
 "signup.input_fields.password_min_characters" = "Passwort (mindestens 6 Zeichen)";
 "signup.navbar_title" = "Registrieren";
-"signup.newsletter_full" = "Endecke neue Projekte in unserem wöchentlichen Newsletter.";
+"signup.newsletter_full_opt_out" = "Du erhältst den wöchentlichen Kickstarter Newsletter und sporadische Updates per E-Mail. Du kannst diese E-Mails jederzeit über den in der E-Mail enthaltenen Link oder wie in unseren Datenschutzrichtlinien dargelegt abwählen.";
 "social.buttons.cancel" = "Abbrechen";
 "social.buttons.post" = "Posten";
 "social.buttons.send" = "Senden";

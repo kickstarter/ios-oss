@@ -5,21 +5,22 @@ import UIKit
 public let createNewAccountButtonStyle = greenButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.facebook_confirmation_button() }
 
-public let disclaimerButtonStyle =
-  UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_400
-    <> UIButton.lens.titleLabel.font %~~ { _, label in
+public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_400
+  <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
+    UIColor.ksr_text_dark_grey_400.withAlphaComponent(0.5)
+  }
+  <> UIButton.lens.titleLabel.font %~~ { _, label in
       label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
+  }
+  <> UIButton.lens.titleLabel.textAlignment .~ .center
+  <> UIButton.lens.title(for: .normal) %~ { _ in
+    Strings.login_tout_disclaimer_agree_to_terms()
+  }
+  <> UIButton.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
+  <> UIButton.lens.accessibilityLabel %~ { _ in
+    Strings.login_tout_disclaimer_agree_to_terms()
     }
-    <> UIButton.lens.titleLabel.textAlignment .~ .center
-    <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 0, leftRight: Styles.grid(3))
-    <> UIButton.lens.title(for: .normal) %~ { _ in
-      Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
-    }
-    <> UIButton.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
-    <> UIButton.lens.accessibilityLabel %~ { _ in
-      Strings.login_tout_disclaimer_by_signing_up_you_agree_to_terms()
-    }
-    <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
+  <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
 public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }
@@ -80,10 +81,6 @@ public let onePasswordButtonStyle =
     <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_dark_grey_400
     <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_one_password() }
 
-public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
-  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
-  <> UILabel.lens.text %~ { _ in Strings.signup_newsletter_full() }
-
 public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
 
 public let passwordFieldStyle = formFieldStyle
@@ -114,6 +111,27 @@ public let signupControllerStyle = baseControllerStyle()
 
 public let signupWithEmailButtonStyle = borderButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.signup_button_email() }
+
+public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
+  <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
+    UIColor.ksr_text_dark_grey_500.withAlphaComponent(0.5)
+  }
+  <> UIButton.lens.titleLabel.font .~ .ksr_footnote()
+  <> UIButton.lens.titleLabel.textAlignment .~ .left
+  <> UIButton.lens.title(for: .normal) %~ { _ in
+    Strings.signup_newsletter_full_opt_out()
+  }
+  <> UIButton.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
+  <> UIButton.lens.accessibilityLabel %~ { _ in
+    Strings.signup_newsletter_full_opt_out()
+  }
+  <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
+
+public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
+  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+  <> UILabel.lens.lineBreakMode .~ .byWordWrapping
+  <> UILabel.lens.numberOfLines .~ 0
+  <> UILabel.lens.text %~ { _ in Strings.signup_newsletter_full_opt_out() }
 
 public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.textAlignment .~ .center
