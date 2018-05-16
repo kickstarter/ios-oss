@@ -22,23 +22,6 @@ public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
     }
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
-public let disclaimerLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_400
-    <> UILabel.lens.font %~~ { _, label in
-      label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
-    }
-    <> UILabel.lens.textAlignment .~ .center
-    <> UILabel.lens.text %~ { _ in Strings.login_tout_disclaimer_agree_to_terms() }
-    <> UILabel.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
-    <> UILabel.lens.accessibilityLabel %~ { _ in
-      Strings.login_tout_disclaimer_agree_to_terms()
-    }
-    <> UILabel.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
-    <> UILabel.lens.lineBreakMode .~ .byWordWrapping
-    <> UILabel.lens.numberOfLines .~ 0
-    <> UILabel.lens.adjustsFontSizeToFitWidth .~ true
-    <> UILabel.lens.minimumScaleFactor .~ 0.5
-
 public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }
   <> UITextField.lens.keyboardType .~ .emailAddress

@@ -93,8 +93,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
     _ = self.signupButton
       |> signupButtonStyle
-
-    self.disclaimerButton.sizeToFit()
   }
 
   internal override func bindViewModel() {
