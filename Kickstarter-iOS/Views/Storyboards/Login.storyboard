@@ -26,10 +26,10 @@
                                 <rect key="frame" x="20" y="20" width="360" height="511"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PSN-BI-sXu">
-                                        <rect key="frame" x="0.0" y="0.0" width="360" height="216"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="360" height="286"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
-                                                <rect key="frame" x="0.0" y="0.0" width="360" height="216"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="360" height="286"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Q9a-f5-7eI">
                                                         <rect key="frame" x="0.0" y="0.0" width="360" height="10"/>
@@ -93,8 +93,11 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Q6Z-wy-WZo" customClass="TextButton" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="186" width="360" height="30"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Q6Z-wy-WZo">
+                                                        <rect key="frame" x="0.0" y="186" width="360" height="100"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="m5W-d1-nrw"/>
+                                                        </constraints>
                                                         <state key="normal" title="Legal"/>
                                                     </button>
                                                 </subviews>
@@ -136,7 +139,7 @@
                     <connections>
                         <outlet property="bringCreativeProjectsToLifeLabel" destination="IdC-V8-RTt" id="zB4-FN-a6D"/>
                         <outlet property="contextLabel" destination="dpL-Nr-tUh" id="BOf-Py-pLj"/>
-                        <outlet property="disclaimerButton" destination="Q6Z-wy-WZo" id="Qe2-Bm-5sk"/>
+                        <outlet property="disclaimerButton" destination="Q6Z-wy-WZo" id="HPK-fR-ian"/>
                         <outlet property="fbLoginButton" destination="DI6-Zp-Yoj" id="jrl-tE-eBz"/>
                         <outlet property="loginButton" destination="tcm-YK-ZfH" id="qe9-86-RTl"/>
                         <outlet property="loginContextStackView" destination="Q9a-f5-7eI" id="62n-by-ckH"/>
@@ -672,10 +675,10 @@
                                 <rect key="frame" x="0.0" y="20" width="400" height="580"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="42" translatesAutoresizingMaskIntoConstraints="NO" id="o6G-gP-3eh" userLabel="Root Stack View">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="454.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="495.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="XcZ-ub-1e8" userLabel="Confirm">
-                                                <rect key="frame" x="16" y="16" width="368" height="328"/>
+                                                <rect key="frame" x="16" y="16" width="368" height="369"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ay8-Ym-I01">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -689,49 +692,39 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="cCu-Nh-agc" userLabel="Newsletter">
-                                                        <rect key="frame" x="0.0" y="89" width="368" height="31"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="cCu-Nh-agc" userLabel="Newsletter">
+                                                        <rect key="frame" x="0.0" y="89" width="368" height="100"/>
                                                         <subviews>
-                                                            <label opaque="NO" contentMode="left" verticalCompressionResistancePriority="1000" text=" " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ha-q6-wmd">
-                                                                <rect key="frame" x="0.0" y="6.5" width="301" height="18"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
+                                                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="AIS-6D-izi">
+                                                                <rect key="frame" x="0.0" y="0.0" width="301" height="100"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="KGD-IS-HsB"/>
+                                                                </constraints>
+                                                                <state key="normal" title="Button"/>
+                                                            </button>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j4R-JY-GCT">
-                                                                <rect key="frame" x="319" y="0.0" width="51" height="31"/>
+                                                                <rect key="frame" x="319" y="34.5" width="51" height="31"/>
                                                             </switch>
                                                         </subviews>
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VHR-ZD-hIa">
-                                                        <rect key="frame" x="0.0" y="144" width="368" height="32"/>
+                                                        <rect key="frame" x="0.0" y="213" width="368" height="32"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                         <state key="normal">
                                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                     </button>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jwO-fe-cZ1">
-                                                        <rect key="frame" x="0.0" y="200" width="368" height="128"/>
-                                                        <subviews>
-                                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxt-Tl-iph">
-                                                                <rect key="frame" x="5" y="0.0" width="358" height="128"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="wJS-md-Esc">
+                                                        <rect key="frame" x="0.0" y="269" width="368" height="100"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="bottom" secondItem="oxt-Tl-iph" secondAttribute="bottom" id="F0z-Ji-VSJ"/>
-                                                            <constraint firstAttribute="trailing" secondItem="oxt-Tl-iph" secondAttribute="trailing" constant="5" id="UP7-FP-lT5"/>
-                                                            <constraint firstItem="oxt-Tl-iph" firstAttribute="leading" secondItem="jwO-fe-cZ1" secondAttribute="leading" constant="5" id="iQr-y0-0am"/>
-                                                            <constraint firstItem="oxt-Tl-iph" firstAttribute="top" secondItem="jwO-fe-cZ1" secondAttribute="top" id="nqP-HS-WCe"/>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="ijw-4M-4TI"/>
                                                         </constraints>
-                                                    </view>
+                                                        <state key="normal" title="Disclaimer"/>
+                                                    </button>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="g4y-Ze-ncG" userLabel="Login">
-                                                <rect key="frame" x="16" y="386" width="368" height="52.5"/>
+                                                <rect key="frame" x="16" y="427" width="368" height="52.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7LL-th-UNn">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="14.5"/>
@@ -774,11 +767,11 @@
                     <connections>
                         <outlet property="confirmationLabel" destination="Ay8-Ym-I01" id="k6e-Ud-cjo"/>
                         <outlet property="createAccountButton" destination="VHR-ZD-hIa" id="m2x-fE-f3n"/>
-                        <outlet property="disclaimerButton" destination="oxt-Tl-iph" id="iOf-El-Wp6"/>
+                        <outlet property="disclaimerButton" destination="wJS-md-Esc" id="7ay-bZ-Clt"/>
                         <outlet property="emailLabel" destination="EiY-Q0-wRr" id="M2A-lI-Wd7"/>
                         <outlet property="loginButton" destination="oMq-Lz-Vqr" id="gGQ-f1-Q19"/>
                         <outlet property="loginLabel" destination="7LL-th-UNn" id="cXm-4k-CXd"/>
-                        <outlet property="newsletterLabel" destination="6Ha-q6-wmd" id="xXn-hq-sw4"/>
+                        <outlet property="newsletterButton" destination="AIS-6D-izi" id="uhD-W2-flm"/>
                         <outlet property="newsletterSwitch" destination="j4R-JY-GCT" id="m6S-Ak-7lf"/>
                         <outlet property="rootStackView" destination="o6G-gP-3eh" id="UfY-Ev-fwZ"/>
                     </connections>

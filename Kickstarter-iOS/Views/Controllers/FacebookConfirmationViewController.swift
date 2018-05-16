@@ -13,10 +13,10 @@ internal final class FacebookConfirmationViewController: UIViewController,
   @IBOutlet private weak var confirmationLabel: UILabel!
   @IBOutlet private weak var createAccountButton: UIButton!
   @IBOutlet private weak var emailLabel: UILabel!
-  @IBOutlet private weak var disclaimerButton: UILabel!
+  @IBOutlet private weak var disclaimerButton: UIButton!
   @IBOutlet private weak var loginButton: UIButton!
   @IBOutlet private weak var loginLabel: UILabel!
-  @IBOutlet private weak var newsletterLabel: UILabel!
+  @IBOutlet private weak var newsletterButton: UIButton!
   @IBOutlet private weak var newsletterSwitch: UISwitch!
   @IBOutlet private weak var rootStackView: UIStackView!
 
@@ -44,13 +44,8 @@ internal final class FacebookConfirmationViewController: UIViewController,
 
     self.newsletterSwitch.addTarget(self, action: #selector(newsletterSwitchChanged),
                                     for: .valueChanged)
-
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(newsletterLabelTapped))
-
-    self.newsletterLabel.addGestureRecognizer(tapGestureRecognizer)
-
-    let disclaimerTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(helpButtonPressed))
-    self.disclaimerButton.addGestureRecognizer(disclaimerTapGestureRecognizer)
+    self.newsletterButton.addTarget(self, action: #selector(newsletterLabelTapped), for: .touchUpInside)
+    self.disclaimerButton.addTarget(self, action: #selector(helpButtonPressed), for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -64,11 +59,13 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.confirmationLabel |> fbConfirmationMessageLabelStyle
     _ = self.createAccountButton |> createNewAccountButtonStyle
     _ = self.emailLabel |> fbConfirmEmailLabelStyle
-    _ = self.disclaimerButton |> disclaimerLabelStyle
+    _ = self.disclaimerButton
+      |> disclaimerButtonStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.loginLabel |> fbWrongAccountLabelStyle
     _ = self.navigationItem.title = Strings.signup_navbar_title()
-    _ = self.newsletterLabel |> newsletterLabelStyle
+    _ = self.newsletterButton
+      |> newsletterButtonStyle
     _ = self.newsletterSwitch |> newsletterSwitchStyle
     _ = self.rootStackView |> loginRootStackViewStyle
   }

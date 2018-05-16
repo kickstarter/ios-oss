@@ -11,7 +11,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   @IBOutlet fileprivate weak var contextLabel: UILabel!
   @IBOutlet fileprivate weak var bringCreativeProjectsToLifeLabel: UILabel!
   @IBOutlet fileprivate weak var fbLoginButton: UIButton!
-  @IBOutlet fileprivate weak var disclaimerButton: TextButton!
+  @IBOutlet fileprivate weak var disclaimerButton: UIButton!
   @IBOutlet fileprivate weak var loginButton: UIButton!
   @IBOutlet fileprivate weak var signupButton: UIButton!
   @IBOutlet fileprivate weak var loginContextStackView: UIStackView!
@@ -69,15 +69,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     _ = self |> baseControllerStyle()
     _ = self.fbLoginButton |> fbLoginButtonStyle
-    
-    DispatchQueue.main.async {
-      _ = self.disclaimerButton
-        |> disclaimerButtonStyle
-      
-      self.disclaimerButton.setNeedsLayout()
-      self.disclaimerButton.setNeedsDisplay()
-    }
-        
+    _ = self.disclaimerButton
+      |> disclaimerButtonStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.rootStackView
       |> loginRootStackViewStyle
