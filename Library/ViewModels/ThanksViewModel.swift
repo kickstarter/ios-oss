@@ -52,6 +52,9 @@ public protocol ThanksViewModelOutputs {
   /// Emits project when should go to Project page
   var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
 
+  /// Emits when a user pledges a project for the first time.
+  var postContextualNotification: Signal<(), NoError> { get }
+
   /// Emits when a user updated notification should be posted
   var postUserUpdatedNotification: Signal<Notification, NoError> { get }
 
@@ -111,7 +114,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .filter {
         $0 == false &&
         !AppEnvironment.current.userDefaults.hasSeenAppRating &&
-        AppEnvironment.current.config?.iTunesLink != nil
+        AppEnvironment.current.config?.iTunesLink != nil && shouldShowPledgeDialog() == false
       }
       .takeWhen(self.viewDidLoadProperty.signal)
       .ignoreValues()
@@ -154,6 +157,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
     }
+
+    self.postContextualNotification = self.viewDidLoadProperty.signal
+      .filter { shouldShowPledgeDialog() }
 
     self.postUserUpdatedNotification = self.userUpdatedProperty.signal
       .mapConst(Notification(name: .ksr_userUpdated))
@@ -271,6 +277,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let goToAppStoreRating: Signal<String, NoError>
   public let backedProjectText: Signal<NSAttributedString, NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
+  public let postContextualNotification: Signal<(), NoError>
   public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let showRatingAlert: Signal<(), NoError>
   public let showGamesNewsletterAlert: Signal<(), NoError>
@@ -329,6 +336,11 @@ private func relatedProjects(toProject project: Project,
       .uniqueValues { $0.id }
       .take(first: 3)
       .collect()
+}
+
+private func shouldShowPledgeDialog() -> Bool {
+  return PushNotificationDialog.canShowDialog(for: .pledge) &&
+    AppEnvironment.current.currentUser?.stats.backedProjectsCount == 0
 }
 
 // Shuffle an array without mutating the input argument.

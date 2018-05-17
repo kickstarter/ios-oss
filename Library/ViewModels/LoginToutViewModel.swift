@@ -57,7 +57,7 @@ public protocol LoginToutViewModelOutputs {
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
 
   /// Emits when a login success notification should be posted.
-  var postNotification: Signal<Notification, NoError> { get }
+  var postNotification: Signal<(Notification, Notification), NoError> { get }
 
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, NoError> { get }
@@ -151,7 +151,9 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .map { token, error in (error.facebookUser ?? nil, token) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: .ksr_sessionStarted))
+      .mapConst((Notification(name: .ksr_sessionStarted),
+                 Notification(name: .ksr_showNotificationsDialog,
+                              userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login])))
 
     self.dismissViewController = self.viewIsPresentedProperty.signal
       .filter(isTrue)
@@ -227,7 +229,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), NoError>
   public let startTwoFactorChallenge: Signal<String, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public let postNotification: Signal<Notification, NoError>
+  public let postNotification: Signal<(Notification, Notification), NoError>
   public let logInContextText: Signal<String, NoError>
   public let isLoading: Signal<Bool, NoError>
   public let attemptFacebookLogin: Signal<(), NoError>

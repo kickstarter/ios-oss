@@ -224,7 +224,7 @@ private func expandableRows(selectedRow: SelectableRow,
                            params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
                            selectableRows: ([rootCategory] + (rootCategory.subcategories?.nodes ?? []))
                             .sorted()
-                            .flatMap { node in
+                            .compactMap { node in
                               return SelectableRow(isSelected: node == selectedRow.params.category,
                                                    params: .defaults
                                                     |> DiscoveryParams.lens.category .~ node)
@@ -283,15 +283,20 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
     filters.append(.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true)
   }
 
-  if user != nil {
+  guard user != nil else {
+    return filters
+  }
+
     filters.append(.defaults |> DiscoveryParams.lens.starred .~ true)
-    filters.append(
-      .defaults
+
+    if user?.optedOutOfRecommendations != true {
+      filters.append(.defaults
         |> DiscoveryParams.lens.recommended .~ true
         |> DiscoveryParams.lens.backed .~ false
-    )
+      )
+    }
+
     filters.append(.defaults |> DiscoveryParams.lens.social .~ true)
-  }
 
   return filters
 }
@@ -304,7 +309,7 @@ private func favorites(selectedRow: SelectableRow, categories: [KsApi.Category])
       .flatMap { category in ([category] + (category.subcategories?.nodes ?? [])) }
 
     let faves: [SelectableRow] = subcategories
-      .flatMap { subcategory in
+      .compactMap { subcategory in
         guard let id = subcategory.intID else {
           return nil
         }

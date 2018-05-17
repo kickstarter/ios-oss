@@ -19,7 +19,7 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let isLoading = TestObserver<Bool, NoError>()
   fileprivate let logInContextText = TestObserver<String, NoError>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  fileprivate let postNotification = TestObserver<Notification.Name, NoError>()
+  fileprivate let postNotification = TestObserver<(Notification.Name, Notification.Name), NoError>()
   fileprivate let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
   fileprivate let startFacebookConfirmation = TestObserver<String, NoError>()
   fileprivate let startLogin = TestObserver<(), NoError>()
@@ -35,7 +35,7 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
-    self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotification.observer)
+    self.vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }.observe(self.postNotification.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
     self.vm.outputs.startFacebookConfirmation.map { _, token in token }
       .observe(self.startFacebookConfirmation.observer)
@@ -140,8 +140,9 @@ final class LoginToutViewModelTests: TestCase {
     XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
 
     vm.inputs.environmentLoggedIn()
-    postNotification.assertValues([.ksr_sessionStarted],
-                                  "Login notification posted.")
+    XCTAssertEqual(postNotification.values.first?.0, .ksr_sessionStarted, "Login notification posted.")
+    XCTAssertEqual(postNotification.values.first?.1, .ksr_showNotificationsDialog,
+                   "Contextual Dialog notification posted.")
 
     showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")
     startFacebookConfirmation.assertValueCount(0, "Facebook confirmation did not emit")

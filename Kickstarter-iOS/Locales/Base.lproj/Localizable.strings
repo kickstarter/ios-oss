@@ -126,7 +126,9 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> backed a <i>Theater</i> project.";
 "Friend_name_launched_a_project" = "%{friend_name} launched a project!";
 "Funding_successful" = "Funding successful";
+"Get_notified_about_new_messages" = "Get notified about new messages?";
 "Get_notified_about_this_creators_live_streams" = "Get notified about this creator’s live streams";
+"Get_reminded_about_this_project" = "Get reminded about this project?";
 "Go_to_project_page" = "Go to project page";
 "Got_it" = "Got it.";
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
@@ -144,6 +146,7 @@
 "Keep_up_with_future_live_streams" = "Keep up with future live streams";
 "Kickstarter_if_funded" = "Kickstarter (if funded)";
 "Kickstarter_is_not_a_store" = "Kickstarter is not a store.";
+"Know_when_creators_and_backers_message_you" = "Know when creators and backers message you by enabling notifications.";
 "Learn_more_about_accountability" = "Learn more about accountability";
 "Left_count_left.few" = "%{left_count} left";
 "Left_count_left.many" = "%{left_count} left";
@@ -170,6 +173,7 @@
 "Message_creator" = "Message creator";
 "Message_user_name" = "Message %{user_name}…";
 "Name" = "Name";
+"Never" = "Never";
 "New_pledge_activity" = "New pledge activity";
 "No_Results" = "No Results";
 "No_comments_yet" = "No comments yet.";
@@ -180,6 +184,7 @@
 "No_unread_messages" = "No unread messages";
 "Not_delivered" = "Not delivered";
 "Not_followed" = "Not followed";
+"Not_now" = "Not Now";
 "Once_you_back_a_project_well_share" = "Once you back a project, we’ll share personalized recommendations in this space.";
 "Only_amount_of_time_left_to_watch_this" = "Only %{amount_of_time} left to watch this.";
 "Opens_comments" = "Opens comments.";
@@ -228,6 +233,9 @@
 "Rate_us_in_the_App_Store" = "Rate us in the App Store";
 "Read_more_about_the_campaign" = "Read more about the campaign";
 "Read_more_about_the_campaign_arrow" = "Read more about the campaign  →";
+"Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications.";
+"Receive_project_updates_and_more" = "Receive project updates and more by enabling notifications.";
+"Receive_project_updates_messages_and_more" = "Receive project updates, messages, and more by enabling notifications.";
 "Recent_live_stream" = "Recent live stream";
 "Recommendations" = "Recommendations";
 "Recommended" = "Recommended";
@@ -284,6 +292,8 @@
 "Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
 "Starting_soon" = "Starting soon";
 "Status" = "Status";
+"Stay_up_to_date" = "Stay up to date?";
+"Stay_updated_on_this_project" = "Stay updated on this project?";
 "Subscribe" = "Subscribe";
 "Subscribed" = "Subscribed";
 "Subscribes_to_upcoming_lives_streams" = "Subscribes to upcoming live streams.";
@@ -923,10 +933,9 @@
 "login_tout.default_intent.traditional_login_button" = "Log in";
 "login_tout.default_intent.traditional_signup_button" = "Sign up";
 "login_tout.default_intent.traditional_title" = "Use your email address:";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms" = "By signing up, you agree to our terms of use, privacy policy, and cookie policy.";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms_html" = "By signing up, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>.";
+"login_tout.disclaimer.agree_to_terms" = "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
 "login_tout.disclaimer.read_more" = "Read more";
-"login_tout.disclaimer.we_never_post_anything_without_permission" = "We'll never post anything without your permission.";
 "login_tout.errors.button.ok" = "OK";
 "login_tout.errors.facebook.authorization_exception.button" = "Let's try that again";
 "login_tout.errors.facebook.authorization_exception.message" = "We're having some trouble getting you logged in.";
@@ -1220,7 +1229,7 @@
 "signup.input_fields.password" = "Password";
 "signup.input_fields.password_min_characters" = "Password (minimum 6 characters)";
 "signup.navbar_title" = "Sign up";
-"signup.newsletter_full" = "Receive our weekly newsletter and other occasional updates.";
+"signup.newsletter_full_opt_out" = "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy.";
 "social.buttons.cancel" = "Cancel";
 "social.buttons.post" = "Post";
 "social.buttons.send" = "Send";

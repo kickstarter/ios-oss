@@ -12,7 +12,7 @@ final class TwoFactorViewModelTests: TestCase {
   var isFormValid = TestObserver<Bool, NoError>()
   var isLoading = TestObserver<Bool, NoError>()
   var logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  var postNotificationName = TestObserver<Notification.Name, NoError>()
+  var postNotificationName = TestObserver<(Notification.Name, Notification.Name), NoError>()
   var resendSuccess = TestObserver<(), NoError>()
   var showError = TestObserver<String, NoError>()
 
@@ -23,7 +23,7 @@ final class TwoFactorViewModelTests: TestCase {
     vm.outputs.isFormValid.observe(isFormValid.observer)
     vm.outputs.isLoading.observe(isLoading.observer)
     vm.outputs.logIntoEnvironment.observe(logIntoEnvironment.observer)
-    vm.outputs.postNotification.map { $0.name }.observe(postNotificationName.observer)
+    vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }.observe(postNotificationName.observer)
     vm.outputs.resendSuccess.observe(resendSuccess.observer)
     vm.outputs.showError.observe(showError.observer)
   }
@@ -98,8 +98,10 @@ final class TwoFactorViewModelTests: TestCase {
 
     vm.inputs.environmentLoggedIn()
 
-    postNotificationName.assertValues([.ksr_sessionStarted],
-                                      "Login notification posted.")
+    XCTAssertEqual(postNotificationName.values.first?.0, .ksr_sessionStarted,
+                   "Login notification posted.")
+    XCTAssertEqual(postNotificationName.values.first?.1, .ksr_showNotificationsDialog,
+                   "Contextual dialog notification posted.")
   }
 
   func testLogin_withFacebookFlow() {
@@ -117,8 +119,10 @@ final class TwoFactorViewModelTests: TestCase {
 
     vm.inputs.environmentLoggedIn()
 
-    postNotificationName.assertValues([.ksr_sessionStarted],
-                                      "Login notification posted.")
+    XCTAssertEqual(postNotificationName.values.first?.0, .ksr_sessionStarted,
+                   "Login notification posted.")
+    XCTAssertEqual(postNotificationName.values.first?.1, .ksr_showNotificationsDialog,
+                   "Contextual dialog notification posted.")
   }
 
   func testLoginCodeMismatch_withEmailPasswordFlow() {

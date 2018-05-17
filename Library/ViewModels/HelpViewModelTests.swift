@@ -39,16 +39,16 @@ internal final class HelpViewModelTests: TestCase {
     XCTAssertEqual(["Settings"], self.trackingClient.properties.map { $0["context"] as! String? })
     XCTAssertEqual(["Cookie Policy"], self.trackingClient.properties.map { $0["type"] as! String? })
 
-    self.vm.inputs.helpTypeButtonTapped(.faq)
+    self.vm.inputs.helpTypeButtonTapped(.helpCenter)
 
-    self.showWebHelp.assertValues([HelpType.cookie, HelpType.faq])
+    self.showWebHelp.assertValues([HelpType.cookie, HelpType.helpCenter])
     XCTAssertEqual(["Selected Help Option", "Selected Help Option"], self.trackingClient.events)
     XCTAssertEqual(["Settings", "Settings"], self.trackingClient.properties.map { $0["context"] as! String? })
     XCTAssertEqual(["Cookie Policy", "FAQ"], self.trackingClient.properties.map { $0["type"] as! String? })
 
     self.vm.inputs.helpTypeButtonTapped(.howItWorks)
 
-    self.showWebHelp.assertValues([HelpType.cookie, HelpType.faq, HelpType.howItWorks])
+    self.showWebHelp.assertValues([HelpType.cookie, HelpType.helpCenter, HelpType.howItWorks])
     XCTAssertEqual(["Selected Help Option", "Selected Help Option", "Selected Help Option"],
                    self.trackingClient.events)
     XCTAssertEqual(["Settings", "Settings", "Settings"],
@@ -58,7 +58,9 @@ internal final class HelpViewModelTests: TestCase {
 
     self.vm.inputs.helpTypeButtonTapped(.privacy)
 
-    self.showWebHelp.assertValues([HelpType.cookie, HelpType.faq, HelpType.howItWorks, HelpType.privacy])
+    self.showWebHelp.assertValues(
+      [HelpType.cookie, HelpType.helpCenter, HelpType.howItWorks, HelpType.privacy]
+    )
     XCTAssertEqual(["Selected Help Option", "Selected Help Option", "Selected Help Option",
       "Selected Help Option"], self.trackingClient.events)
     XCTAssertEqual(["Settings", "Settings", "Settings", "Settings"],
@@ -68,7 +70,7 @@ internal final class HelpViewModelTests: TestCase {
 
     self.vm.inputs.helpTypeButtonTapped(.terms)
 
-    self.showWebHelp.assertValues([HelpType.cookie, .faq, .howItWorks, .privacy,
+    self.showWebHelp.assertValues([HelpType.cookie, .helpCenter, .howItWorks, .privacy,
       .terms])
     self.showMailCompose.assertValueCount(0)
     self.showNoEmailError.assertValueCount(0)

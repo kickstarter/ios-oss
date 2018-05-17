@@ -1,7 +1,7 @@
 public enum HelpType {
   case contact
   case cookie
-  case faq
+  case helpCenter
   case howItWorks
   case privacy
   case terms
@@ -13,8 +13,8 @@ public enum HelpType {
     return Strings.login_tout_help_sheet_contact()
     case .cookie:
       return Strings.login_tout_help_sheet_cookie()
-    case .faq:
-      return Strings.profile_settings_about_faq()
+    case .helpCenter:
+      return Strings.Help_center()
     case .howItWorks:
     return Strings.login_tout_help_sheet_how_it_works()
     case .privacy:
@@ -32,7 +32,7 @@ public enum HelpType {
       return "Contact"
     case .cookie:
       return "Cookie Policy"
-    case .faq:
+    case .helpCenter:
       return "FAQ"
     case .howItWorks:
       return "How It Works"
@@ -49,7 +49,7 @@ public enum HelpType {
 extension HelpType: Equatable {}
 public func == (lhs: HelpType, rhs: HelpType) -> Bool {
   switch (lhs, rhs) {
-  case (.contact, .contact), (.cookie, .cookie), (.faq, .faq), (.howItWorks, .howItWorks),
+  case (.contact, .contact), (.cookie, .cookie), (.helpCenter, .helpCenter), (.howItWorks, .howItWorks),
        (.privacy, .privacy), (.terms, .terms), (.trust, .trust):
     return true
   default:
