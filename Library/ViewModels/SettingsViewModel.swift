@@ -12,6 +12,7 @@ public protocol SettingsViewModelInputs {
   func commentsTapped(selected: Bool)
   func creatorTipsTapped(selected: Bool)
   func emailFrequencyTapped()
+  func environmentSwitcherButtonTapped(environment: ServerConfigType)
   func findFriendsTapped()
   func followerTapped(selected: Bool)
   func friendActivityTapped(selected: Bool)
@@ -258,6 +259,10 @@ SettingsViewModelOutputs {
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
+    self.environmentSwitcherButtonTappedProperty.signal.skipNil().observeValues { config in
+      AppEnvironment.updateServerConfig(config)
+    }
+
     self.goToEmailFrequency = self.updateCurrentUser
       .takeWhen(self.emailFrequencyTappedProperty.signal)
 
@@ -350,6 +355,12 @@ SettingsViewModelOutputs {
   public func emailFrequencyTapped() {
     self.emailFrequencyTappedProperty.value = ()
   }
+
+  fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<ServerConfig?>(nil)
+  public func environmentSwitcherButtonTapped(environment: ServerConfigType) {
+    self.environmentSwitcherButtonTappedProperty.value = environment as? ServerConfig
+  }
+
   fileprivate let findFriendsTappedProperty = MutableProperty(())
   public func findFriendsTapped() {
     self.findFriendsTappedProperty.value = ()
