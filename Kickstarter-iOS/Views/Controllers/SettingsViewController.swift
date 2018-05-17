@@ -499,7 +499,6 @@ internal final class SettingsViewController: UIViewController {
     self.present(controller, animated: true, completion: nil)
   }
 
-
   fileprivate func goToBetaFeedback() {
     guard MFMailComposeViewController.canSendMail() else { return }
 
