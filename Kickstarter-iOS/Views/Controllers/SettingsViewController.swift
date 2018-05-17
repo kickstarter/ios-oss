@@ -621,9 +621,11 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @objc fileprivate func exportDataTapped() {
-    let exportDataSheet = UIAlertController(title: Strings.Download_your_personal_data(),
-                                            message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
-                                            preferredStyle: .actionSheet)
+    let exportDataSheet = UIAlertController(
+      title: Strings.Download_your_personal_data(),
+      message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
+      preferredStyle: .actionSheet)
+
     let startTheRequest = UIAlertAction(title: Strings.Start_data_collection(),
                                         style: .default,
                                         handler: { [weak self] _ in
