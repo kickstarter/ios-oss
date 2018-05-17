@@ -34,6 +34,8 @@ public protocol SettingsViewModelInputs {
   func updatesTapped(selected: Bool)
   func viewDidLoad()
   func weeklyNewsletterTapped(on: Bool)
+
+  func recommendationsTapped(on: Bool)
 }
 
 public protocol SettingsViewModelOutputs {
@@ -72,6 +74,8 @@ public protocol SettingsViewModelOutputs {
   var updateCurrentUser: Signal<User, NoError> { get }
   var versionText: Signal<String, NoError> { get }
   var weeklyNewsletterOn: Signal<Bool, NoError> { get }
+
+  var recommendationsOn: Signal<Bool, NoError> { get }
 }
 
 public protocol SettingsViewModelType {
@@ -187,6 +191,8 @@ SettingsViewModelOutputs {
       .map { previous, _ in previous }
 
     self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
+
+    self.recommendationsOn = initialUser.map { $0.optedOutOfRecommendations }
 
     self.creatorNotificationsHidden = self.updateCurrentUser.map { !$0.isCreator }.skipRepeats()
 
@@ -422,6 +428,10 @@ SettingsViewModelOutputs {
   public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
   }
+  fileprivate let recommendationsTappedProperty = MutableProperty(false)
+  public func recommendationsTapped(on: Bool) {
+    self.recommendationsTappedProperty.value = on
+  }
   fileprivate let rateUsTappedProperty = MutableProperty(())
   public func rateUsTapped() {
     self.rateUsTappedProperty.value = ()
@@ -474,6 +484,8 @@ SettingsViewModelOutputs {
   public let updateCurrentUser: Signal<User, NoError>
   public let weeklyNewsletterOn: Signal<Bool, NoError>
   public let versionText: Signal<String, NoError>
+
+  public let recommendationsOn: Signal<Bool, NoError>
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }

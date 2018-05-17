@@ -801,6 +801,7 @@
                                                                 <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <connections>
                                                                     <action selector="artsAndCultureNewsletterTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="GjW-cB-RuR"/>
+                                                                    <action selector="recommendationsTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="Qg2-sY-paM"/>
                                                                 </connections>
                                                             </switch>
                                                         </subviews>

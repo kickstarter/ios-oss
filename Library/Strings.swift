@@ -1187,6 +1187,23 @@ backers"
     )
   }
   /**
+   "Download your personal data"
+
+   - **es**: "Download your personal data"
+   - **ja**: "Download your personal data"
+   - **de**: "Download your personal data"
+   - **fr**: "Download your personal data"
+   - **en**: "Download your personal data"
+  */
+  public static func Download_your_personal_data() -> String {
+    return localizedString(
+      key: "Download_your_personal_data",
+      defaultValue: "Download your personal data",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Earth"
 
    - **es**: "Tierra"
@@ -2253,6 +2270,23 @@ backers"
     return localizedString(
       key: "Info",
       defaultValue: "Info",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again."
+
+   - **es**: "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again."
+   - **ja**: "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again."
+   - **de**: "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again."
+   - **fr**: "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again."
+   - **en**: "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again."
+  */
+  public static func It_may_take_up_to_24_hours_to_collect_your_data() -> String {
+    return localizedString(
+      key: "It_may_take_up_to_24_hours_to_collect_your_data",
+      defaultValue: "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.",
       count: nil,
       substitutions: [:]
     )
@@ -4575,6 +4609,23 @@ catch your eye?"
     return localizedString(
       key: "Something_went_wrong_please_try_again",
       defaultValue: "Something went wrong, please try again.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Start data collection"
+
+   - **es**: "Start data collection"
+   - **ja**: "Start data collection"
+   - **de**: "Start data collection"
+   - **fr**: "Start data collection"
+   - **en**: "Start data collection"
+  */
+  public static func Start_data_collection() -> String {
+    return localizedString(
+      key: "Start_data_collection",
+      defaultValue: "Start data collection",
       count: nil,
       substitutions: [:]
     )
@@ -13108,8 +13159,8 @@ Please try again later."
 
    - **es**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
    - **ja**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
-   - **de**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
-   - **fr**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **de**: "Bei Erstellung eines Kontos stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu. Unsere Datenschutz- und Cookie-Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unsere Services und unserer Webseite nutzen."
+   - **fr**: "En créant un compte, vous acceptez nos conditions d'utilisation, notre politique de confidentialité et notre politique en matière de cookies. Ces deux dernières politiques décrivent comment nous utilisons vos données pour proposer, améliorer et faire la promotion de nos services et de notre site, ainsi que les droits dont vous disposez pour contrôler cette utilisation et comment les exercer."
    - **en**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
   */
   public static func login_tout_disclaimer_agree_to_terms() -> String {
@@ -13126,7 +13177,7 @@ Please try again later."
    - **es**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
    - **ja**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
    - **de**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
-   - **fr**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **fr**: "En créant un compte, vous acceptez nos <u>conditions d'utilisation</u>, notre <u>politique de confidentialité</u> et notre <u>politique en matière de cookies</u>. Ces deux dernières politiques décrivent comment nous utilisons vos données pour proposer, améliorer et faire la promotion de nos services et de notre site, ainsi que les droits dont vous disposez pour contrôler cette utilisation et comment les exercer."
    - **en**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
   */
   public static func login_tout_disclaimer_agree_to_terms_html() -> String {

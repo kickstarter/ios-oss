@@ -71,6 +71,7 @@
 "Discover_more_projects" = "Découvrez plus de projets.";
 "Dismiss" = "Ignorer";
 "Done" = "Terminé";
+"Download_your_personal_data" = "Download your personal data";
 "Earth" = "Terre";
 "Either_the_pledge_or_the_project_was_canceled" = "Soit l'engagement soit le projet a été annulé avant la date limite.";
 "Email_frequency" = "Fréquence d'envoi des e-mails";
@@ -138,6 +139,7 @@
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
 "Individual_Emails" = "E-mails individuels";
 "Info" = "Info";
+"It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
 "Its_a_way_to_bring_creative_projects_to_life" = "C'est un outil qui permet de donner vie à des projets créatifs.";
 "Its_better_with_friends" = "On est mieux ensemble.";
 "Joining_the_live_stream" = "Connexion à la diffusion en direct en cours";
@@ -290,6 +292,7 @@
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
 "Something_catch_your_eye" = "Quelque chose a retenu votre attention ?";
 "Something_went_wrong_please_try_again" = "Un problème est survenu. Veuillez réessayer.";
+"Start_data_collection" = "Start data collection";
 "Starting_soon" = "Bientôt en direct";
 "Status" = "État :";
 "Stay_up_to_date" = "Envie d'être informé ?";
@@ -933,8 +936,8 @@
 "login_tout.default_intent.traditional_login_button" = "Connexion";
 "login_tout.default_intent.traditional_signup_button" = "Inscription";
 "login_tout.default_intent.traditional_title" = "Utilisez votre adresse e-mail :";
-"login_tout.disclaimer.agree_to_terms" = "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
-"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms" = "En créant un compte, vous acceptez nos conditions d'utilisation, notre politique de confidentialité et notre politique en matière de cookies. Ces deux dernières politiques décrivent comment nous utilisons vos données pour proposer, améliorer et faire la promotion de nos services et de notre site, ainsi que les droits dont vous disposez pour contrôler cette utilisation et comment les exercer.";
+"login_tout.disclaimer.agree_to_terms_html" = "En créant un compte, vous acceptez nos <u>conditions d'utilisation</u>, notre <u>politique de confidentialité</u> et notre <u>politique en matière de cookies</u>. Ces deux dernières politiques décrivent comment nous utilisons vos données pour proposer, améliorer et faire la promotion de nos services et de notre site, ainsi que les droits dont vous disposez pour contrôler cette utilisation et comment les exercer.";
 "login_tout.disclaimer.read_more" = "En savoir plus";
 "login_tout.errors.button.ok" = "OK";
 "login_tout.errors.facebook.authorization_exception.button" = "Réessayons";

@@ -71,6 +71,7 @@
 "Discover_more_projects" = "プロジェクトをさがす";
 "Dismiss" = "破棄";
 "Done" = "完了";
+"Download_your_personal_data" = "Download your personal data";
 "Earth" = "全世界";
 "Either_the_pledge_or_the_project_was_canceled" = "プレッジもプロジェクトも期限前にキャンセル済";
 "Email_frequency" = "通知頻度";
@@ -138,6 +139,7 @@
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
 "Individual_Emails" = "個人メール";
 "Info" = "インフォメーション";
+"It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
 "Its_a_way_to_bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
 "Its_better_with_friends" = "友達にとってより良い。";
 "Joining_the_live_stream" = "ライブ配信に参加";
@@ -290,6 +292,7 @@
 "Signs_up_with_Email" = "Eメールでサインアップする。";
 "Something_catch_your_eye" = "何か目にとまるものはありましたか？";
 "Something_went_wrong_please_try_again" = "なにかが間違っています。もう一度お試しください。";
+"Start_data_collection" = "Start data collection";
 "Starting_soon" = "もう少しで始まります。";
 "Status" = "ステータス";
 "Stay_up_to_date" = "最新情報を常に把握したい？";

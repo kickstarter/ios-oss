@@ -463,6 +463,8 @@ internal final class SettingsViewController: UIViewController {
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
     self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
+
+    self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
   }
   // swiftlint:enable function_body_length
 
@@ -638,14 +640,13 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func recommendationsInfoTapped() {
     let alertController = UIAlertController(
-      title: "Info",
-      message: "Recommendation Copy",
+      title: Strings.Recommendations(),
+      message: "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this.",
       preferredStyle: .alert)
-
     alertController.addAction(
       UIAlertAction(
-        title: "OK",
-        style: .default,
+        title: Strings.Got_it(),
+        style: .cancel,
         handler: nil
       )
     )
@@ -679,6 +680,10 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func promoNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.isOn)
+  }
+
+  @IBAction fileprivate func recommendationsTapped(_ recommendationSwitch: UISwitch) {
+    self.viewModel.inputs.recommendationsTapped(on: recommendationSwitch.isOn)
   }
 
   @objc fileprivate func rateUsTapped() {

@@ -71,6 +71,7 @@
 "Discover_more_projects" = "Descubre más proyectos.";
 "Dismiss" = "Descartar";
 "Done" = "Listo";
+"Download_your_personal_data" = "Download your personal data";
 "Earth" = "Tierra";
 "Either_the_pledge_or_the_project_was_canceled" = "Se canceló la contribución o el proyecto antes de que el plazo terminara.";
 "Email_frequency" = "Frecuencia de aviso por correo electrónico";
@@ -138,6 +139,7 @@
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
 "Individual_Emails" = "Notificaciones por correo electrónico individuales";
 "Info" = "Información";
+"It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
 "Its_better_with_friends" = "Todo en la vida es mejor con amigos ...";
 "Joining_the_live_stream" = "Abriendo conexión a Live Stream";
@@ -290,6 +292,7 @@
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
+"Start_data_collection" = "Start data collection";
 "Starting_soon" = "Comienza en breve";
 "Status" = "Estado:";
 "Stay_up_to_date" = "¿Deseas mantenerte actualizado?";
