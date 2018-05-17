@@ -11,6 +11,7 @@ public protocol ServerConfigType {
   var basicHTTPAuth: BasicHTTPAuthType? { get }
   var graphQLEndpointUrl: URL { get }
   var helpCenterUrl: URL { get }
+  var environmentName: String { get }
 }
 
 public func == (lhs: ServerConfigType, rhs: ServerConfigType) -> Bool {
@@ -34,6 +35,7 @@ public struct ServerConfig: ServerConfigType {
   public fileprivate(set) var basicHTTPAuth: BasicHTTPAuthType?
   public fileprivate(set) var graphQLEndpointUrl: URL
   public fileprivate(set) var helpCenterUrl: URL
+  public fileprivate(set) var environmentName: String
 
   public static let production: ServerConfigType = ServerConfig(
     apiBaseUrl: URL(string: "https://\(Secrets.Api.Endpoint.production)")!,
@@ -42,7 +44,8 @@ public struct ServerConfig: ServerConfigType {
     basicHTTPAuth: nil,
     graphQLEndpointUrl: URL(string: "https://\(Secrets.WebEndpoint.production)")!
       .appendingPathComponent(gqlPath),
-    helpCenterUrl: URL(string: Secrets.HelpCenter.endpoint)!
+    helpCenterUrl: URL(string: Secrets.HelpCenter.endpoint)!,
+    environmentName: "Production"
   )
 
   public static let staging: ServerConfigType = ServerConfig(
@@ -52,7 +55,8 @@ public struct ServerConfig: ServerConfigType {
     basicHTTPAuth: BasicHTTPAuth.development,
     graphQLEndpointUrl: URL(string: "https://\(Secrets.WebEndpoint.staging)")!
       .appendingPathComponent(gqlPath),
-    helpCenterUrl: URL(string: Secrets.HelpCenter.endpoint)!
+    helpCenterUrl: URL(string: Secrets.HelpCenter.endpoint)!,
+    environmentName: "Staging"
   )
 
   public static let local: ServerConfigType = ServerConfig(
@@ -61,7 +65,8 @@ public struct ServerConfig: ServerConfigType {
     apiClientAuth: ClientAuth.development,
     basicHTTPAuth: BasicHTTPAuth.development,
     graphQLEndpointUrl: URL(string: "http://ksr.dev")!.appendingPathComponent(gqlPath),
-    helpCenterUrl: URL(string: Secrets.HelpCenter.endpoint)!
+    helpCenterUrl: URL(string: Secrets.HelpCenter.endpoint)!,
+    environmentName: "Local"
   )
 
   public init(apiBaseUrl: URL,
@@ -69,7 +74,8 @@ public struct ServerConfig: ServerConfigType {
               apiClientAuth: ClientAuthType,
               basicHTTPAuth: BasicHTTPAuthType?,
               graphQLEndpointUrl: URL,
-              helpCenterUrl: URL) {
+              helpCenterUrl: URL,
+              environmentName: String = "") {
 
     self.apiBaseUrl = apiBaseUrl
     self.webBaseUrl = webBaseUrl
@@ -77,5 +83,6 @@ public struct ServerConfig: ServerConfigType {
     self.basicHTTPAuth = basicHTTPAuth
     self.graphQLEndpointUrl = graphQLEndpointUrl
     self.helpCenterUrl = helpCenterUrl
+    self.environmentName = environmentName
   }
 }

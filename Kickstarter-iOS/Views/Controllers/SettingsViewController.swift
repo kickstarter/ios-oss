@@ -211,7 +211,8 @@ internal final class SettingsViewController: UIViewController {
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
-      |> UIButton.lens.title(for: .normal) .~ "Change Environment"
+      |> UIButton.lens.title(for: .normal)
+        .~ "Change Environment: \(AppEnvironment.current.apiService.serverConfig.environmentName)"
 
     _ = self.findFriendsButton
       |> settingsSectionButtonStyle
@@ -434,6 +435,7 @@ internal final class SettingsViewController: UIViewController {
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
       self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
+    self.environmentSwitcher.rac.title = self.viewModel.outputs.environmentSwitcherButtonTitle
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
@@ -697,7 +699,6 @@ internal final class SettingsViewController: UIViewController {
 
     alert.addAction(
       UIAlertAction(title: "Local", style: .default) { [weak self] _ in
-        //AppEnvironment.updateServerConfig(ServerConfig.local)
         self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.local)
       }
     )
@@ -711,7 +712,6 @@ internal final class SettingsViewController: UIViewController {
 
     alert.addAction(
       UIAlertAction(title: "Production", style: .default) { [weak self] _ in
-        //AppEnvironment.updateServerConfig(ServerConfig.production)
         self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.production)
       }
     )

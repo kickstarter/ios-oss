@@ -45,6 +45,7 @@ public protocol SettingsViewModelOutputs {
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
   var creatorTipsSelected: Signal<Bool, NoError> { get }
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
+  var environmentSwitcherButtonTitle: Signal<String, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
   var friendActivitySelected: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
@@ -260,7 +261,13 @@ SettingsViewModelOutputs {
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
     self.environmentSwitcherButtonTappedProperty.signal.skipNil().observeValues { config in
-      AppEnvironment.updateServerConfig(config)
+        AppEnvironment.updateServerConfig(config)
+    }
+
+    self.environmentSwitcherButtonTitle = viewDidLoadProperty.signal
+      .takeWhen(self.environmentSwitcherButtonTappedProperty.signal)
+      .map {
+        "Current Environment - \(AppEnvironment.current.apiService.serverConfig.environmentName)"
     }
 
     self.goToEmailFrequency = self.updateCurrentUser
@@ -457,6 +464,7 @@ SettingsViewModelOutputs {
   public let creatorNotificationsHidden: Signal<Bool, NoError>
   public let creatorTipsSelected: Signal<Bool, NoError>
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
+  public let environmentSwitcherButtonTitle: Signal<String, NoError>
   public let followerSelected: Signal<Bool, NoError>
   public let friendActivitySelected: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
