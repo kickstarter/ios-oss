@@ -30,8 +30,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
-  @IBOutlet fileprivate weak var helpCenterButton: UIButton!
-  @IBOutlet fileprivate weak var helpCenterLabel: UILabel!
+  @IBOutlet fileprivate weak var exportDataButton: UIButton!
+  @IBOutlet fileprivate weak var exportDataLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
@@ -40,6 +40,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var gamesNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var happeningNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var happeningNowLabel: UILabel!
+  @IBOutlet fileprivate weak var helpCenterButton: UIButton!
+  @IBOutlet fileprivate weak var helpCenterLabel: UILabel!
   @IBOutlet fileprivate weak var helpTitleLabel: UILabel!
   @IBOutlet fileprivate weak var howKsrWorksButton: UIButton!
   @IBOutlet fileprivate weak var howKsrWorksLabel: UILabel!
@@ -619,9 +621,10 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @objc fileprivate func exportDataTapped() {
-    let exportDataSheet = UIAlertController(title: nil, message: "export instructions to email",
+    let exportDataSheet = UIAlertController(title: Strings.Download_your_personal_data(),
+                                            message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
                                             preferredStyle: .actionSheet)
-    let startTheRequest = UIAlertAction(title: "Start the request",
+    let startTheRequest = UIAlertAction(title: Strings.Start_data_collection(),
                                         style: .default,
                                         handler: { [weak self] _ in
                                           self?.viewModel.inputs.exportDataTapped()
@@ -641,6 +644,10 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func findFriendsTapped() {
     self.viewModel.inputs.findFriendsTapped()
+  }
+
+  @objc fileprivate func helpCenterTapped() {
+    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
   }
 
   @IBAction fileprivate func followerTapped(_ button: UIButton) {

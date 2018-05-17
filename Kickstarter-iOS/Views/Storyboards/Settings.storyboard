@@ -1081,6 +1081,8 @@
                         <outlet property="emailFrequencyArrow" destination="sHL-Gt-Phv" id="hbc-NJ-nTq"/>
                         <outlet property="emailFrequencyButton" destination="Jfz-QX-Izu" id="7jq-ko-iPf"/>
                         <outlet property="emailFrequencyLabel" destination="Ahi-Hx-9ab" id="blc-ri-ih6"/>
+                        <outlet property="exportDataButton" destination="7SN-cI-sju" id="MIE-4K-PaL"/>
+                        <outlet property="exportDataLabel" destination="SHQ-yw-sJx" id="q4T-9B-PnH"/>
                         <outlet property="findFriendsButton" destination="hEp-CW-Yrn" id="Jx3-uc-1Ke"/>
                         <outlet property="findFriendsLabel" destination="03Y-07-t4n" id="AGb-OR-2kh"/>
                         <outlet property="followerButton" destination="uwd-RZ-59n" id="3fo-NK-ARN"/>

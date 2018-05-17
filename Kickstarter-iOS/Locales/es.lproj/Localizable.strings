@@ -71,6 +71,7 @@
 "Discover_more_projects" = "Descubre más proyectos.";
 "Dismiss" = "Descartar";
 "Done" = "Listo";
+"Download_your_personal_data" = "Descarga tus datos personales";
 "Earth" = "Tierra";
 "Either_the_pledge_or_the_project_was_canceled" = "Se canceló la contribución o el proyecto antes de que el plazo terminara.";
 "Email_frequency" = "Frecuencia de aviso por correo electrónico";
@@ -138,6 +139,7 @@
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
 "Individual_Emails" = "Notificaciones por correo electrónico individuales";
 "Info" = "Información";
+"It_may_take_up_to_24_hours_to_collect_your_data" = "Puede demorar hasta 24 horas recopilar tus datos. Cuando estén listos, te enviaremos instrucciones para descargar tus datos al correo electrónico asociado con esta cuenta. Si no recibes noticias nuestras, vuelve aquí e inténtalo de nuevo.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
 "Its_better_with_friends" = "Todo en la vida es mejor con amigos ...";
 "Joining_the_live_stream" = "Abriendo conexión a Live Stream";
@@ -290,6 +292,7 @@
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
+"Start_data_collection" = "Comenzar la recopilación de datos";
 "Starting_soon" = "Comienza en breve";
 "Status" = "Estado:";
 "Stay_up_to_date" = "¿Deseas mantenerte actualizado?";
@@ -341,6 +344,7 @@
 "View_your_reward" = "Mostrar recompensa";
 "Watch_live" = "Ver en vivo";
 "We_couldnt_find_anything_for_search_term" = "La búsqueda \"%{search_term}\" no dio resultados.";
+"We_use_your_activity_internally_to_make_recommendations_for_you" = "Utilizamos tu actividad internamente para hacerte recomendaciones. Desactiva las recomendaciones si no quieres recibirlas.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "No se pudo conectar al chat de live stream.";
 "We_were_unable_to_load_the_shipping_destinations" = "No se pudieron cargar los destinos de envío.\nPor favor inténtalo de nuevo más tarde.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil.";
@@ -933,8 +937,8 @@
 "login_tout.default_intent.traditional_login_button" = "Iniciar sesión";
 "login_tout.default_intent.traditional_signup_button" = "Registrar";
 "login_tout.default_intent.traditional_title" = "Utiliza tu dirección de correo electrónico:";
-"login_tout.disclaimer.agree_to_terms" = "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
-"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms" = "Al crear una cuenta, aceptas nuestros términos de uso, política de privacidad y política de cookies. Nuestras políticas de privacidad y de cookies explican cómo utilizamos tus datos para entregar, mejorar y promocionar nuestro servicio y nuestro sitio, y cómo puedes ejercer tus derechos para controlar dicho uso.";
+"login_tout.disclaimer.agree_to_terms_html" = "Al crear una cuenta, aceptas nuestros <u>términos de uso</u>, <u>política de privacidad</u> y<u>política de cookies</u>. Nuestras políticas de privacidad y de cookies explican cómo utilizamos tus datos para entregar, mejorar y promocionar nuestro servicio y nuestro sitio, y cómo puedes ejercer tus derechos para controlar dicho uso.";
 "login_tout.disclaimer.read_more" = "Leer más";
 "login_tout.errors.button.ok" = "Ok";
 "login_tout.errors.facebook.authorization_exception.button" = "¡Inténtalo de nuevo!";

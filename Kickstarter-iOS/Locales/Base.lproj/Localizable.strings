@@ -71,6 +71,7 @@
 "Discover_more_projects" = "Discover more projects.";
 "Dismiss" = "Dismiss";
 "Done" = "Done";
+"Download_your_personal_data" = "Download your personal data";
 "Earth" = "Earth";
 "Either_the_pledge_or_the_project_was_canceled" = "Either the pledge or the project was canceled before the deadline.";
 "Email_frequency" = "Email frequency";
@@ -138,6 +139,7 @@
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
 "Individual_Emails" = "Individual emails";
 "Info" = "Info";
+"It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
 "Its_a_way_to_bring_creative_projects_to_life" = "It’s a way to bring creative projects to life.";
 "Its_better_with_friends" = "It’s better\nwith friends.";
 "Joining_the_live_stream" = "Joining the live stream";
@@ -290,6 +292,7 @@
 "Signs_up_with_Email" = "Signs up with Email.";
 "Something_catch_your_eye" = "Something\ncatch your eye?";
 "Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
+"Start_data_collection" = "Start data collection";
 "Starting_soon" = "Starting soon";
 "Status" = "Status";
 "Stay_up_to_date" = "Stay up to date?";
@@ -341,6 +344,7 @@
 "View_your_reward" = "View your reward";
 "Watch_live" = "Watch live";
 "We_couldnt_find_anything_for_search_term" = "We couldn't find anything for “%{search_term}”.";
+"We_use_your_activity_internally_to_make_recommendations_for_you" = "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "We were unable to connect to the live stream chat.";
 "We_were_unable_to_load_the_shipping_destinations" = "We were unable to load the shipping destinations.\nPlease try again later.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.";
