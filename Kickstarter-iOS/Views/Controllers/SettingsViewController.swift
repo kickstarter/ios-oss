@@ -35,6 +35,9 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
+  @IBOutlet fileprivate weak var followingPrivacyInfoButton: UIButton!
+  @IBOutlet fileprivate weak var followingPrivacyLabel: UILabel!
+  @IBOutlet fileprivate weak var followingPrivacySwitch: UISwitch!
   @IBOutlet fileprivate weak var friendActivityButton: UIButton!
   @IBOutlet fileprivate weak var friendActivityLabel: UILabel!
   @IBOutlet fileprivate weak var gamesNewsletterSwitch: UISwitch!
@@ -127,6 +130,10 @@ internal final class SettingsViewController: UIViewController {
     self.findFriendsButton.addTarget(self,
                                      action: #selector(findFriendsTapped),
                                      for: .touchUpInside)
+
+    self.followingPrivacyInfoButton.addTarget(self,
+                                              action: #selector(followingPrivacyInfoTapped),
+                                              for: .touchUpInside)
 
     self.helpCenterButton.addTarget(self, action: #selector(helpCenterTapped), for: .touchUpInside)
 
@@ -235,6 +242,14 @@ internal final class SettingsViewController: UIViewController {
     _ = self.findFriendsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_find_friends() }
+
+    _ = self.followingPrivacyLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in "Following" }
+
+    _ = self.followingPrivacyInfoButton
+      |> UIButton.lens.image(for: .normal)
+      .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
 
     _ = self.friendActivityLabel
       |> settingsSectionLabelStyle
@@ -648,12 +663,28 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.findFriendsTapped()
   }
 
-  @objc fileprivate func helpCenterTapped() {
-    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
-  }
-
   @IBAction fileprivate func followerTapped(_ button: UIButton) {
     self.viewModel.inputs.followerTapped(selected: !button.isSelected)
+  }
+
+  @objc fileprivate func followingPrivacyInfoTapped() {
+    let alertController = UIAlertController(
+      title: "Info",
+      message: "GDPR Bleh bleh bleh...",
+      preferredStyle: .alert)
+
+    alertController.addAction(
+      UIAlertAction(
+        title: "OK",
+        style: .default,
+        handler: nil
+      )
+    )
+    self.present(alertController, animated: true, completion: nil)
+  }
+
+  @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
+    self.viewModel.inputs.followingSwitchTapped(on: followingPrivacySwitch.isOn)
   }
 
   @IBAction fileprivate func friendActivityTapped(_ button: UIButton) {
@@ -666,6 +697,10 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func happeningNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.happeningNewsletterTapped(on: newsletterSwitch.isOn)
+  }
+
+  @objc fileprivate func helpCenterTapped() {
+    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
   }
 
   @IBAction fileprivate func inventNewsletterTapped(_ newsletterSwitch: UISwitch) {

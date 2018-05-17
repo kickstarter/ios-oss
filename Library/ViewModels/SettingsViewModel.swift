@@ -16,6 +16,7 @@ public protocol SettingsViewModelInputs {
   func exportDataTapped()
   func findFriendsTapped()
   func followerTapped(selected: Bool)
+  func followingSwitchTapped(on: Bool)
   func friendActivityTapped(selected: Bool)
   func gamesNewsletterTapped(on: Bool)
   func happeningNewsletterTapped(on: Bool)
@@ -268,6 +269,8 @@ SettingsViewModelOutputs {
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
+
+
     self.goToEmailFrequency = self.updateCurrentUser
       .takeWhen(self.emailFrequencyTappedProperty.signal)
 
@@ -383,6 +386,10 @@ SettingsViewModelOutputs {
   fileprivate let followerTappedProperty = MutableProperty(false)
   public func followerTapped(selected: Bool) {
     self.followerTappedProperty.value = selected
+  }
+  fileprivate let followingSwitchTappedProperty = MutableProperty(false)
+  public func followingSwitchTapped(on: Bool) {
+    self.followingSwitchTappedProperty.value = on
   }
   fileprivate let friendActivityTappedProperty = MutableProperty(false)
   public func friendActivityTapped(selected: Bool) {
