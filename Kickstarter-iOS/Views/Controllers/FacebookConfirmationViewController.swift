@@ -48,7 +48,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
 
     let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(newsletterLabelTapped))
     self.newsletterLabel.addGestureRecognizer(tapGestureRecognizer)
-    
+
     self.viewModel.inputs.viewDidLoad()
   }
 
