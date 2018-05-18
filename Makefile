@@ -92,7 +92,7 @@ deploy:
 alpha:
 	@echo "Deploying private/alpha-dist..."
 
-	@git branch -f alpha-dist private/alpha-dist
+	@git branch -f alpha-dist private/$(BRANCH)
 	@git push -f private alpha-dist
 	@git branch -d alpha-dist
 
