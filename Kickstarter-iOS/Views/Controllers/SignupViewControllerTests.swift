@@ -9,7 +9,7 @@ internal final class SignupViewControllerTests: TestCase {
   }
 
   func testView() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad, Device.phone4inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = SignupViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
