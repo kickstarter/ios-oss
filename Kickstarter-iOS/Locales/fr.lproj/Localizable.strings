@@ -126,9 +126,9 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> a soutenu un projet de <i>théâtre</i>.";
 "Friend_name_launched_a_project" = "%{friend_name} a lancé un projet !";
 "Funding_successful" = "Intégralement financé";
-"Get_notified_about_new_messages" = "Get notified about new messages?";
+"Get_notified_about_new_messages" = "Envie d'être informé des messages entrants ?";
 "Get_notified_about_this_creators_live_streams" = "Envoyez-moi des notifications au sujet des diffusions en direct de ce créateur.";
-"Get_reminded_about_this_project" = "Get reminded about this project?";
+"Get_reminded_about_this_project" = "Envie de recevoir un rappel à propos de ce projet ?";
 "Go_to_project_page" = "Accéder à la page de projet";
 "Got_it" = "Super.";
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
@@ -233,9 +233,9 @@
 "Rate_us_in_the_App_Store" = "Évaluez-nous dans l'App Store";
 "Read_more_about_the_campaign" = "En savoir plus sur la campagne";
 "Read_more_about_the_campaign_arrow" = "En savoir plus sur la campagne →";
-"Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications.";
-"Receive_project_updates_and_more" = "Receive project updates and more by enabling notifications.";
-"Receive_project_updates_messages_and_more" = "Receive project updates, messages, and more by enabling notifications.";
+"Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Si vous activez vos notifications, vous recevrez un rappel 48 heures avant la fin de ce projet et de tous les autres que vous enregistrez.";
+"Receive_project_updates_and_more" = "Si vous activez vos notifications, vous recevrez des actus de projet et plus.";
+"Receive_project_updates_messages_and_more" = "Si vous activez vos notifications, vous recevrez des actus de projet, vos messages et plus.";
 "Recent_live_stream" = "Diffusion en direct récente";
 "Recommendations" = "Recommandations";
 "Recommended" = "Rien que pour vous";
@@ -292,8 +292,8 @@
 "Something_went_wrong_please_try_again" = "Un problème est survenu. Veuillez réessayer.";
 "Starting_soon" = "Bientôt en direct";
 "Status" = "État :";
-"Stay_up_to_date" = "Stay up to date?";
-"Stay_updated_on_this_project" = "Stay updated on this project?";
+"Stay_up_to_date" = "Envie d'être informé ?";
+"Stay_updated_on_this_project" = "Envie de suivre ce projet ?";
 "Subscribe" = "S'abonner";
 "Subscribed" = "Abonné ";
 "Subscribes_to_upcoming_lives_streams" = "Abonnement aux diffusions en direct à venir.";
@@ -933,10 +933,9 @@
 "login_tout.default_intent.traditional_login_button" = "Connexion";
 "login_tout.default_intent.traditional_signup_button" = "Inscription";
 "login_tout.default_intent.traditional_title" = "Utilisez votre adresse e-mail :";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms" = "En vous inscrivant, vous acceptez les Conditions d'utilisation, notre Politique de confidentialité et notre Politique en matière de cookies.";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms_html" = "En vous inscrivant, vous acceptez nos <u>Conditions d'utilisation</u>, notre <u>Politique de confidentialité</u> et notre <u>Politique en matière de cookies</u>.";
+"login_tout.disclaimer.agree_to_terms" = "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
 "login_tout.disclaimer.read_more" = "En savoir plus";
-"login_tout.disclaimer.we_never_post_anything_without_permission" = "Rien ne sera publié sans votre permission.";
 "login_tout.errors.button.ok" = "OK";
 "login_tout.errors.facebook.authorization_exception.button" = "Réessayons";
 "login_tout.errors.facebook.authorization_exception.message" = "Nous avons du mal à ouvrir votre compte.";
@@ -1230,7 +1229,7 @@
 "signup.input_fields.password" = "Mot de passe";
 "signup.input_fields.password_min_characters" = "Mot de passe (6 caractères minimum)";
 "signup.navbar_title" = "Inscription";
-"signup.newsletter_full" = "Découvrez de nouveaux projets grâce à notre lettre d'informations hebdomadaire.";
+"signup.newsletter_full_opt_out" = "Vous recevrez la lettre d'information hebdomadaire de Kickstarter et d'autres actualités, par e-mail. Vous pouvez vous désabonner de ces messages à tout moment en cliquant sur le lien contenu dans chaque e-mail ou en suivant les instructions de notre Politique de confidentialité.";
 "social.buttons.cancel" = "Annuler";
 "social.buttons.post" = "Publier";
 "social.buttons.send" = "Envoyer";

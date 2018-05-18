@@ -933,10 +933,9 @@
 "login_tout.default_intent.traditional_login_button" = "Iniciar sesión";
 "login_tout.default_intent.traditional_signup_button" = "Registrar";
 "login_tout.default_intent.traditional_title" = "Utiliza tu dirección de correo electrónico:";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms" = "Al registrarte, estás aceptando nuestros términos de uso, nuestra política de privacidad y de cookies.";
-"login_tout.disclaimer.by_signing_up_you_agree_to_terms_html" = "Con la registración confirmas tu conformidad con nuestros <u>terms of use</u>, <u>privacy policy</u>, y <u>cookie policy</u>.";
+"login_tout.disclaimer.agree_to_terms" = "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
 "login_tout.disclaimer.read_more" = "Leer más";
-"login_tout.disclaimer.we_never_post_anything_without_permission" = "Nunca publicaremos nada sin tu consentimiento.";
 "login_tout.errors.button.ok" = "Ok";
 "login_tout.errors.facebook.authorization_exception.button" = "¡Inténtalo de nuevo!";
 "login_tout.errors.facebook.authorization_exception.message" = "Surgió un problema iniciando sesión.";
@@ -1230,7 +1229,7 @@
 "signup.input_fields.password" = "Contraseña";
 "signup.input_fields.password_min_characters" = "Clave (mínimo 6 caracteres)";
 "signup.navbar_title" = "Registrar";
-"signup.newsletter_full" = "Descubre nuevos proyectos con nuestro boletín semanal.";
+"signup.newsletter_full_opt_out" = "Recibe el boletín semanal de Kickstarter y otras actualizaciones ocasionales por correo electrónico. Puedes optar por dejar de recibir estos mensajes en cualquier momento utilizando el enlace incluido en el correo electrónico y según lo establecido en nuestra Política de privacidad.";
 "social.buttons.cancel" = "Cancelar";
 "social.buttons.post" = "Publicar";
 "social.buttons.send" = "Enviar";

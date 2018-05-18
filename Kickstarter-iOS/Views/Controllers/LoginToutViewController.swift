@@ -8,11 +8,10 @@ import Prelude
 import FBSDKLoginKit
 
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
-  @IBOutlet fileprivate weak var fbDisclaimer: UILabel!
   @IBOutlet fileprivate weak var contextLabel: UILabel!
   @IBOutlet fileprivate weak var bringCreativeProjectsToLifeLabel: UILabel!
   @IBOutlet fileprivate weak var fbLoginButton: UIButton!
-  @IBOutlet fileprivate weak var helpButton: UIButton!
+  @IBOutlet fileprivate weak var disclaimerButton: UIButton!
   @IBOutlet fileprivate weak var loginButton: UIButton!
   @IBOutlet fileprivate weak var signupButton: UIButton!
   @IBOutlet fileprivate weak var loginContextStackView: UIStackView!
@@ -51,6 +50,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(helpButtonPressed))
+
+    self.disclaimerButton.addTarget(self, action: #selector(helpButtonPressed), for: .touchUpInside)
   }
 
   deinit {
@@ -67,9 +68,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     super.bindStyles()
 
     _ = self |> baseControllerStyle()
-    _ = self.fbDisclaimer |> fbDisclaimerLabelStyle
     _ = self.fbLoginButton |> fbLoginButtonStyle
-    _ = self.helpButton |> disclaimerButtonStyle
+    _ = self.disclaimerButton
+      |> disclaimerButtonStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.rootStackView
       |> loginRootStackViewStyle
