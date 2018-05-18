@@ -331,13 +331,6 @@ internal final class SettingsViewModelTests: TestCase {
       "Enabled Push Notifications"], self.trackingClient.events)
   }
 
-  func testEnvironmentSwitcher_ChangesEnvironment() {
-    //        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.local)
-
-  
-
-  }
-
   func testLogoutFlow() {
     let params = .defaults
       |> DiscoveryParams.lens.includePOTD .~ true
