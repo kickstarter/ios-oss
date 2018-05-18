@@ -270,8 +270,8 @@ SettingsViewModelOutputs {
     self.environmentSwitcherButtonTitle = viewDidLoadProperty.signal
       .takeWhen(self.environmentSwitcherButtonTappedProperty.signal)
       .map {
-        "Current Environment - \(AppEnvironment.current.apiService.serverConfig.environmentName)"
-    }
+        "Change Environment - \(AppEnvironment.current.apiService.serverConfig.environmentName)"
+    }.skipRepeats()
 
     self.goToEmailFrequency = self.updateCurrentUser
       .takeWhen(self.emailFrequencyTappedProperty.signal)
