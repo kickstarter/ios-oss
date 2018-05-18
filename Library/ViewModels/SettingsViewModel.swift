@@ -213,10 +213,13 @@ SettingsViewModelOutputs {
         )
     }
 
-    self.logoutWithParams = self.logoutConfirmedProperty.signal
-      .map { .defaults
-        |> DiscoveryParams.lens.includePOTD .~ true
-        |> DiscoveryParams.lens.sort .~ .magic
+    self.logoutWithParams = Signal.merge (
+      self.logoutConfirmedProperty.signal,
+      self.environmentSwitcherButtonTappedProperty.signal.skipNil().ignoreValues()
+    )
+    .map { .defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
     }
 
     self.showOptInPrompt = newsletterOn
