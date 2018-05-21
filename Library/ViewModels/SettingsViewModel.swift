@@ -12,6 +12,7 @@ public protocol SettingsViewModelInputs {
   func commentsTapped(selected: Bool)
   func creatorTipsTapped(selected: Bool)
   func emailFrequencyTapped()
+  func environmentSwitcherButtonTapped(environment: ServerConfigType)
   func findFriendsTapped()
   func followerTapped(selected: Bool)
   func friendActivityTapped(selected: Bool)
@@ -44,6 +45,7 @@ public protocol SettingsViewModelOutputs {
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
   var creatorTipsSelected: Signal<Bool, NoError> { get }
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
+  var environmentSwitcherButtonTitle: Signal<String, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
   var friendActivitySelected: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
@@ -211,10 +213,13 @@ SettingsViewModelOutputs {
         )
     }
 
-    self.logoutWithParams = self.logoutConfirmedProperty.signal
-      .map { .defaults
-        |> DiscoveryParams.lens.includePOTD .~ true
-        |> DiscoveryParams.lens.sort .~ .magic
+    self.logoutWithParams = Signal.merge (
+      self.logoutConfirmedProperty.signal,
+      self.environmentSwitcherButtonTappedProperty.signal.skipNil().ignoreValues()
+    )
+    .map { .defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.sort .~ .magic
     }
 
     self.showOptInPrompt = newsletterOn
@@ -257,6 +262,16 @@ SettingsViewModelOutputs {
       .map { $0.notifications.updates }.skipNil().skipRepeats()
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
+
+    self.environmentSwitcherButtonTappedProperty.signal.skipNil().observeValues { config in
+        AppEnvironment.updateServerConfig(config)
+    }
+
+    self.environmentSwitcherButtonTitle = viewDidLoadProperty.signal
+      .takeWhen(self.environmentSwitcherButtonTappedProperty.signal)
+      .map {
+        "Change Environment - \(AppEnvironment.current.apiService.serverConfig.environmentName)"
+    }.skipRepeats()
 
     self.goToEmailFrequency = self.updateCurrentUser
       .takeWhen(self.emailFrequencyTappedProperty.signal)
@@ -350,6 +365,12 @@ SettingsViewModelOutputs {
   public func emailFrequencyTapped() {
     self.emailFrequencyTappedProperty.value = ()
   }
+
+  fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<ServerConfig?>(nil)
+  public func environmentSwitcherButtonTapped(environment: ServerConfigType) {
+    self.environmentSwitcherButtonTappedProperty.value = environment as? ServerConfig
+  }
+
   fileprivate let findFriendsTappedProperty = MutableProperty(())
   public func findFriendsTapped() {
     self.findFriendsTappedProperty.value = ()
@@ -446,6 +467,7 @@ SettingsViewModelOutputs {
   public let creatorNotificationsHidden: Signal<Bool, NoError>
   public let creatorTipsSelected: Signal<Bool, NoError>
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
+  public let environmentSwitcherButtonTitle: Signal<String, NoError>
   public let followerSelected: Signal<Bool, NoError>
   public let friendActivitySelected: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
