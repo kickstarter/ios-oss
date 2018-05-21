@@ -47,7 +47,7 @@ internal final class DashboardViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.05)
       }
     }
   }
