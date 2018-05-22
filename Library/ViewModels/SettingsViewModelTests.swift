@@ -34,6 +34,7 @@ internal final class SettingsViewModelTests: TestCase {
   let postLikesSelected = TestObserver<Bool, NoError>()
   let projectNotificationsCount = TestObserver<String, NoError>()
   let promoNewsletterOn = TestObserver<Bool, NoError>()
+  let recommendationsOn = TestObserver<Bool, NoError>()
   let showConfirmLogoutPrompt = TestObserver<(message: String, cancel: String, confirm: String), NoError>()
   let showOptInPrompt = TestObserver<String, NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
@@ -68,6 +69,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.postLikesSelected.observe(self.postLikesSelected.observer)
     self.vm.outputs.projectNotificationsCount.observe(self.projectNotificationsCount.observer)
     self.vm.outputs.promoNewsletterOn.observe(self.promoNewsletterOn.observer)
+    self.vm.outputs.recommendationsOn.observe(self.recommendationsOn.observer)
     self.vm.outputs.showConfirmLogoutPrompt.observe(self.showConfirmLogoutPrompt.observer)
     self.vm.outputs.showOptInPrompt.observe(self.showOptInPrompt.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
@@ -173,6 +175,15 @@ internal final class SettingsViewModelTests: TestCase {
     self.mobilePostLikesSelected.assertValues([false, true])
     self.postLikesSelected.assertValues([false, true])
     self.unableToSaveError.assertValueCount(0, "Error did not happen.")
+  }
+
+  func testOptOutOfRecommendations() {
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.viewDidLoad()
+    self.recommendationsOn.assertValues([true])
+    self.vm.inputs.recommendationsTapped(on: false)
+    self.recommendationsOn.assertValues([true, false])
   }
 
   func testGoToAppStoreRating() {
