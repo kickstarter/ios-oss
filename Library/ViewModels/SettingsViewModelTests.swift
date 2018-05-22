@@ -15,6 +15,7 @@ internal final class SettingsViewModelTests: TestCase {
   let betaToolsHidden = TestObserver<Bool, NoError>()
   let commentsSelected = TestObserver<Bool, NoError>()
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
+  let environmentSwitcherButtonTitle = TestObserver<String, NoError>()
   let followerSelected = TestObserver<Bool, NoError>()
   let friendActivitySelected = TestObserver<Bool, NoError>()
   let gamesNewsletterOn = TestObserver<Bool, NoError>()
@@ -50,6 +51,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.betaToolsHidden.observe(self.betaToolsHidden.observer)
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
+    self.vm.outputs.environmentSwitcherButtonTitle.observe(self.environmentSwitcherButtonTitle.observer)
     self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
     self.vm.outputs.friendActivitySelected.observe(self.friendActivitySelected.observer)
     self.vm.outputs.gamesNewsletterOn.observe(self.gamesNewsletterOn.observer)
@@ -135,6 +137,39 @@ internal final class SettingsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.creatorNotificationsHidden.assertValues([false], "Creator notifications shown for creator.")
     }
+  }
+
+  func testEnvironmentButton_SwitchesEnvironment() {
+
+    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
+
+      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environmentName, "Staging")
+
+      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environmentName, "Local")
+    }
+  }
+
+  func testLogoutWithParamsEmits_WhenEnvironmentChanges() {
+
+    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
+
+      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+      self.logoutWithParams.assertDidEmitValue()
+    }
+  }
+
+  func testEnvironmentButtonTitle_showsEnvironment_WhenEnvironmentChanges() {
+
+    self.vm.viewDidLoad()
+
+    self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+    self.environmentSwitcherButtonTitle.assertValue("Change Environment - Staging")
+
+    self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
+    self.environmentSwitcherButtonTitle.assertValues(["Change Environment - Staging",
+                                                      "Change Environment - Local"])
   }
 
   func testCreatorNotificationsTapped() {

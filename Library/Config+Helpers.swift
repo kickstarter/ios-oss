@@ -1,11 +1,3 @@
-//
-//  Config+Helpers.swift
-//  Kickstarter-iOS
-//
-//  Created by Isabel Barrera on 5/7/18.
-//  Copyright © 2018 Kickstarter. All rights reserved.
-//
-
 import Foundation
 import KsApi
 
