@@ -15,12 +15,18 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       self.messageLabel.text = Strings.Pledge_to_your_favorites_then_view_all_the_projects()
       self.titleLabel.text = Strings.Explore_creative_projects()
       _ = self.iconImageView
-        |> UIImageView.lens.image .~ UIImage(named: "icon--eye")
+        |> UIImageView.lens.image
+        .~ UIImage(named: "icon--eye",
+                   in: .framework,
+                   compatibleWith: nil)
     case .saved:
       self.messageLabel.text = Strings.Tap_the_heart_on_a_project_to_get_notified()
       self.titleLabel.text = Strings.No_saved_projects()
       _ = self.iconImageView
-        |> UIImageView.lens.image .~ UIImage(named: "icon--heart-outline")
+        |> UIImageView.lens.image
+        .~ UIImage(named: "icon--heart-outline",
+                   in: .framework,
+                   compatibleWith: nil)
     }
   }
 
