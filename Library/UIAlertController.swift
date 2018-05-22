@@ -200,6 +200,57 @@ public extension UIAlertController {
     return alertController
   }
 
+  public static func turnOffPrivacyFollowing(
+    turnOnHandler: @escaping ((UIAlertAction) -> Void),
+    turnOffHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
+
+    let alertController = UIAlertController(
+      title: "Are you sure?",
+      message: """
+                If you turn following off, you won't be able to follow anyone and no one will be able to
+                follow you. Your profile will be disconnected from all of your followers.
+                This can’t be undone.
+               """,
+      preferredStyle: .alert
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: "Yes, turn off",
+        style: .destructive,
+        handler: turnOffHandler
+      )
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.general_navigation_buttons_cancel(),
+        style: .cancel,
+        handler: turnOnHandler
+      )
+    )
+
+    return alertController
+  }
+
+  public static func followingPrivacyInfo() -> UIAlertController {
+    let alertController = UIAlertController(
+      title: Strings.Following(),
+      message: """
+                When following is on, you can follow the activity of others and others
+                can follow your activity. Turn following off to permanently delete this data.
+               """,
+      preferredStyle: .alert)
+
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Got_it(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    return alertController
+  }
+
   public static func facebookTokenFail() -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_invalid_token_title(),

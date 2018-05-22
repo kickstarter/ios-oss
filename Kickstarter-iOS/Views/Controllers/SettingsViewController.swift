@@ -420,6 +420,12 @@ internal final class SettingsViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] newsletter in self?.showOptInPrompt(newsletter) }
 
+    self.viewModel.outputs.showPrivacyFollowingPrompt
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.showPrivacyFollowingPrompt()
+      }
+
     self.viewModel.outputs.unableToSaveError
       .observeForControllerAction()
       .observeValues { [weak self] message in
@@ -669,26 +675,28 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @objc fileprivate func followingPrivacyInfoTapped() {
-    let alertController = UIAlertController(
-      title: nil,
-      message: """
-                When following is on, you can follow the activity of others and others can follow
-                your activity. Turn following off to permanently delete this data.
-               """,
-      preferredStyle: .alert)
+    let privacyInfoAlert = UIAlertController.followingPrivacyInfo()
+    self.present(privacyInfoAlert, animated: true, completion: nil)
+  }
 
-    alertController.addAction(
-      UIAlertAction(
-        title: Strings.Got_it(),
-        style: .default,
-        handler: nil
-      )
+  fileprivate func showPrivacyFollowingPrompt() {
+    let followingAlert = UIAlertController.turnOffPrivacyFollowing(
+       turnOnHandler: { [weak self] _ in
+        self?.viewModel.inputs.enableFollowingPrivacy(enable: true)
+      },
+       turnOffHandler: { [weak self] _ in
+        self?.viewModel.inputs.enableFollowingPrivacy(enable: false)
+      }
     )
-    self.present(alertController, animated: true, completion: nil)
+     self.present(followingAlert, animated: true, completion: nil)
   }
 
   @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
-    self.viewModel.inputs.followingSwitchTapped(on: followingPrivacySwitch.isOn)
+    guard followingPrivacySwitch.isOn == true else {
+      self.viewModel.inputs.followingSwitchTapped(on: followingPrivacySwitch.isOn)
+      return
+    }
+    self.viewModel.inputs.enableFollowingPrivacy(enable: true)
   }
 
   @IBAction fileprivate func friendActivityTapped(_ button: UIButton) {

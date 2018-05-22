@@ -38,6 +38,7 @@ internal final class SettingsViewModelTests: TestCase {
   let requestExportData = TestObserver<(), NoError>()
   let showConfirmLogoutPrompt = TestObserver<(message: String, cancel: String, confirm: String), NoError>()
   let showOptInPrompt = TestObserver<String, NoError>()
+  let showPrivacyFollowingPrompt = TestObserver<(), NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
   let updatesSelected = TestObserver<Bool, NoError>()
   let updateCurrentUser = TestObserver<User, NoError>()
@@ -74,6 +75,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.requestExportData.observe(self.requestExportData.observer)
     self.vm.outputs.showConfirmLogoutPrompt.observe(self.showConfirmLogoutPrompt.observer)
     self.vm.outputs.showOptInPrompt.observe(self.showOptInPrompt.observer)
+    self.vm.outputs.showPrivacyFollowingPrompt.observe(self.showPrivacyFollowingPrompt.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
     self.vm.outputs.updatesSelected.observe(self.updatesSelected.observer)
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
@@ -188,6 +190,11 @@ internal final class SettingsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.followingPrivacyOn.assertValues([true])
     }
+  }
+
+  func testFollowingPrivacyAlertEmits() {
+    self.vm.inputs.followingSwitchTapped(on: false)
+    self.showPrivacyFollowingPrompt.assertDidEmitValue()
   }
 
   func testRequestExportData() {
@@ -433,7 +440,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.inputs.commentsTapped(selected: true)
     self.updateCurrentUser.assertValueCount(4, "User should be updated.")
 
-    self.vm.inputs.followingSwitchTapped(on: true)
+    self.vm.inputs.enableFollowingPrivacy(enable: true)
     self.updateCurrentUser.assertValueCount(5, "User should be updated.")
   }
 

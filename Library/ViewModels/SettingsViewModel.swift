@@ -13,6 +13,7 @@ public protocol SettingsViewModelInputs {
   func creatorTipsTapped(selected: Bool)
   func deleteAccountTapped()
   func emailFrequencyTapped()
+  func enableFollowingPrivacy(enable: Bool)
   func exportDataTapped()
   func findFriendsTapped()
   func followerTapped(selected: Bool)
@@ -71,6 +72,7 @@ public protocol SettingsViewModelOutputs {
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var requestExportData: Signal<(), NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
+  var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updatesSelected: Signal<Bool, NoError> { get }
@@ -99,7 +101,10 @@ SettingsViewModelOutputs {
       }
       .skipNil()
 
-    self.followingPrivacyOn = initialUser.map { $0.social }.skipNil().skipRepeats()
+    self.followingPrivacyOn = Signal.merge(
+      initialUser.map { $0.social ?? true }.skipRepeats(),
+      enableFollowingPrivacyProperty.signal
+    )
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
       self.artsAndCultureNewsletterTappedProperty.signal.map { (.arts, $0) },
@@ -168,7 +173,7 @@ SettingsViewModelOutputs {
       self.updatesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.updates), $0)
       },
-      self.followingSwitchTappedProperty.signal.map {
+      self.enableFollowingPrivacyProperty.signal.map {
         (UserAttribute.privacy(Privacy.following), $0)
       }
     )
@@ -227,6 +232,10 @@ SettingsViewModelOutputs {
         confirm: Strings.profile_settings_logout_alert_confirm_button()
         )
     }
+
+    self.showPrivacyFollowingPrompt = self.followingSwitchTappedProperty.signal
+      .filter { $0 == false }
+      .ignoreValues()
 
     self.logoutWithParams = self.logoutConfirmedProperty.signal
       .map { .defaults
@@ -380,6 +389,10 @@ SettingsViewModelOutputs {
   public func emailFrequencyTapped() {
     self.emailFrequencyTappedProperty.value = ()
   }
+  fileprivate let enableFollowingPrivacyProperty = MutableProperty(false)
+  public func enableFollowingPrivacy(enable: Bool) {
+    self.enableFollowingPrivacyProperty.value = enable
+  }
   fileprivate let exportDataTappedProperty = MutableProperty(())
   public func exportDataTapped() {
     self.exportDataTappedProperty.value = ()
@@ -464,6 +477,7 @@ SettingsViewModelOutputs {
   public func rateUsTapped() {
     self.rateUsTappedProperty.value = ()
   }
+
   fileprivate let updatesTappedProperty = MutableProperty(false)
   public func updatesTapped(selected: Bool) {
     self.updatesTappedProperty.value = selected
@@ -509,6 +523,7 @@ SettingsViewModelOutputs {
   public let requestExportData: Signal<(), NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
   public let showOptInPrompt: Signal<String, NoError>
+  public let showPrivacyFollowingPrompt: Signal<(), NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updatesSelected: Signal<Bool, NoError>
   public let updateCurrentUser: Signal<User, NoError>
