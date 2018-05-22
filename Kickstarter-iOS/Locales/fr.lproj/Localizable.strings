@@ -71,7 +71,7 @@
 "Discover_more_projects" = "Découvrez plus de projets.";
 "Dismiss" = "Ignorer";
 "Done" = "Terminé";
-"Download_your_personal_data" = "Download your personal data";
+"Download_your_personal_data" = "Téléchargement de vos données personnelles";
 "Earth" = "Terre";
 "Either_the_pledge_or_the_project_was_canceled" = "Soit l'engagement soit le projet a été annulé avant la date limite.";
 "Email_frequency" = "Fréquence d'envoi des e-mails";
@@ -139,7 +139,7 @@
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
 "Individual_Emails" = "E-mails individuels";
 "Info" = "Info";
-"It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
+"It_may_take_up_to_24_hours_to_collect_your_data" = "La préparation de vos données personnelles peut prendre jusqu'à 24 heures. Nous vous enverrons des instructions de téléchargement à l'adresse e-mail associée à ce compte une fois que tout sera prêt. Si vous ne recevez rien, revenez ici pour réessayer.";
 "Its_a_way_to_bring_creative_projects_to_life" = "C'est un outil qui permet de donner vie à des projets créatifs.";
 "Its_better_with_friends" = "On est mieux ensemble.";
 "Joining_the_live_stream" = "Connexion à la diffusion en direct en cours";
@@ -292,7 +292,7 @@
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
 "Something_catch_your_eye" = "Quelque chose a retenu votre attention ?";
 "Something_went_wrong_please_try_again" = "Un problème est survenu. Veuillez réessayer.";
-"Start_data_collection" = "Start data collection";
+"Start_data_collection" = "Commencer la préparation";
 "Starting_soon" = "Bientôt en direct";
 "Status" = "État :";
 "Stay_up_to_date" = "Envie d'être informé ?";
@@ -344,6 +344,7 @@
 "View_your_reward" = "Afficher ma récompense";
 "Watch_live" = "Regarder en direct";
 "We_couldnt_find_anything_for_search_term" = "Pas de résultats pour « %{search_term} ».";
+"We_use_your_activity_internally_to_make_recommendations_for_you" = "À l'interne, nous nous servons de vos activités pour vous faire des recommandations. Si vous ne souhaitez pas participer, nous vous invitons à désactiver vos recommandations.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Connexion au chat en direct impossible.";
 "We_were_unable_to_load_the_shipping_destinations" = "Nous n'avons pas été en mesure de charger les destinations d'expédition.\nVeuillez réessayer ultérieurement.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Nous vous enverrons un rappel 48 heures avant la fin de cette campagne. Vous recevrez aussi des rappels pour tous les projets que vous avez enregistré. Ceux-ci sont tous accessibles depuis votre profil.";

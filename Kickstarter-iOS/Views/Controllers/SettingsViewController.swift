@@ -641,7 +641,7 @@ internal final class SettingsViewController: UIViewController {
   @objc fileprivate func recommendationsInfoTapped() {
     let alertController = UIAlertController(
       title: Strings.Recommendations(),
-      message: "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this.",
+      message: Strings.We_use_your_activity_internally_to_make_recommendations_for_you(),
       preferredStyle: .alert)
     alertController.addAction(
       UIAlertAction(

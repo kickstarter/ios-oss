@@ -31,11 +31,10 @@ public protocol SettingsViewModelInputs {
   func postLikesTapped(selected: Bool)
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
+  func recommendationsTapped(on: Bool)
   func updatesTapped(selected: Bool)
   func viewDidLoad()
   func weeklyNewsletterTapped(on: Bool)
-
-  func recommendationsTapped(on: Bool)
 }
 
 public protocol SettingsViewModelOutputs {
@@ -67,6 +66,7 @@ public protocol SettingsViewModelOutputs {
   var postLikesSelected: Signal<Bool, NoError> { get }
   var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
+  var recommendationsOn: Signal<Bool, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
@@ -74,8 +74,6 @@ public protocol SettingsViewModelOutputs {
   var updateCurrentUser: Signal<User, NoError> { get }
   var versionText: Signal<String, NoError> { get }
   var weeklyNewsletterOn: Signal<Bool, NoError> { get }
-
-  var recommendationsOn: Signal<Bool, NoError> { get }
 }
 
 public protocol SettingsViewModelType {
@@ -162,6 +160,9 @@ SettingsViewModelOutputs {
       },
       self.updatesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.updates), $0)
+      },
+      self.recommendationsTappedProperty.signal.map {
+        (UserAttribute.privacy(Privacy.recommendations), !$0)
       }
     )
 
@@ -191,8 +192,6 @@ SettingsViewModelOutputs {
       .map { previous, _ in previous }
 
     self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
-
-    self.recommendationsOn = initialUser.map { $0.optedOutOfRecommendations }
 
     self.creatorNotificationsHidden = self.updateCurrentUser.map { !$0.isCreator }.skipRepeats()
 
@@ -261,6 +260,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.postLikes }.skipNil().skipRepeats()
     self.updatesSelected = self.updateCurrentUser
       .map { $0.notifications.updates }.skipNil().skipRepeats()
+    self.recommendationsOn = self.updateCurrentUser
+      .map { $0.optedOutOfRecommendations }.skipNil().map { $0 ? false : true }.skipRepeats()
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
@@ -305,6 +306,10 @@ SettingsViewModelOutputs {
                .comments, .follower, .friendActivity, .postLikes, .creatorTips, .updates:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)
+          }
+        case let .privacy(privacy):
+          switch privacy {
+          case .recommendations: "recommendations"
           }
         }
     }
@@ -494,6 +499,7 @@ SettingsViewModelOutputs {
 private enum UserAttribute {
   case newsletter(Newsletter)
   case notification(Notification)
+  case privacy(Privacy)
 
   fileprivate var lens: Lens<User, Bool?> {
     switch self {
@@ -521,6 +527,10 @@ private enum UserAttribute {
       case .mobileUpdates:        return User.lens.notifications.mobileUpdates
       case .postLikes:            return User.lens.notifications.postLikes
       case .updates:              return User.lens.notifications.updates
+      }
+    case let .privacy(privacy):
+      switch privacy {
+      case .recommendations:   return User.lens.optedOutOfRecommendations
       }
     }
   }
@@ -550,6 +560,16 @@ private enum Notification {
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
     case .postLikes, .mobilePostLikes:              return "New likes"
     case .updates, .mobileUpdates:                  return "Project updates"
+    }
+  }
+}
+
+private enum Privacy {
+  case recommendations
+
+  fileprivate var trackingString: String {
+    switch self {
+    case .recommendations: return Strings.Recommendations()
     }
   }
 }
