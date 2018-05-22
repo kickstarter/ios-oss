@@ -324,7 +324,7 @@ SettingsViewModelOutputs {
           }
         case let .privacy(privacy):
           switch privacy {
-          case .recommendations: "recommendations"
+          case .recommendations: AppEnvironment.current.koala.trackRecommendationsOptIn()
           }
         }
     }
