@@ -16,6 +16,7 @@ internal final class SettingsViewModelTests: TestCase {
   let commentsSelected = TestObserver<Bool, NoError>()
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
   let followerSelected = TestObserver<Bool, NoError>()
+  let followingPrivacyOn = TestObserver<Bool, NoError>()
   let friendActivitySelected = TestObserver<Bool, NoError>()
   let gamesNewsletterOn = TestObserver<Bool, NoError>()
   let goToAppStoreRating = TestObserver<String, NoError>()
@@ -51,6 +52,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
     self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
+    self.vm.outputs.followingPrivacyOn.observe(self.followingPrivacyOn.observer)
     self.vm.outputs.friendActivitySelected.observe(self.friendActivitySelected.observer)
     self.vm.outputs.gamesNewsletterOn.observe(self.gamesNewsletterOn.observer)
     self.vm.outputs.goToAppStoreRating.observe(self.goToAppStoreRating.observer)
@@ -175,6 +177,17 @@ internal final class SettingsViewModelTests: TestCase {
     self.mobilePostLikesSelected.assertValues([false, true])
     self.postLikesSelected.assertValues([false, true])
     self.unableToSaveError.assertValueCount(0, "Error did not happen.")
+  }
+
+  func testFollowingPrivacyToggleStatus_OnViewDidLoad() {
+
+    let socialUser = .template
+      |> User.lens.social .~ true
+
+    withEnvironment(currentUser: socialUser) {
+      self.vm.inputs.viewDidLoad()
+      self.followingPrivacyOn.assertValues([true])
+    }
   }
 
   func testRequestExportData() {
@@ -419,6 +432,9 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.inputs.commentsTapped(selected: true)
     self.updateCurrentUser.assertValueCount(4, "User should be updated.")
+
+    self.vm.inputs.followingSwitchTapped(on: true)
+    self.updateCurrentUser.assertValueCount(5, "User should be updated.")
   }
 
   func testVersionText_Alpha() {

@@ -48,6 +48,7 @@ public protocol SettingsViewModelOutputs {
   var creatorTipsSelected: Signal<Bool, NoError> { get }
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
+  var followingPrivacyOn: Signal<Bool, NoError> { get }
   var friendActivitySelected: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
@@ -97,6 +98,8 @@ SettingsViewModelOutputs {
           .demoteErrors()
       }
       .skipNil()
+
+    self.followingPrivacyOn = initialUser.map { $0.social }.skipNil().skipRepeats()
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
       self.artsAndCultureNewsletterTappedProperty.signal.map { (.arts, $0) },
@@ -164,6 +167,9 @@ SettingsViewModelOutputs {
       },
       self.updatesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.updates), $0)
+      },
+      self.followingSwitchTappedProperty.signal.map {
+        (UserAttribute.privacy(Privacy.following), $0)
       }
     )
 
@@ -239,7 +245,7 @@ SettingsViewModelOutputs {
     self.weeklyNewsletterOn = self.updateCurrentUser.map { $0.newsletters.weekly }.skipNil().skipRepeats()
     self.inventNewsletterOn = self.updateCurrentUser.map { $0.newsletters.invent }.skipNil().skipRepeats()
     self.artsAndCultureNewsletterOn = self.updateCurrentUser
-      .map { $0.newsletters.arts}.skipNil().skipRepeats()
+      .map { $0.newsletters.arts }.skipNil().skipRepeats()
 
     self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
     self.creatorTipsSelected = self.updateCurrentUser
@@ -268,8 +274,6 @@ SettingsViewModelOutputs {
       .map { $0.notifications.updates }.skipNil().skipRepeats()
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
-
-
 
     self.goToEmailFrequency = self.updateCurrentUser
       .takeWhen(self.emailFrequencyTappedProperty.signal)
@@ -321,6 +325,7 @@ SettingsViewModelOutputs {
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)
           }
+        default: break
         }
     }
 
@@ -480,6 +485,7 @@ SettingsViewModelOutputs {
   public let creatorTipsSelected: Signal<Bool, NoError>
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
   public let followerSelected: Signal<Bool, NoError>
+  public let followingPrivacyOn: Signal<Bool, NoError>
   public let friendActivitySelected: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
@@ -518,6 +524,7 @@ SettingsViewModelOutputs {
 private enum UserAttribute {
   case newsletter(Newsletter)
   case notification(Notification)
+  case privacy(Privacy)
 
   fileprivate var lens: Lens<User, Bool?> {
     switch self {
@@ -545,6 +552,10 @@ private enum UserAttribute {
       case .mobileUpdates:        return User.lens.notifications.mobileUpdates
       case .postLikes:            return User.lens.notifications.postLikes
       case .updates:              return User.lens.notifications.updates
+      }
+    case let .privacy(privacy):
+      switch privacy {
+      case .following:  return User.lens.social
       }
     }
   }
@@ -576,4 +587,8 @@ private enum Notification {
     case .updates, .mobileUpdates:                  return "Project updates"
     }
   }
+}
+
+private enum Privacy {
+  case following
 }

@@ -481,6 +481,7 @@ internal final class SettingsViewController: UIViewController {
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
     self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
+    self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
     self.happeningNewsletterSwitch.rac.on = self.viewModel.outputs.happeningNewsletterOn
@@ -669,13 +670,16 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func followingPrivacyInfoTapped() {
     let alertController = UIAlertController(
-      title: "Info",
-      message: "GDPR Bleh bleh bleh...",
+      title: nil,
+      message: """
+                When following is on, you can follow the activity of others and others can follow
+                your activity. Turn following off to permanently delete this data.
+               """,
       preferredStyle: .alert)
 
     alertController.addAction(
       UIAlertAction(
-        title: "OK",
+        title: Strings.Got_it(),
         style: .default,
         handler: nil
       )
