@@ -214,11 +214,11 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.deleteAccountLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in "Delete my Kickstarter Account" }
+      |> UILabel.lens.text %~ { _ in Strings.Delete_my_Kickstarter_Account() }
 
     _ = self.exportDataLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in "Request my Personal Data" }
+      |> UILabel.lens.text %~ { _ in Strings.Request_my_Personal_Data() }
 
     _ = self.emailFrequencyLabel
       |> UILabel.lens.font .~ .ksr_body()
