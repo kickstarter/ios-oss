@@ -376,6 +376,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.recommendationsInfoButton
       |> UIButton.lens.image(for: .normal)
         .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
+<<<<<<< HEAD
+=======
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Recommendations_More_Info() }
+>>>>>>> oss/master
 
     _ = self.recommendationsLabel
       |> settingsSectionLabelStyle
@@ -498,6 +502,10 @@ internal final class SettingsViewController: UIViewController {
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
     self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
+<<<<<<< HEAD
+=======
+    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
+>>>>>>> oss/master
     self.environmentSwitcher.rac.title = self.viewModel.outputs.environmentSwitcherButtonTitle
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
     self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
@@ -516,10 +524,10 @@ internal final class SettingsViewController: UIViewController {
     self.postLikesButton.rac.selected = self.viewModel.outputs.postLikesSelected
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
     self.promoNewsletterSwitch.rac.on = self.viewModel.outputs.promoNewsletterOn
+    self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
     self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
-    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
   }
   // swiftlint:enable function_body_length
 
@@ -746,6 +754,7 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func recommendationsInfoTapped() {
     let alertController = UIAlertController(
+<<<<<<< HEAD
       title: "Info",
       message: "GDPR Blah blah blah...",
       preferredStyle: .alert)
@@ -754,6 +763,15 @@ internal final class SettingsViewController: UIViewController {
       UIAlertAction(
         title: "OK",
         style: .default,
+=======
+      title: Strings.Recommendations(),
+      message: Strings.We_use_your_activity_internally_to_make_recommendations_for_you(),
+      preferredStyle: .alert)
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Got_it(),
+        style: .cancel,
+>>>>>>> oss/master
         handler: nil
       )
     )
@@ -787,6 +805,10 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func promoNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.isOn)
+  }
+
+  @IBAction fileprivate func recommendationsTapped(_ recommendationSwitch: UISwitch) {
+    self.viewModel.inputs.recommendationsTapped(on: recommendationSwitch.isOn)
   }
 
   @objc fileprivate func rateUsTapped() {

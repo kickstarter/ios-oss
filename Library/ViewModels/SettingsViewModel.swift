@@ -35,6 +35,7 @@ public protocol SettingsViewModelInputs {
   func postLikesTapped(selected: Bool)
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
+  func recommendationsTapped(on: Bool)
   func updatesTapped(selected: Bool)
   func viewDidLoad()
   func weeklyNewsletterTapped(on: Bool)
@@ -72,6 +73,7 @@ public protocol SettingsViewModelOutputs {
   var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var requestExportData: Signal<(), NoError> { get }
+  var recommendationsOn: Signal<Bool, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
   var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
@@ -174,12 +176,16 @@ SettingsViewModelOutputs {
       self.updatesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.updates), $0)
       },
+
       self.followingSwitchTappedProperty.signal
         .filter { (on, didShowPrompt) in
           didShowPrompt == true || (on == true && didShowPrompt == false)
         }
         .map {
         (UserAttribute.privacy(Privacy.following), $0.0)
+
+      self.recommendationsTappedProperty.signal.map {
+        (UserAttribute.privacy(Privacy.recommendations), !$0)
       }
     )
 
@@ -289,6 +295,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.postLikes }.skipNil().skipRepeats()
     self.updatesSelected = self.updateCurrentUser
       .map { $0.notifications.updates }.skipNil().skipRepeats()
+    self.recommendationsOn = self.updateCurrentUser
+      .map { $0.optedOutOfRecommendations }.skipNil().map { $0 ? false : true }.skipRepeats()
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
@@ -352,7 +360,10 @@ SettingsViewModelOutputs {
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)
           }
-        default: break
+        case let .privacy(privacy):
+          switch privacy {
+          case .recommendations: AppEnvironment.current.koala.trackRecommendationsOptIn()
+          }
         }
     }
 
@@ -494,6 +505,10 @@ SettingsViewModelOutputs {
   public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
   }
+  fileprivate let recommendationsTappedProperty = MutableProperty(false)
+  public func recommendationsTapped(on: Bool) {
+    self.recommendationsTappedProperty.value = on
+  }
   fileprivate let rateUsTappedProperty = MutableProperty(())
   public func rateUsTapped() {
     self.rateUsTappedProperty.value = ()
@@ -543,6 +558,7 @@ SettingsViewModelOutputs {
   public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
   public let requestExportData: Signal<(), NoError>
+  public let recommendationsOn: Signal<Bool, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
   public let showOptInPrompt: Signal<String, NoError>
   public let showPrivacyFollowingPrompt: Signal<(), NoError>
@@ -592,7 +608,8 @@ private enum UserAttribute {
       }
     case let .privacy(privacy):
       switch privacy {
-      case .following:  return User.lens.social
+      case .following:       return User.lens.social
+      case .recommendations: return User.lens.optedOutOfRecommendations
       }
     }
   }
@@ -627,5 +644,14 @@ private enum Notification {
 }
 
 private enum Privacy {
+
   case following
+  case recommendations
+
+  fileprivate var trackingString: String {
+    switch self {
+    case .following: return Strings.Following()
+    case .recommendations: return Strings.Recommendations()
+    }
+  }
 }

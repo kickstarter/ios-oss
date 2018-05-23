@@ -772,7 +772,11 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ar1-S2-Cvy" userLabel="Privacy stack view">
+<<<<<<< HEAD
                                                 <rect key="frame" x="0.0" y="1846" width="368" height="255.5"/>
+=======
+                                                <rect key="frame" x="0.0" y="1846" width="368" height="89.5"/>
+>>>>>>> oss/master
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Privacy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Urg-Aa-oLZ" userLabel="Privacy label">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -838,6 +842,7 @@
                                                                 <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <connections>
                                                                     <action selector="artsAndCultureNewsletterTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="GjW-cB-RuR"/>
+                                                                    <action selector="recommendationsTapped:" destination="wCS-h4-p7K" eventType="valueChanged" id="Qg2-sY-paM"/>
                                                                 </connections>
                                                             </switch>
                                                         </subviews>

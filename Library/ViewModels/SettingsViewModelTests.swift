@@ -37,6 +37,7 @@ internal final class SettingsViewModelTests: TestCase {
   let projectNotificationsCount = TestObserver<String, NoError>()
   let promoNewsletterOn = TestObserver<Bool, NoError>()
   let requestExportData = TestObserver<(), NoError>()
+  let recommendationsOn = TestObserver<Bool, NoError>()
   let showConfirmLogoutPrompt = TestObserver<(message: String, cancel: String, confirm: String), NoError>()
   let showOptInPrompt = TestObserver<String, NoError>()
   let showPrivacyFollowingPrompt = TestObserver<(), NoError>()
@@ -75,6 +76,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.projectNotificationsCount.observe(self.projectNotificationsCount.observer)
     self.vm.outputs.promoNewsletterOn.observe(self.promoNewsletterOn.observer)
     self.vm.outputs.requestExportData.observe(self.requestExportData.observer)
+    self.vm.outputs.recommendationsOn.observe(self.recommendationsOn.observer)
     self.vm.outputs.showConfirmLogoutPrompt.observe(self.showConfirmLogoutPrompt.observer)
     self.vm.outputs.showOptInPrompt.observe(self.showOptInPrompt.observer)
     self.vm.outputs.showPrivacyFollowingPrompt.observe(self.showPrivacyFollowingPrompt.observer)
@@ -285,6 +287,15 @@ internal final class SettingsViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.requestExportData.assertValueCount(1, "Request Data")
+  }
+
+  func testOptOutOfRecommendations() {
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.viewDidLoad()
+    self.recommendationsOn.assertValues([true])
+    self.vm.inputs.recommendationsTapped(on: false)
+    self.recommendationsOn.assertValues([true, false])
   }
 
   func testGoToAppStoreRating() {

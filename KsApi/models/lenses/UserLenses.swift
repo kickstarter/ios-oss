@@ -74,7 +74,7 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations, social: $1.social, stats: $1.stats) }
     )
 
-    public static let optedOutOfRecommendations = Lens<User, Bool>(
+    public static let optedOutOfRecommendations = Lens<User, Bool?>(
       view: { $0.optedOutOfRecommendations },
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
         isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name,

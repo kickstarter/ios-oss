@@ -343,6 +343,7 @@ internal enum Route {
       var params: [String: Any] = [:]
       params = user.notifications.encode().withAllValuesFrom(user.newsletters.encode())
       params["social"] = user.social
+      params["opted_out_of_recommendations"] = user.optedOutOfRecommendations
 
       return (.PUT, "/v1/users/self", params, nil)
 
