@@ -383,7 +383,7 @@ internal final class SettingsViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
 
-    self.viewModel.outputs.goToSafariBrowser
+    self.viewModel.outputs.goToDeleteAccountBrowser
       .observeForControllerAction()
       .observeValues { [weak self] url in self?.goToDeleteAccount(url: url) }
 

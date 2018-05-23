@@ -20,6 +20,7 @@ internal final class SettingsViewModelTests: TestCase {
   let gamesNewsletterOn = TestObserver<Bool, NoError>()
   let goToAppStoreRating = TestObserver<String, NoError>()
   let goToBetaFeedback = TestObserver<(), NoError>()
+  let goToDeleteAccountBrowser = TestObserver<URL, NoError>()
   let goToFindFriends = TestObserver<Void, NoError>()
   let goToManageProjectNotifications = TestObserver<Void, NoError>()
   let happeningNewsletterOn = TestObserver<Bool, NoError>()
@@ -55,6 +56,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.gamesNewsletterOn.observe(self.gamesNewsletterOn.observer)
     self.vm.outputs.goToAppStoreRating.observe(self.goToAppStoreRating.observer)
     self.vm.outputs.goToBetaFeedback.observe(self.goToBetaFeedback.observer)
+    self.vm.outputs.goToDeleteAccountBrowser.observe(self.goToDeleteAccountBrowser.observer)
     self.vm.outputs.goToFindFriends.observe(self.goToFindFriends.observer)
     self.vm.outputs.goToManageProjectNotifications.observe(self.goToManageProjectNotifications.observer)
     self.vm.outputs.happeningNewsletterOn.observe(self.happeningNewsletterOn.observer)
@@ -197,6 +199,16 @@ internal final class SettingsViewModelTests: TestCase {
     XCTAssertEqual(["Settings View", "Viewed Settings", "App Store Rating Open", "Opened App Store Listing"],
                    self.trackingClient.events)
     self.goToAppStoreRating.assertValueCount(1, "Go to App Store.")
+  }
+
+  func testGoToDeleteAccount() {
+    let user = User.template
+    let url =
+      AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy")
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.deleteAccountTapped()
+    self.goToDeleteAccountBrowser.assertValues([url])
   }
 
   func testGoToFindFriends() {
