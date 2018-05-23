@@ -682,21 +682,17 @@ internal final class SettingsViewController: UIViewController {
   fileprivate func showPrivacyFollowingPrompt() {
     let followingAlert = UIAlertController.turnOffPrivacyFollowing(
        turnOnHandler: { [weak self] _ in
-        self?.viewModel.inputs.enableFollowingPrivacy(enable: true)
+        self?.viewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
       },
        turnOffHandler: { [weak self] _ in
-        self?.viewModel.inputs.enableFollowingPrivacy(enable: false)
+        self?.viewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
       }
     )
      self.present(followingAlert, animated: true, completion: nil)
   }
 
   @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
-    guard followingPrivacySwitch.isOn == true else {
-      self.viewModel.inputs.followingSwitchTapped(on: followingPrivacySwitch.isOn)
-      return
-    }
-    self.viewModel.inputs.enableFollowingPrivacy(enable: true)
+    self.viewModel.inputs.followingSwitchTapped(on: followingPrivacySwitch.isOn, didShowPrompt: false)
   }
 
   @IBAction fileprivate func friendActivityTapped(_ button: UIButton) {

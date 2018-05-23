@@ -354,7 +354,6 @@ internal enum Route {
 
     case let .user(userId):
       return (.GET, "/v1/users/\(userId)", [:], nil)
-
     }
   }
 }

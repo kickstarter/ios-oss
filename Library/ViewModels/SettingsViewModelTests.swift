@@ -192,9 +192,53 @@ internal final class SettingsViewModelTests: TestCase {
     }
   }
 
-  func testFollowingPrivacyAlertEmits() {
-    self.vm.inputs.followingSwitchTapped(on: false)
+  func testFollowingPrivacyAlertEmits_beforeTurnFollowingOff() {
+    self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: false)
     self.showPrivacyFollowingPrompt.assertDidEmitValue()
+  }
+
+  func testFollowingPrivacyDoesNotAlertEmit_TurningFollowingOn() {
+    self.vm.inputs.followingSwitchTapped(on: true, didShowPrompt: false)
+    self.showPrivacyFollowingPrompt.assertDidNotEmitValue()
+  }
+
+  func testUpdateUserEmits_When_TurnFollowingOn() {
+
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+
+    self.vm.inputs.viewDidLoad()
+    self.updateCurrentUser.assertValueCount(2, "Begin with environment's current user and refresh.")
+
+    self.vm.inputs.followingSwitchTapped(on: true, didShowPrompt: false)
+    self.updateCurrentUser.assertValueCount(3, "User should be updated.")
+
+    self.vm.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
+    self.updateCurrentUser.assertValueCount(4, "User should be updated.")
+  }
+
+  func testUpdateUserDoesNotEmit_TurningFollowingOff_BeforeShowingPrompt() {
+
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+
+    self.vm.inputs.viewDidLoad()
+    self.updateCurrentUser.assertValueCount(2, "Begin with environment's current user and refresh.")
+
+    self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: false)
+    self.updateCurrentUser.assertValueCount(2, "User should not be updated.")
+  }
+
+  func testUpdateUserEmits_TurningFollowingOff_AfterShowingPrompt() {
+
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+
+    self.vm.inputs.viewDidLoad()
+    self.updateCurrentUser.assertValueCount(2, "Begin with environment's current user and refresh.")
+
+    self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
+    self.updateCurrentUser.assertValueCount(3, "User should be updated.")
   }
 
   func testRequestExportData() {
@@ -439,9 +483,6 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.inputs.commentsTapped(selected: true)
     self.updateCurrentUser.assertValueCount(4, "User should be updated.")
-
-    self.vm.inputs.enableFollowingPrivacy(enable: true)
-    self.updateCurrentUser.assertValueCount(5, "User should be updated.")
   }
 
   func testVersionText_Alpha() {

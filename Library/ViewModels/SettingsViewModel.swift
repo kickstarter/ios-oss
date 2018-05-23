@@ -13,11 +13,10 @@ public protocol SettingsViewModelInputs {
   func creatorTipsTapped(selected: Bool)
   func deleteAccountTapped()
   func emailFrequencyTapped()
-  func enableFollowingPrivacy(enable: Bool)
   func exportDataTapped()
   func findFriendsTapped()
   func followerTapped(selected: Bool)
-  func followingSwitchTapped(on: Bool)
+  func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
   func friendActivityTapped(selected: Bool)
   func gamesNewsletterTapped(on: Bool)
   func happeningNewsletterTapped(on: Bool)
@@ -103,7 +102,7 @@ SettingsViewModelOutputs {
 
     self.followingPrivacyOn = Signal.merge(
       initialUser.map { $0.social ?? true }.skipRepeats(),
-      enableFollowingPrivacyProperty.signal
+      self.followingSwitchTappedProperty.signal.map { $0.0 }
     )
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
@@ -173,8 +172,12 @@ SettingsViewModelOutputs {
       self.updatesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.updates), $0)
       },
-      self.enableFollowingPrivacyProperty.signal.map {
-        (UserAttribute.privacy(Privacy.following), $0)
+      self.followingSwitchTappedProperty.signal
+        .filter { (on, didShowPrompt) in
+          didShowPrompt == true || (on == true && didShowPrompt == false)
+        }
+        .map {
+        (UserAttribute.privacy(Privacy.following), $0.0)
       }
     )
 
@@ -234,7 +237,7 @@ SettingsViewModelOutputs {
     }
 
     self.showPrivacyFollowingPrompt = self.followingSwitchTappedProperty.signal
-      .filter { $0 == false }
+      .filter { $0.0 == false && $0.1 == false }
       .ignoreValues()
 
     self.logoutWithParams = self.logoutConfirmedProperty.signal
@@ -389,10 +392,6 @@ SettingsViewModelOutputs {
   public func emailFrequencyTapped() {
     self.emailFrequencyTappedProperty.value = ()
   }
-  fileprivate let enableFollowingPrivacyProperty = MutableProperty(false)
-  public func enableFollowingPrivacy(enable: Bool) {
-    self.enableFollowingPrivacyProperty.value = enable
-  }
   fileprivate let exportDataTappedProperty = MutableProperty(())
   public func exportDataTapped() {
     self.exportDataTappedProperty.value = ()
@@ -405,9 +404,9 @@ SettingsViewModelOutputs {
   public func followerTapped(selected: Bool) {
     self.followerTappedProperty.value = selected
   }
-  fileprivate let followingSwitchTappedProperty = MutableProperty(false)
-  public func followingSwitchTapped(on: Bool) {
-    self.followingSwitchTappedProperty.value = on
+  fileprivate let followingSwitchTappedProperty = MutableProperty((false, false))
+  public func followingSwitchTapped(on: Bool, didShowPrompt: Bool) {
+    self.followingSwitchTappedProperty.value = (on, didShowPrompt)
   }
   fileprivate let friendActivityTappedProperty = MutableProperty(false)
   public func friendActivityTapped(selected: Bool) {
