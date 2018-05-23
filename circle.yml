@@ -356,16 +356,16 @@ workflows:
       - library-tests
       - livestream-tests
       - ksapi-tests
-      - master:
-          filters:
-            branches:
-              only: master
-          requires:
-            - swiftlint-and-cache
-            - kickstarter-tests
-            - library-tests
-            - livestream-tests
-            - ksapi-tests
+      # - master:
+      #     filters:
+      #       branches:
+      #         only: master
+      #     requires:
+      #       - swiftlint-and-cache
+      #       - kickstarter-tests
+      #       - library-tests
+      #       - livestream-tests
+      #       - ksapi-tests
       - alpha:
           filters:
             branches:

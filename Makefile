@@ -105,7 +105,7 @@ sync:
 	@git fetch oss
 	@git fetch private
 
-	@git push private private/$(BRANCH)
+	@git push private $(BRANCH)
 	@echo "private and oss remotes are now synced!"
 
 lint:
