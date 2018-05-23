@@ -47,6 +47,15 @@ public struct AppEnvironment {
     )
   }
 
+  public static func updateServerConfig(_ config: ServerConfigType) {
+
+    let service = Service(serverConfig: config)
+
+    replaceCurrentEnvironment(
+      apiService: service
+    )
+  }
+
   public static func updateConfig(_ config: Config) {
     replaceCurrentEnvironment(
       config: config,

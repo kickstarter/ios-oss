@@ -16,7 +16,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
   @IBOutlet private weak var disclaimerButton: UIButton!
   @IBOutlet private weak var loginButton: UIButton!
   @IBOutlet private weak var loginLabel: UILabel!
-  @IBOutlet private weak var newsletterButton: UIButton!
+  @IBOutlet private weak var newsletterLabel: UILabel!
   @IBOutlet private weak var newsletterSwitch: UISwitch!
   @IBOutlet private weak var rootStackView: UIStackView!
 
@@ -44,8 +44,10 @@ internal final class FacebookConfirmationViewController: UIViewController,
 
     self.newsletterSwitch.addTarget(self, action: #selector(newsletterSwitchChanged),
                                     for: .valueChanged)
-    self.newsletterButton.addTarget(self, action: #selector(newsletterLabelTapped), for: .touchUpInside)
     self.disclaimerButton.addTarget(self, action: #selector(helpButtonPressed), for: .touchUpInside)
+
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(newsletterLabelTapped))
+    self.newsletterLabel.addGestureRecognizer(tapGestureRecognizer)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -64,8 +66,8 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.loginLabel |> fbWrongAccountLabelStyle
     _ = self.navigationItem.title = Strings.signup_navbar_title()
-    _ = self.newsletterButton
-      |> newsletterButtonStyle
+    _ = self.newsletterLabel
+      |> newsletterLabelStyle
     _ = self.newsletterSwitch |> newsletterSwitchStyle
     _ = self.rootStackView |> loginRootStackViewStyle
   }

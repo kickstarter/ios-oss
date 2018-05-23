@@ -12,7 +12,7 @@ public struct User {
   public let name: String
   public let newsletters: NewsletterSubscriptions
   public let notifications: Notifications
-  public let optedOutOfRecommendations: Bool
+  public let optedOutOfRecommendations: Bool?
   public let social: Bool?
   public let stats: Stats
 
@@ -87,7 +87,7 @@ extension User: Argo.Decodable {
       <*> json <| "name"
       <*> User.NewsletterSubscriptions.decode(json)
       <*> User.Notifications.decode(json)
-      <*> (json <| "opted_out_of_recommendations" <|> .success(false))
+      <*> json <|? "opted_out_of_recommendations"
     return tmp3
       <*> json <|? "social"
       <*> User.Stats.decode(json)
@@ -104,6 +104,7 @@ extension User: EncodableType {
     result["ksr_live_token"] = self.liveAuthToken
     result["location"] = self.location?.encode()
     result["name"] = self.name
+    result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false
     result = result.withAllValuesFrom(self.newsletters.encode())
     result = result.withAllValuesFrom(self.notifications.encode())
     result = result.withAllValuesFrom(self.stats.encode())

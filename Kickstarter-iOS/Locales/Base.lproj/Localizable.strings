@@ -20,6 +20,7 @@
 "All_gone" = "All gone";
 "Amount_previous_amount" = "Amount: %{amount}, previous amount: %{previous_amount}";
 "Amount_reward" = "Amount: %{amount}, %{reward}";
+"Are_you_sure" = "Are you sure?";
 "Ask_me_anything" = "Ask me anything";
 "Available_to_watch_for_time_more_units" = "Available to watch for %{time} more %{units}";
 "Back" = "Back";
@@ -36,6 +37,7 @@
 "Become_a_backer_to_leave_a_comment" = "Become a backer to leave a comment.";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
+"Cancel" = "Cancel";
 "Cancel_your_pledge" = "Cancel your pledge";
 "Change_payment_method" = "Change payment method";
 "Chat" = "Chat";
@@ -67,6 +69,7 @@
 "Creator_tips" = "Creator tips";
 "Daily_digest" = "Daily digest";
 "Data_will_appear_here_once" = "Data will appear here once somebody backs your project.";
+"Delete_my_Kickstarter_Account" = "Delete my Kickstarter Account";
 "Delivered" = "Delivered";
 "Discover_more_projects" = "Discover more projects.";
 "Dismiss" = "Dismiss";
@@ -109,6 +112,7 @@
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Follow your Facebook friends and keep up with the projects they back and launch.";
 "Followed" = "Followed";
 "Following" = "Following";
+"Following_More_Info" = "Following More Info";
 "Follows_friend_name" = "Follows %{friend_name}.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> backed an <i>Art</i> project.";
 "Friend_backed_comics_project" = "<b>%{friend_name}</b> backed a <i>Comics</i> project.";
@@ -137,6 +141,7 @@
 "Home" = "Home";
 "How_backers_found_your_project" = "How backers found your project";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
+"If_you_turn_following_off" = "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone.";
 "Individual_Emails" = "Individual emails";
 "Info" = "Info";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
@@ -183,6 +188,7 @@
 "No_one_has_posted_an_update_yet" = "No one has posted an update yet.";
 "No_pledges_from_friends_yet" = "No pledges\nfrom friends yet.";
 "No_replay_is_available_for_this_live_stream" = "No replay is available for this live stream.";
+"No_saved_projects" = "No saved projects";
 "No_unread_messages" = "No unread messages";
 "Not_delivered" = "Not delivered";
 "Not_followed" = "Not followed";
@@ -240,6 +246,7 @@
 "Receive_project_updates_messages_and_more" = "Receive project updates, messages, and more by enabling notifications.";
 "Recent_live_stream" = "Recent live stream";
 "Recommendations" = "Recommendations";
+"Recommendations_More_Info" = "Recommendations More Info";
 "Recommended" = "Recommended";
 "Recommended_For_You" = "Recommended For You";
 "Recorded_Live" = "Recorded Live";
@@ -250,6 +257,7 @@
 "Replay_past_live_stream" = "Replay past live stream";
 "Replay_past_live_streams" = "Replay past live streams";
 "Reply_to_user_name" = "Reply to %{user_name}…";
+"Request_my_Personal_Data" = "Request my Personal Data";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.many" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.one" = "Reward Survey";
@@ -348,7 +356,9 @@
 "We_were_unable_to_connect_to_the_live_stream_chat" = "We were unable to connect to the live stream chat.";
 "We_were_unable_to_load_the_shipping_destinations" = "We were unable to load the shipping destinations.\nPlease try again later.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.";
+"When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
+"Yes_turn_off" = "Yes, turn off";
 "You_Launched" = "You Launched!";
 "You_backed_this_project" = "You backed this project.";
 "You_have_successfully_backed_project_html" = "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!";

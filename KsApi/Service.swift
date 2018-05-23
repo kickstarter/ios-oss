@@ -356,9 +356,7 @@ public struct Service: ServiceType {
       return request(.facebookLogin(facebookAccessToken: facebookAccessToken, code: code))
   }
 
-  public func markAsRead(messageThread: MessageThread)
-    -> SignalProducer<MessageThread, ErrorEnvelope> {
-
+  public func markAsRead(messageThread: MessageThread) -> SignalProducer<MessageThread, ErrorEnvelope> {
       return request(.markAsRead(messageThread))
   }
 
