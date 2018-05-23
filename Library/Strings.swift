@@ -2960,6 +2960,23 @@ from friends yet."
     )
   }
   /**
+   "No saved projects"
+
+   - **es**: "No saved projects"
+   - **ja**: "No saved projects"
+   - **de**: "No saved projects"
+   - **fr**: "No saved projects"
+   - **en**: "No saved projects"
+  */
+  public static func No_saved_projects() -> String {
+    return localizedString(
+      key: "No_saved_projects",
+      defaultValue: "No saved projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No unread messages"
 
    - **es**: "No hay mensajes no leídos"
@@ -5502,7 +5519,7 @@ catch your eye?"
 
    - **es**: "Utilizamos tu actividad internamente para hacerte recomendaciones. Desactiva las recomendaciones si no quieres recibirlas."
    - **ja**: "あなたのアクティビティをもとにおすすめの提供を行っています。オプトアウトするにはおすすめ機能をオフにしてください。"
-   - **de**: "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this."
+   - **de**: "Deine Aktivitäten werden intern genutzt, um dir Empfehlungen zu unterbreiten. Um dies zu deaktivieren, wähle "Empfehlungen" einfach ab."
    - **fr**: "À l'interne, nous nous servons de vos activités pour vous faire des recommandations. Si vous ne souhaitez pas participer, nous vous invitons à désactiver vos recommandations."
    - **en**: "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this."
   */
@@ -13193,7 +13210,7 @@ Please try again later."
 
    - **es**: "Al crear una cuenta, aceptas nuestros <u>términos de uso</u>, <u>política de privacidad</u> y<u>política de cookies</u>. Nuestras políticas de privacidad y de cookies explican cómo utilizamos tus datos para entregar, mejorar y promocionar nuestro servicio y nuestro sitio, y cómo puedes ejercer tus derechos para controlar dicho uso."
    - **ja**: "アカウントを作成することで、Kickstarter の<u>利用規約</u>、<u>プライバシーポリシー</u>、<u>Cookie ポリシー</u>に同意するものとみなされます。プライバシーポリシーと Cookie ポリシーでは、Kickstarter のサービスとサイトを配信、改善、促進するために、同社がお客様のデータをどのように使用しているか、そしてそのようなデータ使用を管理するためのお客様の権利について説明しています。"
-   - **de**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
+   - **de**: "Bei Erstellung eines Kontos stimmst du unseren <u>Nutzungsbedingungen</u>, <u>Datenschutzrichtlinien</u> und <u>Cookie-Richtlinien</u> zu. Unsere Datenschutz- und Cookie-Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unsere Services und unserer Webseite nutzen."
    - **fr**: "En créant un compte, vous acceptez nos <u>conditions d'utilisation</u>, notre <u>politique de confidentialité</u> et notre <u>politique en matière de cookies</u>. Ces deux dernières politiques décrivent comment nous utilisons vos données pour proposer, améliorer et faire la promotion de nos services et de notre site, ainsi que les droits dont vous disposez pour contrôler cette utilisation et comment les exercer."
    - **en**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
   */

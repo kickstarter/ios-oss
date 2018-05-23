@@ -183,6 +183,7 @@
 "No_one_has_posted_an_update_yet" = "Es wurden noch keine Updates gepostet.";
 "No_pledges_from_friends_yet" = "Es gibt noch keine Beiträge von Freunden.";
 "No_replay_is_available_for_this_live_stream" = "Keine Wiedergabe verügbar für diesen Live-Stream.";
+"No_saved_projects" = "No saved projects";
 "No_unread_messages" = "Keine ungelesenen Nachrichten";
 "Not_delivered" = "Nicht verschickt";
 "Not_followed" = "Nicht abonniert";
@@ -344,7 +345,7 @@
 "View_your_reward" = "Belohnung ansehen";
 "Watch_live" = "Live ansehen";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
-"We_use_your_activity_internally_to_make_recommendations_for_you" = "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this.";
+"We_use_your_activity_internally_to_make_recommendations_for_you" = "Deine Aktivitäten werden intern genutzt, um dir Empfehlungen zu unterbreiten. Um dies zu deaktivieren, wähle \"Empfehlungen\" einfach ab.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden.";
 "We_were_unable_to_load_the_shipping_destinations" = "Das Laden der Versandadressen war leider nicht möglich.\nBitte versuche es später noch einmal.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
@@ -938,7 +939,7 @@
 "login_tout.default_intent.traditional_signup_button" = "Registrieren";
 "login_tout.default_intent.traditional_title" = "Benutze deine E-Mail-Adresse:";
 "login_tout.disclaimer.agree_to_terms" = "Bei Erstellung eines Kontos stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu. Unsere Datenschutz- und Cookie-Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unsere Services und unserer Webseite nutzen.";
-"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms_html" = "Bei Erstellung eines Kontos stimmst du unseren <u>Nutzungsbedingungen</u>, <u>Datenschutzrichtlinien</u> und <u>Cookie-Richtlinien</u> zu. Unsere Datenschutz- und Cookie-Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unsere Services und unserer Webseite nutzen.";
 "login_tout.disclaimer.read_more" = "Weiterlesen";
 "login_tout.errors.button.ok" = "OK";
 "login_tout.errors.facebook.authorization_exception.button" = "Versuche es noch einmal!";
