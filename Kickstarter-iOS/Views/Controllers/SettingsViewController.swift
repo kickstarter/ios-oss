@@ -9,7 +9,6 @@ internal final class SettingsViewController: UIViewController {
   fileprivate let viewModel: SettingsViewModelType = SettingsViewModel()
   fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
 
-  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
   @IBOutlet fileprivate weak var artsAndCultureNewsLabel: UILabel!
   @IBOutlet fileprivate weak var artsAndCultureNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var backingsButton: UIButton!
@@ -30,8 +29,10 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
+  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
   @IBOutlet fileprivate weak var exportDataButton: UIButton!
   @IBOutlet fileprivate weak var exportDataLabel: UILabel!
+  @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
@@ -126,6 +127,10 @@ internal final class SettingsViewController: UIViewController {
     self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
 
     self.exportDataButton.addTarget(self, action: #selector(exportDataTapped), for: .touchUpInside)
+
+    self.environmentSwitcher.addTarget(self,
+                                       action: #selector(environmentSwitcherTapped),
+                                       for: .touchUpInside)
 
     self.findFriendsButton.addTarget(self,
                                      action: #selector(findFriendsTapped),
@@ -234,6 +239,13 @@ internal final class SettingsViewController: UIViewController {
       ||> UIButton.lens.image(for: .selected)
         .~ image(named: "email-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
+
+    _ = self.environmentSwitcher
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleLabel.font .~ .ksr_body()
+      |> UIButton.lens.contentHorizontalAlignment .~ .left
+      |> UIButton.lens.title(for: .normal)
+        .~ "Change Environment: \(AppEnvironment.current.apiService.serverConfig.environmentName)"
 
     _ = self.findFriendsButton
       |> settingsSectionButtonStyle
@@ -486,6 +498,7 @@ internal final class SettingsViewController: UIViewController {
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
     self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
+    self.environmentSwitcher.rac.title = self.viewModel.outputs.environmentSwitcherButtonTitle
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
     self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
@@ -662,8 +675,8 @@ internal final class SettingsViewController: UIViewController {
     self.present(exportDataSheet, animated: true, completion: nil)
   }
 
-  @objc fileprivate func faqTapped() {
-    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
+  @objc fileprivate func environmentSwitcherTapped() {
+    self.showEnvironmentActionSheet()
   }
 
   @objc fileprivate func findFriendsTapped() {
@@ -809,6 +822,37 @@ internal final class SettingsViewController: UIViewController {
       Storyboard.DebugPushNotifications.instantiate(DebugPushNotificationsViewController.self),
       animated: true
     )
+  }
+
+  private func showEnvironmentActionSheet() {
+    let alert = UIAlertController(title: "Change Environment",
+                                  message: nil,
+                                  preferredStyle: .actionSheet)
+
+    alert.addAction(
+      UIAlertAction(title: "Local", style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.local)
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: "Staging", style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: "Production", style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.production)
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction.init(title: "Cancel", style: .cancel)
+    )
+
+    self.present(alert, animated: true, completion: nil)
   }
 }
 

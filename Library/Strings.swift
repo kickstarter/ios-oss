@@ -3047,10 +3047,17 @@ from friends yet."
   /**
    "No saved projects"
 
+<<<<<<< HEAD
    - **es**: "No hay proyectos guardados"
    - **ja**: "保存済みのプロジェクトはありません"
    - **de**: "Keine gespeicherten Projekte"
    - **fr**: "Pas de projets enregistrés"
+=======
+   - **es**: "No saved projects"
+   - **ja**: "No saved projects"
+   - **de**: "No saved projects"
+   - **fr**: "No saved projects"
+>>>>>>> master
    - **en**: "No saved projects"
   */
   public static func No_saved_projects() -> String {
