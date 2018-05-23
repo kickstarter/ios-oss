@@ -20,7 +20,7 @@
 "All_gone" = "Alle weg";
 "Amount_previous_amount" = "Jetziger Betrag: %{amount}, vorheriger Betrag: %{previous_amount}";
 "Amount_reward" = "Betrag: %{amount}, %{reward}";
-"Are_you_sure" = "Are you sure?";
+"Are_you_sure" = "Bist du sicher?";
 "Ask_me_anything" = "Frage stellen";
 "Available_to_watch_for_time_more_units" = "Kann noch %{time} %{units} angesehen werden";
 "Back" = "Zurück";
@@ -37,7 +37,7 @@
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
-"Cancel" = "Cancel";
+"Cancel" = "Abbrechen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Chat" = "Chat";

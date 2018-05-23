@@ -386,7 +386,7 @@ public enum Strings {
 
    - **es**: "Are you sure?"
    - **ja**: "Are you sure?"
-   - **de**: "Are you sure?"
+   - **de**: "Bist du sicher?"
    - **fr**: "Are you sure?"
    - **en**: "Are you sure?"
   */
@@ -613,7 +613,7 @@ backers"
 
    - **es**: "Cancel"
    - **ja**: "Cancel"
-   - **de**: "Cancel"
+   - **de**: "Abbrechen"
    - **fr**: "Cancel"
    - **en**: "Cancel"
   */
@@ -3047,23 +3047,10 @@ from friends yet."
   /**
    "No saved projects"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> oss/master
    - **es**: "No hay proyectos guardados"
    - **ja**: "保存済みのプロジェクトはありません"
    - **de**: "Keine gespeicherten Projekte"
    - **fr**: "Pas de projets enregistrés"
-<<<<<<< HEAD
-=======
-   - **es**: "No saved projects"
-   - **ja**: "No saved projects"
-   - **de**: "No saved projects"
-   - **fr**: "No saved projects"
->>>>>>> master
-=======
->>>>>>> oss/master
    - **en**: "No saved projects"
   */
   public static func No_saved_projects() -> String {
