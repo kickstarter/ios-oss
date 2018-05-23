@@ -205,17 +205,13 @@ public extension UIAlertController {
     turnOffHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
 
     let alertController = UIAlertController(
-      title: "Are you sure?",
-      message: """
-                If you turn following off, you won't be able to follow anyone and no one will be able to
-                follow you. Your profile will be disconnected from all of your followers.
-                This can’t be undone.
-               """,
+      title: Strings.Are_you_sure(),
+      message: Strings.If_you_turn_following_off(),
       preferredStyle: .alert
     )
     alertController.addAction(
       UIAlertAction(
-        title: "Yes, turn off",
+        title: Strings.Yes_turn_off(),
         style: .destructive,
         handler: turnOffHandler
       )
@@ -234,10 +230,7 @@ public extension UIAlertController {
   public static func followingPrivacyInfo() -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.Following(),
-      message: """
-                When following is on, you can follow the activity of others and others
-                can follow your activity. Turn following off to permanently delete this data.
-               """,
+      message: Strings.When_following_is_on_you_can_follow_the_acticity_of_others(),
       preferredStyle: .alert)
 
     alertController.addAction(

@@ -245,7 +245,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.followingPrivacyLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in "Following" }
+      |> UILabel.lens.text %~ { _ in Strings.Following() }
 
     _ = self.followingPrivacyInfoButton
       |> UIButton.lens.image(for: .normal)
