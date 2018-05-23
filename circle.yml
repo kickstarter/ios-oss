@@ -192,26 +192,11 @@ jobs:
             - source-v1-{{ .Branch }}-{{ .Revision }}
             - source-v1-{{ .Branch }}-
             - source-v1-
-
       - checkout
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "Opentok.lock" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
       - save_cache:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
-
-      - save_cache:
-          key: opentok-cache-{{ checksum "Opentok.lock" }}
-          paths:
-            - "Frameworks/OpenTok"
       - run:
           name: Make Sync
           command: make sync
