@@ -20,6 +20,7 @@
 "All_gone" = "終了";
 "Amount_previous_amount" = "金額: %{amount}, 以前の金額: %{previous_amount}";
 "Amount_reward" = "金額：%{amount}、%{reward}";
+"Are_you_sure" = "Are you sure?";
 "Ask_me_anything" = "お問い合わせ";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
 "Back" = "バック";
@@ -36,6 +37,7 @@
 "Become_a_backer_to_leave_a_comment" = "コメントを残すためにバッカーになる。";
 "Bookmarks" = "ブックマーク";
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
+"Cancel" = "Cancel";
 "Cancel_your_pledge" = "プレッジを取り消す";
 "Change_payment_method" = "支払方法の変更";
 "Chat" = "チャット";
@@ -67,6 +69,7 @@
 "Creator_tips" = "アドバイス";
 "Daily_digest" = "デイリーダイジェスト";
 "Data_will_appear_here_once" = "誰かがプロジェクトをバック（支援）すると、ここにデータが表示されます。";
+"Delete_my_Kickstarter_Account" = "Kickstarter アカウントを削除";
 "Delivered" = "発送済";
 "Discover_more_projects" = "プロジェクトをさがす";
 "Dismiss" = "破棄";
@@ -109,6 +112,7 @@
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Facebookの友達をフォローしよう！";
 "Followed" = "フォロー中";
 "Following" = "フォロー中の友達";
+"Following_More_Info" = "Following More Info";
 "Follows_friend_name" = "%{friend_name} をフォロー";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> は<i>アート</i> プロジェクトをバックしています。";
 "Friend_backed_comics_project" = "<b>%{friend_name}</b> は<i>コミック</i> プロジェクトをバックしています。";
@@ -137,6 +141,7 @@
 "Home" = "ホーム";
 "How_backers_found_your_project" = "バッカ―があなたのプロジェクトを見つけた経緯";
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
+"If_you_turn_following_off" = "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone.";
 "Individual_Emails" = "個人メール";
 "Info" = "インフォメーション";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "データの収集には最大で24時間かかる場合があります。ダウンロードの準備が整いましたら、このアカウントに登録されているメールアドレス宛てにデータのダウンロード手順が記載されたメールをお送りします。メールが届かなかった場合には、お手数ですがこちらに戻って再試行してください。";
@@ -183,7 +188,7 @@
 "No_one_has_posted_an_update_yet" = "まだアップデートの投稿はありません。";
 "No_pledges_from_friends_yet" = "友達からのプレッジはありません。";
 "No_replay_is_available_for_this_live_stream" = "このライブ配信を再生することはできません";
-"No_saved_projects" = "No saved projects";
+"No_saved_projects" = "保存済みのプロジェクトはありません";
 "No_unread_messages" = "未読メッセージはありません";
 "Not_delivered" = "未配送";
 "Not_followed" = "フォローしてない";
@@ -241,6 +246,7 @@
 "Receive_project_updates_messages_and_more" = "通知を有効にして、プロジェクトの更新情報、メッセージ等を受け取ります。";
 "Recent_live_stream" = "最近のライブ配信";
 "Recommendations" = "おすすめ";
+"Recommendations_More_Info" = "Recommendations More Info";
 "Recommended" = "おすすめ";
 "Recommended_For_You" = "あなたへのおすすめ";
 "Recorded_Live" = "配信済ライブ";
@@ -251,6 +257,7 @@
 "Replay_past_live_stream" = "過去のライブ配信をリプレイ";
 "Replay_past_live_streams" = "過去のライブ配信をリプレイ";
 "Reply_to_user_name" = "%{user_nameに返信";
+"Request_my_Personal_Data" = "自分の個人データをリクエストする";
 "Reward_Surveys.few" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.many" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.one" = "リワードサーベイ";
@@ -349,7 +356,9 @@
 "We_were_unable_to_connect_to_the_live_stream_chat" = "ライブ配信への接続に失敗。";
 "We_were_unable_to_load_the_shipping_destinations" = "配送先の読込に失敗。\n再度お試しください。";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "終了48時間前に通知が届きます。保存アイテムをみるにはプロフィールをご覧ください。";
+"When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "プロジェクトを保存し、終了の48時間前にリマインドする。";
+"Yes_turn_off" = "Yes, turn off";
 "You_Launched" = "発表されました！";
 "You_backed_this_project" = "バック済";
 "You_have_successfully_backed_project_html" = "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。";

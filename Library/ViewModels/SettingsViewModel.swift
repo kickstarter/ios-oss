@@ -32,6 +32,7 @@ public protocol SettingsViewModelInputs {
   func postLikesTapped(selected: Bool)
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
+  func recommendationsTapped(on: Bool)
   func updatesTapped(selected: Bool)
   func viewDidLoad()
   func weeklyNewsletterTapped(on: Bool)
@@ -67,6 +68,7 @@ public protocol SettingsViewModelOutputs {
   var postLikesSelected: Signal<Bool, NoError> { get }
   var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
+  var recommendationsOn: Signal<Bool, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
@@ -160,6 +162,9 @@ SettingsViewModelOutputs {
       },
       self.updatesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.updates), $0)
+      },
+      self.recommendationsTappedProperty.signal.map {
+        (UserAttribute.privacy(Privacy.recommendations), !$0)
       }
     )
 
@@ -260,6 +265,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.postLikes }.skipNil().skipRepeats()
     self.updatesSelected = self.updateCurrentUser
       .map { $0.notifications.updates }.skipNil().skipRepeats()
+    self.recommendationsOn = self.updateCurrentUser
+      .map { $0.optedOutOfRecommendations }.skipNil().map { $0 ? false : true }.skipRepeats()
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
@@ -314,6 +321,10 @@ SettingsViewModelOutputs {
                .comments, .follower, .friendActivity, .postLikes, .creatorTips, .updates:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)
+          }
+        case let .privacy(privacy):
+          switch privacy {
+          case .recommendations: AppEnvironment.current.koala.trackRecommendationsOptIn()
           }
         }
     }
@@ -443,6 +454,10 @@ SettingsViewModelOutputs {
   public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
   }
+  fileprivate let recommendationsTappedProperty = MutableProperty(false)
+  public func recommendationsTapped(on: Bool) {
+    self.recommendationsTappedProperty.value = on
+  }
   fileprivate let rateUsTappedProperty = MutableProperty(())
   public func rateUsTapped() {
     self.rateUsTappedProperty.value = ()
@@ -489,6 +504,7 @@ SettingsViewModelOutputs {
   public let postLikesSelected: Signal<Bool, NoError>
   public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
+  public let recommendationsOn: Signal<Bool, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
   public let showOptInPrompt: Signal<String, NoError>
   public let unableToSaveError: Signal<String, NoError>
@@ -504,6 +520,7 @@ SettingsViewModelOutputs {
 private enum UserAttribute {
   case newsletter(Newsletter)
   case notification(Notification)
+  case privacy(Privacy)
 
   fileprivate var lens: Lens<User, Bool?> {
     switch self {
@@ -531,6 +548,10 @@ private enum UserAttribute {
       case .mobileUpdates:        return User.lens.notifications.mobileUpdates
       case .postLikes:            return User.lens.notifications.postLikes
       case .updates:              return User.lens.notifications.updates
+      }
+    case let .privacy(privacy):
+      switch privacy {
+      case .recommendations: return User.lens.optedOutOfRecommendations
       }
     }
   }
@@ -560,6 +581,16 @@ private enum Notification {
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
     case .postLikes, .mobilePostLikes:              return "New likes"
     case .updates, .mobileUpdates:                  return "Project updates"
+    }
+  }
+}
+
+private enum Privacy {
+  case recommendations
+
+  fileprivate var trackingString: String {
+    switch self {
+    case .recommendations: return Strings.Recommendations()
     }
   }
 }
