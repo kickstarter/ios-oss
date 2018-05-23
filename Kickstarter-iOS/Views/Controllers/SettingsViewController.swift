@@ -376,10 +376,7 @@ internal final class SettingsViewController: UIViewController {
     _ = self.recommendationsInfoButton
       |> UIButton.lens.image(for: .normal)
         .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
-<<<<<<< HEAD
-=======
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Recommendations_More_Info() }
->>>>>>> oss/master
 
     _ = self.recommendationsLabel
       |> settingsSectionLabelStyle
@@ -502,10 +499,7 @@ internal final class SettingsViewController: UIViewController {
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
     self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
-<<<<<<< HEAD
-=======
     self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
->>>>>>> oss/master
     self.environmentSwitcher.rac.title = self.viewModel.outputs.environmentSwitcherButtonTitle
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
     self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
@@ -754,16 +748,7 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func recommendationsInfoTapped() {
     let alertController = UIAlertController(
-<<<<<<< HEAD
-      title: "Info",
-      message: "GDPR Blah blah blah...",
-      preferredStyle: .alert)
 
-    alertController.addAction(
-      UIAlertAction(
-        title: "OK",
-        style: .default,
-=======
       title: Strings.Recommendations(),
       message: Strings.We_use_your_activity_internally_to_make_recommendations_for_you(),
       preferredStyle: .alert)
@@ -771,7 +756,6 @@ internal final class SettingsViewController: UIViewController {
       UIAlertAction(
         title: Strings.Got_it(),
         style: .cancel,
->>>>>>> oss/master
         handler: nil
       )
     )

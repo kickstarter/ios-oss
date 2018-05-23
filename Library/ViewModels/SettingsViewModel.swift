@@ -176,14 +176,13 @@ SettingsViewModelOutputs {
       self.updatesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.updates), $0)
       },
-
       self.followingSwitchTappedProperty.signal
         .filter { (on, didShowPrompt) in
           didShowPrompt == true || (on == true && didShowPrompt == false)
         }
         .map {
         (UserAttribute.privacy(Privacy.following), $0.0)
-
+      },
       self.recommendationsTappedProperty.signal.map {
         (UserAttribute.privacy(Privacy.recommendations), !$0)
       }
@@ -363,6 +362,7 @@ SettingsViewModelOutputs {
         case let .privacy(privacy):
           switch privacy {
           case .recommendations: AppEnvironment.current.koala.trackRecommendationsOptIn()
+          default: break
           }
         }
     }
