@@ -184,8 +184,7 @@ jobs:
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
-   # Hockey Alpha
-  alpha:
+  master:
     <<: *base_job
     steps:
       - restore_cache:
@@ -200,6 +199,37 @@ jobs:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
 
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+
+      - save_cache:
+          key: opentok-cache-{{ checksum "Opentok.lock" }}
+          paths:
+            - "Frameworks/OpenTok"
+      - run:
+          name: Make Sync
+          command: make sync
+      - run:
+          name: Deploy Alpha
+          command: RELEASE=alpha make deploy
+
+   # Hockey Alpha
+  alpha:
+    <<: *base_job
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+
+      - checkout
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -341,6 +371,16 @@ workflows:
       - library-tests
       - livestream-tests
       - ksapi-tests
+      - master:
+          filters:
+            branches:
+              only: master
+          requires:
+            - swiftlint-and-cache
+            - kickstarter-tests
+            - library-tests
+            - livestream-tests
+            - ksapi-tests
       - alpha:
           filters:
             branches:
@@ -377,5 +417,6 @@ experimental:
     branches:
       only:
         - master
+        - alpha-dist
         - beta-dist
         - itunes-dist

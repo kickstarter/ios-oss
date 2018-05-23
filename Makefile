@@ -72,9 +72,9 @@ deploy:
 		echo "There are commits in oss/$(BRANCH) that are not in private/$(BRANCH). Please sync the remotes before deploying."; \
 		exit 1; \
 	fi
-	@if test "$(RELEASE)" != "beta" && test "$(RELEASE)" != "itunes"; \
+	@if test "$(RELEASE)" != "alpha" && test "$(RELEASE)" != "beta" && test "$(RELEASE)" != "itunes"; \
 	then \
-		echo "RELEASE must be 'beta' or 'itunes'."; \
+		echo "RELEASE must be 'alpha', beta' or 'itunes'."; \
 		exit 1; \
 	fi
 	@if test "$(RELEASE)" = "itunes" && test "$(BRANCH)" != "master"; \
@@ -97,6 +97,15 @@ alpha:
 	@git branch -d alpha-dist
 
 	@echo "Deploy has been kicked off to CircleCI!"
+
+sync:
+	@echo "Syncing oss and prive remotes..."
+
+	@git fetch oss
+	@git fetch private
+
+	@git push -f private private/$(BRANCH)
+	@echo "private and oss remotes are now synced!"
 
 lint:
 	swiftlint lint --reporter json --strict
