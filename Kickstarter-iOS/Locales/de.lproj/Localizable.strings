@@ -20,6 +20,7 @@
 "All_gone" = "Alle weg";
 "Amount_previous_amount" = "Jetziger Betrag: %{amount}, vorheriger Betrag: %{previous_amount}";
 "Amount_reward" = "Betrag: %{amount}, %{reward}";
+"Are_you_sure" = "Are you sure?";
 "Ask_me_anything" = "Frage stellen";
 "Available_to_watch_for_time_more_units" = "Kann noch %{time} %{units} angesehen werden";
 "Back" = "Zurück";
@@ -36,6 +37,7 @@
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
+"Cancel" = "Cancel";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Chat" = "Chat";
@@ -67,6 +69,7 @@
 "Creator_tips" = "Tpps für Projektgründer";
 "Daily_digest" = "Tägliche Zusammenfassung";
 "Data_will_appear_here_once" = "Info wird hier angezeigt, sobald jemand dein Projekt unterstützt.";
+"Delete_my_Kickstarter_Account" = "Mein Kickstarter-Konto löschen";
 "Delivered" = "Verschickt";
 "Discover_more_projects" = "Erkunde mehr Projekte.";
 "Dismiss" = "Verwerfen";
@@ -109,6 +112,7 @@
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Folge deinen Facebook-Freunden - wir halten dich auf dem Laufenden, wenn sie ein Projekt unterstützen oder veröffentlichen.";
 "Followed" = "Abonniert";
 "Following" = "Abonniert";
+"Following_More_Info" = "Following More Info";
 "Follows_friend_name" = "%{friend_name} folgen.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> hat ein <i>Kunst-Projekt</i> unterstützt.";
 "Friend_backed_comics_project" = "<b>%{friend_name}</b> hat ein <i>Comics-Projekt</i> unterstützt.";
@@ -137,6 +141,7 @@
 "Home" = "Home";
 "How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
+"If_you_turn_following_off" = "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone.";
 "Individual_Emails" = "Individuelle E-Mails";
 "Info" = "Info";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Die Zusammenstellung deiner Daten kann bis zu 24 Stunden dauern. Sobald sie zum Download bereitstehen, werden wir dir eine Anleitung dazu per E-Mail schicken. Solltest du nichts von uns hören, versuche es von hier aus noch einmal.";
@@ -183,7 +188,7 @@
 "No_one_has_posted_an_update_yet" = "Es wurden noch keine Updates gepostet.";
 "No_pledges_from_friends_yet" = "Es gibt noch keine Beiträge von Freunden.";
 "No_replay_is_available_for_this_live_stream" = "Keine Wiedergabe verügbar für diesen Live-Stream.";
-"No_saved_projects" = "No saved projects";
+"No_saved_projects" = "Keine gespeicherten Projekte";
 "No_unread_messages" = "Keine ungelesenen Nachrichten";
 "Not_delivered" = "Nicht verschickt";
 "Not_followed" = "Nicht abonniert";
@@ -241,6 +246,7 @@
 "Receive_project_updates_messages_and_more" = "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen, neue Nachrichten und ähnliches Bescheid.";
 "Recent_live_stream" = "Kürzlich gesendeter Live-Stream";
 "Recommendations" = "Empfehlungen";
+"Recommendations_More_Info" = "Recommendations More Info";
 "Recommended" = "Empfehlungen";
 "Recommended_For_You" = "Empfehlungen für dich";
 "Recorded_Live" = "Live aufgenommen";
@@ -251,6 +257,7 @@
 "Replay_past_live_stream" = "Wiedergabe des vorigen Live-Streams";
 "Replay_past_live_streams" = "Wiedergabe vergangener Live-Streams";
 "Reply_to_user_name" = "%{user_name} antworten …";
+"Request_my_Personal_Data" = "Meine persönlichen Daten anfordern";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";
@@ -349,7 +356,9 @@
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden.";
 "We_were_unable_to_load_the_shipping_destinations" = "Das Laden der Versandadressen war leider nicht möglich.\nBitte versuche es später noch einmal.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
+"When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
+"Yes_turn_off" = "Yes, turn off";
 "You_Launched" = "Dein Projekt ist live!";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
 "You_have_successfully_backed_project_html" = "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!";

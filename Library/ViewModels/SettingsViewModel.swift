@@ -504,6 +504,7 @@ SettingsViewModelOutputs {
   public let postLikesSelected: Signal<Bool, NoError>
   public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
+  public let recommendationsOn: Signal<Bool, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
   public let showOptInPrompt: Signal<String, NoError>
   public let unableToSaveError: Signal<String, NoError>
@@ -511,8 +512,6 @@ SettingsViewModelOutputs {
   public let updateCurrentUser: Signal<User, NoError>
   public let weeklyNewsletterOn: Signal<Bool, NoError>
   public let versionText: Signal<String, NoError>
-
-  public let recommendationsOn: Signal<Bool, NoError>
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }
@@ -552,7 +551,7 @@ private enum UserAttribute {
       }
     case let .privacy(privacy):
       switch privacy {
-      case .recommendations:   return User.lens.optedOutOfRecommendations
+      case .recommendations: return User.lens.optedOutOfRecommendations
       }
     }
   }

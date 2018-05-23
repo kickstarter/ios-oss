@@ -343,6 +343,7 @@ internal final class SettingsViewController: UIViewController {
     _ = self.recommendationsInfoButton
       |> UIButton.lens.image(for: .normal)
         .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Recommendations_More_Info() }
 
     _ = self.recommendationsLabel
       |> settingsSectionLabelStyle
@@ -455,6 +456,7 @@ internal final class SettingsViewController: UIViewController {
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
     self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
+    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
     self.environmentSwitcher.rac.title = self.viewModel.outputs.environmentSwitcherButtonTitle
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
@@ -472,12 +474,10 @@ internal final class SettingsViewController: UIViewController {
     self.postLikesButton.rac.selected = self.viewModel.outputs.postLikesSelected
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
     self.promoNewsletterSwitch.rac.on = self.viewModel.outputs.promoNewsletterOn
+    self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
     self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
-    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
-
-    self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
   }
   // swiftlint:enable function_body_length
 

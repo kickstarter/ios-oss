@@ -104,7 +104,7 @@ extension User: EncodableType {
     result["ksr_live_token"] = self.liveAuthToken
     result["location"] = self.location?.encode()
     result["name"] = self.name
-    result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? true
+    result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false
     result = result.withAllValuesFrom(self.newsletters.encode())
     result = result.withAllValuesFrom(self.notifications.encode())
     result = result.withAllValuesFrom(self.stats.encode())
