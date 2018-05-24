@@ -1244,6 +1244,11 @@ public final class Koala {
     self.track(event: "Opened App Store Listing")
   }
 
+  public func trackRecommendationsOptIn() {
+    // deprecated
+    self.track(event: "Toggled recommendations", properties: deprecatedProps)
+  }
+
   public func trackCancelLogoutModal() {
     self.track(event: "Canceled Logout", properties: ["context": "modal"])
   }

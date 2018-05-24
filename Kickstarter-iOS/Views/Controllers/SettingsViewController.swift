@@ -9,7 +9,6 @@ internal final class SettingsViewController: UIViewController {
   fileprivate let viewModel: SettingsViewModelType = SettingsViewModel()
   fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
 
-  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
   @IBOutlet fileprivate weak var artsAndCultureNewsLabel: UILabel!
   @IBOutlet fileprivate weak var artsAndCultureNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var backingsButton: UIButton!
@@ -26,10 +25,14 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var creatorStackView: UIStackView!
   @IBOutlet fileprivate weak var creatorTips: UILabel!
   @IBOutlet fileprivate weak var creatorTipsButton: UIButton!
+  @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
+  @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
-  @IBOutlet fileprivate weak var faqButton: UIButton!
-  @IBOutlet fileprivate weak var faqLabel: UILabel!
+  @IBOutlet fileprivate weak var exportDataButton: UIButton!
+  @IBOutlet fileprivate weak var exportDataLabel: UILabel!
+  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
+  @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
@@ -38,6 +41,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var gamesNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var happeningNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var happeningNowLabel: UILabel!
+  @IBOutlet fileprivate weak var helpCenterButton: UIButton!
+  @IBOutlet fileprivate weak var helpCenterLabel: UILabel!
   @IBOutlet fileprivate weak var helpTitleLabel: UILabel!
   @IBOutlet fileprivate weak var howKsrWorksButton: UIButton!
   @IBOutlet fileprivate weak var howKsrWorksLabel: UILabel!
@@ -63,6 +68,7 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var newPledgesLabel: UILabel!
   @IBOutlet fileprivate weak var newslettersTitleLabel: UILabel!
   @IBOutlet fileprivate weak var postLikesButton: UIButton!
+  @IBOutlet fileprivate weak var privacyTitleLabel: UILabel!
   @IBOutlet fileprivate weak var privacyPolicyButton: UIButton!
   @IBOutlet fileprivate weak var privacyPolicyLabel: UILabel!
   @IBOutlet fileprivate weak var projectNotificationsCountView: CountBadgeView!
@@ -72,6 +78,9 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var promoNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var rateUsButton: UIButton!
   @IBOutlet fileprivate weak var rateUsLabel: UILabel!
+  @IBOutlet fileprivate weak var recommendationsInfoButton: UIButton!
+  @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
+  @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
   @IBOutlet fileprivate weak var socialNotificationsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var termsOfUseButton: UIButton!
   @IBOutlet fileprivate weak var termsOfUseLabel: UILabel!
@@ -111,13 +120,23 @@ internal final class SettingsViewController: UIViewController {
                                       action: #selector(cookiePolicyTapped),
                                       for: .touchUpInside)
 
+    self.deleteAccountButton.addTarget(self,
+                                    action: #selector(deleteAccountTapped),
+                                    for: .touchUpInside)
+
     self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
 
-    self.faqButton.addTarget(self, action: #selector(faqTapped), for: .touchUpInside)
+    self.exportDataButton.addTarget(self, action: #selector(exportDataTapped), for: .touchUpInside)
+
+    self.environmentSwitcher.addTarget(self,
+                                       action: #selector(environmentSwitcherTapped),
+                                       for: .touchUpInside)
 
     self.findFriendsButton.addTarget(self,
                                      action: #selector(findFriendsTapped),
                                      for: .touchUpInside)
+
+    self.helpCenterButton.addTarget(self, action: #selector(helpCenterTapped), for: .touchUpInside)
 
     self.howKsrWorksButton.addTarget(self,
                                      action: #selector(howKickstarterWorksTapped),
@@ -138,6 +157,10 @@ internal final class SettingsViewController: UIViewController {
                                        for: .touchUpInside)
 
     self.rateUsButton.addTarget(self, action: #selector(rateUsTapped), for: .touchUpInside)
+
+    self.recommendationsInfoButton.addTarget(self,
+                                             action: #selector(recommendationsInfoTapped),
+                                             for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -192,6 +215,14 @@ internal final class SettingsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Creator_tips() }
 
+    _ = self.deleteAccountLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Delete_my_Kickstarter_Account() }
+
+    _ = self.exportDataLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Request_my_Personal_Data() }
+
     _ = self.emailFrequencyLabel
       |> UILabel.lens.font .~ .ksr_body()
       |> UILabel.lens.numberOfLines .~ 2
@@ -205,13 +236,12 @@ internal final class SettingsViewController: UIViewController {
         .~ image(named: "email-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
-    _ = self.faqButton
-      |> settingsSectionButtonStyle
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_faq() }
-
-    _ = self.faqLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_faq() }
+    _ = self.environmentSwitcher
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleLabel.font .~ .ksr_body()
+      |> UIButton.lens.contentHorizontalAlignment .~ .left
+      |> UIButton.lens.title(for: .normal)
+        .~ "Change Environment: \(AppEnvironment.current.apiService.serverConfig.environmentName)"
 
     _ = self.findFriendsButton
       |> settingsSectionButtonStyle
@@ -228,6 +258,14 @@ internal final class SettingsViewController: UIViewController {
     _ = self.happeningNowLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_happening() }
+
+    _ = self.helpCenterButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Help_center() }
+
+    _ = self.helpCenterLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Help_center() }
 
     _ = self.helpTitleLabel
       |> settingsTitleLabelStyle
@@ -289,6 +327,10 @@ internal final class SettingsViewController: UIViewController {
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_title() }
 
+    _ = self.privacyTitleLabel
+      |> settingsTitleLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Privacy() }
+
     _ = self.privacyPolicyButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_privacy() }
@@ -325,6 +367,15 @@ internal final class SettingsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Rate_us_in_the_App_Store() }
 
+    _ = self.recommendationsInfoButton
+      |> UIButton.lens.image(for: .normal)
+        .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Recommendations_More_Info() }
+
+    _ = self.recommendationsLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Recommendations() }
+
     _ = self.separatorViews
       ||> separatorStyle
 
@@ -353,6 +404,10 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.outputs.goToAppStoreRating
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
+
+    self.viewModel.outputs.goToDeleteAccountBrowser
+      .observeForControllerAction()
+      .observeValues { [weak self] url in self?.goToDeleteAccount(url: url) }
 
     self.viewModel.outputs.goToManageProjectNotifications
       .observeForControllerAction()
@@ -431,7 +486,9 @@ internal final class SettingsViewController: UIViewController {
     self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
-      self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
+    self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
+    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
+    self.environmentSwitcher.rac.title = self.viewModel.outputs.environmentSwitcherButtonTitle
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
@@ -448,16 +505,22 @@ internal final class SettingsViewController: UIViewController {
     self.postLikesButton.rac.selected = self.viewModel.outputs.postLikesSelected
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
     self.promoNewsletterSwitch.rac.on = self.viewModel.outputs.promoNewsletterOn
+    self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
     self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
-    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
   }
   // swiftlint:enable function_body_length
 
   fileprivate func goToAppStore(link: String) {
     guard let url = URL(string: link) else { return }
     UIApplication.shared.openURL(url)
+  }
+
+  fileprivate func goToDeleteAccount(url: URL) {
+    let controller = SFSafariViewController(url: url)
+    controller.modalPresentationStyle = .overFullScreen
+    self.present(controller, animated: true, completion: nil)
   }
 
   fileprivate func goToBetaFeedback() {
@@ -581,12 +644,36 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.emailFrequencyTapped()
   }
 
-  @objc fileprivate func faqTapped() {
-    self.helpViewModel.inputs.helpTypeButtonTapped(.faq)
+  @objc fileprivate func exportDataTapped() {
+    let exportDataSheet = UIAlertController(
+      title: Strings.Download_your_personal_data(),
+      message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
+      preferredStyle: .actionSheet)
+
+    let startTheRequest = UIAlertAction(title: Strings.Start_data_collection(),
+                                        style: .default,
+                                        handler: { [weak self] _ in
+                                          self?.viewModel.inputs.exportDataTapped()
+    })
+
+    let dismiss = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+    exportDataSheet.addAction(startTheRequest)
+    exportDataSheet.addAction(dismiss)
+
+    self.present(exportDataSheet, animated: true, completion: nil)
+  }
+
+  @objc fileprivate func environmentSwitcherTapped() {
+    self.showEnvironmentActionSheet()
   }
 
   @objc fileprivate func findFriendsTapped() {
     self.viewModel.inputs.findFriendsTapped()
+  }
+
+  @objc fileprivate func helpCenterTapped() {
+    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
   }
 
   @IBAction fileprivate func followerTapped(_ button: UIButton) {
@@ -628,6 +715,22 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.mobileCommentsTapped(selected: !button.isSelected)
   }
 
+  @objc fileprivate func recommendationsInfoTapped() {
+    let alertController = UIAlertController(
+      title: Strings.Recommendations(),
+      message: Strings.We_use_your_activity_internally_to_make_recommendations_for_you(),
+      preferredStyle: .alert)
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Got_it(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    self.present(alertController, animated: true, completion: nil)
+  }
+
   @IBAction fileprivate func mobileFollowerTapped(_ button: UIButton) {
     self.viewModel.inputs.mobileFollowerTapped(selected: !button.isSelected)
   }
@@ -659,8 +762,16 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.isOn)
   }
 
+  @IBAction fileprivate func recommendationsTapped(_ recommendationSwitch: UISwitch) {
+    self.viewModel.inputs.recommendationsTapped(on: recommendationSwitch.isOn)
+  }
+
   @objc fileprivate func rateUsTapped() {
     self.viewModel.inputs.rateUsTapped()
+  }
+
+  @objc fileprivate func deleteAccountTapped() {
+    self.viewModel.inputs.deleteAccountTapped()
   }
 
   @objc fileprivate func termsOfUseTapped() {
@@ -688,6 +799,37 @@ internal final class SettingsViewController: UIViewController {
       Storyboard.DebugPushNotifications.instantiate(DebugPushNotificationsViewController.self),
       animated: true
     )
+  }
+
+  private func showEnvironmentActionSheet() {
+    let alert = UIAlertController(title: "Change Environment",
+                                  message: nil,
+                                  preferredStyle: .actionSheet)
+
+    alert.addAction(
+      UIAlertAction(title: "Local", style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.local)
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: "Staging", style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: "Production", style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.production)
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction.init(title: "Cancel", style: .cancel)
+    )
+
+    self.present(alert, animated: true, completion: nil)
   }
 }
 

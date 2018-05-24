@@ -382,6 +382,23 @@ public enum Strings {
     )
   }
   /**
+   "Are you sure?"
+
+   - **es**: "Are you sure?"
+   - **ja**: "Are you sure?"
+   - **de**: "Are you sure?"
+   - **fr**: "Are you sure?"
+   - **en**: "Are you sure?"
+  */
+  public static func Are_you_sure() -> String {
+    return localizedString(
+      key: "Are_you_sure",
+      defaultValue: "Are you sure?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Ask me anything"
 
    - **es**: "¡Pregúntame!"
@@ -587,6 +604,23 @@ backers"
     return localizedString(
       key: "Bring_creative_projects_to_life",
       defaultValue: "Bring creative projects to life.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Cancel"
+
+   - **es**: "Cancel"
+   - **ja**: "Cancel"
+   - **de**: "Cancel"
+   - **fr**: "Cancel"
+   - **en**: "Cancel"
+  */
+  public static func Cancel() -> String {
+    return localizedString(
+      key: "Cancel",
+      defaultValue: "Cancel",
       count: nil,
       substitutions: [:]
     )
@@ -1119,6 +1153,23 @@ backers"
     )
   }
   /**
+   "Delete my Kickstarter Account"
+
+   - **es**: "Eliminar mi cuenta de Kickstarter"
+   - **ja**: "Kickstarter アカウントを削除"
+   - **de**: "Mein Kickstarter-Konto löschen"
+   - **fr**: "Supprimer mon compte Kickstarter"
+   - **en**: "Delete my Kickstarter Account"
+  */
+  public static func Delete_my_Kickstarter_Account() -> String {
+    return localizedString(
+      key: "Delete_my_Kickstarter_Account",
+      defaultValue: "Delete my Kickstarter Account",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Delivered"
 
    - **es**: "Entregado"
@@ -1182,6 +1233,23 @@ backers"
     return localizedString(
       key: "Done",
       defaultValue: "Done",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Download your personal data"
+
+   - **es**: "Descarga tus datos personales"
+   - **ja**: "自分の個人データをダウンロード"
+   - **de**: "Lade deine persönlichen Daten herunter"
+   - **fr**: "Téléchargement de vos données personnelles"
+   - **en**: "Download your personal data"
+  */
+  public static func Download_your_personal_data() -> String {
+    return localizedString(
+      key: "Download_your_personal_data",
+      defaultValue: "Download your personal data",
       count: nil,
       substitutions: [:]
     )
@@ -1748,6 +1816,23 @@ backers"
     )
   }
   /**
+   "Following More Info"
+
+   - **es**: "Following More Info"
+   - **ja**: "Following More Info"
+   - **de**: "Following More Info"
+   - **fr**: "Following More Info"
+   - **en**: "Following More Info"
+  */
+  public static func Following_More_Info() -> String {
+    return localizedString(
+      key: "Following_More_Info",
+      defaultValue: "Following More Info",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Follows %{friend_name}."
 
    - **es**: "Sigue a %{friend_name}."
@@ -2054,6 +2139,23 @@ backers"
     )
   }
   /**
+   "Get notified about new messages?"
+
+   - **es**: "¿Deseas recibir notificaciones sobre nuevos mensajes?"
+   - **ja**: "新規メッセージについて通知の受信を希望しますか？"
+   - **de**: "Möchtest du benachrichtigt werden bei neuen Nachrichten?"
+   - **fr**: "Envie d'être informé des messages entrants ?"
+   - **en**: "Get notified about new messages?"
+  */
+  public static func Get_notified_about_new_messages() -> String {
+    return localizedString(
+      key: "Get_notified_about_new_messages",
+      defaultValue: "Get notified about new messages?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Get notified about this creator’s live streams"
 
    - **es**: "Recibe notificaciones sobre los Live Streams de este creador"
@@ -2066,6 +2168,23 @@ backers"
     return localizedString(
       key: "Get_notified_about_this_creators_live_streams",
       defaultValue: "Get notified about this creator’s live streams",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Get reminded about this project?"
+
+   - **es**: "¿Deseas recibir recordatorios sobre este proyecto?"
+   - **ja**: "このプロジェクトについてリマインダーを希望しますか？"
+   - **de**: "Möchtest du an dieses Projekt erinnert werden?"
+   - **fr**: "Envie de recevoir un rappel à propos de ce projet ?"
+   - **en**: "Get reminded about this project?"
+  */
+  public static func Get_reminded_about_this_project() -> String {
+    return localizedString(
+      key: "Get_reminded_about_this_project",
+      defaultValue: "Get reminded about this project?",
       count: nil,
       substitutions: [:]
     )
@@ -2122,6 +2241,23 @@ backers"
     )
   }
   /**
+   "Help Center"
+
+   - **es**: "Centro de ayuda"
+   - **ja**: "ヘルプセンター"
+   - **de**: "Hilfe-Center"
+   - **fr**: "Centre d'aide"
+   - **en**: "Help Center"
+  */
+  public static func Help_center() -> String {
+    return localizedString(
+      key: "Help_center",
+      defaultValue: "Help Center",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Home"
 
    - **es**: "Inicio"
@@ -2173,6 +2309,23 @@ backers"
     )
   }
   /**
+   "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
+
+   - **es**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
+   - **ja**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
+   - **de**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
+   - **fr**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
+   - **en**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
+  */
+  public static func If_you_turn_following_off() -> String {
+    return localizedString(
+      key: "If_you_turn_following_off",
+      defaultValue: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Individual emails"
 
    - **es**: "Notificaciones por correo electrónico individuales"
@@ -2202,6 +2355,23 @@ backers"
     return localizedString(
       key: "Info",
       defaultValue: "Info",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again."
+
+   - **es**: "Puede demorar hasta 24 horas recopilar tus datos. Cuando estén listos, te enviaremos instrucciones para descargar tus datos al correo electrónico asociado con esta cuenta. Si no recibes noticias nuestras, vuelve aquí e inténtalo de nuevo."
+   - **ja**: "データの収集には最大で24時間かかる場合があります。ダウンロードの準備が整いましたら、このアカウントに登録されているメールアドレス宛てにデータのダウンロード手順が記載されたメールをお送りします。メールが届かなかった場合には、お手数ですがこちらに戻って再試行してください。"
+   - **de**: "Die Zusammenstellung deiner Daten kann bis zu 24 Stunden dauern. Sobald sie zum Download bereitstehen, werden wir dir eine Anleitung dazu per E-Mail schicken. Solltest du nichts von uns hören, versuche es von hier aus noch einmal."
+   - **fr**: "La préparation de vos données personnelles peut prendre jusqu'à 24 heures. Nous vous enverrons des instructions de téléchargement à l'adresse e-mail associée à ce compte une fois que tout sera prêt. Si vous ne recevez rien, revenez ici pour réessayer."
+   - **en**: "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again."
+  */
+  public static func It_may_take_up_to_24_hours_to_collect_your_data() -> String {
+    return localizedString(
+      key: "It_may_take_up_to_24_hours_to_collect_your_data",
+      defaultValue: "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.",
       count: nil,
       substitutions: [:]
     )
@@ -2340,6 +2510,23 @@ with friends."
     return localizedString(
       key: "Kickstarter_is_not_a_store",
       defaultValue: "Kickstarter is not a store.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Know when creators and backers message you by enabling notifications."
+
+   - **es**: "Entérate cuando los creadores y patrocinadores te envíen mensajes habilitando las notificaciones."
+   - **ja**: "クリエイターやバッカ―からメッセージが届いた場合にすぐ分かるように、通知機能を有効にしましょう。"
+   - **de**: "Aktiviere Benachrichtigungen, damit du über eingehende Nachrichten von Projektgründern und Unterstützern Bescheid weißt."
+   - **fr**: "Activez vos notifications pour savoir quand un créateur ou un contributeur vous envoie un message."
+   - **en**: "Know when creators and backers message you by enabling notifications."
+  */
+  public static func Know_when_creators_and_backers_message_you() -> String {
+    return localizedString(
+      key: "Know_when_creators_and_backers_message_you",
+      defaultValue: "Know when creators and backers message you by enabling notifications.",
       count: nil,
       substitutions: [:]
     )
@@ -2705,7 +2892,7 @@ with friends."
    "Name"
 
    - **es**: "Nombre"
-   - **ja**: "Name"
+   - **ja**: "名前"
    - **de**: "Name"
    - **fr**: "Nom"
    - **en**: "Name"
@@ -2714,6 +2901,23 @@ with friends."
     return localizedString(
       key: "Name",
       defaultValue: "Name",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Never"
+
+   - **es**: "Nunca"
+   - **ja**: "通知を受けない"
+   - **de**: "Niemals"
+   - **fr**: "Jamais"
+   - **en**: "Never"
+  */
+  public static func Never() -> String {
+    return localizedString(
+      key: "Never",
+      defaultValue: "Never",
       count: nil,
       substitutions: [:]
     )
@@ -2841,6 +3045,23 @@ from friends yet."
     )
   }
   /**
+   "No saved projects"
+
+   - **es**: "No hay proyectos guardados"
+   - **ja**: "保存済みのプロジェクトはありません"
+   - **de**: "Keine gespeicherten Projekte"
+   - **fr**: "Pas de projets enregistrés"
+   - **en**: "No saved projects"
+  */
+  public static func No_saved_projects() -> String {
+    return localizedString(
+      key: "No_saved_projects",
+      defaultValue: "No saved projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No unread messages"
 
    - **es**: "No hay mensajes no leídos"
@@ -2887,6 +3108,23 @@ from friends yet."
     return localizedString(
       key: "Not_followed",
       defaultValue: "Not followed",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Not Now"
+
+   - **es**: "Ahora no"
+   - **ja**: "後で"
+   - **de**: "Nicht jetzt"
+   - **fr**: "Pas maintenant"
+   - **en**: "Not Now"
+  */
+  public static func Not_now() -> String {
+    return localizedString(
+      key: "Not_now",
+      defaultValue: "Not Now",
       count: nil,
       substitutions: [:]
     )
@@ -3470,6 +3708,23 @@ from friends yet."
     )
   }
   /**
+   "Privacy"
+
+   - **es**: "Privacidad"
+   - **ja**: "プライバシー"
+   - **de**: "Datenschutz"
+   - **fr**: "Vie privée"
+   - **en**: "Privacy"
+  */
+  public static func Privacy() -> String {
+    return localizedString(
+      key: "Privacy",
+      defaultValue: "Privacy",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project Cancelled."
 
    - **es**: "Proyecto cancelado."
@@ -3694,6 +3949,57 @@ daring ideas."
     )
   }
   /**
+   "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
+
+   - **es**: "Recibe un recordatorio 48 horas antes de que este o cualquier otro proyecto guardado finalice habilitando las notificaciones."
+   - **ja**: "通知を有効にして、このプロジェクトやその他の保存済みプロジェクトが終了する48時間前にリマインダーを受け取ります。"
+   - **de**: "Aktiviere Benachrichtigungen - wir schicken dir eine Erinnerung 48 Stunden, bevor dieses und andere gespeicherte Projekte abläuft."
+   - **fr**: "Si vous activez vos notifications, vous recevrez un rappel 48 heures avant la fin de ce projet et de tous les autres que vous enregistrez."
+   - **en**: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications."
+  */
+  public static func Receive_a_reminder_forty_eight_hours_before_this_project_ends() -> String {
+    return localizedString(
+      key: "Receive_a_reminder_forty_eight_hours_before_this_project_ends",
+      defaultValue: "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Receive project updates and more by enabling notifications."
+
+   - **es**: "Recibe actualizaciones de proyectos y más habilitando las notificaciones."
+   - **ja**: "通知を有効にして、プロジェクトの更新情報等を受け取ります。"
+   - **de**: "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen Bescheid."
+   - **fr**: "Si vous activez vos notifications, vous recevrez des actus de projet et plus."
+   - **en**: "Receive project updates and more by enabling notifications."
+  */
+  public static func Receive_project_updates_and_more() -> String {
+    return localizedString(
+      key: "Receive_project_updates_and_more",
+      defaultValue: "Receive project updates and more by enabling notifications.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Receive project updates, messages, and more by enabling notifications."
+
+   - **es**: "Recibe actualizaciones de proyectos, mensajes y más habilitando las notificaciones."
+   - **ja**: "通知を有効にして、プロジェクトの更新情報、メッセージ等を受け取ります。"
+   - **de**: "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen, neue Nachrichten und ähnliches Bescheid."
+   - **fr**: "Si vous activez vos notifications, vous recevrez des actus de projet, vos messages et plus."
+   - **en**: "Receive project updates, messages, and more by enabling notifications."
+  */
+  public static func Receive_project_updates_messages_and_more() -> String {
+    return localizedString(
+      key: "Receive_project_updates_messages_and_more",
+      defaultValue: "Receive project updates, messages, and more by enabling notifications.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Recent live stream"
 
    - **es**: "Live-Stream reciente"
@@ -3706,6 +4012,40 @@ daring ideas."
     return localizedString(
       key: "Recent_live_stream",
       defaultValue: "Recent live stream",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Recommendations"
+
+   - **es**: "Recomendaciones"
+   - **ja**: "おすすめ"
+   - **de**: "Empfehlungen"
+   - **fr**: "Recommandations"
+   - **en**: "Recommendations"
+  */
+  public static func Recommendations() -> String {
+    return localizedString(
+      key: "Recommendations",
+      defaultValue: "Recommendations",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Recommendations More Info"
+
+   - **es**: "Recommendations More Info"
+   - **ja**: "Recommendations More Info"
+   - **de**: "Recommendations More Info"
+   - **fr**: "Recommendations More Info"
+   - **en**: "Recommendations More Info"
+  */
+  public static func Recommendations_More_Info() -> String {
+    return localizedString(
+      key: "Recommendations_More_Info",
+      defaultValue: "Recommendations More Info",
       count: nil,
       substitutions: [:]
     )
@@ -3878,6 +4218,23 @@ daring ideas."
       defaultValue: "Reply to %{user_name}…",
       count: nil,
       substitutions: ["user_name": user_name]
+    )
+  }
+  /**
+   "Request my Personal Data"
+
+   - **es**: "Solicitar mis datos personales"
+   - **ja**: "自分の個人データをリクエストする"
+   - **de**: "Meine persönlichen Daten anfordern"
+   - **fr**: "Demander mes données personnelles"
+   - **en**: "Request my Personal Data"
+  */
+  public static func Request_my_Personal_Data() -> String {
+    return localizedString(
+      key: "Request_my_Personal_Data",
+      defaultValue: "Request my Personal Data",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -4393,6 +4750,23 @@ catch your eye?"
     )
   }
   /**
+   "Start data collection"
+
+   - **es**: "Comenzar la recopilación de datos"
+   - **ja**: "データの収集を開始する"
+   - **de**: "Daten zusammenstellen"
+   - **fr**: "Commencer la préparation"
+   - **en**: "Start data collection"
+  */
+  public static func Start_data_collection() -> String {
+    return localizedString(
+      key: "Start_data_collection",
+      defaultValue: "Start data collection",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Starting soon"
 
    - **es**: "Comienza en breve"
@@ -4422,6 +4796,40 @@ catch your eye?"
     return localizedString(
       key: "Status",
       defaultValue: "Status",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Stay up to date?"
+
+   - **es**: "¿Deseas mantenerte actualizado?"
+   - **ja**: "最新情報を常に把握したい？"
+   - **de**: "Möchtest du auf dem Laufenden bleiben?"
+   - **fr**: "Envie d'être informé ?"
+   - **en**: "Stay up to date?"
+  */
+  public static func Stay_up_to_date() -> String {
+    return localizedString(
+      key: "Stay_up_to_date",
+      defaultValue: "Stay up to date?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Stay updated on this project?"
+
+   - **es**: "¿Deseas mantenerte actualizado sobre este proyecto?"
+   - **ja**: "このプロジェクトの最新情報を受け取りたい？"
+   - **de**: "Möchtest du bei diesem Projekt auf dem Laufenden bleiben?"
+   - **fr**: "Envie de suivre ce projet ?"
+   - **en**: "Stay updated on this project?"
+  */
+  public static func Stay_updated_on_this_project() -> String {
+    return localizedString(
+      key: "Stay_updated_on_this_project",
+      defaultValue: "Stay updated on this project?",
       count: nil,
       substitutions: [:]
     )
@@ -5226,6 +5634,23 @@ catch your eye?"
     )
   }
   /**
+   "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this."
+
+   - **es**: "Utilizamos tu actividad internamente para hacerte recomendaciones. Desactiva las recomendaciones si no quieres recibirlas."
+   - **ja**: "あなたのアクティビティをもとにおすすめの提供を行っています。オプトアウトするにはおすすめ機能をオフにしてください。"
+   - **de**: "Deine Aktivitäten werden intern genutzt, um dir Empfehlungen zu unterbreiten. Um dies zu deaktivieren, wähle "Empfehlungen" einfach ab."
+   - **fr**: "À l'interne, nous nous servons de vos activités pour vous faire des recommandations. Si vous ne souhaitez pas participer, nous vous invitons à désactiver vos recommandations."
+   - **en**: "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this."
+  */
+  public static func We_use_your_activity_internally_to_make_recommendations_for_you() -> String {
+    return localizedString(
+      key: "We_use_your_activity_internally_to_make_recommendations_for_you",
+      defaultValue: "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "We were unable to connect to the live stream chat."
 
    - **es**: "No se pudo conectar al chat de live stream."
@@ -5283,6 +5708,23 @@ Please try again later."
     )
   }
   /**
+   "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
+
+   - **es**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
+   - **ja**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
+   - **de**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
+   - **fr**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
+   - **en**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
+  */
+  public static func When_following_is_on_you_can_follow_the_acticity_of_others() -> String {
+    return localizedString(
+      key: "When_following_is_on_you_can_follow_the_acticity_of_others",
+      defaultValue: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "When you save a project we’ll send you a reminder 48 hours before it ends"
 
    - **es**: "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice"
@@ -5295,6 +5737,23 @@ Please try again later."
     return localizedString(
       key: "When_you_save_a_project_we_ll_send_you_a_reminder",
       defaultValue: "When you save a project we’ll send you a reminder 48 hours before it ends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Yes, turn off"
+
+   - **es**: "Yes, turn off"
+   - **ja**: "Yes, turn off"
+   - **de**: "Yes, turn off"
+   - **fr**: "Yes, turn off"
+   - **en**: "Yes, turn off"
+  */
+  public static func Yes_turn_off() -> String {
+    return localizedString(
+      key: "Yes_turn_off",
+      defaultValue: "Yes, turn off",
       count: nil,
       substitutions: [:]
     )
@@ -12883,35 +13342,35 @@ Please try again later."
     )
   }
   /**
-   "By signing up, you agree to our terms of use, privacy policy, and cookie policy."
+   "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
 
-   - **es**: "Al registrarte, estás aceptando nuestros términos de uso, nuestra política de privacidad y de cookies."
-   - **ja**: "サインアップは、利用規約とプライバシーポリシー、Cookieポリシーへの同意とみなされます。"
-   - **de**: "Mit der Registrierung stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu."
-   - **fr**: "En vous inscrivant, vous acceptez les Conditions d'utilisation, notre Politique de confidentialité et notre Politique en matière de cookies."
-   - **en**: "By signing up, you agree to our terms of use, privacy policy, and cookie policy."
+   - **es**: "Al crear una cuenta, aceptas nuestros términos de uso, política de privacidad y política de cookies. Nuestras políticas de privacidad y de cookies explican cómo utilizamos tus datos para entregar, mejorar y promocionar nuestro servicio y nuestro sitio, y cómo puedes ejercer tus derechos para controlar dicho uso."
+   - **ja**: "アカウントを作成することで、Kickstarter の利用規約、プライバシーポリシー、Cookie ポリシーに同意するものとみなされます。プライバシーポリシーと Cookie ポリシーでは、Kickstarter のサービスとサイトを配信、改善、促進するために、同社がお客様のデータをどのように使用しているか、そしてそのようなデータ使用を管理するためのお客様の権利について説明しています。"
+   - **de**: "Bei Erstellung eines Kontos stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu. Unsere Datenschutz- und Cookie-Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unsere Services und unserer Webseite nutzen."
+   - **fr**: "En créant un compte, vous acceptez nos conditions d'utilisation, notre politique de confidentialité et notre politique en matière de cookies. Ces deux dernières politiques décrivent comment nous utilisons vos données pour proposer, améliorer et faire la promotion de nos services et de notre site, ainsi que les droits dont vous disposez pour contrôler cette utilisation et comment les exercer."
+   - **en**: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
   */
-  public static func login_tout_disclaimer_by_signing_up_you_agree_to_terms() -> String {
+  public static func login_tout_disclaimer_agree_to_terms() -> String {
     return localizedString(
-      key: "login_tout.disclaimer.by_signing_up_you_agree_to_terms",
-      defaultValue: "By signing up, you agree to our terms of use, privacy policy, and cookie policy.",
+      key: "login_tout.disclaimer.agree_to_terms",
+      defaultValue: "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.",
       count: nil,
       substitutions: [:]
     )
   }
   /**
-   "By signing up, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>."
+   "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
 
-   - **es**: "Con la registración confirmas tu conformidad con nuestros <u>terms of use</u>, <u>privacy policy</u>, y <u>cookie policy</u>."
-   - **ja**: "サインアップは、<u>利用方法</u>、<u>プライバシーポリシー</u>、<u>または<u>Cookieポリシーへの同意とみなします。</u>"
-   - **de**: "Durch deine Anmeldung erklärst du dich mir unseren <u>terms of use</u>, <u>privacy policy</u>, und <u>cookie policy</u> einverstanden."
-   - **fr**: "En vous inscrivant, vous acceptez nos <u>Conditions d'utilisation</u>, notre <u>Politique de confidentialité</u> et notre <u>Politique en matière de cookies</u>."
-   - **en**: "By signing up, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>."
+   - **es**: "Al crear una cuenta, aceptas nuestros <u>términos de uso</u>, <u>política de privacidad</u> y<u>política de cookies</u>. Nuestras políticas de privacidad y de cookies explican cómo utilizamos tus datos para entregar, mejorar y promocionar nuestro servicio y nuestro sitio, y cómo puedes ejercer tus derechos para controlar dicho uso."
+   - **ja**: "アカウントを作成することで、Kickstarter の<u>利用規約</u>、<u>プライバシーポリシー</u>、<u>Cookie ポリシー</u>に同意するものとみなされます。プライバシーポリシーと Cookie ポリシーでは、Kickstarter のサービスとサイトを配信、改善、促進するために、同社がお客様のデータをどのように使用しているか、そしてそのようなデータ使用を管理するためのお客様の権利について説明しています。"
+   - **de**: "Bei Erstellung eines Kontos stimmst du unseren <u>Nutzungsbedingungen</u>, <u>Datenschutzrichtlinien</u> und <u>Cookie-Richtlinien</u> zu. Unsere Datenschutz- und Cookie-Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unsere Services und unserer Webseite nutzen."
+   - **fr**: "En créant un compte, vous acceptez nos <u>conditions d'utilisation</u>, notre <u>politique de confidentialité</u> et notre <u>politique en matière de cookies</u>. Ces deux dernières politiques décrivent comment nous utilisons vos données pour proposer, améliorer et faire la promotion de nos services et de notre site, ainsi que les droits dont vous disposez pour contrôler cette utilisation et comment les exercer."
+   - **en**: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use."
   */
-  public static func login_tout_disclaimer_by_signing_up_you_agree_to_terms_html() -> String {
+  public static func login_tout_disclaimer_agree_to_terms_html() -> String {
     return localizedString(
-      key: "login_tout.disclaimer.by_signing_up_you_agree_to_terms_html",
-      defaultValue: "By signing up, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>.",
+      key: "login_tout.disclaimer.agree_to_terms_html",
+      defaultValue: "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.",
       count: nil,
       substitutions: [:]
     )
@@ -12929,23 +13388,6 @@ Please try again later."
     return localizedString(
       key: "login_tout.disclaimer.read_more",
       defaultValue: "Read more",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "We'll never post anything without your permission."
-
-   - **es**: "Nunca publicaremos nada sin tu consentimiento."
-   - **ja**: "Kickstarterが勝手に投稿することはありません。"
-   - **de**: "Wir veröffentlichen niemals etwas ohne deine Zustimmung."
-   - **fr**: "Rien ne sera publié sans votre permission."
-   - **en**: "We'll never post anything without your permission."
-  */
-  public static func login_tout_disclaimer_we_never_post_anything_without_permission() -> String {
-    return localizedString(
-      key: "login_tout.disclaimer.we_never_post_anything_without_permission",
-      defaultValue: "We'll never post anything without your permission.",
       count: nil,
       substitutions: [:]
     )
@@ -17234,18 +17676,18 @@ saved"
     )
   }
   /**
-   "Receive our weekly newsletter and other occasional updates."
+   "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
 
-   - **es**: "Descubre nuevos proyectos con nuestro boletín semanal."
-   - **ja**: "ニュースレターやアップデートを受け取ろう"
-   - **de**: "Endecke neue Projekte in unserem wöchentlichen Newsletter."
-   - **fr**: "Découvrez de nouveaux projets grâce à notre lettre d'informations hebdomadaire."
-   - **en**: "Receive our weekly newsletter and other occasional updates."
+   - **es**: "Recibe el boletín semanal de Kickstarter y otras actualizaciones ocasionales por correo electrónico. Puedes optar por dejar de recibir estos mensajes en cualquier momento utilizando el enlace incluido en el correo electrónico y según lo establecido en nuestra Política de privacidad."
+   - **ja**: "Kickstarter の週刊ニュースレーターや更新情報をメールでお届けします。このような Kickstarter からのお知らせメールを受け取りたくない場合は、そのメール内に記載されているリンクを使うか、プライバシーポリシーに記載されている方法で、いつでも配信を停止することができます。"
+   - **de**: "Du erhältst den wöchentlichen Kickstarter Newsletter und sporadische Updates per E-Mail. Du kannst diese E-Mails jederzeit über den in der E-Mail enthaltenen Link oder wie in unseren Datenschutzrichtlinien dargelegt abwählen."
+   - **fr**: "Vous recevrez la lettre d'information hebdomadaire de Kickstarter et d'autres actualités, par e-mail. Vous pouvez vous désabonner de ces messages à tout moment en cliquant sur le lien contenu dans chaque e-mail ou en suivant les instructions de notre Politique de confidentialité."
+   - **en**: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy."
   */
-  public static func signup_newsletter_full() -> String {
+  public static func signup_newsletter_full_opt_out() -> String {
     return localizedString(
-      key: "signup.newsletter_full",
-      defaultValue: "Receive our weekly newsletter and other occasional updates.",
+      key: "signup.newsletter_full_opt_out",
+      defaultValue: "Receive Kickstarter's weekly newsletter and other occasional updates by email. You can opt out of these messages at any time by using the link in the email and as otherwise set out in our Privacy Policy.",
       count: nil,
       substitutions: [:]
     )

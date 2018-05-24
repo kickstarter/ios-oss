@@ -7,8 +7,17 @@ extension Project {
       set: { Project(blurb: $0, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-        video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state,
+        stats: $1.stats, urls: $1.urls, video: $1.video) }
+    )
+
+    public static let staffPick = Lens<Project, Bool>(
+      view: { $0.staffPick },
+      set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
+                     creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+                     location: $1.location, name: $1.name, personalization: $1.personalization,
+                     photo: $1.photo, rewards: $1.rewards, slug: $1.slug,
+                     staffPick: $0, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video) }
     )
 
     public static let category = Lens<Project, Category>(
@@ -16,8 +25,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $0, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-        video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state,
+        stats: $1.stats, urls: $1.urls, video: $1.video) }
     )
 
     public static let country = Lens<Project, Country>(
@@ -25,8 +34,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $0,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-        video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state,
+        stats: $1.stats, urls: $1.urls, video: $1.video) }
     )
 
     public static let creator = Lens<Project, User>(
@@ -34,8 +43,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $0, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-        video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state,
+        stats: $1.stats, urls: $1.urls, video: $1.video) }
     )
 
     public static let dates = Lens<Project, Project.Dates>(
@@ -43,8 +52,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $0, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-        video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state,
+        stats: $1.stats, urls: $1.urls, video: $1.video) }
     )
 
     public static let id = Lens<Project, Int>(
@@ -52,8 +61,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $0,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-        video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state,
+        stats: $1.stats, urls: $1.urls, video: $1.video) }
     )
 
     public static let location = Lens<Project, Location>(
@@ -61,8 +70,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $0, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-        video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick,
+        state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video) }
     )
 
     public static let memberData = Lens<Project, Project.MemberData>(
@@ -70,8 +79,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $0, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-        video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick,
+        state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video) }
     )
 
     public static let name = Lens<Project, String>(
@@ -79,8 +88,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $0, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-        video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick,
+        state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video) }
     )
 
     public static let personalization = Lens<Project, Project.Personalization>(
@@ -88,7 +97,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $0, photo: $1.photo, rewards: $1.rewards,
-        slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video) }
+        slug: $1.slug, staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls,
+        video: $1.video) }
     )
 
     public static let photo = Lens<Project, Project.Photo>(
@@ -96,8 +106,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $0,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls,
-        video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state,
+        stats: $1.stats, urls: $1.urls, video: $1.video) }
     )
 
     public static let rewards = Lens<Project, [Reward]>(
@@ -105,7 +115,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $0, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video) }
+        rewards: $0, slug: $1.slug, staffPick: $1.staffPick, state: $1.state, stats: $1.stats,
+        urls: $1.urls, video: $1.video) }
     )
 
     public static let slug = Lens<Project, String>(
@@ -113,7 +124,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $0, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video) }
+        rewards: $1.rewards, slug: $0, staffPick: $1.staffPick, state: $1.state, stats: $1.stats,
+        urls: $1.urls, video: $1.video) }
     )
 
     public static let state = Lens<Project, Project.State>(
@@ -121,7 +133,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $0, stats: $1.stats, urls: $1.urls, video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $0, stats: $1.stats,
+        urls: $1.urls, video: $1.video) }
     )
 
     public static let stats = Lens<Project, Project.Stats>(
@@ -129,7 +142,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $0, urls: $1.urls, video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state, stats: $0,
+        urls: $1.urls, video: $1.video) }
     )
 
     public static let urls = Lens<Project, Project.UrlsEnvelope>(
@@ -137,7 +151,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $0, video: $1.video) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state, stats: $1.stats,
+        urls: $0, video: $1.video) }
     )
 
     public static let video = Lens<Project, Project.Video?>(
@@ -145,7 +160,8 @@ extension Project {
       set: { Project(blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, state: $1.state, stats: $1.stats, urls: $1.urls, video: $0) }
+        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state, stats: $1.stats,
+        urls: $1.urls, video: $0) }
     )
   }
 }

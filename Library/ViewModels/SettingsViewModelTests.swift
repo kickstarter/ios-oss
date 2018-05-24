@@ -15,11 +15,13 @@ internal final class SettingsViewModelTests: TestCase {
   let betaToolsHidden = TestObserver<Bool, NoError>()
   let commentsSelected = TestObserver<Bool, NoError>()
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
+  let environmentSwitcherButtonTitle = TestObserver<String, NoError>()
   let followerSelected = TestObserver<Bool, NoError>()
   let friendActivitySelected = TestObserver<Bool, NoError>()
   let gamesNewsletterOn = TestObserver<Bool, NoError>()
   let goToAppStoreRating = TestObserver<String, NoError>()
   let goToBetaFeedback = TestObserver<(), NoError>()
+  let goToDeleteAccountBrowser = TestObserver<URL, NoError>()
   let goToFindFriends = TestObserver<Void, NoError>()
   let goToManageProjectNotifications = TestObserver<Void, NoError>()
   let happeningNewsletterOn = TestObserver<Bool, NoError>()
@@ -34,6 +36,8 @@ internal final class SettingsViewModelTests: TestCase {
   let postLikesSelected = TestObserver<Bool, NoError>()
   let projectNotificationsCount = TestObserver<String, NoError>()
   let promoNewsletterOn = TestObserver<Bool, NoError>()
+  let requestExportData = TestObserver<(), NoError>()
+  let recommendationsOn = TestObserver<Bool, NoError>()
   let showConfirmLogoutPrompt = TestObserver<(message: String, cancel: String, confirm: String), NoError>()
   let showOptInPrompt = TestObserver<String, NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
@@ -49,11 +53,13 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.betaToolsHidden.observe(self.betaToolsHidden.observer)
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
+    self.vm.outputs.environmentSwitcherButtonTitle.observe(self.environmentSwitcherButtonTitle.observer)
     self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
     self.vm.outputs.friendActivitySelected.observe(self.friendActivitySelected.observer)
     self.vm.outputs.gamesNewsletterOn.observe(self.gamesNewsletterOn.observer)
     self.vm.outputs.goToAppStoreRating.observe(self.goToAppStoreRating.observer)
     self.vm.outputs.goToBetaFeedback.observe(self.goToBetaFeedback.observer)
+    self.vm.outputs.goToDeleteAccountBrowser.observe(self.goToDeleteAccountBrowser.observer)
     self.vm.outputs.goToFindFriends.observe(self.goToFindFriends.observer)
     self.vm.outputs.goToManageProjectNotifications.observe(self.goToManageProjectNotifications.observer)
     self.vm.outputs.happeningNewsletterOn.observe(self.happeningNewsletterOn.observer)
@@ -68,6 +74,8 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.postLikesSelected.observe(self.postLikesSelected.observer)
     self.vm.outputs.projectNotificationsCount.observe(self.projectNotificationsCount.observer)
     self.vm.outputs.promoNewsletterOn.observe(self.promoNewsletterOn.observer)
+    self.vm.outputs.requestExportData.observe(self.requestExportData.observer)
+    self.vm.outputs.recommendationsOn.observe(self.recommendationsOn.observer)
     self.vm.outputs.showConfirmLogoutPrompt.observe(self.showConfirmLogoutPrompt.observer)
     self.vm.outputs.showOptInPrompt.observe(self.showOptInPrompt.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
@@ -135,6 +143,39 @@ internal final class SettingsViewModelTests: TestCase {
     }
   }
 
+  func testEnvironmentButton_SwitchesEnvironment() {
+
+    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
+
+      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environmentName, "Staging")
+
+      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environmentName, "Local")
+    }
+  }
+
+  func testLogoutWithParamsEmits_WhenEnvironmentChanges() {
+
+    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
+
+      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+      self.logoutWithParams.assertDidEmitValue()
+    }
+  }
+
+  func testEnvironmentButtonTitle_showsEnvironment_WhenEnvironmentChanges() {
+
+    self.vm.viewDidLoad()
+
+    self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+    self.environmentSwitcherButtonTitle.assertValue("Change Environment - Staging")
+
+    self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
+    self.environmentSwitcherButtonTitle.assertValues(["Change Environment - Staging",
+                                                      "Change Environment - Local"])
+  }
+
   func testCreatorNotificationsTapped() {
     let user = User.template |> User.lens.stats.createdProjectsCount .~ 2
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
@@ -175,6 +216,26 @@ internal final class SettingsViewModelTests: TestCase {
     self.unableToSaveError.assertValueCount(0, "Error did not happen.")
   }
 
+  func testRequestExportData() {
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.exportDataTapped()
+
+    self.scheduler.advance()
+
+    self.requestExportData.assertValueCount(1, "Request Data")
+  }
+
+  func testOptOutOfRecommendations() {
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.viewDidLoad()
+    self.recommendationsOn.assertValues([true])
+    self.vm.inputs.recommendationsTapped(on: false)
+    self.recommendationsOn.assertValues([true, false])
+  }
+
   func testGoToAppStoreRating() {
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
@@ -184,6 +245,16 @@ internal final class SettingsViewModelTests: TestCase {
     XCTAssertEqual(["Settings View", "Viewed Settings", "App Store Rating Open", "Opened App Store Listing"],
                    self.trackingClient.events)
     self.goToAppStoreRating.assertValueCount(1, "Go to App Store.")
+  }
+
+  func testGoToDeleteAccount() {
+    let user = User.template
+    let url =
+      AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy")
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.deleteAccountTapped()
+    self.goToDeleteAccountBrowser.assertValues([url])
   }
 
   func testGoToFindFriends() {

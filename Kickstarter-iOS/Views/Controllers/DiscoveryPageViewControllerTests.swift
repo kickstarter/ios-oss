@@ -27,8 +27,10 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       |> Activity.lens.user .~ brandoNoAvatar
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(apiService: MockService(fetchActivitiesResponse: [backing]), currentUser: User.template,
-        language: language, userDefaults: MockKeyValueStore()) {
+      withEnvironment(apiService: MockService(fetchActivitiesResponse: [backing]),
+                      currentUser: User.template,
+                      language: language,
+                      userDefaults: MockKeyValueStore()) {
 
           let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -47,12 +49,16 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ [project]
+    let config = Config.template
+      |> Config.lens.abExperiments
+        .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
 
     combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad])
       .forEach { language, device in
-
         withEnvironment(apiService: MockService(fetchActivitiesResponse: [],
-          fetchDiscoveryResponse: discoveryResponse), currentUser: User.template, language: language) {
+                                                fetchDiscoveryResponse: discoveryResponse),
+                        config: config,
+                        currentUser: User.template, language: language) {
 
             let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
             let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -76,6 +82,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         |> Project.lens.dates.featuredAt .~ self.dateType.init().timeIntervalSince1970
 
     let devices = [Device.phone4inch, Device.phone4_7inch, Device.pad]
+    let config = Config.template
+      |> Config.lens.abExperiments
+      .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
 
     combos(Language.allLanguages, devices, [("featured", featuredProj)])
       .forEach { language, device, labeledProj in
@@ -83,7 +92,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
           |> DiscoveryEnvelope.lens.projects .~ [labeledProj.1]
 
         let apiService =  MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
-        withEnvironment(apiService: apiService, currentUser: User.template, language: language) {
+        withEnvironment(apiService: apiService,
+                        config: config,
+                        currentUser: User.template, language: language) {
 
           let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -110,6 +121,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
     let states = [Project.State.successful, .canceled, .failed, .suspended]
     let devices = [Device.phone4inch, Device.phone4_7inch, Device.pad]
+    let config = Config.template
+      |> Config.lens.abExperiments
+      .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
 
     combos(Language.allLanguages, devices, states )
       .forEach { language, device, state in
@@ -117,7 +131,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
           |> DiscoveryEnvelope.lens.projects .~ [projectTemplate |> Project.lens.state .~ state]
 
         let apiService =  MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
-        withEnvironment(apiService: apiService, currentUser: User.template, language: language) {
+        withEnvironment(apiService: apiService,
+                        config: config,
+                        currentUser: User.template, language: language) {
 
           let controller = DiscoveryPageViewController.configuredWith(sort: .endingSoon)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)

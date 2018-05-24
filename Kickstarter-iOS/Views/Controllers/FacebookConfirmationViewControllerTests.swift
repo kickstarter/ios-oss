@@ -9,7 +9,8 @@ internal final class FacebookConfirmationViewControllerTests: TestCase {
   }
 
   func testView() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    let devices = [Device.phone4_7inch, Device.pad, Device.phone4inch]
+    combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let controller = FacebookConfirmationViewController
           .configuredWith(facebookUserEmail: "hello@kickstarter.com", facebookAccessToken: "")

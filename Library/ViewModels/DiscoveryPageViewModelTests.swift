@@ -44,13 +44,13 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
 
-    self.vm.outputs.projects
-      .map { $0.count }
+    self.vm.outputs.projectsLoaded
+      .map { $0.0.count }
       .combinePrevious(0)
       .map { prev, next in next > prev }
       .observe(self.hasAddedProjects.observer)
-    self.vm.outputs.projects
-      .map { $0.count }
+    self.vm.outputs.projectsLoaded
+      .map { $0.0.count }
       .combinePrevious(0)
       .map { prev, next in next < prev }
       .observe(self.hasRemovedProjects.observer)

@@ -54,6 +54,7 @@ internal final class MessageDialogViewController: UIViewController {
     self.viewModel.outputs.notifyPresenterCommentWasPostedSuccesfully
       .observeValues { [weak self] message in
         guard let _self = self else { return }
+        _self.postNotification()
         _self.delegate?.messageDialog(_self, postedMessage: message)
     }
 
@@ -92,6 +93,12 @@ internal final class MessageDialogViewController: UIViewController {
     self.present(UIAlertController.genericError(message),
                                animated: true,
                                completion: nil)
+  }
+
+  private func postNotification() {
+    NotificationCenter.default.post(name: Notification.Name.ksr_showNotificationsDialog,
+                                    object: nil,
+                                    userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.message])
   }
 }
 
