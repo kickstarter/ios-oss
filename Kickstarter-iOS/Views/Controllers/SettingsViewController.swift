@@ -30,9 +30,9 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
+  @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
   @IBOutlet fileprivate weak var exportDataButton: UIButton!
   @IBOutlet fileprivate weak var exportDataLabel: UILabel!
-  @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
@@ -221,11 +221,11 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.deleteAccountLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in "Delete my Kickstarter Account" }
+      |> UILabel.lens.text %~ { _ in Strings.Delete_my_Kickstarter_Account() }
 
     _ = self.exportDataLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in "Request my Personal Data" }
+      |> UILabel.lens.text %~ { _ in Strings.Request_my_Personal_Data() }
 
     _ = self.emailFrequencyLabel
       |> UILabel.lens.font .~ .ksr_body()
@@ -412,7 +412,7 @@ internal final class SettingsViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
 
-    self.viewModel.outputs.goToSafariBrowser
+    self.viewModel.outputs.goToDeleteAccountBrowser
       .observeForControllerAction()
       .observeValues { [weak self] url in self?.goToDeleteAccount(url: url) }
 

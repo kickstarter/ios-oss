@@ -56,6 +56,7 @@ public protocol SettingsViewModelOutputs {
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
   var goToBetaFeedback: Signal<(), NoError> { get }
+  var goToDeleteAccountBrowser: Signal<URL, NoError> { get }
   var goToEmailFrequency: Signal<User, NoError> { get }
   var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
@@ -82,8 +83,6 @@ public protocol SettingsViewModelOutputs {
   var updateCurrentUser: Signal<User, NoError> { get }
   var versionText: Signal<String, NoError> { get }
   var weeklyNewsletterOn: Signal<Bool, NoError> { get }
-
-  var goToSafariBrowser: Signal<URL, NoError> { get }
 }
 
 public protocol SettingsViewModelType {
@@ -224,7 +223,8 @@ SettingsViewModelOutputs {
     self.goToAppStoreRating = self.rateUsTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
-    self.goToSafariBrowser = self.deleteAccountTappedProperty.signal
+
+    self.goToDeleteAccountBrowser = self.deleteAccountTappedProperty.signal
       .map {
         AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy")
       }
@@ -428,7 +428,6 @@ SettingsViewModelOutputs {
   public func environmentSwitcherButtonTapped(environment: ServerConfigType) {
     self.environmentSwitcherButtonTappedProperty.value = environment as? ServerConfig
   }
-
   fileprivate let findFriendsTappedProperty = MutableProperty(())
   public func findFriendsTapped() {
     self.findFriendsTappedProperty.value = ()
@@ -541,6 +540,7 @@ SettingsViewModelOutputs {
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
   public let goToBetaFeedback: Signal<(), NoError>
+  public let goToDeleteAccountBrowser: Signal<URL, NoError>
   public let goToEmailFrequency: Signal<User, NoError>
   public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
@@ -567,8 +567,6 @@ SettingsViewModelOutputs {
   public let updateCurrentUser: Signal<User, NoError>
   public let weeklyNewsletterOn: Signal<Bool, NoError>
   public let versionText: Signal<String, NoError>
-
-  public let goToSafariBrowser: Signal<URL, NoError>
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }
