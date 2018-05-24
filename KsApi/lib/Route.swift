@@ -132,7 +132,7 @@ internal enum Route {
       return (.POST, pledgeUrl?.absoluteString ?? "", params, nil)
 
     case .exportData:
-      return (.POST, "/v1/users//self/request_export_data", [:], nil)
+      return (.POST, "/v1/users//self/queue_export_data", [:], nil)
 
     case let .exportDataState(state, downloadUrl):
       let params: [String: Any] = [
