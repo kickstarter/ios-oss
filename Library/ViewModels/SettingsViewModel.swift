@@ -17,6 +17,7 @@ public protocol SettingsViewModelInputs {
   func environmentSwitcherButtonTapped(environment: ServerConfigType)
   func findFriendsTapped()
   func followerTapped(selected: Bool)
+  func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
   func friendActivityTapped(selected: Bool)
   func gamesNewsletterTapped(on: Bool)
   func happeningNewsletterTapped(on: Bool)
@@ -52,6 +53,7 @@ public protocol SettingsViewModelOutputs {
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
   var environmentSwitcherButtonTitle: Signal<String, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
+  var followingPrivacyOn: Signal<Bool, NoError> { get }
   var friendActivitySelected: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
@@ -78,6 +80,7 @@ public protocol SettingsViewModelOutputs {
   var requestExportData: Signal<(), NoError> { get }
   var recommendationsOn: Signal<Bool, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
+  var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updatesSelected: Signal<Bool, NoError> { get }
@@ -103,6 +106,11 @@ SettingsViewModelOutputs {
           .demoteErrors()
       }
       .skipNil()
+
+    self.followingPrivacyOn = Signal.merge(
+      initialUser.map { $0.social ?? true }.skipRepeats(),
+      self.followingSwitchTappedProperty.signal.map { $0.0 }
+    )
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
       self.artsAndCultureNewsletterTappedProperty.signal.map { (.arts, $0) },
@@ -177,6 +185,13 @@ SettingsViewModelOutputs {
       self.updatesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.updates), $0)
       },
+      self.followingSwitchTappedProperty.signal
+        .filter { (on, didShowPrompt) in
+          didShowPrompt == true || (on == true && didShowPrompt == false)
+        }
+        .map {
+        (UserAttribute.privacy(Privacy.following), $0.0)
+      },
       self.recommendationsTappedProperty.signal.map {
         (UserAttribute.privacy(Privacy.recommendations), !$0)
       }
@@ -237,6 +252,10 @@ SettingsViewModelOutputs {
         )
     }
 
+    self.showPrivacyFollowingPrompt = self.followingSwitchTappedProperty.signal
+      .filter { $0.0 == false && $0.1 == false }
+      .ignoreValues()
+
     self.logoutWithParams = Signal.merge (
       self.logoutConfirmedProperty.signal,
       self.environmentSwitcherButtonTappedProperty.signal.skipNil().ignoreValues()
@@ -257,7 +276,7 @@ SettingsViewModelOutputs {
     self.weeklyNewsletterOn = self.updateCurrentUser.map { $0.newsletters.weekly }.skipNil().skipRepeats()
     self.inventNewsletterOn = self.updateCurrentUser.map { $0.newsletters.invent }.skipNil().skipRepeats()
     self.artsAndCultureNewsletterOn = self.updateCurrentUser
-      .map { $0.newsletters.arts}.skipNil().skipRepeats()
+      .map { $0.newsletters.arts }.skipNil().skipRepeats()
 
     self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
     self.creatorTipsSelected = self.updateCurrentUser
@@ -356,6 +375,7 @@ SettingsViewModelOutputs {
         case let .privacy(privacy):
           switch privacy {
           case .recommendations: AppEnvironment.current.koala.trackRecommendationsOptIn()
+          default: break
           }
         }
     }
@@ -411,10 +431,12 @@ SettingsViewModelOutputs {
   public func emailFrequencyTapped() {
     self.emailFrequencyTappedProperty.value = ()
   }
+
   fileprivate let exportDataTappedProperty = MutableProperty(())
   public func exportDataTapped() {
     self.exportDataTappedProperty.value = ()
   }
+
   fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<ServerConfig?>(nil)
   public func environmentSwitcherButtonTapped(environment: ServerConfigType) {
     self.environmentSwitcherButtonTappedProperty.value = environment as? ServerConfig
@@ -426,6 +448,10 @@ SettingsViewModelOutputs {
   fileprivate let followerTappedProperty = MutableProperty(false)
   public func followerTapped(selected: Bool) {
     self.followerTappedProperty.value = selected
+  }
+  fileprivate let followingSwitchTappedProperty = MutableProperty((false, false))
+  public func followingSwitchTapped(on: Bool, didShowPrompt: Bool) {
+    self.followingSwitchTappedProperty.value = (on, didShowPrompt)
   }
   fileprivate let friendActivityTappedProperty = MutableProperty(false)
   public func friendActivityTapped(selected: Bool) {
@@ -507,6 +533,7 @@ SettingsViewModelOutputs {
   public func rateUsTapped() {
     self.rateUsTappedProperty.value = ()
   }
+
   fileprivate let updatesTappedProperty = MutableProperty(false)
   public func updatesTapped(selected: Bool) {
     self.updatesTappedProperty.value = selected
@@ -529,6 +556,7 @@ SettingsViewModelOutputs {
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
   public let environmentSwitcherButtonTitle: Signal<String, NoError>
   public let followerSelected: Signal<Bool, NoError>
+  public let followingPrivacyOn: Signal<Bool, NoError>
   public let friendActivitySelected: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
@@ -556,6 +584,7 @@ SettingsViewModelOutputs {
   public let recommendationsOn: Signal<Bool, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
   public let showOptInPrompt: Signal<String, NoError>
+  public let showPrivacyFollowingPrompt: Signal<(), NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updatesSelected: Signal<Bool, NoError>
   public let updateCurrentUser: Signal<User, NoError>
@@ -602,6 +631,7 @@ private enum UserAttribute {
       }
     case let .privacy(privacy):
       switch privacy {
+      case .following:       return User.lens.social
       case .recommendations: return User.lens.optedOutOfRecommendations
       }
     }
@@ -640,10 +670,13 @@ private enum Notification {
 }
 
 private enum Privacy {
+
+  case following
   case recommendations
 
   fileprivate var trackingString: String {
     switch self {
+    case .following: return Strings.Following()
     case .recommendations: return Strings.Recommendations()
     }
   }

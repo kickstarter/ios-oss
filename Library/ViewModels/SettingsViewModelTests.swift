@@ -17,6 +17,7 @@ internal final class SettingsViewModelTests: TestCase {
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
   let environmentSwitcherButtonTitle = TestObserver<String, NoError>()
   let followerSelected = TestObserver<Bool, NoError>()
+  let followingPrivacyOn = TestObserver<Bool, NoError>()
   let friendActivitySelected = TestObserver<Bool, NoError>()
   let gamesNewsletterOn = TestObserver<Bool, NoError>()
   let goToAppStoreRating = TestObserver<String, NoError>()
@@ -42,6 +43,7 @@ internal final class SettingsViewModelTests: TestCase {
   let recommendationsOn = TestObserver<Bool, NoError>()
   let showConfirmLogoutPrompt = TestObserver<(message: String, cancel: String, confirm: String), NoError>()
   let showOptInPrompt = TestObserver<String, NoError>()
+  let showPrivacyFollowingPrompt = TestObserver<(), NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
   let updatesSelected = TestObserver<Bool, NoError>()
   let updateCurrentUser = TestObserver<User, NoError>()
@@ -57,6 +59,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
     self.vm.outputs.environmentSwitcherButtonTitle.observe(self.environmentSwitcherButtonTitle.observer)
     self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
+    self.vm.outputs.followingPrivacyOn.observe(self.followingPrivacyOn.observer)
     self.vm.outputs.friendActivitySelected.observe(self.friendActivitySelected.observer)
     self.vm.outputs.gamesNewsletterOn.observe(self.gamesNewsletterOn.observer)
     self.vm.outputs.goToAppStoreRating.observe(self.goToAppStoreRating.observer)
@@ -82,6 +85,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.recommendationsOn.observe(self.recommendationsOn.observer)
     self.vm.outputs.showConfirmLogoutPrompt.observe(self.showConfirmLogoutPrompt.observer)
     self.vm.outputs.showOptInPrompt.observe(self.showOptInPrompt.observer)
+    self.vm.outputs.showPrivacyFollowingPrompt.observe(self.showPrivacyFollowingPrompt.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
     self.vm.outputs.updatesSelected.observe(self.updatesSelected.observer)
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
@@ -218,6 +222,66 @@ internal final class SettingsViewModelTests: TestCase {
     self.mobilePostLikesSelected.assertValues([false, true])
     self.postLikesSelected.assertValues([false, true])
     self.unableToSaveError.assertValueCount(0, "Error did not happen.")
+  }
+
+  func testFollowingPrivacyToggleStatus_OnViewDidLoad() {
+
+    let socialUser = .template
+      |> User.lens.social .~ true
+
+    withEnvironment(currentUser: socialUser) {
+      self.vm.inputs.viewDidLoad()
+      self.followingPrivacyOn.assertValues([true])
+    }
+  }
+
+  func testFollowingPrivacyAlertEmits_beforeTurnFollowingOff() {
+    self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: false)
+    self.showPrivacyFollowingPrompt.assertDidEmitValue()
+  }
+
+  func testFollowingPrivacyDoesNotAlertEmit_TurningFollowingOn() {
+    self.vm.inputs.followingSwitchTapped(on: true, didShowPrompt: false)
+    self.showPrivacyFollowingPrompt.assertDidNotEmitValue()
+  }
+
+  func testUpdateUserEmits_When_TurnFollowingOn() {
+
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+
+    self.vm.inputs.viewDidLoad()
+    self.updateCurrentUser.assertValueCount(2, "Begin with environment's current user and refresh.")
+
+    self.vm.inputs.followingSwitchTapped(on: true, didShowPrompt: false)
+    self.updateCurrentUser.assertValueCount(3, "User should be updated.")
+
+    self.vm.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
+    self.updateCurrentUser.assertValueCount(4, "User should be updated.")
+  }
+
+  func testUpdateUserDoesNotEmit_TurningFollowingOff_BeforeShowingPrompt() {
+
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+
+    self.vm.inputs.viewDidLoad()
+    self.updateCurrentUser.assertValueCount(2, "Begin with environment's current user and refresh.")
+
+    self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: false)
+    self.updateCurrentUser.assertValueCount(2, "User should not be updated.")
+  }
+
+  func testUpdateUserEmits_TurningFollowingOff_AfterShowingPrompt() {
+
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+
+    self.vm.inputs.viewDidLoad()
+    self.updateCurrentUser.assertValueCount(2, "Begin with environment's current user and refresh.")
+
+    self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
+    self.updateCurrentUser.assertValueCount(3, "User should be updated.")
   }
 
   func testRequestExportData() {

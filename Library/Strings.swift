@@ -386,7 +386,7 @@ public enum Strings {
 
    - **es**: "Are you sure?"
    - **ja**: "Are you sure?"
-   - **de**: "Are you sure?"
+   - **de**: "Bist du sicher?"
    - **fr**: "Are you sure?"
    - **en**: "Are you sure?"
   */
@@ -613,7 +613,7 @@ backers"
 
    - **es**: "Cancel"
    - **ja**: "Cancel"
-   - **de**: "Cancel"
+   - **de**: "Abbrechen"
    - **fr**: "Cancel"
    - **en**: "Cancel"
   */

@@ -29,13 +29,16 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
-  @IBOutlet fileprivate weak var exportDataButton: UIButton!
-  @IBOutlet fileprivate weak var exportDataLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
   @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
+  @IBOutlet fileprivate weak var exportDataButton: UIButton!
+  @IBOutlet fileprivate weak var exportDataLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
+  @IBOutlet fileprivate weak var followingPrivacyInfoButton: UIButton!
+  @IBOutlet fileprivate weak var followingPrivacyLabel: UILabel!
+  @IBOutlet fileprivate weak var followingPrivacySwitch: UISwitch!
   @IBOutlet fileprivate weak var friendActivityButton: UIButton!
   @IBOutlet fileprivate weak var friendActivityLabel: UILabel!
   @IBOutlet fileprivate weak var gamesNewsletterSwitch: UISwitch!
@@ -135,6 +138,10 @@ internal final class SettingsViewController: UIViewController {
     self.findFriendsButton.addTarget(self,
                                      action: #selector(findFriendsTapped),
                                      for: .touchUpInside)
+
+    self.followingPrivacyInfoButton.addTarget(self,
+                                              action: #selector(followingPrivacyInfoTapped),
+                                              for: .touchUpInside)
 
     self.helpCenterButton.addTarget(self, action: #selector(helpCenterTapped), for: .touchUpInside)
 
@@ -250,6 +257,15 @@ internal final class SettingsViewController: UIViewController {
     _ = self.findFriendsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_find_friends() }
+
+    _ = self.followingPrivacyLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Following() }
+
+    _ = self.followingPrivacyInfoButton
+      |> UIButton.lens.image(for: .normal)
+      .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Following_More_Info() }
 
     _ = self.friendActivityLabel
       |> settingsSectionLabelStyle
@@ -425,6 +441,12 @@ internal final class SettingsViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] newsletter in self?.showOptInPrompt(newsletter) }
 
+    self.viewModel.outputs.showPrivacyFollowingPrompt
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.showPrivacyFollowingPrompt()
+      }
+
     self.viewModel.outputs.unableToSaveError
       .observeForControllerAction()
       .observeValues { [weak self] message in
@@ -488,6 +510,7 @@ internal final class SettingsViewController: UIViewController {
     self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
     self.environmentSwitcher.rac.title = self.viewModel.outputs.environmentSwitcherButtonTitle
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
+    self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
     self.happeningNewsletterSwitch.rac.on = self.viewModel.outputs.happeningNewsletterOn
@@ -672,12 +695,29 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.findFriendsTapped()
   }
 
-  @objc fileprivate func helpCenterTapped() {
-    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
-  }
-
   @IBAction fileprivate func followerTapped(_ button: UIButton) {
     self.viewModel.inputs.followerTapped(selected: !button.isSelected)
+  }
+
+  @objc fileprivate func followingPrivacyInfoTapped() {
+    let privacyInfoAlert = UIAlertController.followingPrivacyInfo()
+    self.present(privacyInfoAlert, animated: true, completion: nil)
+  }
+
+  fileprivate func showPrivacyFollowingPrompt() {
+    let followingAlert = UIAlertController.turnOffPrivacyFollowing(
+       turnOnHandler: { [weak self] _ in
+        self?.viewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
+      },
+       turnOffHandler: { [weak self] _ in
+        self?.viewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
+      }
+    )
+     self.present(followingAlert, animated: true, completion: nil)
+  }
+
+  @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
+    self.viewModel.inputs.followingSwitchTapped(on: followingPrivacySwitch.isOn, didShowPrompt: false)
   }
 
   @IBAction fileprivate func friendActivityTapped(_ button: UIButton) {
@@ -690,6 +730,10 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func happeningNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.happeningNewsletterTapped(on: newsletterSwitch.isOn)
+  }
+
+  @objc fileprivate func helpCenterTapped() {
+    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
   }
 
   @IBAction fileprivate func inventNewsletterTapped(_ newsletterSwitch: UISwitch) {
@@ -718,6 +762,7 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func recommendationsInfoTapped() {
     let alertController = UIAlertController(
+
       title: Strings.Recommendations(),
       message: Strings.We_use_your_activity_internally_to_make_recommendations_for_you(),
       preferredStyle: .alert)
