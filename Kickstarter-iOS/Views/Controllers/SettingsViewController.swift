@@ -262,6 +262,7 @@ internal final class SettingsViewController: UIViewController {
     _ = self.followingPrivacyInfoButton
       |> UIButton.lens.image(for: .normal)
       .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Following_More_Info() }
 
     _ = self.friendActivityLabel
       |> settingsSectionLabelStyle
