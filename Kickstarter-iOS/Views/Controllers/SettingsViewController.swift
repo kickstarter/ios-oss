@@ -303,9 +303,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = messagesLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in
-        "Messages"
-      }
+      |> UILabel.lens.text %~ { _ in "Messages" }
 
     _ = self.newCommentsLabel
       |> settingsSectionLabelStyle
@@ -496,10 +494,12 @@ internal final class SettingsViewController: UIViewController {
     self.inventNewsletterSwitch.rac.on = self.viewModel.outputs.inventNewsletterOn
     self.manageProjectNotificationsButton.rac.accessibilityHint =
       self.viewModel.outputs.manageProjectNotificationsButtonAccessibilityHint
+    self.messagesButton.rac.selected = self.viewModel.outputs.messagesSelected
     self.mobileBackingsButton.rac.selected = self.viewModel.outputs.mobileBackingsSelected
     self.mobileCommentsButton.rac.selected = self.viewModel.outputs.mobileCommentsSelected
     self.mobileFollowerButton.rac.selected = self.viewModel.outputs.mobileFollowerSelected
     self.mobileFriendActivityButton.rac.selected = self.viewModel.outputs.mobileFriendActivitySelected
+    self.mobileMessagesButton.rac.selected = self.viewModel.outputs.mobileMessagesSelected
     self.mobilePostLikesButton.rac.selected = self.viewModel.outputs.mobilePostLikesSelected
     self.mobileUpdatesButton.rac.selected = self.viewModel.outputs.mobileUpdatesSelected
     self.postLikesButton.rac.selected = self.viewModel.outputs.postLikesSelected
@@ -705,6 +705,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @IBAction fileprivate func messagesTapped(_ button: UIButton) {
+    self.viewModel.inputs.messagesTapped(selected: !button.isSelected)
   }
 
   @IBAction fileprivate func mobileBackingsTapped(_ button: UIButton) {
@@ -740,6 +741,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @IBAction fileprivate func mobileMessagesTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileMessagesTapped(selected: !button.isSelected)
   }
 
   @IBAction fileprivate func mobilePostLikesTapped(_ button: UIButton) {

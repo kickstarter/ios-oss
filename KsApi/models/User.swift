@@ -36,10 +36,12 @@ public struct User {
     public let comments: Bool?
     public let follower: Bool?
     public let friendActivity: Bool?
+    public let messages: Bool?
     public let mobileBackings: Bool?
     public let mobileComments: Bool?
     public let mobileFollower: Bool?
     public let mobileFriendActivity: Bool?
+    public let mobileMessages: Bool?
     public let mobilePostLikes: Bool?
     public let mobileUpdates: Bool?
     public let postLikes: Bool?
@@ -177,11 +179,13 @@ extension User.Notifications: Argo.Decodable {
       <*> json <|? "notify_of_comments"
       <*> json <|? "notify_of_follower"
       <*> json <|? "notify_of_friend_activity"
+      <*> json <|? "notify_of_messages"
     let tmp2 = tmp1
       <*> json <|? "notify_mobile_of_backings"
       <*> json <|? "notify_mobile_of_comments"
       <*> json <|? "notify_mobile_of_follower"
       <*> json <|? "notify_mobile_of_friend_activity"
+      <*> json <|? "notify_mobile_of_messages"
     return tmp2
       <*> json <|? "notify_mobile_of_post_likes"
       <*> json <|? "notify_mobile_of_updates"
@@ -199,6 +203,7 @@ extension User.Notifications: EncodableType {
     result["notify_of_comments"] = self.comments
     result["notify_of_follower"] = self.follower
     result["notify_of_friend_activity"] = self.friendActivity
+    result["notify_of_messages"] = self.messages
     result["notify_of_post_likes"] = self.postLikes
     result["notify_of_creator_edu"] = self.creatorTips
     result["notify_of_updates"] = self.updates
@@ -207,6 +212,7 @@ extension User.Notifications: EncodableType {
     result["notify_mobile_of_comments"] = self.mobileComments
     result["notify_mobile_of_follower"] = self.mobileFollower
     result["notify_mobile_of_friend_activity"] = self.mobileFriendActivity
+    result["notify_mobile_of_messages"] = self.mobileMessages
     result["notify_mobile_of_post_likes"] = self.mobilePostLikes
     result["notify_mobile_of_updates"] = self.mobileUpdates
     return result
@@ -219,10 +225,12 @@ public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
     lhs.comments == rhs.comments &&
     lhs.follower == rhs.follower &&
     lhs.friendActivity == rhs.friendActivity &&
+    lhs.messages == rhs.messages &&
     lhs.mobileBackings == rhs.mobileBackings &&
     lhs.mobileComments == rhs.mobileComments &&
     lhs.mobileFollower == rhs.mobileFollower &&
     lhs.mobileFriendActivity == rhs.mobileFriendActivity &&
+    lhs.mobileMessages == rhs.mobileMessages &&
     lhs.mobilePostLikes == rhs.mobilePostLikes &&
     lhs.mobileUpdates == rhs.mobileUpdates &&
     lhs.postLikes == rhs.postLikes &&

@@ -104,9 +104,6 @@ SettingsViewModelOutputs {
       }
       .skipNil()
 
-    self.messagesSelected = .empty
-    self.mobileMessagesSelected = .empty
-
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
       self.artsAndCultureNewsletterTappedProperty.signal.map { (.arts, $0) },
       self.gamesNewsletterTappedProperty.signal.map { (.games, $0) },
@@ -147,6 +144,9 @@ SettingsViewModelOutputs {
       self.friendActivityTappedProperty.signal.map {
         (UserAttribute.notification(Notification.friendActivity), $0)
       },
+      self.messagesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.messages), $0)
+      },
       self.mobileBackingsTappedProperty.signal.map {
         (UserAttribute.notification(Notification.mobileBackings), $0)
       },
@@ -158,6 +158,9 @@ SettingsViewModelOutputs {
       },
       self.mobileFriendActivityTappedProperty.signal.map {
         (UserAttribute.notification(Notification.mobileFriendActivity), $0)
+      },
+      self.mobileMessagesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileMessages), $0)
       },
       self.mobilePostLikesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.mobilePostLikes), $0)
@@ -265,6 +268,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.follower }.skipNil().skipRepeats()
     self.friendActivitySelected = self.updateCurrentUser
       .map { $0.notifications.friendActivity }.skipNil().skipRepeats()
+    self.messagesSelected = self.updateCurrentUser
+      .map { $0.notifications.messages }.skipNil().skipRepeats()
     self.mobileBackingsSelected = self.updateCurrentUser
       .map { $0.notifications.mobileBackings }.skipNil().skipRepeats()
     self.mobileCommentsSelected = self.updateCurrentUser
@@ -273,6 +278,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.mobileFollower }.skipNil().skipRepeats()
     self.mobileFriendActivitySelected = self.updateCurrentUser
       .map { $0.notifications.mobileFriendActivity }.skipNil().skipRepeats()
+    self.mobileMessagesSelected = self.updateCurrentUser
+      .map { $0.notifications.mobileMessages }.skipNil().skipRepeats()
     self.mobilePostLikesSelected = self.updateCurrentUser
       .map { $0.notifications.mobilePostLikes }.skipNil().skipRepeats()
     self.mobileUpdatesSelected = self.updateCurrentUser
@@ -337,12 +344,12 @@ SettingsViewModelOutputs {
           switch notification {
           case
           .mobileBackings,
-          .mobileComments, .mobileFollower, .mobileFriendActivity, .mobilePostLikes,
+          .mobileComments, .mobileFollower, .mobileFriendActivity, .mobilePostLikes, .mobileMessages,
                .mobileUpdates:
             AppEnvironment.current.koala.trackChangePushNotification(type: notification.trackingString,
                                                                      on: on)
           case .backings,
-               .comments, .follower, .friendActivity, .postLikes, .creatorTips, .updates:
+               .comments, .follower, .friendActivity, .messages, .postLikes, .creatorTips, .updates:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)
           }
@@ -582,10 +589,12 @@ private enum UserAttribute {
       case .creatorTips:          return User.lens.notifications.creatorTips
       case .follower:             return User.lens.notifications.follower
       case .friendActivity:       return User.lens.notifications.friendActivity
+      case .messages:             return User.lens.notifications.messages
       case .mobileBackings:       return User.lens.notifications.mobileBackings
       case .mobileComments:       return User.lens.notifications.mobileComments
       case .mobileFollower:       return User.lens.notifications.mobileFollower
       case .mobileFriendActivity: return User.lens.notifications.mobileFriendActivity
+      case .mobileMessages:       return User.lens.notifications.mobileMessages
       case .mobilePostLikes:      return User.lens.notifications.mobilePostLikes
       case .mobileUpdates:        return User.lens.notifications.mobileUpdates
       case .postLikes:            return User.lens.notifications.postLikes
@@ -605,10 +614,12 @@ private enum Notification {
   case creatorTips
   case follower
   case friendActivity
+  case messages
   case mobileBackings
   case mobileComments
   case mobileFollower
   case mobileFriendActivity
+  case mobileMessages
   case mobilePostLikes
   case mobileUpdates
   case postLikes
@@ -621,6 +632,7 @@ private enum Notification {
     case .creatorTips:                              return "Creator tips"
     case .follower, .mobileFollower:                return "New followers"
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
+    case .messages, .mobileMessages:                 return "New messages"
     case .postLikes, .mobilePostLikes:              return "New likes"
     case .updates, .mobileUpdates:                  return "Project updates"
     }
