@@ -27,10 +27,12 @@ internal final class SettingsViewModelTests: TestCase {
   let happeningNewsletterOn = TestObserver<Bool, NoError>()
   let inventNewsletterOn = TestObserver<Bool, NoError>()
   let logoutWithParams = TestObserver<DiscoveryParams, NoError>()
+  let messagesSelected = TestObserver<Bool, NoError>()
   let mobileBackingsSelected = TestObserver<Bool, NoError>()
   let mobileCommentsSelected = TestObserver<Bool, NoError>()
   let mobileFollowerSelected = TestObserver<Bool, NoError>()
   let mobileFriendActivitySelected = TestObserver<Bool, NoError>()
+  let mobileMessagesSelected = TestObserver<Bool, NoError>()
   let mobilePostLikesSelected = TestObserver<Bool, NoError>()
   let mobileUpdatesSelected = TestObserver<Bool, NoError>()
   let postLikesSelected = TestObserver<Bool, NoError>()
@@ -65,10 +67,12 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.happeningNewsletterOn.observe(self.happeningNewsletterOn.observer)
     self.vm.outputs.inventNewsletterOn.observe(self.inventNewsletterOn.observer)
     self.vm.outputs.logoutWithParams.observe(self.logoutWithParams.observer)
+    self.vm.outputs.messagesSelected.observe(self.messagesSelected.observer)
     self.vm.outputs.mobileBackingsSelected.observe(self.mobileBackingsSelected.observer)
     self.vm.outputs.mobileCommentsSelected.observe(self.mobileCommentsSelected.observer)
     self.vm.outputs.mobileFollowerSelected.observe(self.mobileFollowerSelected.observer)
     self.vm.outputs.mobileFriendActivitySelected.observe(self.mobileFriendActivitySelected.observer)
+    self.vm.outputs.mobileMessagesSelected.observe(self.mobileMessagesSelected.observer)
     self.vm.outputs.mobilePostLikesSelected.observe(self.mobilePostLikesSelected.observer)
     self.vm.outputs.mobileUpdatesSelected.observe(self.mobileUpdatesSelected.observer)
     self.vm.outputs.postLikesSelected.observe(self.postLikesSelected.observer)
@@ -412,21 +416,28 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.followerSelected.assertValues([false], "All social notifications turned off as test default.")
     self.friendActivitySelected.assertValues([false])
+    self.messagesSelected.assertValues([false])
     self.mobileFollowerSelected.assertValues([false])
     self.mobileFriendActivitySelected.assertValues([false])
+    self.mobileMessagesSelected.assertValues([false])
 
     self.vm.inputs.followerTapped(selected: true)
     self.vm.inputs.friendActivityTapped(selected: true)
+    self.vm.inputs.messagesTapped(selected: true)
     self.vm.inputs.mobileFollowerTapped(selected: true)
     self.vm.inputs.mobileFriendActivityTapped(selected: true)
+    self.vm.inputs.mobileMessagesTapped(selected: true)
 
     self.followerSelected.assertValues([false, true], "All social notifications toggled on.")
     self.friendActivitySelected.assertValues([false, true])
+    self.messagesSelected.assertValues([false, true])
     self.mobileFollowerSelected.assertValues([false, true])
     self.mobileFriendActivitySelected.assertValues([false, true])
+    self.mobileMessagesSelected.assertValues([false, true])
 
     XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
-      "Enabled Email Notifications", "Enabled Push Notifications", "Enabled Push Notifications"],
+      "Enabled Email Notifications", "Enabled Email Notifications", "Enabled Push Notifications",
+      "Enabled Push Notifications", "Enabled Push Notifications"],
       self.trackingClient.events)
 
     self.vm.inputs.mobileFollowerTapped(selected: false)
@@ -436,7 +447,8 @@ internal final class SettingsViewModelTests: TestCase {
     self.mobileFriendActivitySelected.assertValues([false, true, false])
 
     XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
-      "Enabled Email Notifications", "Enabled Push Notifications", "Enabled Push Notifications",
+      "Enabled Email Notifications", "Enabled Email Notifications", "Enabled Push Notifications",
+      "Enabled Push Notifications", "Enabled Push Notifications",
       "Disabled Push Notifications", "Disabled Push Notifications"], self.trackingClient.events)
   }
 
