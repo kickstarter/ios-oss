@@ -85,6 +85,7 @@
 "Explore" = "Explore";
 "Explore_creative_projects" = "Explore creative projects";
 "Explore_projects" = "Explore projects";
+"Facebook_login_disclaimer" = "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.";
 "Failed_to_retrieve_live_stream_event_details" = "Failed to retrieve live stream event details";
 "Failed_to_update_subscription" = "Failed to update subscription";
 "Filter_by_all_projects" = "Filter by all projects";
@@ -135,7 +136,7 @@
 "Get_notified_about_this_creators_live_streams" = "Get notified about this creator’s live streams";
 "Get_reminded_about_this_project" = "Get reminded about this project?";
 "Go_to_project_page" = "Go to project page";
-"Got_it" = "Got it.";
+"Got_it" = "Got it";
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
 "Help_center" = "Help Center";
 "Home" = "Home";

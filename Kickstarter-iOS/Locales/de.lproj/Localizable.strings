@@ -85,6 +85,7 @@
 "Explore" = "Erkunden";
 "Explore_creative_projects" = "Erkunde kreative Projekte";
 "Explore_projects" = "Projekte erkunden";
+"Facebook_login_disclaimer" = "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.";
 "Failed_to_retrieve_live_stream_event_details" = "Details zu Live-Stream-Event konnten nicht geladen werden";
 "Failed_to_update_subscription" = "Abo konnte nicht aktualisiert werden";
 "Filter_by_all_projects" = "Filter: Alle Projekte";

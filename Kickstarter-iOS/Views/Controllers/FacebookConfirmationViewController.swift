@@ -61,8 +61,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.confirmationLabel |> fbConfirmationMessageLabelStyle
     _ = self.createAccountButton |> createNewAccountButtonStyle
     _ = self.emailLabel |> fbConfirmEmailLabelStyle
-    _ = self.disclaimerButton
-      |> disclaimerButtonStyle
+    _ = self.disclaimerButton |> disclaimerButtonStyle |> fbDisclaimerTextStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.loginLabel |> fbWrongAccountLabelStyle
     _ = self.navigationItem.title = Strings.signup_navbar_title()

@@ -1425,6 +1425,23 @@ backers"
     )
   }
   /**
+   "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
+
+   - **es**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
+   - **ja**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
+   - **de**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
+   - **fr**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
+   - **en**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
+  */
+  public static func Facebook_login_disclaimer() -> String {
+    return localizedString(
+      key: "Facebook_login_disclaimer",
+      defaultValue: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Failed to retrieve live stream event details"
 
    - **es**: "No se pudo cargar la información acerca del evento en vivo"
@@ -2207,18 +2224,18 @@ backers"
     )
   }
   /**
-   "Got it."
+   "Got it"
 
    - **es**: "¡Listo!"
    - **ja**: "完了"
    - **de**: "Alles klar!"
    - **fr**: "Super."
-   - **en**: "Got it."
+   - **en**: "Got it"
   */
   public static func Got_it() -> String {
     return localizedString(
       key: "Got_it",
-      defaultValue: "Got it.",
+      defaultValue: "Got it",
       count: nil,
       substitutions: [:]
     )

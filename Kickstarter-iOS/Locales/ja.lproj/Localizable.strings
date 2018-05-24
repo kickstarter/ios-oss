@@ -85,6 +85,7 @@
 "Explore" = "さがす";
 "Explore_creative_projects" = "クリエイティブなプロジェクトをさがす";
 "Explore_projects" = "プロジェクトをさがす";
+"Facebook_login_disclaimer" = "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.";
 "Failed_to_retrieve_live_stream_event_details" = "ライブ配信の詳細を取得できませんでした";
 "Failed_to_update_subscription" = "定期購読の更新に失敗しました";
 "Filter_by_all_projects" = "全てのプロジェクトに絞る";
