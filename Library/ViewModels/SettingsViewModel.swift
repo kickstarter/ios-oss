@@ -223,7 +223,6 @@ SettingsViewModelOutputs {
     self.goToAppStoreRating = self.rateUsTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
-
     self.goToDeleteAccountBrowser = self.deleteAccountTappedProperty.signal
       .map {
         AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy")
