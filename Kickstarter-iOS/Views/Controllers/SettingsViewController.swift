@@ -303,7 +303,7 @@ internal final class SettingsViewController: UIViewController {
 
     _ = messagesLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in "Messages" }
+      |> UILabel.lens.text %~ { _ in Strings.dashboard_buttons_messages() }
 
     _ = self.newCommentsLabel
       |> settingsSectionLabelStyle
