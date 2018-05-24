@@ -22,6 +22,12 @@ public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
     }
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
+public let fbDisclaimerTextStyle = UIButton.lens.title(for: .normal) %~ { _ in
+    Strings.Facebook_login_disclaimer()
+  } <> UIButton.lens.accessibilityLabel %~ { _ in
+    Strings.Facebook_login_disclaimer()
+  }
+
 public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }
   <> UITextField.lens.keyboardType .~ .emailAddress
