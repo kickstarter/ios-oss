@@ -102,10 +102,9 @@ sync:
 	@echo "Syncing oss and prive remotes..."
 
 	@git checkout oss $(BRANCH)
-	@git fetch oss
-	@git fetch private
-
+	@git pull oss $(BRANCH)
 	@git push private $(BRANCH)
+	
 	@echo "private and oss remotes are now synced!"
 
 lint:
