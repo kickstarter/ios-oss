@@ -25,12 +25,14 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var creatorStackView: UIStackView!
   @IBOutlet fileprivate weak var creatorTips: UILabel!
   @IBOutlet fileprivate weak var creatorTipsButton: UIButton!
-  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
+  @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
+  @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
+  @IBOutlet fileprivate weak var exportDataButton: UIButton!
+  @IBOutlet fileprivate weak var exportDataLabel: UILabel!
+  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
   @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
-  @IBOutlet fileprivate weak var helpCenterButton: UIButton!
-  @IBOutlet fileprivate weak var helpCenterLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
@@ -39,6 +41,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var gamesNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var happeningNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var happeningNowLabel: UILabel!
+  @IBOutlet fileprivate weak var helpCenterButton: UIButton!
+  @IBOutlet fileprivate weak var helpCenterLabel: UILabel!
   @IBOutlet fileprivate weak var helpTitleLabel: UILabel!
   @IBOutlet fileprivate weak var howKsrWorksButton: UIButton!
   @IBOutlet fileprivate weak var howKsrWorksLabel: UILabel!
@@ -113,7 +117,13 @@ internal final class SettingsViewController: UIViewController {
                                       action: #selector(cookiePolicyTapped),
                                       for: .touchUpInside)
 
+    self.deleteAccountButton.addTarget(self,
+                                    action: #selector(deleteAccountTapped),
+                                    for: .touchUpInside)
+
     self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
+
+    self.exportDataButton.addTarget(self, action: #selector(exportDataTapped), for: .touchUpInside)
 
     self.environmentSwitcher.addTarget(self,
                                        action: #selector(environmentSwitcherTapped),
@@ -201,6 +211,14 @@ internal final class SettingsViewController: UIViewController {
     _ = self.creatorTips
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Creator_tips() }
+
+    _ = self.deleteAccountLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Delete_my_Kickstarter_Account() }
+
+    _ = self.exportDataLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Request_my_Personal_Data() }
 
     _ = self.emailFrequencyLabel
       |> UILabel.lens.font .~ .ksr_body()
@@ -378,6 +396,10 @@ internal final class SettingsViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
 
+    self.viewModel.outputs.goToDeleteAccountBrowser
+      .observeForControllerAction()
+      .observeValues { [weak self] url in self?.goToDeleteAccount(url: url) }
+
     self.viewModel.outputs.goToManageProjectNotifications
       .observeForControllerAction()
       .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
@@ -484,6 +506,12 @@ internal final class SettingsViewController: UIViewController {
   fileprivate func goToAppStore(link: String) {
     guard let url = URL(string: link) else { return }
     UIApplication.shared.openURL(url)
+  }
+
+  fileprivate func goToDeleteAccount(url: URL) {
+    let controller = SFSafariViewController(url: url)
+    controller.modalPresentationStyle = .overFullScreen
+    self.present(controller, animated: true, completion: nil)
   }
 
   fileprivate func goToBetaFeedback() {
@@ -607,16 +635,36 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.emailFrequencyTapped()
   }
 
+  @objc fileprivate func exportDataTapped() {
+    let exportDataSheet = UIAlertController(
+      title: Strings.Download_your_personal_data(),
+      message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
+      preferredStyle: .actionSheet)
+
+    let startTheRequest = UIAlertAction(title: Strings.Start_data_collection(),
+                                        style: .default,
+                                        handler: { [weak self] _ in
+                                          self?.viewModel.inputs.exportDataTapped()
+    })
+
+    let dismiss = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+    exportDataSheet.addAction(startTheRequest)
+    exportDataSheet.addAction(dismiss)
+
+    self.present(exportDataSheet, animated: true, completion: nil)
+  }
+
   @objc fileprivate func environmentSwitcherTapped() {
     self.showEnvironmentActionSheet()
   }
 
-  @objc fileprivate func helpCenterTapped() {
-    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
-  }
-
   @objc fileprivate func findFriendsTapped() {
     self.viewModel.inputs.findFriendsTapped()
+  }
+
+  @objc fileprivate func helpCenterTapped() {
+    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
   }
 
   @IBAction fileprivate func followerTapped(_ button: UIButton) {
@@ -705,6 +753,10 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func rateUsTapped() {
     self.viewModel.inputs.rateUsTapped()
+  }
+
+  @objc fileprivate func deleteAccountTapped() {
+    self.viewModel.inputs.deleteAccountTapped()
   }
 
   @objc fileprivate func termsOfUseTapped() {

@@ -19,6 +19,8 @@ internal enum Route {
   case deleteImage(UpdateDraft.Image, fromDraft: UpdateDraft)
   case deleteVideo(UpdateDraft.Video, fromDraft: UpdateDraft)
   case discover(DiscoveryParams)
+  case exportData
+  case exportDataState(state: String, downloadUrl: String)
   case facebookConnect(facebookAccessToken: String)
   case facebookLogin(facebookAccessToken: String, code: String?)
   case facebookSignup(facebookAccessToken: String, sendNewsletters: Bool)
@@ -128,6 +130,16 @@ internal enum Route {
         ].compact()
 
       return (.POST, pledgeUrl?.absoluteString ?? "", params, nil)
+
+    case .exportData:
+      return (.POST, "/v1/users//self/request_export_data", [:], nil)
+
+    case let .exportDataState(state, downloadUrl):
+      let params: [String: Any] = [
+         "state": state,
+         "download_url": downloadUrl
+      ]
+      return (.GET, "/v1/users/self/download_export_data", params, nil)
 
     case let .deleteImage(i, draft):
       return (.DELETE, "/v1/projects/\(draft.update.projectId)/updates/draft/images/\(i.id)", [:], nil)
