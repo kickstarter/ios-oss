@@ -157,6 +157,10 @@ extension Lens where Whole == User, Part == User.Notifications {
     return User.lens.notifications..User.Notifications.lens.friendActivity
   }
 
+  public var messages: Lens<User, Bool?> {
+    return User.lens.notifications..User.Notifications.lens.messages
+  }
+
   public var postLikes: Lens<User, Bool?> {
     return User.lens.notifications..User.Notifications.lens.postLikes
   }
@@ -187,6 +191,10 @@ extension Lens where Whole == User, Part == User.Notifications {
 
   public var mobileFriendActivity: Lens<User, Bool?> {
     return User.lens.notifications..User.Notifications.lens.mobileFriendActivity
+  }
+
+  public var mobileMessages: Lens<User, Bool?> {
+    return User.lens.notifications..User.Notifications.lens.mobileMessages
   }
 
   public var mobilePostLikes: Lens<User, Bool?> {

@@ -56,10 +56,13 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var logoutButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsLabel: UILabel!
+  @IBOutlet fileprivate weak var messagesLabel: UILabel!
+  @IBOutlet fileprivate weak var messagesButton: UIButton!
   @IBOutlet fileprivate weak var mobileBackingsButton: UIButton!
   @IBOutlet fileprivate weak var mobileCommentsButton: UIButton!
   @IBOutlet fileprivate weak var mobileFollowerButton: UIButton!
   @IBOutlet fileprivate weak var mobileFriendActivityButton: UIButton!
+  @IBOutlet fileprivate weak var mobileMessagesButton: UIButton!
   @IBOutlet fileprivate weak var mobilePostLikesButton: UIButton!
   @IBOutlet fileprivate weak var mobileUpdatesButton: UIButton!
   @IBOutlet fileprivate weak var newCommentsLabel: UILabel!
@@ -314,6 +317,10 @@ internal final class SettingsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_notifications() }
 
+    _ = messagesLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.dashboard_buttons_messages() }
+
     _ = self.newCommentsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_comments() }
@@ -510,10 +517,12 @@ internal final class SettingsViewController: UIViewController {
     self.inventNewsletterSwitch.rac.on = self.viewModel.outputs.inventNewsletterOn
     self.manageProjectNotificationsButton.rac.accessibilityHint =
       self.viewModel.outputs.manageProjectNotificationsButtonAccessibilityHint
+    self.messagesButton.rac.selected = self.viewModel.outputs.messagesSelected
     self.mobileBackingsButton.rac.selected = self.viewModel.outputs.mobileBackingsSelected
     self.mobileCommentsButton.rac.selected = self.viewModel.outputs.mobileCommentsSelected
     self.mobileFollowerButton.rac.selected = self.viewModel.outputs.mobileFollowerSelected
     self.mobileFriendActivityButton.rac.selected = self.viewModel.outputs.mobileFriendActivitySelected
+    self.mobileMessagesButton.rac.selected = self.viewModel.outputs.mobileMessagesSelected
     self.mobilePostLikesButton.rac.selected = self.viewModel.outputs.mobilePostLikesSelected
     self.mobileUpdatesButton.rac.selected = self.viewModel.outputs.mobileUpdatesSelected
     self.postLikesButton.rac.selected = self.viewModel.outputs.postLikesSelected
@@ -739,6 +748,10 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.manageProjectNotificationsTapped()
   }
 
+  @IBAction fileprivate func messagesTapped(_ button: UIButton) {
+    self.viewModel.inputs.messagesTapped(selected: !button.isSelected)
+  }
+
   @IBAction fileprivate func mobileBackingsTapped(_ button: UIButton) {
     self.viewModel.inputs.mobileBackingsTapped(selected: !button.isSelected)
   }
@@ -770,6 +783,10 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func mobileFriendActivityTapped(_ button: UIButton) {
     self.viewModel.inputs.mobileFriendActivityTapped(selected: !button.isSelected)
+  }
+
+  @IBAction fileprivate func mobileMessagesTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileMessagesTapped(selected: !button.isSelected)
   }
 
   @IBAction fileprivate func mobilePostLikesTapped(_ button: UIButton) {
