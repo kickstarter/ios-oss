@@ -22,6 +22,10 @@ public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
     }
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
+public let showHidePasswordButtonStyle = UIButton.lens.accessibilityLabel .~ "Password visibility"
+  <> UIButton.lens.title(for: .normal) .~ ""
+  <> UIButton.lens.tintColor .~ .ksr_grey_400
+
 public let fbDisclaimerTextStyle = UIButton.lens.title(for: .normal) %~ { _ in
     Strings.Facebook_login_disclaimer()
   } <> UIButton.lens.accessibilityLabel %~ { _ in
@@ -90,6 +94,7 @@ public let onePasswordButtonStyle =
 public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
 
 public let passwordFieldStyle = formFieldStyle
+  <> UITextField.lens.clearButtonMode .~ .whileEditing
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_password() }
   <> UITextField.lens.secureTextEntry .~ true
 
