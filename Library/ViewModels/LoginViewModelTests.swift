@@ -251,21 +251,21 @@ final class LoginViewModelTests: TestCase {
                                      "Two factor challenge emitted with email and password")
     }
   }
-  
+
   func testShowPassword() {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.showHidePasswordButtonTapped()
-    
+
     self.showHidePassword.assertValue(true)
   }
-  
+
   func testHidePassword() {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.showHidePasswordButtonTapped()
     self.showHidePassword.assertValue(true, "Password is shown")
-    
+
     self.vm.inputs.showHidePasswordButtonTapped()
     self.showHidePassword.assertValueCount(2)
     self.showHidePassword.assertLastValue(false, "Password not shown")
