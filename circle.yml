@@ -198,11 +198,8 @@ jobs:
           paths:
             - ".git"
       - run:
-          name: Make Sync
-          command: make sync
-      - run:
           name: Deploy Alpha
-          command: RELEASE=alpha make deploy
+          command: make alpha
 
    # Hockey Alpha
   alpha:
@@ -241,6 +238,10 @@ jobs:
           name: Fastlane
           command: bundle exec fastlane alpha_match_gym_hockey --verbose
           no_output_timeout: "30m" # 30 minutes
+
+      - run:
+          name: Cleanup Temp Branch
+          command: make cleanup
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
@@ -369,7 +370,7 @@ workflows:
       - alpha:
           filters:
             branches:
-              only: alpha-dist
+              only: /alpha-dist-*/
           requires:
             - swiftlint-and-cache
             - kickstarter-tests

@@ -10,6 +10,7 @@ IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
 OPENTOK_VERSION ?= 2.10.2
+COMMIT ?= $(CIRCLE_SHA1)
 
 ifeq ($(PLATFORM),iOS)
 	DESTINATION ?= 'platform=iOS Simulator,name=$(IPHONE_NAME),OS=$(IOS_VERSION)'
@@ -72,9 +73,9 @@ deploy:
 		echo "There are commits in oss/$(BRANCH) that are not in private/$(BRANCH). Please sync the remotes before deploying."; \
 		exit 1; \
 	fi
-	@if test "$(RELEASE)" != "alpha" && test "$(RELEASE)" != "beta" && test "$(RELEASE)" != "itunes"; \
+	@if test "$(RELEASE)" != "beta" && test "$(RELEASE)" != "itunes"; \
 	then \
-		echo "RELEASE must be 'alpha', beta' or 'itunes'."; \
+		echo "RELEASE must be 'beta' or 'itunes'."; \
 		exit 1; \
 	fi
 	@if test "$(RELEASE)" = "itunes" && test "$(BRANCH)" != "master"; \
@@ -90,22 +91,35 @@ deploy:
 	@echo "Deploy has been kicked off to CircleCI!"
 
 alpha:
-	@echo "Deploying private/alpha-dist..."
+	@echo "Adding remotes..."
+	@git remote add oss https://github.com/kickstarter/ios-oss
+	@git remote add private https://github.com/kickstarter/ios-private
 
-	@git branch -f alpha-dist private/$(BRANCH)
-	@git push -f private alpha-dist
-	@git branch -d alpha-dist
+	@echo "Deploying private/alpha-dist-$(COMMIT)..."
+
+	@git branch -f alpha-dist-$(COMMIT)
+	@git push -f private alpha-dist-$(COMMIT)
+	@git branch -d alpha-dist-$(COMMIT)
 
 	@echo "Deploy has been kicked off to CircleCI!"
 
 sync:
-	@echo "Syncing oss and prive remotes..."
+	@echo "Syncing oss and private remotes..."
 
 	@git checkout oss $(BRANCH)
 	@git pull oss $(BRANCH)
 	@git push private $(BRANCH)
 	
 	@echo "private and oss remotes are now synced!"
+
+cleanup:
+	@echo "Adding remotes..."
+	@git remote add oss https://github.com/kickstarter/ios-oss
+	@git remote add private https://github.com/kickstarter/ios-private
+
+	@echo "Deleting temporary branch: $(CIRCLE_BRANCH)"
+
+	@git push -d private $(CIRCLE_BRANCH)
 
 lint:
 	swiftlint lint --reporter json --strict

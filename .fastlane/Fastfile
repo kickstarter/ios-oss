@@ -182,7 +182,7 @@ platform :ios do
       repository_url: ENV["CIRCLE_REPOSITORY_URL"],
       build_server_url: ENV["CIRCLE_BUILD_URL"],
       commit_sha: ENV["CIRCLE_SHA1"],
-      notes: "CircleCI build " + ENV["CIRCLE_BUILD_NUM"],
+      notes: "CircleCI build #{ENV['CIRCLE_BUILD_NUM']}, for commit: #{ENV['CIRCLE_SHA1']}",
       bypass_cdn: true,
       notify: "1"
     )
