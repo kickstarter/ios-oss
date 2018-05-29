@@ -94,7 +94,6 @@ public let onePasswordButtonStyle =
 public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
 
 public let passwordFieldStyle = formFieldStyle
-  <> UITextField.lens.clearButtonMode .~ .whileEditing
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_password() }
   <> UITextField.lens.secureTextEntry .~ true
 

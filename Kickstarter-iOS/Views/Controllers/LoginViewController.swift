@@ -83,7 +83,6 @@ internal final class LoginViewController: UIViewController {
 
     _ = self.passwordTextField |> passwordFieldStyle
       |> UITextField.lens.returnKeyType .~ .go
-      |> UITextField.lens.rightViewMode .~ .whileEditing
 
     _ = self.formDividerView |> separatorStyle
 
@@ -105,22 +104,25 @@ internal final class LoginViewController: UIViewController {
     self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonHidden
 
+    
     self.viewModel.outputs.showHidePasswordButtonToggled
     .observeForUI()
     .observeValues { [weak self] shouldShow in
       guard let sself = self else { return }
       let tintColor: UIColor = shouldShow ? .ksr_green_500 : .ksr_grey_400
-
+      let accessibilityValue = shouldShow ? "Hide password" : "Show password"
+      
       _ = sself.showHidePasswordButton
         |> UIButton.lens.tintColor .~ tintColor
-
-      _ = sself.passwordTextField
-        |> UITextField.lens.secureTextEntry .~ !shouldShow
+        |> UIButton.lens.accessibilityValue .~ accessibilityValue
 
       // Note: workaround for cursor whitespace render bug
-      let currentText = sself.passwordTextField.text
-      sself.passwordTextField.text = " "
-      sself.passwordTextField.text = currentText
+      let currentText = sself.passwordTextField ^* UITextField.lens.text
+      
+      _ = sself.passwordTextField
+        |> UITextField.lens.secureTextEntry .~ !shouldShow
+        |> UITextField.lens.text .~ " "
+        |> UITextField.lens.text .~ currentText
     }
 
     self.viewModel.outputs.dismissKeyboard
