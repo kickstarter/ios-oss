@@ -384,10 +384,10 @@ public enum Strings {
   /**
    "Are you sure?"
 
-   - **es**: "Are you sure?"
-   - **ja**: "Are you sure?"
+   - **es**: "¿Estás seguro?"
+   - **ja**: "オフにしてもよろしいですか？"
    - **de**: "Bist du sicher?"
-   - **fr**: "Are you sure?"
+   - **fr**: "Êtes-vous certain ?"
    - **en**: "Are you sure?"
   */
   public static func Are_you_sure() -> String {
@@ -611,10 +611,10 @@ backers"
   /**
    "Cancel"
 
-   - **es**: "Cancel"
-   - **ja**: "Cancel"
+   - **es**: "Cancelar"
+   - **ja**: "キャンセル"
    - **de**: "Abbrechen"
-   - **fr**: "Cancel"
+   - **fr**: "Annuler"
    - **en**: "Cancel"
   */
   public static func Cancel() -> String {
@@ -1425,6 +1425,23 @@ backers"
     )
   }
   /**
+   "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
+
+   - **es**: "Si inicias sesión con Facebook, importaremos tu nombre y foto de perfil. También accederemos a tu lista de amigos para que puedas seguir a tus amigos de Facebook en Kickstarter. Jamás publicaremos nada en Facebook sin tu permiso."
+   - **ja**: "Facebook でログインすると、あなたの氏名とプロフィール写真がインポートされます。また、あなたが Kickstarter 上で Facebook 友達をフォローすることができるように、友達リストも Kickstarter によってアクセスされます。あなたの許可なしに Kickstarter が Facebook 上に投稿を行うことは決してありません。  "
+   - **de**: "Wenn du dich über Facebook anmeldest, importieren wir deinen Namen und dein Profilfoto. Außerdem wird deine Freundesliste importiert, damit du deinen Freunden auf Kickstarter folgen kannst. Wir werden niemals etwas ohne deine Erlaubnis auf Facebook posten."
+   - **fr**: "Si vous vous connectez avec Facebook, nous importerons votre nom et votre photo de profil. Nous accéderons aussi à votre liste d'amis pour vous permettre de suivre vos connaissances sur Kickstarter. Nous ne publierons jamais sur Facebook sans votre autorisation."
+   - **en**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
+  */
+  public static func Facebook_login_disclaimer() -> String {
+    return localizedString(
+      key: "Facebook_login_disclaimer",
+      defaultValue: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Failed to retrieve live stream event details"
 
    - **es**: "No se pudo cargar la información acerca del evento en vivo"
@@ -1818,9 +1835,9 @@ backers"
   /**
    "Following More Info"
 
-   - **es**: "Following More Info"
-   - **ja**: "Following More Info"
-   - **de**: "Following More Info"
+   - **es**: "Más información sobre el seguimiento"
+   - **ja**: "フォロー 詳細"
+   - **de**: "Mehr Info zu Folgen"
    - **fr**: "Following More Info"
    - **en**: "Following More Info"
   */
@@ -2207,18 +2224,18 @@ backers"
     )
   }
   /**
-   "Got it."
+   "Got it"
 
    - **es**: "¡Listo!"
    - **ja**: "完了"
    - **de**: "Alles klar!"
    - **fr**: "Super."
-   - **en**: "Got it."
+   - **en**: "Got it"
   */
   public static func Got_it() -> String {
     return localizedString(
       key: "Got_it",
-      defaultValue: "Got it.",
+      defaultValue: "Got it",
       count: nil,
       substitutions: [:]
     )
@@ -2311,10 +2328,10 @@ backers"
   /**
    "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
 
-   - **es**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
-   - **ja**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
-   - **de**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
-   - **fr**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
+   - **es**: "Si desactivas el seguimiento, no podrás seguir a nadie y nadie podrá seguirte. Tu perfil se desconectará de todos tus seguidores. Esto no se puede deshacer."
+   - **ja**: "フォローをオフにすると、あなたは誰もフォローすることができなくなり、また他の人があなたをフォローすることもできなくなります。また、既存のフォロワーとのつながりも絶たれます。この操作は後から元に戻すことはできませんのでご注意ください。"
+   - **de**: "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden."
+   - **fr**: "Si vous désactivez les fonctionnalités de suivi, vous ne pourrez pas vous abonner aux activités des autres et plus personne ne pourra suivre les vôtres. Votre profil sera déconnecté de tous vos abonnés. Cette action ne pourra pas être annulée."
    - **en**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
   */
   public static func If_you_turn_following_off() -> String {
@@ -2886,6 +2903,23 @@ with friends."
       defaultValue: "Message %{user_name}…",
       count: nil,
       substitutions: ["user_name": user_name]
+    )
+  }
+  /**
+   "Messages"
+
+   - **es**: "Mensajes"
+   - **ja**: "メッセージ"
+   - **de**: "Nachrichten"
+   - **fr**: "Messages"
+   - **en**: "Messages"
+  */
+  public static func Messages() -> String {
+    return localizedString(
+      key: "Messages",
+      defaultValue: "Messages",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -4036,10 +4070,10 @@ daring ideas."
   /**
    "Recommendations More Info"
 
-   - **es**: "Recommendations More Info"
-   - **ja**: "Recommendations More Info"
-   - **de**: "Recommendations More Info"
-   - **fr**: "Recommendations More Info"
+   - **es**: "Más información sobre las recomendaciones"
+   - **ja**: "おすすめ 詳細"
+   - **de**: "Mehr Info zu Empfehlungen"
+   - **fr**: "Plus d'infos sur les recommandations"
    - **en**: "Recommendations More Info"
   */
   public static func Recommendations_More_Info() -> String {
@@ -5710,10 +5744,10 @@ Please try again later."
   /**
    "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
 
-   - **es**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
-   - **ja**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
-   - **de**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
-   - **fr**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
+   - **es**: "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente."
+   - **ja**: "フォローがオンになっていると、他の人のアクティビティをフォローすることができ、また、他の人もあなたのアクティビティをフォローすることができます。このようなデータを永久に削除するためにはフォローをオフにしてください。"
+   - **de**: "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht."
+   - **fr**: "Lorsque les fonctionnalités de suivi sont activées, vous pouvez vous abonner aux activités des autres, qui pourront à leur tour s'abonner aux vôtres. Pour supprimer définitivement ces données, il vous suffit de désactiver les fonctionnalités de suivi."
    - **en**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
   */
   public static func When_following_is_on_you_can_follow_the_acticity_of_others() -> String {
@@ -5744,10 +5778,10 @@ Please try again later."
   /**
    "Yes, turn off"
 
-   - **es**: "Yes, turn off"
-   - **ja**: "Yes, turn off"
-   - **de**: "Yes, turn off"
-   - **fr**: "Yes, turn off"
+   - **es**: "Sí, desactivar"
+   - **ja**: "はい、オフにします"
+   - **de**: "Ja, deaktivieren"
+   - **fr**: "Oui, désactiver"
    - **en**: "Yes, turn off"
   */
   public static func Yes_turn_off() -> String {
