@@ -10,14 +10,12 @@ import XCTest
 internal final class HelpWebViewModelTests: TestCase {
   fileprivate let vm: HelpWebViewModelType = HelpWebViewModel()
 
-  private let helpCenterUrl = AppEnvironment.current.apiService.serverConfig.helpCenterUrl
-
   fileprivate let webViewLoadRequest = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.webViewLoadRequest.map(urlFrom(request:))
+    self.vm.outputs.webViewLoadRequest.map { $0.url?.relativePath ?? "" }
       .observe(self.webViewLoadRequest.observer)
   }
 
@@ -34,32 +32,24 @@ internal final class HelpWebViewModelTests: TestCase {
     self.vm.inputs.configureWith(helpType: .helpCenter)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", helpCenterUrl.absoluteString])
+    self.webViewLoadRequest.assertValues(["/cookies", "/help"])
 
     self.vm.inputs.configureWith(helpType: .howItWorks)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", helpCenterUrl.absoluteString, "/about"])
+    self.webViewLoadRequest.assertValues(["/cookies", "/help", "/about"])
 
     self.vm.inputs.configureWith(helpType: .privacy)
     self.vm.inputs.viewDidLoad()
 
     self.webViewLoadRequest.assertValues(
-      ["/cookies", helpCenterUrl.absoluteString, "/about", "/privacy"]
+      ["/cookies", "/help", "/about", "/privacy"]
     )
 
     self.vm.inputs.configureWith(helpType: .terms)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", helpCenterUrl.absoluteString, "/about", "/privacy",
+    self.webViewLoadRequest.assertValues(["/cookies", "/help", "/about", "/privacy",
       "/terms-of-use"])
-  }
-
-  private func urlFrom(request: URLRequest) -> String {
-
-    guard let url = request.url else { return "" }
-
-    let relativePath = request.url?.relativePath ?? ""
-    return url.absoluteString.contains("help") ? helpCenterUrl.absoluteString : relativePath
   }
 }

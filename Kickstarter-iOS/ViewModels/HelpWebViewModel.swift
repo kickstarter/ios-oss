@@ -52,7 +52,7 @@ private func urlForHelpType(_ helpType: HelpType, baseUrl: URL) -> URL? {
   case .contact:
     return nil
   case .helpCenter:
-    return AppEnvironment.current.apiService.serverConfig.helpCenterUrl
+    return baseUrl.appendingPathComponent("help")
   case .howItWorks:
     return baseUrl.appendingPathComponent("about")
   case .privacy:
