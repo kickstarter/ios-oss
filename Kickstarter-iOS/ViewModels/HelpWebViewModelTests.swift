@@ -10,8 +10,6 @@ import XCTest
 internal final class HelpWebViewModelTests: TestCase {
   fileprivate let vm: HelpWebViewModelType = HelpWebViewModel()
 
-  private let helpCenterUrl = AppEnvironment.current.apiService.serverConfig.helpCenterUrl
-
   fileprivate let webViewLoadRequest = TestObserver<String, NoError>()
 
   override func setUp() {
