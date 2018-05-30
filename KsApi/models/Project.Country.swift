@@ -11,6 +11,12 @@ extension Project {
     public let minPledge: Int?
     public let trailingCode: Bool
 
+    /*
+     The amount for maximum pledge can be found here:
+     https://github.com/kickstarter/kickstarter/blob/master/config/countries.yml
+     Ideally we should get the amounts from the API. But for now we have to update them manually.
+    */
+
     // swiftlint:disable line_length
     // swiftlint:disable comma
     public static let at = Country(countryCode: "AT", currencyCode: "EUR", currencySymbol: "€",  maxPledge: 8_500, minPledge: 1, trailingCode: false)
