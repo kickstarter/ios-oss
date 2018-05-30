@@ -22,7 +22,7 @@ public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
     }
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
-public let showHidePasswordButtonStyle = UIButton.lens.accessibilityLabel .~ "Password visibility"
+public let showHidePasswordButtonStyle = UIButton.lens.accessibilityLabel .~ Strings.Password_visibility()
   <> UIButton.lens.title(for: .normal) .~ ""
   <> UIButton.lens.tintColor .~ .ksr_grey_400
 

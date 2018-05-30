@@ -79,7 +79,7 @@ internal final class LoginViewController: UIViewController {
       |> UIButton.lens.image(for: .normal) .~ image(named: "icon--eye",
                                                     inBundle: Bundle.framework,
                                                     compatibleWithTraitCollection: nil)
-      |> UIButton.lens.accessibilityValue .~ "Show password"
+      |> UIButton.lens.accessibilityValue .~ Strings.Show_password()
 
     _ = self.passwordTextField |> passwordFieldStyle
       |> UITextField.lens.returnKeyType .~ .go
@@ -109,7 +109,7 @@ internal final class LoginViewController: UIViewController {
     .observeValues { [weak self] shouldShow in
       guard let sself = self else { return }
       let tintColor: UIColor = shouldShow ? .ksr_green_500 : .ksr_grey_400
-      let accessibilityValue = shouldShow ? "Hide password" : "Show password"
+      let accessibilityValue = shouldShow ? Strings.Hide_password() : Strings.Show_password()
 
       _ = sself.showHidePasswordButton
         |> UIButton.lens.tintColor .~ tintColor
