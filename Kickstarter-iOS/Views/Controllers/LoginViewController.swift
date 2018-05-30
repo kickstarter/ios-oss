@@ -79,7 +79,9 @@ internal final class LoginViewController: UIViewController {
       |> UIButton.lens.image(for: .normal) .~ image(named: "icon--eye",
                                                     inBundle: Bundle.framework,
                                                     compatibleWithTraitCollection: nil)
-      |> UIButton.lens.accessibilityValue .~ Strings.Show_password()
+      |> UIButton.lens.accessibilityValue %~ { _ in
+        Strings.Show_password()
+      }
 
     _ = self.passwordTextField |> passwordFieldStyle
       |> UITextField.lens.returnKeyType .~ .go
