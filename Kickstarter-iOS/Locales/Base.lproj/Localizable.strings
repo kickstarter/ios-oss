@@ -180,6 +180,7 @@
 "Message_backer" = "Message backer";
 "Message_creator" = "Message creator";
 "Message_user_name" = "Message %{user_name}…";
+"Messages" = "Messages";
 "Name" = "Name";
 "Never" = "Never";
 "New_pledge_activity" = "New pledge activity";
