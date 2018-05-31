@@ -2275,6 +2275,23 @@ backers"
     )
   }
   /**
+   "Hide password"
+
+   - **es**: "Ocultar contraseña"
+   - **ja**: "Hide password"
+   - **de**: "Hide password"
+   - **fr**: "Hide password"
+   - **en**: "Hide password"
+  */
+  public static func Hide_password() -> String {
+    return localizedString(
+      key: "Hide_password",
+      defaultValue: "Hide password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Home"
 
    - **es**: "Inicio"
@@ -3431,6 +3448,23 @@ from friends yet."
     return localizedString(
       key: "Other_projects_you_might_like",
       defaultValue: "Other projects you might like.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Password visibility"
+
+   - **es**: "Visibilidad de la contraseña"
+   - **ja**: "Password visibility"
+   - **de**: "Password visibility"
+   - **fr**: "Password visibility"
+   - **en**: "Password visibility"
+  */
+  public static func Password_visibility() -> String {
+    return localizedString(
+      key: "Password_visibility",
+      defaultValue: "Password visibility",
       count: nil,
       substitutions: [:]
     )
@@ -4709,6 +4743,23 @@ daring ideas."
     return localizedString(
       key: "Ships_to",
       defaultValue: "Ships to:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Show password"
+
+   - **es**: "Mostrar contraseña"
+   - **ja**: "Show password"
+   - **de**: "Show password"
+   - **fr**: "Show password"
+   - **en**: "Show password"
+  */
+  public static func Show_password() -> String {
+    return localizedString(
+      key: "Show_password",
+      defaultValue: "Show password",
       count: nil,
       substitutions: [:]
     )
