@@ -176,17 +176,17 @@ internal final class LoginViewController: UIViewController {
     let vc = ResetPasswordViewController.configuredWith(email: emailTextField.text)
     self.navigationController?.pushViewController(vc, animated: true)
   }
-  
+
   fileprivate func updateShowHidePassword(_ shouldShow: Bool) {
     let tintColor: UIColor = shouldShow ? .ksr_green_500 : .ksr_grey_400
     let accessibilityValue = shouldShow ? Strings.Hide_password() : Strings.Show_password()
-    
+
     _ = self.showHidePasswordButton
       |> UIButton.lens.tintColor .~ tintColor
       |> UIButton.lens.accessibilityValue .~ accessibilityValue
-    
+
     let currentText = self.passwordTextField ^* UITextField.lens.text
-    
+
     // Note: workaround for cursor whitespace render bug
     _ = self.passwordTextField
       |> UITextField.lens.secureTextEntry .~ !shouldShow
