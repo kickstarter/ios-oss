@@ -317,8 +317,11 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   }
 
   private func showEnvironmentActionSheet() {
+
+    let config = ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)
+    
     let alert = UIAlertController(
-      title: "Change Environment (\(ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)))",
+      title: "Change Environment (\(config))",
       message: nil,
       preferredStyle: .actionSheet
     )
