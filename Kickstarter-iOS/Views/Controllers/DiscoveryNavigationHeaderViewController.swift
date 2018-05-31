@@ -18,6 +18,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   @IBOutlet fileprivate weak var bookmarkOutlineImageView: UIImageView!
   @IBOutlet fileprivate weak var dividerLabel: UILabel!
   @IBOutlet fileprivate weak var exploreLabel: UILabel!
+  @IBOutlet fileprivate weak var environmentSwitcherButton: UIButton!
   @IBOutlet fileprivate weak var favoriteButton: UIButton!
   @IBOutlet fileprivate weak var favoriteContainerView: UIView!
   @IBOutlet fileprivate weak var primaryLabel: UILabel!
@@ -44,6 +45,10 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.environmentSwitcherButton.addTarget(self,
+                                       action: #selector(environmentSwitcherTapped),
+                                       for: .touchUpInside)
+
     self.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped),
                                   for: .touchUpInside)
 
@@ -55,6 +60,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.environmentSwitcherButton.rac.hidden = self.viewModel.outputs.environmentSwitcherButtonIsHidden
     self.exploreLabel.rac.hidden = self.viewModel.outputs.exploreLabelIsHidden
     self.favoriteContainerView.rac.hidden = self.viewModel.outputs.favoriteViewIsHidden
     self.favoriteButton.rac.accessibilityLabel = self.viewModel.outputs.favoriteButtonAccessibilityLabel
@@ -295,12 +301,49 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     }
   }
 
+  @objc fileprivate func environmentSwitcherTapped() {
+    self.showEnvironmentActionSheet()
+  }
+
   @objc fileprivate func titleButtonTapped() {
     self.viewModel.inputs.titleButtonTapped()
   }
 
   @objc fileprivate func favoriteButtonTapped() {
     self.viewModel.inputs.favoriteButtonTapped()
+  }
+
+  private func showEnvironmentActionSheet() {
+    let alert = UIAlertController(
+      title: "Change Environment (\(ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)))",
+      message: nil,
+      preferredStyle: .actionSheet
+    )
+
+    alert.addAction(
+      UIAlertAction(title: "Local", style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.local)
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: "Staging", style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction(title: "Production", style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.production)
+      }
+    )
+
+    alert.addAction(
+      UIAlertAction.init(title: "Cancel", style: .cancel)
+    )
+
+    self.present(alert, animated: true, completion: nil)
   }
 }
 

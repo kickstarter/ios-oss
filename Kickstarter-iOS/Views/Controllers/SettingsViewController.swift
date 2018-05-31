@@ -248,7 +248,7 @@ internal final class SettingsViewController: UIViewController {
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
       |> UIButton.lens.title(for: .normal)
-        .~ "Change Environment: \(AppEnvironment.current.apiService.serverConfig.environmentName)"
+        .~ "Change Environment (\(ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)))"
 
     _ = self.findFriendsButton
       |> settingsSectionButtonStyle

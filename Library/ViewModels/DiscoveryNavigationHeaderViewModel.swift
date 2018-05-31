@@ -8,6 +8,9 @@ public protocol DiscoveryNavigationHeaderViewModelInputs {
   /// Call to configure with Discovery params.
   func configureWith(params: DiscoveryParams)
 
+  /// Call when environement switcher button is tapped.
+  func environmentSwitcherButtonTapped(environment: ServerConfigType)
+
   /// Call when favorite category button is tapped.
   func favoriteButtonTapped()
 
@@ -33,6 +36,9 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
 
   /// Emits when the filters view controller should be dismissed.
   var dismissDiscoveryFilters: Signal<(), NoError> { get }
+
+  /// Emits when environment button should be shown/hidden, depending if build is Beta or Debug.
+  var environmentSwitcherButtonIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits when the Explore label should be shown/hidden after filter is selected.
   var exploreLabelIsHidden: Signal<Bool, NoError> { get }
@@ -117,6 +123,14 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       self.exploreLabelIsHidden = self.filtersSelectedRowProperty.signal.map {
         return shouldHideLabel($0?.params)
       }
+
+    self.environmentSwitcherButtonTappedProperty.signal.skipNil().observeValues { config in
+        AppEnvironment.updateServerConfig(config)
+        NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
+      }
+
+    self.environmentSwitcherButtonIsHidden = self.viewDidLoadProperty.signal
+      .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }
 
     self.favoriteViewIsHidden = paramsAndFiltersAreHidden.map(first)
       .map { $0.category == nil }
@@ -227,6 +241,10 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .observeValues { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
   }
 
+  fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<ServerConfig?>(nil)
+  public func environmentSwitcherButtonTapped(environment: ServerConfigType) {
+    self.environmentSwitcherButtonTappedProperty.value = environment as? ServerConfig
+  }
   fileprivate let paramsProperty = MutableProperty<DiscoveryParams?>(nil)
   public func configureWith(params: DiscoveryParams) {
     self.paramsProperty.value = params
@@ -252,6 +270,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError>
   public let dividerIsHidden: Signal<Bool, NoError>
   public let dismissDiscoveryFilters: Signal<(), NoError>
+  public let environmentSwitcherButtonIsHidden: Signal<Bool, NoError>
   public let exploreLabelIsHidden: Signal<Bool, NoError>
   public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
   public let favoriteViewIsDimmed: Signal<Bool, NoError>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -148,15 +148,15 @@
                                                     <rect key="frame" x="15" y="11" width="345" height="22"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BZy-2b-lTV">
-                                                            <rect key="frame" x="0.0" y="0.0" width="93" height="22"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="4.5" height="22"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="live-indicator" translatesAutoresizingMaskIntoConstraints="NO" id="2gr-FJ-6h7">
-                                                            <rect key="frame" x="99" y="5.5" width="11" height="11"/>
+                                                            <rect key="frame" x="10.5" y="5.5" width="11" height="11"/>
                                                         </imageView>
                                                         <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Nas-2T-LXH">
-                                                            <rect key="frame" x="116" y="11" width="229" height="0.0"/>
+                                                            <rect key="frame" x="27.5" y="11" width="317.5" height="0.0"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" id="b9E-4T-Aii"/>
@@ -467,7 +467,7 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AvP-Jg-11Z" userLabel="Outer Stack View">
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AvP-Jg-11Z" userLabel="Outer Stack View">
                                 <rect key="frame" x="50" y="8" width="300" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ow-Q0-eFO">
@@ -524,24 +524,32 @@
                                 <rect key="frame" x="50" y="0.0" width="300" height="45"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZM-xp-3Le">
+                                <rect key="frame" x="367" y="7" width="33" height="30"/>
+                                <state key="normal" title="Button"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="AvP-Jg-11Z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CTG-N8-oCA" secondAttribute="trailing" id="1w0-jI-Xbx"/>
+                            <constraint firstItem="iZ3-Qf-C5g" firstAttribute="bottom" secondItem="dZM-xp-3Le" secondAttribute="bottom" constant="8" id="4hI-25-COL"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="top" secondItem="AvP-Jg-11Z" secondAttribute="top" constant="-8" id="8xm-2D-pr7"/>
                             <constraint firstAttribute="bottomMargin" secondItem="AvP-Jg-11Z" secondAttribute="bottom" constant="-8" id="B0H-UJ-qJS"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="bottom" secondItem="AvP-Jg-11Z" secondAttribute="bottom" constant="-8" id="DFn-av-A3D"/>
                             <constraint firstItem="iZ3-Qf-C5g" firstAttribute="trailing" secondItem="H2g-DT-JXM" secondAttribute="trailing" id="K0b-az-zyn"/>
                             <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="AvP-Jg-11Z" secondAttribute="trailing" constant="30" id="KnM-2i-YX8"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="leading" secondItem="AvP-Jg-11Z" secondAttribute="leading" id="MMI-dy-ql8"/>
+                            <constraint firstItem="dZM-xp-3Le" firstAttribute="trailing" secondItem="iZ3-Qf-C5g" secondAttribute="trailing" id="VjN-UX-3Ve"/>
                             <constraint firstItem="H2g-DT-JXM" firstAttribute="top" secondItem="189-Qu-20l" secondAttribute="top" id="Xq0-ie-rTE"/>
                             <constraint firstItem="AvP-Jg-11Z" firstAttribute="top" secondItem="iZ3-Qf-C5g" secondAttribute="top" constant="8" id="YP3-fh-T5U"/>
+                            <constraint firstItem="dZM-xp-3Le" firstAttribute="leading" secondItem="AvP-Jg-11Z" secondAttribute="trailing" constant="17" id="cbJ-ff-QG8"/>
                             <constraint firstItem="AvP-Jg-11Z" firstAttribute="centerX" secondItem="iZ3-Qf-C5g" secondAttribute="centerX" id="dF0-3N-f3X"/>
                             <constraint firstItem="H2g-DT-JXM" firstAttribute="leading" secondItem="iZ3-Qf-C5g" secondAttribute="leading" id="np9-Pa-vI9"/>
                             <constraint firstItem="9CN-EK-zBj" firstAttribute="trailing" secondItem="AvP-Jg-11Z" secondAttribute="trailing" id="ogl-6o-HhW"/>
                             <constraint firstItem="CTG-N8-oCA" firstAttribute="centerY" secondItem="RUu-Jy-Y4V" secondAttribute="centerY" id="pY8-ei-3kJ"/>
                             <constraint firstItem="CTG-N8-oCA" firstAttribute="leading" secondItem="iZ3-Qf-C5g" secondAttribute="leading" id="ufK-KL-tb3"/>
                             <constraint firstAttribute="bottom" secondItem="H2g-DT-JXM" secondAttribute="bottom" id="vnK-fd-I4j"/>
+                            <constraint firstItem="dZM-xp-3Le" firstAttribute="top" secondItem="iZ3-Qf-C5g" secondAttribute="top" constant="7" id="w4o-Pm-Fhw"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="iZ3-Qf-C5g"/>
                     </view>
@@ -552,6 +560,7 @@
                         <outlet property="bookmarkOutlineImageView" destination="Ij6-dc-OpY" id="yPA-fI-vRe"/>
                         <outlet property="containerStackView" destination="AvP-Jg-11Z" id="Sxc-Vb-Uga"/>
                         <outlet property="dividerLabel" destination="RHL-NK-fXr" id="dQn-Xj-o1t"/>
+                        <outlet property="environmentSwitcherButton" destination="dZM-xp-3Le" id="gIn-Hk-hDV"/>
                         <outlet property="exploreLabel" destination="4ow-Q0-eFO" id="zXl-OR-jlP"/>
                         <outlet property="favoriteButton" destination="3gE-WC-mdL" id="d3h-i4-zh1"/>
                         <outlet property="favoriteContainerView" destination="CTG-N8-oCA" id="naU-cK-WQv"/>
@@ -564,7 +573,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cpq-X6-ooJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1340" y="-1313"/>
+            <point key="canvasLocation" x="1339.2" y="-1313.793103448276"/>
         </scene>
         <!--LiveStreamDiscoveryViewController-->
         <scene sceneID="y5a-Cj-TAa">
