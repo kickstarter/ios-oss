@@ -2102,7 +2102,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.showAlertMessage.assertValues([
         "Please enter an amount of DKK 20 or more.",
-        "Please enter an amount of DKK 50,000 or less."
+        "Please enter an amount of DKK 65,000 or less."
         ])
       self.showAlertShouldDismiss.assertValues([false, false])
 
@@ -2156,7 +2156,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.showAlertMessage.assertValues([
         "Please enter an amount of DKK 5 or more.",
-        "Please enter an amount of DKK 50,000 or less."
+        "Please enter an amount of DKK 65,000 or less."
         ])
       self.showAlertShouldDismiss.assertValues([false, false])
 
