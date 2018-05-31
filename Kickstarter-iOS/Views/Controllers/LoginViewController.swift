@@ -109,21 +109,7 @@ internal final class LoginViewController: UIViewController {
     self.viewModel.outputs.showHidePasswordButtonToggled
     .observeForUI()
     .observeValues { [weak self] shouldShow in
-      guard let sself = self else { return }
-      let tintColor: UIColor = shouldShow ? .ksr_green_500 : .ksr_grey_400
-      let accessibilityValue = shouldShow ? Strings.Hide_password() : Strings.Show_password()
-
-      _ = sself.showHidePasswordButton
-        |> UIButton.lens.tintColor .~ tintColor
-        |> UIButton.lens.accessibilityValue .~ accessibilityValue
-
-      // Note: workaround for cursor whitespace render bug
-      let currentText = sself.passwordTextField ^* UITextField.lens.text
-
-      _ = sself.passwordTextField
-        |> UITextField.lens.secureTextEntry .~ !shouldShow
-        |> UITextField.lens.text .~ " "
-        |> UITextField.lens.text .~ currentText
+      self?.updateShowHidePassword(shouldShow)
     }
 
     self.viewModel.outputs.dismissKeyboard
@@ -189,6 +175,23 @@ internal final class LoginViewController: UIViewController {
   fileprivate func startResetPasswordViewController() {
     let vc = ResetPasswordViewController.configuredWith(email: emailTextField.text)
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+  
+  fileprivate func updateShowHidePassword(_ shouldShow: Bool) {
+    let tintColor: UIColor = shouldShow ? .ksr_green_500 : .ksr_grey_400
+    let accessibilityValue = shouldShow ? Strings.Hide_password() : Strings.Show_password()
+    
+    _ = self.showHidePasswordButton
+      |> UIButton.lens.tintColor .~ tintColor
+      |> UIButton.lens.accessibilityValue .~ accessibilityValue
+    
+    let currentText = self.passwordTextField ^* UITextField.lens.text
+    
+    // Note: workaround for cursor whitespace render bug
+    _ = self.passwordTextField
+      |> UITextField.lens.secureTextEntry .~ !shouldShow
+      |> UITextField.lens.text .~ " "
+      |> UITextField.lens.text .~ currentText
   }
 
   @IBAction
