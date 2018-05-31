@@ -156,10 +156,14 @@ internal final class SettingsViewModelTests: TestCase {
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
 
       self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
-      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environmentName, "Staging")
+      let envStaging = ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)
+
+      XCTAssertEqual(envStaging, "Staging")
 
       self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
-      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environmentName, "Local")
+      let envLocal = ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)
+
+      XCTAssertEqual(envLocal, "Local")
     }
   }
 
@@ -177,11 +181,11 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.viewDidLoad()
 
     self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
-    self.environmentSwitcherButtonTitle.assertValue("Change Environment - Staging")
+    self.environmentSwitcherButtonTitle.assertValue("Change Environment (Staging)")
 
     self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
-    self.environmentSwitcherButtonTitle.assertValues(["Change Environment - Staging",
-                                                      "Change Environment - Local"])
+    self.environmentSwitcherButtonTitle.assertValues(["Change Environment (Staging)",
+                                                      "Change Environment (Local)"])
   }
 
   func testCreatorNotificationsTapped() {

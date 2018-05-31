@@ -179,6 +179,9 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     _ = self.bookmarkOutlineImageView
       |> UIView.lens.tintColor .~ discoveryPrimaryColor()
 
+    _ = self.environmentSwitcherButton
+      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--debug")
+
     _ = self.primaryLabel
       |> UILabel.lens.isAccessibilityElement .~ false
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()

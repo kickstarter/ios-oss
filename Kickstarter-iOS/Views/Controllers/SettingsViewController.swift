@@ -243,12 +243,13 @@ internal final class SettingsViewController: UIViewController {
         .~ image(named: "email-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
+    let config = ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)
     _ = self.environmentSwitcher
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
       |> UIButton.lens.title(for: .normal)
-        .~ "Change Environment (\(ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)))"
+        .~ "Change Environment (\(config))"
 
     _ = self.findFriendsButton
       |> settingsSectionButtonStyle

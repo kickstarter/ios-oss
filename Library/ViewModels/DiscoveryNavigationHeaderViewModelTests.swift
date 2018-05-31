@@ -14,6 +14,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   fileprivate let arrowOpacity = TestObserver<CGFloat, NoError>()
   fileprivate let arrowOpacityAnimated = TestObserver<Bool, NoError>()
   fileprivate let dividerIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let environmentSwitcherButtonIsHidden = TestObserver<Bool, NoError>()
   fileprivate let exploreLabelIsHidden = TestObserver<Bool, NoError>()
   fileprivate let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
   fileprivate let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
@@ -49,6 +50,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.outputs.arrowOpacityAnimated.map(second).observe(self.arrowOpacityAnimated.observer)
     self.vm.outputs.dismissDiscoveryFilters.observe(self.dismissDiscoveryFilters.observer)
     self.vm.outputs.dividerIsHidden.observe(self.dividerIsHidden.observer)
+    self.vm.outputs.environmentSwitcherButtonIsHidden.observe(self.environmentSwitcherButtonIsHidden.observer)
     self.vm.outputs.exploreLabelIsHidden.observe(self.exploreLabelIsHidden.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(first).observe(self.primaryLabelOpacity.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(second).observe(self.primaryLabelOpacityAnimated.observer)
@@ -479,5 +481,41 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.inputs.titleButtonTapped()
 
     XCTAssertEqual(["Closed Discovery Filter", "Closed Discovery Filter"], self.trackingClient.events)
+  }
+
+  func testEnvironmentButtonIsNotHidden_Alpha() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue)) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.environmentSwitcherButtonIsHidden.assertValue(false)
+    }
+  }
+
+  func testEnvironmentButtonIsNotHidden_Beta() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.environmentSwitcherButtonIsHidden.assertValue(false)
+    }
+  }
+
+  func testEnvironmentButtonIsHidden_Release() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue)) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.environmentSwitcherButtonIsHidden.assertValue(true)
+    }
+  }
+
+  func testEnvironmentButtonIsHidden_Unknown() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: "com.unknown")) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.environmentSwitcherButtonIsHidden.assertValue(true)
+    }
   }
 }
