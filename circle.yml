@@ -370,7 +370,7 @@ workflows:
       - alpha:
           filters:
             branches:
-              only: /alpha-dist-*/
+              only: /alpha-dist-.*/
           requires:
             - swiftlint-and-cache
             - kickstarter-tests
