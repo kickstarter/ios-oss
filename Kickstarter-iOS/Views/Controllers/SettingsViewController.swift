@@ -90,7 +90,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var updatesButton: UIButton!
   @IBOutlet fileprivate weak var weeklyNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var versionLabel: UILabel!
-
+  @IBOutlet fileprivate weak var privateProfileSwitch: UISwitch!
+  @IBOutlet fileprivate weak var privateProfileLabel: UILabel!
   @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var pushNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var separatorViews: [UIView]!
@@ -168,7 +169,7 @@ internal final class SettingsViewController: UIViewController {
     self.recommendationsInfoButton.addTarget(self,
                                              action: #selector(recommendationsInfoTapped),
                                              for: .touchUpInside)
-
+    
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -352,6 +353,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.privacyPolicyLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_privacy() }
+      
+    _ = self.privateProfileLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text .~ "Private profile"
 
     _ = self.projectUpdatesLabel
       |> settingsSectionLabelStyle
