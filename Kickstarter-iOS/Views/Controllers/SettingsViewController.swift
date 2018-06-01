@@ -25,20 +25,27 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var creatorStackView: UIStackView!
   @IBOutlet fileprivate weak var creatorTips: UILabel!
   @IBOutlet fileprivate weak var creatorTipsButton: UIButton!
-  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
+  @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
+  @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
+  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
   @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
-  @IBOutlet fileprivate weak var helpCenterButton: UIButton!
-  @IBOutlet fileprivate weak var helpCenterLabel: UILabel!
+  @IBOutlet fileprivate weak var exportDataButton: UIButton!
+  @IBOutlet fileprivate weak var exportDataLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
+  @IBOutlet fileprivate weak var followingPrivacyInfoButton: UIButton!
+  @IBOutlet fileprivate weak var followingPrivacyLabel: UILabel!
+  @IBOutlet fileprivate weak var followingPrivacySwitch: UISwitch!
   @IBOutlet fileprivate weak var friendActivityButton: UIButton!
   @IBOutlet fileprivate weak var friendActivityLabel: UILabel!
   @IBOutlet fileprivate weak var gamesNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var happeningNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var happeningNowLabel: UILabel!
+  @IBOutlet fileprivate weak var helpCenterButton: UIButton!
+  @IBOutlet fileprivate weak var helpCenterLabel: UILabel!
   @IBOutlet fileprivate weak var helpTitleLabel: UILabel!
   @IBOutlet fileprivate weak var howKsrWorksButton: UIButton!
   @IBOutlet fileprivate weak var howKsrWorksLabel: UILabel!
@@ -49,10 +56,13 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var logoutButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsLabel: UILabel!
+  @IBOutlet fileprivate weak var messagesLabel: UILabel!
+  @IBOutlet fileprivate weak var messagesButton: UIButton!
   @IBOutlet fileprivate weak var mobileBackingsButton: UIButton!
   @IBOutlet fileprivate weak var mobileCommentsButton: UIButton!
   @IBOutlet fileprivate weak var mobileFollowerButton: UIButton!
   @IBOutlet fileprivate weak var mobileFriendActivityButton: UIButton!
+  @IBOutlet fileprivate weak var mobileMessagesButton: UIButton!
   @IBOutlet fileprivate weak var mobilePostLikesButton: UIButton!
   @IBOutlet fileprivate weak var mobileUpdatesButton: UIButton!
   @IBOutlet fileprivate weak var newCommentsLabel: UILabel!
@@ -61,6 +71,7 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var newPledgesLabel: UILabel!
   @IBOutlet fileprivate weak var newslettersTitleLabel: UILabel!
   @IBOutlet fileprivate weak var postLikesButton: UIButton!
+  @IBOutlet fileprivate weak var privacyTitleLabel: UILabel!
   @IBOutlet fileprivate weak var privacyPolicyButton: UIButton!
   @IBOutlet fileprivate weak var privacyPolicyLabel: UILabel!
   @IBOutlet fileprivate weak var projectNotificationsCountView: CountBadgeView!
@@ -70,6 +81,9 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var promoNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var rateUsButton: UIButton!
   @IBOutlet fileprivate weak var rateUsLabel: UILabel!
+  @IBOutlet fileprivate weak var recommendationsInfoButton: UIButton!
+  @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
+  @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
   @IBOutlet fileprivate weak var socialNotificationsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var termsOfUseButton: UIButton!
   @IBOutlet fileprivate weak var termsOfUseLabel: UILabel!
@@ -109,7 +123,13 @@ internal final class SettingsViewController: UIViewController {
                                       action: #selector(cookiePolicyTapped),
                                       for: .touchUpInside)
 
+    self.deleteAccountButton.addTarget(self,
+                                    action: #selector(deleteAccountTapped),
+                                    for: .touchUpInside)
+
     self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
+
+    self.exportDataButton.addTarget(self, action: #selector(exportDataTapped), for: .touchUpInside)
 
     self.environmentSwitcher.addTarget(self,
                                        action: #selector(environmentSwitcherTapped),
@@ -118,6 +138,10 @@ internal final class SettingsViewController: UIViewController {
     self.findFriendsButton.addTarget(self,
                                      action: #selector(findFriendsTapped),
                                      for: .touchUpInside)
+
+    self.followingPrivacyInfoButton.addTarget(self,
+                                              action: #selector(followingPrivacyInfoTapped),
+                                              for: .touchUpInside)
 
     self.helpCenterButton.addTarget(self, action: #selector(helpCenterTapped), for: .touchUpInside)
 
@@ -140,6 +164,10 @@ internal final class SettingsViewController: UIViewController {
                                        for: .touchUpInside)
 
     self.rateUsButton.addTarget(self, action: #selector(rateUsTapped), for: .touchUpInside)
+
+    self.recommendationsInfoButton.addTarget(self,
+                                             action: #selector(recommendationsInfoTapped),
+                                             for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -194,6 +222,14 @@ internal final class SettingsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Creator_tips() }
 
+    _ = self.deleteAccountLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Delete_my_Kickstarter_Account() }
+
+    _ = self.exportDataLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Request_my_Personal_Data() }
+
     _ = self.emailFrequencyLabel
       |> UILabel.lens.font .~ .ksr_body()
       |> UILabel.lens.numberOfLines .~ 2
@@ -221,6 +257,15 @@ internal final class SettingsViewController: UIViewController {
     _ = self.findFriendsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_find_friends() }
+
+    _ = self.followingPrivacyLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Following() }
+
+    _ = self.followingPrivacyInfoButton
+      |> UIButton.lens.image(for: .normal)
+      .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Following_More_Info() }
 
     _ = self.friendActivityLabel
       |> settingsSectionLabelStyle
@@ -272,6 +317,10 @@ internal final class SettingsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_notifications() }
 
+    _ = messagesLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.dashboard_buttons_messages() }
+
     _ = self.newCommentsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_comments() }
@@ -291,6 +340,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.newslettersTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_title() }
+
+    _ = self.privacyTitleLabel
+      |> settingsTitleLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Privacy() }
 
     _ = self.privacyPolicyButton
       |> settingsSectionButtonStyle
@@ -328,6 +381,15 @@ internal final class SettingsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Rate_us_in_the_App_Store() }
 
+    _ = self.recommendationsInfoButton
+      |> UIButton.lens.image(for: .normal)
+        .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Recommendations_More_Info() }
+
+    _ = self.recommendationsLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Recommendations() }
+
     _ = self.separatorViews
       ||> separatorStyle
 
@@ -357,6 +419,10 @@ internal final class SettingsViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
 
+    self.viewModel.outputs.goToDeleteAccountBrowser
+      .observeForControllerAction()
+      .observeValues { [weak self] url in self?.goToDeleteAccount(url: url) }
+
     self.viewModel.outputs.goToManageProjectNotifications
       .observeForControllerAction()
       .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
@@ -374,6 +440,12 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.outputs.showOptInPrompt
       .observeForControllerAction()
       .observeValues { [weak self] newsletter in self?.showOptInPrompt(newsletter) }
+
+    self.viewModel.outputs.showPrivacyFollowingPrompt
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.showPrivacyFollowingPrompt()
+      }
 
     self.viewModel.outputs.unableToSaveError
       .observeForControllerAction()
@@ -434,34 +506,44 @@ internal final class SettingsViewController: UIViewController {
     self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
-      self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
+    self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
+    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
     self.environmentSwitcher.rac.title = self.viewModel.outputs.environmentSwitcherButtonTitle
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
+    self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
     self.happeningNewsletterSwitch.rac.on = self.viewModel.outputs.happeningNewsletterOn
     self.inventNewsletterSwitch.rac.on = self.viewModel.outputs.inventNewsletterOn
     self.manageProjectNotificationsButton.rac.accessibilityHint =
       self.viewModel.outputs.manageProjectNotificationsButtonAccessibilityHint
+    self.messagesButton.rac.selected = self.viewModel.outputs.messagesSelected
     self.mobileBackingsButton.rac.selected = self.viewModel.outputs.mobileBackingsSelected
     self.mobileCommentsButton.rac.selected = self.viewModel.outputs.mobileCommentsSelected
     self.mobileFollowerButton.rac.selected = self.viewModel.outputs.mobileFollowerSelected
     self.mobileFriendActivityButton.rac.selected = self.viewModel.outputs.mobileFriendActivitySelected
+    self.mobileMessagesButton.rac.selected = self.viewModel.outputs.mobileMessagesSelected
     self.mobilePostLikesButton.rac.selected = self.viewModel.outputs.mobilePostLikesSelected
     self.mobileUpdatesButton.rac.selected = self.viewModel.outputs.mobileUpdatesSelected
     self.postLikesButton.rac.selected = self.viewModel.outputs.postLikesSelected
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
     self.promoNewsletterSwitch.rac.on = self.viewModel.outputs.promoNewsletterOn
+    self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
     self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
-    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
   }
   // swiftlint:enable function_body_length
 
   fileprivate func goToAppStore(link: String) {
     guard let url = URL(string: link) else { return }
     UIApplication.shared.openURL(url)
+  }
+
+  fileprivate func goToDeleteAccount(url: URL) {
+    let controller = SFSafariViewController(url: url)
+    controller.modalPresentationStyle = .overFullScreen
+    self.present(controller, animated: true, completion: nil)
   }
 
   fileprivate func goToBetaFeedback() {
@@ -585,12 +667,28 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.emailFrequencyTapped()
   }
 
-  @objc fileprivate func environmentSwitcherTapped() {
-    self.showEnvironmentActionSheet()
+  @objc fileprivate func exportDataTapped() {
+    let exportDataSheet = UIAlertController(
+      title: Strings.Download_your_personal_data(),
+      message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
+      preferredStyle: .actionSheet)
+
+    let startTheRequest = UIAlertAction(title: Strings.Start_data_collection(),
+                                        style: .default,
+                                        handler: { [weak self] _ in
+                                          self?.viewModel.inputs.exportDataTapped()
+    })
+
+    let dismiss = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+    exportDataSheet.addAction(startTheRequest)
+    exportDataSheet.addAction(dismiss)
+
+    self.present(exportDataSheet, animated: true, completion: nil)
   }
 
-  @objc fileprivate func helpCenterTapped() {
-    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
+  @objc fileprivate func environmentSwitcherTapped() {
+    self.showEnvironmentActionSheet()
   }
 
   @objc fileprivate func findFriendsTapped() {
@@ -599,6 +697,27 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction fileprivate func followerTapped(_ button: UIButton) {
     self.viewModel.inputs.followerTapped(selected: !button.isSelected)
+  }
+
+  @objc fileprivate func followingPrivacyInfoTapped() {
+    let privacyInfoAlert = UIAlertController.followingPrivacyInfo()
+    self.present(privacyInfoAlert, animated: true, completion: nil)
+  }
+
+  fileprivate func showPrivacyFollowingPrompt() {
+    let followingAlert = UIAlertController.turnOffPrivacyFollowing(
+       turnOnHandler: { [weak self] _ in
+        self?.viewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
+      },
+       turnOffHandler: { [weak self] _ in
+        self?.viewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
+      }
+    )
+     self.present(followingAlert, animated: true, completion: nil)
+  }
+
+  @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
+    self.viewModel.inputs.followingSwitchTapped(on: followingPrivacySwitch.isOn, didShowPrompt: false)
   }
 
   @IBAction fileprivate func friendActivityTapped(_ button: UIButton) {
@@ -613,6 +732,10 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.happeningNewsletterTapped(on: newsletterSwitch.isOn)
   }
 
+  @objc fileprivate func helpCenterTapped() {
+    self.helpViewModel.inputs.helpTypeButtonTapped(.helpCenter)
+  }
+
   @IBAction fileprivate func inventNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.inventNewsletterTapped(on: newsletterSwitch.isOn)
   }
@@ -625,6 +748,10 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.manageProjectNotificationsTapped()
   }
 
+  @IBAction fileprivate func messagesTapped(_ button: UIButton) {
+    self.viewModel.inputs.messagesTapped(selected: !button.isSelected)
+  }
+
   @IBAction fileprivate func mobileBackingsTapped(_ button: UIButton) {
     self.viewModel.inputs.mobileBackingsTapped(selected: !button.isSelected)
   }
@@ -633,12 +760,33 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.mobileCommentsTapped(selected: !button.isSelected)
   }
 
+  @objc fileprivate func recommendationsInfoTapped() {
+    let alertController = UIAlertController(
+
+      title: Strings.Recommendations(),
+      message: Strings.We_use_your_activity_internally_to_make_recommendations_for_you(),
+      preferredStyle: .alert)
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Got_it(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    self.present(alertController, animated: true, completion: nil)
+  }
+
   @IBAction fileprivate func mobileFollowerTapped(_ button: UIButton) {
     self.viewModel.inputs.mobileFollowerTapped(selected: !button.isSelected)
   }
 
   @IBAction fileprivate func mobileFriendActivityTapped(_ button: UIButton) {
     self.viewModel.inputs.mobileFriendActivityTapped(selected: !button.isSelected)
+  }
+
+  @IBAction fileprivate func mobileMessagesTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileMessagesTapped(selected: !button.isSelected)
   }
 
   @IBAction fileprivate func mobilePostLikesTapped(_ button: UIButton) {
@@ -661,8 +809,16 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.isOn)
   }
 
+  @IBAction fileprivate func recommendationsTapped(_ recommendationSwitch: UISwitch) {
+    self.viewModel.inputs.recommendationsTapped(on: recommendationSwitch.isOn)
+  }
+
   @objc fileprivate func rateUsTapped() {
     self.viewModel.inputs.rateUsTapped()
+  }
+
+  @objc fileprivate func deleteAccountTapped() {
+    self.viewModel.inputs.deleteAccountTapped()
   }
 
   @objc fileprivate func termsOfUseTapped() {

@@ -13,6 +13,7 @@ internal final class LoginViewController: UIViewController {
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
   @IBOutlet fileprivate weak var passwordTextField: UITextField!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate weak var showHidePasswordButton: UIButton!
 
   internal let viewModel: LoginViewModelType = LoginViewModel()
 
@@ -46,6 +47,10 @@ internal final class LoginViewController: UIViewController {
                                      action: #selector(passwordTextFieldChanged(_:)),
                                      for: .editingChanged)
 
+    self.showHidePasswordButton.addTarget(self,
+                                          action: #selector(showHidePasswordButtonTapped),
+                                          for: .touchUpInside)
+
     self.viewModel.inputs.onePassword(
       isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
     )
@@ -59,6 +64,8 @@ internal final class LoginViewController: UIViewController {
   }
 
   override func bindStyles() {
+    self.showHidePasswordButton.frame = CGRect(x: 0, y: 0, width: 45, height: 30)
+
     _ = self |> loginControllerStyle
 
     _ = self.loginButton |> loginButtonStyle
@@ -67,6 +74,14 @@ internal final class LoginViewController: UIViewController {
 
     _ = self.emailTextField |> emailFieldStyle
       |> UITextField.lens.returnKeyType .~ .next
+
+    _ = self.showHidePasswordButton |> showHidePasswordButtonStyle
+      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--eye",
+                                                    inBundle: Bundle.framework,
+                                                    compatibleWithTraitCollection: nil)
+      |> UIButton.lens.accessibilityValue %~ { _ in
+        Strings.Show_password()
+      }
 
     _ = self.passwordTextField |> passwordFieldStyle
       |> UITextField.lens.returnKeyType .~ .go
@@ -90,6 +105,12 @@ internal final class LoginViewController: UIViewController {
       self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
     self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonHidden
+
+    self.viewModel.outputs.showHidePasswordButtonToggled
+    .observeForUI()
+    .observeValues { [weak self] shouldShow in
+      self?.updateShowHidePassword(shouldShow)
+    }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
@@ -156,6 +177,23 @@ internal final class LoginViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
+  fileprivate func updateShowHidePassword(_ shouldShow: Bool) {
+    let tintColor: UIColor = shouldShow ? .ksr_green_500 : .ksr_grey_400
+    let accessibilityValue = shouldShow ? Strings.Hide_password() : Strings.Show_password()
+
+    _ = self.showHidePasswordButton
+      |> UIButton.lens.tintColor .~ tintColor
+      |> UIButton.lens.accessibilityValue .~ accessibilityValue
+
+    let currentText = self.passwordTextField ^* UITextField.lens.text
+
+    // Note: workaround for cursor whitespace render bug
+    _ = self.passwordTextField
+      |> UITextField.lens.secureTextEntry .~ !shouldShow
+      |> UITextField.lens.text .~ " "
+      |> UITextField.lens.text .~ currentText
+  }
+
   @IBAction
   internal func loginButtonPressed(_ sender: UIButton) {
     self.viewModel.inputs.loginButtonPressed()
@@ -188,5 +226,9 @@ internal final class LoginViewController: UIViewController {
 
   @objc internal func dismissKeyboard() {
     self.view.endEditing(true)
+  }
+
+  @objc func showHidePasswordButtonTapped() {
+    self.viewModel.inputs.showHidePasswordButtonTapped()
   }
 }

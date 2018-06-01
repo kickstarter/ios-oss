@@ -29,7 +29,7 @@ internal final class SettingsViewControllerTests: TestCase {
 
             let vc = SettingsViewController.instantiate()
             let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-            parent.view.frame.size.height = 1_450
+            parent.view.frame.size.height = 1_900
 
             FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
         }
@@ -50,7 +50,7 @@ internal final class SettingsViewControllerTests: TestCase {
 
           let vc = SettingsViewController.instantiate()
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-          parent.view.frame.size.height = 1_650
+          parent.view.frame.size.height = 2_100
 
           FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")}
       }
@@ -69,7 +69,7 @@ internal final class SettingsViewControllerTests: TestCase {
 
           let vc = SettingsViewController.instantiate()
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-          parent.view.frame.size.height = 1_450
+          parent.view.frame.size.height = 1_900
 
           FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
@@ -82,7 +82,7 @@ internal final class SettingsViewControllerTests: TestCase {
     withEnvironment(apiService: MockService(fetchUserSelfResponse: .template), mainBundle: bundle) {
       let vc = SettingsViewController.instantiate()
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 1_450
+      parent.view.frame.size.height = 1_800
 
       FBSnapshotVerifyView(vc.view)
     }

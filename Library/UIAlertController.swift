@@ -200,6 +200,50 @@ public extension UIAlertController {
     return alertController
   }
 
+  public static func turnOffPrivacyFollowing(
+    turnOnHandler: @escaping ((UIAlertAction) -> Void),
+    turnOffHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
+
+    let alertController = UIAlertController(
+      title: Strings.Are_you_sure(),
+      message: Strings.If_you_turn_following_off(),
+      preferredStyle: .alert
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Yes_turn_off(),
+        style: .destructive,
+        handler: turnOffHandler
+      )
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.general_navigation_buttons_cancel(),
+        style: .cancel,
+        handler: turnOnHandler
+      )
+    )
+
+    return alertController
+  }
+
+  public static func followingPrivacyInfo() -> UIAlertController {
+    let alertController = UIAlertController(
+      title: Strings.Following(),
+      message: Strings.When_following_is_on_you_can_follow_the_acticity_of_others(),
+      preferredStyle: .alert)
+
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Got_it(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    return alertController
+  }
+
   public static func facebookTokenFail() -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_invalid_token_title(),

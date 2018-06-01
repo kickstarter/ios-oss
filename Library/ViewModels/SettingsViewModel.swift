@@ -11,10 +11,13 @@ public protocol SettingsViewModelInputs {
   func betaFeedbackButtonTapped()
   func commentsTapped(selected: Bool)
   func creatorTipsTapped(selected: Bool)
+  func deleteAccountTapped()
   func emailFrequencyTapped()
+  func exportDataTapped()
   func environmentSwitcherButtonTapped(environment: ServerConfigType)
   func findFriendsTapped()
   func followerTapped(selected: Bool)
+  func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
   func friendActivityTapped(selected: Bool)
   func gamesNewsletterTapped(on: Bool)
   func happeningNewsletterTapped(on: Bool)
@@ -23,15 +26,18 @@ public protocol SettingsViewModelInputs {
   func logoutConfirmed()
   func logoutTapped()
   func manageProjectNotificationsTapped()
+  func messagesTapped(selected: Bool)
   func mobileBackingsTapped(selected: Bool)
   func mobileCommentsTapped(selected: Bool)
   func mobileFollowerTapped(selected: Bool)
   func mobileFriendActivityTapped(selected: Bool)
+  func mobileMessagesTapped(selected: Bool)
   func mobilePostLikesTapped(selected: Bool)
   func mobileUpdatesTapped(selected: Bool)
   func postLikesTapped(selected: Bool)
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
+  func recommendationsTapped(on: Bool)
   func updatesTapped(selected: Bool)
   func viewDidLoad()
   func weeklyNewsletterTapped(on: Bool)
@@ -47,10 +53,12 @@ public protocol SettingsViewModelOutputs {
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
   var environmentSwitcherButtonTitle: Signal<String, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
+  var followingPrivacyOn: Signal<Bool, NoError> { get }
   var friendActivitySelected: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
   var goToBetaFeedback: Signal<(), NoError> { get }
+  var goToDeleteAccountBrowser: Signal<URL, NoError> { get }
   var goToEmailFrequency: Signal<User, NoError> { get }
   var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
@@ -58,16 +66,21 @@ public protocol SettingsViewModelOutputs {
   var inventNewsletterOn: Signal<Bool, NoError> { get }
   var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
   var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
+  var messagesSelected: Signal<Bool, NoError> { get }
   var mobileBackingsSelected: Signal<Bool, NoError> { get }
   var mobileCommentsSelected: Signal<Bool, NoError> { get }
   var mobileFollowerSelected: Signal<Bool, NoError> { get }
   var mobileFriendActivitySelected: Signal<Bool, NoError> { get }
+  var mobileMessagesSelected: Signal<Bool, NoError> { get }
   var mobilePostLikesSelected: Signal<Bool, NoError> { get }
   var mobileUpdatesSelected: Signal<Bool, NoError> { get }
   var postLikesSelected: Signal<Bool, NoError> { get }
   var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
+  var requestExportData: Signal<(), NoError> { get }
+  var recommendationsOn: Signal<Bool, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
+  var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updatesSelected: Signal<Bool, NoError> { get }
@@ -93,6 +106,11 @@ SettingsViewModelOutputs {
           .demoteErrors()
       }
       .skipNil()
+
+    self.followingPrivacyOn = Signal.merge(
+      initialUser.map { $0.social ?? true }.skipRepeats(),
+      self.followingSwitchTappedProperty.signal.map { $0.0 }
+    )
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
       self.artsAndCultureNewsletterTappedProperty.signal.map { (.arts, $0) },
@@ -134,6 +152,9 @@ SettingsViewModelOutputs {
       self.friendActivityTappedProperty.signal.map {
         (UserAttribute.notification(Notification.friendActivity), $0)
       },
+      self.messagesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.messages), $0)
+      },
       self.mobileBackingsTappedProperty.signal.map {
         (UserAttribute.notification(Notification.mobileBackings), $0)
       },
@@ -145,6 +166,9 @@ SettingsViewModelOutputs {
       },
       self.mobileFriendActivityTappedProperty.signal.map {
         (UserAttribute.notification(Notification.mobileFriendActivity), $0)
+      },
+      self.mobileMessagesTappedProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileMessages), $0)
       },
       self.mobilePostLikesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.mobilePostLikes), $0)
@@ -160,6 +184,16 @@ SettingsViewModelOutputs {
       },
       self.updatesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.updates), $0)
+      },
+      self.followingSwitchTappedProperty.signal
+        .filter { (on, didShowPrompt) in
+          didShowPrompt == true || (on == true && didShowPrompt == false)
+        }
+        .map {
+        (UserAttribute.privacy(Privacy.following), $0.0)
+      },
+      self.recommendationsTappedProperty.signal.map {
+        (UserAttribute.privacy(Privacy.recommendations), !$0)
       }
     )
 
@@ -199,6 +233,11 @@ SettingsViewModelOutputs {
     self.goToAppStoreRating = self.rateUsTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
+    self.goToDeleteAccountBrowser = self.deleteAccountTappedProperty.signal
+      .map {
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy")
+      }
+
     self.goToBetaFeedback = self.betaFeedbackButtonTappedProperty.signal
 
     self.goToFindFriends = self.findFriendsTappedProperty.signal
@@ -212,6 +251,10 @@ SettingsViewModelOutputs {
         confirm: Strings.profile_settings_logout_alert_confirm_button()
         )
     }
+
+    self.showPrivacyFollowingPrompt = self.followingSwitchTappedProperty.signal
+      .filter { $0.0 == false && $0.1 == false }
+      .ignoreValues()
 
     self.logoutWithParams = Signal.merge (
       self.logoutConfirmedProperty.signal,
@@ -233,7 +276,7 @@ SettingsViewModelOutputs {
     self.weeklyNewsletterOn = self.updateCurrentUser.map { $0.newsletters.weekly }.skipNil().skipRepeats()
     self.inventNewsletterOn = self.updateCurrentUser.map { $0.newsletters.invent }.skipNil().skipRepeats()
     self.artsAndCultureNewsletterOn = self.updateCurrentUser
-      .map { $0.newsletters.arts}.skipNil().skipRepeats()
+      .map { $0.newsletters.arts }.skipNil().skipRepeats()
 
     self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
     self.creatorTipsSelected = self.updateCurrentUser
@@ -244,6 +287,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.follower }.skipNil().skipRepeats()
     self.friendActivitySelected = self.updateCurrentUser
       .map { $0.notifications.friendActivity }.skipNil().skipRepeats()
+    self.messagesSelected = self.updateCurrentUser
+      .map { $0.notifications.messages }.skipNil().skipRepeats()
     self.mobileBackingsSelected = self.updateCurrentUser
       .map { $0.notifications.mobileBackings }.skipNil().skipRepeats()
     self.mobileCommentsSelected = self.updateCurrentUser
@@ -252,6 +297,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.mobileFollower }.skipNil().skipRepeats()
     self.mobileFriendActivitySelected = self.updateCurrentUser
       .map { $0.notifications.mobileFriendActivity }.skipNil().skipRepeats()
+    self.mobileMessagesSelected = self.updateCurrentUser
+      .map { $0.notifications.mobileMessages }.skipNil().skipRepeats()
     self.mobilePostLikesSelected = self.updateCurrentUser
       .map { $0.notifications.mobilePostLikes }.skipNil().skipRepeats()
     self.mobileUpdatesSelected = self.updateCurrentUser
@@ -260,6 +307,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.postLikes }.skipNil().skipRepeats()
     self.updatesSelected = self.updateCurrentUser
       .map { $0.notifications.updates }.skipNil().skipRepeats()
+    self.recommendationsOn = self.updateCurrentUser
+      .map { $0.optedOutOfRecommendations }.skipNil().map { $0 ? false : true }.skipRepeats()
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
@@ -287,6 +336,14 @@ SettingsViewModelOutputs {
         return "\(versionString)\(build)"
     }
 
+    self.requestExportData = self.exportDataTappedProperty.signal
+      .switchMap {
+        AppEnvironment.current.apiService.exportData()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .demoteErrors()
+      }
+      .ignoreValues()
+
     self.betaToolsHidden = self.viewDidLoadProperty.signal
       .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }
 
@@ -306,14 +363,19 @@ SettingsViewModelOutputs {
           switch notification {
           case
           .mobileBackings,
-          .mobileComments, .mobileFollower, .mobileFriendActivity, .mobilePostLikes,
+          .mobileComments, .mobileFollower, .mobileFriendActivity, .mobilePostLikes, .mobileMessages,
                .mobileUpdates:
             AppEnvironment.current.koala.trackChangePushNotification(type: notification.trackingString,
                                                                      on: on)
           case .backings,
-               .comments, .follower, .friendActivity, .postLikes, .creatorTips, .updates:
+               .comments, .follower, .friendActivity, .messages, .postLikes, .creatorTips, .updates:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)
+          }
+        case let .privacy(privacy):
+          switch privacy {
+          case .recommendations: AppEnvironment.current.koala.trackRecommendationsOptIn()
+          default: break
           }
         }
     }
@@ -357,6 +419,10 @@ SettingsViewModelOutputs {
   public func creatorDigestTapped(on: Bool) {
     self.creatorDigestTappedProperty.value = on
   }
+  fileprivate let deleteAccountTappedProperty = MutableProperty(())
+  public func deleteAccountTapped() {
+    self.deleteAccountTappedProperty.value = ()
+  }
   fileprivate let individualEmailTappedProperty = MutableProperty(false)
   public func individualEmailTapped(on: Bool) {
     self.individualEmailTappedProperty.value = on
@@ -366,11 +432,15 @@ SettingsViewModelOutputs {
     self.emailFrequencyTappedProperty.value = ()
   }
 
+  fileprivate let exportDataTappedProperty = MutableProperty(())
+  public func exportDataTapped() {
+    self.exportDataTappedProperty.value = ()
+  }
+
   fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<ServerConfig?>(nil)
   public func environmentSwitcherButtonTapped(environment: ServerConfigType) {
     self.environmentSwitcherButtonTappedProperty.value = environment as? ServerConfig
   }
-
   fileprivate let findFriendsTappedProperty = MutableProperty(())
   public func findFriendsTapped() {
     self.findFriendsTappedProperty.value = ()
@@ -378,6 +448,10 @@ SettingsViewModelOutputs {
   fileprivate let followerTappedProperty = MutableProperty(false)
   public func followerTapped(selected: Bool) {
     self.followerTappedProperty.value = selected
+  }
+  fileprivate let followingSwitchTappedProperty = MutableProperty((false, false))
+  public func followingSwitchTapped(on: Bool, didShowPrompt: Bool) {
+    self.followingSwitchTappedProperty.value = (on, didShowPrompt)
   }
   fileprivate let friendActivityTappedProperty = MutableProperty(false)
   public func friendActivityTapped(selected: Bool) {
@@ -411,6 +485,10 @@ SettingsViewModelOutputs {
   public func manageProjectNotificationsTapped() {
     self.manageProjectNotificationsTappedProperty.value = ()
   }
+  fileprivate let messagesTappedProperty = MutableProperty(false)
+  public func messagesTapped(selected: Bool) {
+    self.messagesTappedProperty.value = selected
+  }
   fileprivate let mobileBackingsTappedProperty = MutableProperty(false)
   public func mobileBackingsTapped(selected: Bool) {
     self.mobileBackingsTappedProperty.value = selected
@@ -426,6 +504,10 @@ SettingsViewModelOutputs {
   fileprivate let mobileFriendActivityTappedProperty = MutableProperty(false)
   public func mobileFriendActivityTapped(selected: Bool) {
     self.mobileFriendActivityTappedProperty.value = selected
+  }
+  fileprivate let mobileMessagesTappedProperty = MutableProperty(false)
+  public func mobileMessagesTapped(selected: Bool) {
+    self.mobileMessagesTappedProperty.value = selected
   }
   fileprivate let mobilePostLikesTappedProperty = MutableProperty(false)
   public func mobilePostLikesTapped(selected: Bool) {
@@ -443,10 +525,15 @@ SettingsViewModelOutputs {
   public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
   }
+  fileprivate let recommendationsTappedProperty = MutableProperty(false)
+  public func recommendationsTapped(on: Bool) {
+    self.recommendationsTappedProperty.value = on
+  }
   fileprivate let rateUsTappedProperty = MutableProperty(())
   public func rateUsTapped() {
     self.rateUsTappedProperty.value = ()
   }
+
   fileprivate let updatesTappedProperty = MutableProperty(false)
   public func updatesTapped(selected: Bool) {
     self.updatesTappedProperty.value = selected
@@ -469,10 +556,12 @@ SettingsViewModelOutputs {
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
   public let environmentSwitcherButtonTitle: Signal<String, NoError>
   public let followerSelected: Signal<Bool, NoError>
+  public let followingPrivacyOn: Signal<Bool, NoError>
   public let friendActivitySelected: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
   public let goToBetaFeedback: Signal<(), NoError>
+  public let goToDeleteAccountBrowser: Signal<URL, NoError>
   public let goToEmailFrequency: Signal<User, NoError>
   public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
@@ -480,17 +569,22 @@ SettingsViewModelOutputs {
   public let inventNewsletterOn: Signal<Bool, NoError>
   public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
+  public let messagesSelected: Signal<Bool, NoError>
   public let mobileBackingsSelected: Signal<Bool, NoError>
   public let mobileCommentsSelected: Signal<Bool, NoError>
   public let mobileFollowerSelected: Signal<Bool, NoError>
   public let mobileFriendActivitySelected: Signal<Bool, NoError>
+  public let mobileMessagesSelected: Signal<Bool, NoError>
   public let mobilePostLikesSelected: Signal<Bool, NoError>
   public let mobileUpdatesSelected: Signal<Bool, NoError>
   public let postLikesSelected: Signal<Bool, NoError>
   public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
+  public let requestExportData: Signal<(), NoError>
+  public let recommendationsOn: Signal<Bool, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
   public let showOptInPrompt: Signal<String, NoError>
+  public let showPrivacyFollowingPrompt: Signal<(), NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updatesSelected: Signal<Bool, NoError>
   public let updateCurrentUser: Signal<User, NoError>
@@ -504,6 +598,7 @@ SettingsViewModelOutputs {
 private enum UserAttribute {
   case newsletter(Newsletter)
   case notification(Notification)
+  case privacy(Privacy)
 
   fileprivate var lens: Lens<User, Bool?> {
     switch self {
@@ -523,14 +618,21 @@ private enum UserAttribute {
       case .creatorTips:          return User.lens.notifications.creatorTips
       case .follower:             return User.lens.notifications.follower
       case .friendActivity:       return User.lens.notifications.friendActivity
+      case .messages:             return User.lens.notifications.messages
       case .mobileBackings:       return User.lens.notifications.mobileBackings
       case .mobileComments:       return User.lens.notifications.mobileComments
       case .mobileFollower:       return User.lens.notifications.mobileFollower
       case .mobileFriendActivity: return User.lens.notifications.mobileFriendActivity
+      case .mobileMessages:       return User.lens.notifications.mobileMessages
       case .mobilePostLikes:      return User.lens.notifications.mobilePostLikes
       case .mobileUpdates:        return User.lens.notifications.mobileUpdates
       case .postLikes:            return User.lens.notifications.postLikes
       case .updates:              return User.lens.notifications.updates
+      }
+    case let .privacy(privacy):
+      switch privacy {
+      case .following:       return User.lens.social
+      case .recommendations: return User.lens.optedOutOfRecommendations
       }
     }
   }
@@ -542,10 +644,12 @@ private enum Notification {
   case creatorTips
   case follower
   case friendActivity
+  case messages
   case mobileBackings
   case mobileComments
   case mobileFollower
   case mobileFriendActivity
+  case mobileMessages
   case mobilePostLikes
   case mobileUpdates
   case postLikes
@@ -558,8 +662,22 @@ private enum Notification {
     case .creatorTips:                              return "Creator tips"
     case .follower, .mobileFollower:                return "New followers"
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
+    case .messages, .mobileMessages:                 return "New messages"
     case .postLikes, .mobilePostLikes:              return "New likes"
     case .updates, .mobileUpdates:                  return "Project updates"
+    }
+  }
+}
+
+private enum Privacy {
+
+  case following
+  case recommendations
+
+  fileprivate var trackingString: String {
+    switch self {
+    case .following: return Strings.Following()
+    case .recommendations: return Strings.Recommendations()
     }
   }
 }

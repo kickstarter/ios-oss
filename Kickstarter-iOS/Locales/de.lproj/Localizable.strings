@@ -20,6 +20,7 @@
 "All_gone" = "Alle weg";
 "Amount_previous_amount" = "Jetziger Betrag: %{amount}, vorheriger Betrag: %{previous_amount}";
 "Amount_reward" = "Betrag: %{amount}, %{reward}";
+"Are_you_sure" = "Bist du sicher?";
 "Ask_me_anything" = "Frage stellen";
 "Available_to_watch_for_time_more_units" = "Kann noch %{time} %{units} angesehen werden";
 "Back" = "Zurück";
@@ -36,6 +37,7 @@
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
+"Cancel" = "Abbrechen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Chat" = "Chat";
@@ -67,10 +69,12 @@
 "Creator_tips" = "Tpps für Projektgründer";
 "Daily_digest" = "Tägliche Zusammenfassung";
 "Data_will_appear_here_once" = "Info wird hier angezeigt, sobald jemand dein Projekt unterstützt.";
+"Delete_my_Kickstarter_Account" = "Mein Kickstarter-Konto löschen";
 "Delivered" = "Verschickt";
 "Discover_more_projects" = "Erkunde mehr Projekte.";
 "Dismiss" = "Verwerfen";
 "Done" = "Fertig!";
+"Download_your_personal_data" = "Lade deine persönlichen Daten herunter";
 "Earth" = "Erde";
 "Either_the_pledge_or_the_project_was_canceled" = "Entweder der Finanzierungsbeitrag wurde zurückgezogen oder das Projekt wurde abgebrochen, bevor die Frist abgelaufen war.";
 "Email_frequency" = "Häufigkeit der E-Mails";
@@ -81,6 +85,7 @@
 "Explore" = "Erkunden";
 "Explore_creative_projects" = "Erkunde kreative Projekte";
 "Explore_projects" = "Projekte erkunden";
+"Facebook_login_disclaimer" = "Wenn du dich über Facebook anmeldest, importieren wir deinen Namen und dein Profilfoto. Außerdem wird deine Freundesliste importiert, damit du deinen Freunden auf Kickstarter folgen kannst. Wir werden niemals etwas ohne deine Erlaubnis auf Facebook posten.";
 "Failed_to_retrieve_live_stream_event_details" = "Details zu Live-Stream-Event konnten nicht geladen werden";
 "Failed_to_update_subscription" = "Abo konnte nicht aktualisiert werden";
 "Filter_by_all_projects" = "Filter: Alle Projekte";
@@ -108,6 +113,7 @@
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Folge deinen Facebook-Freunden - wir halten dich auf dem Laufenden, wenn sie ein Projekt unterstützen oder veröffentlichen.";
 "Followed" = "Abonniert";
 "Following" = "Abonniert";
+"Following_More_Info" = "Mehr Info zu Folgen";
 "Follows_friend_name" = "%{friend_name} folgen.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> hat ein <i>Kunst-Projekt</i> unterstützt.";
 "Friend_backed_comics_project" = "<b>%{friend_name}</b> hat ein <i>Comics-Projekt</i> unterstützt.";
@@ -133,11 +139,14 @@
 "Got_it" = "Alles klar!";
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
 "Help_center" = "Hilfe-Center";
+"Hide_password" = "Hide password";
 "Home" = "Home";
 "How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
+"If_you_turn_following_off" = "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden.";
 "Individual_Emails" = "Individuelle E-Mails";
 "Info" = "Info";
+"It_may_take_up_to_24_hours_to_collect_your_data" = "Die Zusammenstellung deiner Daten kann bis zu 24 Stunden dauern. Sobald sie zum Download bereitstehen, werden wir dir eine Anleitung dazu per E-Mail schicken. Solltest du nichts von uns hören, versuche es von hier aus noch einmal.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_better_with_friends" = "Gemeinsam mehr erreichen";
 "Joining_the_live_stream" = "Verbindung zum Live-Stream wird aufgebaut";
@@ -172,6 +181,7 @@
 "Message_backer" = "Nachricht an Unterstützer senden";
 "Message_creator" = "Nachricht an Projektgründer senden";
 "Message_user_name" = "Nachricht senden an %{user_name}…";
+"Messages" = "Nachrichten";
 "Name" = "Name";
 "Never" = "Niemals";
 "New_pledge_activity" = "Neue Finanzierungsbeiträge";
@@ -181,6 +191,7 @@
 "No_one_has_posted_an_update_yet" = "Es wurden noch keine Updates gepostet.";
 "No_pledges_from_friends_yet" = "Es gibt noch keine Beiträge von Freunden.";
 "No_replay_is_available_for_this_live_stream" = "Keine Wiedergabe verügbar für diesen Live-Stream.";
+"No_saved_projects" = "Keine gespeicherten Projekte";
 "No_unread_messages" = "Keine ungelesenen Nachrichten";
 "Not_delivered" = "Nicht verschickt";
 "Not_followed" = "Nicht abonniert";
@@ -201,6 +212,7 @@
 "Or_select_a_different_reward_below_colon" = "Oder eine andere Belohnung wählen:";
 "Other_payment_methods" = "Weitere Zahlungsmethoden";
 "Other_projects_you_might_like" = "Ähnliche Projekte:";
+"Password_visibility" = "Password visibility";
 "Past_live_stream" = "Früherer Live-Stream";
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Please_enter_an_amount_of_amount_or_less" = "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein.";
@@ -238,6 +250,7 @@
 "Receive_project_updates_messages_and_more" = "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen, neue Nachrichten und ähnliches Bescheid.";
 "Recent_live_stream" = "Kürzlich gesendeter Live-Stream";
 "Recommendations" = "Empfehlungen";
+"Recommendations_More_Info" = "Mehr Info zu Empfehlungen";
 "Recommended" = "Empfehlungen";
 "Recommended_For_You" = "Empfehlungen für dich";
 "Recorded_Live" = "Live aufgenommen";
@@ -248,6 +261,7 @@
 "Replay_past_live_stream" = "Wiedergabe des vorigen Live-Streams";
 "Replay_past_live_streams" = "Wiedergabe vergangener Live-Streams";
 "Reply_to_user_name" = "%{user_name} antworten …";
+"Request_my_Personal_Data" = "Meine persönlichen Daten anfordern";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";
@@ -286,10 +300,12 @@
 "Share_update" = "Teilen";
 "Shipping" = "Versand";
 "Ships_to" = "Versand an:";
+"Show_password" = "Show password";
 "Shows_list_of_subcategories" = "Unterkategorien anzeigen.";
 "Signs_up_with_Email" = "Mit E-Mail-Adresse registrieren.";
 "Something_catch_your_eye" = "Etwas interessantes gefunden?";
 "Something_went_wrong_please_try_again" = "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal.";
+"Start_data_collection" = "Daten zusammenstellen";
 "Starting_soon" = "Beginnt in Kürze";
 "Status" = "Status:";
 "Stay_up_to_date" = "Möchtest du auf dem Laufenden bleiben?";
@@ -341,10 +357,13 @@
 "View_your_reward" = "Belohnung ansehen";
 "Watch_live" = "Live ansehen";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
+"We_use_your_activity_internally_to_make_recommendations_for_you" = "Deine Aktivitäten werden intern genutzt, um dir Empfehlungen zu unterbreiten. Um dies zu deaktivieren, wähle \"Empfehlungen\" einfach ab.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden.";
 "We_were_unable_to_load_the_shipping_destinations" = "Das Laden der Versandadressen war leider nicht möglich.\nBitte versuche es später noch einmal.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
+"When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
+"Yes_turn_off" = "Ja, deaktivieren";
 "You_Launched" = "Dein Projekt ist live!";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
 "You_have_successfully_backed_project_html" = "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!";
@@ -933,8 +952,8 @@
 "login_tout.default_intent.traditional_login_button" = "Anmelden";
 "login_tout.default_intent.traditional_signup_button" = "Registrieren";
 "login_tout.default_intent.traditional_title" = "Benutze deine E-Mail-Adresse:";
-"login_tout.disclaimer.agree_to_terms" = "By creating an account, you agree to our terms of use, privacy policy, and cookie policy. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
-"login_tout.disclaimer.agree_to_terms_html" = "By creating an account, you agree to our <u>terms of use</u>, <u>privacy policy</u>, and <u>cookie policy</u>. Our privacy and cookie policies explain how we use your data to deliver, improve and promote our service and our site, and how you can exercise your rights to control that use.";
+"login_tout.disclaimer.agree_to_terms" = "Bei Erstellung eines Kontos stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu. Unsere Datenschutz- und Cookie-Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unsere Services und unserer Webseite nutzen.";
+"login_tout.disclaimer.agree_to_terms_html" = "Bei Erstellung eines Kontos stimmst du unseren <u>Nutzungsbedingungen</u>, <u>Datenschutzrichtlinien</u> und <u>Cookie-Richtlinien</u> zu. Unsere Datenschutz- und Cookie-Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unsere Services und unserer Webseite nutzen.";
 "login_tout.disclaimer.read_more" = "Weiterlesen";
 "login_tout.errors.button.ok" = "OK";
 "login_tout.errors.facebook.authorization_exception.button" = "Versuche es noch einmal!";

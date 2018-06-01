@@ -102,6 +102,15 @@ public struct Service: ServiceType {
       return request(.deleteVideo(video, fromDraft: draft))
   }
 
+  public func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+    return request(.exportData)
+  }
+
+  public func exportDataState(state: String, downloadUrl: String)
+    -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+    return request(.exportDataState(state: state, downloadUrl: downloadUrl))
+  }
+
   public func previewUrl(forDraft draft: UpdateDraft) -> URL? {
     return self.serverConfig.apiBaseUrl
       .appendingPathComponent("/v1/projects/\(draft.update.projectId)/updates/draft/preview")
@@ -347,9 +356,7 @@ public struct Service: ServiceType {
       return request(.facebookLogin(facebookAccessToken: facebookAccessToken, code: code))
   }
 
-  public func markAsRead(messageThread: MessageThread)
-    -> SignalProducer<MessageThread, ErrorEnvelope> {
-
+  public func markAsRead(messageThread: MessageThread) -> SignalProducer<MessageThread, ErrorEnvelope> {
       return request(.markAsRead(messageThread))
   }
 

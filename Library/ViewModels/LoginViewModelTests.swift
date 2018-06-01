@@ -23,6 +23,7 @@ final class LoginViewModelTests: TestCase {
   fileprivate let onePasswordButtonHidden = TestObserver<Bool, NoError>()
   fileprivate let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
   fileprivate let passwordText = TestObserver<String, NoError>()
+  fileprivate let showHidePassword = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -43,6 +44,7 @@ final class LoginViewModelTests: TestCase {
     self.vm.outputs.onePasswordButtonHidden.observe(self.onePasswordButtonHidden.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
     self.vm.outputs.passwordText.observe(self.passwordText.observer)
+    self.vm.outputs.showHidePasswordButtonToggled.observe(self.showHidePassword.observer)
   }
 
   func testLoginFlow() {
@@ -248,5 +250,24 @@ final class LoginViewModelTests: TestCase {
       self.tfaChallenge.assertValues(["nativesquad@gmail.com"],
                                      "Two factor challenge emitted with email and password")
     }
+  }
+
+  func testShowPassword() {
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.showHidePasswordButtonTapped()
+
+    self.showHidePassword.assertValue(true)
+  }
+
+  func testHidePassword() {
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.showHidePasswordButtonTapped()
+    self.showHidePassword.assertValue(true, "Password is shown")
+
+    self.vm.inputs.showHidePasswordButtonTapped()
+    self.showHidePassword.assertValueCount(2)
+    self.showHidePassword.assertLastValue(false, "Password not shown")
   }
 }
