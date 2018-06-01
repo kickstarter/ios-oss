@@ -184,7 +184,7 @@ jobs:
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
-  master:
+  deploy_alpha:
     <<: *base_job
     steps:
       - restore_cache:
@@ -357,10 +357,10 @@ workflows:
       - library-tests
       - livestream-tests
       - ksapi-tests
-      - master:
+      - deploy_alpha:
           filters:
             branches:
-              only: ib-alpha-build
+              only: master
           requires:
             - swiftlint-and-cache
             - kickstarter-tests
@@ -403,6 +403,5 @@ experimental:
     branches:
       only:
         - master
-        - alpha-dist
         - beta-dist
         - itunes-dist
