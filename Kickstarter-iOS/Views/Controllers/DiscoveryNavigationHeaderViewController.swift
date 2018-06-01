@@ -82,6 +82,12 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
           completion: nil)
     }
 
+    self.viewModel.outputs.logoutWithParams
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.logout(params: $0)
+      }
+
     self.viewModel.outputs.arrowOpacityAnimated
       .observeForUI()
       .observeValues { [weak self] (alpha, animated) in
@@ -352,6 +358,18 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     )
 
     self.present(alert, animated: true, completion: nil)
+  }
+
+  fileprivate func logout(params: DiscoveryParams) {
+    AppEnvironment.logout()
+
+    self.view.window?.rootViewController
+      .flatMap { $0 as? RootTabBarViewController }
+      .doIfSome { root in
+        root.switchToDiscovery(params: params)
+    }
+
+    NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
   }
 }
 

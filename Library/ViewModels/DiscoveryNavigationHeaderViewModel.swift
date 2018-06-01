@@ -52,6 +52,9 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits whether the favorite container view is hidden.
   var favoriteViewIsHidden: Signal<Bool, NoError> { get }
 
+  /// Emits to log the user out after changing environment using the debug tool.
+  var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
+
   /// Emits params for Discovery view controller when filter selected.
   var notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError> { get }
 
@@ -92,9 +95,9 @@ public protocol DiscoveryNavigationHeaderViewModelType {
 }
 
 public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeaderViewModelType,
-  DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutputs {
+DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutputs {
 
-    public init() {
+  public init() {
     let currentParams = Signal.merge(
       self.paramsProperty.signal.skipNil(),
       self.filtersSelectedRowProperty.signal.skipNil().map { $0.params }
@@ -120,14 +123,21 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .map { $0.subcategory == nil }
       .skipRepeats()
 
-      self.exploreLabelIsHidden = self.filtersSelectedRowProperty.signal.map {
-        return shouldHideLabel($0?.params)
-      }
+    self.exploreLabelIsHidden = self.filtersSelectedRowProperty.signal.map {
+      return shouldHideLabel($0?.params)
+    }
 
     self.environmentSwitcherButtonTappedProperty.signal.skipNil().observeValues { config in
-        AppEnvironment.updateServerConfig(config)
-        NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
-      }
+      AppEnvironment.updateServerConfig(config)
+    }
+
+    self.logoutWithParams = Signal.merge (
+      self.environmentSwitcherButtonTappedProperty.signal.skipNil().ignoreValues()
+      )
+      .map { .defaults
+        |> DiscoveryParams.lens.includePOTD .~ true
+        |> DiscoveryParams.lens.sort .~ .magic
+    }
 
     self.debugContainerViewIsHidden = self.viewDidLoadProperty.signal
       .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }
@@ -166,7 +176,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
     self.primaryLabelText = strings.map { filter in
       filter.filter
-      }
+    }
 
     self.secondaryLabelIsHidden = strings
       .map { $0.subcategory == nil }
@@ -221,7 +231,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .takeWhen(self.favoriteButtonTappedProperty.signal)
       .filter { _ in
         !AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert ||
-        !AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert
+          !AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert
       }
       .on(value: { _ in
         AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert = true
@@ -275,6 +285,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
   public let favoriteViewIsDimmed: Signal<Bool, NoError>
   public let favoriteViewIsHidden: Signal<Bool, NoError>
+  public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public let notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError>
   public let primaryLabelFont: Signal<Bool, NoError>
   public let primaryLabelOpacityAnimated: Signal<(CGFloat, Bool), NoError>
@@ -345,7 +356,7 @@ private func string(forCategoryId id: String) -> String {
 
 private func isFavoriteCategoryStored(withId id: Int) -> Bool {
   return AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.index(of: id) != nil ||
-  AppEnvironment.current.userDefaults.favoriteCategoryIds.index(of: id) != nil
+    AppEnvironment.current.userDefaults.favoriteCategoryIds.index(of: id) != nil
 }
 
 private func toggleStoredFavoriteCategory(withId id: Int) {

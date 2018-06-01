@@ -54,7 +54,6 @@ public struct AppEnvironment {
     replaceCurrentEnvironment(
       apiService: service
     )
-    AppEnvironment.logout()
   }
 
   public static func updateConfig(_ config: Config) {

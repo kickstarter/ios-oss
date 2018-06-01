@@ -16,6 +16,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   fileprivate let debugContainerViewIsHidden = TestObserver<Bool, NoError>()
   fileprivate let dividerIsHidden = TestObserver<Bool, NoError>()
   fileprivate let exploreLabelIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let logoutWithParams = TestObserver<DiscoveryParams, NoError>()
   fileprivate let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
   fileprivate let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
   fileprivate let primaryLabelText = TestObserver<String, NoError>()
@@ -52,6 +53,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.outputs.dismissDiscoveryFilters.observe(self.dismissDiscoveryFilters.observer)
     self.vm.outputs.dividerIsHidden.observe(self.dividerIsHidden.observer)
     self.vm.outputs.exploreLabelIsHidden.observe(self.exploreLabelIsHidden.observer)
+    self.vm.outputs.logoutWithParams.observe(self.logoutWithParams.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(first).observe(self.primaryLabelOpacity.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(second).observe(self.primaryLabelOpacityAnimated.observer)
     self.vm.outputs.primaryLabelText.observe(self.primaryLabelText.observer)
@@ -516,6 +518,17 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.debugContainerViewIsHidden.assertValue(true)
+    }
+  }
+
+  func testLogoutWithParamsEmits_WhenEnvironmentChanges() {
+
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
+
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.production)
+
+      self.logoutWithParams.assertDidEmitValue()
     }
   }
 }
