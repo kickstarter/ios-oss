@@ -268,9 +268,9 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
 
   public let animateArrowToDown: Signal<Bool, NoError>
   public let arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError>
-  public let dividerIsHidden: Signal<Bool, NoError>
-  public let dismissDiscoveryFilters: Signal<(), NoError>
   public let debugContainerViewIsHidden: Signal<Bool, NoError>
+  public let dismissDiscoveryFilters: Signal<(), NoError>
+  public let dividerIsHidden: Signal<Bool, NoError>
   public let exploreLabelIsHidden: Signal<Bool, NoError>
   public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
   public let favoriteViewIsDimmed: Signal<Bool, NoError>

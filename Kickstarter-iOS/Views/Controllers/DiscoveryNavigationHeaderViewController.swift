@@ -19,8 +19,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   @IBOutlet fileprivate weak var debugContainerView: UIView!
   @IBOutlet fileprivate weak var debugImageView: UIImageView!
   @IBOutlet fileprivate weak var dividerLabel: UILabel!
-  @IBOutlet fileprivate weak var exploreLabel: UILabel!
   @IBOutlet fileprivate weak var environmentSwitcherButton: UIButton!
+  @IBOutlet fileprivate weak var exploreLabel: UILabel!
   @IBOutlet fileprivate weak var favoriteButton: UIButton!
   @IBOutlet fileprivate weak var favoriteContainerView: UIView!
   @IBOutlet fileprivate weak var primaryLabel: UILabel!
