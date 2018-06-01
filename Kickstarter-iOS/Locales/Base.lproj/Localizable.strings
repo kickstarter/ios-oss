@@ -139,6 +139,7 @@
 "Got_it" = "Got it";
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
 "Help_center" = "Help Center";
+"Hide_password" = "Hide password";
 "Home" = "Home";
 "How_backers_found_your_project" = "How backers found your project";
 "Id_just_like_to_support_the_project" = "I’d just like to support the project.";
@@ -211,6 +212,7 @@
 "Or_select_a_different_reward_below_colon" = "Or select a different reward below:";
 "Other_payment_methods" = "Other payment methods";
 "Other_projects_you_might_like" = "Other projects you might like.";
+"Password_visibility" = "Password visibility";
 "Past_live_stream" = "Past live stream";
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Please_enter_an_amount_of_amount_or_less" = "Please enter an amount of %{amount} or less.";
@@ -298,6 +300,7 @@
 "Share_update" = "Share update";
 "Shipping" = "Shipping";
 "Ships_to" = "Ships to:";
+"Show_password" = "Show password";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Signs_up_with_Email" = "Signs up with Email.";
 "Something_catch_your_eye" = "Something\ncatch your eye?";

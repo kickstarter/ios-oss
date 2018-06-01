@@ -36,6 +36,9 @@ public protocol LoginViewModelInputs {
   /// Call when reset password button is pressed.
   func resetPasswordButtonPressed()
 
+  /// Call when the show/hide password button is pressed.
+  func showHidePasswordButtonTapped()
+
   /// Call when the view did load.
   func viewDidLoad()
 
@@ -79,6 +82,9 @@ public protocol LoginViewModelOutputs {
 
   /// Emits when the reset password screen should be shown
   var showResetPassword: Signal<(), NoError> { get }
+
+  // Emits when the show/hide password button is toggled
+  var showHidePasswordButtonToggled: Signal<Bool, NoError> { get }
 
   /// Emits when TFA is required for login.
   var tfaChallenge: Signal<(email: String, password: String), NoError> { get }
@@ -163,6 +169,8 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     self.logIntoEnvironment
       .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
+    self.showHidePasswordButtonToggled = self.shouldShowPasswordProperty.signal
+
     self.showError
       .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
   }
@@ -216,6 +224,12 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public func resetPasswordButtonPressed() {
     self.resetPasswordPressedProperty.value = ()
   }
+
+  fileprivate let shouldShowPasswordProperty = MutableProperty(false)
+  public func showHidePasswordButtonTapped() {
+    self.shouldShowPasswordProperty.value = shouldShowPasswordProperty.negate().value
+  }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -233,6 +247,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public let postNotification: Signal<(Notification, Notification), NoError>
   public let showError: Signal<String, NoError>
   public let showResetPassword: Signal<(), NoError>
+  public let showHidePasswordButtonToggled: Signal<Bool, NoError>
   public let tfaChallenge: Signal<(email: String, password: String), NoError>
 }
 
