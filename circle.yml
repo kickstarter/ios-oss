@@ -371,12 +371,6 @@ workflows:
           filters:
             branches:
               only: /alpha-dist-.*/
-          requires:
-            - swiftlint-and-cache
-            - kickstarter-tests
-            - library-tests
-            - livestream-tests
-            - ksapi-tests
       - beta:
           filters:
             branches:
@@ -403,5 +397,6 @@ experimental:
     branches:
       only:
         - master
+        - /alpha-dist-.*/
         - beta-dist
         - itunes-dist
