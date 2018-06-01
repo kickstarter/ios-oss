@@ -16,6 +16,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   @IBOutlet fileprivate weak var bgView: UIView!
   @IBOutlet fileprivate weak var bookmarkImageView: UIImageView!
   @IBOutlet fileprivate weak var bookmarkOutlineImageView: UIImageView!
+  @IBOutlet fileprivate weak var debugContainerView: UIView!
+  @IBOutlet fileprivate weak var debugImageView: UIImageView!
   @IBOutlet fileprivate weak var dividerLabel: UILabel!
   @IBOutlet fileprivate weak var exploreLabel: UILabel!
   @IBOutlet fileprivate weak var environmentSwitcherButton: UIButton!
@@ -60,7 +62,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.environmentSwitcherButton.rac.hidden = self.viewModel.outputs.environmentSwitcherButtonIsHidden
+    self.debugContainerView.rac.hidden = self.viewModel.outputs.debugContainerViewIsHidden
     self.exploreLabel.rac.hidden = self.viewModel.outputs.exploreLabelIsHidden
     self.favoriteContainerView.rac.hidden = self.viewModel.outputs.favoriteViewIsHidden
     self.favoriteButton.rac.accessibilityLabel = self.viewModel.outputs.favoriteButtonAccessibilityLabel
@@ -179,8 +181,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     _ = self.bookmarkOutlineImageView
       |> UIView.lens.tintColor .~ discoveryPrimaryColor()
 
-    _ = self.environmentSwitcherButton
-      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--debug")
+    _ = self.debugImageView
+      |> UIImageView.lens.image .~ image(named: "icon--debug")
 
     _ = self.primaryLabel
       |> UILabel.lens.isAccessibilityElement .~ false

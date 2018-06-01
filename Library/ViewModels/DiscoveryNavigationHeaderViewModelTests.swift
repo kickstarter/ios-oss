@@ -13,8 +13,8 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   fileprivate let animateArrowToDown = TestObserver<Bool, NoError>()
   fileprivate let arrowOpacity = TestObserver<CGFloat, NoError>()
   fileprivate let arrowOpacityAnimated = TestObserver<Bool, NoError>()
+  fileprivate let debugContainerViewIsHidden = TestObserver<Bool, NoError>()
   fileprivate let dividerIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let environmentSwitcherButtonIsHidden = TestObserver<Bool, NoError>()
   fileprivate let exploreLabelIsHidden = TestObserver<Bool, NoError>()
   fileprivate let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
   fileprivate let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
@@ -48,9 +48,9 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.outputs.animateArrowToDown.observe(self.animateArrowToDown.observer)
     self.vm.outputs.arrowOpacityAnimated.map(first).observe(self.arrowOpacity.observer)
     self.vm.outputs.arrowOpacityAnimated.map(second).observe(self.arrowOpacityAnimated.observer)
+    self.vm.outputs.debugContainerViewIsHidden.observe(self.debugContainerViewIsHidden.observer)
     self.vm.outputs.dismissDiscoveryFilters.observe(self.dismissDiscoveryFilters.observer)
     self.vm.outputs.dividerIsHidden.observe(self.dividerIsHidden.observer)
-    self.vm.outputs.environmentSwitcherButtonIsHidden.observe(self.environmentSwitcherButtonIsHidden.observer)
     self.vm.outputs.exploreLabelIsHidden.observe(self.exploreLabelIsHidden.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(first).observe(self.primaryLabelOpacity.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(second).observe(self.primaryLabelOpacityAnimated.observer)
@@ -488,7 +488,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.environmentSwitcherButtonIsHidden.assertValue(false)
+      self.debugContainerViewIsHidden.assertValue(false)
     }
   }
 
@@ -497,7 +497,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.environmentSwitcherButtonIsHidden.assertValue(false)
+      self.debugContainerViewIsHidden.assertValue(false)
     }
   }
 
@@ -506,7 +506,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.environmentSwitcherButtonIsHidden.assertValue(true)
+      self.debugContainerViewIsHidden.assertValue(true)
     }
   }
 
@@ -515,7 +515,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.environmentSwitcherButtonIsHidden.assertValue(true)
+      self.debugContainerViewIsHidden.assertValue(true)
     }
   }
 }

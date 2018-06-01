@@ -31,14 +31,14 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits opacity for arrow and whether to animate the change, used for launch transition.
   var arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError> { get }
 
+  /// Emits when debug container view should be shown/hidden, depending if build is Beta/Debug or Release.
+  var debugContainerViewIsHidden: Signal<Bool, NoError> { get }
+
   /// Emits whether divider label is hidden.
   var dividerIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits when the filters view controller should be dismissed.
   var dismissDiscoveryFilters: Signal<(), NoError> { get }
-
-  /// Emits when environment button should be shown/hidden, depending if build is Beta or Debug.
-  var environmentSwitcherButtonIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits when the Explore label should be shown/hidden after filter is selected.
   var exploreLabelIsHidden: Signal<Bool, NoError> { get }
@@ -129,7 +129,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
       }
 
-    self.environmentSwitcherButtonIsHidden = self.viewDidLoadProperty.signal
+    self.debugContainerViewIsHidden = self.viewDidLoadProperty.signal
       .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }
 
     self.favoriteViewIsHidden = paramsAndFiltersAreHidden.map(first)
@@ -270,7 +270,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError>
   public let dividerIsHidden: Signal<Bool, NoError>
   public let dismissDiscoveryFilters: Signal<(), NoError>
-  public let environmentSwitcherButtonIsHidden: Signal<Bool, NoError>
+  public let debugContainerViewIsHidden: Signal<Bool, NoError>
   public let exploreLabelIsHidden: Signal<Bool, NoError>
   public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
   public let favoriteViewIsDimmed: Signal<Bool, NoError>
