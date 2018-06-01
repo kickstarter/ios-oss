@@ -35,6 +35,7 @@ public protocol SettingsViewModelInputs {
   func mobilePostLikesTapped(selected: Bool)
   func mobileUpdatesTapped(selected: Bool)
   func postLikesTapped(selected: Bool)
+  func privateProfileSwitchDidChange(isOn: Bool)
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
   func recommendationsTapped(on: Bool)
@@ -178,6 +179,9 @@ SettingsViewModelOutputs {
       },
       self.postLikesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.postLikes), $0)
+      },
+      self.privateProfileEnabledProperty.signal.map {
+        (UserAttribute.notification(Notification.privacy.profile), $0)
       },
       self.creatorTipsProperty.signal.map {
         (UserAttribute.notification(Notification.creatorTips), $0)
@@ -521,6 +525,12 @@ SettingsViewModelOutputs {
   public func postLikesTapped(selected: Bool) {
     self.postLikesTappedProperty.value = selected
   }
+  
+  fileprivate let privateProfileEnabledProperty = MutableProperty(false)
+  public func privateProfileSwitchDidChange(isOn: Bool) {
+    self.privateProfileProperty.value = isOn
+  }
+  
   fileprivate let promoNewsletterTappedProperty = MutableProperty(false)
   public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
@@ -670,14 +680,15 @@ private enum Notification {
 }
 
 private enum Privacy {
-
   case following
   case recommendations
+  case profile
 
   fileprivate var trackingString: String {
     switch self {
     case .following: return Strings.Following()
     case .recommendations: return Strings.Recommendations()
+    case .profile: return "Private Profile"
     }
   }
 }

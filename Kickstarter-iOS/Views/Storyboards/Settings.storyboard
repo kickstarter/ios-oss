@@ -898,6 +898,9 @@
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pxi-vF-nZT">
                                                                 <rect key="frame" x="319" y="0.0" width="51" height="31"/>
                                                                 <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <connections>
+                                                                    <action selector="privateProfileSwitchDidChange:" destination="wCS-h4-p7K" eventType="valueChanged" id="ggQ-h1-Kma"/>
+                                                                </connections>
                                                             </switch>
                                                         </subviews>
                                                     </stackView>

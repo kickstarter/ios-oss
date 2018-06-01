@@ -810,6 +810,10 @@ internal final class SettingsViewController: UIViewController {
     self.helpViewModel.inputs.helpTypeButtonTapped(.privacy)
   }
 
+  @IBAction func privateProfileSwitchDidChange(_ sender: UISwitch) {
+    print("Switch is on: \(sender.isOn)")
+  }
+  
   @IBAction fileprivate func promoNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.isOn)
   }
