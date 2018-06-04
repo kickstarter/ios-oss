@@ -8,6 +8,7 @@ public final class RootTabBarViewController: UITabBarController {
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
   private var userUpdatedObserver: Any?
+  private var languageChangedObserver: Any?
 
   fileprivate let viewModel: RootViewModelType = RootViewModel()
 
@@ -33,6 +34,12 @@ public final class RootTabBarViewController: UITabBarController {
         self?.viewModel.inputs.currentUserUpdated()
     }
 
+    self.languageChangedObserver = NotificationCenter
+      .default
+      .addObserver(forName: Notification.Name.ksr_languageChanged, object: nil, queue: nil, using: { [weak self] _ in
+        self?.viewModel.inputs.currentLanguageChanged()
+      })
+    
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -55,7 +62,9 @@ public final class RootTabBarViewController: UITabBarController {
 
     self.viewModel.outputs.setViewControllers
       .observeForUI()
-      .observeValues { [weak self] in self?.setViewControllers($0, animated: false) }
+      .observeValues { [weak self] in
+        self?.setViewControllers($0, animated: false)
+    }
 
     self.viewModel.outputs.selectedIndex
       .observeForUI()

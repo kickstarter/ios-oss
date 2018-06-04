@@ -32,6 +32,16 @@ public enum Language: String {
 
     self = language
   }
+  
+  public var displayString: String {
+    switch self {
+    case .de: return "German"
+    case .en: return "English"
+    case .es: return "Spanish"
+    case .fr: return "French"
+    case .ja: return "Japanese"
+    }
+  }
 }
 
 extension Language: Equatable {}

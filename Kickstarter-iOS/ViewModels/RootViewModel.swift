@@ -22,6 +22,9 @@ internal enum TabBarItem {
 internal protocol RootViewModelInputs {
   /// Call when the controller has received a user updated notification.
   func currentUserUpdated()
+  
+  /// Call when the language selection has changed
+  func currentLanguageChanged()
 
   /// Call when selected tab bar index changes.
   func didSelectIndex(_ index: Int)
@@ -94,17 +97,24 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     let userState: Signal<(isLoggedIn: Bool, isMember: Bool), NoError> = currentUser
       .map { ($0 != nil, ($0?.stats.memberProjectsCount ?? 0) > 0) }
       .skipRepeats(==)
-
-    let standardViewControllers = self.viewDidLoadProperty.signal
-      .map { _ in
+    
+    let standardViewControllers = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      self.currentLanguageProperty.signal
+      ).map { _ in
         [
           DiscoveryViewController.instantiate(),
           ActivitiesViewController.instantiate(),
           SearchViewController.instantiate()
         ]
       }
+    
+    let userStateLanguageChange = userState.takeWhen(self.currentLanguageProperty.signal)
 
-    let personalizedViewControllers = userState
+    let personalizedViewControllers = Signal.merge(
+        userState,
+        userStateLanguageChange
+      )
       .map { user in
         [
           user.isMember    ? DashboardViewController.instantiate() as UIViewController? : nil,
@@ -118,7 +128,9 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
 
     self.setViewControllers = viewControllers
-      .map { $0.map(UINavigationController.init(rootViewController:)) }
+      .map {
+        $0.map(UINavigationController.init(rootViewController:))
+    }
 
     let loginState = userState.map { $0.isLoggedIn }
     let vcCount = self.setViewControllers.map { $0.count }
@@ -186,6 +198,12 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
   }
+  
+  fileprivate let currentLanguageProperty = MutableProperty(())
+  internal func currentLanguageChanged() {
+    self.currentLanguageProperty.value = ()
+  }
+  
   fileprivate let didSelectIndexProperty = MutableProperty(0)
   internal func didSelectIndex(_ index: Int) {
     self.didSelectIndexProperty.value = index
