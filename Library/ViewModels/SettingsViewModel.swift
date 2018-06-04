@@ -181,7 +181,7 @@ SettingsViewModelOutputs {
         (UserAttribute.notification(Notification.postLikes), $0)
       },
       self.privateProfileEnabledProperty.signal.map {
-        (UserAttribute.notification(Notification.privacy.profile), $0)
+        (UserAttribute.privacy(Privacy.privateProfile), $0)
       },
       self.creatorTipsProperty.signal.map {
         (UserAttribute.notification(Notification.creatorTips), $0)
@@ -528,7 +528,7 @@ SettingsViewModelOutputs {
   
   fileprivate let privateProfileEnabledProperty = MutableProperty(false)
   public func privateProfileSwitchDidChange(isOn: Bool) {
-    self.privateProfileProperty.value = isOn
+    self.privateProfileEnabledProperty.value = isOn
   }
   
   fileprivate let promoNewsletterTappedProperty = MutableProperty(false)
@@ -643,6 +643,7 @@ private enum UserAttribute {
       switch privacy {
       case .following:       return User.lens.social
       case .recommendations: return User.lens.optedOutOfRecommendations
+      case .privateProfile:  return User.lens.social
       }
     }
   }
@@ -672,7 +673,7 @@ private enum Notification {
     case .creatorTips:                              return "Creator tips"
     case .follower, .mobileFollower:                return "New followers"
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
-    case .messages, .mobileMessages:                 return "New messages"
+    case .messages, .mobileMessages:                return "New messages"
     case .postLikes, .mobilePostLikes:              return "New likes"
     case .updates, .mobileUpdates:                  return "Project updates"
     }
@@ -682,13 +683,13 @@ private enum Notification {
 private enum Privacy {
   case following
   case recommendations
-  case profile
+  case privateProfile
 
   fileprivate var trackingString: String {
     switch self {
     case .following: return Strings.Following()
     case .recommendations: return Strings.Recommendations()
-    case .profile: return "Private Profile"
+    case .privateProfile: return "Private profile"
     }
   }
 }

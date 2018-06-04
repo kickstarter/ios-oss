@@ -356,7 +356,7 @@ internal final class SettingsViewController: UIViewController {
       
     _ = self.privateProfileLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text .~ "Private profile"
+      |> UILabel.lens.text .~ Strings.Private_profile()
 
     _ = self.projectUpdatesLabel
       |> settingsSectionLabelStyle
