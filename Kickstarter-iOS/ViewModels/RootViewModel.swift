@@ -22,7 +22,7 @@ internal enum TabBarItem {
 internal protocol RootViewModelInputs {
   /// Call when the controller has received a user updated notification.
   func currentUserUpdated()
-  
+
   /// Call when the language selection has changed
   func currentLanguageChanged()
 
@@ -97,7 +97,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     let userState: Signal<(isLoggedIn: Bool, isMember: Bool), NoError> = currentUser
       .map { ($0 != nil, ($0?.stats.memberProjectsCount ?? 0) > 0) }
       .skipRepeats(==)
-    
+
     let standardViewControllers = self.viewDidLoadProperty.signal.map { _ in
         [
           DiscoveryViewController.instantiate(),
@@ -105,7 +105,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
           SearchViewController.instantiate()
         ]
       }
-    
+
     let personalizedViewControllers = userState.map { user in
         [
           user.isMember    ? DashboardViewController.instantiate() as UIViewController? : nil,
@@ -115,16 +115,16 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
         ]
       }
       .map { $0.compact() }
-    
+
     let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
-    
+
     let refreshedViewControllers = userState.takeWhen(self.currentLanguageProperty.signal)
       .map { user -> [UIViewController?] in
         let dashboardViewController: UIViewController? = user.isMember
           ? DashboardViewController.instantiate() : nil
         let loginProfileViewController: UIViewController = user.isLoggedIn
           ? profileController() : LoginToutViewController.configuredWith(loginIntent: .generic)
-        
+
         return [
           DiscoveryViewController.instantiate(),
           ActivitiesViewController.instantiate(),
@@ -207,12 +207,12 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
   }
-  
+
   fileprivate let currentLanguageProperty = MutableProperty(())
   internal func currentLanguageChanged() {
     self.currentLanguageProperty.value = ()
   }
-  
+
   fileprivate let didSelectIndexProperty = MutableProperty(0)
   internal func didSelectIndex(_ index: Int) {
     self.didSelectIndexProperty.value = index

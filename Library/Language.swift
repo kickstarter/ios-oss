@@ -32,7 +32,7 @@ public enum Language: String {
 
     self = language
   }
-  
+
   public var displayString: String {
     switch self {
     case .de: return "German"

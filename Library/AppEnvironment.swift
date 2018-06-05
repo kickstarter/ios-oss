@@ -62,7 +62,7 @@ public struct AppEnvironment {
       koala: AppEnvironment.current.koala |> Koala.lens.config .~ config
     )
   }
-  
+
   public static func updateLanguage(_ language: Language) {
     replaceCurrentEnvironment(language: language)
   }

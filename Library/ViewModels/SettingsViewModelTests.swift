@@ -589,23 +589,23 @@ internal final class SettingsViewModelTests: TestCase {
         "Build version string emitted without build number.")
     }
   }
-  
+
   func testSetCurrentLanguage() {
     withEnvironment(language: Language.en) {
       self.vm.inputs.viewDidLoad()
-      
+
       self.vm.inputs.setCurrentLanguage(.de)
-      
+
       self.currentLanguage.assertValue(.de)
     }
   }
-  
+
   func testSetCurrentLanguage_filtersWhenCurrentEnvLanguageIsTheSame() {
     withEnvironment(language: Language.en) {
       self.vm.inputs.viewDidLoad()
-      
+
       self.vm.inputs.setCurrentLanguage(.en)
-      
+
       self.currentLanguage.assertValueCount(0)
     }
   }

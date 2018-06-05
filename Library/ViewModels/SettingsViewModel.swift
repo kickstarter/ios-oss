@@ -313,11 +313,11 @@ SettingsViewModelOutputs {
       .map { $0.optedOutOfRecommendations }.skipNil().map { $0 ? false : true }.skipRepeats()
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
-    
+
     self.currentLanguage = self.currentLanguageProperty.signal
       .skipRepeats()
       .filter { AppEnvironment.current.language != $0 }
-  
+
     self.environmentSwitcherButtonTappedProperty.signal.skipNil().observeValues { config in
         AppEnvironment.updateServerConfig(config)
     }
@@ -475,12 +475,12 @@ SettingsViewModelOutputs {
   public func inventNewsletterTapped(on: Bool) {
     self.inventNewsletterTappedProperty.value = on
   }
-  
+
   fileprivate let currentLanguageProperty = MutableProperty(AppEnvironment.current.language)
   public func setCurrentLanguage(_ language: Language) {
     self.currentLanguageProperty.value = language
   }
-  
+
   fileprivate let logoutCanceledProperty = MutableProperty(())
   public func logoutCanceled() {
     self.logoutCanceledProperty.value = ()

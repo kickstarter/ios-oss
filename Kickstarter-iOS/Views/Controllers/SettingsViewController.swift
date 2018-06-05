@@ -149,7 +149,7 @@ internal final class SettingsViewController: UIViewController {
     self.howKsrWorksButton.addTarget(self,
                                      action: #selector(howKickstarterWorksTapped),
                                      for: .touchUpInside)
-    
+
     self.languageSwitcher.addTarget(self,
                                     action: #selector(languageSwitcherTapped),
                                     for: .touchUpInside)
@@ -201,7 +201,7 @@ internal final class SettingsViewController: UIViewController {
     _ = self.betaTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text .~ "Beta tools"
-      
+
     _ = self.languageSwitcher
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.title(for: .normal) %~ { _ in
@@ -516,7 +516,7 @@ internal final class SettingsViewController: UIViewController {
       .observeValues { [weak self] language in
         self?.languageDidChange(language: language)
       }
-      
+
     self.artsAndCultureNewsletterSwitch.rac.on = self.viewModel.outputs.artsAndCultureNewsletterOn
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
     self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
@@ -761,7 +761,7 @@ internal final class SettingsViewController: UIViewController {
   @objc fileprivate func howKickstarterWorksTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.howItWorks)
   }
-  
+
   @objc fileprivate func languageSwitcherTapped() {
     self.showLanguageActionSheet()
   }
@@ -869,18 +869,18 @@ internal final class SettingsViewController: UIViewController {
       animated: true
     )
   }
-  
+
   private func languageDidChange(language: Language) {
     AppEnvironment.updateLanguage(language)
-        
+
     NotificationCenter.default.post(name: Notification.Name.ksr_languageChanged, object: nil, userInfo: nil)
   }
-  
+
   private func showLanguageActionSheet() {
     let alert = UIAlertController(title: "Change Language",
                                   message: nil,
                                   preferredStyle: .actionSheet)
-    
+
     Language.allLanguages.forEach { language in
       alert.addAction(
         UIAlertAction(title: language.displayString, style: .default) { [weak self] _ in
@@ -888,11 +888,11 @@ internal final class SettingsViewController: UIViewController {
         }
       )
     }
-    
+
     alert.addAction(
       UIAlertAction.init(title: "Cancel", style: .cancel)
     )
-    
+
     self.present(alert, animated: true, completion: nil)
   }
 

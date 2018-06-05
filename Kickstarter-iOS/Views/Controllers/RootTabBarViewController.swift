@@ -36,10 +36,13 @@ public final class RootTabBarViewController: UITabBarController {
 
     self.languageChangedObserver = NotificationCenter
       .default
-      .addObserver(forName: Notification.Name.ksr_languageChanged, object: nil, queue: nil, using: { [weak self] _ in
+      .addObserver(forName: Notification.Name.ksr_languageChanged,
+                   object: nil,
+                   queue: nil,
+                   using: { [weak self] _ in
         self?.viewModel.inputs.currentLanguageChanged()
       })
-    
+
     self.viewModel.inputs.viewDidLoad()
   }
 
