@@ -132,6 +132,20 @@ final class RootViewModelTests: TestCase {
 
     self.viewControllerNames.assertValueCount(1)
   }
+  
+  func testUpdateCurrentLanguage() {
+    let viewControllerNames = TestObserver<[String], NoError>()
+    vm.outputs.setViewControllers.map(extractRootNames)
+      .observe(viewControllerNames.observer)
+    
+    self.vm.inputs.viewDidLoad()
+    
+    self.viewControllerNames.assertValueCount(1)
+    
+    self.vm.inputs.currentLanguageChanged()
+
+    self.viewControllerNames.assertValueCount(2)
+  }
 
   func testSelectedIndex() {
     self.selectedIndex.assertValues([], "No index seleted before view loads.")

@@ -189,7 +189,7 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_arts() }
 
     _ = self.betaDebugPushNotificationsButton
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
       |> UIButton.lens.title(for: .normal) .~ "Debug push notifications"
@@ -203,8 +203,9 @@ internal final class SettingsViewController: UIViewController {
       |> UILabel.lens.text .~ "Beta tools"
       
     _ = self.languageSwitcher
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.title(for: .normal) %~ { _ in
-        "Change language: \(AppEnvironment.current.language.displayString)"
+        "\(AppEnvironment.current.language.displayString)"
       }
 
     _ = self.contactButton
@@ -254,11 +255,10 @@ internal final class SettingsViewController: UIViewController {
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
     _ = self.environmentSwitcher
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
-      |> UIButton.lens.titleLabel.font .~ .ksr_body()
-      |> UIButton.lens.contentHorizontalAlignment .~ .left
-      |> UIButton.lens.title(for: .normal)
-        .~ "Change Environment: \(AppEnvironment.current.apiService.serverConfig.environmentName)"
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
+      |> UIButton.lens.title(for: .normal) %~ { _ in
+        "\(AppEnvironment.current.apiService.serverConfig.environmentName)"
+      }
 
     _ = self.findFriendsButton
       |> settingsSectionButtonStyle
@@ -549,7 +549,7 @@ internal final class SettingsViewController: UIViewController {
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
     self.languageSwitcher.rac.title = self.viewModel.outputs.currentLanguage
-      .map {"Change language: \($0.displayString)" }
+      .map {"\($0.displayString)" }
   }
   // swiftlint:enable function_body_length
 

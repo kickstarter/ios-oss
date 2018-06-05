@@ -98,10 +98,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .map { ($0 != nil, ($0?.stats.memberProjectsCount ?? 0) > 0) }
       .skipRepeats(==)
     
-    let standardViewControllers = Signal.merge(
-      self.viewDidLoadProperty.signal,
-      self.currentLanguageProperty.signal
-      ).map { _ in
+    let standardViewControllers = self.viewDidLoadProperty.signal.map { _ in
         [
           DiscoveryViewController.instantiate(),
           ActivitiesViewController.instantiate(),
@@ -109,13 +106,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
         ]
       }
     
-    let userStateLanguageChange = userState.takeWhen(self.currentLanguageProperty.signal)
-
-    let personalizedViewControllers = Signal.merge(
-        userState,
-        userStateLanguageChange
-      )
-      .map { user in
+    let personalizedViewControllers = userState.map { user in
         [
           user.isMember    ? DashboardViewController.instantiate() as UIViewController? : nil,
           !user.isLoggedIn
@@ -124,11 +115,29 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
         ]
       }
       .map { $0.compact() }
-
+    
     let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
+    
+    let refreshedViewControllers = userState.takeWhen(self.currentLanguageProperty.signal)
+      .map { user -> [UIViewController?] in
+        let dashboardViewController: UIViewController? = user.isMember
+          ? DashboardViewController.instantiate() : nil
+        let loginProfileViewController: UIViewController = user.isLoggedIn
+          ? profileController() : LoginToutViewController.configuredWith(loginIntent: .generic)
+        
+        return [
+          DiscoveryViewController.instantiate(),
+          ActivitiesViewController.instantiate(),
+          SearchViewController.instantiate(),
+          dashboardViewController,
+          loginProfileViewController
+        ]
+      }.map { $0.compact() }
 
-    self.setViewControllers = viewControllers
-      .map {
+    self.setViewControllers = Signal.merge(
+      viewControllers,
+      refreshedViewControllers
+    ).map {
         $0.map(UINavigationController.init(rootViewController:))
     }
 
