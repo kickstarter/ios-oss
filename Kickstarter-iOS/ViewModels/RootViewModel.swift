@@ -98,41 +98,20 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .map { ($0 != nil, ($0?.stats.memberProjectsCount ?? 0) > 0) }
       .skipRepeats(==)
 
-    let standardViewControllers = self.viewDidLoadProperty.signal.map { _ in
-        [
-          DiscoveryViewController.instantiate(),
-          ActivitiesViewController.instantiate(),
-          SearchViewController.instantiate()
-        ]
-      }
-
-    let personalizedViewControllers = userState.map { user in
-        [
-          user.isMember    ? DashboardViewController.instantiate() as UIViewController? : nil,
-          !user.isLoggedIn
-            ? LoginToutViewController.configuredWith(loginIntent: .generic) as UIViewController? : nil,
-          user.isLoggedIn  ? profileController() : nil
-        ]
-      }
+    let standardViewControllers = self.viewDidLoadProperty.signal.map { generateStandardViewControllers() }
+    let personalizedViewControllers = userState.map { generatePersonalizedViewControllers(userState: $0) }
       .map { $0.compact() }
 
     let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
 
     let refreshedViewControllers = userState.takeWhen(self.currentLanguageProperty.signal)
-      .map { user -> [UIViewController?] in
-        let dashboardViewController: UIViewController? = user.isMember
-          ? DashboardViewController.instantiate() : nil
-        let loginProfileViewController: UIViewController = user.isLoggedIn
-          ? profileController() : LoginToutViewController.configuredWith(loginIntent: .generic)
-
-        return [
-          DiscoveryViewController.instantiate(),
-          ActivitiesViewController.instantiate(),
-          SearchViewController.instantiate(),
-          dashboardViewController,
-          loginProfileViewController
-        ]
-      }.map { $0.compact() }
+      .map { userState -> [UIViewController?] in
+        let standard = generateStandardViewControllers()
+        let personalized = generatePersonalizedViewControllers(userState: userState)
+        
+        return [standard, personalized].flatMap { $0 }
+      }
+      .map { $0.compact() }
 
     self.setViewControllers = Signal.merge(
       viewControllers,
@@ -264,6 +243,23 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
   internal var inputs: RootViewModelInputs { return self }
   internal var outputs: RootViewModelOutputs { return self }
+}
+
+private func generateStandardViewControllers() -> [UIViewController] {
+  return [
+    DiscoveryViewController.instantiate(),
+    ActivitiesViewController.instantiate(),
+    SearchViewController.instantiate()
+  ]
+}
+
+private func generatePersonalizedViewControllers(userState: (isMember: Bool, isLoggedIn: Bool)) -> [UIViewController?] {
+  let dashboardViewController: UIViewController? = userState.isMember
+    ? DashboardViewController.instantiate() : nil
+  let loginProfileViewController: UIViewController = userState.isLoggedIn
+    ? profileController() : LoginToutViewController.configuredWith(loginIntent: .generic)
+  
+  return [dashboardViewController, loginProfileViewController]
 }
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
