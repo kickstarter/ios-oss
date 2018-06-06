@@ -76,6 +76,7 @@ public protocol SettingsViewModelOutputs {
   var mobilePostLikesSelected: Signal<Bool, NoError> { get }
   var mobileUpdatesSelected: Signal<Bool, NoError> { get }
   var postLikesSelected: Signal<Bool, NoError> { get }
+  var privateProfileEnabled: Signal<Bool, NoError> { get }
   var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var requestExportData: Signal<(), NoError> { get }
@@ -180,8 +181,8 @@ SettingsViewModelOutputs {
       self.postLikesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.postLikes), $0)
       },
-      self.privateProfileEnabledProperty.signal.map {
-        (UserAttribute.privacy(Privacy.privateProfile), $0)
+      self.showPublicProfileProperty.signal.map {
+        (UserAttribute.privacy(Privacy.showPublicProfile), $0)
       },
       self.creatorTipsProperty.signal.map {
         (UserAttribute.notification(Notification.creatorTips), $0)
@@ -307,6 +308,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.mobilePostLikes }.skipNil().skipRepeats()
     self.mobileUpdatesSelected = self.updateCurrentUser
       .map { $0.notifications.mobileUpdates }.skipNil().skipRepeats()
+    self.privateProfileEnabled = self.updateCurrentUser
+      .map { $0.showPublicProfile }.skipNil().negate().skipRepeats()
     self.postLikesSelected = self.updateCurrentUser
       .map { $0.notifications.postLikes }.skipNil().skipRepeats()
     self.updatesSelected = self.updateCurrentUser
@@ -526,9 +529,9 @@ SettingsViewModelOutputs {
     self.postLikesTappedProperty.value = selected
   }
   
-  fileprivate let privateProfileEnabledProperty = MutableProperty(false)
+  fileprivate let showPublicProfileProperty = MutableProperty(false)
   public func privateProfileSwitchDidChange(isOn: Bool) {
-    self.privateProfileEnabledProperty.value = isOn
+    self.showPublicProfileProperty.value = !isOn
   }
   
   fileprivate let promoNewsletterTappedProperty = MutableProperty(false)
@@ -588,6 +591,7 @@ SettingsViewModelOutputs {
   public let mobilePostLikesSelected: Signal<Bool, NoError>
   public let mobileUpdatesSelected: Signal<Bool, NoError>
   public let postLikesSelected: Signal<Bool, NoError>
+  public let privateProfileEnabled: Signal<Bool, NoError>
   public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
   public let requestExportData: Signal<(), NoError>
@@ -641,9 +645,9 @@ private enum UserAttribute {
       }
     case let .privacy(privacy):
       switch privacy {
-      case .following:       return User.lens.social
-      case .recommendations: return User.lens.optedOutOfRecommendations
-      case .privateProfile:  return User.lens.social
+      case .following:          return User.lens.social
+      case .recommendations:    return User.lens.optedOutOfRecommendations
+      case .showPublicProfile:  return User.lens.showPublicProfile
       }
     }
   }
@@ -683,13 +687,13 @@ private enum Notification {
 private enum Privacy {
   case following
   case recommendations
-  case privateProfile
+  case showPublicProfile
 
   fileprivate var trackingString: String {
     switch self {
     case .following: return Strings.Following()
     case .recommendations: return Strings.Recommendations()
-    case .privateProfile: return "Private profile"
+    case .showPublicProfile: return "Show public profile"
     }
   }
 }

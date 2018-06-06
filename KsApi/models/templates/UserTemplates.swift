@@ -13,6 +13,7 @@ extension User {
     newsletters: .template,
     notifications: .template,
     optedOutOfRecommendations: false,
+    showPublicProfile: false,
     social: nil,
     stats: .template
   )

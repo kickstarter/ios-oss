@@ -534,6 +534,7 @@ internal final class SettingsViewController: UIViewController {
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
     self.promoNewsletterSwitch.rac.on = self.viewModel.outputs.promoNewsletterOn
     self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
+    self.privateProfileSwitch.rac.on = self.viewModel.outputs.privateProfileEnabled
     self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
@@ -811,7 +812,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @IBAction func privateProfileSwitchDidChange(_ sender: UISwitch) {
-    print("Switch is on: \(sender.isOn)")
+    self.viewModel.inputs.privateProfileSwitchDidChange(isOn: sender.isOn)
   }
   
   @IBAction fileprivate func promoNewsletterTapped(_ newsletterSwitch: UISwitch) {
