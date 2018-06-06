@@ -108,7 +108,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .map { userState -> [UIViewController?] in
         let standard = generateStandardViewControllers()
         let personalized = generatePersonalizedViewControllers(userState: userState)
-        
+
         return [standard, personalized].flatMap { $0 }
       }
       .map { $0.compact() }
@@ -253,12 +253,13 @@ private func generateStandardViewControllers() -> [UIViewController] {
   ]
 }
 
-private func generatePersonalizedViewControllers(userState: (isMember: Bool, isLoggedIn: Bool)) -> [UIViewController?] {
+private func generatePersonalizedViewControllers(userState: (isMember: Bool, isLoggedIn: Bool))
+  -> [UIViewController?] {
   let dashboardViewController: UIViewController? = userState.isMember
     ? DashboardViewController.instantiate() : nil
   let loginProfileViewController: UIViewController = userState.isLoggedIn
     ? profileController() : LoginToutViewController.configuredWith(loginIntent: .generic)
-  
+
   return [dashboardViewController, loginProfileViewController]
 }
 
