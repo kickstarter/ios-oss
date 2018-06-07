@@ -37,6 +37,7 @@ internal final class SettingsViewModelTests: TestCase {
   let mobilePostLikesSelected = TestObserver<Bool, NoError>()
   let mobileUpdatesSelected = TestObserver<Bool, NoError>()
   let postLikesSelected = TestObserver<Bool, NoError>()
+  let privateProfileEnabled = TestObserver<Bool, NoError>()
   let projectNotificationsCount = TestObserver<String, NoError>()
   let promoNewsletterOn = TestObserver<Bool, NoError>()
   let requestExportData = TestObserver<(), NoError>()
@@ -79,6 +80,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.mobilePostLikesSelected.observe(self.mobilePostLikesSelected.observer)
     self.vm.outputs.mobileUpdatesSelected.observe(self.mobileUpdatesSelected.observer)
     self.vm.outputs.postLikesSelected.observe(self.postLikesSelected.observer)
+    self.vm.outputs.privateProfileEnabled.observe(self.privateProfileEnabled.observer)
     self.vm.outputs.projectNotificationsCount.observe(self.projectNotificationsCount.observer)
     self.vm.outputs.promoNewsletterOn.observe(self.promoNewsletterOn.observer)
     self.vm.outputs.requestExportData.observe(self.requestExportData.observer)
@@ -514,6 +516,19 @@ internal final class SettingsViewModelTests: TestCase {
       "Enabled Email Notifications", "Enabled Email Notifications", "Enabled Push Notifications",
       "Enabled Push Notifications", "Enabled Push Notifications",
       "Disabled Push Notifications", "Disabled Push Notifications"], self.trackingClient.events)
+  }
+  
+  func testPrivateProfileToggled() {
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    
+    self.vm.inputs.viewDidLoad()
+    
+    self.privateProfileEnabled.assertValues([true])
+
+    self.vm.inputs.privateProfileSwitchDidChange(isOn: false)
+
+    self.privateProfileEnabled.assertValues([true, false])
   }
 
   func testUpdateError() {
