@@ -15,6 +15,7 @@ internal final class SettingsViewModelTests: TestCase {
   let betaToolsHidden = TestObserver<Bool, NoError>()
   let commentsSelected = TestObserver<Bool, NoError>()
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
+  let currentLanguage = TestObserver<Language, NoError>()
   let environmentSwitcherButtonTitle = TestObserver<String, NoError>()
   let followerSelected = TestObserver<Bool, NoError>()
   let followingPrivacyOn = TestObserver<Bool, NoError>()
@@ -58,6 +59,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.betaToolsHidden.observe(self.betaToolsHidden.observer)
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
+    self.vm.outputs.currentLanguage.observe(self.currentLanguage.observer)
     self.vm.outputs.environmentSwitcherButtonTitle.observe(self.environmentSwitcherButtonTitle.observer)
     self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
     self.vm.outputs.followingPrivacyOn.observe(self.followingPrivacyOn.observer)
@@ -600,6 +602,26 @@ internal final class SettingsViewModelTests: TestCase {
       self.versionText.assertValues(
         ["Version \(self.mainBundle.shortVersionString)"],
         "Build version string emitted without build number.")
+    }
+  }
+
+  func testSetCurrentLanguage() {
+    withEnvironment(language: Language.en) {
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.setCurrentLanguage(.de)
+
+      self.currentLanguage.assertValue(.de)
+    }
+  }
+
+  func testSetCurrentLanguage_filtersWhenCurrentEnvLanguageIsTheSame() {
+    withEnvironment(language: Language.en) {
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.setCurrentLanguage(.en)
+
+      self.currentLanguage.assertValueCount(0)
     }
   }
 }

@@ -39,6 +39,7 @@ public protocol SettingsViewModelInputs {
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
   func recommendationsTapped(on: Bool)
+  func setCurrentLanguage(_ language: Language)
   func updatesTapped(selected: Bool)
   func viewDidLoad()
   func weeklyNewsletterTapped(on: Bool)
@@ -51,6 +52,7 @@ public protocol SettingsViewModelOutputs {
   var commentsSelected: Signal<Bool, NoError> { get }
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
   var creatorTipsSelected: Signal<Bool, NoError> { get }
+  var currentLanguage: Signal<Language, NoError> { get }
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
   var environmentSwitcherButtonTitle: Signal<String, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
@@ -319,6 +321,10 @@ SettingsViewModelOutputs {
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
+    self.currentLanguage = self.currentLanguageProperty.signal
+      .skipRepeats()
+      .filter { AppEnvironment.current.language != $0 }
+
     self.environmentSwitcherButtonTappedProperty.signal.skipNil().observeValues { config in
         AppEnvironment.updateServerConfig(config)
     }
@@ -476,6 +482,12 @@ SettingsViewModelOutputs {
   public func inventNewsletterTapped(on: Bool) {
     self.inventNewsletterTappedProperty.value = on
   }
+
+  fileprivate let currentLanguageProperty = MutableProperty(AppEnvironment.current.language)
+  public func setCurrentLanguage(_ language: Language) {
+    self.currentLanguageProperty.value = language
+  }
+
   fileprivate let logoutCanceledProperty = MutableProperty(())
   public func logoutCanceled() {
     self.logoutCanceledProperty.value = ()
@@ -566,6 +578,7 @@ SettingsViewModelOutputs {
   public let commentsSelected: Signal<Bool, NoError>
   public let creatorNotificationsHidden: Signal<Bool, NoError>
   public let creatorTipsSelected: Signal<Bool, NoError>
+  public let currentLanguage: Signal<Language, NoError>
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
   public let environmentSwitcherButtonTitle: Signal<String, NoError>
   public let followerSelected: Signal<Bool, NoError>
