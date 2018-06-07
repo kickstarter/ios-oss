@@ -96,12 +96,12 @@ extension User {
         showPublicProfile: $1.showPublicProfile,
         social: $1.social, stats: $1.stats) }
     )
-    
+
     public static let showPublicProfile = Lens<User, Bool?>(
       view: { $0.showPublicProfile },
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
-                  isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name,
-                  newsletters: $1.newsletters, notifications: $1.notifications,
+                  isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $1.location,
+                  name: $1.name, newsletters: $1.newsletters, notifications: $1.notifications,
                   optedOutOfRecommendations: $1.optedOutOfRecommendations, showPublicProfile: $0,
                   social: $1.social, stats: $1.stats) }
     )

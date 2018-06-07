@@ -169,7 +169,7 @@ internal final class SettingsViewController: UIViewController {
     self.recommendationsInfoButton.addTarget(self,
                                              action: #selector(recommendationsInfoTapped),
                                              for: .touchUpInside)
-    
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -353,10 +353,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.privacyPolicyLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_privacy() }
-      
+
     _ = self.privateProfileLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text .~ Strings.Private_profile()
+      |> UILabel.lens.text %~ { _ in Strings.Private_profile() }
 
     _ = self.projectUpdatesLabel
       |> settingsSectionLabelStyle
@@ -814,7 +814,7 @@ internal final class SettingsViewController: UIViewController {
   @IBAction func privateProfileSwitchDidChange(_ sender: UISwitch) {
     self.viewModel.inputs.privateProfileSwitchDidChange(isOn: sender.isOn)
   }
-  
+
   @IBAction fileprivate func promoNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.isOn)
   }

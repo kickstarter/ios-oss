@@ -517,13 +517,13 @@ internal final class SettingsViewModelTests: TestCase {
       "Enabled Push Notifications", "Enabled Push Notifications",
       "Disabled Push Notifications", "Disabled Push Notifications"], self.trackingClient.events)
   }
-  
+
   func testPrivateProfileToggled() {
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-    
+
     self.vm.inputs.viewDidLoad()
-    
+
     self.privateProfileEnabled.assertValues([true])
 
     self.vm.inputs.privateProfileSwitchDidChange(isOn: false)

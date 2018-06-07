@@ -528,12 +528,12 @@ SettingsViewModelOutputs {
   public func postLikesTapped(selected: Bool) {
     self.postLikesTappedProperty.value = selected
   }
-  
+
   fileprivate let showPublicProfileProperty = MutableProperty(false)
   public func privateProfileSwitchDidChange(isOn: Bool) {
     self.showPublicProfileProperty.value = !isOn
   }
-  
+
   fileprivate let promoNewsletterTappedProperty = MutableProperty(false)
   public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
