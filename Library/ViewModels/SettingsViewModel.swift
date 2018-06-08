@@ -183,7 +183,7 @@ SettingsViewModelOutputs {
       self.postLikesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.postLikes), $0)
       },
-      self.showPublicProfileProperty.signal.map {
+      self.privateProfileEnabledProperty.signal.negate().map {
         (UserAttribute.privacy(Privacy.showPublicProfile), $0)
       },
       self.creatorTipsProperty.signal.map {
@@ -541,9 +541,9 @@ SettingsViewModelOutputs {
     self.postLikesTappedProperty.value = selected
   }
 
-  fileprivate let showPublicProfileProperty = MutableProperty(false)
+  fileprivate let privateProfileEnabledProperty = MutableProperty(false)
   public func privateProfileSwitchDidChange(isOn: Bool) {
-    self.showPublicProfileProperty.value = !isOn
+    self.privateProfileEnabledProperty.value = isOn
   }
 
   fileprivate let promoNewsletterTappedProperty = MutableProperty(false)
