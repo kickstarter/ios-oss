@@ -706,7 +706,7 @@ private enum Privacy {
     switch self {
     case .following: return Strings.Following()
     case .recommendations: return Strings.Recommendations()
-    case .showPublicProfile: return "Show public profile"
+    default: return ""
     }
   }
 }
