@@ -833,7 +833,7 @@ internal final class SettingsViewController: UIViewController {
     self.helpViewModel.inputs.helpTypeButtonTapped(.privacy)
   }
 
-  @IBAction func privateProfileSwitchDidChange(_ sender: UISwitch) {
+  @IBAction fileprivate func privateProfileSwitchDidChange(_ sender: UISwitch) {
     self.viewModel.inputs.privateProfileSwitchDidChange(isOn: sender.isOn)
   }
 
