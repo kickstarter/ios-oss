@@ -541,7 +541,7 @@ SettingsViewModelOutputs {
     self.postLikesTappedProperty.value = selected
   }
 
-  fileprivate let privateProfileEnabledProperty = MutableProperty(false)
+  fileprivate let privateProfileEnabledProperty = MutableProperty(true)
   public func privateProfileSwitchDidChange(isOn: Bool) {
     self.privateProfileEnabledProperty.value = isOn
   }
