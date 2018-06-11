@@ -48,8 +48,8 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     super.viewDidLoad()
 
     self.environmentSwitcherButton.addTarget(self,
-                                       action: #selector(environmentSwitcherTapped),
-                                       for: .touchUpInside)
+                                             action: #selector(environmentSwitcherTapped),
+                                             for: .touchUpInside)
 
     self.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped),
                                   for: .touchUpInside)
@@ -343,7 +343,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     alert.addAction(
       UIAlertAction(title: "Staging", style: .default) { [weak self] _ in
         self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
-
       }
     )
 
