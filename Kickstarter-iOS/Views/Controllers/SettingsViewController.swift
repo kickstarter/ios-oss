@@ -169,7 +169,7 @@ internal final class SettingsViewController: UIViewController {
     self.privacyPolicyButton.addTarget(self,
                                        action: #selector(privacyPolicyTapped),
                                        for: .touchUpInside)
-    
+
     self.rateUsButton.addTarget(self, action: #selector(rateUsTapped), for: .touchUpInside)
 
     self.recommendationsInfoButton.addTarget(self,
@@ -368,7 +368,7 @@ internal final class SettingsViewController: UIViewController {
     _ = self.privateProfileLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Private_profile() }
-      
+
     _ = self.privateProfileMoreInfoButton
       |> UIButton.lens.image(for: .normal)
       .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
@@ -854,10 +854,10 @@ internal final class SettingsViewController: UIViewController {
         handler: nil
       )
     )
-    
+
     self.present(alertController, animated: true, completion: nil)
   }
-  
+
   @IBAction fileprivate func promoNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.isOn)
   }
