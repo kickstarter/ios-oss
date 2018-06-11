@@ -1838,7 +1838,7 @@ backers"
    - **es**: "Más información sobre el seguimiento"
    - **ja**: "フォロー 詳細"
    - **de**: "Mehr Info zu Folgen"
-   - **fr**: "Following More Info"
+   - **fr**: "Plus d'informations sur le suivi et l'abonnement"
    - **en**: "Following More Info"
   */
   public static func Following_More_Info() -> String {
@@ -2270,6 +2270,23 @@ backers"
     return localizedString(
       key: "Help_center",
       defaultValue: "Help Center",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Hide password"
+
+   - **es**: "Ocultar contraseña"
+   - **ja**: "パスワードを非表示にする"
+   - **de**: "Passwort verbergen"
+   - **fr**: "Masquer le mot de passe"
+   - **en**: "Hide password"
+  */
+  public static func Hide_password() -> String {
+    return localizedString(
+      key: "Hide_password",
+      defaultValue: "Hide password",
       count: nil,
       substitutions: [:]
     )
@@ -3436,6 +3453,23 @@ from friends yet."
     )
   }
   /**
+   "Password visibility"
+
+   - **es**: "Visibilidad de la contraseña"
+   - **ja**: "パスワードの表示/非表示"
+   - **de**: "Passwort-Anzeige"
+   - **fr**: "Visibilité du mot de passe"
+   - **en**: "Password visibility"
+  */
+  public static func Password_visibility() -> String {
+    return localizedString(
+      key: "Password_visibility",
+      defaultValue: "Password visibility",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Past live stream"
 
    - **es**: "Live Stream pasado"
@@ -3754,6 +3788,23 @@ from friends yet."
     return localizedString(
       key: "Privacy",
       defaultValue: "Privacy",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Private profile"
+
+   - **es**: "Private profile"
+   - **ja**: "Private profile"
+   - **de**: "Private profile"
+   - **fr**: "Private profile"
+   - **en**: "Private profile"
+  */
+  public static func Private_profile() -> String {
+    return localizedString(
+      key: "Private_profile",
+      defaultValue: "Private profile",
       count: nil,
       substitutions: [:]
     )
@@ -4709,6 +4760,23 @@ daring ideas."
     return localizedString(
       key: "Ships_to",
       defaultValue: "Ships to:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Show password"
+
+   - **es**: "Mostrar contraseña"
+   - **ja**: "パスワードを表示する"
+   - **de**: "Passwort anzeigen"
+   - **fr**: "Afficher le mot de passe"
+   - **en**: "Show password"
+  */
+  public static func Show_password() -> String {
+    return localizedString(
+      key: "Show_password",
+      defaultValue: "Show password",
       count: nil,
       substitutions: [:]
     )

@@ -15,6 +15,7 @@ internal final class SettingsViewModelTests: TestCase {
   let betaToolsHidden = TestObserver<Bool, NoError>()
   let commentsSelected = TestObserver<Bool, NoError>()
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
+  let currentLanguage = TestObserver<Language, NoError>()
   let environmentSwitcherButtonTitle = TestObserver<String, NoError>()
   let followerSelected = TestObserver<Bool, NoError>()
   let followingPrivacyOn = TestObserver<Bool, NoError>()
@@ -37,6 +38,7 @@ internal final class SettingsViewModelTests: TestCase {
   let mobilePostLikesSelected = TestObserver<Bool, NoError>()
   let mobileUpdatesSelected = TestObserver<Bool, NoError>()
   let postLikesSelected = TestObserver<Bool, NoError>()
+  let privateProfileEnabled = TestObserver<Bool, NoError>()
   let projectNotificationsCount = TestObserver<String, NoError>()
   let promoNewsletterOn = TestObserver<Bool, NoError>()
   let requestExportData = TestObserver<(), NoError>()
@@ -57,6 +59,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.betaToolsHidden.observe(self.betaToolsHidden.observer)
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
+    self.vm.outputs.currentLanguage.observe(self.currentLanguage.observer)
     self.vm.outputs.environmentSwitcherButtonTitle.observe(self.environmentSwitcherButtonTitle.observer)
     self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
     self.vm.outputs.followingPrivacyOn.observe(self.followingPrivacyOn.observer)
@@ -79,6 +82,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.mobilePostLikesSelected.observe(self.mobilePostLikesSelected.observer)
     self.vm.outputs.mobileUpdatesSelected.observe(self.mobileUpdatesSelected.observer)
     self.vm.outputs.postLikesSelected.observe(self.postLikesSelected.observer)
+    self.vm.outputs.privateProfileEnabled.observe(self.privateProfileEnabled.observer)
     self.vm.outputs.projectNotificationsCount.observe(self.projectNotificationsCount.observer)
     self.vm.outputs.promoNewsletterOn.observe(self.promoNewsletterOn.observer)
     self.vm.outputs.requestExportData.observe(self.requestExportData.observer)
@@ -181,11 +185,11 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.viewDidLoad()
 
     self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
-    self.environmentSwitcherButtonTitle.assertValue("Change Environment (Staging)")
+    self.environmentSwitcherButtonTitle.assertValue("Staging")
 
     self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
-    self.environmentSwitcherButtonTitle.assertValues(["Change Environment (Staging)",
-                                                      "Change Environment (Local)"])
+    self.environmentSwitcherButtonTitle.assertValues(["Staging",
+                                                      "Local"])
   }
 
   func testCreatorNotificationsTapped() {
@@ -520,6 +524,19 @@ internal final class SettingsViewModelTests: TestCase {
       "Disabled Push Notifications", "Disabled Push Notifications"], self.trackingClient.events)
   }
 
+  func testPrivateProfileToggled() {
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+
+    self.vm.inputs.viewDidLoad()
+
+    self.privateProfileEnabled.assertValues([true])
+
+    self.vm.inputs.privateProfileSwitchDidChange(isOn: false)
+
+    self.privateProfileEnabled.assertValues([true, false])
+  }
+
   func testUpdateError() {
     let error = ErrorEnvelope(
       errorMessages: ["Unable to save."],
@@ -589,6 +606,26 @@ internal final class SettingsViewModelTests: TestCase {
       self.versionText.assertValues(
         ["Version \(self.mainBundle.shortVersionString)"],
         "Build version string emitted without build number.")
+    }
+  }
+
+  func testSetCurrentLanguage() {
+    withEnvironment(language: Language.en) {
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.setCurrentLanguage(.de)
+
+      self.currentLanguage.assertValue(.de)
+    }
+  }
+
+  func testSetCurrentLanguage_filtersWhenCurrentEnvLanguageIsTheSame() {
+    withEnvironment(language: Language.en) {
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.setCurrentLanguage(.en)
+
+      self.currentLanguage.assertValueCount(0)
     }
   }
 }

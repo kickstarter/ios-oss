@@ -1,10 +1,10 @@
 import UIKit
 
 internal enum Device {
-  case phone4inch
-  case phone4_7inch
-  case phone5_5inch
-  case phone5_8inch
+  case phone4inch   // iPhone SE
+  case phone4_7inch // iPhone 8, 7, 6S
+  case phone5_5inch // iPhone 8 Plus, 7 Plus, 6S Plus
+  case phone5_8inch // iPhone X
   case pad
 }
 

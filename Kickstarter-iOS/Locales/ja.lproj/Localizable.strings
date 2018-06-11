@@ -139,6 +139,7 @@
 "Got_it" = "完了";
 "Got_it_your_survey_response_has_been_submitted" = "サーベイを送信しました！";
 "Help_center" = "ヘルプセンター";
+"Hide_password" = "パスワードを非表示にする";
 "Home" = "ホーム";
 "How_backers_found_your_project" = "バッカ―があなたのプロジェクトを見つけた経緯";
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
@@ -211,6 +212,7 @@
 "Or_select_a_different_reward_below_colon" = "別のリワードをみる：";
 "Other_payment_methods" = "その他の支払方法";
 "Other_projects_you_might_like" = "おすすめをさらに見る";
+"Password_visibility" = "パスワードの表示/非表示";
 "Past_live_stream" = "過去のプロジェクト";
 "Payment_method_was_successfully_charged" = "支払い方法が登録されました。";
 "Please_enter_an_amount_of_amount_or_less" = "%{amount} 以下の金額を入力してくだささい。";
@@ -230,6 +232,7 @@
 "Popular" = "人気";
 "Popular_Projects" = "人気のプロジェクト";
 "Privacy" = "プライバシー";
+"Private_profile" = "Private profile";
 "Project_Cancelled" = "プロジェクトが取り消されました。";
 "Project_Suspended" = "中止プロジェクト";
 "Project_cancelled" = "プロジェクトが取り消されました。";
@@ -298,6 +301,7 @@
 "Share_update" = "アップデートをシェアしましょう";
 "Shipping" = "配送";
 "Ships_to" = "配送先：";
+"Show_password" = "パスワードを表示する";
 "Shows_list_of_subcategories" = "サブカテゴリーリストを見せる。";
 "Signs_up_with_Email" = "Eメールでサインアップする。";
 "Something_catch_your_eye" = "何か目にとまるものはありましたか？";

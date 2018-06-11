@@ -113,7 +113,7 @@
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Suivez vos amis Facebook, les projets qu'ils soutiennent et les campagnes qu'ils lancent.";
 "Followed" = "Abonné";
 "Following" = "Projets soutenus par mes amis";
-"Following_More_Info" = "Following More Info";
+"Following_More_Info" = "Plus d'informations sur le suivi et l'abonnement";
 "Follows_friend_name" = "Abonnement aux actus de %{friend_name}.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> a soutenu un projet <i>artistique</i>.";
 "Friend_backed_comics_project" = "<b>%{friend_name}</b> a soutenu un projet de <i>BD</i>.";
@@ -139,6 +139,7 @@
 "Got_it" = "Super.";
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
 "Help_center" = "Centre d'aide";
+"Hide_password" = "Masquer le mot de passe";
 "Home" = "Accueil";
 "How_backers_found_your_project" = "Comment les contributeurs ont découvert votre projet";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
@@ -211,6 +212,7 @@
 "Or_select_a_different_reward_below_colon" = "Ou sélectionner une autre récompense ci-dessous :";
 "Other_payment_methods" = "Autres moyens de paiement";
 "Other_projects_you_might_like" = "Autre projets qui pourraient vous intéresser";
+"Password_visibility" = "Visibilité du mot de passe";
 "Past_live_stream" = "Diffusion en direct passée";
 "Payment_method_was_successfully_charged" = "Le moyen de paiement a bien été débité.";
 "Please_enter_an_amount_of_amount_or_less" = "Veuillez saisir un montant de %{amount} ou moins.";
@@ -230,6 +232,7 @@
 "Popular" = "Tendances";
 "Popular_Projects" = "Les tendances";
 "Privacy" = "Vie privée";
+"Private_profile" = "Private profile";
 "Project_Cancelled" = "Projet annulé.";
 "Project_Suspended" = "Projet suspendu.";
 "Project_cancelled" = "Projet annulé";
@@ -298,6 +301,7 @@
 "Share_update" = "Partager";
 "Shipping" = "Expédition";
 "Ships_to" = "Livraison :";
+"Show_password" = "Afficher le mot de passe";
 "Shows_list_of_subcategories" = "Affiche la liste des sous-catégories.";
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
 "Something_catch_your_eye" = "Quelque chose a retenu votre attention ?";

@@ -35,9 +35,11 @@ public protocol SettingsViewModelInputs {
   func mobilePostLikesTapped(selected: Bool)
   func mobileUpdatesTapped(selected: Bool)
   func postLikesTapped(selected: Bool)
+  func privateProfileSwitchDidChange(isOn: Bool)
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
   func recommendationsTapped(on: Bool)
+  func setCurrentLanguage(_ language: Language)
   func updatesTapped(selected: Bool)
   func viewDidLoad()
   func weeklyNewsletterTapped(on: Bool)
@@ -50,6 +52,7 @@ public protocol SettingsViewModelOutputs {
   var commentsSelected: Signal<Bool, NoError> { get }
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
   var creatorTipsSelected: Signal<Bool, NoError> { get }
+  var currentLanguage: Signal<Language, NoError> { get }
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
   var environmentSwitcherButtonTitle: Signal<String, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
@@ -75,6 +78,7 @@ public protocol SettingsViewModelOutputs {
   var mobilePostLikesSelected: Signal<Bool, NoError> { get }
   var mobileUpdatesSelected: Signal<Bool, NoError> { get }
   var postLikesSelected: Signal<Bool, NoError> { get }
+  var privateProfileEnabled: Signal<Bool, NoError> { get }
   var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var requestExportData: Signal<(), NoError> { get }
@@ -178,6 +182,9 @@ SettingsViewModelOutputs {
       },
       self.postLikesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.postLikes), $0)
+      },
+      self.privateProfileEnabledProperty.signal.negate().map {
+        (UserAttribute.privacy(Privacy.showPublicProfile), $0)
       },
       self.creatorTipsProperty.signal.map {
         (UserAttribute.notification(Notification.creatorTips), $0)
@@ -303,6 +310,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.mobilePostLikes }.skipNil().skipRepeats()
     self.mobileUpdatesSelected = self.updateCurrentUser
       .map { $0.notifications.mobileUpdates }.skipNil().skipRepeats()
+    self.privateProfileEnabled = self.updateCurrentUser
+      .map { $0.showPublicProfile }.skipNil().negate().skipRepeats()
     self.postLikesSelected = self.updateCurrentUser
       .map { $0.notifications.postLikes }.skipNil().skipRepeats()
     self.updatesSelected = self.updateCurrentUser
@@ -312,6 +321,10 @@ SettingsViewModelOutputs {
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
+    self.currentLanguage = self.currentLanguageProperty.signal
+      .skipRepeats()
+      .filter { AppEnvironment.current.language != $0 }
+
     self.environmentSwitcherButtonTappedProperty.signal.skipNil().observeValues { config in
         AppEnvironment.updateServerConfig(config)
     }
@@ -320,7 +333,7 @@ SettingsViewModelOutputs {
       .takeWhen(self.environmentSwitcherButtonTappedProperty.signal)
       .map { _ in
         let config = ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)
-        return "Change Environment (\(config))"
+        return config
     }.skipRepeats()
 
     self.goToEmailFrequency = self.updateCurrentUser
@@ -470,6 +483,12 @@ SettingsViewModelOutputs {
   public func inventNewsletterTapped(on: Bool) {
     self.inventNewsletterTappedProperty.value = on
   }
+
+  fileprivate let currentLanguageProperty = MutableProperty(AppEnvironment.current.language)
+  public func setCurrentLanguage(_ language: Language) {
+    self.currentLanguageProperty.value = language
+  }
+
   fileprivate let logoutCanceledProperty = MutableProperty(())
   public func logoutCanceled() {
     self.logoutCanceledProperty.value = ()
@@ -522,6 +541,12 @@ SettingsViewModelOutputs {
   public func postLikesTapped(selected: Bool) {
     self.postLikesTappedProperty.value = selected
   }
+
+  fileprivate let privateProfileEnabledProperty = MutableProperty(true)
+  public func privateProfileSwitchDidChange(isOn: Bool) {
+    self.privateProfileEnabledProperty.value = isOn
+  }
+
   fileprivate let promoNewsletterTappedProperty = MutableProperty(false)
   public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
@@ -554,6 +579,7 @@ SettingsViewModelOutputs {
   public let commentsSelected: Signal<Bool, NoError>
   public let creatorNotificationsHidden: Signal<Bool, NoError>
   public let creatorTipsSelected: Signal<Bool, NoError>
+  public let currentLanguage: Signal<Language, NoError>
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
   public let environmentSwitcherButtonTitle: Signal<String, NoError>
   public let followerSelected: Signal<Bool, NoError>
@@ -579,6 +605,7 @@ SettingsViewModelOutputs {
   public let mobilePostLikesSelected: Signal<Bool, NoError>
   public let mobileUpdatesSelected: Signal<Bool, NoError>
   public let postLikesSelected: Signal<Bool, NoError>
+  public let privateProfileEnabled: Signal<Bool, NoError>
   public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
   public let requestExportData: Signal<(), NoError>
@@ -632,8 +659,9 @@ private enum UserAttribute {
       }
     case let .privacy(privacy):
       switch privacy {
-      case .following:       return User.lens.social
-      case .recommendations: return User.lens.optedOutOfRecommendations
+      case .following:          return User.lens.social
+      case .recommendations:    return User.lens.optedOutOfRecommendations
+      case .showPublicProfile:  return User.lens.showPublicProfile
       }
     }
   }
@@ -663,7 +691,7 @@ private enum Notification {
     case .creatorTips:                              return "Creator tips"
     case .follower, .mobileFollower:                return "New followers"
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
-    case .messages, .mobileMessages:                 return "New messages"
+    case .messages, .mobileMessages:                return "New messages"
     case .postLikes, .mobilePostLikes:              return "New likes"
     case .updates, .mobileUpdates:                  return "Project updates"
     }
@@ -671,14 +699,15 @@ private enum Notification {
 }
 
 private enum Privacy {
-
   case following
   case recommendations
+  case showPublicProfile
 
   fileprivate var trackingString: String {
     switch self {
     case .following: return Strings.Following()
     case .recommendations: return Strings.Recommendations()
+    default: return ""
     }
   }
 }

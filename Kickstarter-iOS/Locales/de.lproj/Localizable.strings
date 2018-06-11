@@ -139,6 +139,7 @@
 "Got_it" = "Alles klar!";
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
 "Help_center" = "Hilfe-Center";
+"Hide_password" = "Passwort verbergen";
 "Home" = "Home";
 "How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
@@ -211,6 +212,7 @@
 "Or_select_a_different_reward_below_colon" = "Oder eine andere Belohnung wählen:";
 "Other_payment_methods" = "Weitere Zahlungsmethoden";
 "Other_projects_you_might_like" = "Ähnliche Projekte:";
+"Password_visibility" = "Passwort-Anzeige";
 "Past_live_stream" = "Früherer Live-Stream";
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Please_enter_an_amount_of_amount_or_less" = "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein.";
@@ -230,6 +232,7 @@
 "Popular" = "Beliebt";
 "Popular_Projects" = "Beliebte Projekte";
 "Privacy" = "Datenschutz";
+"Private_profile" = "Private profile";
 "Project_Cancelled" = "Projekt abgebrochen.";
 "Project_Suspended" = "Projekt ausgesetzt.";
 "Project_cancelled" = "Projekt abgebrochen";
@@ -298,6 +301,7 @@
 "Share_update" = "Teilen";
 "Shipping" = "Versand";
 "Ships_to" = "Versand an:";
+"Show_password" = "Passwort anzeigen";
 "Shows_list_of_subcategories" = "Unterkategorien anzeigen.";
 "Signs_up_with_Email" = "Mit E-Mail-Adresse registrieren.";
 "Something_catch_your_eye" = "Etwas interessantes gefunden?";

@@ -13,6 +13,7 @@ public struct User {
   public let newsletters: NewsletterSubscriptions
   public let notifications: Notifications
   public let optedOutOfRecommendations: Bool?
+  public let showPublicProfile: Bool?
   public let social: Bool?
   public let stats: Stats
 
@@ -91,6 +92,7 @@ extension User: Argo.Decodable {
       <*> User.Notifications.decode(json)
       <*> json <|? "opted_out_of_recommendations"
     return tmp3
+      <*> json <|? "show_public_profile"
       <*> json <|? "social"
       <*> User.Stats.decode(json)
   }
@@ -107,6 +109,7 @@ extension User: EncodableType {
     result["location"] = self.location?.encode()
     result["name"] = self.name
     result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false
+    result["show_public_profile"] = self.showPublicProfile ?? false
     result = result.withAllValuesFrom(self.newsletters.encode())
     result = result.withAllValuesFrom(self.notifications.encode())
     result = result.withAllValuesFrom(self.stats.encode())
