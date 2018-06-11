@@ -232,7 +232,9 @@
 "Popular" = "Popular";
 "Popular_Projects" = "Proyectos populares";
 "Privacy" = "Privacidad";
-"Private_profile" = "Private profile";
+"Private_profile" = "Perfil privado";
+"Private_profile_more_info" = "Private profile more info";
+"Private_profile_more_info_content" = "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.";
 "Project_Cancelled" = "Proyecto cancelado.";
 "Project_Suspended" = "Proyecto suspendido.";
 "Project_cancelled" = "Proyecto cancelado";

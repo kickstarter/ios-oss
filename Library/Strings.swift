@@ -3795,16 +3795,50 @@ from friends yet."
   /**
    "Private profile"
 
-   - **es**: "Private profile"
-   - **ja**: "Private profile"
-   - **de**: "Private profile"
-   - **fr**: "Private profile"
+   - **es**: "Perfil privado"
+   - **ja**: "プライベート設定のプロフィール"
+   - **de**: "Privates Profil"
+   - **fr**: "Profil privé"
    - **en**: "Private profile"
   */
   public static func Private_profile() -> String {
     return localizedString(
       key: "Private_profile",
       defaultValue: "Private profile",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Private profile more info"
+
+   - **es**: "Private profile more info"
+   - **ja**: "Private profile more info"
+   - **de**: "Private profile more info"
+   - **fr**: "Private profile more info"
+   - **en**: "Private profile more info"
+  */
+  public static func Private_profile_more_info() -> String {
+    return localizedString(
+      key: "Private_profile_more_info",
+      defaultValue: "Private profile more info",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
+
+   - **es**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
+   - **ja**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
+   - **de**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
+   - **fr**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
+   - **en**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
+  */
+  public static func Private_profile_more_info_content() -> String {
+    return localizedString(
+      key: "Private_profile_more_info_content",
+      defaultValue: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.",
       count: nil,
       substitutions: [:]
     )

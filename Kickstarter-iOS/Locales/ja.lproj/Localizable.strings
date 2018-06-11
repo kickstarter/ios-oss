@@ -232,7 +232,9 @@
 "Popular" = "人気";
 "Popular_Projects" = "人気のプロジェクト";
 "Privacy" = "プライバシー";
-"Private_profile" = "Private profile";
+"Private_profile" = "プライベート設定のプロフィール";
+"Private_profile_more_info" = "Private profile more info";
+"Private_profile_more_info_content" = "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.";
 "Project_Cancelled" = "プロジェクトが取り消されました。";
 "Project_Suspended" = "中止プロジェクト";
 "Project_cancelled" = "プロジェクトが取り消されました。";

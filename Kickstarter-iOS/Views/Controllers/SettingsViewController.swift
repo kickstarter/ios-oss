@@ -93,6 +93,7 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var versionLabel: UILabel!
   @IBOutlet fileprivate weak var privateProfileSwitch: UISwitch!
   @IBOutlet fileprivate weak var privateProfileLabel: UILabel!
+  @IBOutlet fileprivate weak var privateProfileMoreInfoButton: UIButton!
   @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var pushNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var separatorViews: [UIView]!
@@ -168,7 +169,7 @@ internal final class SettingsViewController: UIViewController {
     self.privacyPolicyButton.addTarget(self,
                                        action: #selector(privacyPolicyTapped),
                                        for: .touchUpInside)
-
+    
     self.rateUsButton.addTarget(self, action: #selector(rateUsTapped), for: .touchUpInside)
 
     self.recommendationsInfoButton.addTarget(self,
@@ -367,6 +368,11 @@ internal final class SettingsViewController: UIViewController {
     _ = self.privateProfileLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Private_profile() }
+      
+    _ = self.privateProfileMoreInfoButton
+      |> UIButton.lens.image(for: .normal)
+      .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Private_profile_more_info() }
 
     _ = self.projectUpdatesLabel
       |> settingsSectionLabelStyle
@@ -836,7 +842,22 @@ internal final class SettingsViewController: UIViewController {
   @IBAction fileprivate func privateProfileSwitchDidChange(_ sender: UISwitch) {
     self.viewModel.inputs.privateProfileSwitchDidChange(isOn: sender.isOn)
   }
-
+  @IBAction fileprivate func privateProfileMoreInfoButtonTapped(_ sender: UIButton) {
+    let alertController = UIAlertController(
+      title: Strings.Private_profile(),
+      message: Strings.Private_profile_more_info_content(),
+      preferredStyle: .alert)
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Got_it(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+    
+    self.present(alertController, animated: true, completion: nil)
+  }
+  
   @IBAction fileprivate func promoNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.isOn)
   }
