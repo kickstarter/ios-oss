@@ -30,7 +30,7 @@ internal final class ThanksProjectsDataSource: ValueCellDataSource {
 
   internal func projectAtIndexPath(_ indexPath: IndexPath) -> Project? {
     let discoveryProjectCellRowValue = self[indexPath] as? DiscoveryProjectCellRowValue
-    
+
     return discoveryProjectCellRowValue?.project
   }
 
