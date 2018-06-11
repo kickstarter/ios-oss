@@ -35,6 +35,7 @@ public protocol SettingsViewModelInputs {
   func mobilePostLikesTapped(selected: Bool)
   func mobileUpdatesTapped(selected: Bool)
   func postLikesTapped(selected: Bool)
+  func privateProfileSwitchDidChange(isOn: Bool)
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
   func recommendationsTapped(on: Bool)
@@ -77,6 +78,7 @@ public protocol SettingsViewModelOutputs {
   var mobilePostLikesSelected: Signal<Bool, NoError> { get }
   var mobileUpdatesSelected: Signal<Bool, NoError> { get }
   var postLikesSelected: Signal<Bool, NoError> { get }
+  var privateProfileEnabled: Signal<Bool, NoError> { get }
   var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var requestExportData: Signal<(), NoError> { get }
@@ -180,6 +182,9 @@ SettingsViewModelOutputs {
       },
       self.postLikesTappedProperty.signal.map {
         (UserAttribute.notification(Notification.postLikes), $0)
+      },
+      self.privateProfileEnabledProperty.signal.negate().map {
+        (UserAttribute.privacy(Privacy.showPublicProfile), $0)
       },
       self.creatorTipsProperty.signal.map {
         (UserAttribute.notification(Notification.creatorTips), $0)
@@ -305,6 +310,8 @@ SettingsViewModelOutputs {
       .map { $0.notifications.mobilePostLikes }.skipNil().skipRepeats()
     self.mobileUpdatesSelected = self.updateCurrentUser
       .map { $0.notifications.mobileUpdates }.skipNil().skipRepeats()
+    self.privateProfileEnabled = self.updateCurrentUser
+      .map { $0.showPublicProfile }.skipNil().negate().skipRepeats()
     self.postLikesSelected = self.updateCurrentUser
       .map { $0.notifications.postLikes }.skipNil().skipRepeats()
     self.updatesSelected = self.updateCurrentUser
@@ -533,6 +540,12 @@ SettingsViewModelOutputs {
   public func postLikesTapped(selected: Bool) {
     self.postLikesTappedProperty.value = selected
   }
+
+  fileprivate let privateProfileEnabledProperty = MutableProperty(true)
+  public func privateProfileSwitchDidChange(isOn: Bool) {
+    self.privateProfileEnabledProperty.value = isOn
+  }
+
   fileprivate let promoNewsletterTappedProperty = MutableProperty(false)
   public func promoNewsletterTapped(on: Bool) {
     self.promoNewsletterTappedProperty.value = on
@@ -591,6 +604,7 @@ SettingsViewModelOutputs {
   public let mobilePostLikesSelected: Signal<Bool, NoError>
   public let mobileUpdatesSelected: Signal<Bool, NoError>
   public let postLikesSelected: Signal<Bool, NoError>
+  public let privateProfileEnabled: Signal<Bool, NoError>
   public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
   public let requestExportData: Signal<(), NoError>
@@ -644,8 +658,9 @@ private enum UserAttribute {
       }
     case let .privacy(privacy):
       switch privacy {
-      case .following:       return User.lens.social
-      case .recommendations: return User.lens.optedOutOfRecommendations
+      case .following:          return User.lens.social
+      case .recommendations:    return User.lens.optedOutOfRecommendations
+      case .showPublicProfile:  return User.lens.showPublicProfile
       }
     }
   }
@@ -675,7 +690,7 @@ private enum Notification {
     case .creatorTips:                              return "Creator tips"
     case .follower, .mobileFollower:                return "New followers"
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
-    case .messages, .mobileMessages:                 return "New messages"
+    case .messages, .mobileMessages:                return "New messages"
     case .postLikes, .mobilePostLikes:              return "New likes"
     case .updates, .mobileUpdates:                  return "Project updates"
     }
@@ -683,14 +698,15 @@ private enum Notification {
 }
 
 private enum Privacy {
-
   case following
   case recommendations
+  case showPublicProfile
 
   fileprivate var trackingString: String {
     switch self {
     case .following: return Strings.Following()
     case .recommendations: return Strings.Recommendations()
+    default: return ""
     }
   }
 }

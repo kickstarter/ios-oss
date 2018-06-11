@@ -91,7 +91,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var updatesButton: UIButton!
   @IBOutlet fileprivate weak var weeklyNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var versionLabel: UILabel!
-
+  @IBOutlet fileprivate weak var privateProfileSwitch: UISwitch!
+  @IBOutlet fileprivate weak var privateProfileLabel: UILabel!
   @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var pushNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var separatorViews: [UIView]!
@@ -363,6 +364,10 @@ internal final class SettingsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_privacy() }
 
+    _ = self.privateProfileLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Private_profile() }
+
     _ = self.projectUpdatesLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_project_updates() }
@@ -545,6 +550,7 @@ internal final class SettingsViewController: UIViewController {
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
     self.promoNewsletterSwitch.rac.on = self.viewModel.outputs.promoNewsletterOn
     self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
+    self.privateProfileSwitch.rac.on = self.viewModel.outputs.privateProfileEnabled
     self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
@@ -825,6 +831,10 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func privacyPolicyTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.privacy)
+  }
+
+  @IBAction fileprivate func privateProfileSwitchDidChange(_ sender: UISwitch) {
+    self.viewModel.inputs.privateProfileSwitchDidChange(isOn: sender.isOn)
   }
 
   @IBAction fileprivate func promoNewsletterTapped(_ newsletterSwitch: UISwitch) {

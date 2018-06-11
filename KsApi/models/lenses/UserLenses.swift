@@ -7,6 +7,7 @@ extension User {
       set: { User(avatar: $0, facebookConnected: $1.facebookConnected, id: $1.id, isFriend: $1.isFriend,
         liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name, newsletters: $1.newsletters,
         notifications: $1.notifications, optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
         social: $1.social, stats: $1.stats) }
     )
 
@@ -15,6 +16,7 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $0, id: $1.id, isFriend: $1.isFriend,
         liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name, newsletters: $1.newsletters,
         notifications: $1.notifications, optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
         social: $1.social, stats: $1.stats) }
     )
 
@@ -23,6 +25,7 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $0, isFriend: $1.isFriend,
         liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name, newsletters: $1.newsletters,
         notifications: $1.notifications, optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
         social: $1.social, stats: $1.stats) }
     )
 
@@ -31,6 +34,7 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id, isFriend: $0,
         liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name, newsletters: $1.newsletters,
         notifications: $1.notifications, optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
         social: $1.social, stats: $1.stats) }
     )
 
@@ -39,7 +43,9 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
         isFriend: $1.isFriend, liveAuthToken: $0, location: $1.location, name: $1.name,
         newsletters: $1.newsletters, notifications: $1.notifications,
-         optedOutOfRecommendations: $1.optedOutOfRecommendations, social: $1.social, stats: $1.stats) }
+         optedOutOfRecommendations: $1.optedOutOfRecommendations,
+         showPublicProfile: $1.showPublicProfile,
+         social: $1.social, stats: $1.stats) }
     )
 
     public static let location = Lens<User, Location?>(
@@ -47,7 +53,9 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
         isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $0, name: $1.name,
         newsletters: $1.newsletters, notifications: $1.notifications,
-        optedOutOfRecommendations: $1.optedOutOfRecommendations, social: $1.social, stats: $1.stats) }
+        optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
+        social: $1.social, stats: $1.stats) }
     )
 
     public static let name = Lens<User, String>(
@@ -55,7 +63,9 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
         isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $1.location, name: $0,
         newsletters: $1.newsletters, notifications: $1.notifications,
-        optedOutOfRecommendations: $1.optedOutOfRecommendations, social: $1.social, stats: $1.stats) }
+        optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
+        social: $1.social, stats: $1.stats) }
     )
 
     public static let newsletters = Lens<User, User.NewsletterSubscriptions>(
@@ -63,7 +73,9 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
         isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name,
         newsletters: $0, notifications: $1.notifications,
-        optedOutOfRecommendations: $1.optedOutOfRecommendations, social: $1.social, stats: $1.stats) }
+        optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
+        social: $1.social, stats: $1.stats) }
     )
 
     public static let notifications = Lens<User, User.Notifications>(
@@ -71,7 +83,9 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
         isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name,
         newsletters: $1.newsletters, notifications: $0,
-        optedOutOfRecommendations: $1.optedOutOfRecommendations, social: $1.social, stats: $1.stats) }
+        optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
+        social: $1.social, stats: $1.stats) }
     )
 
     public static let optedOutOfRecommendations = Lens<User, Bool?>(
@@ -79,7 +93,17 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
         isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name,
         newsletters: $1.newsletters, notifications: $1.notifications, optedOutOfRecommendations: $0,
+        showPublicProfile: $1.showPublicProfile,
         social: $1.social, stats: $1.stats) }
+    )
+
+    public static let showPublicProfile = Lens<User, Bool?>(
+      view: { $0.showPublicProfile },
+      set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
+                  isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $1.location,
+                  name: $1.name, newsletters: $1.newsletters, notifications: $1.notifications,
+                  optedOutOfRecommendations: $1.optedOutOfRecommendations, showPublicProfile: $0,
+                  social: $1.social, stats: $1.stats) }
     )
 
     public static let social = Lens<User, Bool?>(
@@ -87,7 +111,9 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
         isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name,
         newsletters: $1.newsletters, notifications: $1.notifications,
-        optedOutOfRecommendations: $1.optedOutOfRecommendations, social: $0, stats: $1.stats) }
+        optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
+        social: $0, stats: $1.stats) }
     )
 
     public static let stats = Lens<User, User.Stats>(
@@ -95,7 +121,9 @@ extension User {
       set: { User(avatar: $1.avatar, facebookConnected: $1.facebookConnected, id: $1.id,
         isFriend: $1.isFriend, liveAuthToken: $1.liveAuthToken, location: $1.location, name: $1.name,
         newsletters: $1.newsletters, notifications: $1.notifications,
-        optedOutOfRecommendations: $1.optedOutOfRecommendations, social: $1.social, stats: $0) }
+        optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
+        social: $1.social, stats: $0) }
     )
   }
 }

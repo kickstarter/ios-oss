@@ -1838,7 +1838,7 @@ backers"
    - **es**: "Más información sobre el seguimiento"
    - **ja**: "フォロー 詳細"
    - **de**: "Mehr Info zu Folgen"
-   - **fr**: "Following More Info"
+   - **fr**: "Plus d'informations sur le suivi et l'abonnement"
    - **en**: "Following More Info"
   */
   public static func Following_More_Info() -> String {
@@ -2278,9 +2278,9 @@ backers"
    "Hide password"
 
    - **es**: "Ocultar contraseña"
-   - **ja**: "Hide password"
-   - **de**: "Hide password"
-   - **fr**: "Hide password"
+   - **ja**: "パスワードを非表示にする"
+   - **de**: "Passwort verbergen"
+   - **fr**: "Masquer le mot de passe"
    - **en**: "Hide password"
   */
   public static func Hide_password() -> String {
@@ -3456,9 +3456,9 @@ from friends yet."
    "Password visibility"
 
    - **es**: "Visibilidad de la contraseña"
-   - **ja**: "Password visibility"
-   - **de**: "Password visibility"
-   - **fr**: "Password visibility"
+   - **ja**: "パスワードの表示/非表示"
+   - **de**: "Passwort-Anzeige"
+   - **fr**: "Visibilité du mot de passe"
    - **en**: "Password visibility"
   */
   public static func Password_visibility() -> String {
@@ -3788,6 +3788,23 @@ from friends yet."
     return localizedString(
       key: "Privacy",
       defaultValue: "Privacy",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Private profile"
+
+   - **es**: "Private profile"
+   - **ja**: "Private profile"
+   - **de**: "Private profile"
+   - **fr**: "Private profile"
+   - **en**: "Private profile"
+  */
+  public static func Private_profile() -> String {
+    return localizedString(
+      key: "Private_profile",
+      defaultValue: "Private profile",
       count: nil,
       substitutions: [:]
     )
@@ -4751,9 +4768,9 @@ daring ideas."
    "Show password"
 
    - **es**: "Mostrar contraseña"
-   - **ja**: "Show password"
-   - **de**: "Show password"
-   - **fr**: "Show password"
+   - **ja**: "パスワードを表示する"
+   - **de**: "Passwort anzeigen"
+   - **fr**: "Afficher le mot de passe"
    - **en**: "Show password"
   */
   public static func Show_password() -> String {
