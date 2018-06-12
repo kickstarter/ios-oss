@@ -847,6 +847,7 @@ internal final class SettingsViewController: UIViewController {
       title: Strings.Private_profile(),
       message: Strings.Private_profile_more_info_content(),
       preferredStyle: .alert)
+    
     alertController.addAction(
       UIAlertAction(
         title: Strings.Got_it(),
