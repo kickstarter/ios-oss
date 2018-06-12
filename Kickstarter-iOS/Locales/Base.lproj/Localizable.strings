@@ -86,6 +86,7 @@
 "Explore_creative_projects" = "Explore creative projects";
 "Explore_projects" = "Explore projects";
 "Facebook_login_disclaimer" = "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.";
+"Facebook_login_disclaimer_update" = "By logging in with Facebook, we’ll import your name, profile photo and friend list.";
 "Failed_to_retrieve_live_stream_event_details" = "Failed to retrieve live stream event details";
 "Failed_to_update_subscription" = "Failed to update subscription";
 "Filter_by_all_projects" = "Filter by all projects";
@@ -233,6 +234,8 @@
 "Popular_Projects" = "Popular Projects";
 "Privacy" = "Privacy";
 "Private_profile" = "Private profile";
+"Private_profile_more_info" = "Private profile more info";
+"Private_profile_more_info_content" = "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.";
 "Project_Cancelled" = "Project Cancelled.";
 "Project_Suspended" = "Project Suspended.";
 "Project_cancelled" = "Project cancelled";

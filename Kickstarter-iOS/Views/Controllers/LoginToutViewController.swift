@@ -16,7 +16,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   @IBOutlet fileprivate weak var signupButton: UIButton!
   @IBOutlet fileprivate weak var loginContextStackView: UIStackView!
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
-
+  @IBOutlet fileprivate weak var facebookDisclaimerLabel: UILabel!
+  
   fileprivate let helpViewModel = HelpViewModel()
   private var sessionStartedObserver: Any?
   fileprivate let viewModel: LoginToutViewModelType = LoginToutViewModel()
@@ -76,6 +77,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> loginRootStackViewStyle
       |> UIStackView.lens.spacing .~ Styles.grid(5)
     _ = self.signupButton |> signupWithEmailButtonStyle
+    
+    _ = self.facebookDisclaimerLabel |> fbDisclaimerTextStyle
 
     _ = self.bringCreativeProjectsToLifeLabel
       |> UILabel.lens.font %~~ { _, l in

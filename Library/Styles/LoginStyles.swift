@@ -28,10 +28,13 @@ public let showHidePasswordButtonStyle = UIButton.lens.title(for: .normal) .~ ""
       Strings.Password_visibility()
   }
 
-public let fbDisclaimerTextStyle = UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.Facebook_login_disclaimer()
-  } <> UIButton.lens.accessibilityLabel %~ { _ in
-    Strings.Facebook_login_disclaimer()
+public let fbDisclaimerTextStyle = UILabel.lens.font .~ .ksr_footnote()
+  <> UILabel.lens.lineBreakMode .~ .byWordWrapping
+  <> UILabel.lens.numberOfLines .~ 0
+  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+  <> UILabel.lens.textAlignment .~ .center
+  <> UILabel.lens.text %~ { _ in
+      Strings.Facebook_login_disclaimer_update()
   }
 
 public let emailFieldStyle = formFieldStyle

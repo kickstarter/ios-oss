@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -26,10 +26,10 @@
                                 <rect key="frame" x="20" y="20" width="360" height="511"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PSN-BI-sXu">
-                                        <rect key="frame" x="0.0" y="0.0" width="360" height="326"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="360" height="398"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
-                                                <rect key="frame" x="0.0" y="0.0" width="360" height="326"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="360" height="398"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Q9a-f5-7eI">
                                                         <rect key="frame" x="0.0" y="0.0" width="360" height="10"/>
@@ -49,7 +49,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
-                                                        <rect key="frame" x="0.0" y="20" width="360" height="156"/>
+                                                        <rect key="frame" x="0.0" y="20" width="360" height="228"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj">
                                                                 <rect key="frame" x="0.0" y="0.0" width="360" height="44"/>
@@ -65,8 +65,17 @@
                                                                     <action selector="facebookLoginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="lED-xT-rnp"/>
                                                                 </connections>
                                                             </button>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pa3-LL-Bbr">
+                                                                <rect key="frame" x="0.0" y="56" width="360" height="60"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="zl4-Uo-ViE"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH">
-                                                                <rect key="frame" x="0.0" y="56" width="360" height="44"/>
+                                                                <rect key="frame" x="0.0" y="128" width="360" height="44"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="IVh-ao-BJi"/>
                                                                 </constraints>
@@ -79,7 +88,7 @@
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytH-Nw-2z0">
-                                                                <rect key="frame" x="0.0" y="112" width="360" height="44"/>
+                                                                <rect key="frame" x="0.0" y="184" width="360" height="44"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="rmm-8H-xbE"/>
                                                                 </constraints>
@@ -94,7 +103,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Q6Z-wy-WZo">
-                                                        <rect key="frame" x="0.0" y="186" width="360" height="140"/>
+                                                        <rect key="frame" x="0.0" y="258" width="360" height="140"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="140" id="m5W-d1-nrw"/>
                                                         </constraints>
@@ -140,6 +149,7 @@
                         <outlet property="bringCreativeProjectsToLifeLabel" destination="IdC-V8-RTt" id="zB4-FN-a6D"/>
                         <outlet property="contextLabel" destination="dpL-Nr-tUh" id="BOf-Py-pLj"/>
                         <outlet property="disclaimerButton" destination="Q6Z-wy-WZo" id="HPK-fR-ian"/>
+                        <outlet property="facebookDisclaimerLabel" destination="Pa3-LL-Bbr" id="rJC-BQ-epB"/>
                         <outlet property="fbLoginButton" destination="DI6-Zp-Yoj" id="jrl-tE-eBz"/>
                         <outlet property="loginButton" destination="tcm-YK-ZfH" id="qe9-86-RTl"/>
                         <outlet property="loginContextStackView" destination="Q9a-f5-7eI" id="62n-by-ckH"/>
