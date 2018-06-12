@@ -160,9 +160,8 @@ internal final class SettingsViewModelTests: TestCase {
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
 
       self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
-      let envStaging = ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)
 
-      XCTAssertEqual(envStaging, "Staging")
+      XCTAssertEqual(EnvironmentType.staging.rawValue, "Staging")
 
       self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
       let envLocal = ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)

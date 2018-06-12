@@ -526,7 +526,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.production)
+      self.vm.inputs.environmentSwitcherButtonTapped(environment: .production)
 
       self.logoutWithParams.assertDidEmitValue()
     }

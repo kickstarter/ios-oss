@@ -14,7 +14,7 @@ public protocol SettingsViewModelInputs {
   func deleteAccountTapped()
   func emailFrequencyTapped()
   func exportDataTapped()
-  func environmentSwitcherButtonTapped(environment: ServerConfigType)
+  func environmentSwitcherButtonTapped(environment: EnvironmentType)
   func findFriendsTapped()
   func followerTapped(selected: Bool)
   func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
@@ -325,15 +325,16 @@ SettingsViewModelOutputs {
       .skipRepeats()
       .filter { AppEnvironment.current.language != $0 }
 
-    self.environmentSwitcherButtonTappedProperty.signal.skipNil().observeValues { config in
+    self.environmentSwitcherButtonTappedProperty.signal.skipNil()
+      .map(ServerConfig.config(for:))
+      .observeValues { config in
         AppEnvironment.updateServerConfig(config)
     }
 
     self.environmentSwitcherButtonTitle = viewDidLoadProperty.signal
       .takeWhen(self.environmentSwitcherButtonTappedProperty.signal)
       .map { _ in
-        let config = ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)
-        return config
+        return AppEnvironment.current.apiService.serverConfig.environment.rawValue
     }.skipRepeats()
 
     self.goToEmailFrequency = self.updateCurrentUser
@@ -451,9 +452,9 @@ SettingsViewModelOutputs {
     self.exportDataTappedProperty.value = ()
   }
 
-  fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<ServerConfig?>(nil)
-  public func environmentSwitcherButtonTapped(environment: ServerConfigType) {
-    self.environmentSwitcherButtonTappedProperty.value = environment as? ServerConfig
+  fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<EnvironmentType?>(nil)
+  public func environmentSwitcherButtonTapped(environment: EnvironmentType) {
+    self.environmentSwitcherButtonTappedProperty.value = environment
   }
   fileprivate let findFriendsTappedProperty = MutableProperty(())
   public func findFriendsTapped() {

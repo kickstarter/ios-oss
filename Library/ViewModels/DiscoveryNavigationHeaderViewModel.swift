@@ -9,7 +9,7 @@ public protocol DiscoveryNavigationHeaderViewModelInputs {
   func configureWith(params: DiscoveryParams)
 
   /// Call when environement switcher button is tapped.
-  func environmentSwitcherButtonTapped(environment: ServerConfigType)
+  func environmentSwitcherButtonTapped(environment: EnvironmentType)
 
   /// Call when favorite category button is tapped.
   func favoriteButtonTapped()
@@ -127,7 +127,9 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
       return shouldHideLabel($0?.params)
     }
 
-    self.environmentSwitcherButtonTappedProperty.signal.skipNil().observeValues { config in
+    self.environmentSwitcherButtonTappedProperty.signal.skipNil()
+      .map(ServerConfig.config(for:))
+      .observeValues { config in
       AppEnvironment.updateServerConfig(config)
     }
 
@@ -251,9 +253,9 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
       .observeValues { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
   }
 
-  fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<ServerConfig?>(nil)
-  public func environmentSwitcherButtonTapped(environment: ServerConfigType) {
-    self.environmentSwitcherButtonTappedProperty.value = environment as? ServerConfig
+  fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<EnvironmentType?>(nil)
+  public func environmentSwitcherButtonTapped(environment: EnvironmentType) {
+    self.environmentSwitcherButtonTappedProperty.value = environment
   }
   fileprivate let paramsProperty = MutableProperty<DiscoveryParams?>(nil)
   public func configureWith(params: DiscoveryParams) {
@@ -347,6 +349,18 @@ private func accessibilityLabelForTitleButton(params: DiscoveryParams) -> String
     return Strings.Filter_by_projects_recommended_for_you()
   } else {
     return Strings.Filter_by_all_projects()
+  }
+}
+
+private func serverConfig(for environment: EnvironmentType) -> ServerConfigType {
+
+  switch environment {
+  case EnvironmentType.local:
+    return ServerConfig.local
+  case EnvironmentType.staging:
+    return ServerConfig.staging
+  case EnvironmentType.production:
+    return ServerConfig.production
   }
 }
 

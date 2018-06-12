@@ -326,31 +326,18 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
   private func showEnvironmentActionSheet() {
 
-    let config = ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)
-
     let alert = UIAlertController(
-      title: "Change Environment (\(config))",
+      title: "Change Environment (\(AppEnvironment.current.apiService.serverConfig.environment.rawValue))",
       message: nil,
       preferredStyle: .actionSheet
     )
 
-    alert.addAction(
-      UIAlertAction(title: "Local", style: .default) { [weak self] _ in
-        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.local)
-      }
-    )
+    EnvironmentType.allCases.forEach { environment in
 
-    alert.addAction(
-      UIAlertAction(title: "Staging", style: .default) { [weak self] _ in
-        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
-      }
-    )
-
-    alert.addAction(
-      UIAlertAction(title: "Production", style: .default) { [weak self] _ in
-        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.production)
-      }
-    )
+      alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: environment)
+      })
+    }
 
     alert.addAction(
       UIAlertAction.init(title: "Cancel", style: .cancel)
