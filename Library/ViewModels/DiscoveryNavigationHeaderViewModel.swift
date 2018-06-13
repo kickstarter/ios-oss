@@ -133,9 +133,7 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
       AppEnvironment.updateServerConfig(config)
     }
 
-    self.logoutWithParams = Signal.merge (
-      self.environmentSwitcherButtonTappedProperty.signal.skipNil().ignoreValues()
-      )
+    self.logoutWithParams = self.environmentSwitcherButtonTappedProperty.signal.skipNil().ignoreValues()
       .map { .defaults
         |> DiscoveryParams.lens.includePOTD .~ true
         |> DiscoveryParams.lens.sort .~ .magic
@@ -233,7 +231,7 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
       .takeWhen(self.favoriteButtonTappedProperty.signal)
       .filter { _ in
         !AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert ||
-          !AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert
+        !AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert
       }
       .on(value: { _ in
         AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert = true

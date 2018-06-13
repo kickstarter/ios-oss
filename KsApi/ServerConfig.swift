@@ -3,7 +3,7 @@ import Foundation
 
 /**
  A type that knows the location of a Kickstarter API and web server.
- */
+*/
 public protocol ServerConfigType {
   var apiBaseUrl: URL { get }
   var webBaseUrl: URL { get }

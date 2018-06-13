@@ -333,7 +333,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     )
 
     EnvironmentType.allCases.forEach { environment in
-
       alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
         self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: environment)
       })
