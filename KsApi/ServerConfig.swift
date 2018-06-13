@@ -10,17 +10,27 @@ public protocol ServerConfigType {
   var apiClientAuth: ClientAuthType { get }
   var basicHTTPAuth: BasicHTTPAuthType? { get }
   var graphQLEndpointUrl: URL { get }
-  var environmentName: String { get }
+  var environment: EnvironmentType { get }
 }
 
 public func == (lhs: ServerConfigType, rhs: ServerConfigType) -> Bool {
   return
     type(of: lhs) == type(of: rhs) &&
-    lhs.apiBaseUrl == rhs.apiBaseUrl &&
-    lhs.webBaseUrl == rhs.webBaseUrl &&
-    lhs.apiClientAuth == rhs.apiClientAuth &&
-    lhs.basicHTTPAuth == rhs.basicHTTPAuth &&
-    lhs.graphQLEndpointUrl == rhs.graphQLEndpointUrl
+      lhs.apiBaseUrl == rhs.apiBaseUrl &&
+      lhs.webBaseUrl == rhs.webBaseUrl &&
+      lhs.apiClientAuth == rhs.apiClientAuth &&
+      lhs.basicHTTPAuth == rhs.basicHTTPAuth &&
+      lhs.graphQLEndpointUrl == rhs.graphQLEndpointUrl &&
+      lhs.environment == rhs.environment
+}
+
+public enum EnvironmentType: String {
+
+  public static let allCases: [EnvironmentType] = [.production, .staging, .local]
+
+  case production = "Production"
+  case staging = "Staging"
+  case local = "Local"
 }
 
 private let gqlPath = "graph"
@@ -32,7 +42,7 @@ public struct ServerConfig: ServerConfigType {
   public fileprivate(set) var apiClientAuth: ClientAuthType
   public fileprivate(set) var basicHTTPAuth: BasicHTTPAuthType?
   public fileprivate(set) var graphQLEndpointUrl: URL
-  public fileprivate(set) var environmentName: String
+  public fileprivate(set) var environment: EnvironmentType
 
   public static let production: ServerConfigType = ServerConfig(
     apiBaseUrl: URL(string: "https://\(Secrets.Api.Endpoint.production)")!,
@@ -41,7 +51,7 @@ public struct ServerConfig: ServerConfigType {
     basicHTTPAuth: nil,
     graphQLEndpointUrl: URL(string: "https://\(Secrets.WebEndpoint.production)")!
       .appendingPathComponent(gqlPath),
-    environmentName: "Production"
+    environment: EnvironmentType.production
   )
 
   public static let staging: ServerConfigType = ServerConfig(
@@ -51,7 +61,7 @@ public struct ServerConfig: ServerConfigType {
     basicHTTPAuth: BasicHTTPAuth.development,
     graphQLEndpointUrl: URL(string: "https://\(Secrets.WebEndpoint.staging)")!
       .appendingPathComponent(gqlPath),
-    environmentName: "Staging"
+    environment: EnvironmentType.staging
   )
 
   public static let local: ServerConfigType = ServerConfig(
@@ -60,7 +70,7 @@ public struct ServerConfig: ServerConfigType {
     apiClientAuth: ClientAuth.development,
     basicHTTPAuth: BasicHTTPAuth.development,
     graphQLEndpointUrl: URL(string: "http://ksr.dev")!.appendingPathComponent(gqlPath),
-    environmentName: "Local"
+    environment: EnvironmentType.local
   )
 
   public init(apiBaseUrl: URL,
@@ -68,13 +78,25 @@ public struct ServerConfig: ServerConfigType {
               apiClientAuth: ClientAuthType,
               basicHTTPAuth: BasicHTTPAuthType?,
               graphQLEndpointUrl: URL,
-              environmentName: String = "") {
+              environment: EnvironmentType = .production) {
 
     self.apiBaseUrl = apiBaseUrl
     self.webBaseUrl = webBaseUrl
     self.apiClientAuth = apiClientAuth
     self.basicHTTPAuth = basicHTTPAuth
     self.graphQLEndpointUrl = graphQLEndpointUrl
-    self.environmentName = environmentName
+    self.environment = environment
+  }
+
+  public static func config(for environment: EnvironmentType) -> ServerConfigType {
+
+    switch environment {
+    case .local:
+      return ServerConfig.local
+    case .staging:
+      return ServerConfig.staging
+    case .production:
+      return ServerConfig.production
+    }
   }
 }
