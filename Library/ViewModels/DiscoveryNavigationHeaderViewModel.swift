@@ -352,18 +352,6 @@ private func accessibilityLabelForTitleButton(params: DiscoveryParams) -> String
   }
 }
 
-private func serverConfig(for environment: EnvironmentType) -> ServerConfigType {
-
-  switch environment {
-  case EnvironmentType.local:
-    return ServerConfig.local
-  case EnvironmentType.staging:
-    return ServerConfig.staging
-  case EnvironmentType.production:
-    return ServerConfig.production
-  }
-}
-
 private func string(forCategoryId id: String) -> String {
   return RootCategory(categoryId: id).allProjectsString()
 }

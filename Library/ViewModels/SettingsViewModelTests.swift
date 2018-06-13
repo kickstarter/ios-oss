@@ -159,14 +159,13 @@ internal final class SettingsViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
 
-      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+      self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
 
-      XCTAssertEqual(EnvironmentType.staging.rawValue, "Staging")
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Staging")
 
-      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
-      let envLocal = ServerConfig.environmentName(config: AppEnvironment.current.apiService.serverConfig)
+      self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.local)
 
-      XCTAssertEqual(envLocal, "Local")
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Local")
     }
   }
 
@@ -174,7 +173,7 @@ internal final class SettingsViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
 
-      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+      self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
       self.logoutWithParams.assertDidEmitValue()
     }
   }
@@ -183,10 +182,10 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.viewDidLoad()
 
-    self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+    self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
     self.environmentSwitcherButtonTitle.assertValue("Staging")
 
-    self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
+    self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.local)
     self.environmentSwitcherButtonTitle.assertValues(["Staging",
                                                       "Local"])
   }

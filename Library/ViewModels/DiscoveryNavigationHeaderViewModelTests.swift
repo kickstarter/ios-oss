@@ -521,13 +521,25 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     }
   }
 
+  func testEnvironmentButton_SwitchesEnvironment() {
+
+    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
+
+      self.vm.inputs.environmentSwitcherButtonTapped(environment: .staging)
+
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Staging")
+
+      self.vm.inputs.environmentSwitcherButtonTapped(environment: .local)
+
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Local")
+    }
+  }
+
   func testLogoutWithParamsEmits_WhenEnvironmentChanges() {
 
     withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
 
-      self.vm.inputs.viewDidLoad()
       self.vm.inputs.environmentSwitcherButtonTapped(environment: .production)
-
       self.logoutWithParams.assertDidEmitValue()
     }
   }

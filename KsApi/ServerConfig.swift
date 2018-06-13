@@ -91,11 +91,11 @@ public struct ServerConfig: ServerConfigType {
   public static func config(for environment: EnvironmentType) -> ServerConfigType {
 
     switch environment {
-    case EnvironmentType.local:
+    case .local:
       return ServerConfig.local
-    case EnvironmentType.staging:
+    case .staging:
       return ServerConfig.staging
-    case EnvironmentType.production:
+    case .production:
       return ServerConfig.production
     }
   }
