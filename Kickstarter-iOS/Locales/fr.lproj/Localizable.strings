@@ -86,6 +86,7 @@
 "Explore_creative_projects" = "Découvrez des projets créatifs";
 "Explore_projects" = "Découvrir des projets";
 "Facebook_login_disclaimer" = "Si vous vous connectez avec Facebook, nous importerons votre nom et votre photo de profil. Nous accéderons aussi à votre liste d'amis pour vous permettre de suivre vos connaissances sur Kickstarter. Nous ne publierons jamais sur Facebook sans votre autorisation.";
+"Facebook_login_disclaimer_update" = "By logging in with Facebook, we’ll import your name, profile photo and friend list.";
 "Failed_to_retrieve_live_stream_event_details" = "Impossible de récupérer les détails de la diffusion en direct";
 "Failed_to_update_subscription" = "Mise à jour de l'abonnement impossible";
 "Filter_by_all_projects" = "Filtrer : tous les projets";
@@ -233,8 +234,8 @@
 "Popular_Projects" = "Les tendances";
 "Privacy" = "Vie privée";
 "Private_profile" = "Profil privé";
-"Private_profile_more_info" = "Private profile more info";
-"Private_profile_more_info_content" = "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.";
+"Private_profile_more_info" = "Plus d'informations sur le profil privé";
+"Private_profile_more_info_content" = "Par défaut, les profils Kickstarter sont privés. Pour rendre votre profil public et visible par tout le monde, décochez cette case.";
 "Project_Cancelled" = "Projet annulé.";
 "Project_Suspended" = "Projet suspendu.";
 "Project_cancelled" = "Projet annulé";

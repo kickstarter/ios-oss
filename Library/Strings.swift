@@ -1442,6 +1442,23 @@ backers"
     )
   }
   /**
+   "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+
+   - **es**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+   - **ja**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+   - **de**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+   - **fr**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+   - **en**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+  */
+  public static func Facebook_login_disclaimer_update() -> String {
+    return localizedString(
+      key: "Facebook_login_disclaimer_update",
+      defaultValue: "By logging in with Facebook, we’ll import your name, profile photo and friend list.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Failed to retrieve live stream event details"
 
    - **es**: "No se pudo cargar la información acerca del evento en vivo"
@@ -3812,10 +3829,10 @@ from friends yet."
   /**
    "Private profile more info"
 
-   - **es**: "Private profile more info"
+   - **es**: "Más información sobre el perfil privado"
    - **ja**: "Private profile more info"
-   - **de**: "Private profile more info"
-   - **fr**: "Private profile more info"
+   - **de**: "Privates Profil - Mehr Info"
+   - **fr**: "Plus d'informations sur le profil privé"
    - **en**: "Private profile more info"
   */
   public static func Private_profile_more_info() -> String {
@@ -3829,10 +3846,10 @@ from friends yet."
   /**
    "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
 
-   - **es**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
+   - **es**: "Los perfiles de Kickstarter son privados por defecto. Para hacer que tu perfil sea público y visible para el mundo, desactiva esta opción."
    - **ja**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
-   - **de**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
-   - **fr**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
+   - **de**: "Die Standard-Einstellung für Profile sind auf Kickstarter ist privat. Um dein Profil öffentlich zu machen, hebe diese Einstellung bitte auf."
+   - **fr**: "Par défaut, les profils Kickstarter sont privés. Pour rendre votre profil public et visible par tout le monde, décochez cette case."
    - **en**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
   */
   public static func Private_profile_more_info_content() -> String {

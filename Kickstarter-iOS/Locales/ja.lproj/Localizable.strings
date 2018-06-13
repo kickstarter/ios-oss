@@ -86,6 +86,7 @@
 "Explore_creative_projects" = "クリエイティブなプロジェクトをさがす";
 "Explore_projects" = "プロジェクトをさがす";
 "Facebook_login_disclaimer" = "Facebook でログインすると、あなたの氏名とプロフィール写真がインポートされます。また、あなたが Kickstarter 上で Facebook 友達をフォローすることができるように、友達リストも Kickstarter によってアクセスされます。あなたの許可なしに Kickstarter が Facebook 上に投稿を行うことは決してありません。  ";
+"Facebook_login_disclaimer_update" = "By logging in with Facebook, we’ll import your name, profile photo and friend list.";
 "Failed_to_retrieve_live_stream_event_details" = "ライブ配信の詳細を取得できませんでした";
 "Failed_to_update_subscription" = "定期購読の更新に失敗しました";
 "Filter_by_all_projects" = "全てのプロジェクトに絞る";
