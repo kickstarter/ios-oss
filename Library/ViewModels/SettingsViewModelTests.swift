@@ -96,6 +96,16 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.weeklyNewsletterOn.observe(self.weeklyNewsletterOn.observer)
     self.vm.outputs.versionText.observe(self.versionText.observer)
   }
+  
+  func testBetaToolsHidden_Debug() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.debug.rawValue)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+      
+      self.vm.inputs.viewDidLoad()
+      
+      self.betaToolsHidden.assertValues([false])
+    }
+  }
 
   func testbetaToolsHidden_Alpha() {
     withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue)) {

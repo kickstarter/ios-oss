@@ -1,7 +1,8 @@
 import Foundation
 
 public enum KickstarterBundleIdentifier: String {
-  case alpha = "com.kickstarter.kickstarter.alpha"
+  case debug = "com.kickstarter.kickstarter.debug"
+  case alpha = "com.kickstarter.kickstarter.kickalpha"
   case beta = "com.kickstarter.kickstarter.beta"
   case release = "com.kickstarter.kickstarter"
 }
@@ -25,6 +26,10 @@ extension NSBundleType {
 
   public var version: String {
     return self.infoDictionary?["CFBundleVersion"] as? String ?? "0"
+  }
+  
+  public var isDebug: Bool {
+    return self.identifier == KickstarterBundleIdentifier.debug.rawValue
   }
 
   public var isAlpha: Bool {

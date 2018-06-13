@@ -31,7 +31,6 @@ platform :ios do
         "com.kickstarter.drip",
         "com.kickstarter.drip.debug",
         "com.kickstarter.kickstarter",
-        "com.kickstarter.kickstarter.alpha",
         "com.kickstarter.kickstarter.debug"
       ],
       type: "development",
@@ -49,7 +48,7 @@ platform :ios do
       app_identifier: [
         "com.kickstarter.drip.beta", 
         "com.kickstarter.kickstarter.beta",
-        "com.kickstarter.kickstarter.kickalpha",
+        "com.kickstarter.kickstarter.alpha",
       ],
       type: "enterprise",
       git_url: "https://github.com/kickstarter/ios-certificates",
