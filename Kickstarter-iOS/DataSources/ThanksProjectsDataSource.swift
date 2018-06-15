@@ -29,7 +29,9 @@ internal final class ThanksProjectsDataSource: ValueCellDataSource {
   }
 
   internal func projectAtIndexPath(_ indexPath: IndexPath) -> Project? {
-    return self[indexPath] as? Project
+    let discoveryProjectCellRowValue = self[indexPath] as? DiscoveryProjectCellRowValue
+
+    return discoveryProjectCellRowValue?.project
   }
 
   internal func categoryAtIndexPath(_ indexPath: IndexPath) -> KsApi.Category? {

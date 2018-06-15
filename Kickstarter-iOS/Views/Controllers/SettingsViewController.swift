@@ -93,6 +93,7 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var versionLabel: UILabel!
   @IBOutlet fileprivate weak var privateProfileSwitch: UISwitch!
   @IBOutlet fileprivate weak var privateProfileLabel: UILabel!
+  @IBOutlet fileprivate weak var privateProfileMoreInfoButton: UIButton!
   @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var pushNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var separatorViews: [UIView]!
@@ -257,9 +258,10 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.environmentSwitcher
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        "\(AppEnvironment.current.apiService.serverConfig.environmentName)"
-      }
+      |> UIButton.lens.contentHorizontalAlignment .~ .left
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
+      |> UIButton.lens.title(for: .normal) .~
+        AppEnvironment.current.apiService.serverConfig.environment.rawValue
 
     _ = self.findFriendsButton
       |> settingsSectionButtonStyle
@@ -367,6 +369,11 @@ internal final class SettingsViewController: UIViewController {
     _ = self.privateProfileLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Private_profile() }
+
+    _ = self.privateProfileMoreInfoButton
+      |> UIButton.lens.image(for: .normal)
+      .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Private_profile_more_info() }
 
     _ = self.projectUpdatesLabel
       |> settingsSectionLabelStyle
@@ -836,6 +843,22 @@ internal final class SettingsViewController: UIViewController {
   @IBAction fileprivate func privateProfileSwitchDidChange(_ sender: UISwitch) {
     self.viewModel.inputs.privateProfileSwitchDidChange(isOn: sender.isOn)
   }
+  @IBAction fileprivate func privateProfileMoreInfoButtonTapped(_ sender: UIButton) {
+    let alertController = UIAlertController(
+      title: Strings.Private_profile(),
+      message: Strings.Private_profile_more_info_content(),
+      preferredStyle: .alert)
+
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Got_it(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    self.present(alertController, animated: true, completion: nil)
+  }
 
   @IBAction fileprivate func promoNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.promoNewsletterTapped(on: newsletterSwitch.isOn)
@@ -911,24 +934,11 @@ internal final class SettingsViewController: UIViewController {
                                   message: nil,
                                   preferredStyle: .actionSheet)
 
-    alert.addAction(
-      UIAlertAction(title: "Local", style: .default) { [weak self] _ in
-        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.local)
-      }
-    )
-
-    alert.addAction(
-      UIAlertAction(title: "Staging", style: .default) { [weak self] _ in
-        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
-
-      }
-    )
-
-    alert.addAction(
-      UIAlertAction(title: "Production", style: .default) { [weak self] _ in
-        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: ServerConfig.production)
-      }
-    )
+    EnvironmentType.allCases.forEach { environment in
+      alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
+        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: environment)
+      })
+    }
 
     alert.addAction(
       UIAlertAction.init(title: "Cancel", style: .cancel)
