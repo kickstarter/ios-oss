@@ -6,6 +6,10 @@ import UIKit
 import PlaygroundSupport
 @testable import Kickstarter_Framework
 
+PlaygroundPage.current.needsIndefiniteExecution = true
+
+let controller = DiscoveryViewController.instantiate()
+
 let basicParams = DiscoveryParams.defaults
 
 let paramsWithCategory = .defaults
@@ -50,9 +54,6 @@ let launch = .template
 // Instantiate projects with metadata.
 let today = AppEnvironment.current.calendar.startOfDay(for: Date()).timeIntervalSince1970
 
-let potd = .todayByScottThrift
-  |> Project.lens.dates.potdAt .~ today
-
 let starred = .todayByScottThrift
   |> Project.lens.personalization.isStarred .~ true
 
@@ -67,7 +68,6 @@ AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
     fetchActivitiesResponse: [projectUpdate, follow, backing],
     fetchDiscoveryResponse: .template |> DiscoveryEnvelope.lens.projects .~ [
-      potd,
       starred,
       backed,
       featured
@@ -80,11 +80,12 @@ AppEnvironment.replaceCurrentEnvironment(
 )
 
 // Initialize the view controller.
-initialize()
-let controller = DiscoveryViewController.instantiate()
+//initialize()
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
 let frame = parent.view.frame
+
 PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
+

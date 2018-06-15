@@ -100,12 +100,12 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
 
     self.topGradientView.startPoint = .init(x: 0, y: 0)
     self.topGradientView.endPoint = .init(x: 0, y: 1)
-    self.topGradientView.setGradient(
-      [
-        (UIColor.black.withAlphaComponent(0.6), 0),
-        (UIColor.black.withAlphaComponent(0), 1)
-      ]
-    )
+//    self.topGradientView.setGradient(
+//      [
+//        (UIColor.black.withAlphaComponent(0.6), 0),
+//        (UIColor.black.withAlphaComponent(0), 1)
+//      ]
+//    )
   }
 
   internal override func bindViewModel() {

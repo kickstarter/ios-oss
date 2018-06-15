@@ -6,8 +6,6 @@ import UIKit
 import PlaygroundSupport
 @testable import Kickstarter_Framework
 
-PlaygroundPage.current.needsIndefiniteExecution = true
-
 let project = .template
   |> Project.lens.video .~ (
     .template
@@ -23,4 +21,7 @@ AppEnvironment.replaceCurrentEnvironment(
 
 initialize()
 let controller = VideoViewController.configuredWith(project: project)
+let frame = controller.view.frame |> CGRect.lens.size.height .~ 2200
+
 PlaygroundPage.current.liveView = controller
+controller.view.frame = frame

@@ -43,11 +43,11 @@ AppEnvironment.replaceCurrentEnvironment(
 )
 
 // Initialize the view controller.
-initialize()
+//initialize()
 let controller = CommentsViewController.configuredWith(project: project)
 
 let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portrait, child: controller)
 
 let frame = parent.view.frame
-PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
+PlaygroundPage.current.liveView = parent

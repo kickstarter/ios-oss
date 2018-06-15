@@ -19,14 +19,11 @@ AppEnvironment.replaceCurrentEnvironment(
   mainBundle: Bundle.framework
 )
 
-// Instantiate the Find Friends view controller.
-initialize()
-let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
-
 // Set the device type and orientation.
 let (parent, _) = playgroundControllers(device: .phone5_5inch, orientation: .portrait, child: controller)
 
 // Render the screen.
 let frame = parent.view.frame
-PlaygroundPage.current.liveView = parent
+PlaygroundPage.current.liveView = parent.view
 parent.view.frame = frame
+

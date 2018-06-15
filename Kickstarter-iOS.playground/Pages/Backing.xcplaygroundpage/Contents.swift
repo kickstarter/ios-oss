@@ -7,14 +7,8 @@ import UIKit
 import PlaygroundSupport
 @testable import Kickstarter_Framework
 
-let reward = .template
-|> Reward.lens.description .~ "- PRINT COPY-  A full color copy of the Far Away comic book, plus a sticker and a Far Away Button. Also includes the pdf and all other digital downloads. "
-
-let backing = .template
-  |> Backing.lens.amount .~ 1_000
-  |> Backing.lens.status .~ .canceled
-  |> Backing.lens.sequence .~ 1_000
-  |> Backing.lens.reward .~ reward
+//initialize()
+let controller = BackingViewController.configuredWith(project: .template, backer: .template)
 
 AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef",
   user: .template
@@ -30,7 +24,16 @@ AppEnvironment.replaceCurrentEnvironment(
   mainBundle: Bundle.framework
 )
 
-initialize()
-let controller = BackingViewController.configuredWith(project: .template, backer: .template)
+let reward = .template
+  |> Reward.lens.description .~ "- PRINT COPY-  A full color copy of the Far Away comic book, plus a sticker and a Far Away Button. Also includes the pdf and all other digital downloads. "
 
+let backing = .template
+  |> Backing.lens.amount .~ 1_000
+  |> Backing.lens.status .~ .canceled
+  |> Backing.lens.sequence .~ 1_000
+  |> Backing.lens.reward .~ reward
+
+let frame = controller.view.frame
 PlaygroundPage.current.liveView = controller
+controller.view.frame = frame
+PlaygroundPage.current.needsIndefiniteExecution = true

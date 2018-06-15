@@ -6,6 +6,9 @@ import UIKit
 import PlaygroundSupport
 @testable import Kickstarter_Framework
 
+//initialize()
+let controller = DashboardViewController.instantiate()
+
 let rewards = (1...6).map {
   .template
     |> Reward.lens.backersCount .~ ($0 * 5)
@@ -102,9 +105,6 @@ AppEnvironment.replaceCurrentEnvironment(
   locale: Locale(identifier: "en"),
   mainBundle: Bundle.framework
 )
-
-initialize()
-let controller = DashboardViewController.instantiate()
 
 PlaygroundPage.current.liveView = controller
 controller.view |> UIView.lens.frame.size.height .~ 1_250

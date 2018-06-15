@@ -1,9 +1,9 @@
-@testable import KsApi
 import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
 import PlaygroundSupport
+@testable import KsApi
 @testable import Kickstarter_Framework
 
 let creator = .template |> User.lens.avatar.small .~ ""
@@ -94,12 +94,13 @@ AppEnvironment.replaceCurrentEnvironment(
   ),
   currentUser: Project.cosmicSurgery.creator
 )
-
-initialize()
+ 
+//initialize()
 let controller = ActivitiesViewController.instantiate()
-let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+let (parent, _) = playgroundControllers(device: .phone4_7inch,
+                                        orientation: .portrait, child: controller, additionalTraits: .init())
+
 
 let frame = parent.view.frame |> CGRect.lens.size.height .~ 2200
 PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
-

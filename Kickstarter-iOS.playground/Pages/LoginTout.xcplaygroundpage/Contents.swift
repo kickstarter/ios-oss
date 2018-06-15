@@ -20,3 +20,5 @@ AppEnvironment.replaceCurrentEnvironment(
 let frame = parent.view.frame
 PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
+
+UINavigationController(rootViewController: controller)
