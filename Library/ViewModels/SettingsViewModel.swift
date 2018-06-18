@@ -52,6 +52,9 @@ public protocol SettingsViewModelOutputs {
   var creatorTipsSelected: Signal<Bool, NoError> { get }
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
   var environmentSwitcherButtonTitle: Signal<String, NoError> { get }
+  var exportDataText: Signal<String, NoError> { get }
+  var exportDataExpirationDate: Signal<String, NoError> { get }
+  var exportDataButtonEnabled: Signal<Bool, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
   var followingPrivacyOn: Signal<Bool, NoError> { get }
   var friendActivitySelected: Signal<Bool, NoError> { get }
@@ -79,7 +82,9 @@ public protocol SettingsViewModelOutputs {
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var requestExportData: Signal<(), NoError> { get }
   var recommendationsOn: Signal<Bool, NoError> { get }
+  var exportDataLoadingIndicator: Signal<Bool, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
+  var showDataExpirationAndChevron: Signal<Bool, NoError> { get }
   var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
@@ -111,6 +116,31 @@ SettingsViewModelOutputs {
       initialUser.map { $0.social ?? true }.skipRepeats(),
       self.followingSwitchTappedProperty.signal.map { $0.0 }
     )
+
+    let exportEnvelope = viewDidLoadProperty.signal
+      .switchMap {
+        AppEnvironment.current.apiService.exportDataState()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .demoteErrors()
+      }
+
+    self.exportDataLoadingIndicator = Signal.merge(
+      exportEnvelope.map { $0.state == .processing ?  true : false },
+      self.exportDataTappedProperty.signal.mapConst(true)
+    )
+
+    self.exportDataText = self.exportDataLoadingIndicator.signal
+      .map { $0 ? "Preparing your personal data..." : Strings.Request_my_Personal_Data() }
+
+
+    self.exportDataExpirationDate = exportEnvelope
+      .map { dateFormatter(for: $0.expiresAt, state: $0.state)! }
+
+    self.exportDataButtonEnabled = self.exportDataLoadingIndicator.signal
+      .map { !$0 }
+
+    self.showDataExpirationAndChevron = self.exportDataLoadingIndicator.signal
+      .map { $0 }
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
       self.artsAndCultureNewsletterTappedProperty.signal.map { (.arts, $0) },
@@ -555,6 +585,10 @@ SettingsViewModelOutputs {
   public let creatorTipsSelected: Signal<Bool, NoError>
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
   public let environmentSwitcherButtonTitle: Signal<String, NoError>
+  public let exportDataLoadingIndicator: Signal<Bool, NoError>
+  public let exportDataText: Signal<String, NoError>
+  public let exportDataExpirationDate: Signal<String, NoError>
+  public let exportDataButtonEnabled: Signal<Bool, NoError>
   public let followerSelected: Signal<Bool, NoError>
   public let followingPrivacyOn: Signal<Bool, NoError>
   public let friendActivitySelected: Signal<Bool, NoError>
@@ -583,6 +617,7 @@ SettingsViewModelOutputs {
   public let requestExportData: Signal<(), NoError>
   public let recommendationsOn: Signal<Bool, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
+  public let showDataExpirationAndChevron: Signal<Bool, NoError>
   public let showOptInPrompt: Signal<String, NoError>
   public let showPrivacyFollowingPrompt: Signal<(), NoError>
   public let unableToSaveError: Signal<String, NoError>
@@ -593,6 +628,38 @@ SettingsViewModelOutputs {
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }
+}
+
+private func dateFormatter(for dateString: String, state: ExportDataEnvelope.State) -> String? {
+  let dateFormatter = DateFormatter()
+  dateFormatter.dateFormat = "yyyy-MM-dd"
+  let newDateFormatter = DateFormatter()
+  newDateFormatter.dateFormat = "MMM d"
+
+  let timeFormatter = DateFormatter()
+  timeFormatter.dateFormat = "HH-mm-sZ"
+  let newTimeFormatter = DateFormatter()
+  newTimeFormatter.dateFormat = "h:mm a"
+
+  let dateComponents = dateString.components(separatedBy: "T")
+
+  let splitDate = dateComponents[0]
+  let splitTime = dateComponents[1]
+
+  if let date = dateFormatter.date(from: splitDate),
+    let time = timeFormatter.date(from: splitTime) {
+
+    let convertedDate = newDateFormatter.string(from: date)
+    let convertedTime = newTimeFormatter.string(from: time)
+
+    if state == .expired {
+      return "Expired \(convertedDate) at \(convertedTime)"
+    } else {
+      return "Expires \(convertedDate) at \(convertedTime)"
+    }
+  } else {
+    return "failed"
+  }
 }
 
 private enum UserAttribute {
@@ -662,7 +729,7 @@ private enum Notification {
     case .creatorTips:                              return "Creator tips"
     case .follower, .mobileFollower:                return "New followers"
     case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
-    case .messages, .mobileMessages:                 return "New messages"
+    case .messages, .mobileMessages:                return "New messages"
     case .postLikes, .mobilePostLikes:              return "New likes"
     case .updates, .mobileUpdates:                  return "Project updates"
     }
@@ -670,7 +737,6 @@ private enum Notification {
 }
 
 private enum Privacy {
-
   case following
   case recommendations
 
