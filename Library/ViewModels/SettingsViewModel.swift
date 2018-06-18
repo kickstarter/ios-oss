@@ -358,7 +358,11 @@ SettingsViewModelOutputs {
       .ignoreValues()
 
     self.betaToolsHidden = self.viewDidLoadProperty.signal
-      .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }
+      .map {
+        !AppEnvironment.current.mainBundle.isDebug
+        && !AppEnvironment.current.mainBundle.isAlpha
+        && !AppEnvironment.current.mainBundle.isBeta
+    }
 
     // a11y
     self.manageProjectNotificationsButtonAccessibilityHint = self.updateCurrentUser

@@ -6532,8 +6532,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickDebug;
-				PROVISIONING_PROFILE = "b552670d-29a5-4746-b230-cc321b7d2788";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.kickstarter.kickstarter.alpha";
+				PROVISIONING_PROFILE = "a3a59c2f-772f-45cf-aa56-ef5f0dd2a5e5";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.kickstarter.kickstarter.debug";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
