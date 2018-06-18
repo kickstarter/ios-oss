@@ -586,7 +586,7 @@ AppDelegateViewModelOutputs {
 
         return HockeyConfigData(
           appIdentifier: appIdentifier,
-          disableUpdates: mainBundle.isRelease || mainBundle.isAlpha,
+          disableUpdates: mainBundle.isRelease || mainBundle.isDebug,
           userId: (AppEnvironment.current.currentUser?.id).map(String.init) ?? "0",
           userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
         )

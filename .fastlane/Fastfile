@@ -172,7 +172,7 @@ platform :ios do
   end
 
   private_lane :upload_hockey do |options|
-    notes = generate_build_notes
+    notes = changelog
     hockey(
       api_token: ENV["HOCKEY_APP_TOKEN"],
       ipa: options[:ipa],
@@ -194,14 +194,6 @@ platform :ios do
       commits_count: 1,
       date_format: "short"
     )
-  end
-
-  private_lane :generate_build_notes do
-    build_num = ENV["CIRCLE_BUILD_NUM"]
-    short_sha = ENV["CIRCLE_SHA1"][0..6]
-    messages = changelog
-
-    "*** CircleCI build #{build_num}, for commit: #{short_sha} ***. \n Commit message: #{messages}"
   end
 
   after_all do |lane|
