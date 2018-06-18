@@ -169,11 +169,13 @@ internal final class SettingsViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
 
-      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
-      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environmentName, "Staging")
+      self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
 
-      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
-      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environmentName, "Local")
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Staging")
+
+      self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.local)
+
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Local")
     }
   }
 
@@ -181,7 +183,7 @@ internal final class SettingsViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
 
-      self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
+      self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
       self.logoutWithParams.assertDidEmitValue()
     }
   }
@@ -190,12 +192,12 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.viewDidLoad()
 
-    self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.staging)
-    self.environmentSwitcherButtonTitle.assertValue("Change Environment - Staging")
+    self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
+    self.environmentSwitcherButtonTitle.assertValue("Staging")
 
-    self.vm.environmentSwitcherButtonTapped(environment: ServerConfig.local)
-    self.environmentSwitcherButtonTitle.assertValues(["Change Environment - Staging",
-                                                      "Change Environment - Local"])
+    self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.local)
+    self.environmentSwitcherButtonTitle.assertValues(["Staging",
+                                                      "Local"])
   }
 
   func testCreatorNotificationsTapped() {

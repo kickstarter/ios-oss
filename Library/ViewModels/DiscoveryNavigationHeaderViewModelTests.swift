@@ -13,8 +13,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   fileprivate let animateArrowToDown = TestObserver<Bool, NoError>()
   fileprivate let arrowOpacity = TestObserver<CGFloat, NoError>()
   fileprivate let arrowOpacityAnimated = TestObserver<Bool, NoError>()
+  fileprivate let debugContainerViewIsHidden = TestObserver<Bool, NoError>()
   fileprivate let dividerIsHidden = TestObserver<Bool, NoError>()
   fileprivate let exploreLabelIsHidden = TestObserver<Bool, NoError>()
+  fileprivate let logoutWithParams = TestObserver<DiscoveryParams, NoError>()
   fileprivate let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
   fileprivate let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
   fileprivate let primaryLabelText = TestObserver<String, NoError>()
@@ -47,9 +49,11 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.outputs.animateArrowToDown.observe(self.animateArrowToDown.observer)
     self.vm.outputs.arrowOpacityAnimated.map(first).observe(self.arrowOpacity.observer)
     self.vm.outputs.arrowOpacityAnimated.map(second).observe(self.arrowOpacityAnimated.observer)
+    self.vm.outputs.debugContainerViewIsHidden.observe(self.debugContainerViewIsHidden.observer)
     self.vm.outputs.dismissDiscoveryFilters.observe(self.dismissDiscoveryFilters.observer)
     self.vm.outputs.dividerIsHidden.observe(self.dividerIsHidden.observer)
     self.vm.outputs.exploreLabelIsHidden.observe(self.exploreLabelIsHidden.observer)
+    self.vm.outputs.logoutWithParams.observe(self.logoutWithParams.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(first).observe(self.primaryLabelOpacity.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(second).observe(self.primaryLabelOpacityAnimated.observer)
     self.vm.outputs.primaryLabelText.observe(self.primaryLabelText.observer)
@@ -479,5 +483,64 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.inputs.titleButtonTapped()
 
     XCTAssertEqual(["Closed Discovery Filter", "Closed Discovery Filter"], self.trackingClient.events)
+  }
+
+  func testEnvironmentButtonIsNotHidden_Alpha() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue)) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.debugContainerViewIsHidden.assertValue(false)
+    }
+  }
+
+  func testEnvironmentButtonIsNotHidden_Beta() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.debugContainerViewIsHidden.assertValue(false)
+    }
+  }
+
+  func testEnvironmentButtonIsHidden_Release() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue)) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.debugContainerViewIsHidden.assertValue(true)
+    }
+  }
+
+  func testEnvironmentButtonIsHidden_Unknown() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: "com.unknown")) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.debugContainerViewIsHidden.assertValue(true)
+    }
+  }
+
+  func testEnvironmentButton_SwitchesEnvironment() {
+
+    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
+
+      self.vm.inputs.environmentSwitcherButtonTapped(environment: .staging)
+
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Staging")
+
+      self.vm.inputs.environmentSwitcherButtonTapped(environment: .local)
+
+      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Local")
+    }
+  }
+
+  func testLogoutWithParamsEmits_WhenEnvironmentChanges() {
+
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
+
+      self.vm.inputs.environmentSwitcherButtonTapped(environment: .production)
+      self.logoutWithParams.assertDidEmitValue()
+    }
   }
 }
