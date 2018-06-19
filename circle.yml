@@ -4,11 +4,11 @@ xcode_version: &xcode_version 9.4
 iphone_name: &iphone_name iPhone 8
 ios_version: &ios_version 11.4
 opentok_version: &opentok_version 2.10.2
-preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.4)' || true
+preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.4) [2437FE39-2885-482D-A42F-A169C65AE271]' || true
 
 base_job: &base_job
   macos:
-    xcode: "9.3.0"
+    xcode: "9.4.0"
   working_directory: ~/kickstarter
   environment:
     CIRCLE_ARTIFACTS: /tmp
