@@ -56,7 +56,8 @@ internal final class ProfileViewControllerTests: TestCase {
       |> User.lens.stats.backedProjectsCount .~ 3
       |> User.lens.stats.createdProjectsCount .~ 1
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: env, fetchUserSelfResponse: user),
         currentUser: user,
         language: language) {

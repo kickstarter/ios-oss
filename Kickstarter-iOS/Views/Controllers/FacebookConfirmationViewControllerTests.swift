@@ -9,7 +9,7 @@ internal final class FacebookConfirmationViewControllerTests: TestCase {
   }
 
   func testView() {
-    let devices = [Device.phone4_7inch, Device.pad, Device.phone4inch]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let controller = FacebookConfirmationViewController

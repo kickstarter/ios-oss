@@ -41,7 +41,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3/4)
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -97,7 +98,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
           |> Backing.lens.reward .~ project.rewards.first
     }
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
 
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
@@ -152,7 +154,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
 
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
@@ -204,7 +207,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   func testMinimalProjectRendering() {
     let project = self.cosmicSurgery!
 
-    [Device.phone4_7inch, Device.pad].forEach { device in
+    [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
       let (parent, _) = traitControllers(
         device: device, orientation: .portrait, child: vc, handleAppearanceTransition: false
@@ -220,7 +223,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let project = self.cosmicSurgery!
 
     withEnvironment(apiService: MockService(fetchProjectResponse: project)) {
-      [Device.phone4_7inch, Device.pad].forEach { device in
+      [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
         let minimal = ProjectPamphletViewController.configuredWith(
           projectOrParam: .left(project), refTag: nil
         )
@@ -278,7 +281,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let liveService = MockLiveStreamService(fetchEventsForProjectResult: Result(envelope))
     let apiService = MockService(fetchProjectResponse: project)
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(
       apiService: apiService,
       language: language,

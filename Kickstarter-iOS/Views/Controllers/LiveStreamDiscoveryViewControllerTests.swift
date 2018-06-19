@@ -45,7 +45,8 @@ internal final class LiveStreamDiscoveryViewControllerTests: TestCase {
 
     let liveStreamService = MockLiveStreamService(fetchEventsResult: .success(events))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, .pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(language: language, liveStreamService: liveStreamService) {
 
         let vc = Storyboard.LiveStreamDiscovery.instantiate(LiveStreamDiscoveryViewController.self)
@@ -85,7 +86,7 @@ internal final class LiveStreamDiscoveryViewControllerTests: TestCase {
 
     let liveStreamService = MockLiveStreamService(fetchEventsResult: .success(events))
 
-    combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
+    combos([Language.en], [Device.phone4_7inch, Device.phone5_8inch]).forEach { language, device in
       withEnvironment(language: language, liveStreamService: liveStreamService) {
 
         let vc = Storyboard.LiveStreamDiscovery.instantiate(LiveStreamDiscoveryViewController.self)
