@@ -90,7 +90,8 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
 
   func testEmpty_SavedProjects() {
     let env = .template |> DiscoveryEnvelope.lens.projects .~ []
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
                       currentUser: User.template,
                       language: language) {
