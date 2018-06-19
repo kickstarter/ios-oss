@@ -26,30 +26,37 @@
                                 <rect key="frame" x="20" y="20" width="360" height="511"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PSN-BI-sXu">
-                                        <rect key="frame" x="0.0" y="0.0" width="360" height="326"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="360" height="421"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
-                                                <rect key="frame" x="0.0" y="0.0" width="360" height="326"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="UHD-eb-qXC">
+                                                <rect key="frame" x="0.0" y="0.0" width="360" height="421"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Q9a-f5-7eI">
-                                                        <rect key="frame" x="0.0" y="0.0" width="360" height="10"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="Q9a-f5-7eI">
+                                                        <rect key="frame" x="0.0" y="0.0" width="360" height="67.5"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdC-V8-RTt">
-                                                                <rect key="frame" x="0.0" y="0.0" width="360" height="0.0"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bringing Creative Projects to Life" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdC-V8-RTt">
+                                                                <rect key="frame" x="0.0" y="0.0" width="360" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpL-Nr-tUh">
-                                                                <rect key="frame" x="0.0" y="10" width="360" height="0.0"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pledge to projects and view all your saved projects in one place" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpL-Nr-tUh">
+                                                                <rect key="frame" x="0.0" y="26.5" width="360" height="41"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP">
-                                                        <rect key="frame" x="0.0" y="20" width="360" height="156"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oCE-eD-seN" userLabel="Spacer">
+                                                        <rect key="frame" x="0.0" y="79.5" width="360" height="1"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="kr8-NW-nnl"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="KPx-HE-JiN" userLabel="Facebook Login Stack View">
+                                                        <rect key="frame" x="0.0" y="92.5" width="360" height="76.5"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-Zp-Yoj">
                                                                 <rect key="frame" x="0.0" y="0.0" width="360" height="44"/>
@@ -58,20 +65,31 @@
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <state key="normal">
+                                                                <state key="normal" title="Facebook Login ">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
                                                                 <connections>
                                                                     <action selector="facebookLoginButtonPressed:" destination="jyD-hR-XbB" eventType="touchUpInside" id="lED-xT-rnp"/>
                                                                 </connections>
                                                             </button>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="Disclaimer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pa3-LL-Bbr">
+                                                                <rect key="frame" x="0.0" y="56" width="360" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="eRD-uK-yiP" userLabel="Email Signup Stack View">
+                                                        <rect key="frame" x="0.0" y="181" width="360" height="240"/>
+                                                        <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcm-YK-ZfH">
-                                                                <rect key="frame" x="0.0" y="56" width="360" height="44"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="360" height="44"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="IVh-ao-BJi"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                                                <state key="normal">
+                                                                <state key="normal" title="Login">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
                                                                 <connections>
@@ -79,27 +97,27 @@
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytH-Nw-2z0">
-                                                                <rect key="frame" x="0.0" y="112" width="360" height="44"/>
+                                                                <rect key="frame" x="0.0" y="50" width="360" height="44"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="rmm-8H-xbE"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                                                <state key="normal">
+                                                                <state key="normal" title="Sign up">
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
                                                                 <connections>
                                                                     <action selector="signupButtonPressed" destination="jyD-hR-XbB" eventType="touchUpInside" id="xmd-s4-EfN"/>
                                                                 </connections>
                                                             </button>
+                                                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Q6Z-wy-WZo">
+                                                                <rect key="frame" x="0.0" y="100" width="360" height="140"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="140" id="m5W-d1-nrw"/>
+                                                                </constraints>
+                                                                <state key="normal" title="Legal"/>
+                                                            </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Q6Z-wy-WZo">
-                                                        <rect key="frame" x="0.0" y="186" width="360" height="140"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="140" id="m5W-d1-nrw"/>
-                                                        </constraints>
-                                                        <state key="normal" title="Legal"/>
-                                                    </button>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
@@ -140,6 +158,7 @@
                         <outlet property="bringCreativeProjectsToLifeLabel" destination="IdC-V8-RTt" id="zB4-FN-a6D"/>
                         <outlet property="contextLabel" destination="dpL-Nr-tUh" id="BOf-Py-pLj"/>
                         <outlet property="disclaimerButton" destination="Q6Z-wy-WZo" id="HPK-fR-ian"/>
+                        <outlet property="facebookDisclaimerLabel" destination="Pa3-LL-Bbr" id="rJC-BQ-epB"/>
                         <outlet property="fbLoginButton" destination="DI6-Zp-Yoj" id="jrl-tE-eBz"/>
                         <outlet property="loginButton" destination="tcm-YK-ZfH" id="qe9-86-RTl"/>
                         <outlet property="loginContextStackView" destination="Q9a-f5-7eI" id="62n-by-ckH"/>
@@ -684,10 +703,10 @@
                                 <rect key="frame" x="0.0" y="20" width="400" height="580"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="42" translatesAutoresizingMaskIntoConstraints="NO" id="o6G-gP-3eh" userLabel="Root Stack View">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="466.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="302.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="XcZ-ub-1e8" userLabel="Confirm">
-                                                <rect key="frame" x="16" y="16" width="368" height="340"/>
+                                                <rect key="frame" x="16" y="16" width="368" height="176"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ay8-Ym-I01">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -722,17 +741,10 @@
                                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="wJS-md-Esc">
-                                                        <rect key="frame" x="0.0" y="200" width="368" height="140"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="140" id="ijw-4M-4TI"/>
-                                                        </constraints>
-                                                        <state key="normal" title="Disclaimer"/>
-                                                    </button>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="g4y-Ze-ncG" userLabel="Login">
-                                                <rect key="frame" x="16" y="398" width="368" height="52.5"/>
+                                                <rect key="frame" x="16" y="234" width="368" height="52.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7LL-th-UNn">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="14.5"/>
@@ -775,7 +787,6 @@
                     <connections>
                         <outlet property="confirmationLabel" destination="Ay8-Ym-I01" id="k6e-Ud-cjo"/>
                         <outlet property="createAccountButton" destination="VHR-ZD-hIa" id="m2x-fE-f3n"/>
-                        <outlet property="disclaimerButton" destination="wJS-md-Esc" id="7ay-bZ-Clt"/>
                         <outlet property="emailLabel" destination="EiY-Q0-wRr" id="M2A-lI-Wd7"/>
                         <outlet property="loginButton" destination="oMq-Lz-Vqr" id="gGQ-f1-Q19"/>
                         <outlet property="loginLabel" destination="7LL-th-UNn" id="cXm-4k-CXd"/>
