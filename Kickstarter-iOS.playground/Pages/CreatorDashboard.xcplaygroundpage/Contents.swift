@@ -6,7 +6,7 @@ import UIKit
 import PlaygroundSupport
 @testable import Kickstarter_Framework
 
-//initialize()
+initialize()
 let controller = DashboardViewController.instantiate()
 
 let rewards = (1...6).map {

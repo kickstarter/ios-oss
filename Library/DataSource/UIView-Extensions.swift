@@ -31,7 +31,9 @@ extension UIView {
     guard !hasSwizzled else { return }
 
     hasSwizzled = true
-    swizzle(self)
+    DispatchQueue.main.async {
+      swizzle(self)
+    }
   }
 
   open override func awakeFromNib() {

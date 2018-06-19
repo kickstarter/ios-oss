@@ -7,7 +7,7 @@ import UIKit
 import PlaygroundSupport
 @testable import Kickstarter_Framework
 
-//initialize()
+initialize()
 let controller = BackingViewController.configuredWith(project: .template, backer: .template)
 
 AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef",

@@ -80,7 +80,7 @@ AppEnvironment.replaceCurrentEnvironment(
 )
 
 // Initialize the view controller.
-//initialize()
+initialize()
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 

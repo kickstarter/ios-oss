@@ -94,13 +94,13 @@ AppEnvironment.replaceCurrentEnvironment(
   ),
   currentUser: Project.cosmicSurgery.creator
 )
- 
-//initialize()
+
+initialize(viewController: ActivitiesViewController.self)
+
 let controller = ActivitiesViewController.instantiate()
 let (parent, _) = playgroundControllers(device: .phone4_7inch,
                                         orientation: .portrait, child: controller, additionalTraits: .init())
 
-
-let frame = parent.view.frame |> CGRect.lens.size.height .~ 2200
+let frame = parent.view.frame
 PlaygroundPage.current.liveView = parent
 parent.view.frame = frame

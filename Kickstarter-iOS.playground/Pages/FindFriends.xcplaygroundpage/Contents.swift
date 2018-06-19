@@ -4,6 +4,11 @@ import PlaygroundSupport
 @testable import Kickstarter_Framework
 @testable import KsApi
 
+initialize()
+
+// Set the device type and orientation.
+let (parent, _) = playgroundControllers(device: .phone5_5inch, orientation: .portrait, child: controller)
+
 let currentUser = .template
   |> User.lens.facebookConnected .~ true
 
@@ -18,9 +23,6 @@ AppEnvironment.replaceCurrentEnvironment(
   locale: Locale(identifier: "en"),
   mainBundle: Bundle.framework
 )
-
-// Set the device type and orientation.
-let (parent, _) = playgroundControllers(device: .phone5_5inch, orientation: .portrait, child: controller)
 
 // Render the screen.
 let frame = parent.view.frame

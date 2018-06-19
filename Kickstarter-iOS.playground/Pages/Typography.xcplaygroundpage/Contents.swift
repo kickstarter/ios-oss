@@ -12,7 +12,7 @@ let rootStackView = UIStackView(frame: liveView.bounds)
   |> UIStackView.lens.alignment .~ .leading
   |> UIStackView.lens.axis .~ .vertical
   |> UIStackView.lens.distribution .~ .fill
-  |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+  |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
   |> UIStackView.lens.layoutMargins .~ .init(top: 16, left: 16, bottom: 16, right: 16)
   |> UIStackView.lens.spacing .~ 8.0
 liveView.addSubview(rootStackView)
