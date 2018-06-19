@@ -1,10 +1,10 @@
 version: 2
 
-xcode_version: &xcode_version 9.3
+xcode_version: &xcode_version 9.4
 iphone_name: &iphone_name iPhone 8
-ios_version: &ios_version 11.3
+ios_version: &ios_version 11.4
 opentok_version: &opentok_version 2.10.2
-preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.3) [5FEDB80B-4688-4334-8B56-77D413CF00DC]' || true
+preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.4) [5FEDB80B-4688-4334-8B56-77D413CF00DC]' || true
 
 base_job: &base_job
   macos:
