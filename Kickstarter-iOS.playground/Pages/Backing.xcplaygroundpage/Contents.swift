@@ -36,4 +36,3 @@ let backing = .template
 let frame = controller.view.frame
 PlaygroundPage.current.liveView = controller
 controller.view.frame = frame
-PlaygroundPage.current.needsIndefiniteExecution = true

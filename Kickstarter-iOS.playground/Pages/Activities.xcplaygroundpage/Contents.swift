@@ -95,9 +95,9 @@ AppEnvironment.replaceCurrentEnvironment(
   currentUser: Project.cosmicSurgery.creator
 )
 
-initialize(viewController: ActivitiesViewController.self)
-
+initialize()
 let controller = ActivitiesViewController.instantiate()
+
 let (parent, _) = playgroundControllers(device: .phone4_7inch,
                                         orientation: .portrait, child: controller, additionalTraits: .init())
 
