@@ -45,7 +45,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.currentEnvironmentChangedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_environmentChanged, object: nil, queue: nil, using: { [weak self] _ in
-        self?.viewModel.inputs.currentEnvironmentChanged(environment: AppEnvironment.current.apiService.serverConfig.environment)
+        self?.viewModel.inputs.currentEnvironmentChanged(environment:
+          AppEnvironment.current.apiService.serverConfig.environment)
       })
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
