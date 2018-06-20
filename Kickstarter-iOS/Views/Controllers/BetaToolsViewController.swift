@@ -13,7 +13,6 @@ internal final class BetaToolsViewController: UIViewController {
   @IBOutlet fileprivate weak var betaDebugPushNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var betaFeedbackButton: UIButton!
   @IBOutlet fileprivate weak var betaTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var betaToolsStackView: UIStackView!
   @IBOutlet fileprivate weak var languageSwitcher: UIButton!
   @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
 
@@ -63,9 +62,7 @@ internal final class BetaToolsViewController: UIViewController {
 
     self.viewModel.outputs.currentLanguage
       .observeForUI()
-      .observeValues { [weak self] language in
-        self?.languageDidChange(language: language)
-    }
+      .observeValues { [weak self] language in self?.languageDidChange(language: language) }
 
     self.viewModel.outputs.goToBetaFeedback
       .observeForControllerAction()
@@ -103,7 +100,7 @@ internal final class BetaToolsViewController: UIViewController {
     self.navigationController?.dismiss(animated: true, completion: nil)
   }
 
-  // MARK: Private Helper Funcs
+  // MARK: Private Helper Functions
 
   private func showLanguageActionSheet() {
     let alert = UIAlertController(title: "Change Language",

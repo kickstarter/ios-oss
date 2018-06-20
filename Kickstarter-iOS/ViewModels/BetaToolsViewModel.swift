@@ -50,9 +50,7 @@ BetaToolsViewModelInputs, BetaToolsViewModelOutputs {
       .filter { AppEnvironment.current.language != $0 }
 
     let updateEnvironment = self.environmentSwitcherButtonTappedProperty.signal.skipNil()
-      .filter {
-        AppEnvironment.current.apiService.serverConfig.environment != $0
-      }
+      .filter { AppEnvironment.current.apiService.serverConfig.environment != $0 }
 
     _ = updateEnvironment
       .map(ServerConfig.config(for:))

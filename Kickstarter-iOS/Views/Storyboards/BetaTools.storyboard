@@ -15,12 +15,12 @@
         <!--Beta Tools-->
         <scene sceneID="bjj-6p-Mbi">
             <objects>
-                <viewController storyboardIdentifier="BetaToolsViewController" title="Beta Tools" id="aah-T1-uYL" customClass="BetaToolsViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BetaToolsViewController" title="Beta Tools" id="aah-T1-uYL" customClass="BetaToolsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="k4A-jH-WMb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="f9E-vF-CFV">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="f9E-vF-CFV" userLabel="Beta tools stack view">
                                 <rect key="frame" x="16" y="42" width="343" height="238.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Beta Tools" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OfO-br-B4B">
@@ -149,7 +149,6 @@
                         <outlet property="betaDebugPushNotificationsButton" destination="mdf-iB-mw8" id="4sv-R5-fBG"/>
                         <outlet property="betaFeedbackButton" destination="an2-Sx-MMB" id="oaG-r9-Z19"/>
                         <outlet property="betaTitleLabel" destination="OfO-br-B4B" id="tJC-0K-gTO"/>
-                        <outlet property="betaToolsStackView" destination="f9E-vF-CFV" id="fgc-Pw-f6P"/>
                         <outlet property="doneButton" destination="F4W-2U-60Y" id="Bte-cr-EgE"/>
                         <outlet property="environmentSwitcher" destination="PrG-kB-k3l" id="Eb7-lN-yOG"/>
                         <outlet property="languageSwitcher" destination="1jE-rN-j3I" id="Ktx-pO-Tp3"/>

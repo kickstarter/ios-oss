@@ -28,8 +28,8 @@ final class BetaToolsViewModelTests: TestCase {
   }
 
   func testEnvironmentButton_SwitchesEnvironment() {
-
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
+      self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
 
@@ -44,7 +44,7 @@ final class BetaToolsViewModelTests: TestCase {
   func testLogoutWithParamsEmits_WhenEnvironmentChanges() {
 
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
-
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
       self.logoutWithParams.assertDidEmitValue()
     }
@@ -52,6 +52,7 @@ final class BetaToolsViewModelTests: TestCase {
 
   func testLogoutWithParamsDoesNotEmit_WhenEnvironmentChangesToCurrentEnvironment() {
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.environmentSwitcherButtonTapped(environment: EnvironmentType.production)
 
       self.logoutWithParams.assertDidNotEmitValue()
@@ -59,7 +60,6 @@ final class BetaToolsViewModelTests: TestCase {
   }
 
   func testEnvironmentButtonTitle_showsEnvironment_WhenEnvironmentChanges() {
-
     self.vm.inputs.viewDidLoad()
 
     self.environmentSwitcherButtonTitle.assertValue("Production")
