@@ -3,7 +3,7 @@ import Curry
 import Runes
 
 public struct ExportDataEnvelope {
-  public let expiresAt: String
+  public let expiresAt: String?
   public let state: State
 
   public enum State: String {
@@ -13,8 +13,6 @@ public struct ExportDataEnvelope {
     case expired
   }
 }
-
-
 
 extension ExportDataEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ExportDataEnvelope> {

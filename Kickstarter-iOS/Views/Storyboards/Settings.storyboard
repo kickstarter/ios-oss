@@ -26,7 +26,7 @@
                                 <rect key="frame" x="0.0" y="64" width="400" height="1892"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="8mW-y4-spg" userLabel="Root stack view">
-                                        <rect key="frame" x="16" y="0.0" width="368" height="2463"/>
+                                        <rect key="frame" x="16" y="0.0" width="368" height="2522"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BKe-u1-jse">
                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="1"/>
@@ -808,7 +808,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ar1-S2-Cvy" userLabel="Privacy stack view">
-                                                <rect key="frame" x="0.0" y="1951" width="368" height="271.5"/>
+                                                <rect key="frame" x="0.0" y="1951" width="368" height="330.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Privacy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Urg-Aa-oLZ" userLabel="Privacy label">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -908,19 +908,19 @@
                                                         </constraints>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="qoi-0y-ja8" userLabel="Export Personal Data Stack View">
-                                                        <rect key="frame" x="0.0" y="212.5" width="368" height="46"/>
+                                                        <rect key="frame" x="0.0" y="212.5" width="368" height="105"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Kcf-xk-ETV">
-                                                                <rect key="frame" x="0.0" y="0.0" width="303" height="46"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="303" height="105"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete my Kickstarter Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SHQ-yw-sJx">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="303" height="20.5"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SHQ-yw-sJx">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="303" height="50"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete my Kickstarter Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t0T-24-cQV">
-                                                                        <rect key="frame" x="0.0" y="25.5" width="303" height="20.5"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t0T-24-cQV">
+                                                                        <rect key="frame" x="0.0" y="55" width="303" height="50"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <nil key="highlightedColor"/>
@@ -928,15 +928,15 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="3se-cZ-wat">
-                                                                <rect key="frame" x="321" y="15.5" width="9" height="15"/>
+                                                                <rect key="frame" x="321" y="45" width="9" height="15"/>
                                                             </imageView>
                                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hu1-Sd-ner">
-                                                                <rect key="frame" x="348" y="13" width="20" height="20"/>
+                                                                <rect key="frame" x="348" y="42.5" width="20" height="20"/>
                                                             </activityIndicatorView>
                                                         </subviews>
                                                     </stackView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bEP-Vu-3oY">
-                                                        <rect key="frame" x="0.0" y="270.5" width="368" height="1"/>
+                                                        <rect key="frame" x="0.0" y="329.5" width="368" height="1"/>
                                                         <color key="backgroundColor" red="0.89563578369999997" green="0.89563578369999997" blue="0.89563578369999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="1" id="2aG-2h-ogn"/>
@@ -945,7 +945,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="SlO-en-sfv" userLabel="Rating stack view">
-                                                <rect key="frame" x="0.0" y="2258.5" width="368" height="56"/>
+                                                <rect key="frame" x="0.0" y="2317.5" width="368" height="56"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVZ-o5-coE">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="1"/>
@@ -978,7 +978,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IQM-bL-GaS">
-                                                <rect key="frame" x="0.0" y="2350.5" width="368" height="76.5"/>
+                                                <rect key="frame" x="0.0" y="2409.5" width="368" height="76.5"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kM8-GB-tee">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="44"/>
@@ -995,7 +995,7 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VLB-0D-JqX">
-                                                <rect key="frame" x="0.0" y="2463" width="368" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="2522" width="368" height="0.0"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" id="uSU-eO-Qy1"/>

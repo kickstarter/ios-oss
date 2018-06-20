@@ -31,6 +31,8 @@ internal final class SettingsViewControllerTests: TestCase {
             let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
             parent.view.frame.size.height = 1_900
 
+            self.scheduler.run()
+
             FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
         }
       }
@@ -52,6 +54,8 @@ internal final class SettingsViewControllerTests: TestCase {
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
           parent.view.frame.size.height = 2_100
 
+          self.scheduler.run()
+
           FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")}
       }
   }
@@ -71,6 +75,8 @@ internal final class SettingsViewControllerTests: TestCase {
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
           parent.view.frame.size.height = 1_900
 
+          self.scheduler.run()
+
           FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
     }
@@ -83,6 +89,8 @@ internal final class SettingsViewControllerTests: TestCase {
       let vc = SettingsViewController.instantiate()
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 1_800
+
+      self.scheduler.run()
 
       FBSnapshotVerifyView(vc.view)
     }

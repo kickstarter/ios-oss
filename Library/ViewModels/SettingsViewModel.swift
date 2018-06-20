@@ -52,9 +52,10 @@ public protocol SettingsViewModelOutputs {
   var creatorTipsSelected: Signal<Bool, NoError> { get }
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
   var environmentSwitcherButtonTitle: Signal<String, NoError> { get }
-  var exportDataText: Signal<String, NoError> { get }
-  var exportDataExpirationDate: Signal<String, NoError> { get }
   var exportDataButtonEnabled: Signal<Bool, NoError> { get }
+  var exportDataExpirationDate: Signal<String, NoError> { get }
+  var exportDataLoadingIndicator: Signal<Bool, NoError> { get }
+  var exportDataText: Signal<String, NoError> { get }
   var followerSelected: Signal<Bool, NoError> { get }
   var followingPrivacyOn: Signal<Bool, NoError> { get }
   var friendActivitySelected: Signal<Bool, NoError> { get }
@@ -82,7 +83,6 @@ public protocol SettingsViewModelOutputs {
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var requestExportData: Signal<(), NoError> { get }
   var recommendationsOn: Signal<Bool, NoError> { get }
-  var exportDataLoadingIndicator: Signal<Bool, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
   var showDataExpirationAndChevron: Signal<Bool, NoError> { get }
   var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
@@ -125,16 +125,16 @@ SettingsViewModelOutputs {
       }
 
     self.exportDataLoadingIndicator = Signal.merge(
-      exportEnvelope.map { $0.state == .processing ?  true : false },
+      exportEnvelope.map { $0.state == .processing ? true : false },
       self.exportDataTappedProperty.signal.mapConst(true)
     )
 
     self.exportDataText = self.exportDataLoadingIndicator.signal
       .map { $0 ? "Preparing your personal data..." : Strings.Request_my_Personal_Data() }
 
-
     self.exportDataExpirationDate = exportEnvelope
-      .map { dateFormatter(for: $0.expiresAt, state: $0.state)! }
+      .map { dateFormatter(for: $0.expiresAt, state: $0.state)
+    }
 
     self.exportDataButtonEnabled = self.exportDataLoadingIndicator.signal
       .map { !$0 }
@@ -630,7 +630,7 @@ SettingsViewModelOutputs {
   public var outputs: SettingsViewModelOutputs { return self }
 }
 
-private func dateFormatter(for dateString: String, state: ExportDataEnvelope.State) -> String? {
+private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.State) -> String {
   let dateFormatter = DateFormatter()
   dateFormatter.dateFormat = "yyyy-MM-dd"
   let newDateFormatter = DateFormatter()
@@ -641,7 +641,7 @@ private func dateFormatter(for dateString: String, state: ExportDataEnvelope.Sta
   let newTimeFormatter = DateFormatter()
   newTimeFormatter.dateFormat = "h:mm a"
 
-  let dateComponents = dateString.components(separatedBy: "T")
+  guard let dateComponents = dateString?.components(separatedBy: "T") else { return "" }
 
   let splitDate = dateComponents[0]
   let splitTime = dateComponents[1]
@@ -658,7 +658,7 @@ private func dateFormatter(for dateString: String, state: ExportDataEnvelope.Sta
       return "Expires \(convertedDate) at \(convertedTime)"
     }
   } else {
-    return "failed"
+    return ""
   }
 }
 

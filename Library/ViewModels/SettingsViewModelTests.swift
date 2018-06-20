@@ -16,6 +16,10 @@ internal final class SettingsViewModelTests: TestCase {
   let commentsSelected = TestObserver<Bool, NoError>()
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
   let environmentSwitcherButtonTitle = TestObserver<String, NoError>()
+  let exportDataButtonEnabled = TestObserver<Bool, NoError>()
+  let exportDataExpirationDate = TestObserver<String, NoError>()
+  let exportdDataLoadingIndicator = TestObserver<Bool, NoError>()
+  let exportDataText = TestObserver<String, NoError>()
   let followerSelected = TestObserver<Bool, NoError>()
   let followingPrivacyOn = TestObserver<Bool, NoError>()
   let friendActivitySelected = TestObserver<Bool, NoError>()
@@ -42,6 +46,7 @@ internal final class SettingsViewModelTests: TestCase {
   let requestExportData = TestObserver<(), NoError>()
   let recommendationsOn = TestObserver<Bool, NoError>()
   let showConfirmLogoutPrompt = TestObserver<(message: String, cancel: String, confirm: String), NoError>()
+  let showDataExpirationAndChevron = TestObserver<Bool, NoError>()
   let showOptInPrompt = TestObserver<String, NoError>()
   let showPrivacyFollowingPrompt = TestObserver<(), NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
@@ -58,6 +63,10 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
     self.vm.outputs.environmentSwitcherButtonTitle.observe(self.environmentSwitcherButtonTitle.observer)
+    self.vm.outputs.exportDataButtonEnabled.observe(self.exportDataButtonEnabled.observer)
+    self.vm.outputs.exportDataExpirationDate.observe(self.exportDataExpirationDate.observer)
+    self.vm.outputs.exportDataLoadingIndicator.observe(self.exportdDataLoadingIndicator.observer)
+    self.vm.outputs.exportDataText.observe(self.exportDataText.observer)
     self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
     self.vm.outputs.followingPrivacyOn.observe(self.followingPrivacyOn.observer)
     self.vm.outputs.friendActivitySelected.observe(self.friendActivitySelected.observer)
@@ -84,6 +93,7 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.requestExportData.observe(self.requestExportData.observer)
     self.vm.outputs.recommendationsOn.observe(self.recommendationsOn.observer)
     self.vm.outputs.showConfirmLogoutPrompt.observe(self.showConfirmLogoutPrompt.observer)
+    self.vm.outputs.showDataExpirationAndChevron.observe(self.showDataExpirationAndChevron.observer)
     self.vm.outputs.showOptInPrompt.observe(self.showOptInPrompt.observer)
     self.vm.outputs.showPrivacyFollowingPrompt.observe(self.showPrivacyFollowingPrompt.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
@@ -148,6 +158,38 @@ internal final class SettingsViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
       self.creatorNotificationsHidden.assertValues([false], "Creator notifications shown for creator.")
+    }
+  }
+
+  func testExportDataButtonIsEnabled() {
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.exportDataTapped()
+
+    self.exportDataButtonEnabled.assertValues([false], "Export data button is disabled")
+
+    self.scheduler.advance()
+
+    self.exportDataButtonEnabled.assertValues([false, true], "Export data button is enabled")
+  }
+
+  func testExportDataExpirationDateText_Hidden() {
+    let user = User.template
+    let export = ExportDataEnvelope.template
+    withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showDataExpirationAndChevron.assertValues([false])
+
+      self.exportDataExpirationDate.assertValues(["Expired Jun 19 at 8:12 AM"])
+
+      self.vm.inputs.exportDataTapped()
+
+      self.showDataExpirationAndChevron.assertValues([false, true])
     }
   }
 
