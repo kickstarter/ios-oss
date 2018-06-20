@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Beta Tools-->
+        <scene sceneID="bjj-6p-Mbi">
+            <objects>
+                <viewController storyboardIdentifier="BetaToolsViewController" title="Beta Tools" id="aah-T1-uYL" customClass="BetaToolsViewController" customModule="Kickstarter_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="k4A-jH-WMb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="f9E-vF-CFV">
+                                <rect key="frame" x="16" y="42" width="343" height="238.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Beta Tools" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OfO-br-B4B">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iEe-Db-ZQR">
+                                        <rect key="frame" x="0.0" y="32.5" width="343" height="1"/>
+                                        <color key="backgroundColor" red="0.89563578369999997" green="0.89563578369999997" blue="0.89563578369999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="cC8-IB-Lvc"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="r8X-RE-ShM">
+                                        <rect key="frame" x="0.0" y="45.5" width="343" height="38"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdf-iB-mw8">
+                                                <rect key="frame" x="0.0" y="2" width="334" height="34"/>
+                                                <state key="normal" title="Debug push notifications">
+                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="betaDebugPushNotificationsButtonTapped:" destination="aah-T1-uYL" eventType="touchUpInside" id="bc2-hP-vgO"/>
+                                                </connections>
+                                            </button>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="KZ1-Re-0vU">
+                                                <rect key="frame" x="334" y="11.5" width="9" height="15"/>
+                                            </imageView>
+                                        </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wpo-dW-Nm3">
+                                        <rect key="frame" x="0.0" y="95.5" width="343" height="1"/>
+                                        <color key="backgroundColor" red="0.89563578369999997" green="0.89563578369999997" blue="0.89563578369999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="bjr-h1-cDF"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VIN-D9-Qku">
+                                        <rect key="frame" x="0.0" y="108.5" width="343" height="29"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Change environment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hcy-KX-D9W">
+                                                <rect key="frame" x="0.0" y="0.0" width="259" height="29"/>
+                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                                                <color key="textColor" red="0.39607843139999999" green="0.41176470590000003" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PrG-kB-k3l" userLabel="Environment Switcher">
+                                                <rect key="frame" x="259" y="0.0" width="84" height="29"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="29" id="kry-zp-bbL"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <state key="normal" title="Production">
+                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="environmentSwitcherTapped:" destination="aah-T1-uYL" eventType="touchUpInside" id="9GG-zt-SKt"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="81h-Zu-6kN">
+                                        <rect key="frame" x="0.0" y="149.5" width="343" height="1"/>
+                                        <color key="backgroundColor" red="0.89563578369999997" green="0.89563578369999997" blue="0.89563578369999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="syb-fW-rJd"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s5j-nH-Eeb">
+                                        <rect key="frame" x="0.0" y="162.5" width="343" height="30"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Change language" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UNj-rk-GSE">
+                                                <rect key="frame" x="0.0" y="0.0" width="284" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.39607843139999999" green="0.41176470590000003" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1jE-rN-j3I" userLabel="Language Switcher Button">
+                                                <rect key="frame" x="284" y="0.0" width="59" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="t5A-5o-MCh"/>
+                                                </constraints>
+                                                <state key="normal" title="English">
+                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="languageSwitcherTapped:" destination="aah-T1-uYL" eventType="touchUpInside" id="aVb-h6-mMr"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="an2-Sx-MMB">
+                                        <rect key="frame" x="0.0" y="204.5" width="343" height="34"/>
+                                        <state key="normal" title="Send Feedback">
+                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="betaFeedbackButtonTapped:" destination="aah-T1-uYL" eventType="touchUpInside" id="1kv-n7-EVM"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="238.5" id="7r6-8y-Xcg"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="f9E-vF-CFV" firstAttribute="trailingMargin" secondItem="H0w-39-wBv" secondAttribute="trailing" constant="-16" id="4B3-yL-Hds"/>
+                            <constraint firstItem="f9E-vF-CFV" firstAttribute="leadingMargin" secondItem="H0w-39-wBv" secondAttribute="leading" constant="16" id="mJD-RN-0Va"/>
+                            <constraint firstItem="f9E-vF-CFV" firstAttribute="topMargin" secondItem="H0w-39-wBv" secondAttribute="top" constant="22" id="ocK-8R-DBP"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="H0w-39-wBv"/>
+                    </view>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="done" id="F4W-2U-60Y">
+                            <connections>
+                                <action selector="doneTapped:" destination="aah-T1-uYL" id="vJI-m1-fmS"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="betaDebugPushNotificationsButton" destination="mdf-iB-mw8" id="4sv-R5-fBG"/>
+                        <outlet property="betaFeedbackButton" destination="an2-Sx-MMB" id="oaG-r9-Z19"/>
+                        <outlet property="betaTitleLabel" destination="OfO-br-B4B" id="tJC-0K-gTO"/>
+                        <outlet property="betaToolsStackView" destination="f9E-vF-CFV" id="fgc-Pw-f6P"/>
+                        <outlet property="doneButton" destination="F4W-2U-60Y" id="Bte-cr-EgE"/>
+                        <outlet property="environmentSwitcher" destination="PrG-kB-k3l" id="Eb7-lN-yOG"/>
+                        <outlet property="languageSwitcher" destination="1jE-rN-j3I" id="Ktx-pO-Tp3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fjq-Uc-v7p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="170" y="36"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="chevron-right" width="9" height="15"/>
+    </resources>
+</document>

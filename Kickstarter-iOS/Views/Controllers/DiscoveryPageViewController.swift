@@ -10,6 +10,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate let loadingIndicatorView = UIActivityIndicatorView()
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
+  private var currentEnvironmentChangedObserver: Any?
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
@@ -42,6 +43,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.viewModel.inputs.userSessionEnded()
     }
 
+    self.currentEnvironmentChangedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_environmentChanged, object: nil, queue: nil, using: { [weak self] _ in
+        self?.viewModel.inputs.currentEnvironmentChanged(environment: AppEnvironment.current.apiService.serverConfig.environment)
+      })
+
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
     self.emptyStatesController = emptyVC
     emptyVC.delegate = self
@@ -59,6 +65,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   deinit {
     self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.currentEnvironmentChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   internal override func viewWillAppear(_ animated: Bool) {

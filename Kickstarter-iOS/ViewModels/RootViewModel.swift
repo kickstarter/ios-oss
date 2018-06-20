@@ -177,7 +177,10 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .takePairWhen(selectedTabAgain)
       .map { vcs, idx in vcs[idx] }
 
-    self.tabBarItemsData = Signal.combineLatest(currentUser, self.viewDidLoadProperty.signal)
+    self.tabBarItemsData = Signal.combineLatest(currentUser, .merge(
+      self.viewDidLoadProperty.signal,
+      self.currentLanguageProperty.signal.ignoreValues())
+      )
       .map(first)
       .map(tabData(forUser:))
   }

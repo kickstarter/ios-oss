@@ -82,12 +82,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
           completion: nil)
     }
 
-    self.viewModel.outputs.logoutWithParams
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.logout(params: $0)
-      }
-
     self.viewModel.outputs.arrowOpacityAnimated
       .observeForUI()
       .observeValues { [weak self] (alpha, animated) in
@@ -313,7 +307,11 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   }
 
   @objc fileprivate func environmentSwitcherTapped() {
-    self.showEnvironmentActionSheet()
+    let betaToolsViewController = BetaToolsViewController.instantiate()
+
+    let navController = UINavigationController(rootViewController: betaToolsViewController)
+
+    self.present(navController, animated: true, completion: nil)
   }
 
   @objc fileprivate func titleButtonTapped() {
@@ -322,39 +320,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
   @objc fileprivate func favoriteButtonTapped() {
     self.viewModel.inputs.favoriteButtonTapped()
-  }
-
-  private func showEnvironmentActionSheet() {
-
-    let alert = UIAlertController(
-      title: "Change Environment (\(AppEnvironment.current.apiService.serverConfig.environment.rawValue))",
-      message: nil,
-      preferredStyle: .actionSheet
-    )
-
-    EnvironmentType.allCases.forEach { environment in
-      alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
-        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: environment)
-      })
-    }
-
-    alert.addAction(
-      UIAlertAction.init(title: "Cancel", style: .cancel)
-    )
-
-    self.present(alert, animated: true, completion: nil)
-  }
-
-  fileprivate func logout(params: DiscoveryParams) {
-    AppEnvironment.logout()
-
-    self.view.window?.rootViewController
-      .flatMap { $0 as? RootTabBarViewController }
-      .doIfSome { root in
-        root.switchToDiscovery(params: params)
-    }
-
-    NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
   }
 }
 

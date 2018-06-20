@@ -141,10 +141,12 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.viewControllerNames.assertValueCount(1)
+    self.tabBarItemsData.assertValueCount(1)
 
     self.vm.inputs.currentLanguageChanged()
 
     self.viewControllerNames.assertValueCount(2)
+    self.tabBarItemsData.assertValueCount(2)
   }
 
   func testSelectedIndex() {
