@@ -7,7 +7,7 @@ import Result
 public protocol DiscoveryPageViewModelInputs {
   /// Call with the sort provided to the view.
   func configureWith(sort: DiscoveryParams.Sort)
-  
+
   /// Call when the current environment has changed
   func currentEnvironmentChanged(environment: EnvironmentType)
 
@@ -124,11 +124,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
       ).skipRepeats()
-      
+
     let environmentChanged = self.currentEnvironmentChangedProperty.signal
       .skipNil()
       .skipRepeats()
-      
+
     let firstPageParams = Signal.combineLatest(
       currentUser,
       paramsChanged,
@@ -140,7 +140,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         return lhs.0 == rhs.0 && lhs.1 == rhs.1
       }
       .map { $0.1 }
-      
+
     let requestFirstPageWith = Signal.merge(
         firstPageParams,
         (firstPageParams.takeWhen(environmentChanged)))
@@ -263,7 +263,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
   }
-  
+
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
   public func currentEnvironmentChanged(environment: EnvironmentType) {
     self.currentEnvironmentChangedProperty.value = environment

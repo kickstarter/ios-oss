@@ -49,11 +49,11 @@ final class BetaToolsViewModelTests: TestCase {
       self.logoutWithParams.assertDidEmitValue()
     }
   }
-  
+
   func testLogoutWithParamsDoesNotEmit_WhenEnvironmentChangesToCurrentEnvironment() {
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
       self.vm.inputs.environmentSwitcherButtonTapped(environment: EnvironmentType.production)
-      
+
       self.logoutWithParams.assertDidNotEmitValue()
     }
   }

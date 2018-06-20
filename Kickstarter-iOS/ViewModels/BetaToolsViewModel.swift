@@ -53,8 +53,8 @@ BetaToolsViewModelInputs, BetaToolsViewModelOutputs {
       .filter {
         AppEnvironment.current.apiService.serverConfig.environment != $0
       }
-      
-    let _ = updateEnvironment
+
+    _ = updateEnvironment
       .map(ServerConfig.config(for:))
       .observeValues { config in
         AppEnvironment.updateServerConfig(config)

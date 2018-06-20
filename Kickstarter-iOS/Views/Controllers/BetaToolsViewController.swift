@@ -187,11 +187,11 @@ internal final class BetaToolsViewController: UIViewController {
 
   private func logoutAndDismiss(params: DiscoveryParams) {
     AppEnvironment.logout()
-    
+
     NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
     // Refresh the discovery screens
     NotificationCenter.default.post(.init(name: .ksr_environmentChanged))
-    
+
     self.navigationController?.dismiss(animated: true, completion: nil)
   }
 }
