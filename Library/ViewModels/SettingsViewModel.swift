@@ -117,31 +117,6 @@ SettingsViewModelOutputs {
       self.followingSwitchTappedProperty.signal.map { $0.0 }
     )
 
-    let exportEnvelope = viewDidLoadProperty.signal
-      .switchMap {
-        AppEnvironment.current.apiService.exportDataState()
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .demoteErrors()
-      }
-
-    self.exportDataLoadingIndicator = Signal.merge(
-      exportEnvelope.map { $0.state == .processing ? true : false },
-      self.exportDataTappedProperty.signal.mapConst(true)
-    )
-
-    self.exportDataText = self.exportDataLoadingIndicator.signal
-      .map { $0 ? "Preparing your personal data..." : Strings.Request_my_Personal_Data() }
-
-    self.exportDataExpirationDate = exportEnvelope
-      .map { dateFormatter(for: $0.expiresAt, state: $0.state)
-    }
-
-    self.exportDataButtonEnabled = self.exportDataLoadingIndicator.signal
-      .map { !$0 }
-
-    self.showDataExpirationAndChevron = self.exportDataLoadingIndicator.signal
-      .map { $0 }
-
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = .merge(
       self.artsAndCultureNewsletterTappedProperty.signal.map { (.arts, $0) },
       self.gamesNewsletterTappedProperty.signal.map { (.games, $0) },
@@ -373,6 +348,30 @@ SettingsViewModelOutputs {
           .demoteErrors()
       }
       .ignoreValues()
+
+    let exportEnvelope = initialUser
+      .switchMap { _ in
+        AppEnvironment.current.apiService.exportDataState()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .demoteErrors()
+    }
+
+    self.exportDataLoadingIndicator = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      self.exportDataTappedProperty.signal.mapConst(true)
+    )
+
+    self.exportDataText = self.exportDataLoadingIndicator.signal
+      .map { $0 ? "Preparing your personal data..." : Strings.Request_my_Personal_Data() }
+
+    self.exportDataExpirationDate = exportEnvelope
+      .map { dateFormatter(for: $0.expiresAt, state: $0.state) }
+
+    self.exportDataButtonEnabled = self.exportDataLoadingIndicator.signal
+      .map { !$0 }
+
+    self.showDataExpirationAndChevron = self.exportDataLoadingIndicator.signal
+      .map { $0 }
 
     self.betaToolsHidden = self.viewDidLoadProperty.signal
       .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }
