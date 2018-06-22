@@ -349,6 +349,8 @@ SettingsViewModelOutputs {
       }
       .ignoreValues()
 
+    let isLoading = MutableProperty(false)
+
     let exportEnvelope = initialUser
       .switchMap { _ in
         AppEnvironment.current.apiService.exportDataState()
@@ -356,15 +358,30 @@ SettingsViewModelOutputs {
           .demoteErrors()
     }
 
+    let exportEnvelopeUpdateEvent = self.exportDataTappedProperty.signal
+      .switchMap { _ in
+        AppEnvironment.current.apiService.exportDataState()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(
+            starting: {
+              isLoading.value = true
+          },
+            terminated: {
+              isLoading.value = false
+          })
+          .demoteErrors()
+    }
+
+
     self.exportDataLoadingIndicator = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      self.exportDataTappedProperty.signal.mapConst(true)
+      isLoading.signal.map(isTrue)
     )
 
     self.exportDataText = self.exportDataLoadingIndicator.signal
       .map { $0 ? "Preparing your personal data..." : Strings.Request_my_Personal_Data() }
 
-    self.exportDataExpirationDate = exportEnvelope
+    self.exportDataExpirationDate = Signal.merge (exportEnvelope, exportEnvelopeUpdateEvent)
       .map { dateFormatter(for: $0.expiresAt, state: $0.state) }
 
     self.exportDataButtonEnabled = self.exportDataLoadingIndicator.signal
