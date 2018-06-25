@@ -372,7 +372,6 @@ SettingsViewModelOutputs {
           .demoteErrors()
     }
 
-
     self.exportDataLoadingIndicator = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
       isLoading.signal.map(isTrue)
