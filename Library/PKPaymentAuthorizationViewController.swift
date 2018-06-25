@@ -27,7 +27,7 @@ extension PKPaymentAuthorizationViewController {
 
     if countryCode == "US" && project.country != Project.Country.us ||
       countryCode != "US" {
-      return PKPaymentAuthorizationViewController.supportedNetworks.filter { $0 != .masterCard }
+      return PKPaymentAuthorizationViewController.supportedNetworks.filter { $0 != .discover }
     }
 
     return PKPaymentAuthorizationViewController.supportedNetworks
