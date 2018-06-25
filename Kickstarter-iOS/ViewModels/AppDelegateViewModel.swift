@@ -1080,5 +1080,6 @@ private func authStatusType(for status: UNAuthorizationStatus) -> NotificationAu
   case .authorized: return .authorized
   case .denied: return .denied
   case .notDetermined: return .notDetermined
+  case .provisional: return .notDetermined
   }
 }
