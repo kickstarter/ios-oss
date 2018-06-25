@@ -69,7 +69,7 @@ internal final class RewardPledgeViewController: UIViewController {
   internal static func configuredWith(
     project: Project,
     reward: Reward,
-    applePayCapable: Bool = PKPaymentAuthorizationViewController.applePayCapable())
+    applePayCapable: Bool)
     -> RewardPledgeViewController {
 
       let vc = Storyboard.RewardPledge.instantiate(RewardPledgeViewController.self)
