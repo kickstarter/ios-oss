@@ -13,7 +13,6 @@ internal final class FacebookConfirmationViewController: UIViewController,
   @IBOutlet private weak var confirmationLabel: UILabel!
   @IBOutlet private weak var createAccountButton: UIButton!
   @IBOutlet private weak var emailLabel: UILabel!
-  @IBOutlet private weak var disclaimerButton: UIButton!
   @IBOutlet private weak var loginButton: UIButton!
   @IBOutlet private weak var loginLabel: UILabel!
   @IBOutlet private weak var newsletterLabel: UILabel!
@@ -44,7 +43,6 @@ internal final class FacebookConfirmationViewController: UIViewController,
 
     self.newsletterSwitch.addTarget(self, action: #selector(newsletterSwitchChanged),
                                     for: .valueChanged)
-    self.disclaimerButton.addTarget(self, action: #selector(helpButtonPressed), for: .touchUpInside)
 
     let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(newsletterLabelTapped))
     self.newsletterLabel.addGestureRecognizer(tapGestureRecognizer)
@@ -61,7 +59,6 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.confirmationLabel |> fbConfirmationMessageLabelStyle
     _ = self.createAccountButton |> createNewAccountButtonStyle
     _ = self.emailLabel |> fbConfirmEmailLabelStyle
-    _ = self.disclaimerButton |> disclaimerButtonStyle |> fbDisclaimerTextStyle
     _ = self.loginButton |> loginWithEmailButtonStyle
     _ = self.loginLabel |> fbWrongAccountLabelStyle
     _ = self.navigationItem.title = Strings.signup_navbar_title()
@@ -179,10 +176,6 @@ internal final class FacebookConfirmationViewController: UIViewController,
 
   @objc private func loginButtonPressed() {
     self.viewModel.inputs.loginButtonPressed()
-  }
-
-  @objc private func helpButtonPressed() {
-    self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
   @objc fileprivate func newsletterLabelTapped() {

@@ -46,9 +46,10 @@ platform :ios do
   private_lane :match_enterprise do
     match(
       app_identifier: [
-        "com.kickstarter.drip.beta", 
+        "com.kickstarter.drip.beta",
+        "com.kickstarter.drip.alpha",
         "com.kickstarter.kickstarter.beta",
-        "com.kickstarter.kickstarter.alpha",
+        "com.kickstarter.kickstarter.kickalpha"
       ],
       type: "enterprise",
       git_url: "https://github.com/kickstarter/ios-certificates",
