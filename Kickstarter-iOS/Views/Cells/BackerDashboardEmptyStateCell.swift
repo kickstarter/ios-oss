@@ -28,6 +28,8 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
                    in: .framework,
                    compatibleWith: nil)
     }
+
+    animateHeart()
   }
 
   internal override func bindStyles() {
@@ -50,5 +52,50 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
 
     _ = self.iconImageView
     |> UIImageView.lens.tintColor .~ .ksr_text_dark_grey_900
+  }
+
+  internal func animateHeart() {
+//    self.iconImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+
+    let image = UIImage(named: "icon--heart-outline",
+                        in: .framework,
+                        compatibleWith: nil)
+
+    let imageTwo = UIImage(named: "icon--heart",
+                             in: .framework,
+                             compatibleWith: nil)
+
+    let this: UIImageView
+
+    this.image = imageTwo
+
+    let images: [UIImage] = [image!, imageTwo!]
+
+    UIView.transition(from: self.iconImageView,
+                      to: this,
+                      duration: 2.0,
+                      options: [.curveEaseOut, .repeat],
+//                      animations: {
+//                        self.iconImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+//                        self.iconImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+//                      },
+                        completion: nil)
+
+    //self.iconImageView.image = UIImage.animatedImage(with: images, duration: 2.0)
+
+//    UIView.animate(
+//      withDuration: 0.8,
+//      delay: 0.0,
+//      usingSpringWithDamping: 0.6,
+//      initialSpringVelocity: 0.8,
+//      options:  .repeat,
+//      animations: {
+//        self.iconImageView.alpha = 1.0
+//        self.iconImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+//        self.iconImageView.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+//        self.iconImageView.image = UIImage.animatedImage(with: images, duration: 1)
+//    },
+//      completion: nil
+//    )
   }
 }
