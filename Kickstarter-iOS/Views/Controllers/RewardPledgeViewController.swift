@@ -313,10 +313,10 @@ internal final class RewardPledgeViewController: UIViewController {
     _ = self.readMoreGradientView.backgroundColor = .clear
     _ = self.readMoreGradientView.startPoint = .zero
     _ = self.readMoreGradientView.endPoint = CGPoint(x: 1, y: 0)
-//    _ = self.readMoreGradientView.setGradient(
-//      [(UIColor.ksr_grey_100.withAlphaComponent(0.0), 0.0),
-//        (UIColor.ksr_grey_100.withAlphaComponent(1.0), 1.0)]
-//    )
+    _ = self.readMoreGradientView.setGradient(
+      [(UIColor.ksr_grey_100.withAlphaComponent(0.0), 0.0),
+        (UIColor.ksr_grey_100.withAlphaComponent(1.0), 1.0)]
+    )
 
     _ = self.readMoreLabel
       |> UILabel.lens.backgroundColor .~ .ksr_grey_100

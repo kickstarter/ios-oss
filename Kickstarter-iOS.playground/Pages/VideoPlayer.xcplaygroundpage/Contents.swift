@@ -21,6 +21,5 @@ AppEnvironment.replaceCurrentEnvironment(
 
 initialize()
 let controller = VideoViewController.configuredWith(project: project)
-//let frame = controller.view.frame |> CGRect.lens.size.height .~ 2200
 
 PlaygroundPage.current.liveView = controller
