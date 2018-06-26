@@ -35,7 +35,7 @@ public func playgroundControllers(device: Device = .phone4_7inch,
   -> (parent: UIViewController, child: UIViewController) {
 
     let parent = UIViewController()
-    parent.addChild(child)
+    parent.addChildViewController(child)
     parent.view.addSubview(child.view)
 
     child.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -134,7 +134,7 @@ public func playgroundControllers(device: Device = .phone4_7inch,
     child.view.backgroundColor = .white
 
     let allTraits = UITraitCollection.init(traitsFrom: [traits, additionalTraits])
-    parent.setOverrideTraitCollection(allTraits, forChild: child)
+    parent.setOverrideTraitCollection(allTraits, forChildViewController: child)
 
     return (parent, child)
 }
