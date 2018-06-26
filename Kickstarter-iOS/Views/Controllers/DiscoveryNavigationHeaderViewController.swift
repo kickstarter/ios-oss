@@ -13,13 +13,13 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   fileprivate let viewModel: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
+  @IBOutlet fileprivate weak var betaToolsButton: UIButton!
   @IBOutlet fileprivate weak var bgView: UIView!
   @IBOutlet fileprivate weak var bookmarkImageView: UIImageView!
   @IBOutlet fileprivate weak var bookmarkOutlineImageView: UIImageView!
   @IBOutlet fileprivate weak var debugContainerView: UIView!
   @IBOutlet fileprivate weak var debugImageView: UIImageView!
   @IBOutlet fileprivate weak var dividerLabel: UILabel!
-  @IBOutlet fileprivate weak var environmentSwitcherButton: UIButton!
   @IBOutlet fileprivate weak var exploreLabel: UILabel!
   @IBOutlet fileprivate weak var favoriteButton: UIButton!
   @IBOutlet fileprivate weak var favoriteContainerView: UIView!
@@ -47,9 +47,9 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.environmentSwitcherButton.addTarget(self,
-                                             action: #selector(environmentSwitcherTapped),
-                                             for: .touchUpInside)
+    self.betaToolsButton.addTarget(self,
+                                   action: #selector(betaToolsButtonTapped),
+                                   for: .touchUpInside)
 
     self.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped),
                                   for: .touchUpInside)
@@ -306,7 +306,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     }
   }
 
-  @objc fileprivate func environmentSwitcherTapped() {
+  @objc fileprivate func betaToolsButtonTapped() {
     let betaToolsViewController = BetaToolsViewController.instantiate()
 
     let navController = UINavigationController(rootViewController: betaToolsViewController)

@@ -254,13 +254,11 @@ SettingsViewModelOutputs {
       .filter { $0.0 == false && $0.1 == false }
       .ignoreValues()
 
-    self.logoutWithParams = Signal.merge (
-      self.logoutConfirmedProperty.signal
-    )
-    .map { .defaults
-      |> DiscoveryParams.lens.includePOTD .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    }
+    self.logoutWithParams = self.logoutConfirmedProperty.signal
+      .map { .defaults
+        |> DiscoveryParams.lens.includePOTD .~ true
+        |> DiscoveryParams.lens.sort .~ .magic
+      }
 
     self.showOptInPrompt = newsletterOn
       .filter { _, on in AppEnvironment.current.config?.countryCode == "DE" && on }
