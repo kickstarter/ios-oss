@@ -20,7 +20,7 @@ initialize()
 let controller = Storyboard.Search.instantiate(SearchViewController.self)
 
 // Set the device type and orientation.
-let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portrait, child: controller)
+let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
 // Set the device language.
 AppEnvironment.replaceCurrentEnvironment(

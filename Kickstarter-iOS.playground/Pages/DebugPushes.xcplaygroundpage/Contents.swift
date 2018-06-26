@@ -7,7 +7,7 @@ import PlaygroundSupport
 @testable import Kickstarter_Framework
 
 // Instantiate the Settings view controller.
-//initialize()
+initialize()
 let controller = Storyboard.DebugPushNotifications.instantiate(DebugPushNotificationsViewController.self)
 
 // Set the device type and orientation.
