@@ -123,6 +123,8 @@
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
+		7765DDF120E40D63000DDE35 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7765DDEF20E40D62000DDE35 /* Crashlytics.framework */; };
+		7765DDF220E40D63000DDE35 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7765DDF020E40D63000DDE35 /* Fabric.framework */; };
 		77758157209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */; };
 		7775818E209CBF7700EE357F /* DiscoveryProjectCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */; };
 		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
@@ -1684,6 +1686,8 @@
 		7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryView.swift; sourceTree = "<group>"; };
 		7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModel.swift; sourceTree = "<group>"; };
 		7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryProjectCategoryView.xib; sourceTree = "<group>"; };
+		7765DDEF20E40D62000DDE35 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Fabric/Crashlytics.framework; sourceTree = SOURCE_ROOT; };
+		7765DDF020E40D63000DDE35 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Frameworks/Fabric/Fabric.framework; sourceTree = SOURCE_ROOT; };
 		77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModelTests.swift; sourceTree = "<group>"; };
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		7DD8EE231F02DBED0070B63D /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/FBSDK/iOS/Bolts.framework; sourceTree = "<group>"; };
@@ -2565,10 +2569,12 @@
 				A7E3BE771D415FF900F63EE6 /* HockeySDK.framework in Frameworks */,
 				D01BEA081F0259A30064C1D9 /* Result.framework in Frameworks */,
 				D0B45CF41EF864700020A8DA /* ReactiveExtensions.framework in Frameworks */,
+				7765DDF120E40D63000DDE35 /* Crashlytics.framework in Frameworks */,
 				D0745B491EEB0B6C00FA53D3 /* ReactiveSwift.framework in Frameworks */,
 				D0745AD41EEB09DE00FA53D3 /* Argo.framework in Frameworks */,
 				D0745B0C1EEB0A0A00FA53D3 /* Prelude.framework in Frameworks */,
 				D0745B051EEB09E500FA53D3 /* Curry.framework in Frameworks */,
+				7765DDF220E40D63000DDE35 /* Fabric.framework in Frameworks */,
 				7DD8EE241F02DBED0070B63D /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2621,6 +2627,15 @@
 				A731BF581D1ED60800A734AC /* WebViewController.swift */,
 			);
 			name = Library;
+			sourceTree = "<group>";
+		};
+		7765DDEC20E40B01000DDE35 /* Fabric */ = {
+			isa = PBXGroup;
+			children = (
+				7765DDEF20E40D62000DDE35 /* Crashlytics.framework */,
+				7765DDF020E40D63000DDE35 /* Fabric.framework */,
+			);
+			path = Fabric;
 			sourceTree = "<group>";
 		};
 		802800561C88F62500141235 /* Configs */ = {
@@ -2773,6 +2788,7 @@
 		A7424F421C84F43300FDC1E4 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				7765DDEC20E40B01000DDE35 /* Fabric */,
 				D0FD4CA61E26427A00488660 /* AudioToolbox.framework */,
 				D0FD4CA81E26428000488660 /* AVFoundation.framework */,
 				7DD8EE231F02DBED0070B63D /* Bolts.framework */,
@@ -4131,6 +4147,7 @@
 				A7D1F9431C850B7C000D41D5 /* Resources */,
 				A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */,
 				16344A3D20B4F6B700610E8D /* Swiftlint */,
+				7713662C20E4048B00D7D7AD /* Fabric */,
 			);
 			buildRules = (
 			);
@@ -4929,6 +4946,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint > /dev/null; then\n    if [ -z \"$CI\" ]; then\n        echo \"Running swiftlint...\"\n        swiftlint\n    fi\nelse\n    echo \"warning: swiftlint not installed, run brew install swiftlint\"\nfi";
+		};
+		7713662C20E4048B00D7D7AD /* Fabric */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Fabric;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Frameworks/Fabric/Fabric.framework/run 42ed3a9f80e767878c3ba3e7832a80ee7aabec42 0879a05903a7119a1556d14951bad987d1653d90fee30ad3894d823a7292f13a";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -6000,6 +6031,9 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks/Fabric",
+					"$(PROJECT_DIR)/Fabric",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
@@ -6521,11 +6555,15 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks/Fabric",
+					"$(PROJECT_DIR)/Fabric",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/Stripe/",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks/Fabric/",
 				);
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -6556,6 +6594,9 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks/Fabric",
+					"$(PROJECT_DIR)/Fabric",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
@@ -6985,6 +7026,9 @@
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks/Fabric",
+					"$(PROJECT_DIR)/Fabric",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
