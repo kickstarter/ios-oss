@@ -49,6 +49,9 @@ public protocol FindFriendsFacebookConnectCellViewModelOutputs {
 
   /// Emits a User that can be used to replace the current user in the environment
   var updateUserInEnvironment: Signal<User, NoError> { get }
+
+  var facebookConnectCellTitle: Signal<String, NoError> { get }
+  var facebookConnectCellDescription: Signal<String, NoError> { get }
 }
 
 public protocol FindFriendsFacebookConnectCellViewModelType {
@@ -183,4 +186,6 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
   public let updateUserInEnvironment: Signal<User, NoError>
   public let showErrorAlert: Signal<AlertError, NoError>
   public let hideCloseButton: Signal<Bool, NoError>
+  public let facebookConnectCellTitle: Signal<String, NoError>
+  public let facebookConnectCellDescription: Signal<String, NoError>
 }
