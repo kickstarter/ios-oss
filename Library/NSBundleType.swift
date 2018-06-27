@@ -27,7 +27,7 @@ extension NSBundleType {
   public var version: String {
     return self.infoDictionary?["CFBundleVersion"] as? String ?? "0"
   }
-  
+
   public var isDebug: Bool {
     return self.identifier == KickstarterBundleIdentifier.debug.rawValue
   }
