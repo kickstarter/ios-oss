@@ -1,14 +1,14 @@
 version: 2
 
-xcode_version: &xcode_version 9.3
+xcode_version: &xcode_version 9.4
 iphone_name: &iphone_name iPhone 8
-ios_version: &ios_version 11.3
+ios_version: &ios_version 11.4
 opentok_version: &opentok_version 2.10.2
-preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.3) [5FEDB80B-4688-4334-8B56-77D413CF00DC]' || true
+preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.4) [2437FE39-2885-482D-A42F-A169C65AE271]' || true
 
 base_job: &base_job
   macos:
-    xcode: "9.3.0"
+    xcode: "9.4.0"
   working_directory: ~/kickstarter
   environment:
     CIRCLE_ARTIFACTS: /tmp
@@ -184,7 +184,72 @@ jobs:
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
-  # Hockey
+  deploy_alpha:
+    <<: *base_job
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - checkout
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+      - run:
+          name: Deploy Alpha
+          command: make alpha
+
+   # Hockey Alpha
+  alpha:
+    <<: *base_job
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+
+      - checkout
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
+      - restore_cache:
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Bundle install
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+      - save_cache:
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Increment build number
+          command: agvtool new-version -all $(($(date +%s)/100))
+
+      - run:
+          name: Fastlane
+          command: bundle exec fastlane alpha_match_gym_hockey --verbose
+          no_output_timeout: "30m" # 30 minutes
+
+      - run:
+          name: Cleanup Temp Branch
+          command: make cleanup
+
+      - store_artifacts:
+          path: /tmp/xcode_raw.log
+
+      - store_artifacts:
+          path: output
+
+  # Hockey Beta
   beta:
     <<: *base_job
     steps:
@@ -292,6 +357,20 @@ workflows:
       - library-tests
       - livestream-tests
       - ksapi-tests
+      - deploy_alpha:
+          filters:
+            branches:
+              only: master
+          requires:
+            - swiftlint-and-cache
+            - kickstarter-tests
+            - library-tests
+            - livestream-tests
+            - ksapi-tests
+      - alpha:
+          filters:
+            branches:
+              only: /alpha-dist-.*/
       - beta:
           filters:
             branches:
@@ -318,5 +397,6 @@ experimental:
     branches:
       only:
         - master
+        - /alpha-dist-.*/
         - beta-dist
         - itunes-dist

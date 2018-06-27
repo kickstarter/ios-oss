@@ -4,7 +4,6 @@ default_platform :ios
 
 platform :ios do
   ### MATCH
-
   desc "Fastlane Match"
   lane :match_all do
     setup_circle_ci
@@ -48,7 +47,10 @@ platform :ios do
   private_lane :match_enterprise do
     match(
       app_identifier: [
-        "com.kickstarter.drip.beta", "com.kickstarter.kickstarter.beta"
+        "com.kickstarter.drip.beta",
+        "com.kickstarter.drip.alpha",
+        "com.kickstarter.kickstarter.beta",
+        "com.kickstarter.kickstarter.kickalpha"
       ],
       type: "enterprise",
       git_url: "https://github.com/kickstarter/ios-certificates",
@@ -136,6 +138,11 @@ platform :ios do
   end
 
   ### ALPHA
+  lane :alpha_match_gym_hockey do
+    match_all
+    alpha_gym
+    alpha_hockey
+  end
 
   desc "Build Alpha"
   lane :alpha_gym do
@@ -167,6 +174,7 @@ platform :ios do
   end
 
   private_lane :upload_hockey do |options|
+    notes = generate_build_notes
     hockey(
       api_token: ENV["HOCKEY_APP_TOKEN"],
       ipa: options[:ipa],
@@ -175,10 +183,27 @@ platform :ios do
       repository_url: ENV["CIRCLE_REPOSITORY_URL"],
       build_server_url: ENV["CIRCLE_BUILD_URL"],
       commit_sha: ENV["CIRCLE_SHA1"],
-      notes: "CircleCI build " + ENV["CIRCLE_BUILD_NUM"],
+      notes: notes,
       bypass_cdn: true,
       notify: "1"
     )
+  end
+
+  ### HELPERS
+  ### Grabs the last commit message into a changelog
+  private_lane :changelog do
+    changelog_from_git_commits(
+      commits_count: 1,
+      date_format: "short"
+    )
+  end
+
+  private_lane :generate_build_notes do
+    build_num = ENV["CIRCLE_BUILD_NUM"]
+    short_sha = ENV["CIRCLE_SHA1"][0..6]
+    messages = changelog
+
+    "*** CircleCI build #{build_num}, for commit: #{short_sha} ***. \n Commit message: #{messages}"
   end
 
   after_all do |lane|

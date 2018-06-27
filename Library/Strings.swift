@@ -384,10 +384,10 @@ public enum Strings {
   /**
    "Are you sure?"
 
-   - **es**: "Are you sure?"
-   - **ja**: "Are you sure?"
+   - **es**: "¿Estás seguro?"
+   - **ja**: "オフにしてもよろしいですか？"
    - **de**: "Bist du sicher?"
-   - **fr**: "Are you sure?"
+   - **fr**: "Êtes-vous certain ?"
    - **en**: "Are you sure?"
   */
   public static func Are_you_sure() -> String {
@@ -611,10 +611,10 @@ backers"
   /**
    "Cancel"
 
-   - **es**: "Cancel"
-   - **ja**: "Cancel"
+   - **es**: "Cancelar"
+   - **ja**: "キャンセル"
    - **de**: "Abbrechen"
-   - **fr**: "Cancel"
+   - **fr**: "Annuler"
    - **en**: "Cancel"
   */
   public static func Cancel() -> String {
@@ -1427,16 +1427,33 @@ backers"
   /**
    "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
 
-   - **es**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
-   - **ja**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
-   - **de**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
-   - **fr**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
+   - **es**: "Si inicias sesión con Facebook, importaremos tu nombre y foto de perfil. También accederemos a tu lista de amigos para que puedas seguir a tus amigos de Facebook en Kickstarter. Jamás publicaremos nada en Facebook sin tu permiso."
+   - **ja**: "Facebook でログインすると、あなたの氏名とプロフィール写真がインポートされます。また、あなたが Kickstarter 上で Facebook 友達をフォローすることができるように、友達リストも Kickstarter によってアクセスされます。あなたの許可なしに Kickstarter が Facebook 上に投稿を行うことは決してありません。  "
+   - **de**: "Wenn du dich über Facebook anmeldest, importieren wir deinen Namen und dein Profilfoto. Außerdem wird deine Freundesliste importiert, damit du deinen Freunden auf Kickstarter folgen kannst. Wir werden niemals etwas ohne deine Erlaubnis auf Facebook posten."
+   - **fr**: "Si vous vous connectez avec Facebook, nous importerons votre nom et votre photo de profil. Nous accéderons aussi à votre liste d'amis pour vous permettre de suivre vos connaissances sur Kickstarter. Nous ne publierons jamais sur Facebook sans votre autorisation."
    - **en**: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission."
   */
   public static func Facebook_login_disclaimer() -> String {
     return localizedString(
       key: "Facebook_login_disclaimer",
       defaultValue: "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+
+   - **es**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+   - **ja**: "Facebook を使ってログインすると、お名前とプロフィール写真、友達リストがインポートされます。"
+   - **de**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+   - **fr**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+   - **en**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+  */
+  public static func Facebook_login_disclaimer_update() -> String {
+    return localizedString(
+      key: "Facebook_login_disclaimer_update",
+      defaultValue: "By logging in with Facebook, we’ll import your name, profile photo and friend list.",
       count: nil,
       substitutions: [:]
     )
@@ -1835,10 +1852,10 @@ backers"
   /**
    "Following More Info"
 
-   - **es**: "Following More Info"
-   - **ja**: "Following More Info"
-   - **de**: "Following More Info"
-   - **fr**: "Following More Info"
+   - **es**: "Más información sobre el seguimiento"
+   - **ja**: "フォロー 詳細"
+   - **de**: "Mehr Info zu Folgen"
+   - **fr**: "Plus d'informations sur le suivi et l'abonnement"
    - **en**: "Following More Info"
   */
   public static func Following_More_Info() -> String {
@@ -2275,6 +2292,23 @@ backers"
     )
   }
   /**
+   "Hide password"
+
+   - **es**: "Ocultar contraseña"
+   - **ja**: "パスワードを非表示にする"
+   - **de**: "Passwort verbergen"
+   - **fr**: "Masquer le mot de passe"
+   - **en**: "Hide password"
+  */
+  public static func Hide_password() -> String {
+    return localizedString(
+      key: "Hide_password",
+      defaultValue: "Hide password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Home"
 
    - **es**: "Inicio"
@@ -2328,10 +2362,10 @@ backers"
   /**
    "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
 
-   - **es**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
-   - **ja**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
-   - **de**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
-   - **fr**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
+   - **es**: "Si desactivas el seguimiento, no podrás seguir a nadie y nadie podrá seguirte. Tu perfil se desconectará de todos tus seguidores. Esto no se puede deshacer."
+   - **ja**: "フォローをオフにすると、あなたは誰もフォローすることができなくなり、また他の人があなたをフォローすることもできなくなります。また、既存のフォロワーとのつながりも絶たれます。この操作は後から元に戻すことはできませんのでご注意ください。"
+   - **de**: "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden."
+   - **fr**: "Si vous désactivez les fonctionnalités de suivi, vous ne pourrez pas vous abonner aux activités des autres et plus personne ne pourra suivre les vôtres. Votre profil sera déconnecté de tous vos abonnés. Cette action ne pourra pas être annulée."
    - **en**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
   */
   public static func If_you_turn_following_off() -> String {
@@ -2906,6 +2940,23 @@ with friends."
     )
   }
   /**
+   "Messages"
+
+   - **es**: "Mensajes"
+   - **ja**: "メッセージ"
+   - **de**: "Nachrichten"
+   - **fr**: "Messages"
+   - **en**: "Messages"
+  */
+  public static func Messages() -> String {
+    return localizedString(
+      key: "Messages",
+      defaultValue: "Messages",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Name"
 
    - **es**: "Nombre"
@@ -3419,6 +3470,23 @@ from friends yet."
     )
   }
   /**
+   "Password visibility"
+
+   - **es**: "Visibilidad de la contraseña"
+   - **ja**: "パスワードの表示/非表示"
+   - **de**: "Passwort-Anzeige"
+   - **fr**: "Visibilité du mot de passe"
+   - **en**: "Password visibility"
+  */
+  public static func Password_visibility() -> String {
+    return localizedString(
+      key: "Password_visibility",
+      defaultValue: "Password visibility",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Past live stream"
 
    - **es**: "Live Stream pasado"
@@ -3742,6 +3810,57 @@ from friends yet."
     )
   }
   /**
+   "Private profile"
+
+   - **es**: "Perfil privado"
+   - **ja**: "プライベート設定のプロフィール"
+   - **de**: "Privates Profil"
+   - **fr**: "Profil privé"
+   - **en**: "Private profile"
+  */
+  public static func Private_profile() -> String {
+    return localizedString(
+      key: "Private_profile",
+      defaultValue: "Private profile",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Private profile more info"
+
+   - **es**: "Más información sobre el perfil privado"
+   - **ja**: "プライベート設定のプロフィール詳細"
+   - **de**: "Privates Profil - Mehr Info"
+   - **fr**: "Plus d'informations sur le profil privé"
+   - **en**: "Private profile more info"
+  */
+  public static func Private_profile_more_info() -> String {
+    return localizedString(
+      key: "Private_profile_more_info",
+      defaultValue: "Private profile more info",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
+
+   - **es**: "Los perfiles de Kickstarter son privados por defecto. Para hacer que tu perfil sea público y visible para el mundo, desactiva esta opción."
+   - **ja**: "Kickstarter でのプロフィールはデフォルト設定ではプライベート (非公開) となっています。プロフィールを公開したい場合はこの設定をオフにしてください。"
+   - **de**: "Die Standard-Einstellung für Profile sind auf Kickstarter ist privat. Um dein Profil öffentlich zu machen, hebe diese Einstellung bitte auf."
+   - **fr**: "Par défaut, les profils Kickstarter sont privés. Pour rendre votre profil public et visible par tout le monde, décochez cette case."
+   - **en**: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off."
+  */
+  public static func Private_profile_more_info_content() -> String {
+    return localizedString(
+      key: "Private_profile_more_info_content",
+      defaultValue: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project Cancelled."
 
    - **es**: "Proyecto cancelado."
@@ -4053,10 +4172,10 @@ daring ideas."
   /**
    "Recommendations More Info"
 
-   - **es**: "Recommendations More Info"
-   - **ja**: "Recommendations More Info"
-   - **de**: "Recommendations More Info"
-   - **fr**: "Recommendations More Info"
+   - **es**: "Más información sobre las recomendaciones"
+   - **ja**: "おすすめ 詳細"
+   - **de**: "Mehr Info zu Empfehlungen"
+   - **fr**: "Plus d'infos sur les recommandations"
    - **en**: "Recommendations More Info"
   */
   public static func Recommendations_More_Info() -> String {
@@ -4692,6 +4811,23 @@ daring ideas."
     return localizedString(
       key: "Ships_to",
       defaultValue: "Ships to:",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Show password"
+
+   - **es**: "Mostrar contraseña"
+   - **ja**: "パスワードを表示する"
+   - **de**: "Passwort anzeigen"
+   - **fr**: "Afficher le mot de passe"
+   - **en**: "Show password"
+  */
+  public static func Show_password() -> String {
+    return localizedString(
+      key: "Show_password",
+      defaultValue: "Show password",
       count: nil,
       substitutions: [:]
     )
@@ -5727,10 +5863,10 @@ Please try again later."
   /**
    "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
 
-   - **es**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
-   - **ja**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
-   - **de**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
-   - **fr**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
+   - **es**: "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente."
+   - **ja**: "フォローがオンになっていると、他の人のアクティビティをフォローすることができ、また、他の人もあなたのアクティビティをフォローすることができます。このようなデータを永久に削除するためにはフォローをオフにしてください。"
+   - **de**: "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht."
+   - **fr**: "Lorsque les fonctionnalités de suivi sont activées, vous pouvez vous abonner aux activités des autres, qui pourront à leur tour s'abonner aux vôtres. Pour supprimer définitivement ces données, il vous suffit de désactiver les fonctionnalités de suivi."
    - **en**: "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data."
   */
   public static func When_following_is_on_you_can_follow_the_acticity_of_others() -> String {
@@ -5761,10 +5897,10 @@ Please try again later."
   /**
    "Yes, turn off"
 
-   - **es**: "Yes, turn off"
-   - **ja**: "Yes, turn off"
-   - **de**: "Yes, turn off"
-   - **fr**: "Yes, turn off"
+   - **es**: "Sí, desactivar"
+   - **ja**: "はい、オフにします"
+   - **de**: "Ja, deaktivieren"
+   - **fr**: "Oui, désactiver"
    - **en**: "Yes, turn off"
   */
   public static func Yes_turn_off() -> String {

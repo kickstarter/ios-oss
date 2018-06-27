@@ -16,12 +16,13 @@ let currentUser = loggedOut
 //let currentUser = loggedIn
 //let currentUser = member
 
+initialize()
 AppEnvironment.replaceCurrentEnvironment(currentUser: currentUser, mainBundle: Bundle.framework)
 
-initialize()
 let controller = Storyboard.Main.instantiate(RootTabBarViewController.self)
 
-let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+let (parent, _) = playgroundControllers(device: .phone4inch, orientation: .portrait, child: controller)
 let frame = parent.view.frame
 PlaygroundPage.current.liveView = parent
+
 parent.view.frame = frame

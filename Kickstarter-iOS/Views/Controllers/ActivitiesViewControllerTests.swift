@@ -128,7 +128,8 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
     let activities = [follow, update, backing, launch, following, success, failure, canceled, suspended]
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: activities,
         fetchUnansweredSurveyResponsesResponse: [survey]),

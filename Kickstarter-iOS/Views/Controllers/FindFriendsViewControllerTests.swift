@@ -18,7 +18,7 @@ internal final class FindFriendsViewControllerTests: TestCase {
   }
 
   func testView_ShowFacebookConnect() {
-    combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -57,7 +57,7 @@ internal final class FindFriendsViewControllerTests: TestCase {
       |> FriendStatsEnvelope.lens.stats.friendProjectsCount .~ 1_738
       |> FriendStatsEnvelope.lens.stats.remoteFriendsCount .~ 5
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch]).forEach { language, device in
       withEnvironment(apiService: MockService(fetchFriendsResponse: friendsResponse,
         fetchFriendStatsResponse: friendStats), currentUser: currentUser, language: language) {
 

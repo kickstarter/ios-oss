@@ -26,7 +26,8 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       |> Activity.lens.project .~ cosmicSurgeryNoPhoto
       |> Activity.lens.user .~ brandoNoAvatar
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(apiService: MockService(fetchActivitiesResponse: [backing]),
                       currentUser: User.template,
                       language: language,
@@ -53,7 +54,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       |> Config.lens.abExperiments
         .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
 
-    combos(Language.allLanguages, [Device.phone4inch, Device.phone4_7inch, Device.pad])
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(apiService: MockService(fetchActivitiesResponse: [],
                                                 fetchDiscoveryResponse: discoveryResponse),
@@ -81,7 +82,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         |> Project.lens.category .~ Category.art
         |> Project.lens.dates.featuredAt .~ self.dateType.init().timeIntervalSince1970
 
-    let devices = [Device.phone4inch, Device.phone4_7inch, Device.pad]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let config = Config.template
       |> Config.lens.abExperiments
       .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
@@ -120,7 +121,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       |> DiscoveryParams.lens.starred .~ true
 
     let states = [Project.State.successful, .canceled, .failed, .suspended]
-    let devices = [Device.phone4inch, Device.phone4_7inch, Device.pad]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let config = Config.template
       |> Config.lens.abExperiments
       .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
@@ -153,7 +154,8 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   func testView_Onboarding() {
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(currentUser: nil, language: language) {
 
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)

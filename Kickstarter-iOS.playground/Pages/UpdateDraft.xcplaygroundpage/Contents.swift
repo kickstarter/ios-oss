@@ -28,6 +28,4 @@ AppEnvironment.replaceCurrentEnvironment(
 initialize()
 let controller = UpdateDraftViewController.configuredWith(project: .template)
 
-PlaygroundPage.current.liveView =
-//  controller
-  UINavigationController(rootViewController: controller)
+PlaygroundPage.current.liveView = controller

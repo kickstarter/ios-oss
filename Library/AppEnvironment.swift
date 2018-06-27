@@ -63,6 +63,10 @@ public struct AppEnvironment {
     )
   }
 
+  public static func updateLanguage(_ language: Language) {
+    replaceCurrentEnvironment(language: language)
+  }
+
   // Invoke when you want to end the user's session.
   public static func logout() {
     let storage = AppEnvironment.current.cookieStorage
@@ -247,8 +251,7 @@ public struct AppEnvironment {
           webBaseUrl: service.serverConfig.webBaseUrl,
           apiClientAuth: ClientAuth(clientId: clientId),
           basicHTTPAuth: service.serverConfig.basicHTTPAuth,
-          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl,
-          helpCenterUrl: service.serverConfig.helpCenterUrl
+          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl
         ),
         oauthToken: service.oauthToken,
         language: current.language.rawValue,
@@ -268,8 +271,7 @@ public struct AppEnvironment {
           webBaseUrl: webBaseUrl,
           apiClientAuth: service.serverConfig.apiClientAuth,
           basicHTTPAuth: service.serverConfig.basicHTTPAuth,
-          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl,
-          helpCenterUrl: service.serverConfig.helpCenterUrl
+          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl
         ),
         oauthToken: service.oauthToken,
         language: current.language.rawValue,
@@ -287,8 +289,7 @@ public struct AppEnvironment {
           webBaseUrl: service.serverConfig.webBaseUrl,
           apiClientAuth: service.serverConfig.apiClientAuth,
           basicHTTPAuth: BasicHTTPAuth(username: username, password: password),
-          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl,
-          helpCenterUrl: service.serverConfig.helpCenterUrl
+          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl
         ),
         oauthToken: service.oauthToken,
         language: current.language.rawValue,

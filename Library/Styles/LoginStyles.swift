@@ -22,10 +22,21 @@ public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
     }
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
-public let fbDisclaimerTextStyle = UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.Facebook_login_disclaimer()
-  } <> UIButton.lens.accessibilityLabel %~ { _ in
-    Strings.Facebook_login_disclaimer()
+public let showHidePasswordButtonStyle = UIButton.lens.title(for: .normal) .~ ""
+  <> UIButton.lens.tintColor .~ .ksr_grey_400
+  <> UIButton.lens.accessibilityLabel %~ { _ in
+      Strings.Password_visibility()
+  }
+
+public let fbDisclaimerTextStyle = UILabel.lens.font %~~ { _, label in
+    label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote(size: 11.0)
+  }
+  <> UILabel.lens.lineBreakMode .~ .byWordWrapping
+  <> UILabel.lens.numberOfLines .~ 0
+  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+  <> UILabel.lens.textAlignment .~ .center
+  <> UILabel.lens.text %~ { _ in
+      Strings.Facebook_login_disclaimer_update()
   }
 
 public let emailFieldStyle = formFieldStyle
@@ -45,16 +56,6 @@ public let fbConfirmEmailLabelStyle =  UILabel.lens.textColor .~ .ksr_text_dark_
   <> UILabel.lens.font .~ .ksr_headline()
   <> UILabel.lens.textAlignment .~ .left
   <> UILabel.lens.adjustsFontSizeToFitWidth .~ true
-
-public let fbDisclaimerLabelStyle =
-  UILabel.lens.font %~~ { _, label in
-    label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote()
-  }
-  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
-  <> UILabel.lens.textAlignment .~ .center
-  <> UILabel.lens.text %~ { _ in
-    Strings.discovery_facebook_connect_hero_we_will_never_post_anything_on_facebook()
-}
 
 public let fbWrongAccountLabelStyle = UILabel.lens.font .~ .ksr_caption1()
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
