@@ -364,8 +364,6 @@ SettingsViewModelOutputs {
       }
       .ignoreValues()
 
-    let isLoading = MutableProperty(false)
-
     let exportEnvelope = initialUser
       .switchMap { _ in
         AppEnvironment.current.apiService.exportDataState()
@@ -373,29 +371,16 @@ SettingsViewModelOutputs {
           .demoteErrors()
     }
 
-    let exportEnvelopeUpdateEvent = self.exportDataTappedProperty.signal
-      .switchMap { _ in
-        AppEnvironment.current.apiService.exportDataState()
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .on(
-            starting: {
-              isLoading.value = true
-          },
-            terminated: {
-              isLoading.value = false
-          })
-          .demoteErrors()
-    }
-
     self.exportDataLoadingIndicator = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      isLoading.signal.map(isTrue)
+      exportEnvelope.map { $0.state == .processing },
+      self.exportDataTappedProperty.signal.mapConst(true)
     )
 
     self.exportDataText = self.exportDataLoadingIndicator.signal
-      .map { $0 ? "Preparing your personal data..." : Strings.Request_my_Personal_Data() }
+      .map { $0 ? Strings.Preparing_your_personal_data() : Strings.Request_my_Personal_Data() }
 
-    self.exportDataExpirationDate = Signal.merge (exportEnvelope, exportEnvelopeUpdateEvent)
+    self.exportDataExpirationDate = Signal.merge (exportEnvelope)
       .map { dateFormatter(for: $0.expiresAt, state: $0.state) }
 
     self.exportDataButtonEnabled = self.exportDataLoadingIndicator.signal
@@ -683,6 +668,7 @@ private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.St
   let timeFormatter = DateFormatter()
   timeFormatter.dateFormat = "HH-mm-sZ"
   let newTimeFormatter = DateFormatter()
+  newTimeFormatter.timeZone = AppEnvironment.current.calendar.timeZone
   newTimeFormatter.dateFormat = "h:mm a"
 
   guard let dateComponents = dateString?.components(separatedBy: "T") else { return "" }
@@ -697,9 +683,9 @@ private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.St
     let convertedTime = newTimeFormatter.string(from: time)
 
     if state == .expired {
-      return "Expired \(convertedDate) at \(convertedTime)"
+      return Strings.Expired_date_at_time(date: convertedDate, time: convertedTime)
     } else {
-      return "Expires \(convertedDate) at \(convertedTime)"
+      return Strings.Expires_date_at_time(date: convertedDate, time: convertedTime)
     }
   } else {
     return ""

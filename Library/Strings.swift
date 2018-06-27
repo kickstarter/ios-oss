@@ -1374,6 +1374,40 @@ backers"
     )
   }
   /**
+   "Expired %{date} at %{time}"
+
+   - **es**: "Venció el %{date} a la(s) %{time}"
+   - **ja**: "有効期限: %{date} %{time}"
+   - **de**: "Abgelaufen am %{date} um %{time}"
+   - **fr**: "Expirées depuis le %{date} à %{time}"
+   - **en**: "Expired %{date} at %{time}"
+  */
+  public static func Expired_date_at_time(date: String, time: String) -> String {
+    return localizedString(
+      key: "Expired_date_at_time",
+      defaultValue: "Expired %{date} at %{time}",
+      count: nil,
+      substitutions: ["date": date, "time": time]
+    )
+  }
+  /**
+   "Expires %{date} at %{time}"
+
+   - **es**: "Vence el %{date} a la(s) %{time}"
+   - **ja**: "有効期限: %{date} %{time}"
+   - **de**: "Läuft am %{date} um %{time} ab"
+   - **fr**: "Expiration le %{date} à %{time}"
+   - **en**: "Expires %{date} at %{time}"
+  */
+  public static func Expires_date_at_time(date: String, time: String) -> String {
+    return localizedString(
+      key: "Expires_date_at_time",
+      defaultValue: "Expires %{date} at %{time}",
+      count: nil,
+      substitutions: ["date": date, "time": time]
+    )
+  }
+  /**
    "Explore"
 
    - **es**: "Explora"
@@ -1444,10 +1478,10 @@ backers"
   /**
    "By logging in with Facebook, we’ll import your name, profile photo and friend list."
 
-   - **es**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+   - **es**: "Al iniciar sesión con Facebook, importaremos tu nombre, foto de perfil y lista de amigos."
    - **ja**: "Facebook を使ってログインすると、お名前とプロフィール写真、友達リストがインポートされます。"
-   - **de**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
-   - **fr**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
+   - **de**: "Bei einer Anmeldung über Facebook werden dein Name, Profilbild und Freundesliste importiert."
+   - **fr**: "Lorsque vous vous connectez avec Facebook, votre nom, votre photo de profil et votre liste d'amis seront importés."
    - **en**: "By logging in with Facebook, we’ll import your name, profile photo and friend list."
   */
   public static func Facebook_login_disclaimer_update() -> String {
@@ -3788,6 +3822,23 @@ from friends yet."
     return localizedString(
       key: "Popular_Projects",
       defaultValue: "Popular Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Preparing your personal data..."
+
+   - **es**: "Preparando tus datos personales..."
+   - **ja**: "あなたの個人データを準備中…"
+   - **de**: "Persönlichen Daten werden vorbereitet ..."
+   - **fr**: "La préparation de vos données personnelles est en cours..."
+   - **en**: "Preparing your personal data..."
+  */
+  public static func Preparing_your_personal_data() -> String {
+    return localizedString(
+      key: "Preparing_your_personal_data",
+      defaultValue: "Preparing your personal data...",
       count: nil,
       substitutions: [:]
     )

@@ -842,11 +842,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ar1-S2-Cvy" userLabel="Privacy stack view">
-<<<<<<< HEAD
                                                 <rect key="frame" x="0.0" y="1951" width="368" height="330.5"/>
-=======
-                                                <rect key="frame" x="0.0" y="2005" width="368" height="311.5"/>
->>>>>>> oss/master
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Privacy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Urg-Aa-oLZ" userLabel="Privacy label">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -980,11 +976,7 @@
                                                         </constraints>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="qoi-0y-ja8" userLabel="Export Personal Data Stack View">
-<<<<<<< HEAD
-                                                        <rect key="frame" x="0.0" y="212.5" width="368" height="105"/>
-=======
                                                         <rect key="frame" x="0.0" y="268.5" width="368" height="30"/>
->>>>>>> oss/master
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Kcf-xk-ETV">
                                                                 <rect key="frame" x="0.0" y="0.0" width="303" height="105"/>
@@ -1012,11 +1004,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bEP-Vu-3oY">
-<<<<<<< HEAD
-                                                        <rect key="frame" x="0.0" y="329.5" width="368" height="1"/>
-=======
                                                         <rect key="frame" x="0.0" y="310.5" width="368" height="1"/>
->>>>>>> oss/master
                                                         <color key="backgroundColor" red="0.89563578369999997" green="0.89563578369999997" blue="0.89563578369999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="1" id="2aG-2h-ogn"/>
@@ -1025,11 +1013,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="SlO-en-sfv" userLabel="Rating stack view">
-<<<<<<< HEAD
-                                                <rect key="frame" x="0.0" y="2317.5" width="368" height="56"/>
-=======
                                                 <rect key="frame" x="0.0" y="2352.5" width="368" height="56"/>
->>>>>>> oss/master
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVZ-o5-coE">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="1"/>
@@ -1062,11 +1046,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IQM-bL-GaS">
-<<<<<<< HEAD
-                                                <rect key="frame" x="0.0" y="2409.5" width="368" height="76.5"/>
-=======
                                                 <rect key="frame" x="0.0" y="2444.5" width="368" height="76.5"/>
->>>>>>> oss/master
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kM8-GB-tee">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="44"/>
@@ -1083,11 +1063,7 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VLB-0D-JqX">
-<<<<<<< HEAD
-                                                <rect key="frame" x="0.0" y="2522" width="368" height="0.0"/>
-=======
                                                 <rect key="frame" x="0.0" y="2557" width="368" height="0.0"/>
->>>>>>> oss/master
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" id="uSU-eO-Qy1"/>

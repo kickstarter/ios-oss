@@ -169,13 +169,16 @@ internal final class SettingsViewModelTests: TestCase {
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.viewDidLoad()
+
+    self.exportDataButtonEnabled.assertValues([true], "Export data button is enabled")
+
     self.vm.inputs.exportDataTapped()
 
-    self.exportDataButtonEnabled.assertValues([false], "Export data button is disabled")
+    self.exportDataButtonEnabled.assertValues([true, false], "Export data button is disabled")
 
     self.scheduler.advance()
 
-    self.exportDataButtonEnabled.assertValues([false, true], "Export data button is enabled")
+    self.exportDataButtonEnabled.assertValues([true, false, true], "Export data button is enabled")
   }
 
   func testExportDataExpirationDateText_Hidden() {
@@ -185,15 +188,15 @@ internal final class SettingsViewModelTests: TestCase {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
-
       self.showDataExpirationAndChevron.assertValues([false])
 
-      self.exportDataExpirationDate.assertValues(["Expired Jun 19 at 8:12 AM"])
-
       self.vm.inputs.exportDataTapped()
-
       self.showDataExpirationAndChevron.assertValues([false, true])
+
+      self.scheduler.advance()
+
+      self.showDataExpirationAndChevron.assertValues([false, true, false])
+      self.exportDataExpirationDate.assertValues(["Expired Jun 19 at 8:12 AM"])
     }
   }
 
