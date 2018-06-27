@@ -33,7 +33,7 @@ let controller = ProjectPamphletViewController.configuredWith(projectOrParam: .l
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
-let frame = parent.view.frame// |> CGRect.lens.size.height .~ 1_800
+let frame = parent.view.frame |> CGRect.lens.size.height .~ 1_800
 PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
 
