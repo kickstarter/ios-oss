@@ -37,13 +37,8 @@ BetaToolsViewModelInputs, BetaToolsViewModelOutputs {
   }
 
   public init() {
-    self.goToBetaFeedback = self.canSendMailProperty.signal.filter({ canSendMail -> Bool in
-      return canSendMail == true
-    }).ignoreValues()
-
-    self.betaFeedbackMailDisabled = self.canSendMailProperty.signal.filter({ (canSendMail) -> Bool in
-      return canSendMail == false
-    }).ignoreValues()
+    self.goToBetaFeedback = self.canSendMailProperty.signal.filter(isTrue).ignoreValues()
+    self.betaFeedbackMailDisabled = self.canSendMailProperty.signal.filter(isFalse).ignoreValues()
 
     self.currentLanguage = self.currentLanguageProperty.signal
       .skipRepeats()
@@ -51,12 +46,8 @@ BetaToolsViewModelInputs, BetaToolsViewModelOutputs {
 
     let updateEnvironment = self.environmentSwitcherButtonTappedProperty.signal.skipNil()
       .filter { AppEnvironment.current.apiService.serverConfig.environment != $0 }
-
-    _ = updateEnvironment
       .map(ServerConfig.config(for:))
-      .observeValues { config in
-        AppEnvironment.updateServerConfig(config)
-    }
+      .on(value: AppEnvironment.updateServerConfig)
 
     self.environmentSwitcherButtonTitle = Signal.merge(
       updateEnvironment.ignoreValues(),
