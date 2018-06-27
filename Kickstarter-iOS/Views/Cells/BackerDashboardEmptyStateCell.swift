@@ -9,6 +9,8 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var messageLabel: UILabel!
   @IBOutlet private weak var titleLabel: UILabel!
 
+  internal var thisImage = UIImageView()
+
   internal func configureWith(value: ProfileProjectsType) {
     switch value {
     case .backed:
@@ -27,9 +29,28 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
         .~ UIImage(named: "icon--heart-outline",
                    in: .framework,
                    compatibleWith: nil)
-    }
 
-    animateHeart()
+      let image = UIImage(named: "icon--heart-outline",
+                                         in: .framework,
+                                         compatibleWith: nil)
+
+      let thisImage = UIImage(named: "icon--heart",
+                                 in: .framework,
+                                 compatibleWith: nil)
+
+      let images = [image!, thisImage!]
+
+            UIView.animate(
+                          withDuration: 0.5,
+                          delay: 0.0,
+                          usingSpringWithDamping: 0.0,
+                          initialSpringVelocity: 0.1,
+                          options: [.repeat, .autoreverse, .curveEaseOut],
+                          animations: {
+                            self.iconImageView.alpha = 1.0
+                            self.iconImageView.image = UIImage.animatedImage(with: images, duration: 2.0)
+                          },
+                          completion: nil)}
   }
 
   internal override func bindStyles() {
@@ -57,29 +78,20 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
   internal func animateHeart() {
 //    self.iconImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
 
-    let image = UIImage(named: "icon--heart-outline",
-                        in: .framework,
-                        compatibleWith: nil)
-
     let imageTwo = UIImage(named: "icon--heart",
                              in: .framework,
                              compatibleWith: nil)
 
-    let this: UIImageView
-
+    let this = UIImageView()
     this.image = imageTwo
 
-    let images: [UIImage] = [image!, imageTwo!]
 
-    UIView.transition(from: self.iconImageView,
-                      to: this,
-                      duration: 2.0,
-                      options: [.curveEaseOut, .repeat],
-//                      animations: {
-//                        self.iconImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-//                        self.iconImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-//                      },
-                        completion: nil)
+
+//    let images: [UIImage] = [image!, imageTwo!]
+//
+//    let thisToo = UIImageView()
+//    this.image = image
+//
 
     //self.iconImageView.image = UIImage.animatedImage(with: images, duration: 2.0)
 
