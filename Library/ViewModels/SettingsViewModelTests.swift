@@ -15,8 +15,6 @@ internal final class SettingsViewModelTests: TestCase {
   let betaToolsHidden = TestObserver<Bool, NoError>()
   let commentsSelected = TestObserver<Bool, NoError>()
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
-  let currentLanguage = TestObserver<Language, NoError>()
-  let environmentSwitcherButtonTitle = TestObserver<String, NoError>()
   let exportDataButtonEnabled = TestObserver<Bool, NoError>()
   let exportDataExpirationDate = TestObserver<String, NoError>()
   let exportdDataLoadingIndicator = TestObserver<Bool, NoError>()
@@ -63,8 +61,6 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.backingsSelected.observe(self.backingsSelected.observer)
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
-    self.vm.outputs.currentLanguage.observe(self.currentLanguage.observer)
-    self.vm.outputs.environmentSwitcherButtonTitle.observe(self.environmentSwitcherButtonTitle.observer)
     self.vm.outputs.exportDataButtonEnabled.observe(self.exportDataButtonEnabled.observer)
     self.vm.outputs.exportDataExpirationDate.observe(self.exportDataExpirationDate.observer)
     self.vm.outputs.exportDataLoadingIndicator.observe(self.exportdDataLoadingIndicator.observer)
@@ -156,41 +152,6 @@ internal final class SettingsViewModelTests: TestCase {
       self.showDataExpirationAndChevron.assertValues([false, true, false])
       self.exportDataExpirationDate.assertValues(["Expired Jun 19 at 1:12 PM"])
     }
-  }
-
-  func testEnvironmentButton_SwitchesEnvironment() {
-
-    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
-
-      self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
-
-      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Staging")
-
-      self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.local)
-
-      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Local")
-    }
-  }
-
-  func testLogoutWithParamsEmits_WhenEnvironmentChanges() {
-
-    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
-
-      self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
-      self.logoutWithParams.assertDidEmitValue()
-    }
-  }
-
-  func testEnvironmentButtonTitle_showsEnvironment_WhenEnvironmentChanges() {
-
-    self.vm.viewDidLoad()
-
-    self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)
-    self.environmentSwitcherButtonTitle.assertValue("Staging")
-
-    self.vm.environmentSwitcherButtonTapped(environment: EnvironmentType.local)
-    self.environmentSwitcherButtonTitle.assertValues(["Staging",
-                                                      "Local"])
   }
 
   func testCreatorNotificationsTapped() {
