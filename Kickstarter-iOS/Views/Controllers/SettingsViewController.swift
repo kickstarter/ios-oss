@@ -12,10 +12,6 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var artsAndCultureNewsLabel: UILabel!
   @IBOutlet fileprivate weak var artsAndCultureNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var backingsButton: UIButton!
-  @IBOutlet fileprivate weak var betaDebugPushNotificationsButton: UIButton!
-  @IBOutlet fileprivate weak var betaFeedbackButton: UIButton!
-  @IBOutlet fileprivate weak var betaTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var betaToolsStackView: UIStackView!
   @IBOutlet fileprivate weak var commentsButton: UIButton!
   @IBOutlet fileprivate weak var contactButton: UIButton!
   @IBOutlet fileprivate weak var contactLabel: UILabel!
@@ -30,7 +26,6 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
-  @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
   @IBOutlet fileprivate weak var exportDataButton: UIButton!
   @IBOutlet fileprivate weak var exportDataLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
@@ -53,7 +48,6 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var inventNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var ksrLovesGamesLabel: UILabel!
   @IBOutlet fileprivate weak var ksrNewsAndEventsLabel: UILabel!
-  @IBOutlet fileprivate weak var languageSwitcher: UIButton!
   @IBOutlet fileprivate weak var logoutButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsLabel: UILabel!
@@ -112,14 +106,6 @@ internal final class SettingsViewController: UIViewController {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
 
-    self.betaFeedbackButton.addTarget(self,
-                                      action: #selector(betaFeedbackButtonTapped),
-                                      for: .touchUpInside)
-
-    self.betaDebugPushNotificationsButton.addTarget(self,
-                                                    action: #selector(betaDebugPushNotificationsButtonTapped),
-                                                    for: .touchUpInside)
-
     self.contactButton.addTarget(self, action: #selector(contactTapped), for: .touchUpInside)
 
     self.cookiePolicyButton.addTarget(self,
@@ -134,10 +120,6 @@ internal final class SettingsViewController: UIViewController {
 
     self.exportDataButton.addTarget(self, action: #selector(exportDataTapped), for: .touchUpInside)
 
-    self.environmentSwitcher.addTarget(self,
-                                       action: #selector(environmentSwitcherTapped),
-                                       for: .touchUpInside)
-
     self.findFriendsButton.addTarget(self,
                                      action: #selector(findFriendsTapped),
                                      for: .touchUpInside)
@@ -151,10 +133,6 @@ internal final class SettingsViewController: UIViewController {
     self.howKsrWorksButton.addTarget(self,
                                      action: #selector(howKickstarterWorksTapped),
                                      for: .touchUpInside)
-
-    self.languageSwitcher.addTarget(self,
-                                    action: #selector(languageSwitcherTapped),
-                                    for: .touchUpInside)
 
     self.logoutButton.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
 
@@ -189,26 +167,6 @@ internal final class SettingsViewController: UIViewController {
     _ = self.artsAndCultureNewsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_arts() }
-
-    _ = self.betaDebugPushNotificationsButton
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
-      |> UIButton.lens.titleLabel.font .~ .ksr_body()
-      |> UIButton.lens.contentHorizontalAlignment .~ .left
-      |> UIButton.lens.title(for: .normal) .~ "Debug push notifications"
-
-    _ = self.betaFeedbackButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Submit feedback for beta"
-
-    _ = self.betaTitleLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text .~ "Beta tools"
-
-    _ = self.languageSwitcher
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        "\(AppEnvironment.current.language.displayString)"
-      }
 
     _ = self.contactButton
       |> settingsSectionButtonStyle
@@ -255,13 +213,6 @@ internal final class SettingsViewController: UIViewController {
       ||> UIButton.lens.image(for: .selected)
         .~ image(named: "email-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
-
-    _ = self.environmentSwitcher
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-      |> UIButton.lens.contentHorizontalAlignment .~ .left
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
-      |> UIButton.lens.title(for: .normal) .~
-        AppEnvironment.current.apiService.serverConfig.environment.rawValue
 
     _ = self.findFriendsButton
       |> settingsSectionButtonStyle
@@ -491,10 +442,6 @@ internal final class SettingsViewController: UIViewController {
         self?.goToEmailFrequency(user: user)
       }
 
-    self.viewModel.outputs.goToBetaFeedback
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.goToBetaFeedback() }
-
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -523,20 +470,12 @@ internal final class SettingsViewController: UIViewController {
         self?.emailFrequencyArrow.alpha = enabled ? 1.0 : 0.5
       }
 
-    self.viewModel.outputs.currentLanguage
-      .observeForUI()
-      .observeValues { [weak self] language in
-        self?.languageDidChange(language: language)
-      }
-
     self.artsAndCultureNewsletterSwitch.rac.on = self.viewModel.outputs.artsAndCultureNewsletterOn
     self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
-    self.betaToolsStackView.rac.hidden = self.viewModel.outputs.betaToolsHidden
     self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
     self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
     self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
-    self.environmentSwitcher.rac.title = self.viewModel.outputs.environmentSwitcherButtonTitle
     self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
     self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
     self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
@@ -561,8 +500,6 @@ internal final class SettingsViewController: UIViewController {
     self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
-    self.languageSwitcher.rac.title = self.viewModel.outputs.currentLanguage
-      .map {"\($0.displayString)" }
   }
   // swiftlint:enable function_body_length
 
@@ -574,30 +511,6 @@ internal final class SettingsViewController: UIViewController {
   fileprivate func goToDeleteAccount(url: URL) {
     let controller = SFSafariViewController(url: url)
     controller.modalPresentationStyle = .overFullScreen
-    self.present(controller, animated: true, completion: nil)
-  }
-
-  fileprivate func goToBetaFeedback() {
-    guard MFMailComposeViewController.canSendMail() else { return }
-
-    let userName = AppEnvironment.current.currentUser?.name ?? "Logged out user"
-    let userId = AppEnvironment.current.currentUser?.id ?? 0
-    let version = AppEnvironment.current.mainBundle.version
-    let shortVersion = AppEnvironment.current.mainBundle.shortVersionString
-    let device = UIDevice.current
-
-    let controller = MFMailComposeViewController()
-    controller.setToRecipients([Secrets.fieldReportEmail])
-    controller.setSubject("Field report: ")
-    controller.setMessageBody(
-      "\(userName) | \(userId) | \(version) | \(shortVersion) | " +
-        "\(device.systemVersion) | \(device.modelCode)\n\n" +
-        "Describe the bug here. Attach images if it helps!\n" +
-        "---------------------------\n\n\n\n\n\n",
-      isHTML: false
-    )
-
-    controller.mailComposeDelegate = self
     self.present(controller, animated: true, completion: nil)
   }
 
@@ -718,10 +631,6 @@ internal final class SettingsViewController: UIViewController {
     self.present(exportDataSheet, animated: true, completion: nil)
   }
 
-  @objc fileprivate func environmentSwitcherTapped() {
-    self.showEnvironmentActionSheet()
-  }
-
   @objc fileprivate func findFriendsTapped() {
     self.viewModel.inputs.findFriendsTapped()
   }
@@ -773,10 +682,6 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func howKickstarterWorksTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.howItWorks)
-  }
-
-  @objc fileprivate func languageSwitcherTapped() {
-    self.showLanguageActionSheet()
   }
 
   @objc fileprivate func manageProjectNotificationsTapped() {
@@ -888,63 +793,8 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.weeklyNewsletterTapped(on: newsletterSwitch.isOn)
   }
 
-  @objc fileprivate func betaFeedbackButtonTapped() {
-    self.viewModel.inputs.betaFeedbackButtonTapped()
-  }
-
   @objc fileprivate func closeButtonPressed() {
     self.dismiss(animated: true, completion: nil)
-  }
-
-  @objc fileprivate func betaDebugPushNotificationsButtonTapped() {
-    self.navigationController?.pushViewController(
-      Storyboard.DebugPushNotifications.instantiate(DebugPushNotificationsViewController.self),
-      animated: true
-    )
-  }
-
-  private func languageDidChange(language: Language) {
-    AppEnvironment.updateLanguage(language)
-
-    NotificationCenter.default.post(name: Notification.Name.ksr_languageChanged, object: nil, userInfo: nil)
-  }
-
-  private func showLanguageActionSheet() {
-    let alert = UIAlertController(title: "Change Language",
-                                  message: nil,
-                                  preferredStyle: .actionSheet)
-
-    Language.allLanguages.forEach { language in
-      alert.addAction(
-        UIAlertAction(title: language.displayString, style: .default) { [weak self] _ in
-          self?.viewModel.inputs.setCurrentLanguage(language)
-        }
-      )
-    }
-
-    alert.addAction(
-      UIAlertAction.init(title: "Cancel", style: .cancel)
-    )
-
-    self.present(alert, animated: true, completion: nil)
-  }
-
-  private func showEnvironmentActionSheet() {
-    let alert = UIAlertController(title: "Change Environment",
-                                  message: nil,
-                                  preferredStyle: .actionSheet)
-
-    EnvironmentType.allCases.forEach { environment in
-      alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
-        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: environment)
-      })
-    }
-
-    alert.addAction(
-      UIAlertAction.init(title: "Cancel", style: .cancel)
-    )
-
-    self.present(alert, animated: true, completion: nil)
   }
 }
 

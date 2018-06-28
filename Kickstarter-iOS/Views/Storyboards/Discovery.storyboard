@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -579,6 +579,7 @@
                     </view>
                     <connections>
                         <outlet property="arrowImageView" destination="0Gr-Vv-egm" id="kxl-cB-kRF"/>
+                        <outlet property="betaToolsButton" destination="dZM-xp-3Le" id="9fB-ef-H3K"/>
                         <outlet property="bgView" destination="H2g-DT-JXM" id="5Ko-kL-825"/>
                         <outlet property="bookmarkImageView" destination="DzE-4H-e6W" id="zbv-vW-mDf"/>
                         <outlet property="bookmarkOutlineImageView" destination="Ij6-dc-OpY" id="yPA-fI-vRe"/>
@@ -586,7 +587,6 @@
                         <outlet property="debugContainerView" destination="GaM-Iw-c4o" id="f54-L7-qSA"/>
                         <outlet property="debugImageView" destination="jza-aK-1Xi" id="TsQ-vu-Ck5"/>
                         <outlet property="dividerLabel" destination="RHL-NK-fXr" id="dQn-Xj-o1t"/>
-                        <outlet property="environmentSwitcherButton" destination="dZM-xp-3Le" id="gIn-Hk-hDV"/>
                         <outlet property="exploreLabel" destination="4ow-Q0-eFO" id="zXl-OR-jlP"/>
                         <outlet property="favoriteButton" destination="3gE-WC-mdL" id="d3h-i4-zh1"/>
                         <outlet property="favoriteContainerView" destination="CTG-N8-oCA" id="naU-cK-WQv"/>
