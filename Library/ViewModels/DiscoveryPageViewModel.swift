@@ -8,6 +8,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call with the sort provided to the view.
   func configureWith(sort: DiscoveryParams.Sort)
 
+  /// Call when the current environment has changed
+  func currentEnvironmentChanged(environment: EnvironmentType)
+
   /// Call when the filter is changed.
   func selectedFilter(_ params: DiscoveryParams)
 
@@ -122,10 +125,25 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidDisappearProperty.signal.mapConst(false)
       ).skipRepeats()
 
-    let requestFirstPageWith = Signal.combineLatest(currentUser, paramsChanged, isVisible)
-      .filter { _, _, visible in visible }
-      .skipRepeats { lhs, rhs in lhs.0 == rhs.0 && lhs.1 == rhs.1 }
-      .map(second)
+    let environmentChanged = self.currentEnvironmentChangedProperty.signal
+      .skipNil()
+      .skipRepeats()
+
+    let firstPageParams = Signal.combineLatest(
+      currentUser,
+      paramsChanged,
+      isVisible)
+      .filter { _, _, visible in
+        return visible
+      }
+      .skipRepeats { lhs, rhs in
+        return lhs.0 == rhs.0 && lhs.1 == rhs.1
+      }
+      .map { $0.1 }
+
+    let requestFirstPageWith = Signal.merge(
+        firstPageParams,
+        (firstPageParams.takeWhen(environmentChanged)))
 
     let paginatedProjects: Signal<[Project], NoError>
     let pageCount: Signal<Int, NoError>
@@ -244,6 +262,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
+  }
+
+  fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
+  public func currentEnvironmentChanged(environment: EnvironmentType) {
+    self.currentEnvironmentChangedProperty.value = environment
   }
 
   fileprivate let sortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)

@@ -61,7 +61,6 @@ internal final class SettingsViewModelTests: TestCase {
     super.setUp()
     self.vm.outputs.artsAndCultureNewsletterOn.observe(self.artsAndCultureNewsletterOn.observer)
     self.vm.outputs.backingsSelected.observe(self.backingsSelected.observer)
-    self.vm.outputs.betaToolsHidden.observe(self.betaToolsHidden.observer)
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
     self.vm.outputs.currentLanguage.observe(self.currentLanguage.observer)
@@ -75,7 +74,6 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.friendActivitySelected.observe(self.friendActivitySelected.observer)
     self.vm.outputs.gamesNewsletterOn.observe(self.gamesNewsletterOn.observer)
     self.vm.outputs.goToAppStoreRating.observe(self.goToAppStoreRating.observer)
-    self.vm.outputs.goToBetaFeedback.observe(self.goToBetaFeedback.observer)
     self.vm.outputs.goToDeleteAccountBrowser.observe(self.goToDeleteAccountBrowser.observer)
     self.vm.outputs.goToFindFriends.observe(self.goToFindFriends.observer)
     self.vm.outputs.goToManageProjectNotifications.observe(self.goToManageProjectNotifications.observer)
@@ -105,46 +103,6 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
     self.vm.outputs.weeklyNewsletterOn.observe(self.weeklyNewsletterOn.observer)
     self.vm.outputs.versionText.observe(self.versionText.observer)
-  }
-
-  func testbetaToolsHidden_Alpha() {
-    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue)) {
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-
-      self.vm.inputs.viewDidLoad()
-
-      self.betaToolsHidden.assertValues([false])
-    }
-  }
-
-  func testbetaToolsHidden_Beta() {
-    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-
-      self.vm.inputs.viewDidLoad()
-
-      self.betaToolsHidden.assertValues([false])
-    }
-  }
-
-  func testbetaToolsHidden_Release() {
-    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue)) {
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-
-      self.vm.inputs.viewDidLoad()
-
-      self.betaToolsHidden.assertValues([true])
-    }
-  }
-
-  func testbetaToolsHidden_Unknown() {
-    withEnvironment(mainBundle: MockBundle(bundleIdentifier: "com.unknown")) {
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-
-      self.vm.inputs.viewDidLoad()
-
-      self.betaToolsHidden.assertValues([true])
-    }
   }
 
   func testCreatorNotificationsHidden() {
@@ -649,26 +607,6 @@ internal final class SettingsViewModelTests: TestCase {
       self.versionText.assertValues(
         ["Version \(self.mainBundle.shortVersionString)"],
         "Build version string emitted without build number.")
-    }
-  }
-
-  func testSetCurrentLanguage() {
-    withEnvironment(language: Language.en) {
-      self.vm.inputs.viewDidLoad()
-
-      self.vm.inputs.setCurrentLanguage(.de)
-
-      self.currentLanguage.assertValue(.de)
-    }
-  }
-
-  func testSetCurrentLanguage_filtersWhenCurrentEnvLanguageIsTheSame() {
-    withEnvironment(language: Language.en) {
-      self.vm.inputs.viewDidLoad()
-
-      self.vm.inputs.setCurrentLanguage(.en)
-
-      self.currentLanguage.assertValueCount(0)
     }
   }
 }

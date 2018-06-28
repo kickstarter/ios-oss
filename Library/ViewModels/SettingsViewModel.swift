@@ -8,13 +8,11 @@ import Result
 public protocol SettingsViewModelInputs {
   func artsAndCultureNewsletterTapped(on: Bool)
   func backingsTapped(selected: Bool)
-  func betaFeedbackButtonTapped()
   func commentsTapped(selected: Bool)
   func creatorTipsTapped(selected: Bool)
   func deleteAccountTapped()
   func emailFrequencyTapped()
   func exportDataTapped()
-  func environmentSwitcherButtonTapped(environment: EnvironmentType)
   func findFriendsTapped()
   func followerTapped(selected: Bool)
   func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
@@ -39,7 +37,6 @@ public protocol SettingsViewModelInputs {
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
   func recommendationsTapped(on: Bool)
-  func setCurrentLanguage(_ language: Language)
   func updatesTapped(selected: Bool)
   func viewDidLoad()
   func weeklyNewsletterTapped(on: Bool)
@@ -48,13 +45,10 @@ public protocol SettingsViewModelInputs {
 public protocol SettingsViewModelOutputs {
   var artsAndCultureNewsletterOn: Signal<Bool, NoError> { get }
   var backingsSelected: Signal<Bool, NoError> { get }
-  var betaToolsHidden: Signal<Bool, NoError> { get }
   var commentsSelected: Signal<Bool, NoError> { get }
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
   var creatorTipsSelected: Signal<Bool, NoError> { get }
-  var currentLanguage: Signal<Language, NoError> { get }
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
-  var environmentSwitcherButtonTitle: Signal<String, NoError> { get }
   var exportDataButtonEnabled: Signal<Bool, NoError> { get }
   var exportDataExpirationDate: Signal<String, NoError> { get }
   var exportDataLoadingIndicator: Signal<Bool, NoError> { get }
@@ -64,7 +58,6 @@ public protocol SettingsViewModelOutputs {
   var friendActivitySelected: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
-  var goToBetaFeedback: Signal<(), NoError> { get }
   var goToDeleteAccountBrowser: Signal<URL, NoError> { get }
   var goToEmailFrequency: Signal<User, NoError> { get }
   var goToFindFriends: Signal<Void, NoError> { get }
@@ -250,8 +243,6 @@ SettingsViewModelOutputs {
         AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy")
       }
 
-    self.goToBetaFeedback = self.betaFeedbackButtonTappedProperty.signal
-
     self.goToFindFriends = self.findFriendsTappedProperty.signal
 
     self.goToManageProjectNotifications = self.manageProjectNotificationsTappedProperty.signal
@@ -268,14 +259,11 @@ SettingsViewModelOutputs {
       .filter { $0.0 == false && $0.1 == false }
       .ignoreValues()
 
-    self.logoutWithParams = Signal.merge (
-      self.logoutConfirmedProperty.signal,
-      self.environmentSwitcherButtonTappedProperty.signal.skipNil().ignoreValues()
-    )
-    .map { .defaults
-      |> DiscoveryParams.lens.includePOTD .~ true
-      |> DiscoveryParams.lens.sort .~ .magic
-    }
+    self.logoutWithParams = self.logoutConfirmedProperty.signal
+      .map { .defaults
+        |> DiscoveryParams.lens.includePOTD .~ true
+        |> DiscoveryParams.lens.sort .~ .magic
+      }
 
     self.showOptInPrompt = newsletterOn
       .filter { _, on in AppEnvironment.current.config?.countryCode == "DE" && on }
@@ -326,22 +314,6 @@ SettingsViewModelOutputs {
 
     self.emailFrequencyButtonEnabled = self.backingsSelected
 
-    self.currentLanguage = self.currentLanguageProperty.signal
-      .skipRepeats()
-      .filter { AppEnvironment.current.language != $0 }
-
-    self.environmentSwitcherButtonTappedProperty.signal.skipNil()
-      .map(ServerConfig.config(for:))
-      .observeValues { config in
-        AppEnvironment.updateServerConfig(config)
-    }
-
-    self.environmentSwitcherButtonTitle = viewDidLoadProperty.signal
-      .takeWhen(self.environmentSwitcherButtonTappedProperty.signal)
-      .map { _ in
-        return AppEnvironment.current.apiService.serverConfig.environment.rawValue
-    }.skipRepeats()
-
     self.goToEmailFrequency = self.updateCurrentUser
       .takeWhen(self.emailFrequencyTappedProperty.signal)
 
@@ -388,9 +360,6 @@ SettingsViewModelOutputs {
 
     self.showDataExpirationAndChevron = self.exportDataLoadingIndicator.signal
       .map { $0 }
-
-    self.betaToolsHidden = self.viewDidLoadProperty.signal
-      .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }
 
     // a11y
     self.manageProjectNotificationsButtonAccessibilityHint = self.updateCurrentUser
@@ -448,10 +417,7 @@ SettingsViewModelOutputs {
   public func backingsTapped(selected: Bool) {
     self.backingsTappedProperty.value = selected
   }
-  fileprivate let betaFeedbackButtonTappedProperty = MutableProperty(())
-  public func betaFeedbackButtonTapped() {
-    self.betaFeedbackButtonTappedProperty.value = ()
-  }
+
   fileprivate let commentsTappedProperty = MutableProperty(false)
   public func commentsTapped(selected: Bool) {
     self.commentsTappedProperty.value = selected
@@ -481,11 +447,6 @@ SettingsViewModelOutputs {
   public func exportDataTapped() {
     self.exportDataTappedProperty.value = ()
   }
-
-  fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<EnvironmentType?>(nil)
-  public func environmentSwitcherButtonTapped(environment: EnvironmentType) {
-    self.environmentSwitcherButtonTappedProperty.value = environment
-  }
   fileprivate let findFriendsTappedProperty = MutableProperty(())
   public func findFriendsTapped() {
     self.findFriendsTappedProperty.value = ()
@@ -513,11 +474,6 @@ SettingsViewModelOutputs {
   fileprivate let inventNewsletterTappedProperty = MutableProperty(false)
   public func inventNewsletterTapped(on: Bool) {
     self.inventNewsletterTappedProperty.value = on
-  }
-
-  fileprivate let currentLanguageProperty = MutableProperty(AppEnvironment.current.language)
-  public func setCurrentLanguage(_ language: Language) {
-    self.currentLanguageProperty.value = language
   }
 
   fileprivate let logoutCanceledProperty = MutableProperty(())
@@ -606,13 +562,10 @@ SettingsViewModelOutputs {
 
   public let artsAndCultureNewsletterOn: Signal<Bool, NoError>
   public let backingsSelected: Signal<Bool, NoError>
-  public let betaToolsHidden: Signal<Bool, NoError>
   public let commentsSelected: Signal<Bool, NoError>
   public let creatorNotificationsHidden: Signal<Bool, NoError>
   public let creatorTipsSelected: Signal<Bool, NoError>
-  public let currentLanguage: Signal<Language, NoError>
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
-  public let environmentSwitcherButtonTitle: Signal<String, NoError>
   public let exportDataLoadingIndicator: Signal<Bool, NoError>
   public let exportDataText: Signal<String, NoError>
   public let exportDataExpirationDate: Signal<String, NoError>
@@ -622,7 +575,6 @@ SettingsViewModelOutputs {
   public let friendActivitySelected: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
-  public let goToBetaFeedback: Signal<(), NoError>
   public let goToDeleteAccountBrowser: Signal<URL, NoError>
   public let goToEmailFrequency: Signal<User, NoError>
   public let goToFindFriends: Signal<Void, NoError>
