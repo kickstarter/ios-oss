@@ -144,7 +144,7 @@ platform :ios do
         "production",
         get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
         get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
-        "iTunes Connect 🚀"
+        "App Store Connect 🚀"
       )
     )
   end
