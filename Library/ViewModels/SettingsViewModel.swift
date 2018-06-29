@@ -628,20 +628,15 @@ private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.St
   let splitDate = dateComponents[0]
   let splitTime = dateComponents[1]
 
-  if let date = dateFormatter.date(from: splitDate),
-    let time = timeFormatter.date(from: splitTime) {
+  guard let date = dateFormatter.date(from: splitDate) else { return "" }
+  guard let time = timeFormatter.date(from: splitTime) else { return "" }
 
-    let convertedDate = newDateFormatter.string(from: date)
-    let convertedTime = newTimeFormatter.string(from: time)
+  let convertedDate = newDateFormatter.string(from: date)
+  let convertedTime = newTimeFormatter.string(from: time)
 
-    if state == .expired {
-      return Strings.Expired_date_at_time(date: convertedDate, time: convertedTime)
-    } else {
-      return Strings.Expires_date_at_time(date: convertedDate, time: convertedTime)
-    }
-  } else {
+  if state == .expired {
     return ""
-  }
+  } else { return Strings.Expires_date_at_time(date: convertedDate, time: convertedTime)}
 }
 
 private enum UserAttribute {
