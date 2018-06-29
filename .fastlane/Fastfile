@@ -85,6 +85,16 @@ platform :ios do
       dsym: "./output/gym/KickBeta.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_BETA_APP_ID"]
     )
+
+    slack(
+      slack_url: ENV["SLACK_WEBHOOK"],
+      message: slack_message(
+        "beta",
+        get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
+        get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
+        "HockeyApp"
+      )
+    )
   end
 
   ### PRODUCTION
@@ -130,10 +140,12 @@ platform :ios do
 
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
-      message: "Successfully uploaded" +
-        " v" + get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS") +
-        " (" + get_build_number(xcodeproj: "Kickstarter.xcodeproj") + ")" +
-        " of the Kickstarter iOS app to iTunes Connect 🚀"
+      message: slack_message(
+        "app store",
+        get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
+        get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
+        "App Store Connect 🚀"
+      )
     )
   end
 
@@ -159,6 +171,16 @@ platform :ios do
       ipa: "./output/gym/KickAlpha.ipa",
       dsym: "./output/gym/KickAlpha.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_ALPHA_APP_ID"]
+    )
+
+    slack(
+      slack_url: ENV["SLACK_WEBHOOK"],
+      message: slack_message(
+        "alpha",
+        get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
+        get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
+        "HockeyApp"
+      )
     )
   end
 
@@ -204,6 +226,10 @@ platform :ios do
     messages = changelog
 
     "*** CircleCI build #{build_num}, for commit: #{short_sha} ***. \n Commit message: #{messages}"
+  end
+
+  def slack_message(type, version_number, build_number, platform)
+    "[#{type.upcase}] uploaded v#{version_number} (#{build_number}) of the Kickstarter iOS app to #{platform}"
   end
 
   after_all do |lane|
