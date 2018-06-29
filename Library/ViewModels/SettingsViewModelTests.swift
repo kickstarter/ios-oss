@@ -150,7 +150,7 @@ internal final class SettingsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.showDataExpirationAndChevron.assertValues([false, true, false])
-      self.exportDataExpirationDate.assertValues(["Expired Jun 19 at 1:12 PM"])
+      self.exportDataExpirationDate.assertValues(["Expires Jun 19 at 9:12 AM"])
     }
   }
 

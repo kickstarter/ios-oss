@@ -620,7 +620,7 @@ private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.St
   let timeFormatter = DateFormatter()
   timeFormatter.dateFormat = "HH-mm-sZ"
   let newTimeFormatter = DateFormatter()
-  newTimeFormatter.timeZone = AppEnvironment.current.calendar.timeZone
+  newTimeFormatter.timeZone = TimeZone(secondsFromGMT: TimeZone.current.secondsFromGMT())
   newTimeFormatter.dateFormat = "h:mm a"
 
   guard let dateComponents = dateString?.components(separatedBy: "T") else { return "" }
