@@ -141,7 +141,7 @@ platform :ios do
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
       message: slack_message(
-        "production",
+        "app store",
         get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
         get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
         "App Store Connect 🚀"
