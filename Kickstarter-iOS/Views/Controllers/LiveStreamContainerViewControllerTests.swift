@@ -29,7 +29,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
 
-    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let orientations = [Orientation.landscape, .portrait]
 
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
@@ -60,7 +60,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
 
-    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let orientations = [Orientation.landscape, .portrait]
 
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
@@ -90,7 +90,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
 
-    let devices = [Device.phone4_7inch]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch]
     let orientations = [Orientation.portrait]
 
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
@@ -124,7 +124,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
 
-    let devices = [Device.phone4_7inch]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch]
     let orientations = [Orientation.portrait]
 
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(liveStreamEvent))
@@ -158,7 +158,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
 
-    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let orientations = [Orientation.landscape, .portrait]
 
     let liveStreamService = MockLiveStreamService(fetchEventResult: Result(error: .genericFailure))
@@ -302,7 +302,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
 
-    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let orientations = [Orientation.landscape, .portrait]
 
     let chatMessages = (1...50)
@@ -344,7 +344,7 @@ internal final class LiveStreamContainerViewControllerTests: TestCase {
       |> LiveStreamEvent.lens.description .~ ("175 char max. 175 char max 175 char max message with " +
         "a max character count. Hi everyone! We’re doing an exclusive performance of one of our new tracks!")
 
-    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let orientations = [Orientation.landscape, .portrait]
 
     let chatMessages = (1...50)

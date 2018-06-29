@@ -13,7 +13,8 @@ internal final class TwoFactorViewControllerTests: TestCase {
   }
 
   func testView() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(language: language) {
         let controller = Storyboard.Login.instantiate(TwoFactorViewController.self)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)

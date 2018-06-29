@@ -6,6 +6,9 @@ import UIKit
 import PlaygroundSupport
 @testable import Kickstarter_Framework
 
+initialize()
+let controller = DashboardViewController.instantiate()
+
 let rewards = (1...6).map {
   .template
     |> Reward.lens.backersCount .~ ($0 * 5)
@@ -67,10 +70,10 @@ let cosmicSurgery = .cosmicSurgery
 let stats = [
   3_000, 4_000, 5_000, 7_000, 8_000,
   13_000, 14_000, 15_000, 17_000, 18_000,
-//  20_000, 21_000, 22_000, 23_000, 24_000,
-//  24_000, 24_000, 24_200, 24_400, 24_800,
-//  25_000, 25_800, 26_800, 28_000, 29_500,
-//  31_500, 33_000, 35_000, 37_000, 40_000
+  20_000, 21_000, 22_000, 23_000, 24_000,
+  24_000, 24_000, 24_200, 24_400, 24_800,
+  25_000, 25_800, 26_800, 28_000, 29_500,
+  31_500, 33_000, 35_000, 37_000, 40_000
 ]
 
 let fundingStats = stats.enumerated().map { idx, pledged in
@@ -103,8 +106,5 @@ AppEnvironment.replaceCurrentEnvironment(
   mainBundle: Bundle.framework
 )
 
-initialize()
-let controller = DashboardViewController.instantiate()
-
 PlaygroundPage.current.liveView = controller
-controller.view |> UIView.lens.frame.size.height .~ 1_250
+controller.view |> UIView.lens.frame.size.height .~ 2_000

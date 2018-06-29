@@ -27,7 +27,8 @@ class ThanksViewControllerTests: TestCase {
       let mockService = MockService(fetchGraphCategoriesResponse: rootCategories,
                                     fetchDiscoveryResponse: discoveryEnvelope)
 
-      combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+      combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+        language, device in
         withEnvironment(apiService: mockService, language: language) {
           let project = Project.cosmicSurgery
           |> Project.lens.id .~ 3
@@ -53,7 +54,8 @@ class ThanksViewControllerTests: TestCase {
       |> Config.lens.abExperiments
       .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(apiService: mockService, config: config, language: language) {
         let project = Project.cosmicSurgery
           |> Project.lens.id .~ 3

@@ -30,7 +30,7 @@ internal final class LiveStreamCountdownViewControllerTests: TestCase {
 
     AppEnvironment.replaceCurrentEnvironment(liveStreamService: liveStreamService)
 
-    let devices = [Device.phone4_7inch, .phone4inch, .pad]
+    let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let orientations = [Orientation.landscape, .portrait]
 
     combos(Language.allLanguages, devices, orientations).forEach { lang, device, orientation in

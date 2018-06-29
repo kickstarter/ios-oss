@@ -13,13 +13,13 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   fileprivate let viewModel: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
+  @IBOutlet fileprivate weak var betaToolsButton: UIButton!
   @IBOutlet fileprivate weak var bgView: UIView!
   @IBOutlet fileprivate weak var bookmarkImageView: UIImageView!
   @IBOutlet fileprivate weak var bookmarkOutlineImageView: UIImageView!
   @IBOutlet fileprivate weak var debugContainerView: UIView!
   @IBOutlet fileprivate weak var debugImageView: UIImageView!
   @IBOutlet fileprivate weak var dividerLabel: UILabel!
-  @IBOutlet fileprivate weak var environmentSwitcherButton: UIButton!
   @IBOutlet fileprivate weak var exploreLabel: UILabel!
   @IBOutlet fileprivate weak var favoriteButton: UIButton!
   @IBOutlet fileprivate weak var favoriteContainerView: UIView!
@@ -47,9 +47,9 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.environmentSwitcherButton.addTarget(self,
-                                             action: #selector(environmentSwitcherTapped),
-                                             for: .touchUpInside)
+    self.betaToolsButton.addTarget(self,
+                                   action: #selector(betaToolsButtonTapped),
+                                   for: .touchUpInside)
 
     self.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped),
                                   for: .touchUpInside)
@@ -81,12 +81,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
           },
           completion: nil)
     }
-
-    self.viewModel.outputs.logoutWithParams
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.logout(params: $0)
-      }
 
     self.viewModel.outputs.arrowOpacityAnimated
       .observeForUI()
@@ -312,8 +306,12 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     }
   }
 
-  @objc fileprivate func environmentSwitcherTapped() {
-    self.showEnvironmentActionSheet()
+  @objc fileprivate func betaToolsButtonTapped() {
+    let betaToolsViewController = BetaToolsViewController.instantiate()
+
+    let navController = UINavigationController(rootViewController: betaToolsViewController)
+
+    self.present(navController, animated: true, completion: nil)
   }
 
   @objc fileprivate func titleButtonTapped() {
@@ -322,39 +320,6 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
   @objc fileprivate func favoriteButtonTapped() {
     self.viewModel.inputs.favoriteButtonTapped()
-  }
-
-  private func showEnvironmentActionSheet() {
-
-    let alert = UIAlertController(
-      title: "Change Environment (\(AppEnvironment.current.apiService.serverConfig.environment.rawValue))",
-      message: nil,
-      preferredStyle: .actionSheet
-    )
-
-    EnvironmentType.allCases.forEach { environment in
-      alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
-        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: environment)
-      })
-    }
-
-    alert.addAction(
-      UIAlertAction.init(title: "Cancel", style: .cancel)
-    )
-
-    self.present(alert, animated: true, completion: nil)
-  }
-
-  fileprivate func logout(params: DiscoveryParams) {
-    AppEnvironment.logout()
-
-    self.view.window?.rootViewController
-      .flatMap { $0 as? RootTabBarViewController }
-      .doIfSome { root in
-        root.switchToDiscovery(params: params)
-    }
-
-    NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
   }
 }
 

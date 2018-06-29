@@ -81,7 +81,7 @@ let paletteStackView = UIStackView()
   |> UIStackView.lens.distribution .~ .equalSpacing
   |> UIStackView.lens.spacing .~ 0.0
   |> UIStackView.lens.layoutMargins .~ .init(all: 32.0)
-  |> UIStackView.lens.layoutMarginsRelativeArrangement .~ true
+  |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
   |> UIStackView.lens.arrangedSubviews .~ groups.map { group in
 
     UIStackView()
@@ -106,16 +106,16 @@ let dropShadowView = colorBlockStackView(color: .ksr_dropShadow, colorName: "Dro
 
 
 let gradient1 = gradientBlockStackView(colorName: "Lavender / Powder",
-                                       startColor: .ksr_lavenderToPowderGradientStart,
-                                       endColor: .ksr_lavenderToPowderGradientEnd)
+                                       startColor: .ksr_grey_500,
+                                       endColor: .ksr_text_dark_grey_900)
 
 let gradient2 = gradientBlockStackView(colorName: "Peach / Blush",
-                                       startColor: .ksr_peachToBlushGradientStart,
-                                       endColor: .ksr_peachToBlushGradientEnd)
+                                       startColor: .ksr_orange_400,
+                                       endColor: .ksr_text_dark_grey_400)
 
 let gradient3 = gradientBlockStackView(colorName: "Sand / Sage",
-                                       startColor: .ksr_sandToSageGradientStart,
-                                       endColor: .ksr_sandToSageGradientEnd)
+                                       startColor: .ksr_text_navy_600,
+                                       endColor: .ksr_violet_500)
 
 let miscStackView = UIStackView()
   |> UIStackView.lens.axis .~ .vertical
@@ -128,8 +128,8 @@ paletteStackView.addArrangedSubview(miscStackView)
 
 let size = paletteStackView.systemLayoutSizeFitting(
   CGSize(width: 1150, height: 1100),
-  withHorizontalFittingPriority: UILayoutPriorityDefaultHigh,
-  verticalFittingPriority: UILayoutPriorityDefaultHigh
+  withHorizontalFittingPriority: .defaultHigh,
+  verticalFittingPriority: .defaultHigh
 )
 paletteStackView.frame = CGRect(origin: .zero, size: size)
 
