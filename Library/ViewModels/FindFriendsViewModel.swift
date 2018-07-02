@@ -52,6 +52,9 @@ public protocol FindFriendsViewModelOutputs {
   /// Emits bool whether Facebook Connect view should show with the source that presented the controller.
   var showFacebookConnect: Signal<(FriendsSource, Bool), NoError> { get }
 
+  /// Emits bool whether Facebook reconnect view should show with the source that presented the controller.
+  var showFacebookReconnect: Signal<(FriendsSource, Bool), NoError> { get }
+
   /// Emits friends count when should display "Follow all friends" alert.
   var showFollowAllFriendsAlert: Signal<Int, NoError> { get }
 
@@ -109,7 +112,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     })
 
     self.friends = Signal.combineLatest(
-      Signal.merge(friends, followAll.mapConst([])).skipRepeats(==),
+      Signal.merge(friends.0, followAll.mapConst([])).skipRepeats(==),
       source
     )
 
@@ -126,6 +129,15 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     self.showFacebookConnect = shouldShowFacebookConnect.map { (.findFriends, $0) }
 
+    let needsReconnect = shouldShowFacebookConnect
+      .filter(isFalse)
+      .map { _ in AppEnvironment.current.currentUser.needsFreshFacebookToken ?? false}
+
+    self.showFacebookReconnect = needsReconnect
+      .map {
+        (.findFriends, !$0)
+      }.logEvents(identifier: "show reconnect")
+
     self.showLoadingIndicatorView = Signal.merge(
       isLoading.take(first: 1),
       friends.mapConst(false)
@@ -139,7 +151,10 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
         .materialize()
     }
 
-    self.stats = Signal.combineLatest(statsEvent.values(), source)
+    let stats = Signal.combineLatest(statsEvent.values(), source)
+
+    self.stats = stats
+      .takeWhen(needsReconnect.filter(isFalse))
 
     source
       .takeWhen(self.viewDidLoadProperty.signal)
@@ -205,6 +220,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   public let goToDiscovery: Signal<DiscoveryParams, NoError>
   public let showErrorAlert: Signal<AlertError, NoError>
   public let showFacebookConnect: Signal<(FriendsSource, Bool), NoError>
+  public let showFacebookReconnect: Signal<(FriendsSource, Bool), NoError>
   public let showFollowAllFriendsAlert: Signal<Int, NoError>
   public let showLoadingIndicatorView: Signal<Bool, NoError>
   public let stats: Signal<(FriendStatsEnvelope, FriendsSource), NoError>
