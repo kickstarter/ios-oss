@@ -208,7 +208,7 @@ extension FindFriendsFacebookConnectCellViewModel {
     case .connect:
       return Strings.Discover_more_projects()
     case .reconnect:
-      return "Reconnect"
+      return Strings.Facebook_reconnect()
     }
   }
 
@@ -217,7 +217,7 @@ extension FindFriendsFacebookConnectCellViewModel {
     case .connect:
       return Strings.Connect_with_Facebook_to_follow_friends_and_get_notified()
     case .reconnect:
-      return "Please reconnect your facebook account"
+      return Strings.Facebook_reconnect_description()
     }
   }
 

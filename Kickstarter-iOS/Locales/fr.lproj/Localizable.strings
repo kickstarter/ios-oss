@@ -89,6 +89,8 @@
 "Explore_projects" = "Découvrir des projets";
 "Facebook_login_disclaimer" = "Si vous vous connectez avec Facebook, nous importerons votre nom et votre photo de profil. Nous accéderons aussi à votre liste d'amis pour vous permettre de suivre vos connaissances sur Kickstarter. Nous ne publierons jamais sur Facebook sans votre autorisation.";
 "Facebook_login_disclaimer_update" = "Lorsque vous vous connectez avec Facebook, votre nom, votre photo de profil et votre liste d'amis seront importés.";
+"Facebook_reconnect" = "Please reconnect";
+"Facebook_reconnect_description" = "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again.";
 "Failed_to_retrieve_live_stream_event_details" = "Impossible de récupérer les détails de la diffusion en direct";
 "Failed_to_update_subscription" = "Mise à jour de l'abonnement impossible";
 "Filter_by_all_projects" = "Filtrer : tous les projets";
@@ -241,8 +243,11 @@
 "Private_profile_more_info_content" = "Par défaut, les profils Kickstarter sont privés. Pour rendre votre profil public et visible par tout le monde, décochez cette case.";
 "Project_Cancelled" = "Projet annulé.";
 "Project_Suspended" = "Projet suspendu.";
+"Project_activity" = "Activité de mon projet";
 "Project_cancelled" = "Projet annulé";
+"Project_reminders" = "Rappels";
 "Project_saved" = "Projet enregistré.";
+"Project_updates" = "Actus de projet";
 "Projects_We_Love" = "Nos coups de cœur";
 "Projects_youve_backed" = "Les projets que j'ai soutenus";
 "Projects_youve_launched" = "Les projets que vous avez lancés";
@@ -277,6 +282,7 @@
 "Reward_delivered" = "Récompense livrée ?";
 "Reward_estimated_for_delivery_in_date" = "<b>Récompense</b> prévue pour %{delivery_date}";
 "Reward_selected" = "Récompense sélectionnée";
+"Reward_surveys" = "Questionnaires des récompenses";
 "Rewards_count_rewards.few" = "%{rewards_count} récompenses";
 "Rewards_count_rewards.many" = "%{rewards_count} récompenses";
 "Rewards_count_rewards.one" = "%{rewards_count} récompense";

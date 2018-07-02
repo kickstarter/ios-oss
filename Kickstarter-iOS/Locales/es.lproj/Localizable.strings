@@ -89,6 +89,8 @@
 "Explore_projects" = "Explora proyectos";
 "Facebook_login_disclaimer" = "Si inicias sesión con Facebook, importaremos tu nombre y foto de perfil. También accederemos a tu lista de amigos para que puedas seguir a tus amigos de Facebook en Kickstarter. Jamás publicaremos nada en Facebook sin tu permiso.";
 "Facebook_login_disclaimer_update" = "Al iniciar sesión con Facebook, importaremos tu nombre, foto de perfil y lista de amigos.";
+"Facebook_reconnect" = "Vuelve a conectar";
+"Facebook_reconnect_description" = "Disculpa, tu cuenta se desconectó accidentalmente. Conéctala otra vez para volver a seguir a tus amigos.";
 "Failed_to_retrieve_live_stream_event_details" = "No se pudo cargar la información acerca del evento en vivo";
 "Failed_to_update_subscription" = "No se pudo actualizar la suscripción";
 "Filter_by_all_projects" = "Filtro: Todos los proyectos";
@@ -241,8 +243,11 @@
 "Private_profile_more_info_content" = "Los perfiles de Kickstarter son privados por defecto. Para hacer que tu perfil sea público y visible para el mundo, desactiva esta opción.";
 "Project_Cancelled" = "Proyecto cancelado.";
 "Project_Suspended" = "Proyecto suspendido.";
+"Project_activity" = "Actividad del proyecto";
 "Project_cancelled" = "Proyecto cancelado";
+"Project_reminders" = "Recordatorios del proyecto";
 "Project_saved" = "Proyecto guardado.";
+"Project_updates" = "Actualizaciones del proyecto";
 "Projects_We_Love" = "Nuestros Favoritos";
 "Projects_youve_backed" = "Proyectos que has patrocinado";
 "Projects_youve_launched" = "Proyectos que has publicado";
@@ -277,6 +282,7 @@
 "Reward_delivered" = "¿Recompensa entregada?";
 "Reward_estimated_for_delivery_in_date" = "<b>Recompensa</b> estimada para entregarse en %{delivery_date}";
 "Reward_selected" = "Recompensa seleccionada";
+"Reward_surveys" = "Cuestionarios sobre recompensas";
 "Rewards_count_rewards.few" = "%{rewards_count} recompensas";
 "Rewards_count_rewards.many" = "%{rewards_count} recompensas";
 "Rewards_count_rewards.one" = "%{rewards_count} recompensa";

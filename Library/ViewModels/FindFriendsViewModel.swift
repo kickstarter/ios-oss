@@ -112,7 +112,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     })
 
     self.friends = Signal.combineLatest(
-      Signal.merge(friends.0, followAll.mapConst([])).skipRepeats(==),
+      Signal.merge(friends, followAll.mapConst([])).skipRepeats(==),
       source
     )
 
@@ -131,12 +131,12 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     let needsReconnect = shouldShowFacebookConnect
       .filter(isFalse)
-      .map { _ in AppEnvironment.current.currentUser.needsFreshFacebookToken ?? false}
+      .map { _ in AppEnvironment.current.currentUser?.needsFreshFacebookToken ?? false}
 
     self.showFacebookReconnect = needsReconnect
       .map {
-        (.findFriends, !$0)
-      }.logEvents(identifier: "show reconnect")
+        (.findFriends, $0)
+      }
 
     self.showLoadingIndicatorView = Signal.merge(
       isLoading.take(first: 1),
@@ -153,8 +153,12 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     let stats = Signal.combineLatest(statsEvent.values(), source)
 
-    self.stats = stats
-      .takeWhen(needsReconnect.filter(isFalse))
+    self.stats = Signal.combineLatest(
+        needsReconnect,
+        stats
+      ).map(unpack) // unpack into 3-tuple (needsReconnect, friends, source)
+      .filter { !$0.0 } // filter for when needsReconnect is false
+      .map { ($1, $2)} // map back into expected tuple (friends, source)
 
     source
       .takeWhen(self.viewDidLoadProperty.signal)

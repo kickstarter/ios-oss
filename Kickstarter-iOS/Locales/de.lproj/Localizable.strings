@@ -89,6 +89,8 @@
 "Explore_projects" = "Projekte erkunden";
 "Facebook_login_disclaimer" = "Wenn du dich über Facebook anmeldest, importieren wir deinen Namen und dein Profilfoto. Außerdem wird deine Freundesliste importiert, damit du deinen Freunden auf Kickstarter folgen kannst. Wir werden niemals etwas ohne deine Erlaubnis auf Facebook posten.";
 "Facebook_login_disclaimer_update" = "Bei einer Anmeldung über Facebook werden dein Name, Profilbild und Freundesliste importiert.";
+"Facebook_reconnect" = "Bitte erneut verbinden";
+"Facebook_reconnect_description" = "Dein Konto wurde aus Versehen getrennt. Bitte verbinde es erneut, um Freunden folgen zu können.";
 "Failed_to_retrieve_live_stream_event_details" = "Details zu Live-Stream-Event konnten nicht geladen werden";
 "Failed_to_update_subscription" = "Abo konnte nicht aktualisiert werden";
 "Filter_by_all_projects" = "Filter: Alle Projekte";
@@ -241,8 +243,11 @@
 "Private_profile_more_info_content" = "Die Standard-Einstellung für Profile sind auf Kickstarter ist privat. Um dein Profil öffentlich zu machen, hebe diese Einstellung bitte auf.";
 "Project_Cancelled" = "Projekt abgebrochen.";
 "Project_Suspended" = "Projekt ausgesetzt.";
+"Project_activity" = "Projektaktivität";
 "Project_cancelled" = "Projekt abgebrochen";
+"Project_reminders" = "Projekt-Erinnerungen";
 "Project_saved" = "Projekt gespeichert.";
+"Project_updates" = "Projekt-Updates";
 "Projects_We_Love" = "Team-Favoriten";
 "Projects_youve_backed" = "Projekte, die du unterstützt hast";
 "Projects_youve_launched" = "Deine veröffentlichten Projekte";
@@ -277,6 +282,7 @@
 "Reward_delivered" = "Belohnung versandt?";
 "Reward_estimated_for_delivery_in_date" = "Voraussichtliche Lieferung der <b>Belohnung</b> im %{delivery_date}";
 "Reward_selected" = "Ausgewählte Belohnung";
+"Reward_surveys" = "Befragungen";
 "Rewards_count_rewards.few" = "%{rewards_count} Belohnungen";
 "Rewards_count_rewards.many" = "%{rewards_count} Belohnungen";
 "Rewards_count_rewards.one" = "%{rewards_count} Belohnung";

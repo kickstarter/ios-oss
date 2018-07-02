@@ -89,6 +89,8 @@
 "Explore_projects" = "Explore projects";
 "Facebook_login_disclaimer" = "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.";
 "Facebook_login_disclaimer_update" = "By logging in with Facebook, we’ll import your name, profile photo and friend list.";
+"Facebook_reconnect" = "Please reconnect";
+"Facebook_reconnect_description" = "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again.";
 "Failed_to_retrieve_live_stream_event_details" = "Failed to retrieve live stream event details";
 "Failed_to_update_subscription" = "Failed to update subscription";
 "Filter_by_all_projects" = "Filter by all projects";
@@ -241,8 +243,11 @@
 "Private_profile_more_info_content" = "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.";
 "Project_Cancelled" = "Project Cancelled.";
 "Project_Suspended" = "Project Suspended.";
+"Project_activity" = "Project activity";
 "Project_cancelled" = "Project cancelled";
+"Project_reminders" = "Project reminders";
 "Project_saved" = "Project saved.";
+"Project_updates" = "Project updates";
 "Projects_We_Love" = "Projects We Love";
 "Projects_youve_backed" = "Projects you've backed";
 "Projects_youve_launched" = "Projects you've launched";
@@ -277,6 +282,7 @@
 "Reward_delivered" = "Reward delivered?";
 "Reward_estimated_for_delivery_in_date" = "<b>Reward</b> estimated for delivery in %{delivery_date}";
 "Reward_selected" = "Reward selected";
+"Reward_surveys" = "Reward surveys";
 "Rewards_count_rewards.few" = "%{rewards_count} rewards";
 "Rewards_count_rewards.many" = "%{rewards_count} rewards";
 "Rewards_count_rewards.one" = "%{rewards_count} reward";

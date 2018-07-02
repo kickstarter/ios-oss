@@ -1493,6 +1493,40 @@ backers"
     )
   }
   /**
+   "Please reconnect"
+
+   - **es**: "Vuelve a conectar"
+   - **ja**: "Please reconnect"
+   - **de**: "Bitte erneut verbinden"
+   - **fr**: "Please reconnect"
+   - **en**: "Please reconnect"
+  */
+  public static func Facebook_reconnect() -> String {
+    return localizedString(
+      key: "Facebook_reconnect",
+      defaultValue: "Please reconnect",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again."
+
+   - **es**: "Disculpa, tu cuenta se desconectó accidentalmente. Conéctala otra vez para volver a seguir a tus amigos."
+   - **ja**: "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again."
+   - **de**: "Dein Konto wurde aus Versehen getrennt. Bitte verbinde es erneut, um Freunden folgen zu können."
+   - **fr**: "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again."
+   - **en**: "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again."
+  */
+  public static func Facebook_reconnect_description() -> String {
+    return localizedString(
+      key: "Facebook_reconnect_description",
+      defaultValue: "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Failed to retrieve live stream event details"
 
    - **es**: "No se pudo cargar la información acerca del evento en vivo"
@@ -3946,6 +3980,23 @@ from friends yet."
     )
   }
   /**
+   "Project activity"
+
+   - **es**: "Actividad del proyecto"
+   - **ja**: "Project activity"
+   - **de**: "Projektaktivität"
+   - **fr**: "Activité de mon projet"
+   - **en**: "Project activity"
+  */
+  public static func Project_activity() -> String {
+    return localizedString(
+      key: "Project_activity",
+      defaultValue: "Project activity",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project cancelled"
 
    - **es**: "Proyecto cancelado"
@@ -3963,6 +4014,23 @@ from friends yet."
     )
   }
   /**
+   "Project reminders"
+
+   - **es**: "Recordatorios del proyecto"
+   - **ja**: "Project reminders"
+   - **de**: "Projekt-Erinnerungen"
+   - **fr**: "Rappels"
+   - **en**: "Project reminders"
+  */
+  public static func Project_reminders() -> String {
+    return localizedString(
+      key: "Project_reminders",
+      defaultValue: "Project reminders",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project saved."
 
    - **es**: "Proyecto guardado."
@@ -3975,6 +4043,23 @@ from friends yet."
     return localizedString(
       key: "Project_saved",
       defaultValue: "Project saved.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project updates"
+
+   - **es**: "Actualizaciones del proyecto"
+   - **ja**: "Project updates"
+   - **de**: "Projekt-Updates"
+   - **fr**: "Actus de projet"
+   - **en**: "Project updates"
+  */
+  public static func Project_updates() -> String {
+    return localizedString(
+      key: "Project_updates",
+      defaultValue: "Project updates",
       count: nil,
       substitutions: [:]
     )
@@ -4488,6 +4573,23 @@ daring ideas."
     return localizedString(
       key: "Reward_selected",
       defaultValue: "Reward selected",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Reward surveys"
+
+   - **es**: "Cuestionarios sobre recompensas"
+   - **ja**: "Reward surveys"
+   - **de**: "Befragungen"
+   - **fr**: "Questionnaires des récompenses"
+   - **en**: "Reward surveys"
+  */
+  public static func Reward_surveys() -> String {
+    return localizedString(
+      key: "Reward_surveys",
+      defaultValue: "Reward surveys",
       count: nil,
       substitutions: [:]
     )

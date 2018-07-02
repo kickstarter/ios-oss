@@ -89,6 +89,8 @@
 "Explore_projects" = "プロジェクトをさがす";
 "Facebook_login_disclaimer" = "Facebook でログインすると、あなたの氏名とプロフィール写真がインポートされます。また、あなたが Kickstarter 上で Facebook 友達をフォローすることができるように、友達リストも Kickstarter によってアクセスされます。あなたの許可なしに Kickstarter が Facebook 上に投稿を行うことは決してありません。  ";
 "Facebook_login_disclaimer_update" = "Facebook を使ってログインすると、お名前とプロフィール写真、友達リストがインポートされます。";
+"Facebook_reconnect" = "Please reconnect";
+"Facebook_reconnect_description" = "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again.";
 "Failed_to_retrieve_live_stream_event_details" = "ライブ配信の詳細を取得できませんでした";
 "Failed_to_update_subscription" = "定期購読の更新に失敗しました";
 "Filter_by_all_projects" = "全てのプロジェクトに絞る";
@@ -241,8 +243,11 @@
 "Private_profile_more_info_content" = "Kickstarter でのプロフィールはデフォルト設定ではプライベート (非公開) となっています。プロフィールを公開したい場合はこの設定をオフにしてください。";
 "Project_Cancelled" = "プロジェクトが取り消されました。";
 "Project_Suspended" = "中止プロジェクト";
+"Project_activity" = "Project activity";
 "Project_cancelled" = "プロジェクトが取り消されました。";
+"Project_reminders" = "Project reminders";
 "Project_saved" = "プロジェクトを保存しました。";
+"Project_updates" = "Project updates";
 "Projects_We_Love" = "Projects We Love";
 "Projects_youve_backed" = "バック（支援）したプロジェクト";
 "Projects_youve_launched" = "ローンチしたプロジェクト";
@@ -277,6 +282,7 @@
 "Reward_delivered" = "リワードを受け取りましたか？";
 "Reward_estimated_for_delivery_in_date" = "<b>リワード</b>の配達予定日は%{delivery_date}";
 "Reward_selected" = "選択中のリワード";
+"Reward_surveys" = "Reward surveys";
 "Rewards_count_rewards.few" = "%{rewards_count} 種類のリワード";
 "Rewards_count_rewards.many" = "%{rewards_count} 種類のリワード";
 "Rewards_count_rewards.one" = "%{rewards_count} 種類のリワード";
