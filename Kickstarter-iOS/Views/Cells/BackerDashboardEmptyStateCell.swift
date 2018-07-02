@@ -6,6 +6,7 @@ import UIKit
 internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
 
   @IBOutlet private weak var iconImageView: UIImageView!
+  @IBOutlet private weak var animatedIconImageVIew: UIImageView!
   @IBOutlet private weak var messageLabel: UILabel!
   @IBOutlet private weak var titleLabel: UILabel!
 
@@ -30,27 +31,29 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
                    in: .framework,
                    compatibleWith: nil)
 
-      let image = UIImage(named: "icon--heart-outline",
-                                         in: .framework,
-                                         compatibleWith: nil)
+      self.iconImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+      self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
 
-      let thisImage = UIImage(named: "icon--heart",
-                                 in: .framework,
-                                 compatibleWith: nil)
+      self.animatedIconImageVIew.alpha = 1.0
 
-      let images = [image!, thisImage!]
-
-            UIView.animate(
-                          withDuration: 0.5,
-                          delay: 0.0,
-                          usingSpringWithDamping: 0.0,
-                          initialSpringVelocity: 0.1,
-                          options: [.repeat, .autoreverse, .curveEaseOut],
-                          animations: {
-                            self.iconImageView.alpha = 1.0
-                            self.iconImageView.image = UIImage.animatedImage(with: images, duration: 2.0)
-                          },
-                          completion: nil)}
+      UIView.animate(
+        withDuration: 0.6,
+        delay: 0.0,
+        usingSpringWithDamping: 0.8,
+        initialSpringVelocity: 0.0,
+        options: [.repeat, .autoreverse, .curveEaseInOut],
+        animations: {
+          self.iconImageView.alpha = 0.0
+          self.animatedIconImageVIew.alpha = 1.0
+          self.iconImageView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+          self.iconImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+          self.iconImageView.alpha = 1.0
+          self.animatedIconImageVIew.alpha = 0.0
+          self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+          self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+      },
+        completion: { _ in UIView.animate(withDuration: 1.0, animations: { self.animatedIconImageVIew.alpha = 1.0 })  })
+    }
   }
 
   internal override func bindStyles() {
@@ -73,41 +76,5 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
 
     _ = self.iconImageView
     |> UIImageView.lens.tintColor .~ .ksr_text_dark_grey_900
-  }
-
-  internal func animateHeart() {
-//    self.iconImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
-
-    let imageTwo = UIImage(named: "icon--heart",
-                             in: .framework,
-                             compatibleWith: nil)
-
-    let this = UIImageView()
-    this.image = imageTwo
-
-
-
-//    let images: [UIImage] = [image!, imageTwo!]
-//
-//    let thisToo = UIImageView()
-//    this.image = image
-//
-
-    //self.iconImageView.image = UIImage.animatedImage(with: images, duration: 2.0)
-
-//    UIView.animate(
-//      withDuration: 0.8,
-//      delay: 0.0,
-//      usingSpringWithDamping: 0.6,
-//      initialSpringVelocity: 0.8,
-//      options:  .repeat,
-//      animations: {
-//        self.iconImageView.alpha = 1.0
-//        self.iconImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-//        self.iconImageView.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
-//        self.iconImageView.image = UIImage.animatedImage(with: images, duration: 1)
-//    },
-//      completion: nil
-//    )
   }
 }
