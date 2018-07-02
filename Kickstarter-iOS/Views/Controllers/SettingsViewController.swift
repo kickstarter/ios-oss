@@ -530,7 +530,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   fileprivate func goToManageProjectNotifications() {
-    let vc = ProjectNotificationsViewController.instantiate()
+    let vc = SettingsNotificationsViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
