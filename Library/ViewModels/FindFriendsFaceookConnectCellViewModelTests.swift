@@ -21,6 +21,9 @@ import UIKit.UIActivity
   let postUserUpdatedNotification = TestObserver<Notification.Name, NoError>()
   let updateUserInEnvironment = TestObserver<User, NoError>()
   let showErrorAlert = TestObserver<AlertError, NoError>()
+  let title = TestObserver<String, NoError>()
+  let subtitle = TestObserver<String, NoError>()
+  let standardValue = FacebookConnectCellValue(source: .activity, connectionType: .connect)
 
   override func setUp() {
     super.setUp()
@@ -33,10 +36,12 @@ import UIKit.UIActivity
       .observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
     vm.outputs.showErrorAlert.observe(showErrorAlert.observer)
+    vm.outputs.facebookConnectCellTitle.observe(title.observer)
+    vm.outputs.facebookConnectCellSubtitle.observe(subtitle.observer)
   }
 
   func testDismissal() {
-    vm.inputs.configureWith(source: FriendsSource.activity)
+    vm.inputs.configureWith(value: standardValue)
 
     notifyPresenterToDismissHeader.assertValueCount(0)
 
@@ -46,6 +51,22 @@ import UIKit.UIActivity
 
     XCTAssertEqual(["Close Facebook Connect"], self.trackingClient.events)
     XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
+  }
+
+  func testTitleValue() {
+    vm.inputs.configureWith(value: standardValue)
+
+    title.assertValue(Strings.Discover_more_projects())
+    subtitle.assertValue(Strings.Connect_with_Facebook_to_follow_friends_and_get_notified())
+  }
+
+  func testSubtitleValue() {
+    let value = FacebookConnectCellValue(source: .findFriends,
+                                         connectionType: .reconnect)
+    vm.inputs.configureWith(value: value)
+
+    title.assertValue(Strings.Facebook_reconnect())
+    subtitle.assertValue(Strings.Facebook_reconnect_description())
   }
 
   func testFacebookConnectFlow_Success() {
@@ -67,7 +88,7 @@ import UIKit.UIActivity
     )!
 
     withEnvironment(currentUser: User.template) {
-      vm.inputs.configureWith(source: FriendsSource.activity)
+      vm.inputs.configureWith(value: standardValue)
 
       attemptFacebookLogin.assertValueCount(0, "Attempt Facebook Login does not emit")
 
@@ -104,7 +125,7 @@ import UIKit.UIActivity
                           FBSDKErrorLocalizedDescriptionKey: "Something went wrong yo."
       ])
 
-    vm.inputs.configureWith(source: FriendsSource.activity)
+    vm.inputs.configureWith(value: standardValue)
 
     attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -153,7 +174,7 @@ import UIKit.UIActivity
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      vm.inputs.configureWith(source: FriendsSource.activity)
+      vm.inputs.configureWith(value: standardValue)
 
       attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -207,7 +228,7 @@ import UIKit.UIActivity
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      vm.inputs.configureWith(source: FriendsSource.activity)
+      vm.inputs.configureWith(value: standardValue)
 
       attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -263,7 +284,7 @@ import UIKit.UIActivity
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      vm.inputs.configureWith(source: FriendsSource.activity)
+      vm.inputs.configureWith(value: standardValue)
 
       attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -317,7 +338,7 @@ import UIKit.UIActivity
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      vm.inputs.configureWith(source: FriendsSource.activity)
+      vm.inputs.configureWith(value: standardValue)
 
       attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 

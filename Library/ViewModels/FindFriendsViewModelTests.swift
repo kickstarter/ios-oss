@@ -20,6 +20,7 @@ final class FindFriendsViewModelTests: TestCase {
   let showLoadingIndicatorView = TestObserver<Bool, NoError>()
   let stats = TestObserver<FriendStatsEnvelope, NoError>()
   let statsSource = TestObserver<FriendsSource, NoError>()
+  let showFacebookReconnect = TestObserver<(FriendsSource, Bool), NoError>()
 
   override func setUp() {
     super.setUp()
@@ -32,6 +33,7 @@ final class FindFriendsViewModelTests: TestCase {
     vm.outputs.showLoadingIndicatorView.observe(showLoadingIndicatorView.observer)
     vm.outputs.stats.map { env, _ in env }.observe(stats.observer)
     vm.outputs.stats.map { _, source in source }.observe(statsSource.observer)
+    vm.outputs.showFacebookReconnect.observe(showFacebookReconnect.observer)
   }
 
   func testSource() {
@@ -169,6 +171,24 @@ final class FindFriendsViewModelTests: TestCase {
     }
   }
 
+  func testFacebookConnectedUser_needsReconnect() {
+    let needsReconnectUser = User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ true
+
+    withEnvironment(currentUser: needsReconnectUser) {
+      vm.inputs.configureWith(source: FriendsSource.findFriends)
+
+      vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showFacebookConnect.assertValue(false)
+      self.showFacebookReconnect.assertValueCount(1)
+      self.stats.assertValueCount(0)
+    }
+  }
+
   func testStats_WithFacebookConnectedUser() {
     withEnvironment(currentUser: User.template |> User.lens.facebookConnected .~ true) {
       vm.inputs.configureWith(source: FriendsSource.activity)
@@ -197,6 +217,26 @@ final class FindFriendsViewModelTests: TestCase {
       self.scheduler.advance()
 
       stats.assertValueCount(0, "Stats should not emit if user isn't FB Connected")
+      statsSource.assertValueCount(0)
+    }
+  }
+
+  func testStats_WithNeedsReconnectUser() {
+    let facebookConnectedNeedsReconnectUser = User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ true
+
+    withEnvironment(currentUser: facebookConnectedNeedsReconnectUser) {
+      vm.inputs.configureWith(source: FriendsSource.activity)
+
+      stats.assertValueCount(0)
+      statsSource.assertValueCount(0)
+
+      vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      stats.assertValueCount(0, "Stats should not emit if needs facebook reconnect")
       statsSource.assertValueCount(0)
     }
   }

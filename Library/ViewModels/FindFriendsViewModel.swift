@@ -73,7 +73,7 @@ public protocol FindFriendsViewModelType {
 public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsViewModelInputs,
   FindFriendsViewModelOutputs {
 
-    public init() {
+  public init() {
     let source = self.configureWithProperty.signal
 
     let followAll = self.confirmFollowAllFriendsProperty.signal
@@ -131,6 +131,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     let needsReconnect = shouldShowFacebookConnect
       .filter(isFalse)
+      .logEvents(identifier: "needs reconnect")
       .map { _ in AppEnvironment.current.currentUser?.needsFreshFacebookToken ?? false}
 
     self.showFacebookReconnect = needsReconnect
@@ -154,7 +155,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     let stats = Signal.combineLatest(statsEvent.values(), source)
 
     self.stats = Signal.combineLatest(
-        needsReconnect,
+      needsReconnect,
         stats
       ).map(unpack) // unpack into 3-tuple (needsReconnect, friends, source)
       .filter { !$0.0 } // filter for when needsReconnect is false
