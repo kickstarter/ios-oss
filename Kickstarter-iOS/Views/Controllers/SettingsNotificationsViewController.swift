@@ -5,7 +5,19 @@ import UIKit
 
 internal final class SettingsNotificationsViewController: UIViewController {
 
-  
+  private let viewModel: SettingsViewModelType = SettingsViewModel()
+
+  @IBOutlet fileprivate weak var findFriendsButton: UIButton!
+  @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
+  @IBOutlet fileprivate weak var followerButton: UIButton!
+  @IBOutlet fileprivate weak var friendActivityButton: UIButton!
+  @IBOutlet fileprivate weak var friendActivityLabel: UILabel!
+  @IBOutlet fileprivate weak var messagesLabel: UILabel!
+  @IBOutlet fileprivate weak var messagesButton: UIButton!
+  @IBOutlet fileprivate weak var mobileFollowerButton: UIButton!
+  @IBOutlet fileprivate weak var mobileFriendActivityButton: UIButton!
+  @IBOutlet fileprivate weak var mobileMessagesButton: UIButton!
+  @IBOutlet fileprivate weak var newFollowersLabel: UILabel!
   @IBOutlet fileprivate weak var manageProjectNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsLabel: UILabel!
   @IBOutlet fileprivate weak var mobileUpdatesButton: UIButton!
@@ -13,7 +25,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var projectNotificationsCountView: CountBadgeView!
   @IBOutlet fileprivate weak var projectsYouBackTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectUpdatesLabel: UILabel!
-
+  @IBOutlet fileprivate weak var socialNotificationsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var updatesButton: UIButton!
 
   @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
@@ -30,7 +42,12 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.manageProjectNotificationsButton.addTarget(self,
                                                     action: #selector(manageProjectNotificationsTapped),
                                                     for: .touchUpInside)
-   // self.viewModel.inputs.viewDidLoad()
+
+    self.findFriendsButton.addTarget(self,
+                                                    action: #selector(findFriendsTapped),
+                                                    for: .touchUpInside)
+
+   self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func bindStyles() {
@@ -38,7 +55,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
-      |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
+      |> UIViewController.lens.title %~ { _ in Strings.Push_notifications() }
 
     _ = self.emailNotificationButtons
       ||> settingsNotificationIconButtonStyle
@@ -48,9 +65,29 @@ internal final class SettingsNotificationsViewController: UIViewController {
       .~ image(named: "email-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
+    _ = self.findFriendsButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_social_find_friends() }
+
+    _ = self.findFriendsLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_find_friends() }
+
+    _ = self.friendActivityLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_friend_backs() }
+
     _ = self.manageProjectNotificationsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_notifications() }
+
+    _ = self.manageProjectNotificationsButton
+      |> settingsSectionButtonStyle
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_backer_notifications() }
+
+    _ = self.newFollowersLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_followers() }
 
     _ = self.projectUpdatesLabel
       |> settingsSectionLabelStyle
@@ -70,14 +107,42 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
     _ = self.separatorViews
       ||> separatorStyle
+
+    _ = self.socialNotificationsTitleLabel
+      |> settingsTitleLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_title() }
+
   }
 
-  @IBAction fileprivate func updatesTapped(_ button: UIButton) {
-    //self.viewModel.inputs.updatesTapped(selected: !button.isSelected)
+  @IBAction fileprivate func emailProjectUpdates(_ button: UIButton) {
+    self.viewModel.inputs.emailProjectUpdates(selected: !button.isSelected)
+  }
+
+  @IBAction fileprivate func mobileUpdatesTapped(_ sender: UIButton) {
+    self.viewModel.inputs.mobileUpdatesTapped(selected: !sender.isSelected)
+  }
+
+  @IBAction func emailNewFollowersTapped(_ sender: UIButton) {
+    self.viewModel.inputs.emailNewFollowersTapped(selected: !sender.isSelected)
+  }
+
+  @IBAction func mobileNewFollowersTapped(_ sender: UIButton) {
+    self.viewModel.inputs.mobileNewFollowersSelected(selected: !sender.isSelected)
+  }
+  
+  @IBAction func emailFriendsActivityTapped(_ sender: UIButton) {
+    self.viewModel.inputs.emailFriendActivityTapped(selected: !sender.isSelected)
+  }
+
+  @IBAction func mobileFriendsActivityTapped(_ sender: UIButton) {
+    self.viewModel.inputs.mobileFriendsActivityTapped(selected: !sender.isSelected)
+  }
+
+  @objc fileprivate func findFriendsTapped() {
+    self.viewModel.inputs.findFriendsTapped()
   }
 
   @objc fileprivate func manageProjectNotificationsTapped() {
-    //self.viewModel.inputs.manageProjectNotificationsTapped()
+    self.viewModel.inputs.manageProjectNotificationsTapped()
   }
-
 }
