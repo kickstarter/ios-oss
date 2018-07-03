@@ -66,7 +66,7 @@ internal final class MessageThreadViewControllerTests: TestCase {
       mainBundle: Bundle.framework
     )
 
-    [Device.phone4_7inch, Device.pad].forEach { device in
+    [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
 
       let controller = MessageThreadsViewController.configuredWith(project: project, refTag: nil)
 

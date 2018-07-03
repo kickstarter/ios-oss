@@ -37,7 +37,7 @@ public struct Config {
 extension Config: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Config> {
     let tmp = curry(Config.init)
-      <^> decodeDictionary(json <| "ab_experiments")
+      <^> (decodeDictionary(json <| "ab_experiments"))
       <*> json <| "app_id"
       <*> json <|| "apple_pay_countries"
       <*> json <| "country_code"

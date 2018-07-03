@@ -297,6 +297,24 @@ public struct AppEnvironment {
       )
     }
 
+    // Try restoring the environment
+    if let environment = data["apiService.serverConfig.environment"] as? String,
+      let environmentType = EnvironmentType(rawValue: environment) {
+      service = Service(
+        serverConfig: ServerConfig(
+          apiBaseUrl: service.serverConfig.apiBaseUrl,
+          webBaseUrl: service.serverConfig.webBaseUrl,
+          apiClientAuth: service.serverConfig.apiClientAuth,
+          basicHTTPAuth: service.serverConfig.basicHTTPAuth,
+          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl,
+          environment: environmentType
+        ),
+        oauthToken: service.oauthToken,
+        language: current.language.rawValue,
+        currency: current.locale.currencyCode ?? "USD"
+      )
+    }
+
     // Try restore the current user
     if service.oauthToken != nil {
       currentUser = data["currentUser"].flatMap(decode)
@@ -325,6 +343,7 @@ public struct AppEnvironment {
     data["apiService.serverConfig.basicHTTPAuth.password"] = env.apiService.serverConfig.basicHTTPAuth?.password
     // swiftlint:enable line_length
     data["apiService.serverConfig.webBaseUrl"] = env.apiService.serverConfig.webBaseUrl.absoluteString
+    data["apiService.serverConfig.environment"] = env.apiService.serverConfig.environment.rawValue
     data["apiService.language"] = env.apiService.language
     data["apiService.currency"] = env.apiService.currency
     data["config"] = env.config?.encode()
