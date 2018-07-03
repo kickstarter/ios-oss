@@ -352,7 +352,7 @@ SettingsViewModelOutputs {
     self.exportDataText = self.exportDataLoadingIndicator.signal
       .map { $0 ? Strings.Preparing_your_personal_data() : Strings.Request_my_Personal_Data() }
 
-    self.exportDataExpirationDate = Signal.merge (exportEnvelope)
+    self.exportDataExpirationDate = exportEnvelope
       .map { dateFormatter(for: $0.expiresAt, state: $0.state) }
 
     self.exportDataButtonEnabled = self.exportDataLoadingIndicator.signal
@@ -612,31 +612,17 @@ SettingsViewModelOutputs {
 }
 
 private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.State) -> String {
+  guard let isoDate = dateString else { return "" }
   let dateFormatter = DateFormatter()
-  dateFormatter.dateFormat = "yyyy-MM-dd"
-  let newDateFormatter = DateFormatter()
-  newDateFormatter.dateFormat = "MMM d"
+  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:sZ"
+  guard let date = dateFormatter.date(from: isoDate) else { return "" }
 
-  let timeFormatter = DateFormatter()
-  timeFormatter.dateFormat = "HH-mm-sZ"
-  let newTimeFormatter = DateFormatter()
-  newTimeFormatter.timeZone = TimeZone(secondsFromGMT: TimeZone.current.secondsFromGMT())
-  newTimeFormatter.dateFormat = "h:mm a"
-
-  guard let dateComponents = dateString?.components(separatedBy: "T") else { return "" }
-
-  let splitDate = dateComponents[0]
-  let splitTime = dateComponents[1]
-
-  guard let date = dateFormatter.date(from: splitDate) else { return "" }
-  guard let time = timeFormatter.date(from: splitTime) else { return "" }
-
-  let convertedDate = newDateFormatter.string(from: date)
-  let convertedTime = newTimeFormatter.string(from: time)
+  let expirationDate = Format.date(secondsInUTC: date.timeIntervalSince1970, template: "MMM d, yyyy")
+  let expirationTime = Format.date(secondsInUTC: date.timeIntervalSince1970, template: "h:mm a")
 
   if state == .expired {
     return ""
-  } else { return Strings.Expires_date_at_time(date: convertedDate, time: convertedTime)}
+  } else { return Strings.Expires_date_at_time(date: expirationDate, time: expirationTime) }
 }
 
 private enum UserAttribute {
