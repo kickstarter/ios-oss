@@ -29,6 +29,9 @@ public protocol SettingsNotificationsViewModelOutputs {
   var mobileNewFollowersSelected: Signal<Bool, NoError> { get }
   var mobileProjectUpdatesSelected: Signal<Bool, NoError> { get }
   var projectNotificationsCount: Signal<String, NoError> { get }
+  var unableToSaveError: Signal<String, NoError> { get }
+  var updatesSelected: Signal<Bool, NoError> { get }
+  var updateCurrentUser: Signal<User, NoError> { get }
 }
 
 public protocol SettingsNotificationsViewModelType {
@@ -87,6 +90,21 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
           .materialize()
     }
 
+    self.unableToSaveError = updateEvent.errors()
+      .map { env in
+        env.errorMessages.first ?? Strings.profile_settings_error()
+    }
+
+    let previousUserOnError = Signal.merge(initialUser, updatedUser)
+      .combinePrevious()
+      .takeWhen(self.unableToSaveError)
+      .map { previous, _ in previous }
+
+    self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
+
+    self.updatesSelected = self.updateCurrentUser
+      .map { $0.notifications.updates }.skipNil().skipRepeats()
+
     self.emailNewFollowersSelected = .empty
     self.emailFriendsActivitySelected = .empty
     self.emailProjectUpdatesSelected = .empty
@@ -144,7 +162,6 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-
   public let emailFriendsActivitySelected: Signal<Bool, NoError>
   public let emailNewFollowersSelected: Signal<Bool, NoError>
   public let emailProjectUpdatesSelected: Signal<Bool, NoError>
@@ -155,6 +172,9 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   public let mobileFriendsActivitySelected: Signal<Bool, NoError>
   public let mobileProjectUpdatesSelected: Signal<Bool, NoError>
   public let projectNotificationsCount: Signal<String, NoError>
+  public let unableToSaveError: Signal<String, NoError>
+  public let updatesSelected: Signal<Bool, NoError>
+  public let updateCurrentUser: Signal<User, NoError>
 
   public var inputs: SettingsNotificationsViewModelInputs { return self }
   public var outputs: SettingsNotificationsViewModelOutputs { return self }
