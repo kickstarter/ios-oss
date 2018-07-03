@@ -250,7 +250,6 @@
 		A73923C11D272242004524C3 /* Friends.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B01D272242004524C3 /* Friends.storyboard */; };
 		A73923C31D272242004524C3 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B21D272242004524C3 /* Login.storyboard */; };
 		A73923C51D272242004524C3 /* Messages.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B41D272242004524C3 /* Messages.storyboard */; };
-		A73923C61D272242004524C3 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B51D272242004524C3 /* Profile.storyboard */; };
 		A73923C81D272242004524C3 /* ProjectActivity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B71D272242004524C3 /* ProjectActivity.storyboard */; };
 		A73923C91D272242004524C3 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B81D272242004524C3 /* Search.storyboard */; };
 		A73923CA1D272242004524C3 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73923B91D272242004524C3 /* Settings.storyboard */; };
@@ -267,7 +266,6 @@
 		A74382051D3458C900040A95 /* PaddingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74382041D3458C900040A95 /* PaddingCell.swift */; };
 		A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A745D0201CA897FF00C12802 /* SearchViewController.swift */; };
 		A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A745D0461CA8985B00C12802 /* DashboardViewController.swift */; };
-		A745D04B1CA8986E00C12802 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A745D0491CA8986E00C12802 /* ProfileViewController.swift */; };
 		A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F761761C85FACB005405ED /* LoginToutViewController.swift */; };
 		A747A7DF1D454E8500AF199A /* ProjectPamphletContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C93FB81D4415E700C2DF9B /* ProjectPamphletContentViewController.swift */; };
 		A747A8B91D45893100AF199A /* ProjectPamphletContentDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A747A8B81D45893100AF199A /* ProjectPamphletContentDataSource.swift */; };
@@ -581,7 +579,6 @@
 		A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
 		A7ED204A1E8323E900BFFA01 /* RewardPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202F1E8323E900BFFA01 /* RewardPledgeViewControllerTests.swift */; };
 		A7ED204B1E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */; };
-		A7ED204C1E8323E900BFFA01 /* ProfileViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20311E8323E900BFFA01 /* ProfileViewControllerTests.swift */; };
 		A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20321E8323E900BFFA01 /* FindFriendsViewControllerTests.swift */; };
 		A7ED204E1E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */; };
 		A7ED204F1E8323E900BFFA01 /* CommentsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20341E8323E900BFFA01 /* CommentsViewControllerTests.swift */; };
@@ -1819,7 +1816,6 @@
 		A73923B21D272242004524C3 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		A73923B31D272242004524C3 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		A73923B41D272242004524C3 /* Messages.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Messages.storyboard; sourceTree = "<group>"; };
-		A73923B51D272242004524C3 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		A73923B71D272242004524C3 /* ProjectActivity.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ProjectActivity.storyboard; sourceTree = "<group>"; };
 		A73923B81D272242004524C3 /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		A73923B91D272242004524C3 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
@@ -1832,7 +1828,6 @@
 		A74382041D3458C900040A95 /* PaddingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingCell.swift; sourceTree = "<group>"; };
 		A745D0201CA897FF00C12802 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A745D0461CA8985B00C12802 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
-		A745D0491CA8986E00C12802 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A747A8B81D45893100AF199A /* ProjectPamphletContentDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletContentDataSource.swift; sourceTree = "<group>"; };
 		A747A8EA1D45896000AF199A /* RewardCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCellViewModel.swift; sourceTree = "<group>"; };
 		A747A8ED1D45899F00AF199A /* RewardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCell.swift; sourceTree = "<group>"; };
@@ -2145,7 +2140,6 @@
 		A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPageViewControllerTests.swift; sourceTree = "<group>"; };
 		A7ED202F1E8323E900BFFA01 /* RewardPledgeViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeViewControllerTests.swift; sourceTree = "<group>"; };
 		A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewControllerTests.swift; sourceTree = "<group>"; };
-		A7ED20311E8323E900BFFA01 /* ProfileViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerTests.swift; sourceTree = "<group>"; };
 		A7ED20321E8323E900BFFA01 /* FindFriendsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsViewControllerTests.swift; sourceTree = "<group>"; };
 		A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivityViewControllerTests.swift; sourceTree = "<group>"; };
 		A7ED20341E8323E900BFFA01 /* CommentsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2749,7 +2743,6 @@
 				A73923B21D272242004524C3 /* Login.storyboard */,
 				A73923B31D272242004524C3 /* Main.storyboard */,
 				A73923B41D272242004524C3 /* Messages.storyboard */,
-				A73923B51D272242004524C3 /* Profile.storyboard */,
 				A73923B71D272242004524C3 /* ProjectActivity.storyboard */,
 				A78838731D8A2EFF0081E94D /* ProjectPamphlet.storyboard */,
 				A77DA9231E4D13F000DB3A66 /* RewardCell.xib */,
@@ -2984,8 +2977,6 @@
 				A75A29231CE0AE5A00D35E5C /* MessagesViewController.swift */,
 				A71003D81CDCFA2500B4F4D7 /* MessageThreadsViewController.swift */,
 				A7ED203E1E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift */,
-				A745D0491CA8986E00C12802 /* ProfileViewController.swift */,
-				A7ED20311E8323E900BFFA01 /* ProfileViewControllerTests.swift */,
 				9D9F580C1D131B1200CE81DE /* ProjectActivitiesViewController.swift */,
 				A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */,
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
@@ -4893,7 +4884,6 @@
 				9DDE1F701D5924AC0092D9A5 /* Checkout.storyboard in Resources */,
 				A73923CA1D272242004524C3 /* Settings.storyboard in Resources */,
 				A73923C01D272242004524C3 /* Discovery.storyboard in Resources */,
-				A73923C61D272242004524C3 /* Profile.storyboard in Resources */,
 				A73923C11D272242004524C3 /* Friends.storyboard in Resources */,
 				01940B2E1D46A9AD0074FCE3 /* Help.storyboard in Resources */,
 				014D62FF1E7211220033D2BD /* BackerDashboardProjectCell.xib in Resources */,
@@ -5415,7 +5405,6 @@
 				D08A817B1DFAAD04000128DB /* LiveStreamContainerViewController.swift in Sources */,
 				598D96B61D426D80003F3F66 /* ActivitySampleFollowCell.swift in Sources */,
 				A72C3AB91D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */,
-				A745D04B1CA8986E00C12802 /* ProfileViewController.swift in Sources */,
 				A77DA9641E4D1F4D00DB3A66 /* Nib.swift in Sources */,
 				A75A29281CE0B7DD00D35E5C /* BackingCell.swift in Sources */,
 				A731BF5A1D1ED60800A734AC /* WebViewController.swift in Sources */,
@@ -5548,7 +5537,6 @@
 				A7ED201A1E83229E00BFFA01 /* ProfileDataSourceTests.swift in Sources */,
 				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
-				A7ED204C1E8323E900BFFA01 /* ProfileViewControllerTests.swift in Sources */,
 				A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
