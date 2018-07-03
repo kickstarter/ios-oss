@@ -34,25 +34,28 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       self.iconImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
       self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
 
-      self.animatedIconImageVIew.alpha = 1.0
-
       UIView.animate(
-        withDuration: 0.6,
+        withDuration: 6.0,
         delay: 0.0,
         usingSpringWithDamping: 0.8,
         initialSpringVelocity: 0.0,
-        options: [.repeat, .autoreverse, .curveEaseInOut],
+        options: [.curveEaseInOut, .autoreverse, .repeat],
         animations: {
-          self.iconImageView.alpha = 0.0
           self.animatedIconImageVIew.alpha = 1.0
-          self.iconImageView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-          self.iconImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-          self.iconImageView.alpha = 1.0
-          self.animatedIconImageVIew.alpha = 0.0
+          self.iconImageView.alpha = 0.0
           self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
           self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+          self.animatedIconImageVIew.alpha = 0.0
+          self.iconImageView.alpha = 1.0
+
+          self.animatedIconImageVIew.alpha = 0.0
+          self.iconImageView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+          self.iconImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+          self.iconImageView.alpha = 0.0
+          self.animatedIconImageVIew.alpha = 1.0
+
       },
-        completion: { _ in UIView.animate(withDuration: 1.0, animations: { self.animatedIconImageVIew.alpha = 1.0 })  })
+        completion: nil)
     }
   }
 
