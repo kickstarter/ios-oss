@@ -81,18 +81,4 @@ internal final class SettingsViewControllerTests: TestCase {
       }
     }
   }
-
-  func testNonRelease() {
-    let bundle = MockBundle(bundleIdentifier: "com.kickstarter.kickstarter.beta")
-
-    withEnvironment(apiService: MockService(fetchUserSelfResponse: .template), mainBundle: bundle) {
-      let vc = SettingsViewController.instantiate()
-      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 1_800
-
-      self.scheduler.run()
-
-      FBSnapshotVerifyView(vc.view)
-    }
-  }
 }
