@@ -269,6 +269,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="emailProjectUpdatesButton" destination="lCv-oW-5rH" id="jj4-e8-PGn"/>
                         <outlet property="findFriendsButton" destination="r0m-Hf-c3Y" id="I4f-XN-ZJU"/>
                         <outlet property="findFriendsLabel" destination="cBC-DT-HcP" id="hcM-OM-kFo"/>
                         <outlet property="followerButton" destination="7NU-9m-iyy" id="MgT-5B-J1m"/>
@@ -284,7 +285,6 @@
                         <outlet property="projectUpdatesLabel" destination="arL-t1-u9d" id="qgu-cI-c1y"/>
                         <outlet property="projectsYouBackTitleLabel" destination="4b5-7t-PnI" id="3Nc-Oi-cqa"/>
                         <outlet property="socialNotificationsTitleLabel" destination="I6w-7B-Cp7" id="CHs-GA-edp"/>
-                        <outlet property="updatesButton" destination="lCv-oW-5rH" id="RWl-Ku-MTN"/>
                         <outletCollection property="pushNotificationButtons" destination="m0a-gA-4Sv" collectionClass="NSMutableArray" id="7Wi-o6-FV6"/>
                         <outletCollection property="separatorViews" destination="bI5-Db-mFQ" collectionClass="NSMutableArray" id="bFM-z3-m8E"/>
                         <outletCollection property="separatorViews" destination="eB1-PY-FtM" collectionClass="NSMutableArray" id="Yve-XO-3cT"/>

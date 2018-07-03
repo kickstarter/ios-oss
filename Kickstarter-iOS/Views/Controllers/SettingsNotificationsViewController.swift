@@ -22,7 +22,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var projectsYouBackTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectUpdatesLabel: UILabel!
   @IBOutlet fileprivate weak var socialNotificationsTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var updatesButton: UIButton!
+  @IBOutlet fileprivate weak var emailProjectUpdatesButton: UIButton!
   @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var pushNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var separatorViews: [UIView]!
@@ -133,6 +133,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
         self?.goToFindFriends()
     }
 
+    self.emailProjectUpdatesButton.rac.selected = self.viewModel.outputs.emailProjectUpdatesSelected
     self.followerButton.rac.selected = self.viewModel.outputs.emailNewFollowersSelected
     self.friendActivityButton.rac.selected = self.viewModel.outputs.emailFriendsActivitySelected
     self.manageProjectNotificationsButton.rac.accessibilityHint =
@@ -141,10 +142,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.mobileFriendActivityButton.rac.selected = self.viewModel.outputs.mobileFriendsActivitySelected
     self.mobileUpdatesButton.rac.selected = self.viewModel.outputs.mobileProjectUpdatesSelected
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
-    self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
   }
 
-  @IBAction fileprivate func emailProjectUpdates(_ button: UIButton) {
+  @IBAction fileprivate func emailUpdatesTapped(_ button: UIButton) {
     self.viewModel.inputs.emailProjectUpdates(selected: !button.isSelected)
   }
 
@@ -177,7 +177,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
   }
 
   fileprivate func goToManageProjectNotifications() {
-    let vc = SettingsNotificationsViewController.instantiate()
+    let vc = ProjectNotificationsViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

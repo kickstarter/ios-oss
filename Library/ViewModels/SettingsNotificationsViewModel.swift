@@ -30,7 +30,6 @@ public protocol SettingsNotificationsViewModelOutputs {
   var mobileProjectUpdatesSelected: Signal<Bool, NoError> { get }
   var projectNotificationsCount: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
-  var updatesSelected: Signal<Bool, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
 }
 
@@ -102,14 +101,11 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
 
-    self.updatesSelected = self.updateCurrentUser
-      .map { $0.notifications.updates }.skipNil().skipRepeats()
-
-    self.emailNewFollowersSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileFollower }.skipNil().skipRepeats()
-
     self.emailFriendsActivitySelected = self.updateCurrentUser
       .map { $0.notifications.friendActivity }.skipNil().skipRepeats()
+
+    self.emailNewFollowersSelected = self.updateCurrentUser
+      .map { $0.notifications.follower }.skipNil().skipRepeats()
 
     self.emailProjectUpdatesSelected = self.updateCurrentUser
       .map { $0.notifications.updates }.skipNil().skipRepeats()
@@ -191,7 +187,6 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   public let mobileProjectUpdatesSelected: Signal<Bool, NoError>
   public let projectNotificationsCount: Signal<String, NoError>
   public let unableToSaveError: Signal<String, NoError>
-  public let updatesSelected: Signal<Bool, NoError>
   public let updateCurrentUser: Signal<User, NoError>
 
   public var inputs: SettingsNotificationsViewModelInputs { return self }
