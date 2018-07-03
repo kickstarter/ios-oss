@@ -5,7 +5,7 @@ import UIKit
 
 internal final class SettingsNotificationsViewController: UIViewController {
 
-  private let viewModel: SettingsViewModelType = SettingsViewModel()
+  private let viewModel: SettingsNotificationsViewModelType = SettingsNotificationsViewModel()
 
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
@@ -111,7 +111,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
     _ = self.socialNotificationsTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_title() }
-
   }
 
   @IBAction fileprivate func emailProjectUpdates(_ button: UIButton) {
@@ -119,7 +118,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
   }
 
   @IBAction fileprivate func mobileUpdatesTapped(_ sender: UIButton) {
-    self.viewModel.inputs.mobileUpdatesTapped(selected: !sender.isSelected)
+    self.viewModel.inputs.mobileProjectUpdatesTapped(selected: !sender.isSelected)
   }
 
   @IBAction func emailNewFollowersTapped(_ sender: UIButton) {
@@ -127,7 +126,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
   }
 
   @IBAction func mobileNewFollowersTapped(_ sender: UIButton) {
-    self.viewModel.inputs.mobileNewFollowersSelected(selected: !sender.isSelected)
+    self.viewModel.inputs.mobileNewFollowersTapped(selected: !sender.isSelected)
   }
   
   @IBAction func emailFriendsActivityTapped(_ sender: UIButton) {
