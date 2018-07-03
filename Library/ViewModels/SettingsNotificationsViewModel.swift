@@ -8,24 +8,29 @@ import Result
 public protocol SettingsNotificationsViewModelInputs {
 
   func emailFriendActivityTapped(selected: Bool)
+  func emailMessagesTapped(selected: Bool)
   func emailNewFollowersTapped(selected: Bool)
   func emailProjectUpdates(selected: Bool)
   func findFriendsTapped()
   func manageProjectNotificationsTapped()
   func mobileFriendsActivityTapped(selected: Bool)
+  func mobileMessagesTapped(selected: Bool)
   func mobileNewFollowersTapped(selected: Bool)
   func mobileProjectUpdatesTapped(selected: Bool)
   func viewDidLoad()
 }
 
 public protocol SettingsNotificationsViewModelOutputs {
-  var emailNewFollowersSelected: Signal<Bool, NoError> { get }
+
   var emailFriendsActivitySelected: Signal<Bool, NoError> { get }
+  var emailMessagesSelected: Signal<Bool, NoError> { get }
+  var emailNewFollowersSelected: Signal<Bool, NoError> { get }
   var emailProjectUpdatesSelected: Signal<Bool, NoError> { get }
   var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
   var mobileFriendsActivitySelected: Signal<Bool, NoError> { get }
+  var mobileMessagesSelected: Signal<Bool, NoError> { get }
   var mobileNewFollowersSelected: Signal<Bool, NoError> { get }
   var mobileProjectUpdatesSelected: Signal<Bool, NoError> { get }
   var projectNotificationsCount: Signal<String, NoError> { get }
@@ -53,12 +58,17 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     .skipNil()
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = Signal.merge(
-
+      self.emailFriendActivityProperty.signal.map {
+        (UserAttribute.notification(Notification.friendActivity), $0)
+      },
+      self.emailMessagesProperty.signal.map {
+        (UserAttribute.notification(Notification.messages), $0)
+      },
       self.emailNewFollowersProperty.signal.map {
         (UserAttribute.notification(Notification.follower), $0)
       },
-      self.emailFriendActivityProperty.signal.map {
-        (UserAttribute.notification(Notification.friendActivity), $0)
+      self.mobileMessagesProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileMessages), $0)
       },
       self.mobileNewFollowersProperty.signal.map {
         (UserAttribute.notification(Notification.mobileFollower), $0)
@@ -104,6 +114,9 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.emailFriendsActivitySelected = self.updateCurrentUser
       .map { $0.notifications.friendActivity }.skipNil().skipRepeats()
 
+    self.emailMessagesSelected = self.updateCurrentUser
+      .map { $0.notifications.messages }.skipNil().skipRepeats()
+
     self.emailNewFollowersSelected = self.updateCurrentUser
       .map { $0.notifications.follower }.skipNil().skipRepeats()
 
@@ -120,6 +133,9 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.mobileFriendsActivitySelected = self.updateCurrentUser
       .map { $0.notifications.mobileFriendActivity }.skipNil().skipRepeats()
 
+    self.mobileMessagesSelected = self.updateCurrentUser
+      .map { $0.notifications.mobileMessages }.skipNil().skipRepeats()
+
     self.mobileNewFollowersSelected = self.updateCurrentUser
       .map { $0.notifications.mobileFollower }.skipNil().skipRepeats()
 
@@ -134,6 +150,11 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   fileprivate let emailFriendActivityProperty = MutableProperty(false)
   public func emailFriendActivityTapped(selected: Bool) {
     self.emailFriendActivityProperty.value = selected
+  }
+
+  fileprivate let emailMessagesProperty = MutableProperty(false)
+  public func emailMessagesTapped(selected: Bool) {
+    self.emailMessagesProperty.value = selected
   }
 
   fileprivate let emailNewFollowersProperty = MutableProperty(false)
@@ -161,6 +182,11 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.mobileFriendsActivityProperty.value = selected
   }
 
+  fileprivate let mobileMessagesProperty = MutableProperty(false)
+  public func mobileMessagesTapped(selected: Bool) {
+    self.mobileMessagesProperty.value = selected
+  }
+
   fileprivate let mobileNewFollowersProperty = MutableProperty(false)
   public func mobileNewFollowersTapped(selected: Bool) {
     self.mobileNewFollowersProperty.value = selected
@@ -177,11 +203,13 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   }
 
   public let emailFriendsActivitySelected: Signal<Bool, NoError>
+  public let emailMessagesSelected: Signal<Bool, NoError>
   public let emailNewFollowersSelected: Signal<Bool, NoError>
   public let emailProjectUpdatesSelected: Signal<Bool, NoError>
   public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
   public let manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
+  public let mobileMessagesSelected: Signal<Bool, NoError>
   public let mobileNewFollowersSelected: Signal<Bool, NoError>
   public let mobileFriendsActivitySelected: Signal<Bool, NoError>
   public let mobileProjectUpdatesSelected: Signal<Bool, NoError>

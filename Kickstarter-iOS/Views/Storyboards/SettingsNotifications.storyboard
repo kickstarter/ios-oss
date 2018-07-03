@@ -23,7 +23,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="xbW-Oh-E8n" userLabel="Root stack view">
-                                <rect key="frame" x="16" y="64" width="343" height="485"/>
+                                <rect key="frame" x="16" y="64" width="343" height="544"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n0a-8a-Hvr">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="0.0"/>
@@ -112,7 +112,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="RCo-hA-Qax" userLabel="Social notifications stack view">
-                                        <rect key="frame" x="0.0" y="239.5" width="343" height="209.5"/>
+                                        <rect key="frame" x="0.0" y="239.5" width="343" height="268.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J3m-cH-dut" userLabel="Social notifications label">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
@@ -127,8 +127,44 @@
                                                     <constraint firstAttribute="height" constant="1" id="b2w-wy-2PS"/>
                                                 </constraints>
                                             </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="TSh-nd-xRa">
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="FdW-lI-PUl">
                                                 <rect key="frame" x="0.0" y="45.5" width="343" height="34"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bbr-fu-NPi">
+                                                        <rect key="frame" x="0.0" y="0.0" width="231" height="34"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hho-LN-a8Y">
+                                                        <rect key="frame" x="243" y="0.0" width="44" height="34"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="44" id="biS-ms-ifX"/>
+                                                        </constraints>
+                                                        <connections>
+                                                            <action selector="messagesTapped:" destination="JLZ-Bh-abg" eventType="touchUpInside" id="pGR-c8-SfP"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NYs-tD-ahe">
+                                                        <rect key="frame" x="299" y="0.0" width="44" height="34"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="44" id="RHv-pH-JMU"/>
+                                                        </constraints>
+                                                        <connections>
+                                                            <action selector="mobileMessagesTapped:" destination="JLZ-Bh-abg" eventType="touchUpInside" id="KY0-zF-IRd"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bbw-D7-rP4">
+                                                <rect key="frame" x="0.0" y="91.5" width="343" height="1"/>
+                                                <color key="backgroundColor" red="0.89563578369999997" green="0.89563578369999997" blue="0.89563578369999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="m5e-md-Fko"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="TSh-nd-xRa">
+                                                <rect key="frame" x="0.0" y="104.5" width="343" height="34"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BG9-ea-Xjd" userLabel="New Followers Label">
                                                         <rect key="frame" x="0.0" y="0.0" width="231" height="34"/>
@@ -157,14 +193,14 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qYZ-Rt-eQE">
-                                                <rect key="frame" x="0.0" y="91.5" width="343" height="1"/>
+                                                <rect key="frame" x="0.0" y="150.5" width="343" height="1"/>
                                                 <color key="backgroundColor" red="0.89563578369999997" green="0.89563578369999997" blue="0.89563578369999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="Y1l-BR-lho"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="X4v-5A-0Er">
-                                                <rect key="frame" x="0.0" y="104.5" width="343" height="34"/>
+                                                <rect key="frame" x="0.0" y="163.5" width="343" height="34"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ieb-9c-vn9" userLabel="Friend Activity Label">
                                                         <rect key="frame" x="0.0" y="0.0" width="231" height="34"/>
@@ -193,14 +229,14 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CfL-3K-TxS">
-                                                <rect key="frame" x="0.0" y="150.5" width="343" height="1"/>
+                                                <rect key="frame" x="0.0" y="209.5" width="343" height="1"/>
                                                 <color key="backgroundColor" red="0.89563578369999997" green="0.89563578369999997" blue="0.89563578369999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="0aU-cV-STo"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="g9U-VY-aT1" userLabel="Find Friends Stack View">
-                                                <rect key="frame" x="0.0" y="163.5" width="343" height="33"/>
+                                                <rect key="frame" x="0.0" y="222.5" width="343" height="33"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBC-DT-HcP" userLabel="Find Friends Label">
                                                         <rect key="frame" x="0.0" y="6.5" width="316" height="20.5"/>
@@ -214,7 +250,7 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jlL-fb-fji">
-                                                <rect key="frame" x="0.0" y="208.5" width="343" height="1"/>
+                                                <rect key="frame" x="0.0" y="267.5" width="343" height="1"/>
                                                 <color key="backgroundColor" red="0.89563578369999997" green="0.89563578369999997" blue="0.89563578369999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="V7U-Bm-TEg"/>
@@ -223,7 +259,7 @@
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AJs-ym-aCy">
-                                        <rect key="frame" x="0.0" y="485" width="343" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="544" width="343" height="0.0"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" id="4es-7C-Ruv"/>
@@ -239,7 +275,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r0m-Hf-c3Y">
-                                <rect key="frame" x="16" y="467" width="343" height="33"/>
+                                <rect key="frame" x="16" y="526" width="343" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -272,8 +308,11 @@
                         <outlet property="friendActivityLabel" destination="ieb-9c-vn9" id="7jw-FC-qJe"/>
                         <outlet property="manageProjectNotificationsButton" destination="Xtd-UD-87r" id="Uo5-mc-RUI"/>
                         <outlet property="manageProjectNotificationsLabel" destination="gvv-6U-ggd" id="eXp-Fh-ejz"/>
+                        <outlet property="messagesButton" destination="hho-LN-a8Y" id="Swv-V9-AoD"/>
+                        <outlet property="messagesLabel" destination="Bbr-fu-NPi" id="l0o-Kv-ow3"/>
                         <outlet property="mobileFollowerButton" destination="neh-sl-PJV" id="1We-9r-i4E"/>
                         <outlet property="mobileFriendActivityButton" destination="m0a-gA-4Sv" id="i6F-2P-zef"/>
+                        <outlet property="mobileMessagesButton" destination="NYs-tD-ahe" id="Bu9-WY-bXu"/>
                         <outlet property="mobileUpdatesButton" destination="bW2-5Q-sEu" id="ki0-lj-rkO"/>
                         <outlet property="newFollowersLabel" destination="BG9-ea-Xjd" id="nRl-i1-beQ"/>
                         <outlet property="projectNotificationsCountView" destination="lH0-4n-1mr" id="m1R-Kw-UnZ"/>
@@ -293,6 +332,8 @@
                         <outletCollection property="emailNotificationButtons" destination="xwK-W8-KGb" collectionClass="NSMutableArray" id="s6t-Ha-Cfo"/>
                         <outletCollection property="separatorViews" destination="CfL-3K-TxS" collectionClass="NSMutableArray" id="WsN-Rw-tSj"/>
                         <outletCollection property="separatorViews" destination="jlL-fb-fji" collectionClass="NSMutableArray" id="UDV-Ec-jgN"/>
+                        <outletCollection property="emailNotificationButtons" destination="hho-LN-a8Y" collectionClass="NSMutableArray" id="0k7-d5-xd0"/>
+                        <outletCollection property="pushNotificationButtons" destination="NYs-tD-ahe" collectionClass="NSMutableArray" id="FEO-xh-iAE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="deh-wf-zvn" userLabel="First Responder" sceneMemberID="firstResponder"/>

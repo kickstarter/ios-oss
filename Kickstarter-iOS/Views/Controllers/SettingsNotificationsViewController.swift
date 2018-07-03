@@ -17,6 +17,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var newFollowersLabel: UILabel!
   @IBOutlet fileprivate weak var manageProjectNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsLabel: UILabel!
+  @IBOutlet fileprivate weak var messagesLabel: UILabel!
+  @IBOutlet fileprivate weak var messagesButton: UIButton!
+  @IBOutlet fileprivate weak var mobileMessagesButton: UIButton!
   @IBOutlet fileprivate weak var mobileUpdatesButton: UIButton!
   @IBOutlet fileprivate weak var projectNotificationsCountView: CountBadgeView!
   @IBOutlet fileprivate weak var projectsYouBackTitleLabel: UILabel!
@@ -80,6 +83,10 @@ internal final class SettingsNotificationsViewController: UIViewController {
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_backer_notifications() }
 
+    _ = messagesLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.dashboard_buttons_messages() }
+
     _ = self.newFollowersLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_followers() }
@@ -107,8 +114,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_title() }
   }
-
-  // swiftlint:enable function_body_length
 
   internal override func bindViewModel() {
     super.bindViewModel()
@@ -138,8 +143,10 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.friendActivityButton.rac.selected = self.viewModel.outputs.emailFriendsActivitySelected
     self.manageProjectNotificationsButton.rac.accessibilityHint =
     self.viewModel.outputs.manageProjectNotificationsButtonAccessibilityHint
+    self.messagesButton.rac.selected = self.viewModel.outputs.emailMessagesSelected
     self.mobileFollowerButton.rac.selected = self.viewModel.outputs.mobileNewFollowersSelected
     self.mobileFriendActivityButton.rac.selected = self.viewModel.outputs.mobileFriendsActivitySelected
+    self.mobileMessagesButton.rac.selected = self.viewModel.outputs.mobileMessagesSelected
     self.mobileUpdatesButton.rac.selected = self.viewModel.outputs.mobileProjectUpdatesSelected
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
   }
@@ -164,8 +171,16 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.viewModel.inputs.emailFriendActivityTapped(selected: !sender.isSelected)
   }
 
+  @IBAction fileprivate func messagesTapped(_ button: UIButton) {
+    self.viewModel.inputs.emailMessagesTapped(selected: !button.isSelected)
+  }
+
   @IBAction func mobileFriendsActivityTapped(_ sender: UIButton) {
     self.viewModel.inputs.mobileFriendsActivityTapped(selected: !sender.isSelected)
+  }
+
+  @IBAction fileprivate func mobileMessagesTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileMessagesTapped(selected: !button.isSelected)
   }
 
   @objc fileprivate func findFriendsTapped() {
