@@ -51,6 +51,42 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     .skipNil()
 
 
+    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = Signal.merge(
+
+      self.emailNewFollowersProperty.signal.map {
+        (UserAttribute.notification(Notification.follower), $0)
+      },
+      self.emailFriendActivityProperty.signal.map {
+        (UserAttribute.notification(Notification.friendActivity), $0)
+      },
+      self.mobileNewFollowersProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileFollower), $0)
+      },
+      self.mobileFriendActivityProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileFriendActivity), $0)
+      },
+      self.mobileProjectUpdatesProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileUpdates), $0)
+      },
+      self.emailProjectUpdatesProperty.signal.map {
+        (UserAttribute.notification(Notification.updates), $0)
+      }
+    )
+
+    let updatedUser = initialUser
+      .switchMap { user in
+        userAttributeChanged.scan(user) { user, attributeAndOn in
+          let (attribute, on) = attributeAndOn
+          return user |> attribute.lens .~ on
+        }
+    }
+
+    let updateEvent = updatedUser
+      .switchMap {
+        AppEnvironment.current.apiService.updateUserSelf($0)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
   }
 
   fileprivate let emailFriendActivityProperty = MutableProperty(false)
