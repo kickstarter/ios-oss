@@ -105,16 +105,34 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.updatesSelected = self.updateCurrentUser
       .map { $0.notifications.updates }.skipNil().skipRepeats()
 
-    self.emailNewFollowersSelected = .empty
-    self.emailFriendsActivitySelected = .empty
-    self.emailProjectUpdatesSelected = .empty
-    self.goToFindFriends = .empty
-    self.goToManageProjectNotifications = .empty
-    self.manageProjectNotificationsButtonAccessibilityHint = .empty
-    self.mobileFriendsActivitySelected = .empty
-    self.mobileNewFollowersSelected = .empty
-    self.mobileProjectUpdatesSelected = .empty
-    self.projectNotificationsCount = .empty
+    self.emailNewFollowersSelected = self.updateCurrentUser
+      .map { $0.notifications.mobileFollower }.skipNil().skipRepeats()
+
+    self.emailFriendsActivitySelected = self.updateCurrentUser
+      .map { $0.notifications.friendActivity }.skipNil().skipRepeats()
+
+    self.emailProjectUpdatesSelected = self.updateCurrentUser
+      .map { $0.notifications.updates }.skipNil().skipRepeats()
+
+    self.goToFindFriends = self.findFriendsTappedProperty.signal
+
+    self.goToManageProjectNotifications = self.manageProjectNotificationsProperty.signal
+
+    self.manageProjectNotificationsButtonAccessibilityHint = self.updateCurrentUser
+      .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
+
+    self.mobileFriendsActivitySelected = self.updateCurrentUser
+      .map { $0.notifications.mobileFriendActivity }.skipNil().skipRepeats()
+
+    self.mobileNewFollowersSelected = self.updateCurrentUser
+      .map { $0.notifications.mobileFollower }.skipNil().skipRepeats()
+
+    self.mobileProjectUpdatesSelected = self.updateCurrentUser
+      .map { $0.notifications.mobileUpdates }.skipNil().skipRepeats()
+
+    self.projectNotificationsCount = self.updateCurrentUser
+      .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
+      .skipRepeats()
   }
 
   fileprivate let emailFriendActivityProperty = MutableProperty(false)

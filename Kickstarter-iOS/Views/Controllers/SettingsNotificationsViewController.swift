@@ -12,22 +12,17 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var followerButton: UIButton!
   @IBOutlet fileprivate weak var friendActivityButton: UIButton!
   @IBOutlet fileprivate weak var friendActivityLabel: UILabel!
-  @IBOutlet fileprivate weak var messagesLabel: UILabel!
-  @IBOutlet fileprivate weak var messagesButton: UIButton!
   @IBOutlet fileprivate weak var mobileFollowerButton: UIButton!
   @IBOutlet fileprivate weak var mobileFriendActivityButton: UIButton!
-  @IBOutlet fileprivate weak var mobileMessagesButton: UIButton!
   @IBOutlet fileprivate weak var newFollowersLabel: UILabel!
   @IBOutlet fileprivate weak var manageProjectNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var manageProjectNotificationsLabel: UILabel!
   @IBOutlet fileprivate weak var mobileUpdatesButton: UIButton!
-
   @IBOutlet fileprivate weak var projectNotificationsCountView: CountBadgeView!
   @IBOutlet fileprivate weak var projectsYouBackTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectUpdatesLabel: UILabel!
   @IBOutlet fileprivate weak var socialNotificationsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var updatesButton: UIButton!
-
   @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var pushNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var separatorViews: [UIView]!
@@ -113,6 +108,42 @@ internal final class SettingsNotificationsViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_title() }
   }
 
+  // swiftlint:enable function_body_length
+
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.goToManageProjectNotifications
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
+
+    self.viewModel.outputs.unableToSaveError
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
+    }
+
+    self.viewModel.outputs.updateCurrentUser
+      .observeForUI()
+      .observeValues { user in AppEnvironment.updateCurrentUser(user) }
+
+    self.viewModel.outputs.goToFindFriends
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToFindFriends()
+    }
+
+    self.followerButton.rac.selected = self.viewModel.outputs.emailNewFollowersSelected
+    self.friendActivityButton.rac.selected = self.viewModel.outputs.emailFriendsActivitySelected
+    self.manageProjectNotificationsButton.rac.accessibilityHint =
+    self.viewModel.outputs.manageProjectNotificationsButtonAccessibilityHint
+    self.mobileFollowerButton.rac.selected = self.viewModel.outputs.mobileNewFollowersSelected
+    self.mobileFriendActivityButton.rac.selected = self.viewModel.outputs.mobileFriendsActivitySelected
+    self.mobileUpdatesButton.rac.selected = self.viewModel.outputs.mobileProjectUpdatesSelected
+    self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
+    self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
+  }
+
   @IBAction fileprivate func emailProjectUpdates(_ button: UIButton) {
     self.viewModel.inputs.emailProjectUpdates(selected: !button.isSelected)
   }
@@ -128,7 +159,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBAction func mobileNewFollowersTapped(_ sender: UIButton) {
     self.viewModel.inputs.mobileNewFollowersTapped(selected: !sender.isSelected)
   }
-  
+
   @IBAction func emailFriendsActivityTapped(_ sender: UIButton) {
     self.viewModel.inputs.emailFriendActivityTapped(selected: !sender.isSelected)
   }
@@ -143,5 +174,15 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
   @objc fileprivate func manageProjectNotificationsTapped() {
     self.viewModel.inputs.manageProjectNotificationsTapped()
+  }
+
+  fileprivate func goToManageProjectNotifications() {
+    let vc = SettingsNotificationsViewController.instantiate()
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  fileprivate func goToFindFriends() {
+    let vc = FindFriendsViewController.configuredWith(source: .settings)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
