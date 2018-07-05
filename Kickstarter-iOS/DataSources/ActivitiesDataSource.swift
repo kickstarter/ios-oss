@@ -11,9 +11,9 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     case activities
   }
 
-  internal func facebookConnect(source: FriendsSource, visible: Bool) {
-    // TODO: verify that we can default here to the "connect" state
-    let facebookCellValue = FacebookConnectCellValue(source: source, connectionType: .connect)
+  internal func facebookConnect(type: FacebookConnectionType, source: FriendsSource, visible: Bool) {
+    let facebookCellValue = FacebookConnectCellValue(source: source, connectionType: type)
+    
     self.set(values: visible ? [facebookCellValue] : [],
              cellClass: FindFriendsFacebookConnectCell.self,
              inSection: Section.facebookConnect.rawValue)

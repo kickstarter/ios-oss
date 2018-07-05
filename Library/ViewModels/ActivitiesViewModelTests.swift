@@ -21,6 +21,7 @@ final class ActivitiesViewModelTests: TestCase {
   fileprivate let goToFriends = TestObserver<FriendsSource, NoError>()
   fileprivate let showEmptyStateIsLoggedIn = TestObserver<Bool, NoError>()
   fileprivate let showFacebookConnectSection = TestObserver<Bool, NoError>()
+  fileprivate let showFacebookReconnectSection = TestObserver<Bool, NoError>()
   fileprivate let showFacebookConnectSectionSource = TestObserver<FriendsSource, NoError>()
   fileprivate let showFindFriendsSection = TestObserver<Bool, NoError>()
   fileprivate let showFindFriendsSectionSource = TestObserver<FriendsSource, NoError>()
@@ -47,6 +48,7 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.showFindFriendsSection.map { $0.0 }.observe(self.showFindFriendsSectionSource.observer)
     self.vm.outputs.showFacebookConnectErrorAlert.observe(self.showFacebookConnectErrorAlert.observer)
     self.vm.outputs.unansweredSurveys.observe(self.unansweredSurveyResponse.observer)
+    self.vm.outputs.showFacebookReconnectSection.map { $0.1 }.observe(showFacebookReconnectSection.observer)
   }
 
   // Tests the flow of logging in with a user that has activities.
@@ -305,6 +307,63 @@ final class ActivitiesViewModelTests: TestCase {
 
     showFacebookConnectSection.assertValues([false, true, false],
                                             "Don't show Facebook Connect Section on return")
+  }
+
+  func testFacebookReconnectSection() {
+    // logged out
+    self.showFacebookReconnectSection.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: false)
+
+    self.showFacebookReconnectSection.assertValueCount(0)
+
+    // logged in && not Facebook connected
+    AppEnvironment.logout()
+    self.vm.inputs.userSessionEnded()
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+    self.vm.inputs.userSessionStarted()
+    self.scheduler.advance()
+    self.vm.inputs.viewWillAppear(animated: false)
+
+    self.showFacebookReconnectSection.assertValues([false], "Don't show Facebook Reconnect Section")
+
+    // logged in && Facebook connected, does not need fresh Facebook token
+    let user = User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ false
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.userSessionStarted()
+    self.scheduler.advance()
+
+    self.vm.inputs.viewWillAppear(animated: false)
+
+    self.showFacebookReconnectSection.assertValues([false, false], "Don't show Facebook Reconnect Section")
+
+    // logged in && Facebook connected, needs fresh Facebook token
+    let facebookReconnectUser = User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ true
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: facebookReconnectUser))
+    self.vm.inputs.userSessionStarted()
+    self.scheduler.advance()
+
+    self.vm.inputs.viewWillAppear(animated: false)
+
+    self.showFacebookReconnectSection.assertValues([false, false, true], "Shows facebook reconnect section")
+
+    // delete section
+    // TODO determine if the cell is delete-able from the activities VC
+//    self.deleteFacebookConnectSection.assertValueCount(0)
+//
+//    self.vm.inputs.findFriendsFacebookConnectCellDidDismissHeader()
+//
+//    self.deleteFacebookConnectSection.assertValueCount(1)
+//
+//    self.vm.inputs.viewWillAppear(animated: false)
+//
+//    showFacebookConnectSection.assertValues([false, false, true, false],
+//                                            "Don't show Facebook Connect Section on return")
   }
 
   func testFindFriendsSection() {
