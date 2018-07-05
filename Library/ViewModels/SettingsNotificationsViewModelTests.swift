@@ -63,7 +63,9 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.viewDidLoad()
 
-    self.emailProjectUpdatesSelected.assertValues([false], "All project updates notifications turned off as test default.")
+    self.emailProjectUpdatesSelected.assertValues(
+      [false], "All project updates notifications turned off as test default."
+    )
     self.mobileProjectUpdatesSelected.assertValues([false])
 
     self.vm.inputs.emailProjectUpdatesTapped(selected: true)
@@ -79,21 +81,23 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     self.vm.inputs.emailProjectUpdatesTapped(selected: false)
     self.vm.inputs.mobileProjectUpdatesTapped(selected: false)
 
-    self.emailProjectUpdatesSelected.assertValues([false, true, false], "Mobile social notifications toggled off.")
+    self.emailProjectUpdatesSelected.assertValues([false, true, false],
+                                                  "Mobile social notifications toggled off.")
     self.mobileProjectUpdatesSelected.assertValues([false, true, false])
 
     XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
                     "Enabled Push Notifications",
-                    "Disabled Email Notifications", "Disabled Push Notifications"], self.trackingClient.events)
+                    "Disabled Email Notifications", "Disabled Push Notifications"],
+                   self.trackingClient.events)
   }
-
 
   func testSocialNotificationsToggled() {
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.viewDidLoad()
 
-    self.emailNewFollowersSelected.assertValues([false], "All social notifications turned off as test default.")
+    self.emailNewFollowersSelected.assertValues([false],
+                                                "All social notifications turned off as test default.")
     self.emailFriendsActivitySelected.assertValues([false])
     self.emailMessagesSelected.assertValues([false])
     self.mobileNewFollowersSelected.assertValues([false])
@@ -115,22 +119,22 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     self.mobileMessagesSelected.assertValues([false, true])
 
     XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
-                    "Enabled Email Notifications", "Enabled Email Notifications", "Enabled Push Notifications",
-                    "Enabled Push Notifications", "Enabled Push Notifications"],
+                    "Enabled Email Notifications", "Enabled Email Notifications",
+                    "Enabled Push Notifications", "Enabled Push Notifications", "Enabled Push Notifications"],
                    self.trackingClient.events)
 
     self.vm.inputs.mobileNewFollowersTapped(selected: false)
     self.vm.inputs.mobileFriendsActivityTapped(selected: false)
 
-    self.mobileNewFollowersSelected.assertValues([false, true, false], "Mobile social notifications toggled off.")
+    self.mobileNewFollowersSelected.assertValues([false, true, false],
+                                                 "Mobile social notifications toggled off.")
     self.mobileFriendsActivitySelected.assertValues([false, true, false])
 
     XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
-                    "Enabled Email Notifications", "Enabled Email Notifications", "Enabled Push Notifications",
-                    "Enabled Push Notifications", "Enabled Push Notifications",
+                    "Enabled Email Notifications", "Enabled Email Notifications",
+                    "Enabled Push Notifications", "Enabled Push Notifications", "Enabled Push Notifications",
                     "Disabled Push Notifications", "Disabled Push Notifications"], self.trackingClient.events)
   }
-
 
   func testProjectNotificationsCount() {
     let user = User.template |> User.lens.stats.backedProjectsCount .~ 42
@@ -146,7 +150,8 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.viewDidLoad()
 
-    self.emailProjectUpdatesSelected.assertValues([false], "Project update notifications turned off as test default.")
+    self.emailProjectUpdatesSelected.assertValues([false],
+                                                  "Project update notifications turned off as test default.")
     self.mobileProjectUpdatesSelected.assertValues([false])
 
     self.vm.inputs.emailProjectUpdatesTapped(selected: true)
