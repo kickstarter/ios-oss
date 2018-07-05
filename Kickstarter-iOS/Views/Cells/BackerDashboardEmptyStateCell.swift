@@ -5,12 +5,16 @@ import UIKit
 
 internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
 
-  @IBOutlet private weak var iconImageView: UIImageView!
-  @IBOutlet private weak var animatedIconImageVIew: UIImageView!
+  @IBOutlet private weak var filledHeartIconImageView: UIImageView!
   @IBOutlet private weak var messageLabel: UILabel!
   @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet private weak var iconImageView: UIImageView!
 
-  internal var thisImage = UIImageView()
+  private let duration = 0.4
+  private let hideHeart = CGFloat(0.0)
+  private let showHeart = CGFloat(1.0)
+  private let shrinkHeart = CGAffineTransform(scaleX: 0.7, y: 0.7)
+  private let expandHeart = CGAffineTransform(scaleX: 1.0, y: 1.0)
 
   internal func configureWith(value: ProfileProjectsType) {
     switch value {
@@ -31,34 +35,34 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
 
   internal func animateToFilledHeart() {
     UIView.animate(
-      withDuration: 0.4,
+      withDuration: self.duration,
       delay: 1.0,
       usingSpringWithDamping: 1.0,
       initialSpringVelocity: 0.0,
       options: .curveEaseInOut,
       animations: {
-        self.animatedIconImageVIew.alpha = 0.0
-        self.iconImageView.alpha = 0.0
-        self.iconImageView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-        self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-        self.animatedIconImageVIew.alpha = 1.0
+        self.filledHeartIconImageView.alpha = self.hideHeart
+        self.iconImageView.alpha = self.hideHeart
+        self.iconImageView.transform = self.shrinkHeart
+        self.filledHeartIconImageView.transform = self.expandHeart
+        self.filledHeartIconImageView.alpha = self.showHeart
         },
-      completion: { _ in self.animateToHeartOutline() })
+      completion: { _ in self.animateToOutlineHeart() } )
   }
 
-  internal func animateToHeartOutline() {
+  internal func animateToOutlineHeart() {
     UIView.animate(
-      withDuration: 0.4,
+      withDuration: self.duration,
       delay: 0.6,
       usingSpringWithDamping: 1.0,
       initialSpringVelocity: 0.0,
       options: .curveEaseInOut,
       animations: {
-        self.iconImageView.alpha = 0.0
-        self.animatedIconImageVIew.alpha = 0.0
-        self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-        self.iconImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-        self.iconImageView.alpha = 1.0
+        self.filledHeartIconImageView.alpha = self.hideHeart
+        self.iconImageView.alpha = self.hideHeart
+        self.filledHeartIconImageView.transform = self.shrinkHeart
+        self.iconImageView.transform = self.expandHeart
+        self.iconImageView.alpha = self.showHeart
     },
       completion: nil)
   }

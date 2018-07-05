@@ -76,8 +76,8 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="animatedIconImageVIew" destination="20M-1x-YKv" id="MpP-kY-3ZJ"/>
-                <outlet property="iconImageView" destination="8fS-wh-pRu" id="hMY-k3-l6h"/>
+                <outlet property="filledHeartIconImageView" destination="20M-1x-YKv" id="EtJ-KN-juv"/>
+                <outlet property="iconImageView" destination="8fS-wh-pRu" id="z8A-YU-Ucr"/>
                 <outlet property="messageLabel" destination="p1W-dX-mAL" id="nK1-qX-N1b"/>
                 <outlet property="titleLabel" destination="XcK-cs-ZYq" id="ME1-z6-1e8"/>
             </connections>

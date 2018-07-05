@@ -122,7 +122,6 @@ internal final class BackerDashboardViewController: UIViewController {
         guard let _self = self, let controller = self?.pagesDataSource.controllerFor(tab: tab) else {
           fatalError("Controller not found for tab \(tab)")
         }
-
         _self.pageViewController.setViewControllers(
           [controller],
           direction: .forward,
