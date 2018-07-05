@@ -47,7 +47,8 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
         self.filledHeartIconImageView.transform = self.expandHeart
         self.filledHeartIconImageView.alpha = self.showHeart
         },
-      completion: { _ in self.animateToOutlineHeart() } )
+      completion: { _ in self.animateToOutlineHeart() }
+    )
   }
 
   internal func animateToOutlineHeart() {
