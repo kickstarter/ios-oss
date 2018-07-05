@@ -174,7 +174,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
           }
         }
     }
-    
+
     self.viewDidLoadProperty.signal.observeValues { _ in
       AppEnvironment.current.koala.trackSettingsView()
     }
