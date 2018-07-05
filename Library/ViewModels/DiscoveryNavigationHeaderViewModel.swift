@@ -122,7 +122,7 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
     }
 
     self.debugContainerViewIsHidden = self.viewDidLoadProperty.signal
-      .map { AppEnvironment.current.mainBundle.isRelease }
+      .map { AppEnvironment.current.mainBundle.isRelease || AppEnvironment.current.mainBundle.isTest }
 
     self.favoriteViewIsHidden = paramsAndFiltersAreHidden.map(first)
       .map { $0.category == nil }
