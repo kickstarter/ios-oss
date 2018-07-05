@@ -28,14 +28,9 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
   @IBOutlet fileprivate weak var exportDataButton: UIButton!
   @IBOutlet fileprivate weak var exportDataLabel: UILabel!
-  @IBOutlet fileprivate weak var findFriendsButton: UIButton!
-  @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
-  @IBOutlet fileprivate weak var followerButton: UIButton!
   @IBOutlet fileprivate weak var followingPrivacyInfoButton: UIButton!
   @IBOutlet fileprivate weak var followingPrivacyLabel: UILabel!
   @IBOutlet fileprivate weak var followingPrivacySwitch: UISwitch!
-  @IBOutlet fileprivate weak var friendActivityButton: UIButton!
-  @IBOutlet fileprivate weak var friendActivityLabel: UILabel!
   @IBOutlet fileprivate weak var gamesNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var happeningNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var happeningNowLabel: UILabel!
@@ -49,19 +44,10 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var ksrLovesGamesLabel: UILabel!
   @IBOutlet fileprivate weak var ksrNewsAndEventsLabel: UILabel!
   @IBOutlet fileprivate weak var logoutButton: UIButton!
-  @IBOutlet fileprivate weak var manageProjectNotificationsButton: UIButton!
-  @IBOutlet fileprivate weak var manageProjectNotificationsLabel: UILabel!
-  @IBOutlet fileprivate weak var messagesLabel: UILabel!
-  @IBOutlet fileprivate weak var messagesButton: UIButton!
   @IBOutlet fileprivate weak var mobileBackingsButton: UIButton!
   @IBOutlet fileprivate weak var mobileCommentsButton: UIButton!
-  @IBOutlet fileprivate weak var mobileFollowerButton: UIButton!
-  @IBOutlet fileprivate weak var mobileFriendActivityButton: UIButton!
-  @IBOutlet fileprivate weak var mobileMessagesButton: UIButton!
   @IBOutlet fileprivate weak var mobilePostLikesButton: UIButton!
-  @IBOutlet fileprivate weak var mobileUpdatesButton: UIButton!
   @IBOutlet fileprivate weak var newCommentsLabel: UILabel!
-  @IBOutlet fileprivate weak var newFollowersLabel: UILabel!
   @IBOutlet fileprivate weak var newLikesLabel: UILabel!
   @IBOutlet fileprivate weak var newPledgesLabel: UILabel!
   @IBOutlet fileprivate weak var newslettersTitleLabel: UILabel!
@@ -69,20 +55,15 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var privacyTitleLabel: UILabel!
   @IBOutlet fileprivate weak var privacyPolicyButton: UIButton!
   @IBOutlet fileprivate weak var privacyPolicyLabel: UILabel!
-  @IBOutlet fileprivate weak var projectNotificationsCountView: CountBadgeView!
-  @IBOutlet fileprivate weak var projectUpdatesLabel: UILabel!
   @IBOutlet fileprivate weak var projectsWeLoveLabel: UILabel!
-  @IBOutlet fileprivate weak var projectsYouBackTitleLabel: UILabel!
   @IBOutlet fileprivate weak var promoNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var rateUsButton: UIButton!
   @IBOutlet fileprivate weak var rateUsLabel: UILabel!
   @IBOutlet fileprivate weak var recommendationsInfoButton: UIButton!
   @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
   @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
-  @IBOutlet fileprivate weak var socialNotificationsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var termsOfUseButton: UIButton!
   @IBOutlet fileprivate weak var termsOfUseLabel: UILabel!
-  @IBOutlet fileprivate weak var updatesButton: UIButton!
   @IBOutlet fileprivate weak var weeklyNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var versionLabel: UILabel!
   @IBOutlet fileprivate weak var privateProfileSwitch: UISwitch!
@@ -120,10 +101,6 @@ internal final class SettingsViewController: UIViewController {
 
     self.exportDataButton.addTarget(self, action: #selector(exportDataTapped), for: .touchUpInside)
 
-    self.findFriendsButton.addTarget(self,
-                                     action: #selector(findFriendsTapped),
-                                     for: .touchUpInside)
-
     self.followingPrivacyInfoButton.addTarget(self,
                                               action: #selector(followingPrivacyInfoTapped),
                                               for: .touchUpInside)
@@ -135,10 +112,6 @@ internal final class SettingsViewController: UIViewController {
                                      for: .touchUpInside)
 
     self.logoutButton.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
-
-    self.manageProjectNotificationsButton.addTarget(self,
-                                                    action: #selector(manageProjectNotificationsTapped),
-                                                    for: .touchUpInside)
 
     self.termsOfUseButton.addTarget(self,
                                     action: #selector(termsOfUseTapped),
@@ -214,14 +187,6 @@ internal final class SettingsViewController: UIViewController {
         .~ image(named: "email-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
       ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
-    _ = self.findFriendsButton
-      |> settingsSectionButtonStyle
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_social_find_friends() }
-
-    _ = self.findFriendsLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_find_friends() }
-
     _ = self.followingPrivacyLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Following() }
@@ -230,10 +195,6 @@ internal final class SettingsViewController: UIViewController {
       |> UIButton.lens.image(for: .normal)
       .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Following_More_Info() }
-
-    _ = self.friendActivityLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_friend_backs() }
 
     _ = self.happeningNowLabel
       |> settingsSectionLabelStyle
@@ -273,25 +234,9 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.logoutButton |> settingsLogoutButtonStyle
 
-    _ = self.manageProjectNotificationsButton
-      |> settingsSectionButtonStyle
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_backer_notifications() }
-
-    _ = self.manageProjectNotificationsLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_notifications() }
-
-    _ = messagesLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.dashboard_buttons_messages() }
-
     _ = self.newCommentsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_comments() }
-
-    _ = self.newFollowersLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_followers() }
 
     _ = self.newLikesLabel
       |> settingsSectionLabelStyle
@@ -326,17 +271,9 @@ internal final class SettingsViewController: UIViewController {
       .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Private_profile_more_info() }
 
-    _ = self.projectUpdatesLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_backer_project_updates() }
-
     _ = self.projectsWeLoveLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_weekly() }
-
-    _ = self.projectsYouBackTitleLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Projects_youve_backed() }
 
     _ = self.pushNotificationButtons
       ||> settingsNotificationIconButtonStyle
@@ -366,10 +303,6 @@ internal final class SettingsViewController: UIViewController {
     _ = self.separatorViews
       ||> separatorStyle
 
-    _ = self.socialNotificationsTitleLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_title() }
-
     _ = self.termsOfUseButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_terms() }
@@ -395,10 +328,6 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.outputs.goToDeleteAccountBrowser
       .observeForControllerAction()
       .observeValues { [weak self] url in self?.goToDeleteAccount(url: url) }
-
-    self.viewModel.outputs.goToManageProjectNotifications
-      .observeForControllerAction()
-      .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
 
     self.viewModel.outputs.logoutWithParams
       .observeForControllerAction()
@@ -429,12 +358,6 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()
       .observeValues { user in AppEnvironment.updateCurrentUser(user) }
-
-    self.viewModel.outputs.goToFindFriends
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToFindFriends()
-    }
 
     self.viewModel.outputs.goToEmailFrequency
       .observeForControllerAction()
@@ -476,28 +399,17 @@ internal final class SettingsViewController: UIViewController {
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
     self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
     self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
-    self.followerButton.rac.selected = self.viewModel.outputs.followerSelected
     self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
-    self.friendActivityButton.rac.selected = self.viewModel.outputs.friendActivitySelected
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
     self.happeningNewsletterSwitch.rac.on = self.viewModel.outputs.happeningNewsletterOn
     self.inventNewsletterSwitch.rac.on = self.viewModel.outputs.inventNewsletterOn
-    self.manageProjectNotificationsButton.rac.accessibilityHint =
-      self.viewModel.outputs.manageProjectNotificationsButtonAccessibilityHint
-    self.messagesButton.rac.selected = self.viewModel.outputs.messagesSelected
     self.mobileBackingsButton.rac.selected = self.viewModel.outputs.mobileBackingsSelected
     self.mobileCommentsButton.rac.selected = self.viewModel.outputs.mobileCommentsSelected
-    self.mobileFollowerButton.rac.selected = self.viewModel.outputs.mobileFollowerSelected
-    self.mobileFriendActivityButton.rac.selected = self.viewModel.outputs.mobileFriendActivitySelected
-    self.mobileMessagesButton.rac.selected = self.viewModel.outputs.mobileMessagesSelected
     self.mobilePostLikesButton.rac.selected = self.viewModel.outputs.mobilePostLikesSelected
-    self.mobileUpdatesButton.rac.selected = self.viewModel.outputs.mobileUpdatesSelected
     self.postLikesButton.rac.selected = self.viewModel.outputs.postLikesSelected
-    self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
     self.promoNewsletterSwitch.rac.on = self.viewModel.outputs.promoNewsletterOn
     self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
     self.privateProfileSwitch.rac.on = self.viewModel.outputs.privateProfileEnabled
-    self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
   }
@@ -519,18 +431,8 @@ internal final class SettingsViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  fileprivate func goToFindFriends() {
-    let vc = FindFriendsViewController.configuredWith(source: .settings)
-    self.navigationController?.pushViewController(vc, animated: true)
-  }
-
   fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
-    self.navigationController?.pushViewController(vc, animated: true)
-  }
-
-  fileprivate func goToManageProjectNotifications() {
-    let vc = SettingsNotificationsViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -631,14 +533,6 @@ internal final class SettingsViewController: UIViewController {
     self.present(exportDataSheet, animated: true, completion: nil)
   }
 
-  @objc fileprivate func findFriendsTapped() {
-    self.viewModel.inputs.findFriendsTapped()
-  }
-
-  @IBAction fileprivate func followerTapped(_ button: UIButton) {
-    self.viewModel.inputs.followerTapped(selected: !button.isSelected)
-  }
-
   @objc fileprivate func followingPrivacyInfoTapped() {
     let privacyInfoAlert = UIAlertController.followingPrivacyInfo()
     self.present(privacyInfoAlert, animated: true, completion: nil)
@@ -660,10 +554,6 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.followingSwitchTapped(on: followingPrivacySwitch.isOn, didShowPrompt: false)
   }
 
-  @IBAction fileprivate func friendActivityTapped(_ button: UIButton) {
-    self.viewModel.inputs.friendActivityTapped(selected: !button.isSelected)
-  }
-
   @IBAction fileprivate func gamesNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.gamesNewsletterTapped(on: newsletterSwitch.isOn)
   }
@@ -682,14 +572,6 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func howKickstarterWorksTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.howItWorks)
-  }
-
-  @objc fileprivate func manageProjectNotificationsTapped() {
-    self.viewModel.inputs.manageProjectNotificationsTapped()
-  }
-
-  @IBAction fileprivate func messagesTapped(_ button: UIButton) {
-    self.viewModel.inputs.messagesTapped(selected: !button.isSelected)
   }
 
   @IBAction fileprivate func mobileBackingsTapped(_ button: UIButton) {
@@ -717,24 +599,8 @@ internal final class SettingsViewController: UIViewController {
     self.present(alertController, animated: true, completion: nil)
   }
 
-  @IBAction fileprivate func mobileFollowerTapped(_ button: UIButton) {
-    self.viewModel.inputs.mobileFollowerTapped(selected: !button.isSelected)
-  }
-
-  @IBAction fileprivate func mobileFriendActivityTapped(_ button: UIButton) {
-    self.viewModel.inputs.mobileFriendActivityTapped(selected: !button.isSelected)
-  }
-
-  @IBAction fileprivate func mobileMessagesTapped(_ button: UIButton) {
-    self.viewModel.inputs.mobileMessagesTapped(selected: !button.isSelected)
-  }
-
   @IBAction fileprivate func mobilePostLikesTapped(_ button: UIButton) {
     self.viewModel.inputs.mobilePostLikesTapped(selected: !button.isSelected)
-  }
-
-  @IBAction fileprivate func mobileUpdatesTapped(_ button: UIButton) {
-    self.viewModel.inputs.mobileUpdatesTapped(selected: !button.isSelected)
   }
 
   @IBAction fileprivate func postLikesTapped(_ button: UIButton) {
@@ -783,10 +649,6 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func termsOfUseTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.terms)
-  }
-
-  @IBAction fileprivate func updatesTapped(_ button: UIButton) {
-    self.viewModel.inputs.updatesTapped(selected: !button.isSelected)
   }
 
   @IBAction fileprivate func weeklyNewsletterTapped(_ newsletterSwitch: UISwitch) {

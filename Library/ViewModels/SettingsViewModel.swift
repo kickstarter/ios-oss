@@ -13,31 +13,22 @@ public protocol SettingsViewModelInputs {
   func deleteAccountTapped()
   func emailFrequencyTapped()
   func exportDataTapped()
-  func findFriendsTapped()
-  func followerTapped(selected: Bool)
   func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
-  func friendActivityTapped(selected: Bool)
   func gamesNewsletterTapped(on: Bool)
   func happeningNewsletterTapped(on: Bool)
   func inventNewsletterTapped(on: Bool)
   func logoutCanceled()
   func logoutConfirmed()
   func logoutTapped()
-  func manageProjectNotificationsTapped()
   func messagesTapped(selected: Bool)
   func mobileBackingsTapped(selected: Bool)
   func mobileCommentsTapped(selected: Bool)
-  func mobileFollowerTapped(selected: Bool)
-  func mobileFriendActivityTapped(selected: Bool)
-  func mobileMessagesTapped(selected: Bool)
   func mobilePostLikesTapped(selected: Bool)
-  func mobileUpdatesTapped(selected: Bool)
   func postLikesTapped(selected: Bool)
   func privateProfileSwitchDidChange(isOn: Bool)
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
   func recommendationsTapped(on: Bool)
-  func updatesTapped(selected: Bool)
   func viewDidLoad()
   func weeklyNewsletterTapped(on: Bool)
 }
@@ -49,30 +40,19 @@ public protocol SettingsViewModelOutputs {
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
   var creatorTipsSelected: Signal<Bool, NoError> { get }
   var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
-  var followerSelected: Signal<Bool, NoError> { get }
   var followingPrivacyOn: Signal<Bool, NoError> { get }
-  var friendActivitySelected: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
   var goToDeleteAccountBrowser: Signal<URL, NoError> { get }
   var goToEmailFrequency: Signal<User, NoError> { get }
-  var goToFindFriends: Signal<Void, NoError> { get }
-  var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var happeningNewsletterOn: Signal<Bool, NoError> { get }
   var inventNewsletterOn: Signal<Bool, NoError> { get }
   var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
-  var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
-  var messagesSelected: Signal<Bool, NoError> { get }
   var mobileBackingsSelected: Signal<Bool, NoError> { get }
   var mobileCommentsSelected: Signal<Bool, NoError> { get }
-  var mobileFollowerSelected: Signal<Bool, NoError> { get }
-  var mobileFriendActivitySelected: Signal<Bool, NoError> { get }
-  var mobileMessagesSelected: Signal<Bool, NoError> { get }
   var mobilePostLikesSelected: Signal<Bool, NoError> { get }
-  var mobileUpdatesSelected: Signal<Bool, NoError> { get }
   var postLikesSelected: Signal<Bool, NoError> { get }
   var privateProfileEnabled: Signal<Bool, NoError> { get }
-  var projectNotificationsCount: Signal<String, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var requestExportData: Signal<(), NoError> { get }
   var recommendationsOn: Signal<Bool, NoError> { get }
@@ -80,7 +60,6 @@ public protocol SettingsViewModelOutputs {
   var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
-  var updatesSelected: Signal<Bool, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
   var versionText: Signal<String, NoError> { get }
   var weeklyNewsletterOn: Signal<Bool, NoError> { get }
@@ -226,10 +205,6 @@ SettingsViewModelOutputs {
 
     self.creatorNotificationsHidden = self.updateCurrentUser.map { !$0.isCreator }.skipRepeats()
 
-    self.projectNotificationsCount = self.updateCurrentUser
-      .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
-      .skipRepeats()
-
     self.goToAppStoreRating = self.rateUsTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
@@ -237,10 +212,6 @@ SettingsViewModelOutputs {
       .map {
         AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy")
       }
-
-    self.goToFindFriends = self.findFriendsTappedProperty.signal
-
-    self.goToManageProjectNotifications = self.manageProjectNotificationsTappedProperty.signal
 
     self.showConfirmLogoutPrompt = self.logoutTappedProperty.signal
       .map {
@@ -278,32 +249,16 @@ SettingsViewModelOutputs {
       .map { $0.notifications.creatorTips }.skipNil().skipRepeats()
     self.commentsSelected = self.updateCurrentUser
       .map { $0.notifications.comments }.skipNil().skipRepeats()
-    self.followerSelected = self.updateCurrentUser
-      .map { $0.notifications.follower }.skipNil().skipRepeats()
-    self.friendActivitySelected = self.updateCurrentUser
-      .map { $0.notifications.friendActivity }.skipNil().skipRepeats()
-    self.messagesSelected = self.updateCurrentUser
-      .map { $0.notifications.messages }.skipNil().skipRepeats()
     self.mobileBackingsSelected = self.updateCurrentUser
       .map { $0.notifications.mobileBackings }.skipNil().skipRepeats()
     self.mobileCommentsSelected = self.updateCurrentUser
       .map { $0.notifications.mobileComments }.skipNil().skipRepeats()
-    self.mobileFollowerSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileFollower }.skipNil().skipRepeats()
-    self.mobileFriendActivitySelected = self.updateCurrentUser
-      .map { $0.notifications.mobileFriendActivity }.skipNil().skipRepeats()
-    self.mobileMessagesSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileMessages }.skipNil().skipRepeats()
     self.mobilePostLikesSelected = self.updateCurrentUser
       .map { $0.notifications.mobilePostLikes }.skipNil().skipRepeats()
-    self.mobileUpdatesSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileUpdates }.skipNil().skipRepeats()
     self.privateProfileEnabled = self.updateCurrentUser
       .map { $0.showPublicProfile }.skipNil().negate().skipRepeats()
     self.postLikesSelected = self.updateCurrentUser
       .map { $0.notifications.postLikes }.skipNil().skipRepeats()
-    self.updatesSelected = self.updateCurrentUser
-      .map { $0.notifications.updates }.skipNil().skipRepeats()
     self.recommendationsOn = self.updateCurrentUser
       .map { $0.optedOutOfRecommendations }.skipNil().map { $0 ? false : true }.skipRepeats()
 
@@ -330,10 +285,6 @@ SettingsViewModelOutputs {
           .demoteErrors()
       }
       .ignoreValues()
-
-    // a11y
-    self.manageProjectNotificationsButtonAccessibilityHint = self.updateCurrentUser
-      .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
 
     // Koala
     userAttributeChanged
@@ -536,30 +487,19 @@ SettingsViewModelOutputs {
   public let creatorNotificationsHidden: Signal<Bool, NoError>
   public let creatorTipsSelected: Signal<Bool, NoError>
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
-  public let followerSelected: Signal<Bool, NoError>
   public let followingPrivacyOn: Signal<Bool, NoError>
-  public let friendActivitySelected: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
   public let goToDeleteAccountBrowser: Signal<URL, NoError>
   public let goToEmailFrequency: Signal<User, NoError>
-  public let goToFindFriends: Signal<Void, NoError>
-  public let goToManageProjectNotifications: Signal<Void, NoError>
   public let happeningNewsletterOn: Signal<Bool, NoError>
   public let inventNewsletterOn: Signal<Bool, NoError>
   public let logoutWithParams: Signal<DiscoveryParams, NoError>
-  public var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
-  public let messagesSelected: Signal<Bool, NoError>
   public let mobileBackingsSelected: Signal<Bool, NoError>
   public let mobileCommentsSelected: Signal<Bool, NoError>
-  public let mobileFollowerSelected: Signal<Bool, NoError>
-  public let mobileFriendActivitySelected: Signal<Bool, NoError>
-  public let mobileMessagesSelected: Signal<Bool, NoError>
   public let mobilePostLikesSelected: Signal<Bool, NoError>
-  public let mobileUpdatesSelected: Signal<Bool, NoError>
   public let postLikesSelected: Signal<Bool, NoError>
   public let privateProfileEnabled: Signal<Bool, NoError>
-  public let projectNotificationsCount: Signal<String, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
   public let requestExportData: Signal<(), NoError>
   public let recommendationsOn: Signal<Bool, NoError>
@@ -567,7 +507,6 @@ SettingsViewModelOutputs {
   public let showOptInPrompt: Signal<String, NoError>
   public let showPrivacyFollowingPrompt: Signal<(), NoError>
   public let unableToSaveError: Signal<String, NoError>
-  public let updatesSelected: Signal<Bool, NoError>
   public let updateCurrentUser: Signal<User, NoError>
   public let weeklyNewsletterOn: Signal<Bool, NoError>
   public let versionText: Signal<String, NoError>
