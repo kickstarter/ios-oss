@@ -175,7 +175,9 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
         }
     }
     
-    self.viewDidLoadProperty.signal.observeValues { _ in AppEnvironment.current.koala.trackSettingsView() }
+    self.viewDidLoadProperty.signal.observeValues { _ in
+      AppEnvironment.current.koala.trackSettingsView()
+    }
   }
 
   fileprivate let emailFriendActivityProperty = MutableProperty(false)
