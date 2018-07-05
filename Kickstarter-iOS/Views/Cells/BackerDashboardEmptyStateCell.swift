@@ -25,38 +25,42 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
     case .saved:
       self.messageLabel.text = Strings.Tap_the_heart_on_a_project_to_get_notified()
       self.titleLabel.text = Strings.No_saved_projects()
-      _ = self.iconImageView
-        |> UIImageView.lens.image
-        .~ UIImage(named: "icon--heart-outline",
-                   in: .framework,
-                   compatibleWith: nil)
-
-      self.iconImageView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
-      self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
-
-      UIView.animate(
-        withDuration: 6.0,
-        delay: 0.0,
-        usingSpringWithDamping: 0.8,
-        initialSpringVelocity: 0.0,
-        options: [.curveEaseInOut, .autoreverse, .repeat],
-        animations: {
-          self.animatedIconImageVIew.alpha = 1.0
-          self.iconImageView.alpha = 0.0
-          self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-          self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-          self.animatedIconImageVIew.alpha = 0.0
-          self.iconImageView.alpha = 1.0
-
-          self.animatedIconImageVIew.alpha = 0.0
-          self.iconImageView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-          self.iconImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-          self.iconImageView.alpha = 0.0
-          self.animatedIconImageVIew.alpha = 1.0
-
-      },
-        completion: nil)
+      animateToFilledHeart()
     }
+  }
+
+  internal func animateToFilledHeart() {
+    UIView.animate(
+      withDuration: 0.4,
+      delay: 1.0,
+      usingSpringWithDamping: 1.0,
+      initialSpringVelocity: 0.0,
+      options: .curveEaseInOut,
+      animations: {
+        self.animatedIconImageVIew.alpha = 0.0
+        self.iconImageView.alpha = 0.0
+        self.iconImageView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        self.animatedIconImageVIew.alpha = 1.0
+        },
+      completion: { _ in self.animateToHeartOutline() })
+  }
+
+  internal func animateToHeartOutline() {
+    UIView.animate(
+      withDuration: 0.4,
+      delay: 0.6,
+      usingSpringWithDamping: 1.0,
+      initialSpringVelocity: 0.0,
+      options: .curveEaseInOut,
+      animations: {
+        self.iconImageView.alpha = 0.0
+        self.animatedIconImageVIew.alpha = 0.0
+        self.animatedIconImageVIew.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        self.iconImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        self.iconImageView.alpha = 1.0
+    },
+      completion: nil)
   }
 
   internal override func bindStyles() {
