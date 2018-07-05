@@ -51,6 +51,7 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var newLikesLabel: UILabel!
   @IBOutlet fileprivate weak var newPledgesLabel: UILabel!
   @IBOutlet fileprivate weak var newslettersTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var notificationsLabel: UILabel!
   @IBOutlet fileprivate weak var postLikesButton: UIButton!
   @IBOutlet fileprivate weak var privacyTitleLabel: UILabel!
   @IBOutlet fileprivate weak var privacyPolicyButton: UIButton!
@@ -249,6 +250,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.newslettersTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_title() }
+
+    _ = self.notificationsLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_navbar_title_notifications() }
 
     _ = self.privacyTitleLabel
       |> settingsTitleLabelStyle
@@ -552,6 +557,11 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
     self.viewModel.inputs.followingSwitchTapped(on: followingPrivacySwitch.isOn, didShowPrompt: false)
+  }
+
+  @IBAction func goToNotifications(_ sender: UIButton) {
+    let vc = SettingsNotificationsViewController.instantiate()
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   @IBAction fileprivate func gamesNewsletterTapped(_ newsletterSwitch: UISwitch) {

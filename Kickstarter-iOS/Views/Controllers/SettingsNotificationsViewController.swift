@@ -7,6 +7,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
   private let viewModel: SettingsNotificationsViewModelType = SettingsNotificationsViewModel()
 
+  @IBOutlet fileprivate weak var creatorNotificationsTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var creatorTipsLabel: UILabel!
+  @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
@@ -21,6 +24,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var messagesButton: UIButton!
   @IBOutlet fileprivate weak var mobileMessagesButton: UIButton!
   @IBOutlet fileprivate weak var mobileUpdatesButton: UIButton!
+  @IBOutlet fileprivate weak var newCommentsLabel: UILabel!
+  @IBOutlet fileprivate weak var newLikesLabel: UILabel!
+  @IBOutlet fileprivate weak var pledgeActivityLabel: UILabel!
   @IBOutlet fileprivate weak var projectNotificationsCountView: CountBadgeView!
   @IBOutlet fileprivate weak var projectsYouBackTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectUpdatesLabel: UILabel!
@@ -53,7 +59,19 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
-      |> UIViewController.lens.title %~ { _ in Strings.Push_notifications() }
+      |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title_notifications() }
+
+    _ = self.creatorNotificationsTitleLabel
+      |> settingsTitleLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_title() }
+
+    _ = self.creatorTipsLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Creator_tips() }
+
+    _ = self.emailFrequencyLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Email_frequency() }
 
     _ = self.emailNotificationButtons
       ||> settingsNotificationIconButtonStyle
@@ -87,9 +105,21 @@ internal final class SettingsNotificationsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.dashboard_buttons_messages() }
 
+    _ = self.newCommentsLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_comments() }
+
     _ = self.newFollowersLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_social_followers() }
+
+    _ = self.newLikesLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_likes() }
+
+    _ = self.pledgeActivityLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Pledge_activity() }
 
     _ = self.projectUpdatesLabel
       |> settingsSectionLabelStyle
