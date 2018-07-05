@@ -17,29 +17,19 @@ internal final class SettingsViewModelTests: TestCase {
   let creatorNotificationsHidden = TestObserver<Bool, NoError>()
   let currentLanguage = TestObserver<Language, NoError>()
   let environmentSwitcherButtonTitle = TestObserver<String, NoError>()
-  let followerSelected = TestObserver<Bool, NoError>()
   let followingPrivacyOn = TestObserver<Bool, NoError>()
-  let friendActivitySelected = TestObserver<Bool, NoError>()
   let gamesNewsletterOn = TestObserver<Bool, NoError>()
   let goToAppStoreRating = TestObserver<String, NoError>()
   let goToBetaFeedback = TestObserver<(), NoError>()
   let goToDeleteAccountBrowser = TestObserver<URL, NoError>()
-  let goToFindFriends = TestObserver<Void, NoError>()
-  let goToManageProjectNotifications = TestObserver<Void, NoError>()
   let happeningNewsletterOn = TestObserver<Bool, NoError>()
   let inventNewsletterOn = TestObserver<Bool, NoError>()
   let logoutWithParams = TestObserver<DiscoveryParams, NoError>()
-  let messagesSelected = TestObserver<Bool, NoError>()
   let mobileBackingsSelected = TestObserver<Bool, NoError>()
   let mobileCommentsSelected = TestObserver<Bool, NoError>()
-  let mobileFollowerSelected = TestObserver<Bool, NoError>()
-  let mobileFriendActivitySelected = TestObserver<Bool, NoError>()
-  let mobileMessagesSelected = TestObserver<Bool, NoError>()
   let mobilePostLikesSelected = TestObserver<Bool, NoError>()
-  let mobileUpdatesSelected = TestObserver<Bool, NoError>()
   let postLikesSelected = TestObserver<Bool, NoError>()
   let privateProfileEnabled = TestObserver<Bool, NoError>()
-  let projectNotificationsCount = TestObserver<String, NoError>()
   let promoNewsletterOn = TestObserver<Bool, NoError>()
   let requestExportData = TestObserver<(), NoError>()
   let recommendationsOn = TestObserver<Bool, NoError>()
@@ -47,7 +37,6 @@ internal final class SettingsViewModelTests: TestCase {
   let showOptInPrompt = TestObserver<String, NoError>()
   let showPrivacyFollowingPrompt = TestObserver<(), NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
-  let updatesSelected = TestObserver<Bool, NoError>()
   let updateCurrentUser = TestObserver<User, NoError>()
   let weeklyNewsletterOn = TestObserver<Bool, NoError>()
   let versionText = TestObserver<String, NoError>()
@@ -58,28 +47,18 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.backingsSelected.observe(self.backingsSelected.observer)
     self.vm.outputs.commentsSelected.observe(self.commentsSelected.observer)
     self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
-    self.vm.outputs.followerSelected.observe(self.followerSelected.observer)
     self.vm.outputs.followingPrivacyOn.observe(self.followingPrivacyOn.observer)
-    self.vm.outputs.friendActivitySelected.observe(self.friendActivitySelected.observer)
     self.vm.outputs.gamesNewsletterOn.observe(self.gamesNewsletterOn.observer)
     self.vm.outputs.goToAppStoreRating.observe(self.goToAppStoreRating.observer)
     self.vm.outputs.goToDeleteAccountBrowser.observe(self.goToDeleteAccountBrowser.observer)
-    self.vm.outputs.goToFindFriends.observe(self.goToFindFriends.observer)
-    self.vm.outputs.goToManageProjectNotifications.observe(self.goToManageProjectNotifications.observer)
     self.vm.outputs.happeningNewsletterOn.observe(self.happeningNewsletterOn.observer)
     self.vm.outputs.inventNewsletterOn.observe(self.inventNewsletterOn.observer)
     self.vm.outputs.logoutWithParams.observe(self.logoutWithParams.observer)
-    self.vm.outputs.messagesSelected.observe(self.messagesSelected.observer)
     self.vm.outputs.mobileBackingsSelected.observe(self.mobileBackingsSelected.observer)
     self.vm.outputs.mobileCommentsSelected.observe(self.mobileCommentsSelected.observer)
-    self.vm.outputs.mobileFollowerSelected.observe(self.mobileFollowerSelected.observer)
-    self.vm.outputs.mobileFriendActivitySelected.observe(self.mobileFriendActivitySelected.observer)
-    self.vm.outputs.mobileMessagesSelected.observe(self.mobileMessagesSelected.observer)
     self.vm.outputs.mobilePostLikesSelected.observe(self.mobilePostLikesSelected.observer)
-    self.vm.outputs.mobileUpdatesSelected.observe(self.mobileUpdatesSelected.observer)
     self.vm.outputs.postLikesSelected.observe(self.postLikesSelected.observer)
     self.vm.outputs.privateProfileEnabled.observe(self.privateProfileEnabled.observer)
-    self.vm.outputs.projectNotificationsCount.observe(self.projectNotificationsCount.observer)
     self.vm.outputs.promoNewsletterOn.observe(self.promoNewsletterOn.observer)
     self.vm.outputs.requestExportData.observe(self.requestExportData.observer)
     self.vm.outputs.recommendationsOn.observe(self.recommendationsOn.observer)
@@ -87,7 +66,6 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.showOptInPrompt.observe(self.showOptInPrompt.observer)
     self.vm.outputs.showPrivacyFollowingPrompt.observe(self.showPrivacyFollowingPrompt.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
-    self.vm.outputs.updatesSelected.observe(self.updatesSelected.observer)
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
     self.vm.outputs.weeklyNewsletterOn.observe(self.weeklyNewsletterOn.observer)
     self.vm.outputs.versionText.observe(self.versionText.observer)
@@ -252,22 +230,6 @@ internal final class SettingsViewModelTests: TestCase {
     self.goToDeleteAccountBrowser.assertValues([url])
   }
 
-  func testGoToFindFriends() {
-    let user = User.template
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.findFriendsTapped()
-    self.goToFindFriends.assertValueCount(1, "Go to Find Friends screen.")
-  }
-
-  func testGoToManageProjectNotifications() {
-    let user = User.template
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.manageProjectNotificationsTapped()
-    self.goToManageProjectNotifications.assertValueCount(1, "Go to manage project notifications screen.")
-  }
-
   func testNewslettersToggled() {
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
@@ -335,33 +297,6 @@ internal final class SettingsViewModelTests: TestCase {
     }
   }
 
-  func testProjectNotificationsCount() {
-    let user = User.template |> User.lens.stats.backedProjectsCount .~ 42
-    withEnvironment(apiService: MockService(fetchUserSelfResponse: user)) {
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "dabbadoo", user: user))
-      self.vm.inputs.viewDidLoad()
-      self.projectNotificationsCount.assertValues(["42"], "Project notifications count emits.")
-    }
-  }
-
-  func testProjectUpdateNotifications() {
-    let user = User.template
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-    self.vm.inputs.viewDidLoad()
-
-    self.updatesSelected.assertValues([false], "Project update notifications turned off as test default.")
-    self.mobileUpdatesSelected.assertValues([false])
-
-    self.vm.inputs.updatesTapped(selected: true)
-    self.vm.inputs.mobileUpdatesTapped(selected: true)
-
-    self.updatesSelected.assertValues([false, true], "Project update notifications toggled on.")
-    self.mobileUpdatesSelected.assertValues([false, true])
-
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
-      "Enabled Push Notifications"], self.trackingClient.events)
-  }
-
   func testLogoutFlow() {
     let params = .defaults
       |> DiscoveryParams.lens.includePOTD .~ true
@@ -400,49 +335,6 @@ internal final class SettingsViewModelTests: TestCase {
     }
   }
 
-  func testSocialNotificationsToggled() {
-    let user = User.template
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-    self.vm.inputs.viewDidLoad()
-
-    self.followerSelected.assertValues([false], "All social notifications turned off as test default.")
-    self.friendActivitySelected.assertValues([false])
-    self.messagesSelected.assertValues([false])
-    self.mobileFollowerSelected.assertValues([false])
-    self.mobileFriendActivitySelected.assertValues([false])
-    self.mobileMessagesSelected.assertValues([false])
-
-    self.vm.inputs.followerTapped(selected: true)
-    self.vm.inputs.friendActivityTapped(selected: true)
-    self.vm.inputs.messagesTapped(selected: true)
-    self.vm.inputs.mobileFollowerTapped(selected: true)
-    self.vm.inputs.mobileFriendActivityTapped(selected: true)
-    self.vm.inputs.mobileMessagesTapped(selected: true)
-
-    self.followerSelected.assertValues([false, true], "All social notifications toggled on.")
-    self.friendActivitySelected.assertValues([false, true])
-    self.messagesSelected.assertValues([false, true])
-    self.mobileFollowerSelected.assertValues([false, true])
-    self.mobileFriendActivitySelected.assertValues([false, true])
-    self.mobileMessagesSelected.assertValues([false, true])
-
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
-      "Enabled Email Notifications", "Enabled Email Notifications", "Enabled Push Notifications",
-      "Enabled Push Notifications", "Enabled Push Notifications"],
-      self.trackingClient.events)
-
-    self.vm.inputs.mobileFollowerTapped(selected: false)
-    self.vm.inputs.mobileFriendActivityTapped(selected: false)
-
-    self.mobileFollowerSelected.assertValues([false, true, false], "Mobile social notifications toggled off.")
-    self.mobileFriendActivitySelected.assertValues([false, true, false])
-
-    XCTAssertEqual(["Settings View", "Viewed Settings", "Enabled Email Notifications",
-      "Enabled Email Notifications", "Enabled Email Notifications", "Enabled Push Notifications",
-      "Enabled Push Notifications", "Enabled Push Notifications",
-      "Disabled Push Notifications", "Disabled Push Notifications"], self.trackingClient.events)
-  }
-
   func testPrivateProfileToggled() {
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
@@ -469,16 +361,16 @@ internal final class SettingsViewModelTests: TestCase {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
       self.vm.inputs.viewDidLoad()
 
-      self.updatesSelected.assertValues([false], "Updates notifications turned off as default.")
+      self.backingsSelected.assertValues([false], "Backings notifications turned off as default.")
 
-      self.vm.inputs.updatesTapped(selected: true)
+      self.vm.inputs.backingsTapped(selected: true)
 
-      self.updatesSelected.assertValues([false, true], "Updates immediately flipped to true on tap.")
+      self.backingsSelected.assertValues([false, true], "Backings immediately flipped to true on tap.")
 
       self.scheduler.advance()
 
       self.unableToSaveError.assertValueCount(1, "Updating user errored.")
-      self.updatesSelected.assertValues([false, true, false], "Did not successfully save preference.")
+      self.backingsSelected.assertValues([false, true, false], "Did not successfully save preference.")
     }
   }
 

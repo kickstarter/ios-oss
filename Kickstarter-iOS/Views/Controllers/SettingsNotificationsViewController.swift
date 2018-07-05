@@ -152,7 +152,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
   }
 
   @IBAction fileprivate func emailUpdatesTapped(_ button: UIButton) {
-    self.viewModel.inputs.emailProjectUpdates(selected: !button.isSelected)
+    self.viewModel.inputs.emailProjectUpdatesTapped(selected: !button.isSelected)
   }
 
   @IBAction fileprivate func mobileUpdatesTapped(_ sender: UIButton) {

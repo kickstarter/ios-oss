@@ -10,7 +10,7 @@ public protocol SettingsNotificationsViewModelInputs {
   func emailFriendActivityTapped(selected: Bool)
   func emailMessagesTapped(selected: Bool)
   func emailNewFollowersTapped(selected: Bool)
-  func emailProjectUpdates(selected: Bool)
+  func emailProjectUpdatesTapped(selected: Bool)
   func findFriendsTapped()
   func manageProjectNotificationsTapped()
   func mobileFriendsActivityTapped(selected: Bool)
@@ -145,6 +145,37 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.projectNotificationsCount = self.updateCurrentUser
       .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
       .skipRepeats()
+
+    // Koala
+    userAttributeChanged
+      .observeValues { attribute, on in
+        switch attribute {
+        case let .newsletter(newsletter):
+          AppEnvironment.current.koala.trackChangeNewsletter(
+            newsletterType: newsletter, sendNewsletter: on, project: nil, context: .settings
+          )
+        case let .notification(notification):
+          switch notification {
+          case
+          .mobileBackings,
+          .mobileComments, .mobileFollower, .mobileFriendActivity, .mobilePostLikes, .mobileMessages,
+          .mobileUpdates:
+            AppEnvironment.current.koala.trackChangePushNotification(type: notification.trackingString,
+                                                                     on: on)
+          case .backings,
+               .comments, .follower, .friendActivity, .messages, .postLikes, .creatorTips, .updates:
+            AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
+                                                                      on: on)
+          }
+        case let .privacy(privacy):
+          switch privacy {
+          case .recommendations: AppEnvironment.current.koala.trackRecommendationsOptIn()
+          default: break
+          }
+        }
+    }
+    
+    self.viewDidLoadProperty.signal.observeValues { _ in AppEnvironment.current.koala.trackSettingsView() }
   }
 
   fileprivate let emailFriendActivityProperty = MutableProperty(false)
@@ -163,7 +194,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   }
 
   fileprivate let emailProjectUpdatesProperty = MutableProperty(false)
-  public func emailProjectUpdates(selected: Bool) {
+  public func emailProjectUpdatesTapped(selected: Bool) {
     self.emailProjectUpdatesProperty.value = selected
   }
 
