@@ -54,22 +54,22 @@ import Prelude
   }
 
   func testLabels_NonFacebookConnectedUser() {
-    vm.inputs.configureWith(source: .activity)
-
     withEnvironment(currentUser: User.template) {
+      vm.inputs.configureWith(source: .activity)
+
       title.assertValue(Strings.Discover_more_projects())
       subtitle.assertValue(Strings.Connect_with_Facebook_to_follow_friends_and_get_notified())
     }
   }
 
   func testLabels_needsReconnect() {
-    vm.inputs.configureWith(source: .activity)
-
     withEnvironment(currentUser: User.template
       |> User.lens.facebookConnected .~ true
       |> User.lens.needsFreshFacebookToken .~ true) {
-      title.assertValue(Strings.Facebook_reconnect())
-      subtitle.assertValue(Strings.Facebook_reconnect_description())
+        vm.inputs.configureWith(source: .activity)
+
+        title.assertValue(Strings.Facebook_reconnect())
+        subtitle.assertValue(Strings.Facebook_reconnect_description())
     }
   }
 
