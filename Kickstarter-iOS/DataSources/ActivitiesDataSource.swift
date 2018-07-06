@@ -11,10 +11,8 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     case activities
   }
 
-  internal func facebookConnect(type: FacebookConnectionType, source: FriendsSource, visible: Bool) {
-    let facebookCellValue = FacebookConnectCellValue(source: source, connectionType: type)
-    
-    self.set(values: visible ? [facebookCellValue] : [],
+  internal func facebookConnect(source: FriendsSource, visible: Bool) {
+    self.set(values: visible ? [source] : [],
              cellClass: FindFriendsFacebookConnectCell.self,
              inSection: Section.facebookConnect.rawValue)
   }
@@ -78,7 +76,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       cell.configureWith(value: activity)
     case let (cell as ActivityProjectStatusCell, activity as Activity):
       cell.configureWith(value: activity)
-    case let (cell as FindFriendsFacebookConnectCell, value as FacebookConnectCellValue):
+    case let (cell as FindFriendsFacebookConnectCell, value as FriendsSource):
       cell.configureWith(value: value)
     case let (cell as FindFriendsHeaderCell, value as FriendsSource):
       cell.configureWith(value: value)

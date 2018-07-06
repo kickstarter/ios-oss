@@ -3,6 +3,7 @@
 import XCTest
 import ReactiveSwift
 import UIKit.UIActivity
+import Prelude
 @testable import ReactiveExtensions
 @testable import ReactiveExtensions_TestHelpers
 @testable import Result
@@ -23,7 +24,6 @@ import UIKit.UIActivity
   let showErrorAlert = TestObserver<AlertError, NoError>()
   let title = TestObserver<String, NoError>()
   let subtitle = TestObserver<String, NoError>()
-  let standardValue = FacebookConnectCellValue(source: .activity, connectionType: .connect)
 
   override func setUp() {
     super.setUp()
@@ -41,7 +41,7 @@ import UIKit.UIActivity
   }
 
   func testDismissal() {
-    vm.inputs.configureWith(value: standardValue)
+    vm.inputs.configureWith(source: .activity)
 
     notifyPresenterToDismissHeader.assertValueCount(0)
 
@@ -53,20 +53,24 @@ import UIKit.UIActivity
     XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
   }
 
-  func testTitleValue() {
-    vm.inputs.configureWith(value: standardValue)
+  func testLabels_NonFacebookConnectedUser() {
+    vm.inputs.configureWith(source: .activity)
 
-    title.assertValue(Strings.Discover_more_projects())
-    subtitle.assertValue(Strings.Connect_with_Facebook_to_follow_friends_and_get_notified())
+    withEnvironment(currentUser: User.template) {
+      title.assertValue(Strings.Discover_more_projects())
+      subtitle.assertValue(Strings.Connect_with_Facebook_to_follow_friends_and_get_notified())
+    }
   }
 
-  func testSubtitleValue() {
-    let value = FacebookConnectCellValue(source: .findFriends,
-                                         connectionType: .reconnect)
-    vm.inputs.configureWith(value: value)
+  func testLabels_needsReconnect() {
+    vm.inputs.configureWith(source: .activity)
 
-    title.assertValue(Strings.Facebook_reconnect())
-    subtitle.assertValue(Strings.Facebook_reconnect_description())
+    withEnvironment(currentUser: User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ true) {
+      title.assertValue(Strings.Facebook_reconnect())
+      subtitle.assertValue(Strings.Facebook_reconnect_description())
+    }
   }
 
   func testFacebookConnectFlow_Success() {
@@ -88,7 +92,7 @@ import UIKit.UIActivity
     )!
 
     withEnvironment(currentUser: User.template) {
-      vm.inputs.configureWith(value: standardValue)
+      vm.inputs.configureWith(source: .activity)
 
       attemptFacebookLogin.assertValueCount(0, "Attempt Facebook Login does not emit")
 
@@ -125,7 +129,7 @@ import UIKit.UIActivity
                           FBSDKErrorLocalizedDescriptionKey: "Something went wrong yo."
       ])
 
-    vm.inputs.configureWith(value: standardValue)
+    vm.inputs.configureWith(source: .activity)
 
     attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -174,7 +178,7 @@ import UIKit.UIActivity
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      vm.inputs.configureWith(value: standardValue)
+      vm.inputs.configureWith(source: .activity)
 
       attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -228,7 +232,7 @@ import UIKit.UIActivity
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      vm.inputs.configureWith(value: standardValue)
+      vm.inputs.configureWith(source: .activity)
 
       attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -284,7 +288,7 @@ import UIKit.UIActivity
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      vm.inputs.configureWith(value: standardValue)
+      vm.inputs.configureWith(source: .activity)
 
       attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
@@ -338,7 +342,7 @@ import UIKit.UIActivity
     )
 
     withEnvironment(apiService: MockService(facebookConnectError: error)) {
-      vm.inputs.configureWith(value: standardValue)
+      vm.inputs.configureWith(source: .activity)
 
       attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 

@@ -61,14 +61,7 @@ internal final class FindFriendsViewController: UITableViewController {
     self.viewModel.outputs.showFacebookConnect
       .observeForUI()
       .observeValues { [weak self] (source, visible) in
-        self?.dataSource.facebookConnect(type: .connect, source: source, visible: visible)
-        self?.tableView.reloadData()
-    }
-
-    self.viewModel.outputs.showFacebookReconnect
-      .observeForUI()
-      .observeValues { [weak self] (source, visible) in
-        self?.dataSource.facebookConnect(type: .reconnect, source: source, visible: visible)
+        self?.dataSource.facebookConnect(source: source, visible: visible)
         self?.tableView.reloadData()
     }
 

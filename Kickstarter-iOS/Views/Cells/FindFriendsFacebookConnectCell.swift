@@ -31,8 +31,8 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
     return manager
   }()
 
-  internal func configureWith(value: FacebookConnectCellValue) {
-    self.viewModel.inputs.configureWith(value: value)
+  internal func configureWith(value: FriendsSource) {
+    self.viewModel.inputs.configureWith(source: value)
   }
 
   internal override func bindViewModel() {

@@ -119,7 +119,7 @@
 		59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */; };
 		59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
-		770BC80E20EA9E64002AC38F /* FacebookConnectCellValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770BC80D20EA9E64002AC38F /* FacebookConnectCellValue.swift */; };
+		77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */; };
 		77556F5420A099B3008CEA57 /* Config+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F1C20A09993008CEA57 /* Config+Helpers.swift */; };
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
@@ -1681,6 +1681,7 @@
 		59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModel.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
 		770BC80D20EA9E64002AC38F /* FacebookConnectCellValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookConnectCellValue.swift; sourceTree = "<group>"; };
+		77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConnectionType.swift; sourceTree = "<group>"; };
 		77556F1C20A09993008CEA57 /* Config+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+Helpers.swift"; sourceTree = "<group>"; };
 		77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksViewControllerTests.swift; sourceTree = "<group>"; };
 		7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryView.swift; sourceTree = "<group>"; };
@@ -3175,6 +3176,7 @@
 				A7ED1F141E830FDC00BFFA01 /* EnvironmentTests.swift */,
 				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
 				A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */,
+				77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */,
 				A7C725801C85D36D005A016B /* Format.swift */,
 				A7ED1F151E830FDC00BFFA01 /* FormatTests.swift */,
 				A7CC14641D00E81B00035C52 /* FriendsSource.swift */,
@@ -4990,6 +4992,7 @@
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
 				01C7CDB31D13462A00D9E0D1 /* DashboardRewardsCellViewModel.swift in Sources */,
 				A7D121091D15B08200F364FD /* CountBadgeView.swift in Sources */,
+				77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */,
 				D79D61151FD0979D000F958B /* String+Base64.swift in Sources */,
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
@@ -5094,7 +5097,6 @@
 				A755116C1C8642C3005355CF /* UIPress-Extensions.swift in Sources */,
 				A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
-				770BC80E20EA9E64002AC38F /* FacebookConnectCellValue.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
 				8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */,
 				A7F441B71D005A9400FE6FC5 /* BackingCellViewModel.swift in Sources */,

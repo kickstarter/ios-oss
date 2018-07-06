@@ -87,16 +87,9 @@ internal final class ActivitiesViewController: UITableViewController {
     self.viewModel.outputs.showFacebookConnectSection
       .observeForUI()
       .observeValues { [weak self] source, shouldShow in
-        self?.dataSource.facebookConnect(type: .connect, source: source, visible: shouldShow)
+        self?.dataSource.facebookConnect(source: source, visible: shouldShow)
         self?.tableView.reloadData()
     }
-
-    self.viewModel.outputs.showFacebookReconnectSection
-      .observeForUI()
-      .observeValues { [weak self] source, shouldShow in
-        self?.dataSource.facebookConnect(type: .reconnect, source: source, visible: shouldShow)
-        self?.tableView.reloadData()
-      }
 
     self.viewModel.outputs.showFindFriendsSection
       .observeForUI()

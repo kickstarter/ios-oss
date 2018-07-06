@@ -52,9 +52,6 @@ public protocol FindFriendsViewModelOutputs {
   /// Emits bool whether Facebook Connect view should show with the source that presented the controller.
   var showFacebookConnect: Signal<(FriendsSource, Bool), NoError> { get }
 
-  /// Emits bool whether Facebook reconnect view should show with the source that presented the controller.
-  var showFacebookReconnect: Signal<(FriendsSource, Bool), NoError> { get }
-
   /// Emits friends count when should display "Follow all friends" alert.
   var showFollowAllFriendsAlert: Signal<Int, NoError> { get }
 
@@ -87,7 +84,9 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       self.viewDidLoadProperty.signal,
       self.userFacebookConnectedProperty.signal
       )
-      .map { !(AppEnvironment.current.currentUser?.facebookConnected ?? false) }
+      .map { _ in
+        FindFriendsFacebookConnectCellViewModel.showFacebookConnectionSection(for: AppEnvironment.current.currentUser)
+      }
 
     let requestFirstPageWith = Signal.merge(
       shouldShowFacebookConnect.filter(isFalse).ignoreValues(),
@@ -127,17 +126,8 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     self.showErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.skipNil()
 
-    self.showFacebookConnect = shouldShowFacebookConnect.map { (.findFriends, $0) }
-
-    let needsReconnect = shouldShowFacebookConnect
-      .filter(isFalse)
-      .logEvents(identifier: "needs reconnect")
-      .map { _ in AppEnvironment.current.currentUser?.needsFreshFacebookToken ?? false}
-
-    self.showFacebookReconnect = needsReconnect
-      .map {
-        (.findFriends, $0)
-      }
+    self.showFacebookConnect = shouldShowFacebookConnect.signal
+      .map { (.findFriends, $0)}
 
     self.showLoadingIndicatorView = Signal.merge(
       isLoading.take(first: 1),
@@ -155,10 +145,10 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     let stats = Signal.combineLatest(statsEvent.values(), source)
 
     self.stats = Signal.combineLatest(
-      needsReconnect,
+        shouldShowFacebookConnect,
         stats
-      ).map(unpack) // unpack into 3-tuple (needsReconnect, friends, source)
-      .filter { !$0.0 } // filter for when needsReconnect is false
+      ).map(unpack) // unpack into 3-tuple (shouldShowFacebookConnect, friends, source)
+      .filter { !$0.0 } // filter for when shouldShowFacebookConnect is false
       .map { ($1, $2)} // map back into expected tuple (friends, source)
 
     source
@@ -225,7 +215,6 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   public let goToDiscovery: Signal<DiscoveryParams, NoError>
   public let showErrorAlert: Signal<AlertError, NoError>
   public let showFacebookConnect: Signal<(FriendsSource, Bool), NoError>
-  public let showFacebookReconnect: Signal<(FriendsSource, Bool), NoError>
   public let showFollowAllFriendsAlert: Signal<Int, NoError>
   public let showLoadingIndicatorView: Signal<Bool, NoError>
   public let stats: Signal<(FriendStatsEnvelope, FriendsSource), NoError>

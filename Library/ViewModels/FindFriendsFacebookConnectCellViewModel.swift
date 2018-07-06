@@ -10,7 +10,7 @@ public protocol FindFriendsFacebookConnectCellViewModelInputs {
   func closeButtonTapped()
 
   /// Call to set where Friends View Controller was loaded from
-  func configureWith(value: FacebookConnectCellValue)
+  func configureWith(source: FriendsSource)
 
   /// Call when Facebook Connect button is tapped
   func facebookConnectButtonTapped()
@@ -134,14 +134,22 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
       facebookLoginAttemptFailAlert
     ])
 
-    let source = configureWithProperty.signal.skipNil().map { $0.source }
-    let cellType = configureWithProperty.signal.skipNil().map { $0.connectionType }
+    let source = configureWithProperty.signal.skipNil().map { $0 }
+    let connectionType = configureWithProperty.signal.skipNil().map { _ in
+      FindFriendsFacebookConnectCellViewModel.connectionType(user: AppEnvironment.current.currentUser)
+    }
 
     self.hideCloseButton = source.map { $0 == FriendsSource.findFriends }
 
-      self.facebookConnectCellTitle = cellType.signal.map { FindFriendsFacebookConnectCellViewModel.titleText(for: $0) }
-      self.facebookConnectCellSubtitle = cellType.signal.map { FindFriendsFacebookConnectCellViewModel.subtitleText(for: $0) }
-      self.facebookConnectButtonTitle = cellType.signal.map { FindFriendsFacebookConnectCellViewModel.buttonText(for: $0) }
+    self.facebookConnectCellTitle = connectionType.signal
+        .skipNil()
+        .map { FindFriendsFacebookConnectCellViewModel.titleText(for: $0) }
+    self.facebookConnectCellSubtitle = connectionType.signal
+        .skipNil()
+        .map { FindFriendsFacebookConnectCellViewModel.subtitleText(for: $0) }
+    self.facebookConnectButtonTitle = connectionType.signal
+        .skipNil()
+        .map { FindFriendsFacebookConnectCellViewModel.buttonText(for: $0) }
 
     source
       .takeWhen(self.showErrorAlert)
@@ -164,9 +172,9 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     closeButtonTappedProperty.value = ()
   }
 
-  fileprivate let configureWithProperty = MutableProperty<FacebookConnectCellValue?>(nil)
-  public func configureWith(value: FacebookConnectCellValue) {
-    configureWithProperty.value = value
+  fileprivate let configureWithProperty = MutableProperty<FriendsSource?>(nil)
+  public func configureWith(source: FriendsSource) {
+    configureWithProperty.value = source
   }
 
   fileprivate let facebookConnectButtonTappedProperty = MutableProperty(())
@@ -203,6 +211,33 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 }
 
 extension FindFriendsFacebookConnectCellViewModel {
+  public static func showFacebookConnectionSection(for user: User?) -> Bool {
+    // Hide Facebook Connect section if we don't have info on their connection state
+    guard let isFacebookConnected = user?.facebookConnected else {
+      return true
+    }
+
+    let needsFreshFacebookToken = user?.needsFreshFacebookToken ?? false
+
+    // Show section in "reconnect" state if facebook connected but requiring a new token
+    return !isFacebookConnected || (isFacebookConnected
+      && needsFreshFacebookToken)
+  }
+
+  private static func connectionType(user: User?) -> FacebookConnectionType? {
+    guard let isFacebookConnected = user?.facebookConnected else {
+      return .connect
+    }
+
+    let needsRefresh = user?.needsFreshFacebookToken ?? false
+
+    if isFacebookConnected && needsRefresh {
+      return .reconnect
+    }
+
+    return .connect
+  }
+
   fileprivate static func titleText(for connectionType: FacebookConnectionType) -> String {
     switch connectionType {
     case .connect:

@@ -93,9 +93,6 @@ public protocol ActivitiesViewModelOutputs {
   /// Emits whether Facebook Connect header cell should show with the .Activity source.
   var showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError> { get }
 
-  /// Emits whether the Facebook Reconnect header cell should show the .Activity source.
-  var showFacebookReconnectSection: Signal<(FriendsSource, Bool), NoError> { get }
-
   /// Emits whether Find Friends header cell should show with the .Activity source.
   var showFindFriendsSection: Signal<(FriendsSource, Bool), NoError> { get }
 
@@ -228,24 +225,18 @@ ActivitiesViewModelOutputs {
       .map {
         (
           .activity,
-          AppEnvironment.current.currentUser?.facebookConnected ?? false
+          !FindFriendsFacebookConnectCellViewModel
+            .showFacebookConnectionSection(for: AppEnvironment.current.currentUser)
           && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
         )
     }
 
     self.showFacebookConnectSection = surveyValuesOrErrors
-      .map {
-        (
-          .activity,
-          !(AppEnvironment.current.currentUser?.facebookConnected ?? false)
-          && !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
-        )
-      }
-
-    self.showFacebookReconnectSection = surveyValuesOrErrors
-      .map {
-        (.activity,
-         ActivitiesViewModel.shouldShowFacebookReconnectSection(for: AppEnvironment.current.currentUser))
+      .map { (
+        .activity,
+        FindFriendsFacebookConnectCellViewModel
+          .showFacebookConnectionSection(for: AppEnvironment.current.currentUser) &&
+        !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity)
       }
 
     self.deleteFacebookConnectSection = self.dismissFacebookConnectSectionProperty.signal
@@ -350,18 +341,6 @@ ActivitiesViewModelOutputs {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  private static func shouldShowFacebookReconnectSection(for user: User?) -> Bool {
-    return true
-
-    guard let isFacebookConnected = user?.facebookConnected, isFacebookConnected == true else {
-      return false
-    }
-
-    let needsFreshFacebookToken = user?.needsFreshFacebookToken ?? false
-
-    return isFacebookConnected && needsFreshFacebookToken
-  }
-
   public let activities: Signal<[Activity], NoError>
   public let deleteFacebookConnectSection: Signal<(), NoError>
   public let deleteFindFriendsSection: Signal<(), NoError>
@@ -374,7 +353,6 @@ ActivitiesViewModelOutputs {
   public let showEmptyStateIsLoggedIn: Signal<Bool, NoError>
   public let showFindFriendsSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError>
-  public let showFacebookReconnectSection: Signal<(FriendsSource, Bool), NoError>
   public let showFacebookConnectErrorAlert: Signal<AlertError, NoError>
   public let unansweredSurveys: Signal<[SurveyResponse], NoError>
 

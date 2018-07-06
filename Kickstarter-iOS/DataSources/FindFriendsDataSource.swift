@@ -10,10 +10,8 @@ internal final class FindFriendsDataSource: ValueCellDataSource {
     case friends
   }
 
-  internal func facebookConnect(type: FacebookConnectionType, source: FriendsSource, visible: Bool) {
-    let facebookConnectCellValue = FacebookConnectCellValue(source: source, connectionType: type)
-
-    self.set(values: visible ? [facebookConnectCellValue] : [],
+  internal func facebookConnect(source: FriendsSource, visible: Bool) {
+    self.set(values: visible ? [source] : [],
              cellClass: FindFriendsFacebookConnectCell.self,
              inSection: Section.facebookConnect.rawValue)
   }
@@ -38,7 +36,7 @@ internal final class FindFriendsDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as FindFriendsFriendFollowCell, value as (User, FriendsSource)):
       cell.configureWith(value: value)
-    case let (cell as FindFriendsFacebookConnectCell, value as FacebookConnectCellValue):
+    case let (cell as FindFriendsFacebookConnectCell, value as FriendsSource):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")

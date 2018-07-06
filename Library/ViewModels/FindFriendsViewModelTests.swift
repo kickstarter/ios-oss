@@ -20,7 +20,6 @@ final class FindFriendsViewModelTests: TestCase {
   let showLoadingIndicatorView = TestObserver<Bool, NoError>()
   let stats = TestObserver<FriendStatsEnvelope, NoError>()
   let statsSource = TestObserver<FriendsSource, NoError>()
-  let showFacebookReconnect = TestObserver<(FriendsSource, Bool), NoError>()
 
   override func setUp() {
     super.setUp()
@@ -33,7 +32,6 @@ final class FindFriendsViewModelTests: TestCase {
     vm.outputs.showLoadingIndicatorView.observe(showLoadingIndicatorView.observer)
     vm.outputs.stats.map { env, _ in env }.observe(stats.observer)
     vm.outputs.stats.map { _, source in source }.observe(statsSource.observer)
-    vm.outputs.showFacebookReconnect.observe(showFacebookReconnect.observer)
   }
 
   func testSource() {
@@ -183,8 +181,7 @@ final class FindFriendsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.showFacebookConnect.assertValue(false)
-      self.showFacebookReconnect.assertValueCount(1)
+      self.showFacebookConnect.assertValues([true])
       self.stats.assertValueCount(0)
     }
   }

@@ -149,7 +149,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
     }
   }
 
-  /*func testMultipleSurveys_NotFacebookConnected_YouLaunched() {
+  func testMultipleSurveys_NotFacebookConnected_YouLaunched() {
     let launch = .template
       |> Activity.lens.id .~ 73
       |> Activity.lens.project .~ (.cosmicSurgery
@@ -169,7 +169,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: [launch],
           fetchUnansweredSurveyResponsesResponse: [survey, survey2]),
-        currentUser: you,
+        currentUser: you |> User.lens.facebookConnected .~ false |> User.lens.needsFreshFacebookToken .~ true,
         language: language,
         userDefaults: MockKeyValueStore()
       ) {
@@ -179,8 +179,43 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-//        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
-  }*/
+  }
+
+  func testMultipleSurveys_NeedsFacebookReconnect() {
+    let launch = .template
+      |> Activity.lens.id .~ 73
+      |> Activity.lens.project .~ (.cosmicSurgery
+        |> Project.lens.creator .~ you
+        |> Project.lens.photo.med .~ ""
+        |> Project.lens.photo.full .~ ""
+        |> Project.lens.name .~ "A Very Very Important Project About Kittens and Puppies"
+        |> Project.lens.stats.fundingProgress .~ 0.01
+      )
+      |> Activity.lens.user .~ you
+      |> Activity.lens.category .~ .launch
+
+    let survey2 = .template |> SurveyResponse.lens.project .~ (.anomalisa
+      |> Project.lens.creator .~ creator)
+
+    combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(
+        apiService: MockService(fetchActivitiesResponse: [launch],
+                                fetchUnansweredSurveyResponsesResponse: [survey, survey2]),
+        currentUser: you |> User.lens.facebookConnected .~ true |> User.lens.needsFreshFacebookToken .~ true,
+        language: language,
+        userDefaults: MockKeyValueStore()
+      ) {
+        let vc = ActivitiesViewController.instantiate()
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = 900
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 }
