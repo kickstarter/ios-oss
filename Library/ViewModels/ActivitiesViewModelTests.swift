@@ -365,7 +365,9 @@ final class ActivitiesViewModelTests: TestCase {
     self.scheduler.advance()
     self.vm.inputs.viewWillAppear(animated: false)
 
-    self.showFindFriendsSectionSource.assertValues([FriendsSource.activity, FriendsSource.activity, FriendsSource.activity])
+    self.showFindFriendsSectionSource.assertValues([FriendsSource.activity,
+                                                    FriendsSource.activity,
+                                                    FriendsSource.activity])
     self.showFindFriendsSection.assertValues([false, false, true], "Show Find Friends Section")
 
     // delete section
@@ -377,7 +379,10 @@ final class ActivitiesViewModelTests: TestCase {
 
     self.vm.inputs.viewWillAppear(animated: false)
 
-    showFindFriendsSection.assertValues([false, false, true, false], "Don't show Find Friends Section on return")
+    showFindFriendsSection.assertValues([false,
+                                         false,
+                                         true,
+                                         false], "Don't show Find Friends Section on return")
   }
 
   func testFacebookErrorAlerts() {

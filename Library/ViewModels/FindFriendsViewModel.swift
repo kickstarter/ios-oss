@@ -85,7 +85,8 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       self.userFacebookConnectedProperty.signal
       )
       .map { _ in
-        FindFriendsFacebookConnectCellViewModel.showFacebookConnectionSection(for: AppEnvironment.current.currentUser)
+        FindFriendsFacebookConnectCellViewModel
+          .showFacebookConnectionSection(for: AppEnvironment.current.currentUser)
       }
 
     let requestFirstPageWith = Signal.merge(
