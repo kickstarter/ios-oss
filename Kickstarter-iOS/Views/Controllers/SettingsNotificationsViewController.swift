@@ -7,8 +7,12 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
   private let viewModel: SettingsNotificationsViewModelType = SettingsNotificationsViewModel()
 
+  @IBOutlet fileprivate weak var creatorNotificationsStackView: UIStackView!
   @IBOutlet fileprivate weak var creatorNotificationsTitleLabel: UILabel!
   @IBOutlet fileprivate weak var creatorTipsLabel: UILabel!
+  @IBOutlet fileprivate weak var emailCreatorTipsButton: UIButton!
+  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
+  @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
@@ -23,6 +27,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var messagesLabel: UILabel!
   @IBOutlet fileprivate weak var messagesButton: UIButton!
   @IBOutlet fileprivate weak var mobileMessagesButton: UIButton!
+  @IBOutlet fileprivate weak var mobileNewPledgeButton: UIButton!
+  @IBOutlet fileprivate weak var mobileNewCommentsButton: UIButton!
+  @IBOutlet fileprivate weak var mobileNewLikesButton: UIButton!
   @IBOutlet fileprivate weak var mobileUpdatesButton: UIButton!
   @IBOutlet fileprivate weak var newCommentsLabel: UILabel!
   @IBOutlet fileprivate weak var newLikesLabel: UILabel!
@@ -31,7 +38,10 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var projectsYouBackTitleLabel: UILabel!
   @IBOutlet fileprivate weak var projectUpdatesLabel: UILabel!
   @IBOutlet fileprivate weak var socialNotificationsTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var emailNewLikesButton: UIButton!
   @IBOutlet fileprivate weak var emailProjectUpdatesButton: UIButton!
+  @IBOutlet fileprivate weak var emailNewPledgeButton: UIButton!
+  @IBOutlet fileprivate weak var emailNewCommentsButton: UIButton!
   @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var pushNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var separatorViews: [UIView]!
@@ -42,6 +52,8 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
+ self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
 
     self.manageProjectNotificationsButton.addTarget(self,
                                                     action: #selector(manageProjectNotificationsTapped),
@@ -168,6 +180,19 @@ internal final class SettingsNotificationsViewController: UIViewController {
         self?.goToFindFriends()
     }
 
+    self.viewModel.outputs.goToEmailFrequency
+      .observeForControllerAction()
+      .observeValues { [weak self] user in
+        self?.goToEmailFrequency(user: user)
+    }
+
+    self.viewModel.outputs.emailFrequencyButtonEnabled
+      .observeForUI()
+      .observeValues { [weak self] enabled in
+        self?.emailFrequencyLabel.textColor = enabled ? .ksr_text_dark_grey_500 : .ksr_text_dark_grey_400
+        self?.emailFrequencyArrow.alpha = enabled ? 1.0 : 0.5
+    }
+
     self.emailProjectUpdatesButton.rac.selected = self.viewModel.outputs.emailProjectUpdatesSelected
     self.followerButton.rac.selected = self.viewModel.outputs.emailNewFollowersSelected
     self.friendActivityButton.rac.selected = self.viewModel.outputs.emailFriendsActivitySelected
@@ -179,6 +204,14 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.mobileMessagesButton.rac.selected = self.viewModel.outputs.mobileMessagesSelected
     self.mobileUpdatesButton.rac.selected = self.viewModel.outputs.mobileProjectUpdatesSelected
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
+  }
+
+  @IBAction fileprivate func creatorTipsTapped(_ button: UIButton) {
+    self.viewModel.inputs.emailCreatorTipsTapped(selected: !button.isSelected)
+  }
+
+  @IBAction fileprivate func emailCommentsTapped(_ button: UIButton) {
+    self.viewModel.inputs.emailNewCommentsTapped(selected: !button.isSelected)
   }
 
   @IBAction fileprivate func emailUpdatesTapped(_ button: UIButton) {
@@ -201,6 +234,14 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.viewModel.inputs.emailFriendActivityTapped(selected: !sender.isSelected)
   }
 
+  @IBAction fileprivate func emailNewLikesTapped(_ button: UIButton) {
+    self.viewModel.inputs.emailNewLikesTapped(selected: !button.isSelected)
+  }
+
+  @IBAction func emailNewPledgeTapped(_ sender: UIButton) {
+    self.viewModel.inputs.emailNewPledgeTapped(selected: !sender.isSelected)
+  }
+
   @IBAction fileprivate func messagesTapped(_ button: UIButton) {
     self.viewModel.inputs.emailMessagesTapped(selected: !button.isSelected)
   }
@@ -213,6 +254,22 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.viewModel.inputs.mobileMessagesTapped(selected: !button.isSelected)
   }
 
+  @IBAction fileprivate func mobileNewCommentsTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileNewCommentsTapped(selected: !button.isSelected)
+  }
+
+  @IBAction fileprivate func mobileNewLikesTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileNewLikesTapped(selected: !button.isSelected)
+  }
+
+  @IBAction fileprivate func mobileNewPledgeTapped(_ button: UIButton) {
+    self.viewModel.inputs.mobileNewPledgeTapped(selected: !button.isSelected)
+  }
+
+  @objc fileprivate func emailFrequencyTapped() {
+    self.viewModel.inputs.emailFrequencyTapped()
+  }
+
   @objc fileprivate func findFriendsTapped() {
     self.viewModel.inputs.findFriendsTapped()
   }
@@ -221,13 +278,18 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.viewModel.inputs.manageProjectNotificationsTapped()
   }
 
-  fileprivate func goToManageProjectNotifications() {
-    let vc = ProjectNotificationsViewController.instantiate()
+  fileprivate func goToEmailFrequency(user: User) {
+    let vc = CreatorDigestSettingsViewController.configureWith(user: user)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
   fileprivate func goToFindFriends() {
     let vc = FindFriendsViewController.configuredWith(source: .settings)
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  fileprivate func goToManageProjectNotifications() {
+    let vc = ProjectNotificationsViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 }

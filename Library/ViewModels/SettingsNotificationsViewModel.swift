@@ -76,23 +76,44 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     .skipNil()
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = Signal.merge(
+      self.emailCreatorTipsProperty.signal.map {
+        (UserAttribute.notification(Notification.creatorTips), $0)
+      },
       self.emailFriendActivityProperty.signal.map {
         (UserAttribute.notification(Notification.friendActivity), $0)
       },
       self.emailMessagesProperty.signal.map {
         (UserAttribute.notification(Notification.messages), $0)
       },
+      self.emailNewCommentsProperty.signal.map {
+        (UserAttribute.notification(Notification.comments), $0)
+      },
       self.emailNewFollowersProperty.signal.map {
         (UserAttribute.notification(Notification.follower), $0)
+      },
+      self.emailNewLikesProperty.signal.map {
+        (UserAttribute.notification(Notification.postLikes), $0)
+      },
+      self.emailNewPledgeProperty.signal.map {
+        (UserAttribute.notification(Notification.backings), $0)
+      },
+      self.mobileFriendsActivityProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileFriendActivity), $0)
       },
       self.mobileMessagesProperty.signal.map {
         (UserAttribute.notification(Notification.mobileMessages), $0)
       },
+      self.mobileNewCommentsProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileComments), $0)
+      },
       self.mobileNewFollowersProperty.signal.map {
         (UserAttribute.notification(Notification.mobileFollower), $0)
       },
-      self.mobileFriendsActivityProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileFriendActivity), $0)
+      self.mobileNewLikesProperty.signal.map {
+        (UserAttribute.notification(Notification.mobilePostLikes), $0)
+      },
+      self.mobileNewPledgeProperty.signal.map {
+        (UserAttribute.notification(Notification.mobileBackings), $0)
       },
       self.mobileProjectUpdatesProperty.signal.map {
         (UserAttribute.notification(Notification.mobileUpdates), $0)
@@ -149,7 +170,10 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.emailNewLikesSelected = self.updateCurrentUser
       .map { $0.notifications.postLikes }.skipNil().skipRepeats()
 
-    self.emailNewPledgesSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
+    self.emailNewPledgesSelected = self.updateCurrentUser
+                                    .map { $0.notifications.backings }
+                                    .skipNil()
+                                    .skipRepeats()
 
     self.emailProjectUpdatesSelected = self.updateCurrentUser
       .map { $0.notifications.updates }.skipNil().skipRepeats()

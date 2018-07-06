@@ -143,12 +143,18 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="8g4-Zk-F07"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="emailNewPledgeTapped:" destination="JLZ-Bh-abg" eventType="touchUpInside" id="zVH-8o-v3d"/>
+                                                                </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Djt-vO-cOk">
                                                                 <rect key="frame" x="299" y="0.0" width="44" height="34"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="Wfj-jj-STV"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="mobileNewPledgeTapped:" destination="JLZ-Bh-abg" eventType="touchUpInside" id="tfD-R6-gWx"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -194,12 +200,18 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="0qD-06-Vg1"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="emailCommentsTapped:" destination="JLZ-Bh-abg" eventType="touchUpInside" id="x0j-he-HuB"/>
+                                                                </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNh-jo-cV1">
                                                                 <rect key="frame" x="299" y="0.0" width="44" height="34"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="0np-l6-H2Q"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="mobileNewCommentsTapped:" destination="JLZ-Bh-abg" eventType="touchUpInside" id="gp8-ZI-5tP"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -224,12 +236,18 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="2hx-WM-a4Y"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="emailNewLikesTapped:" destination="JLZ-Bh-abg" eventType="touchUpInside" id="8ml-Xj-heL"/>
+                                                                </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yru-by-GbI">
                                                                 <rect key="frame" x="299" y="0.0" width="44" height="34"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="LzS-Y2-ims"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="mobileNewLikesTapped:" destination="JLZ-Bh-abg" eventType="touchUpInside" id="RnK-3m-iIl"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -254,6 +272,9 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="eBs-3Z-frj"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="creatorTipsTapped:" destination="JLZ-Bh-abg" eventType="touchUpInside" id="98I-Wq-V1n"/>
+                                                                </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="84L-HB-dyi">
                                                                 <rect key="frame" x="299" y="0.0" width="44" height="34"/>
@@ -435,6 +456,13 @@
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TcV-xb-aYc">
+                                        <rect key="frame" x="16" y="327" width="343" height="33"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <state key="normal">
+                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r0m-Hf-c3Y">
                                         <rect key="frame" x="16" y="842.5" width="343" height="33"/>
                                         <constraints>
@@ -449,11 +477,15 @@
                                 <constraints>
                                     <constraint firstItem="xbW-Oh-E8n" firstAttribute="centerX" secondItem="cJM-fu-T2N" secondAttribute="centerX" id="3An-Zt-hkI"/>
                                     <constraint firstItem="Xtd-UD-87r" firstAttribute="bottom" secondItem="lVl-EL-RgA" secondAttribute="bottom" id="5jZ-ei-h6X"/>
+                                    <constraint firstItem="TcV-xb-aYc" firstAttribute="top" secondItem="RHG-Vk-jbc" secondAttribute="top" id="74u-HQ-5RX"/>
                                     <constraint firstItem="Xtd-UD-87r" firstAttribute="leading" secondItem="lVl-EL-RgA" secondAttribute="leading" id="8Sx-Gn-H9G"/>
                                     <constraint firstItem="r0m-Hf-c3Y" firstAttribute="leading" secondItem="g9U-VY-aT1" secondAttribute="leading" id="Djo-e3-lVg"/>
                                     <constraint firstItem="xbW-Oh-E8n" firstAttribute="top" secondItem="cJM-fu-T2N" secondAttribute="top" id="Drr-E5-Bwy"/>
+                                    <constraint firstItem="TcV-xb-aYc" firstAttribute="trailing" secondItem="RHG-Vk-jbc" secondAttribute="trailing" id="Iyv-2d-Rhi"/>
                                     <constraint firstItem="r0m-Hf-c3Y" firstAttribute="trailing" secondItem="g9U-VY-aT1" secondAttribute="trailing" id="LjY-3t-uf0"/>
                                     <constraint firstItem="Xtd-UD-87r" firstAttribute="top" secondItem="lVl-EL-RgA" secondAttribute="top" id="Mcj-Eo-Vu1"/>
+                                    <constraint firstItem="TcV-xb-aYc" firstAttribute="leading" secondItem="RHG-Vk-jbc" secondAttribute="leading" id="aOd-PH-BG9"/>
+                                    <constraint firstItem="TcV-xb-aYc" firstAttribute="bottom" secondItem="RHG-Vk-jbc" secondAttribute="bottom" id="gdg-2r-4kM"/>
                                     <constraint firstAttribute="bottom" secondItem="xbW-Oh-E8n" secondAttribute="bottom" constant="76" id="gnF-uI-W8X"/>
                                     <constraint firstItem="xbW-Oh-E8n" firstAttribute="leading" secondItem="cJM-fu-T2N" secondAttribute="leading" constant="16" id="s6d-jG-ssR"/>
                                     <constraint firstAttribute="trailing" secondItem="xbW-Oh-E8n" secondAttribute="trailing" constant="16" id="uKY-Z8-wTp"/>
@@ -475,9 +507,16 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="1000"/>
                     <connections>
+                        <outlet property="creatorNotificationsStackView" destination="JHW-pX-6X2" id="e7J-3I-33B"/>
                         <outlet property="creatorNotificationsTitleLabel" destination="pTR-o7-uQx" id="8YI-0F-Opt"/>
                         <outlet property="creatorTipsLabel" destination="jRO-rO-WNA" id="EWz-IV-zgp"/>
+                        <outlet property="emailCreatorTipsButton" destination="ENb-Kx-EkH" id="IcW-rD-y9S"/>
+                        <outlet property="emailFrequencyArrow" destination="vgm-cV-O78" id="6un-kX-Ptc"/>
+                        <outlet property="emailFrequencyButton" destination="TcV-xb-aYc" id="Azq-Ul-jCS"/>
                         <outlet property="emailFrequencyLabel" destination="wFP-4R-EGI" id="1hb-9O-mtm"/>
+                        <outlet property="emailNewCommentsButton" destination="MWU-M1-sY2" id="NBk-xs-49O"/>
+                        <outlet property="emailNewLikesButton" destination="WY9-dk-lSv" id="O8N-I3-4dl"/>
+                        <outlet property="emailNewPledgeButton" destination="7Nv-kI-MSx" id="kII-Su-G6i"/>
                         <outlet property="emailProjectUpdatesButton" destination="lCv-oW-5rH" id="jj4-e8-PGn"/>
                         <outlet property="findFriendsButton" destination="r0m-Hf-c3Y" id="I4f-XN-ZJU"/>
                         <outlet property="findFriendsLabel" destination="cBC-DT-HcP" id="hcM-OM-kFo"/>
@@ -491,6 +530,9 @@
                         <outlet property="mobileFollowerButton" destination="neh-sl-PJV" id="1We-9r-i4E"/>
                         <outlet property="mobileFriendActivityButton" destination="m0a-gA-4Sv" id="i6F-2P-zef"/>
                         <outlet property="mobileMessagesButton" destination="NYs-tD-ahe" id="Bu9-WY-bXu"/>
+                        <outlet property="mobileNewCommentsButton" destination="bNh-jo-cV1" id="mZA-xn-zph"/>
+                        <outlet property="mobileNewLikesButton" destination="Yru-by-GbI" id="e5j-4i-JHk"/>
+                        <outlet property="mobileNewPledgeButton" destination="Djt-vO-cOk" id="dXh-Kk-hmW"/>
                         <outlet property="mobileUpdatesButton" destination="bW2-5Q-sEu" id="ki0-lj-rkO"/>
                         <outlet property="newCommentsLabel" destination="2iC-B6-QO6" id="1XU-Na-nOI"/>
                         <outlet property="newFollowersLabel" destination="BG9-ea-Xjd" id="nRl-i1-beQ"/>
