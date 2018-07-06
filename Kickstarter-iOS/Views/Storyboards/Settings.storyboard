@@ -26,7 +26,7 @@
                                 <rect key="frame" x="0.0" y="64" width="400" height="1892"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="8mW-y4-spg" userLabel="Root stack view">
-                                        <rect key="frame" x="16" y="0.0" width="368" height="2557"/>
+                                        <rect key="frame" x="16" y="0.0" width="368" height="2282.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BKe-u1-jse">
                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="1"/>
@@ -35,93 +35,8 @@
                                                     <constraint firstAttribute="height" constant="1" id="OmJ-mY-XzZ"/>
                                                 </constraints>
                                             </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="8TA-Jj-lRV">
-                                                <rect key="frame" x="0.0" y="37" width="368" height="238.5"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aeH-og-UPD">
-                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-Ze-LrW">
-                                                        <rect key="frame" x="0.0" y="32.5" width="368" height="1"/>
-                                                        <color key="backgroundColor" red="0.89563578367233276" green="0.89563578367233276" blue="0.89563578367233276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="1" id="pdA-y2-6cl"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6X1-zQ-it8">
-                                                        <rect key="frame" x="0.0" y="45.5" width="368" height="34"/>
-                                                        <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7w-le-BZc">
-                                                                <rect key="frame" x="0.0" y="0.0" width="359" height="34"/>
-                                                                <state key="normal">
-                                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                </state>
-                                                            </button>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="OYW-jp-cac">
-                                                                <rect key="frame" x="359" y="9.5" width="9" height="15"/>
-                                                            </imageView>
-                                                        </subviews>
-                                                    </stackView>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i85-oa-tsu">
-                                                        <rect key="frame" x="0.0" y="91.5" width="368" height="1"/>
-                                                        <color key="backgroundColor" red="0.89563578367233276" green="0.89563578367233276" blue="0.89563578367233276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="1" id="AOA-aO-qkY"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vzx-Rr-sNq">
-                                                        <rect key="frame" x="0.0" y="104.5" width="368" height="33"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Change environment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TRP-sm-CgN">
-                                                                <rect key="frame" x="0.0" y="0.0" width="284" height="33"/>
-                                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
-                                                                <color key="textColor" red="0.396078431372549" green="0.41176470588235292" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2t-gL-FzK" userLabel="Environment Switcher">
-                                                                <rect key="frame" x="284" y="0.0" width="84" height="33"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <state key="normal" title="Production">
-                                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                </state>
-                                                            </button>
-                                                        </subviews>
-                                                    </stackView>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ww-Yo-UnY">
-                                                        <rect key="frame" x="0.0" y="149.5" width="368" height="1"/>
-                                                        <color key="backgroundColor" red="0.89563578369999997" green="0.89563578369999997" blue="0.89563578369999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="1" id="9DK-7r-CkH"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bqE-11-cMM">
-                                                        <rect key="frame" x="0.0" y="162.5" width="368" height="30"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Change language" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GoK-CB-yHr">
-                                                                <rect key="frame" x="0.0" y="0.0" width="318" height="30"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" red="0.39607843139999999" green="0.41176470590000003" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yY3-hv-P7H" userLabel="Language Switcher Button">
-                                                                <rect key="frame" x="318" y="0.0" width="50" height="30"/>
-                                                                <state key="normal" title="English"/>
-                                                            </button>
-                                                        </subviews>
-                                                    </stackView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CeQ-LQ-cjX">
-                                                        <rect key="frame" x="0.0" y="204.5" width="368" height="34"/>
-                                                        <state key="normal">
-                                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </state>
-                                                    </button>
-                                                </subviews>
-                                            </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="HEu-B6-yqB" userLabel="Projects you back stack view">
-                                                <rect key="frame" x="0.0" y="311.5" width="368" height="167.5"/>
+                                                <rect key="frame" x="0.0" y="37" width="368" height="167.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P8S-3I-ZH2" userLabel="Projects you back label">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -200,7 +115,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="1ZC-gw-NRT" userLabel="Creator notifications stack view">
-                                                <rect key="frame" x="0.0" y="515" width="368" height="344.5"/>
+                                                <rect key="frame" x="0.0" y="240.5" width="368" height="344.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="It8-HK-urg" userLabel="Creator notifications label">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -383,7 +298,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="5Ox-jp-RH4" userLabel="Social notifications stack view">
-                                                <rect key="frame" x="0.0" y="895.5" width="368" height="268.5"/>
+                                                <rect key="frame" x="0.0" y="621" width="368" height="268.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uNC-qv-Q2T" userLabel="Social notifications label">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -530,7 +445,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="nZ7-PD-Y4S" userLabel="Newsletters stack view">
-                                                <rect key="frame" x="0.0" y="1200" width="368" height="369.5"/>
+                                                <rect key="frame" x="0.0" y="925.5" width="368" height="369.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NV2-hf-Obd" userLabel="Newsletters label">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -698,7 +613,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="GWS-aD-fwG" userLabel="Help stack view">
-                                                <rect key="frame" x="0.0" y="1605.5" width="368" height="363.5"/>
+                                                <rect key="frame" x="0.0" y="1331" width="368" height="363.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k1a-uu-6d9" userLabel="Help label">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -842,7 +757,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ar1-S2-Cvy" userLabel="Privacy stack view">
-                                                <rect key="frame" x="0.0" y="2005" width="368" height="311.5"/>
+                                                <rect key="frame" x="0.0" y="1730.5" width="368" height="311.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Privacy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Urg-Aa-oLZ" userLabel="Privacy label">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -999,7 +914,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="SlO-en-sfv" userLabel="Rating stack view">
-                                                <rect key="frame" x="0.0" y="2352.5" width="368" height="56"/>
+                                                <rect key="frame" x="0.0" y="2078" width="368" height="56"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVZ-o5-coE">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="1"/>
@@ -1032,7 +947,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IQM-bL-GaS">
-                                                <rect key="frame" x="0.0" y="2444.5" width="368" height="76.5"/>
+                                                <rect key="frame" x="0.0" y="2170" width="368" height="76.5"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kM8-GB-tee">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="44"/>
@@ -1049,7 +964,7 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VLB-0D-JqX">
-                                                <rect key="frame" x="0.0" y="2557" width="368" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="2282.5" width="368" height="0.0"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" id="uSU-eO-Qy1"/>
@@ -1205,10 +1120,6 @@
                         <outlet property="artsAndCultureNewsLabel" destination="dh4-6i-avI" id="Gk5-Ol-YuM"/>
                         <outlet property="artsAndCultureNewsletterSwitch" destination="z08-QD-7Rx" id="Qal-2s-PhG"/>
                         <outlet property="backingsButton" destination="bdr-cN-Jni" id="OA7-ej-nR6"/>
-                        <outlet property="betaDebugPushNotificationsButton" destination="g7w-le-BZc" id="77M-NT-976"/>
-                        <outlet property="betaFeedbackButton" destination="CeQ-LQ-cjX" id="N23-22-nWA"/>
-                        <outlet property="betaTitleLabel" destination="aeH-og-UPD" id="6Y1-6m-Aix"/>
-                        <outlet property="betaToolsStackView" destination="8TA-Jj-lRV" id="oVw-L9-eRV"/>
                         <outlet property="commentsButton" destination="JjR-gY-rjY" id="pHR-pS-cJf"/>
                         <outlet property="contactButton" destination="zG7-vO-CqI" id="sAQ-qu-Eay"/>
                         <outlet property="contactLabel" destination="rzh-y6-qTi" id="4dD-fo-aHJ"/>
@@ -1223,7 +1134,6 @@
                         <outlet property="emailFrequencyArrow" destination="sHL-Gt-Phv" id="hbc-NJ-nTq"/>
                         <outlet property="emailFrequencyButton" destination="Jfz-QX-Izu" id="7jq-ko-iPf"/>
                         <outlet property="emailFrequencyLabel" destination="Ahi-Hx-9ab" id="blc-ri-ih6"/>
-                        <outlet property="environmentSwitcher" destination="y2t-gL-FzK" id="NMI-BR-K1l"/>
                         <outlet property="exportDataButton" destination="7SN-cI-sju" id="MIE-4K-PaL"/>
                         <outlet property="exportDataLabel" destination="SHQ-yw-sJx" id="q4T-9B-PnH"/>
                         <outlet property="findFriendsButton" destination="hEp-CW-Yrn" id="Jx3-uc-1Ke"/>
@@ -1246,7 +1156,6 @@
                         <outlet property="inventNewsletterSwitch" destination="ucH-28-3Ce" id="Luk-D0-5aH"/>
                         <outlet property="ksrLovesGamesLabel" destination="QnO-BN-lK4" id="6VF-wN-zau"/>
                         <outlet property="ksrNewsAndEventsLabel" destination="lWY-TN-wVz" id="nCE-ZG-hpo"/>
-                        <outlet property="languageSwitcher" destination="yY3-hv-P7H" id="bQs-J8-wAn"/>
                         <outlet property="logoutButton" destination="kM8-GB-tee" id="pf7-dH-tJZ"/>
                         <outlet property="manageProjectNotificationsButton" destination="8aU-vJ-x8w" id="e51-o2-xZD"/>
                         <outlet property="manageProjectNotificationsLabel" destination="hX8-cX-McX" id="poD-zw-O2m"/>
@@ -1324,8 +1233,6 @@
                         <outletCollection property="separatorViews" destination="NfI-AO-bpI" collectionClass="NSMutableArray" id="iE6-nn-fjc"/>
                         <outletCollection property="pushNotificationButtons" destination="5RA-91-rJW" collectionClass="NSMutableArray" id="qeZ-ct-tYH"/>
                         <outletCollection property="pushNotificationButtons" destination="V2W-jh-eyw" collectionClass="NSMutableArray" id="8av-fS-4oi"/>
-                        <outletCollection property="separatorViews" destination="cPB-Ze-LrW" collectionClass="NSMutableArray" id="yVe-OM-bNU"/>
-                        <outletCollection property="separatorViews" destination="i85-oa-tsu" collectionClass="NSMutableArray" id="qjc-E1-meE"/>
                         <outletCollection property="emailNotificationButtons" destination="qLl-B8-n0r" collectionClass="NSMutableArray" id="nOn-cp-yFI"/>
                         <outletCollection property="emailNotificationButtons" destination="uu7-GJ-btb" collectionClass="NSMutableArray" id="nPv-9f-oq8"/>
                         <outletCollection property="pushNotificationButtons" destination="5Aw-fz-bIi" collectionClass="NSMutableArray" id="fdC-uq-l1E"/>

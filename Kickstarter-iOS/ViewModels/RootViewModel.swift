@@ -177,7 +177,10 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .takePairWhen(selectedTabAgain)
       .map { vcs, idx in vcs[idx] }
 
-    self.tabBarItemsData = Signal.combineLatest(currentUser, self.viewDidLoadProperty.signal)
+    self.tabBarItemsData = Signal.combineLatest(currentUser, .merge(
+      self.viewDidLoadProperty.signal,
+      self.currentLanguageProperty.signal.ignoreValues())
+      )
       .map(first)
       .map(tabData(forUser:))
   }
@@ -313,8 +316,6 @@ private func first<VC: UIViewController>(_ viewController: VC.Type) -> ([UIViewC
 }
 
 private func profileController() -> UIViewController {
-  let showDash = AppEnvironment.current.config?.features["ios_backer_dashboard"] == .some(true)
-  return showDash
-    ? BackerDashboardViewController.instantiate()
-    : ProfileViewController.instantiate()
+
+  return BackerDashboardViewController.instantiate()
 }

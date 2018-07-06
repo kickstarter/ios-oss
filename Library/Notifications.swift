@@ -7,6 +7,7 @@ public enum CurrentUserNotifications {
   public static let sessionEnded = "CurrentUserNotifications.sessionEnded"
   public static let userUpdated = "CurrentUserNotifications.userUpdated"
   public static let languageChanged = "CurrentUserNotification.languageChanged"
+  public static let environmentChanged = "CurrentUserNotification.environmentChanged"
 }
 
 public enum UserInfoKeys {
@@ -23,5 +24,8 @@ extension Notification.Name {
     Notification.Name(rawValue: CurrentUserNotifications.showNotificationsDialog)
   public static let ksr_languageChanged = Notification.Name(rawValue:
     CurrentUserNotifications.languageChanged
+  )
+  public static let ksr_environmentChanged = Notification.Name(rawValue:
+    CurrentUserNotifications.environmentChanged
   )
 }
