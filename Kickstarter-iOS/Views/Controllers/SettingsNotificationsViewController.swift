@@ -193,16 +193,25 @@ internal final class SettingsNotificationsViewController: UIViewController {
         self?.emailFrequencyArrow.alpha = enabled ? 1.0 : 0.5
     }
 
+    self.creatorNotificationsStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
+    self.emailCreatorTipsButton.rac.selected = self.viewModel.outputs.emailCreatorTipsSelected
+    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
+    self.emailNewCommentsButton.rac.selected = self.viewModel.outputs.emailNewCommentsSelected
+    self.emailNewLikesButton.rac.selected = self.viewModel.outputs.emailNewLikesSelected
+    self.emailNewPledgeButton.rac.selected = self.viewModel.outputs.emailNewPledgesSelected
     self.emailProjectUpdatesButton.rac.selected = self.viewModel.outputs.emailProjectUpdatesSelected
     self.followerButton.rac.selected = self.viewModel.outputs.emailNewFollowersSelected
     self.friendActivityButton.rac.selected = self.viewModel.outputs.emailFriendsActivitySelected
     self.manageProjectNotificationsButton.rac.accessibilityHint =
     self.viewModel.outputs.manageProjectNotificationsButtonAccessibilityHint
-    self.messagesButton.rac.selected = self.viewModel.outputs.emailMessagesSelected
     self.mobileFollowerButton.rac.selected = self.viewModel.outputs.mobileNewFollowersSelected
     self.mobileFriendActivityButton.rac.selected = self.viewModel.outputs.mobileFriendsActivitySelected
     self.mobileMessagesButton.rac.selected = self.viewModel.outputs.mobileMessagesSelected
+    self.mobileNewPledgeButton.rac.selected = self.viewModel.outputs.mobileNewPledgesSelected
+    self.mobileNewCommentsButton.rac.selected = self.viewModel.outputs.mobileNewCommentsSelected
+    self.mobileNewLikesButton.rac.selected = self.viewModel.outputs.mobileNewLikesSelected
     self.mobileUpdatesButton.rac.selected = self.viewModel.outputs.mobileProjectUpdatesSelected
+    self.messagesButton.rac.selected = self.viewModel.outputs.emailMessagesSelected
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
   }
 

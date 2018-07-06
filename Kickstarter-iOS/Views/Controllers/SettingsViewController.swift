@@ -11,21 +11,12 @@ internal final class SettingsViewController: UIViewController {
 
   @IBOutlet fileprivate weak var artsAndCultureNewsLabel: UILabel!
   @IBOutlet fileprivate weak var artsAndCultureNewsletterSwitch: UISwitch!
-  @IBOutlet fileprivate weak var backingsButton: UIButton!
-  @IBOutlet fileprivate weak var commentsButton: UIButton!
   @IBOutlet fileprivate weak var contactButton: UIButton!
   @IBOutlet fileprivate weak var contactLabel: UILabel!
   @IBOutlet fileprivate weak var cookiePolicyButton: UIButton!
   @IBOutlet fileprivate weak var cookiePolicyLabel: UILabel!
-  @IBOutlet fileprivate weak var creatorNotificationsTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var creatorStackView: UIStackView!
-  @IBOutlet fileprivate weak var creatorTips: UILabel!
-  @IBOutlet fileprivate weak var creatorTipsButton: UIButton!
   @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
   @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
-  @IBOutlet fileprivate weak var emailFrequencyButton: UIButton!
-  @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
-  @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
   @IBOutlet fileprivate weak var exportDataButton: UIButton!
   @IBOutlet fileprivate weak var exportDataLabel: UILabel!
   @IBOutlet fileprivate weak var followingPrivacyInfoButton: UIButton!
@@ -44,15 +35,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var ksrLovesGamesLabel: UILabel!
   @IBOutlet fileprivate weak var ksrNewsAndEventsLabel: UILabel!
   @IBOutlet fileprivate weak var logoutButton: UIButton!
-  @IBOutlet fileprivate weak var mobileBackingsButton: UIButton!
-  @IBOutlet fileprivate weak var mobileCommentsButton: UIButton!
-  @IBOutlet fileprivate weak var mobilePostLikesButton: UIButton!
-  @IBOutlet fileprivate weak var newCommentsLabel: UILabel!
-  @IBOutlet fileprivate weak var newLikesLabel: UILabel!
-  @IBOutlet fileprivate weak var newPledgesLabel: UILabel!
   @IBOutlet fileprivate weak var newslettersTitleLabel: UILabel!
   @IBOutlet fileprivate weak var notificationsLabel: UILabel!
-  @IBOutlet fileprivate weak var postLikesButton: UIButton!
   @IBOutlet fileprivate weak var privacyTitleLabel: UILabel!
   @IBOutlet fileprivate weak var privacyPolicyButton: UIButton!
   @IBOutlet fileprivate weak var privacyPolicyLabel: UILabel!
@@ -70,8 +54,6 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var privateProfileSwitch: UISwitch!
   @IBOutlet fileprivate weak var privateProfileLabel: UILabel!
   @IBOutlet fileprivate weak var privateProfileMoreInfoButton: UIButton!
-  @IBOutlet fileprivate var emailNotificationButtons: [UIButton]!
-  @IBOutlet fileprivate var pushNotificationButtons: [UIButton]!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
   internal static func instantiate() -> SettingsViewController {
@@ -97,8 +79,6 @@ internal final class SettingsViewController: UIViewController {
     self.deleteAccountButton.addTarget(self,
                                     action: #selector(deleteAccountTapped),
                                     for: .touchUpInside)
-
-    self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
 
     self.exportDataButton.addTarget(self, action: #selector(exportDataTapped), for: .touchUpInside)
 
@@ -159,14 +139,6 @@ internal final class SettingsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_cookie() }
 
-    _ = self.creatorNotificationsTitleLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_title() }
-
-    _ = self.creatorTips
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Creator_tips() }
-
     _ = self.deleteAccountLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Delete_my_Kickstarter_Account() }
@@ -174,19 +146,6 @@ internal final class SettingsViewController: UIViewController {
     _ = self.exportDataLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Request_my_Personal_Data() }
-
-    _ = self.emailFrequencyLabel
-      |> UILabel.lens.font .~ .ksr_body()
-      |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.text %~ { _ in Strings.Email_frequency() }
-
-    _ = self.emailNotificationButtons
-      ||> settingsNotificationIconButtonStyle
-      ||> UIButton.lens.image(for: .normal)
-        .~ UIImage(named: "email-icon", in: .framework, compatibleWith: nil)
-      ||> UIButton.lens.image(for: .selected)
-        .~ image(named: "email-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
-      ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
     _ = self.followingPrivacyLabel
       |> settingsSectionLabelStyle
@@ -235,18 +194,6 @@ internal final class SettingsViewController: UIViewController {
 
     _ = self.logoutButton |> settingsLogoutButtonStyle
 
-    _ = self.newCommentsLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_comments() }
-
-    _ = self.newLikesLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_creator_likes() }
-
-    _ = self.newPledgesLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Pledge_activity() }
-
     _ = self.newslettersTitleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_title() }
@@ -279,14 +226,6 @@ internal final class SettingsViewController: UIViewController {
     _ = self.projectsWeLoveLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_weekly() }
-
-    _ = self.pushNotificationButtons
-      ||> settingsNotificationIconButtonStyle
-      ||> UIButton.lens.image(for: .normal)
-        .~ UIImage(named: "mobile-icon", in: .framework, compatibleWith: nil)
-      ||> UIButton.lens.image(for: .selected)
-        .~ image(named: "mobile-icon", tintColor: .ksr_green_700, inBundle: Bundle.framework)
-      ||> UIButton.lens.accessibilityLabel %~ { _ in Strings.Push_notifications() }
 
     _ = self.rateUsButton
       |> settingsSectionButtonStyle
@@ -391,27 +330,11 @@ internal final class SettingsViewController: UIViewController {
         self?.goToHelpType(helpType)
     }
 
-    self.viewModel.outputs.emailFrequencyButtonEnabled
-      .observeForUI()
-      .observeValues { [weak self] enabled in
-        self?.emailFrequencyLabel.textColor = enabled ? .ksr_text_dark_grey_500 : .ksr_text_dark_grey_400
-        self?.emailFrequencyArrow.alpha = enabled ? 1.0 : 0.5
-      }
-
     self.artsAndCultureNewsletterSwitch.rac.on = self.viewModel.outputs.artsAndCultureNewsletterOn
-    self.backingsButton.rac.selected = self.viewModel.outputs.backingsSelected
-    self.commentsButton.rac.selected = self.viewModel.outputs.commentsSelected
-    self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
-    self.creatorTipsButton.rac.selected = self.viewModel.outputs.creatorTipsSelected
-    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
     self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
     self.happeningNewsletterSwitch.rac.on = self.viewModel.outputs.happeningNewsletterOn
     self.inventNewsletterSwitch.rac.on = self.viewModel.outputs.inventNewsletterOn
-    self.mobileBackingsButton.rac.selected = self.viewModel.outputs.mobileBackingsSelected
-    self.mobileCommentsButton.rac.selected = self.viewModel.outputs.mobileCommentsSelected
-    self.mobilePostLikesButton.rac.selected = self.viewModel.outputs.mobilePostLikesSelected
-    self.postLikesButton.rac.selected = self.viewModel.outputs.postLikesSelected
     self.promoNewsletterSwitch.rac.on = self.viewModel.outputs.promoNewsletterOn
     self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
     self.privateProfileSwitch.rac.on = self.viewModel.outputs.privateProfileEnabled
@@ -494,28 +417,12 @@ internal final class SettingsViewController: UIViewController {
     self.viewModel.inputs.artsAndCultureNewsletterTapped(on: newsletterSwitch.isOn)
   }
 
-  @IBAction fileprivate func backingsTapped(_ button: UIButton) {
-    self.viewModel.inputs.backingsTapped(selected: !button.isSelected)
-  }
-
-  @IBAction fileprivate func commentsTapped(_ button: UIButton) {
-    self.viewModel.inputs.commentsTapped(selected: !button.isSelected)
-  }
-
   @objc fileprivate func contactTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.contact)
   }
 
   @objc fileprivate func cookiePolicyTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.cookie)
-  }
-
-  @IBAction fileprivate func creatorTipsTapped(_ button: UIButton) {
-    self.viewModel.inputs.creatorTipsTapped(selected: !button.isSelected)
-  }
-
-  @objc fileprivate func emailFrequencyTapped() {
-    self.viewModel.inputs.emailFrequencyTapped()
   }
 
   @objc fileprivate func exportDataTapped() {
@@ -584,14 +491,6 @@ internal final class SettingsViewController: UIViewController {
     self.helpViewModel.inputs.helpTypeButtonTapped(.howItWorks)
   }
 
-  @IBAction fileprivate func mobileBackingsTapped(_ button: UIButton) {
-    self.viewModel.inputs.mobileBackingsTapped(selected: !button.isSelected)
-  }
-
-  @IBAction fileprivate func mobileCommentsTapped(_ button: UIButton) {
-    self.viewModel.inputs.mobileCommentsTapped(selected: !button.isSelected)
-  }
-
   @objc fileprivate func recommendationsInfoTapped() {
     let alertController = UIAlertController(
 
@@ -605,16 +504,7 @@ internal final class SettingsViewController: UIViewController {
         handler: nil
       )
     )
-
     self.present(alertController, animated: true, completion: nil)
-  }
-
-  @IBAction fileprivate func mobilePostLikesTapped(_ button: UIButton) {
-    self.viewModel.inputs.mobilePostLikesTapped(selected: !button.isSelected)
-  }
-
-  @IBAction fileprivate func postLikesTapped(_ button: UIButton) {
-    self.viewModel.inputs.postLikesTapped(selected: !button.isSelected)
   }
 
   @objc fileprivate func privacyPolicyTapped() {

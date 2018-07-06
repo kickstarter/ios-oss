@@ -457,7 +457,7 @@
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TcV-xb-aYc">
-                                        <rect key="frame" x="16" y="327" width="343" height="33"/>
+                                        <rect key="frame" x="16" y="344" width="343" height="50"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -565,7 +565,6 @@
                         <outletCollection property="pushNotificationButtons" destination="Djt-vO-cOk" collectionClass="NSMutableArray" id="3sp-Pp-aJg"/>
                         <outletCollection property="pushNotificationButtons" destination="bNh-jo-cV1" collectionClass="NSMutableArray" id="F98-v5-MTI"/>
                         <outletCollection property="pushNotificationButtons" destination="Yru-by-GbI" collectionClass="NSMutableArray" id="p0D-4M-0XR"/>
-                        <outletCollection property="pushNotificationButtons" destination="84L-HB-dyi" collectionClass="NSMutableArray" id="q8w-tS-R3u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="deh-wf-zvn" userLabel="First Responder" sceneMemberID="firstResponder"/>
