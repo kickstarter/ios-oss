@@ -1,4 +1,4 @@
-public enum FacebookConnectionType: String {
+public enum FacebookConnectionType {
   case connect
   case reconnect
 }

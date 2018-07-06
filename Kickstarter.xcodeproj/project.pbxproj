@@ -1680,7 +1680,6 @@
 		59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCell.swift; sourceTree = "<group>"; };
 		59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModel.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
-		770BC80D20EA9E64002AC38F /* FacebookConnectCellValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookConnectCellValue.swift; sourceTree = "<group>"; };
 		77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConnectionType.swift; sourceTree = "<group>"; };
 		77556F1C20A09993008CEA57 /* Config+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+Helpers.swift"; sourceTree = "<group>"; };
 		77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksViewControllerTests.swift; sourceTree = "<group>"; };
@@ -3262,7 +3261,6 @@
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
-				770BC80D20EA9E64002AC38F /* FacebookConnectCellValue.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
