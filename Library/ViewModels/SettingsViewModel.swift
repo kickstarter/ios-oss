@@ -7,11 +7,7 @@ import Result
 
 public protocol SettingsViewModelInputs {
   func artsAndCultureNewsletterTapped(on: Bool)
-  func backingsTapped(selected: Bool)
-  func commentsTapped(selected: Bool)
-  func creatorTipsTapped(selected: Bool)
   func deleteAccountTapped()
-  func emailFrequencyTapped()
   func exportDataTapped()
   func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
   func gamesNewsletterTapped(on: Bool)
@@ -20,11 +16,6 @@ public protocol SettingsViewModelInputs {
   func logoutCanceled()
   func logoutConfirmed()
   func logoutTapped()
-  func messagesTapped(selected: Bool)
-  func mobileBackingsTapped(selected: Bool)
-  func mobileCommentsTapped(selected: Bool)
-  func mobilePostLikesTapped(selected: Bool)
-  func postLikesTapped(selected: Bool)
   func privateProfileSwitchDidChange(isOn: Bool)
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
@@ -35,23 +26,13 @@ public protocol SettingsViewModelInputs {
 
 public protocol SettingsViewModelOutputs {
   var artsAndCultureNewsletterOn: Signal<Bool, NoError> { get }
-  var backingsSelected: Signal<Bool, NoError> { get }
-  var commentsSelected: Signal<Bool, NoError> { get }
-  var creatorNotificationsHidden: Signal<Bool, NoError> { get }
-  var creatorTipsSelected: Signal<Bool, NoError> { get }
-  var emailFrequencyButtonEnabled: Signal<Bool, NoError> { get }
   var followingPrivacyOn: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
   var goToDeleteAccountBrowser: Signal<URL, NoError> { get }
-  var goToEmailFrequency: Signal<User, NoError> { get }
   var happeningNewsletterOn: Signal<Bool, NoError> { get }
   var inventNewsletterOn: Signal<Bool, NoError> { get }
   var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
-  var mobileBackingsSelected: Signal<Bool, NoError> { get }
-  var mobileCommentsSelected: Signal<Bool, NoError> { get }
-  var mobilePostLikesSelected: Signal<Bool, NoError> { get }
-  var postLikesSelected: Signal<Bool, NoError> { get }
   var privateProfileEnabled: Signal<Bool, NoError> { get }
   var promoNewsletterOn: Signal<Bool, NoError> { get }
   var requestExportData: Signal<(), NoError> { get }
@@ -203,8 +184,6 @@ SettingsViewModelOutputs {
 
     self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
 
-    self.creatorNotificationsHidden = self.updateCurrentUser.map { !$0.isCreator }.skipRepeats()
-
     self.goToAppStoreRating = self.rateUsTappedProperty.signal
       .map { AppEnvironment.current.config?.iTunesLink ?? "" }
 
@@ -244,28 +223,10 @@ SettingsViewModelOutputs {
     self.artsAndCultureNewsletterOn = self.updateCurrentUser
       .map { $0.newsletters.arts }.skipNil().skipRepeats()
 
-    self.backingsSelected = self.updateCurrentUser.map { $0.notifications.backings }.skipNil().skipRepeats()
-    self.creatorTipsSelected = self.updateCurrentUser
-      .map { $0.notifications.creatorTips }.skipNil().skipRepeats()
-    self.commentsSelected = self.updateCurrentUser
-      .map { $0.notifications.comments }.skipNil().skipRepeats()
-    self.mobileBackingsSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileBackings }.skipNil().skipRepeats()
-    self.mobileCommentsSelected = self.updateCurrentUser
-      .map { $0.notifications.mobileComments }.skipNil().skipRepeats()
-    self.mobilePostLikesSelected = self.updateCurrentUser
-      .map { $0.notifications.mobilePostLikes }.skipNil().skipRepeats()
     self.privateProfileEnabled = self.updateCurrentUser
       .map { $0.showPublicProfile }.skipNil().negate().skipRepeats()
-    self.postLikesSelected = self.updateCurrentUser
-      .map { $0.notifications.postLikes }.skipNil().skipRepeats()
     self.recommendationsOn = self.updateCurrentUser
       .map { $0.optedOutOfRecommendations }.skipNil().map { $0 ? false : true }.skipRepeats()
-
-    self.emailFrequencyButtonEnabled = self.backingsSelected
-
-    self.goToEmailFrequency = self.updateCurrentUser
-      .takeWhen(self.emailFrequencyTappedProperty.signal)
 
     self.versionText = viewDidLoadProperty.signal
       .map {
@@ -482,23 +443,13 @@ SettingsViewModelOutputs {
   }
 
   public let artsAndCultureNewsletterOn: Signal<Bool, NoError>
-  public let backingsSelected: Signal<Bool, NoError>
-  public let commentsSelected: Signal<Bool, NoError>
-  public let creatorNotificationsHidden: Signal<Bool, NoError>
-  public let creatorTipsSelected: Signal<Bool, NoError>
-  public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
   public let followingPrivacyOn: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
   public let goToDeleteAccountBrowser: Signal<URL, NoError>
-  public let goToEmailFrequency: Signal<User, NoError>
   public let happeningNewsletterOn: Signal<Bool, NoError>
   public let inventNewsletterOn: Signal<Bool, NoError>
   public let logoutWithParams: Signal<DiscoveryParams, NoError>
-  public let mobileBackingsSelected: Signal<Bool, NoError>
-  public let mobileCommentsSelected: Signal<Bool, NoError>
-  public let mobilePostLikesSelected: Signal<Bool, NoError>
-  public let postLikesSelected: Signal<Bool, NoError>
   public let privateProfileEnabled: Signal<Bool, NoError>
   public let promoNewsletterOn: Signal<Bool, NoError>
   public let requestExportData: Signal<(), NoError>

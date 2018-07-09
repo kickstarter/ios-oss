@@ -303,12 +303,6 @@ internal final class SettingsViewController: UIViewController {
       .observeForUI()
       .observeValues { user in AppEnvironment.updateCurrentUser(user) }
 
-    self.viewModel.outputs.goToEmailFrequency
-      .observeForControllerAction()
-      .observeValues { [weak self] user in
-        self?.goToEmailFrequency(user: user)
-      }
-
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
       .observeValues { [weak self] in

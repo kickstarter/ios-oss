@@ -10,15 +10,25 @@ import Prelude
 internal final class SettingsNotificationsViewModelTests: TestCase {
   let vm = SettingsNotificationsViewModel()
 
+  let creatorNotificationsHidden = TestObserver<Bool, NoError>()
+  let emailCreatorTipsSelected = TestObserver<Bool, NoError>()
+  let emailFrequencyButtonEnabled = TestObserver<Bool, NoError>()
+  let emailNewCommentsSelected = TestObserver<Bool, NoError>()
+  let emailNewLikesSelected = TestObserver<Bool, NoError>()
+  let emailNewPledgesSelected = TestObserver<Bool, NoError>()
   let emailFriendsActivitySelected = TestObserver<Bool, NoError>()
   let emailMessagesSelected = TestObserver<Bool, NoError>()
   let emailNewFollowersSelected = TestObserver<Bool, NoError>()
   let emailProjectUpdatesSelected = TestObserver<Bool, NoError>()
+  let goToEmailFrequency = TestObserver<User, NoError>()
   let goToFindFriends = TestObserver<Void, NoError>()
   let goToManageProjectNotifications = TestObserver<Void, NoError>()
-  let mobileNewFollowersSelected = TestObserver<Bool, NoError>()
   let mobileFriendsActivitySelected = TestObserver<Bool, NoError>()
   let mobileMessagesSelected = TestObserver<Bool, NoError>()
+  let mobileNewCommentsSelected = TestObserver<Bool, NoError>()
+  let mobileNewFollowersSelected = TestObserver<Bool, NoError>()
+  let mobileNewLikesSelected = TestObserver<Bool, NoError>()
+  let mobileNewPledgesSelected = TestObserver<Bool, NoError>()
   let mobileProjectUpdatesSelected = TestObserver<Bool, NoError>()
   let projectNotificationsCount = TestObserver<String, NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
@@ -27,15 +37,24 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.creatorNotificationsHidden.observe(self.creatorNotificationsHidden.observer)
+    self.vm.outputs.emailCreatorTipsSelected.observe(self.emailCreatorTipsSelected.observer)
     self.vm.outputs.emailFriendsActivitySelected.observe(self.emailFriendsActivitySelected.observer)
+    self.vm.outputs.emailMessagesSelected.observe(self.emailMessagesSelected.observer)
+    self.vm.outputs.emailNewCommentsSelected.observe(self.emailNewCommentsSelected.observer)
     self.vm.outputs.emailNewFollowersSelected.observe(self.emailNewFollowersSelected.observer)
+    self.vm.outputs.emailNewLikesSelected.observe(self.emailNewLikesSelected.observer)
+    self.vm.outputs.emailNewPledgesSelected.observe(self.emailNewPledgesSelected.observer)
     self.vm.outputs.emailProjectUpdatesSelected.observe(self.emailProjectUpdatesSelected.observer)
+    self.vm.outputs.goToEmailFrequency.observe(self.goToEmailFrequency.observer)
     self.vm.outputs.goToFindFriends.observe(self.goToFindFriends.observer)
     self.vm.outputs.goToManageProjectNotifications.observe(self.goToManageProjectNotifications.observer)
-    self.vm.outputs.emailMessagesSelected.observe(self.emailMessagesSelected.observer)
     self.vm.outputs.mobileFriendsActivitySelected.observe(self.mobileFriendsActivitySelected.observer)
     self.vm.outputs.mobileMessagesSelected.observe(self.mobileMessagesSelected.observer)
+    self.vm.outputs.mobileNewCommentsSelected.observe(self.mobileNewCommentsSelected.observer)
     self.vm.outputs.mobileNewFollowersSelected.observe(self.mobileNewFollowersSelected.observer)
+    self.vm.outputs.mobileNewLikesSelected.observe(self.mobileNewLikesSelected.observer)
+    self.vm.outputs.mobileNewPledgesSelected.observe(self.mobileNewPledgesSelected.observer)
     self.vm.outputs.mobileProjectUpdatesSelected.observe(self.mobileProjectUpdatesSelected.observer)
     self.vm.outputs.projectNotificationsCount.observe(self.projectNotificationsCount.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
@@ -134,6 +153,65 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
                     "Enabled Email Notifications", "Enabled Email Notifications",
                     "Enabled Push Notifications", "Enabled Push Notifications", "Enabled Push Notifications",
                     "Disabled Push Notifications", "Disabled Push Notifications"], self.trackingClient.events)
+  }
+
+  func testCreatorNotificationsHidden() {
+    let user = User.template
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.viewDidLoad()
+    self.creatorNotificationsHidden.assertValues([true], "Creator notifications hidden from non-creator.")
+  }
+
+  func testCreatorNotificationsShown() {
+    let creator = User.template |> User.lens.stats.createdProjectsCount .~ 2
+
+    withEnvironment(apiService: MockService(fetchUserSelfResponse: creator)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
+
+      self.vm.inputs.viewDidLoad()
+      self.creatorNotificationsHidden.assertValues([false], "Creator notifications shown for creator.")
+    }
+  }
+
+  func testCreatorNotificationsTapped() {
+
+    let user = User.template |> User.lens.stats.createdProjectsCount .~ 2
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+    self.vm.inputs.viewDidLoad()
+
+    self.emailNewPledgesSelected.assertValues([false], "All creator notifications turned off as test default.")
+    self.emailNewCommentsSelected.assertValues([false])
+    self.mobileNewPledgesSelected.assertValues([false])
+    self.mobileNewCommentsSelected.assertValues([false])
+    self.mobileNewLikesSelected.assertValues([false])
+    self.emailNewLikesSelected.assertValues([false])
+
+    self.vm.inputs.mobileNewPledgeTapped(selected: true)
+    self.mobileNewPledgesSelected.assertValues([false, true], "Mobile backings notifications on.")
+    self.emailNewPledgesSelected.assertValues([false], "Backings notifications remain unchanged.")
+
+    self.vm.inputs.mobileNewPledgeTapped(selected: false)
+    self.mobileNewPledgesSelected.assertValues([false, true, false], "Mobile backings notifications off.")
+    self.mobileNewCommentsSelected.assertValues([false], "Mobile comments notifications remain unchanged.")
+
+    self.vm.inputs.mobileNewPledgeTapped(selected: false)
+    self.mobileNewPledgesSelected.assertValues([false, true, false],
+                                             "Mobile backings notifications remain off.")
+
+    self.vm.inputs.emailNewPledgeTapped(selected: true)
+    self.vm.inputs.emailNewCommentsTapped(selected: true)
+    self.vm.inputs.mobileNewPledgeTapped(selected: true)
+    self.vm.inputs.mobileNewCommentsTapped(selected: true)
+    self.vm.inputs.mobileNewLikesTapped(selected: true)
+    self.vm.inputs.emailNewLikesTapped(selected: true)
+
+    self.emailNewPledgesSelected.assertValues([false, true], "All creator notifications toggled on.")
+    self.emailNewCommentsSelected.assertValues([false, true])
+    self.mobileNewPledgesSelected.assertValues([false, true, false, true])
+    self.mobileNewCommentsSelected.assertValues([false, true])
+    self.mobileNewLikesSelected.assertValues([false, true])
+    self.emailNewLikesSelected.assertValues([false, true])
+    self.unableToSaveError.assertValueCount(0, "Error did not happen.")
   }
 
   func testProjectNotificationsCount() {
