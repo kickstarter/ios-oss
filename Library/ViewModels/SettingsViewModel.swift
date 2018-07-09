@@ -350,7 +350,7 @@ SettingsViewModelOutputs {
     )
 
     self.exportDataText = self.exportDataLoadingIndicator.signal
-      .map { $0 ? Strings.Preparing_your_personal_data() : Strings.Request_my_Personal_Data() }
+      .map { $0 ? Strings.Preparing_your_personal_data() : Strings.Download_your_personal_data() }
 
     self.exportDataExpirationDate = exportEnvelope
       .map { dateFormatter(for: $0.expiresAt, state: $0.state) }
