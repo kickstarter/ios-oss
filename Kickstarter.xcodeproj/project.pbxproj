@@ -915,6 +915,7 @@
 		D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */; };
 		D6B6F8E020EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */; };
 		D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */; };
+		D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */; };
 		D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* Category.swift */; };
 		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
 		D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */; };
@@ -2463,6 +2464,7 @@
 		D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationdialogTests.swift; sourceTree = "<group>"; };
 		D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewModelTests.swift; sourceTree = "<group>"; };
 		D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewControllerTests.swift; sourceTree = "<group>"; };
+		D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAttribute.swift; sourceTree = "<group>"; };
 		D6B9DF3E1F72E25A0064A4D8 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphSchemaTests.swift; sourceTree = "<group>"; };
 		D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryLenses.swift; sourceTree = "<group>"; };
@@ -3286,6 +3288,7 @@
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+				D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -5121,6 +5124,7 @@
 				598D96C51D42A3E3003F3F66 /* ActivitySampleFollowCellViewModel.swift in Sources */,
 				598D96BA1D426FD8003F3F66 /* ActivitySampleBackingCellViewModel.swift in Sources */,
 				59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */,
+				D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */,
 				A755116C1C8642C3005355CF /* UIPress-Extensions.swift in Sources */,
 				A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,

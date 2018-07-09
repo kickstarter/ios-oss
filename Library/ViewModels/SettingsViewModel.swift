@@ -98,62 +98,62 @@ SettingsViewModelOutputs {
         (UserAttribute.newsletter(Newsletter.weekly), $0)
       },
       self.backingsTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.backings), $0)
+        (UserAttribute.notification(UserAttribute.Notification.backings), $0)
       },
       self.commentsTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.comments), $0)
+        (UserAttribute.notification(UserAttribute.Notification.comments), $0)
       },
       self.followerTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.follower), $0)
+        (UserAttribute.notification(UserAttribute.Notification.follower), $0)
       },
       self.friendActivityTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.friendActivity), $0)
+        (UserAttribute.notification(UserAttribute.Notification.friendActivity), $0)
       },
       self.messagesTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.messages), $0)
+        (UserAttribute.notification(UserAttribute.Notification.messages), $0)
       },
       self.mobileBackingsTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileBackings), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileBackings), $0)
       },
       self.mobileCommentsTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileComments), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileComments), $0)
       },
       self.mobileFollowerTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileFollower), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileFollower), $0)
       },
       self.mobileFriendActivityTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileFriendActivity), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileFriendActivity), $0)
       },
       self.mobileMessagesTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileMessages), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileMessages), $0)
       },
       self.mobilePostLikesTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.mobilePostLikes), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobilePostLikes), $0)
       },
       self.mobileUpdatesTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileUpdates), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileUpdates), $0)
       },
       self.postLikesTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.postLikes), $0)
+        (UserAttribute.notification(UserAttribute.Notification.postLikes), $0)
       },
       self.privateProfileEnabledProperty.signal.negate().map {
-        (UserAttribute.privacy(Privacy.showPublicProfile), $0)
+        (UserAttribute.privacy(UserAttribute.Privacy.showPublicProfile), $0)
       },
       self.creatorTipsProperty.signal.map {
-        (UserAttribute.notification(Notification.creatorTips), $0)
+        (UserAttribute.notification(UserAttribute.Notification.creatorTips), $0)
       },
       self.updatesTappedProperty.signal.map {
-        (UserAttribute.notification(Notification.updates), $0)
+        (UserAttribute.notification(UserAttribute.Notification.updates), $0)
       },
       self.followingSwitchTappedProperty.signal
         .filter { (on, didShowPrompt) in
           didShowPrompt == true || (on == true && didShowPrompt == false)
         }
         .map {
-        (UserAttribute.privacy(Privacy.following), $0.0)
+        (UserAttribute.privacy(UserAttribute.Privacy.following), $0.0)
       },
       self.recommendationsTappedProperty.signal.map {
-        (UserAttribute.privacy(Privacy.recommendations), !$0)
+        (UserAttribute.privacy(UserAttribute.Privacy.recommendations), !$0)
       }
     )
 
@@ -267,6 +267,7 @@ SettingsViewModelOutputs {
                .comments, .follower, .friendActivity, .messages, .postLikes, .creatorTips, .updates:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)
+          default: break
           }
         case let .privacy(privacy):
           switch privacy {
@@ -464,93 +465,4 @@ SettingsViewModelOutputs {
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }
-}
-
-private enum UserAttribute {
-  case newsletter(Newsletter)
-  case notification(Notification)
-  case privacy(Privacy)
-
-  fileprivate var lens: Lens<User, Bool?> {
-    switch self {
-    case let .newsletter(newsletter):
-      switch newsletter {
-      case .arts:       return User.lens.newsletters.arts
-      case .games:      return User.lens.newsletters.games
-      case .happening:  return User.lens.newsletters.happening
-      case .invent:     return User.lens.newsletters.invent
-      case .promo:      return User.lens.newsletters.promo
-      case .weekly:     return User.lens.newsletters.weekly
-      }
-    case let .notification(notification):
-      switch notification {
-      case .backings:             return User.lens.notifications.backings
-      case .comments:             return User.lens.notifications.comments
-      case .creatorTips:          return User.lens.notifications.creatorTips
-      case .follower:             return User.lens.notifications.follower
-      case .friendActivity:       return User.lens.notifications.friendActivity
-      case .messages:             return User.lens.notifications.messages
-      case .mobileBackings:       return User.lens.notifications.mobileBackings
-      case .mobileComments:       return User.lens.notifications.mobileComments
-      case .mobileFollower:       return User.lens.notifications.mobileFollower
-      case .mobileFriendActivity: return User.lens.notifications.mobileFriendActivity
-      case .mobileMessages:       return User.lens.notifications.mobileMessages
-      case .mobilePostLikes:      return User.lens.notifications.mobilePostLikes
-      case .mobileUpdates:        return User.lens.notifications.mobileUpdates
-      case .postLikes:            return User.lens.notifications.postLikes
-      case .updates:              return User.lens.notifications.updates
-      }
-    case let .privacy(privacy):
-      switch privacy {
-      case .following:          return User.lens.social
-      case .recommendations:    return User.lens.optedOutOfRecommendations
-      case .showPublicProfile:  return User.lens.showPublicProfile
-      }
-    }
-  }
-}
-
-private enum Notification {
-  case backings
-  case comments
-  case creatorTips
-  case follower
-  case friendActivity
-  case messages
-  case mobileBackings
-  case mobileComments
-  case mobileFollower
-  case mobileFriendActivity
-  case mobileMessages
-  case mobilePostLikes
-  case mobileUpdates
-  case postLikes
-  case updates
-
-  fileprivate var trackingString: String {
-    switch self {
-    case .backings, .mobileBackings:                return "New pledges"
-    case .comments, .mobileComments:                return "New comments"
-    case .creatorTips:                              return "Creator tips"
-    case .follower, .mobileFollower:                return "New followers"
-    case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
-    case .messages, .mobileMessages:                return "New messages"
-    case .postLikes, .mobilePostLikes:              return "New likes"
-    case .updates, .mobileUpdates:                  return "Project updates"
-    }
-  }
-}
-
-private enum Privacy {
-  case following
-  case recommendations
-  case showPublicProfile
-
-  fileprivate var trackingString: String {
-    switch self {
-    case .following: return Strings.Following()
-    case .recommendations: return Strings.Recommendations()
-    default: return ""
-    }
-  }
 }

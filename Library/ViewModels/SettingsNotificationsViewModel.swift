@@ -77,49 +77,49 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = Signal.merge(
       self.emailCreatorTipsProperty.signal.map {
-        (UserAttribute.notification(Notification.creatorTips), $0)
+        (UserAttribute.notification(UserAttribute.Notification.creatorTips), $0)
       },
       self.emailFriendActivityProperty.signal.map {
-        (UserAttribute.notification(Notification.friendActivity), $0)
+        (UserAttribute.notification(UserAttribute.Notification.friendActivity), $0)
       },
       self.emailMessagesProperty.signal.map {
-        (UserAttribute.notification(Notification.messages), $0)
+        (UserAttribute.notification(UserAttribute.Notification.messages), $0)
       },
       self.emailNewCommentsProperty.signal.map {
-        (UserAttribute.notification(Notification.comments), $0)
+        (UserAttribute.notification(UserAttribute.Notification.comments), $0)
       },
       self.emailNewFollowersProperty.signal.map {
-        (UserAttribute.notification(Notification.follower), $0)
+        (UserAttribute.notification(UserAttribute.Notification.follower), $0)
       },
       self.emailNewLikesProperty.signal.map {
-        (UserAttribute.notification(Notification.postLikes), $0)
+        (UserAttribute.notification(UserAttribute.Notification.postLikes), $0)
       },
       self.emailNewPledgeProperty.signal.map {
-        (UserAttribute.notification(Notification.backings), $0)
+        (UserAttribute.notification(UserAttribute.Notification.backings), $0)
       },
       self.mobileFriendsActivityProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileFriendActivity), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileFriendActivity), $0)
       },
       self.mobileMessagesProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileMessages), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileMessages), $0)
       },
       self.mobileNewCommentsProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileComments), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileComments), $0)
       },
       self.mobileNewFollowersProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileFollower), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileFollower), $0)
       },
       self.mobileNewLikesProperty.signal.map {
-        (UserAttribute.notification(Notification.mobilePostLikes), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobilePostLikes), $0)
       },
       self.mobileNewPledgeProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileBackings), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileBackings), $0)
       },
       self.mobileProjectUpdatesProperty.signal.map {
-        (UserAttribute.notification(Notification.mobileUpdates), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobileUpdates), $0)
       },
       self.emailProjectUpdatesProperty.signal.map {
-        (UserAttribute.notification(Notification.updates), $0)
+        (UserAttribute.notification(UserAttribute.Notification.updates), $0)
       }
     )
 
@@ -235,6 +235,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
                .comments, .follower, .friendActivity, .messages, .postLikes, .creatorTips, .updates:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)
+          default: break
           }
         case let .privacy(privacy):
           switch privacy {
@@ -371,93 +372,4 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
   public var inputs: SettingsNotificationsViewModelInputs { return self }
   public var outputs: SettingsNotificationsViewModelOutputs { return self }
-}
-
-private enum UserAttribute {
-  case newsletter(Newsletter)
-  case notification(Notification)
-  case privacy(Privacy)
-
-  fileprivate var lens: Lens<User, Bool?> {
-    switch self {
-    case let .newsletter(newsletter):
-      switch newsletter {
-      case .arts:       return User.lens.newsletters.arts
-      case .games:      return User.lens.newsletters.games
-      case .happening:  return User.lens.newsletters.happening
-      case .invent:     return User.lens.newsletters.invent
-      case .promo:      return User.lens.newsletters.promo
-      case .weekly:     return User.lens.newsletters.weekly
-      }
-    case let .notification(notification):
-      switch notification {
-      case .backings:             return User.lens.notifications.backings
-      case .comments:             return User.lens.notifications.comments
-      case .creatorTips:          return User.lens.notifications.creatorTips
-      case .follower:             return User.lens.notifications.follower
-      case .friendActivity:       return User.lens.notifications.friendActivity
-      case .messages:             return User.lens.notifications.messages
-      case .mobileBackings:       return User.lens.notifications.mobileBackings
-      case .mobileComments:       return User.lens.notifications.mobileComments
-      case .mobileFollower:       return User.lens.notifications.mobileFollower
-      case .mobileFriendActivity: return User.lens.notifications.mobileFriendActivity
-      case .mobileMessages:       return User.lens.notifications.mobileMessages
-      case .mobilePostLikes:      return User.lens.notifications.mobilePostLikes
-      case .mobileUpdates:        return User.lens.notifications.mobileUpdates
-      case .postLikes:            return User.lens.notifications.postLikes
-      case .updates:              return User.lens.notifications.updates
-      }
-    case let .privacy(privacy):
-      switch privacy {
-      case .following:          return User.lens.social
-      case .recommendations:    return User.lens.optedOutOfRecommendations
-      case .showPublicProfile:  return User.lens.showPublicProfile
-      }
-    }
-  }
-}
-
-private enum Notification {
-  case backings
-  case comments
-  case creatorTips
-  case follower
-  case friendActivity
-  case messages
-  case mobileBackings
-  case mobileComments
-  case mobileFollower
-  case mobileFriendActivity
-  case mobileMessages
-  case mobilePostLikes
-  case mobileUpdates
-  case postLikes
-  case updates
-
-  fileprivate var trackingString: String {
-    switch self {
-    case .backings, .mobileBackings:                return "New pledges"
-    case .comments, .mobileComments:                return "New comments"
-    case .creatorTips:                              return "Creator tips"
-    case .follower, .mobileFollower:                return "New followers"
-    case .friendActivity, .mobileFriendActivity:    return "Friend backs a project"
-    case .messages, .mobileMessages:                return "New messages"
-    case .postLikes, .mobilePostLikes:              return "New likes"
-    case .updates, .mobileUpdates:                  return "Project updates"
-    }
-  }
-}
-
-private enum Privacy {
-  case following
-  case recommendations
-  case showPublicProfile
-
-  fileprivate var trackingString: String {
-    switch self {
-    case .following: return Strings.Following()
-    case .recommendations: return Strings.Recommendations()
-    default: return ""
-    }
-  }
 }
