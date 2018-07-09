@@ -179,7 +179,8 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.viewDidLoad()
 
-    self.emailNewPledgesSelected.assertValues([false], "All creator notifications turned off as test default.")
+    self.emailNewPledgesSelected.assertValues([false],
+                                              "All creator notifications turned off as test default.")
     self.emailNewCommentsSelected.assertValues([false])
     self.mobileNewPledgesSelected.assertValues([false])
     self.mobileNewCommentsSelected.assertValues([false])
