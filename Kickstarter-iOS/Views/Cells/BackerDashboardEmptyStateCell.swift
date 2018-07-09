@@ -28,13 +28,15 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
                    compatibleWith: nil)
       self.filledHeartIconImageView.isHidden = true
     case .saved:
+      let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(animateToFilledHeart))
+      self.addGestureRecognizer(tapRecognizer)
       self.messageLabel.text = Strings.Tap_the_heart_on_a_project_to_get_notified()
       self.titleLabel.text = Strings.No_saved_projects()
       animateToFilledHeart()
     }
   }
 
-  internal func animateToFilledHeart() {
+  @objc internal func animateToFilledHeart() {
     UIView.animate(
       withDuration: self.duration,
       delay: 1.0,
