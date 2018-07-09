@@ -62,7 +62,7 @@ public protocol ServiceType {
 
   func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 
-  func exportDataState(state: String, downloadUrl: String) -> SignalProducer<VoidEnvelope, ErrorEnvelope>
+  func exportDataState() -> SignalProducer<ExportDataEnvelope, ErrorEnvelope>
 
   /// Fetch a page of activities.
   func fetchActivities(count: Int?) -> SignalProducer<ActivityEnvelope, ErrorEnvelope>

@@ -82,11 +82,13 @@
 "Ending_soon" = "Endet bald";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Expands_subcategories" = "Erweitert die Anzeige der Unterkategorien.";
+"Expired_date_at_time" = "Abgelaufen am %{date} um %{time}";
+"Expires_date_at_time" = "Läuft am %{date} um %{time} ab";
 "Explore" = "Erkunden";
 "Explore_creative_projects" = "Erkunde kreative Projekte";
 "Explore_projects" = "Projekte erkunden";
 "Facebook_login_disclaimer" = "Wenn du dich über Facebook anmeldest, importieren wir deinen Namen und dein Profilfoto. Außerdem wird deine Freundesliste importiert, damit du deinen Freunden auf Kickstarter folgen kannst. Wir werden niemals etwas ohne deine Erlaubnis auf Facebook posten.";
-"Facebook_login_disclaimer_update" = "By logging in with Facebook, we’ll import your name, profile photo and friend list.";
+"Facebook_login_disclaimer_update" = "Bei einer Anmeldung über Facebook werden dein Name, Profilbild und Freundesliste importiert.";
 "Failed_to_retrieve_live_stream_event_details" = "Details zu Live-Stream-Event konnten nicht geladen werden";
 "Failed_to_update_subscription" = "Abo konnte nicht aktualisiert werden";
 "Filter_by_all_projects" = "Filter: Alle Projekte";
@@ -232,6 +234,7 @@
 "Pledged_on_date" = "<b>Beitrag geleistet</b> am %{pledge_date}";
 "Popular" = "Beliebt";
 "Popular_Projects" = "Beliebte Projekte";
+"Preparing_your_personal_data" = "Persönlichen Daten werden vorbereitet ...";
 "Privacy" = "Datenschutz";
 "Private_profile" = "Privates Profil";
 "Private_profile_more_info" = "Privates Profil - Mehr Info";

@@ -27,7 +27,10 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var emailFrequencyLabel: UILabel!
   @IBOutlet fileprivate weak var emailFrequencyArrow: UIImageView!
   @IBOutlet fileprivate weak var exportDataButton: UIButton!
+  @IBOutlet fileprivate weak var exportDataActivityIndicator: UIActivityIndicatorView!
+  @IBOutlet fileprivate weak var exportDataExpirationText: UILabel!
   @IBOutlet fileprivate weak var exportDataLabel: UILabel!
+  @IBOutlet fileprivate weak var exportChevron: UIImageView!
   @IBOutlet fileprivate weak var findFriendsButton: UIButton!
   @IBOutlet fileprivate weak var findFriendsLabel: UILabel!
   @IBOutlet fileprivate weak var followerButton: UIButton!
@@ -197,12 +200,17 @@ internal final class SettingsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Delete_my_Kickstarter_Account() }
 
+    _ = self.exportDataExpirationText
+      |> UILabel.lens.font .~ .ksr_body(size: 13)
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+
+    _ = self.exportDataActivityIndicator
+      |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
+
     _ = self.exportDataLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Request_my_Personal_Data() }
 
     _ = self.emailFrequencyLabel
-      |> UILabel.lens.font .~ .ksr_body()
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.text %~ { _ in Strings.Email_frequency() }
 
@@ -496,6 +504,15 @@ internal final class SettingsViewController: UIViewController {
     self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
     self.promoNewsletterSwitch.rac.on = self.viewModel.outputs.promoNewsletterOn
     self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
+    self.exportDataExpirationText.rac.text = self.viewModel.outputs.exportDataExpirationDate
+    self.exportDataLabel.rac.text = self.viewModel.outputs.exportDataText
+    self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
+    self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
+    self.versionLabel.rac.text = self.viewModel.outputs.versionText
+    self.exportDataActivityIndicator.rac.animating = self.viewModel.outputs.exportDataLoadingIndicator
+    self.exportDataButton.rac.enabled = self.viewModel.outputs.exportDataButtonEnabled
+    self.exportDataExpirationText.rac.hidden = self.viewModel.outputs.showDataExpirationAndChevron
+    self.exportChevron.rac.hidden = self.viewModel.outputs.showDataExpirationAndChevron
     self.privateProfileSwitch.rac.on = self.viewModel.outputs.privateProfileEnabled
     self.updatesButton.rac.selected = self.viewModel.outputs.updatesSelected
     self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
