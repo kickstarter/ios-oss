@@ -511,8 +511,8 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     }
   }
 
-  func testDebugButtonIsHidden_Test() {
-    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.test.rawValue)) {
+  func testDebugButtonIsHidden_Unknown() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: "unknown")) {
       self.vm.inputs.viewDidLoad()
 
       self.debugContainerViewIsHidden.assertValue(true)

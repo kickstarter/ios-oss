@@ -122,7 +122,8 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
     }
 
     self.debugContainerViewIsHidden = self.viewDidLoadProperty.signal
-      .map { AppEnvironment.current.mainBundle.isRelease || AppEnvironment.current.mainBundle.isTest }
+      .map { DiscoveryNavigationHeaderViewModel.canShowBetaTools(environment: AppEnvironment.current) }
+      .negate()
 
     self.favoriteViewIsHidden = paramsAndFiltersAreHidden.map(first)
       .map { $0.category == nil }
@@ -252,6 +253,10 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private static func canShowBetaTools(environment: Environment) -> Bool {
+    return environment.mainBundle.isAlpha || environment.mainBundle.isBeta || environment.mainBundle.isDebug
   }
 
   public let animateArrowToDown: Signal<Bool, NoError>
