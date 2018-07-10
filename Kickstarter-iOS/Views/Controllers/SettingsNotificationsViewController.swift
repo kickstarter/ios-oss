@@ -53,15 +53,17 @@ internal final class SettingsNotificationsViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
- self.emailFrequencyButton.addTarget(self, action: #selector(emailFrequencyTapped), for: .touchUpInside)
+    self.emailFrequencyButton.addTarget(self,
+                                        action: #selector(emailFrequencyTapped),
+                                        for: .touchUpInside)
 
     self.manageProjectNotificationsButton.addTarget(self,
                                                     action: #selector(manageProjectNotificationsTapped),
                                                     for: .touchUpInside)
 
     self.findFriendsButton.addTarget(self,
-                                                    action: #selector(findFriendsTapped),
-                                                    for: .touchUpInside)
+                                     action: #selector(findFriendsTapped),
+                                     for: .touchUpInside)
 
    self.viewModel.inputs.viewDidLoad()
   }
@@ -189,8 +191,12 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.viewModel.outputs.emailFrequencyButtonEnabled
       .observeForUI()
       .observeValues { [weak self] enabled in
-        self?.emailFrequencyLabel.textColor = enabled ? .ksr_text_dark_grey_500 : .ksr_text_dark_grey_400
-        self?.emailFrequencyArrow.alpha = enabled ? 1.0 : 0.5
+
+        _ = self?.emailFrequencyLabel
+            ?|> UILabel.lens.textColor .~ (enabled ? .ksr_text_dark_grey_500 : .ksr_text_dark_grey_400)
+
+        _ = self?.emailFrequencyArrow
+            ?|> UIImageView.lens.alpha .~ (enabled ? 1.0 : 0.5)
     }
 
     self.creatorNotificationsStackView.rac.hidden = self.viewModel.outputs.creatorNotificationsHidden
