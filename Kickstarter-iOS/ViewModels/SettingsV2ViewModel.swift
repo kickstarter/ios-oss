@@ -22,6 +22,8 @@ public protocol SettingsV2ViewModelOutputs {
 public protocol SettingsV2ViewModelType {
   var inputs: SettingsV2ViewModelInputs { get }
   var outputs: SettingsV2ViewModelOutputs { get }
+
+  func shouldSelectRow(for cellType: SettingsCellType) -> Bool
 }
 
 final class SettingsV2ViewModel: SettingsV2ViewModelInputs,
@@ -51,7 +53,7 @@ SettingsV2ViewModelOutputs, SettingsV2ViewModelType {
 
     self.transitionToViewController = selectedCellTypeProperty.signal
       .skipNil()
-      .map { $0.viewController }
+      .map { SettingsV2ViewModel.viewController(for: $0) }
       .skipNil()
 
     self.reloadData = self.viewDidLoadProperty.signal
@@ -99,4 +101,31 @@ SettingsV2ViewModelOutputs, SettingsV2ViewModelType {
 
   public var inputs: SettingsV2ViewModelInputs { return self }
   public var outputs: SettingsV2ViewModelOutputs { return self }
+}
+
+// MARK: Helpers
+extension SettingsV2ViewModel {
+  static func viewController(for cellType: SettingsCellType) -> UIViewController? {
+    switch cellType {
+    case .help:
+      return UIViewController()
+    case .privacy:
+      return UIViewController()
+    case .newsletters:
+      return UIViewController()
+    case .notifications:
+      return UIViewController()
+    default:
+      return nil
+    }
+  }
+
+  func shouldSelectRow(for cellType: SettingsCellType) -> Bool {
+    switch cellType {
+    case .appVersion:
+      return false
+    default:
+      return true
+    }
+  }
 }

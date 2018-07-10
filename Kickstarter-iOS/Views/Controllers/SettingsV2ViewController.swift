@@ -30,6 +30,7 @@ final class SettingsV2ViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
+      |> UIViewController.lens.view.backgroundColor .~ .ksr_grey_200
       |> UIViewController.lens.title %~ { _ in Strings.profile_buttons_settings() }
   }
 
@@ -118,6 +119,14 @@ extension SettingsV2ViewController: UITableViewDelegate {
     _ = headerView |> UIView.lens.backgroundColor .~ .ksr_grey_200
 
     return headerView
+  }
+
+  func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+    guard let cellType = dataSource.cellTypeForIndexPath(indexPath: indexPath) else {
+      return false
+    }
+
+    return self.viewModel.shouldSelectRow(for: cellType)
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

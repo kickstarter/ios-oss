@@ -6,7 +6,7 @@ public enum SettingsSectionType: Int {
   case logout
   case ratingAppVersion
 
-  var cellRowsForSection: [SettingsCellType] {
+  public var cellRowsForSection: [SettingsCellType] {
     switch self {
     case .notificationNewsletters:
       return [.notifications, .newsletters]
@@ -31,7 +31,7 @@ public enum SettingsCellType {
   case rateInAppStore
   case appVersion
 
-  var titleString: String {
+  public var titleString: String {
     switch self {
     case .notifications:
       return Strings.profile_settings_navbar_title_notifications()
@@ -51,27 +51,12 @@ public enum SettingsCellType {
     }
   }
 
-  var showArrowImageView: Bool {
+  public var showArrowImageView: Bool {
     switch self {
     case .notifications, .newsletters, .help, .privacy, .rateInAppStore:
       return true
     default:
       return false
-    }
-  }
-
-  var viewController: UIViewController? {
-    switch self {
-    case .help:
-      return UIViewController()
-    case .privacy:
-      return UIViewController()
-    case .newsletters:
-      return UIViewController()
-    case .notifications:
-      return UIViewController()
-    default:
-      return nil
     }
   }
 }
