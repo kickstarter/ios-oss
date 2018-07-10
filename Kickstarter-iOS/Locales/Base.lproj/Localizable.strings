@@ -82,6 +82,8 @@
 "Ending_soon" = "Ending Soon";
 "Estimated_delivery" = "Estimated delivery:";
 "Expands_subcategories" = "Expands subcategories.";
+"Expired_date_at_time" = "Expired %{date} at %{time}";
+"Expires_date_at_time" = "Expires %{date} at %{time}";
 "Explore" = "Explore";
 "Explore_creative_projects" = "Explore creative projects";
 "Explore_projects" = "Explore projects";
@@ -232,6 +234,7 @@
 "Pledged_on_date" = "<b>Pledged</b> on %{pledge_date}";
 "Popular" = "Popular";
 "Popular_Projects" = "Popular Projects";
+"Preparing_your_personal_data" = "Preparing your personal data...";
 "Privacy" = "Privacy";
 "Private_profile" = "Private profile";
 "Private_profile_more_info" = "Private profile more info";

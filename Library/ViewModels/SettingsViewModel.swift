@@ -26,6 +26,10 @@ public protocol SettingsViewModelInputs {
 
 public protocol SettingsViewModelOutputs {
   var artsAndCultureNewsletterOn: Signal<Bool, NoError> { get }
+  var exportDataButtonEnabled: Signal<Bool, NoError> { get }
+  var exportDataExpirationDate: Signal<String, NoError> { get }
+  var exportDataLoadingIndicator: Signal<Bool, NoError> { get }
+  var exportDataText: Signal<String, NoError> { get }
   var followingPrivacyOn: Signal<Bool, NoError> { get }
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
@@ -38,6 +42,7 @@ public protocol SettingsViewModelOutputs {
   var requestExportData: Signal<(), NoError> { get }
   var recommendationsOn: Signal<Bool, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
+  var showDataExpirationAndChevron: Signal<Bool, NoError> { get }
   var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
   var showOptInPrompt: Signal<String, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
@@ -247,6 +252,31 @@ SettingsViewModelOutputs {
       }
       .ignoreValues()
 
+    let exportEnvelope = initialUser
+      .switchMap { _ in
+        AppEnvironment.current.apiService.exportDataState()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .demoteErrors()
+    }
+
+    self.exportDataLoadingIndicator = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      exportEnvelope.map { $0.state == .processing },
+      self.exportDataTappedProperty.signal.mapConst(true)
+    )
+
+    self.exportDataText = self.exportDataLoadingIndicator.signal
+      .map { $0 ? Strings.Preparing_your_personal_data() : Strings.Download_your_personal_data() }
+
+    self.exportDataExpirationDate = exportEnvelope
+      .map { dateFormatter(for: $0.expiresAt, state: $0.state) }
+
+    self.exportDataButtonEnabled = self.exportDataLoadingIndicator.signal
+      .map { !$0 }
+
+    self.showDataExpirationAndChevron = self.exportDataLoadingIndicator.signal
+      .map { $0 }
+
     // Koala
     userAttributeChanged
       .observeValues { attribute, on in
@@ -444,6 +474,10 @@ SettingsViewModelOutputs {
   }
 
   public let artsAndCultureNewsletterOn: Signal<Bool, NoError>
+  public let exportDataLoadingIndicator: Signal<Bool, NoError>
+  public let exportDataText: Signal<String, NoError>
+  public let exportDataExpirationDate: Signal<String, NoError>
+  public let exportDataButtonEnabled: Signal<Bool, NoError>
   public let followingPrivacyOn: Signal<Bool, NoError>
   public let gamesNewsletterOn: Signal<Bool, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
@@ -456,6 +490,7 @@ SettingsViewModelOutputs {
   public let requestExportData: Signal<(), NoError>
   public let recommendationsOn: Signal<Bool, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
+  public let showDataExpirationAndChevron: Signal<Bool, NoError>
   public let showOptInPrompt: Signal<String, NoError>
   public let showPrivacyFollowingPrompt: Signal<(), NoError>
   public let unableToSaveError: Signal<String, NoError>
@@ -465,4 +500,18 @@ SettingsViewModelOutputs {
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }
+}
+
+private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.State) -> String {
+  guard let isoDate = dateString else { return "" }
+  let dateFormatter = DateFormatter()
+  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:sZ"
+  guard let date = dateFormatter.date(from: isoDate) else { return "" }
+
+  let expirationDate = Format.date(secondsInUTC: date.timeIntervalSince1970, template: "MMM d, yyyy")
+  let expirationTime = Format.date(secondsInUTC: date.timeIntervalSince1970, template: "h:mm a")
+
+  if state == .expired {
+    return ""
+  } else { return Strings.Expires_date_at_time(date: expirationDate, time: expirationTime) }
 }
