@@ -28,6 +28,7 @@ public enum Storyboard: String {
   case Search
   case Settings
   case SettingsV2
+  case SettingsNotifications
   case Thanks
   case Update
   case UpdateDraft
