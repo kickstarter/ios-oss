@@ -1187,6 +1187,23 @@ backers"
     )
   }
   /**
+   "Developer"
+
+   - **es**: "Desarrollador"
+   - **ja**: "開発者"
+   - **de**: "Developer"
+   - **fr**: "Développeur"
+   - **en**: "Developer"
+  */
+  public static func Developer() -> String {
+    return localizedString(
+      key: "Developer",
+      defaultValue: "Developer",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Discover more projects."
 
    - **es**: "Descubre más proyectos."
@@ -1488,6 +1505,40 @@ backers"
     return localizedString(
       key: "Facebook_login_disclaimer_update",
       defaultValue: "By logging in with Facebook, we’ll import your name, profile photo and friend list.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Please reconnect"
+
+   - **es**: "Vuelve a conectar"
+   - **ja**: "もう一度接続してください"
+   - **de**: "Bitte erneut verbinden"
+   - **fr**: "Veuillez vous reconnecter."
+   - **en**: "Please reconnect"
+  */
+  public static func Facebook_reconnect() -> String {
+    return localizedString(
+      key: "Facebook_reconnect",
+      defaultValue: "Please reconnect",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again."
+
+   - **es**: "Disculpa, tu cuenta se desconectó accidentalmente. Conéctala otra vez para volver a seguir a tus amigos."
+   - **ja**: "申し訳ございません。アカウントの接続が切断されました。もう一度接続しなおして友達をフォローしてください。"
+   - **de**: "Dein Konto wurde aus Versehen getrennt. Bitte verbinde es erneut, um Freunden folgen zu können."
+   - **fr**: "Nous sommes désolés, mais votre compte a été déconnecté accidentellement. Veuillez vous reconnecter pour retrouver vos amis."
+   - **en**: "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again."
+  */
+  public static func Facebook_reconnect_description() -> String {
+    return localizedString(
+      key: "Facebook_reconnect_description",
+      defaultValue: "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again.",
       count: nil,
       substitutions: [:]
     )
@@ -2309,6 +2360,40 @@ backers"
     )
   }
   /**
+   "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week."
+
+   - **es**: "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week."
+   - **ja**: "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week."
+   - **de**: "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week."
+   - **fr**: "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week."
+   - **en**: "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week."
+  */
+  public static func Happening_newsletter() -> String {
+    return localizedString(
+      key: "Happening_newsletter",
+      defaultValue: "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Help"
+
+   - **es**: "Ayuda"
+   - **ja**: "ヘルプ"
+   - **de**: "Help"
+   - **fr**: "Aide"
+   - **en**: "Help"
+  */
+  public static func Help() -> String {
+    return localizedString(
+      key: "Help",
+      defaultValue: "Help",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Help Center"
 
    - **es**: "Centro de ayuda"
@@ -2855,6 +2940,23 @@ with friends."
     )
   }
   /**
+   "Log out"
+
+   - **es**: "Cerrar sesión"
+   - **ja**: "ログアウト"
+   - **de**: "Log out"
+   - **fr**: "Déconnexion"
+   - **en**: "Log out"
+  */
+  public static func Log_out() -> String {
+    return localizedString(
+      key: "Log_out",
+      defaultValue: "Log out",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Make a pledge without a reward"
 
    - **es**: "Contribuir sin recompensa"
@@ -3037,6 +3139,40 @@ with friends."
     return localizedString(
       key: "New_pledge_activity",
       defaultValue: "New pledge activity",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Big news and events happening near you, delivered just a few times a year."
+
+   - **es**: "Big news and events happening near you, delivered just a few times a year."
+   - **ja**: "Big news and events happening near you, delivered just a few times a year."
+   - **de**: "Big news and events happening near you, delivered just a few times a year."
+   - **fr**: "Big news and events happening near you, delivered just a few times a year."
+   - **en**: "Big news and events happening near you, delivered just a few times a year."
+  */
+  public static func News_events() -> String {
+    return localizedString(
+      key: "News_events",
+      defaultValue: "Big news and events happening near you, delivered just a few times a year.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Newsletters"
+
+   - **es**: "Boletines informativos"
+   - **ja**: "ニュースレター"
+   - **de**: "Newsletters"
+   - **fr**: "Lettres d'information"
+   - **en**: "Newsletters"
+  */
+  public static func Newsletters() -> String {
+    return localizedString(
+      key: "Newsletters",
+      defaultValue: "Newsletters",
       count: nil,
       substitutions: [:]
     )
@@ -3227,6 +3363,23 @@ from friends yet."
     return localizedString(
       key: "Not_now",
       defaultValue: "Not Now",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Notifications"
+
+   - **es**: "Notificaciones"
+   - **ja**: "通知"
+   - **de**: "Notifications"
+   - **fr**: "Notifications"
+   - **en**: "Notifications"
+  */
+  public static func Notifications() -> String {
+    return localizedString(
+      key: "Notifications",
+      defaultValue: "Notifications",
       count: nil,
       substitutions: [:]
     )
@@ -3946,6 +4099,23 @@ from friends yet."
     )
   }
   /**
+   "Project activity"
+
+   - **es**: "Actividad del proyecto"
+   - **ja**: "プロジェクトのアクティビティ"
+   - **de**: "Projektaktivität"
+   - **fr**: "Activité de mon projet"
+   - **en**: "Project activity"
+  */
+  public static func Project_activity() -> String {
+    return localizedString(
+      key: "Project_activity",
+      defaultValue: "Project activity",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project cancelled"
 
    - **es**: "Proyecto cancelado"
@@ -3963,6 +4133,23 @@ from friends yet."
     )
   }
   /**
+   "Project reminders"
+
+   - **es**: "Recordatorios del proyecto"
+   - **ja**: "プロジェクトのリマインダー"
+   - **de**: "Projekt-Erinnerungen"
+   - **fr**: "Rappels"
+   - **en**: "Project reminders"
+  */
+  public static func Project_reminders() -> String {
+    return localizedString(
+      key: "Project_reminders",
+      defaultValue: "Project reminders",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project saved."
 
    - **es**: "Proyecto guardado."
@@ -3975,6 +4162,23 @@ from friends yet."
     return localizedString(
       key: "Project_saved",
       defaultValue: "Project saved.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Project updates"
+
+   - **es**: "Actualizaciones del proyecto"
+   - **ja**: "プロジェクトの更新情報"
+   - **de**: "Projekt-Updates"
+   - **fr**: "Actus de projet"
+   - **en**: "Project updates"
+  */
+  public static func Project_updates() -> String {
+    return localizedString(
+      key: "Project_updates",
+      defaultValue: "Project updates",
       count: nil,
       substitutions: [:]
     )
@@ -4493,6 +4697,23 @@ daring ideas."
     )
   }
   /**
+   "Reward surveys"
+
+   - **es**: "Cuestionarios sobre recompensas"
+   - **ja**: "リワードのサーベイ"
+   - **de**: "Befragungen"
+   - **fr**: "Questionnaires des récompenses"
+   - **en**: "Reward surveys"
+  */
+  public static func Reward_surveys() -> String {
+    return localizedString(
+      key: "Reward_surveys",
+      defaultValue: "Reward surveys",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{rewards_count} rewards"
 
    - **es**: "%{rewards_count} recompensas"
@@ -4901,6 +5122,23 @@ daring ideas."
     )
   }
   /**
+   "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team."
+
+   - **es**: "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team."
+   - **ja**: "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team."
+   - **de**: "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team."
+   - **fr**: "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team."
+   - **en**: "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team."
+  */
+  public static func Sign_up_newsletter() -> String {
+    return localizedString(
+      key: "Sign_up_newsletter",
+      defaultValue: "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Signs up with Email."
 
    - **es**: "Registro con correo electrónico."
@@ -5017,6 +5255,23 @@ catch your eye?"
     return localizedString(
       key: "Stay_up_to_date",
       defaultValue: "Stay up to date?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Stay up to date with our favorite projects, and any news and events that are on our radar."
+
+   - **es**: "Stay up to date with our favorite projects, and any news and events that are on our radar."
+   - **ja**: "Stay up to date with our favorite projects, and any news and events that are on our radar."
+   - **de**: "Stay up to date with our favorite projects, and any news and events that are on our radar."
+   - **fr**: "Stay up to date with our favorite projects, and any news and events that are on our radar."
+   - **en**: "Stay up to date with our favorite projects, and any news and events that are on our radar."
+  */
+  public static func Stay_up_to_date_newsletter() -> String {
+    return localizedString(
+      key: "Stay_up_to_date_newsletter",
+      defaultValue: "Stay up to date with our favorite projects, and any news and events that are on our radar.",
       count: nil,
       substitutions: [:]
     )
@@ -15228,17 +15483,34 @@ Let's change that!"
     )
   }
   /**
-   "Happening Now"
+   "Happening"
 
    - **es**: "Eventos"
    - **ja**: "出来事"
    - **de**: "Happening Now"
    - **fr**: "Happening"
-   - **en**: "Happening Now"
+   - **en**: "Happening"
   */
   public static func profile_settings_newsletter_happening() -> String {
     return localizedString(
       key: "profile.settings.newsletter.happening",
+      defaultValue: "Happening",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Happening Now"
+
+   - **es**: "Happening Now"
+   - **ja**: "Happening Now"
+   - **de**: "Happening Now"
+   - **fr**: "Happening Now"
+   - **en**: "Happening Now"
+  */
+  public static func profile_settings_newsletter_happening_now() -> String {
+    return localizedString(
+      key: "profile.settings.newsletter.happening_now",
       defaultValue: "Happening Now",
       count: nil,
       substitutions: [:]
@@ -15257,6 +15529,23 @@ Let's change that!"
     return localizedString(
       key: "profile.settings.newsletter.invent",
       defaultValue: "Invent",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "News & Events"
+
+   - **es**: "News & Events"
+   - **ja**: "News & Events"
+   - **de**: "News & Events"
+   - **fr**: "News & Events"
+   - **en**: "News & Events"
+  */
+  public static func profile_settings_newsletter_news_event() -> String {
+    return localizedString(
+      key: "profile.settings.newsletter.news_event",
+      defaultValue: "News & Events",
       count: nil,
       substitutions: [:]
     )
@@ -15325,6 +15614,23 @@ Let's change that!"
     return localizedString(
       key: "profile.settings.newsletter.publishing",
       defaultValue: "Kickstarter Reads",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Subscribe to all"
+
+   - **es**: "Subscribe to all"
+   - **ja**: "Subscribe to all"
+   - **de**: "Subscribe to all"
+   - **fr**: "Subscribe to all"
+   - **en**: "Subscribe to all"
+  */
+  public static func profile_settings_newsletter_subscribe_all() -> String {
+    return localizedString(
+      key: "profile.settings.newsletter.subscribe_all",
+      defaultValue: "Subscribe to all",
       count: nil,
       substitutions: [:]
     )

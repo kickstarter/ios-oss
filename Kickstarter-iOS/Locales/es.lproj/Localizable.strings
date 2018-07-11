@@ -71,6 +71,7 @@
 "Data_will_appear_here_once" = "Los datos aparecerán aquí una vez que alguien patrocine tu proyecto.";
 "Delete_my_Kickstarter_Account" = "Eliminar mi cuenta de Kickstarter";
 "Delivered" = "Entregado";
+"Developer" = "Desarrollador";
 "Discover_more_projects" = "Descubre más proyectos.";
 "Dismiss" = "Descartar";
 "Done" = "Listo";
@@ -89,6 +90,8 @@
 "Explore_projects" = "Explora proyectos";
 "Facebook_login_disclaimer" = "Si inicias sesión con Facebook, importaremos tu nombre y foto de perfil. También accederemos a tu lista de amigos para que puedas seguir a tus amigos de Facebook en Kickstarter. Jamás publicaremos nada en Facebook sin tu permiso.";
 "Facebook_login_disclaimer_update" = "Al iniciar sesión con Facebook, importaremos tu nombre, foto de perfil y lista de amigos.";
+"Facebook_reconnect" = "Vuelve a conectar";
+"Facebook_reconnect_description" = "Disculpa, tu cuenta se desconectó accidentalmente. Conéctala otra vez para volver a seguir a tus amigos.";
 "Failed_to_retrieve_live_stream_event_details" = "No se pudo cargar la información acerca del evento en vivo";
 "Failed_to_update_subscription" = "No se pudo actualizar la suscripción";
 "Filter_by_all_projects" = "Filtro: Todos los proyectos";
@@ -141,6 +144,8 @@
 "Go_to_project_page" = "Ir a la página de proyecto";
 "Got_it" = "¡Listo!";
 "Got_it_your_survey_response_has_been_submitted" = "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario.";
+"Happening_newsletter" = "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week.";
+"Help" = "Ayuda";
 "Help_center" = "Centro de ayuda";
 "Hide_password" = "Ocultar contraseña";
 "Home" = "Inicio";
@@ -177,6 +182,7 @@
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Inicia sesión para guardar este proyecto. Te recordaremos 48 horas antes de que finalice.";
 "Log_in_or_sign_up_to_subscribe" = "Para activar la suscripción, por favor inicia sesión o regístrate";
 "Log_in_to_leave_a_comment" = "Inicia sesión para dejar un comentario.";
+"Log_out" = "Cerrar sesión";
 "Make_a_pledge_without_a_reward" = "Contribuir sin recompensa";
 "Manage_your_pledge" = "Administra tu contribución";
 "Manage_your_pledge_below" = "Administra tu contribución:";
@@ -188,6 +194,8 @@
 "Name" = "Nombre";
 "Never" = "Nunca";
 "New_pledge_activity" = "Nueva actividad de contribución";
+"News_events" = "Big news and events happening near you, delivered just a few times a year.";
+"Newsletters" = "Boletines informativos";
 "No_Results" = "Sin resultados";
 "No_comments_yet" = "No hay comentarios todavia.";
 "No_messages" = "No hay mensajes";
@@ -199,6 +207,7 @@
 "Not_delivered" = "No entregado";
 "Not_followed" = "No siguiendo";
 "Not_now" = "Ahora no";
+"Notifications" = "Notificaciones";
 "Once_you_back_a_project_well_share" = "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas.";
 "Only_amount_of_time_left_to_watch_this" = "Queda poco tiempo para verlo (%{amount_of_time}).";
 "Opens_comments" = "Abre comentarios.";
@@ -241,8 +250,11 @@
 "Private_profile_more_info_content" = "Los perfiles de Kickstarter son privados por defecto. Para hacer que tu perfil sea público y visible para el mundo, desactiva esta opción.";
 "Project_Cancelled" = "Proyecto cancelado.";
 "Project_Suspended" = "Proyecto suspendido.";
+"Project_activity" = "Actividad del proyecto";
 "Project_cancelled" = "Proyecto cancelado";
+"Project_reminders" = "Recordatorios del proyecto";
 "Project_saved" = "Proyecto guardado.";
+"Project_updates" = "Actualizaciones del proyecto";
 "Projects_We_Love" = "Nuestros Favoritos";
 "Projects_youve_backed" = "Proyectos que has patrocinado";
 "Projects_youve_launched" = "Proyectos que has publicado";
@@ -277,6 +289,7 @@
 "Reward_delivered" = "¿Recompensa entregada?";
 "Reward_estimated_for_delivery_in_date" = "<b>Recompensa</b> estimada para entregarse en %{delivery_date}";
 "Reward_selected" = "Recompensa seleccionada";
+"Reward_surveys" = "Cuestionarios sobre recompensas";
 "Rewards_count_rewards.few" = "%{rewards_count} recompensas";
 "Rewards_count_rewards.many" = "%{rewards_count} recompensas";
 "Rewards_count_rewards.one" = "%{rewards_count} recompensa";
@@ -309,6 +322,7 @@
 "Ships_to" = "Envío a:";
 "Show_password" = "Mostrar contraseña";
 "Shows_list_of_subcategories" = "Mostrar lista de subcategorías.";
+"Sign_up_newsletter" = "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team.";
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
@@ -316,6 +330,7 @@
 "Starting_soon" = "Comienza en breve";
 "Status" = "Estado:";
 "Stay_up_to_date" = "¿Deseas mantenerte actualizado?";
+"Stay_up_to_date_newsletter" = "Stay up to date with our favorite projects, and any news and events that are on our radar.";
 "Stay_updated_on_this_project" = "¿Deseas mantenerte actualizado sobre este proyecto?";
 "Subscribe" = "Suscribir";
 "Subscribed" = "Suscripción activa";
@@ -1075,11 +1090,14 @@
 "profile.settings.newsletter.film" = "Kickstarter Films";
 "profile.settings.newsletter.games" = "Nos encantan los juegos";
 "profile.settings.newsletter.happening" = "Eventos";
+"profile.settings.newsletter.happening_now" = "Happening Now";
 "profile.settings.newsletter.invent" = "Invenciones";
+"profile.settings.newsletter.news_event" = "News & Events";
 "profile.settings.newsletter.opt_in.message" = "Hemos enviado una confirmación a la dirección de correo electrónico asociada con tu cuenta. Por favor checa tu bandeja de entrada y confirma la subscripción a %{newsletter}.";
 "profile.settings.newsletter.opt_in.title" = "¡Sólo un último paso!";
 "profile.settings.newsletter.promo" = "Novedades y eventos de Kickstarter";
 "profile.settings.newsletter.publishing" = "Kickstarter Reads";
+"profile.settings.newsletter.subscribe_all" = "Subscribe to all";
 "profile.settings.newsletter.title" = "Boletines informativos";
 "profile.settings.newsletter.weekly" = "Nuestros Favoritos";
 "profile.settings.rating.message" = "Gracias por usar la aplicación de Kickstarter.\nSi tienes un momento, ¿podrías calificar tu experiencia?\n¡Te lo agradeceríamos!";
