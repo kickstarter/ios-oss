@@ -32,7 +32,12 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       self.messageLabel.text = Strings.Tap_the_heart_on_a_project_to_get_notified()
       self.titleLabel.text = Strings.No_saved_projects()
 
-      NotificationCenter.default.addObserver(self, selector: #selector(animateToFilledHeart), name: .ksr_savedProjectEmptyStateTapped, object: nil)
+      NotificationCenter.default.addObserver(
+        self,
+        selector: #selector(animateToFilledHeart),
+        name: .ksr_savedProjectEmptyStateTapped,
+        object: nil
+      )
       animateToFilledHeart()
     }
   }
