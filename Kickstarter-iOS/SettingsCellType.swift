@@ -1,5 +1,12 @@
 import Library
 
+protocol SettingsCellTypeProtocol {
+  var titleString: String { get }
+  var showArrowImageView: Bool { get }
+  var textColor: UIColor { get }
+  var hideDescriptionLabel: Bool { get }
+}
+
 public enum SettingsSectionType: Int {
   case notificationNewsletters
   case helpPrivacy
@@ -19,10 +26,13 @@ public enum SettingsSectionType: Int {
     }
   }
 
-  static var allCases: [SettingsSectionType] = [.notificationNewsletters, .helpPrivacy, .logout, .ratingAppVersion]
+  static var allCases: [SettingsSectionType] = [.notificationNewsletters,
+                                                .helpPrivacy,
+                                                .logout,
+                                                .ratingAppVersion]
 }
 
-public enum SettingsCellType {
+public enum SettingsCellType: SettingsCellTypeProtocol {
   case notifications
   case newsletters
   case help
@@ -58,5 +68,85 @@ public enum SettingsCellType {
     default:
       return false
     }
+  }
+
+  public var textColor: UIColor {
+    switch self {
+    case .logout:
+      return .ksr_red_400
+    default:
+      return .ksr_text_dark_grey_500
+    }
+  }
+
+  public var hideDescriptionLabel: Bool {
+    switch self {
+    case .appVersion:
+      return false
+    default:
+      return true
+    }
+  }
+}
+
+public enum HelpSectionType: Int {
+  case help
+  case howItWorks
+  case privacy
+
+  static var allCases: [HelpSectionType] = [.help, .howItWorks, .privacy]
+
+  public var cellRowsForSection: [HelpCellType] {
+    switch self {
+    case .help:
+      return [.helpCenter, .contact]
+    case .howItWorks:
+      return [.howItWorks]
+    case .privacy:
+      return [.termsOfUse, .privacyPolicy, .cookiePolicy]
+    }
+  }
+}
+
+public enum HelpCellType: SettingsCellTypeProtocol {
+  case helpCenter
+  case contact
+  case howItWorks
+  case termsOfUse
+  case privacyPolicy
+  case cookiePolicy
+
+  public var titleString: String {
+    switch self {
+    case .helpCenter:
+      return Strings.Help_center()
+    case .contact:
+      return Strings.profile_settings_about_contact()
+    case .howItWorks:
+      return Strings.profile_settings_about_how_it_works()
+    case .termsOfUse:
+      return Strings.profile_settings_about_terms()
+    case .privacyPolicy:
+      return Strings.profile_settings_about_privacy()
+    case .cookiePolicy:
+      return Strings.profile_settings_about_cookie()
+    }
+  }
+
+  public var showArrowImageView: Bool {
+    switch self {
+    case .contact:
+      return true
+    default:
+      return false
+    }
+  }
+
+  public var textColor: UIColor {
+    return .ksr_text_dark_grey_500
+  }
+
+  public var hideDescriptionLabel: Bool {
+    return true
   }
 }

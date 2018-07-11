@@ -108,7 +108,7 @@ extension SettingsV2ViewModel {
   static func viewController(for cellType: SettingsCellType) -> UIViewController? {
     switch cellType {
     case .help:
-      return UIViewController()
+      return HelpViewController.instantiate()
     case .privacy:
       return UIViewController()
     case .newsletters:

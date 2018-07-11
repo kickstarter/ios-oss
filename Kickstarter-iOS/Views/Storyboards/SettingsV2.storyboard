@@ -40,5 +40,34 @@
             </objects>
             <point key="canvasLocation" x="-2145" y="139"/>
         </scene>
+        <!--HelpViewController-->
+        <scene sceneID="gLr-Hi-uhd">
+            <objects>
+                <viewController storyboardIdentifier="HelpViewController" title="HelpViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="0bf-LD-kqJ" customClass="HelpViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Qv7-Qt-Vb5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Xy4-mc-nWC">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="q38-TC-wFh" firstAttribute="trailing" secondItem="Xy4-mc-nWC" secondAttribute="trailing" id="DSv-1m-Iyv"/>
+                            <constraint firstItem="q38-TC-wFh" firstAttribute="bottom" secondItem="Xy4-mc-nWC" secondAttribute="bottom" id="NBc-HI-ls1"/>
+                            <constraint firstItem="Xy4-mc-nWC" firstAttribute="leading" secondItem="q38-TC-wFh" secondAttribute="leading" id="Q5h-9D-kOU"/>
+                            <constraint firstItem="Xy4-mc-nWC" firstAttribute="top" secondItem="q38-TC-wFh" secondAttribute="top" id="sms-yf-toC"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="q38-TC-wFh"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="Xy4-mc-nWC" id="PLa-PU-WVP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xfj-3T-WxF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
     </scenes>
 </document>

@@ -21,6 +21,7 @@ final class SettingsV2ViewController: UIViewController {
     tableView.delegate = self
 
     tableView.register(nib: .SettingsTableViewCell)
+    tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -115,10 +116,7 @@ extension SettingsV2ViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 30))
-    _ = headerView |> UIView.lens.backgroundColor .~ .ksr_grey_200
-
-    return headerView
+    return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
 
   func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {

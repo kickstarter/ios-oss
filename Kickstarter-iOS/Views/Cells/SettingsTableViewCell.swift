@@ -7,21 +7,14 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
   @IBOutlet fileprivate weak var appVersionLabel: UILabel!
   @IBOutlet fileprivate weak var lineLayer: UIView!
 
-  private var cellType: SettingsCellType!
-
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
 
-  func configureWith(value cellType: SettingsCellType) {
-    self.cellType = cellType
-
+  func configureWith(value cellType: SettingsCellTypeProtocol) {
     _ = titleLabel
       |> UILabel.lens.text .~ cellType.titleString
-      |> UILabel.lens.textColor %~ { _ in
-        print(cellType)
-        return cellType == .logout ? .ksr_red_400 : .ksr_text_dark_grey_500
-      }
+      |> UILabel.lens.textColor .~ cellType.textColor
 
     _ = arrowImageView
       |> UIImageView.lens.isHidden
@@ -29,7 +22,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
     _ = appVersionLabel
       |> UILabel.lens.isHidden %~ { _ in
-        return !(cellType == .appVersion)
+        return cellType.hideDescriptionLabel
       }
       |> UILabel.lens.text %~ { _ in
         let versionString = AppEnvironment.current.mainBundle.shortVersionString
