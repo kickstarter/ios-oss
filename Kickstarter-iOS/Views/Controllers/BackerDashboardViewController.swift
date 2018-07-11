@@ -65,7 +65,7 @@ internal final class BackerDashboardViewController: UIViewController {
     self.view.addGestureRecognizer(panGesture)
 
     let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureNotifier))
-    self.view.addGestureRecognizer(tapRecognizer)
+    self.pageViewController.view.addGestureRecognizer(tapRecognizer)
 
     self.viewModel.inputs.viewDidLoad()
   }
