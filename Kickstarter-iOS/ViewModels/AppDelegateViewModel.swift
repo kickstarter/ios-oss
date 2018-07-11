@@ -578,15 +578,14 @@ AppDelegateViewModelOutputs {
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal
       )
+      .filter { !AppEnvironment.current.mainBundle.isDebug }
       .map { _ in
         let mainBundle = AppEnvironment.current.mainBundle
-        let appIdentifier = mainBundle.isRelease
-          ? KsApi.Secrets.HockeyAppId.production
-          : KsApi.Secrets.HockeyAppId.beta
+        let hockeyAppId = mainBundle.hockeyAppId ?? KsApi.Secrets.HockeyAppId.production
 
         return HockeyConfigData(
-          appIdentifier: appIdentifier,
-          disableUpdates: mainBundle.isRelease || mainBundle.isAlpha,
+          appIdentifier: hockeyAppId,
+          disableUpdates: mainBundle.isRelease,
           userId: (AppEnvironment.current.currentUser?.id).map(String.init) ?? "0",
           userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
         )

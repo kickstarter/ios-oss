@@ -1,7 +1,9 @@
 import Foundation
+import KsApi
 
 public enum KickstarterBundleIdentifier: String {
-  case alpha = "com.kickstarter.kickstarter.alpha"
+  case debug = "com.kickstarter.kickstarter.debug"
+  case alpha = "com.kickstarter.kickstarter.kickalpha"
   case beta = "com.kickstarter.kickstarter.beta"
   case release = "com.kickstarter.kickstarter"
 }
@@ -27,6 +29,10 @@ extension NSBundleType {
     return self.infoDictionary?["CFBundleVersion"] as? String ?? "0"
   }
 
+  public var isDebug: Bool {
+    return self.identifier == KickstarterBundleIdentifier.debug.rawValue
+  }
+
   public var isAlpha: Bool {
     return self.identifier == KickstarterBundleIdentifier.alpha.rawValue
   }
@@ -37,6 +43,27 @@ extension NSBundleType {
 
   public var isRelease: Bool {
     return self.identifier == KickstarterBundleIdentifier.release.rawValue
+  }
+
+  public var kickstarterBundleId: KickstarterBundleIdentifier? {
+    return KickstarterBundleIdentifier(rawValue: identifier)
+  }
+
+  public var hockeyAppId: String? {
+    guard let bundleId = kickstarterBundleId else {
+      return nil
+    }
+
+    switch bundleId {
+    case .release:
+      return KsApi.Secrets.HockeyAppId.production
+    case .beta:
+      return KsApi.Secrets.HockeyAppId.beta
+    case .alpha:
+      return KsApi.Secrets.HockeyAppId.alpha
+    default:
+      return nil
+    }
   }
 }
 
