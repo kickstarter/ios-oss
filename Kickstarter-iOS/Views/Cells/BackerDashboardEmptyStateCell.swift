@@ -11,10 +11,10 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var iconImageView: UIImageView!
 
   private let duration = 0.4
-  private let hideHeart = CGFloat(0.0)
-  private let showHeart = CGFloat(1.0)
-  private let shrinkHeart = CGAffineTransform(scaleX: 0.7, y: 0.7)
-  private let expandHeart = CGAffineTransform(scaleX: 1.0, y: 1.0)
+  private let hiddenHeartAlpha = CGFloat(0.0)
+  private let visibleHeartAlpha = CGFloat(1.0)
+  private let shrunkHeartTransform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+  private let expandedHearTransform = CGAffineTransform(scaleX: 1.0, y: 1.0)
 
   internal func configureWith(value: ProfileProjectsType) {
     switch value {
@@ -26,12 +26,13 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
         .~ UIImage(named: "icon--eye",
                    in: .framework,
                    compatibleWith: nil)
-      self.filledHeartIconImageView.isHidden = true
+      _ = self.filledHeartIconImageView
+        |> UIImageView.lens.isHidden .~ true
     case .saved:
-      let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(animateToFilledHeart))
-      self.addGestureRecognizer(tapRecognizer)
       self.messageLabel.text = Strings.Tap_the_heart_on_a_project_to_get_notified()
       self.titleLabel.text = Strings.No_saved_projects()
+
+      NotificationCenter.default.addObserver(self, selector: #selector(animateToFilledHeart), name: .ksr_savedProjectEmptyStateTapped, object: nil)
       animateToFilledHeart()
     }
   }
@@ -43,14 +44,14 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       usingSpringWithDamping: 1.0,
       initialSpringVelocity: 0.0,
       options: .curveEaseInOut,
-      animations: {
-        self.filledHeartIconImageView.alpha = self.hideHeart
-        self.iconImageView.alpha = self.hideHeart
-        self.iconImageView.transform = self.shrinkHeart
-        self.filledHeartIconImageView.transform = self.expandHeart
-        self.filledHeartIconImageView.alpha = self.showHeart
+      animations: { [unowned self] in
+        self.filledHeartIconImageView.alpha = self.hiddenHeartAlpha
+        self.iconImageView.alpha = self.hiddenHeartAlpha
+        self.iconImageView.transform = self.shrunkHeartTransform
+        self.filledHeartIconImageView.transform = self.expandedHearTransform
+        self.filledHeartIconImageView.alpha = self.visibleHeartAlpha
         },
-      completion: { _ in self.animateToOutlineHeart() }
+      completion: { [unowned self] _ in self.animateToOutlineHeart() }
     )
   }
 
@@ -61,12 +62,12 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       usingSpringWithDamping: 1.0,
       initialSpringVelocity: 0.0,
       options: .curveEaseInOut,
-      animations: {
-        self.filledHeartIconImageView.alpha = self.hideHeart
-        self.iconImageView.alpha = self.hideHeart
-        self.filledHeartIconImageView.transform = self.shrinkHeart
-        self.iconImageView.transform = self.expandHeart
-        self.iconImageView.alpha = self.showHeart
+      animations: { [unowned self] in
+        self.filledHeartIconImageView.alpha = self.hiddenHeartAlpha
+        self.iconImageView.alpha = self.hiddenHeartAlpha
+        self.filledHeartIconImageView.transform = self.shrunkHeartTransform
+        self.iconImageView.transform = self.expandedHearTransform
+        self.iconImageView.alpha = self.visibleHeartAlpha
     },
       completion: nil)
   }
