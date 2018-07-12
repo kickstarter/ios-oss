@@ -223,7 +223,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs.applicationDidFinishLaunching(application: application,
                                                         launchOptions: launchOptions)
 
-
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
 

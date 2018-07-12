@@ -30,4 +30,3 @@ final class HelpDataSourceTests: XCTestCase {
     XCTAssertEqual(HelpType.cookie, dataSource.cellTypeForIndexPath(indexPath: indexPath4))
   }
 }
-
