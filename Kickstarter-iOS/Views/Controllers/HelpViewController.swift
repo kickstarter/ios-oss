@@ -72,7 +72,7 @@ final class HelpViewController: UIViewController {
 
 extension HelpViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 30
+    return HelpSectionType.sectionHeaderHeight
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -84,6 +84,8 @@ extension HelpViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+
     guard let helpType = self.dataSource.cellTypeForIndexPath(indexPath: indexPath) else {
       return
     }

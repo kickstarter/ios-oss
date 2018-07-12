@@ -13,6 +13,10 @@ public enum SettingsSectionType: Int {
   case logout
   case ratingAppVersion
 
+  public static var sectionHeaderHeight: CGFloat {
+    return 30.0
+  }
+
   public var cellRowsForSection: [SettingsCellType] {
     switch self {
     case .notificationNewsletters:
@@ -91,6 +95,10 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
 public enum HelpSectionType: Int {
   case help
   case privacy
+
+  public static var sectionHeaderHeight: CGFloat {
+    return 30.0
+  }
 
   public static var allCases: [HelpSectionType] = [.help, .privacy]
 

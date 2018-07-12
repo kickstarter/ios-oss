@@ -115,7 +115,7 @@ final class SettingsV2ViewController: UIViewController {
 
 extension SettingsV2ViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 30
+    return SettingsSectionType.sectionHeaderHeight
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
