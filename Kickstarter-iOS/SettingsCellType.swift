@@ -56,7 +56,6 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
     case .rateInAppStore:
       return Strings.Rate_us_in_the_App_Store()
     case .appVersion:
-      // TODO use translated string here
       return "App version"
     }
   }
