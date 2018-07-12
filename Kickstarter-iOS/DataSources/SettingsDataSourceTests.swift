@@ -1,5 +1,6 @@
 import XCTest
 @testable import Kickstarter_Framework
+@testable import Library
 
 final class SettingsDataSourceTests: XCTestCase {
   private let dataSource = SettingsDataSource()
@@ -24,13 +25,5 @@ final class SettingsDataSourceTests: XCTestCase {
 
     XCTAssertEqual(SettingsCellType.notifications, dataSource.cellTypeForIndexPath(indexPath: indexPath0))
     XCTAssertEqual(SettingsCellType.newsletters, dataSource.cellTypeForIndexPath(indexPath: indexPath1))
-  }
-
-  func testCellTypeForIndexPath_invalidIndexPath() {
-    dataSource.configureRows()
-
-    let indexPath = IndexPath(item: 0, section: 5)
-
-    XCTAssertEqual(nil, dataSource.cellTypeForIndexPath(indexPath: indexPath))
   }
 }

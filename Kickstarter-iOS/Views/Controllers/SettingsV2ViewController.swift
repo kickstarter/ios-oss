@@ -33,6 +33,9 @@ final class SettingsV2ViewController: UIViewController {
       |> baseControllerStyle()
       |> UIViewController.lens.view.backgroundColor .~ .ksr_grey_200
       |> UIViewController.lens.title %~ { _ in Strings.profile_buttons_settings() }
+
+    _ = tableView
+      |> UITableView.lens.backgroundColor .~ .ksr_grey_200
   }
 
   override func bindViewModel() {
@@ -113,6 +116,14 @@ final class SettingsV2ViewController: UIViewController {
 extension SettingsV2ViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 30
+  }
+
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 0.1
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return nil
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

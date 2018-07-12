@@ -10,13 +10,13 @@ final class HelpDataSource: ValueCellDataSource {
     }
   }
 
-  func cellTypeForIndexPath(indexPath: IndexPath) -> HelpCellType? {
-    return self[indexPath] as? HelpCellType
+  func cellTypeForIndexPath(indexPath: IndexPath) -> HelpType? {
+    return self[indexPath] as? HelpType
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as SettingsTableViewCell, value as HelpCellType):
+    case let (cell as SettingsTableViewCell, value as HelpType):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

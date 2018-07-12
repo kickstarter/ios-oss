@@ -1,7 +1,7 @@
-import Library
+import UIKit
 
-protocol SettingsCellTypeProtocol {
-  var titleString: String { get }
+public protocol SettingsCellTypeProtocol {
+  var title: String { get }
   var showArrowImageView: Bool { get }
   var textColor: UIColor { get }
   var hideDescriptionLabel: Bool { get }
@@ -26,7 +26,7 @@ public enum SettingsSectionType: Int {
     }
   }
 
-  static var allCases: [SettingsSectionType] = [.notificationNewsletters,
+  public static var allCases: [SettingsSectionType] = [.notificationNewsletters,
                                                 .helpPrivacy,
                                                 .logout,
                                                 .ratingAppVersion]
@@ -41,7 +41,7 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   case rateInAppStore
   case appVersion
 
-  public var titleString: String {
+  public var title: String {
     switch self {
     case .notifications:
       return Strings.profile_settings_navbar_title_notifications()
@@ -91,62 +91,16 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
 
 public enum HelpSectionType: Int {
   case help
-  case howItWorks
   case privacy
 
-  static var allCases: [HelpSectionType] = [.help, .howItWorks, .privacy]
+  public static var allCases: [HelpSectionType] = [.help, .privacy]
 
-  public var cellRowsForSection: [HelpCellType] {
+  public var cellRowsForSection: [HelpType] {
     switch self {
     case .help:
       return [.helpCenter, .contact]
-    case .howItWorks:
-      return [.howItWorks]
     case .privacy:
-      return [.termsOfUse, .privacyPolicy, .cookiePolicy]
+      return [.terms, .privacy, .cookie]
     }
-  }
-}
-
-public enum HelpCellType: SettingsCellTypeProtocol {
-  case helpCenter
-  case contact
-  case howItWorks
-  case termsOfUse
-  case privacyPolicy
-  case cookiePolicy
-
-  public var titleString: String {
-    switch self {
-    case .helpCenter:
-      return Strings.Help_center()
-    case .contact:
-      return Strings.profile_settings_about_contact()
-    case .howItWorks:
-      return Strings.profile_settings_about_how_it_works()
-    case .termsOfUse:
-      return Strings.profile_settings_about_terms()
-    case .privacyPolicy:
-      return Strings.profile_settings_about_privacy()
-    case .cookiePolicy:
-      return Strings.profile_settings_about_cookie()
-    }
-  }
-
-  public var showArrowImageView: Bool {
-    switch self {
-    case .contact:
-      return true
-    default:
-      return false
-    }
-  }
-
-  public var textColor: UIColor {
-    return .ksr_text_dark_grey_500
-  }
-
-  public var hideDescriptionLabel: Bool {
-    return true
   }
 }

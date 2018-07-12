@@ -13,7 +13,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   func configureWith(value cellType: SettingsCellTypeProtocol) {
     _ = titleLabel
-      |> UILabel.lens.text .~ cellType.titleString
+      |> UILabel.lens.text .~ cellType.title
       |> UILabel.lens.textColor .~ cellType.textColor
 
     _ = arrowImageView
@@ -34,11 +34,6 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
   }
 
   override func bindStyles() {
-    _ = arrowImageView
-    |> UIImageView.lens.image %~ { _ in
-      UIImage(named: "chevron-right", in: .framework, compatibleWith: nil)
-    }
-
     _ = titleLabel
     |> UILabel.lens.font .~ .ksr_body()
 
@@ -47,5 +42,14 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
     _ = lineLayer
     |> UIView.lens.backgroundColor .~ .ksr_grey_400
+  }
+
+  override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+    super.setHighlighted(highlighted, animated: animated)
+
+    let backgroundColor: UIColor = .ksr_grey_500
+
+    _ = self
+      |> UITableViewCell.lens.backgroundColor .~ (highlighted ? backgroundColor.withAlphaComponent(0.1) : .white)
   }
 }
