@@ -40,6 +40,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var logoutButton: UIButton!
   @IBOutlet fileprivate weak var newslettersTitleLabel: UILabel!
   @IBOutlet fileprivate weak var notificationsLabel: UILabel!
+  @IBOutlet fileprivate weak var privacyButton: UIButton!
+  @IBOutlet fileprivate weak var privacyLabel: UILabel!
   @IBOutlet fileprivate weak var privacyTitleLabel: UILabel!
   @IBOutlet fileprivate weak var privacyPolicyButton: UIButton!
   @IBOutlet fileprivate weak var privacyPolicyLabel: UILabel!
@@ -210,6 +212,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.notificationsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_navbar_title_notifications() }
+
+    _ = self.privacyLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Privacy() }
 
     _ = self.privacyTitleLabel
       |> settingsTitleLabelStyle
@@ -479,6 +485,11 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction func goToNotifications(_ sender: UIButton) {
     let vc = SettingsNotificationsViewController.instantiate()
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  @IBAction func goToPrivacy(_ sender: UIButton) {
+    let vc = SettingsPrivacyViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

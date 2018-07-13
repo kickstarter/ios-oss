@@ -921,6 +921,9 @@
 		D6ED38A21F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */; };
 		D6FB2A3D1FA27D0300B0D282 /* CategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
+		D703FC3120F7E280004A272D /* SettingsPrivacy.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */; };
+		D703FC6920F7E2EC004A272D /* SettingsPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */; };
+		D703FC6B20F7E3F8004A272D /* SettingsPrivacyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */; };
 		D70740541FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70740531FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift */; };
 		D7417CD620BF12F4004DABA6 /* ExportDataEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7417CD520BF12F4004DABA6 /* ExportDataEnvelope.swift */; };
 		D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */; };
@@ -2469,6 +2472,9 @@
 		D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTests.swift; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
+		D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsPrivacy.storyboard; sourceTree = "<group>"; };
+		D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewController.swift; sourceTree = "<group>"; };
+		D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewModel.swift; sourceTree = "<group>"; };
 		D70740531FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorDigestSettingsViewModelTests.swift; sourceTree = "<group>"; };
 		D7417CD520BF12F4004DABA6 /* ExportDataEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDataEnvelope.swift; sourceTree = "<group>"; };
 		D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportStateEnvelopeTemplates.swift; sourceTree = "<group>"; };
@@ -2761,6 +2767,7 @@
 				A78852381D6CC5DE00617930 /* RewardPledge.storyboard */,
 				A73923B81D272242004524C3 /* Search.storyboard */,
 				A73923B91D272242004524C3 /* Settings.storyboard */,
+				D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */,
 				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
 				A73923AC1D272242004524C3 /* Thanks.storyboard */,
 				D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */,
@@ -3013,6 +3020,7 @@
 				A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */,
 				D6AD9A7F20EA720F0015A18B /* SettingsNotificationsViewController.swift */,
 				D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */,
+				D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */,
 				A72C39F31D00F27E0075227E /* SettingsViewController.swift */,
 				A7ED203B1E8323E900BFFA01 /* SettingsViewControllerTests.swift */,
 				A749001D1D00E27100BC3BE7 /* SignupViewController.swift */,
@@ -3653,6 +3661,7 @@
 				A7ED1F651E831C5C00BFFA01 /* SettingsViewModelTests.swift */,
 				D6AE3FD720EBC5D100DB212F /* SettingsNotificationsViewModel.swift */,
 				D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */,
+				D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */,
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
 				A7ED1F811E831C5C00BFFA01 /* ShareViewModelTests.swift */,
 				A74900171D00E23000BC3BE7 /* SignupViewModel.swift */,
@@ -4876,6 +4885,7 @@
 				01AFE30E1D5A97FB0094C263 /* Main.storyboard in Resources */,
 				A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */,
 				013744C11D999BE200E50C78 /* EmptyStates.storyboard in Resources */,
+				D703FC3120F7E280004A272D /* SettingsPrivacy.storyboard in Resources */,
 				774A76EE20D863EF0012A71F /* BetaTools.storyboard in Resources */,
 				D0CDA8A11E7434E400AA3450 /* LiveStreamNavTitleView.xib in Resources */,
 				9D89B7E81D6BA71F0021F6FF /* WebModal.storyboard in Resources */,
@@ -5076,6 +5086,7 @@
 				9D1A2A4F1D5D200E009E1B3F /* CheckoutViewModel.swift in Sources */,
 				D07227021E671B4500C2E537 /* LiveStreamContainerPageViewModel.swift in Sources */,
 				59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */,
+				D703FC6B20F7E3F8004A272D /* SettingsPrivacyViewModel.swift in Sources */,
 				0169F9881D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift in Sources */,
 				01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */,
 				A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */,
@@ -5470,6 +5481,7 @@
 				A747A8B91D45893100AF199A /* ProjectPamphletContentDataSource.swift in Sources */,
 				01A120D31D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift in Sources */,
 				59B0E0041D1203970081D2DC /* DashboardActionCell.swift in Sources */,
+				D703FC6920F7E2EC004A272D /* SettingsPrivacyViewController.swift in Sources */,
 				D0D2AB221E964485008D298A /* LiveVideoViewController.swift in Sources */,
 				0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */,
 				8072F41D1D46B75200999EF1 /* UpdatePreviewViewController.swift in Sources */,
