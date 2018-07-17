@@ -609,11 +609,6 @@
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="nZ7-PD-Y4S" firstAttribute="leading" secondItem="8mW-y4-spg" secondAttribute="leading" id="7qg-Nt-5Vg"/>
-                                            <constraint firstAttribute="trailing" secondItem="nZ7-PD-Y4S" secondAttribute="trailing" id="JQa-Pa-3td"/>
-                                            <constraint firstItem="nZ7-PD-Y4S" firstAttribute="top" secondItem="q9t-0r-CMc" secondAttribute="bottom" constant="36" id="agX-4j-a2C"/>
-                                        </constraints>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khs-ff-QAn" userLabel="Notifications Button">
                                         <rect key="frame" x="16" y="37" width="368" height="50"/>

@@ -4,10 +4,12 @@ public enum Nib: String {
   case BackerDashboardEmptyStateCell
   case BackerDashboardProjectCell
   case DiscoveryPostcardCell
+  case DiscoveryProjectCategoryView
   case LiveStreamNavTitleView
   case RewardCell
+  case SettingsNewslettersCell
   case ThanksCategoryCell
-  case DiscoveryProjectCategoryView
+
 }
 
 extension UITableView {

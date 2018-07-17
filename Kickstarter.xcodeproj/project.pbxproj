@@ -912,6 +912,11 @@
 		D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */; };
 		D6B674F120F641810082717D /* SettingsNewslettersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B674F020F641810082717D /* SettingsNewslettersViewController.swift */; };
 		D6B6752920F6422A0082717D /* SettingsNewsletters.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6B6752820F6422A0082717D /* SettingsNewsletters.storyboard */; };
+		D6B6752B20F8F5430082717D /* SettingsNewslettersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6752A20F8F5430082717D /* SettingsNewslettersDataSource.swift */; };
+		D6B6752E20F8F7700082717D /* SettingsNewslettersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6752C20F8F7700082717D /* SettingsNewslettersCell.swift */; };
+		D6B6752F20F8F7700082717D /* SettingsNewslettersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6B6752D20F8F7700082717D /* SettingsNewslettersCell.xib */; };
+		D6B6753120F8F8430082717D /* SettingsNewslettersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6753020F8F8430082717D /* SettingsNewslettersType.swift */; };
+		D6B675D720F9424B0082717D /* SettingsNewslettersCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B675D620F9424B0082717D /* SettingsNewslettersCellViewModel.swift */; };
 		D6B6F8E020EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */; };
 		D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */; };
 		D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */; };
@@ -2462,6 +2467,11 @@
 		D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationdialogTests.swift; sourceTree = "<group>"; };
 		D6B674F020F641810082717D /* SettingsNewslettersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewController.swift; sourceTree = "<group>"; };
 		D6B6752820F6422A0082717D /* SettingsNewsletters.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsNewsletters.storyboard; sourceTree = "<group>"; };
+		D6B6752A20F8F5430082717D /* SettingsNewslettersDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSource.swift; sourceTree = "<group>"; };
+		D6B6752C20F8F7700082717D /* SettingsNewslettersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersCell.swift; sourceTree = "<group>"; };
+		D6B6752D20F8F7700082717D /* SettingsNewslettersCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNewslettersCell.xib; sourceTree = "<group>"; };
+		D6B6753020F8F8430082717D /* SettingsNewslettersType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersType.swift; sourceTree = "<group>"; };
+		D6B675D620F9424B0082717D /* SettingsNewslettersCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersCellViewModel.swift; sourceTree = "<group>"; };
 		D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewModelTests.swift; sourceTree = "<group>"; };
 		D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewControllerTests.swift; sourceTree = "<group>"; };
 		D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAttribute.swift; sourceTree = "<group>"; };
@@ -2936,8 +2946,10 @@
 				A747A8ED1D45899F00AF199A /* RewardCell.swift */,
 				A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */,
 				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
+				D6B6752C20F8F7700082717D /* SettingsNewslettersCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 				014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */,
+				D6B6752D20F8F7700082717D /* SettingsNewslettersCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3290,6 +3302,7 @@
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+				D6B6753020F8F8430082717D /* SettingsNewslettersType.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -3441,6 +3454,7 @@
 				A74FFEC81CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift */,
 				014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */,
 				77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */,
+				D6B6752A20F8F5430082717D /* SettingsNewslettersDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -3677,6 +3691,7 @@
 				A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
+				D6B675D620F9424B0082717D /* SettingsNewslettersCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -4883,6 +4898,7 @@
 				A757EA6C1D19F93400A5C978 /* 1Password.xcassets in Resources */,
 				013744C11D999BE200E50C78 /* EmptyStates.storyboard in Resources */,
 				774A76EE20D863EF0012A71F /* BetaTools.storyboard in Resources */,
+				D6B6752F20F8F7700082717D /* SettingsNewslettersCell.xib in Resources */,
 				D6B6752920F6422A0082717D /* SettingsNewsletters.storyboard in Resources */,
 				D0CDA8A11E7434E400AA3450 /* LiveStreamNavTitleView.xib in Resources */,
 				9D89B7E81D6BA71F0021F6FF /* WebModal.storyboard in Resources */,
@@ -5078,6 +5094,7 @@
 				597073B41D07294500B00444 /* ProjectNotificationCellViewModel.swift in Sources */,
 				015572711E79C427005FB8CC /* ProfileProjectCellViewModel.swift in Sources */,
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
+				D6B6753120F8F8430082717D /* SettingsNewslettersType.swift in Sources */,
 				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
 				9D1A2A4F1D5D200E009E1B3F /* CheckoutViewModel.swift in Sources */,
@@ -5137,6 +5154,7 @@
 				A7CC13DB1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,
 				9DD1E3881D50035E00D4829E /* ProjectActivityData.swift in Sources */,
 				01940B261D42DC1A0074FCE3 /* HelpViewModel.swift in Sources */,
+				D6B675D720F9424B0082717D /* SettingsNewslettersCellViewModel.swift in Sources */,
 				593AC6011D33F517002613F4 /* DashboardFundingCellViewModel.swift in Sources */,
 				9D2F4BE01D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */,
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,
@@ -5415,6 +5433,7 @@
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
+				D6B6752E20F8F7700082717D /* SettingsNewslettersCell.swift in Sources */,
 				015A06F41D219156007AE210 /* DashboardRewardRowStackView.swift in Sources */,
 				A708F0ED1E42512000599688 /* UIView+LivePulsatingAnimation.swift in Sources */,
 				A78838A91D8A32060081E94D /* ProjectNavBarViewController.swift in Sources */,
@@ -5487,6 +5506,7 @@
 				D08A817C1DFAAD08000128DB /* LiveStreamCountdownViewController.swift in Sources */,
 				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
+				D6B6752B20F8F5430082717D /* SettingsNewslettersDataSource.swift in Sources */,
 				59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,

@@ -33,9 +33,9 @@ internal final class SettingsNewslettersViewController: UIViewController {
     return Storyboard.SettingsNewsletters.instantiate(SettingsNewslettersViewController.self)
   }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+  }
 
   override func bindStyles() {
 
@@ -94,5 +94,20 @@ internal final class SettingsNewslettersViewController: UIViewController {
 
     _ = self.subscribeDescriptionLabel
       |> UILabel.lens.text %~ { _ in Strings.Stay_up_to_date_newsletter() }
+  }
+}
+
+extension SettingsNewslettersViewController: UITableViewDelegate {
+
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 0.1
+  }
+}
+
+extension SettingsNewslettersViewController: SettingsNewslettersCellDelegate {
+
+  func shouldShowOptInAlert(_ newsletterName: String) {
+    let optInAlert = UIAlertController.newsletterOptIn(newsletterName)
+    self.present(optInAlert, animated: true, completion: nil)
   }
 }
