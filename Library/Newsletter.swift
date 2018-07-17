@@ -30,11 +30,11 @@ public enum Newsletter {
     case .arts:
       return Strings.Stay_up_to_date_newsletter()
     case .games:
-      return Strings.Stay_up_to_date_newsletter() //TODO
+      return Strings.Stay_up_to_date_newsletter()
     case .happening:
       return Strings.Happening_newsletter()
     case .invent:
-      return Strings.Stay_up_to_date_newsletter() // TODO
+      return Strings.Stay_up_to_date_newsletter()
     case .promo:
       return Strings.News_events()
     case .weekly:
