@@ -915,7 +915,6 @@
 		D6B6752B20F8F5430082717D /* SettingsNewslettersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6752A20F8F5430082717D /* SettingsNewslettersDataSource.swift */; };
 		D6B6752E20F8F7700082717D /* SettingsNewslettersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6752C20F8F7700082717D /* SettingsNewslettersCell.swift */; };
 		D6B6752F20F8F7700082717D /* SettingsNewslettersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6B6752D20F8F7700082717D /* SettingsNewslettersCell.xib */; };
-		D6B6753120F8F8430082717D /* SettingsNewslettersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6753020F8F8430082717D /* SettingsNewslettersType.swift */; };
 		D6B675D720F9424B0082717D /* SettingsNewslettersCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B675D620F9424B0082717D /* SettingsNewslettersCellViewModel.swift */; };
 		D6B6F8E020EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */; };
 		D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */; };
@@ -2470,7 +2469,6 @@
 		D6B6752A20F8F5430082717D /* SettingsNewslettersDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSource.swift; sourceTree = "<group>"; };
 		D6B6752C20F8F7700082717D /* SettingsNewslettersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersCell.swift; sourceTree = "<group>"; };
 		D6B6752D20F8F7700082717D /* SettingsNewslettersCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNewslettersCell.xib; sourceTree = "<group>"; };
-		D6B6753020F8F8430082717D /* SettingsNewslettersType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersType.swift; sourceTree = "<group>"; };
 		D6B675D620F9424B0082717D /* SettingsNewslettersCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersCellViewModel.swift; sourceTree = "<group>"; };
 		D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewModelTests.swift; sourceTree = "<group>"; };
 		D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2776,6 +2774,7 @@
 				A73923B81D272242004524C3 /* Search.storyboard */,
 				A73923B91D272242004524C3 /* Settings.storyboard */,
 				D6B6752820F6422A0082717D /* SettingsNewsletters.storyboard */,
+				D6B6752D20F8F7700082717D /* SettingsNewslettersCell.xib */,
 				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
 				A73923AC1D272242004524C3 /* Thanks.storyboard */,
 				D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */,
@@ -2949,7 +2948,6 @@
 				D6B6752C20F8F7700082717D /* SettingsNewslettersCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 				014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */,
-				D6B6752D20F8F7700082717D /* SettingsNewslettersCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3302,7 +3300,6 @@
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
-				D6B6753020F8F8430082717D /* SettingsNewslettersType.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -5094,7 +5091,6 @@
 				597073B41D07294500B00444 /* ProjectNotificationCellViewModel.swift in Sources */,
 				015572711E79C427005FB8CC /* ProfileProjectCellViewModel.swift in Sources */,
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
-				D6B6753120F8F8430082717D /* SettingsNewslettersType.swift in Sources */,
 				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
 				9D1A2A4F1D5D200E009E1B3F /* CheckoutViewModel.swift in Sources */,

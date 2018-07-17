@@ -14,6 +14,7 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var newslettersDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var newslettersLabel: UILabel!
   @IBOutlet fileprivate weak var newslettersSwitch: UISwitch!
+  @IBOutlet fileprivate var separatorViews: [UIView]!
 
   public weak var delegate: SettingsNewslettersCellDelegate?
 
@@ -29,14 +30,19 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
   }
 
   override func awakeFromNib() {
-      super.awakeFromNib()
+    super.awakeFromNib()
+    self.viewModel.inputs.awakeFromNib()
   }
 
   override func bindStyles() {
 
+    _ = self.separatorViews
+      ||> separatorStyle
+
     _ = self.newslettersDescriptionLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.font .~ .ksr_body(size: 13)
+      |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.newslettersLabel
       |> settingsSectionLabelStyle

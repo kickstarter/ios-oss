@@ -83,7 +83,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
     self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
 
     self.switchIsOn = self.updateCurrentUser
-      .map { $0.newsletters != nil }
+      .map { $0.newsletters.arts }.skipNil().skipRepeats()
   }
 
   fileprivate let awakeFromNibProperty = MutableProperty(())
