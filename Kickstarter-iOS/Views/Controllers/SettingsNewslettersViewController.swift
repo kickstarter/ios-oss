@@ -17,6 +17,8 @@ internal final class SettingsNewslettersViewController: UIViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = dataSource
+    self.tableView.delegate = self
+    self.tableView.registerHeaderFooter(nib: .SettingsNewslettersHeaderView)
     self.tableView.register(nib: .SettingsNewslettersCell)
     self.dataSource.load(newsletters: Newsletter.allCases)
   }
@@ -27,6 +29,19 @@ internal final class SettingsNewslettersViewController: UIViewController {
     _ = self.tableView
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.estimatedRowHeight .~ 100
+  }
+}
+
+extension SettingsNewslettersViewController: UITableViewDelegate {
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return 113
+  }
+
+  internal func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return tableView.dequeueReusableHeaderFooterView(
+      withIdentifier: Nib.SettingsNewslettersHeaderView.rawValue
+    )
   }
 }
 

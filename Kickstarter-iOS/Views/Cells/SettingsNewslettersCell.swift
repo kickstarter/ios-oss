@@ -54,7 +54,7 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.newslettersSwitch.rac.on = self.viewModel.outputs.switchIsOn
+    self.newslettersSwitch.rac.on = self.viewModel.outputs.switchIsOn.skipNil()
 
     self.viewModel.outputs.showOptInPrompt
       .observeForControllerAction()

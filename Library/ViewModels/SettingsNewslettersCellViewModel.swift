@@ -13,7 +13,7 @@ public protocol SettingsNewslettersCellViewModelInputs {
 public protocol SettingsNewslettersCellViewModelOutputs {
 
   var showOptInPrompt: Signal<String, NoError> { get }
-  var switchIsOn: Signal<Bool, NoError> { get }
+  var switchIsOn: Signal<Bool?, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
 }
@@ -83,7 +83,8 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
     self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
 
     self.switchIsOn = self.updateCurrentUser
-      .map { $0.newsletters.arts }.skipNil().skipRepeats()
+      .combineLatest(with: newsletter)
+      .map(userIsSubscribed(user:newsletter:))
   }
 
   fileprivate let awakeFromNibProperty = MutableProperty(())
@@ -102,10 +103,27 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
   }
 
   public let showOptInPrompt: Signal<String, NoError>
-  public let switchIsOn: Signal<Bool, NoError>
+  public let switchIsOn: Signal<Bool?, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
 
   public var inputs: SettingsNewslettersCellViewModelInputs { return self }
   public var outputs: SettingsNewslettersCellViewModelOutputs { return self }
+}
+
+private func userIsSubscribed(user: User, newsletter: Newsletter) -> Bool? {
+  switch newsletter {
+  case .arts:
+    return user.newsletters.arts
+  case .games:
+    return user.newsletters.games
+  case .happening:
+    return user.newsletters.happening
+  case .invent:
+    return user.newsletters.invent
+  case .promo:
+    return user.newsletters.promo
+  case .weekly:
+    return user.newsletters.weekly
+  }
 }

@@ -8,6 +8,7 @@ public enum Nib: String {
   case LiveStreamNavTitleView
   case RewardCell
   case SettingsNewslettersCell
+  case SettingsNewslettersHeaderView
   case ThanksCategoryCell
 
 }
@@ -15,6 +16,11 @@ public enum Nib: String {
 extension UITableView {
   public func register(nib: Nib, inBundle bundle: Bundle = .framework) {
     self.register(UINib(nibName: nib.rawValue, bundle: bundle), forCellReuseIdentifier: nib.rawValue)
+  }
+
+  public func registerHeaderFooter(nib: Nib, inBundle bundle: Bundle = .framework) {
+    self.register(UINib(nibName: nib.rawValue, bundle: bundle),
+                  forHeaderFooterViewReuseIdentifier: nib.rawValue)
   }
 }
 
