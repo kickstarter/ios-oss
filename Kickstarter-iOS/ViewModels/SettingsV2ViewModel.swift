@@ -12,11 +12,11 @@ public protocol SettingsV2ViewModelInputs {
 }
 
 public protocol SettingsV2ViewModelOutputs {
-  var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
-  var transitionToViewController: Signal<UIViewController, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
+  var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
   var reloadData: Signal<Void, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
+  var transitionToViewController: Signal<UIViewController, NoError> { get }
 }
 
 public protocol SettingsV2ViewModelType {
@@ -93,11 +93,11 @@ SettingsV2ViewModelOutputs, SettingsV2ViewModelType {
      self.viewDidLoadProperty.value = ()
   }
 
-  public let logoutWithParams: Signal<DiscoveryParams, NoError>
-  public let transitionToViewController: Signal<UIViewController, NoError>
   public let goToAppStoreRating: Signal<String, NoError>
+  public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
   public let reloadData: Signal<Void, NoError>
+  public let transitionToViewController: Signal<UIViewController, NoError>
 
   public var inputs: SettingsV2ViewModelInputs { return self }
   public var outputs: SettingsV2ViewModelOutputs { return self }

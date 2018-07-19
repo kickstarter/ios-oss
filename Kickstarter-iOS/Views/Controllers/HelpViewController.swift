@@ -76,7 +76,7 @@ extension HelpViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 0.1
+    return 0.1 // Required to remove the footer in UITableViewStyleGrouped
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

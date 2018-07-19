@@ -8,20 +8,20 @@ import Result
 internal final class SettingsV2ViewModelTests: TestCase {
   let vm = SettingsV2ViewModel()
 
-  let logout = TestObserver<DiscoveryParams, NoError>()
-  let transitionToViewController = TestObserver<UIViewController, NoError>()
   let goToAppStoreRating = TestObserver<String, NoError>()
+  let logout = TestObserver<DiscoveryParams, NoError>()
   let reloadData = TestObserver<Void, NoError>()
   let showConfirmLogout = TestObserver<Void, NoError>()
+  let transitionToViewController = TestObserver<UIViewController, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.logoutWithParams.observe(logout.observer)
-    self.vm.outputs.transitionToViewController.observe(transitionToViewController.observer)
     self.vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
+    self.vm.outputs.logoutWithParams.observe(logout.observer)
     self.vm.outputs.reloadData.observe(reloadData.observer)
     self.vm.outputs.showConfirmLogoutPrompt.signal.mapConst(()).observe(showConfirmLogout.observer)
+    self.vm.outputs.transitionToViewController.observe(transitionToViewController.observer)
   }
 
   func testLogoutCellTapped() {

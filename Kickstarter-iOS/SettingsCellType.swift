@@ -31,9 +31,9 @@ public enum SettingsSectionType: Int {
   }
 
   public static var allCases: [SettingsSectionType] = [.notificationNewsletters,
-                                                .helpPrivacy,
-                                                .logout,
-                                                .ratingAppVersion]
+                                                       .helpPrivacy,
+                                                       .logout,
+                                                       .ratingAppVersion]
 }
 
 public enum SettingsCellType: SettingsCellTypeProtocol {
