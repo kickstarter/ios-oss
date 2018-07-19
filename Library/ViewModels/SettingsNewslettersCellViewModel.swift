@@ -8,6 +8,7 @@ public protocol SettingsNewslettersCellViewModelInputs {
   func awakeFromNib()
   func configureWith(value: Newsletter)
   func newslettersSwitchTapped(on: Bool)
+  func allNewslettersSwitchTapped(on: Bool)
 }
 
 public protocol SettingsNewslettersCellViewModelOutputs {
@@ -50,8 +51,9 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = Signal.combineLatest(
         newsletter,
+        self.allNewslettersSwitchProperty.signal.skipNil(),
         self.newslettersSwitchTappedProperty.signal.skipNil()
-    ).map { newsletter, isOn in
+    ).map { newsletter, _, isOn in
       (UserAttribute.newsletter(newsletter), isOn)
     }
 
@@ -102,6 +104,11 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
     self.newslettersSwitchTappedProperty.value = on
   }
 
+  fileprivate let allNewslettersSwitchProperty = MutableProperty<Bool?>(nil)
+  public func allNewslettersSwitchTapped(on: Bool) {
+    self.allNewslettersSwitchProperty.value = on
+  }
+
   public let showOptInPrompt: Signal<String, NoError>
   public let switchIsOn: Signal<Bool?, NoError>
   public let unableToSaveError: Signal<String, NoError>
@@ -109,6 +116,12 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
   public var inputs: SettingsNewslettersCellViewModelInputs { return self }
   public var outputs: SettingsNewslettersCellViewModelOutputs { return self }
+}
+
+private func updateAllNewsletterSubscriptions(on: Bool) {
+  let newsletters = AppEnvironment.current.currentUser?.newsletters
+  newsletters.
+
 }
 
 private func userIsSubscribed(user: User, newsletter: Newsletter) -> Bool? {

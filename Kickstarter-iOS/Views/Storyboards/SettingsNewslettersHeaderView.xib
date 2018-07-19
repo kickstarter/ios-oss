@@ -38,6 +38,9 @@
                                 <constraint firstAttribute="width" constant="47" id="It3-cr-rxP"/>
                                 <constraint firstAttribute="height" constant="31" id="TSq-0n-rBT"/>
                             </constraints>
+                            <connections>
+                                <action selector="newsletterSwitchTapped:" destination="-1" eventType="valueChanged" id="Ghl-j4-Hny"/>
+                            </connections>
                         </switch>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fVy-qg-kDP">
                             <rect key="frame" x="8" y="11" width="304" height="21"/>
