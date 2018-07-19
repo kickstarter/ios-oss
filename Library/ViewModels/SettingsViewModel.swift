@@ -16,6 +16,7 @@ public protocol SettingsViewModelInputs {
   func logoutCanceled()
   func logoutConfirmed()
   func logoutTapped()
+  func privacyTapped()
   func privateProfileSwitchDidChange(isOn: Bool)
   func promoNewsletterTapped(on: Bool)
   func rateUsTapped()
@@ -49,6 +50,8 @@ public protocol SettingsViewModelOutputs {
   var updateCurrentUser: Signal<User, NoError> { get }
   var versionText: Signal<String, NoError> { get }
   var weeklyNewsletterOn: Signal<Bool, NoError> { get }
+
+  var goToPrivacy: Signal<User, NoError> { get }
 }
 
 public protocol SettingsViewModelType {
@@ -320,6 +323,9 @@ SettingsViewModelOutputs {
       .observeValues { _ in AppEnvironment.current.koala.trackLogoutModal() }
 
     self.viewDidLoadProperty.signal.observeValues { _ in AppEnvironment.current.koala.trackSettingsView() }
+
+    self.goToPrivacy = self.updateCurrentUser
+      .takeWhen(self.privacyTappedProperty.signal)
   }
 
   fileprivate let artsAndCultureNewsletterTappedProperty = MutableProperty(false)
@@ -441,7 +447,10 @@ SettingsViewModelOutputs {
   public func postLikesTapped(selected: Bool) {
     self.postLikesTappedProperty.value = selected
   }
-
+  fileprivate let privacyTappedProperty = MutableProperty(())
+  public func privacyTapped() {
+    self.privacyTappedProperty.value = ()
+  }
   fileprivate let privateProfileEnabledProperty = MutableProperty(true)
   public func privateProfileSwitchDidChange(isOn: Bool) {
     self.privateProfileEnabledProperty.value = isOn
@@ -497,6 +506,8 @@ SettingsViewModelOutputs {
   public let updateCurrentUser: Signal<User, NoError>
   public let weeklyNewsletterOn: Signal<Bool, NoError>
   public let versionText: Signal<String, NoError>
+
+  public let goToPrivacy: Signal<User, NoError>
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }

@@ -8,6 +8,7 @@ public enum Nib: String {
   case RewardCell
   case ThanksCategoryCell
   case DiscoveryProjectCategoryView
+  case SettingsPrivacyCell
 }
 
 extension UITableView {

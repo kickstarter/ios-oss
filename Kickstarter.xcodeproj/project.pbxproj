@@ -924,6 +924,7 @@
 		D703FC3120F7E280004A272D /* SettingsPrivacy.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */; };
 		D703FC6920F7E2EC004A272D /* SettingsPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */; };
 		D703FC6B20F7E3F8004A272D /* SettingsPrivacyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */; };
+		D703FCC120F949A3004A272D /* SettingsPrivacyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D703FCC020F949A3004A272D /* SettingsPrivacyCell.xib */; };
 		D70740541FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70740531FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift */; };
 		D7417CD620BF12F4004DABA6 /* ExportDataEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7417CD520BF12F4004DABA6 /* ExportDataEnvelope.swift */; };
 		D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */; };
@@ -932,6 +933,9 @@
 		D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */; };
 		D775EC3020812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */; };
 		D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */; };
+		D796864420FD051400E54C61 /* SettingsPrivacyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796864320FD051400E54C61 /* SettingsPrivacyCell.swift */; };
+		D796867C20FE655300E54C61 /* SettingsPrivacyCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867B20FE655300E54C61 /* SettingsPrivacyCellViewModel.swift */; };
+		D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */; };
 		D79D61151FD0979D000F958B /* String+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D61141FD0979D000F958B /* String+Base64.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
@@ -2475,6 +2479,7 @@
 		D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsPrivacy.storyboard; sourceTree = "<group>"; };
 		D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewController.swift; sourceTree = "<group>"; };
 		D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewModel.swift; sourceTree = "<group>"; };
+		D703FCC020F949A3004A272D /* SettingsPrivacyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsPrivacyCell.xib; sourceTree = "<group>"; };
 		D70740531FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorDigestSettingsViewModelTests.swift; sourceTree = "<group>"; };
 		D7417CD520BF12F4004DABA6 /* ExportDataEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDataEnvelope.swift; sourceTree = "<group>"; };
 		D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportStateEnvelopeTemplates.swift; sourceTree = "<group>"; };
@@ -2483,6 +2488,9 @@
 		D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift; sourceTree = "<group>"; };
 		D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift; sourceTree = "<group>"; };
 		D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossDissolveTransitionAnimator.swift; sourceTree = "<group>"; };
+		D796864320FD051400E54C61 /* SettingsPrivacyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyCell.swift; sourceTree = "<group>"; };
+		D796867B20FE655300E54C61 /* SettingsPrivacyCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyCellViewModel.swift; sourceTree = "<group>"; };
+		D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDataSource.swift; sourceTree = "<group>"; };
 		D79D61141FD0979D000F958B /* String+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64.swift"; sourceTree = "<group>"; };
 		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
 		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
@@ -2771,6 +2779,7 @@
 				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
 				A73923AC1D272242004524C3 /* Thanks.storyboard */,
 				D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */,
+				D703FCC020F949A3004A272D /* SettingsPrivacyCell.xib */,
 				A73923BA1D272242004524C3 /* Update.storyboard */,
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
@@ -2938,6 +2947,7 @@
 				A747A8ED1D45899F00AF199A /* RewardCell.swift */,
 				A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */,
 				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
+				D796864320FD051400E54C61 /* SettingsPrivacyCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 				014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */,
 			);
@@ -3441,6 +3451,7 @@
 				A7ED20101E83229E00BFFA01 /* ProjectPamphletContentDataSourceTests.swift */,
 				A75CFA4E1CCDB322004CD5FA /* SearchDataSource.swift */,
 				A74FFEC81CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift */,
+				D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */,
 				014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */,
 				77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */,
 			);
@@ -3662,6 +3673,7 @@
 				D6AE3FD720EBC5D100DB212F /* SettingsNotificationsViewModel.swift */,
 				D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */,
 				D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */,
+				D796867B20FE655300E54C61 /* SettingsPrivacyCellViewModel.swift */,
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
 				A7ED1F811E831C5C00BFFA01 /* ShareViewModelTests.swift */,
 				A74900171D00E23000BC3BE7 /* SignupViewModel.swift */,
@@ -4908,6 +4920,7 @@
 				D6A7AB401FDAF3EC007B20AE /* ThanksCategoryCell.xib in Resources */,
 				01A120D11D2D646300B42F73 /* DashboardProjectsDrawer.storyboard in Resources */,
 				59673C8B1D50EC920035AFD9 /* Video.storyboard in Resources */,
+				D703FCC120F949A3004A272D /* SettingsPrivacyCell.xib in Resources */,
 				A73923BE1D272242004524C3 /* Comments.storyboard in Resources */,
 				A73923BF1D272242004524C3 /* Dashboard.storyboard in Resources */,
 				9DDE1F701D5924AC0092D9A5 /* Checkout.storyboard in Resources */,
@@ -5062,6 +5075,7 @@
 				A7F441CB1D005A9400FE6FC5 /* MessagesSearchViewModel.swift in Sources */,
 				A7CC14651D00E81B00035C52 /* FriendsSource.swift in Sources */,
 				9D9F581B1D1324E200CE81DE /* DashboardViewModel.swift in Sources */,
+				D796867C20FE655300E54C61 /* SettingsPrivacyCellViewModel.swift in Sources */,
 				D0D2ABA91E9677E8008D298A /* LiveStreamTypes.swift in Sources */,
 				A7FC8C061C8F1DEA00C3B49B /* CircleAvatarImageView.swift in Sources */,
 				A7CA8C0E1D8F241A0086A3E9 /* ProjectNavBarViewModel.swift in Sources */,
@@ -5385,6 +5399,7 @@
 				A7E315C61C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift in Sources */,
 				7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */,
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
+				D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */,
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */,
 				A71199F91DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift in Sources */,
@@ -5500,6 +5515,7 @@
 				9D89B7E31D6B8B310021F6FF /* WebModalViewController.swift in Sources */,
 				9D14FF8D1D133351005F4ABB /* ProjectActivityBackingCell.swift in Sources */,
 				A7CC14451D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
+				D796864420FD051400E54C61 /* SettingsPrivacyCell.swift in Sources */,
 				D077CCC71E53459A004E8FDF /* LiveStreamChatMessageCell.swift in Sources */,
 				D0BB2D901E54895700EE1D9D /* LiveStreamChatDataSource.swift in Sources */,
 				A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */,

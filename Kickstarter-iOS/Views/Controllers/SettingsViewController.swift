@@ -75,6 +75,10 @@ internal final class SettingsViewController: UIViewController {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
 
+    self.privacyButton.addTarget(self,
+                                        action: #selector(privacyTapped),
+                                        for: .touchUpInside)
+
     self.contactButton.addTarget(self, action: #selector(contactTapped), for: .touchUpInside)
 
     self.cookiePolicyButton.addTarget(self,
@@ -339,6 +343,12 @@ internal final class SettingsViewController: UIViewController {
         self?.goToHelpType(helpType)
     }
 
+    self.viewModel.outputs.goToPrivacy
+      .observeForControllerAction()
+      .observeValues { [weak self] user in
+        self?.goToPrivacy(user: user)
+    }
+
     self.artsAndCultureNewsletterSwitch.rac.on = self.viewModel.outputs.artsAndCultureNewsletterOn
     self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
     self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
@@ -373,6 +383,11 @@ internal final class SettingsViewController: UIViewController {
 
   fileprivate func goToEmailFrequency(user: User) {
     let vc = CreatorDigestSettingsViewController.configureWith(user: user)
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  fileprivate func goToPrivacy(user: User) {
+    let vc = SettingsPrivacyViewController.configureWith(user: user)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -488,11 +503,6 @@ internal final class SettingsViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  @IBAction func goToPrivacy(_ sender: UIButton) {
-    let vc = SettingsPrivacyViewController.instantiate()
-    self.navigationController?.pushViewController(vc, animated: true)
-  }
-
   @IBAction fileprivate func gamesNewsletterTapped(_ newsletterSwitch: UISwitch) {
     self.viewModel.inputs.gamesNewsletterTapped(on: newsletterSwitch.isOn)
   }
@@ -571,6 +581,10 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func termsOfUseTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.terms)
+  }
+
+  @objc fileprivate func privacyTapped() {
+    self.viewModel.inputs.privacyTapped()
   }
 
   @IBAction fileprivate func weeklyNewsletterTapped(_ newsletterSwitch: UISwitch) {

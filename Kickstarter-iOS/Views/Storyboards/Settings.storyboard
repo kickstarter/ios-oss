@@ -685,9 +685,6 @@
                                         <state key="normal">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
-                                        <connections>
-                                            <action selector="goToPrivacy:" destination="wCS-h4-p7K" eventType="touchUpInside" id="Yba-ev-h05"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7SN-cI-sju">
                                         <rect key="frame" x="16" y="1276.5" width="368" height="105"/>
