@@ -7,11 +7,13 @@ import Result
 
 public protocol SettingsPrivacyViewModelInputs {
   func configureWith(user: User)
+  func showPrivacyAlert()
   func viewDidLoad()
 }
 
 public protocol SettingsPrivacyViewModelOutputs {
-  var reloadData: Signal <User, NoError> { get }
+  var reloadData: Signal<User, NoError> { get }
+  var showFollowPrivacyAlert: Signal<(), NoError> { get }
 }
 
 public protocol SettingsPrivacyViewModelType {
@@ -31,7 +33,10 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
 
     self.reloadData = initialUser
       .takeWhen(self.viewDidLoadProperty.signal)
-  }
+
+    self.showFollowPrivacyAlert = self.showFollowPrivacyAlertProperty.signal
+
+}
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
@@ -43,7 +48,13 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
     self.configureWithUserProperty.value = user
   }
 
+  fileprivate let showFollowPrivacyAlertProperty = MutableProperty(())
+  public func showPrivacyAlert() {
+    self.showFollowPrivacyAlertProperty.value = ()
+  }
+
   public let reloadData: Signal<User, NoError>
+  public let showFollowPrivacyAlert: Signal<(), NoError>
 
   public var inputs: SettingsPrivacyViewModelInputs { return self }
   public var outputs: SettingsPrivacyViewModelOutputs { return self }

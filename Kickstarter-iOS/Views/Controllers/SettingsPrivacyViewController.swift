@@ -5,6 +5,7 @@ import UIKit
 
 internal final class SettingsPrivacyViewController: UITableViewController {
   internal let viewModel: SettingsPrivacyViewModelType = SettingsPrivacyViewModel()
+  internal let cellViewModel: SettingsPrivacyCellViewModelType = SettingsPrivacyCellViewModel()
   fileprivate let dataSource = SettingsPrivacyDataSource()
 
   internal static func configureWith(user: User) -> SettingsPrivacyViewController {
@@ -17,6 +18,8 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
+    self.tableView.register(nib: .SettingsPrivacyCell)
+
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -38,6 +41,24 @@ internal final class SettingsPrivacyViewController: UITableViewController {
         self?.dataSource.load(user: user)
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.showFollowPrivacyAlert
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.showPrivacyFollowingPrompt()
+    }
+  }
+
+  func showPrivacyFollowingPrompt() {
+    let followingAlert = UIAlertController.turnOffPrivacyFollowing(
+      turnOnHandler: { [weak self] _ in
+        self?.cellViewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
+      },
+      turnOffHandler: { [weak self] _ in
+        self?.cellViewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
+      }
+    )
+    self.present(followingAlert, animated: true, completion: nil)
   }
 
   public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
@@ -55,5 +76,9 @@ extension SettingsPrivacyViewController: SettingsPrivacyCellDelegate {
 
   func goToDeleteAccount() {
 
+  }
+
+  func notifyDelegateShowFollowPrivacyPrompt() {
+    self.viewModel.inputs.showPrivacyAlert()
   }
 }
