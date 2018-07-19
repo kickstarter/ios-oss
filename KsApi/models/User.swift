@@ -30,6 +30,17 @@ public struct User {
     public let invent: Bool?
     public let promo: Bool?
     public let weekly: Bool?
+
+    public static func all(on: Bool) -> NewsletterSubscriptions {
+      return NewsletterSubscriptions(
+        arts: on,
+        games: on,
+        happening: on,
+        invent: on,
+        promo: on,
+        weekly: on
+      )
+    }
   }
 
   public struct Notifications {

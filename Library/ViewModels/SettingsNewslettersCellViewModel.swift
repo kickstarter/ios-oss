@@ -51,19 +51,25 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = Signal.combineLatest(
         newsletter,
-        self.allNewslettersSwitchProperty.signal.skipNil(),
         self.newslettersSwitchTappedProperty.signal.skipNil()
-    ).map { newsletter, _, isOn in
+    ).map { newsletter, isOn in
       (UserAttribute.newsletter(newsletter), isOn)
     }
 
     let updatedUser = initialUser
+      .takeWhen(userAttributeChanged)
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
           let (attribute, on) = attributeAndOn
           return user |> attribute.lens .~ on
         }
     }
+
+    let updateUserAllOn = initialUser
+      .takePairWhen(self.allNewslettersSwitchProperty.signal.skipNil())
+          .map { user, on in
+            return user |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: on)
+        }
 
     let updateEvent = updatedUser
       .switchMap {
@@ -120,7 +126,6 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
 private func updateAllNewsletterSubscriptions(on: Bool) {
   let newsletters = AppEnvironment.current.currentUser?.newsletters
-  newsletters.
 
 }
 
