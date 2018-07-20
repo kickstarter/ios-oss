@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SettingsNotificationCell" customModule="Kickstarter_Framework">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="iuS-VI-vmP">
+                    <rect key="frame" x="16" y="36" width="343" height="615"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PoD-oO-miz">
+                            <rect key="frame" x="0.0" y="0.0" width="248" height="615"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Nh-JE-XGT">
+                            <rect key="frame" x="272" y="0.0" width="26" height="615"/>
+                            <state key="normal" title=" " image="email-icon"/>
+                            <connections>
+                                <action selector="emailNotificationsButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="6Kv-1x-2Ge"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91p-HN-64I">
+                            <rect key="frame" x="322" y="0.0" width="21" height="615"/>
+                            <state key="normal" title=" " image="mobile-icon"/>
+                            <connections>
+                                <action selector="pushNotificationsButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="aVk-hB-cdV"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="57i-36-zKL">
+                    <rect key="frame" x="16" y="666" width="343" height="1"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="gia-Zl-90V"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="iuS-VI-vmP" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="2ag-Er-JPe"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="iuS-VI-vmP" secondAttribute="trailing" constant="16" id="Qaz-hI-VJ7"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="iuS-VI-vmP" secondAttribute="bottom" constant="16" id="TDX-g3-DSU"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="57i-36-zKL" secondAttribute="bottom" id="WId-1V-q0T"/>
+                <constraint firstItem="57i-36-zKL" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="XQK-eh-qR8"/>
+                <constraint firstItem="iuS-VI-vmP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="c2Q-6i-ShS"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="57i-36-zKL" secondAttribute="trailing" constant="16" id="cCR-Lx-bir"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="emailNotificationsButton" destination="9Nh-JE-XGT" id="2BX-N5-6BI"/>
+                <outlet property="pushNotificationsButton" destination="91p-HN-64I" id="U1o-N6-sFq"/>
+                <outlet property="titleLabel" destination="PoD-oO-miz" id="BNC-Gv-2y0"/>
+                <outletCollection property="gestureRecognizers" destination="M3B-MH-k5l" appends="YES" id="ppE-vw-Ab5"/>
+            </connections>
+        </view>
+        <tapGestureRecognizer id="M3B-MH-k5l">
+            <connections>
+                <action selector="cellBackgroundTapped:" destination="iN0-l3-epB" id="1ti-c5-ZFC"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="email-icon" width="22" height="16"/>
+        <image name="mobile-icon" width="17" height="24"/>
+    </resources>
+</document>

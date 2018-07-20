@@ -137,6 +137,8 @@
 		778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */; };
 		778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */; };
 		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
+		77A7B64321026CAE008D12C1 /* SettingsNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */; };
+		77A7B67B21026F4F008D12C1 /* SettingsNotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */; };
 		77E643FD20F550B1005F6B38 /* SettingsV2ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6CAE20F405E300809E31 /* SettingsV2ViewModel.swift */; };
 		77E643FF20F55324005F6B38 /* SettingsV2ViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6D0920F541CA00809E31 /* SettingsV2ViewModelTests.swift */; };
 		77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440020F64F0B005F6B38 /* HelpDataSource.swift */; };
@@ -1719,6 +1721,8 @@
 		778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSourceTests.swift; sourceTree = "<group>"; };
 		778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewControllerTests.swift; sourceTree = "<group>"; };
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
+		77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNotificationCell.xib; sourceTree = "<group>"; };
+		77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCell.swift; sourceTree = "<group>"; };
 		77E6440020F64F0B005F6B38 /* HelpDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSource.swift; sourceTree = "<group>"; };
 		77E6440220F65074005F6B38 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSource.swift; sourceTree = "<group>"; };
@@ -2793,13 +2797,14 @@
 				77216D5F20F3D27C0061BE82 /* SettingsV2.storyboard */,
 				77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */,
 				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
+				77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */,
+				77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */,
 				A73923AC1D272242004524C3 /* Thanks.storyboard */,
 				D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */,
 				A73923BA1D272242004524C3 /* Update.storyboard */,
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
 				9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */,
-				77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -2892,6 +2897,7 @@
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				D0D2AB1A1E96444B008D298A /* VideoGridView.swift */,
+				77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */,
 				A751A51C1C85EAD8009C5DEA /* Cells */,
 				A751A51D1C85EAD8009C5DEA /* Controllers */,
 				A73923AA1D272242004524C3 /* Storyboards */,
@@ -4947,6 +4953,7 @@
 				A73923BF1D272242004524C3 /* Dashboard.storyboard in Resources */,
 				9DDE1F701D5924AC0092D9A5 /* Checkout.storyboard in Resources */,
 				A73923CA1D272242004524C3 /* Settings.storyboard in Resources */,
+				77A7B64321026CAE008D12C1 /* SettingsNotificationCell.xib in Resources */,
 				A73923C01D272242004524C3 /* Discovery.storyboard in Resources */,
 				A73923C11D272242004524C3 /* Friends.storyboard in Resources */,
 				01940B2E1D46A9AD0074FCE3 /* Help.storyboard in Resources */,
@@ -5577,6 +5584,7 @@
 				A7CC143E1D00E74F00035C52 /* FindFriendsFriendFollowCell.swift in Sources */,
 				77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */,
 				A75A9D8D1D6F336B00603D1D /* RewardShippingPickerViewController.swift in Sources */,
+				77A7B67B21026F4F008D12C1 /* SettingsNotificationCell.swift in Sources */,
 				014A8E1C1CE3CE34003BF51C /* ThanksCategoryCell.swift in Sources */,
 				A74FFECA1CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift in Sources */,
 				A775B5211CA8705B00BBB587 /* RootTabBarViewController.swift in Sources */,
