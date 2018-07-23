@@ -18,6 +18,7 @@ final internal class SettingsNewslettersHeaderView: UITableViewHeaderFooterView 
 
   override func awakeFromNib() {
     super.awakeFromNib()
+    self.viewModel.inputs.awakeFromNib()
   }
 
   override func bindStyles() {
@@ -34,6 +35,18 @@ final internal class SettingsNewslettersHeaderView: UITableViewHeaderFooterView 
     _ = self.titleLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_subscribe_all() }
+  }
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.updateCurrentUser
+      .observeForUI()
+      .observeValues { user in
+        AppEnvironment.updateCurrentUser(user)
+    }
+
+    self.newsletterSwitch.rac.on = self.viewModel.outputs.subscribeToAllSwitchIsOn.skipNil()
   }
 
   @IBAction func newsletterSwitchTapped(_ sender: UISwitch) {

@@ -17,6 +17,7 @@ public protocol SettingsNewslettersCellViewModelOutputs {
   var switchIsOn: Signal<Bool?, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
+  var subscribeToAllSwitchIsOn: Signal<Bool?, NoError> { get }
 }
 
 public protocol SettingsNewslettersCellViewModelType {
@@ -40,6 +41,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
           .demoteErrors()
       }
       .skipNil()
+      .skipRepeats()
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = newsletter
       .takePairWhen(self.newslettersSwitchTappedProperty.signal.skipNil())
@@ -57,7 +59,6 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
     }
 
     let updatedUser = initialUser
-      .takeWhen(userAttributeChanged)
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
           let (attribute, on) = attributeAndOn
@@ -67,11 +68,12 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
     let updateUserAllOn = initialUser
       .takePairWhen(self.allNewslettersSwitchProperty.signal.skipNil())
-          .map { user, on in
-            return user |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: on)
-        }
+      .map { user, on in
+        return user
+          |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: on)
+    }
 
-    let updateEvent = updatedUser
+    let updateEvent = Signal.merge(updatedUser, updateUserAllOn)
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -83,12 +85,15 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
         env.errorMessages.first ?? Strings.profile_settings_error()
       }
 
-    let previousUserOnError = Signal.merge(initialUser, updatedUser)
+    let previousUserOnError = Signal.merge(initialUser, updatedUser, updateUserAllOn)
       .combinePrevious()
       .takeWhen(self.unableToSaveError)
       .map { previous, _ in previous }
 
-    self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
+    self.updateCurrentUser = Signal.merge(initialUser, updatedUser, updateUserAllOn, previousUserOnError)
+
+    self.subscribeToAllSwitchIsOn = self.updateCurrentUser
+      .map(userIsSubscribedToAll(user:))
 
     self.switchIsOn = self.updateCurrentUser
       .combineLatest(with: newsletter)
@@ -116,6 +121,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
   }
 
   public let showOptInPrompt: Signal<String, NoError>
+  public let subscribeToAllSwitchIsOn: Signal<Bool?, NoError>
   public let switchIsOn: Signal<Bool?, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
@@ -124,9 +130,14 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
   public var outputs: SettingsNewslettersCellViewModelOutputs { return self }
 }
 
-private func updateAllNewsletterSubscriptions(on: Bool) {
-  let newsletters = AppEnvironment.current.currentUser?.newsletters
+private func userIsSubscribedToAll(user: User) -> Bool? {
 
+  return user.newsletters.arts == true
+    && user.newsletters.games == true
+    && user.newsletters.happening == true
+    && user.newsletters.invent == true
+    && user.newsletters.promo == true
+    && user.newsletters.weekly == true
 }
 
 private func userIsSubscribed(user: User, newsletter: Newsletter) -> Bool? {

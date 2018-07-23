@@ -59,6 +59,12 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.showOptInPrompt
       .observeForControllerAction()
       .observeValues { [weak self] newsletter in self?.showOptInPrompt(newsletter) }
+
+    self.viewModel.outputs.updateCurrentUser
+      .observeForUI()
+      .observeValues { user in
+        AppEnvironment.updateCurrentUser(user)
+    }
   }
 
   fileprivate func showOptInPrompt(_ newsletter: String) {
