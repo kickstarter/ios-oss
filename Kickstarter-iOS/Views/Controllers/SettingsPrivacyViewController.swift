@@ -18,8 +18,9 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
-    self.tableView.register(nib: .SettingsPrivacyCell)
 
+    self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(4)))
+    self.tableView.tableHeaderView?.backgroundColor = .ksr_grey_100
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -28,8 +29,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerStyle()
-      |> UIViewController.lens.title %~ { _ in Strings.Privacy() }
+      |> baseTableControllerStyle()
   }
 
   internal override func bindViewModel() {
@@ -38,7 +38,49 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     self.viewModel.outputs.reloadData
       .observeForUI()
       .observeValues { [weak self] user in
-        self?.dataSource.load(user: user)
+        self?.dataSource.loadFollowCell(user: user)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.reloadData
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.dataSource.loadFollowFooter()
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.reloadData
+      .observeForUI()
+      .observeValues { [weak self] user in
+        self?.dataSource.loadRecommendationsCell(user: user)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.reloadData
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.dataSource.loadRecommendationsFooter()
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.reloadData
+      .observeForUI()
+      .observeValues { [weak self] user in
+        self?.dataSource.loadDownloadDataCell(user: user)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.reloadData
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.dataSource.loadDownloadDataFooter()
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.reloadData
+      .observeForUI()
+      .observeValues { [weak self] user in
+        self?.dataSource.loadDeleteAccountCell(user: user)
         self?.tableView.reloadData()
     }
 
@@ -70,14 +112,6 @@ internal final class SettingsPrivacyViewController: UITableViewController {
 }
 
 extension SettingsPrivacyViewController: SettingsPrivacyCellDelegate {
-  func goToDownloadData() {
-
-  }
-
-  func goToDeleteAccount() {
-
-  }
-
   func notifyDelegateShowFollowPrivacyPrompt() {
     self.viewModel.inputs.showPrivacyAlert()
   }

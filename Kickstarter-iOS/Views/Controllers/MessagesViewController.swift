@@ -89,11 +89,6 @@ internal final class MessagesViewController: UITableViewController {
       .observeValues { [weak self] project, user in self?.goToBacking(project: project, user: user)}
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-    return UITableViewAutomaticDimension
-  }
-
   internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if self.dataSource.isProjectBanner(indexPath: indexPath) {
       self.viewModel.inputs.projectBannerTapped()

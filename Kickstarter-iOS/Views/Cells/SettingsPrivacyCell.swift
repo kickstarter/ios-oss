@@ -6,8 +6,6 @@ import ReactiveSwift
 import UIKit
 
 public protocol SettingsPrivacyCellDelegate: class {
-  func goToDeleteAccount()
-  func goToDownloadData()
   /// Called when follow switch is tapped
   func notifyDelegateShowFollowPrivacyPrompt()
 }
@@ -28,20 +26,10 @@ internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
-        cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(20))
-          : .init(topBottom: Styles.grid(10), leftRight: Styles.grid(3))
-    }
-
     _ = self.privacySettingLabel
       |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in "Following" }
+      |> UILabel.lens.text %~ { _ in Strings.Following() }
 
-    _ = self.privacyStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
   }
 
   internal override func bindViewModel() {

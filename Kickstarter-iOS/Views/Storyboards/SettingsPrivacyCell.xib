@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsPrivacyCell" rowHeight="76" id="lAz-kz-S5b" customClass="SettingsPrivacyCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="76" id="lAz-kz-S5b">
             <rect key="frame" x="0.0" y="0.0" width="325" height="76"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lAz-kz-S5b" id="tt7-M0-Nuz">
@@ -33,9 +33,6 @@
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0NG-25-a61">
                                         <rect key="frame" x="256" y="12.5" width="51" height="31"/>
                                         <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <connections>
-                                            <action selector="followingPrivacySwitchTapped:" destination="lAz-kz-S5b" eventType="valueChanged" id="Ow7-eG-uvN"/>
-                                        </connections>
                                     </switch>
                                 </subviews>
                             </stackView>
@@ -57,11 +54,6 @@
                     <constraint firstItem="6p8-6K-m8O" firstAttribute="top" secondItem="tt7-M0-Nuz" secondAttribute="top" id="vhl-bp-4Nm"/>
                 </constraints>
             </tableViewCellContentView>
-            <connections>
-                <outlet property="privacySettingLabel" destination="qrB-dC-ULk" id="OGe-OO-s2w"/>
-                <outlet property="privacyStackView" destination="1Bs-DP-jbn" id="DfW-02-d7w"/>
-                <outlet property="privacySwitch" destination="0NG-25-a61" id="Whs-ve-Je7"/>
-            </connections>
             <point key="canvasLocation" x="-21.5" y="-423"/>
         </tableViewCell>
     </objects>
