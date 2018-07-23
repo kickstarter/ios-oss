@@ -7,6 +7,7 @@ import UIKit
 
 internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
+  @IBOutlet fileprivate weak var separatorView: UIView!
 
   internal func configureWith(value user: User) {
 
@@ -17,6 +18,9 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
 
     _ = self
       |> baseTableViewCellStyle()
+
+    _ = self.separatorView
+      |> separatorStyle
 
     _ = self.deleteAccountLabel
       |> UILabel.lens.textColor .~ .ksr_red_400

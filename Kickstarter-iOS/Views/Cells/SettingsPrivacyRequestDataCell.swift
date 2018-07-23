@@ -6,7 +6,10 @@ import ReactiveSwift
 import UIKit
 
 internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell {
+
   @IBOutlet fileprivate weak var requestDataLabel: UILabel!
+  @IBOutlet fileprivate weak var containerView: UIView!
+  @IBOutlet fileprivate  var separatorViews: [UIView]!
 
   internal func configureWith(value user: User) {
 
@@ -17,6 +20,9 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
 
     _ = self
       |> baseTableViewCellStyle()
+
+    _ = separatorViews
+      ||> separatorStyle
 
     _ = self.requestDataLabel
       |> settingsSectionLabelStyle

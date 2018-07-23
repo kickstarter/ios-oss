@@ -9,6 +9,7 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
 
   @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
   @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
+  @IBOutlet fileprivate weak var separatorView: UIView!
 
   internal func configureWith(value user: User) {
 
@@ -19,6 +20,9 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
 
     _ = self
       |> baseTableViewCellStyle()
+
+    _ = self.separatorView
+      |> separatorStyle
 
     _ = self.recommendationsLabel
       |> settingsSectionLabelStyle

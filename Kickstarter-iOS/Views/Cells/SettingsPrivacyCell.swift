@@ -13,6 +13,7 @@ public protocol SettingsPrivacyCellDelegate: class {
 internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
   fileprivate let viewModel = SettingsPrivacyCellViewModel()
 
+  @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var privacySwitch: UISwitch!
   @IBOutlet fileprivate weak var privacySettingLabel: UILabel!
   @IBOutlet fileprivate weak var privacyStackView: UIStackView!
@@ -30,6 +31,8 @@ internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Following() }
 
+    _ = self.separatorView
+      |> separatorStyle
   }
 
   internal override func bindViewModel() {

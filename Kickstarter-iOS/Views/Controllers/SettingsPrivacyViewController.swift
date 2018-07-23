@@ -29,7 +29,9 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     super.bindStyles()
 
     _ = self
-      |> baseTableControllerStyle()
+      |> UITableViewController.lens.view.backgroundColor .~ .ksr_grey_100
+      |> UITableViewController.lens.title %~ { _ in Strings.Privacy() }
+
   }
 
   internal override func bindViewModel() {
