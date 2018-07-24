@@ -29,4 +29,3 @@ internal final class SettingsNewslettersViewModelTests: TestCase {
     self.initialUser.assertValueCount(1, "initialUser should emit after viewDidLoad.")
   }
 }
-
