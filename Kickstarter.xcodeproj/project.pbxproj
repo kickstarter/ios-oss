@@ -911,6 +911,7 @@
 		D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */; };
 		D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */; };
 		D6B4EFC6210686270079159D /* SettingsNewslettersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */; };
+		D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFFD21079C870079159D /* SettingsNewslettersViewModelTests.swift */; };
 		D6B6766220FE849F0082717D /* SettingsNewslettersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6B6762A20FE849B0082717D /* SettingsNewslettersCell.xib */; };
 		D6B6766320FE849F0082717D /* SettingsNewsletters.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6B6766120FE849F0082717D /* SettingsNewsletters.storyboard */; };
 		D6B6766520FE85010082717D /* SettingsNewslettersCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6766420FE85000082717D /* SettingsNewslettersCellViewModel.swift */; };
@@ -2468,6 +2469,7 @@
 		D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64Tests.swift"; sourceTree = "<group>"; };
 		D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationdialogTests.swift; sourceTree = "<group>"; };
 		D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewModel.swift; sourceTree = "<group>"; };
+		D6B4EFFD21079C870079159D /* SettingsNewslettersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewModelTests.swift; sourceTree = "<group>"; };
 		D6B6762A20FE849B0082717D /* SettingsNewslettersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsNewslettersCell.xib; sourceTree = "<group>"; };
 		D6B6766120FE849F0082717D /* SettingsNewsletters.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsNewsletters.storyboard; sourceTree = "<group>"; };
 		D6B6766420FE85000082717D /* SettingsNewslettersCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersCellViewModel.swift; sourceTree = "<group>"; };
@@ -3678,6 +3680,7 @@
 				A7ED1F651E831C5C00BFFA01 /* SettingsViewModelTests.swift */,
 				D6B6766420FE85000082717D /* SettingsNewslettersCellViewModel.swift */,
 				D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */,
+				D6B4EFFD21079C870079159D /* SettingsNewslettersViewModelTests.swift */,
 				D6AE3FD720EBC5D100DB212F /* SettingsNotificationsViewModel.swift */,
 				D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */,
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
@@ -5254,6 +5257,7 @@
 				A7ED1FFD1E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift in Sources */,
 				A7ED1F341E830FDC00BFFA01 /* SharedFunctionsTests.swift in Sources */,
 				77758157209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift in Sources */,
+				D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */,
 				A7ED1FC81E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift in Sources */,
 				A7ED1F311E830FDC00BFFA01 /* PaginateTests.swift in Sources */,
 				D70740541FAB9ABE004E2422 /* CreatorDigestSettingsViewModelTests.swift in Sources */,
