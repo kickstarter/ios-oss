@@ -16,33 +16,48 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="iuS-VI-vmP">
-                    <rect key="frame" x="16" y="36" width="343" height="615"/>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="iuS-VI-vmP">
+                    <rect key="frame" x="16" y="28" width="343" height="631"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PoD-oO-miz">
-                            <rect key="frame" x="0.0" y="0.0" width="248" height="615"/>
+                            <rect key="frame" x="0.0" y="295.5" width="230" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="3s0-Sg-1Ri"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Nh-JE-XGT">
-                            <rect key="frame" x="272" y="0.0" width="26" height="615"/>
+                        <button opaque="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Nh-JE-XGT">
+                            <rect key="frame" x="238" y="295.5" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="2uc-bG-rkt"/>
+                                <constraint firstAttribute="width" constant="40" id="HcT-TX-HEA"/>
+                            </constraints>
                             <state key="normal" title=" " image="email-icon"/>
                             <connections>
-                                <action selector="emailNotificationsButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="6Kv-1x-2Ge"/>
+                                <action selector="emailNotificationsButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="8Ib-sD-MXc"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91p-HN-64I">
-                            <rect key="frame" x="322" y="0.0" width="21" height="615"/>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91p-HN-64I">
+                            <rect key="frame" x="286" y="295.5" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="468-ns-iLs"/>
+                                <constraint firstAttribute="width" constant="40" id="DnL-zQ-RGw"/>
+                            </constraints>
                             <state key="normal" title=" " image="mobile-icon"/>
                             <connections>
-                                <action selector="pushNotificationsButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="aVk-hB-cdV"/>
+                                <action selector="pushNotificationsButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="NmF-oV-ylv"/>
                             </connections>
                         </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="RXa-H2-iDw">
+                            <rect key="frame" x="334" y="308" width="9" height="15"/>
+                        </imageView>
                     </subviews>
+                    <gestureRecognizers/>
                 </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="57i-36-zKL">
-                    <rect key="frame" x="16" y="666" width="343" height="1"/>
+                    <rect key="frame" x="0.0" y="666" width="375" height="1"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="gia-Zl-90V"/>
@@ -52,29 +67,27 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="iuS-VI-vmP" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="2ag-Er-JPe"/>
+                <constraint firstItem="iuS-VI-vmP" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="2ag-Er-JPe"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="iuS-VI-vmP" secondAttribute="trailing" constant="16" id="Qaz-hI-VJ7"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="iuS-VI-vmP" secondAttribute="bottom" constant="16" id="TDX-g3-DSU"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="iuS-VI-vmP" secondAttribute="bottom" constant="8" id="TDX-g3-DSU"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="57i-36-zKL" secondAttribute="bottom" id="WId-1V-q0T"/>
-                <constraint firstItem="57i-36-zKL" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="XQK-eh-qR8"/>
+                <constraint firstItem="57i-36-zKL" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="XQK-eh-qR8"/>
                 <constraint firstItem="iuS-VI-vmP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="c2Q-6i-ShS"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="57i-36-zKL" secondAttribute="trailing" constant="16" id="cCR-Lx-bir"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="57i-36-zKL" secondAttribute="trailing" id="cCR-Lx-bir"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="emailNotificationsButton" destination="9Nh-JE-XGT" id="2BX-N5-6BI"/>
-                <outlet property="pushNotificationsButton" destination="91p-HN-64I" id="U1o-N6-sFq"/>
-                <outlet property="titleLabel" destination="PoD-oO-miz" id="BNC-Gv-2y0"/>
-                <outletCollection property="gestureRecognizers" destination="M3B-MH-k5l" appends="YES" id="ppE-vw-Ab5"/>
+                <outlet property="arrowImageView" destination="RXa-H2-iDw" id="0G8-UU-eCA"/>
+                <outlet property="emailNotificationsButton" destination="9Nh-JE-XGT" id="cA3-CX-4bx"/>
+                <outlet property="pushNotificationsButton" destination="91p-HN-64I" id="FEZ-Fn-URt"/>
+                <outlet property="separatorView" destination="57i-36-zKL" id="t3y-9S-TzN"/>
+                <outlet property="titleLabel" destination="PoD-oO-miz" id="RG9-wm-zqY"/>
             </connections>
+            <point key="canvasLocation" x="-97" y="-17"/>
         </view>
-        <tapGestureRecognizer id="M3B-MH-k5l">
-            <connections>
-                <action selector="cellBackgroundTapped:" destination="iN0-l3-epB" id="1ti-c5-ZFC"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
+        <image name="chevron-right" width="9" height="15"/>
         <image name="email-icon" width="22" height="16"/>
         <image name="mobile-icon" width="17" height="24"/>
     </resources>

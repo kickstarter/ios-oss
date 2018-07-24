@@ -8,7 +8,7 @@ public let settingsSectionButtonStyle =
 
 public let settingsSectionLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_dark_grey_500
-    <> UILabel.lens.font .~ .ksr_body()
+    <> UILabel.lens.font .~ .ksr_subhead()
     <> UILabel.lens.numberOfLines .~ 2
 
 public let settingsTitleLabelStyle =
@@ -22,3 +22,11 @@ public let settingsLogoutButtonStyle = borderButtonStyle
 public let settingsNotificationIconButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
     <> UIButton.lens.tintColor .~ .ksr_text_dark_grey_400
+
+public let notificationButtonStyle = UIButton.lens.layer.cornerRadius .~ 12
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_300.cgColor
+  <> UIButton.lens.layer.borderWidth .~ 1.0
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .white
+  <> UIButton.lens.backgroundColor(for: .selected) .~ .ksr_grey_200
+  <> UIButton.lens.title(for: .normal) .~ nil
+  <> UIButton.lens.clipsToBounds .~ true

@@ -6,6 +6,9 @@ import ReactiveExtensions
 import Result
 
 public protocol SettingsNotificationsViewModelInputs {
+  func emailNotificationsTogged(cellType: SettingsNotificationCellType, enabled: Bool)
+  func mobileNotificationsToggled(cellType: SettingsNotificationCellType, enabled: Bool)
+  func didSelectRow(cellType: SettingsNotificationCellType)
 
   func emailCreatorTipsTapped(selected: Bool)
   func emailFrequencyTapped()
@@ -29,6 +32,8 @@ public protocol SettingsNotificationsViewModelInputs {
 }
 
 public protocol SettingsNotificationsViewModelOutputs {
+  var reloadData: Signal<Bool, NoError> { get }
+
 
   var creatorNotificationsHidden: Signal<Bool, NoError> { get }
   var emailCreatorTipsSelected: Signal<Bool, NoError> { get }
@@ -59,6 +64,8 @@ public protocol SettingsNotificationsViewModelOutputs {
 public protocol SettingsNotificationsViewModelType {
   var inputs: SettingsNotificationsViewModelInputs { get }
   var outputs: SettingsNotificationsViewModelOutputs { get }
+
+  func shouldSelectRow(for cellType: SettingsNotificationCellType) -> Bool
 }
 
 public final class SettingsNotificationsViewModel: SettingsNotificationsViewModelType,
@@ -74,6 +81,8 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
         .demoteErrors()
     }
     .skipNil()
+
+    self.reloadData = initialUser.signal.map { $0.isCreator }
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = Signal.merge(
       self.emailCreatorTipsProperty.signal.map {
@@ -178,9 +187,18 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.emailProjectUpdatesSelected = self.updateCurrentUser
       .map { $0.notifications.updates }.skipNil().skipRepeats()
 
-    self.goToFindFriends = self.findFriendsTappedProperty.signal
+    let findFriendsTapped = self.selectedCellType.signal
+      .skipNil()
+      .filter { $0 == .findFacebookFriends }
 
-    self.goToManageProjectNotifications = self.manageProjectNotificationsProperty.signal
+    self.goToFindFriends = findFriendsTapped.signal.ignoreValues()
+
+    let manageProjectNotificationsSelected = self.selectedCellType.signal
+      .skipNil()
+      .filter { $0 == .projectNotifications }
+
+    self.goToManageProjectNotifications = manageProjectNotificationsSelected.signal
+      .ignoreValues()
 
     self.manageProjectNotificationsButtonAccessibilityHint = self.updateCurrentUser
       .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
@@ -212,8 +230,12 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     self.emailFrequencyButtonEnabled = self.emailNewPledgesSelected
 
+    let emailFrequencySelected = self.selectedCellType.signal
+      .skipNil()
+      .filter { $0 == .emailFrequency }
+
     self.goToEmailFrequency = self.updateCurrentUser
-      .takeWhen(self.emailFrequencyTappedProperty.signal)
+      .takeWhen(emailFrequencySelected)
 
     // Koala
     userAttributeChanged
@@ -345,6 +367,26 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  public func shouldSelectRow(for cellType: SettingsNotificationCellType) -> Bool {
+    switch cellType {
+    case .projectNotifications, .emailFrequency, .findFacebookFriends: return true
+    default: return false
+    }
+  }
+
+  public func emailNotificationsTogged(cellType: SettingsNotificationCellType, enabled: Bool) {
+
+  }
+
+  public func mobileNotificationsToggled(cellType: SettingsNotificationCellType, enabled: Bool) {
+
+  }
+
+  fileprivate let selectedCellType = MutableProperty<SettingsNotificationCellType?>(nil)
+  public func didSelectRow(cellType: SettingsNotificationCellType) {
+    self.selectedCellType.value = cellType
+  }
+
   public let creatorNotificationsHidden: Signal<Bool, NoError>
   public let emailCreatorTipsSelected: Signal<Bool, NoError>
   public let emailFrequencyButtonEnabled: Signal<Bool, NoError>
@@ -369,6 +411,8 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   public let projectNotificationsCount: Signal<String, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
+
+  public let reloadData: Signal<Bool, NoError>
 
   public var inputs: SettingsNotificationsViewModelInputs { return self }
   public var outputs: SettingsNotificationsViewModelOutputs { return self }

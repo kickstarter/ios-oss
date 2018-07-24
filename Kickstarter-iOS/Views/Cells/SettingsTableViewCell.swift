@@ -34,6 +34,8 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
   }
 
   override func bindStyles() {
+    super.bindStyles()
+
     _ = titleLabel
     |> UILabel.lens.font .~ .ksr_body()
 
