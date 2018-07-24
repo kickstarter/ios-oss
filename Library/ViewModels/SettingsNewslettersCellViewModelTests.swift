@@ -59,12 +59,28 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
     self.assertValue(for: .promo)
   }
 
+  func test_GamesNewsletters_Toggled() {
+    self.assertValue(for: .games)
+  }
+
   func test_HappeningNewsletters_Toggled() {
     self.assertValue(for: .happening)
   }
 
   func test_InventNewsletters_Toggled() {
     self.assertValue(for: .invent)
+  }
+
+  func test_FilmsNewsletters_Toggled() {
+    self.assertValue(for: .films)
+  }
+
+  func test_PublishingNewsletters_Toggled() {
+    self.assertValue(for: .publishing)
+  }
+
+  func test_AlumniNewsletters_Toggled() {
+    self.assertValue(for: .alumni)
   }
 
   private func assertValue(for newsletter: Newsletter) {
