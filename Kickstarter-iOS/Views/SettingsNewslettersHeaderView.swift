@@ -2,10 +2,6 @@ import Library
 import Prelude
 import UIKit
 
-protocol SettingsNewslettersHeaderViewDelegate: class {
-  func didChangeNewslettersSetting(_ isOn: Bool)
-}
-
 final internal class SettingsNewslettersHeaderView: UITableViewHeaderFooterView {
 
   let viewModel: SettingsNewslettersCellViewModelType = SettingsNewsletterCellViewModel()
@@ -13,9 +9,8 @@ final internal class SettingsNewslettersHeaderView: UITableViewHeaderFooterView 
   @IBOutlet fileprivate weak var descriptionLabel: UILabel!
   @IBOutlet fileprivate weak var newsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
-  @IBOutlet fileprivate var separatorViews: [UIView]!
 
-  public weak var delegate: SettingsNewslettersHeaderViewDelegate?
+  @IBOutlet fileprivate var separatorViews: [UIView]!
 
   override func awakeFromNib() {
     super.awakeFromNib()

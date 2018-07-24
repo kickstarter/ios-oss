@@ -5,19 +5,19 @@ import Result
 
 public protocol SettingsNewslettersCellViewModelInputs {
 
+  func allNewslettersSwitchTapped(on: Bool)
   func awakeFromNib()
   func configureWith(value: (newsletter: Newsletter, user: User))
   func newslettersSwitchTapped(on: Bool)
-  func allNewslettersSwitchTapped(on: Bool)
 }
 
 public protocol SettingsNewslettersCellViewModelOutputs {
 
   var showOptInPrompt: Signal<String, NoError> { get }
+  var subscribeToAllSwitchIsOn: Signal<Bool?, NoError> { get }
   var switchIsOn: Signal<Bool?, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
-  var subscribeToAllSwitchIsOn: Signal<Bool?, NoError> { get }
 }
 
 public protocol SettingsNewslettersCellViewModelType {

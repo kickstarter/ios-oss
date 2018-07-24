@@ -54,9 +54,9 @@ extension SettingsNewslettersViewController: UITableViewDelegate {
   }
 
   internal func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
     return tableView.dequeueReusableHeaderFooterView(
-      withIdentifier: Nib.SettingsNewslettersHeaderView.rawValue
-    )
+      withIdentifier: Nib.SettingsNewslettersHeaderView.rawValue)
   }
 }
 
@@ -65,9 +65,5 @@ extension SettingsNewslettersViewController: SettingsNewslettersCellDelegate {
   func shouldShowOptInAlert(_ newsletterName: String) {
     let optInAlert = UIAlertController.newsletterOptIn(newsletterName)
     self.present(optInAlert, animated: true, completion: nil)
-  }
-
-  func shouldReloadCells() {
-    self.tableView.reloadData()
   }
 }

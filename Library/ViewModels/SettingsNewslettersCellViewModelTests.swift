@@ -11,18 +11,18 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
   let vm = SettingsNewsletterCellViewModel()
 
   let showOptInPrompt = TestObserver<String, NoError>()
+  let subscribeToAllSwitchIsOn = TestObserver<Bool?, NoError>()
   let switchIsOn = TestObserver<Bool?, NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
   let updateCurrentUser = TestObserver<User, NoError>()
-  let subscribeToAllSwitchIsOn = TestObserver<Bool?, NoError>()
 
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.showOptInPrompt.observe(self.showOptInPrompt.observer)
+    self.vm.outputs.subscribeToAllSwitchIsOn.observe(self.subscribeToAllSwitchIsOn.observer)
     self.vm.outputs.switchIsOn.observe(self.switchIsOn.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
-    self.vm.outputs.subscribeToAllSwitchIsOn.observe(self.subscribeToAllSwitchIsOn.observer)
   }
 
   func test_SubscribeToAll_Toggled() {
