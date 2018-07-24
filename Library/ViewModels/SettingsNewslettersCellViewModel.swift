@@ -6,7 +6,7 @@ import Result
 public protocol SettingsNewslettersCellViewModelInputs {
 
   func awakeFromNib()
-  func configureWith(value: Newsletter)
+  func configureWith(value: (newsletter: Newsletter, user: User))
   func newslettersSwitchTapped(on: Bool)
   func allNewslettersSwitchTapped(on: Bool)
 }
@@ -105,9 +105,11 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
     self.awakeFromNibProperty.value = ()
   }
 
+  fileprivate let initialUserProperty = MutableProperty<User?>(nil)
   fileprivate let newsletterProperty = MutableProperty<Newsletter?>(nil)
-  public func configureWith(value: Newsletter) {
-    self.newsletterProperty.value = value
+  public func configureWith(value: (newsletter: Newsletter, user: User)) {
+    self.newsletterProperty.value = value.newsletter
+    self.initialUserProperty.value = value.user
   }
 
   fileprivate let newslettersSwitchTappedProperty = MutableProperty<Bool?>(nil)

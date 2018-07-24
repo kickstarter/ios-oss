@@ -7,15 +7,20 @@ internal final class SettingsNewslettersDataSource: ValueCellDataSource {
     case newsletters
   }
 
-  internal func load(newsletters: [Newsletter]) {
-    self.set(values: newsletters,
+  internal func load(newsletters: [Newsletter], user: User) {
+
+    let newsletter = newsletters.enumerated().map { _, newsletter in
+      (newsletter: newsletter, user: user)
+    }
+
+    self.set(values: newsletter,
              cellClass: SettingsNewslettersCell.self,
              inSection: Section.newsletters.rawValue)
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as SettingsNewslettersCell, value as Newsletter):
+    case let (cell as SettingsNewslettersCell, value as (newsletter: Newsletter, user: User)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

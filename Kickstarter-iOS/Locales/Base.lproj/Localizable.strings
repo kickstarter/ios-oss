@@ -20,6 +20,7 @@
 "All_gone" = "All gone";
 "Amount_previous_amount" = "Amount: %{amount}, previous amount: %{previous_amount}";
 "Amount_reward" = "Amount: %{amount}, %{reward}";
+"App_version" = "App version";
 "Are_you_sure" = "Are you sure?";
 "Ask_me_anything" = "Ask me anything";
 "Available_to_watch_for_time_more_units" = "Available to watch for %{time} more %{units}";
@@ -72,6 +73,7 @@
 "Delete_my_Kickstarter_Account" = "Delete my Kickstarter Account";
 "Delivered" = "Delivered";
 "Developer" = "Developer";
+"Discover_arts_news" = "Discover innovative projects and ideas, handpicked twice a month by Kickstarter's Design & Tech team.";
 "Discover_more_projects" = "Discover more projects.";
 "Dismiss" = "Dismiss";
 "Done" = "Done";
@@ -138,6 +140,7 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> backed a <i>Theater</i> project.";
 "Friend_name_launched_a_project" = "%{friend_name} launched a project!";
 "Funding_successful" = "Funding successful";
+"Games_newsletter" = "Sign up to receive a biweekly mix of new projects and updates on all things games, handpicked by Kickstarter's Games team.";
 "Get_notified_about_new_messages" = "Get notified about new messages?";
 "Get_notified_about_this_creators_live_streams" = "Get notified about this creator’s live streams";
 "Get_reminded_about_this_project" = "Get reminded about this project?";
@@ -1086,8 +1089,12 @@
 "profile.settings.logout_alert.title" = "Log out";
 "profile.settings.navbar_title" = "Settings";
 "profile.settings.navbar_title_notifications" = "Notifications";
+"profile.settings.newsletter.alumni_newsletter" = "Sign up to receive monthly emails featuring tips and resources for continuing work on your creative project, interviews with Kickstarter creators, invites to events, and more.";
 "profile.settings.newsletter.arts" = "Arts & Culture News";
+"profile.settings.newsletter.arts_news" = "Arts News";
+"profile.settings.newsletter.arts_news_newsletter" = "Discover new projects and ideas from established and emerging artists, handpicked each month by Kickstarter's Arts team.";
 "profile.settings.newsletter.film" = "Kickstarter Films";
+"profile.settings.newsletter.films_newsletter" = "Sign up for a monthly newsletter curated by Kickstarter's Film team, highlighting new projects, creator stories, and events on their radar.";
 "profile.settings.newsletter.games" = "Kickstarter Loves Games";
 "profile.settings.newsletter.happening" = "Happening";
 "profile.settings.newsletter.happening_now" = "Happening Now";
@@ -1097,6 +1104,7 @@
 "profile.settings.newsletter.opt_in.title" = "One final step!";
 "profile.settings.newsletter.promo" = "Kickstarter News and Events";
 "profile.settings.newsletter.publishing" = "Kickstarter Reads";
+"profile.settings.newsletter.publishing_newsletter" = "Sign up for a monthly newsletter from Kickstarter's Publishing team highlighting great new projects, creator stories, and literary events on their radar.";
 "profile.settings.newsletter.subscribe_all" = "Subscribe to all";
 "profile.settings.newsletter.title" = "Newsletters";
 "profile.settings.newsletter.weekly" = "Projects We Love";

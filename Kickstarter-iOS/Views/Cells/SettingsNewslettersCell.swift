@@ -18,15 +18,15 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
 
   public weak var delegate: SettingsNewslettersCellDelegate?
 
-  func configureWith(value: Newsletter) {
+  func configureWith(value: (newsletter: Newsletter, user: User)) {
 
     self.viewModel.inputs.configureWith(value: value)
 
     _ = self.newslettersLabel
-      |> UILabel.lens.text %~ { _ in value.displayableName }
+      |> UILabel.lens.text %~ { _ in value.newsletter.displayableName }
 
     _ = self.newslettersDescriptionLabel
-      |> UILabel.lens.text %~ { _ in value.displayableDescription }
+      |> UILabel.lens.text %~ { _ in value.newsletter.displayableDescription }
   }
 
   override func awakeFromNib() {
