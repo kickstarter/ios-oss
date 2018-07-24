@@ -12,11 +12,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="94" id="KGk-i7-Jjw" customClass="SettingsNewslettersCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="353" height="94"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="102" id="KGk-i7-Jjw" customClass="SettingsNewslettersCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="353" height="102"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="353" height="93.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="353" height="101.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zeY-Sg-uOX">
@@ -59,8 +59,14 @@
                             <constraint firstAttribute="height" constant="1" id="R66-mx-MVX"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eeh-3D-v8z">
+                        <rect key="frame" x="7" y="83" width="338" height="10"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="10" id="fOG-vy-2Nw"/>
+                        </constraints>
+                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a5A-Ik-D7O">
-                        <rect key="frame" x="0.0" y="93" width="353" height="1"/>
+                        <rect key="frame" x="0.0" y="100.5" width="353" height="1"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="rLd-h8-B2g"/>
@@ -76,18 +82,21 @@
                 <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98220964818218937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="9fv-lg-tJV" firstAttribute="top" secondItem="zeY-Sg-uOX" secondAttribute="bottom" id="00p-8Q-Acg"/>
+                    <constraint firstItem="Eeh-3D-v8z" firstAttribute="leading" secondItem="SR9-Fi-BXj" secondAttribute="leading" id="347-s2-OZ2"/>
                     <constraint firstItem="SR9-Fi-BXj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="7" id="AVe-jy-1Eu"/>
                     <constraint firstAttribute="trailing" secondItem="a5A-Ik-D7O" secondAttribute="trailing" id="CJ3-lw-xiH"/>
                     <constraint firstAttribute="trailing" secondItem="SR9-Fi-BXj" secondAttribute="trailing" constant="8" id="Lqf-oD-qa6"/>
+                    <constraint firstItem="Eeh-3D-v8z" firstAttribute="top" secondItem="SR9-Fi-BXj" secondAttribute="bottom" id="MgU-KI-8if"/>
                     <constraint firstAttribute="bottom" secondItem="a5A-Ik-D7O" secondAttribute="bottom" id="T8F-gu-NZk"/>
                     <constraint firstItem="zeY-Sg-uOX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Tup-iM-3Zv"/>
-                    <constraint firstItem="a5A-Ik-D7O" firstAttribute="top" secondItem="SR9-Fi-BXj" secondAttribute="bottom" constant="10" id="Yfx-ih-GA0"/>
                     <constraint firstItem="9fv-lg-tJV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Yi4-qv-kvG"/>
+                    <constraint firstItem="a5A-Ik-D7O" firstAttribute="top" secondItem="SR9-Fi-BXj" secondAttribute="bottom" constant="17.5" id="cIX-l4-4ne"/>
                     <constraint firstItem="zeY-Sg-uOX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="dZ4-AO-PRw"/>
                     <constraint firstItem="SR9-Fi-BXj" firstAttribute="top" secondItem="9fv-lg-tJV" secondAttribute="bottom" constant="3" id="iuE-74-Zif"/>
                     <constraint firstAttribute="trailing" secondItem="9fv-lg-tJV" secondAttribute="trailing" id="jDr-oY-iuq"/>
                     <constraint firstItem="a5A-Ik-D7O" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ptH-Cc-tAh"/>
                     <constraint firstAttribute="trailing" secondItem="zeY-Sg-uOX" secondAttribute="trailing" id="slZ-JF-vtD"/>
+                    <constraint firstItem="Eeh-3D-v8z" firstAttribute="trailing" secondItem="SR9-Fi-BXj" secondAttribute="trailing" id="yW0-Dt-KJY"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -98,7 +107,7 @@
                 <outletCollection property="separatorViews" destination="9fv-lg-tJV" collectionClass="NSMutableArray" id="v0h-FN-JYT"/>
                 <outletCollection property="separatorViews" destination="a5A-Ik-D7O" collectionClass="NSMutableArray" id="fvk-mb-2P6"/>
             </connections>
-            <point key="canvasLocation" x="-54.5" y="-72"/>
+            <point key="canvasLocation" x="-54.5" y="-68"/>
         </tableViewCell>
     </objects>
 </document>

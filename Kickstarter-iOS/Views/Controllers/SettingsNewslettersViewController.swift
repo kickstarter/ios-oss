@@ -32,6 +32,8 @@ internal final class SettingsNewslettersViewController: UIViewController {
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.estimatedRowHeight .~ 100
       |> UITableView.lens.allowsSelection .~ false
+
+    self.title = Strings.Newsletters()
   }
 
   override func bindViewModel() {
