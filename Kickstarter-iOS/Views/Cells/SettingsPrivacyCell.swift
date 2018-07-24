@@ -12,13 +12,12 @@ public protocol SettingsPrivacyCellDelegate: class {
 
 internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
   fileprivate let viewModel = SettingsPrivacyCellViewModel()
+  internal weak var delegate: SettingsPrivacyCellDelegate?
 
   @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var privacySwitch: UISwitch!
   @IBOutlet fileprivate weak var privacySettingLabel: UILabel!
   @IBOutlet fileprivate weak var privacyStackView: UIStackView!
-
-  internal weak var delegate: SettingsPrivacyCellDelegate?
 
   internal func configureWith(value user: User) {
     self.viewModel.inputs.configureWith(user: user)
@@ -27,18 +26,21 @@ internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self.privacySettingLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Following() }
+    _ = self
+      |> baseTableViewCellStyle()
 
     _ = self.separatorView
       |> separatorStyle
+
+    _ = self.privacySettingLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Following() }
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.notifyDelegateShowFollowPrivacyPrompt
+    self.viewModel.outputs.showPrivacyFollowingPrompt
       .observeForUI()
       .observeValues { [weak self] in
         self?.delegate?.notifyDelegateShowFollowPrivacyPrompt()

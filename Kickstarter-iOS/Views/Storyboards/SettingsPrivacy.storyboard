@@ -41,6 +41,9 @@
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xde-Y8-aIY">
                                                             <rect key="frame" x="306" y="10" width="51" height="31"/>
                                                             <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <connections>
+                                                                <action selector="followingPrivacySwitchTapped:" destination="5pE-lN-hvd" eventType="valueChanged" id="XwK-o4-woP"/>
+                                                            </connections>
                                                         </switch>
                                                     </subviews>
                                                     <constraints>
@@ -215,22 +218,33 @@
                                             </constraints>
                                             <viewLayoutGuide key="safeArea" id="Ufg-5Z-5Nh"/>
                                         </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uag-cG-Z0v">
+                                            <rect key="frame" x="0.0" y="1" width="375" height="42"/>
+                                            <connections>
+                                                <action selector="requestDataButtonTapped:" destination="mv7-dd-4yd" eventType="touchUpInside" id="or5-ER-8Ee"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="bMn-0H-yEC" secondAttribute="trailing" id="AJI-4c-pyJ"/>
+                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="J2F-UO-XjY"/>
                                         <constraint firstAttribute="trailing" secondItem="w3T-mz-kcX" secondAttribute="trailing" id="LVW-Uh-pDY"/>
                                         <constraint firstAttribute="bottom" secondItem="fd8-Je-vBB" secondAttribute="bottom" id="NDY-FX-jeA"/>
                                         <constraint firstAttribute="bottom" secondItem="bMn-0H-yEC" secondAttribute="bottom" id="TNF-mo-aVx"/>
                                         <constraint firstAttribute="trailing" secondItem="fd8-Je-vBB" secondAttribute="trailing" id="cFd-y3-ZMq"/>
                                         <constraint firstItem="w3T-mz-kcX" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="dBa-lz-2Y4"/>
+                                        <constraint firstItem="fd8-Je-vBB" firstAttribute="top" secondItem="Uag-cG-Z0v" secondAttribute="bottom" id="i2b-IX-dF0"/>
                                         <constraint firstItem="bMn-0H-yEC" firstAttribute="top" secondItem="ihf-gP-uZh" secondAttribute="top" id="oJ9-Al-ZAu"/>
                                         <constraint firstItem="fd8-Je-vBB" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="rpq-29-ebI"/>
+                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="top" secondItem="w3T-mz-kcX" secondAttribute="bottom" id="taa-nu-UHf"/>
+                                        <constraint firstAttribute="trailing" secondItem="Uag-cG-Z0v" secondAttribute="trailing" id="uI3-DG-5xU"/>
                                         <constraint firstItem="bMn-0H-yEC" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="vZR-r2-Oc1"/>
                                         <constraint firstItem="w3T-mz-kcX" firstAttribute="top" secondItem="ihf-gP-uZh" secondAttribute="top" id="w4F-id-x88"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="containerView" destination="bMn-0H-yEC" id="zjd-MC-mgF"/>
+                                    <outlet property="requestDataButton" destination="Uag-cG-Z0v" id="3mY-YJ-03k"/>
                                     <outlet property="requestDataLabel" destination="6hE-J6-eaL" id="sRG-ka-7Zq"/>
                                     <outletCollection property="separatorViews" destination="fd8-Je-vBB" collectionClass="NSMutableArray" id="3dO-Ki-EeK"/>
                                     <outletCollection property="separatorViews" destination="w3T-mz-kcX" collectionClass="NSMutableArray" id="k2A-6V-C09"/>
@@ -260,6 +274,15 @@
                                                 <constraint firstAttribute="bottom" secondItem="oK3-Tf-Z28" secondAttribute="bottom" constant="15" id="sKF-yW-hto"/>
                                             </constraints>
                                         </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VQ1-SN-E2X">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <state key="normal">
+                                                <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="tappedDeleteButton:" destination="GvU-P6-buY" eventType="touchUpInside" id="HLo-84-p0e"/>
+                                            </connections>
+                                        </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7XT-79-fCP">
                                             <rect key="frame" x="0.0" y="43" width="375" height="1"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -269,17 +292,22 @@
                                         </view>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="VQ1-SN-E2X" firstAttribute="trailing" secondItem="6FC-en-I0Q" secondAttribute="trailing" id="2j5-lQ-F5s"/>
                                         <constraint firstAttribute="trailing" secondItem="7XT-79-fCP" secondAttribute="trailing" id="9NO-g6-ZOb"/>
                                         <constraint firstAttribute="trailing" secondItem="6FC-en-I0Q" secondAttribute="trailing" id="EQA-dJ-wm0"/>
                                         <constraint firstItem="7XT-79-fCP" firstAttribute="leading" secondItem="a4V-wq-rhE" secondAttribute="leading" id="G1Q-rg-5QH"/>
+                                        <constraint firstItem="VQ1-SN-E2X" firstAttribute="leading" secondItem="6FC-en-I0Q" secondAttribute="leading" id="LiI-n7-fBm"/>
                                         <constraint firstAttribute="bottom" secondItem="7XT-79-fCP" secondAttribute="bottom" id="UTw-W2-9EG"/>
+                                        <constraint firstItem="VQ1-SN-E2X" firstAttribute="top" secondItem="6FC-en-I0Q" secondAttribute="top" id="fwh-Z1-3G8"/>
                                         <constraint firstAttribute="bottom" secondItem="6FC-en-I0Q" secondAttribute="bottom" id="lc7-er-KPM"/>
                                         <constraint firstItem="6FC-en-I0Q" firstAttribute="top" secondItem="a4V-wq-rhE" secondAttribute="top" id="pJ8-Q0-VTe"/>
+                                        <constraint firstItem="VQ1-SN-E2X" firstAttribute="bottom" secondItem="6FC-en-I0Q" secondAttribute="bottom" id="qU9-wh-rsO"/>
                                         <constraint firstItem="6FC-en-I0Q" firstAttribute="leading" secondItem="a4V-wq-rhE" secondAttribute="leading" id="s8Q-PB-mFU"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
+                                    <outlet property="deleteAccountButton" destination="VQ1-SN-E2X" id="p4B-VF-buu"/>
                                     <outlet property="deleteAccountLabel" destination="oK3-Tf-Z28" id="SND-ix-GL7"/>
                                     <outlet property="separatorView" destination="7XT-79-fCP" id="Yqy-ul-CGJ"/>
                                 </connections>

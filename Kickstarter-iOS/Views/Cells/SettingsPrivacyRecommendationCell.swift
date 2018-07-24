@@ -18,7 +18,6 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
 
   internal override func bindStyles() {
     super.bindStyles()
-
     _ = self
       |> baseTableViewCellStyle()
 

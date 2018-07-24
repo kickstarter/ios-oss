@@ -1,6 +1,9 @@
 import KsApi
 import Library
 import Prelude
+import Prelude_UIKit
+import SafariServices
+import Result
 import UIKit
 
 internal final class SettingsPrivacyViewController: UITableViewController {
@@ -31,7 +34,6 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     _ = self
       |> UITableViewController.lens.view.backgroundColor .~ .ksr_grey_100
       |> UITableViewController.lens.title %~ { _ in Strings.Privacy() }
-
   }
 
   internal override func bindViewModel() {
@@ -85,24 +87,6 @@ internal final class SettingsPrivacyViewController: UITableViewController {
         self?.dataSource.loadDeleteAccountCell(user: user)
         self?.tableView.reloadData()
     }
-
-    self.viewModel.outputs.showFollowPrivacyAlert
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.showPrivacyFollowingPrompt()
-    }
-  }
-
-  func showPrivacyFollowingPrompt() {
-    let followingAlert = UIAlertController.turnOffPrivacyFollowing(
-      turnOnHandler: { [weak self] _ in
-        self?.cellViewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
-      },
-      turnOffHandler: { [weak self] _ in
-        self?.cellViewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
-      }
-    )
-    self.present(followingAlert, animated: true, completion: nil)
   }
 
   public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
@@ -115,6 +99,47 @@ internal final class SettingsPrivacyViewController: UITableViewController {
 
 extension SettingsPrivacyViewController: SettingsPrivacyCellDelegate {
   func notifyDelegateShowFollowPrivacyPrompt() {
-    self.viewModel.inputs.showPrivacyAlert()
+    let followingAlert = UIAlertController.turnOffPrivacyFollowing(
+      turnOnHandler: { [weak self] _ in
+        self?.cellViewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true) // fix this
+      },
+      turnOffHandler: { [weak self] _ in
+        self?.cellViewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true) // and this
+      }
+    )
+    self.present(followingAlert, animated: true, completion: nil)
+  }
+}
+
+extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
+  func notifyDelegatePresentRequestDataPrompt() {
+    let exportDataSheet = UIAlertController(
+      title: Strings.Download_your_personal_data(),
+      message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
+      preferredStyle: .actionSheet)
+
+    let startTheRequest = UIAlertAction(title: Strings.Start_data_collection(),
+                                        style: .default,
+                                        handler: nil
+//      { [weak self] _ in
+//    self?.viewModel.inputs.exportDataTapped()
+//
+//    }
+    )
+
+    let dismiss = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+    exportDataSheet.addAction(startTheRequest)
+    exportDataSheet.addAction(dismiss)
+
+    self.present(exportDataSheet, animated: true, completion: nil)
+  }
+}
+
+extension SettingsPrivacyViewController: SettingsPrivacyDeleteAccountCellDelegate {
+  func goToDeleteAccount(url: URL) {
+    let controller = SFSafariViewController(url: url)
+    controller.modalPresentationStyle = .overFullScreen
+    self.present(controller, animated: true, completion: nil)
   }
 }
