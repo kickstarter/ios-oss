@@ -98,6 +98,18 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
     self.switchIsOn = self.updateCurrentUser
       .combineLatest(with: newsletter)
       .map(userIsSubscribed(user:newsletter:))
+
+    // Koala
+    userAttributeChanged
+      .observeValues { attribute, on in
+        switch attribute {
+        case let .newsletter(newsletter):
+          AppEnvironment.current.koala.trackChangeNewsletter(
+            newsletterType: newsletter, sendNewsletter: on, project: nil, context: .settings
+          )
+        default: break
+      }
+    }
   }
 
   fileprivate let awakeFromNibProperty = MutableProperty(())
