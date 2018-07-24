@@ -17,6 +17,9 @@ public enum UserAttribute {
       case .invent:     return User.lens.newsletters.invent
       case .promo:      return User.lens.newsletters.promo
       case .weekly:     return User.lens.newsletters.weekly
+      case .films:      return User.lens.newsletters.films
+      case .publishing: return User.lens.newsletters.publishing
+      case .alumni:     return User.lens.newsletters.alumni
       }
     case let .notification(notification):
       switch notification {

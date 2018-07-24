@@ -1089,6 +1089,7 @@
 "profile.settings.logout_alert.title" = "ログアウト";
 "profile.settings.navbar_title" = "設定";
 "profile.settings.navbar_title_notifications" = "通知設定";
+"profile.settings.newsletter.alumni" = "Kickstarter Alumni";
 "profile.settings.newsletter.alumni_newsletter" = "Sign up to receive monthly emails featuring tips and resources for continuing work on your creative project, interviews with Kickstarter creators, invites to events, and more.";
 "profile.settings.newsletter.arts" = "アート＆カルチャー";
 "profile.settings.newsletter.arts_news" = "Arts News";

@@ -73,7 +73,7 @@
 "Delete_my_Kickstarter_Account" = "Mein Kickstarter-Konto löschen";
 "Delivered" = "Verschickt";
 "Developer" = "Entwickler";
-"Discover_arts_news" = "Discover innovative projects and ideas, handpicked twice a month by Kickstarter's Design & Tech team.";
+"Discover_arts_news" = "Entdecke innovative Projekte und Ideen, handverlesen zweimal monatlich von Kickstarters Design & Tech Team.";
 "Discover_more_projects" = "Erkunde mehr Projekte.";
 "Dismiss" = "Verwerfen";
 "Done" = "Fertig!";
@@ -1089,12 +1089,13 @@
 "profile.settings.logout_alert.title" = "Abmelden";
 "profile.settings.navbar_title" = "Einstellungen";
 "profile.settings.navbar_title_notifications" = "Benachrichtigungen";
-"profile.settings.newsletter.alumni_newsletter" = "Sign up to receive monthly emails featuring tips and resources for continuing work on your creative project, interviews with Kickstarter creators, invites to events, and more.";
+"profile.settings.newsletter.alumni" = "Kickstarter Alumni";
+"profile.settings.newsletter.alumni_newsletter" = "Abonniere unsere monatlichen E-Mails mit Tipps und Ressourcen für dein kreatives Projekt. Außerdem: Interviews mit Kickstarter-Projektgründern, Einladungen zu Events und vieles mehr.";
 "profile.settings.newsletter.arts" = "Kunst & Kultur News";
 "profile.settings.newsletter.arts_news" = "Arts News";
-"profile.settings.newsletter.arts_news_newsletter" = "Discover new projects and ideas from established and emerging artists, handpicked each month by Kickstarter's Arts team.";
+"profile.settings.newsletter.arts_news_newsletter" = "Entdecke einmal monatlich neue Projekte und Ideen von etablierten Künstlern und Newcomern, handverlesen vom Kickstarter Kunst-Team.";
 "profile.settings.newsletter.film" = "Kickstarter Films";
-"profile.settings.newsletter.films_newsletter" = "Sign up for a monthly newsletter curated by Kickstarter's Film team, highlighting new projects, creator stories, and events on their radar.";
+"profile.settings.newsletter.films_newsletter" = "Abonniere den monatlichen Newsletter des Kickstarter Film-Teams mit Highlights zu neuen Projekten, Projektgründer-Stories und Veranstaltungen.";
 "profile.settings.newsletter.games" = "Wir lieben Spiele";
 "profile.settings.newsletter.happening" = "Happening Now";
 "profile.settings.newsletter.happening_now" = "Jetzt in Happening";
@@ -1104,7 +1105,7 @@
 "profile.settings.newsletter.opt_in.title" = "Nur noch ein letzter Schritt!";
 "profile.settings.newsletter.promo" = "Kickstarter Neuigkeiten und Events";
 "profile.settings.newsletter.publishing" = "Kickstarter Reads";
-"profile.settings.newsletter.publishing_newsletter" = "Sign up for a monthly newsletter from Kickstarter's Publishing team highlighting great new projects, creator stories, and literary events on their radar.";
+"profile.settings.newsletter.publishing_newsletter" = "Abonniere den monatlicher Newsletter des Kickstarter Publishing-Teams mit Highlights zu neuen Projekten, Projektgründer-Stories und Literatur-Veranstaltungen.";
 "profile.settings.newsletter.subscribe_all" = "Alle abonnieren";
 "profile.settings.newsletter.title" = "Newsletter";
 "profile.settings.newsletter.weekly" = "Unsere Lieblingsprojekte";

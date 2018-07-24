@@ -30,7 +30,7 @@ final internal class SettingsNewslettersHeaderView: UITableViewHeaderFooterView 
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.text %~ { _ in
-        Strings.Sign_up_newsletter()
+        Strings.Stay_up_to_date_newsletter()
     }
 
     _ = self.newsletterSwitch

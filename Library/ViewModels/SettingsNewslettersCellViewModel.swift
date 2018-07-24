@@ -152,6 +152,9 @@ private func userIsSubscribedToAll(user: User) -> Bool? {
     && user.newsletters.invent == true
     && user.newsletters.promo == true
     && user.newsletters.weekly == true
+    && user.newsletters.films == true
+    && user.newsletters.publishing == true
+    && user.newsletters.alumni == true
 }
 
 private func userIsSubscribed(user: User, newsletter: Newsletter) -> Bool? {
@@ -168,5 +171,11 @@ private func userIsSubscribed(user: User, newsletter: Newsletter) -> Bool? {
     return user.newsletters.promo
   case .weekly:
     return user.newsletters.weekly
+  case .films:
+    return user.newsletters.films
+  case .publishing:
+    return user.newsletters.publishing
+  case .alumni:
+    return user.newsletters.alumni
   }
 }

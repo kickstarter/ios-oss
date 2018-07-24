@@ -140,7 +140,7 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Teatro</i>.";
 "Friend_name_launched_a_project" = "¡%{friend_name} publicó un proyecto!";
 "Funding_successful" = "Financiado con éxito";
-"Games_newsletter" = "Suscríbete para recibir una combinación bisemanal de nuevos proyectos y actualizaciones sobre todo lo relacionado a juegos, seleccionados exclusivamente para ti por el equipo de Juegos de Kickstarter.";
+"Games_newsletter" = "Suscríbete para recibir, cada dos semanas, una combinación de nuevos proyectos y actualizaciones sobre todo lo relacionado a juegos, seleccionados exclusivamente para ti por el equipo de Juegos de Kickstarter.";
 "Get_notified_about_new_messages" = "¿Deseas recibir notificaciones sobre nuevos mensajes?";
 "Get_notified_about_this_creators_live_streams" = "Recibe notificaciones sobre los Live Streams de este creador";
 "Get_reminded_about_this_project" = "¿Deseas recibir recordatorios sobre este proyecto?";
@@ -1089,6 +1089,7 @@
 "profile.settings.logout_alert.title" = "Cerrar sesión";
 "profile.settings.navbar_title" = "Configuración";
 "profile.settings.navbar_title_notifications" = "Notificaciones";
+"profile.settings.newsletter.alumni" = "Kickstarter Alumni";
 "profile.settings.newsletter.alumni_newsletter" = "Suscríbete para recibir correos electrónicos mensuales con consejos y recursos para seguir trabajando en tu proyecto creativo, entrevistas con creadores de Kickstarter, invitaciones a eventos y más.";
 "profile.settings.newsletter.arts" = "Novedades sobre Arte & Cultura";
 "profile.settings.newsletter.arts_news" = "Arts News";
