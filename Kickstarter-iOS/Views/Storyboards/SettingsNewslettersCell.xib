@@ -32,7 +32,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vFW-ja-Zdo">
-                                <rect key="frame" x="296" y="12" width="49" height="31"/>
+                                <rect key="frame" x="292" y="12" width="49" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="8Xv-y0-joT"/>
                                     <constraint firstAttribute="width" constant="47" id="tX1-1g-ErE"/>
@@ -44,8 +44,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="vFW-ja-Zdo" secondAttribute="trailing" constant="24" id="5jS-FK-wOG"/>
-                            <constraint firstItem="vFW-ja-Zdo" firstAttribute="leading" secondItem="w9P-hq-KmY" secondAttribute="trailing" constant="-5" id="DDu-Vd-ina"/>
+                            <constraint firstAttribute="trailing" secondItem="vFW-ja-Zdo" secondAttribute="trailing" constant="28" id="5jS-FK-wOG"/>
+                            <constraint firstItem="vFW-ja-Zdo" firstAttribute="leading" secondItem="w9P-hq-KmY" secondAttribute="trailing" constant="-9" id="DDu-Vd-ina"/>
                             <constraint firstItem="w9P-hq-KmY" firstAttribute="leading" secondItem="zeY-Sg-uOX" secondAttribute="leading" id="cSk-un-Dn9"/>
                             <constraint firstAttribute="height" constant="56" id="cwJ-0k-z4l"/>
                             <constraint firstItem="w9P-hq-KmY" firstAttribute="top" secondItem="zeY-Sg-uOX" secondAttribute="top" constant="12" id="tOx-Mh-HUS"/>

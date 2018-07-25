@@ -52,7 +52,7 @@ internal final class SettingsNewslettersViewController: UIViewController {
 extension SettingsNewslettersViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 146
+    return 145
   }
 
   internal func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
