@@ -24,8 +24,6 @@ final class HelpViewController: UIViewController {
     tableView.register(nib: .SettingsTableViewCell)
     tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
-    _ = tableView |> UITableView.lens.backgroundColor .~ .ksr_grey_200
-
     dataSource.configureRows()
 
     tableView.reloadData()
@@ -38,6 +36,8 @@ final class HelpViewController: UIViewController {
       |> baseControllerStyle()
       |> UIViewController.lens.view.backgroundColor .~ .ksr_grey_200
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_about_title() }
+
+    _ = tableView |> UITableView.lens.backgroundColor .~ .ksr_grey_200
   }
 
   override func bindViewModel() {
