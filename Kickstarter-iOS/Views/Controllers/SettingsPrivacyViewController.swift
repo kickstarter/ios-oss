@@ -99,10 +99,6 @@ internal final class SettingsPrivacyViewController: UITableViewController {
       deleteAccountCell.delegate = self
     }
   }
-
-//  internal func goToDeleteAccount(_ url: URL) {
-//
-//  }
 }
 
 extension SettingsPrivacyViewController: SettingsPrivacyCellDelegate {
@@ -145,8 +141,6 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
 
 extension SettingsPrivacyViewController: SettingsPrivacyDeleteAccountCellDelegate {
   internal func goToDeleteAccount(url: URL) {
-  //  self.goToDeleteAccount(url: url)
-
     let controller = SFSafariViewController(url: url)
     controller.modalPresentationStyle = .overFullScreen
     self.present(controller, animated: true, completion: nil)
