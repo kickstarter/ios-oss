@@ -10,7 +10,7 @@ public protocol SettingsRequestDataCellDelegate: class {
 }
 
 internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel: SettingsRequestDataCellViewModelType = SettingsRequestDataCellViewModel()
+  fileprivate let viewModel = SettingsRequestDataCellViewModel()
   internal weak var delegate: SettingsRequestDataCellDelegate?
 
 

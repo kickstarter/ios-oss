@@ -89,12 +89,20 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     }
   }
 
-  public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
+  internal override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
                                  forRowAt indexPath: IndexPath) {
-    if let cell = cell as? SettingsPrivacyCell, cell.delegate == nil {
-      cell.delegate = self
+    if let followCell = cell as? SettingsPrivacyCell {
+      followCell.delegate = self
+    } else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
+      requestDataCell.delegate = self
+    } else if let deleteAccountCell = cell as? SettingsPrivacyDeleteAccountCell {
+      deleteAccountCell.delegate = self
     }
   }
+
+//  internal func goToDeleteAccount(_ url: URL) {
+//
+//  }
 }
 
 extension SettingsPrivacyViewController: SettingsPrivacyCellDelegate {
@@ -123,7 +131,6 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
                                         handler: nil
 //      { [weak self] _ in
 //    self?.viewModel.inputs.exportDataTapped()
-//
 //    }
     )
 
@@ -137,7 +144,9 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
 }
 
 extension SettingsPrivacyViewController: SettingsPrivacyDeleteAccountCellDelegate {
-  func goToDeleteAccount(url: URL) {
+  internal func goToDeleteAccount(url: URL) {
+  //  self.goToDeleteAccount(url: url)
+
     let controller = SFSafariViewController(url: url)
     controller.modalPresentationStyle = .overFullScreen
     self.present(controller, animated: true, completion: nil)

@@ -10,12 +10,19 @@ public protocol SettingsPrivacyDeleteAccountCellDelegate: class {
 }
 
 internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel: SettingsDeleteAccountCellViewModelType = SettingsDeleteAccountCellViewModel()
+  fileprivate let viewModel = SettingsDeleteAccountCellViewModel()
   internal weak var delegate: SettingsPrivacyDeleteAccountCellDelegate?
 
   @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
+
+
+  internal override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.deleteAccountButton.addTarget(self, action: #selector(deleteAccountTapped), for: .touchUpInside)
+  }
 
   internal func configureWith(value user: User) {
     self.viewModel.inputs.configureWith(user: user)
@@ -38,13 +45,13 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
     super.bindViewModel()
 
     self.viewModel.outputs.notifyDeleteAccountTapped
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] url in
         self?.delegate?.goToDeleteAccount(url: url)
     }
   }
 
-  @IBAction func tappedDeleteButton(_ sender: Any) {
+  @objc fileprivate func deleteAccountTapped() {
     self.viewModel.inputs.deleteAccountTapped()
   }
 }

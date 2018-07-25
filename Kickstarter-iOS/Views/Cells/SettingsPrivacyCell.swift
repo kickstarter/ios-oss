@@ -46,7 +46,6 @@ internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
         self?.delegate?.notifyDelegateShowFollowPrivacyPrompt()
     }
 
-    //switches go here
     self.privacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
   }
 
