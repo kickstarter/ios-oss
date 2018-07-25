@@ -8,6 +8,8 @@ public struct SettingsNotificationCellValue {
 }
 
 final class SettingsNotificationsDataSource: ValueCellDataSource {
+  weak var cellDelegate: SettingsNotificationCellDelegate?
+
   func load(user: User) {
     let isCreator = user.isCreator
 
@@ -32,66 +34,6 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     return allSections[section]
   }
 
-//  func settingsCellValue(for cellType: SettingsNotificationCellType, user: User) -> SettingsNotificationCellValue {
-//    switch cellType {
-//    case .projectUpdates:
-//      return SettingsNotificationCellValue(cellType: .projectUpdates,
-//                                           pushNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.mobileUpdates).lens.view,
-//                                           emailNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.updates).lens.view)
-//    case .projectNotifications:
-//      return SettingsNotificationCellValue(cellType: .projectNotifications,
-//                                           pushNotificationsEnabled: nil,
-//                                           emailNotificationsEnabled: nil,
-//                                           projectCount: Format.wholeNumber(user.stats.backedProjectsCount
-//                                            ?? 0)
-//      )
-//    case .pledgeActivity:
-//      // TODO: what is pledge activity?
-//      return SettingsNotificationCellValue(cellType: .pledgeActivity,
-//                                           pushNotificationsEnabled: user |> UserAttribute.notification(.creatorDigest).lens.view,
-//                                           emailNotificationsEnabled: user |> UserAttribute.notification(.creatorDigest).lens.view)
-//    case .newComments:
-//      return SettingsNotificationCellValue(cellType: .newComments,
-//                                           pushNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.comments).lens.view,
-//                                           emailNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.mobileComments).lens.view)
-//    case .newLikes:
-//      return SettingsNotificationCellValue(cellType: .newLikes,
-//                                           pushNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.postLikes).lens.view,
-//                                           emailNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.mobilePostLikes).lens.view)
-//    case .creatorTips:
-//      return SettingsNotificationCellValue(cellType: .creatorTips,
-//                                           pushNotificationsEnabled: nil,
-//                                           emailNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.creatorTips).lens.view)
-//    case .messages:
-//      return SettingsNotificationCellValue(cellType: .messages,
-//                                           pushNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.messages).lens.view,
-//                                           emailNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.mobileMessages).lens.view)
-//    case .newFollowers:
-//      return SettingsNotificationCellValue(cellType: .newFollowers,
-//                                           pushNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.follower).lens.view,
-//                                           emailNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.mobileFollower).lens.view)
-//    case .friendBacksProject:
-//      return SettingsNotificationCellValue(cellType: .friendBacksProject,
-//                                           pushNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.friendActivity).lens.view,
-//                                           emailNotificationsEnabled: user
-//                                            |> UserAttribute.notification(.mobileFriendActivity).lens.view)
-//    default:
-//      return SettingsNotificationCellValue(cellType: cellType)
-//    }
-//  }
-
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsNotificationCellType? {
     let value = self[indexPath] as? SettingsNotificationCellValue
 
@@ -102,6 +44,7 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as SettingsNotificationCell, value as SettingsNotificationCellValue):
       cell.configureWith(value: value)
+      cell.delegate = cellDelegate
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }

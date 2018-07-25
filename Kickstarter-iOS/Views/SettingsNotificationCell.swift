@@ -102,6 +102,18 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
           _self.addGestureRecognizer(_self.tapGesture)
         }
     }
+
+    viewModel.outputs.updateCurrentUser
+      .observeForControllerAction()
+      .observeValues { [weak self] (user) in
+        self?.delegate?.didUpdateUser(user: user)
+    }
+
+    viewModel.outputs.unableToSaveError
+      .observeForControllerAction()
+      .observeValues { [weak self] (errorString) in
+        self?.delegate?.didFailToSaveChange(errorMessage: errorString)
+    }
   }
 
   @IBAction func emailNotificationsButtonTapped(_ sender: UIButton) {

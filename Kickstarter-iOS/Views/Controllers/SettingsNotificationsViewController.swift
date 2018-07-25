@@ -16,6 +16,8 @@ internal final class SettingsNotificationsViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    dataSource.cellDelegate = self
+
     tableView.dataSource = dataSource
     tableView.delegate = self
 
@@ -38,10 +40,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
-
-    self.viewModel.outputs.goToManageProjectNotifications
-      .observeForControllerAction()
-      .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
 
     self.viewModel.outputs.unableToSaveError
       .observeForControllerAction()
@@ -69,10 +67,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
         self?.goToEmailFrequency(user: user)
     }
 
-//    self.emailFrequencyButton.rac.enabled = self.viewModel.outputs.emailFrequencyButtonEnabled
-//    self.manageProjectNotificationsButton.rac.accessibilityHint =
-//      self.viewModel.outputs.manageProjectNotificationsButtonAccessibilityHint
-//    self.projectNotificationsCountView.label.rac.text = self.viewModel.outputs.projectNotificationsCount
+    self.viewModel.outputs.goToManageProjectNotifications
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
   }
 
   fileprivate func goToEmailFrequency(user: User) {
@@ -129,5 +126,15 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
     }
 
     self.viewModel.inputs.didSelectRow(cellType: cellType)
+  }
+}
+
+extension SettingsNotificationsViewController: SettingsNotificationCellDelegate {
+  func didFailToSaveChange(errorMessage: String) {
+    self.viewModel.inputs.failedToUpdateUser(error: errorMessage)
+  }
+
+  func didUpdateUser(user: User) {
+    self.viewModel.inputs.updateUser(user: user)
   }
 }
