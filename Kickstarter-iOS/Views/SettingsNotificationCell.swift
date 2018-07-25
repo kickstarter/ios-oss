@@ -1,10 +1,11 @@
 import Foundation
 import Prelude
 import Library
+import KsApi
 
 protocol SettingsNotificationCellDelegate: class {
-  func didTapEmailNotificationsButton(withType: SettingsNotificationCellType, enabled: Bool)
-  func didTapPushNotificationsButton(withType: SettingsNotificationCellType, enabled: Bool)
+  func didFailToSaveChange(errorMessage: String)
+  func didUpdateUser(user: User)
 }
 
 final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
@@ -13,13 +14,14 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
   @IBOutlet fileprivate weak var pushNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
+  @IBOutlet fileprivate weak var projectCountLabel: UILabel!
+
+  weak var delegate: SettingsNotificationCellDelegate?
 
   private let viewModel: SettingsNotificationCellViewModelType = SettingsNotificationCellViewModel()
   private lazy var tapGesture: UITapGestureRecognizer = {
     return UITapGestureRecognizer(target: self, action: #selector(cellBackgroundTapped))
   }()
-
-  weak var delegate: SettingsNotificationCellDelegate?
 
   private var notificationType: SettingsNotificationCellType?
 
@@ -37,6 +39,9 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     _ = arrowImageView
       |> UIImageView.lens.isHidden .~ cellValue.cellType.shouldHideArrowView
+
+    _ = projectCountLabel
+      |> UILabel.lens.isHidden .~ cellValue.cellType.projectCountLabelHidden
   }
 
   override func bindStyles() {
@@ -44,6 +49,10 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     _ = titleLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.font .~ .ksr_body()
+
+    _ = projectCountLabel
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ .ksr_body()
 
     _ = self.emailNotificationsButton |> notificationButtonStyle
@@ -79,6 +88,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     self.emailNotificationsButton.rac.selected = viewModel.outputs.emailNotificationsEnabled
     self.emailNotificationsButton.rac.hidden = viewModel.outputs.hideNotificationButtons
+    self.projectCountLabel.rac.text = viewModel.outputs.projectCountText
     self.pushNotificationsButton.rac.selected = viewModel.outputs.pushNotificationsEnabled
     self.pushNotificationsButton.rac.hidden = viewModel.outputs.hideNotificationButtons
 
@@ -91,22 +101,6 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
         } else {
           _self.addGestureRecognizer(_self.tapGesture)
         }
-    }
-
-    viewModel.outputs.emailNotificationsSettingToggled
-      .observeForControllerAction()
-      .observeValues { [weak self] (enabled) in
-        guard let _self = self else { return }
-        _self.delegate?.didTapEmailNotificationsButton(withType: _self.notificationType!,
-                                                      enabled: enabled)
-    }
-
-    viewModel.outputs.pushNotificationsSettingToggled
-      .observeForControllerAction()
-      .observeValues { [weak self] (enabled) in
-        guard let _self = self else { return }
-        _self.delegate?.didTapPushNotificationsButton(withType: _self.notificationType!,
-                                                      enabled: enabled)
     }
   }
 
@@ -121,13 +115,13 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
   @IBAction func cellBackgroundTapped(_ sender: Any) {
     let sizeTransform = CGAffineTransform(scaleX: 1.2, y: 1.2)
 
-    UIView.animate(withDuration: 0.18, animations: {
+    UIView.animate(withDuration: 0.15, animations: {
       self.pushNotificationsButton.transform = sizeTransform
     }, completion: { (_) in
       self.identityAnimation(for: self.pushNotificationsButton)
     })
 
-    UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseInOut, animations: {
+    UIView.animate(withDuration: 0.15, delay: 0.1, options: .curveEaseInOut, animations: {
       self.emailNotificationsButton.transform = sizeTransform
     }, completion: { (_) in
       self.identityAnimation(for: self.emailNotificationsButton)

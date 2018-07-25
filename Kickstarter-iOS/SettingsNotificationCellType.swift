@@ -57,6 +57,13 @@ public enum SettingsNotificationCellType {
     }
   }
 
+  public var projectCountLabelHidden: Bool {
+    switch self {
+    case .projectNotifications: return false
+    default: return true
+    }
+  }
+
   public var shouldHideArrowView: Bool {
     switch self {
     case .projectNotifications, .findFacebookFriends, .emailFrequency: return false

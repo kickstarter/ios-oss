@@ -23,7 +23,7 @@ public let settingsNotificationIconButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
     <> UIButton.lens.tintColor .~ .ksr_text_dark_grey_400
 
-public let notificationButtonStyle = UIButton.lens.layer.cornerRadius .~ 12
+public let notificationButtonStyle = UIButton.lens.layer.cornerRadius .~ 9
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_300.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.backgroundColor(for: .normal) .~ .white
