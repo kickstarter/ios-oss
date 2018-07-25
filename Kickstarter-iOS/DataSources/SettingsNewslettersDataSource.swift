@@ -9,7 +9,7 @@ internal final class SettingsNewslettersDataSource: ValueCellDataSource {
 
   internal func load(newsletters: [Newsletter], user: User) {
 
-    let newsletter = newsletters.enumerated().map { _, newsletter in
+    let newsletter = newsletters.map { newsletter in
       (newsletter: newsletter, user: user)
     }
 

@@ -24,12 +24,13 @@ final internal class SettingsNewslettersHeaderView: UITableViewHeaderFooterView 
       |> settingsSectionLabelStyle
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.numberOfLines .~ 0
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_400
       |> UILabel.lens.text %~ { _ in
         Strings.Stay_up_to_date_newsletter()
     }
 
     _ = self.newsletterSwitch
-      |> UISwitch.lens.onTintColor .~ .ksr_green_800
+      |> UISwitch.lens.onTintColor .~ .ksr_green_700
 
     _ = self.separatorViews
       ||> separatorStyle

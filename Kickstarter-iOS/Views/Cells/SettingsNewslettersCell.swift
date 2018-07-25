@@ -43,12 +43,13 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
       |> settingsSectionLabelStyle
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.numberOfLines .~ 0
+      |> UILabel.lens.textColor .~ .ksr_dark_grey_400
 
     _ = self.newslettersLabel
       |> settingsSectionLabelStyle
 
     _ = self.newslettersSwitch
-      |> UISwitch.lens.onTintColor .~ .ksr_green_800
+      |> UISwitch.lens.onTintColor .~ .ksr_green_700
   }
 
   override func bindViewModel() {

@@ -31,17 +31,27 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
   public init() {
 
-    let newsletter = self.newsletterProperty.signal.skipNil()
+    let newsletter = self.newsletterProperty.signal.skipNil().take(first: 1)
 
-    let initialUser = self.awakeFromNibProperty.signal
-      .flatMap {
-        AppEnvironment.current.apiService.fetchUserSelf()
-          .wrapInOptional()
-          .prefix(value: AppEnvironment.current.currentUser)
-          .demoteErrors()
-      }
-      .skipNil()
-      .skipRepeats()
+    newsletter.signal.observeValues { v in
+      print("\n\n\n===== NEWSLETTER! \(v) =====\n\n\n")
+    }
+
+    let initialUser = self.initialUserProperty.signal.skipNil().take(first: 1)
+
+    initialUser.signal.observeValues { v in
+      print("===== NEW USER! \(v.newsletters) =====")
+    }
+
+//    let initialUser = self.initialUserProperty.signal
+//      .flatMap {
+//        AppEnvironment.current.apiService.fetchUserSelf()
+//          .wrapInOptional()
+//          .prefix(value: AppEnvironment.current.currentUser)
+//          .demoteErrors()
+//      }
+//      .skipNil()
+//      .skipRepeats()
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = newsletter
       .takePairWhen(self.newslettersSwitchTappedProperty.signal.skipNil())

@@ -81,7 +81,7 @@ extension User.NewsletterSubscriptions {
     )
 
     public static let films = Lens<User.NewsletterSubscriptions, Bool?>(
-      view: { $0.weekly },
+      view: { $0.films },
       set: { User.NewsletterSubscriptions(arts: $1.arts,
                                           games: $1.games,
                                           happening: $1.happening,
@@ -94,7 +94,7 @@ extension User.NewsletterSubscriptions {
     )
 
     public static let publishing = Lens<User.NewsletterSubscriptions, Bool?>(
-      view: { $0.weekly },
+      view: { $0.publishing },
       set: { User.NewsletterSubscriptions(arts: $1.arts,
                                           games: $1.games,
                                           happening: $1.happening,
@@ -107,7 +107,7 @@ extension User.NewsletterSubscriptions {
     )
 
     public static let alumni = Lens<User.NewsletterSubscriptions, Bool?>(
-      view: { $0.weekly },
+      view: { $0.alumni },
       set: { User.NewsletterSubscriptions(arts: $1.arts,
                                           games: $1.games,
                                           happening: $1.happening,

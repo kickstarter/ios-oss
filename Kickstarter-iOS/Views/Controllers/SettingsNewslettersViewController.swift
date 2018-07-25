@@ -30,7 +30,7 @@ internal final class SettingsNewslettersViewController: UIViewController {
 
     _ = self.tableView
       |> UITableView.lens.separatorStyle .~ .none
-      |> UITableView.lens.estimatedRowHeight .~ 100
+      |> UITableView.lens.estimatedRowHeight .~ 127
       |> UITableView.lens.allowsSelection .~ false
 
     self.title = Strings.Newsletters()
@@ -52,7 +52,7 @@ internal final class SettingsNewslettersViewController: UIViewController {
 extension SettingsNewslettersViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 135
+    return 146
   }
 
   internal func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
