@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -17,17 +17,17 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="NgN-c7-cxN" userLabel="Category Stack View">
-                    <rect key="frame" x="0.0" y="20" width="370" height="647"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DCy-vT-LTC">
-                            <rect key="frame" x="0.0" y="313.5" width="20" height="20"/>
+                            <rect key="frame" x="0.0" y="323.5" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="20" id="PzC-6n-cUO"/>
                                 <constraint firstAttribute="height" constant="20" id="hwC-Zo-KJ7"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TRu-fJ-hBL">
-                            <rect key="frame" x="25" y="313.5" width="345" height="20.5"/>
+                            <rect key="frame" x="25" y="323.5" width="350" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -36,10 +36,9 @@
                     <color key="backgroundColor" red="0.97556585073471069" green="0.032535631209611893" blue="0.018401686102151871" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </stackView>
                 <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="QQz-Fr-vLT" customClass="UIImageView">
-                    <rect key="frame" x="370" y="20" width="5" height="647"/>
+                    <rect key="frame" x="375" y="0.0" width="5" height="667"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="20" id="o1S-LV-cjj"/>
                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="15" id="wlQ-LL-Vwq"/>
                     </constraints>
                 </view>
