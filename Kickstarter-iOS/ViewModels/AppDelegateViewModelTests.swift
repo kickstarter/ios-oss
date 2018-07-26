@@ -76,6 +76,56 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
   }
 
+  func testConfigureHockey_AlphaApp_LoggedOut() {
+    let alphaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue, lang: "en")
+
+    withEnvironment(mainBundle: alphaBundle) {
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                              launchOptions: [:])
+
+      self.configureHockey.assertValues([
+        HockeyConfigData(
+          appIdentifier: KsApi.Secrets.HockeyAppId.alpha,
+          disableUpdates: false,
+          userId: "0",
+          userName: "anonymous"
+        )
+        ])
+    }
+  }
+
+  func testConfigureHockey_AlphaApp_LoggedIn() {
+    let alphaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue, lang: "en")
+    let currentUser = User.template
+
+    withEnvironment(
+      currentUser: .template,
+      mainBundle: alphaBundle) {
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                              launchOptions: [:])
+
+      self.configureHockey.assertValues([
+        HockeyConfigData(
+          appIdentifier: KsApi.Secrets.HockeyAppId.alpha,
+          disableUpdates: false,
+          userId: String(currentUser.id),
+          userName: currentUser.name
+        )
+        ])
+    }
+  }
+
+  func testConfigureHockey_DebugApp() {
+    let debugBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.debug.rawValue, lang: "en")
+
+    withEnvironment(mainBundle: debugBundle) {
+      vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                              launchOptions: [:])
+
+      self.configureHockey.assertDidNotEmitValue()
+    }
+  }
+
   func testConfigureHockey_BetaApp_LoggedOut() {
     let betaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en")
 

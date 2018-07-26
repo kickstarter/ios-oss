@@ -82,6 +82,8 @@
 "Ending_soon" = "終了直前";
 "Estimated_delivery" = "配達予定日：";
 "Expands_subcategories" = "サブカテゴリーを表示";
+"Expired_date_at_time" = "有効期限: %{date} %{time}";
+"Expires_date_at_time" = "有効期限: %{date} %{time}";
 "Explore" = "さがす";
 "Explore_creative_projects" = "クリエイティブなプロジェクトをさがす";
 "Explore_projects" = "プロジェクトをさがす";
@@ -232,6 +234,7 @@
 "Pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "Popular" = "人気";
 "Popular_Projects" = "人気のプロジェクト";
+"Preparing_your_personal_data" = "あなたの個人データを準備中…";
 "Privacy" = "プライバシー";
 "Private_profile" = "プライベート設定のプロフィール";
 "Private_profile_more_info" = "プライベート設定のプロフィール詳細";
