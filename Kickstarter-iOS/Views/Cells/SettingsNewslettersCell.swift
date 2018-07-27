@@ -5,6 +5,7 @@ import UIKit
 
 internal protocol SettingsNewslettersCellDelegate: class {
   func shouldShowOptInAlert(_ newsletterName: String)
+  func didUpdate(user: User)
 }
 
 internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
@@ -59,17 +60,15 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.showOptInPrompt
       .observeForControllerAction()
-      .observeValues { [weak self] newsletter in self?.showOptInPrompt(newsletter) }
+      .observeValues { [weak self] newsletter in
+        self?.delegate?.shouldShowOptInAlert(newsletter)
+    }
 
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()
-      .observeValues { user in
-        AppEnvironment.updateCurrentUser(user)
+      .observeValues { [weak self] in
+        self?.delegate?.didUpdate(user: $0)
     }
-  }
-
-  fileprivate func showOptInPrompt(_ newsletter: String) {
-    self.delegate?.shouldShowOptInAlert(newsletter)
   }
 
   @IBAction func newslettersSwitchTapped(_ sender: UISwitch) {

@@ -19,10 +19,10 @@ internal final class SettingsNewslettersViewController: UIViewController {
 
     self.viewModel.inputs.viewDidLoad()
 
-    self.tableView.dataSource = dataSource
-    self.tableView.delegate = self
     self.tableView.registerHeaderFooter(nib: .SettingsNewslettersHeaderView)
     self.tableView.register(nib: .SettingsNewslettersCell)
+    self.tableView.dataSource = dataSource
+    self.tableView.delegate = self
   }
 
   override func bindStyles() {
@@ -39,19 +39,18 @@ internal final class SettingsNewslettersViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.initialUser
+    self.viewModel.outputs.currentUser
       .observeForUI()
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         self?.dataSource.load(newsletters: Newsletter.allCases, user: user)
-        self?.tableView.reloadData()
     }
-  }
+  } 
 }
 
 extension SettingsNewslettersViewController: UITableViewDelegate {
 
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  internal func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 145
   }
 
@@ -60,9 +59,22 @@ extension SettingsNewslettersViewController: UITableViewDelegate {
     return tableView.dequeueReusableHeaderFooterView(
       withIdentifier: Nib.SettingsNewslettersHeaderView.rawValue)
   }
+
+  internal func tableView(_ tableView: UITableView,
+                          willDisplay cell: UITableViewCell,
+                          forRowAt indexPath: IndexPath) {
+
+    if let cell = cell as? SettingsNewslettersCell, cell.delegate == nil {
+      cell.delegate = self
+    }
+  }
 }
 
 extension SettingsNewslettersViewController: SettingsNewslettersCellDelegate {
+
+  func didUpdate(user: User) {
+    self.viewModel.inputs.didUpdate(user: user)
+  }
 
   func shouldShowOptInAlert(_ newsletterName: String) {
     let optInAlert = UIAlertController.newsletterOptIn(newsletterName)

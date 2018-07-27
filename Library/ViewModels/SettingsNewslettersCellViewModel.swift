@@ -31,27 +31,9 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
   public init() {
 
-    let newsletter = self.newsletterProperty.signal.skipNil().take(first: 1)
+    let newsletter = self.newsletterProperty.signal.skipNil()
 
-    newsletter.signal.observeValues { v in
-      print("\n\n\n===== NEWSLETTER! \(v) =====\n\n\n")
-    }
-
-    let initialUser = self.initialUserProperty.signal.skipNil().take(first: 1)
-
-    initialUser.signal.observeValues { v in
-      print("===== NEW USER! \(v.newsletters) =====")
-    }
-
-//    let initialUser = self.initialUserProperty.signal
-//      .flatMap {
-//        AppEnvironment.current.apiService.fetchUserSelf()
-//          .wrapInOptional()
-//          .prefix(value: AppEnvironment.current.currentUser)
-//          .demoteErrors()
-//      }
-//      .skipNil()
-//      .skipRepeats()
+    let initialUser = self.initialUserProperty.signal.skipNil()
 
     let newsletterOn: Signal<(Newsletter, Bool), NoError> = newsletter
       .takePairWhen(self.newslettersSwitchTappedProperty.signal.skipNil())
@@ -61,12 +43,11 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
       .filter { _, on in AppEnvironment.current.config?.countryCode == "DE" && on }
       .map { newsletter, _ in newsletter.displayableName }
 
-    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> = Signal.combineLatest(
-        newsletter,
-        self.newslettersSwitchTappedProperty.signal.skipNil()
-    ).map { newsletter, isOn in
-      (UserAttribute.newsletter(newsletter), isOn)
-    }
+    let userAttributeChanged = newsletter
+      .takePairWhen(self.newslettersSwitchTappedProperty.signal.skipNil())
+      .map { newsletter, isOn in
+        (UserAttribute.newsletter(newsletter), isOn)
+      }.logEvents(identifier: "user attribute changed")
 
     let updatedUser = initialUser
       .switchMap { user in
@@ -74,18 +55,18 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
           let (attribute, on) = attributeAndOn
           return user |> attribute.lens .~ on
         }
-    }
+    }.logEvents(identifier: "updated user")
 
     let updateUserAllOn = initialUser
-      .takePairWhen(self.allNewslettersSwitchProperty.signal.skipNil())
+      .combineLatest(with: self.allNewslettersSwitchProperty.signal.skipNil())
       .map { user, on in
         return user
           |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: on)
     }
 
     let updateEvent = Signal.merge(updatedUser, updateUserAllOn)
-      .switchMap {
-        AppEnvironment.current.apiService.updateUserSelf($0)
+      .switchMap { user in
+        AppEnvironment.current.apiService.updateUserSelf(user)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
@@ -104,6 +85,8 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
     self.subscribeToAllSwitchIsOn = self.updateCurrentUser
       .map(userIsSubscribedToAll(user:))
+
+
 
     self.switchIsOn = self.updateCurrentUser
       .combineLatest(with: newsletter)

@@ -6,11 +6,12 @@ import Result
 public protocol SettingsNewslettersViewModelInputs {
 
   func viewDidLoad()
+  func didUpdate(user: User)
 }
 
 public protocol SettingsNewslettersViewModelOutputs {
 
-  var initialUser: Signal<User, NoError> { get }
+  var currentUser: Signal<User, NoError> { get }
 }
 
 public protocol SettingsNewslettersViewModelType {
@@ -24,7 +25,7 @@ SettingsNewslettersViewModelInputs, SettingsNewslettersViewModelOutputs {
 
   public init() {
 
-    self.initialUser = self.viewDidLoadProperty.signal
+    let initialUser = self.viewDidLoadProperty.signal
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()
           .wrapInOptional()
@@ -33,6 +34,10 @@ SettingsNewslettersViewModelInputs, SettingsNewslettersViewModelOutputs {
       }
       .skipNil()
       .skipRepeats()
+
+    let updatedUser = self.didUpdateUserProperty.signal.skipNil()
+
+    self.currentUser = Signal.merge(initialUser, updatedUser)
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
@@ -40,7 +45,12 @@ SettingsNewslettersViewModelInputs, SettingsNewslettersViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let initialUser: Signal<User, NoError>
+  fileprivate let didUpdateUserProperty = MutableProperty<User?>(nil)
+  public func didUpdate(user: User) {
+    self.didUpdateUserProperty.value = user
+  }
+
+  public let currentUser: Signal<User, NoError>
 
   public var inputs: SettingsNewslettersViewModelInputs { return self }
   public var outputs: SettingsNewslettersViewModelOutputs { return self }

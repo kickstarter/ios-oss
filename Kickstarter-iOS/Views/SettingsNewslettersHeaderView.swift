@@ -4,7 +4,7 @@ import UIKit
 
 final internal class SettingsNewslettersHeaderView: UITableViewHeaderFooterView {
 
-  let viewModel: SettingsNewslettersCellViewModelType = SettingsNewsletterCellViewModel()
+  private let viewModel: SettingsNewslettersCellViewModelType = SettingsNewsletterCellViewModel()
 
   @IBOutlet fileprivate weak var descriptionLabel: UILabel!
   @IBOutlet fileprivate weak var newsletterSwitch: UISwitch!
