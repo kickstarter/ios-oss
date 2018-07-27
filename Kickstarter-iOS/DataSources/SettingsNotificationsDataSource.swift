@@ -31,6 +31,10 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     let allSections = SettingsNotificationSectionType.allCases
       .filter { filterCreatorForSection($0, user: user) }
 
+    guard section < allSections.endIndex else {
+      return nil
+    }
+
     return allSections[section]
   }
 

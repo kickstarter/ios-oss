@@ -68,4 +68,14 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
     XCTAssertEqual(SettingsNotificationSectionType.creator, section1)
     XCTAssertEqual(SettingsNotificationSectionType.social, section2)
   }
+
+  func testSectionTypeForSection_OutOfBounds() {
+    let user = User.template
+
+    dataSource.load(user: user)
+
+    let section = dataSource.sectionType(section: 2, user: user)
+
+    XCTAssertNil(section)
+  }
 }
