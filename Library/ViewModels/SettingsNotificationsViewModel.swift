@@ -37,8 +37,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
         .wrapInOptional()
         .prefix(value: AppEnvironment.current.currentUser)
         .demoteErrors()
-    }
-      .skipNil().logEvents(identifier: "initial user")
+    }.skipNil()
 
     self.unableToSaveError = updateUserErrorProperty.signal.skipNil()
 

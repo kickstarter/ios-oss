@@ -74,7 +74,7 @@ SettingsNotificationCellViewModelType {
                                                                  notificationType: notificationType)
 
         return (notification, enabled)
-    }.logEvents(identifier: "user attribute changed")
+    }
 
     let updatedUser = initialUserProperty.signal
       .skipNil()
@@ -94,14 +94,14 @@ SettingsNotificationCellViewModelType {
         AppEnvironment.current.apiService.updateUserSelf($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-      }.logEvents(identifier: "update event")
+      }
 
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
     }
 
-    self.updateCurrentUser = updateEvent.values().logEvents(identifier: "user was updated")
+    self.updateCurrentUser = updateEvent.values()
 
     let previousPushNotificationValue = initialPushNotificationValue.signal
       .takeWhen(self.unableToSaveError)
@@ -117,9 +117,9 @@ SettingsNotificationCellViewModelType {
 
     self.emailNotificationsEnabled = Signal.merge(
       initialEmailNotificationsValue.signal,
-      emailNotificationValueToggled.logEvents(identifier: "email toggled"),
-      previousEmailNotificationValue.logEvents(identifier: "previous email")
-    ).logEvents(identifier: "email notification enabled")
+      emailNotificationValueToggled,
+      previousEmailNotificationValue
+    )
 
     self.hideEmailNotificationsButton = cellTypeProperty.signal
       .skipNil()
