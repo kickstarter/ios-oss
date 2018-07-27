@@ -38,9 +38,12 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
     let indexPath1 = IndexPath(item: 1, section: 0)
     let indexPath2 = IndexPath(item: 0, section: 1)
 
-    XCTAssertEqual(SettingsNotificationCellType.projectUpdates, dataSource.cellTypeForIndexPath(indexPath: indexPath0))
-    XCTAssertEqual(SettingsNotificationCellType.projectNotifications, dataSource.cellTypeForIndexPath(indexPath: indexPath1))
-    XCTAssertEqual(SettingsNotificationCellType.messages, dataSource.cellTypeForIndexPath(indexPath: indexPath2))
+    XCTAssertEqual(SettingsNotificationCellType.projectUpdates,
+                   dataSource.cellTypeForIndexPath(indexPath: indexPath0))
+    XCTAssertEqual(SettingsNotificationCellType.projectNotifications,
+                   dataSource.cellTypeForIndexPath(indexPath: indexPath1))
+    XCTAssertEqual(SettingsNotificationCellType.messages,
+                   dataSource.cellTypeForIndexPath(indexPath: indexPath2))
   }
 
   func testSectionTypeForSection() {

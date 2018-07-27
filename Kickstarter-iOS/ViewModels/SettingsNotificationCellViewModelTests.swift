@@ -53,10 +53,16 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testEmailNotificationsEnabled() {
-    let notification = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
                                                                          notificationType: .email)
+
+    guard let notification = notificationType else {
+      XCTFail("Notification cannot be nil")
+      return
+    }
+
     let user = User.template
-      |> UserAttribute.notification(notification!).lens .~ true
+      |> UserAttribute.notification(notification).lens .~ true
 
     let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 
@@ -65,7 +71,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.emailNotificationsEnabledObserver.assertValues([true], "Email notifications are enabled")
 
     let user1 = user
-      |> UserAttribute.notification(notification!).lens .~ false
+      |> UserAttribute.notification(notification).lens .~ false
     let value1 = SettingsNotificationCellValue(cellType: .projectUpdates, user: user1)
 
     self.vm.inputs.configure(with: value1)
@@ -84,11 +90,16 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testPushNotificationsEnabled() {
-    let notification = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
                                                                          notificationType: .push)
 
+    guard let notification = notificationType else {
+      XCTFail("Notification cannot be nil")
+      return
+    }
+
     let user = User.template
-      |> UserAttribute.notification(notification!).lens .~ true
+      |> UserAttribute.notification(notification).lens .~ true
 
     let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 
@@ -97,7 +108,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.pushNotificationsEnabledObserver.assertValues([true], "Push notifications are enabled")
 
     let value1 = SettingsNotificationCellValue(cellType: .projectUpdates, user: user
-      |> UserAttribute.notification(notification!).lens .~ false)
+      |> UserAttribute.notification(notification).lens .~ false)
 
     self.vm.inputs.configure(with: value1)
 

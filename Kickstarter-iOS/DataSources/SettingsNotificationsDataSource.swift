@@ -54,7 +54,7 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     }
   }
 
-  // MARK - Helpers
+  // MARK: Helpers
   func filterCreatorForSection(_ section: SettingsNotificationSectionType, user: User) -> Bool {
     return user.isCreator ? true : (section != .creator)
   }

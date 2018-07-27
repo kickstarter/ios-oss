@@ -2,7 +2,7 @@ import Library
 import Prelude
 
 final class SettingsHeaderView: UITableViewHeaderFooterView {
-  @IBOutlet weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   func configure(title: String) {
     _ = titleLabel
