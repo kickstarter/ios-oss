@@ -23,7 +23,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
     tableView.register(nib: .SettingsNotificationCell)
     tableView.registerHeaderFooter(nib: .SettingsHeaderView)
-    
+
     self.viewModel.inputs.viewDidLoad()
   }
 

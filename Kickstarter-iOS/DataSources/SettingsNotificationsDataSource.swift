@@ -27,7 +27,7 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     guard let user = user else {
       return nil
     }
-    
+
     let allSections = SettingsNotificationSectionType.allCases
       .filter { filterCreatorForSection($0, user: user) }
 
@@ -59,4 +59,3 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     return user.isCreator ? true : (section != .creator)
   }
 }
-
