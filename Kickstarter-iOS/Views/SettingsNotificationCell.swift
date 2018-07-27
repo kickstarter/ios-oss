@@ -128,22 +128,30 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
   @IBAction func cellBackgroundTapped(_ sender: Any) {
     let sizeTransform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+    let animationDuration: TimeInterval = 0.15
 
-    UIView.animate(withDuration: 0.15, animations: {
-      self.pushNotificationsButton.transform = sizeTransform
-    }, completion: { (_) in
-      self.identityAnimation(for: self.pushNotificationsButton)
+    UIView.animate(withDuration: animationDuration, animations: { [weak self] in
+      self?.pushNotificationsButton.transform = sizeTransform
+    }, completion: { [weak self] (_) in
+      guard let _self = self else { return }
+
+      _self.identityAnimation(for: _self.pushNotificationsButton)
     })
 
-    UIView.animate(withDuration: 0.15, delay: 0.1, options: .curveEaseInOut, animations: {
-      self.emailNotificationsButton.transform = sizeTransform
-    }, completion: { (_) in
-      self.identityAnimation(for: self.emailNotificationsButton)
+    UIView.animate(withDuration: animationDuration,
+                   delay: 0.1,
+                   options: .curveEaseInOut,
+                   animations: { [weak self] in
+      self?.emailNotificationsButton.transform = sizeTransform
+    }, completion: { [weak self] (_) in
+      guard let _self = self else { return }
+
+      _self.identityAnimation(for: _self.emailNotificationsButton)
     })
   }
 
-  func identityAnimation(for button: UIButton) {
-    UIView.animate(withDuration: 0.18, animations: {
+  private func identityAnimation(for button: UIButton, duration: TimeInterval = 0.15) {
+    UIView.animate(withDuration: duration, animations: {
       button.transform = .identity
     }, completion: nil)
   }

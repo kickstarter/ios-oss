@@ -2,10 +2,10 @@ import Library
 import Prelude
 
 final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
   @IBOutlet fileprivate weak var appVersionLabel: UILabel!
   @IBOutlet fileprivate weak var lineLayer: UIView!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
