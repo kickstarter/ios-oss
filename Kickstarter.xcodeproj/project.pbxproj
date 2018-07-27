@@ -2818,6 +2818,7 @@
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
 				9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */,
+				77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
