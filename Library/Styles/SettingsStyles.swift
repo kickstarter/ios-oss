@@ -27,6 +27,7 @@ public let notificationButtonStyle = UIButton.lens.layer.cornerRadius .~ 9
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_300.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.backgroundColor(for: .normal) .~ .white
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_grey_200
   <> UIButton.lens.backgroundColor(for: .selected) .~ .ksr_grey_200
   <> UIButton.lens.title(for: .normal) .~ nil
   <> UIButton.lens.clipsToBounds .~ true

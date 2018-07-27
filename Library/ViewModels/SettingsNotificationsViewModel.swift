@@ -41,6 +41,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     .skipNil()
 
     self.unableToSaveError = updateUserErrorProperty.signal.skipNil()
+
     self.updateCurrentUser = Signal.merge(
       initialUser,
       updatedUserProperty.signal.skipNil())

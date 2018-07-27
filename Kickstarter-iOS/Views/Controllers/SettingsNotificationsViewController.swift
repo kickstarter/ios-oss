@@ -98,13 +98,13 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue) as? SettingsHeaderView
-    let isCreator = AppEnvironment.current.currentUser?.isCreator ?? false
     guard let sectionType = dataSource.sectionType(section: section,
-                                                   isCreator: isCreator) else {
+                                                   user: AppEnvironment.current.currentUser) else {
       return nil
     }
 
+    let headerView = tableView
+      .dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue) as? SettingsHeaderView
     headerView?.configure(title: sectionType.sectionTitle)
 
     return headerView

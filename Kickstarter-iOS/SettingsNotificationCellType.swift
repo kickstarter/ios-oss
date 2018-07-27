@@ -48,9 +48,30 @@ public enum SettingsNotificationCellType {
   case friendBacksProject
   case findFacebookFriends
 
-  public var shouldShowNotificationButtons: Bool {
+  public static var allCases: [SettingsNotificationCellType] = [.projectUpdates,
+                                                                .projectNotifications,
+                                                                .pledgeActivity,
+                                                                .emailFrequency,
+                                                                .newComments,
+                                                                .newLikes,
+                                                                .creatorTips,
+                                                                .messages,
+                                                                .newFollowers,
+                                                                .friendBacksProject,
+                                                                .findFacebookFriends]
+
+  public var shouldShowEmailNotificationButton: Bool {
     switch self {
     case .projectNotifications, .findFacebookFriends, .emailFrequency:
+      return false
+    default:
+      return true
+    }
+  }
+
+  public var showShowPushNotificationButton: Bool {
+    switch self {
+    case .projectNotifications, .findFacebookFriends, .emailFrequency, .creatorTips:
       return false
     default:
       return true

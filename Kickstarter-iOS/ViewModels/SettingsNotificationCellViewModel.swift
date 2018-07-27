@@ -5,17 +5,19 @@ import KsApi
 import Prelude
 
 protocol SettingsNotificationCellViewModelInputs {
-  func didTapPushNotificationsButton()
-  func didTapEmailNotificationsButton()
+  func didTapPushNotificationsButton(selected: Bool)
+  func didTapEmailNotificationsButton(selected: Bool)
   func configure(with cellValue: SettingsNotificationCellValue)
 }
 
 protocol SettingsNotificationCellViewModelOutputs {
+  var enableButtonAnimation: Signal<Bool, NoError> { get }
+  var emailNotificationsEnabled: Signal<Bool, NoError> { get }
+  var hideEmailNotificationsButton: Signal<Bool, NoError> { get }
+  var hidePushNotificationButton: Signal<Bool, NoError> { get }
   var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
   var projectCountText: Signal<String, NoError> { get }
   var pushNotificationsEnabled: Signal<Bool, NoError> { get }
-  var emailNotificationsEnabled: Signal<Bool, NoError> { get }
-  var hideNotificationButtons: Signal<Bool, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
 }
@@ -31,82 +33,106 @@ SettingsNotificationCellViewModelType {
   public init() {
     let initialPushNotificationValue = Signal.combineLatest(
       initialUserProperty.signal.skipNil(),
-      cellTypeProperty.signal.skipNil())
+      cellTypeProperty.signal.skipNil().skipRepeats())
       .map { (user, cellType) -> Bool? in
-        guard let notification = SettingsNotificationCellViewModel.notificationFor(cellType: cellType,
-                                                                                   notificationType: .push) else {
-                                                                                    return nil
+        guard let notification = SettingsNotificationCellViewModel
+          .notificationFor(cellType: cellType,
+                           notificationType: .push) else {
+                            return nil
         }
 
         return user |> UserAttribute.notification(notification).lens.view
     }.skipNil()
 
-    self.pushNotificationsEnabled = Signal.merge(
-      initialPushNotificationValue.signal,
-      pushNotificationsEnabledProperty.signal
-    )
+    let pushNotificationValueToggled = pushNotificationValueChangedProperty.signal.negate()
 
     let initialEmailNotificationsValue = Signal.combineLatest(
       initialUserProperty.signal.skipNil(),
-      cellTypeProperty.signal.skipNil())
+      cellTypeProperty.signal.skipNil().skipRepeats())
       .map { (user, cellType) -> Bool? in
-        guard let notification = SettingsNotificationCellViewModel.notificationFor(cellType: cellType,
-                                                                                   notificationType: .email) else {
-                                                                                    return nil
+        guard let notification = SettingsNotificationCellViewModel
+          .notificationFor(cellType: cellType,
+                           notificationType: .email) else {
+                            return nil
         }
 
         return user |> UserAttribute.notification(notification).lens.view
       }.skipNil()
 
-    self.emailNotificationsEnabled = Signal.merge(
-      initialEmailNotificationsValue.signal,
-      emailNotificationsEnabledProperty.signal
-    )
+    let emailNotificationValueToggled = emailNotificationValueChangedProperty.signal.negate()
 
     let updatedNotificationSetting = Signal.merge(
-      pushNotificationsEnabledProperty.signal.skipRepeats().map { (NotificationType.push, $0) },
-      emailNotificationsEnabledProperty.signal.skipRepeats().map { (NotificationType.email, $0) }
-    ).logEvents(identifier: "update notification")
-
-    let userAttributeChanged = Signal.combineLatest(
-      cellTypeProperty.signal.skipNil(),
-      updatedNotificationSetting.signal
+      pushNotificationValueToggled.signal.skipRepeats().map { (NotificationType.push, $0) },
+      emailNotificationValueToggled.signal.skipRepeats().map { (NotificationType.email, $0) }
     )
+
+    let userAttributeChanged = cellTypeProperty.signal.skipNil()
+    .takePairWhen(updatedNotificationSetting.signal)
     .map(unpack)
     .map { cellType, notificationType, enabled -> (UserAttribute.Notification?, Bool) in
         let notification = SettingsNotificationCellViewModel.notificationFor(cellType: cellType,
                                                                  notificationType: notificationType)
 
         return (notification, enabled)
-    }
+    }.logEvents(identifier: "user attribute changed")
 
     let updatedUser = initialUserProperty.signal
       .skipNil()
-      .switchMap { user in
-        userAttributeChanged.scan(user) { user, notificationAndOn in
-          let (notification, on) = notificationAndOn
-          return user |> UserAttribute.notification(notification!).lens .~ on
+      .takePairWhen(userAttributeChanged)
+      .map { user, notificationAndOn -> User? in
+        let (notification, on) = notificationAndOn
+
+        guard let notificationType = notification else {
+          return nil
         }
-    }
+
+        return user |> UserAttribute.notification(notificationType).lens .~ on
+      }.skipNil()
 
     let updateEvent = updatedUser
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }.logEvents(identifier: "update event")
 
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
     }
 
-    self.updateCurrentUser = updateEvent.values()
+    self.updateCurrentUser = updateEvent.values().logEvents(identifier: "user was updated")
 
-    self.hideNotificationButtons = cellTypeProperty.signal
+    let previousPushNotificationValue = initialPushNotificationValue.signal
+      .takeWhen(self.unableToSaveError)
+
+    let previousEmailNotificationValue = initialEmailNotificationsValue.signal
+      .takeWhen(self.unableToSaveError)
+
+    self.pushNotificationsEnabled = Signal.merge(
+      initialPushNotificationValue.signal,
+      pushNotificationValueChangedProperty.signal.negate(),
+      previousPushNotificationValue
+    )
+
+    self.emailNotificationsEnabled = Signal.merge(
+      initialEmailNotificationsValue.signal,
+      emailNotificationValueToggled.logEvents(identifier: "email toggled"),
+      previousEmailNotificationValue.logEvents(identifier: "previous email")
+    ).logEvents(identifier: "email notification enabled")
+
+    self.hideEmailNotificationsButton = cellTypeProperty.signal
       .skipNil()
-      .map { $0.shouldShowNotificationButtons }
+      .map { $0.shouldShowEmailNotificationButton }
       .negate()
+
+    self.hidePushNotificationButton = cellTypeProperty.signal
+      .skipNil()
+      .map { $0.showShowPushNotificationButton }
+      .negate()
+
+    self.enableButtonAnimation = self.hideEmailNotificationsButton
+      .negate() // Only add animation if email notification button is shown
 
     self.manageProjectNotificationsButtonAccessibilityHint = initialUserProperty.signal
       .skipNil()
@@ -123,14 +149,14 @@ SettingsNotificationCellViewModelType {
     }
   }
 
-  fileprivate let pushNotificationsEnabledProperty = MutableProperty(false)
-  func didTapPushNotificationsButton() {
-    self.pushNotificationsEnabledProperty.value = self.pushNotificationsEnabledProperty.negate().value
+  fileprivate let pushNotificationValueChangedProperty = MutableProperty(false)
+  func didTapPushNotificationsButton(selected: Bool) {
+    self.pushNotificationValueChangedProperty.value = selected
   }
 
-  fileprivate let emailNotificationsEnabledProperty = MutableProperty(false)
-  func didTapEmailNotificationsButton() {
-    self.emailNotificationsEnabledProperty.value = self.emailNotificationsEnabledProperty.negate().value
+  fileprivate let emailNotificationValueChangedProperty = MutableProperty(false)
+  func didTapEmailNotificationsButton(selected: Bool) {
+    self.emailNotificationValueChangedProperty.value = selected
   }
 
   fileprivate let initialUserProperty = MutableProperty<User?>(nil)
@@ -140,8 +166,10 @@ SettingsNotificationCellViewModelType {
     self.initialUserProperty.value = cellValue.user
   }
 
+  public let enableButtonAnimation: Signal<Bool, NoError>
   public let emailNotificationsEnabled: Signal<Bool, NoError>
-  public let hideNotificationButtons: Signal<Bool, NoError>
+  public let hideEmailNotificationsButton: Signal<Bool, NoError>
+  public let hidePushNotificationButton: Signal<Bool, NoError>
   public let manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
   public let projectCountText: Signal<String, NoError>
   public let pushNotificationsEnabled: Signal<Bool, NoError>
@@ -164,29 +192,38 @@ extension SettingsNotificationCellViewModel {
     }
 
     switch notification {
-    case
-    .mobileBackings,
-    .mobileComments, .mobileFollower, .mobileFriendActivity, .mobilePostLikes, .mobileMessages,
-    .mobileUpdates:
+    case .mobileComments,
+         .mobileFollower,
+         .mobileFriendActivity,
+         .mobilePledgeActivity,
+         .mobilePostLikes,
+         .mobileMessages,
+         .mobileUpdates:
       AppEnvironment.current.koala.trackChangePushNotification(type: notification.trackingString,
                                                                on: enabled)
-    case .backings,
-         .comments, .follower, .friendActivity, .messages, .postLikes, .creatorTips, .updates:
+    case .comments,
+         .follower,
+         .friendActivity,
+         .messages,
+         .pledgeActivity,
+         .postLikes,
+         .creatorTips,
+         .updates:
       AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                 on: enabled)
     default: break
     }
   }
 
-  static func notificationFor(cellType: SettingsNotificationCellType, notificationType: NotificationType) -> UserAttribute.Notification? {
+  public static func notificationFor(cellType: SettingsNotificationCellType,
+                                     notificationType: NotificationType) -> UserAttribute.Notification? {
     switch cellType {
     case .projectUpdates:
       return notificationType == .email
         ? UserAttribute.Notification.updates : UserAttribute.Notification.mobileUpdates
     case .pledgeActivity:
-      // TODO rename this for clarity
       return notificationType == .email
-        ? UserAttribute.Notification.backings : UserAttribute.Notification.mobileBackings
+        ? UserAttribute.Notification.pledgeActivity : UserAttribute.Notification.mobilePledgeActivity
     case .newComments:
       return notificationType == .email
         ? UserAttribute.Notification.comments : UserAttribute.Notification.mobileComments

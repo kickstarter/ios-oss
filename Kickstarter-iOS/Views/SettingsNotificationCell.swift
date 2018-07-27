@@ -60,7 +60,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
                                                               tintColor: .ksr_grey_400,
                                                               inBundle: Bundle.framework)
       |> UIButton.lens.image(for: .highlighted) .~ Library.image(named: "email-icon",
-                                                            tintColor: .ksr_green_700,
+                                                            tintColor: .ksr_grey_500,
                                                             inBundle: Bundle.framework)
       |> UIButton.lens.image(for: .selected) .~ Library.image(named: "email-icon",
                                                       tintColor: .ksr_green_700,
@@ -73,7 +73,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
                                                               tintColor: .ksr_grey_400,
                                                               inBundle: Bundle.framework)
       |> UIButton.lens.image(for: .highlighted) .~ Library.image(named: "mobile-icon",
-                                                              tintColor: .ksr_green_700,
+                                                              tintColor: .ksr_grey_500,
                                                               inBundle: Bundle.framework)
       |> UIButton.lens.image(for: .selected) .~ Library.image(named: "mobile-icon",
                                                       tintColor: .ksr_green_700,
@@ -87,19 +87,21 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     super.bindViewModel()
 
     self.emailNotificationsButton.rac.selected = viewModel.outputs.emailNotificationsEnabled
-    self.emailNotificationsButton.rac.hidden = viewModel.outputs.hideNotificationButtons
+    self.emailNotificationsButton.rac.hidden = viewModel.outputs.hideEmailNotificationsButton
     self.projectCountLabel.rac.text = viewModel.outputs.projectCountText
     self.pushNotificationsButton.rac.selected = viewModel.outputs.pushNotificationsEnabled
-    self.pushNotificationsButton.rac.hidden = viewModel.outputs.hideNotificationButtons
+    self.pushNotificationsButton.rac.hidden = viewModel.outputs.hidePushNotificationButton
+    self.projectCountLabel.rac.accessibilityHint = viewModel.outputs
+      .manageProjectNotificationsButtonAccessibilityHint
 
-    viewModel.outputs.hideNotificationButtons
+    viewModel.outputs.enableButtonAnimation
     .observeForUI()
-    .observeValues { [weak self] shouldHide in
+    .observeValues { [weak self] enableAnimation in
       guard let _self = self else { return }
-        if shouldHide {
-          _self.removeGestureRecognizer(_self.tapGesture)
-        } else {
+        if enableAnimation {
           _self.addGestureRecognizer(_self.tapGesture)
+        } else {
+          _self.removeGestureRecognizer(_self.tapGesture)
         }
     }
 
@@ -117,11 +119,11 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
   }
 
   @IBAction func emailNotificationsButtonTapped(_ sender: UIButton) {
-    self.viewModel.inputs.didTapEmailNotificationsButton()
+    self.viewModel.inputs.didTapEmailNotificationsButton(selected: sender.isSelected)
   }
 
   @IBAction func pushNotificationsButtonTapped(_ sender: UIButton) {
-    self.viewModel.inputs.didTapPushNotificationsButton()
+    self.viewModel.inputs.didTapPushNotificationsButton(selected: sender.isSelected)
   }
 
   @IBAction func cellBackgroundTapped(_ sender: Any) {

@@ -11,11 +11,8 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
   weak var cellDelegate: SettingsNotificationCellDelegate?
 
   func load(user: User) {
-    let isCreator = user.isCreator
-
-    _ = SettingsNotificationSectionType.allCases.filter { section -> Bool in
-      return isCreator ? true : (section != .creator)
-    }.enumerated().map { index, section -> Void in
+    _ = SettingsNotificationSectionType.allCases.filter { filterCreatorForSection($0, user: user) }
+    .enumerated().map { index, section -> Void in
       let values = section.cellRowsForSection.map { cellType in
         return SettingsNotificationCellValue(cellType: cellType, user: user)
       }
@@ -26,10 +23,13 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     }
   }
 
-  func sectionType(section: Int, isCreator: Bool) -> SettingsNotificationSectionType? {
-    let allSections = SettingsNotificationSectionType.allCases.filter { section -> Bool in
-      return isCreator ? true : (section != .creator)
+  func sectionType(section: Int, user: User?) -> SettingsNotificationSectionType? {
+    guard let user = user else {
+      return nil
     }
+    
+    let allSections = SettingsNotificationSectionType.allCases
+      .filter { filterCreatorForSection($0, user: user) }
 
     return allSections[section]
   }
@@ -48,6 +48,11 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }
+  }
+
+  // MARK - Helpers
+  func filterCreatorForSection(_ section: SettingsNotificationSectionType, user: User) -> Bool {
+    return user.isCreator ? true : (section != .creator)
   }
 }
 
