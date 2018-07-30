@@ -32,7 +32,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
-    self.vm.inputs.awakeFromNib()
+    self.vm.inputs.configureWith(value: user)
     self.subscribeToAllSwitchIsOn.assertValue(true)
   }
 
@@ -43,7 +43,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
-    self.vm.inputs.awakeFromNib()
+    self.vm.inputs.configureWith(value: user)
     self.subscribeToAllSwitchIsOn.assertValue(false)
   }
 

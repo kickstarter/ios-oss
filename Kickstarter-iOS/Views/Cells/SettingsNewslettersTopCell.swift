@@ -3,7 +3,11 @@ import Library
 import Prelude
 import UIKit
 
-final internal class SettingsNewslettersHeaderView: UITableViewCell, ValueCell {
+protocol SettingsNewslettersTopCellDelegate: class {
+  func didUpdateAllNewsletters(user: User)
+}
+
+final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
 
   private let viewModel: SettingsNewslettersCellViewModelType = SettingsNewsletterCellViewModel()
 
@@ -13,10 +17,10 @@ final internal class SettingsNewslettersHeaderView: UITableViewCell, ValueCell {
 
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
-  public weak var delegate: SettingsNewslettersCellDelegate?
+  public weak var delegate: SettingsNewslettersTopCellDelegate?
 
   func configureWith(value: User) {
-      self.viewModel.inputs.configureWith(value: value)
+    self.viewModel.inputs.configureWith(value: value)
   }
 
   override func awakeFromNib() {
@@ -53,7 +57,7 @@ final internal class SettingsNewslettersHeaderView: UITableViewCell, ValueCell {
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()
       .observeValues { [weak self] in
-        self?.delegate?.didUpdate(user: $0)
+         self?.delegate?.didUpdateAllNewsletters(user: $0)
     }
 
     self.newsletterSwitch.rac.on = self.viewModel.outputs.subscribeToAllSwitchIsOn.skipNil()

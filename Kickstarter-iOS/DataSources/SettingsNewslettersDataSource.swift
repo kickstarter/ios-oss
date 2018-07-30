@@ -9,17 +9,26 @@ internal final class SettingsNewslettersDataSource: ValueCellDataSource {
 
   internal func load(newsletters: [Newsletter], user: User) {
 
-    let newsletter = newsletters.map { newsletter in
-      (newsletter: newsletter, user: user)
-    }
+    let section = Section.newsletters.rawValue
 
-    self.set(values: newsletter,
-             cellClass: SettingsNewslettersCell.self,
-             inSection: Section.newsletters.rawValue)
+    self.clearValues(section: section)
+
+    self.appendRow(value: user,
+                   cellClass: SettingsNewslettersTopCell.self,
+                   toSection: section)
+
+    newsletters.forEach { value in
+
+      self.appendRow(value: (value, user),
+                     cellClass: SettingsNewslettersCell.self,
+                     toSection: section)
+    }
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
+    case let (cell as SettingsNewslettersTopCell, value as User):
+      cell.configureWith(value: value)
     case let (cell as SettingsNewslettersCell, value as (newsletter: Newsletter, user: User)):
       cell.configureWith(value: value)
     default:

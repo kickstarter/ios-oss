@@ -7,6 +7,7 @@ public protocol SettingsNewslettersCellViewModelInputs {
 
   func allNewslettersSwitchTapped(on: Bool)
   func awakeFromNib()
+  func configureWith(value: User)
   func configureWith(value: (newsletter: Newsletter, user: User))
   func newslettersSwitchTapped(on: Bool)
 }
@@ -62,7 +63,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
       .map { user, on in
         return user
           |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: on)
-    }
+    }.logEvents(identifier: "updated all")
 
     let updateEvent = Signal.merge(updatedUser, updateUserAllOn)
       .switchMap { user in
@@ -81,12 +82,11 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
       .takeWhen(self.unableToSaveError)
       .map { previous, _ in previous }
 
-    self.updateCurrentUser = Signal.merge(initialUser, updatedUser, updateUserAllOn, previousUserOnError)
+    self.updateCurrentUser = Signal.merge(initialUser,
+                                          updatedUser, updateUserAllOn, previousUserOnError)
 
     self.subscribeToAllSwitchIsOn = self.updateCurrentUser
       .map(userIsSubscribedToAll(user:))
-
-
 
     self.switchIsOn = self.updateCurrentUser
       .combineLatest(with: newsletter)
@@ -115,6 +115,9 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
   public func configureWith(value: (newsletter: Newsletter, user: User)) {
     self.newsletterProperty.value = value.newsletter
     self.initialUserProperty.value = value.user
+  }
+  public func configureWith(value: User) {
+    self.initialUserProperty.value = value
   }
 
   fileprivate let newslettersSwitchTappedProperty = MutableProperty<Bool?>(nil)

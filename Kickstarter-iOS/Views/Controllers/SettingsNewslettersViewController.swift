@@ -19,7 +19,7 @@ internal final class SettingsNewslettersViewController: UIViewController {
 
     self.viewModel.inputs.viewDidLoad()
 
-    self.tableView.registerHeaderFooter(nib: .SettingsNewslettersHeaderView)
+    self.tableView.register(nib: .SettingsNewslettersTopCell)
     self.tableView.register(nib: .SettingsNewslettersCell)
     self.tableView.dataSource = dataSource
     self.tableView.delegate = self
@@ -45,26 +45,18 @@ internal final class SettingsNewslettersViewController: UIViewController {
         AppEnvironment.updateCurrentUser(user)
         self?.dataSource.load(newsletters: Newsletter.allCases, user: user)
     }
-  } 
+  }
 }
 
 extension SettingsNewslettersViewController: UITableViewDelegate {
-
-  internal func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 145
-  }
-
-  internal func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-
-    return tableView.dequeueReusableHeaderFooterView(
-      withIdentifier: Nib.SettingsNewslettersHeaderView.rawValue)
-  }
 
   internal func tableView(_ tableView: UITableView,
                           willDisplay cell: UITableViewCell,
                           forRowAt indexPath: IndexPath) {
 
-    if let cell = cell as? SettingsNewslettersCell, cell.delegate == nil {
+    if let cell = cell as? SettingsNewslettersTopCell, cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? SettingsNewslettersCell, cell.delegate == nil {
       cell.delegate = self
     }
   }
@@ -79,5 +71,12 @@ extension SettingsNewslettersViewController: SettingsNewslettersCellDelegate {
   func shouldShowOptInAlert(_ newsletterName: String) {
     let optInAlert = UIAlertController.newsletterOptIn(newsletterName)
     self.present(optInAlert, animated: true, completion: nil)
+  }
+}
+
+extension SettingsNewslettersViewController: SettingsNewslettersTopCellDelegate {
+
+  func didUpdateAllNewsletters(user: User) {
+    self.viewModel.inputs.didUpdate(user: user)
   }
 }

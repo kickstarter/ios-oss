@@ -926,6 +926,8 @@
 		D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */; };
 		D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */; };
 		D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* Category.swift */; };
+		D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */; };
+		D6C3845C210B9AC400ADB671 /* SettingsNewslettersTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */; };
 		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
 		D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */; };
 		D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2551F75921500981E64 /* CategoryTemplates.swift */; };
@@ -2486,6 +2488,8 @@
 		D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewControllerTests.swift; sourceTree = "<group>"; };
 		D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAttribute.swift; sourceTree = "<group>"; };
 		D6B9DF3E1F72E25A0064A4D8 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersTopCell.swift; sourceTree = "<group>"; };
+		D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNewslettersTopCell.xib; sourceTree = "<group>"; };
 		D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphSchemaTests.swift; sourceTree = "<group>"; };
 		D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryLenses.swift; sourceTree = "<group>"; };
 		D6C9A2551F75921500981E64 /* CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTemplates.swift; sourceTree = "<group>"; };
@@ -2787,6 +2791,7 @@
 				A73923B91D272242004524C3 /* Settings.storyboard */,
 				D6B6766120FE849F0082717D /* SettingsNewsletters.storyboard */,
 				D6B6762A20FE849B0082717D /* SettingsNewslettersCell.xib */,
+				D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */,
 				D6B6766E20FF98CB0082717D /* SettingsNewslettersHeaderView.xib */,
 				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
 				A73923AC1D272242004524C3 /* Thanks.storyboard */,
@@ -2960,6 +2965,7 @@
 				A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */,
 				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
 				D6B6766A20FF8F890082717D /* SettingsNewslettersCell.swift */,
+				D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 				014A8E171CE3CD86003BF51C /* ThanksProjectCell.swift */,
 			);
@@ -4931,6 +4937,7 @@
 				A73923CB1D272242004524C3 /* Update.storyboard in Resources */,
 				014D629D1E6E5B070033D2BD /* BackerDashboardEmptyStateCell.xib in Resources */,
 				A71C7F6E1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard in Resources */,
+				D6C3845C210B9AC400ADB671 /* SettingsNewslettersTopCell.xib in Resources */,
 				A787E6BE1E28A85A0017B186 /* LiveStream.storyboard in Resources */,
 				D6B6766F20FF98CB0082717D /* SettingsNewslettersHeaderView.xib in Resources */,
 				A78838741D8A2EFF0081E94D /* ProjectPamphlet.storyboard in Resources */,
@@ -5504,6 +5511,7 @@
 				01940B291D467ECE0074FCE3 /* HelpWebViewController.swift in Sources */,
 				A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */,
 				A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */,
+				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
 				A7561A3D1D3146290028DEA1 /* ProjectNavigatorViewController.swift in Sources */,
 				595CDAB81D3537180051C816 /* FundingGraphView.swift in Sources */,
 				A72C3AB01D00F9C10075227E /* DiscoveryFiltersDataSource.swift in Sources */,

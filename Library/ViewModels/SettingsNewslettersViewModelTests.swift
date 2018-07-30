@@ -14,7 +14,7 @@ internal final class SettingsNewslettersViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.initialUser.observe(self.initialUser.observer)
+    self.vm.outputs.currentUser.observe(self.initialUser.observer)
   }
 
   func testInitialUserEmits_OnViewDidLoad() {

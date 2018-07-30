@@ -8,7 +8,7 @@ public enum Nib: String {
   case LiveStreamNavTitleView
   case RewardCell
   case SettingsNewslettersCell
-  case SettingsNewslettersHeaderView
+  case SettingsNewslettersTopCell
   case ThanksCategoryCell
 
 }
