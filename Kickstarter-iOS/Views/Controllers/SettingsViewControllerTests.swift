@@ -31,6 +31,8 @@ internal final class SettingsViewControllerTests: TestCase {
             let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
             parent.view.frame.size.height = 1_900
 
+            self.scheduler.run()
+
             FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
         }
       }
@@ -52,6 +54,8 @@ internal final class SettingsViewControllerTests: TestCase {
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
           parent.view.frame.size.height = 2_100
 
+          self.scheduler.run()
+
           FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")}
       }
   }
@@ -71,20 +75,10 @@ internal final class SettingsViewControllerTests: TestCase {
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
           parent.view.frame.size.height = 1_900
 
+          self.scheduler.run()
+
           FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
-    }
-  }
-
-  func testNonRelease() {
-    let bundle = MockBundle(bundleIdentifier: "com.kickstarter.kickstarter.beta")
-
-    withEnvironment(apiService: MockService(fetchUserSelfResponse: .template), mainBundle: bundle) {
-      let vc = SettingsViewController.instantiate()
-      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 1_800
-
-      FBSnapshotVerifyView(vc.view)
     }
   }
 }

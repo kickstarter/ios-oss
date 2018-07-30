@@ -15,7 +15,7 @@ platform :ios do
   desc "Fastlane Match - App Store"
   private_lane :match_appstore do
     match(
-      app_identifier: ["com.kickstarter.drip", "com.kickstarter.kickstarter"],
+      app_identifier: ["com.kickstarter.kickstarter"],
       type: "appstore",
       git_url: "https://github.com/kickstarter/ios-certificates",
       team_id: "48YBP49Y5N",
@@ -28,10 +28,7 @@ platform :ios do
   private_lane :match_development do
     match(
       app_identifier: [
-        "com.kickstarter.drip",
-        "com.kickstarter.drip.debug",
         "com.kickstarter.kickstarter",
-        "com.kickstarter.kickstarter.alpha",
         "com.kickstarter.kickstarter.debug"
       ],
       type: "development",
@@ -47,8 +44,6 @@ platform :ios do
   private_lane :match_enterprise do
     match(
       app_identifier: [
-        "com.kickstarter.drip.beta",
-        "com.kickstarter.drip.alpha",
         "com.kickstarter.kickstarter.beta",
         "com.kickstarter.kickstarter.kickalpha"
       ],
@@ -84,6 +79,16 @@ platform :ios do
       ipa: "./output/gym/KickBeta.ipa",
       dsym: "./output/gym/KickBeta.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_BETA_APP_ID"]
+    )
+
+    slack(
+      slack_url: ENV["SLACK_WEBHOOK"],
+      message: slack_message(
+        "beta",
+        get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
+        get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
+        "HockeyApp"
+      )
     )
   end
 
@@ -130,10 +135,12 @@ platform :ios do
 
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
-      message: "Successfully uploaded" +
-        " v" + get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS") +
-        " (" + get_build_number(xcodeproj: "Kickstarter.xcodeproj") + ")" +
-        " of the Kickstarter iOS app to iTunes Connect 🚀"
+      message: slack_message(
+        "app store",
+        get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
+        get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
+        "App Store Connect 🚀"
+      )
     )
   end
 
@@ -160,6 +167,16 @@ platform :ios do
       dsym: "./output/gym/KickAlpha.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_ALPHA_APP_ID"]
     )
+
+    slack(
+      slack_url: ENV["SLACK_WEBHOOK"],
+      message: slack_message(
+        "alpha",
+        get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
+        get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
+        "HockeyApp"
+      )
+    )
   end
 
   ### SHARED
@@ -174,7 +191,7 @@ platform :ios do
   end
 
   private_lane :upload_hockey do |options|
-    notes = generate_build_notes
+    notes = changelog
     hockey(
       api_token: ENV["HOCKEY_APP_TOKEN"],
       ipa: options[:ipa],
@@ -198,12 +215,8 @@ platform :ios do
     )
   end
 
-  private_lane :generate_build_notes do
-    build_num = ENV["CIRCLE_BUILD_NUM"]
-    short_sha = ENV["CIRCLE_SHA1"][0..6]
-    messages = changelog
-
-    "*** CircleCI build #{build_num}, for commit: #{short_sha} ***. \n Commit message: #{messages}"
+  def slack_message(type, version_number, build_number, platform)
+    "[#{type.upcase}] uploaded v#{version_number} (#{build_number}) of the Kickstarter iOS app to #{platform}"
   end
 
   after_all do |lane|

@@ -53,7 +53,6 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.outputs.dismissDiscoveryFilters.observe(self.dismissDiscoveryFilters.observer)
     self.vm.outputs.dividerIsHidden.observe(self.dividerIsHidden.observer)
     self.vm.outputs.exploreLabelIsHidden.observe(self.exploreLabelIsHidden.observer)
-    self.vm.outputs.logoutWithParams.observe(self.logoutWithParams.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(first).observe(self.primaryLabelOpacity.observer)
     self.vm.outputs.primaryLabelOpacityAnimated.map(second).observe(self.primaryLabelOpacityAnimated.observer)
     self.vm.outputs.primaryLabelText.observe(self.primaryLabelText.observer)
@@ -512,35 +511,11 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     }
   }
 
-  func testEnvironmentButtonIsHidden_Unknown() {
-    withEnvironment(mainBundle: MockBundle(bundleIdentifier: "com.unknown")) {
-
+  func testDebugButtonIsHidden_Unknown() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: "unknown")) {
       self.vm.inputs.viewDidLoad()
 
       self.debugContainerViewIsHidden.assertValue(true)
-    }
-  }
-
-  func testEnvironmentButton_SwitchesEnvironment() {
-
-    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
-
-      self.vm.inputs.environmentSwitcherButtonTapped(environment: .staging)
-
-      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Staging")
-
-      self.vm.inputs.environmentSwitcherButtonTapped(environment: .local)
-
-      XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment.rawValue, "Local")
-    }
-  }
-
-  func testLogoutWithParamsEmits_WhenEnvironmentChanges() {
-
-    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
-
-      self.vm.inputs.environmentSwitcherButtonTapped(environment: .production)
-      self.logoutWithParams.assertDidEmitValue()
     }
   }
 }

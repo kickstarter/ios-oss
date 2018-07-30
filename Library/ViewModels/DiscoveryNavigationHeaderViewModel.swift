@@ -8,9 +8,6 @@ public protocol DiscoveryNavigationHeaderViewModelInputs {
   /// Call to configure with Discovery params.
   func configureWith(params: DiscoveryParams)
 
-  /// Call when environement switcher button is tapped.
-  func environmentSwitcherButtonTapped(environment: EnvironmentType)
-
   /// Call when favorite category button is tapped.
   func favoriteButtonTapped()
 
@@ -51,9 +48,6 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
 
   /// Emits whether the favorite container view is hidden.
   var favoriteViewIsHidden: Signal<Bool, NoError> { get }
-
-  /// Emits to log the user out after changing environment using the debug tool.
-  var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
 
   /// Emits params for Discovery view controller when filter selected.
   var notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError> { get }
@@ -127,20 +121,9 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
       return shouldHideLabel($0?.params)
     }
 
-    self.environmentSwitcherButtonTappedProperty.signal.skipNil()
-      .map(ServerConfig.config(for:))
-      .observeValues { config in
-      AppEnvironment.updateServerConfig(config)
-    }
-
-    self.logoutWithParams = self.environmentSwitcherButtonTappedProperty.signal.skipNil().ignoreValues()
-      .map { .defaults
-        |> DiscoveryParams.lens.includePOTD .~ true
-        |> DiscoveryParams.lens.sort .~ .magic
-    }
-
     self.debugContainerViewIsHidden = self.viewDidLoadProperty.signal
-      .map { !AppEnvironment.current.mainBundle.isAlpha && !AppEnvironment.current.mainBundle.isBeta }
+      .map { DiscoveryNavigationHeaderViewModel.canShowBetaTools(environment: AppEnvironment.current) }
+      .negate()
 
     self.favoriteViewIsHidden = paramsAndFiltersAreHidden.map(first)
       .map { $0.category == nil }
@@ -251,10 +234,6 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
       .observeValues { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
   }
 
-  fileprivate let environmentSwitcherButtonTappedProperty = MutableProperty<EnvironmentType?>(nil)
-  public func environmentSwitcherButtonTapped(environment: EnvironmentType) {
-    self.environmentSwitcherButtonTappedProperty.value = environment
-  }
   fileprivate let paramsProperty = MutableProperty<DiscoveryParams?>(nil)
   public func configureWith(params: DiscoveryParams) {
     self.paramsProperty.value = params
@@ -276,6 +255,10 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
     self.viewDidLoadProperty.value = ()
   }
 
+  private static func canShowBetaTools(environment: Environment) -> Bool {
+    return environment.mainBundle.isAlpha || environment.mainBundle.isBeta || environment.mainBundle.isDebug
+  }
+
   public let animateArrowToDown: Signal<Bool, NoError>
   public let arrowOpacityAnimated: Signal<(CGFloat, Bool), NoError>
   public let debugContainerViewIsHidden: Signal<Bool, NoError>
@@ -285,7 +268,6 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
   public let favoriteButtonAccessibilityLabel: Signal<String, NoError>
   public let favoriteViewIsDimmed: Signal<Bool, NoError>
   public let favoriteViewIsHidden: Signal<Bool, NoError>
-  public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public let notifyDelegateFilterSelectedParams: Signal<DiscoveryParams, NoError>
   public let primaryLabelFont: Signal<Bool, NoError>
   public let primaryLabelOpacityAnimated: Signal<(CGFloat, Bool), NoError>
