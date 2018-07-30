@@ -174,9 +174,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.configureFabric
       .observeForUI()
       .observeValues {
-        if !KsApi.Secrets.isOSS {
-          Fabric.with([Crashlytics.self])
-        }
+        Fabric.with([Crashlytics.self])
     }
 
     self.viewModel.outputs.configureHockey
