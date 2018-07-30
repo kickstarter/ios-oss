@@ -44,6 +44,9 @@ internal struct MockService: ServiceType {
   fileprivate let fetchFriendStatsResponse: FriendStatsEnvelope?
   fileprivate let fetchFriendStatsError: ErrorEnvelope?
 
+  fileprivate let fetchExportStateResponse: ExportDataEnvelope?
+  fileprivate let fetchExportStateError: ErrorEnvelope?
+
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
@@ -171,6 +174,8 @@ internal struct MockService: ServiceType {
                 fetchFriendsError: ErrorEnvelope? = nil,
                 fetchFriendStatsResponse: FriendStatsEnvelope? = nil,
                 fetchFriendStatsError: ErrorEnvelope? = nil,
+                fetchExportStateResponse: ExportDataEnvelope? = nil,
+                fetchExportStateError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
@@ -278,6 +283,9 @@ internal struct MockService: ServiceType {
 
     self.fetchFriendStatsResponse = fetchFriendStatsResponse
     self.fetchFriendStatsError = fetchFriendStatsError
+
+    self.fetchExportStateResponse = fetchExportStateResponse
+    self.fetchExportStateError = fetchExportStateError
 
     self.fetchDraftResponse = fetchDraftResponse
     self.fetchDraftError = fetchDraftError
@@ -1018,8 +1026,13 @@ internal struct MockService: ServiceType {
     return SignalProducer(value: VoidEnvelope())
   }
 
-  func exportDataState(state: String, downloadUrl: String) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    return SignalProducer(value: VoidEnvelope())
+  func exportDataState() -> SignalProducer<ExportDataEnvelope, ErrorEnvelope> {
+    if let response = fetchExportStateResponse {
+      return SignalProducer(value: response)
+    } else if let error = fetchExportStateError {
+      return SignalProducer(error: error)
+    }
+    return SignalProducer(value: .template)
   }
 
   internal func searchMessages(query: String, project: Project?)
@@ -1234,6 +1247,8 @@ private extension MockService {
           fetchFriendsError: $1.fetchFriendsError,
           fetchFriendStatsResponse: $1.fetchFriendStatsResponse,
           fetchFriendStatsError: $1.fetchFriendStatsError,
+          fetchExportStateResponse: $1.fetchExportStateResponse,
+          fetchExportStateError: $1.fetchExportStateError,
           fetchDraftResponse: $1.fetchDraftResponse,
           fetchDraftError: $1.fetchDraftError,
           addAttachmentResponse: $1.addAttachmentResponse,

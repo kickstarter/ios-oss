@@ -81,8 +81,10 @@ CreatorDigestSettingsViewModelInputs, CreatorDigestSettingsViewModelOutputs {
           switch notification {
           case .creatorDigest:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
-                                                                                          on: on)
+                                                                                            on: on)
+          default: break
         }
+        default: break
       }
     }
   }
@@ -114,27 +116,4 @@ CreatorDigestSettingsViewModelInputs, CreatorDigestSettingsViewModelOutputs {
 
   public var inputs: CreatorDigestSettingsViewModelInputs { return self }
   public var outputs: CreatorDigestSettingsViewModelOutputs { return self }
-}
-
-private enum UserAttribute {
-  case notification(Notification)
-
-  fileprivate var lens: Lens<User, Bool?> {
-    switch self {
-    case let .notification(notification):
-    switch notification {
-    case .creatorDigest:  return User.lens.notifications.creatorDigest
-      }
-    }
-  }
-}
-
-private enum Notification {
-  case creatorDigest
-
-  fileprivate var trackingString: String {
-    switch self {
-    case .creatorDigest:  return "Creator digest"
-    }
-  }
 }
