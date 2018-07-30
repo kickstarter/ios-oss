@@ -1,3 +1,5 @@
+import Crashlytics
+import Fabric
 import FBSDKCoreKit
 import Foundation
 import HockeySDK
@@ -168,6 +170,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { [weak self] in
         self?.presentRemoteNotificationAlert($0)
       }
+
+    self.viewModel.outputs.configureFabric
+      .observeForUI()
+      .observeValues {
+        if !KsApi.Secrets.isOSS {
+          Fabric.with([Crashlytics.self])
+        }
+    }
 
     self.viewModel.outputs.configureHockey
       .observeForUI()
