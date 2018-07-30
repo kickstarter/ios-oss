@@ -84,11 +84,18 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
     self.updateCurrentUser = Signal.merge(initialUser,
                                           updatedUser, updateUserAllOn, previousUserOnError)
+      .takeWhen(
+        Signal.merge(
+          self.newslettersSwitchTappedProperty.signal.ignoreValues(),
+          self.allNewslettersSwitchProperty.signal.ignoreValues()
+        )
+      )
 
-    self.subscribeToAllSwitchIsOn = self.updateCurrentUser
+
+    self.subscribeToAllSwitchIsOn = initialUser
       .map(userIsSubscribedToAll(user:))
 
-    self.switchIsOn = self.updateCurrentUser
+    self.switchIsOn = initialUser
       .combineLatest(with: newsletter)
       .map(userIsSubscribed(user:newsletter:))
 

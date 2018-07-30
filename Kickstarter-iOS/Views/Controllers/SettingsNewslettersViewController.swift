@@ -44,6 +44,9 @@ internal final class SettingsNewslettersViewController: UIViewController {
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         self?.dataSource.load(newsletters: Newsletter.allCases, user: user)
+        if let indexes = self?.tableView.indexPathsForVisibleRows {
+          self?.tableView.reloadRows(at: indexes, with: .none)
+        }
     }
   }
 }
