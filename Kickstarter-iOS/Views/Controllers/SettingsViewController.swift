@@ -307,7 +307,7 @@ internal final class SettingsViewController: UIViewController {
     self.exportDataButton.rac.enabled = self.viewModel.outputs.exportDataButtonEnabled
     self.exportDataExpirationText.rac.hidden = self.viewModel.outputs.showDataExpirationAndChevron
     self.exportChevron.rac.hidden = self.viewModel.outputs.showDataExpirationAndChevron
-    self.privateProfileSwitch.rac.on = self.viewModel.outputs.privateProfileEnabled 
+    self.privateProfileSwitch.rac.on = self.viewModel.outputs.privateProfileEnabled
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
   }
   // swiftlint:enable function_body_length
