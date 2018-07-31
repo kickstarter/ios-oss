@@ -157,6 +157,7 @@ private func userIsSubscribedToAll(user: User) -> Bool? {
 }
 
 private func userIsSubscribed(user: User, newsletter: Newsletter) -> Bool? {
+  
   switch newsletter {
   case .arts:
     return user.newsletters.arts
