@@ -9,12 +9,12 @@ protocol SettingsNotificationCellDelegate: class {
 }
 
 final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var arrowImageView: UIImageView!
   @IBOutlet fileprivate weak var emailNotificationsButton: UIButton!
+  @IBOutlet fileprivate weak var projectCountLabel: UILabel!
   @IBOutlet fileprivate weak var pushNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var separatorView: UIView!
-  @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet fileprivate weak var projectCountLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   weak var delegate: SettingsNotificationCellDelegate?
 
@@ -87,10 +87,10 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     super.bindViewModel()
 
     self.emailNotificationsButton.rac.selected = viewModel.outputs.emailNotificationsEnabled
-    self.emailNotificationsButton.rac.hidden = viewModel.outputs.hideEmailNotificationsButton
+    self.emailNotificationsButton.rac.hidden = viewModel.outputs.emailNotificationButtonIsHidden
     self.projectCountLabel.rac.text = viewModel.outputs.projectCountText
     self.pushNotificationsButton.rac.selected = viewModel.outputs.pushNotificationsEnabled
-    self.pushNotificationsButton.rac.hidden = viewModel.outputs.hidePushNotificationButton
+    self.pushNotificationsButton.rac.hidden = viewModel.outputs.pushNotificationButtonIsHidden
     self.projectCountLabel.rac.accessibilityHint = viewModel.outputs
       .manageProjectNotificationsButtonAccessibilityHint
 

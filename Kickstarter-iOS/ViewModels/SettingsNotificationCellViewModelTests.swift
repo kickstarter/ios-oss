@@ -24,8 +24,8 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.outputs.enableButtonAnimation.observe(enableButtonAnimationObserver.observer)
     self.vm.outputs.emailNotificationsEnabled.observe(emailNotificationsEnabledObserver.observer)
-    self.vm.outputs.hideEmailNotificationsButton.observe(hideEmailNotificationButtonObserver.observer)
-    self.vm.outputs.hidePushNotificationButton.observe(hidePushNotificationButtonObserver.observer)
+    self.vm.outputs.emailNotificationButtonIsHidden.observe(hideEmailNotificationButtonObserver.observer)
+    self.vm.outputs.pushNotificationButtonIsHidden.observe(hidePushNotificationButtonObserver.observer)
     self.vm.outputs.manageProjectNotificationsButtonAccessibilityHint
       .observe(manageProjectNotificationsHintObserver.observer)
     self.vm.outputs.projectCountText.observe(projectCountTextObserver.observer)
@@ -217,6 +217,35 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testUpdateCurrentUser_Success() {
+    let mockService = MockService()
+    let user = User.template
+      |> UserAttribute.notification(.updates).lens .~ true
+      |> UserAttribute.notification(.mobileUpdates).lens .~ true
 
+    let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.configure(with: value)
+      self.emailNotificationsEnabledObserver.assertValue(true)
+      self.pushNotificationsEnabledObserver.assertValue(true)
+
+      self.vm.inputs.didTapEmailNotificationsButton(selected: true)
+
+      scheduler.advance()
+
+      self.updateCurrentUserObserver.assertValueCount(1, "User was updated")
+
+      self.emailNotificationsEnabledObserver
+        .assertValues([true, false], "Email notification button was toggled")
+
+      self.vm.inputs.didTapPushNotificationsButton(selected: true)
+
+      scheduler.advance()
+
+      self.updateCurrentUserObserver.assertValueCount(2, "User was updated")
+
+      self.pushNotificationsEnabledObserver
+        .assertValues([true, false], "Push notification button was toggled")
+    }
   }
 }

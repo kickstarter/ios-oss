@@ -13,8 +13,8 @@ protocol SettingsNotificationCellViewModelInputs {
 protocol SettingsNotificationCellViewModelOutputs {
   var enableButtonAnimation: Signal<Bool, NoError> { get }
   var emailNotificationsEnabled: Signal<Bool, NoError> { get }
-  var hideEmailNotificationsButton: Signal<Bool, NoError> { get }
-  var hidePushNotificationButton: Signal<Bool, NoError> { get }
+  var emailNotificationButtonIsHidden: Signal<Bool, NoError> { get }
+  var pushNotificationButtonIsHidden: Signal<Bool, NoError> { get }
   var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
   var projectCountText: Signal<String, NoError> { get }
   var pushNotificationsEnabled: Signal<Bool, NoError> { get }
@@ -121,17 +121,17 @@ SettingsNotificationCellViewModelType {
       previousEmailNotificationValue
     )
 
-    self.hideEmailNotificationsButton = cellTypeProperty.signal
+    self.emailNotificationButtonIsHidden = cellTypeProperty.signal
       .skipNil()
       .map { $0.shouldShowEmailNotificationButton }
       .negate()
 
-    self.hidePushNotificationButton = cellTypeProperty.signal
+    self.pushNotificationButtonIsHidden = cellTypeProperty.signal
       .skipNil()
       .map { $0.showShowPushNotificationButton }
       .negate()
 
-    self.enableButtonAnimation = self.hideEmailNotificationsButton
+    self.enableButtonAnimation = self.emailNotificationButtonIsHidden
       .negate() // Only add animation if email notification button is shown
 
     self.manageProjectNotificationsButtonAccessibilityHint = initialUserProperty.signal
@@ -168,8 +168,8 @@ SettingsNotificationCellViewModelType {
 
   public let enableButtonAnimation: Signal<Bool, NoError>
   public let emailNotificationsEnabled: Signal<Bool, NoError>
-  public let hideEmailNotificationsButton: Signal<Bool, NoError>
-  public let hidePushNotificationButton: Signal<Bool, NoError>
+  public let emailNotificationButtonIsHidden: Signal<Bool, NoError>
+  public let pushNotificationButtonIsHidden: Signal<Bool, NoError>
   public let manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
   public let projectCountText: Signal<String, NoError>
   public let pushNotificationsEnabled: Signal<Bool, NoError>
