@@ -46,4 +46,3 @@ class SettingsNewslettersDataSourceTests: XCTestCase {
     XCTAssertEqual("SettingsNewslettersCell", self.dataSource.reusableId(item: 9, section: 0))
   }
 }
-
