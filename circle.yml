@@ -35,7 +35,9 @@ jobs:
 
       - checkout
 
-      - run: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run: 
+          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
@@ -79,7 +81,9 @@ jobs:
 
       - checkout
 
-      - run: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run: 
+          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+
       - restore_cache:
           keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
@@ -114,7 +118,9 @@ jobs:
 
       - checkout
 
-      - run: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run: 
+          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+
       - restore_cache:
           keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
@@ -147,7 +153,9 @@ jobs:
 
       - checkout
 
-      - run: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run: 
+          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+
       - restore_cache:
           keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
@@ -180,8 +188,9 @@ jobs:
 
       - checkout
 
-      - run: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
-      
+      - run: 
+          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+
       - restore_cache:
           keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
@@ -231,7 +240,9 @@ jobs:
 
       - checkout
 
-      - run: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run:
+          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
@@ -286,7 +297,9 @@ jobs:
 
       - checkout
 
-      - run: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run: 
+          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
@@ -337,7 +350,9 @@ jobs:
 
       - checkout
 
-      - run: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run: 
+          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
