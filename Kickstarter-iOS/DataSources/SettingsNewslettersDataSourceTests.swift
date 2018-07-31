@@ -4,7 +4,7 @@ import XCTest
 @testable import KsApi
 import Prelude
 
-class SettingsNewslettersDataSourceTests: XCTestCase {
+final class SettingsNewslettersDataSourceTests: XCTestCase {
 
     let dataSource = SettingsNewslettersDataSource()
     let tableView = UITableView()
