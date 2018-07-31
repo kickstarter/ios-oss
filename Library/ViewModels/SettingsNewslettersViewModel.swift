@@ -5,8 +5,8 @@ import Result
 
 public protocol SettingsNewslettersViewModelInputs {
 
-  func viewDidLoad()
   func didUpdate(user: User)
+  func viewDidLoad()
 }
 
 public protocol SettingsNewslettersViewModelOutputs {
