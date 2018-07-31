@@ -6,6 +6,7 @@ ios_version: &ios_version 11.4
 opentok_version: &opentok_version 2.10.2
 fabric_sdk_version: &fabric_sdk_version 3.10.5
 preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.4) [2437FE39-2885-482D-A42F-A169C65AE271]' || true
+store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
 
 base_job: &base_job
   macos:
@@ -35,12 +36,16 @@ jobs:
 
       - checkout
 
-      - run: 
-          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
 
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
+
+      - restore_cache:
+          keys: 
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -81,13 +86,17 @@ jobs:
 
       - checkout
 
-      - run: 
-          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
             - opentok-cache-{{ checksum "Opentok.lock" }}
+
+      - restore_cache:
+          keys: 
+            - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -118,13 +127,17 @@ jobs:
 
       - checkout
 
-      - run: 
-          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
             - opentok-cache-{{ checksum "Opentok.lock" }}
+
+      - restore_cache:
+          keys: 
+            - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -153,13 +166,17 @@ jobs:
 
       - checkout
 
-      - run: 
-          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
             - opentok-cache-{{ checksum "Opentok.lock" }}
+
+      - restore_cache:
+          keys: 
+            - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -188,13 +205,17 @@ jobs:
 
       - checkout
 
-      - run: 
-          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
             - opentok-cache-{{ checksum "Opentok.lock" }}
+
+      - restore_cache:
+          keys: 
+            - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -241,11 +262,15 @@ jobs:
       - checkout
 
       - run:
-          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
 
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
+
+      - restore_cache:
+          keys: 
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -297,12 +322,16 @@ jobs:
 
       - checkout
 
-      - run: 
-          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
 
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
+
+      - restore_cache:
+          keys: 
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -350,14 +379,18 @@ jobs:
 
       - checkout
 
-      - run: 
-          command: echo "$FABRIC_SDK_VERSION" > fabric_version.txt
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
 
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
 
+      - restore_cache:
+          keys: 
+            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            
       - run:
           name: Make bootstrap
           command: make bootstrap
