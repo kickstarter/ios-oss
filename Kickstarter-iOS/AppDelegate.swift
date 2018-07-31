@@ -171,13 +171,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.presentRemoteNotificationAlert($0)
       }
 
+    #if RELEASE || HOCKEY
     self.viewModel.outputs.configureFabric
       .observeForUI()
       .observeValues {
-        #if RELEASE || HOCKEY
-          Fabric.with([Crashlytics.self])
-        #endif
+        Fabric.with([Crashlytics.self])
     }
+    #endif
 
     self.viewModel.outputs.configureHockey
       .observeForUI()
