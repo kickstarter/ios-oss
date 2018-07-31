@@ -478,7 +478,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   @IBAction func goToNotifications(_ sender: UIButton) {
-    let vc = SettingsNewslettersViewController.instantiate()
+    let vc = SettingsNotificationsViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
