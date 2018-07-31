@@ -38,7 +38,7 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: submodules configs secrets opentok
+dependencies: submodules configs secrets opentok fabric
 
 bootstrap: hooks dependencies
 	brew update || brew update
@@ -174,4 +174,4 @@ fabric:
 	fi
 
 
-.PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok
+.PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok fabric
