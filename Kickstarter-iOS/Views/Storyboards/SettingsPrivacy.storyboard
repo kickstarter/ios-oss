@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -197,18 +198,37 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bMn-0H-yEC">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6hE-J6-eaL">
-                                                    <rect key="frame" x="10" y="15" width="355" height="14"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l2B-Ws-xhI">
+                                                    <rect key="frame" x="67" y="-42" width="240" height="128"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="na3-gk-DnO">
+                                                            <rect key="frame" x="-78" y="37" width="395" height="54"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6hE-J6-eaL">
+                                                                    <rect key="frame" x="20" y="20" width="355" height="14"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="JPT-WC-CVC">
+                                                                    <rect key="frame" x="197" y="27" width="0.0" height="0.0"/>
+                                                                </activityIndicatorView>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="na3-gk-DnO" secondAttribute="bottom" constant="10" id="aJ8-a7-XG0"/>
+                                                        <constraint firstAttribute="trailing" secondItem="na3-gk-DnO" secondAttribute="trailing" constant="10" id="f6a-sb-CH6"/>
+                                                        <constraint firstItem="na3-gk-DnO" firstAttribute="leading" secondItem="l2B-Ws-xhI" secondAttribute="leading" constant="10" id="gf2-2K-LM4"/>
+                                                        <constraint firstItem="na3-gk-DnO" firstAttribute="top" secondItem="l2B-Ws-xhI" secondAttribute="top" constant="10" id="tYx-Ep-xwy"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="6hE-J6-eaL" secondAttribute="bottom" constant="15" id="DQF-X5-hJk"/>
-                                                <constraint firstItem="6hE-J6-eaL" firstAttribute="top" secondItem="bMn-0H-yEC" secondAttribute="top" constant="15" id="FaX-VO-5ct"/>
-                                                <constraint firstAttribute="trailing" secondItem="6hE-J6-eaL" secondAttribute="trailing" constant="10" id="QKD-sw-fRE"/>
-                                                <constraint firstItem="6hE-J6-eaL" firstAttribute="leading" secondItem="bMn-0H-yEC" secondAttribute="leading" constant="10" id="fhN-lP-ctX"/>
+                                                <constraint firstItem="l2B-Ws-xhI" firstAttribute="top" secondItem="bMn-0H-yEC" secondAttribute="top" id="MFb-QR-XhD"/>
+                                                <constraint firstAttribute="bottom" secondItem="l2B-Ws-xhI" secondAttribute="bottom" id="PGO-B2-s4C"/>
+                                                <constraint firstAttribute="trailing" secondItem="l2B-Ws-xhI" secondAttribute="trailing" id="enI-9o-8JC"/>
+                                                <constraint firstItem="l2B-Ws-xhI" firstAttribute="leading" secondItem="bMn-0H-yEC" secondAttribute="leading" id="scN-TB-SXk"/>
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w3T-mz-kcX">
@@ -220,30 +240,28 @@
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uag-cG-Z0v">
                                             <rect key="frame" x="0.0" y="1" width="375" height="42"/>
-                                            <connections>
-                                                <action selector="requestDataButtonTapped:" destination="mv7-dd-4yd" eventType="touchUpInside" id="or5-ER-8Ee"/>
-                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="trailing" secondItem="ihf-gP-uZh" secondAttribute="trailingMargin" id="7Ol-wf-rlh"/>
                                         <constraint firstAttribute="trailing" secondItem="bMn-0H-yEC" secondAttribute="trailing" id="AJI-4c-pyJ"/>
-                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="J2F-UO-XjY"/>
+                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="top" secondItem="w3T-mz-kcX" secondAttribute="bottom" id="JY6-6e-sLk"/>
                                         <constraint firstAttribute="trailing" secondItem="w3T-mz-kcX" secondAttribute="trailing" id="LVW-Uh-pDY"/>
                                         <constraint firstAttribute="bottom" secondItem="fd8-Je-vBB" secondAttribute="bottom" id="NDY-FX-jeA"/>
                                         <constraint firstAttribute="bottom" secondItem="bMn-0H-yEC" secondAttribute="bottom" id="TNF-mo-aVx"/>
                                         <constraint firstAttribute="trailing" secondItem="fd8-Je-vBB" secondAttribute="trailing" id="cFd-y3-ZMq"/>
                                         <constraint firstItem="w3T-mz-kcX" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="dBa-lz-2Y4"/>
-                                        <constraint firstItem="fd8-Je-vBB" firstAttribute="top" secondItem="Uag-cG-Z0v" secondAttribute="bottom" id="i2b-IX-dF0"/>
                                         <constraint firstItem="bMn-0H-yEC" firstAttribute="top" secondItem="ihf-gP-uZh" secondAttribute="top" id="oJ9-Al-ZAu"/>
+                                        <constraint firstItem="fd8-Je-vBB" firstAttribute="top" secondItem="Uag-cG-Z0v" secondAttribute="bottom" id="ptb-ng-cCz"/>
                                         <constraint firstItem="fd8-Je-vBB" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="rpq-29-ebI"/>
-                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="top" secondItem="w3T-mz-kcX" secondAttribute="bottom" id="taa-nu-UHf"/>
-                                        <constraint firstAttribute="trailing" secondItem="Uag-cG-Z0v" secondAttribute="trailing" id="uI3-DG-5xU"/>
                                         <constraint firstItem="bMn-0H-yEC" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="vZR-r2-Oc1"/>
                                         <constraint firstItem="w3T-mz-kcX" firstAttribute="top" secondItem="ihf-gP-uZh" secondAttribute="top" id="w4F-id-x88"/>
+                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leadingMargin" id="z03-kJ-y2z"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="containerView" destination="bMn-0H-yEC" id="zjd-MC-mgF"/>
+                                    <outlet property="requestDataActivityIndicator" destination="JPT-WC-CVC" id="wrf-4b-KFs"/>
                                     <outlet property="requestDataButton" destination="Uag-cG-Z0v" id="3mY-YJ-03k"/>
                                     <outlet property="requestDataLabel" destination="6hE-J6-eaL" id="sRG-ka-7Zq"/>
                                     <outletCollection property="separatorViews" destination="fd8-Je-vBB" collectionClass="NSMutableArray" id="3dO-Ki-EeK"/>

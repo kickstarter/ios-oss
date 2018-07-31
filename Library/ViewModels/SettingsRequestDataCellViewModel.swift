@@ -7,6 +7,7 @@ import Result
 
 public protocol SettingsRequestDataCellViewModelInputs {
   func exportDataTapped()
+  func startRequestDataTapped()
   func configureWith(user: User)
 }
 
@@ -15,7 +16,8 @@ public protocol SettingsRequestDataCellViewModelOutputs {
   var requestDataLoadingIndicator: Signal<Bool, NoError> { get }
   var requestDataText: Signal<String, NoError> { get }
   var requestExportData: Signal<(), NoError> { get }
-}
+  var requestDataDownloadLink: Signal<String, NoError> { get }
+  }
 
 public protocol SettingsRequestDataCellViewModelType {
   var inputs: SettingsRequestDataCellViewModelInputs { get }
@@ -25,16 +27,8 @@ public protocol SettingsRequestDataCellViewModelType {
 public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellViewModelType, SettingsRequestDataCellViewModelInputs, SettingsRequestDataCellViewModelOutputs {
 
   public init() {
-    let initialUser = configureWithProperty.signal
+    let initialUser = configureWithUserProperty.signal
       .skipNil()
-
-    self.requestExportData = self.exportDataTappedProperty.signal
-      .switchMap {
-        AppEnvironment.current.apiService.exportData()
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .demoteErrors()
-    }
-      .ignoreValues()
 
     let exportEnvelope = initialUser
       .switchMap { _ in
@@ -43,10 +37,18 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
           .demoteErrors()
     }
 
+    self.requestExportData = self.startRequestDataTappedProperty.signal
+      .switchMap {
+        AppEnvironment.current.apiService.exportData()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .demoteErrors()
+    }
+      .ignoreValues()
+
     self.requestDataLoadingIndicator = Signal.merge(
-    //  self.viewDidLoadProperty.signal.mapConst(false),
+      self.configureWithUserProperty.signal.mapConst(false),
       exportEnvelope.map { $0.state == .processing },
-      self.exportDataTappedProperty.signal.mapConst(true)
+      self.startRequestDataTappedProperty.signal.mapConst(true)
     )
 
     self.requestDataText = self.requestDataLoadingIndicator.signal
@@ -55,9 +57,9 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     self.requestDataButtonEnabled = self.requestDataLoadingIndicator.signal
       .map { !$0 }
 
-// In Expiration Footer
-//    self.exportDataExpirationDate = exportEnvelope
-//      .map { dateFormatter(for: $0.expiresAt, state: $0.state) }
+    self.requestDataDownloadLink = exportEnvelope
+      .map { $0.dataUrl ?? "" }
+      .takeWhen(self.exportDataTappedProperty.signal)
   }
 
   fileprivate let exportDataTappedProperty = MutableProperty(())
@@ -65,15 +67,21 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     self.exportDataTappedProperty.value = ()
   }
 
-  fileprivate let configureWithProperty = MutableProperty<User?>(nil)
+  fileprivate let startRequestDataTappedProperty = MutableProperty(())
+  public func startRequestDataTapped() {
+    self.startRequestDataTappedProperty.value = ()
+  }
+
+  fileprivate let configureWithUserProperty = MutableProperty<User?>(nil)
   public func configureWith(user: User) {
-    self.configureWithProperty.value = user
+    self.configureWithUserProperty.value = user
   }
 
   public let requestDataText: Signal<String, NoError>
   public let requestDataButtonEnabled: Signal<Bool, NoError>
   public let requestDataLoadingIndicator: Signal<Bool, NoError>
   public let requestExportData: Signal<(), NoError>
+  public let requestDataDownloadLink: Signal<String, NoError>
 
   public var inputs: SettingsRequestDataCellViewModelInputs { return self }
   public var outputs: SettingsRequestDataCellViewModelOutputs { return self }

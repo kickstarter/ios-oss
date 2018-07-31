@@ -27,8 +27,8 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
   }
 
   internal func loadRecommendationsCell(user: User) {
-    let this = [user]
-    self.set(values: this.map { $0 } ,
+    let this = [user] // correct naming here
+    self.set(values: this.map { $0 },
              cellClass: SettingsPrivacyRecommendationCell.self,
              inSection: Section.recommendations.rawValue)
   }
@@ -40,11 +40,12 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
   }
 
   internal func loadDownloadDataCell(user: User) {
-    let this = [user]
-    self.set(values: this.map { $0 } ,
+    let this = [user] // correct naming here
+    self.set(values: this.map { $0 },
              cellClass: SettingsPrivacyRequestDataCell.self,
              inSection: Section.downloadData.rawValue)
   }
+
 
   internal func loadDownloadDataFooter() {
     self.set(values: ["DOWNLOAD DATA COPY"],

@@ -6,10 +6,14 @@ import SafariServices
 import Result
 import UIKit
 
-internal final class SettingsPrivacyViewController: UITableViewController {
+public protocol SettingsPrivacyViewControllerDelegate: class {
+  func notifyStartRequestDataTapped()
+}
+
+internal final class SettingsPrivacyViewController: UITableViewController, UIDocumentInteractionControllerDelegate {
   internal let viewModel: SettingsPrivacyViewModelType = SettingsPrivacyViewModel()
-  internal let cellViewModel: SettingsPrivacyCellViewModelType = SettingsPrivacyCellViewModel()
   fileprivate let dataSource = SettingsPrivacyDataSource()
+  internal weak var delegate: SettingsPrivacyViewControllerDelegate?
 
   internal static func configureWith(user: User) -> SettingsPrivacyViewController {
     let vc = Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
@@ -87,6 +91,17 @@ internal final class SettingsPrivacyViewController: UITableViewController {
         self?.dataSource.loadDeleteAccountCell(user: user)
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.updateCurrentUser // put in VC
+      .observeForUI()
+      .observeValues { [weak self] user in
+        AppEnvironment.updateCurrentUser(user)
+        self?.dataSource.loadFollowCell(user: user)
+        self?.tableView.reloadData()
+    }
+
+
+
   }
 
   internal override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
@@ -124,10 +139,9 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
 
     let startTheRequest = UIAlertAction(title: Strings.Start_data_collection(),
                                         style: .default,
-                                        handler: nil
-//      { [weak self] _ in
-//    self?.viewModel.inputs.exportDataTapped()
-//    }
+                                        handler: { _ in
+        NotificationCenter.default.post(name: Notification.Name.ksr_dataRequested, object: nil, userInfo: nil)
+      }
     )
 
     let dismiss = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -136,6 +150,11 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
     exportDataSheet.addAction(dismiss)
 
     self.present(exportDataSheet, animated: true, completion: nil)
+  }
+
+  func notifyDelegatePresentDownloadData(url: String) {
+    guard let fileUrl = URL(string: url) else { return }
+    UIApplication.shared.openURL(fileUrl)
   }
 }
 
