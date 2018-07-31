@@ -1,29 +1,48 @@
-public enum HelpType {
-  case contact
-  case cookie
+import UIKit
+
+public enum HelpType: SettingsCellTypeProtocol {
   case helpCenter
+  case contact
   case howItWorks
-  case privacy
   case terms
+  case privacy
+  case cookie
   case trust
 
   public var title: String {
     switch self {
-    case .contact:
-    return Strings.login_tout_help_sheet_contact()
-    case .cookie:
-      return Strings.login_tout_help_sheet_cookie()
     case .helpCenter:
       return Strings.Help_center()
+    case .contact:
+      return Strings.profile_settings_about_contact()
     case .howItWorks:
-    return Strings.login_tout_help_sheet_how_it_works()
-    case .privacy:
-      return Strings.login_tout_help_sheet_privacy()
+      return Strings.profile_settings_about_how_it_works()
     case .terms:
-      return Strings.login_tout_help_sheet_terms()
+      return Strings.profile_settings_about_terms()
+    case .privacy:
+      return Strings.profile_settings_about_privacy()
+    case .cookie:
+      return Strings.profile_settings_about_cookie()
     case .trust:
       return ""
     }
+  }
+
+  public var showArrowImageView: Bool {
+    switch self {
+    case .contact:
+      return true
+    default:
+      return false
+    }
+  }
+
+  public var textColor: UIColor {
+    return .ksr_text_dark_grey_500
+  }
+
+  public var hideDescriptionLabel: Bool {
+    return true
   }
 
   public var trackingString: String {

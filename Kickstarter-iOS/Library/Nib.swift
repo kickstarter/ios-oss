@@ -7,10 +7,11 @@ public enum Nib: String {
   case DiscoveryProjectCategoryView
   case LiveStreamNavTitleView
   case RewardCell
+  case SettingsHeaderView
   case SettingsNewslettersCell
   case SettingsNewslettersTopCell
+  case SettingsTableViewCell
   case ThanksCategoryCell
-
 }
 
 extension UITableView {
