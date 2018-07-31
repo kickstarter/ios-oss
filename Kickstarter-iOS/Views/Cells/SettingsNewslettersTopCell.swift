@@ -5,6 +5,7 @@ import UIKit
 
 protocol SettingsNewslettersTopCellDelegate: class {
   func didUpdateAllNewsletters(user: User)
+  func couldNotUpdateAllNewsletters(_ message: String)
 }
 
 final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
@@ -58,6 +59,12 @@ final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] in
          self?.delegate?.didUpdateAllNewsletters(user: $0)
+    }
+
+    self.viewModel.outputs.unableToSaveError
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.delegate?.couldNotUpdateAllNewsletters($0)
     }
 
     self.newsletterSwitch.rac.on = self.viewModel.outputs.subscribeToAllSwitchIsOn.skipNil()

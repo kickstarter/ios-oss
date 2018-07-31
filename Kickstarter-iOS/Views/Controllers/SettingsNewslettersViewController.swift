@@ -44,9 +44,7 @@ internal final class SettingsNewslettersViewController: UIViewController {
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         self?.dataSource.load(newsletters: Newsletter.allCases, user: user)
-        if let indexes = self?.tableView.indexPathsForVisibleRows {
-          self?.tableView.reloadRows(at: indexes, with: .none)
-        }
+        self?.tableView.reloadData()
     }
   }
 }
@@ -67,6 +65,11 @@ extension SettingsNewslettersViewController: UITableViewDelegate {
 
 extension SettingsNewslettersViewController: SettingsNewslettersCellDelegate {
 
+  func couldNotUpdateUser(_ message: String) {
+    let errorAlert = UIAlertController.genericError(message)
+    self.present(errorAlert, animated: true, completion: nil)
+  }
+
   func didUpdate(user: User) {
     self.viewModel.inputs.didUpdate(user: user)
   }
@@ -81,5 +84,10 @@ extension SettingsNewslettersViewController: SettingsNewslettersTopCellDelegate 
 
   func didUpdateAllNewsletters(user: User) {
     self.viewModel.inputs.didUpdate(user: user)
+  }
+
+  func couldNotUpdateAllNewsletters(_ message: String) {
+    let errorAlert = UIAlertController.genericError(message)
+    self.present(errorAlert, animated: true, completion: nil)
   }
 }

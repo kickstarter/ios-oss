@@ -88,17 +88,21 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
-    self.vm.inputs.awakeFromNib()
-
     self.vm.inputs.configureWith(value: (newsletter, user))
     self.switchIsOn.assertValues([false])
 
     self.vm.inputs.newslettersSwitchTapped(on: true)
-    self.switchIsOn.assertValues([false, true])
+    let user1 = User.template |> UserAttribute.newsletter(newsletter).lens .~ true
 
+    self.vm.inputs.configureWith(value: user1)
+
+    self.switchIsOn.assertValues([false, true])
     XCTAssertEqual(["Subscribed To Newsletter"], self.trackingClient.events)
 
     self.vm.inputs.newslettersSwitchTapped(on: false)
+    let user2 = User.template |> UserAttribute.newsletter(newsletter).lens .~ false
+
+    self.vm.inputs.configureWith(value: user2)
     self.switchIsOn.assertValues([false, true, false])
 
     XCTAssertEqual(["Subscribed To Newsletter", "Unsubscribed From Newsletter"], self.trackingClient.events)
@@ -108,7 +112,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
     withEnvironment(countryCode: "US") {
       let user = User.template
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-      self.vm.inputs.awakeFromNib()
+
       self.vm.inputs.newslettersSwitchTapped(on: true)
       self.showOptInPrompt.assertDidNotEmitValue("Non-German locale does not require double opt-in.")
     }
@@ -120,7 +124,6 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
       self.vm.inputs.configureWith(value: (.arts, user))
-      self.vm.inputs.awakeFromNib()
 
       self.vm.inputs.newslettersSwitchTapped(on: true)
       self.showOptInPrompt.assertValueCount(1, "German locale requires double opt-in.")
@@ -143,18 +146,22 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
       self.vm.inputs.configureWith(value: (.arts, user))
-      self.vm.inputs.awakeFromNib()
 
       self.switchIsOn.assertValues([false], "Newsletter notifications turned off as default.")
 
       self.vm.inputs.newslettersSwitchTapped(on: true)
+      let user1 = User.template
+        |> User.lens.newsletters.arts .~ true
 
+      self.vm.inputs.configureWith(value: user1)
       self.switchIsOn.assertValues([false, true], "Newsletter immediately turned on on tap.")
 
       self.scheduler.advance()
 
+      self.vm.inputs.allNewslettersSwitchTapped(on: false)
       self.unableToSaveError.assertValueCount(1, "Updating user errored.")
-      self.switchIsOn.assertValues([false, true, false], "Did not successfully save preference.")
+
+      self.switchIsOn.assertValues([false, true], "Did not successfully save preference.")
     }
   }
 
@@ -163,14 +170,19 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
     self.vm.inputs.configureWith(value: (.games, user))
-    self.vm.inputs.awakeFromNib()
 
-    self.updateCurrentUser.assertValueCount(1, "Begin with environment's current user.")
+    self.updateCurrentUser.assertValueCount(0, "Begin with environment's current user.")
 
     self.vm.inputs.newslettersSwitchTapped(on: true)
+
+    self.scheduler.advance()
+
+    self.updateCurrentUser.assertValueCount(1, "User should be updated.")
+
+    self.vm.inputs.newslettersSwitchTapped(on: false)
+
+    self.scheduler.advance()
+
     self.updateCurrentUser.assertValueCount(2, "User should be updated.")
-
-    self.vm.inputs.newslettersSwitchTapped(on: true)
-    self.updateCurrentUser.assertValueCount(3, "User should be updated.")
   }
 }

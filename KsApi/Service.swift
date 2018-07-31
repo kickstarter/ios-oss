@@ -29,7 +29,7 @@ public struct Service: ServiceType {
               buildVersion: String = Bundle.main._buildVersion) {
 
     self.appId = appId
-    self.serverConfig = ServerConfig.staging
+    self.serverConfig = serverConfig
     self.oauthToken = oauthToken
     self.language = language
     self.currency = currency

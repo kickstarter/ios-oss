@@ -11,18 +11,10 @@ internal final class SettingsNewslettersDataSource: ValueCellDataSource {
 
     let section = Section.newsletters.rawValue
 
-    self.clearValues(section: section)
+    let values = newsletters.map { ($0, user) }
 
-    self.appendRow(value: user,
-                   cellClass: SettingsNewslettersTopCell.self,
-                   toSection: section)
-
-    newsletters.forEach { value in
-
-      self.appendRow(value: (value, user),
-                     cellClass: SettingsNewslettersCell.self,
-                     toSection: section)
-    }
+    self.set(values: values, cellClass: SettingsNewslettersCell.self, inSection: section)
+    self.set(value: user, cellClass: SettingsNewslettersTopCell.self, inSection: section, row: 0)
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

@@ -59,7 +59,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
     }.logEvents(identifier: "updated user")
 
     let updateUserAllOn = initialUser
-      .combineLatest(with: self.allNewslettersSwitchProperty.signal.skipNil())
+      .takePairWhen(self.allNewslettersSwitchProperty.signal.skipNil())
       .map { user, on in
         return user
           |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: on)
@@ -71,33 +71,29 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
+    .logEvents(identifier: "update event")
 
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
-      }
+      }.logEvents(identifier: "Couldn't update user")
 
-    let previousUserOnError = Signal.merge(initialUser, updatedUser, updateUserAllOn)
-      .combinePrevious()
+    let initialUserOnError = initialUser
       .takeWhen(self.unableToSaveError)
-      .map { previous, _ in previous }
+      .map { previous in previous }
 
     self.updateCurrentUser = Signal.merge(initialUser,
-                                          updatedUser, updateUserAllOn, previousUserOnError)
-      .takeWhen(
-        Signal.merge(
-          self.newslettersSwitchTappedProperty.signal.ignoreValues(),
-          self.allNewslettersSwitchProperty.signal.ignoreValues()
-        )
-      )
-
+                                          updatedUser,
+                                          updateUserAllOn,
+                                          initialUserOnError)
+      .takeWhen(updateEvent.values().ignoreValues())
 
     self.subscribeToAllSwitchIsOn = initialUser
       .map(userIsSubscribedToAll(user:))
 
     self.switchIsOn = initialUser
       .combineLatest(with: newsletter)
-      .map(userIsSubscribed(user:newsletter:))
+      .map(userIsSubscribed(user:newsletter:)).logEvents(identifier: "switchIsOn emitted")
 
     // Koala
     userAttributeChanged

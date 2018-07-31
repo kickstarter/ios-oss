@@ -4,8 +4,9 @@ import Prelude
 import UIKit
 
 internal protocol SettingsNewslettersCellDelegate: class {
-  func shouldShowOptInAlert(_ newsletterName: String)
+  func couldNotUpdateUser(_ message: String)
   func didUpdate(user: User)
+  func shouldShowOptInAlert(_ newsletterName: String)
 }
 
 internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
@@ -62,6 +63,12 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
       .observeForControllerAction()
       .observeValues { [weak self] newsletter in
         self?.delegate?.shouldShowOptInAlert(newsletter)
+    }
+
+    self.viewModel.outputs.unableToSaveError
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.delegate?.couldNotUpdateUser($0)
     }
 
     self.viewModel.outputs.updateCurrentUser
