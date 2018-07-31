@@ -6,8 +6,8 @@ import ReactiveSwift
 import UIKit
 
 public protocol SettingsRequestDataCellDelegate: class {
-  func notifyDelegatePresentRequestDataPrompt()
-  func notifyDelegatePresentDownloadData(url: String)
+  func shouldPresentRequestDataPrompt()
+  func shouldRequestData(with url: String)
 }
 
 internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell {
@@ -64,10 +64,16 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.requestDataDownloadLink
+    self.viewModel.outputs.showRequestDataPrompt
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.delegate?.shouldPresentRequestDataPrompt()
+    }
+
+    self.viewModel.outputs.goToSafari
       .observeForUI()
       .observeValues { [weak self] url in
-        self?.delegate?.notifyDelegatePresentDownloadData(url: url)
+        self?.delegate?.shouldRequestData(with: url)
     }
 
     self.requestDataButton.rac.enabled = self.viewModel.outputs.requestDataButtonEnabled

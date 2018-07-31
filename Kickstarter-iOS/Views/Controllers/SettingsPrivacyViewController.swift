@@ -10,7 +10,7 @@ public protocol SettingsPrivacyViewControllerDelegate: class {
   func notifyStartRequestDataTapped()
 }
 
-internal final class SettingsPrivacyViewController: UITableViewController, UIDocumentInteractionControllerDelegate {
+internal final class SettingsPrivacyViewController: UITableViewController {
   internal let viewModel: SettingsPrivacyViewModelType = SettingsPrivacyViewModel()
   fileprivate let dataSource = SettingsPrivacyDataSource()
   internal weak var delegate: SettingsPrivacyViewControllerDelegate?
@@ -131,7 +131,7 @@ extension SettingsPrivacyViewController: SettingsPrivacyCellDelegate {
 }
 
 extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
-  func notifyDelegatePresentRequestDataPrompt() {
+  func shouldPresentRequestDataPrompt() {
     let exportDataSheet = UIAlertController(
       title: Strings.Download_your_personal_data(),
       message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
@@ -152,7 +152,7 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
     self.present(exportDataSheet, animated: true, completion: nil)
   }
 
-  func notifyDelegatePresentDownloadData(url: String) {
+  func shouldRequestData(with url: String) {
     guard let fileUrl = URL(string: url) else { return }
     UIApplication.shared.openURL(fileUrl)
   }
