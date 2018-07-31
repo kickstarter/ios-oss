@@ -4,6 +4,7 @@ xcode_version: &xcode_version 9.4
 iphone_name: &iphone_name iPhone 8
 ios_version: &ios_version 11.4
 opentok_version: &opentok_version 2.10.2
+fabric_sdk_version: &fabric_sdk_version 3.10.5
 preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.4) [2437FE39-2885-482D-A42F-A169C65AE271]' || true
 
 base_job: &base_job
@@ -16,6 +17,7 @@ base_job: &base_job
     FL_OUTPUT_DIR: output
     LC_ALL: en_US.UTF-8
     LANG: en_US.UTF-8
+    FABRIC_SDK_VERSION: *fabric_sdk_version
     OPENTOK_VERSION: *opentok_version
     IOS_VERSION: *ios_version
     IPHONE_NAME: *iphone_name
@@ -36,6 +38,7 @@ jobs:
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
+            - fabric-cache-{{ checksum "Fabric.lock" }}
 
       - run:
           name: Make bootstrap
@@ -50,6 +53,11 @@ jobs:
           key: opentok-cache-{{ checksum "Opentok.lock" }}
           paths:
             - "Frameworks/OpenTok"
+
+      - save_cache:
+          key: fabric-cache-{{ checksum "Fabric.lock" }}
+          paths:
+            - "Frameworks/Fabric"
 
       - run:
           name: SwiftLint
@@ -72,6 +80,7 @@ jobs:
 
       - restore_cache:
           keys:
+            - fabric-cache-{{ checksum "Fabric.lock" }}
             - opentok-cache-{{ checksum "Opentok.lock" }}
 
       - run:
@@ -105,6 +114,7 @@ jobs:
 
       - restore_cache:
           keys:
+            - fabric-cache-{{ checksum "Fabric.lock" }}
             - opentok-cache-{{ checksum "Opentok.lock" }}
 
       - run:
@@ -136,6 +146,7 @@ jobs:
 
       - restore_cache:
           keys:
+            - fabric-cache-{{ checksum "Fabric.lock" }}
             - opentok-cache-{{ checksum "Opentok.lock" }}
 
       - run:
@@ -167,6 +178,7 @@ jobs:
 
       - restore_cache:
           keys:
+            - fabric-cache-{{ checksum "Fabric.lock" }}
             - opentok-cache-{{ checksum "Opentok.lock" }}
 
       - run:
@@ -212,6 +224,12 @@ jobs:
             - source-v1-
 
       - checkout
+
+      - restore_cache:
+          keys:
+            - opentok-cache-{{ checksum "Opentok.lock" }}
+            - fabric-cache-{{ checksum "Fabric.lock" }}
+
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -264,6 +282,7 @@ jobs:
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
+            - fabric-cache-{{ checksum "Fabric.lock" }}
 
       - run:
           name: Make bootstrap
@@ -313,6 +332,7 @@ jobs:
       - restore_cache:
           keys:
             - opentok-cache-{{ checksum "Opentok.lock" }}
+            - fabric-cache-{{ checksum "Fabric.lock" }}
 
       - run:
           name: Make bootstrap
