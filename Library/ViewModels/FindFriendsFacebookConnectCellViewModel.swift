@@ -212,7 +212,6 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 
 extension FindFriendsFacebookConnectCellViewModel {
   public static func showFacebookConnectionSection(for user: User?) -> Bool {
-    // Hide Facebook Connect section if we don't have info on their connection state
     guard let isFacebookConnected = user?.facebookConnected else {
       return true
     }
@@ -257,11 +256,6 @@ extension FindFriendsFacebookConnectCellViewModel {
   }
 
   fileprivate static func buttonText(for connectionType: FacebookConnectionType) -> String {
-    switch connectionType {
-    case .connect:
-      return Strings.general_social_buttons_connect_with_facebook()
-    case .reconnect:
-      return "Continue"
-    }
+    return Strings.general_social_buttons_connect_with_facebook()
   }
 }
