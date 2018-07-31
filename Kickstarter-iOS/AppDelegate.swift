@@ -174,7 +174,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.configureFabric
       .observeForUI()
       .observeValues {
-        Fabric.with([Crashlytics.self])
+        #if RELEASE || HOCKEY
+          Fabric.with([Crashlytics.self])
+        #endif
     }
 
     self.viewModel.outputs.configureHockey
