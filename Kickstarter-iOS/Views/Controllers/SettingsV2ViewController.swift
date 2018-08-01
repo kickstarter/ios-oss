@@ -122,10 +122,6 @@ extension SettingsV2ViewController: UITableViewDelegate {
     return 0.1 // Required to remove the footer in UITableViewStyleGrouped
   }
 
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return nil
-  }
-
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
