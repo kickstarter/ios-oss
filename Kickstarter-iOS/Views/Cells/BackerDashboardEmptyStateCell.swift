@@ -10,6 +10,7 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var titleLabel: UILabel!
   @IBOutlet private weak var iconImageView: UIImageView!
 
+  var isAnimating: Bool = false
   private let duration = 0.4
   private let hiddenHeartAlpha = CGFloat(0.0)
   private let visibleHeartAlpha = CGFloat(1.0)
@@ -43,6 +44,9 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
   }
 
   @objc internal func animateToFilledHeart() {
+
+    guard self.isAnimating == false else { return }
+
     UIView.animate(
       withDuration: self.duration,
       delay: 1.0,
@@ -50,13 +54,17 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       initialSpringVelocity: 0.0,
       options: .curveEaseInOut,
       animations: { [unowned self] in
+        self.isAnimating = true
+
         self.filledHeartIconImageView.alpha = self.hiddenHeartAlpha
         self.iconImageView.alpha = self.hiddenHeartAlpha
         self.iconImageView.transform = self.shrunkHeartTransform
         self.filledHeartIconImageView.transform = self.expandedHearTransform
         self.filledHeartIconImageView.alpha = self.visibleHeartAlpha
         },
-      completion: { [unowned self] _ in self.animateToOutlineHeart() }
+      completion: { [unowned self] _ in
+        self.animateToOutlineHeart()
+      }
     )
   }
 
@@ -73,8 +81,11 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
         self.filledHeartIconImageView.transform = self.shrunkHeartTransform
         self.iconImageView.transform = self.expandedHearTransform
         self.iconImageView.alpha = self.visibleHeartAlpha
-    },
-      completion: nil)
+      },
+      completion: { [unowned self] _ in
+        self.isAnimating = false
+      }
+    )
   }
 
   internal override func bindStyles() {
