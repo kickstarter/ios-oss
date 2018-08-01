@@ -10,7 +10,7 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var titleLabel: UILabel!
   @IBOutlet private weak var iconImageView: UIImageView!
 
-  var isAnimating: Bool = false
+  private var isAnimating: Bool = false
   private let duration = 0.4
   private let hiddenHeartAlpha = CGFloat(0.0)
   private let visibleHeartAlpha = CGFloat(1.0)
