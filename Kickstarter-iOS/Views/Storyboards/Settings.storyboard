@@ -26,7 +26,11 @@
                                 <rect key="frame" x="0.0" y="64" width="400" height="1486"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="8mW-y4-spg" userLabel="Root stack view">
+<<<<<<< HEAD
                                         <rect key="frame" x="16" y="0.0" width="368" height="1286.5"/>
+=======
+                                        <rect key="frame" x="16" y="0.0" width="368" height="1580"/>
+>>>>>>> feature-settings-v2
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eK6-kF-TgC">
                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="0.0"/>
@@ -417,7 +421,11 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="SlO-en-sfv" userLabel="Rating stack view">
+<<<<<<< HEAD
                                                 <rect key="frame" x="0.0" y="1082" width="368" height="56"/>
+=======
+                                                <rect key="frame" x="0.0" y="1375.5" width="368" height="56"/>
+>>>>>>> feature-settings-v2
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVZ-o5-coE">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="1"/>
@@ -450,7 +458,11 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IQM-bL-GaS">
+<<<<<<< HEAD
                                                 <rect key="frame" x="0.0" y="1174" width="368" height="76.5"/>
+=======
+                                                <rect key="frame" x="0.0" y="1467.5" width="368" height="76.5"/>
+>>>>>>> feature-settings-v2
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kM8-GB-tee">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="44"/>
@@ -467,7 +479,11 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VLB-0D-JqX">
+<<<<<<< HEAD
                                                 <rect key="frame" x="0.0" y="1286.5" width="368" height="0.0"/>
+=======
+                                                <rect key="frame" x="0.0" y="1580" width="368" height="0.0"/>
+>>>>>>> feature-settings-v2
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" id="uSU-eO-Qy1"/>
@@ -531,13 +547,21 @@
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7SN-cI-sju">
+<<<<<<< HEAD
                                         <rect key="frame" x="16" y="928" width="368" height="105"/>
+=======
+                                        <rect key="frame" x="16" y="1221.5" width="368" height="105"/>
+>>>>>>> feature-settings-v2
                                         <state key="normal">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uhM-6M-CXD">
+<<<<<<< HEAD
                                         <rect key="frame" x="16" y="1095" width="368" height="30"/>
+=======
+                                        <rect key="frame" x="16" y="1388.5" width="368" height="30"/>
+>>>>>>> feature-settings-v2
                                         <state key="normal">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>

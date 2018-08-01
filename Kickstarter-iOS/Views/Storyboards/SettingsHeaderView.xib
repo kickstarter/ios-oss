@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="UITableViewHeaderFooterView">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SettingsHeaderView" customModule="Kickstarter_Framework">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -26,11 +26,20 @@
                                 <constraint firstAttribute="height" constant="1" id="yRs-ae-XqT"/>
                             </constraints>
                         </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELH-30-5QZ">
+                            <rect key="frame" x="16" y="658" width="343" height="0.0"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstItem="3xo-eX-C1s" firstAttribute="top" secondItem="ELH-30-5QZ" secondAttribute="bottom" constant="8" id="DcP-Fe-Z2Y"/>
                         <constraint firstAttribute="bottom" secondItem="3xo-eX-C1s" secondAttribute="bottom" id="ISQ-gO-MBj"/>
+                        <constraint firstAttribute="trailing" secondItem="ELH-30-5QZ" secondAttribute="trailing" constant="16" id="RJA-F7-wPl"/>
                         <constraint firstAttribute="trailing" secondItem="3xo-eX-C1s" secondAttribute="trailing" id="b4l-dY-9Dg"/>
+                        <constraint firstItem="ELH-30-5QZ" firstAttribute="leading" secondItem="B7M-R3-D3J" secondAttribute="leading" constant="16" id="y21-w8-Z5k"/>
                         <constraint firstItem="3xo-eX-C1s" firstAttribute="leading" secondItem="B7M-R3-D3J" secondAttribute="leading" id="ygh-Pw-hmy"/>
                     </constraints>
                 </view>
@@ -42,6 +51,9 @@
                 <constraint firstItem="B7M-R3-D3J" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="bvR-ag-b3I"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="titleLabel" destination="ELH-30-5QZ" id="qi1-IP-fK2"/>
+            </connections>
         </view>
     </objects>
 </document>

@@ -12,6 +12,7 @@ public enum Nib: String {
   case SettingsNewslettersTopCell
   case SettingsTableViewCell
   case ThanksCategoryCell
+  case SettingsNotificationCell
 }
 
 extension UITableView {
