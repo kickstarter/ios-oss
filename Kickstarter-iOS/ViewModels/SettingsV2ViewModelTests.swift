@@ -44,8 +44,16 @@ internal final class SettingsV2ViewModelTests: TestCase {
   }
 
   func testNotificationsCellTapped() {
+    self.vm.inputs.viewDidLoad()
     self.transitionToViewController.assertValueCount(0)
     self.vm.settingsCellTapped(cellType: .notifications)
+    self.transitionToViewController.assertValueCount(1)
+  }
+
+  func testNewslettersCellTapped() {
+    self.vm.inputs.viewDidLoad()
+    self.transitionToViewController.assertValueCount(0)
+    self.vm.settingsCellTapped(cellType: .newsletters)
     self.transitionToViewController.assertValueCount(1)
   }
 
