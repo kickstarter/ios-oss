@@ -10,6 +10,7 @@ public enum Nib: String {
   case DiscoveryProjectCategoryView
   case SettingsTableViewCell
   case SettingsHeaderView
+  case SettingsNotificationCell
 }
 
 extension UITableView {
