@@ -4,18 +4,15 @@ import ReactiveSwift
 import Result
 
 public protocol SettingsNewslettersViewModelInputs {
-
   func didUpdate(user: User)
   func viewDidLoad()
 }
 
 public protocol SettingsNewslettersViewModelOutputs {
-
   var currentUser: Signal<User, NoError> { get }
 }
 
 public protocol SettingsNewslettersViewModelType {
-
   var inputs: SettingsNewslettersViewModelInputs { get }
   var outputs: SettingsNewslettersViewModelOutputs { get }
 }

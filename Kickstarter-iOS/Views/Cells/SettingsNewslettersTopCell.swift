@@ -5,7 +5,7 @@ import UIKit
 
 protocol SettingsNewslettersTopCellDelegate: class {
   func didUpdateAllNewsletters(user: User)
-  func couldNotUpdateAllNewsletters(_ message: String)
+  func failedToUpdateAllNewsletters(_ message: String)
 }
 
 final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
@@ -22,11 +22,6 @@ final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
 
   func configureWith(value: User) {
     self.viewModel.inputs.configureWith(value: value)
-  }
-
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    self.viewModel.inputs.awakeFromNib()
   }
 
   override func bindStyles() {
@@ -64,7 +59,7 @@ final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.unableToSaveError
       .observeForUI()
       .observeValues { [weak self] in
-        self?.delegate?.couldNotUpdateAllNewsletters($0)
+        self?.delegate?.failedToUpdateAllNewsletters($0)
     }
 
     self.newsletterSwitch.rac.on = self.viewModel.outputs.subscribeToAllSwitchIsOn.skipNil()

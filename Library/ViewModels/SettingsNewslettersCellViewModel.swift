@@ -4,16 +4,13 @@ import ReactiveSwift
 import Result
 
 public protocol SettingsNewslettersCellViewModelInputs {
-
   func allNewslettersSwitchTapped(on: Bool)
-  func awakeFromNib()
   func configureWith(value: User)
   func configureWith(value: (newsletter: Newsletter, user: User))
   func newslettersSwitchTapped(on: Bool)
 }
 
 public protocol SettingsNewslettersCellViewModelOutputs {
-
   var showOptInPrompt: Signal<String, NoError> { get }
   var subscribeToAllSwitchIsOn: Signal<Bool?, NoError> { get }
   var switchIsOn: Signal<Bool?, NoError> { get }
@@ -22,7 +19,6 @@ public protocol SettingsNewslettersCellViewModelOutputs {
 }
 
 public protocol SettingsNewslettersCellViewModelType {
-
   var inputs: SettingsNewslettersCellViewModelInputs { get }
   var outputs: SettingsNewslettersCellViewModelOutputs { get }
 }
@@ -48,7 +44,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
       .takePairWhen(self.newslettersSwitchTappedProperty.signal.skipNil())
       .map { newsletter, isOn in
         (UserAttribute.newsletter(newsletter), isOn)
-      }.logEvents(identifier: "user attribute changed")
+      }
 
     let updatedUser = initialUser
       .switchMap { user in
@@ -56,14 +52,14 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
           let (attribute, on) = attributeAndOn
           return user |> attribute.lens .~ on
         }
-    }.logEvents(identifier: "updated user")
+    }
 
     let updateUserAllOn = initialUser
       .takePairWhen(self.allNewslettersSwitchProperty.signal.skipNil())
       .map { user, on in
         return user
           |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: on)
-    }.logEvents(identifier: "updated all")
+    }
 
     let updateEvent = Signal.merge(updatedUser, updateUserAllOn)
       .switchMap { user in
@@ -71,16 +67,14 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
-    .logEvents(identifier: "update event")
 
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
-      }.logEvents(identifier: "Couldn't update user")
+      }
 
     let initialUserOnError = initialUser
       .takeWhen(self.unableToSaveError)
-      .map { previous in previous }
 
     self.updateCurrentUser = Signal.merge(initialUser,
                                           updatedUser,
@@ -93,7 +87,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
     self.switchIsOn = initialUser
       .combineLatest(with: newsletter)
-      .map(userIsSubscribed(user:newsletter:)).logEvents(identifier: "switchIsOn emitted")
+      .map(userIsSubscribed(user:newsletter:))
 
     // Koala
     userAttributeChanged
@@ -106,11 +100,6 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
         default: break
       }
     }
-  }
-
-  fileprivate let awakeFromNibProperty = MutableProperty(())
-  public func awakeFromNib() {
-    self.awakeFromNibProperty.value = ()
   }
 
   fileprivate let initialUserProperty = MutableProperty<User?>(nil)

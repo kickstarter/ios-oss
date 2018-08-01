@@ -65,7 +65,7 @@ extension SettingsNewslettersViewController: UITableViewDelegate {
 
 extension SettingsNewslettersViewController: SettingsNewslettersCellDelegate {
 
-  func couldNotUpdateUser(_ message: String) {
+  func failedToUpdateUser(_ message: String) {
     let errorAlert = UIAlertController.genericError(message)
     self.present(errorAlert, animated: true, completion: nil)
   }
@@ -86,7 +86,7 @@ extension SettingsNewslettersViewController: SettingsNewslettersTopCellDelegate 
     self.viewModel.inputs.didUpdate(user: user)
   }
 
-  func couldNotUpdateAllNewsletters(_ message: String) {
+  func failedToUpdateAllNewsletters(_ message: String) {
     let errorAlert = UIAlertController.genericError(message)
     self.present(errorAlert, animated: true, completion: nil)
   }

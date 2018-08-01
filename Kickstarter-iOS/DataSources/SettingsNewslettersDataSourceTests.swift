@@ -1,13 +1,13 @@
-import XCTest
-@testable import Library
 @testable import Kickstarter_Framework
 @testable import KsApi
+@testable import Library
 import Prelude
+import XCTest
 
 final class SettingsNewslettersDataSourceTests: XCTestCase {
 
-    let dataSource = SettingsNewslettersDataSource()
-    let tableView = UITableView()
+  let dataSource = SettingsNewslettersDataSource()
+  let tableView = UITableView()
 
   func testLoadData() {
     let newsletters = Newsletter.allCases

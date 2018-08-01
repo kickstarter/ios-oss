@@ -4,8 +4,8 @@ import Prelude
 import UIKit
 
 internal protocol SettingsNewslettersCellDelegate: class {
-  func couldNotUpdateUser(_ message: String)
   func didUpdate(user: User)
+  func failedToUpdateUser(_ message: String)
   func shouldShowOptInAlert(_ newsletterName: String)
 }
 
@@ -29,11 +29,6 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
 
     _ = self.newslettersDescriptionLabel
       |> UILabel.lens.text %~ { _ in value.newsletter.displayableDescription }
-  }
-
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    self.viewModel.inputs.awakeFromNib()
   }
 
   override func bindStyles() {
@@ -68,7 +63,7 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.unableToSaveError
       .observeForUI()
       .observeValues { [weak self] in
-        self?.delegate?.couldNotUpdateUser($0)
+        self?.delegate?.failedToUpdateUser($0)
     }
 
     self.viewModel.outputs.updateCurrentUser
