@@ -143,13 +143,13 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 
     self.facebookConnectCellTitle = connectionType.signal
         .skipNil()
-        .map { FindFriendsFacebookConnectCellViewModel.titleText(for: $0) }
+        .map { $0.titleText }
     self.facebookConnectCellSubtitle = connectionType.signal
         .skipNil()
-        .map { FindFriendsFacebookConnectCellViewModel.subtitleText(for: $0) }
+        .map { $0.subtitleText }
     self.facebookConnectButtonTitle = connectionType.signal
         .skipNil()
-        .map { FindFriendsFacebookConnectCellViewModel.buttonText(for: $0) }
+      .map { $0.buttonText }
 
     source
       .takeWhen(self.showErrorAlert)
@@ -235,27 +235,5 @@ extension FindFriendsFacebookConnectCellViewModel {
     }
 
     return .connect
-  }
-
-  fileprivate static func titleText(for connectionType: FacebookConnectionType) -> String {
-    switch connectionType {
-    case .connect:
-      return Strings.Discover_more_projects()
-    case .reconnect:
-      return Strings.Facebook_reconnect()
-    }
-  }
-
-  fileprivate static func subtitleText(for connectionType: FacebookConnectionType) -> String {
-    switch connectionType {
-    case .connect:
-      return Strings.Connect_with_Facebook_to_follow_friends_and_get_notified()
-    case .reconnect:
-      return Strings.Facebook_reconnect_description()
-    }
-  }
-
-  fileprivate static func buttonText(for connectionType: FacebookConnectionType) -> String {
-    return Strings.general_social_buttons_connect_with_facebook()
   }
 }
