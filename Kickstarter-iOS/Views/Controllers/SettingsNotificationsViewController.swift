@@ -5,6 +5,7 @@ import UIKit
 
 internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var tableView: UITableView!
+  @IBOutlet fileprivate weak var emailFrequencyPickerView: UIPickerView!
 
   private let viewModel: SettingsNotificationsViewModelType = SettingsNotificationsViewModel()
   private let dataSource: SettingsNotificationsDataSource = SettingsNotificationsDataSource()
@@ -20,6 +21,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
     tableView.dataSource = dataSource
     tableView.delegate = self
+
+    emailFrequencyPickerView.delegate = self
+    emailFrequencyPickerView.dataSource = self
 
     tableView.register(nib: .SettingsNotificationCell)
     tableView.registerHeaderFooter(nib: .SettingsHeaderView)
@@ -40,6 +44,8 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.emailFrequencyPickerView.rac.hidden = viewModel.outputs.pickerViewIsHidden
 
     self.viewModel.outputs.unableToSaveError
       .observeForControllerAction()
@@ -138,5 +144,22 @@ extension SettingsNotificationsViewController: SettingsNotificationCellDelegate 
 
   func didUpdateUser(user: User) {
     self.viewModel.inputs.updateUser(user: user)
+  }
+}
+
+//MARK: UIPickerViewDataSource & UIPickerViewDelegate
+extension SettingsNotificationsViewController: UIPickerViewDataSource {
+  func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    return 1
+  }
+
+  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    return EmailFrequency.allCases.count
+  }
+}
+
+extension SettingsNotificationsViewController: UIPickerViewDelegate {
+  func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    return EmailFrequency(rawValue: row)?.descriptionText
   }
 }

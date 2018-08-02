@@ -16,6 +16,7 @@ public protocol SettingsNotificationsViewModelOutputs {
   var goToEmailFrequency: Signal<User, NoError> { get }
   var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
+  var pickerViewIsHidden: Signal<Bool, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
 }
@@ -100,6 +101,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   public let goToEmailFrequency: Signal<User, NoError>
   public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
+  public let pickerViewIsHidden: Signal<Bool, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
 

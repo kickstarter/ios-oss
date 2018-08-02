@@ -123,6 +123,7 @@
 		770DF3622106241500A6D0F1 /* SettingsNotificationCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770DF3612106241500A6D0F1 /* SettingsNotificationCellType.swift */; };
 		770E441321137E7400396D46 /* SettingsNotificationPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770E441221137E7400396D46 /* SettingsNotificationPickerCell.swift */; };
 		770E441521137F3700396D46 /* SettingsNotificationPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */; };
+		770E447721138E6200396D46 /* SettingsNotificationPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770E447621138E6200396D46 /* SettingsNotificationPickerViewModel.swift */; };
 		77166998210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77166997210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift */; };
 		771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */; };
 		77216D6020F3D27C0061BE82 /* SettingsV2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77216D5F20F3D27C0061BE82 /* SettingsV2.storyboard */; };
@@ -1717,6 +1718,7 @@
 		770DF3612106241500A6D0F1 /* SettingsNotificationCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellType.swift; sourceTree = "<group>"; };
 		770E441221137E7400396D46 /* SettingsNotificationPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationPickerCell.swift; sourceTree = "<group>"; };
 		770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNotificationPickerCell.xib; sourceTree = "<group>"; };
+		770E447621138E6200396D46 /* SettingsNotificationPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationPickerViewModel.swift; sourceTree = "<group>"; };
 		77166997210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellViewModelTests.swift; sourceTree = "<group>"; };
 		771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsDataSourceTests.swift; sourceTree = "<group>"; };
 		77216D5F20F3D27C0061BE82 /* SettingsV2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsV2.storyboard; sourceTree = "<group>"; };
@@ -2899,6 +2901,7 @@
 				77FA6D0920F541CA00809E31 /* SettingsV2ViewModelTests.swift */,
 				7793B13421067D62007857C0 /* SettingsNotificationCellViewModel.swift */,
 				77166997210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift */,
+				770E447621138E6200396D46 /* SettingsNotificationPickerViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -5539,6 +5542,7 @@
 				A71C7FB21E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */,
+				770E447721138E6200396D46 /* SettingsNotificationPickerViewModel.swift in Sources */,
 				A7B1EBB31D90496A00BEE8B3 /* NoRewardCell.swift in Sources */,
 				01940B291D467ECE0074FCE3 /* HelpWebViewController.swift in Sources */,
 				A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */,

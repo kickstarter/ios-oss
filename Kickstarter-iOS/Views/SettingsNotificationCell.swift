@@ -48,8 +48,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     super.bindStyles()
 
     _ = titleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
-      |> UILabel.lens.font .~ .ksr_body()
+      |> settingsTitleLabelStyle
 
     _ = projectCountLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400

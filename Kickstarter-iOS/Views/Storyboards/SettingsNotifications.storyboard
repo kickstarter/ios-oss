@@ -25,10 +25,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9gJ-Cv-1eW">
+                                <rect key="frame" x="0.0" y="784" width="375" height="216"/>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="9gJ-Cv-1eW" firstAttribute="leading" secondItem="1Ie-Mi-JD9" secondAttribute="leading" id="7Mk-e9-IZH"/>
                             <constraint firstAttribute="trailing" secondItem="ctA-pE-Cb4" secondAttribute="trailing" id="Bn8-Xy-72z"/>
+                            <constraint firstItem="skT-PF-d9f" firstAttribute="top" secondItem="9gJ-Cv-1eW" secondAttribute="bottom" id="Uob-d1-EJr"/>
+                            <constraint firstAttribute="trailing" secondItem="9gJ-Cv-1eW" secondAttribute="trailing" id="b7A-Y1-jPA"/>
                             <constraint firstItem="ctA-pE-Cb4" firstAttribute="leading" secondItem="1Ie-Mi-JD9" secondAttribute="leading" id="bY5-dB-D8C"/>
                             <constraint firstItem="ctA-pE-Cb4" firstAttribute="top" secondItem="1Ie-Mi-JD9" secondAttribute="top" id="ijo-kG-7Xk"/>
                             <constraint firstItem="skT-PF-d9f" firstAttribute="top" secondItem="ctA-pE-Cb4" secondAttribute="bottom" id="kpo-yB-45s"/>
@@ -38,6 +44,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="1000"/>
                     <connections>
+                        <outlet property="emailFrequencyPickerView" destination="9gJ-Cv-1eW" id="Ixq-4P-PhT"/>
                         <outlet property="tableView" destination="ctA-pE-Cb4" id="kkl-KF-beA"/>
                     </connections>
                 </viewController>

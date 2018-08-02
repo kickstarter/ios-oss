@@ -11,9 +11,8 @@ public let settingsSectionLabelStyle =
     <> UILabel.lens.font .~ .ksr_subhead()
     <> UILabel.lens.numberOfLines .~ 2
 
-public let settingsTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
-    <> UILabel.lens.font .~ .ksr_subhead()
+public let settingsTitleLabelStyle = UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+    <> UILabel.lens.font .~ .ksr_body()
 
 public let settingsLogoutButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
