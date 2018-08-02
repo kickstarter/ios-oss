@@ -121,6 +121,8 @@
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
 		770DF32A2106210900A6D0F1 /* SettingsNotificationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770DF3292106210900A6D0F1 /* SettingsNotificationsDataSource.swift */; };
 		770DF3622106241500A6D0F1 /* SettingsNotificationCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770DF3612106241500A6D0F1 /* SettingsNotificationCellType.swift */; };
+		770E441321137E7400396D46 /* SettingsNotificationPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770E441221137E7400396D46 /* SettingsNotificationPickerCell.swift */; };
+		770E441521137F3700396D46 /* SettingsNotificationPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */; };
 		77166998210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77166997210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift */; };
 		771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */; };
 		77216D6020F3D27C0061BE82 /* SettingsV2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77216D5F20F3D27C0061BE82 /* SettingsV2.storyboard */; };
@@ -1713,6 +1715,8 @@
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
 		770DF3292106210900A6D0F1 /* SettingsNotificationsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsDataSource.swift; sourceTree = "<group>"; };
 		770DF3612106241500A6D0F1 /* SettingsNotificationCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellType.swift; sourceTree = "<group>"; };
+		770E441221137E7400396D46 /* SettingsNotificationPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationPickerCell.swift; sourceTree = "<group>"; };
+		770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNotificationPickerCell.xib; sourceTree = "<group>"; };
 		77166997210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellViewModelTests.swift; sourceTree = "<group>"; };
 		771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsDataSourceTests.swift; sourceTree = "<group>"; };
 		77216D5F20F3D27C0061BE82 /* SettingsV2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsV2.storyboard; sourceTree = "<group>"; };
@@ -2809,16 +2813,16 @@
 				A73923B91D272242004524C3 /* Settings.storyboard */,
 				77216D5F20F3D27C0061BE82 /* SettingsV2.storyboard */,
 				77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */,
+				77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */,
 				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
 				77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */,
-				77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */,
+				770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */,
 				A73923AC1D272242004524C3 /* Thanks.storyboard */,
 				D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */,
 				A73923BA1D272242004524C3 /* Update.storyboard */,
 				A73923BB1D272242004524C3 /* UpdateDraft.storyboard */,
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
 				9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */,
-				77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -2914,11 +2918,12 @@
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				D0D2AB1A1E96444B008D298A /* VideoGridView.swift */,
 				77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */,
+				7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */,
+				770E441221137E7400396D46 /* SettingsNotificationPickerCell.swift */,
 				A751A51C1C85EAD8009C5DEA /* Cells */,
 				A751A51D1C85EAD8009C5DEA /* Controllers */,
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
-				7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4953,6 +4958,7 @@
 				80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */,
 				A75798C31D6A24CD0063CEEC /* DebugPushNotifications.storyboard in Resources */,
 				A73923C31D272242004524C3 /* Login.storyboard in Resources */,
+				770E441521137F3700396D46 /* SettingsNotificationPickerCell.xib in Resources */,
 				A73923C91D272242004524C3 /* Search.storyboard in Resources */,
 				D6AE3F9120EA975300DB212F /* SettingsNotifications.storyboard in Resources */,
 				A77DA9241E4D13F000DB3A66 /* RewardCell.xib in Resources */,
@@ -5546,6 +5552,7 @@
 				9D14FF931D133351005F4ABB /* ProjectActivityUpdateCell.swift in Sources */,
 				A747A8B91D45893100AF199A /* ProjectPamphletContentDataSource.swift in Sources */,
 				01A120D31D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift in Sources */,
+				770E441321137E7400396D46 /* SettingsNotificationPickerCell.swift in Sources */,
 				59B0E0041D1203970081D2DC /* DashboardActionCell.swift in Sources */,
 				D0D2AB221E964485008D298A /* LiveVideoViewController.swift in Sources */,
 				0148EF911CDD2879000DEFF8 /* ThanksViewController.swift in Sources */,
