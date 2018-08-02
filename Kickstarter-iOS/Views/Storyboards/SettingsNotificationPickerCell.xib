@@ -17,16 +17,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="AI9-ql-p6X">
-                    <rect key="frame" x="16" y="28" width="343" height="631"/>
+                    <rect key="frame" x="16" y="36" width="343" height="615"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxn-QL-v56">
-                            <rect key="frame" x="0.0" y="305.5" width="297" height="20.5"/>
+                            <rect key="frame" x="0.0" y="297.5" width="297" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ja6-8Z-afO">
-                            <rect key="frame" x="297" y="300.5" width="46" height="30"/>
+                            <rect key="frame" x="297" y="292.5" width="46" height="30"/>
                             <state key="normal" title="Button"/>
                             <connections>
                                 <action selector="selectFrequencyButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="wnB-Bo-XQQ"/>
@@ -38,9 +38,9 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="AI9-ql-p6X" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="5Lv-JU-4p7"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="AI9-ql-p6X" secondAttribute="bottom" constant="8" id="Wup-EY-WT4"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="AI9-ql-p6X" secondAttribute="bottom" constant="16" id="Wup-EY-WT4"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="AI9-ql-p6X" secondAttribute="trailing" constant="16" id="ko8-23-vil"/>
-                <constraint firstItem="AI9-ql-p6X" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="zEb-r0-dqH"/>
+                <constraint firstItem="AI9-ql-p6X" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="zEb-r0-dqH"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>

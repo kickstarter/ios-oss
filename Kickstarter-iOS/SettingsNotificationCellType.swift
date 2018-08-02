@@ -16,7 +16,7 @@ public enum SettingsNotificationSectionType: Int {
     case .backedProjects:
       return [.projectUpdates, .projectNotifications]
     case .creator:
-      return [.pledgeActivity, .emailFrequency, .newComments, .newLikes, .creatorTips]
+      return [.pledgeActivity, .newComments, .newLikes, .creatorTips]
     case .social:
       return [.messages, .newFollowers, .friendBacksProject]
     case .findFriends:

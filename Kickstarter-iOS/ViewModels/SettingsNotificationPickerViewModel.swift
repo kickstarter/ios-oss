@@ -4,7 +4,7 @@ import Prelude
 import ReactiveSwift
 import Result
 
-enum EmailFrequency: Int {
+public enum EmailFrequency: Int {
   case daily
   case individualEmails
 
@@ -113,5 +113,3 @@ SettingsNotificationPickerViewModelType {
     return self
   }
 }
-
-

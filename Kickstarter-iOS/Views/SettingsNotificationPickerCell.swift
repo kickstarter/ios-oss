@@ -18,6 +18,7 @@ final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCe
   private let viewModel: SettingsNotificationPickerViewModelType = SettingsNotificationPickerViewModel()
 
   func configureWith(value: SettingsNotificationCellValue) {
+    self.viewModel.inputs.configure(with: value)
 
     _ = titleLabel
     |> UILabel.lens.text .~ value.cellType.title

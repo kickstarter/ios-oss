@@ -1,5 +1,6 @@
 import Foundation
 import KsApi
+import Library
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
@@ -7,18 +8,21 @@ import Result
 
 public protocol SettingsNotificationsViewModelInputs {
   func didSelectRow(cellType: SettingsNotificationCellType)
+  func didSelectEmailFrequency(frequency: EmailFrequency)
   func failedToUpdateUser(error: String)
+  func showPickerView(show: Bool)
   func updateUser(user: User)
   func viewDidLoad()
 }
 
 public protocol SettingsNotificationsViewModelOutputs {
-  var goToEmailFrequency: Signal<User, NoError> { get }
   var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var pickerViewIsHidden: Signal<Bool, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
+  var removeEmailFrequencyCell: Signal<User, NoError> { get }
+  var showEmailFrequencyCell: Signal<User, NoError> { get }
 }
 
 public protocol SettingsNotificationsViewModelType {
@@ -46,6 +50,28 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       initialUser,
       updatedUserProperty.signal.skipNil())
 
+    self.showEmailFrequencyCell = updatedUserProperty.signal
+      .skipNil()
+      .filter { user -> Bool in
+        let pledgeActivityEnabled = user |> UserAttribute.notification(.pledgeActivity).lens.view
+        return pledgeActivityEnabled ?? false
+      }
+
+    self.removeEmailFrequencyCell = updatedUserProperty.signal
+      .skipNil()
+      .filter { user -> Bool in
+        guard let pledgeActivityEnabled = user
+          |> UserAttribute.notification(.pledgeActivity).lens.view else {
+          return false
+        }
+
+        return !pledgeActivityEnabled
+    }
+
+    self.pickerViewIsHidden = Signal.merge(
+      showPickerViewProperty.signal.negate(),
+      emailFrequencyProperty.signal.mapConst(true))
+
     let findFriendsTapped = self.selectedCellType.signal
       .skipNil()
       .filter { $0 == .findFacebookFriends }
@@ -58,13 +84,6 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     self.goToManageProjectNotifications = manageProjectNotificationsSelected.signal
       .ignoreValues()
-
-    let emailFrequencySelected = self.selectedCellType.signal
-      .skipNil()
-      .filter { $0 == .emailFrequency }
-
-    self.goToEmailFrequency = self.updateCurrentUser
-      .takeWhen(emailFrequencySelected)
 
     self.viewDidLoadProperty.signal.observeValues { _ in
       AppEnvironment.current.koala.trackSettingsView()
@@ -83,9 +102,19 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     }
   }
 
+  fileprivate let emailFrequencyProperty = MutableProperty<EmailFrequency?>(nil)
+  public func didSelectEmailFrequency(frequency: EmailFrequency) {
+    self.emailFrequencyProperty.value = frequency
+  }
+
   fileprivate let selectedCellType = MutableProperty<SettingsNotificationCellType?>(nil)
   public func didSelectRow(cellType: SettingsNotificationCellType) {
     self.selectedCellType.value = cellType
+  }
+
+  fileprivate let showPickerViewProperty = MutableProperty(false)
+  public func showPickerView(show: Bool) {
+    self.showPickerViewProperty.value = show
   }
 
   fileprivate let updatedUserProperty = MutableProperty<User?>(nil)
@@ -98,12 +127,13 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.updateUserErrorProperty.value = error
   }
 
-  public let goToEmailFrequency: Signal<User, NoError>
   public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
   public let pickerViewIsHidden: Signal<Bool, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
+  public let removeEmailFrequencyCell: Signal<User, NoError>
+  public let showEmailFrequencyCell: Signal<User, NoError>
 
   public var inputs: SettingsNotificationsViewModelInputs { return self }
   public var outputs: SettingsNotificationsViewModelOutputs { return self }

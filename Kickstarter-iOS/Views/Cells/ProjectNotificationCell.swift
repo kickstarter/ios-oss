@@ -34,8 +34,13 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
 
-    _ = self.nameLabel |> settingsSectionLabelStyle
-    _ = self.separatorView |> separatorStyle
+    _ = self.nameLabel
+      |> settingsSectionLabelStyle
+    _ = self.separatorView
+      |> separatorStyle
+    _ = self.notificationSwitch
+      |> UISwitch.lens.tintColor .~ .ksr_grey_400
+      |> UISwitch.lens.onTintColor .~ .ksr_green_400
   }
 
   internal override func bindViewModel() {

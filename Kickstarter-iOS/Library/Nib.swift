@@ -11,6 +11,7 @@ public enum Nib: String {
   case SettingsTableViewCell
   case SettingsHeaderView
   case SettingsNotificationCell
+  case SettingsNotificationPickerCell
 }
 
 extension UITableView {

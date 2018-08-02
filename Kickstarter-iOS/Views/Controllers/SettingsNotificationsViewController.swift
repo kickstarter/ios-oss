@@ -26,6 +26,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
     emailFrequencyPickerView.dataSource = self
 
     tableView.register(nib: .SettingsNotificationCell)
+    tableView.register(nib: .SettingsNotificationPickerCell)
     tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
     self.viewModel.inputs.viewDidLoad()
@@ -63,16 +64,21 @@ internal final class SettingsNotificationsViewController: UIViewController {
         self?.tableView.reloadData()
     }
 
+    self.viewModel.outputs.removeEmailFrequencyCell
+      .observeForUI()
+      .observeValues { [weak self] (user) in
+        self?.hideEmailFrequencyCell(user: user)
+    }
+
+    self.viewModel.outputs.showEmailFrequencyCell
+      .observeForUI()
+      .observeValues { [weak self] user in
+    }
+
     self.viewModel.outputs.goToFindFriends
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToFindFriends()
-    }
-
-    self.viewModel.outputs.goToEmailFrequency
-      .observeForControllerAction()
-      .observeValues { [weak self] user in
-        self?.goToEmailFrequency(user: user)
     }
 
     self.viewModel.outputs.goToManageProjectNotifications
@@ -93,6 +99,30 @@ internal final class SettingsNotificationsViewController: UIViewController {
   fileprivate func goToManageProjectNotifications() {
     let vc = ProjectNotificationsViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  private func showEmailFrequencyCell(user: User) {
+    guard user.isCreator else {
+      return
+    }
+
+    let indexPath = dataSource.insertEmailFrequencyCell(user: user)
+
+    tableView.beginUpdates()
+    tableView.insertRows(at: [indexPath], with: .automatic)
+    tableView.endUpdates()
+  }
+
+  private func hideEmailFrequencyCell(user: User) {
+    guard user.isCreator else {
+      return
+    }
+
+    let indexPath = dataSource.deleteEmailFrequencyCell()
+
+    tableView.beginUpdates()
+    tableView.deleteRows(at: [indexPath], with: .automatic)
+    tableView.endUpdates()
   }
 }
 
@@ -137,6 +167,7 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
   }
 }
 
+// MARK: SettingsNotificationCellDelegate
 extension SettingsNotificationsViewController: SettingsNotificationCellDelegate {
   func didFailToSaveChange(errorMessage: String) {
     self.viewModel.inputs.failedToUpdateUser(error: errorMessage)
@@ -147,7 +178,14 @@ extension SettingsNotificationsViewController: SettingsNotificationCellDelegate 
   }
 }
 
-//MARK: UIPickerViewDataSource & UIPickerViewDelegate
+// MARK: SettingsNotificationPickerCellDelegate
+extension SettingsNotificationsViewController: SettingsNotificationPickerCellDelegate {
+  func didTapFrequencyPickerButton() {
+    self.viewModel.inputs.showPickerView(show: true)
+  }
+}
+
+// MARK: UIPickerViewDataSource & UIPickerViewDelegate
 extension SettingsNotificationsViewController: UIPickerViewDataSource {
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return 1
@@ -161,5 +199,13 @@ extension SettingsNotificationsViewController: UIPickerViewDataSource {
 extension SettingsNotificationsViewController: UIPickerViewDelegate {
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     return EmailFrequency(rawValue: row)?.descriptionText
+  }
+
+  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    guard let selectedEmailFrequency = EmailFrequency(rawValue: row) else {
+      return
+    }
+
+    self.viewModel.inputs.didSelectEmailFrequency(frequency: selectedEmailFrequency)
   }
 }

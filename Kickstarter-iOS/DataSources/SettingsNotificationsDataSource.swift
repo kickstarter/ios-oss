@@ -8,7 +8,7 @@ public struct SettingsNotificationCellValue {
 }
 
 final class SettingsNotificationsDataSource: ValueCellDataSource {
-  weak var cellDelegate: SettingsNotificationCellDelegate?
+  weak var cellDelegate: SettingsNotificationsViewController?
 
   func load(user: User) {
     _ = SettingsNotificationSectionType.allCases.filter { filterCreatorForSection($0, user: user) }
@@ -21,6 +21,26 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
                cellClass: SettingsNotificationCell.self,
                inSection: index)
     }
+
+    let pledgeActivityEnabled = (user
+      |> UserAttribute.notification(.pledgeActivity).lens.view) ?? false
+
+    if pledgeActivityEnabled {
+      _ = self.insertEmailFrequencyCell(user: user)
+    }
+  }
+
+  func insertEmailFrequencyCell(user: User) -> IndexPath {
+    let cellValue = SettingsNotificationCellValue(cellType: .emailFrequency, user: user)
+
+    return self.insertRow(value: cellValue,
+                          cellClass: SettingsNotificationPickerCell.self,
+                          atIndex: 1,
+                          inSection: SettingsNotificationSectionType.creator.rawValue)
+  }
+
+  func deleteEmailFrequencyCell() -> IndexPath {
+    return self.deleteRow(atIndex: 1, inSection: SettingsNotificationSectionType.creator.rawValue)
   }
 
   func sectionType(section: Int, user: User?) -> SettingsNotificationSectionType? {
@@ -47,6 +67,9 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as SettingsNotificationCell, value as SettingsNotificationCellValue):
+      cell.configureWith(value: value)
+      cell.delegate = cellDelegate
+    case let (cell as SettingsNotificationPickerCell, value as SettingsNotificationCellValue):
       cell.configureWith(value: value)
       cell.delegate = cellDelegate
     default:
