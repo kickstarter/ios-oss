@@ -6017,7 +6017,16 @@
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/Fabric",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
+					"$(PROJECT_DIR)/Frameworks/Firebase/**",
+					"$(PROJECT_DIR)/Frameworks/Stripe",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -6588,7 +6597,16 @@
 				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/Fabric",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
+					"$(PROJECT_DIR)/Frameworks/Firebase/**",
+					"$(PROJECT_DIR)/Frameworks/Stripe",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -6653,7 +6671,16 @@
 				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/Fabric",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
+					"$(PROJECT_DIR)/Frameworks/Firebase/**",
+					"$(PROJECT_DIR)/Frameworks/Stripe",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -6885,7 +6912,16 @@
 				DEVELOPMENT_TEAM = 5DAN4UM3NC;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/Fabric",
+					"$(PROJECT_DIR)/Frameworks/OpenTok",
+					"$(PROJECT_DIR)/Frameworks/Firebase/**",
+					"$(PROJECT_DIR)/Frameworks/Stripe",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
