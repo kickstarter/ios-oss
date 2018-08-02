@@ -53,17 +53,21 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       usingSpringWithDamping: 1.0,
       initialSpringVelocity: 0.0,
       options: .curveEaseInOut,
-      animations: { [unowned self] in
-        self.isAnimating = true
+      animations: { [weak self] in
 
-        self.filledHeartIconImageView.alpha = self.hiddenHeartAlpha
-        self.iconImageView.alpha = self.hiddenHeartAlpha
-        self.iconImageView.transform = self.shrunkHeartTransform
-        self.filledHeartIconImageView.transform = self.expandedHearTransform
-        self.filledHeartIconImageView.alpha = self.visibleHeartAlpha
+        guard let _self = self else { return }
+
+        _self.isAnimating = true
+
+        _self.filledHeartIconImageView.alpha = _self.hiddenHeartAlpha
+        _self.iconImageView.alpha = _self.hiddenHeartAlpha
+        _self.iconImageView.transform = _self.shrunkHeartTransform
+        _self.filledHeartIconImageView.transform = _self.expandedHearTransform
+        _self.filledHeartIconImageView.alpha = _self.visibleHeartAlpha
         },
-      completion: { [unowned self] _ in
-        self.animateToOutlineHeart()
+      completion: { [weak self] _ in
+        guard let _self = self else { return }
+        _self.animateToOutlineHeart()
       }
     )
   }
@@ -75,15 +79,20 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       usingSpringWithDamping: 1.0,
       initialSpringVelocity: 0.0,
       options: .curveEaseInOut,
-      animations: { [unowned self] in
-        self.filledHeartIconImageView.alpha = self.hiddenHeartAlpha
-        self.iconImageView.alpha = self.hiddenHeartAlpha
-        self.filledHeartIconImageView.transform = self.shrunkHeartTransform
-        self.iconImageView.transform = self.expandedHearTransform
-        self.iconImageView.alpha = self.visibleHeartAlpha
+      animations: { [weak self] in
+
+        guard let _self = self else { return }
+
+        _self.filledHeartIconImageView.alpha = _self.hiddenHeartAlpha
+        _self.iconImageView.alpha = _self.hiddenHeartAlpha
+        _self.filledHeartIconImageView.transform = _self.shrunkHeartTransform
+        _self.iconImageView.transform = _self.expandedHearTransform
+        _self.iconImageView.alpha = _self.visibleHeartAlpha
       },
-      completion: { [unowned self] _ in
-        self.isAnimating = false
+      completion: { [weak self] _ in
+
+        guard let _self = self else { return }
+        _self.isAnimating = false
       }
     )
   }
