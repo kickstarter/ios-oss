@@ -1,3 +1,5 @@
+import Crashlytics
+import Fabric
 import FBSDKCoreKit
 import Foundation
 import HockeySDK
