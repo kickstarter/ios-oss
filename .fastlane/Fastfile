@@ -192,7 +192,7 @@ platform :ios do
     unless options[:configuration].equal? "Release"
       # Disable bitcode for enterprise builds
       export_options = {
-        includeBitcode: false
+        includeBitcode: false,
         compileBitcode: false
       }
     end
