@@ -21,7 +21,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
         initialRequest: initialRequest,
         project: project,
         reward: reward,
-        applePayCapable: PKPaymentAuthorizationViewController.applePayCapable()
+        applePayCapable: PKPaymentAuthorizationViewController.applePayCapable(for: project)
       )
       return vc
   }

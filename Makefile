@@ -10,6 +10,7 @@ IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
 OPENTOK_VERSION ?= 2.10.2
+FABRIC_SDK_VERSION ?= 3.10.5
 COMMIT ?= $(CIRCLE_SHA1)
 
 ifeq ($(PLATFORM),iOS)
@@ -37,7 +38,7 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: submodules configs secrets opentok
+dependencies: submodules configs secrets opentok fabric
 
 bootstrap: hooks dependencies
 	brew update || brew update
@@ -157,4 +158,20 @@ opentok:
 		echo "$(OPENTOK_VERSION)" > $(VERSION_FILE); \
 	fi
 
-.PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok
+fabric:
+	@if [ ! -d Frameworks/Fabric ]; then \
+		echo "Downloading Fabric v$(FABRIC_SDK_VERSION)"; \
+		mkdir -p Frameworks/Fabric; \
+		curl -N -L -o fabric.zip https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/$(FABRIC_SDK_VERSION)/com.crashlytics.ios-manual.zip; \
+		unzip fabric.zip -d Frameworks/Fabric || true; \
+		rm fabric.zip; \
+	fi
+	@if [ -e Frameworks/Fabric/Fabric.framework ]; then \
+		echo "Fabric v$(FABRIC_SDK_VERSION) downloaded"; \
+	else \
+		echo "Failed to download Fabric SDK"; \
+		rm -rf Frameworks/Fabric; \
+	fi
+
+
+.PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok fabric

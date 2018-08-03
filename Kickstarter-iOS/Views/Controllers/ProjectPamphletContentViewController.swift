@@ -1,6 +1,7 @@
 import KsApi
 import LiveStream
 import Library
+import PassKit
 import Prelude
 import Prelude_UIKit
 
@@ -127,7 +128,12 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   }
 
   fileprivate func goToRewardPledge(project: Project, reward: Reward) {
-    let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
+
+    let applePayCapable = PKPaymentAuthorizationViewController.applePayCapable(for: project)
+
+    let vc = RewardPledgeViewController.configuredWith(project: project,
+                                                       reward: reward,
+                                                       applePayCapable: applePayCapable)
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
     self.present(nav, animated: true, completion: nil)

@@ -918,6 +918,41 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.loadingOverlayIsHidden.assertValues([true])
   }
 
+  func testDiscoverCard_NotAvailable_ProjectsOutsideUS() {
+
+    let project = Project.template
+      |> Project.lens.country .~ Project.Country.au
+    let user = User.template
+
+    withEnvironment(currentUser: user) {
+
+      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project).contains(.discover))
+    }
+  }
+
+  func testDiscoverCard_NotAvailable_ProjectsInsideUS_UserOutsideUS() {
+
+    let env = Environment.init(countryCode: "AU")
+    let project = Project.template
+
+    withEnvironment(env) {
+
+      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project).contains(.discover))
+    }
+  }
+
+  func testDiscoverCard_Available_ProjectsInsideUS_UserInUS() {
+
+    let project = Project.template
+    let user = User.template
+    let config = Config.template
+      |> Config.lens.countryCode .~ "AU"
+
+    withEnvironment(config: config, currentUser: user) {
+      XCTAssertTrue(PKPaymentAuthorizationViewController.supportedNetworks(for: project).contains(.discover))
+    }
+  }
+
   func testApplePay_LoggedOutFlow() {
     withEnvironment(currentUser: nil) {
       let project = Project.template
