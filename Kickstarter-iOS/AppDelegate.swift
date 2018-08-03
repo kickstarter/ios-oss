@@ -171,14 +171,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.presentRemoteNotificationAlert($0)
       }
 
-    #if RELEASE || HOCKEY
-    self.viewModel.outputs.configureFabric
-      .observeForUI()
-      .observeValues {
-        Fabric.with([Crashlytics.self])
-    }
-    #endif
-
     self.viewModel.outputs.configureHockey
       .observeForUI()
       .observeValues { [weak self] data in
@@ -193,6 +185,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         manager.start()
         manager.authenticator.authenticateInstallation()
     }
+
+    #if RELEASE || HOCKEY
+    self.viewModel.outputs.configureFabric
+      .observeForUI()
+      .observeValues {
+        Fabric.with([Crashlytics.self])
+    }
+    #endif
 
     self.viewModel.outputs.synchronizeUbiquitousStore
       .observeForUI()
