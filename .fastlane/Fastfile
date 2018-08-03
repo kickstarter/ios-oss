@@ -77,9 +77,10 @@ platform :ios do
   lane :beta_hockey do
     upload_hockey(
       ipa: "./output/gym/KickBeta.ipa",
-      dsym: "./output/gym/KickBeta.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_BETA_APP_ID"]
     )
+
+    upload_dsyms(dsym: "./output/gym/KickBeta.app.dSYM.zip")
 
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
@@ -114,12 +115,11 @@ platform :ios do
   lane :itunes_hockey do
     upload_hockey(
       ipa: "./output/gym/Kickstarter.ipa",
-      dsym: "./output/gym/Kickstarter.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_RELEASE_APP_ID"]
     )
   end
 
-  desc "Upload to the app store"
+  desc "Upload to the App Store"
   lane :itunes_deliver do
 
     deliver(
@@ -139,9 +139,13 @@ platform :ios do
         "app store",
         get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
         get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
-        "App Store Connect 🚀"
+        "iTunes Connect 🚀"
       )
     )
+
+    # Upload both local and Apple dSYMs
+    upload_dsyms(dsym: "./output/gym/Kickstarter.app.dSYM.zip")
+    refresh_dsyms
   end
 
   ### ALPHA
@@ -164,9 +168,10 @@ platform :ios do
   lane :alpha_hockey do
     upload_hockey(
       ipa: "./output/gym/KickAlpha.ipa",
-      dsym: "./output/gym/KickAlpha.app.dSYM.zip",
       public_identifier: ENV["HOCKEY_ALPHA_APP_ID"]
     )
+
+    upload_dsyms(dsym: "./output/gym/KickAlpha.app.dSYM.zip")
 
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
@@ -182,14 +187,22 @@ platform :ios do
   ### SHARED
 
   private_lane :build_the_app do |options|
+    export_options = {}
+
+    unless options[:configuration].equal? "Release"
+      # Disable bitcode for enterprise builds
+      export_options = {
+        includeBitcode: false
+        compileBitcode: false
+      }
+    end
+
     gym(
       output_name: options[:output_name],
       export_method: options[:export_method],
       scheme: "Kickstarter-iOS",
       configuration: options[:configuration],
-      export_options: {
-        compileBitcode: false
-      }
+      export_options: export_options
     )
   end
 
@@ -198,7 +211,6 @@ platform :ios do
     hockey(
       api_token: ENV["HOCKEY_APP_TOKEN"],
       ipa: options[:ipa],
-      dsym: options[:dsym],
       public_identifier: options[:public_identifier],
       repository_url: ENV["CIRCLE_REPOSITORY_URL"],
       build_server_url: ENV["CIRCLE_BUILD_URL"],
@@ -207,6 +219,11 @@ platform :ios do
       bypass_cdn: true,
       notify: "1"
     )
+  end
+
+  private_lane :upload_dsyms do |options|
+    upload_symbols_to_crashlytics(dsym_path: options[:dsym], 
+                                  api_token: ENV["FABRIC_API_KEY"])
   end
 
   ### HELPERS
