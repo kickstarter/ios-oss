@@ -107,7 +107,6 @@ platform :ios do
       output_name: "Kickstarter",
       export_method: "app-store",
       configuration: "Release",
-      include_bitcode: false
     )
   end
 
@@ -187,7 +186,8 @@ platform :ios do
       output_name: options[:output_name],
       export_method: options[:export_method],
       scheme: "Kickstarter-iOS",
-      configuration: options[:configuration]
+      configuration: options[:configuration],
+      include_bitcode: false
     )
   end
 
