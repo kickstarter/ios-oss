@@ -189,8 +189,6 @@ internal final class ActivitiesViewControllerTests: TestCase {
       |> Activity.lens.id .~ 73
       |> Activity.lens.project .~ (.cosmicSurgery
         |> Project.lens.creator .~ you
-        |> Project.lens.photo.med .~ ""
-        |> Project.lens.photo.full .~ ""
         |> Project.lens.name .~ "A Very Very Important Project About Kittens and Puppies"
         |> Project.lens.stats.fundingProgress .~ 0.01
       )

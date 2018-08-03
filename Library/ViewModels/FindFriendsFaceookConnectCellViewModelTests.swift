@@ -23,13 +23,15 @@ import Prelude
   let postUserUpdatedNotification = TestObserver<Notification.Name, NoError>()
   let updateUserInEnvironment = TestObserver<User, NoError>()
   let showErrorAlert = TestObserver<AlertError, NoError>()
-  let title = TestObserver<String, NoError>()
   let subtitle = TestObserver<String, NoError>()
+  let title = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
     vm.outputs.attemptFacebookLogin.observe(attemptFacebookLogin.observer)
+    vm.outputs.facebookConnectCellTitle.observe(title.observer)
+    vm.outputs.facebookConnectCellSubtitle.observe(subtitle.observer)
     vm.outputs.hideCloseButton.observe(hideCloseButtonObserver.observer)
     vm.outputs.isLoading.observe(isLoading.observer)
     vm.outputs.notifyDelegateToDismissHeader.observe(notifyPresenterToDismissHeader.observer)
@@ -38,8 +40,6 @@ import Prelude
       .observe(postUserUpdatedNotification.observer)
     vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
     vm.outputs.showErrorAlert.observe(showErrorAlert.observer)
-    vm.outputs.facebookConnectCellTitle.observe(title.observer)
-    vm.outputs.facebookConnectCellSubtitle.observe(subtitle.observer)
   }
 
   func testHideCloseButton() {

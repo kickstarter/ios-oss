@@ -142,13 +142,13 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     self.hideCloseButton = source.map { $0 == FriendsSource.findFriends }
 
     self.facebookConnectCellTitle = connectionType.signal
-        .skipNil()
-        .map { $0.titleText }
+      .skipNil()
+      .map { $0.titleText }
     self.facebookConnectCellSubtitle = connectionType.signal
-        .skipNil()
-        .map { $0.subtitleText }
+      .skipNil()
+      .map { $0.subtitleText }
     self.facebookConnectButtonTitle = connectionType.signal
-        .skipNil()
+      .skipNil()
       .map { $0.buttonText }
 
     source
@@ -198,16 +198,16 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
   }
 
   public let attemptFacebookLogin: Signal<(), NoError>
+  public let facebookConnectButtonTitle: Signal<String, NoError>
+  public let facebookConnectCellTitle: Signal<String, NoError>
+  public let facebookConnectCellSubtitle: Signal<String, NoError>
+  public let hideCloseButton: Signal<Bool, NoError>
   public let isLoading: Signal<Bool, NoError>
   public let notifyDelegateToDismissHeader: Signal<(), NoError>
   public let notifyDelegateUserFacebookConnected: Signal<(), NoError>
   public let postUserUpdatedNotification: Signal<Notification, NoError>
   public let updateUserInEnvironment: Signal<User, NoError>
   public let showErrorAlert: Signal<AlertError, NoError>
-  public let hideCloseButton: Signal<Bool, NoError>
-  public let facebookConnectCellTitle: Signal<String, NoError>
-  public let facebookConnectCellSubtitle: Signal<String, NoError>
-  public let facebookConnectButtonTitle: Signal<String, NoError>
 }
 
 extension FindFriendsFacebookConnectCellViewModel {

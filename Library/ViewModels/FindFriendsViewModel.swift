@@ -149,8 +149,11 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
         shouldShowFacebookConnect,
         stats
       ).map(unpack) // unpack into 3-tuple (shouldShowFacebookConnect, friends, source)
-      .filter { !$0.0 } // filter for when shouldShowFacebookConnect is false
-      .map { ($1, $2)} // map back into expected tuple (friends, source)
+      .filter { shouldShowFacebookConnect, _, _ in
+        return !shouldShowFacebookConnect
+      }.map { _, friends, source in
+        return (friends, source)
+      }
 
     source
       .takeWhen(self.viewDidLoadProperty.signal)
