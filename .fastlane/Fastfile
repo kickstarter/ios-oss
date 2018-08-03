@@ -187,7 +187,9 @@ platform :ios do
       export_method: options[:export_method],
       scheme: "Kickstarter-iOS",
       configuration: options[:configuration],
-      include_bitcode: false
+      export_options: {
+        compileBitcode: false
+      }
     )
   end
 
