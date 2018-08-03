@@ -5,6 +5,9 @@ extension User.NewsletterSubscriptions {
     happening: false,
     invent: false,
     promo: false,
-    weekly: false
+    weekly: false,
+    films: false,
+    publishing: false,
+    alumni: false
   )
 }

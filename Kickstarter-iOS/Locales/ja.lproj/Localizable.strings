@@ -20,6 +20,7 @@
 "All_gone" = "終了";
 "Amount_previous_amount" = "金額: %{amount}, 以前の金額: %{previous_amount}";
 "Amount_reward" = "金額：%{amount}、%{reward}";
+"App_version" = "App version";
 "Are_you_sure" = "オフにしてもよろしいですか？";
 "Ask_me_anything" = "お問い合わせ";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
@@ -71,6 +72,8 @@
 "Data_will_appear_here_once" = "誰かがプロジェクトをバック（支援）すると、ここにデータが表示されます。";
 "Delete_my_Kickstarter_Account" = "Kickstarter アカウントを削除";
 "Delivered" = "発送済";
+"Developer" = "開発者";
+"Discover_arts_news" = "Discover innovative projects and ideas, handpicked twice a month by Kickstarter's Design & Tech team.";
 "Discover_more_projects" = "プロジェクトをさがす";
 "Dismiss" = "破棄";
 "Done" = "完了";
@@ -89,6 +92,8 @@
 "Explore_projects" = "プロジェクトをさがす";
 "Facebook_login_disclaimer" = "Facebook でログインすると、あなたの氏名とプロフィール写真がインポートされます。また、あなたが Kickstarter 上で Facebook 友達をフォローすることができるように、友達リストも Kickstarter によってアクセスされます。あなたの許可なしに Kickstarter が Facebook 上に投稿を行うことは決してありません。  ";
 "Facebook_login_disclaimer_update" = "Facebook を使ってログインすると、お名前とプロフィール写真、友達リストがインポートされます。";
+"Facebook_reconnect" = "もう一度接続してください";
+"Facebook_reconnect_description" = "申し訳ございません。アカウントの接続が切断されました。もう一度接続しなおして友達をフォローしてください。";
 "Failed_to_retrieve_live_stream_event_details" = "ライブ配信の詳細を取得できませんでした";
 "Failed_to_update_subscription" = "定期購読の更新に失敗しました";
 "Filter_by_all_projects" = "全てのプロジェクトに絞る";
@@ -135,12 +140,15 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> は<i>演劇</i> プロジェクトをバックしています。";
 "Friend_name_launched_a_project" = "%{friend_name} がプロジェクトを発表しました！";
 "Funding_successful" = "ファンディング成功";
+"Games_newsletter" = "Sign up to receive a biweekly mix of new projects and updates on all things games, handpicked by Kickstarter's Games team.";
 "Get_notified_about_new_messages" = "新規メッセージについて通知の受信を希望しますか？";
 "Get_notified_about_this_creators_live_streams" = "このクリエイターのライブ配信通知を受け取る";
 "Get_reminded_about_this_project" = "このプロジェクトについてリマインダーを希望しますか？";
 "Go_to_project_page" = "プロジェクトページを見る";
 "Got_it" = "完了";
 "Got_it_your_survey_response_has_been_submitted" = "サーベイを送信しました！";
+"Happening_newsletter" = "新しいプロジェクトや、感動的なストーリー、視覚的なインスピレーションなどが週に1回 (時には2回) 届くニュースレターにサインアップしましょう。";
+"Help" = "ヘルプ";
 "Help_center" = "ヘルプセンター";
 "Hide_password" = "パスワードを非表示にする";
 "Home" = "ホーム";
@@ -177,6 +185,7 @@
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "ログインかサインインしてこのプロジェクトを保存してください。終了４８時間前にリマインドします。";
 "Log_in_or_sign_up_to_subscribe" = "ログインまたはサインアップしてください";
 "Log_in_to_leave_a_comment" = "ログインしてコメントを残す。";
+"Log_out" = "ログアウト";
 "Make_a_pledge_without_a_reward" = "リワードなしでプレッジ";
 "Manage_your_pledge" = "プレッジを変更";
 "Manage_your_pledge_below" = "以下のプレッジを変更";
@@ -188,6 +197,8 @@
 "Name" = "名前";
 "Never" = "通知を受けない";
 "New_pledge_activity" = "新しいプレッジ";
+"News_events" = "1年に数回だけ、お近くのニュースやイベント情報をお届け。";
+"Newsletters" = "ニュースレター";
 "No_Results" = "該当結果なし";
 "No_comments_yet" = "まだコメントはありません。";
 "No_messages" = "メッセージがありません。";
@@ -199,6 +210,7 @@
 "Not_delivered" = "未配送";
 "Not_followed" = "フォローしてない";
 "Not_now" = "後で";
+"Notifications" = "通知";
 "Once_you_back_a_project_well_share" = "プロジェクトをバックするとこのスペースにあなたへのオススメを表示します";
 "Only_amount_of_time_left_to_watch_this" = "あと%{amount_of_time} のみ視聴可能";
 "Opens_comments" = "コメントをみる";
@@ -241,8 +253,11 @@
 "Private_profile_more_info_content" = "Kickstarter でのプロフィールはデフォルト設定ではプライベート (非公開) となっています。プロフィールを公開したい場合はこの設定をオフにしてください。";
 "Project_Cancelled" = "プロジェクトが取り消されました。";
 "Project_Suspended" = "中止プロジェクト";
+"Project_activity" = "プロジェクトのアクティビティ";
 "Project_cancelled" = "プロジェクトが取り消されました。";
+"Project_reminders" = "プロジェクトのリマインダー";
 "Project_saved" = "プロジェクトを保存しました。";
+"Project_updates" = "プロジェクトの更新情報";
 "Projects_We_Love" = "Projects We Love";
 "Projects_youve_backed" = "バック（支援）したプロジェクト";
 "Projects_youve_launched" = "ローンチしたプロジェクト";
@@ -277,6 +292,7 @@
 "Reward_delivered" = "リワードを受け取りましたか？";
 "Reward_estimated_for_delivery_in_date" = "<b>リワード</b>の配達予定日は%{delivery_date}";
 "Reward_selected" = "選択中のリワード";
+"Reward_surveys" = "リワードのサーベイ";
 "Rewards_count_rewards.few" = "%{rewards_count} 種類のリワード";
 "Rewards_count_rewards.many" = "%{rewards_count} 種類のリワード";
 "Rewards_count_rewards.one" = "%{rewards_count} 種類のリワード";
@@ -309,6 +325,7 @@
 "Ships_to" = "配送先：";
 "Show_password" = "パスワードを表示する";
 "Shows_list_of_subcategories" = "サブカテゴリーリストを見せる。";
+"Sign_up_newsletter" = "Projects We Love に登録して、私たち Kickstarter チームが選別した注目プロジェクトに関する情報を週に1度受け取りましょう。";
 "Signs_up_with_Email" = "Eメールでサインアップする。";
 "Something_catch_your_eye" = "何か目にとまるものはありましたか？";
 "Something_went_wrong_please_try_again" = "なにかが間違っています。もう一度お試しください。";
@@ -316,6 +333,7 @@
 "Starting_soon" = "もう少しで始まります。";
 "Status" = "ステータス";
 "Stay_up_to_date" = "最新情報を常に把握したい？";
+"Stay_up_to_date_newsletter" = "Kickstarter チームお気に入りのプロジェクトや、当社が選んだ注目ニュースやイベントについての最新情報を受信しましょう。";
 "Stay_updated_on_this_project" = "このプロジェクトの最新情報を受け取りたい？";
 "Subscribe" = "購読する";
 "Subscribed" = "購読済";
@@ -1071,15 +1089,24 @@
 "profile.settings.logout_alert.title" = "ログアウト";
 "profile.settings.navbar_title" = "設定";
 "profile.settings.navbar_title_notifications" = "通知設定";
+"profile.settings.newsletter.alumni" = "Kickstarter Alumni";
+"profile.settings.newsletter.alumni_newsletter" = "Sign up to receive monthly emails featuring tips and resources for continuing work on your creative project, interviews with Kickstarter creators, invites to events, and more.";
 "profile.settings.newsletter.arts" = "アート＆カルチャー";
+"profile.settings.newsletter.arts_news" = "Arts News";
+"profile.settings.newsletter.arts_news_newsletter" = "Discover new projects and ideas from established and emerging artists, handpicked each month by Kickstarter's Arts team.";
 "profile.settings.newsletter.film" = "Kickstarter Films";
+"profile.settings.newsletter.films_newsletter" = "Sign up for a monthly newsletter curated by Kickstarter's Film team, highlighting new projects, creator stories, and events on their radar.";
 "profile.settings.newsletter.games" = "Kickstarterが選ぶゲーム";
 "profile.settings.newsletter.happening" = "出来事";
+"profile.settings.newsletter.happening_now" = "Happening Now";
 "profile.settings.newsletter.invent" = "インベント";
+"profile.settings.newsletter.news_event" = "ニュース＆イベント";
 "profile.settings.newsletter.opt_in.message" = "登録されているアドレス宛に認証メールを送信しました！%{newsletter} を購読するには、メールを確認してください。";
 "profile.settings.newsletter.opt_in.title" = "あと少し！";
 "profile.settings.newsletter.promo" = "Kickstarterのニュースとイベント";
 "profile.settings.newsletter.publishing" = "Kickstarter Reads";
+"profile.settings.newsletter.publishing_newsletter" = "Sign up for a monthly newsletter from Kickstarter's Publishing team highlighting great new projects, creator stories, and literary events on their radar.";
+"profile.settings.newsletter.subscribe_all" = "すべてのニュースレターを購読する";
 "profile.settings.newsletter.title" = "ニュースレター";
 "profile.settings.newsletter.weekly" = "Projects We Love";
 "profile.settings.rating.message" = "Kickstarterアプリの使い心地はいかがですか？\nぜひ評価をお聞かせください！";
