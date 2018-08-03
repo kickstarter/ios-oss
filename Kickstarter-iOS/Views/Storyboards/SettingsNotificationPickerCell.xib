@@ -34,10 +34,20 @@
                         </button>
                     </subviews>
                 </stackView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tlf-7e-bQy">
+                    <rect key="frame" x="0.0" y="666" width="375" height="1"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="wPy-bE-QCm"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Tlf-7e-bQy" secondAttribute="bottom" id="0rb-PO-9QK"/>
                 <constraint firstItem="AI9-ql-p6X" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="5Lv-JU-4p7"/>
+                <constraint firstItem="Tlf-7e-bQy" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="L0Q-be-APl"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Tlf-7e-bQy" secondAttribute="trailing" id="Rtu-1T-O5S"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="AI9-ql-p6X" secondAttribute="bottom" constant="16" id="Wup-EY-WT4"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="AI9-ql-p6X" secondAttribute="trailing" constant="16" id="ko8-23-vil"/>
                 <constraint firstItem="AI9-ql-p6X" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="zEb-r0-dqH"/>
@@ -45,6 +55,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="selectFrequencyButton" destination="ja6-8Z-afO" id="M1g-oy-1gg"/>
+                <outlet property="separatorView" destination="Tlf-7e-bQy" id="3AE-X6-zz3"/>
                 <outlet property="titleLabel" destination="oxn-QL-v56" id="ppA-6X-WWX"/>
             </connections>
         </view>

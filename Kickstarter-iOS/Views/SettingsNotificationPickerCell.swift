@@ -12,6 +12,7 @@ protocol SettingsNotificationPickerCellDelegate: class {
 final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCell {
   @IBOutlet fileprivate weak var titleLabel: UILabel!
   @IBOutlet fileprivate weak var selectFrequencyButton: UIButton!
+  @IBOutlet fileprivate weak var separatorView: UIView!
 
   weak var delegate: SettingsNotificationPickerCellDelegate?
 
@@ -32,7 +33,10 @@ final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCe
 
     _ = selectFrequencyButton
     |> UIButton.lens.titleLabel.font .~ .ksr_body()
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_grey_400
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_grey_500
+
+    _ = separatorView
+      |> separatorStyle
   }
 
   override func bindViewModel() {
