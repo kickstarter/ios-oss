@@ -106,7 +106,8 @@ platform :ios do
     build_the_app(
       output_name: "Kickstarter",
       export_method: "app-store",
-      configuration: "Release"
+      configuration: "Release",
+      include_bitcode: false
     )
   end
 
