@@ -98,6 +98,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when application should request authorizatoin for notifications.
   var authorizeForRemoteNotifications: Signal<(), NoError> { get }
 
+  /// Emits when the application should configure Fabric
+  var configureFabric: Signal<(), NoError> { get}
+
   /// Emits an app identifier that should be used to configure the hockey app manager.
   var configureHockey: Signal<HockeyConfigData, NoError> { get }
 
@@ -573,6 +576,8 @@ AppDelegateViewModelOutputs {
       )
       .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
 
+    self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+
     self.configureHockey = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.userSessionStartedProperty.signal,
@@ -788,6 +793,7 @@ AppDelegateViewModelOutputs {
   }
 
   public let authorizeForRemoteNotifications: Signal<(), NoError>
+  public let configureFabric: Signal<(), NoError>
   public let configureHockey: Signal<HockeyConfigData, NoError>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let facebookOpenURLReturnValue = MutableProperty(false)
