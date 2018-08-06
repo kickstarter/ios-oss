@@ -43,9 +43,15 @@ final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCe
     super.bindViewModel()
 
     selectFrequencyButton.rac.title = self.viewModel.outputs.frequencyValueText
+
+    self.viewModel.outputs.didTapFrequencyPickerButton
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.delegate?.didTapFrequencyPickerButton()
+    }
   }
 
   @IBAction func selectFrequencyButtonTapped(_ sender: Any) {
-    self.delegate?.didTapFrequencyPickerButton()
+    self.viewModel.inputs.frequencyPickerButtonTapped()
   }
 }

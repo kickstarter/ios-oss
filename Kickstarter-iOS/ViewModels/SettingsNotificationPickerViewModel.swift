@@ -5,11 +5,13 @@ import ReactiveSwift
 import Result
 
 protocol SettingsNotificationPickerViewModelOutputs {
+  var didTapFrequencyPickerButton: Signal<Void, NoError> { get }
   var frequencyValueText: Signal<String, NoError> { get }
 }
 
 protocol SettingsNotificationPickerViewModelInputs {
   func configure(with cellValue: SettingsNotificationCellValue)
+  func frequencyPickerButtonTapped()
 }
 
 protocol SettingsNotificationPickerViewModelType {
@@ -33,6 +35,8 @@ final class SettingsNotificationPickerViewModel: SettingsNotificationPickerViewM
 
     self.frequencyValueText = userDefinedEmailFrequency.signal
       .map { $0.descriptionText }
+
+    self.didTapFrequencyPickerButton = frequencyPickerButtonTappedProperty.signal
   }
 
   fileprivate var initialUserProperty = MutableProperty<User?>(nil)
@@ -40,7 +44,13 @@ final class SettingsNotificationPickerViewModel: SettingsNotificationPickerViewM
     self.initialUserProperty.value = cellValue.user
   }
 
+  fileprivate var frequencyPickerButtonTappedProperty = MutableProperty(())
+  func frequencyPickerButtonTapped() {
+    self.frequencyPickerButtonTappedProperty.value = ()
+  }
+
   public let frequencyValueText: Signal<String, NoError>
+  public let didTapFrequencyPickerButton: Signal<Void, NoError>
 
   var outputs: SettingsNotificationPickerViewModelOutputs {
     return self

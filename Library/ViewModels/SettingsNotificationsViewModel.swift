@@ -22,8 +22,6 @@ public protocol SettingsNotificationsViewModelOutputs {
   var pickerViewSelectedRow: Signal<EmailFrequency, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
-  var removeEmailFrequencyCell: Signal<User, NoError> { get }
-  var showEmailFrequencyCell: Signal<User, NoError> { get }
 }
 
 public protocol SettingsNotificationsViewModelType {
@@ -83,24 +81,6 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       updatedUserProperty.signal.skipNil(),
       emailFrequencyUpdated
     )
-
-    self.showEmailFrequencyCell = updatedUserProperty.signal
-      .skipNil()
-      .filter { user -> Bool in
-        let pledgeActivityEnabled = user |> UserAttribute.notification(.pledgeActivity).lens.view
-        return pledgeActivityEnabled ?? false
-      }
-
-    self.removeEmailFrequencyCell = updatedUserProperty.signal
-      .skipNil()
-      .filter { user -> Bool in
-        guard let pledgeActivityEnabled = user
-          |> UserAttribute.notification(.pledgeActivity).lens.view else {
-          return false
-        }
-
-        return !pledgeActivityEnabled
-    }
 
     self.pickerViewIsHidden = Signal.merge(
       showPickerViewProperty.signal.negate(),
@@ -174,8 +154,6 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   public let pickerViewSelectedRow: Signal<EmailFrequency, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
-  public let removeEmailFrequencyCell: Signal<User, NoError>
-  public let showEmailFrequencyCell: Signal<User, NoError>
 
   public var inputs: SettingsNotificationsViewModelInputs { return self }
   public var outputs: SettingsNotificationsViewModelOutputs { return self }

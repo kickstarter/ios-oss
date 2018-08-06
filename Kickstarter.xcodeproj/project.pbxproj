@@ -141,6 +141,8 @@
 		77758157209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */; };
 		7775818E209CBF7700EE357F /* DiscoveryProjectCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */; };
 		777B70A12118C81000E11032 /* EmailFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777B70A02118C81000E11032 /* EmailFrequency.swift */; };
+		777B70D82118CAD300E11032 /* SettingsNotificationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */; };
+		777B70DA2118D47700E11032 /* SettingsNotificationPickerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777B70D92118D47700E11032 /* SettingsNotificationPickerViewModelTests.swift */; };
 		778215E820F6922100F3D09F /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD31CFFAB9400653B2F /* HelpType.swift */; };
 		778215E920F692D600F3D09F /* SettingsCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6CB220F407A200809E31 /* SettingsCellType.swift */; };
 		778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */; };
@@ -936,7 +938,6 @@
 		D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */; };
 		D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */; };
 		D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */; };
-		D6B6F8E020EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */; };
 		D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */; };
 		D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */; };
 		D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* Category.swift */; };
@@ -1736,6 +1737,7 @@
 		7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryProjectCategoryView.xib; sourceTree = "<group>"; };
 		77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModelTests.swift; sourceTree = "<group>"; };
 		777B70A02118C81000E11032 /* EmailFrequency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailFrequency.swift; sourceTree = "<group>"; };
+		777B70D92118D47700E11032 /* SettingsNotificationPickerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationPickerViewModelTests.swift; sourceTree = "<group>"; };
 		778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSourceTests.swift; sourceTree = "<group>"; };
 		778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewControllerTests.swift; sourceTree = "<group>"; };
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
@@ -2905,6 +2907,7 @@
 				7793B13421067D62007857C0 /* SettingsNotificationCellViewModel.swift */,
 				77166997210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift */,
 				770E447621138E6200396D46 /* SettingsNotificationPickerViewModel.swift */,
+				777B70D92118D47700E11032 /* SettingsNotificationPickerViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -5343,7 +5346,6 @@
 				A7ED1FFA1E831C5C00BFFA01 /* ProjectPamphletContentViewModelTests.swift in Sources */,
 				A7ED1F381E830FDC00BFFA01 /* UIColorTests.swift in Sources */,
 				A7ED1FBA1E831C5C00BFFA01 /* ProjectActivityCommentCellViewModelTests.swift in Sources */,
-				D6B6F8E020EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift in Sources */,
 				A7ED1FE91E831C5C00BFFA01 /* DeprecatedWebViewModelTests.swift in Sources */,
 				A7ED1FD01E831C5C00BFFA01 /* DashboardActionCellViewModelTests.swift in Sources */,
 				A7ED1FE21E831C5C00BFFA01 /* DiscoveryViewModelTests.swift in Sources */,
@@ -5658,6 +5660,7 @@
 				A7ED201A1E83229E00BFFA01 /* ProfileDataSourceTests.swift in Sources */,
 				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
+				777B70D82118CAD300E11032 /* SettingsNotificationsViewModelTests.swift in Sources */,
 				A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
@@ -5677,6 +5680,7 @@
 				A7ED201E1E83231C00BFFA01 /* MockBundle.swift in Sources */,
 				A7ED20551E8323E900BFFA01 /* LoginToutViewControllerTests.swift in Sources */,
 				771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */,
+				777B70DA2118D47700E11032 /* SettingsNotificationPickerViewModelTests.swift in Sources */,
 				A7ED205A1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift in Sources */,
 				A7ED20591E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift in Sources */,
 				A7ED20241E83237F00BFFA01 /* TraitController.swift in Sources */,
