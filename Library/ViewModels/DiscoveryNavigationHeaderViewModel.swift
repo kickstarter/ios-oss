@@ -292,7 +292,7 @@ private func shouldHideLabel(_ params: DiscoveryParams?) -> Bool {
 
 private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcategory: String?) {
   let filterText: String
-  var subcategoryText: String? = nil
+  var subcategoryText: String?
 
   if params.staffPicks == true {
     filterText = Strings.Projects_We_Love()
