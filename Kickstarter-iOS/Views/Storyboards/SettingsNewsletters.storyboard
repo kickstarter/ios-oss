@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Settings Newsletters View Controller-->
+        <scene sceneID="wXM-4l-wWT">
+            <objects>
+                <viewController storyboardIdentifier="SettingsNewslettersViewController" id="5gc-cd-KDA" customClass="SettingsNewslettersViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vib-hc-3CW"/>
+                        <viewControllerLayoutGuide type="bottom" id="mdl-dp-xBS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="c63-3L-8Yv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="18" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PwI-y8-EFz">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98220964820000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98220964820000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="PwI-y8-EFz" secondAttribute="trailing" id="6PR-So-AKW"/>
+                            <constraint firstItem="PwI-y8-EFz" firstAttribute="leading" secondItem="c63-3L-8Yv" secondAttribute="leading" id="7Of-aj-sDD"/>
+                            <constraint firstItem="PwI-y8-EFz" firstAttribute="top" secondItem="vib-hc-3CW" secondAttribute="bottom" id="Wxp-Ag-Dyf"/>
+                            <constraint firstItem="mdl-dp-xBS" firstAttribute="top" secondItem="PwI-y8-EFz" secondAttribute="bottom" id="eoV-DE-9E2"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="667"/>
+                    <connections>
+                        <outlet property="tableView" destination="PwI-y8-EFz" id="E4S-e8-gbG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lmf-Yy-hbu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="0.80000000000000004" y="172.26386806596702"/>
+        </scene>
+    </scenes>
+</document>
