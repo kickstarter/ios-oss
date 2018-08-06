@@ -91,10 +91,10 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
     self.requestDataLabel.rac.text = self.viewModel.outputs.requestDataText
     self.requestedDataStatusAndDateLabel.rac.text = self.viewModel.outputs.requestedDataExpirationDate
 
-    self.chevron.rac.hidden = self.viewModel.outputs.showDataExpirationAndChevron
+    self.chevron.rac.hidden = self.viewModel.outputs.dataExpirationAndChevronHidden
     self.requestDataLabel.rac.hidden = self.viewModel.outputs.requestDataTextHidden
     self.preparingDataLabel.rac.hidden = self.viewModel.outputs.showPreparingDataText
-    self.requestedDataStatusAndDateLabel.rac.hidden = self.viewModel.outputs.showDataExpirationAndChevron
+    self.requestedDataStatusAndDateLabel.rac.hidden = self.viewModel.outputs.dataExpirationAndChevronHidden
 
   }
 

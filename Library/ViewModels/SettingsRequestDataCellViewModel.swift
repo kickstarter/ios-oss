@@ -6,23 +6,23 @@ import ReactiveExtensions
 import Result
 
 public protocol SettingsRequestDataCellViewModelInputs {
+  func configureWith(user: User)
   func exportDataTapped()
   func startRequestDataTapped()
-  func configureWith(user: User)
 }
 
 public protocol SettingsRequestDataCellViewModelOutputs {
+  var goToSafari: Signal<String, NoError> { get }
   var requestDataButtonEnabled: Signal<Bool, NoError> { get }
+  var requestedDataExpirationDate: Signal<String, NoError> { get }
   var requestDataLoadingIndicator: Signal<Bool, NoError> { get }
   var requestDataText: Signal<String, NoError> { get }
+  var requestDataTextHidden: Signal<Bool, NoError> { get }
+  var dataExpirationAndChevronHidden: Signal<Bool, NoError> { get }
+  var showPreparingDataText: Signal<Bool, NoError> { get }
   var showRequestDataPrompt: Signal<(), NoError> { get }
   var unableToRequestDataError: Signal<String, NoError> { get }
-  var goToSafari: Signal<String, NoError> { get }
-  var requestedDataExpirationDate: Signal<String, NoError> { get }
-  var showDataExpirationAndChevron: Signal<Bool, NoError> { get }
-  var showPreparingDataText: Signal<Bool, NoError> { get }
-  var requestDataTextHidden: Signal<Bool, NoError> { get }
-  }
+}
 
 public protocol SettingsRequestDataCellViewModelType {
   var inputs: SettingsRequestDataCellViewModelInputs { get }
@@ -84,7 +84,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
       }
     )
 
-    self.showDataExpirationAndChevron = exportEnvelope
+    self.dataExpirationAndChevronHidden = exportEnvelope
       .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil ? true : false }
 
     self.goToSafari = exportEnvelope
@@ -120,7 +120,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
   public let goToSafari: Signal<String, NoError>
   public let unableToRequestDataError: Signal<String, NoError>
   public let requestedDataExpirationDate: Signal<String, NoError>
-  public let showDataExpirationAndChevron: Signal<Bool, NoError>
+  public let dataExpirationAndChevronHidden: Signal<Bool, NoError>
   public let showPreparingDataText: Signal<Bool, NoError>
   public let requestDataTextHidden: Signal<Bool, NoError>
 
