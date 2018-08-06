@@ -202,4 +202,8 @@ extension SettingsNotificationsViewController: UIPickerViewDelegate {
 
     self.viewModel.inputs.didSelectEmailFrequency(frequency: selectedEmailFrequency)
   }
+
+  func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+    return EmailFrequency.rowHeight
+  }
 }

@@ -33,7 +33,7 @@ final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCe
 
     _ = selectFrequencyButton
     |> UIButton.lens.titleLabel.font .~ .ksr_body()
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_grey_500
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_400
 
     _ = separatorView
       |> separatorStyle
