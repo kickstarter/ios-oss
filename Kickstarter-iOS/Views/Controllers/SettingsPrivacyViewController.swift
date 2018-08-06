@@ -99,9 +99,6 @@ internal final class SettingsPrivacyViewController: UITableViewController {
         self?.dataSource.loadFollowCell(user: user)
         self?.tableView.reloadData()
     }
-
-
-
   }
 
   internal override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,

@@ -9,7 +9,6 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
     case recommendations
     case recommendationsFooter
     case downloadData
-    case downloadDataFooter
     case deleteAccount
   }
 
@@ -44,13 +43,6 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
     self.set(values: this.map { $0 },
              cellClass: SettingsPrivacyRequestDataCell.self,
              inSection: Section.downloadData.rawValue)
-  }
-
-
-  internal func loadDownloadDataFooter() {
-    self.set(values: ["DOWNLOAD DATA COPY"],
-             cellClass: SettingsPrivacyStaticCell.self, // might be it's own cell
-             inSection: Section.downloadDataFooter.rawValue)
   }
 
   internal func loadDeleteAccountCell(user: User) {

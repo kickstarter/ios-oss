@@ -18,6 +18,10 @@ public protocol SettingsRequestDataCellViewModelOutputs {
   var showRequestDataPrompt: Signal<(), NoError> { get }
   var unableToRequestDataError: Signal<String, NoError> { get }
   var goToSafari: Signal<String, NoError> { get }
+  var requestedDataExpirationDate: Signal<String, NoError> { get }
+  var showDataExpirationAndChevron: Signal<Bool, NoError> { get }
+  var showPreparingDataText: Signal<Bool, NoError> { get }
+  var requestDataTextHidden: Signal<Bool, NoError> { get }
   }
 
 public protocol SettingsRequestDataCellViewModelType {
@@ -28,8 +32,10 @@ public protocol SettingsRequestDataCellViewModelType {
 public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellViewModelType, SettingsRequestDataCellViewModelInputs, SettingsRequestDataCellViewModelOutputs {
 
   public init() {
-    let initialUser = configureWithUserProperty.signal
+    let initialUser = self.configureWithUserProperty.signal
       .skipNil()
+
+    let emptyStringOnLoad = self.configureWithUserProperty.signal.mapConst("")
 
     let exportEnvelope = initialUser
       .switchMap { _ in
@@ -61,16 +67,37 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
       self.startRequestDataTappedProperty.signal.mapConst(true)
     )
 
-    self.requestDataText = self.requestDataLoadingIndicator.signal
-      .map { $0 ? Strings.Preparing_your_personal_data() : Strings.Download_your_personal_data() }
+    self.requestDataText = Signal.merge(
+     emptyStringOnLoad,
+     exportEnvelope
+      .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil
+        ? Strings.Request_my_Personal_Data() : Strings.Download_your_personal_data() }
+    )
 
     self.requestDataButtonEnabled = self.requestDataLoadingIndicator.signal
       .map { !$0 }
+
+    self.requestedDataExpirationDate = Signal.merge(
+      emptyStringOnLoad,
+      exportEnvelope.map {
+        dateFormatter(for: $0.expiresAt, state: $0.state)
+      }
+    )
+
+    self.showDataExpirationAndChevron = exportEnvelope
+      .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil ? true : false }
 
     self.goToSafari = exportEnvelope
       .filter { $0.state != .expired  || $0.expiresAt != nil }
       .map { $0.dataUrl ?? "" }
       .takeWhen(self.exportDataTappedProperty.signal)
+
+    self.showPreparingDataText = Signal.merge(
+      exportEnvelope.map { $0.state != .processing },
+      self.startRequestDataTappedProperty.signal.mapConst(false)
+    )
+
+    self.requestDataTextHidden = self.showPreparingDataText.signal.map { !$0 }
   }
 
   fileprivate let exportDataTappedProperty = MutableProperty(())
@@ -92,7 +119,25 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
   public let showRequestDataPrompt: Signal<(), NoError>
   public let goToSafari: Signal<String, NoError>
   public let unableToRequestDataError: Signal<String, NoError>
+  public let requestedDataExpirationDate: Signal<String, NoError>
+  public let showDataExpirationAndChevron: Signal<Bool, NoError>
+  public let showPreparingDataText: Signal<Bool, NoError>
+  public let requestDataTextHidden: Signal<Bool, NoError>
 
   public var inputs: SettingsRequestDataCellViewModelInputs { return self }
   public var outputs: SettingsRequestDataCellViewModelOutputs { return self }
+}
+
+private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.State) -> String {
+  guard let isoDate = dateString else { return "" }
+  let dateFormatter = DateFormatter()
+  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:sZ"
+  guard let date = dateFormatter.date(from: isoDate) else { return "" }
+
+  let expirationDate = Format.date(secondsInUTC: date.timeIntervalSince1970, template: "MMM d, yyyy")
+  let expirationTime = Format.date(secondsInUTC: date.timeIntervalSince1970, template: "h:mm a")
+
+  if state == .expired {
+    return ""
+  } else { return Strings.Expires_date_at_time(date: expirationDate, time: expirationTime) }
 }

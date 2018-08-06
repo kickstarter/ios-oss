@@ -15,17 +15,16 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
   internal weak var delegate: SettingsRequestDataCellDelegate?
 
   @IBOutlet fileprivate weak var requestDataLabel: UILabel!
+  @IBOutlet fileprivate weak var preparingDataLabel: UILabel!
   @IBOutlet fileprivate weak var containerView: UIView!
+  @IBOutlet fileprivate weak var requestedDataStatusAndDateLabel: UILabel!
   @IBOutlet fileprivate var separatorViews: [UIView]!
   @IBOutlet fileprivate weak var requestDataButton: UIButton!
   @IBOutlet fileprivate weak var requestDataActivityIndicator: UIActivityIndicatorView!
+  @IBOutlet fileprivate weak var chevron: UIImageView!
+
 
   private var requestDataObserver: Any?
-
-  public enum DataRequestType {
-      case request
-      case download
-    }
 
   internal override func awakeFromNib() {
     self.requestDataButton.addTarget(self, action: #selector(exportButtonTapped), for: .touchUpInside)
@@ -54,11 +53,21 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
     _ = separatorViews
       ||> separatorStyle
 
+    _ = self.preparingDataLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.numberOfLines .~ 1
+      |> UILabel.lens.text %~ { _ in Strings.Preparing_your_personal_data() }
+
     _ = self.requestDataActivityIndicator
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
 
     _ = self.requestDataLabel
       |> settingsSectionLabelStyle
+      |> UILabel.lens.numberOfLines .~ 1
+
+    _ = self.requestedDataStatusAndDateLabel
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.font .~ .ksr_body(size: 13)
   }
 
   internal override func bindViewModel() {
@@ -78,7 +87,15 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
 
     self.requestDataButton.rac.enabled = self.viewModel.outputs.requestDataButtonEnabled
     self.requestDataActivityIndicator.rac.animating = self.viewModel.outputs.requestDataLoadingIndicator
+
     self.requestDataLabel.rac.text = self.viewModel.outputs.requestDataText
+    self.requestedDataStatusAndDateLabel.rac.text = self.viewModel.outputs.requestedDataExpirationDate
+
+    self.chevron.rac.hidden = self.viewModel.outputs.showDataExpirationAndChevron
+    self.requestDataLabel.rac.hidden = self.viewModel.outputs.requestDataTextHidden
+    self.preparingDataLabel.rac.hidden = self.viewModel.outputs.showPreparingDataText
+    self.requestedDataStatusAndDateLabel.rac.hidden = self.viewModel.outputs.showDataExpirationAndChevron
+
   }
 
   @objc fileprivate func exportButtonTapped() {
