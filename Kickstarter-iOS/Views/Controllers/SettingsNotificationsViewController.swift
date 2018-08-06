@@ -118,8 +118,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
 extension SettingsNotificationsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    guard let sectionType = SettingsNotificationSectionType(rawValue: section) else {
-      return 0.0
+    guard let sectionType = dataSource.sectionType(section: section,
+                                                   user: AppEnvironment.current.currentUser) else {
+                                                    return 0.0
     }
 
     return sectionType.sectionHeaderHeight
