@@ -178,7 +178,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         let manager = BITHockeyManager.shared()
         manager.delegate = _self
         manager.configure(withIdentifier: data.appIdentifier)
-        manager.crashManager.crashManagerStatus = .autoSend
+        manager.crashManager.crashManagerStatus = .disabled
         manager.isUpdateManagerDisabled = data.disableUpdates
         manager.userID = data.userId
         manager.userName = data.userName

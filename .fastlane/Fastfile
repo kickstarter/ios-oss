@@ -107,7 +107,7 @@ platform :ios do
     build_the_app(
       output_name: "Kickstarter",
       export_method: "app-store",
-      configuration: "Release",
+      configuration: "Release"
     )
   end
 
@@ -143,9 +143,7 @@ platform :ios do
       )
     )
 
-    # Upload both local and Apple dSYMs
     upload_dsyms(dsym: "./output/gym/Kickstarter.app.dSYM.zip")
-    refresh_dsyms
   end
 
   ### ALPHA

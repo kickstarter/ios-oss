@@ -271,8 +271,7 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 
   @objc private func settingsButtonTapped() {
-    fatalError("Test crash")
-//    self.viewModel.inputs.settingsButtonTapped()
+    self.viewModel.inputs.settingsButtonTapped()
   }
 
   @objc private func backedButtonTapped() {
