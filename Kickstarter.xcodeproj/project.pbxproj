@@ -140,6 +140,7 @@
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
 		77758157209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */; };
 		7775818E209CBF7700EE357F /* DiscoveryProjectCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */; };
+		777B70A12118C81000E11032 /* EmailFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777B70A02118C81000E11032 /* EmailFrequency.swift */; };
 		778215E820F6922100F3D09F /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD31CFFAB9400653B2F /* HelpType.swift */; };
 		778215E920F692D600F3D09F /* SettingsCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6CB220F407A200809E31 /* SettingsCellType.swift */; };
 		778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */; };
@@ -1734,6 +1735,7 @@
 		7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModel.swift; sourceTree = "<group>"; };
 		7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryProjectCategoryView.xib; sourceTree = "<group>"; };
 		77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModelTests.swift; sourceTree = "<group>"; };
+		777B70A02118C81000E11032 /* EmailFrequency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailFrequency.swift; sourceTree = "<group>"; };
 		778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSourceTests.swift; sourceTree = "<group>"; };
 		778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewControllerTests.swift; sourceTree = "<group>"; };
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
@@ -2691,6 +2693,7 @@
 				A731BF581D1ED60800A734AC /* WebViewController.swift */,
 				77FA6CB220F407A200809E31 /* SettingsCellType.swift */,
 				770DF3612106241500A6D0F1 /* SettingsNotificationCellType.swift */,
+				777B70A02118C81000E11032 /* EmailFrequency.swift */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -5063,6 +5066,7 @@
 				0154A93B1CA1A17800DB9BA4 /* UIColor.swift in Sources */,
 				D0CDA8A31E744EC900AA3450 /* LiveStreamNavTitleViewModel.swift in Sources */,
 				9D0FB7751D7600B5005774F2 /* CheckoutRacingViewModel.swift in Sources */,
+				777B70A12118C81000E11032 /* EmailFrequency.swift in Sources */,
 				A7F441CD1D005A9400FE6FC5 /* MessagesViewModel.swift in Sources */,
 				A774684B1D6E400D007DCDFC /* RewardPledgeViewModel.swift in Sources */,
 				8053D3111D3848A3007B85DB /* Reachability.swift in Sources */,

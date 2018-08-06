@@ -6,6 +6,9 @@ import UIKit
 internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var tableView: UITableView!
   @IBOutlet fileprivate weak var emailFrequencyPickerView: UIPickerView!
+  @IBOutlet fileprivate weak var emailPickerViewTopConstraint: NSLayoutConstraint!
+
+  private static let emailPickerViewHeight: CGFloat = 200.0
 
   private let viewModel: SettingsNotificationsViewModelType = SettingsNotificationsViewModel()
   private let dataSource: SettingsNotificationsDataSource = SettingsNotificationsDataSource()
@@ -46,7 +49,19 @@ internal final class SettingsNotificationsViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.emailFrequencyPickerView.rac.hidden = viewModel.outputs.pickerViewIsHidden
+    self.viewModel.outputs.pickerViewIsHidden
+      .observeForUI()
+      .observeValues { [weak self] (isHidden) in
+        self?.animatePickerView(isHidden: isHidden)
+    }
+
+    self.viewModel.outputs.pickerViewSelectedRow
+      .observeForUI()
+      .observeValues { [weak self] (emailFrequency) in
+        self?.emailFrequencyPickerView.selectRow(emailFrequency.rawValue,
+                                                 inComponent: 0,
+                                                 animated: false)
+    }
 
     self.viewModel.outputs.unableToSaveError
       .observeForControllerAction()
@@ -62,17 +77,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
         self?.dataSource.load(user: user)
 
         self?.tableView.reloadData()
-    }
-
-    self.viewModel.outputs.removeEmailFrequencyCell
-      .observeForUI()
-      .observeValues { [weak self] (user) in
-        self?.hideEmailFrequencyCell(user: user)
-    }
-
-    self.viewModel.outputs.showEmailFrequencyCell
-      .observeForUI()
-      .observeValues { [weak self] user in
     }
 
     self.viewModel.outputs.goToFindFriends
@@ -101,34 +105,24 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func showEmailFrequencyCell(user: User) {
-    guard user.isCreator else {
-      return
+  private func animatePickerView(isHidden: Bool) {
+    UIView.animate(withDuration: 0.25) {
+      self.emailPickerViewTopConstraint.constant = isHidden
+        ? 0 : -SettingsNotificationsViewController.emailPickerViewHeight
+
+      self.view.setNeedsLayout()
+      self.view.layoutIfNeeded()
     }
-
-    let indexPath = dataSource.insertEmailFrequencyCell(user: user)
-
-    tableView.beginUpdates()
-    tableView.insertRows(at: [indexPath], with: .automatic)
-    tableView.endUpdates()
-  }
-
-  private func hideEmailFrequencyCell(user: User) {
-    guard user.isCreator else {
-      return
-    }
-
-    let indexPath = dataSource.deleteEmailFrequencyCell()
-
-    tableView.beginUpdates()
-    tableView.deleteRows(at: [indexPath], with: .automatic)
-    tableView.endUpdates()
   }
 }
 
 extension SettingsNotificationsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return SettingsNotificationSectionType.sectionHeaderHeight
+    guard let sectionType = SettingsNotificationSectionType(rawValue: section) else {
+      return 0.0
+    }
+
+    return sectionType.sectionHeaderHeight
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
