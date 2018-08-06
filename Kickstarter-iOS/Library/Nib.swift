@@ -4,12 +4,14 @@ public enum Nib: String {
   case BackerDashboardEmptyStateCell
   case BackerDashboardProjectCell
   case DiscoveryPostcardCell
+  case DiscoveryProjectCategoryView
   case LiveStreamNavTitleView
   case RewardCell
-  case ThanksCategoryCell
-  case DiscoveryProjectCategoryView
-  case SettingsTableViewCell
   case SettingsHeaderView
+  case SettingsNewslettersCell
+  case SettingsNewslettersTopCell
+  case SettingsTableViewCell
+  case ThanksCategoryCell
   case SettingsNotificationCell
   case SettingsNotificationPickerCell
 }
