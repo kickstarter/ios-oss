@@ -64,6 +64,9 @@ internal final class BackerDashboardViewController: UIViewController {
     panGesture.delegate = self
     self.view.addGestureRecognizer(panGesture)
 
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureNotifier))
+    self.pageViewController.view.addGestureRecognizer(tapRecognizer)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -122,7 +125,6 @@ internal final class BackerDashboardViewController: UIViewController {
         guard let _self = self, let controller = self?.pagesDataSource.controllerFor(tab: tab) else {
           fatalError("Controller not found for tab \(tab)")
         }
-
         _self.pageViewController.setViewControllers(
           [controller],
           direction: .forward,
@@ -258,6 +260,10 @@ internal final class BackerDashboardViewController: UIViewController {
     } else {
       self.navigationController?.pushViewController(vc, animated: true)
     }
+  }
+
+  @objc private func tapGestureNotifier() {
+    NotificationCenter.default.post(name: Notification.Name.ksr_savedProjectEmptyStateTapped, object: nil)
   }
 
   @objc private func messagesButtonTapped() {
