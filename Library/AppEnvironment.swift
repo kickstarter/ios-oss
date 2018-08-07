@@ -230,7 +230,7 @@ public struct AppEnvironment {
     let data = userDefaults.dictionary(forKey: environmentStorageKey) ?? [:]
 
     var service = current.apiService
-    var currentUser: User? = nil
+    var currentUser: User?
     let config: Config? = data["config"].flatMap(decode)
 
     if let oauthToken = data["apiService.oauthToken.token"] as? String {
