@@ -39,10 +39,6 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
                           inSection: SettingsNotificationSectionType.creator.rawValue)
   }
 
-  func deleteEmailFrequencyCell() -> IndexPath {
-    return self.deleteRow(atIndex: 1, inSection: SettingsNotificationSectionType.creator.rawValue)
-  }
-
   func sectionType(section: Int, user: User?) -> SettingsNotificationSectionType? {
     guard let user = user else {
       return nil
