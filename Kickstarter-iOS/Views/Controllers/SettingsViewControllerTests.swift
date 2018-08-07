@@ -29,7 +29,7 @@ internal final class SettingsViewControllerTests: TestCase {
 
             let vc = SettingsViewController.instantiate()
             let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-            parent.view.frame.size.height = 1_900
+            parent.view.frame.size.height = 1_600
 
             self.scheduler.run()
 
@@ -52,7 +52,7 @@ internal final class SettingsViewControllerTests: TestCase {
 
           let vc = SettingsViewController.instantiate()
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-          parent.view.frame.size.height = 2_100
+          parent.view.frame.size.height = 1_600
 
           self.scheduler.run()
 
@@ -73,7 +73,7 @@ internal final class SettingsViewControllerTests: TestCase {
 
           let vc = SettingsViewController.instantiate()
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-          parent.view.frame.size.height = 1_900
+          parent.view.frame.size.height = 1_600
 
           self.scheduler.run()
 
