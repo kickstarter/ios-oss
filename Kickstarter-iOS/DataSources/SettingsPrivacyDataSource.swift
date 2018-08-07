@@ -2,52 +2,38 @@ import Foundation
 import Library
 import KsApi
 
+internal enum Section: Int {
+  case following
+  case followingFooter
+  case recommendations
+  case recommendationsFooter
+  case requestData
+  case deleteAccount
+}
+
 internal final class SettingsPrivacyDataSource: ValueCellDataSource {
-  fileprivate enum Section: Int {
-    case following
-    case followingFooter
-    case recommendations
-    case recommendationsFooter
-    case downloadData
-    case deleteAccount
-  }
+  internal func load(user: User) {
+    self.set(values: [user],
+             cellClass: SettingsPrivacyCell.self,
+             inSection: Section.following.rawValue)
 
-  internal func loadFollowCell(user: User) {
-    let this = [user]
-    self.set(values: this.map { $0 } ,
-               cellClass: SettingsPrivacyCell.self,
-               inSection: Section.following.rawValue)
-  }
-
-  internal func loadFollowFooter() {
     self.set(values: [Strings.When_following_is_on_you_can_follow_the_acticity_of_others()],
              cellClass: SettingsPrivacyStaticCell.self, // change to FollowCell
              inSection: Section.followingFooter.rawValue)
-  }
 
-  internal func loadRecommendationsCell(user: User) {
-    let this = [user] // correct naming here
-    self.set(values: this.map { $0 },
+    self.set(values: [user],
              cellClass: SettingsPrivacyRecommendationCell.self,
              inSection: Section.recommendations.rawValue)
-  }
 
-  internal func loadRecommendationsFooter() {
     self.set(values: [Strings.We_use_your_activity_internally_to_make_recommendations_for_you()],
              cellClass: SettingsPrivacyStaticCell.self,
              inSection: Section.recommendationsFooter.rawValue)
-  }
 
-  internal func loadDownloadDataCell(user: User) {
-    let this = [user] // correct naming here
-    self.set(values: this.map { $0 },
+    self.set(values: [user],
              cellClass: SettingsPrivacyRequestDataCell.self,
-             inSection: Section.downloadData.rawValue)
-  }
+             inSection: Section.requestData.rawValue)
 
-  internal func loadDeleteAccountCell(user: User) {
-    let this = [user]
-    self.set(values: this.map { $0 } ,
+    self.set(values: [user],
              cellClass: SettingsPrivacyDeleteAccountCell.self,
              inSection: Section.deleteAccount.rawValue)
   }

@@ -28,6 +28,11 @@ internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
+          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+    }
 
     _ = self.separatorView
       |> separatorStyle
@@ -50,6 +55,6 @@ internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
   }
 
   @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
-    self.viewModel.inputs.followingSwitchTapped(on: followingPrivacySwitch.isOn, didShowPrompt: false)
+    self.viewModel.inputs.followTapped()
   }
 }

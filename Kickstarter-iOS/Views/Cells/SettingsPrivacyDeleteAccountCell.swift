@@ -17,7 +17,6 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
   @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
 
-
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
@@ -30,6 +29,13 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
 
   internal override func bindStyles() {
     super.bindStyles()
+
+    _ = self
+      |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
+          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2)) }
 
     _ = self.separatorView
       |> separatorStyle

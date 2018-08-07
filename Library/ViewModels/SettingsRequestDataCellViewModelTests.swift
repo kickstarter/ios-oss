@@ -151,13 +151,13 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
   func testUnableToRequestDataError() {
     let user = User.template
     let error = ErrorEnvelope(
-      errorMessages: ["Unable to request data"],
+      errorMessages: ["unable to request data"],
       ksrCode: .UnknownCode,
       httpCode: 400,
       exception: nil
     )
 
-    withEnvironment(apiService: MockService(fetchExportStateError: error)) {
+    withEnvironment(apiService: MockService(exportDataError: error)) {
       self.vm.inputs.configureWith(user: user)
       self.vm.inputs.startRequestDataTapped()
       self.scheduler.advance()

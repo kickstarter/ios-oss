@@ -20,6 +20,10 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
     super.bindStyles()
     _ = self
       |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
+          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2)) }
 
     _ = self.separatorView
       |> separatorStyle

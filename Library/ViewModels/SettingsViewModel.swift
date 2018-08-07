@@ -35,6 +35,7 @@ public protocol SettingsViewModelOutputs {
   var gamesNewsletterOn: Signal<Bool, NoError> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
   var goToDeleteAccountBrowser: Signal<URL, NoError> { get }
+  var goToPrivacy: Signal<User, NoError> { get }
   var happeningNewsletterOn: Signal<Bool, NoError> { get }
   var inventNewsletterOn: Signal<Bool, NoError> { get }
   var logoutWithParams: Signal<DiscoveryParams, NoError> { get }

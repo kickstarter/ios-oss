@@ -7,7 +7,8 @@ import Result
 
 public protocol SettingsPrivacyCellViewModelInputs {
   func configureWith(user: User)
-  func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
+  func followingSwitchTapped(on: Bool)
+  func followTapped()
 }
 
 public protocol SettingsPrivacyCellViewModelOutputs {
@@ -29,18 +30,9 @@ SettingsPrivacyCellViewModelInputs, SettingsPrivacyCellViewModelOutputs {
     let initialUser = configureWithProperty.signal
       .skipNil()
 
-    self.followingPrivacyOn = Signal.merge (
-      initialUser.map { $0.social ?? true }.skipRepeats(),
-      self.followingSwitchTappedProperty.signal.map { $0.0 }
-    )
-
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
-      self.followingSwitchTappedProperty.signal
-        .filter { (on, didShowPrompt) in
-          didShowPrompt == true || (on == true && didShowPrompt == false)
-        }
-        .map {
-          (UserAttribute.privacy(UserAttribute.Privacy.following), $0.0)
+      self.followingSwitchTappedProperty.signal.map {
+      (UserAttribute.privacy(UserAttribute.Privacy.following), !$0)
     }
 
     let updatedUser = initialUser
@@ -70,9 +62,9 @@ SettingsPrivacyCellViewModelInputs, SettingsPrivacyCellViewModelOutputs {
 
     self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
 
-    self.showPrivacyFollowingPrompt = self.followingSwitchTappedProperty.signal
-      .filter { $0.0 == false && $0.1 == false }
-      .ignoreValues()
+    self.showPrivacyFollowingPrompt = self.followTappedProperty.signal
+
+    self.followingPrivacyOn = initialUser.map { $0.social ?? true }
   }
 
   fileprivate let configureWithProperty = MutableProperty<User?>(nil)
@@ -80,9 +72,14 @@ SettingsPrivacyCellViewModelInputs, SettingsPrivacyCellViewModelOutputs {
     self.configureWithProperty.value = user
   }
 
-  fileprivate let followingSwitchTappedProperty = MutableProperty((false, false))
-  public func followingSwitchTapped(on: Bool, didShowPrompt: Bool) {
-    self.followingSwitchTappedProperty.value = (on, didShowPrompt)
+  fileprivate let followTappedProperty = MutableProperty(())
+  public func followTapped() {
+    self.followTappedProperty.value = ()
+  }
+
+  fileprivate let followingSwitchTappedProperty = MutableProperty(false)
+  public func followingSwitchTapped(on: Bool) {
+    self.followingSwitchTappedProperty.value = on
   }
 
   public let followingPrivacyOn: Signal<Bool, NoError>

@@ -46,56 +46,33 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     self.viewModel.outputs.reloadData
       .observeForUI()
       .observeValues { [weak self] user in
-        self?.dataSource.loadFollowCell(user: user)
-        self?.tableView.reloadData()
-    }
+        self?.dataSource.load(user: user)
+      }
 
-    self.viewModel.outputs.reloadData
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.dataSource.loadFollowFooter()
-        self?.tableView.reloadData()
-    }
-
-    self.viewModel.outputs.reloadData
-      .observeForUI()
-      .observeValues { [weak self] user in
-        self?.dataSource.loadRecommendationsCell(user: user)
-        self?.tableView.reloadData()
-    }
-
-    self.viewModel.outputs.reloadData
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.dataSource.loadRecommendationsFooter()
-        self?.tableView.reloadData()
-    }
-
-    self.viewModel.outputs.reloadData
-      .observeForUI()
-      .observeValues { [weak self] user in
-        self?.dataSource.loadDownloadDataCell(user: user)
-        self?.tableView.reloadData()
-    }
-
-    self.viewModel.outputs.reloadData
-      .observeForUI()
-      .observeValues { [weak self] user in
-        self?.dataSource.loadDeleteAccountCell(user: user)
-        self?.tableView.reloadData()
-    }
-
-    self.viewModel.outputs.updateCurrentUser // put in VC
+    self.viewModel.outputs.updateCurrentUser
       .observeForUI()
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
-        self?.dataSource.loadFollowCell(user: user)
-        self?.tableView.reloadData()
+        self?.dataSource.load(user: user)
+    }
+
+    self.viewModel.outputs.unableToSaveError
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
+    }
+
+    self.viewModel.outputs.refreshFollowingSection
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        let followingSection = IndexSet(integer: Section.following.rawValue)
+        self?.tableView.reloadSections(followingSection, with: .none)
     }
   }
 
-  internal override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
-                                 forRowAt indexPath: IndexPath) {
+  internal override func tableView(_ tableView: UITableView,
+                                   willDisplay cell: UITableViewCell,
+                                   forRowAt indexPath: IndexPath) {
     if let followCell = cell as? SettingsPrivacyCell {
       followCell.delegate = self
     } else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
@@ -110,10 +87,10 @@ extension SettingsPrivacyViewController: SettingsPrivacyCellDelegate {
   func notifyDelegateShowFollowPrivacyPrompt() {
     let followingAlert = UIAlertController.turnOffPrivacyFollowing(
       turnOnHandler: { [weak self] _ in
-        self?.cellViewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true) // fix this
+        self?.viewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
       },
       turnOffHandler: { [weak self] _ in
-        self?.cellViewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true) // and this
+        self?.viewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
       }
     )
     self.present(followingAlert, animated: true, completion: nil)
