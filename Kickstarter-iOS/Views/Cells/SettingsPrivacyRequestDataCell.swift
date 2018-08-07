@@ -23,7 +23,6 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
   @IBOutlet fileprivate weak var requestDataActivityIndicator: UIActivityIndicatorView!
   @IBOutlet fileprivate weak var chevron: UIImageView!
 
-
   private var requestDataObserver: Any?
 
   internal override func awakeFromNib() {

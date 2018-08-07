@@ -19,7 +19,8 @@ public protocol SettingsDeleteAccountCellViewModelType {
   var outputs: SettingsDeleteAccountCellViewModelOutputs { get }
 }
 
-public final class SettingsDeleteAccountCellViewModel: SettingsDeleteAccountCellViewModelType, SettingsDeleteAccountCellViewModelInputs, SettingsDeleteAccountCellViewModelOutputs {
+public final class SettingsDeleteAccountCellViewModel: SettingsDeleteAccountCellViewModelType,
+  SettingsDeleteAccountCellViewModelInputs, SettingsDeleteAccountCellViewModelOutputs {
 
   public init() {
     self.notifyDeleteAccountTapped = self.deleteAccountTappedProperty.signal

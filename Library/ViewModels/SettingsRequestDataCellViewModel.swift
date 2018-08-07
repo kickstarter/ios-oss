@@ -29,7 +29,8 @@ public protocol SettingsRequestDataCellViewModelType {
   var outputs: SettingsRequestDataCellViewModelOutputs { get }
 }
 
-public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellViewModelType, SettingsRequestDataCellViewModelInputs, SettingsRequestDataCellViewModelOutputs {
+public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellViewModelType,
+  SettingsRequestDataCellViewModelInputs, SettingsRequestDataCellViewModelOutputs {
 
   public init() {
     let initialUser = self.configureWithUserProperty.signal

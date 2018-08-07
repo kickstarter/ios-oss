@@ -51,8 +51,6 @@ public protocol SettingsViewModelOutputs {
   var updateCurrentUser: Signal<User, NoError> { get }
   var versionText: Signal<String, NoError> { get }
   var weeklyNewsletterOn: Signal<Bool, NoError> { get }
-
-  var goToPrivacy: Signal<User, NoError> { get }
 }
 
 public protocol SettingsViewModelType {

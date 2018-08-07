@@ -9,7 +9,6 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.recordMode = true
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
@@ -31,8 +30,6 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
         self.scheduler.run()
-
-        vc.tableView.reloadData()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
