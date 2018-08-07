@@ -35,6 +35,7 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
 
     _ = self.nameLabel |> settingsSectionLabelStyle
+    _ = self.notificationSwitch |> settingsSwitchStyle
     _ = self.separatorView |> separatorStyle
   }
 

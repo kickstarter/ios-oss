@@ -46,7 +46,7 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
       |> settingsSectionLabelStyle
 
     _ = self.newslettersSwitch
-      |> UISwitch.lens.onTintColor .~ .ksr_green_700
+      |> settingsSwitchStyle
   }
 
   override func bindViewModel() {

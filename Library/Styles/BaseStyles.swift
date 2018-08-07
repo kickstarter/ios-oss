@@ -145,7 +145,7 @@ private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
 private let baseNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
     NSAttributedStringKey.foregroundColor: UIColor.black,
-    NSAttributedStringKey.font: UIFont.ksr_callout()
+    NSAttributedStringKey.font: UIFont.ksr_headline()
     ]
     <> UINavigationBar.lens.isTranslucent .~ false
     <> UINavigationBar.lens.barTintColor .~ .white
@@ -153,7 +153,7 @@ private let baseNavigationBarStyle =
 private let clearNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
     NSAttributedStringKey.foregroundColor: UIColor.white,
-    NSAttributedStringKey.font: UIFont.ksr_callout()
+    NSAttributedStringKey.font: UIFont.ksr_headline()
     ]
     <> UINavigationBar.lens.isTranslucent .~ true
     <> UINavigationBar.lens.shadowImage .~ UIImage()
