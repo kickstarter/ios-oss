@@ -139,7 +139,7 @@ platform :ios do
         "app store",
         get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
         get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
-        "iTunes Connect 🚀"
+        "App Store Connect 🚀"
       )
     )
 
@@ -187,7 +187,7 @@ platform :ios do
   private_lane :build_the_app do |options|
     export_options = {}
 
-    unless options[:configuration].equal? "Release"
+    unless options[:configuration].eql? "Release"
       # Disable bitcode for enterprise builds
       export_options = {
         includeBitcode: false,
@@ -220,10 +220,11 @@ platform :ios do
   end
 
   private_lane :upload_dsyms do |options|
-    upload_symbols_to_crashlytics(dsym_path: options[:dsym], 
-                                  api_token: ENV["FABRIC_API_KEY"],
-                                  binary_path: "./Frameworks/Fabric/Fabric.framework"
-                                  )
+    upload_symbols_to_crashlytics(
+      dsym_path: options[:dsym], 
+      api_token: ENV["FABRIC_API_KEY"],
+      binary_path: "./Frameworks/Fabric/Fabric.framework"
+    )
   end
 
   ### HELPERS
