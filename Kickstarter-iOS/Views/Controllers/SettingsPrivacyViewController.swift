@@ -80,13 +80,6 @@ internal final class SettingsPrivacyViewController: UITableViewController {
 
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.dataSource.loadDownloadDataFooter()
-        self?.tableView.reloadData()
-    }
-
-    self.viewModel.outputs.reloadData
-      .observeForUI()
       .observeValues { [weak self] user in
         self?.dataSource.loadDeleteAccountCell(user: user)
         self?.tableView.reloadData()

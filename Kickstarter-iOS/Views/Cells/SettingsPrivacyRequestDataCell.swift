@@ -53,6 +53,9 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
     _ = separatorViews
       ||> separatorStyle
 
+    _ = self.requestDataButton
+      |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_text_dark_grey_500
+
     _ = self.preparingDataLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.numberOfLines .~ 1

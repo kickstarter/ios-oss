@@ -93,6 +93,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
       .takeWhen(self.exportDataTappedProperty.signal)
 
     self.showPreparingDataText = Signal.merge(
+      self.configureWithUserProperty.signal.mapConst(true),
       exportEnvelope.map { $0.state != .processing },
       self.startRequestDataTappedProperty.signal.mapConst(false)
     )

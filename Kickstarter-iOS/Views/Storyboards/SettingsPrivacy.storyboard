@@ -289,20 +289,21 @@
                                             <viewLayoutGuide key="safeArea" id="Ufg-5Z-5Nh"/>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uag-cG-Z0v">
-                                            <rect key="frame" x="16" y="1" width="343" height="30"/>
+                                            <rect key="frame" x="0.0" y="1" width="375" height="40"/>
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="trailing" secondItem="ihf-gP-uZh" secondAttribute="trailingMargin" id="7Ol-wf-rlh"/>
+                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="trailing" secondItem="ihf-gP-uZh" secondAttribute="trailingMargin" constant="16" id="7Ol-wf-rlh"/>
                                         <constraint firstAttribute="trailing" secondItem="bMn-0H-yEC" secondAttribute="trailing" id="AJI-4c-pyJ"/>
                                         <constraint firstItem="Uag-cG-Z0v" firstAttribute="top" secondItem="w3T-mz-kcX" secondAttribute="bottom" id="JY6-6e-sLk"/>
                                         <constraint firstAttribute="trailing" secondItem="w3T-mz-kcX" secondAttribute="trailing" id="LVW-Uh-pDY"/>
+                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="height" secondItem="eLr-Fe-xyE" secondAttribute="height" id="R2F-rl-HvD"/>
                                         <constraint firstAttribute="bottom" secondItem="bMn-0H-yEC" secondAttribute="bottom" id="TNF-mo-aVx"/>
                                         <constraint firstItem="w3T-mz-kcX" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="dBa-lz-2Y4"/>
                                         <constraint firstItem="bMn-0H-yEC" firstAttribute="top" secondItem="ihf-gP-uZh" secondAttribute="top" id="oJ9-Al-ZAu"/>
                                         <constraint firstItem="bMn-0H-yEC" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="vZR-r2-Oc1"/>
                                         <constraint firstItem="w3T-mz-kcX" firstAttribute="top" secondItem="ihf-gP-uZh" secondAttribute="top" id="w4F-id-x88"/>
-                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leadingMargin" id="z03-kJ-y2z"/>
+                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leadingMargin" constant="-16" id="z03-kJ-y2z"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

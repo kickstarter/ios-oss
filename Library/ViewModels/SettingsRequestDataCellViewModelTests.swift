@@ -36,9 +36,8 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
   func testOpenDataUrlInSafari() {
     let user = User.template
-    let export = ExportDataEnvelope.template
 
-    withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
+    withEnvironment(apiService: MockService(fetchExportStateResponse: .template)) {
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
       self.vm.inputs.exportDataTapped()
@@ -63,9 +62,8 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
   func testDataExpirationDate() {
     let user = User.template
-    let export = ExportDataEnvelope.template
 
-    withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
+    withEnvironment(apiService: MockService(fetchExportStateResponse: .template)) {
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
       self.requestedDataExpirationDate.assertValues(["", "Expires Jun 19, 2018 at 1:12 PM"])
@@ -79,8 +77,6 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
       |> ExportDataEnvelope.lens.expiresAt .~ nil
       |> ExportDataEnvelope.lens.dataUrl .~ nil
 
-    let newExport = ExportDataEnvelope.template
-
     withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
       self.vm.inputs.configureWith(user: user)
 
@@ -92,7 +88,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      withEnvironment(apiService: MockService(fetchExportStateResponse: newExport)) {
+      withEnvironment(apiService: MockService(fetchExportStateResponse: .template)) {
 
         self.vm.inputs.configureWith(user: user)
 
@@ -106,9 +102,8 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
   func testDataExpirationAndChevronHidden() {
     let user = User.template
-    let export = ExportDataEnvelope.template
 
-    withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
+    withEnvironment(apiService: MockService(fetchExportStateResponse: .template)) {
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
       self.requestDataText.assertValues(["", Strings.Download_your_personal_data()])
@@ -140,15 +135,14 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
       self.vm.inputs.configureWith(user: user)
-      self.scheduler.advance()
 
-      self.requestDataLoadingIndicator.assertValues([false, false])
+      self.requestDataLoadingIndicator.assertValues([false])
       self.requestDataTextHidden.assertValues([false])
       self.showPreparingDataText.assertValues([true])
 
       self.vm.inputs.startRequestDataTapped()
 
-      self.requestDataLoadingIndicator.assertValues([false, false, true])
+      self.requestDataLoadingIndicator.assertValues([false, true])
       self.requestDataTextHidden.assertValues([false, true])
       self.showPreparingDataText.assertValues([true, false])
     }
