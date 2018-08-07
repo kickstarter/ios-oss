@@ -129,23 +129,9 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
                                                            atIndex index: Int,
                                                            inSection section: Int) -> IndexPath
     where Cell.Value == Value {
+      self.padValuesForSection(section)
+
       self.values[section].insert((value, Cell.defaultReusableId), at: index)
-
-      return IndexPath(row: index, section: section)
-  }
-
-  /**
-   Remove a single value at the index and section specified.
-
-   - parameter index:     The index to delete the value from
-   - parameter section:   The section to delete the value from
-
-   - returns: The index path of the deleted row.
-   */
-
-  @discardableResult
-  public final func deleteRow(atIndex index: Int, inSection section: Int) -> IndexPath {
-      self.values[section].remove(at: index)
 
       return IndexPath(row: index, section: section)
   }
