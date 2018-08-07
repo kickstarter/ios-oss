@@ -12,13 +12,13 @@ public protocol SettingsRequestDataCellViewModelInputs {
 }
 
 public protocol SettingsRequestDataCellViewModelOutputs {
+  var dataExpirationAndChevronHidden: Signal<Bool, NoError> { get }
   var goToSafari: Signal<String, NoError> { get }
   var requestDataButtonEnabled: Signal<Bool, NoError> { get }
   var requestedDataExpirationDate: Signal<String, NoError> { get }
   var requestDataLoadingIndicator: Signal<Bool, NoError> { get }
   var requestDataText: Signal<String, NoError> { get }
   var requestDataTextHidden: Signal<Bool, NoError> { get }
-  var dataExpirationAndChevronHidden: Signal<Bool, NoError> { get }
   var showPreparingDataText: Signal<Bool, NoError> { get }
   var showRequestDataPrompt: Signal<(), NoError> { get }
   var unableToRequestDataError: Signal<String, NoError> { get }
@@ -115,16 +115,16 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     self.startRequestDataTappedProperty.value = ()
   }
 
-  public let requestDataText: Signal<String, NoError>
-  public let requestDataButtonEnabled: Signal<Bool, NoError>
-  public let requestDataLoadingIndicator: Signal<Bool, NoError>
-  public let showRequestDataPrompt: Signal<(), NoError>
-  public let goToSafari: Signal<String, NoError>
-  public let unableToRequestDataError: Signal<String, NoError>
-  public let requestedDataExpirationDate: Signal<String, NoError>
   public let dataExpirationAndChevronHidden: Signal<Bool, NoError>
-  public let showPreparingDataText: Signal<Bool, NoError>
+  public let goToSafari: Signal<String, NoError>
+  public let requestDataButtonEnabled: Signal<Bool, NoError>
+  public let requestedDataExpirationDate: Signal<String, NoError>
+  public let requestDataLoadingIndicator: Signal<Bool, NoError>
+  public let requestDataText: Signal<String, NoError>
   public let requestDataTextHidden: Signal<Bool, NoError>
+  public let showPreparingDataText: Signal<Bool, NoError>
+  public let showRequestDataPrompt: Signal<(), NoError>
+  public let unableToRequestDataError: Signal<String, NoError>
 
   public var inputs: SettingsRequestDataCellViewModelInputs { return self }
   public var outputs: SettingsRequestDataCellViewModelOutputs { return self }

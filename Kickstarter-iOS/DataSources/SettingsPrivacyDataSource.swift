@@ -14,7 +14,7 @@ internal enum Section: Int {
 internal final class SettingsPrivacyDataSource: ValueCellDataSource {
   internal func load(user: User) {
     self.set(values: [user],
-             cellClass: SettingsPrivacyCell.self,
+             cellClass: SettingsFollowCell.self,
              inSection: Section.following.rawValue)
 
     self.set(values: [Strings.When_following_is_on_you_can_follow_the_acticity_of_others()],
@@ -40,7 +40,7 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as SettingsPrivacyCell, value as User):
+    case let (cell as SettingsFollowCell, value as User):
       cell.configureWith(value: value)
     case let (cell as SettingsPrivacyRecommendationCell, value as User):
       cell.configureWith(value: value)

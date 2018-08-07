@@ -12,10 +12,10 @@ public protocol SettingsPrivacyViewModelInputs {
 }
 
 public protocol SettingsPrivacyViewModelOutputs {
+  var refreshFollowingSection: Signal<Void, NoError> { get }
   var reloadData: Signal<User, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
-  var refreshFollowingSection: Signal<Void, NoError> { get }
 }
 
 public protocol SettingsPrivacyViewModelType {
@@ -96,10 +96,10 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
     self.followingSwitchTappedProperty.value = (on, didShowPrompt)
   }
 
+  public let refreshFollowingSection: Signal<Void, NoError>
   public let reloadData: Signal<User, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
-  public let refreshFollowingSection: Signal<Void, NoError>
 
   public var inputs: SettingsPrivacyViewModelInputs { return self }
   public var outputs: SettingsPrivacyViewModelOutputs { return self }

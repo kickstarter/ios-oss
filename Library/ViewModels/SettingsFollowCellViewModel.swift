@@ -5,26 +5,26 @@ import ReactiveSwift
 import ReactiveExtensions
 import Result
 
-public protocol SettingsPrivacyCellViewModelInputs {
+public protocol SettingsFollowCellViewModelInputs {
   func configureWith(user: User)
   func followingSwitchTapped(on: Bool)
   func followTapped()
 }
 
-public protocol SettingsPrivacyCellViewModelOutputs {
+public protocol SettingsFollowCellViewModelOutputs {
   var followingPrivacyOn: Signal<Bool, NoError> { get }
   var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
 }
 
-public protocol SettingsPrivacyCellViewModelType {
-  var inputs: SettingsPrivacyCellViewModelInputs { get }
-  var outputs: SettingsPrivacyCellViewModelOutputs { get }
+public protocol SettingsFollowCellViewModelType {
+  var inputs: SettingsFollowCellViewModelInputs { get }
+  var outputs: SettingsFollowCellViewModelOutputs { get }
 }
 
-public final class SettingsPrivacyCellViewModel: SettingsPrivacyCellViewModelType,
-SettingsPrivacyCellViewModelInputs, SettingsPrivacyCellViewModelOutputs {
+public final class SettingsFollowCellViewModel: SettingsFollowCellViewModelType,
+SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
 
   public init() {
     let initialUser = configureWithProperty.signal
@@ -87,6 +87,6 @@ SettingsPrivacyCellViewModelInputs, SettingsPrivacyCellViewModelOutputs {
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
 
-  public var inputs: SettingsPrivacyCellViewModelInputs { return self }
-  public var outputs: SettingsPrivacyCellViewModelOutputs { return self }
+  public var inputs: SettingsFollowCellViewModelInputs { return self }
+  public var outputs: SettingsFollowCellViewModelOutputs { return self }
 }

@@ -8,7 +8,7 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class SettingsFollowCellViewModelTests: TestCase {
-  internal let vm = SettingsPrivacyCellViewModel()
+  internal let vm = SettingsFollowCellViewModel()
 
   internal let followingPrivacyOn = TestObserver<Bool, NoError>()
   internal let showPrivacyFollowingPrompt = TestObserver<(), NoError>()

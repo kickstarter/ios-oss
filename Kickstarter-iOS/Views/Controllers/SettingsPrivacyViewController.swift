@@ -73,7 +73,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
   internal override func tableView(_ tableView: UITableView,
                                    willDisplay cell: UITableViewCell,
                                    forRowAt indexPath: IndexPath) {
-    if let followCell = cell as? SettingsPrivacyCell {
+    if let followCell = cell as? SettingsFollowCell {
       followCell.delegate = self
     } else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
       requestDataCell.delegate = self
@@ -83,7 +83,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
   }
 }
 
-extension SettingsPrivacyViewController: SettingsPrivacyCellDelegate {
+extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
   func notifyDelegateShowFollowPrivacyPrompt() {
     let followingAlert = UIAlertController.turnOffPrivacyFollowing(
       turnOnHandler: { [weak self] _ in

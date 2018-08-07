@@ -8,8 +8,8 @@ import UIKit
 internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCell {
   fileprivate let viewModel = SettingsRecommendationsCellViewModel()
 
-  @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
   @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
+  @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
   @IBOutlet fileprivate weak var separatorView: UIView!
 
   internal func configureWith(value user: User) {

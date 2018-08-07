@@ -14,14 +14,14 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
   fileprivate let viewModel = SettingsRequestDataCellViewModel()
   internal weak var delegate: SettingsRequestDataCellDelegate?
 
-  @IBOutlet fileprivate weak var requestDataLabel: UILabel!
-  @IBOutlet fileprivate weak var preparingDataLabel: UILabel!
   @IBOutlet fileprivate weak var containerView: UIView!
+  @IBOutlet fileprivate weak var chevron: UIImageView!
+  @IBOutlet fileprivate weak var preparingDataLabel: UILabel!
+  @IBOutlet fileprivate weak var requestDataActivityIndicator: UIActivityIndicatorView!
+  @IBOutlet fileprivate weak var requestDataButton: UIButton!
+  @IBOutlet fileprivate weak var requestDataLabel: UILabel!
   @IBOutlet fileprivate weak var requestedDataStatusAndDateLabel: UILabel!
   @IBOutlet fileprivate var separatorViews: [UIView]!
-  @IBOutlet fileprivate weak var requestDataButton: UIButton!
-  @IBOutlet fileprivate weak var requestDataActivityIndicator: UIActivityIndicatorView!
-  @IBOutlet fileprivate weak var chevron: UIImageView!
 
   private var requestDataObserver: Any?
 
@@ -93,10 +93,8 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
 
     self.requestDataButton.rac.enabled = self.viewModel.outputs.requestDataButtonEnabled
     self.requestDataActivityIndicator.rac.animating = self.viewModel.outputs.requestDataLoadingIndicator
-
     self.requestDataLabel.rac.text = self.viewModel.outputs.requestDataText
     self.requestedDataStatusAndDateLabel.rac.text = self.viewModel.outputs.requestedDataExpirationDate
-
     self.chevron.rac.hidden = self.viewModel.outputs.dataExpirationAndChevronHidden
     self.requestDataLabel.rac.hidden = self.viewModel.outputs.requestDataTextHidden
     self.preparingDataLabel.rac.hidden = self.viewModel.outputs.showPreparingDataText

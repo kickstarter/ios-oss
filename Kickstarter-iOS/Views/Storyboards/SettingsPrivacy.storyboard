@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsPrivacyCell" rowHeight="71" id="5pE-lN-hvd" customClass="SettingsPrivacyCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsFollowCell" rowHeight="71" id="5pE-lN-hvd" customClass="SettingsFollowCell" customModule="Kickstarter_Framework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="71"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5pE-lN-hvd" id="Zyh-dx-Ri5">
@@ -79,9 +79,9 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="privacySettingLabel" destination="m59-D8-kK5" id="sFN-G9-7Py"/>
-                                    <outlet property="privacyStackView" destination="J4h-kh-cHV" id="ry0-KE-uP5"/>
-                                    <outlet property="privacySwitch" destination="xde-Y8-aIY" id="Ivo-F0-43D"/>
+                                    <outlet property="followStackView" destination="J4h-kh-cHV" id="MFP-RE-z9Y"/>
+                                    <outlet property="followingLabel" destination="m59-D8-kK5" id="0kh-XD-zIS"/>
+                                    <outlet property="followingSwitch" destination="xde-Y8-aIY" id="IED-ku-9TL"/>
                                     <outlet property="separatorView" destination="bSy-wv-Mzl" id="Lr4-PM-tTj"/>
                                 </connections>
                             </tableViewCell>

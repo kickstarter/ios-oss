@@ -13,9 +13,9 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
   fileprivate let viewModel = SettingsDeleteAccountCellViewModel()
   internal weak var delegate: SettingsPrivacyDeleteAccountCellDelegate?
 
+  @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
   @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate weak var separatorView: UIView!
-  @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()

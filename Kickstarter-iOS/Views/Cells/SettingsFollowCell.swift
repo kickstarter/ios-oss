@@ -5,19 +5,19 @@ import Prelude_UIKit
 import ReactiveSwift
 import UIKit
 
-public protocol SettingsPrivacyCellDelegate: class {
+public protocol SettingsFollowCellDelegate: class {
   /// Called when follow switch is tapped
   func notifyDelegateShowFollowPrivacyPrompt()
 }
 
-internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel = SettingsPrivacyCellViewModel()
-  internal weak var delegate: SettingsPrivacyCellDelegate?
+internal final class SettingsFollowCell: UITableViewCell, ValueCell {
+  fileprivate let viewModel = SettingsFollowCellViewModel()
+  internal weak var delegate: SettingsFollowCellDelegate?
 
+  @IBOutlet fileprivate weak var followingLabel: UILabel!
+  @IBOutlet fileprivate weak var followStackView: UIStackView!
+  @IBOutlet fileprivate weak var followingSwitch: UISwitch!
   @IBOutlet fileprivate weak var separatorView: UIView!
-  @IBOutlet fileprivate weak var privacySwitch: UISwitch!
-  @IBOutlet fileprivate weak var privacySettingLabel: UILabel!
-  @IBOutlet fileprivate weak var privacyStackView: UIStackView!
 
   internal func configureWith(value user: User) {
     self.viewModel.inputs.configureWith(user: user)
@@ -37,7 +37,7 @@ internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
     _ = self.separatorView
       |> separatorStyle
 
-    _ = self.privacySettingLabel
+    _ = self.followingLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Following() }
   }
@@ -51,7 +51,7 @@ internal final class SettingsPrivacyCell: UITableViewCell, ValueCell {
         self?.delegate?.notifyDelegateShowFollowPrivacyPrompt()
     }
 
-    self.privacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
+    self.followingSwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
   }
 
   @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
