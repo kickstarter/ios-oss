@@ -62,6 +62,9 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
 
     self.recommendationsOn = self.updateCurrentUser
       .map { $0.optedOutOfRecommendations }.skipNil().map { $0 ? false : true }.skipRepeats()
+
+    self.recommendationsTappedProperty.signal
+      .observeValues { _ in  AppEnvironment.current.koala.trackRecommendationsOptIn() }
   }
 
   fileprivate let configureWithProperty = MutableProperty<User?>(nil)
