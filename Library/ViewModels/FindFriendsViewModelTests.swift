@@ -169,6 +169,23 @@ final class FindFriendsViewModelTests: TestCase {
     }
   }
 
+  func testFacebookConnectedUser_needsReconnect() {
+    let needsReconnectUser = User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ true
+
+    withEnvironment(currentUser: needsReconnectUser) {
+      vm.inputs.configureWith(source: FriendsSource.findFriends)
+
+      vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showFacebookConnect.assertValues([true])
+      self.stats.assertValueCount(0)
+    }
+  }
+
   func testStats_WithFacebookConnectedUser() {
     withEnvironment(currentUser: User.template |> User.lens.facebookConnected .~ true) {
       vm.inputs.configureWith(source: FriendsSource.activity)
@@ -197,6 +214,26 @@ final class FindFriendsViewModelTests: TestCase {
       self.scheduler.advance()
 
       stats.assertValueCount(0, "Stats should not emit if user isn't FB Connected")
+      statsSource.assertValueCount(0)
+    }
+  }
+
+  func testStats_WithNeedsReconnectUser() {
+    let facebookConnectedNeedsReconnectUser = User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ true
+
+    withEnvironment(currentUser: facebookConnectedNeedsReconnectUser) {
+      vm.inputs.configureWith(source: FriendsSource.activity)
+
+      stats.assertValueCount(0)
+      statsSource.assertValueCount(0)
+
+      vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      stats.assertValueCount(0, "Stats should not emit if needs facebook reconnect")
       statsSource.assertValueCount(0)
     }
   }
