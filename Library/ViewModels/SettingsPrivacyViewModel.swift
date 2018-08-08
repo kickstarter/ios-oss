@@ -6,7 +6,6 @@ import ReactiveExtensions
 import Result
 
 public protocol SettingsPrivacyViewModelInputs {
-  func configureWith(user: User)
   func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
   func viewDidLoad()
 }
@@ -27,14 +26,17 @@ public final class SettingsPrivacyViewModel: SettingsPrivacyViewModelType,
 SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
 
   public init() {
-    let initialUser = Signal.combineLatest(
-      self.configureWithUserProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal
-    )
-    .map(first)
+    let initialUser = self.viewDidLoadProperty.signal
+      .flatMap {
+        AppEnvironment.current.apiService.fetchUserSelf()
+          .wrapInOptional()
+          .prefix(value: AppEnvironment.current.currentUser)
+          .demoteErrors()
+    }
+    .skipNil()
+    .skipRepeats()
 
     self.reloadData = initialUser
-      .takeWhen(self.viewDidLoadProperty.signal)
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
     self.followingSwitchTappedProperty.signal
@@ -79,11 +81,6 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-  }
-
-  fileprivate let configureWithUserProperty = MutableProperty<User?>(nil)
-  public func configureWith(user: User) {
-    self.configureWithUserProperty.value = user
   }
 
   fileprivate let updateUserProperty = MutableProperty<User?>(nil)

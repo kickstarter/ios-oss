@@ -25,7 +25,6 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   func testReloadData() {
     let user = User.template
 
-    self.vm.configureWith(user: user)
     self.vm.inputs.viewDidLoad()
 
     self.reloadData.assertValues([user])
@@ -40,10 +39,6 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(updateUserSelfError: error)) {
-      let user = User.template
-          |> User.lens.social .~ true
-
-      self.vm.configureWith(user: user)
       self.vm.inputs.viewDidLoad()
       self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
 
@@ -54,10 +49,7 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testUpdateCurrentUser() {
-    let user = User.template
-      |> User.lens.social .~ true
 
-    self.vm.configureWith(user: user)
     self.vm.inputs.viewDidLoad()
     self.updateCurrentUser.assertValueCount(1)
 

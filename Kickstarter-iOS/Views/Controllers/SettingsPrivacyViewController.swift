@@ -15,10 +15,8 @@ internal final class SettingsPrivacyViewController: UITableViewController {
   fileprivate let dataSource = SettingsPrivacyDataSource()
   internal weak var delegate: SettingsPrivacyViewControllerDelegate?
 
-  internal static func configureWith(user: User) -> SettingsPrivacyViewController {
-    let vc = Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
-    vc.viewModel.inputs.configureWith(user: user)
-    return vc
+  internal static func instantiate() -> SettingsPrivacyViewController {
+   return Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
   }
 
   internal override func viewDidLoad() {

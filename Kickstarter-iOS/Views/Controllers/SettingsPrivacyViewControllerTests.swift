@@ -28,7 +28,7 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
       withEnvironment(apiService: MockService(fetchExportStateResponse: exportData),
                       currentUser: currentUser,
                       language: language) {
-        let vc = SettingsPrivacyViewController.configureWith(user: currentUser)
+        let vc = Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
         self.scheduler.run()

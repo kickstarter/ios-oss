@@ -307,12 +307,6 @@ internal final class SettingsViewController: UIViewController {
         self?.goToHelpType(helpType)
     }
 
-    self.viewModel.outputs.goToPrivacy
-      .observeForControllerAction()
-      .observeValues { [weak self] user in
-        self?.goToPrivacy(user: user)
-    }
-
     self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
     self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
     self.exportDataExpirationText.rac.text = self.viewModel.outputs.exportDataExpirationDate
@@ -343,10 +337,6 @@ internal final class SettingsViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  fileprivate func goToPrivacy(user: User) {
-    let vc = SettingsPrivacyViewController.configureWith(user: user)
-    self.navigationController?.pushViewController(vc, animated: true)
-  }
 
   fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)

@@ -110,7 +110,7 @@ extension SettingsV2ViewModel {
     case .help:
       return HelpViewController.instantiate()
     case .privacy:
-      return UIViewController()
+      return SettingsPrivacyViewController.instantiate()
     case .newsletters:
       return SettingsNewslettersViewController.instantiate()
     case .notifications:
