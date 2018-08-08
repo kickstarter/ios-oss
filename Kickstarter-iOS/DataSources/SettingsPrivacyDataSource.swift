@@ -18,7 +18,7 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
              inSection: Section.following.rawValue)
 
     self.set(values: [Strings.When_following_is_on_you_can_follow_the_acticity_of_others()],
-             cellClass: SettingsPrivacyStaticCell.self, // change to FollowCell
+             cellClass: SettingsPrivacyStaticCell.self,
              inSection: Section.followingFooter.rawValue)
 
     self.set(values: [user],

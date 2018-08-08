@@ -109,7 +109,7 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
       }
     )
 
-    let dismiss = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    let dismiss = UIAlertAction(title: Strings.Cancel(), style: .cancel, handler: nil)
 
     exportDataSheet.addAction(startTheRequest)
     exportDataSheet.addAction(dismiss)

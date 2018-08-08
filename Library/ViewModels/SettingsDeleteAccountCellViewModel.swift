@@ -25,7 +25,9 @@ public final class SettingsDeleteAccountCellViewModel: SettingsDeleteAccountCell
   public init() {
     self.notifyDeleteAccountTapped = self.deleteAccountTappedProperty.signal
       .map {
-        AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent("/profile/destroy")
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl
+          .appendingPathComponent("profile")
+          .appendingPathComponent("destroy")
     }
   }
 

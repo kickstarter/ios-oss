@@ -70,8 +70,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
       .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil
         ? Strings.Request_my_Personal_Data() : Strings.Download_your_personal_data() }
 
-    self.requestDataButtonEnabled = self.requestDataLoadingIndicator.signal
-      .map { !$0 }
+    self.requestDataButtonEnabled = self.requestDataLoadingIndicator.signal.negate()
 
     self.requestedDataExpirationDate = exportEnvelope.map {
         dateFormatter(for: $0.expiresAt, state: $0.state)

@@ -6,7 +6,8 @@ internal final class SettingsPrivacyStaticCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var privacyInfoLabel: UILabel!
 
   func configureWith(value: String) {
-    self.privacyInfoLabel.text = value
+    _ = self.privacyInfoLabel
+      |> UILabel.lens.text %~ { _ in value }
 
     _ = self.privacyInfoLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
