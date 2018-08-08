@@ -21,12 +21,14 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
 
   func testView() {
     let currentUser = User.template
+    let exportData = ExportDataEnvelope.template
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(language: language) {
+      withEnvironment(apiService: MockService(fetchExportStateResponse: exportData),
+                      currentUser: currentUser,
+                      language: language) {
         let vc = SettingsPrivacyViewController.configureWith(user: currentUser)
-
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
         self.scheduler.run()

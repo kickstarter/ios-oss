@@ -36,8 +36,6 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     let initialUser = self.configureWithUserProperty.signal
       .skipNil()
 
-    let emptyStringOnLoad = self.configureWithUserProperty.signal.mapConst("")
-
     let exportEnvelope = initialUser
       .switchMap { _ in
         AppEnvironment.current.apiService.exportDataState()
@@ -68,22 +66,16 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
       self.startRequestDataTappedProperty.signal.mapConst(true)
     )
 
-    self.requestDataText = Signal.merge(
-     emptyStringOnLoad,
-     exportEnvelope
+    self.requestDataText = exportEnvelope
       .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil
         ? Strings.Request_my_Personal_Data() : Strings.Download_your_personal_data() }
-    )
 
     self.requestDataButtonEnabled = self.requestDataLoadingIndicator.signal
       .map { !$0 }
 
-    self.requestedDataExpirationDate = Signal.merge(
-      emptyStringOnLoad,
-      exportEnvelope.map {
+    self.requestedDataExpirationDate = exportEnvelope.map {
         dateFormatter(for: $0.expiresAt, state: $0.state)
       }
-    )
 
     self.dataExpirationAndChevronHidden = exportEnvelope
       .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil ? true : false }
