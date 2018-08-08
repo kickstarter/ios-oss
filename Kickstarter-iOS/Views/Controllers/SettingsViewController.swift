@@ -337,7 +337,6 @@ internal final class SettingsViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-
   fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     self.navigationController?.pushViewController(vc, animated: true)
