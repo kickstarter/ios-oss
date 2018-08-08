@@ -21,20 +21,18 @@ internal final class SettingsViewControllerTests: TestCase {
     let currentUser = .template |> User.lens.stats.backedProjectsCount .~ 1234
 
     Language.allLanguages.forEach { language in
-      Language.allLanguages.forEach { language in
-        withEnvironment(
-          apiService: MockService(fetchUserSelfResponse: currentUser),
-          currentUser: currentUser,
-          language: language) {
+      withEnvironment(
+        apiService: MockService(fetchUserSelfResponse: currentUser),
+        currentUser: currentUser,
+        language: language) {
 
             let vc = SettingsViewController.instantiate()
             let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
             parent.view.frame.size.height = 1_600
 
-            self.scheduler.run()
+          self.scheduler.run()
 
-            FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
-        }
+          FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
     }
   }

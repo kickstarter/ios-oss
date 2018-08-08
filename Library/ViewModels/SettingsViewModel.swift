@@ -105,7 +105,7 @@ SettingsViewModelOutputs {
         (UserAttribute.newsletter(Newsletter.weekly), $0)
       },
       self.backingsTappedProperty.signal.map {
-        (UserAttribute.notification(UserAttribute.Notification.backings), $0)
+        (UserAttribute.notification(UserAttribute.Notification.pledgeActivity), $0)
       },
       self.commentsTappedProperty.signal.map {
         (UserAttribute.notification(UserAttribute.Notification.comments), $0)
@@ -120,7 +120,7 @@ SettingsViewModelOutputs {
         (UserAttribute.notification(UserAttribute.Notification.messages), $0)
       },
       self.mobileBackingsTappedProperty.signal.map {
-        (UserAttribute.notification(UserAttribute.Notification.mobileBackings), $0)
+        (UserAttribute.notification(UserAttribute.Notification.mobilePledgeActivity), $0)
       },
       self.mobileCommentsTappedProperty.signal.map {
         (UserAttribute.notification(UserAttribute.Notification.mobileComments), $0)
@@ -290,12 +290,12 @@ SettingsViewModelOutputs {
         case let .notification(notification):
           switch notification {
           case
-          .mobileBackings,
+          .mobilePledgeActivity,
           .mobileComments, .mobileFollower, .mobileFriendActivity, .mobilePostLikes, .mobileMessages,
                .mobileUpdates:
             AppEnvironment.current.koala.trackChangePushNotification(type: notification.trackingString,
                                                                      on: on)
-          case .backings,
+          case .pledgeActivity,
                .comments, .follower, .friendActivity, .messages, .postLikes, .creatorTips, .updates:
             AppEnvironment.current.koala.trackChangeEmailNotification(type: notification.trackingString,
                                                                       on: on)

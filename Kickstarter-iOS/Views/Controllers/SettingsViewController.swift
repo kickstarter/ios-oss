@@ -9,8 +9,6 @@ internal final class SettingsViewController: UIViewController {
   fileprivate let viewModel: SettingsViewModelType = SettingsViewModel()
   fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
 
-  @IBOutlet fileprivate weak var artsAndCultureNewsLabel: UILabel!
-  @IBOutlet fileprivate weak var artsAndCultureNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var contactButton: UIButton!
   @IBOutlet fileprivate weak var contactLabel: UILabel!
   @IBOutlet fileprivate weak var cookiePolicyButton: UIButton!
@@ -25,28 +23,19 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var followingPrivacyInfoButton: UIButton!
   @IBOutlet fileprivate weak var followingPrivacyLabel: UILabel!
   @IBOutlet fileprivate weak var followingPrivacySwitch: UISwitch!
-  @IBOutlet fileprivate weak var gamesNewsletterSwitch: UISwitch!
-  @IBOutlet fileprivate weak var happeningNewsletterSwitch: UISwitch!
-  @IBOutlet fileprivate weak var happeningNowLabel: UILabel!
   @IBOutlet fileprivate weak var helpCenterButton: UIButton!
   @IBOutlet fileprivate weak var helpCenterLabel: UILabel!
   @IBOutlet fileprivate weak var helpTitleLabel: UILabel!
   @IBOutlet fileprivate weak var howKsrWorksButton: UIButton!
   @IBOutlet fileprivate weak var howKsrWorksLabel: UILabel!
-  @IBOutlet fileprivate weak var inventLabel: UILabel!
-  @IBOutlet fileprivate weak var inventNewsletterSwitch: UISwitch!
-  @IBOutlet fileprivate weak var ksrLovesGamesLabel: UILabel!
-  @IBOutlet fileprivate weak var ksrNewsAndEventsLabel: UILabel!
   @IBOutlet fileprivate weak var logoutButton: UIButton!
-  @IBOutlet fileprivate weak var newslettersTitleLabel: UILabel!
+  @IBOutlet fileprivate weak var newslettersLabel: UILabel!
   @IBOutlet fileprivate weak var notificationsLabel: UILabel!
   @IBOutlet fileprivate weak var privacyButton: UIButton!
   @IBOutlet fileprivate weak var privacyLabel: UILabel!
   @IBOutlet fileprivate weak var privacyTitleLabel: UILabel!
   @IBOutlet fileprivate weak var privacyPolicyButton: UIButton!
   @IBOutlet fileprivate weak var privacyPolicyLabel: UILabel!
-  @IBOutlet fileprivate weak var projectsWeLoveLabel: UILabel!
-  @IBOutlet fileprivate weak var promoNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var rateUsButton: UIButton!
   @IBOutlet fileprivate weak var rateUsLabel: UILabel!
   @IBOutlet fileprivate weak var recommendationsInfoButton: UIButton!
@@ -54,7 +43,6 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
   @IBOutlet fileprivate weak var termsOfUseButton: UIButton!
   @IBOutlet fileprivate weak var termsOfUseLabel: UILabel!
-  @IBOutlet fileprivate weak var weeklyNewsletterSwitch: UISwitch!
   @IBOutlet fileprivate weak var versionLabel: UILabel!
   @IBOutlet fileprivate weak var privateProfileSwitch: UISwitch!
   @IBOutlet fileprivate weak var privateProfileLabel: UILabel!
@@ -127,10 +115,6 @@ internal final class SettingsViewController: UIViewController {
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title() }
 
-    _ = self.artsAndCultureNewsLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_arts() }
-
     _ = self.contactButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.profile_settings_about_contact() }
@@ -171,10 +155,6 @@ internal final class SettingsViewController: UIViewController {
       .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Following_More_Info() }
 
-    _ = self.happeningNowLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_happening() }
-
     _ = self.helpCenterButton
       |> settingsSectionButtonStyle
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Help_center() }
@@ -195,23 +175,11 @@ internal final class SettingsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_about_how_it_works() }
 
-    _ = self.inventLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_invent() }
-
-    _ = self.ksrLovesGamesLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_games() }
-
-    _ = self.ksrNewsAndEventsLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_promo() }
-
     _ = self.logoutButton |> settingsLogoutButtonStyle
 
-    _ = self.newslettersTitleLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_title() }
+    _ = self.newslettersLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Newsletters() }
 
     _ = self.notificationsLabel
       |> settingsSectionLabelStyle
@@ -241,10 +209,6 @@ internal final class SettingsViewController: UIViewController {
       |> UIButton.lens.image(for: .normal)
       .~ image(named: "icon--info", tintColor: .ksr_grey_500, inBundle: Bundle.framework)
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Private_profile_more_info() }
-
-    _ = self.projectsWeLoveLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_weekly() }
 
     _ = self.rateUsButton
       |> settingsSectionButtonStyle
@@ -349,23 +313,16 @@ internal final class SettingsViewController: UIViewController {
         self?.goToPrivacy(user: user)
     }
 
-    self.artsAndCultureNewsletterSwitch.rac.on = self.viewModel.outputs.artsAndCultureNewsletterOn
     self.followingPrivacySwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
-    self.gamesNewsletterSwitch.rac.on = self.viewModel.outputs.gamesNewsletterOn
-    self.happeningNewsletterSwitch.rac.on = self.viewModel.outputs.happeningNewsletterOn
-    self.inventNewsletterSwitch.rac.on = self.viewModel.outputs.inventNewsletterOn
-    self.promoNewsletterSwitch.rac.on = self.viewModel.outputs.promoNewsletterOn
     self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
     self.exportDataExpirationText.rac.text = self.viewModel.outputs.exportDataExpirationDate
     self.exportDataLabel.rac.text = self.viewModel.outputs.exportDataText
-    self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
     self.exportDataActivityIndicator.rac.animating = self.viewModel.outputs.exportDataLoadingIndicator
     self.exportDataButton.rac.enabled = self.viewModel.outputs.exportDataButtonEnabled
     self.exportDataExpirationText.rac.hidden = self.viewModel.outputs.showDataExpirationAndChevron
     self.exportChevron.rac.hidden = self.viewModel.outputs.showDataExpirationAndChevron
     self.privateProfileSwitch.rac.on = self.viewModel.outputs.privateProfileEnabled
-    self.weeklyNewsletterSwitch.rac.on = self.viewModel.outputs.weeklyNewsletterOn
     self.versionLabel.rac.text = self.viewModel.outputs.versionText
   }
   // swiftlint:enable function_body_length
@@ -500,6 +457,11 @@ internal final class SettingsViewController: UIViewController {
 
   @IBAction func goToNotifications(_ sender: UIButton) {
     let vc = SettingsNotificationsViewController.instantiate()
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  @IBAction func goToNewsletters(_ sender: Any) {
+    let vc = SettingsNewslettersViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

@@ -146,7 +146,11 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> a soutenu un projet de <i>théâtre</i>.";
 "Friend_name_launched_a_project" = "%{friend_name} a lancé un projet !";
 "Funding_successful" = "Intégralement financé";
+<<<<<<< HEAD
 "Games_newsletter" = "Un mix de nouveaux projets et d'actus sur le thème des jeux, soigneusement sélectionné par l'équipe Jeux de Kickstarter.";
+=======
+"Games_newsletter" = "Sign up to receive a biweekly mix of new projects and updates on all things games, handpicked by Kickstarter's Games team.";
+>>>>>>> oss/feature-settings-v2
 "Get_notified_about_new_messages" = "Envie d'être informé des messages entrants ?";
 "Get_notified_about_this_creators_live_streams" = "Envoyez-moi des notifications au sujet des diffusions en direct de ce créateur.";
 "Get_reminded_about_this_project" = "Envie de recevoir un rappel à propos de ce projet ?";
@@ -1100,12 +1104,21 @@
 "profile.settings.navbar_title" = "Paramètres";
 "profile.settings.navbar_title_notifications" = "Notifications";
 "profile.settings.newsletter.alumni" = "Kickstarter Alumni";
+<<<<<<< HEAD
 "profile.settings.newsletter.alumni_newsletter" = "Inscrivez-vous pour recevoir un e-mail par mois contenant des conseils et des ressources pour avancer dans vos projets créatifs, des entretiens avec des créateurs Kickstarter, des invitations et plus.";
 "profile.settings.newsletter.arts" = "Actualités art et culture";
 "profile.settings.newsletter.arts_news" = "Arts News";
 "profile.settings.newsletter.arts_news_newsletter" = "Les projets et les idées d'artistes établis et émergents, soigneusement sélectionnés deux fois par mois par l'équipe Arts de Kickstarter.";
 "profile.settings.newsletter.film" = "Kickstarter Films";
 "profile.settings.newsletter.films_newsletter" = "Tous les mois, l'équipe Cinéma de Kickstarter met à l'honneur dans une lettre d'information des projets intéressants, des témoignages de créateurs et des événements à ne pas manquer.";
+=======
+"profile.settings.newsletter.alumni_newsletter" = "Sign up to receive monthly emails featuring tips and resources for continuing work on your creative project, interviews with Kickstarter creators, invites to events, and more.";
+"profile.settings.newsletter.arts" = "Actualités art et culture";
+"profile.settings.newsletter.arts_news" = "Arts News";
+"profile.settings.newsletter.arts_news_newsletter" = "Discover new projects and ideas from established and emerging artists, handpicked each month by Kickstarter's Arts team.";
+"profile.settings.newsletter.film" = "Kickstarter Films";
+"profile.settings.newsletter.films_newsletter" = "Sign up for a monthly newsletter curated by Kickstarter's Film team, highlighting new projects, creator stories, and events on their radar.";
+>>>>>>> oss/feature-settings-v2
 "profile.settings.newsletter.games" = "Kickstarter aime les jeux";
 "profile.settings.newsletter.happening" = "Happening";
 "profile.settings.newsletter.happening_now" = "Happening Now";
@@ -1115,7 +1128,11 @@
 "profile.settings.newsletter.opt_in.title" = "Dernière étape !";
 "profile.settings.newsletter.promo" = "Nouvelles et évènements Kickstarter";
 "profile.settings.newsletter.publishing" = "Kickstarter Reads";
+<<<<<<< HEAD
 "profile.settings.newsletter.publishing_newsletter" = "Tous les mois, l'équipe Éditions de Kickstarter met à l'honneur dans une lettre d'information des projets intéressants, des témoignages de créateurs et les actualités littéraires à ne pas manquer.";
+=======
+"profile.settings.newsletter.publishing_newsletter" = "Sign up for a monthly newsletter from Kickstarter's Publishing team highlighting great new projects, creator stories, and literary events on their radar.";
+>>>>>>> oss/feature-settings-v2
 "profile.settings.newsletter.subscribe_all" = "S'abonner à tout";
 "profile.settings.newsletter.title" = "Lettres d'information";
 "profile.settings.newsletter.weekly" = "Nos coups de cœur";

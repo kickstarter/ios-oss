@@ -288,6 +288,18 @@ extension Lens where Whole == User, Part == User.NewsletterSubscriptions {
   public var weekly: Lens<User, Bool?> {
     return User.lens.newsletters..User.NewsletterSubscriptions.lens.weekly
   }
+
+  public var films: Lens<User, Bool?> {
+    return User.lens.newsletters..User.NewsletterSubscriptions.lens.films
+  }
+
+  public var publishing: Lens<User, Bool?> {
+    return User.lens.newsletters..User.NewsletterSubscriptions.lens.publishing
+  }
+
+  public var alumni: Lens<User, Bool?> {
+    return User.lens.newsletters..User.NewsletterSubscriptions.lens.alumni
+  }
 }
 
 extension Lens where Whole == User, Part == User.Notifications {
