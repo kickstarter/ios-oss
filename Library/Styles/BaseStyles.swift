@@ -149,6 +149,7 @@ private let baseNavigationBarStyle =
     ]
     <> UINavigationBar.lens.isTranslucent .~ false
     <> UINavigationBar.lens.barTintColor .~ .white
+    <> UINavigationBar.lens.tintColor .~ .ksr_green_700
 
 private let clearNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
