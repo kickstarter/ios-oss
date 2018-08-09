@@ -5,9 +5,9 @@ import Prelude_UIKit
 import ReactiveSwift
 import UIKit
 
-public protocol SettingsFollowCellDelegate: class {
+internal protocol SettingsFollowCellDelegate: class {
   /// Called when follow switch is tapped
-  func notifyDelegateShowFollowPrivacyPrompt()
+  func settingsFollowCellDidPresentPrompt(_ cell: SettingsFollowCell)
 }
 
 internal final class SettingsFollowCell: UITableViewCell, ValueCell {
@@ -48,7 +48,8 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.showPrivacyFollowingPrompt
       .observeForUI()
       .observeValues { [weak self] in
-        self?.delegate?.notifyDelegateShowFollowPrivacyPrompt()
+        guard let _self = self else { return }
+        self?.delegate?.settingsFollowCellDidPresentPrompt(_self)
     }
 
     self.followingSwitch.rac.on = self.viewModel.outputs.followingPrivacyOn

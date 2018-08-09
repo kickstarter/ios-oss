@@ -5,8 +5,8 @@ import ReactiveExtensions
 import ReactiveSwift
 import UIKit
 
-public protocol SettingsPrivacyDeleteAccountCellDelegate: class {
-  func goToDeleteAccount(url: URL)
+internal protocol SettingsPrivacyDeleteAccountCellDelegate: class {
+  func settingsPrivacyDeleteAccountCellTapped(_ cell: SettingsPrivacyDeleteAccountCell, with url: URL)
 }
 
 internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCell {
@@ -53,7 +53,8 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
     self.viewModel.outputs.notifyDeleteAccountTapped
       .observeForUI()
       .observeValues { [weak self] url in
-        self?.delegate?.goToDeleteAccount(url: url)
+        guard let _self = self else { return }
+        self?.delegate?.settingsPrivacyDeleteAccountCellTapped(_self, with: url)
     }
   }
 

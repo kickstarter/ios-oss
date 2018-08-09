@@ -5,9 +5,9 @@ import Prelude_UIKit
 import ReactiveSwift
 import UIKit
 
-public protocol SettingsRequestDataCellDelegate: class {
-  func shouldPresentRequestDataPrompt()
-  func shouldRequestData(with url: String)
+internal protocol SettingsRequestDataCellDelegate: class {
+  func settingsRequestDataCellDidPresentPrompt(_ cell: SettingsPrivacyRequestDataCell)
+  func settingsRequestDataCell(_ cell: SettingsPrivacyRequestDataCell, requestedDataWith url: String)
 }
 
 internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell {
@@ -82,13 +82,15 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
     self.viewModel.outputs.showRequestDataPrompt
       .observeForUI()
       .observeValues { [weak self] in
-        self?.delegate?.shouldPresentRequestDataPrompt()
+        guard let _self = self else { return }
+        self?.delegate?.settingsRequestDataCellDidPresentPrompt(_self)
     }
 
     self.viewModel.outputs.goToSafari
       .observeForUI()
       .observeValues { [weak self] url in
-        self?.delegate?.shouldRequestData(with: url)
+        guard let _self = self else { return }
+        self?.delegate?.settingsRequestDataCell(_self, requestedDataWith: url)
     }
 
     self.requestDataButton.rac.enabled = self.viewModel.outputs.requestDataButtonEnabled
@@ -99,7 +101,6 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
     self.requestDataLabel.rac.hidden = self.viewModel.outputs.requestDataTextHidden
     self.preparingDataLabel.rac.hidden = self.viewModel.outputs.showPreparingDataText
     self.requestedDataStatusAndDateLabel.rac.hidden = self.viewModel.outputs.dataExpirationAndChevronHidden
-
   }
 
   @objc fileprivate func exportButtonTapped() {

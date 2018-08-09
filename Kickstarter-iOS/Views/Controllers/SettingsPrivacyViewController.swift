@@ -6,14 +6,9 @@ import SafariServices
 import Result
 import UIKit
 
-public protocol SettingsPrivacyViewControllerDelegate: class {
-  func notifyStartRequestDataTapped()
-}
-
 internal final class SettingsPrivacyViewController: UITableViewController {
   internal let viewModel: SettingsPrivacyViewModelType = SettingsPrivacyViewModel()
   fileprivate let dataSource = SettingsPrivacyDataSource()
-  internal weak var delegate: SettingsPrivacyViewControllerDelegate?
 
   internal static func instantiate() -> SettingsPrivacyViewController {
    return Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
@@ -82,7 +77,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
 }
 
 extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
-  func notifyDelegateShowFollowPrivacyPrompt() {
+  internal func settingsFollowCellDidPresentPrompt(_ cell: SettingsFollowCell) {
     let followingAlert = UIAlertController.turnOffPrivacyFollowing(
       turnOnHandler: { [weak self] _ in
         self?.viewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
@@ -96,7 +91,7 @@ extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
 }
 
 extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
-  func shouldPresentRequestDataPrompt() {
+  internal func settingsRequestDataCellDidPresentPrompt(_ cell: SettingsPrivacyRequestDataCell) {
     let exportDataSheet = UIAlertController(
       title: Strings.Download_your_personal_data(),
       message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
@@ -117,14 +112,16 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
     self.present(exportDataSheet, animated: true, completion: nil)
   }
 
-  func shouldRequestData(with url: String) {
+  internal func settingsRequestDataCell(_ cell: SettingsPrivacyRequestDataCell,
+                                        requestedDataWith url: String) {
     guard let fileUrl = URL(string: url) else { return }
     UIApplication.shared.openURL(fileUrl)
   }
 }
 
 extension SettingsPrivacyViewController: SettingsPrivacyDeleteAccountCellDelegate {
-  internal func goToDeleteAccount(url: URL) {
+  internal func settingsPrivacyDeleteAccountCellTapped(_ cell: SettingsPrivacyDeleteAccountCell,
+                                                       with url: URL)  {
     let controller = SFSafariViewController(url: url)
     controller.modalPresentationStyle = .overFullScreen
     self.present(controller, animated: true, completion: nil)
