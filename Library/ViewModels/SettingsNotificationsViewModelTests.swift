@@ -135,11 +135,11 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
     self.pickerViewIsHiddenObserver.assertDidNotEmitValue()
 
-    self.vm.inputs.showPickerView(show: true)
+    self.vm.inputs.didTapFrequencyPickerButton()
 
     self.pickerViewIsHiddenObserver.assertValues([false], "Picker view should not be hidden")
 
-    self.vm.inputs.showPickerView(show: false)
+    self.vm.inputs.didTapFrequencyPickerButton()
 
     self.pickerViewIsHiddenObserver.assertValues([false, true], "Picker view should be hidden")
   }

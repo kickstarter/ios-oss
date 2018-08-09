@@ -164,19 +164,19 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
 
 // MARK: SettingsNotificationCellDelegate
 extension SettingsNotificationsViewController: SettingsNotificationCellDelegate {
-  func didFailToSaveChange(errorMessage: String) {
+  func settingsNotificationCell(_ cell: SettingsNotificationCell, didFailToUpdateUser errorMessage: String) {
     self.viewModel.inputs.failedToUpdateUser(error: errorMessage)
   }
 
-  func didUpdateUser(user: User) {
+  func settingsNotificationCell(_ cell: SettingsNotificationCell, didUpdateUser user: User) {
     self.viewModel.inputs.updateUser(user: user)
   }
 }
 
 // MARK: SettingsNotificationPickerCellDelegate
 extension SettingsNotificationsViewController: SettingsNotificationPickerCellDelegate {
-  func didTapFrequencyPickerButton() {
-    self.viewModel.inputs.showPickerView(show: true)
+  func settingsNotificationPickerCellDidTapFrequencyPickerButton(_ cell: SettingsNotificationPickerCell) {
+    self.viewModel.inputs.didTapFrequencyPickerButton()
   }
 }
 

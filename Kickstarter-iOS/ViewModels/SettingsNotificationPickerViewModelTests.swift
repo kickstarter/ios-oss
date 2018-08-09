@@ -15,7 +15,7 @@ final class SettingsNotificationPickerViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.didTapFrequencyPickerButton.observe(didTapFrequencyPickerButtonObserver.observer)
+    self.vm.outputs.notifyDelegateDidTapFrequencyButton.observe(didTapFrequencyPickerButtonObserver.observer)
     self.vm.outputs.frequencyValueText.observe(frequencyValueTextObserver.observer)
   }
 

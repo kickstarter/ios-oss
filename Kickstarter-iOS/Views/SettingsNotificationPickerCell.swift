@@ -4,9 +4,7 @@ import Library
 import Prelude
 
 protocol SettingsNotificationPickerCellDelegate: class {
-  func didFailToSaveChange(errorMessage: String)
-  func didTapFrequencyPickerButton()
-  func didUpdateUser(user: User)
+  func settingsNotificationPickerCellDidTapFrequencyPickerButton(_ cell: SettingsNotificationPickerCell)
 }
 
 final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCell {
@@ -22,18 +20,18 @@ final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCe
     self.viewModel.inputs.configure(with: value)
 
     _ = titleLabel
-    |> UILabel.lens.text .~ value.cellType.title
+      |> UILabel.lens.text .~ value.cellType.title
   }
 
   override func bindStyles() {
     super.bindStyles()
 
     _ = titleLabel
-    |> settingsTitleLabelStyle
+      |> settingsTitleLabelStyle
 
     _ = selectFrequencyButton
-    |> UIButton.lens.titleLabel.font .~ .ksr_body()
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_400
+      |> UIButton.lens.titleLabel.font .~ .ksr_body()
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_400
 
     _ = separatorView
       |> separatorStyle
@@ -44,10 +42,11 @@ final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCe
 
     selectFrequencyButton.rac.title = self.viewModel.outputs.frequencyValueText
 
-    self.viewModel.outputs.didTapFrequencyPickerButton
+    self.viewModel.outputs.notifyDelegateDidTapFrequencyButton
       .observeForUI()
       .observeValues { [weak self] in
-        self?.delegate?.didTapFrequencyPickerButton()
+        guard let _self = self else { return }
+        _self.delegate?.settingsNotificationPickerCellDidTapFrequencyPickerButton(_self)
     }
   }
 

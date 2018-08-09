@@ -6,7 +6,9 @@ public enum EmailFrequency: Int {
 
   public static let allCases: [EmailFrequency] = [.daily, .individualEmails]
 
-  public static let rowHeight: CGFloat = 45.0
+  public static var rowHeight: CGFloat {
+    return Styles.grid(7)
+  }
 
   public var descriptionText: String {
     switch self {
