@@ -8,7 +8,10 @@ public struct SettingsNotificationCellValue {
 }
 
 final class SettingsNotificationsDataSource: ValueCellDataSource {
-  weak var cellDelegate: SettingsNotificationsViewController?
+  typealias SettingsNotificationCellDelegates = SettingsNotificationCellDelegate
+    & SettingsNotificationPickerCellDelegate
+
+  weak var cellDelegate: SettingsNotificationCellDelegates?
 
   func load(user: User) {
     _ = SettingsNotificationSectionType.allCases.filter { filterCreatorForSection($0, user: user) }
