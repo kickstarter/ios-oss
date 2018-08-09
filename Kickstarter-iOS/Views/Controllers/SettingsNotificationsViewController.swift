@@ -20,17 +20,17 @@ internal final class SettingsNotificationsViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    dataSource.cellDelegate = self
+    self.dataSource.cellDelegate = self
 
-    tableView.dataSource = dataSource
-    tableView.delegate = self
+    self.tableView.dataSource = dataSource
+    self.tableView.delegate = self
 
-    emailFrequencyPickerView.delegate = self
-    emailFrequencyPickerView.dataSource = self
+    self.emailFrequencyPickerView.delegate = self
+    self.emailFrequencyPickerView.dataSource = self
 
-    tableView.register(nib: .SettingsNotificationCell)
-    tableView.register(nib: .SettingsNotificationPickerCell)
-    tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+    self.tableView.register(nib: .SettingsNotificationCell)
+    self.tableView.register(nib: .SettingsNotificationPickerCell)
+    self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
     self.viewModel.inputs.viewDidLoad()
   }
