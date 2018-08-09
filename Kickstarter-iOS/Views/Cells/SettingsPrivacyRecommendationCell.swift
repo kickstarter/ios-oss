@@ -36,6 +36,14 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.updateCurrentUser
+      .observeForUI()
+      .observeValues { user in AppEnvironment.updateCurrentUser(user)}
+
     self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
+  }
+
+  @IBAction func recommendationsSwitch(_ recommendationsSwitch: UISwitch) {
+    self.viewModel.inputs.recommendationsTapped(on: recommendationsSwitch.isOn)
   }
 }

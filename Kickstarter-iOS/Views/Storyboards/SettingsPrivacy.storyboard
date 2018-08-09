@@ -27,8 +27,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BPJ-xF-tQz">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
+                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BPJ-xF-tQz">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="78"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="J4h-kh-cHV">
                                                     <rect key="frame" x="10" y="10" width="355" height="51"/>
@@ -143,6 +143,9 @@
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZR-mx-pQC">
                                                             <rect key="frame" x="306" y="13.5" width="51" height="31"/>
                                                             <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <connections>
+                                                                <action selector="recommendationsSwitch:" destination="BOX-D4-1ix" eventType="valueChanged" id="UU1-Za-LqE"/>
+                                                            </connections>
                                                         </switch>
                                                     </subviews>
                                                     <constraints>
@@ -178,7 +181,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="recommendationsLabel" destination="h47-6x-9qS" id="Yn8-iG-UXE"/>
-                                    <outlet property="recommendationsSwitch" destination="gZR-mx-pQC" id="BrO-IK-dUC"/>
+                                    <outlet property="recommendationsSwitch" destination="gZR-mx-pQC" id="9FJ-Yl-edI"/>
                                     <outlet property="separatorView" destination="vIw-lj-OpG" id="JhM-NP-WsT"/>
                                 </connections>
                             </tableViewCell>
@@ -290,6 +293,9 @@
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uag-cG-Z0v">
                                             <rect key="frame" x="0.0" y="1" width="375" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="0wO-eK-0N1"/>
+                                            </constraints>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -297,7 +303,7 @@
                                         <constraint firstAttribute="trailing" secondItem="bMn-0H-yEC" secondAttribute="trailing" id="AJI-4c-pyJ"/>
                                         <constraint firstItem="Uag-cG-Z0v" firstAttribute="top" secondItem="w3T-mz-kcX" secondAttribute="bottom" id="JY6-6e-sLk"/>
                                         <constraint firstAttribute="trailing" secondItem="w3T-mz-kcX" secondAttribute="trailing" id="LVW-Uh-pDY"/>
-                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="height" secondItem="eLr-Fe-xyE" secondAttribute="height" id="R2F-rl-HvD"/>
+                                        <constraint firstItem="Uag-cG-Z0v" firstAttribute="height" secondItem="eLr-Fe-xyE" secondAttribute="height" id="Pwt-Io-E9N"/>
                                         <constraint firstAttribute="bottom" secondItem="bMn-0H-yEC" secondAttribute="bottom" id="TNF-mo-aVx"/>
                                         <constraint firstItem="w3T-mz-kcX" firstAttribute="leading" secondItem="ihf-gP-uZh" secondAttribute="leading" id="dBa-lz-2Y4"/>
                                         <constraint firstItem="bMn-0H-yEC" firstAttribute="top" secondItem="ihf-gP-uZh" secondAttribute="top" id="oJ9-Al-ZAu"/>

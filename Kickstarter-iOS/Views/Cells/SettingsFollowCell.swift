@@ -53,6 +53,7 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
     }
 
     self.followingSwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
+    self.followingSwitch.rac.enabled = self.viewModel.outputs.followingPrivacySwitchIsEnabled
   }
 
   @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {

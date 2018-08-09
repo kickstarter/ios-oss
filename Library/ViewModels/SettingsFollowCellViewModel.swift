@@ -13,6 +13,7 @@ public protocol SettingsFollowCellViewModelInputs {
 
 public protocol SettingsFollowCellViewModelOutputs {
   var followingPrivacyOn: Signal<Bool, NoError> { get }
+  var followingPrivacySwitchIsEnabled: Signal<Bool, NoError> { get }
   var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
@@ -62,9 +63,18 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
 
     self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
 
-    self.showPrivacyFollowingPrompt = self.followTappedProperty.signal
+    self.showPrivacyFollowingPrompt = self.updateCurrentUser
+      .takeWhen(self.followTappedProperty.signal)
+      .filter { $0.social ?? true }
+      .ignoreValues()
 
-    self.followingPrivacyOn = initialUser.map { $0.social ?? true }
+    self.followingPrivacyOn = initialUser.map { $0.social ?? true }.skipRepeats()
+
+    self.followingPrivacyOn.signal.observeValues { value in
+        print("\(value)")
+    }
+
+    self.followingPrivacySwitchIsEnabled = self.updateCurrentUser.map { $0.social ?? false }
   }
 
   fileprivate let configureWithProperty = MutableProperty<User?>(nil)
@@ -83,6 +93,7 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
   }
 
   public let followingPrivacyOn: Signal<Bool, NoError>
+  public var followingPrivacySwitchIsEnabled: Signal<Bool, NoError>
   public let showPrivacyFollowingPrompt: Signal<(), NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
