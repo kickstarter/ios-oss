@@ -13,6 +13,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   func configureWith(value cellType: SettingsCellTypeProtocol) {
     _ = titleLabel
+      |> settingsTitleLabelStyle
       |> UILabel.lens.text .~ cellType.title
       |> UILabel.lens.textColor .~ cellType.textColor
 
@@ -35,9 +36,6 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   override func bindStyles() {
     super.bindStyles()
-
-    _ = titleLabel
-    |> settingsTitleLabelStyle
 
     _ = appVersionLabel
     |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
