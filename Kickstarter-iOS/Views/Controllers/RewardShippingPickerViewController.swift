@@ -72,9 +72,10 @@ internal final class RewardShippingPickerViewController: UIViewController {
 
     self.titleShadowView.startPoint = CGPoint(x: 0, y: 1)
     self.titleShadowView.endPoint = CGPoint(x: 0, y: 0)
-    let gradient: [(UIColor?, Float)] =  [(UIColor.init(white: 0.0, alpha: 0.1), 0.0),
-                                          (UIColor.init(white: 0.0, alpha: 0.0), 1.0)]
-    self.titleShadowView.setGradient(gradient)
+    self.titleShadowView.setGradient([
+      (UIColor.init(white: 0.0, alpha: 0.1), 0),
+      (UIColor.init(white: 0.0, alpha: 0.0), 1)
+    ])
 
     _ = self.separatorViews
       ||> separatorStyle

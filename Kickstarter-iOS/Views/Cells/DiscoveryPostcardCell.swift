@@ -103,9 +103,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.backgroundGradientView.startPoint = .zero
     self.backgroundGradientView.endPoint = CGPoint(x: 0, y: 1)
-    let gradient: [(UIColor?, Float)] =  [(UIColor.init(white: 0.0, alpha: 0.5), 0.0),
-                                          (UIColor.init(white: 0.0, alpha: 0.0), 1.0)]
-    self.backgroundGradientView.setGradient(gradient)
+    self.backgroundGradientView.setGradient([
+      (UIColor(white: 0, alpha: 0.5), 0),
+      (UIColor(white: 0, alpha: 0), 1)
+      ])
 
     _ = self
       |> baseTableViewCellStyle()
