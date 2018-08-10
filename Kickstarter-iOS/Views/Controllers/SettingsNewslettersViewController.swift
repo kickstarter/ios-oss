@@ -23,6 +23,8 @@ internal final class SettingsNewslettersViewController: UIViewController {
     self.tableView.register(nib: .SettingsNewslettersCell)
     self.tableView.dataSource = dataSource
     self.tableView.delegate = self
+    self.tableView.tableHeaderView = nil
+    self.tableView.tableFooterView = nil
   }
 
   override func bindStyles() {
@@ -50,7 +52,6 @@ internal final class SettingsNewslettersViewController: UIViewController {
 }
 
 extension SettingsNewslettersViewController: UITableViewDelegate {
-
   internal func tableView(_ tableView: UITableView,
                           willDisplay cell: UITableViewCell,
                           forRowAt indexPath: IndexPath) {
