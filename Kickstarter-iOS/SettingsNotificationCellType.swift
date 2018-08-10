@@ -10,9 +10,9 @@ public enum SettingsNotificationSectionType: Int {
   public var sectionHeaderHeight: CGFloat {
     switch self {
     case .findFriends:
-      return 15
+      return Styles.grid(2)
     default:
-      return 50
+      return Styles.grid(9)
     }
   }
 
