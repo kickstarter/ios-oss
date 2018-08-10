@@ -1,6 +1,7 @@
 import Library
 import Prelude
 import UIKit
+import UserNotifications
 
 // swiftlint:disable line_length
 internal final class DebugPushNotificationsViewController: UIViewController {
@@ -86,6 +87,35 @@ internal final class DebugPushNotificationsViewController: UIViewController {
     guard index >= 0 && index < allPushData.count else { return }
 
     let pushData = allPushData[index]
+    if #available(iOS 10, *) {
+      self.addNotificationRequest(delay: delay, pushData: pushData)
+    } else {
+      self.scheduleLocalNotification(delay: delay, pushData: pushData)
+    }
+  }
+
+  @available(iOS 10, *)
+  private func addNotificationRequest(delay: Bool, pushData: [String: Any]) {
+
+    let identifier = "notify-test"
+
+    let content = UNMutableNotificationContent()
+    content.body = (pushData["aps"] as? [String: AnyObject])?["alert"] as? String ?? ""
+    content.categoryIdentifier = identifier
+
+    // timeInterval must be greater than 0.
+    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: delay ? 5 : 0.5,
+                                                    repeats: false)
+
+    let request = UNNotificationRequest(identifier: identifier,
+                                        content: content,
+                                        trigger: trigger)
+
+    let center = UNUserNotificationCenter.current()
+    center.add(request)
+  }
+
+  private func scheduleLocalNotification(delay: Bool, pushData: [String: Any]) {
 
     let notification = UILocalNotification()
     notification.fireDate = Date(timeIntervalSinceNow: delay ? 5 : 0)
