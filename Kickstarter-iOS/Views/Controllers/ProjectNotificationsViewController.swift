@@ -20,7 +20,9 @@ internal final class ProjectNotificationsViewController: UITableViewController {
 
   override func bindStyles() {
     super.bindStyles()
-    _ = self |> baseControllerStyle()
+
+    _ = self
+      |> baseControllerStyle()
   }
 
   internal override func bindViewModel() {

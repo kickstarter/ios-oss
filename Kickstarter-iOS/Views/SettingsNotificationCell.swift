@@ -48,8 +48,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     super.bindStyles()
 
     _ = titleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
-      |> UILabel.lens.font .~ .ksr_body()
+      |> settingsTitleLabelStyle
 
     _ = projectCountLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
@@ -80,7 +79,8 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
                                                       inBundle: Bundle.framework)
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Push_notifications() }
 
-    _ = self.separatorView |> separatorStyle
+    _ = self.separatorView
+      |> separatorStyle
   }
 
   override func bindViewModel() {
