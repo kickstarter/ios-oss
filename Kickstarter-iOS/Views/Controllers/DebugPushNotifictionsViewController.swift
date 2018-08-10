@@ -13,6 +13,13 @@ internal final class DebugPushNotificationsViewController: UIViewController {
     internal override func bindStyles() {
     super.bindStyles()
 
+      if #available(iOS 10.0, *) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: {didAllow, error in
+        })
+      } else {
+      }
+
+
     _ = self
       |> baseControllerStyle()
 
@@ -101,6 +108,7 @@ internal final class DebugPushNotificationsViewController: UIViewController {
 
     let content = UNMutableNotificationContent()
     content.body = (pushData["aps"] as? [String: AnyObject])?["alert"] as? String ?? ""
+    content.userInfo = pushData
     content.categoryIdentifier = identifier
 
     // timeInterval must be greater than 0.
@@ -111,8 +119,7 @@ internal final class DebugPushNotificationsViewController: UIViewController {
                                         content: content,
                                         trigger: trigger)
 
-    let center = UNUserNotificationCenter.current()
-    center.add(request)
+    UNUserNotificationCenter.current().add(request)
   }
 
   private func scheduleLocalNotification(delay: Bool, pushData: [String: Any]) {

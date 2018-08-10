@@ -23,10 +23,12 @@ internal final class BetaToolsViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
+    self.navigationController?.isNavigationBarHidden = false
     self.navigationItem.setRightBarButton(doneButton, animated: false)
   }
 
   override func bindStyles() {
+
     _ = self.betaDebugPushNotificationsButton
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
