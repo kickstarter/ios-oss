@@ -1,4 +1,5 @@
 "About_reward_amount" = "About %{reward_amount}";
+"Account" = "Account";
 "Add_attachments" = "Add attachments…";
 "All_Art_Projects" = "All Art Projects";
 "All_Comics_Projects" = "All Comics Projects";
@@ -36,12 +37,15 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nbackers";
 "Backers_count_separator_backers.zero" = "%{backers_count}\nbackers";
 "Become_a_backer_to_leave_a_comment" = "Become a backer to leave a comment.";
+"Biography" = "Biography";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
 "Cancel" = "Cancel";
 "Cancel_your_pledge" = "Cancel your pledge";
+"Change_password" = "Change password";
 "Change_payment_method" = "Change payment method";
 "Chat" = "Chat";
+"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
 "Chooses_location_for_shipping" = "Chooses %{location} for shipping.";
 "Close_live_stream" = "Close live stream";
 "Close_project" = "Close project";
@@ -68,6 +72,7 @@
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} was streaming live on Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} will be streaming live on Kickstarter %{in_duration}";
 "Creator_tips" = "Creator tips";
+"Currency" = "Currency";
 "Daily_digest" = "Daily digest";
 "Data_will_appear_here_once" = "Data will appear here once somebody backs your project.";
 "Delete_my_Kickstarter_Account" = "Delete my Kickstarter Account";
@@ -79,7 +84,9 @@
 "Done" = "Done";
 "Download_your_personal_data" = "Download your personal data";
 "Earth" = "Earth";
+"Edit_profile" = "Edit profile";
 "Either_the_pledge_or_the_project_was_canceled" = "Either the pledge or the project was canceled before the deadline.";
+"Email" = "Email";
 "Email_frequency" = "Email frequency";
 "Email_notifications" = "Email notifications";
 "Ending_soon" = "Ending Soon";
@@ -93,7 +100,7 @@
 "Facebook_login_disclaimer" = "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.";
 "Facebook_login_disclaimer_update" = "By logging in with Facebook, we’ll import your name, profile photo and friend list.";
 "Facebook_reconnect" = "Please reconnect";
-"Facebook_reconnect_description" = "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again.";
+"Facebook_reconnect_description" = "Your account was disconnected for your security. By logging in with Facebook, we’ll import your name, profile photo and friend list.";
 "Failed_to_retrieve_live_stream_event_details" = "Failed to retrieve live stream event details";
 "Failed_to_update_subscription" = "Failed to update subscription";
 "Filter_by_all_projects" = "Filter by all projects";
@@ -182,6 +189,7 @@
 "Live_streaming_now" = "Live streaming now";
 "Live_with_creator_name" = "Live with <b>%{creator_name}</b>";
 "Loading" = "Loading";
+"Location" = "Location";
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Log in or sign up to save this project. We’ll remind you 48 hours before it ends.";
 "Log_in_or_sign_up_to_subscribe" = "Log in or sign up to subscribe";
 "Log_in_to_leave_a_comment" = "Log in to leave a comment.";
@@ -230,6 +238,7 @@
 "Password_visibility" = "Password visibility";
 "Past_live_stream" = "Past live stream";
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
+"Payment_methods" = "Payment methods";
 "Please_enter_an_amount_of_amount_or_less" = "Please enter an amount of %{amount} or less.";
 "Please_enter_an_amount_of_amount_or_more" = "Please enter an amount of %{amount} or more.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Please log in or sign up to back this project.";
@@ -283,7 +292,7 @@
 "Replay_past_live_stream" = "Replay past live stream";
 "Replay_past_live_streams" = "Replay past live streams";
 "Reply_to_user_name" = "Reply to %{user_name}…";
-"Request_my_Personal_Data" = "Request my Personal Data";
+"Request_my_personal_data" = "Request my personal data";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.many" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.one" = "Reward Survey";
@@ -322,6 +331,7 @@
 "Share_this_project_on_Twitter" = "Share this project on Twitter.";
 "Share_update" = "Share update";
 "Shipping" = "Shipping";
+"Shipping_addresses" = "Shipping addresses";
 "Ships_to" = "Ships to:";
 "Show_password" = "Show password";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
@@ -329,7 +339,7 @@
 "Signs_up_with_Email" = "Signs up with Email.";
 "Something_catch_your_eye" = "Something\ncatch your eye?";
 "Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
-"Start_data_collection" = "Start data collection";
+"Start_the_request" = "Start data collection";
 "Starting_soon" = "Starting soon";
 "Status" = "Status";
 "Stay_up_to_date" = "Stay up to date?";
@@ -363,6 +373,7 @@
 "Top_ten_pledge_sources" = "Top 10 pledge sources";
 "Top_ten_rewards" = "Top 10 rewards";
 "Total_pledged" = "Total pledged";
+"Unable_to_request_data" = "Unable to request data.";
 "Unfollow_friend_name" = "Unfollow %{friend_name}";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
 "Unsaved" = "Unsaved";
@@ -385,6 +396,7 @@
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "We were unable to connect to the live stream chat.";
 "We_were_unable_to_load_the_shipping_destinations" = "We were unable to load the shipping destinations.\nPlease try again later.";
+"Websites" = "Websites";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
