@@ -130,17 +130,13 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     }
   }
 
-  func testShowPickerView() {
+  func testShowHidePickerView() {
     self.vm.inputs.viewDidLoad()
 
     self.pickerViewIsHiddenObserver.assertDidNotEmitValue()
 
-    self.vm.inputs.didTapFrequencyPickerButton()
+    self.vm.inputs.didSelectRow(cellType: .emailFrequency)
 
     self.pickerViewIsHiddenObserver.assertValues([false], "Picker view should not be hidden")
-
-    self.vm.inputs.didTapFrequencyPickerButton()
-
-    self.pickerViewIsHiddenObserver.assertValues([false, true], "Picker view should be hidden")
   }
 }

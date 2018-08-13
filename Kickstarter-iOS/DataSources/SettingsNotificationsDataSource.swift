@@ -8,10 +8,7 @@ public struct SettingsNotificationCellValue {
 }
 
 final class SettingsNotificationsDataSource: ValueCellDataSource {
-  typealias SettingsNotificationCellDelegates = SettingsNotificationCellDelegate
-    & SettingsNotificationPickerCellDelegate
-
-  weak var cellDelegate: SettingsNotificationCellDelegates?
+  weak var cellDelegate: SettingsNotificationCellDelegate?
 
   func load(user: User) {
     _ = SettingsNotificationSectionType.allCases.filter { filterCreatorForSection($0, user: user) }
@@ -70,7 +67,6 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
       cell.delegate = cellDelegate
     case let (cell as SettingsNotificationPickerCell, value as SettingsNotificationCellValue):
       cell.configureWith(value: value)
-      cell.delegate = cellDelegate
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }

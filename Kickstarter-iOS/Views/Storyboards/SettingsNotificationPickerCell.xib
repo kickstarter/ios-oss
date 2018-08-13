@@ -19,22 +19,21 @@
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="AI9-ql-p6X">
                     <rect key="frame" x="12" y="26" width="351" height="635"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxn-QL-v56">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxn-QL-v56">
                             <rect key="frame" x="0.0" y="307.5" width="175.5" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ja6-8Z-afO">
-                            <rect key="frame" x="305" y="297.5" width="46" height="40"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uRa-gJ-gdF">
+                            <rect key="frame" x="309" y="297.5" width="42" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="40" id="WGo-a3-NH2"/>
+                                <constraint firstAttribute="height" constant="40" id="ojN-SB-3hx"/>
                             </constraints>
-                            <state key="normal" title="Button"/>
-                            <connections>
-                                <action selector="selectFrequencyButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="wnB-Bo-XQQ"/>
-                            </connections>
-                        </button>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                 </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tlf-7e-bQy">
@@ -57,7 +56,7 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="selectFrequencyButton" destination="ja6-8Z-afO" id="M1g-oy-1gg"/>
+                <outlet property="currentEmailFrequencyLabel" destination="uRa-gJ-gdF" id="bWi-kq-1Sc"/>
                 <outlet property="separatorView" destination="Tlf-7e-bQy" id="3AE-X6-zz3"/>
                 <outlet property="titleLabel" destination="oxn-QL-v56" id="ppA-6X-WWX"/>
             </connections>

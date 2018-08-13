@@ -173,13 +173,6 @@ extension SettingsNotificationsViewController: SettingsNotificationCellDelegate 
   }
 }
 
-// MARK: SettingsNotificationPickerCellDelegate
-extension SettingsNotificationsViewController: SettingsNotificationPickerCellDelegate {
-  func settingsNotificationPickerCellDidTapFrequencyPickerButton(_ cell: SettingsNotificationPickerCell) {
-    self.viewModel.inputs.didTapFrequencyPickerButton()
-  }
-}
-
 // MARK: UIPickerViewDataSource & UIPickerViewDelegate
 extension SettingsNotificationsViewController: UIPickerViewDataSource {
   func numberOfComponents(in pickerView: UIPickerView) -> Int {

@@ -10,7 +10,6 @@ public protocol SettingsNotificationsViewModelInputs {
   func didSelectRow(cellType: SettingsNotificationCellType)
   func didSelectEmailFrequency(frequency: EmailFrequency)
   func failedToUpdateUser(error: String)
-  func didTapFrequencyPickerButton()
   func updateUser(user: User)
   func viewDidLoad()
 }
@@ -82,9 +81,14 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       emailFrequencyUpdated
     )
 
+    let emailFrequencyCellSelected = self.selectedCellType.signal
+      .skipNil()
+      .filter { $0 == .emailFrequency }
+
     self.pickerViewIsHidden = Signal.merge(
-      shouldShowFrequencyPickerProperty.signal.negate(),
-      emailFrequencyProperty.signal.mapConst(true))
+        emailFrequencyCellSelected.signal.mapConst(false),
+        emailFrequencyProperty.signal.mapConst(true)
+      ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal
       .map { $0 |> UserAttribute.notification(.creatorDigest).lens.view }
@@ -118,7 +122,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
   public func shouldSelectRow(for cellType: SettingsNotificationCellType) -> Bool {
     switch cellType {
-    case .projectNotifications, .findFacebookFriends: return true
+    case .projectNotifications, .findFacebookFriends, .emailFrequency: return true
     default: return false
     }
   }
@@ -131,11 +135,6 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   fileprivate let selectedCellType = MutableProperty<SettingsNotificationCellType?>(nil)
   public func didSelectRow(cellType: SettingsNotificationCellType) {
     self.selectedCellType.value = cellType
-  }
-
-  fileprivate let shouldShowFrequencyPickerProperty = MutableProperty(false)
-  public func didTapFrequencyPickerButton() {
-    self.shouldShowFrequencyPickerProperty.value = !self.shouldShowFrequencyPickerProperty.value
   }
 
   fileprivate let updatedUserProperty = MutableProperty<User?>(nil)
