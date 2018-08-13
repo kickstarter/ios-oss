@@ -99,7 +99,7 @@ internal final class BetaToolsViewController: UIViewController {
   }
 
   @IBAction func doneTapped(_ sender: Any) {
-    self.navigationController?.dismiss(animated: true, completion: nil)
+    self.navigationController?.popViewController(animated: true)
   }
 
   // MARK: Private Helper Functions
