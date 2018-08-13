@@ -128,6 +128,7 @@ extension User: EncodableType {
     result["location"] = self.location?.encode()
     result["name"] = self.name
     result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false
+    result["social"] = self.social ?? false
     result["show_public_profile"] = self.showPublicProfile ?? false
     result = result.withAllValuesFrom(self.newsletters.encode())
     result = result.withAllValuesFrom(self.notifications.encode())

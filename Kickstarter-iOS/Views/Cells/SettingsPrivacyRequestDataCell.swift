@@ -26,13 +26,15 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
   private var requestDataObserver: Any?
 
   internal override func awakeFromNib() {
+    super.awakeFromNib()
+
     self.requestDataButton.addTarget(self, action: #selector(exportButtonTapped), for: .touchUpInside)
 
     self.requestDataObserver = NotificationCenter.default.addObserver(
       forName: Notification.Name.ksr_dataRequested,
       object: nil, queue: nil) { [weak self] _ in self?.viewModel.inputs.startRequestDataTapped() }
 
-    super.awakeFromNib()
+    self.viewModel.inputs.awakeFromNib()
   }
 
   deinit {

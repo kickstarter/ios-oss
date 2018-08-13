@@ -45,6 +45,7 @@
 "Change_password" = "Change password";
 "Change_payment_method" = "Changer de moyen de paiement";
 "Chat" = "Chat";
+"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
 "Chooses_location_for_shipping" = "Sélectionne %{location} pour la livraison.";
 "Close_live_stream" = "Fermer la diffusion en direct";
 "Close_project" = "Fermer le projet";
@@ -291,7 +292,7 @@
 "Replay_past_live_stream" = "Rediffusion";
 "Replay_past_live_streams" = "Revoir des diffusions en direct passées";
 "Reply_to_user_name" = "Répondre à %{user_name}…";
-"Request_my_Personal_Data" = "Demander mes données personnelles";
+"Request_my_personal_data" = "Request my personal data";
 "Reward_Surveys.few" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.many" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.one" = "Questionnaire";
@@ -338,7 +339,7 @@
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
 "Something_catch_your_eye" = "Quelque chose a retenu votre attention ?";
 "Something_went_wrong_please_try_again" = "Un problème est survenu. Veuillez réessayer.";
-"Start_data_collection" = "Commencer la préparation";
+"Start_the_request" = "Start data collection";
 "Starting_soon" = "Bientôt en direct";
 "Status" = "État :";
 "Stay_up_to_date" = "Envie d'être informé ?";
@@ -372,6 +373,7 @@
 "Top_ten_pledge_sources" = "Vos 10 principales sources de contributions";
 "Top_ten_rewards" = "Les 10 récompenses qui ont le plus de succès";
 "Total_pledged" = "Total engagé";
+"Unable_to_request_data" = "Unable to request data.";
 "Unfollow_friend_name" = "Ne plus suivre %{friend_name}";
 "Unfollows_friend_name" = "Désabonnement des actus de %{friend_name}.";
 "Unsaved" = "Non enregistré";

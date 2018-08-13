@@ -745,6 +745,23 @@ backers"
     )
   }
   /**
+   "Check back later for an update on your export progress."
+
+   - **es**: "Check back later for an update on your export progress."
+   - **ja**: "Check back later for an update on your export progress."
+   - **de**: "Check back later for an update on your export progress."
+   - **fr**: "Check back later for an update on your export progress."
+   - **en**: "Check back later for an update on your export progress."
+  */
+  public static func Check_back_later_for_an_update_on_your_export_progress() -> String {
+    return localizedString(
+      key: "Check_back_later_for_an_update_on_your_export_progress",
+      defaultValue: "Check back later for an update on your export progress.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Chooses %{location} for shipping."
 
    - **es**: "Destino determinado: %{location}."
@@ -1663,18 +1680,18 @@ backers"
     )
   }
   /**
-   "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again."
+   "Your account was disconnected for your security. By logging in with Facebook, we’ll import your name, profile photo and friend list."
 
    - **es**: "Disculpa, tu cuenta se desconectó accidentalmente. Conéctala otra vez para volver a seguir a tus amigos."
    - **ja**: "申し訳ございません。アカウントの接続が切断されました。もう一度接続しなおして友達をフォローしてください。"
    - **de**: "Dein Konto wurde aus Versehen getrennt. Bitte verbinde es erneut, um Freunden folgen zu können."
    - **fr**: "Nous sommes désolés, mais votre compte a été déconnecté accidentellement. Veuillez vous reconnecter pour retrouver vos amis."
-   - **en**: "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again."
+   - **en**: "Your account was disconnected for your security. By logging in with Facebook, we’ll import your name, profile photo and friend list."
   */
   public static func Facebook_reconnect_description() -> String {
     return localizedString(
       key: "Facebook_reconnect_description",
-      defaultValue: "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again.",
+      defaultValue: "Your account was disconnected for your security. By logging in with Facebook, we’ll import your name, profile photo and friend list.",
       count: nil,
       substitutions: [:]
     )
@@ -4799,18 +4816,18 @@ daring ideas."
     )
   }
   /**
-   "Request my Personal Data"
+   "Request my personal data"
 
-   - **es**: "Solicitar mis datos personales"
-   - **ja**: "自分の個人データをリクエストする"
-   - **de**: "Meine persönlichen Daten anfordern"
-   - **fr**: "Demander mes données personnelles"
-   - **en**: "Request my Personal Data"
+   - **es**: "Request my personal data"
+   - **ja**: "Request my personal data"
+   - **de**: "Request my personal data"
+   - **fr**: "Request my personal data"
+   - **en**: "Request my personal data"
   */
-  public static func Request_my_Personal_Data() -> String {
+  public static func Request_my_personal_data() -> String {
     return localizedString(
-      key: "Request_my_Personal_Data",
-      defaultValue: "Request my Personal Data",
+      key: "Request_my_personal_data",
+      defaultValue: "Request my personal data",
       count: nil,
       substitutions: [:]
     )
@@ -5398,15 +5415,15 @@ catch your eye?"
   /**
    "Start data collection"
 
-   - **es**: "Comenzar la recopilación de datos"
-   - **ja**: "データの収集を開始する"
-   - **de**: "Daten zusammenstellen"
-   - **fr**: "Commencer la préparation"
+   - **es**: "Start data collection"
+   - **ja**: "Start data collection"
+   - **de**: "Start data collection"
+   - **fr**: "Start data collection"
    - **en**: "Start data collection"
   */
-  public static func Start_data_collection() -> String {
+  public static func Start_the_request() -> String {
     return localizedString(
-      key: "Start_data_collection",
+      key: "Start_the_request",
       defaultValue: "Start data collection",
       count: nil,
       substitutions: [:]
@@ -5969,6 +5986,23 @@ catch your eye?"
     return localizedString(
       key: "Total_pledged",
       defaultValue: "Total pledged",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Unable to request data."
+
+   - **es**: "Unable to request data."
+   - **ja**: "Unable to request data."
+   - **de**: "Unable to request data."
+   - **fr**: "Unable to request data."
+   - **en**: "Unable to request data."
+  */
+  public static func Unable_to_request_data() -> String {
+    return localizedString(
+      key: "Unable_to_request_data",
+      defaultValue: "Unable to request data.",
       count: nil,
       substitutions: [:]
     )

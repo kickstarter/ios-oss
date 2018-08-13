@@ -21,7 +21,10 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
 
   func testView() {
     let currentUser = User.template
-    let exportData = ExportDataEnvelope.template
+    let exportData = .template
+      |> ExportDataEnvelope.lens.expiresAt .~ nil
+      |> ExportDataEnvelope.lens.state .~ .expired
+      |> ExportDataEnvelope.lens.dataUrl .~ nil
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
@@ -31,9 +34,10 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
         let vc = Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-        self.scheduler.run()
+        vc.viewModel.inputs.viewDidLoad()
+        self.scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }

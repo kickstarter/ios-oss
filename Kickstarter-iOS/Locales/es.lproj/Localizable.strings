@@ -45,6 +45,7 @@
 "Change_password" = "Cambiar contraseña";
 "Change_payment_method" = "Cambiar método de pago";
 "Chat" = "Chat";
+"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
 "Chooses_location_for_shipping" = "Destino determinado: %{location}.";
 "Close_live_stream" = "Cerrar Live Stream";
 "Close_project" = "Cerrar proyecto";
@@ -291,7 +292,7 @@
 "Replay_past_live_stream" = "Repetir live stream pasado";
 "Replay_past_live_streams" = "Repetir live streams pasados";
 "Reply_to_user_name" = "Responder a %{user_name}…";
-"Request_my_Personal_Data" = "Solicitar mis datos personales";
+"Request_my_personal_data" = "Request my personal data";
 "Reward_Surveys.few" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.many" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.one" = "Cuestionario";
@@ -338,7 +339,7 @@
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
-"Start_data_collection" = "Comenzar la recopilación de datos";
+"Start_the_request" = "Start data collection";
 "Starting_soon" = "Comienza en breve";
 "Status" = "Estado:";
 "Stay_up_to_date" = "¿Deseas mantenerte actualizado?";
@@ -372,6 +373,7 @@
 "Top_ten_pledge_sources" = "Las 10 principales fuentes de contribución";
 "Top_ten_rewards" = "Las 10 mejores recompensas";
 "Total_pledged" = "Contribuciones en total";
+"Unable_to_request_data" = "Unable to request data.";
 "Unfollow_friend_name" = "Dejar de seguir a %{friend_name}";
 "Unfollows_friend_name" = "Dejar de seguir a %{friend_name}.";
 "Unsaved" = "Sin guardar";

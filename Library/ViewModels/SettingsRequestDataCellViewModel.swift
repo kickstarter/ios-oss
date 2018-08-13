@@ -6,6 +6,7 @@ import ReactiveExtensions
 import Result
 
 public protocol SettingsRequestDataCellViewModelInputs {
+  func awakeFromNib()
   func configureWith(user: User)
   func exportDataTapped()
   func startRequestDataTapped()
@@ -33,8 +34,10 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
   SettingsRequestDataCellViewModelInputs, SettingsRequestDataCellViewModelOutputs {
 
   public init() {
-    let initialUser = self.configureWithUserProperty.signal
-      .skipNil()
+    let initialUser = Signal.combineLatest(
+      self.configureWithUserProperty.signal.skipNil(),
+      self.awakeFromNibProperty.signal
+    ).map(first)
 
     let exportEnvelope = initialUser
       .switchMap { _ in
@@ -68,7 +71,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
 
     self.requestDataText = exportEnvelope
       .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil
-        ? Strings.Request_my_Personal_Data() : Strings.Download_your_personal_data() }
+        ? Strings.Request_my_personal_data() : Strings.Download_your_personal_data() }
 
     self.requestDataButtonEnabled = self.requestDataLoadingIndicator.signal.negate()
 
@@ -93,13 +96,17 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     self.requestDataTextHidden = self.showPreparingDataText.signal.map { !$0 }
   }
 
-  fileprivate let exportDataTappedProperty = MutableProperty(())
-  public func exportDataTapped() {
-    self.exportDataTappedProperty.value = ()
+  fileprivate let awakeFromNibProperty = MutableProperty(())
+  public func awakeFromNib() {
+    self.awakeFromNibProperty.value = ()
   }
   fileprivate let configureWithUserProperty = MutableProperty<User?>(nil)
   public func configureWith(user: User) {
     self.configureWithUserProperty.value = user
+  }
+  fileprivate let exportDataTappedProperty = MutableProperty(())
+  public func exportDataTapped() {
+    self.exportDataTappedProperty.value = ()
   }
   fileprivate let startRequestDataTappedProperty = MutableProperty(())
   public func startRequestDataTapped() {

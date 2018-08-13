@@ -409,13 +409,13 @@ internal final class SettingsViewController: UIViewController {
       message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
       preferredStyle: .actionSheet)
 
-    let startTheRequest = UIAlertAction(title: Strings.Start_data_collection(),
+    let startTheRequest = UIAlertAction(title: Strings.Start_the_request(),
                                         style: .default,
                                         handler: { [weak self] _ in
                                           self?.viewModel.inputs.exportDataTapped()
     })
 
-    let dismiss = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    let dismiss = UIAlertAction(title: Strings.Cancel(), style: .cancel, handler: nil)
 
     exportDataSheet.addAction(startTheRequest)
     exportDataSheet.addAction(dismiss)

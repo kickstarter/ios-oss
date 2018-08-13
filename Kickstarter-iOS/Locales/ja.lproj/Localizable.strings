@@ -45,6 +45,7 @@
 "Change_password" = "Change password";
 "Change_payment_method" = "支払方法の変更";
 "Chat" = "チャット";
+"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
 "Chooses_location_for_shipping" = "配送先%{location} を選択";
 "Close_live_stream" = "ライブ配信を閉じる";
 "Close_project" = "プロジェクトを閉じる";
@@ -291,7 +292,7 @@
 "Replay_past_live_stream" = "過去のライブ配信をリプレイ";
 "Replay_past_live_streams" = "過去のライブ配信をリプレイ";
 "Reply_to_user_name" = "%{user_nameに返信";
-"Request_my_Personal_Data" = "自分の個人データをリクエストする";
+"Request_my_personal_data" = "Request my personal data";
 "Reward_Surveys.few" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.many" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.one" = "リワードサーベイ";
@@ -338,7 +339,7 @@
 "Signs_up_with_Email" = "Eメールでサインアップする。";
 "Something_catch_your_eye" = "何か目にとまるものはありましたか？";
 "Something_went_wrong_please_try_again" = "なにかが間違っています。もう一度お試しください。";
-"Start_data_collection" = "データの収集を開始する";
+"Start_the_request" = "Start data collection";
 "Starting_soon" = "もう少しで始まります。";
 "Status" = "ステータス";
 "Stay_up_to_date" = "最新情報を常に把握したい？";
@@ -372,6 +373,7 @@
 "Top_ten_pledge_sources" = "プレッジソースのトップ10";
 "Top_ten_rewards" = "リワードのトップ10";
 "Total_pledged" = "プレッジ総計";
+"Unable_to_request_data" = "Unable to request data.";
 "Unfollow_friend_name" = "%{friend_name} のフォロー解除";
 "Unfollows_friend_name" = "%{friend_name} のフォロー解除";
 "Unsaved" = "未保存";

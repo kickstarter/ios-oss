@@ -45,6 +45,7 @@
 "Change_password" = "Change password";
 "Change_payment_method" = "Change payment method";
 "Chat" = "Chat";
+"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
 "Chooses_location_for_shipping" = "Chooses %{location} for shipping.";
 "Close_live_stream" = "Close live stream";
 "Close_project" = "Close project";
@@ -99,7 +100,7 @@
 "Facebook_login_disclaimer" = "If you login with Facebook, we’ll import your name and profile photo. We'll also access your friend list so you can follow your Facebook friends on Kickstarter. We will never post anything on Facebook without your permission.";
 "Facebook_login_disclaimer_update" = "By logging in with Facebook, we’ll import your name, profile photo and friend list.";
 "Facebook_reconnect" = "Please reconnect";
-"Facebook_reconnect_description" = "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again.";
+"Facebook_reconnect_description" = "Your account was disconnected for your security. By logging in with Facebook, we’ll import your name, profile photo and friend list.";
 "Failed_to_retrieve_live_stream_event_details" = "Failed to retrieve live stream event details";
 "Failed_to_update_subscription" = "Failed to update subscription";
 "Filter_by_all_projects" = "Filter by all projects";
@@ -291,7 +292,7 @@
 "Replay_past_live_stream" = "Replay past live stream";
 "Replay_past_live_streams" = "Replay past live streams";
 "Reply_to_user_name" = "Reply to %{user_name}…";
-"Request_my_Personal_Data" = "Request my Personal Data";
+"Request_my_personal_data" = "Request my personal data";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.many" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.one" = "Reward Survey";
@@ -338,7 +339,7 @@
 "Signs_up_with_Email" = "Signs up with Email.";
 "Something_catch_your_eye" = "Something\ncatch your eye?";
 "Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
-"Start_data_collection" = "Start data collection";
+"Start_the_request" = "Start data collection";
 "Starting_soon" = "Starting soon";
 "Status" = "Status";
 "Stay_up_to_date" = "Stay up to date?";
@@ -372,6 +373,7 @@
 "Top_ten_pledge_sources" = "Top 10 pledge sources";
 "Top_ten_rewards" = "Top 10 rewards";
 "Total_pledged" = "Total pledged";
+"Unable_to_request_data" = "Unable to request data.";
 "Unfollow_friend_name" = "Unfollow %{friend_name}";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
 "Unsaved" = "Unsaved";

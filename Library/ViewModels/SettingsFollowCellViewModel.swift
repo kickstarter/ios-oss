@@ -26,7 +26,6 @@ public protocol SettingsFollowCellViewModelType {
 
 public final class SettingsFollowCellViewModel: SettingsFollowCellViewModelType,
 SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
-
   public init() {
     let initialUser = configureWithProperty.signal
       .skipNil()
@@ -69,10 +68,6 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
       .ignoreValues()
 
     self.followingPrivacyOn = initialUser.map { $0.social ?? true }.skipRepeats()
-
-    self.followingPrivacyOn.signal.observeValues { value in
-        print("\(value)")
-    }
 
     self.followingPrivacySwitchIsEnabled = self.updateCurrentUser.map { $0.social ?? false }
   }

@@ -38,7 +38,7 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
 
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()
-      .observeValues { user in AppEnvironment.updateCurrentUser(user)}
+      .observeValues { user in AppEnvironment.updateCurrentUser(user) }
 
     self.recommendationsSwitch.rac.on = self.viewModel.outputs.recommendationsOn
   }

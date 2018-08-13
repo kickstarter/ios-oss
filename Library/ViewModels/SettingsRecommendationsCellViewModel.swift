@@ -24,7 +24,6 @@ public protocol SettingsRecommendationsCellViewModelType {
 public final class SettingsRecommendationsCellViewModel: SettingsRecommendationsCellViewModelType,
 SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModelOutputs {
   public init() {
-
     let initialUser = configureWithProperty.signal
       .skipNil()
 

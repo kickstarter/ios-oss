@@ -69,7 +69,8 @@ internal final class SettingsPrivacyViewController: UITableViewController {
                                    forRowAt indexPath: IndexPath) {
     if let followCell = cell as? SettingsFollowCell {
       followCell.delegate = self
-    } else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
+    }
+      else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
       requestDataCell.delegate = self
     } else if let deleteAccountCell = cell as? SettingsPrivacyDeleteAccountCell {
       deleteAccountCell.delegate = self
@@ -98,7 +99,7 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
       message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
       preferredStyle: .actionSheet)
 
-    let startTheRequest = UIAlertAction(title: Strings.Start_data_collection(),
+    let startTheRequest = UIAlertAction(title: Strings.Start_the_request(),
                                         style: .default,
                                         handler: { _ in
         NotificationCenter.default.post(name: Notification.Name.ksr_dataRequested, object: nil, userInfo: nil)
