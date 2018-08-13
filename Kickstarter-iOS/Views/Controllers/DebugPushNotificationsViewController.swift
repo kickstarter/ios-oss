@@ -100,7 +100,7 @@ internal final class DebugPushNotificationsViewController: UIViewController {
     let identifier = "notify-test"
 
     let content = UNMutableNotificationContent()
-    content.body = (pushData["aps"] as? [String: AnyObject])?["alert"] as? String ?? ""
+    content.body = body(from: pushData)
     content.userInfo = pushData
     content.categoryIdentifier = identifier
 
@@ -119,9 +119,13 @@ internal final class DebugPushNotificationsViewController: UIViewController {
 
     let notification = UILocalNotification()
     notification.fireDate = Date(timeIntervalSinceNow: delay ? 5 : 0)
-    notification.alertBody = (pushData["aps"] as? [String: AnyObject])?["alert"] as? String
+    notification.alertBody = body(from: pushData)
     notification.userInfo = pushData
     UIApplication.shared.scheduleLocalNotification(notification)
+  }
+
+  private func body(from pushData: [String: Any]) -> String {
+    return (pushData["aps"] as? [String: AnyObject])?["alert"] as? String ?? ""
   }
 }
 
