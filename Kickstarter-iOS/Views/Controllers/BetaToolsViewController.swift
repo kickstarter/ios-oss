@@ -38,7 +38,7 @@ internal final class BetaToolsViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) .~ "Submit feedback for beta"
 
     _ = self.betaTitleLabel
-      |> settingsSectionLabelStyle
+      |> settingsTitleLabelStyle
       |> UILabel.lens.text .~ "Beta tools"
 
     _ = self.languageSwitcher

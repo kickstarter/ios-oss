@@ -5,9 +5,15 @@ public enum SettingsNotificationSectionType: Int {
   case backedProjects
   case creator
   case social
+  case findFriends
 
-  public static var sectionHeaderHeight: CGFloat {
-    return 50.0
+  public var sectionHeaderHeight: CGFloat {
+    switch self {
+    case .findFriends:
+      return Styles.grid(2)
+    default:
+      return Styles.grid(9)
+    }
   }
 
   public var cellRowsForSection: [SettingsNotificationCellType] {
@@ -15,9 +21,11 @@ public enum SettingsNotificationSectionType: Int {
     case .backedProjects:
       return [.projectUpdates, .projectNotifications]
     case .creator:
-      return [.pledgeActivity, .emailFrequency, .newComments, .newLikes, .creatorTips]
+      return [.pledgeActivity, .newComments, .newLikes, .creatorTips]
     case .social:
-      return [.messages, .newFollowers, .friendBacksProject, .findFacebookFriends]
+      return [.messages, .newFollowers, .friendBacksProject]
+    case .findFriends:
+      return [.findFacebookFriends]
     }
   }
 
@@ -29,10 +37,15 @@ public enum SettingsNotificationSectionType: Int {
       return Strings.profile_settings_creator_title()
     case .social:
       return Strings.profile_settings_social_title()
+    default:
+      return ""
     }
   }
 
-  public static var allCases: [SettingsNotificationSectionType] = [.backedProjects, .creator, .social]
+  public static var allCases: [SettingsNotificationSectionType] = [.backedProjects,
+                                                                   .creator,
+                                                                   .social,
+                                                                   .findFriends]
 }
 
 public enum SettingsNotificationCellType {

@@ -4,8 +4,8 @@ import Library
 import KsApi
 
 protocol SettingsNotificationCellDelegate: class {
-  func didFailToSaveChange(errorMessage: String)
-  func didUpdateUser(user: User)
+  func settingsNotificationCell(_ cell: SettingsNotificationCell, didFailToUpdateUser errorMessage: String)
+  func settingsNotificationCell(_ cell: SettingsNotificationCell, didUpdateUser user: User)
 }
 
 final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
@@ -46,6 +46,9 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self
+      |> baseTableViewCellStyle()
 
     _ = titleLabel
       |> settingsTitleLabelStyle
@@ -108,13 +111,15 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     viewModel.outputs.updateCurrentUser
       .observeForControllerAction()
       .observeValues { [weak self] (user) in
-        self?.delegate?.didUpdateUser(user: user)
+        guard let _self = self else { return }
+        _self.delegate?.settingsNotificationCell(_self, didUpdateUser: user)
     }
 
     viewModel.outputs.unableToSaveError
       .observeForControllerAction()
       .observeValues { [weak self] (errorString) in
-        self?.delegate?.didFailToSaveChange(errorMessage: errorString)
+        guard let _self = self else { return }
+        _self.delegate?.settingsNotificationCell(_self, didFailToUpdateUser: errorString)
     }
   }
 
