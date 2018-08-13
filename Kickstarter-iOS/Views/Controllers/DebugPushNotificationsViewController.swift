@@ -13,13 +13,6 @@ internal final class DebugPushNotificationsViewController: UIViewController {
     internal override func bindStyles() {
     super.bindStyles()
 
-      if #available(iOS 10.0, *) {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: {didAllow, error in
-        })
-      } else {
-      }
-
-
     _ = self
       |> baseControllerStyle()
 
