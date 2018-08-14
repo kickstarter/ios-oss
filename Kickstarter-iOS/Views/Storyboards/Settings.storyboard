@@ -665,7 +665,7 @@
         <scene sceneID="XQ6-2I-ZHP">
             <objects>
                 <tableViewController storyboardIdentifier="ProjectNotificationsViewController" title="Notifications" id="8ud-wS-IEX" customClass="ProjectNotificationsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="7CL-Np-i1g">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="7CL-Np-i1g">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -677,31 +677,45 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="Vl7-Ga-JLo">
+                                            <rect key="frame" x="12" y="6" width="351" height="47"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcl-Dh-5gE">
+                                                    <rect key="frame" x="0.0" y="13.5" width="296" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Usx-HY-twZ">
+                                                    <rect key="frame" x="302" y="3.5" width="51" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="tuM-td-NJy"/>
+                                                    </constraints>
+                                                </switch>
+                                            </subviews>
+                                        </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C6w-ZC-AH7" userLabel="Separator View">
-                                            <rect key="frame" x="18" y="59" width="339" height="1"/>
+                                            <rect key="frame" x="0.0" y="59" width="375" height="1"/>
                                             <color key="backgroundColor" red="0.94999998807907104" green="0.94999998807907104" blue="0.94999998807907104" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="Jgk-j6-85I"/>
                                                 <constraint firstAttribute="height" constant="1" id="jiO-gd-I4J"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcl-Dh-5gE">
-                                            <rect key="frame" x="26" y="19" width="323" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="C6w-ZC-AH7" secondAttribute="trailing" constant="18" id="CpW-sC-dc7"/>
-                                        <constraint firstItem="hcl-Dh-5gE" firstAttribute="centerY" secondItem="Kyl-Nb-IPc" secondAttribute="centerY" id="HRP-ua-s2k"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="hcl-Dh-5gE" secondAttribute="trailing" constant="10" id="IpR-wI-Ugh"/>
-                                        <constraint firstItem="hcl-Dh-5gE" firstAttribute="leading" secondItem="Kyl-Nb-IPc" secondAttribute="leadingMargin" constant="10" id="XHa-7P-Tph"/>
-                                        <constraint firstAttribute="bottom" secondItem="C6w-ZC-AH7" secondAttribute="bottom" id="cq3-9G-bGd"/>
-                                        <constraint firstItem="C6w-ZC-AH7" firstAttribute="leading" secondItem="Kyl-Nb-IPc" secondAttribute="leading" constant="18" id="oSF-9K-K8p"/>
+                                        <constraint firstItem="Vl7-Ga-JLo" firstAttribute="top" secondItem="Kyl-Nb-IPc" secondAttribute="top" constant="6" id="1wS-np-kcj"/>
+                                        <constraint firstAttribute="trailing" secondItem="C6w-ZC-AH7" secondAttribute="trailing" id="BNu-UU-g6q"/>
+                                        <constraint firstItem="C6w-ZC-AH7" firstAttribute="leading" secondItem="Kyl-Nb-IPc" secondAttribute="leading" id="M4G-me-9Uu"/>
+                                        <constraint firstItem="Vl7-Ga-JLo" firstAttribute="leading" secondItem="Kyl-Nb-IPc" secondAttribute="leading" constant="12" id="MJw-jg-wjc"/>
+                                        <constraint firstItem="C6w-ZC-AH7" firstAttribute="top" secondItem="Vl7-Ga-JLo" secondAttribute="bottom" constant="6" id="RPO-0Y-Kr3"/>
+                                        <constraint firstAttribute="bottom" secondItem="C6w-ZC-AH7" secondAttribute="bottom" id="ZHH-Qq-4pd"/>
+                                        <constraint firstAttribute="trailing" secondItem="Vl7-Ga-JLo" secondAttribute="trailing" constant="12" id="ynv-0j-kwm"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="nameLabel" destination="hcl-Dh-5gE" id="pSY-Pb-fHH"/>
+                                    <outlet property="notificationSwitch" destination="Usx-HY-twZ" id="ppi-GX-4NZ"/>
                                     <outlet property="separatorView" destination="C6w-ZC-AH7" id="NEb-vm-g8J"/>
                                 </connections>
                             </tableViewCell>

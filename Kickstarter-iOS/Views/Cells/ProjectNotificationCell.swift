@@ -14,7 +14,7 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
   internal weak var delegate: ProjectNotificationCellDelegate?
 
   @IBOutlet fileprivate weak var nameLabel: UILabel!
-  fileprivate let notificationSwitch: UISwitch = UISwitch()
+  @IBOutlet fileprivate weak var notificationSwitch: UISwitch!
   @IBOutlet fileprivate weak var separatorView: UIView!
 
  internal override func awakeFromNib() {
@@ -25,7 +25,6 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
       action: #selector(notificationTapped),
       for: UIControlEvents.valueChanged
     )
-    self.accessoryView = self.notificationSwitch
   }
 
   internal override func bindStyles() {
@@ -34,7 +33,11 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
 
-    _ = self.nameLabel |> settingsSectionLabelStyle
+    _ = self.nameLabel
+      |> settingsTitleLabelStyle
+      |> UILabel.lens.numberOfLines .~ 1
+      |> UILabel.lens.lineBreakMode .~ .byClipping
+
     _ = self.notificationSwitch |> settingsSwitchStyle
     _ = self.separatorView |> separatorStyle
   }

@@ -13,8 +13,9 @@ internal final class ProjectNotificationsViewController: UITableViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
     self.viewModel.inputs.viewDidLoad()
-    self.view.backgroundColor = .ksr_grey_100
+
     self.tableView.dataSource = self.dataSource
   }
 
