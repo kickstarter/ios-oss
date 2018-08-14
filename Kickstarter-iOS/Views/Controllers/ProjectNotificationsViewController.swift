@@ -8,15 +8,15 @@ internal final class ProjectNotificationsViewController: UITableViewController {
   fileprivate let dataSource = ProjectNotificationsDataSource()
 
   internal static func instantiate() -> ProjectNotificationsViewController {
-    return Storyboard.Settings.instantiate(ProjectNotificationsViewController.self)
+    return Storyboard.SettingsV2.instantiate(ProjectNotificationsViewController.self)
   }
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.viewModel.inputs.viewDidLoad()
-
     self.tableView.dataSource = self.dataSource
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func bindStyles() {
@@ -27,8 +27,10 @@ internal final class ProjectNotificationsViewController: UITableViewController {
   }
 
   internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.viewModel.outputs.projectNotifications
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] notifications in
         self?.dataSource.load(notifications: notifications)
         self?.tableView.reloadData()

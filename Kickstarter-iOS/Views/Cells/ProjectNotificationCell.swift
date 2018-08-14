@@ -36,7 +36,7 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
     _ = self.nameLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.numberOfLines .~ 1
-      |> UILabel.lens.lineBreakMode .~ .byClipping
+      |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
     _ = self.notificationSwitch |> settingsSwitchStyle
     _ = self.separatorView |> separatorStyle
