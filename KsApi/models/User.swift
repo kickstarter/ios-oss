@@ -10,6 +10,7 @@ public struct User {
   public let liveAuthToken: String?
   public let location: Location?
   public let name: String
+  public let needsFreshFacebookToken: Bool?
   public let newsletters: NewsletterSubscriptions
   public let notifications: Notifications
   public let optedOutOfRecommendations: Bool?
@@ -105,6 +106,7 @@ extension User: Argo.Decodable {
       <*> (json <|? "location" <|> .success(nil))
     let tmp3 = tmp2
       <*> json <| "name"
+      <*> json <|? "needs_fresh_facebook_token"
       <*> User.NewsletterSubscriptions.decode(json)
       <*> User.Notifications.decode(json)
       <*> json <|? "opted_out_of_recommendations"

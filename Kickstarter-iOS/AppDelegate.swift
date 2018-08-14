@@ -283,7 +283,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs.didReceive(remoteNotification: userInfo,
                                      applicationIsActive: application.applicationState == .active)
   }
-
   internal func application(_ application: UIApplication,
                             didReceive notification: UILocalNotification) {
 
@@ -347,9 +346,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       UIAlertAction(title: Strings.Dismiss(), style: .cancel, handler: nil)
     )
 
-    DispatchQueue.main.async {
-      self.rootTabBarController?.present(alert, animated: true, completion: nil)
-    }
+    self.rootTabBarController?.present(alert, animated: true, completion: nil)
   }
 
   private func goToLiveStream(project: Project,
