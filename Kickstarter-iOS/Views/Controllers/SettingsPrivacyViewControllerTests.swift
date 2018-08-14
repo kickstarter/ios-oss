@@ -19,12 +19,10 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testView() {
-    let currentUser = User.template
-    let exportData = .template
-      |> ExportDataEnvelope.lens.expiresAt .~ nil
-      |> ExportDataEnvelope.lens.state .~ .expired
-      |> ExportDataEnvelope.lens.dataUrl .~ nil
+  func testSocialOptedOut_And_DownloadDataCopy() {
+    let currentUser = .template
+      |> User.lens.social .~ false
+    let exportData = ExportDataEnvelope.template
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
@@ -32,12 +30,36 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
                       currentUser: currentUser,
                       language: language) {
         let vc = Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
+
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-        vc.viewModel.inputs.viewDidLoad()
-        self.scheduler.advance()
+        self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testSocialOptedIn_And_RequestDataCopy() {
+    let currentUser = .template
+      |> User.lens.social .~ true
+
+    let exportData = .template
+      |> ExportDataEnvelope.lens.state .~ .expired
+      |> ExportDataEnvelope.lens.dataUrl .~ nil
+      |> ExportDataEnvelope.lens.expiresAt .~ nil
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach { language, device in
+      withEnvironment(apiService: MockService(fetchExportStateResponse: exportData),
+                      currentUser: currentUser,
+                      language: language) {
+        let vc = Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }

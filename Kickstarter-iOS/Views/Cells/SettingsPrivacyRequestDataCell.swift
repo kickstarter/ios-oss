@@ -61,6 +61,10 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
     _ = self.requestDataButton
       |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_text_dark_grey_500
 
+    _ = self.chevron
+      |> UIImageView.lens.tintColor .~ .ksr_text_dark_grey_500
+      |> UIImageView.lens.contentMode .~ .scaleAspectFit
+
     _ = self.preparingDataLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.numberOfLines .~ 1

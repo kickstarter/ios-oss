@@ -40,6 +40,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] user in
         self?.dataSource.load(user: user)
+        self?.tableView.reloadData()
       }
 
     self.viewModel.outputs.updateCurrentUser
@@ -69,8 +70,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
                                    forRowAt indexPath: IndexPath) {
     if let followCell = cell as? SettingsFollowCell {
       followCell.delegate = self
-    }
-      else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
+    } else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
       requestDataCell.delegate = self
     } else if let deleteAccountCell = cell as? SettingsPrivacyDeleteAccountCell {
       deleteAccountCell.delegate = self
