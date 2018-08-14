@@ -49,7 +49,8 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
       |> ExportDataEnvelope.lens.dataUrl .~ nil
       |> ExportDataEnvelope.lens.expiresAt .~ nil
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach { language, device in
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
       withEnvironment(apiService: MockService(fetchExportStateResponse: exportData),
                       currentUser: currentUser,
                       language: language) {
