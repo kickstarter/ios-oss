@@ -27,6 +27,10 @@ internal final class BetaToolsViewController: UIViewController {
   }
 
   override func bindStyles() {
+
+    _ = self.navigationController
+      ?|> UINavigationController.lens.isNavigationBarHidden .~ false
+
     _ = self.betaDebugPushNotificationsButton
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
@@ -97,7 +101,7 @@ internal final class BetaToolsViewController: UIViewController {
   }
 
   @IBAction func doneTapped(_ sender: Any) {
-    self.navigationController?.dismiss(animated: true, completion: nil)
+    self.navigationController?.popViewController(animated: true)
   }
 
   // MARK: Private Helper Functions
