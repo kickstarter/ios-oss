@@ -38,6 +38,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
     let user = User.template
 
     withEnvironment(apiService: MockService(fetchExportStateResponse: .template)) {
+      self.vm.inputs.awakeFromNib()
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
       self.vm.inputs.exportDataTapped()
@@ -64,6 +65,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
     let user = User.template
 
     withEnvironment(apiService: MockService(fetchExportStateResponse: .template)) {
+      self.vm.inputs.awakeFromNib()
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
       self.requestedDataExpirationDate.assertValues(["Expires Jun 19, 2018 at 1:12 PM"])
@@ -78,23 +80,24 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
       |> ExportDataEnvelope.lens.dataUrl .~ nil
 
     withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
+      self.vm.inputs.awakeFromNib()
+
       self.vm.inputs.configureWith(user: user)
 
       self.scheduler.advance()
 
-      self.requestDataText.assertValues([Strings.Request_my_Personal_Data()])
+      self.requestDataText.assertValues([Strings.Request_my_personal_data()])
 
       self.vm.inputs.exportDataTapped()
 
       self.scheduler.advance()
 
       withEnvironment(apiService: MockService(fetchExportStateResponse: .template)) {
-
         self.vm.inputs.configureWith(user: user)
 
         self.scheduler.advance()
 
-        self.requestDataText.assertValues([Strings.Request_my_Personal_Data(),
+        self.requestDataText.assertValues([Strings.Request_my_personal_data(),
                                            Strings.Download_your_personal_data()])
       }
     }
@@ -104,6 +107,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
     let user = User.template
 
     withEnvironment(apiService: MockService(fetchExportStateResponse: .template)) {
+      self.vm.inputs.awakeFromNib()
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
       self.requestDataText.assertValues([Strings.Download_your_personal_data()])
@@ -119,6 +123,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
       |> ExportDataEnvelope.lens.dataUrl .~ nil
 
     withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
+      self.vm.inputs.awakeFromNib()
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
       self.vm.inputs.exportDataTapped()

@@ -42,7 +42,6 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     let exportEnvelope = initialUser
       .switchMap { _ in
         AppEnvironment.current.apiService.exportDataState()
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
     }
 

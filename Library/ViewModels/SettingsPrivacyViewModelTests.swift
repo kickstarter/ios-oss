@@ -22,6 +22,14 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
   }
 
+  func testRefreshFollowingSection() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: false)
+
+    self.updateCurrentUser.assertValueCount(1)
+    self.refreshFollowingSection.assertValueCount(1)
+  }
+
   func testReloadData() {
     let user = User.template
 
