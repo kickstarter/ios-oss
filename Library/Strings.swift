@@ -1257,11 +1257,11 @@ backers"
   /**
    "Delete my Kickstarter account"
 
-   - **es**: "Eliminar mi cuenta de Kickstarter"
-   - **ja**: "Kickstarter アカウントを削除"
    - **de**: "Mein Kickstarter-Konto löschen"
    - **fr**: "Supprimer mon compte Kickstarter"
-   - **en**: "Delete my Kickstarter account"
+   - **en**: "Delete my Kickstarter Account"
+   - **es**: "Eliminar mi cuenta de Kickstarter"
+   - **ja**: "Kickstarter アカウントを削除"
   */
   public static func Delete_my_Kickstarter_Account() -> String {
     return localizedString(
@@ -1682,11 +1682,11 @@ backers"
   /**
    "Your account was disconnected for your security. By logging in with Facebook, we’ll import your name, profile photo and friend list."
 
-   - **es**: "Disculpa, tu cuenta se desconectó accidentalmente. Conéctala otra vez para volver a seguir a tus amigos."
-   - **ja**: "申し訳ございません。アカウントの接続が切断されました。もう一度接続しなおして友達をフォローしてください。"
    - **de**: "Dein Konto wurde aus Versehen getrennt. Bitte verbinde es erneut, um Freunden folgen zu können."
    - **fr**: "Nous sommes désolés, mais votre compte a été déconnecté accidentellement. Veuillez vous reconnecter pour retrouver vos amis."
-   - **en**: "Your account was disconnected for your security. By logging in with Facebook, we’ll import your name, profile photo and friend list."
+   - **en**: "Our apologies, your account was accidentally disconnected. Reconnect to follow friends again."
+   - **es**: "Disculpa, tu cuenta se desconectó accidentalmente. Conéctala otra vez para volver a seguir a tus amigos."
+   - **ja**: "申し訳ございません。アカウントの接続が切断されました。もう一度接続しなおして友達をフォローしてください。"
   */
   public static func Facebook_reconnect_description() -> String {
     return localizedString(
@@ -4818,11 +4818,11 @@ daring ideas."
   /**
    "Request my personal data"
 
-   - **es**: "Request my personal data"
-   - **ja**: "Request my personal data"
-   - **de**: "Request my personal data"
-   - **fr**: "Request my personal data"
-   - **en**: "Request my personal data"
+   - **de**: "Meine persönlichen Daten anfordern"
+   - **fr**: "Demander mes données personnelles"
+   - **en**: "Request my Personal Data"
+   - **es**: "Solicitar mis datos personales"
+   - **ja**: "自分の個人データをリクエストする"
   */
   public static func Request_my_personal_data() -> String {
     return localizedString(
@@ -5415,11 +5415,11 @@ catch your eye?"
   /**
    "Start the request"
 
-   - **es**: "Start the request"
-   - **ja**: "Start the request"
-   - **de**: "Start the request"
-   - **fr**: "Start the request"
-   - **en**: "Start the request"
+   - **de**: "Daten zusammenstellen"
+   - **fr**: "Commencer la préparation"
+   - **en**: "Start data collection"
+   - **es**: "Comenzar la recopilación de datos"
+   - **ja**: "データの収集を開始する"
   */
   public static func Start_the_request() -> String {
     return localizedString(
@@ -12578,12 +12578,12 @@ Please try again later."
   /**
    "Sign up or Log in"
 
-   - **es**: "Regístrate o Inicia sesión"
-   - **ja**: "サインアップ or ログイン
-"
    - **de**: "Registrieren oder Anmelden"
    - **fr**: "Inscription ou connexion"
    - **en**: "Sign up or Log in"
+   - **es**: "Regístrate o Inicia sesión"
+   - **ja**: "サインアップ or ログイン
+"
   */
   public static func discovery_onboarding_buttons_signup_or_login() -> String {
     return localizedString(
@@ -15108,14 +15108,14 @@ This is commonly fixed by going to iOS Settings > Facebook and toggling access f
    "You haven't backed any projects yet.
 Let's change that!"
 
-   - **es**: "Aún no has patrocinado ningún proyecto.
-¡Es hora de cambiar esto!"
-   - **ja**: "まだバックしてません。
-バックしてみよう！"
    - **de**: "Du hast noch keine Projekte unterstützt. Das sollten wir ändern!"
    - **fr**: "Vous n'avez pas encore soutenu de projets. On change ça ?"
    - **en**: "You haven't backed any projects yet.
 Let's change that!"
+   - **es**: "Aún no has patrocinado ningún proyecto.
+¡Es hora de cambiar esto!"
+   - **ja**: "まだバックしてません。
+バックしてみよう！"
   */
   public static func profile_projects_empty_state_message() -> String {
     return localizedString(
@@ -16913,15 +16913,15 @@ Thank you for your support!"
    - **es**: "El URL de la actualización ha sido copiado en tu portapapeles:
 
 %{update_url}"
-   - **ja**: "更新したURLをコピーしました：
+   - **fr**: "L'URL de l'actu a été copiée dans votre presse-papier :
+%{update_url}"
+   - **en**: "The update’s URL has been copied to your clipboard:
 
 %{update_url}"
    - **de**: "Die URL des Updates wurde in die Zwischenablage kopiert:
 
 %{update_url}"
-   - **fr**: "L'URL de l'actu a été copiée dans votre presse-papier :
-%{update_url}"
-   - **en**: "The update’s URL has been copied to your clipboard:
+   - **ja**: "更新したURLをコピーしました：
 
 %{update_url}"
   */

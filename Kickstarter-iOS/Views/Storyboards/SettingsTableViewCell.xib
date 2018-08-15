@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thh-A9-lgV">
-                    <rect key="frame" x="16" y="36" width="334" height="615"/>
+                    <rect key="frame" x="12" y="32" width="338" height="623"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -45,10 +45,10 @@
                 <constraint firstItem="rD1-XM-7lR" firstAttribute="centerY" secondItem="thh-A9-lgV" secondAttribute="centerY" id="AaT-Sy-gbE"/>
                 <constraint firstAttribute="trailing" secondItem="nBB-tu-8Zn" secondAttribute="trailing" id="CDb-91-nkQ"/>
                 <constraint firstItem="QBo-D1-v2F" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="CzJ-ta-2GE"/>
-                <constraint firstItem="thh-A9-lgV" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="Dd3-1O-cpX"/>
+                <constraint firstItem="thh-A9-lgV" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="Dd3-1O-cpX"/>
                 <constraint firstItem="nBB-tu-8Zn" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="SEW-z4-xvb"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="thh-A9-lgV" secondAttribute="bottom" constant="16" id="bN8-98-b8T"/>
-                <constraint firstItem="thh-A9-lgV" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="lQX-zP-Ywa"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="thh-A9-lgV" secondAttribute="bottom" constant="12" id="bN8-98-b8T"/>
+                <constraint firstItem="thh-A9-lgV" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="lQX-zP-Ywa"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rD1-XM-7lR" secondAttribute="trailing" constant="16" id="ttn-Ja-0Cd"/>
                 <constraint firstAttribute="trailing" secondItem="QBo-D1-v2F" secondAttribute="trailing" constant="16" id="u0W-hM-LGw"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="QBo-D1-v2F" secondAttribute="bottom" constant="16" id="zZq-TV-CHl"/>

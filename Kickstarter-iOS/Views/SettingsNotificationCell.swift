@@ -4,8 +4,8 @@ import Library
 import KsApi
 
 protocol SettingsNotificationCellDelegate: class {
-  func didFailToSaveChange(errorMessage: String)
-  func didUpdateUser(user: User)
+  func settingsNotificationCell(_ cell: SettingsNotificationCell, didFailToUpdateUser errorMessage: String)
+  func settingsNotificationCell(_ cell: SettingsNotificationCell, didUpdateUser user: User)
 }
 
 final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
@@ -47,9 +47,11 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> baseTableViewCellStyle()
+
     _ = titleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
-      |> UILabel.lens.font .~ .ksr_body()
+      |> settingsTitleLabelStyle
 
     _ = projectCountLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
@@ -80,7 +82,8 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
                                                       inBundle: Bundle.framework)
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Push_notifications() }
 
-    _ = self.separatorView |> separatorStyle
+    _ = self.separatorView
+      |> separatorStyle
   }
 
   override func bindViewModel() {
@@ -108,13 +111,15 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     viewModel.outputs.updateCurrentUser
       .observeForControllerAction()
       .observeValues { [weak self] (user) in
-        self?.delegate?.didUpdateUser(user: user)
+        guard let _self = self else { return }
+        _self.delegate?.settingsNotificationCell(_self, didUpdateUser: user)
     }
 
     viewModel.outputs.unableToSaveError
       .observeForControllerAction()
       .observeValues { [weak self] (errorString) in
-        self?.delegate?.didFailToSaveChange(errorMessage: errorString)
+        guard let _self = self else { return }
+        _self.delegate?.settingsNotificationCell(_self, didFailToUpdateUser: errorString)
     }
   }
 

@@ -13,20 +13,37 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     dataSource.load(user: user)
 
-    XCTAssertEqual(2, dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(3, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(4, dataSource.tableView(tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(1, dataSource.tableView(tableView, numberOfRowsInSection: 2))
   }
 
-  func testLoadUser_isCreator() {
+  func testLoadUser_isCreator_pledgeActivityDisabled() {
     let user = User.template |> User.lens.stats.createdProjectsCount .~ 2
 
     dataSource.load(user: user)
 
-    XCTAssertEqual(3, dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(4, dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
+    XCTAssertEqual(4, dataSource.tableView(tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(1, dataSource.tableView(tableView, numberOfRowsInSection: 3))
+  }
+
+  func testLoadUser_isCreator_pledgeActivityEnabled() {
+    let user = User.template
+      |> User.lens.stats.createdProjectsCount .~ 2
+      |> UserAttribute.notification(.pledgeActivity).lens .~ true
+      |> UserAttribute.notification(.creatorDigest).lens .~ true
+
+    dataSource.load(user: user)
+
+    XCTAssertEqual(4, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(5, dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(4, dataSource.tableView(tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(1, dataSource.tableView(tableView, numberOfRowsInSection: 3))
   }
 
   func testCellTypeForIndexPath() {
@@ -77,7 +94,17 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     dataSource.load(user: user)
 
-    let section = dataSource.sectionType(section: 2, user: user)
+    let section = dataSource.sectionType(section: 3, user: user)
+
+    XCTAssertNil(section)
+  }
+
+  func testSectionTypeForSection_OutOfBounds_isCreator() {
+    let user = User.template |> User.lens.stats.createdProjectsCount .~ 2
+
+    dataSource.load(user: user)
+
+    let section = dataSource.sectionType(section: 5, user: user)
 
     XCTAssertNil(section)
   }

@@ -129,4 +129,17 @@ internal final class ValueCellDataSourceTests: XCTestCase {
     XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 4))
     XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 5))
   }
+
+  func testInsertRow() {
+    dataSource.clearValues(section: 0)
+    // Add 3 rows
+    dataSource.appendStaticRow(cellIdentifier: "Test", toSection: 0)
+    dataSource.appendStaticRow(cellIdentifier: "Test", toSection: 0)
+    dataSource.appendStaticRow(cellIdentifier: "Test", toSection: 0)
+
+    dataSource.insertRow(value: 1, cellClass: IntTableCell.self, atIndex: 1, inSection: 0)
+
+    XCTAssertEqual(4, dataSource.tableView(tableView, numberOfRowsInSection: 0))
+    XCTAssertEqual(1, dataSource.itemIndexAt(IndexPath(item: 1, section: 0)))
+  }
 }
