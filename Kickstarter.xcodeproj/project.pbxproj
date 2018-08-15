@@ -161,6 +161,7 @@
 		77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73421222E7C005A5C55 /* EmailFrequency.swift */; };
 		77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73621222E97005A5C55 /* SettingsCellType.swift */; };
 		77F6E73921222F4B005A5C55 /* SettingsNotificationCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73821222F4B005A5C55 /* SettingsNotificationCellType.swift */; };
+		77F6E765212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */; };
 		77FA6CA920F3E18F00809E31 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */; };
 		77FA6CAB20F3E3C200809E31 /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */; };
@@ -1768,6 +1769,7 @@
 		77F6E73421222E7C005A5C55 /* EmailFrequency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailFrequency.swift; sourceTree = "<group>"; };
 		77F6E73621222E97005A5C55 /* SettingsCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCellType.swift; sourceTree = "<group>"; };
 		77F6E73821222F4B005A5C55 /* SettingsNotificationCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellType.swift; sourceTree = "<group>"; };
+		77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNotificationsViewControllerTests.swift; sourceTree = "<group>"; };
 		77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSource.swift; sourceTree = "<group>"; };
 		77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewCell.xib; sourceTree = "<group>"; };
@@ -3109,6 +3111,7 @@
 				A7ED20361E8323E900BFFA01 /* ProjectNavBarViewControllerTests.swift */,
 				A7561A3C1D3146290028DEA1 /* ProjectNavigatorViewController.swift */,
 				597073981D06346700B00444 /* ProjectNotificationsViewController.swift */,
+				77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */,
 				A7C93FB81D4415E700C2DF9B /* ProjectPamphletContentViewController.swift */,
 				A7ED20391E8323E900BFFA01 /* ProjectPamphletContentViewControllerTests.swift */,
 				A70F1F311D8A3E85007DA8E9 /* ProjectPamphletViewController.swift */,
@@ -5723,6 +5726,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77F6E765212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
 				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */,
