@@ -29,7 +29,8 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
     self.vm.outputs.requestDataText.observe(self.requestDataText.observer)
     self.vm.outputs.requestDataTextHidden.observe(self.requestDataTextHidden.observer)
     self.vm.outputs.dataExpirationAndChevronHidden.observe(self.dataExpirationAndChevronHidden.observer)
-    self.vm.outputs.showPreparingDataAndCheckBackLaterText.observe(self.showPreparingDataAndCheckBackLaterText.observer)
+    self.vm.outputs.showPreparingDataAndCheckBackLaterText
+      .observe(self.showPreparingDataAndCheckBackLaterText.observer)
     self.vm.outputs.showRequestDataPrompt.observe(self.showRequestDataPrompt.observer)
     self.vm.outputs.unableToRequestDataError.observe(self.unableToRequestDataError.observer)
   }
