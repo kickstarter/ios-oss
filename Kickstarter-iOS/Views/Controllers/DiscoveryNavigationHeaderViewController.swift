@@ -309,9 +309,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
   @objc fileprivate func betaToolsButtonTapped() {
     let betaToolsViewController = BetaToolsViewController.instantiate()
 
-    let navController = UINavigationController(rootViewController: betaToolsViewController)
-
-    self.present(navController, animated: true, completion: nil)
+    self.navigationController?.pushViewController(betaToolsViewController, animated: true)
   }
 
   @objc fileprivate func titleButtonTapped() {

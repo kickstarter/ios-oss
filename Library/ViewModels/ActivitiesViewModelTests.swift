@@ -272,7 +272,7 @@ final class ActivitiesViewModelTests: TestCase {
     self.showFacebookConnectSectionSource.assertValueCount(0)
     self.showFacebookConnectSection.assertValueCount(0)
 
-    // logged in && Facebook connected
+    // logged in && Facebook connected && doesn't need new token
     let user = User.template |> User.lens.facebookConnected .~ true
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.userSessionStarted()
@@ -294,6 +294,19 @@ final class ActivitiesViewModelTests: TestCase {
     self.showFacebookConnectSectionSource.assertValues([FriendsSource.activity, FriendsSource.activity])
     self.showFacebookConnectSection.assertValues([false, true], "Show Facebook Connect Section")
 
+    // logged in && FB connected, needs new token
+
+    let facebookReconnectUser = User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ true
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: facebookReconnectUser))
+    self.vm.inputs.userSessionStarted()
+    self.scheduler.advance()
+
+    self.vm.inputs.viewWillAppear(animated: false)
+
+    self.showFacebookConnectSection.assertValues([false, true, true], "Show Facebook Section")
+
     // delete section
     self.deleteFacebookConnectSection.assertValueCount(0)
 
@@ -303,7 +316,7 @@ final class ActivitiesViewModelTests: TestCase {
 
     self.vm.inputs.viewWillAppear(animated: false)
 
-    showFacebookConnectSection.assertValues([false, true, false],
+    showFacebookConnectSection.assertValues([false, true, true, false],
                                             "Don't show Facebook Connect Section on return")
   }
 
@@ -327,17 +340,35 @@ final class ActivitiesViewModelTests: TestCase {
     self.showFindFriendsSectionSource.assertValues([FriendsSource.activity])
     self.showFindFriendsSection.assertValues([false], "Don't show Find Friends Section")
 
-    // logged in && Facebook connected
+    // logged in && FB connected but needs fresh token
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
-    let userConnected = User.template |> User.lens.facebookConnected .~ true
+    let userConnected = User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ true
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: userConnected))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()
     self.vm.inputs.viewWillAppear(animated: false)
 
     self.showFindFriendsSectionSource.assertValues([FriendsSource.activity, FriendsSource.activity])
-    self.showFindFriendsSection.assertValues([false, true], "Show Find Friends Section")
+    self.showFindFriendsSection.assertValues([false, false], "Hide find friends section")
+
+    // logged in && Facebook connected & doesn't needs fresh token
+    AppEnvironment.logout()
+    self.vm.inputs.userSessionEnded()
+    let fbConnected = User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ false
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: fbConnected))
+    self.vm.inputs.userSessionStarted()
+    self.scheduler.advance()
+    self.vm.inputs.viewWillAppear(animated: false)
+
+    self.showFindFriendsSectionSource.assertValues([FriendsSource.activity,
+                                                    FriendsSource.activity,
+                                                    FriendsSource.activity])
+    self.showFindFriendsSection.assertValues([false, false, true], "Show Find Friends Section")
 
     // delete section
     self.deleteFindFriendsSection.assertValueCount(0)
@@ -348,7 +379,10 @@ final class ActivitiesViewModelTests: TestCase {
 
     self.vm.inputs.viewWillAppear(animated: false)
 
-    showFindFriendsSection.assertValues([false, true, false], "Don't show Find Friends Section on return")
+    showFindFriendsSection.assertValues([false,
+                                         false,
+                                         true,
+                                         false], "Don't show Find Friends Section on return")
   }
 
   func testFacebookErrorAlerts() {
