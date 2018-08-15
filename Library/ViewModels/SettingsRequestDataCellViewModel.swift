@@ -82,7 +82,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
       .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil ? true : false }
 
     self.goToSafari = exportEnvelope
-      .filter { $0.state != .expired  || $0.expiresAt != nil }
+      .filter { $0.state != .expired || $0.expiresAt != nil }
       .map { $0.dataUrl ?? "" }
       .takeWhen(self.exportDataTappedProperty.signal)
 
