@@ -10,7 +10,7 @@ internal final class SettingsPrivacyStaticCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in value }
 
     _ = self.privacyInfoLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.numberOfLines .~ 0
   }
 

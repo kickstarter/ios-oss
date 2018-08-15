@@ -67,12 +67,12 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
 
     _ = self.preparingDataLabel
-      |> settingsSectionLabelStyle
+      |> settingsTitleLabelStyle
       |> UILabel.lens.numberOfLines .~ 1
       |> UILabel.lens.text %~ { _ in Strings.Preparing_your_personal_data() }
 
     _ = self.checkBackLaterLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.text %~ { _ in Strings.Check_back_later_for_an_update_on_your_export_progress() }
 
@@ -80,11 +80,11 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
 
     _ = self.requestDataLabel
-      |> settingsSectionLabelStyle
+      |> settingsTitleLabelStyle
       |> UILabel.lens.numberOfLines .~ 1
 
     _ = self.requestedDataStatusAndDateLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ .ksr_body(size: 13)
   }
 

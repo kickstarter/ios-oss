@@ -29,7 +29,7 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
       |> separatorStyle
 
     _ = self.recommendationsLabel
-      |> settingsSectionLabelStyle
+      |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Recommendations() }
   }
 

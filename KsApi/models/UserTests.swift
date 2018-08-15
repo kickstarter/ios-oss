@@ -37,7 +37,8 @@ final class UserTests: XCTestCase {
       ],
       "is_friend": false,
       "opted_out_of_recommendations": true,
-      "show_public_profile": false
+      "show_public_profile": false,
+      "social": true
     ]
     let decoded = User.decodeJSONDictionary(json)
     let user = decoded.value
@@ -82,7 +83,8 @@ final class UserTests: XCTestCase {
       ],
       "is_friend": false,
       "opted_out_of_recommendations": true,
-      "show_public_profile": false
+      "show_public_profile": false,
+      "social": true
     ]
     let user = User.decodeJSONDictionary(json)
 

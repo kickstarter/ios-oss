@@ -38,8 +38,9 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
       |> separatorStyle
 
     _ = self.followingLabel
-      |> settingsSectionLabelStyle
+      |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Following() }
+      |> UILabel.lens.numberOfLines .~ 1
   }
 
   internal override func bindViewModel() {
