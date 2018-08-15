@@ -11,7 +11,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
   fileprivate let dataSource = SettingsPrivacyDataSource()
 
   internal static func instantiate() -> SettingsPrivacyViewController {
-   return Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
+    return Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
   }
 
   internal override func viewDidLoad() {
