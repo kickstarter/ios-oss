@@ -70,7 +70,7 @@ public protocol FindFriendsViewModelType {
 public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsViewModelInputs,
   FindFriendsViewModelOutputs {
 
-    public init() {
+  public init() {
     let source = self.configureWithProperty.signal
 
     let followAll = self.confirmFollowAllFriendsProperty.signal
@@ -84,7 +84,10 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       self.viewDidLoadProperty.signal,
       self.userFacebookConnectedProperty.signal
       )
-      .map { !(AppEnvironment.current.currentUser?.facebookConnected ?? false) }
+      .map { _ in
+        FindFriendsFacebookConnectCellViewModel
+          .showFacebookConnectionSection(for: AppEnvironment.current.currentUser)
+      }
 
     let requestFirstPageWith = Signal.merge(
       shouldShowFacebookConnect.filter(isFalse).ignoreValues(),
@@ -124,7 +127,8 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
 
     self.showErrorAlert = self.showFacebookConnectErrorAlertProperty.signal.skipNil()
 
-    self.showFacebookConnect = shouldShowFacebookConnect.map { (.findFriends, $0) }
+    self.showFacebookConnect = shouldShowFacebookConnect.signal
+      .map { (.findFriends, $0)}
 
     self.showLoadingIndicatorView = Signal.merge(
       isLoading.take(first: 1),
@@ -139,7 +143,17 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
         .materialize()
     }
 
-    self.stats = Signal.combineLatest(statsEvent.values(), source)
+    let stats = Signal.combineLatest(statsEvent.values(), source)
+
+    self.stats = Signal.combineLatest(
+        shouldShowFacebookConnect,
+        stats
+      ).map(unpack) // unpack into 3-tuple (shouldShowFacebookConnect, friends, source)
+      .filter { shouldShowFacebookConnect, _, _ in
+        return !shouldShowFacebookConnect
+      }.map { _, friends, source in
+        return (friends, source)
+      }
 
     source
       .takeWhen(self.viewDidLoadProperty.signal)

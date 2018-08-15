@@ -40,6 +40,23 @@ final class ActivitiesDataSourceTests: XCTestCase {
     XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
   }
 
+  func testFacebookReconnect() {
+    let section = ActivitiesDataSource.Section.facebookConnect.rawValue
+
+    self.dataSource.facebookConnect(source: .activity, visible: true)
+
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual("FindFriendsFacebookConnectCell", self.dataSource.reusableId(item: 0, section: section))
+
+    let indexPaths = self.dataSource.removeFacebookConnectRows()
+
+    XCTAssertEqual(1, indexPaths.count)
+    XCTAssertEqual(section, indexPaths.first?.section)
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+  }
+
   func testFindFriends() {
     let section = ActivitiesDataSource.Section.findFriends.rawValue
 

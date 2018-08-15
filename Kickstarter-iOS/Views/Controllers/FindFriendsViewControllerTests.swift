@@ -28,6 +28,21 @@ internal final class FindFriendsViewControllerTests: TestCase {
     }
   }
 
+  func testView_ShowFacebookReconnect() {
+    let facebookReconnectUser = User.template
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.needsFreshFacebookToken .~ true
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch]).forEach { language, device in
+      withEnvironment(currentUser: facebookReconnectUser, language: language) {
+        let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testView_ShowFriends() {
     let currentUser = .template
       |> User.lens.facebookConnected .~ true
