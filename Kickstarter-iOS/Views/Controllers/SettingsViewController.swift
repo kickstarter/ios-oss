@@ -333,8 +333,7 @@ internal final class SettingsViewController: UIViewController {
   }
 
   fileprivate func goToEmailFrequency(user: User) {
-    let vc = CreatorDigestSettingsViewController.configureWith(user: user)
-    self.navigationController?.pushViewController(vc, animated: true)
+
   }
 
   fileprivate func goToHelpType(_ helpType: HelpType) {

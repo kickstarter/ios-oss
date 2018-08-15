@@ -90,11 +90,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
       .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
   }
 
-  fileprivate func goToEmailFrequency(user: User) {
-    let vc = CreatorDigestSettingsViewController.configureWith(user: user)
-    self.navigationController?.pushViewController(vc, animated: true)
-  }
-
   fileprivate func goToFindFriends() {
     let vc = FindFriendsViewController.configuredWith(source: .settings)
     self.navigationController?.pushViewController(vc, animated: true)
