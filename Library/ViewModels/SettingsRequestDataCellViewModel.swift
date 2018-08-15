@@ -20,7 +20,7 @@ public protocol SettingsRequestDataCellViewModelOutputs {
   var requestDataLoadingIndicator: Signal<Bool, NoError> { get }
   var requestDataText: Signal<String, NoError> { get }
   var requestDataTextHidden: Signal<Bool, NoError> { get }
-  var showPreparingDataText: Signal<Bool, NoError> { get }
+  var showPreparingDataAndCheckBackLaterText: Signal<Bool, NoError> { get }
   var showRequestDataPrompt: Signal<(), NoError> { get }
   var unableToRequestDataError: Signal<String, NoError> { get }
 }
@@ -86,13 +86,13 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
       .map { $0.dataUrl ?? "" }
       .takeWhen(self.exportDataTappedProperty.signal)
 
-    self.showPreparingDataText = Signal.merge(
+    self.showPreparingDataAndCheckBackLaterText = Signal.merge(
       self.configureWithUserProperty.signal.mapConst(true),
       exportEnvelope.map { $0.state != .processing },
       self.startRequestDataTappedProperty.signal.mapConst(false)
     )
 
-    self.requestDataTextHidden = self.showPreparingDataText.signal.map { !$0 }
+    self.requestDataTextHidden = self.showPreparingDataAndCheckBackLaterText.signal.map { !$0 }
   }
 
   fileprivate let awakeFromNibProperty = MutableProperty(())
@@ -119,7 +119,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
   public let requestDataLoadingIndicator: Signal<Bool, NoError>
   public let requestDataText: Signal<String, NoError>
   public let requestDataTextHidden: Signal<Bool, NoError>
-  public let showPreparingDataText: Signal<Bool, NoError>
+  public let showPreparingDataAndCheckBackLaterText: Signal<Bool, NoError>
   public let showRequestDataPrompt: Signal<(), NoError>
   public let unableToRequestDataError: Signal<String, NoError>
 

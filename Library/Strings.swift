@@ -1255,18 +1255,18 @@ backers"
     )
   }
   /**
-   "Delete my Kickstarter Account"
+   "Delete my Kickstarter account"
 
    - **es**: "Eliminar mi cuenta de Kickstarter"
    - **ja**: "Kickstarter アカウントを削除"
    - **de**: "Mein Kickstarter-Konto löschen"
    - **fr**: "Supprimer mon compte Kickstarter"
-   - **en**: "Delete my Kickstarter Account"
+   - **en**: "Delete my Kickstarter account"
   */
   public static func Delete_my_Kickstarter_Account() -> String {
     return localizedString(
       key: "Delete_my_Kickstarter_Account",
-      defaultValue: "Delete my Kickstarter Account",
+      defaultValue: "Delete my Kickstarter account",
       count: nil,
       substitutions: [:]
     )
@@ -5413,18 +5413,18 @@ catch your eye?"
     )
   }
   /**
-   "Start data collection"
+   "Start the request"
 
-   - **es**: "Start data collection"
-   - **ja**: "Start data collection"
-   - **de**: "Start data collection"
-   - **fr**: "Start data collection"
-   - **en**: "Start data collection"
+   - **es**: "Start the request"
+   - **ja**: "Start the request"
+   - **de**: "Start the request"
+   - **fr**: "Start the request"
+   - **en**: "Start the request"
   */
   public static func Start_the_request() -> String {
     return localizedString(
       key: "Start_the_request",
-      defaultValue: "Start data collection",
+      defaultValue: "Start the request",
       count: nil,
       substitutions: [:]
     )

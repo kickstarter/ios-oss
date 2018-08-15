@@ -16,7 +16,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
   internal let requestDataLoadingIndicator = TestObserver<Bool, NoError>()
   internal let requestDataText = TestObserver<String, NoError>()
   internal let requestDataTextHidden = TestObserver<Bool, NoError>()
-  internal let showPreparingDataText = TestObserver<Bool, NoError>()
+  internal let showPreparingDataAndCheckBackLaterText = TestObserver<Bool, NoError>()
   internal let showRequestDataPrompt = TestObserver<(), NoError>()
   internal let unableToRequestDataError = TestObserver<String, NoError>()
 
@@ -29,7 +29,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
     self.vm.outputs.requestDataText.observe(self.requestDataText.observer)
     self.vm.outputs.requestDataTextHidden.observe(self.requestDataTextHidden.observer)
     self.vm.outputs.dataExpirationAndChevronHidden.observe(self.dataExpirationAndChevronHidden.observer)
-    self.vm.outputs.showPreparingDataText.observe(self.showPreparingDataText.observer)
+    self.vm.outputs.showPreparingDataAndCheckBackLaterText.observe(self.showPreparingDataAndCheckBackLaterText.observer)
     self.vm.outputs.showRequestDataPrompt.observe(self.showRequestDataPrompt.observer)
     self.vm.outputs.unableToRequestDataError.observe(self.unableToRequestDataError.observer)
   }
@@ -131,7 +131,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
     }
   }
 
-  func testPreparingData() {
+  func testPreparingDataAndCheckBackLaterText() {
     let user = User.template
     let export = .template
       |> ExportDataEnvelope.lens.state .~ .expired
@@ -143,13 +143,13 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
       self.requestDataLoadingIndicator.assertValues([false])
       self.requestDataTextHidden.assertValues([false])
-      self.showPreparingDataText.assertValues([true])
+      self.showPreparingDataAndCheckBackLaterText.assertValues([true])
 
       self.vm.inputs.startRequestDataTapped()
 
       self.requestDataLoadingIndicator.assertValues([false, true])
       self.requestDataTextHidden.assertValues([false, true])
-      self.showPreparingDataText.assertValues([true, false])
+      self.showPreparingDataAndCheckBackLaterText.assertValues([true, false])
     }
   }
 

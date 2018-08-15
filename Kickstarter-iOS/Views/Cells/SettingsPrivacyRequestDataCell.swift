@@ -17,6 +17,7 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
   @IBOutlet fileprivate weak var containerView: UIView!
   @IBOutlet fileprivate weak var chevron: UIImageView!
   @IBOutlet fileprivate weak var preparingDataLabel: UILabel!
+  @IBOutlet fileprivate weak var checkBackLaterLabel: UILabel!
   @IBOutlet fileprivate weak var requestDataActivityIndicator: UIActivityIndicatorView!
   @IBOutlet fileprivate weak var requestDataButton: UIButton!
   @IBOutlet fileprivate weak var requestDataLabel: UILabel!
@@ -70,6 +71,11 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
       |> UILabel.lens.numberOfLines .~ 1
       |> UILabel.lens.text %~ { _ in Strings.Preparing_your_personal_data() }
 
+    _ = self.checkBackLaterLabel
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.font .~ .ksr_body(size: 13)
+      |> UILabel.lens.text %~ { _ in Strings.Check_back_later_for_an_update_on_your_export_progress() }
+
     _ = self.requestDataActivityIndicator
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
 
@@ -105,7 +111,8 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
     self.requestedDataStatusAndDateLabel.rac.text = self.viewModel.outputs.requestedDataExpirationDate
     self.chevron.rac.hidden = self.viewModel.outputs.dataExpirationAndChevronHidden
     self.requestDataLabel.rac.hidden = self.viewModel.outputs.requestDataTextHidden
-    self.preparingDataLabel.rac.hidden = self.viewModel.outputs.showPreparingDataText
+    self.preparingDataLabel.rac.hidden = self.viewModel.outputs.showPreparingDataAndCheckBackLaterText
+    self.checkBackLaterLabel.rac.hidden = self.viewModel.outputs.showPreparingDataAndCheckBackLaterText
     self.requestedDataStatusAndDateLabel.rac.hidden = self.viewModel.outputs.dataExpirationAndChevronHidden
   }
 
