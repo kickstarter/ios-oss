@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--SettingsV2ViewController-->
+        <!--SettingsViewController-->
         <scene sceneID="KuD-Ui-DHw">
             <objects>
-                <viewController storyboardIdentifier="SettingsV2ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5Ib-AN-92b" userLabel="SettingsV2ViewController" customClass="SettingsV2ViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5Ib-AN-92b" userLabel="SettingsViewController" customClass="SettingsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c36-74-gmz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

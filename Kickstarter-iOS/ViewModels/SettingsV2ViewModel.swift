@@ -4,14 +4,14 @@ import Result
 import KsApi
 import Library
 
-public protocol SettingsV2ViewModelInputs {
+public protocol SettingsViewModelInputs {
   func logoutCanceled()
   func logoutConfirmed()
   func settingsCellTapped(cellType: SettingsCellType)
   func viewDidLoad()
 }
 
-public protocol SettingsV2ViewModelOutputs {
+public protocol SettingsViewModelOutputs {
   var goToAppStoreRating: Signal<String, NoError> { get }
   var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
   var reloadData: Signal<Void, NoError> { get }
@@ -19,15 +19,15 @@ public protocol SettingsV2ViewModelOutputs {
   var transitionToViewController: Signal<UIViewController, NoError> { get }
 }
 
-public protocol SettingsV2ViewModelType {
-  var inputs: SettingsV2ViewModelInputs { get }
-  var outputs: SettingsV2ViewModelOutputs { get }
+public protocol SettingsViewModelType {
+  var inputs: SettingsViewModelInputs { get }
+  var outputs: SettingsViewModelOutputs { get }
 
   func shouldSelectRow(for cellType: SettingsCellType) -> Bool
 }
 
-final class SettingsV2ViewModel: SettingsV2ViewModelInputs,
-SettingsV2ViewModelOutputs, SettingsV2ViewModelType {
+final class SettingsViewModel: SettingsViewModelInputs,
+SettingsViewModelOutputs, SettingsViewModelType {
 
   public init() {
     self.showConfirmLogoutPrompt = selectedCellTypeProperty.signal
@@ -53,7 +53,7 @@ SettingsV2ViewModelOutputs, SettingsV2ViewModelType {
 
     self.transitionToViewController = selectedCellTypeProperty.signal
       .skipNil()
-      .map { SettingsV2ViewModel.viewController(for: $0) }
+      .map { SettingsViewModel.viewController(for: $0) }
       .skipNil()
 
     self.reloadData = self.viewDidLoadProperty.signal
@@ -99,12 +99,12 @@ SettingsV2ViewModelOutputs, SettingsV2ViewModelType {
   public let reloadData: Signal<Void, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
 
-  public var inputs: SettingsV2ViewModelInputs { return self }
-  public var outputs: SettingsV2ViewModelOutputs { return self }
+  public var inputs: SettingsViewModelInputs { return self }
+  public var outputs: SettingsViewModelOutputs { return self }
 }
 
 // MARK: Helpers
-extension SettingsV2ViewModel {
+extension SettingsViewModel {
   static func viewController(for cellType: SettingsCellType) -> UIViewController? {
     switch cellType {
     case .help:

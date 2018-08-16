@@ -4,14 +4,14 @@ import Prelude
 import ReactiveSwift
 import Result
 
-final class SettingsV2ViewController: UIViewController {
+final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var tableView: UITableView!
 
   private let dataSource = SettingsDataSource()
-  private let viewModel: SettingsV2ViewModelType = SettingsV2ViewModel()
+  private let viewModel: SettingsViewModelType = SettingsViewModel()
 
-  internal static func instantiate() -> SettingsV2ViewController {
-    return Storyboard.SettingsV2.instantiate(SettingsV2ViewController.self)
+  internal static func instantiate() -> SettingsViewController {
+    return Storyboard.Settings.instantiate(SettingsViewController.self)
   }
 
   override func viewDidLoad() {
@@ -113,7 +113,7 @@ final class SettingsV2ViewController: UIViewController {
   }
 }
 
-extension SettingsV2ViewController: UITableViewDelegate {
+extension SettingsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return SettingsSectionType.sectionHeaderHeight
   }

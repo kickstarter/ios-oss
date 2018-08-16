@@ -129,8 +129,8 @@
 		77166998210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77166997210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift */; };
 		771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */; };
 		77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */; };
-		77216D6020F3D27C0061BE82 /* SettingsV2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77216D5F20F3D27C0061BE82 /* SettingsV2.storyboard */; };
-		77216D9820F3D2E40061BE82 /* SettingsV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216D9720F3D2E40061BE82 /* SettingsV2ViewController.swift */; };
+		77216D6020F3D27C0061BE82 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77216D5F20F3D27C0061BE82 /* Settings.storyboard */; };
+		77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216D9720F3D2E40061BE82 /* SettingsViewController.swift */; };
 		774A76E920D841110012A71F /* BetaToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76E820D841110012A71F /* BetaToolsViewController.swift */; };
 		774A76ED20D845770012A71F /* BetaToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76EC20D845770012A71F /* BetaToolsViewModel.swift */; };
 		774A76EE20D863EF0012A71F /* BetaTools.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774A76AF20D83F6B0012A71F /* BetaTools.storyboard */; };
@@ -1754,8 +1754,8 @@
 		77166997210A4BA5007A64A4 /* SettingsNotificationCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellViewModelTests.swift; sourceTree = "<group>"; };
 		771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsDataSourceTests.swift; sourceTree = "<group>"; };
 		77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConnectionType.swift; sourceTree = "<group>"; };
-		77216D5F20F3D27C0061BE82 /* SettingsV2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsV2.storyboard; sourceTree = "<group>"; };
-		77216D9720F3D2E40061BE82 /* SettingsV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsV2ViewController.swift; sourceTree = "<group>"; };
+		77216D5F20F3D27C0061BE82 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		77216D9720F3D2E40061BE82 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		774A76AF20D83F6B0012A71F /* BetaTools.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BetaTools.storyboard; sourceTree = "<group>"; };
 		774A76E820D841110012A71F /* BetaToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewController.swift; sourceTree = "<group>"; };
 		774A76EC20D845770012A71F /* BetaToolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewModel.swift; sourceTree = "<group>"; };
@@ -2878,7 +2878,7 @@
 				D6B6766120FE849F0082717D /* SettingsNewsletters.storyboard */,
 				D6B6762A20FE849B0082717D /* SettingsNewslettersCell.xib */,
 				D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */,
-				77216D5F20F3D27C0061BE82 /* SettingsV2.storyboard */,
+				77216D5F20F3D27C0061BE82 /* Settings.storyboard */,
 				77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */,
 				77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */,
 				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
@@ -3160,7 +3160,7 @@
 				D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */,
 				D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */,
 				D72370932119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift */,
-				77216D9720F3D2E40061BE82 /* SettingsV2ViewController.swift */,
+				77216D9720F3D2E40061BE82 /* SettingsViewController.swift */,
 				A749001D1D00E27100BC3BE7 /* SignupViewController.swift */,
 				A7ED203D1E8323E900BFFA01 /* SignupViewControllerTests.swift */,
 				A72C3AA51D00F7A30075227E /* SortPagerViewController.swift */,
@@ -5067,7 +5067,7 @@
 				77FA6CAB20F3E3C200809E31 /* SettingsTableViewCell.xib in Resources */,
 				A73923CC1D272242004524C3 /* UpdateDraft.storyboard in Resources */,
 				A7986C9D1D6B85840027030D /* Thanks.storyboard in Resources */,
-				77216D6020F3D27C0061BE82 /* SettingsV2.storyboard in Resources */,
+				77216D6020F3D27C0061BE82 /* Settings.storyboard in Resources */,
 				A73923CB1D272242004524C3 /* Update.storyboard in Resources */,
 				014D629D1E6E5B070033D2BD /* BackerDashboardEmptyStateCell.xib in Resources */,
 				A71C7F6E1E2FA03B0051E5E3 /* LiveStreamDiscovery.storyboard in Resources */,
@@ -5664,7 +5664,7 @@
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
 				D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */,
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
-				77216D9820F3D2E40061BE82 /* SettingsV2ViewController.swift in Sources */,
+				77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */,
 				774A76ED20D845770012A71F /* BetaToolsViewModel.swift in Sources */,
 				A71C7FB21E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,

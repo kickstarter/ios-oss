@@ -24,7 +24,7 @@ AppEnvironment.replaceCurrentEnvironment(
 
 // Instantiate the Settings view controller.
 initialize()
-let controller = Storyboard.Settings.instantiate(SettingsV2ViewController.self)
+let controller = Storyboard.Settings.instantiate(SettingsViewController.self)
 
 // Set the device type and orientation.
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
