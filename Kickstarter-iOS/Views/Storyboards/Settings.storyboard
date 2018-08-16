@@ -13,7 +13,7 @@
         <!--SettingsViewController-->
         <scene sceneID="KuD-Ui-DHw">
             <objects>
-                <viewController storyboardIdentifier="SettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5Ib-AN-92b" userLabel="SettingsViewController" customClass="SettingsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5Ib-AN-92b" userLabel="SettingsViewController" customClass="SettingsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c36-74-gmz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
