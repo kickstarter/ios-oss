@@ -1,4 +1,5 @@
 "About_reward_amount" = "Aprox. %{reward_amount}";
+"Account" = "Cuenta";
 "Add_attachments" = "Agregar anexos …";
 "All_Art_Projects" = "Todos los proyectos de la categoría Arte";
 "All_Comics_Projects" = "Todos los proyectos de la categoría Comics";
@@ -36,12 +37,15 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\npatrocinadores";
 "Backers_count_separator_backers.zero" = "%{backers_count}\npatrocinadores";
 "Become_a_backer_to_leave_a_comment" = "Conviértete en patrocinador y deja un comentario.";
+"Biography" = "Biografía";
 "Bookmarks" = "Marcadores";
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
 "Cancel" = "Cancelar";
 "Cancel_your_pledge" = "Cancela tu contribución";
+"Change_password" = "Cambiar contraseña";
 "Change_payment_method" = "Cambiar método de pago";
 "Chat" = "Chat";
+"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
 "Chooses_location_for_shipping" = "Destino determinado: %{location}.";
 "Close_live_stream" = "Cerrar Live Stream";
 "Close_project" = "Cerrar proyecto";
@@ -68,6 +72,7 @@
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} estuvo transmitiendo en vivo en Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} estará trasnmitiendo en vivo en Kickstarter %{in_duration}";
 "Creator_tips" = "Consejos para el creador";
+"Currency" = "Moneda";
 "Daily_digest" = "Resumen diario";
 "Data_will_appear_here_once" = "Los datos aparecerán aquí una vez que alguien patrocine tu proyecto.";
 "Delete_my_Kickstarter_Account" = "Eliminar mi cuenta de Kickstarter";
@@ -79,7 +84,9 @@
 "Done" = "Listo";
 "Download_your_personal_data" = "Descarga tus datos personales";
 "Earth" = "Tierra";
+"Edit_profile" = "Editar perfil";
 "Either_the_pledge_or_the_project_was_canceled" = "Se canceló la contribución o el proyecto antes de que el plazo terminara.";
+"Email" = "Correo electrónico";
 "Email_frequency" = "Frecuencia de aviso por correo electrónico";
 "Email_notifications" = "Notificaciones por correo electrónico";
 "Ending_soon" = "Finaliza pronto";
@@ -182,6 +189,7 @@
 "Live_streaming_now" = "En vivo ahora";
 "Live_with_creator_name" = "En vivo con <b>%{creator_name}</b>";
 "Loading" = "Cargando";
+"Location" = "Ubicación";
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Inicia sesión para guardar este proyecto. Te recordaremos 48 horas antes de que finalice.";
 "Log_in_or_sign_up_to_subscribe" = "Para activar la suscripción, por favor inicia sesión o regístrate";
 "Log_in_to_leave_a_comment" = "Inicia sesión para dejar un comentario.";
@@ -230,6 +238,7 @@
 "Password_visibility" = "Visibilidad de la contraseña";
 "Past_live_stream" = "Live Stream pasado";
 "Payment_method_was_successfully_charged" = "Cargo efectuado a método de pago indicado.";
+"Payment_methods" = "Métodos de pago";
 "Please_enter_an_amount_of_amount_or_less" = "Ingresa un monto de contribución de %{amount} o menor.";
 "Please_enter_an_amount_of_amount_or_more" = "Ingresa un monto de contribución de %{amount} o más.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Por favor inicia sesión o regístrate para patrocinar este proyecto.";
@@ -283,7 +292,7 @@
 "Replay_past_live_stream" = "Repetir live stream pasado";
 "Replay_past_live_streams" = "Repetir live streams pasados";
 "Reply_to_user_name" = "Responder a %{user_name}…";
-"Request_my_Personal_Data" = "Solicitar mis datos personales";
+"Request_my_personal_data" = "Request my personal data";
 "Reward_Surveys.few" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.many" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.one" = "Cuestionario";
@@ -322,6 +331,7 @@
 "Share_this_project_on_Twitter" = "Compartir este proyecto en Twitter.";
 "Share_update" = "Compartir";
 "Shipping" = "Envío";
+"Shipping_addresses" = "Direcciones de envío";
 "Ships_to" = "Envío a:";
 "Show_password" = "Mostrar contraseña";
 "Shows_list_of_subcategories" = "Mostrar lista de subcategorías.";
@@ -329,7 +339,7 @@
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
-"Start_data_collection" = "Comenzar la recopilación de datos";
+"Start_the_request" = "Start the request";
 "Starting_soon" = "Comienza en breve";
 "Status" = "Estado:";
 "Stay_up_to_date" = "¿Deseas mantenerte actualizado?";
@@ -363,6 +373,7 @@
 "Top_ten_pledge_sources" = "Las 10 principales fuentes de contribución";
 "Top_ten_rewards" = "Las 10 mejores recompensas";
 "Total_pledged" = "Contribuciones en total";
+"Unable_to_request_data" = "Unable to request data.";
 "Unfollow_friend_name" = "Dejar de seguir a %{friend_name}";
 "Unfollows_friend_name" = "Dejar de seguir a %{friend_name}.";
 "Unsaved" = "Sin guardar";
@@ -385,6 +396,7 @@
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "Utilizamos tu actividad internamente para hacerte recomendaciones. Desactiva las recomendaciones si no quieres recibirlas.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "No se pudo conectar al chat de live stream.";
 "We_were_unable_to_load_the_shipping_destinations" = "No se pudieron cargar los destinos de envío.\nPor favor inténtalo de nuevo más tarde.";
+"Websites" = "Sitios web";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";

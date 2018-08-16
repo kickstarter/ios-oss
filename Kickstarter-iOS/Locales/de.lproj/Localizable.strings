@@ -1,4 +1,5 @@
 "About_reward_amount" = "Ungefähr %{reward_amount}";
+"Account" = "Konto";
 "Add_attachments" = "Anhänge hinzufügen ...";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
@@ -36,12 +37,15 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nUnterstützer";
 "Backers_count_separator_backers.zero" = "%{backers_count}\nUnterstützer";
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
+"Biography" = "Biografie";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
 "Cancel" = "Abbrechen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
+"Change_password" = "Passwort ändern";
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Chat" = "Chat";
+"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
 "Chooses_location_for_shipping" = "Legt %{location} als Versandort fest.";
 "Close_live_stream" = "Live-Stream schließen";
 "Close_project" = "Projekt schließen";
@@ -68,6 +72,7 @@
 "Creator_name_was_streaming_live_on_Kickstarter" = "Der Stream von %{creator_name} war gerade live auf Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} wird in %{in_duration} live auf Kickstarter streamen";
 "Creator_tips" = "Tpps für Projektgründer";
+"Currency" = "Währung";
 "Daily_digest" = "Tägliche Zusammenfassung";
 "Data_will_appear_here_once" = "Info wird hier angezeigt, sobald jemand dein Projekt unterstützt.";
 "Delete_my_Kickstarter_Account" = "Mein Kickstarter-Konto löschen";
@@ -79,7 +84,9 @@
 "Done" = "Fertig!";
 "Download_your_personal_data" = "Lade deine persönlichen Daten herunter";
 "Earth" = "Erde";
+"Edit_profile" = "Profil bearbeiten";
 "Either_the_pledge_or_the_project_was_canceled" = "Entweder der Finanzierungsbeitrag wurde zurückgezogen oder das Projekt wurde abgebrochen, bevor die Frist abgelaufen war.";
+"Email" = "E-Mail";
 "Email_frequency" = "Häufigkeit der E-Mails";
 "Email_notifications" = "Benachrichtigung per E-Mail";
 "Ending_soon" = "Endet bald";
@@ -140,7 +147,7 @@
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> hat ein <i>Theater-Projekt</i> unterstützt.";
 "Friend_name_launched_a_project" = "%{friend_name} hat ein Projekt veröffentlicht!";
 "Funding_successful" = "Finanzierung erfolgreich";
-"Games_newsletter" = "Sign up to receive a biweekly mix of new projects and updates on all things games, handpicked by Kickstarter's Games team.";
+"Games_newsletter" = "Jetzt abonnieren - du erhältst von Kickstarters Games-Team alle zwei Wochen News zu neuen Projekten und Updates rund um Games.";
 "Get_notified_about_new_messages" = "Möchtest du benachrichtigt werden bei neuen Nachrichten?";
 "Get_notified_about_this_creators_live_streams" = "Benachrichtigungen zu den Live-Streams dieses Projektgründers erhalten.";
 "Get_reminded_about_this_project" = "Möchtest du an dieses Projekt erinnert werden?";
@@ -182,6 +189,7 @@
 "Live_streaming_now" = "Wird gerade live gestreamt";
 "Live_with_creator_name" = "Live mit <b>%{creator_name}</b>";
 "Loading" = "Ladevorgang läuft";
+"Location" = "Standort";
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Melde dich an, um dieses Projekt zu speichern. Wir senden dir 48 Stunden vor Ablauf eine Benachrichtigung.";
 "Log_in_or_sign_up_to_subscribe" = "Bitte einloggen oder registrieren";
 "Log_in_to_leave_a_comment" = "Melde dich an, um einen Kommentar zu hinterlassen.";
@@ -230,6 +238,7 @@
 "Password_visibility" = "Passwort-Anzeige";
 "Past_live_stream" = "Früherer Live-Stream";
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
+"Payment_methods" = "Zahlungsmethoden";
 "Please_enter_an_amount_of_amount_or_less" = "Bitte gib einen Finanzierungsbeitrag von %{amount} oder weniger ein.";
 "Please_enter_an_amount_of_amount_or_more" = "Bitte gib einen Finanzierungsbeitrag von mindestens %{amount} ein.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Um dieses Projekt zu unterstützen, musst du dich bitte anmelden oder registrieren.";
@@ -283,7 +292,7 @@
 "Replay_past_live_stream" = "Wiedergabe des vorigen Live-Streams";
 "Replay_past_live_streams" = "Wiedergabe vergangener Live-Streams";
 "Reply_to_user_name" = "%{user_name} antworten …";
-"Request_my_Personal_Data" = "Meine persönlichen Daten anfordern";
+"Request_my_personal_data" = "Request my personal data";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";
@@ -322,6 +331,7 @@
 "Share_this_project_on_Twitter" = "Teile dieses Projekt auf Twitter.";
 "Share_update" = "Teilen";
 "Shipping" = "Versand";
+"Shipping_addresses" = "Versandanschrift";
 "Ships_to" = "Versand an:";
 "Show_password" = "Passwort anzeigen";
 "Shows_list_of_subcategories" = "Unterkategorien anzeigen.";
@@ -329,7 +339,7 @@
 "Signs_up_with_Email" = "Mit E-Mail-Adresse registrieren.";
 "Something_catch_your_eye" = "Etwas interessantes gefunden?";
 "Something_went_wrong_please_try_again" = "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal.";
-"Start_data_collection" = "Daten zusammenstellen";
+"Start_the_request" = "Start the request";
 "Starting_soon" = "Beginnt in Kürze";
 "Status" = "Status:";
 "Stay_up_to_date" = "Möchtest du auf dem Laufenden bleiben?";
@@ -363,6 +373,7 @@
 "Top_ten_pledge_sources" = "Top 10 Quellen deiner Beiträge";
 "Top_ten_rewards" = "Top 10-Belohnungen";
 "Total_pledged" = "Anzahl der Beiträge insgesamt";
+"Unable_to_request_data" = "Unable to request data.";
 "Unfollow_friend_name" = "%{friend_name} nicht mehr folgen";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
 "Unsaved" = "Speichern wurde rückgängig gemacht";
@@ -385,6 +396,7 @@
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "Deine Aktivitäten werden intern genutzt, um dir Empfehlungen zu unterbreiten. Um dies zu deaktivieren, wähle \"Empfehlungen\" einfach ab.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden.";
 "We_were_unable_to_load_the_shipping_destinations" = "Das Laden der Versandadressen war leider nicht möglich.\nBitte versuche es später noch einmal.";
+"Websites" = "Webseiten";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";

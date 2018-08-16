@@ -23,7 +23,6 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var followingPrivacyInfoButton: UIButton!
   @IBOutlet fileprivate weak var followingPrivacyLabel: UILabel!
   @IBOutlet fileprivate weak var followingPrivacySwitch: UISwitch!
-
   @IBOutlet fileprivate weak var helpCenterButton: UIButton!
   @IBOutlet fileprivate weak var helpCenterLabel: UILabel!
   @IBOutlet fileprivate weak var helpTitleLabel: UILabel!
@@ -32,6 +31,8 @@ internal final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var logoutButton: UIButton!
   @IBOutlet fileprivate weak var newslettersLabel: UILabel!
   @IBOutlet fileprivate weak var notificationsLabel: UILabel!
+  @IBOutlet fileprivate weak var privacyButton: UIButton!
+  @IBOutlet fileprivate weak var privacyLabel: UILabel!
   @IBOutlet fileprivate weak var privacyTitleLabel: UILabel!
   @IBOutlet fileprivate weak var privacyPolicyButton: UIButton!
   @IBOutlet fileprivate weak var privacyPolicyLabel: UILabel!
@@ -61,6 +62,10 @@ internal final class SettingsViewController: UIViewController {
     if self.presentingViewController != nil {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
     }
+
+    self.privacyButton.addTarget(self,
+                                        action: #selector(privacyTapped),
+                                        for: .touchUpInside)
 
     self.contactButton.addTarget(self, action: #selector(contactTapped), for: .touchUpInside)
 
@@ -179,6 +184,10 @@ internal final class SettingsViewController: UIViewController {
     _ = self.notificationsLabel
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.profile_settings_navbar_title_notifications() }
+
+    _ = self.privacyLabel
+      |> settingsSectionLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Privacy() }
 
     _ = self.privacyTitleLabel
       |> settingsTitleLabelStyle
@@ -399,13 +408,13 @@ internal final class SettingsViewController: UIViewController {
       message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
       preferredStyle: .actionSheet)
 
-    let startTheRequest = UIAlertAction(title: Strings.Start_data_collection(),
+    let startTheRequest = UIAlertAction(title: Strings.Start_the_request(),
                                         style: .default,
                                         handler: { [weak self] _ in
                                           self?.viewModel.inputs.exportDataTapped()
     })
 
-    let dismiss = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    let dismiss = UIAlertAction(title: Strings.Cancel(), style: .cancel, handler: nil)
 
     exportDataSheet.addAction(startTheRequest)
     exportDataSheet.addAction(dismiss)
@@ -522,6 +531,10 @@ internal final class SettingsViewController: UIViewController {
 
   @objc fileprivate func termsOfUseTapped() {
     self.helpViewModel.inputs.helpTypeButtonTapped(.terms)
+  }
+
+  @objc fileprivate func privacyTapped() {
+    self.viewModel.inputs.privacyTapped()
   }
 
   @IBAction fileprivate func weeklyNewsletterTapped(_ newsletterSwitch: UISwitch) {

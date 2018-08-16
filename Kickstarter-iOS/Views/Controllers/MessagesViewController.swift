@@ -89,8 +89,8 @@ internal final class MessagesViewController: UITableViewController {
       .observeValues { [weak self] project, user in self?.goToBacking(project: project, user: user)}
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+  internal override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath)
+    -> CGFloat {
     return UITableViewAutomaticDimension
   }
 

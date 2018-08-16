@@ -47,6 +47,8 @@ internal struct MockService: ServiceType {
   fileprivate let fetchExportStateResponse: ExportDataEnvelope?
   fileprivate let fetchExportStateError: ErrorEnvelope?
 
+  fileprivate let exportDataError: ErrorEnvelope?
+
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
@@ -176,6 +178,7 @@ internal struct MockService: ServiceType {
                 fetchFriendStatsError: ErrorEnvelope? = nil,
                 fetchExportStateResponse: ExportDataEnvelope? = nil,
                 fetchExportStateError: ErrorEnvelope? = nil,
+                exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
@@ -286,6 +289,8 @@ internal struct MockService: ServiceType {
 
     self.fetchExportStateResponse = fetchExportStateResponse
     self.fetchExportStateError = fetchExportStateError
+
+    self.exportDataError = exportDataError
 
     self.fetchDraftResponse = fetchDraftResponse
     self.fetchDraftError = fetchDraftError
@@ -515,6 +520,9 @@ internal struct MockService: ServiceType {
   }
 
   internal func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+    if let error = exportDataError {
+      return SignalProducer(error: error)
+    }
     return SignalProducer(value: VoidEnvelope())
   }
 
@@ -1249,6 +1257,7 @@ private extension MockService {
           fetchFriendStatsError: $1.fetchFriendStatsError,
           fetchExportStateResponse: $1.fetchExportStateResponse,
           fetchExportStateError: $1.fetchExportStateError,
+          exportDataError: $1.exportDataError,
           fetchDraftResponse: $1.fetchDraftResponse,
           fetchDraftError: $1.fetchDraftError,
           addAttachmentResponse: $1.addAttachmentResponse,
