@@ -20,6 +20,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     _ = arrowImageView
       |> UIImageView.lens.isHidden
       .~ !cellType.showArrowImageView
+      |> UIImageView.lens.tintColor .~ UIColor(red:0.56, green:0.56, blue:0.58, alpha:1.0) //change this
 
     _ = appVersionLabel
       |> UILabel.lens.isHidden %~ { _ in
