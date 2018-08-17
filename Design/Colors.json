@@ -1,5 +1,6 @@
 {
   "dark_grey_400": "9B9E9E",
+  "dark_grey_300": "8E8E93",
   "dark_grey_500": "656868",
   "dark_grey_900": "282828",
   "dropShadow": "D6D6D6",
@@ -19,6 +20,7 @@
   "orange_400": "F7AA1A",
   "orange_600": "E58111",
   "red_400": "FF5340",
+  "red_300": "FF5151",
   "violet_500": "3A328E",
   "facebookBlue": "3B5998",
   "twitterBlue": "00ACED",
