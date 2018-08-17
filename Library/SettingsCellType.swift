@@ -53,7 +53,7 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   public var title: String {
     switch self {
     case .account:
-      return "Account"
+      return Strings.Account()
     case .notifications:
       return Strings.profile_settings_navbar_title_notifications()
     case .newsletters:
