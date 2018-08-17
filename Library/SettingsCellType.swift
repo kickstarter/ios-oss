@@ -8,6 +8,7 @@ public protocol SettingsCellTypeProtocol {
 }
 
 public enum SettingsSectionType: Int {
+  case account
   case notificationNewsletters
   case helpPrivacy
   case logout
@@ -19,6 +20,8 @@ public enum SettingsSectionType: Int {
 
   public var cellRowsForSection: [SettingsCellType] {
     switch self {
+    case .account:
+      return [SettingsCellType.account]
     case .notificationNewsletters:
       return [.notifications, .newsletters]
     case .helpPrivacy:
@@ -30,13 +33,15 @@ public enum SettingsSectionType: Int {
     }
   }
 
-  public static var allCases: [SettingsSectionType] = [.notificationNewsletters,
+  public static var allCases: [SettingsSectionType] = [.account,
+                                                       .notificationNewsletters,
                                                        .helpPrivacy,
                                                        .logout,
                                                        .ratingAppVersion]
 }
 
 public enum SettingsCellType: SettingsCellTypeProtocol {
+  case account
   case notifications
   case newsletters
   case help
@@ -47,6 +52,8 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
 
   public var title: String {
     switch self {
+    case .account:
+      return "Account"
     case .notifications:
       return Strings.profile_settings_navbar_title_notifications()
     case .newsletters:
@@ -66,7 +73,7 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
 
   public var showArrowImageView: Bool {
     switch self {
-    case .notifications, .newsletters, .help, .privacy, .rateInAppStore:
+    case .account, .notifications, .newsletters, .help, .privacy, .rateInAppStore:
       return true
     default:
       return false
