@@ -75,7 +75,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
         AppEnvironment.updateCurrentUser(user)
 
         self?.dataSource.load(user: user)
-
         self?.tableView.reloadData()
     }
 

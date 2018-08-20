@@ -69,29 +69,30 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.emailNotificationsEnabledObserver.assertValues([true], "Email notifications are enabled")
-
-    let user1 = user
-      |> UserAttribute.notification(notification).lens .~ false
-    let value1 = SettingsNotificationCellValue(cellType: .projectUpdates, user: user1)
-
-    self.vm.inputs.configure(with: value1)
-
-    self.emailNotificationsEnabledObserver.assertValues([true, false], "Email notifications are disabled")
   }
 
-  func testEmailNotificationEnabled_NoValue() {
+  func testEmailNotificationsDisabled() {
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
+                                                                             notificationType: .email)
+
+    guard let notification = notificationType else {
+      XCTFail("Notification cannot be nil")
+      return
+    }
+
     let user = User.template
-    // Should have no Notification value
-    let value = SettingsNotificationCellValue(cellType: .findFacebookFriends, user: user)
+      |> UserAttribute.notification(notification).lens .~ false
+
+    let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 
     self.vm.inputs.configure(with: value)
 
-    self.emailNotificationsEnabledObserver.assertValueCount(0)
+    self.emailNotificationsEnabledObserver.assertValues([false], "Email notifications are disabled")
   }
 
   func testPushNotificationsEnabled() {
     let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
-                                                                         notificationType: .push)
+                                                                             notificationType: .push)
 
     guard let notification = notificationType else {
       XCTFail("Notification cannot be nil")
@@ -106,13 +107,35 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.pushNotificationsEnabledObserver.assertValues([true], "Push notifications are enabled")
+  }
 
-    let value1 = SettingsNotificationCellValue(cellType: .projectUpdates, user: user
-      |> UserAttribute.notification(notification).lens .~ false)
+  func testPushNotificationsDisabled() {
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
+                                                                             notificationType: .push)
 
-    self.vm.inputs.configure(with: value1)
+    guard let notification = notificationType else {
+      XCTFail("Notification cannot be nil")
+      return
+    }
 
-    self.pushNotificationsEnabledObserver.assertValues([true, false], "Push notifications are disabled")
+    let user = User.template
+      |> UserAttribute.notification(notification).lens .~ false
+
+    let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
+
+    self.vm.inputs.configure(with: value)
+
+    self.pushNotificationsEnabledObserver.assertValues([false], "Push notifications are disabled")
+  }
+
+  func testEmailNotificationEnabled_NoValue() {
+    let user = User.template
+    // Should have no Notification value
+    let value = SettingsNotificationCellValue(cellType: .findFacebookFriends, user: user)
+
+    self.vm.inputs.configure(with: value)
+
+    self.emailNotificationsEnabledObserver.assertValueCount(0)
   }
 
   func testPushNotificationsEnabled_NoValue() {
