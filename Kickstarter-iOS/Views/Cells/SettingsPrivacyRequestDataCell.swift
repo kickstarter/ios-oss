@@ -57,7 +57,8 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
           : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2)) }
 
     _ = separatorViews
-      ||> separatorStyle
+      ||> UIView.lens.backgroundColor .~ .ksr_grey_500
+      ||> UIView.lens.accessibilityElementsHidden .~ true
 
     _ = self.requestDataButton
       |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_text_dark_grey_500

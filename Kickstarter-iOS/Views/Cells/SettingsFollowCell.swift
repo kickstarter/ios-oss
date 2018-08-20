@@ -17,7 +17,7 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var followingLabel: UILabel!
   @IBOutlet fileprivate weak var followStackView: UIStackView!
   @IBOutlet fileprivate weak var followingSwitch: UISwitch!
-  @IBOutlet fileprivate weak var separatorView: UIView!
+  @IBOutlet fileprivate var separatorView: [UIView]!
 
   internal func configureWith(value user: User) {
     self.viewModel.inputs.configureWith(user: user)
@@ -35,7 +35,8 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
     }
 
     _ = self.separatorView
-      |> separatorStyle
+      ||> UIView.lens.backgroundColor .~ .ksr_grey_500
+      ||> UIView.lens.accessibilityElementsHidden .~ true
 
     _ = self.followingLabel
       |> settingsTitleLabelStyle
