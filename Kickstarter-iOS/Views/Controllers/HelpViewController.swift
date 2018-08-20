@@ -10,7 +10,7 @@ final class HelpViewController: UIViewController {
   fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
 
   internal static func instantiate() -> HelpViewController {
-    return Storyboard.SettingsV2.instantiate(HelpViewController.self)
+    return Storyboard.Settings.instantiate(HelpViewController.self)
   }
 
   override func viewDidLoad() {
