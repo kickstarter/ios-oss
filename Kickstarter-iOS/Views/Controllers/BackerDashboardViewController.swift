@@ -252,7 +252,7 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 
   private func goToSettings() {
-    let vc = SettingsV2ViewController.instantiate()
+    let vc = SettingsViewController.instantiate()
 
     if UIDevice.current.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)

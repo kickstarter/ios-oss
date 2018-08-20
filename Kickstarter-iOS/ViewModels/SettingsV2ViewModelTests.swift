@@ -5,8 +5,8 @@ import Result
 @testable import Kickstarter_Framework
 @testable import ReactiveExtensions_TestHelpers
 
-internal final class SettingsV2ViewModelTests: TestCase {
-  let vm = SettingsV2ViewModel()
+internal final class SettingsViewModelTests: TestCase {
+  let vm = SettingsViewModel()
 
   let goToAppStoreRating = TestObserver<String, NoError>()
   let logout = TestObserver<DiscoveryParams, NoError>()
