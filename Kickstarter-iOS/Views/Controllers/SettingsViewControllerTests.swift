@@ -1,3 +1,4 @@
+
 import Library
 import Prelude
 import Result
@@ -26,7 +27,7 @@ internal final class SettingsViewControllerTests: TestCase {
         currentUser: currentUser,
         language: language) {
 
-          let vc = SettingsV2ViewController.instantiate()
+          let vc = SettingsViewController.instantiate()
           let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
 
           self.scheduler.run()
