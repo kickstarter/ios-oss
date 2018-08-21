@@ -30,10 +30,14 @@ protocol SettingsNotificationCellViewModelType {
 final class SettingsNotificationCellViewModel: SettingsNotificationCellViewModelInputs,
 SettingsNotificationCellViewModelOutputs,
 SettingsNotificationCellViewModelType {
+
   public init() {
-    let initialPushNotificationValue = Signal.combineLatest(
-      initialUserProperty.signal.skipNil(),
-      cellTypeProperty.signal.skipNil().skipRepeats())
+
+    let initialUser = self.initialUserProperty.signal.skipNil()
+
+    let cellType = cellTypeProperty.signal.skipNil().skipRepeats()
+
+    let initialPushNotificationValue = Signal.zip(initialUser, cellType)
       .map { (user, cellType) -> Bool? in
         guard let notification = SettingsNotificationCellViewModel
           .notificationFor(cellType: cellType,
@@ -46,9 +50,7 @@ SettingsNotificationCellViewModelType {
 
     let pushNotificationValueToggled = pushNotificationValueChangedProperty.signal.negate()
 
-    let initialEmailNotificationsValue = Signal.combineLatest(
-      initialUserProperty.signal.skipNil(),
-      cellTypeProperty.signal.skipNil().skipRepeats())
+    let initialEmailNotificationsValue = Signal.zip(initialUser, cellType)
       .map { (user, cellType) -> Bool? in
         guard let notification = SettingsNotificationCellViewModel
           .notificationFor(cellType: cellType,
@@ -66,8 +68,8 @@ SettingsNotificationCellViewModelType {
       emailNotificationValueToggled.signal.skipRepeats().map { (NotificationType.email, $0) }
     )
 
-    let userAttributeChanged = cellTypeProperty.signal.skipNil()
-    .takePairWhen(updatedNotificationSetting.signal)
+    let userAttributeChanged = cellType
+    .takePairWhen(updatedNotificationSetting)
     .map(unpack)
     .map { cellType, notificationType, enabled -> (UserAttribute.Notification?, Bool) in
         let notification = SettingsNotificationCellViewModel.notificationFor(cellType: cellType,
@@ -76,8 +78,7 @@ SettingsNotificationCellViewModelType {
         return (notification, enabled)
     }
 
-    let updatedUser = initialUserProperty.signal
-      .skipNil()
+    let updatedUser = initialUser
       .takePairWhen(userAttributeChanged)
       .map { user, notificationAndOn -> User? in
         let (notification, on) = notificationAndOn
@@ -111,35 +112,31 @@ SettingsNotificationCellViewModelType {
 
     self.pushNotificationsEnabled = Signal.merge(
       initialPushNotificationValue.signal,
-      pushNotificationValueChangedProperty.signal.negate(),
+      pushNotificationValueToggled,
       previousPushNotificationValue
     )
 
     self.emailNotificationsEnabled = Signal.merge(
-      initialEmailNotificationsValue.signal,
+      initialEmailNotificationsValue,
       emailNotificationValueToggled,
       previousEmailNotificationValue
     )
 
-    self.emailNotificationButtonIsHidden = cellTypeProperty.signal
-      .skipNil()
+    self.emailNotificationButtonIsHidden = cellType
       .map { $0.shouldShowEmailNotificationButton }
       .negate()
 
-    self.pushNotificationButtonIsHidden = cellTypeProperty.signal
-      .skipNil()
+    self.pushNotificationButtonIsHidden = cellType
       .map { $0.showShowPushNotificationButton }
       .negate()
 
     self.enableButtonAnimation = self.emailNotificationButtonIsHidden
       .negate() // Only add animation if email notification button is shown
 
-    self.manageProjectNotificationsButtonAccessibilityHint = initialUserProperty.signal
-      .skipNil()
+    self.manageProjectNotificationsButtonAccessibilityHint = initialUser
       .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
 
-    self.projectCountText = initialUserProperty.signal
-      .skipNil()
+    self.projectCountText = initialUser
       .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0)}
 
     // Koala tracking
