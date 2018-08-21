@@ -11,15 +11,19 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
   weak var cellDelegate: SettingsNotificationCellDelegate?
 
   func load(user: User) {
-    _ = SettingsNotificationSectionType.allCases.filter { filterCreatorForSection($0, user: user) }
-    .enumerated().map { index, section -> Void in
-      let values = section.cellRowsForSection.map { cellType in
-        return SettingsNotificationCellValue(cellType: cellType, user: user)
-      }
 
-      self.set(values: values,
-               cellClass: SettingsNotificationCell.self,
-               inSection: index)
+    _ = SettingsNotificationSectionType.allCases
+      .filter { filterCreatorForSection($0, user: user) }
+      .enumerated()
+      .map { index, section -> Void in
+
+        let values = section.cellRowsForSection.map { cellType in
+           return SettingsNotificationCellValue(cellType: cellType, user: user)
+         }
+
+         self.set(values: values,
+                  cellClass: SettingsNotificationCell.self,
+                  inSection: index)
     }
 
     let pledgeActivityEnabled = (user
