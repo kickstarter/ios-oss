@@ -1,5 +1,5 @@
 "About_reward_amount" = "Environ %{reward_amount}";
-"Account" = "Account";
+"Account" = "Votre compte";
 "Add_attachments" = "Ajouter des pièces jointes...";
 "All_Art_Projects" = "Tous les projets de la catégorie Art";
 "All_Comics_Projects" = "Tous les projets de la catégorie Bande dessinée";
@@ -37,15 +37,15 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\ncontributeurs";
 "Backers_count_separator_backers.zero" = "%{backers_count}\ncontributeurs";
 "Become_a_backer_to_leave_a_comment" = "Soutenez ce projet pour laisser un commentaire.";
-"Biography" = "Biography";
+"Biography" = "Biographie";
 "Bookmarks" = "Signets";
 "Bring_creative_projects_to_life" = "Réalisez vos projets créatifs.";
 "Cancel" = "Annuler";
 "Cancel_your_pledge" = "Annuler mon engagement";
-"Change_password" = "Change password";
+"Change_password" = "Changer de mot de passe";
 "Change_payment_method" = "Changer de moyen de paiement";
 "Chat" = "Chat";
-"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
+"Check_back_later_for_an_update_on_your_export_progress" = "Repassez plus tard pour suivre la préparation de votre exportation.";
 "Chooses_location_for_shipping" = "Sélectionne %{location} pour la livraison.";
 "Close_live_stream" = "Fermer la diffusion en direct";
 "Close_project" = "Fermer le projet";
@@ -72,7 +72,7 @@
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} était en direct sur Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} sera en direct sur Kickstarter %{in_duration}";
 "Creator_tips" = "Astuces pour créateurs";
-"Currency" = "Currency";
+"Currency" = "Devise";
 "Daily_digest" = "Résumé quotidien";
 "Data_will_appear_here_once" = "Ces données seront visibles dès que vous aurez reçu votre première contribution.";
 "Delete_my_Kickstarter_Account" = "Supprimer mon compte Kickstarter";
@@ -84,9 +84,9 @@
 "Done" = "Terminé";
 "Download_your_personal_data" = "Téléchargement de vos données personnelles";
 "Earth" = "Terre";
-"Edit_profile" = "Edit profile";
+"Edit_profile" = "Modifier mon profil";
 "Either_the_pledge_or_the_project_was_canceled" = "Soit l'engagement soit le projet a été annulé avant la date limite.";
-"Email" = "Email";
+"Email" = "E-mail";
 "Email_frequency" = "Fréquence d'envoi des e-mails";
 "Email_notifications" = "Notifications par e-mail";
 "Ending_soon" = "Campagnes bientôt terminées";
@@ -189,7 +189,7 @@
 "Live_streaming_now" = "Diffusion en direct en cours";
 "Live_with_creator_name" = "En direct avec <b>%{creator_name}</b>";
 "Loading" = "Chargement";
-"Location" = "Location";
+"Location" = "Lieu";
 "Log_in_or_sign_up_to_save_this_project_and_we_ll_remind_you" = "Connectez-vous ou inscrivez-vous pour enregistrer ce projet. Vous recevrez un rappel 48 heures avant la fin.";
 "Log_in_or_sign_up_to_subscribe" = "Connectez-vous ou inscrivez-vous pour vous abonner";
 "Log_in_to_leave_a_comment" = "Connectez-vous pour laisser un commentaire.";
@@ -238,7 +238,7 @@
 "Password_visibility" = "Visibilité du mot de passe";
 "Past_live_stream" = "Diffusion en direct passée";
 "Payment_method_was_successfully_charged" = "Le moyen de paiement a bien été débité.";
-"Payment_methods" = "Payment methods";
+"Payment_methods" = "Moyens de paiement ";
 "Please_enter_an_amount_of_amount_or_less" = "Veuillez saisir un montant de %{amount} ou moins.";
 "Please_enter_an_amount_of_amount_or_more" = "Veuillez saisir un montant de %{amount} ou plus.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Veuillez vous connecter ou vous inscrire pour soutenir ce projet.";
@@ -292,7 +292,7 @@
 "Replay_past_live_stream" = "Rediffusion";
 "Replay_past_live_streams" = "Revoir des diffusions en direct passées";
 "Reply_to_user_name" = "Répondre à %{user_name}…";
-"Request_my_personal_data" = "Request my personal data";
+"Request_my_personal_data" = "Demander mes données personnelles";
 "Reward_Surveys.few" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.many" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.one" = "Questionnaire";
@@ -331,7 +331,7 @@
 "Share_this_project_on_Twitter" = "Partagez ce projet sur Twitter.";
 "Share_update" = "Partager";
 "Shipping" = "Expédition";
-"Shipping_addresses" = "Shipping addresses";
+"Shipping_addresses" = "Adresses de livraison";
 "Ships_to" = "Livraison :";
 "Show_password" = "Afficher le mot de passe";
 "Shows_list_of_subcategories" = "Affiche la liste des sous-catégories.";
@@ -339,7 +339,7 @@
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
 "Something_catch_your_eye" = "Quelque chose a retenu votre attention ?";
 "Something_went_wrong_please_try_again" = "Un problème est survenu. Veuillez réessayer.";
-"Start_the_request" = "Start the request";
+"Start_the_request" = "Commencer la préparation";
 "Starting_soon" = "Bientôt en direct";
 "Status" = "État :";
 "Stay_up_to_date" = "Envie d'être informé ?";
@@ -373,7 +373,7 @@
 "Top_ten_pledge_sources" = "Vos 10 principales sources de contributions";
 "Top_ten_rewards" = "Les 10 récompenses qui ont le plus de succès";
 "Total_pledged" = "Total engagé";
-"Unable_to_request_data" = "Unable to request data.";
+"Unable_to_request_data" = "Demande de données impossible.";
 "Unfollow_friend_name" = "Ne plus suivre %{friend_name}";
 "Unfollows_friend_name" = "Désabonnement des actus de %{friend_name}.";
 "Unsaved" = "Non enregistré";
@@ -396,7 +396,7 @@
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "À l'interne, nous nous servons de vos activités pour vous faire des recommandations. Si vous ne souhaitez pas participer, nous vous invitons à désactiver vos recommandations.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Connexion au chat en direct impossible.";
 "We_were_unable_to_load_the_shipping_destinations" = "Nous n'avons pas été en mesure de charger les destinations d'expédition.\nVeuillez réessayer ultérieurement.";
-"Websites" = "Websites";
+"Websites" = "Sites Web";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Nous vous enverrons un rappel 48 heures avant la fin de cette campagne. Vous recevrez aussi des rappels pour tous les projets que vous avez enregistré. Ceux-ci sont tous accessibles depuis votre profil.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Lorsque les fonctionnalités de suivi sont activées, vous pouvez vous abonner aux activités des autres, qui pourront à leur tour s'abonner aux vôtres. Pour supprimer définitivement ces données, il vous suffit de désactiver les fonctionnalités de suivi.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne.";
