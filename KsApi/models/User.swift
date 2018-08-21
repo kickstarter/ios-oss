@@ -31,6 +31,23 @@ public struct User {
     public let invent: Bool?
     public let promo: Bool?
     public let weekly: Bool?
+    public let films: Bool?
+    public let publishing: Bool?
+    public let alumni: Bool?
+
+    public static func all(on: Bool) -> NewsletterSubscriptions {
+      return NewsletterSubscriptions(
+        arts: on,
+        games: on,
+        happening: on,
+        invent: on,
+        promo: on,
+        weekly: on,
+        films: on,
+        publishing: on,
+        alumni: on
+      )
+    }
   }
 
   public struct Notifications {
@@ -111,6 +128,7 @@ extension User: EncodableType {
     result["location"] = self.location?.encode()
     result["name"] = self.name
     result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false
+    result["social"] = self.social ?? false
     result["show_public_profile"] = self.showPublicProfile ?? false
     result = result.withAllValuesFrom(self.newsletters.encode())
     result = result.withAllValuesFrom(self.notifications.encode())
@@ -144,6 +162,7 @@ extension User.Avatar: EncodableType {
 
 extension User.NewsletterSubscriptions: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.NewsletterSubscriptions> {
+
     return curry(User.NewsletterSubscriptions.init)
       <^> json <|? "arts_culture_newsletter"
       <*> json <|? "games_newsletter"
@@ -151,6 +170,9 @@ extension User.NewsletterSubscriptions: Argo.Decodable {
       <*> json <|? "invent_newsletter"
       <*> json <|? "promo_newsletter"
       <*> json <|? "weekly_newsletter"
+      <*> json <|? "film_newsletter"
+      <*> json <|? "publishing_newsletter"
+      <*> json <|? "alumni_newsletter"
   }
 }
 
@@ -163,6 +185,9 @@ extension User.NewsletterSubscriptions: EncodableType {
     result["invent_newsletter"] = self.invent
     result["promo_newsletter"] = self.promo
     result["weekly_newsletter"] = self.weekly
+    result["film_newsletter"] = self.films
+    result["publishing_newsletter"] = self.publishing
+    result["alumni_newsletter"] = self.alumni
     return result
   }
 }
@@ -174,7 +199,10 @@ public func == (lhs: User.NewsletterSubscriptions, rhs: User.NewsletterSubscript
     lhs.happening == rhs.happening &&
     lhs.invent == rhs.invent &&
     lhs.promo == rhs.promo &&
-    lhs.weekly == rhs.weekly
+    lhs.weekly == rhs.weekly &&
+    lhs.films == rhs.films &&
+    lhs.publishing == rhs.publishing &&
+    lhs.alumni == rhs.alumni
 }
 
 extension User.Notifications: Argo.Decodable {

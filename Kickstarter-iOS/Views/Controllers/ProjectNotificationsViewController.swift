@@ -13,19 +13,24 @@ internal final class ProjectNotificationsViewController: UITableViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-    self.viewModel.inputs.viewDidLoad()
-    self.view.backgroundColor = .ksr_grey_100
+
     self.tableView.dataSource = self.dataSource
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func bindStyles() {
     super.bindStyles()
-    _ = self |> baseControllerStyle()
+
+    _ = self
+      |> baseControllerStyle()
   }
 
   internal override func bindViewModel() {
+    super.bindViewModel()
+
     self.viewModel.outputs.projectNotifications
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] notifications in
         self?.dataSource.load(notifications: notifications)
         self?.tableView.reloadData()

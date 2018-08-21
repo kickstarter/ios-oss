@@ -4,15 +4,26 @@ public enum Nib: String {
   case BackerDashboardEmptyStateCell
   case BackerDashboardProjectCell
   case DiscoveryPostcardCell
+  case DiscoveryProjectCategoryView
   case LiveStreamNavTitleView
   case RewardCell
+  case SettingsHeaderView
+  case SettingsNewslettersCell
+  case SettingsNewslettersTopCell
+  case SettingsTableViewCell
   case ThanksCategoryCell
-  case DiscoveryProjectCategoryView
+  case SettingsNotificationCell
+  case SettingsNotificationPickerCell
 }
 
 extension UITableView {
   public func register(nib: Nib, inBundle bundle: Bundle = .framework) {
     self.register(UINib(nibName: nib.rawValue, bundle: bundle), forCellReuseIdentifier: nib.rawValue)
+  }
+
+  public func registerHeaderFooter(nib: Nib, inBundle bundle: Bundle = .framework) {
+    self.register(UINib(nibName: nib.rawValue, bundle: bundle),
+                  forHeaderFooterViewReuseIdentifier: nib.rawValue)
   }
 }
 
