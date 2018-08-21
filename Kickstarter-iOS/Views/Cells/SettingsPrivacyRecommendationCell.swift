@@ -26,8 +26,7 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
           : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2)) }
 
     _ = self.separatorView
-      ||> UIView.lens.backgroundColor .~ .ksr_grey_500
-      ||> UIView.lens.accessibilityElementsHidden .~ true
+      ||> settingsSeparatorStyle
 
     _ = self.recommendationsLabel
       |> settingsTitleLabelStyle

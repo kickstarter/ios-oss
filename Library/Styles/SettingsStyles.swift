@@ -24,6 +24,9 @@ public let settingsLogoutButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.profile_settings_log_out_button() }
 
+public let settingsSeparatorStyle = UIView.lens.backgroundColor .~ .ksr_grey_500
+  <> UIView.lens.accessibilityElementsHidden .~ true
+
 public let settingsNotificationIconButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
     <> UIButton.lens.tintColor .~ .ksr_text_dark_grey_400

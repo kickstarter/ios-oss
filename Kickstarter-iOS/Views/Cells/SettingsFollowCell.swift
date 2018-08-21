@@ -35,8 +35,7 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
     }
 
     _ = self.separatorView
-      ||> UIView.lens.backgroundColor .~ .ksr_grey_500
-      ||> UIView.lens.accessibilityElementsHidden .~ true
+      ||> settingsSeparatorStyle
 
     _ = self.followingLabel
       |> settingsTitleLabelStyle
