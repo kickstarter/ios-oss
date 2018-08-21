@@ -25,7 +25,11 @@ final class SettingsViewController: UIViewController {
 
     if self.presentingViewController != nil {
       let image = UIImage(named: "icon--cross")
-      self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(closeButtonPressed))
+      self.navigationItem.leftBarButtonItem =
+        UIBarButtonItem(image: image,
+                        style: .plain,
+                        target: self,
+                        action: #selector(closeButtonPressed))
     }
 
     self.viewModel.inputs.viewDidLoad()
