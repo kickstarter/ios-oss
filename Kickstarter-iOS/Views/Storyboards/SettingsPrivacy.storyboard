@@ -27,6 +27,13 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5rd-F5-ydE">
+                                            <rect key="frame" x="0.0" y="-168" width="375" height="204"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="0.5" id="5mx-ia-iUg"/>
+                                            </constraints>
+                                        </view>
                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BPJ-xF-tQz">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="78"/>
                                             <subviews>
@@ -64,7 +71,7 @@
                                             <rect key="frame" x="0.0" y="70" width="375" height="1"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="1" id="QLl-AE-ZRg"/>
+                                                <constraint firstAttribute="height" constant="0.5" id="QLl-AE-ZRg"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -74,6 +81,8 @@
                                         <constraint firstAttribute="bottom" secondItem="BPJ-xF-tQz" secondAttribute="bottom" id="AZ6-wH-xSJ"/>
                                         <constraint firstItem="BPJ-xF-tQz" firstAttribute="top" secondItem="Zyh-dx-Ri5" secondAttribute="top" id="FAH-96-5Nk"/>
                                         <constraint firstItem="bSy-wv-Mzl" firstAttribute="leading" secondItem="Zyh-dx-Ri5" secondAttribute="leading" id="OKG-1Q-cuf"/>
+                                        <constraint firstItem="5rd-F5-ydE" firstAttribute="top" secondItem="Zyh-dx-Ri5" secondAttribute="top" id="fGt-kg-4kA"/>
+                                        <constraint firstItem="5rd-F5-ydE" firstAttribute="width" secondItem="Zyh-dx-Ri5" secondAttribute="width" id="h5N-SE-ydu"/>
                                         <constraint firstItem="BPJ-xF-tQz" firstAttribute="leading" secondItem="Zyh-dx-Ri5" secondAttribute="leading" id="sJQ-qv-hah"/>
                                         <constraint firstAttribute="bottom" secondItem="bSy-wv-Mzl" secondAttribute="bottom" id="xGk-PM-ncA"/>
                                     </constraints>
@@ -82,7 +91,8 @@
                                     <outlet property="followStackView" destination="J4h-kh-cHV" id="MFP-RE-z9Y"/>
                                     <outlet property="followingLabel" destination="m59-D8-kK5" id="0kh-XD-zIS"/>
                                     <outlet property="followingSwitch" destination="xde-Y8-aIY" id="IED-ku-9TL"/>
-                                    <outlet property="separatorView" destination="bSy-wv-Mzl" id="Lr4-PM-tTj"/>
+                                    <outletCollection property="separatorView" destination="5rd-F5-ydE" collectionClass="NSMutableArray" id="EPk-KR-VZ6"/>
+                                    <outletCollection property="separatorView" destination="bSy-wv-Mzl" collectionClass="NSMutableArray" id="R4y-Fe-fe9"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsPrivacyStaticCell" rowHeight="112" id="3mJ-Wv-Cax" customClass="SettingsPrivacyStaticCell" customModule="Kickstarter_Framework" customModuleProvider="target">
@@ -128,6 +138,13 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="78"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ghh-wA-aCJ">
+                                            <rect key="frame" x="0.0" y="7" width="375" height="32"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="0.5" id="UWj-Xc-znX"/>
+                                            </constraints>
+                                        </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SPn-7c-wWe">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="78"/>
                                             <subviews>
@@ -165,7 +182,7 @@
                                             <rect key="frame" x="0.0" y="77" width="375" height="1"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="1" id="TAz-fO-0Bs"/>
+                                                <constraint firstAttribute="height" constant="0.5" id="TAz-fO-0Bs"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -175,6 +192,7 @@
                                         <constraint firstItem="SPn-7c-wWe" firstAttribute="top" secondItem="8rT-1X-byh" secondAttribute="top" id="MKN-zg-HrD"/>
                                         <constraint firstAttribute="trailing" secondItem="vIw-lj-OpG" secondAttribute="trailing" id="OiR-3e-9gd"/>
                                         <constraint firstItem="vIw-lj-OpG" firstAttribute="leading" secondItem="8rT-1X-byh" secondAttribute="leading" id="SJl-4n-rfR"/>
+                                        <constraint firstItem="Ghh-wA-aCJ" firstAttribute="width" secondItem="8rT-1X-byh" secondAttribute="width" id="Yn4-XF-vOp"/>
                                         <constraint firstItem="SPn-7c-wWe" firstAttribute="leading" secondItem="8rT-1X-byh" secondAttribute="leading" id="nOE-OS-SZr"/>
                                         <constraint firstAttribute="bottom" secondItem="vIw-lj-OpG" secondAttribute="bottom" id="pZk-a3-Gnd"/>
                                     </constraints>
@@ -182,7 +200,8 @@
                                 <connections>
                                     <outlet property="recommendationsLabel" destination="h47-6x-9qS" id="Yn8-iG-UXE"/>
                                     <outlet property="recommendationsSwitch" destination="gZR-mx-pQC" id="9FJ-Yl-edI"/>
-                                    <outlet property="separatorView" destination="vIw-lj-OpG" id="JhM-NP-WsT"/>
+                                    <outletCollection property="separatorView" destination="Ghh-wA-aCJ" collectionClass="NSMutableArray" id="1pA-yc-lwi"/>
+                                    <outletCollection property="separatorView" destination="vIw-lj-OpG" collectionClass="NSMutableArray" id="9FD-1l-ZoE"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsPrivacyRequestDataCell" rowHeight="98" id="mv7-dd-4yd" customClass="SettingsPrivacyRequestDataCell" customModule="Kickstarter_Framework" customModuleProvider="target">
@@ -241,7 +260,7 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fd8-Je-vBB">
                                                             <rect key="frame" x="0.0" y="70.5" width="375" height="1"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="1" id="vyc-5K-B7z"/>
+                                                                <constraint firstAttribute="height" constant="0.5" id="vyc-5K-B7z"/>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9h-Jz-dtj">
@@ -299,7 +318,7 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w3T-mz-kcX">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="1" id="WU6-yx-k7z"/>
+                                                <constraint firstAttribute="height" constant="0.5" id="WU6-yx-k7z"/>
                                             </constraints>
                                             <viewLayoutGuide key="safeArea" id="Ufg-5Z-5Nh"/>
                                         </view>
@@ -371,7 +390,14 @@
                                             <rect key="frame" x="0.0" y="43" width="375" height="1"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="1" id="d0r-LZ-x9K"/>
+                                                <constraint firstAttribute="height" constant="0.5" id="d0r-LZ-x9K"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0bQ-4e-toD">
+                                            <rect key="frame" x="-20" y="0.0" width="395" height="22"/>
+                                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="0.5" id="Bqo-XG-L0C"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -382,8 +408,10 @@
                                         <constraint firstItem="7XT-79-fCP" firstAttribute="leading" secondItem="a4V-wq-rhE" secondAttribute="leading" id="G1Q-rg-5QH"/>
                                         <constraint firstItem="VQ1-SN-E2X" firstAttribute="leading" secondItem="6FC-en-I0Q" secondAttribute="leading" id="LiI-n7-fBm"/>
                                         <constraint firstAttribute="bottom" secondItem="7XT-79-fCP" secondAttribute="bottom" id="UTw-W2-9EG"/>
+                                        <constraint firstItem="0bQ-4e-toD" firstAttribute="top" secondItem="a4V-wq-rhE" secondAttribute="top" id="agG-D4-vL6"/>
                                         <constraint firstItem="VQ1-SN-E2X" firstAttribute="top" secondItem="6FC-en-I0Q" secondAttribute="top" id="fwh-Z1-3G8"/>
                                         <constraint firstAttribute="bottom" secondItem="6FC-en-I0Q" secondAttribute="bottom" id="lc7-er-KPM"/>
+                                        <constraint firstItem="0bQ-4e-toD" firstAttribute="width" secondItem="6FC-en-I0Q" secondAttribute="width" id="nib-38-HM4"/>
                                         <constraint firstItem="6FC-en-I0Q" firstAttribute="top" secondItem="a4V-wq-rhE" secondAttribute="top" id="pJ8-Q0-VTe"/>
                                         <constraint firstItem="VQ1-SN-E2X" firstAttribute="bottom" secondItem="6FC-en-I0Q" secondAttribute="bottom" id="qU9-wh-rsO"/>
                                         <constraint firstItem="6FC-en-I0Q" firstAttribute="leading" secondItem="a4V-wq-rhE" secondAttribute="leading" id="s8Q-PB-mFU"/>
@@ -393,7 +421,8 @@
                                 <connections>
                                     <outlet property="deleteAccountButton" destination="VQ1-SN-E2X" id="p4B-VF-buu"/>
                                     <outlet property="deleteAccountLabel" destination="oK3-Tf-Z28" id="SND-ix-GL7"/>
-                                    <outlet property="separatorView" destination="7XT-79-fCP" id="Yqy-ul-CGJ"/>
+                                    <outletCollection property="separatorView" destination="0bQ-4e-toD" collectionClass="NSMutableArray" id="ZGO-M7-hDv"/>
+                                    <outletCollection property="separatorView" destination="7XT-79-fCP" collectionClass="NSMutableArray" id="XfM-4x-c5O"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
