@@ -65,6 +65,7 @@ internal final class BackerDashboardViewController: UIViewController {
     self.view.addGestureRecognizer(panGesture)
 
     let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureNotifier))
+    tapRecognizer.cancelsTouchesInView = false
     self.pageViewController.view.addGestureRecognizer(tapRecognizer)
 
     self.viewModel.inputs.viewDidLoad()
@@ -251,7 +252,7 @@ internal final class BackerDashboardViewController: UIViewController {
   }
 
   private func goToSettings() {
-    let vc = SettingsV2ViewController.instantiate()
+    let vc = SettingsViewController.instantiate()
 
     if UIDevice.current.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)

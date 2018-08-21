@@ -27,7 +27,6 @@ public enum Storyboard: String {
   case RewardPledge
   case Search
   case Settings
-  case SettingsV2
   case SettingsNotifications
   case SettingsPrivacy
   case SettingsNewsletters
