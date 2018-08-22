@@ -253,14 +253,10 @@ internal final class BackerDashboardViewController: UIViewController {
 
   private func goToSettings() {
     let vc = SettingsViewController.instantiate()
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
 
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = .formSheet
-      self.present(nav, animated: true, completion: nil)
-    } else {
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+    self.present(nav, animated: true, completion: nil)
   }
 
   @objc private func tapGestureNotifier() {

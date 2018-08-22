@@ -23,6 +23,15 @@ final class SettingsViewController: UIViewController {
     tableView.register(nib: .SettingsTableViewCell)
     tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
+    if self.presentingViewController != nil {
+      let image = UIImage(named: "icon--cross")
+      self.navigationItem.leftBarButtonItem =
+        UIBarButtonItem(image: image,
+                        style: .plain,
+                        target: self,
+                        action: #selector(closeButtonPressed))
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -65,6 +74,10 @@ final class SettingsViewController: UIViewController {
     self.viewModel.outputs.goToAppStoreRating
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
+  }
+
+  @objc fileprivate func closeButtonPressed() {
+    self.dismiss(animated: true, completion: nil)
   }
 
   private func logout(params: DiscoveryParams) {
