@@ -45,7 +45,7 @@
 "Change_password" = "Passwort ändern";
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Chat" = "Chat";
-"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
+"Check_back_later_for_an_update_on_your_export" = "Der Fortschritt des Exports wird in Kürze verfügbar sein- schau später noch einmal vorbei.";
 "Chooses_location_for_shipping" = "Legt %{location} als Versandort fest.";
 "Close_live_stream" = "Live-Stream schließen";
 "Close_project" = "Projekt schließen";
@@ -292,7 +292,7 @@
 "Replay_past_live_stream" = "Wiedergabe des vorigen Live-Streams";
 "Replay_past_live_streams" = "Wiedergabe vergangener Live-Streams";
 "Reply_to_user_name" = "%{user_name} antworten …";
-"Request_my_personal_data" = "Request my personal data";
+"Request_my_personal_data" = "Meine persönlichen Daten anfordern";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";
@@ -339,7 +339,7 @@
 "Signs_up_with_Email" = "Mit E-Mail-Adresse registrieren.";
 "Something_catch_your_eye" = "Etwas interessantes gefunden?";
 "Something_went_wrong_please_try_again" = "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal.";
-"Start_the_request" = "Start the request";
+"Start_the_request" = "Daten zusammenstellen";
 "Starting_soon" = "Beginnt in Kürze";
 "Status" = "Status:";
 "Stay_up_to_date" = "Möchtest du auf dem Laufenden bleiben?";
@@ -373,7 +373,7 @@
 "Top_ten_pledge_sources" = "Top 10 Quellen deiner Beiträge";
 "Top_ten_rewards" = "Top 10-Belohnungen";
 "Total_pledged" = "Anzahl der Beiträge insgesamt";
-"Unable_to_request_data" = "Unable to request data.";
+"Unable_to_request" = "Daten konnten nicht angefordert werden.";
 "Unfollow_friend_name" = "%{friend_name} nicht mehr folgen";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
 "Unsaved" = "Speichern wurde rückgängig gemacht";

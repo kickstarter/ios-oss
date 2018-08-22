@@ -45,7 +45,7 @@
 "Change_password" = "Change password";
 "Change_payment_method" = "Change payment method";
 "Chat" = "Chat";
-"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
+"Check_back_later_for_an_update_on_your_export" = "Check back later for an update on your export progress.";
 "Chooses_location_for_shipping" = "Chooses %{location} for shipping.";
 "Close_live_stream" = "Close live stream";
 "Close_project" = "Close project";
@@ -373,7 +373,7 @@
 "Top_ten_pledge_sources" = "Top 10 pledge sources";
 "Top_ten_rewards" = "Top 10 rewards";
 "Total_pledged" = "Total pledged";
-"Unable_to_request_data" = "Unable to request data.";
+"Unable_to_request" = "Unable to request data.";
 "Unfollow_friend_name" = "Unfollow %{friend_name}";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
 "Unsaved" = "Unsaved";
