@@ -57,13 +57,13 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
           : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2)) }
 
     _ = separatorViews
-      ||> separatorStyle
+      ||> settingsSeparatorStyle
 
     _ = self.requestDataButton
       |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_text_dark_grey_500
 
     _ = self.chevron
-      |> UIImageView.lens.tintColor .~ .ksr_text_dark_grey_500
+      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_400
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
 
     _ = self.preparingDataLabel

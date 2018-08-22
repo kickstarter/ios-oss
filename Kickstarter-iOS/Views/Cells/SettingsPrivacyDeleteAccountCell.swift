@@ -15,7 +15,7 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
 
   @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
   @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
-  @IBOutlet fileprivate weak var separatorView: UIView!
+  @IBOutlet fileprivate var separatorView: [UIView]!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -38,7 +38,7 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
           : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2)) }
 
     _ = self.separatorView
-      |> separatorStyle
+      ||> settingsSeparatorStyle
 
     _ = self.deleteAccountLabel
       |> UILabel.lens.textColor .~ .ksr_red_400
