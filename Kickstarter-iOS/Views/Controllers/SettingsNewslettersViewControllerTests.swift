@@ -29,10 +29,11 @@ internal final class SettingsNewslettersViewControllerTests: TestCase {
           SettingsNewslettersViewController.self
         )
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_300
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(controller.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
