@@ -1,3 +1,4 @@
+"A_weekly_roundup_of_the_best_and_brightest" = "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team.";
 "About_reward_amount" = "Ungefähr %{reward_amount}";
 "Account" = "Konto";
 "Add_attachments" = "Anhänge hinzufügen ...";
@@ -37,6 +38,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nUnterstützer";
 "Backers_count_separator_backers.zero" = "%{backers_count}\nUnterstützer";
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
+"Big_Kickstarter_news_and_events_near_you" = "Big Kickstarter news and events near you, delivered just a few times a year.";
 "Biography" = "Biografie";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
@@ -80,6 +82,7 @@
 "Developer" = "Entwickler";
 "Discover_arts_news" = "Entdecke innovative Projekte und Ideen, handverlesen zweimal monatlich von Kickstarters Design & Tech Team.";
 "Discover_more_projects" = "Erkunde mehr Projekte.";
+"Discover_the_future_of_Design_and_Tech" = "Discover the future of Design and Tech.";
 "Dismiss" = "Verwerfen";
 "Done" = "Fertig!";
 "Download_your_personal_data" = "Lade deine persönlichen Daten herunter";
@@ -167,6 +170,7 @@
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Die Zusammenstellung deiner Daten kann bis zu 24 Stunden dauern. Sobald sie zum Download bereitstehen, werden wir dir eine Anleitung dazu per E-Mail schicken. Solltest du nichts von uns hören, versuche es von hier aus noch einmal.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_better_with_friends" = "Gemeinsam mehr erreichen";
+"Join_our_secret_society" = "Join our secret society.";
 "Joining_the_live_stream" = "Verbindung zum Live-Stream wird aufgebaut";
 "Just_for_you" = "Nur für dich.";
 "Keep_reading" = "Mehr lesen";
@@ -194,6 +198,7 @@
 "Log_in_or_sign_up_to_subscribe" = "Bitte einloggen oder registrieren";
 "Log_in_to_leave_a_comment" = "Melde dich an, um einen Kommentar zu hinterlassen.";
 "Log_out" = "Abmelden";
+"Love_film_We_do_too" = "Love film? We do, too.";
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
 "Manage_your_pledge" = "Meinen Beitrag verwalten";
 "Manage_your_pledge_below" = "Folgenden Beitrag verwalten";
@@ -205,6 +210,7 @@
 "Name" = "Name";
 "Never" = "Niemals";
 "New_pledge_activity" = "Neue Finanzierungsbeiträge";
+"New_work_and_big_ideas_from_established_and" = "New work and big ideas from established and emerging artists.";
 "News_events" = "Ein paar Mal pro Jahr: Neuigkeiten und Events in deiner Nähe.";
 "Newsletters" = "Newsletter";
 "No_Results" = "Keine Ergebnisse";
@@ -361,6 +367,7 @@
 "The_live_stream_will_start_soon" = "Live-Stream started in Kürze";
 "The_live_stream_will_start_time" = "Dieser Live-Stream started in %{time}.";
 "The_replay_will_start_soon" = "Wiedergabe started in Kürze";
+"The_zeitgeist_delivered_to_your_inbox_via_new" = "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories.";
 "There_was_a_problem_with_this_payment" = "Es ist ein Problem bei der Zahlung aufgetreten.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Dieses Projekt wird nur finanziert, wenn bis am %{date} Unterstützungsbeiträge von mindestens %{amount} geleistet werden.";
@@ -397,6 +404,7 @@
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden.";
 "We_were_unable_to_load_the_shipping_destinations" = "Das Laden der Versandadressen war leider nicht möglich.\nBitte versuche es später noch einmal.";
 "Websites" = "Webseiten";
+"Welcome_to_our_library_Peruse_the_stacks_with_us" = "Welcome to our library. Peruse the stacks with us.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";

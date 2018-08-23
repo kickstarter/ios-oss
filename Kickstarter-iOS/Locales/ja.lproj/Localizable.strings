@@ -1,3 +1,4 @@
+"A_weekly_roundup_of_the_best_and_brightest" = "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team.";
 "About_reward_amount" = "約 %{reward_amount}　";
 "Account" = "アカウント";
 "Add_attachments" = "添付ファイルを追加...";
@@ -37,6 +38,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\nバッカー";
 "Backers_count_separator_backers.zero" = "%{backers_count} バッカー";
 "Become_a_backer_to_leave_a_comment" = "コメントを残すためにバッカーになる。";
+"Big_Kickstarter_news_and_events_near_you" = "Big Kickstarter news and events near you, delivered just a few times a year.";
 "Biography" = "自己紹介";
 "Bookmarks" = "ブックマーク";
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
@@ -80,6 +82,7 @@
 "Developer" = "開発者";
 "Discover_arts_news" = "Kickstarter の「デザイン＆テクノロジー」チーム選りすぐりの革新的なプロジェクトを毎月2回お届けします。";
 "Discover_more_projects" = "プロジェクトをさがす";
+"Discover_the_future_of_Design_and_Tech" = "Discover the future of Design and Tech.";
 "Dismiss" = "破棄";
 "Done" = "完了";
 "Download_your_personal_data" = "自分の個人データをダウンロード";
@@ -167,6 +170,7 @@
 "It_may_take_up_to_24_hours_to_collect_your_data" = "データの収集には最大で24時間かかる場合があります。ダウンロードの準備が整いましたら、このアカウントに登録されているメールアドレス宛てにデータのダウンロード手順が記載されたメールをお送りします。メールが届かなかった場合には、お手数ですがこちらに戻って再試行してください。";
 "Its_a_way_to_bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
 "Its_better_with_friends" = "友達にとってより良い。";
+"Join_our_secret_society" = "Join our secret society.";
 "Joining_the_live_stream" = "ライブ配信に参加";
 "Just_for_you" = "あなたのために。";
 "Keep_reading" = "続きを読む";
@@ -194,6 +198,7 @@
 "Log_in_or_sign_up_to_subscribe" = "ログインまたはサインアップしてください";
 "Log_in_to_leave_a_comment" = "ログインしてコメントを残す。";
 "Log_out" = "ログアウト";
+"Love_film_We_do_too" = "Love film? We do, too.";
 "Make_a_pledge_without_a_reward" = "リワードなしでプレッジ";
 "Manage_your_pledge" = "プレッジを変更";
 "Manage_your_pledge_below" = "以下のプレッジを変更";
@@ -205,6 +210,7 @@
 "Name" = "名前";
 "Never" = "通知を受けない";
 "New_pledge_activity" = "新しいプレッジ";
+"New_work_and_big_ideas_from_established_and" = "New work and big ideas from established and emerging artists.";
 "News_events" = "1年に数回だけ、お近くのニュースやイベント情報をお届け。";
 "Newsletters" = "ニュースレター";
 "No_Results" = "該当結果なし";
@@ -361,6 +367,7 @@
 "The_live_stream_will_start_soon" = "ライブ配信が開始します";
 "The_live_stream_will_start_time" = "%{time} にライブ配信が開始されます。";
 "The_replay_will_start_soon" = "リプレイが始まります";
+"The_zeitgeist_delivered_to_your_inbox_via_new" = "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories.";
 "There_was_a_problem_with_this_payment" = "支払いに問題があります。";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "このFacebookアカウントはすでに他のKickstarterユーザーとつながっています";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "このプロジェクトは%{date} までに、少なくとも%{amount}プレッジされるでしょう。";
@@ -397,6 +404,7 @@
 "We_were_unable_to_connect_to_the_live_stream_chat" = "ライブ配信への接続に失敗。";
 "We_were_unable_to_load_the_shipping_destinations" = "配送先の読込に失敗。\n再度お試しください。";
 "Websites" = "ウェブサイト";
+"Welcome_to_our_library_Peruse_the_stacks_with_us" = "Welcome to our library. Peruse the stacks with us.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "終了48時間前に通知が届きます。保存アイテムをみるにはプロフィールをご覧ください。";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "フォローがオンになっていると、他の人のアクティビティをフォローすることができ、また、他の人もあなたのアクティビティをフォローすることができます。このようなデータを永久に削除するためにはフォローをオフにしてください。";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "プロジェクトを保存し、終了の48時間前にリマインドする。";
