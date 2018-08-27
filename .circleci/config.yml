@@ -524,6 +524,8 @@ workflows:
             branches:
               only: fastlane-refresh-dsyms
               # only: /alpha-dist-.*/
+            requires:
+              - swiftlint-and-cache
       - deploy_alpha:
           filters:
             branches:
