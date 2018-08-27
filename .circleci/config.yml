@@ -326,6 +326,10 @@ jobs:
           no_output_timeout: "30m" # 30 minutes
 
       - run:
+          name: Download App Store dSYMs
+          command: bundle exec fastlane refresh_dsyms
+
+      - run:
           name: Cleanup Temp Branch
           command: make cleanup
 
@@ -390,6 +394,10 @@ jobs:
           command: bundle exec fastlane beta_match_gym_hockey --verbose
           no_output_timeout: "30m" # 30 minutes
 
+      - run:
+          name: Download App Store dSYMs
+          command: bundle exec fastlane refresh_dsyms
+
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
@@ -450,6 +458,10 @@ jobs:
           name: Fastlane
           command: bundle exec fastlane itunes_match_gym_deliver_hockey --verbose
           no_output_timeout: "30m" # 30 minutes
+
+      - run:
+          name: Download App Store dSYMs
+          command: bundle exec fastlane refresh_dsyms
 
       - store_artifacts:
           path: /tmp/xcode_raw.log

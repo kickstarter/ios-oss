@@ -184,6 +184,18 @@ platform :ios do
 
   ### SHARED
 
+  desc "Download App Store dSYMs and upload to Crashlytics"
+  lane :refresh_dsyms do |options|
+    download_dsyms(
+      username: ENV["ITUNES_CONNECT_ACCOUNT"],
+      app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
+      team_id: ENV["ITUNES_TEAM_ID"],
+    )
+
+    upload_dsyms # Paths are taken from lane_context[SharedValues::DSYM_PATHS] automatically
+    clean_build_artifacts
+  end
+
   private_lane :build_the_app do |options|
     export_options = {}
 
