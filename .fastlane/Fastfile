@@ -190,6 +190,7 @@ platform :ios do
       username: ENV["ITUNES_CONNECT_ACCOUNT"],
       app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
       team_id: ENV["ITUNES_TEAM_ID"],
+      version: "latest"
     )
 
     upload_dsyms # Paths are taken from lane_context[SharedValues::DSYM_PATHS] automatically
@@ -235,7 +236,7 @@ platform :ios do
     upload_symbols_to_crashlytics(
       dsym_path: options[:dsym], 
       api_token: ENV["FABRIC_API_KEY"],
-      binary_path: "./Frameworks/Fabric/Fabric.framework"
+      binary_path: "./Frameworks/Fabric/Fabric.framework/uploadDSYM"
     )
   end
 
