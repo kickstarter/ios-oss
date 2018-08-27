@@ -326,10 +326,6 @@ jobs:
           no_output_timeout: "30m" # 30 minutes
 
       - run:
-          name: Download App Store dSYMs
-          command: bundle exec fastlane refresh_dsyms
-
-      - run:
           name: Cleanup Temp Branch
           command: make cleanup
 
@@ -394,10 +390,6 @@ jobs:
           command: bundle exec fastlane beta_match_gym_hockey --verbose
           no_output_timeout: "30m" # 30 minutes
 
-      - run:
-          name: Download App Store dSYMs
-          command: bundle exec fastlane refresh_dsyms
-
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
@@ -414,6 +406,14 @@ jobs:
             - source-v1-
 
       - checkout
+
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
+
+      - run:
+          name: Store OpenTok Version
+          command: *store_opentok_version
 
       - restore_cache:
           keys:
@@ -442,7 +442,7 @@ jobs:
             - vendor/bundle
       - run:
           name: Download dSYMs and upload to Crashlytics
-          command: bundle exec fastlane refresh_dsyms
+          command: bundle exec fastlane refresh_dsyms --verbose
 
   # iTunes
   itunes:
@@ -499,10 +499,6 @@ jobs:
           command: bundle exec fastlane itunes_match_gym_deliver_hockey --verbose
           no_output_timeout: "30m" # 30 minutes
 
-      - run:
-          name: Download App Store dSYMs
-          command: bundle exec fastlane refresh_dsyms
-
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
@@ -524,8 +520,6 @@ workflows:
             branches:
               only: fastlane-refresh-dsyms
               # only: /alpha-dist-.*/
-          requires:
-            - swiftlint-and-cache
       - deploy_alpha:
           filters:
             branches:
