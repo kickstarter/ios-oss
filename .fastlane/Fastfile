@@ -195,6 +195,11 @@ platform :ios do
 
     upload_dsyms # Paths are taken from lane_context[SharedValues::DSYM_PATHS] automatically
     clean_build_artifacts
+
+    slack(
+      slack_url: ENV["SLACK_WEBHOOK"],
+      message: "Successfully refreshed dSYMs for the latest App Store version"
+    )
   end
 
   private_lane :build_the_app do |options|
