@@ -236,7 +236,7 @@ platform :ios do
     upload_symbols_to_crashlytics(
       dsym_path: options[:dsym], 
       api_token: ENV["FABRIC_API_KEY"],
-      binary_path: "./Frameworks/Fabric/Fabric.framework/uploadDSYM"
+      binary_path: "./Frameworks/Fabric/Fabric.framework/Fabric"
     )
   end
 
