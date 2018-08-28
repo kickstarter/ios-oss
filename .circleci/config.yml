@@ -396,7 +396,7 @@ jobs:
       - store_artifacts:
           path: output
 
-  test_refresh_dsyms:
+  refresh_app_store_dsyms:
     <<: *base_job
     steps:
       - restore_cache:
@@ -442,7 +442,7 @@ jobs:
             - vendor/bundle
       - run:
           name: Download dSYMs and upload to Crashlytics
-          command: bundle exec fastlane refresh_dsyms --verbose
+          command: bundle exec fastlane refresh_dsyms
 
   # iTunes
   itunes:
@@ -515,11 +515,10 @@ workflows:
       - library-tests
       - livestream-tests
       - ksapi-tests
-      - test_refresh_dsyms:
+      - refresh_app_store_dsyms:
           filters:
             branches:
-              only: fastlane-refresh-dsyms
-              # only: /alpha-dist-.*/
+              only: /alpha-dist-.*/
       - deploy_alpha:
           filters:
             branches:
