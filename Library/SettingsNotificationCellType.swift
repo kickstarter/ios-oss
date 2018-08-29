@@ -5,15 +5,9 @@ public enum SettingsNotificationSectionType: Int {
   case backedProjects
   case creator
   case social
-  case findFriends
 
   public var sectionHeaderHeight: CGFloat {
-    switch self {
-    case .findFriends:
-      return Styles.grid(2)
-    default:
-      return Styles.grid(9)
-    }
+    return Styles.grid(9)
   }
 
   public var cellRowsForSection: [SettingsNotificationCellType] {
@@ -24,8 +18,6 @@ public enum SettingsNotificationSectionType: Int {
       return [.pledgeActivity, .newComments, .newLikes, .creatorTips]
     case .social:
       return [.messages, .newFollowers, .friendBacksProject]
-    case .findFriends:
-      return [.findFacebookFriends]
     }
   }
 
@@ -37,15 +29,13 @@ public enum SettingsNotificationSectionType: Int {
       return Strings.profile_settings_creator_title()
     case .social:
       return Strings.profile_settings_social_title()
-    default:
-      return ""
     }
   }
 
   public static var allCases: [SettingsNotificationSectionType] = [.backedProjects,
                                                                    .creator,
-                                                                   .social,
-                                                                   .findFriends]
+                                                                   .social
+                                                                   ]
 }
 
 public enum SettingsNotificationCellType {
@@ -59,7 +49,6 @@ public enum SettingsNotificationCellType {
   case messages
   case newFollowers
   case friendBacksProject
-  case findFacebookFriends
 
   public static var allCases: [SettingsNotificationCellType] = [.projectUpdates,
                                                                 .projectNotifications,
@@ -71,11 +60,11 @@ public enum SettingsNotificationCellType {
                                                                 .messages,
                                                                 .newFollowers,
                                                                 .friendBacksProject,
-                                                                .findFacebookFriends]
+                                                                ]
 
   public var shouldShowEmailNotificationButton: Bool {
     switch self {
-    case .projectNotifications, .findFacebookFriends, .emailFrequency:
+    case .projectNotifications, .emailFrequency:
       return false
     default:
       return true
@@ -84,7 +73,7 @@ public enum SettingsNotificationCellType {
 
   public var showShowPushNotificationButton: Bool {
     switch self {
-    case .projectNotifications, .findFacebookFriends, .emailFrequency, .creatorTips:
+    case .projectNotifications, .emailFrequency, .creatorTips:
       return false
     default:
       return true
@@ -100,7 +89,7 @@ public enum SettingsNotificationCellType {
 
   public var shouldHideArrowView: Bool {
     switch self {
-    case .projectNotifications, .findFacebookFriends, .emailFrequency: return false
+    case .projectNotifications, .emailFrequency: return false
     default: return true
     }
   }
@@ -127,8 +116,6 @@ public enum SettingsNotificationCellType {
       return Strings.profile_settings_social_followers()
     case .friendBacksProject:
       return Strings.profile_settings_social_friend_backs()
-    case .findFacebookFriends:
-      return Strings.profile_settings_social_find_friends()
     }
   }
 }

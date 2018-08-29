@@ -5,6 +5,7 @@ public enum Nib: String {
   case BackerDashboardProjectCell
   case DiscoveryPostcardCell
   case DiscoveryProjectCategoryView
+  case FindFriendsCell
   case LiveStreamNavTitleView
   case RewardCell
   case SettingsHeaderView

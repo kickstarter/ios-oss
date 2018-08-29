@@ -14,7 +14,7 @@ public protocol SettingsViewModelInputs {
 public protocol SettingsViewModelOutputs {
   var goToAppStoreRating: Signal<String, NoError> { get }
   var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
-  var reloadData: Signal<Void, NoError> { get }
+  var reloadDataWithUser: Signal<User, NoError> { get }
   var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
 }
@@ -30,6 +30,16 @@ final class SettingsViewModel: SettingsViewModelInputs,
 SettingsViewModelOutputs, SettingsViewModelType {
 
   public init() {
+    let initialUser = viewDidLoadProperty.signal
+      .flatMap {
+        AppEnvironment.current.apiService.fetchUserSelf()
+          .wrapInOptional()
+          .prefix(value: AppEnvironment.current.currentUser)
+          .demoteErrors()
+      }.skipNil()
+
+    self.reloadDataWithUser = initialUser
+
     self.showConfirmLogoutPrompt = selectedCellTypeProperty.signal
       .skipNil()
       .filter { $0 == .logout }
@@ -55,8 +65,6 @@ SettingsViewModelOutputs, SettingsViewModelType {
       .skipNil()
       .map { SettingsViewModel.viewController(for: $0) }
       .skipNil()
-
-    self.reloadData = self.viewDidLoadProperty.signal
 
     self.viewDidLoadProperty.signal.observeValues { _ in AppEnvironment.current.koala.trackSettingsView() }
 
@@ -96,7 +104,7 @@ SettingsViewModelOutputs, SettingsViewModelType {
   public let goToAppStoreRating: Signal<String, NoError>
   public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
-  public let reloadData: Signal<Void, NoError>
+  public let reloadDataWithUser: Signal<User, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
 
   public var inputs: SettingsViewModelInputs { return self }
@@ -111,6 +119,8 @@ extension SettingsViewModel {
       return HelpViewController.instantiate()
     case .privacy:
       return SettingsPrivacyViewController.instantiate()
+    case .findFriends:
+      return FindFriendsViewController.configuredWith(source: .settings)
     case .newsletters:
       return SettingsNewslettersViewController.instantiate()
     case .notifications:
@@ -124,6 +134,12 @@ extension SettingsViewModel {
     switch cellType {
     case .appVersion:
       return false
+    case .findFriends:
+      guard let user = AppEnvironment.current.currentUser else {
+        return true
+      }
+
+      return (user |> User.lens.social.view) ?? true
     default:
       return true
     }

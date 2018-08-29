@@ -17,11 +17,12 @@ final class SettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    tableView.dataSource = dataSource
-    tableView.delegate = self
+    self.tableView.dataSource = dataSource
+    self.tableView.delegate = self
 
-    tableView.register(nib: .SettingsTableViewCell)
-    tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+    self.tableView.register(nib: .SettingsTableViewCell)
+    self.tableView.register(nib: .FindFriendsCell)
+    self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
     if self.presentingViewController != nil {
       let image = UIImage(named: "icon--cross")
@@ -48,10 +49,10 @@ final class SettingsViewController: UIViewController {
   }
 
   override func bindViewModel() {
-    self.viewModel.outputs.reloadData
+    self.viewModel.outputs.reloadDataWithUser
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.dataSource.configureRows()
+      .observeValues { [weak self] user in
+        self?.dataSource.configureRows(with: user)
         self?.tableView.reloadData()
     }
 
