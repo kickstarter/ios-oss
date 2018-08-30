@@ -1,4 +1,3 @@
-
 import Prelude
 import ReactiveSwift
 import Result

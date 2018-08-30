@@ -13,7 +13,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   func configureWith(value cellValue: SettingsCellValue) {
     let cellType = cellValue.cellType
-    
+
     _ = titleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text .~ cellType.title

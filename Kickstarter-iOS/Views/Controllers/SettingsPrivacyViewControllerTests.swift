@@ -54,7 +54,7 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
 
     let mockService = MockService(fetchExportStateResponse: exportData,
                                   fetchUserSelfResponse: currentUser)
-    
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(apiService: mockService,
