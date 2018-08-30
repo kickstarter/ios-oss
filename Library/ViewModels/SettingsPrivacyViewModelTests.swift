@@ -32,10 +32,15 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
   func testReloadData() {
     let user = User.template
+    let mockService = MockService(fetchUserSelfResponse: user)
 
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
 
-    self.reloadData.assertValues([user])
+      self.scheduler.advance()
+
+      self.reloadData.assertValues([user, user], "Reload data event fires twice: once for the prefixed currentUser, and once with the updated response from the server")
+    }
   }
 
   func testUnableToSaveError() {
@@ -57,14 +62,19 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testUpdateCurrentUser() {
+    let mockService = MockService(fetchUserSelfResponse: User.template)
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.updateCurrentUser.assertValueCount(0)
 
-    self.vm.inputs.viewDidLoad()
-    self.updateCurrentUser.assertValueCount(1)
+      self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
+      self.updateCurrentUser.assertValueCount(0)
 
-    self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
-    self.updateCurrentUser.assertValueCount(2)
+      self.vm.followingSwitchTapped(on: false, didShowPrompt: true)
 
-    self.vm.followingSwitchTapped(on: false, didShowPrompt: true)
-    self.updateCurrentUser.assertValueCount(3)
+      self.scheduler.advance()
+
+      self.updateCurrentUser.assertValueCount(1)
+    }
   }
 }

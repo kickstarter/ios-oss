@@ -28,7 +28,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="psT-cf-VjN">
                                             <rect key="frame" x="0.0" y="291" width="336" height="40"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="vV2-Bz-aq9"/>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="vV2-Bz-aq9"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>

@@ -5,6 +5,7 @@ import KsApi
 import Library
 
 public protocol SettingsViewModelInputs {
+  func currentUserUpdated()
   func logoutCanceled()
   func logoutConfirmed()
   func settingsCellTapped(cellType: SettingsCellType)
@@ -30,15 +31,18 @@ final class SettingsViewModel: SettingsViewModelInputs,
 SettingsViewModelOutputs, SettingsViewModelType {
 
   public init() {
-    let initialUser = viewDidLoadProperty.signal
+    let user = Signal.merge(
+      viewDidLoadProperty.signal,
+      currentUserUpdatedProperty.signal)
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()
           .wrapInOptional()
           .prefix(value: AppEnvironment.current.currentUser)
           .demoteErrors()
-      }.skipNil()
+      }
+      .skipNil()
 
-    self.reloadDataWithUser = initialUser
+    self.reloadDataWithUser = user
 
     self.showConfirmLogoutPrompt = selectedCellTypeProperty.signal
       .skipNil()
@@ -79,6 +83,11 @@ SettingsViewModelOutputs, SettingsViewModelType {
 
     self.showConfirmLogoutPrompt
       .observeValues { _ in AppEnvironment.current.koala.trackLogoutModal() }
+  }
+
+  private var currentUserUpdatedProperty = MutableProperty(())
+  func currentUserUpdated() {
+    self.currentUserUpdatedProperty.value = ()
   }
 
   private var selectedCellTypeProperty = MutableProperty<SettingsCellType?>(nil)

@@ -8,6 +8,7 @@ final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var tableView: UITableView!
 
   private let dataSource = SettingsDataSource()
+  private var userUpdatedObserver: Any?
   private let viewModel: SettingsViewModelType = SettingsViewModel()
 
   internal static func instantiate() -> SettingsViewController {
@@ -33,7 +34,17 @@ final class SettingsViewController: UIViewController {
                         action: #selector(closeButtonPressed))
     }
 
+    self.userUpdatedObserver = NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_userUpdated,
+                   object: nil, queue: nil) { [weak self] _ in
+                      self?.viewModel.inputs.currentUserUpdated()
+    }
+
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.userUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   override func bindStyles() {

@@ -25,9 +25,13 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testViewDidLoad() {
-    self.vm.viewDidLoad()
+    let mockService = MockService(fetchUserSelfResponse: User.template)
 
-    self.reloadDataWithUserObserver.assertValueCount(1)
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.viewDidLoad()
+
+      self.reloadDataWithUserObserver.assertValueCount(2)
+    }
   }
 
   func testLogoutCellTapped() {
@@ -72,5 +76,18 @@ internal final class SettingsViewModelTests: TestCase {
     self.goToAppStoreRating.assertValueCount(0)
     self.vm.settingsCellTapped(cellType: .rateInAppStore)
     self.goToAppStoreRating.assertValueCount(1, "Opens app store url")
+  }
+
+  func testUserUpdatedNotification() {
+    let updatedUser = User.template |> User.lens.social .~ true
+    let mockService = MockService(fetchUserSelfResponse: updatedUser)
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.currentUserUpdated()
+
+      self.scheduler.advance()
+
+      self.reloadDataWithUserObserver.assertValueCount(2)
+    }
   }
 }
