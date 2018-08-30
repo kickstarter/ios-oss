@@ -45,7 +45,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
   func testEnableButtonAnimation_turnedOff() {
     let user = User.template
-    let value = SettingsNotificationCellValue(cellType: .findFacebookFriends, user: user)
+    let value = SettingsNotificationCellValue(cellType: .emailFrequency, user: user)
 
     self.vm.inputs.configure(with: value)
 
@@ -131,7 +131,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   func testEmailNotificationEnabled_NoValue() {
     let user = User.template
     // Should have no Notification value
-    let value = SettingsNotificationCellValue(cellType: .findFacebookFriends, user: user)
+    let value = SettingsNotificationCellValue(cellType: .emailFrequency, user: user)
 
     self.vm.inputs.configure(with: value)
 
@@ -141,7 +141,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   func testPushNotificationsEnabled_NoValue() {
     let user = User.template
     // Should have no Notification value
-    let value = SettingsNotificationCellValue(cellType: .findFacebookFriends, user: user)
+    let value = SettingsNotificationCellValue(cellType: .emailFrequency, user: user)
 
     self.vm.inputs.configure(with: value)
 
@@ -159,7 +159,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     let user = User.template
 
     // Should have no Notification
-    let value = SettingsNotificationCellValue(cellType: .findFacebookFriends, user: user)
+    let value = SettingsNotificationCellValue(cellType: .projectNotifications, user: user)
 
     self.vm.inputs.configure(with: value)
 
@@ -177,7 +177,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     let user = User.template
 
     // Should have no Notification
-    let value = SettingsNotificationCellValue(cellType: .findFacebookFriends, user: user)
+    let value = SettingsNotificationCellValue(cellType: .projectNotifications, user: user)
 
     self.vm.inputs.configure(with: value)
 

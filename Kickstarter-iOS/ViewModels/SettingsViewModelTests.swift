@@ -10,7 +10,7 @@ internal final class SettingsViewModelTests: TestCase {
 
   let goToAppStoreRating = TestObserver<String, NoError>()
   let logout = TestObserver<DiscoveryParams, NoError>()
-  let reloadData = TestObserver<Void, NoError>()
+  let reloadDataWithUserObserver = TestObserver<User, NoError>()
   let showConfirmLogout = TestObserver<Void, NoError>()
   let transitionToViewController = TestObserver<UIViewController, NoError>()
 
@@ -19,9 +19,15 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
     self.vm.outputs.logoutWithParams.observe(logout.observer)
-    self.vm.outputs.reloadData.observe(reloadData.observer)
+    self.vm.outputs.reloadDataWithUser.observe(reloadDataWithUserObserver.observer)
     self.vm.outputs.showConfirmLogoutPrompt.signal.mapConst(()).observe(showConfirmLogout.observer)
     self.vm.outputs.transitionToViewController.observe(transitionToViewController.observer)
+  }
+
+  func testViewDidLoad() {
+    self.vm.viewDidLoad()
+
+    self.reloadDataWithUserObserver.assertValueCount(1)
   }
 
   func testLogoutCellTapped() {

@@ -20,7 +20,7 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.disabledDescriptionLabel.rac.hidden = self.viewModel.outputs.disabledDescriptionLabelShouldHide
+    self.descriptionLabelContainer.rac.hidden = self.viewModel.outputs.disabledDescriptionLabelShouldHide
 
     self.viewModel.outputs.isDisabled
       .observeForUI()

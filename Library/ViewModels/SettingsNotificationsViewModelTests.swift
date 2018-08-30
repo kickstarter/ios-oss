@@ -21,19 +21,12 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.goToFindFriends.observe(self.goToFindFriendsObserver.observer)
     self.vm.outputs.goToManageProjectNotifications
       .observe(self.goToManageProjectNotificationsObserver.observer)
     self.vm.outputs.pickerViewIsHidden.observe(self.pickerViewIsHiddenObserver.observer)
     self.vm.outputs.pickerViewSelectedRow.observe(self.pickerViewSelectedRowObserver.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveErrorObserver.observer)
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUserObserver.observer)
-  }
-
-  func testGoToFindFriends() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.didSelectRow(cellType: .findFacebookFriends)
-    self.goToFindFriendsObserver.assertValueCount(1, "Go to Find Friends screen.")
   }
 
   func testGoToManageProjectNotifications() {
