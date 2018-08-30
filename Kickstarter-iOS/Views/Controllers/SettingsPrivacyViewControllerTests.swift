@@ -24,9 +24,12 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
       |> User.lens.social .~ false
     let exportData = ExportDataEnvelope.template
 
+    let mockService = MockService(fetchExportStateResponse: exportData,
+                                  fetchUserSelfResponse: currentUser)
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(apiService: MockService(fetchExportStateResponse: exportData),
+      withEnvironment(apiService: mockService,
                       currentUser: currentUser,
                       language: language) {
         let vc = Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
@@ -49,9 +52,12 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
       |> ExportDataEnvelope.lens.dataUrl .~ nil
       |> ExportDataEnvelope.lens.expiresAt .~ nil
 
+    let mockService = MockService(fetchExportStateResponse: exportData,
+                                  fetchUserSelfResponse: currentUser)
+    
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(apiService: MockService(fetchExportStateResponse: exportData),
+      withEnvironment(apiService: mockService,
                       currentUser: currentUser,
                       language: language) {
         let vc = Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
