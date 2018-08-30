@@ -163,6 +163,7 @@
 		77F9A9B02135FB760082A11E /* FindFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */; };
 		77F9A9B22135FC9B0082A11E /* FindFriendsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */; };
 		77F9A9B42136F2340082A11E /* FindFriendsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F9A9B32136F2340082A11E /* FindFriendsCellViewModel.swift */; };
+		77F9A9B6213852290082A11E /* FindFriendsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F9A9B5213852290082A11E /* FindFriendsCellViewModelTests.swift */; };
 		77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */; };
 		77FA6CA920F3E18F00809E31 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */; };
 		77FA6CAB20F3E3C200809E31 /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */; };
@@ -1788,6 +1789,7 @@
 		77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsCell.swift; sourceTree = "<group>"; };
 		77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FindFriendsCell.xib; sourceTree = "<group>"; };
 		77F9A9B32136F2340082A11E /* FindFriendsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsCellViewModel.swift; sourceTree = "<group>"; };
+		77F9A9B5213852290082A11E /* FindFriendsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsCellViewModelTests.swift; sourceTree = "<group>"; };
 		77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSource.swift; sourceTree = "<group>"; };
 		77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewCell.xib; sourceTree = "<group>"; };
@@ -2964,6 +2966,7 @@
 				774A76EC20D845770012A71F /* BetaToolsViewModel.swift */,
 				774A76F220D97A9E0012A71F /* BetaToolsViewModelTests.swift */,
 				77F9A9B32136F2340082A11E /* FindFriendsCellViewModel.swift */,
+				77F9A9B5213852290082A11E /* FindFriendsCellViewModelTests.swift */,
 				01940B2A1D46814E0074FCE3 /* HelpWebViewModel.swift */,
 				A7ED205E1E83256700BFFA01 /* HelpWebViewModelTests.swift */,
 				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
@@ -5837,6 +5840,7 @@
 				774A76F320D97A9E0012A71F /* BetaToolsViewModelTests.swift in Sources */,
 				A7ED20431E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift in Sources */,
 				A7ED20421E8323E900BFFA01 /* SortPagerViewControllerTests.swift in Sources */,
+				77F9A9B6213852290082A11E /* FindFriendsCellViewModelTests.swift in Sources */,
 				D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */,
 				D03340841E8A71520066EC7B /* LiveStreamContainerPagesDataSourceTests.swift in Sources */,
 				A7ED20511E8323E900BFFA01 /* ProjectNavBarViewControllerTests.swift in Sources */,
