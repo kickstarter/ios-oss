@@ -4,11 +4,11 @@ import Library
 import Prelude
 
 final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
+  @IBOutlet fileprivate weak var descriptionLabelContainer: UIView!
   @IBOutlet fileprivate weak var disabledDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var separatorView: UIView!
-  @IBOutlet fileprivate weak var descriptionLabelContainer: UIView!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   private let viewModel: FindFriendsCellViewModelType = FindFriendsCellViewModel()
 

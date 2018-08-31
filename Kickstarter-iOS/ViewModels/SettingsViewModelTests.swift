@@ -72,6 +72,22 @@ internal final class SettingsViewModelTests: TestCase {
     XCTAssertTrue(self.vm.shouldSelectRow(for: .newsletters))
   }
 
+  func testShouldSelectRow_findFriends_FollowingEnabled() {
+    let user = User.template |> User.lens.social .~ true
+
+    withEnvironment(currentUser: user) {
+      XCTAssertTrue(self.vm.shouldSelectRow(for: .findFriends))
+    }
+  }
+
+  func testShouldSelectRow_findFriends_FollowingDisabled() {
+    let user = User.template |> User.lens.social .~ false
+
+    withEnvironment(currentUser: user) {
+      XCTAssertFalse(self.vm.shouldSelectRow(for: .findFriends))
+    }
+  }
+
   func testAppStoreRatingCellTapped() {
     self.goToAppStoreRating.assertValueCount(0)
     self.vm.settingsCellTapped(cellType: .rateInAppStore)
