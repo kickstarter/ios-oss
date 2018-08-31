@@ -18,7 +18,8 @@ protocol FindFriendsCellViewModelType {
   var outputs: FindFriendsCellViewModelOutputs { get }
 }
 
-final class FindFriendsCellViewModel: FindFriendsCellViewModelInputs, FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
+final class FindFriendsCellViewModel: FindFriendsCellViewModelInputs,
+FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
   init() {
     let isFollowingEnabled = userProperty.signal
       .skipNil()

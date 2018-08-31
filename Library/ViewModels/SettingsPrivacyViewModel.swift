@@ -76,7 +76,6 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
    self.updateCurrentUser = Signal.merge(updatedFetchedUser, previousUserOnError)
 
    self.refreshFollowingSection = self.updateCurrentUser.ignoreValues()
-    .takeWhen(self.followingSwitchTappedProperty.signal.ignoreValues())
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

@@ -41,7 +41,8 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
 
     _ = disabledDescriptionLabel
       |> settingsDescriptionLabelStyle
-      |> UILabel.lens.text .~ "Following must be on to find Facebook friends. Following can be changed in Account > Privacy."
+      |> UILabel.lens.text
+      .~ "Following must be on to find Facebook friends. Following can be changed in Account > Privacy."
 
     _ = descriptionLabelContainer
       |> UIView.lens.backgroundColor .~ .ksr_grey_200

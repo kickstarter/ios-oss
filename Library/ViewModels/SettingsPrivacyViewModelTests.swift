@@ -23,11 +23,18 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testRefreshFollowingSection() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: false)
+    let user = User.template
+    let mockService = MockService(fetchUserSelfResponse: user)
 
-    self.updateCurrentUser.assertValueCount(1)
-    self.refreshFollowingSection.assertValueCount(1)
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
+
+      self.scheduler.advance()
+
+      self.updateCurrentUser.assertValueCount(1)
+      self.refreshFollowingSection.assertValueCount(1)
+    }
   }
 
   func testReloadData() {
@@ -39,7 +46,7 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.reloadData.assertValues([user, user], "Reload data event fires twice: once for the prefixed currentUser, and once with the updated response from the server")
+      self.reloadData.assertValues([user, user])
     }
   }
 

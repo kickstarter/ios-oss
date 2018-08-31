@@ -18,7 +18,8 @@ internal final class FindFriendsCellViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.disabledDescriptionLabelShouldHide.observe(disabledDescriptionLabelShouldHideObserver.observer)
+    self.vm.outputs.disabledDescriptionLabelShouldHide
+      .observe(disabledDescriptionLabelShouldHideObserver.observer)
     self.vm.outputs.isDisabled.observe(isDisabledObserver.observer)
   }
 
