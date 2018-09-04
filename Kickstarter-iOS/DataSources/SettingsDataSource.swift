@@ -8,9 +8,9 @@ public struct SettingsCellValue {
 
 final class SettingsDataSource: ValueCellDataSource {
   func configureRows(with user: User) {
-    _ = SettingsSectionType.allCases
+    SettingsSectionType.allCases
       .filter { $0 != .findFriends }
-      .map { section -> Void in
+      .forEach { section -> Void in
         let values = section.cellRowsForSection.map { SettingsCellValue(user: user, cellType: $0) }
 
         self.set(values: values,
