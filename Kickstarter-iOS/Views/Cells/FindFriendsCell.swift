@@ -20,7 +20,7 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.descriptionLabelContainer.rac.hidden = self.viewModel.outputs.disabledDescriptionLabelShouldHide
+    self.descriptionLabelContainer.rac.hidden = self.viewModel.outputs.disabledDescriptionLabelIsHidden
 
     self.viewModel.outputs.isDisabled
       .observeForUI()
@@ -42,7 +42,9 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
     _ = disabledDescriptionLabel
       |> settingsDescriptionLabelStyle
       |> UILabel.lens.text
-      .~ "Following must be on to find Facebook friends. Following can be changed in Account > Privacy."
+      %~ { _ in
+        return Strings.Following_Disabled_Info()
+    }
 
     _ = descriptionLabelContainer
       |> UIView.lens.backgroundColor .~ .ksr_grey_200
