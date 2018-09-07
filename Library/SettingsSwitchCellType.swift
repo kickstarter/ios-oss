@@ -12,8 +12,8 @@ public enum SettingsSwitchCellType {
 
   public var primaryDescriptionString: String {
     switch self {
-      case .privacy:
-        return Strings.If_your_profile_is_private()
+    case .privacy:
+      return Strings.If_your_profile_is_private()
     }
   }
 
