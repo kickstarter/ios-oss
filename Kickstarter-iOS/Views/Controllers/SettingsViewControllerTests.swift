@@ -56,4 +56,24 @@ internal final class SettingsViewControllerTests: TestCase {
       }
     }
   }
+
+  func testView() {
+    let currentUser = User.template
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
+      .forEach { language, device in
+      withEnvironment(
+        apiService: MockService(fetchUserSelfResponse: currentUser),
+        currentUser: currentUser,
+        language: language) {
+
+          let vc = SettingsViewController.instantiate()
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+
+          self.scheduler.run()
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 }
