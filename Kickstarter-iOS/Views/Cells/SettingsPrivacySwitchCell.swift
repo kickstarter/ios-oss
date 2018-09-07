@@ -8,12 +8,12 @@ protocol SettingsPrivacySwitchCellDelegate: class {
 }
 
 final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
-  @IBOutlet fileprivate weak var switchButton: UISwitch!
-  @IBOutlet fileprivate weak var primaryDescriptionLabel: UILabel!
-  @IBOutlet fileprivate weak var secondaryDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var lineLayer: UIView!
+  @IBOutlet fileprivate weak var primaryDescriptionLabel: UILabel!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
   @IBOutlet fileprivate weak var topLineLayer: UIView!
+  @IBOutlet fileprivate weak var secondaryDescriptionLabel: UILabel!
+  @IBOutlet fileprivate weak var switchButton: UISwitch!
 
   private let viewModel = SettingsPrivacySwitchCellViewModel()
 
@@ -66,7 +66,9 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
 
     self.viewModel.privacySwitchToggledOn
       .observeForControllerAction()
-      .observeValues { (privacyEnabled) in
+      .observeValues { [weak self] (privacyEnabled) in
+        guard let `self` = self else { return }
+
         self.delegate?.privacySettingsSwitchCell(self, didTogglePrivacySwitch: privacyEnabled)
     }
   }
