@@ -10,10 +10,17 @@ public enum SettingsSwitchCellType {
     }
   }
 
-//  var descriptionString: String {
-////    switch self {
-////      case .privacy:
-////
-////    }
-//  }
+  public var primaryDescriptionString: String {
+    switch self {
+      case .privacy:
+        return Strings.If_your_profile_is_private()
+    }
+  }
+
+  public var secondaryDescriptionString: String {
+    switch self {
+    case .privacy:
+      return Strings.If_your_profile_is_public()
+    }
+  }
 }

@@ -2734,6 +2734,40 @@ backers"
     )
   }
   /**
+   "If your profile is private, others can see your name and picture."
+
+   - **es**: "If your profile is private, others can see your name and picture."
+   - **ja**: "If your profile is private, others can see your name and picture."
+   - **de**: "If your profile is private, others can see your name and picture."
+   - **fr**: "If your profile is private, others can see your name and picture."
+   - **en**: "If your profile is private, others can see your name and picture."
+  */
+  public static func If_your_profile_is_private() -> String {
+    return localizedString(
+      key: "If_your_profile_is_private",
+      defaultValue: "If your profile is private, others can see your name and picture.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+
+   - **es**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+   - **ja**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+   - **de**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+   - **fr**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+   - **en**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+  */
+  public static func If_your_profile_is_public() -> String {
+    return localizedString(
+      key: "If_your_profile_is_public",
+      defaultValue: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Individual emails"
 
    - **es**: "Notificaciones por correo electrónico individuales"
