@@ -131,18 +131,20 @@
 		77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */; };
 		77216D6020F3D27C0061BE82 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77216D5F20F3D27C0061BE82 /* Settings.storyboard */; };
 		77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216D9720F3D2E40061BE82 /* SettingsViewController.swift */; };
-		7724E7F82146870000BE5890 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
-		7724E7F92146870000BE5890 /* Stripe.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		774A76E920D841110012A71F /* BetaToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76E820D841110012A71F /* BetaToolsViewController.swift */; };
 		774A76ED20D845770012A71F /* BetaToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76EC20D845770012A71F /* BetaToolsViewModel.swift */; };
 		774A76EE20D863EF0012A71F /* BetaTools.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774A76AF20D83F6B0012A71F /* BetaTools.storyboard */; };
 		774A76F320D97A9E0012A71F /* BetaToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76F220D97A9E0012A71F /* BetaToolsViewModelTests.swift */; };
 		774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */; };
-		775032EE21469E45008E1D0E /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
+		77502FC22147D92000620BBC /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
+		77539E6C2147E4EE00A564CD /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
+		77539E6D2147E50E00A564CD /* Stripe.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		77556F5420A099B3008CEA57 /* Config+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F1C20A09993008CEA57 /* Config+Helpers.swift */; };
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
+		776E31CE2147DE6A00EFC09A /* Stripe.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		776E31CF2147DE8000EFC09A /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
 		77758157209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */; };
 		7775818E209CBF7700EE357F /* DiscoveryProjectCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */; };
 		777B70D82118CAD300E11032 /* SettingsNotificationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */; };
@@ -151,7 +153,6 @@
 		778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */; };
 		778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */; };
 		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
-		778B2DB321468B2800D444AF /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
 		7793B13521067D62007857C0 /* SettingsNotificationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B13421067D62007857C0 /* SettingsNotificationCellViewModel.swift */; };
 		7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */; };
 		77A7B64321026CAE008D12C1 /* SettingsNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */; };
@@ -1621,12 +1622,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		77539E692147E2C700A564CD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				77539E6D2147E50E00A564CD /* Stripe.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				776E31CE2147DE6A00EFC09A /* Stripe.framework in Embed Frameworks */,
 				D0745B061EEB09E500FA53D3 /* Curry.framework in Embed Frameworks */,
 				A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */,
 				80762E431D071CB70074189D /* AlamofireImage.framework in Embed Frameworks */,
@@ -1635,7 +1648,6 @@
 				A7BA543F1E1E493600E54377 /* LiveStream.framework in Embed Frameworks */,
 				D01BEA0D1F0259AC0064C1D9 /* Runes.framework in Embed Frameworks */,
 				80762E3F1D071CAA0074189D /* Alamofire.framework in Embed Frameworks */,
-				7724E7F92146870000BE5890 /* Stripe.framework in Embed Frameworks */,
 				D01BEA091F0259A30064C1D9 /* Result.framework in Embed Frameworks */,
 				D0B45CF51EF864700020A8DA /* ReactiveExtensions.framework in Embed Frameworks */,
 				A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */,
@@ -2668,7 +2680,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				778B2DB321468B2800D444AF /* Stripe.framework in Frameworks */,
+				77502FC22147D92000620BBC /* Stripe.framework in Frameworks */,
 				A701B5EF1EB384E1001D4E5F /* PassKit.framework in Frameworks */,
 				D0D2ABA21E964852008D298A /* libsqlite3.tbd in Frameworks */,
 				D0D2AB5B1E964849008D298A /* CoreMedia.framework in Frameworks */,
@@ -2701,6 +2713,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				776E31CF2147DE8000EFC09A /* Stripe.framework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */,
 				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
@@ -2718,7 +2731,6 @@
 				D0745B051EEB09E500FA53D3 /* Curry.framework in Frameworks */,
 				770E46262114E15D00396D46 /* Fabric.framework in Frameworks */,
 				7DD8EE241F02DBED0070B63D /* Bolts.framework in Frameworks */,
-				7724E7F82146870000BE5890 /* Stripe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2731,7 +2743,7 @@
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
 				A782B4951D2D36BF0069D10E /* FBSDKCoreKit.framework in Frameworks */,
 				A782B4961D2D36BF0069D10E /* FBSDKLoginKit.framework in Frameworks */,
-				775032EE21469E45008E1D0E /* Stripe.framework in Frameworks */,
+				77539E6C2147E4EE00A564CD /* Stripe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4381,6 +4393,7 @@
 			buildPhases = (
 				A7D1F9561C850B7C000D41D5 /* Sources */,
 				A7D1F9571C850B7C000D41D5 /* Frameworks */,
+				77539E692147E2C700A564CD /* Embed Frameworks */,
 				A7D1F9581C850B7C000D41D5 /* Resources */,
 			);
 			buildRules = (
