@@ -41,8 +41,7 @@ final class SettingsAccountViewController: UIViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerStyle()
-      |> UIViewController.lens.view.backgroundColor .~ .ksr_grey_200
+      |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in Strings.Account() }
 
     _ = tableView

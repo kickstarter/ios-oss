@@ -39,7 +39,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.viewDidLoadProperty.value = ()
   }
 
-  private var selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
+  private let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
   public func settingsCellTapped(cellType: SettingsAccountCellType) {
     self.selectedCellTypeProperty.value = cellType
   }
