@@ -1787,7 +1787,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     self.vm.inputs.pledgeTextFieldDidEndEditing()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum)), String(format: "%.2f", Double(reward.minimum))],
+    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum)),
+                                           String(format: "%.2f", Double(reward.minimum))],
                                           "Pledge field is reset when done editing with invalid value.")
 
     XCTAssertEqual(
