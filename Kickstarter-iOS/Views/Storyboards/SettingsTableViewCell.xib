@@ -55,8 +55,8 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="appVersionLabel" destination="QBo-D1-v2F" id="dFj-3y-Fy4"/>
                 <outlet property="arrowImageView" destination="rD1-XM-7lR" id="9zq-S4-pcd"/>
+                <outlet property="detailLabel" destination="QBo-D1-v2F" id="ZXw-xy-LEd"/>
                 <outlet property="lineLayer" destination="nBB-tu-8Zn" id="BEm-b3-1Tx"/>
                 <outlet property="titleLabel" destination="thh-A9-lgV" id="2mZ-pA-KY5"/>
             </connections>

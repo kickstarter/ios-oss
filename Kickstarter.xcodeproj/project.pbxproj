@@ -926,11 +926,12 @@
 		D0D2ABA91E9677E8008D298A /* LiveStreamTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA51E9677DD008D298A /* LiveStreamTypes.swift */; };
 		D0D2ABAA1E9677EC008D298A /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */; };
 		D6089E8F209106CD0032CC99 /* PushNotificationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */; };
-		D60C8BE22142CD1E00D96152 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */; };
 		D60C8BE42142CD7600D96152 /* SettingsAccount.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D60C8BE32142CD7600D96152 /* SettingsAccount.storyboard */; };
 		D60C8BE62142D01E00D96152 /* SettingsAccountDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */; };
 		D60C8BE92142D61A00D96152 /* SettingsAccountCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE72142D60800D96152 /* SettingsAccountCellType.swift */; };
-		D60C8BEC21430BD000D96152 /* SettingsAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */; };
+		D60C8BEE2143148B00D96152 /* SettingsAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */; };
+		D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */; };
+		D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */; };
 		D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */; };
 		D6508F6C2049C83C002DCC01 /* UIStackView+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
@@ -2538,6 +2539,7 @@
 		D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountDataSource.swift; sourceTree = "<group>"; };
 		D60C8BE72142D60800D96152 /* SettingsAccountCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountCellType.swift; sourceTree = "<group>"; };
 		D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewModel.swift; sourceTree = "<group>"; };
+		D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewControllerTests.swift; sourceTree = "<group>"; };
 		D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectActivityItemProviderTests.swift; sourceTree = "<group>"; };
 		D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+BackgroundColor.swift"; sourceTree = "<group>"; };
 		D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSourceTests.swift; sourceTree = "<group>"; };
@@ -3168,6 +3170,7 @@
 				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
 				A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */,
 				D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */,
+				D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */,
 				D6B6766620FF8D3C0082717D /* SettingsNewslettersViewController.swift */,
 				D6B4F0012107B3D00079159D /* SettingsNewslettersViewControllerTests.swift */,
 				D6AD9A7F20EA720F0015A18B /* SettingsNotificationsViewController.swift */,
@@ -3824,6 +3827,10 @@
 				A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */,
 				A7ED1FA41E831C5C00BFFA01 /* SearchViewModelTests.swift */,
 				D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */,
+				D79F0F7421068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift */,
+				D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */,
+				D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */,
+				D7237095211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift */,
 				D6B6766420FE85000082717D /* SettingsNewslettersCellViewModel.swift */,
 				D6B4EFFF21079F750079159D /* SettingsNewslettersCellViewModelTests.swift */,
 				D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */,
@@ -3832,14 +3839,10 @@
 				D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */,
 				D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */,
 				D72370912118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift */,
-				D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */,
-				D7237095211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift */,
 				D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */,
 				D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */,
 				D79F0F762107D60800D3B32C /* SettingsRequestDataCellViewModel.swift */,
 				D723708D2118CD9B001EA4CA /* SettingsRequestDataCellViewModelTests.swift */,
-				D79F0F7421068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift */,
-				D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */,
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
 				A7ED1F811E831C5C00BFFA01 /* ShareViewModelTests.swift */,
 				A74900171D00E23000BC3BE7 /* SignupViewModel.swift */,
@@ -5314,7 +5317,7 @@
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
 				A7F441E51D005A9400FE6FC5 /* SearchViewModel.swift in Sources */,
 				A75C81171D210BD700B5AD03 /* ShareViewModel.swift in Sources */,
-				D60C8BEC21430BD000D96152 /* SettingsAccountViewModel.swift in Sources */,
+				D60C8BEE2143148B00D96152 /* SettingsAccountViewModel.swift in Sources */,
 				0156B4191D10B419000C4252 /* UIAlertController.swift in Sources */,
 				A757EAF01D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */,
 				A7CC13D91D00E6CF00035C52 /* FindFriendsStatsCellViewModel.swift in Sources */,
@@ -5765,6 +5768,7 @@
 				A72C3AB51D00FB1F0075227E /* DiscoveryExpandableRowCell.swift in Sources */,
 				A7FA38D91D9068AD0041FC9C /* RewardsTitleCell.swift in Sources */,
 				A75AB1FA1C8A84B5002FC3E6 /* ActivitiesDataSource.swift in Sources */,
+				D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */,
 				9D1A29861D5A9508009E1B3F /* DeprecatedWebViewController.swift in Sources */,
 				014D62991E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift in Sources */,
 				D7237099211A3DA9001EA4CA /* SettingsFollowCell.swift in Sources */,
@@ -5778,7 +5782,6 @@
 				A74FFECA1CE4FB9900C7BCB9 /* SearchMessagesDataSource.swift in Sources */,
 				A775B5211CA8705B00BBB587 /* RootTabBarViewController.swift in Sources */,
 				A75CFA501CCDB322004CD5FA /* SearchDataSource.swift in Sources */,
-				D60C8BE22142CD1E00D96152 /* SettingsAccountViewController.swift in Sources */,
 				A7A052141CD12DD7005AF5E2 /* CommentCell.swift in Sources */,
 				9D14FF8F1D133351005F4ABB /* ProjectActivityLaunchCell.swift in Sources */,
 				0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
@@ -5858,6 +5861,7 @@
 				A7ED204F1E8323E900BFFA01 /* CommentsViewControllerTests.swift in Sources */,
 				77E643FF20F55324005F6B38 /* SettingsV2ViewModelTests.swift in Sources */,
 				A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
+				D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */,
 				D6B4F0032107B4760079159D /* SettingsNewslettersViewControllerTests.swift in Sources */,
 				A7ED205C1E83240D00BFFA01 /* FundingGraphViewTests.swift in Sources */,
 				A7ED20131E83229E00BFFA01 /* DashboardDataSourceTests.swift in Sources */,

@@ -1,15 +1,16 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import ReactiveSwift
 import Result
+import UIKit
 
 final class SettingsAccountViewController: UIViewController {
 
   @IBOutlet private weak var tableView: UITableView!
 
   private let dataSource = SettingsAccountDataSource()
-  private let viewModel: SettingsViewModelType = SettingsViewModel()
+  fileprivate let viewModel: SettingsAccountViewModelType = SettingsAccountViewModel()
 
   internal static func instantiate() -> SettingsAccountViewController {
     return Storyboard.SettingsAccount.instantiate(SettingsAccountViewController.self)
@@ -22,6 +23,8 @@ final class SettingsAccountViewController: UIViewController {
     self.tableView.delegate = self
 
     self.tableView.register(nib: .SettingsTableViewCell)
+    self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -33,20 +36,40 @@ final class SettingsAccountViewController: UIViewController {
         self?.tableView.reloadData()
     }
   }
-  
+
   override func bindStyles() {
     super.bindStyles()
 
     _ = self
       |> baseControllerStyle()
       |> UIViewController.lens.view.backgroundColor .~ .ksr_grey_200
-      |> UIViewController.lens.title %~ { _ in Strings.profile_buttons_settings() }
+      |> UIViewController.lens.title %~ { _ in Strings.Account() }
 
     _ = tableView
       |> UITableView.lens.backgroundColor .~ .ksr_grey_200
+      |> UITableView.lens.separatorStyle .~ .none
   }
 }
 
 extension SettingsAccountViewController: UITableViewDelegate {
 
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let cellType = dataSource.cellTypeForIndexPath(indexPath: indexPath) else {
+      return
+    }
+
+    self.viewModel.inputs.settingsCellTapped(cellType: cellType)
+  }
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return SettingsSectionType.sectionHeaderHeight
+  }
+
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 0.1 // Required to remove the footer in UITableViewStyleGrouped
+  }
+
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
+  }
 }

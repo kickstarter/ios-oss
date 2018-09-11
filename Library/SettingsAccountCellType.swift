@@ -4,25 +4,25 @@ import UIKit
 public enum SettingsAccountSectionType: Int {
 
   case emailPassword
-  case payment
   case privacy
+  case payment
 
   public static var sectionHeaderHeight: CGFloat {
     return 30.0
   }
 
   public static var allCases: [SettingsAccountSectionType] = [.emailPassword,
-                                                              .payment,
-                                                              .privacy]
+                                                              .privacy,
+                                                              .payment]
 
   public var cellRowsForSection: [SettingsAccountCellType] {
     switch self {
     case .emailPassword:
       return [.changeEmail, .changePassword]
-    case .payment:
-      return [.paymentMethods, .currency]
     case .privacy:
       return [.privacy]
+    case .payment:
+      return [.paymentMethods, .currency]
     }
   }
 }
@@ -66,7 +66,7 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
   public var title: String {
     switch self {
     case .changeEmail:
-      return Strings.Email() // TODO: Add string
+      return Strings.Change_email()
     case .changePassword:
       return Strings.Change_password()
     case .privacy:
