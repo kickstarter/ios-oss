@@ -10,10 +10,10 @@ public enum Strings {
   /**
    "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team."
 
-   - **es**: "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team."
-   - **ja**: "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team."
-   - **de**: "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team."
-   - **fr**: "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team."
+   - **es**: "Un resumen semanal de los mejores y más brillantes proyectos de Kickstarter, seleccionados por nuestro equipo."
+   - **ja**: "Kickstarter スタッフがセレクトした今週のおすすめプロジェクト総まとめ。"
+   - **de**: "Eine wöchentliche Zusammenfassung der besten und cleversten Projekte auf Kickstarter, handverlesen von unserem Team."
+   - **fr**: "Un tour d'horizon hebdomadaire des meilleurs projets Kickstarter, triés sur le volet par nos soins."
    - **en**: "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team."
   */
   public static func A_weekly_roundup_of_the_best_and_brightest() -> String {
@@ -628,10 +628,10 @@ backers"
   /**
    "Big Kickstarter news and events near you, delivered just a few times a year."
 
-   - **es**: "Big Kickstarter news and events near you, delivered just a few times a year."
-   - **ja**: "Big Kickstarter news and events near you, delivered just a few times a year."
-   - **de**: "Big Kickstarter news and events near you, delivered just a few times a year."
-   - **fr**: "Big Kickstarter news and events near you, delivered just a few times a year."
+   - **es**: "Unas cuantas veces al año: Noticias sobresalientes de Kickstarter y eventos cerca de ti."
+   - **ja**: "Kickstarter に関するビッグニュースやお近くのイベントについて、年に数回お届け。"
+   - **de**: "Ein paar Mal pro Jahr: Kickstarter-Neuigkeiten und Events in deiner Nähe."
+   - **fr**: "Les grandes nouvelles et les événements près de chez vous, quelques fois par an."
    - **en**: "Big Kickstarter news and events near you, delivered just a few times a year."
   */
   public static func Big_Kickstarter_news_and_events_near_you() -> String {
@@ -1376,10 +1376,10 @@ backers"
   /**
    "Discover the future of Design and Tech."
 
-   - **es**: "Discover the future of Design and Tech."
-   - **ja**: "Discover the future of Design and Tech."
-   - **de**: "Discover the future of Design and Tech."
-   - **fr**: "Discover the future of Design and Tech."
+   - **es**: "Descubre el futuro del diseño y la tecnología."
+   - **ja**: "デザインとテクノロジーの未来を覗いてみよう。"
+   - **de**: "Entdecke das Neueste in Design und Technologie."
+   - **fr**: "Tout sur l'avenir du design et de la technologie."
    - **en**: "Discover the future of Design and Tech."
   */
   public static func Discover_the_future_of_Design_and_Tech() -> String {
@@ -2139,6 +2139,23 @@ backers"
     )
   }
   /**
+   "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
+
+   - **es**: "El seguimiento debe estar activado para encontrar amigos de Facebook. El seguimiento se puede cambiar en Configuración > Privacidad."
+   - **ja**: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
+   - **de**: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
+   - **fr**: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
+   - **en**: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
+  */
+  public static func Following_Disabled_Info() -> String {
+    return localizedString(
+      key: "Following_Disabled_Info",
+      defaultValue: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Following More Info"
 
    - **es**: "Más información sobre el seguimiento"
@@ -2806,10 +2823,10 @@ with friends."
   /**
    "Join our secret society."
 
-   - **es**: "Join our secret society."
-   - **ja**: "Join our secret society."
-   - **de**: "Join our secret society."
-   - **fr**: "Join our secret society."
+   - **es**: "Únete a nuestra sociedad secreta."
+   - **ja**: "この秘密の世界にあなたも浸ってみませんか。"
+   - **de**: "Sei dabei bei unserem Geheimbund."
+   - **fr**: "Notre société secrète n'attend que vous."
    - **en**: "Join our secret society."
   */
   public static func Join_our_secret_society() -> String {
@@ -2850,6 +2867,23 @@ with friends."
     return localizedString(
       key: "Just_for_you",
       defaultValue: "Just for you.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Keep in touch after your campaign and plan your next project."
+
+   - **es**: "Mantente en contacto después de tu campaña y planifica tu próximo proyecto."
+   - **ja**: "キャンペーン終了後もニュースレターで最新情報をチェックし、次のプロジェクトに備えましょう。"
+   - **de**: "Bleibe auch nach deiner Kampagne in Verbindung und plane dein nächstes Projekt."
+   - **fr**: "Une façon de garder le contact après votre campagne et de prévoir votre prochain projet."
+   - **en**: "Keep in touch after your campaign and plan your next project."
+  */
+  public static func Keep_in_touch_after_your_campaign() -> String {
+    return localizedString(
+      key: "Keep_in_touch_after_your_campaign",
+      defaultValue: "Keep in touch after your campaign and plan your next project.",
       count: nil,
       substitutions: [:]
     )
@@ -3214,10 +3248,10 @@ with friends."
   /**
    "Love film? We do, too."
 
-   - **es**: "Love film? We do, too."
-   - **ja**: "Love film? We do, too."
-   - **de**: "Love film? We do, too."
-   - **fr**: "Love film? We do, too."
+   - **es**: "¿Te encanta el cine? A nosotros también."
+   - **ja**: "映画ファン？そんなあなたに必須のニュースレター。"
+   - **de**: "Du bist Kino-Fan? Wir auch."
+   - **fr**: "Cinéphile ? Nous aussi."
    - **en**: "Love film? We do, too."
   */
   public static func Love_film_We_do_too() -> String {
@@ -3418,10 +3452,10 @@ with friends."
   /**
    "New work and big ideas from established and emerging artists."
 
-   - **es**: "New work and big ideas from established and emerging artists."
-   - **ja**: "New work and big ideas from established and emerging artists."
-   - **de**: "New work and big ideas from established and emerging artists."
-   - **fr**: "New work and big ideas from established and emerging artists."
+   - **es**: "Nuevos trabajos y grandes ideas de artistas establecidos y emergentes."
+   - **ja**: "新進アーティストや著名アーティストの最新プロジェクトやアイデアをご紹介。"
+   - **de**: "Neue Arbeiten und großartige Ideen von etablierten und neuen Künstlern."
+   - **fr**: "Grandes idées et nouveaux travaux signés par des artistes établis et émergents."
    - **en**: "New work and big ideas from established and emerging artists."
   */
   public static func New_work_and_big_ideas_from_established_and() -> String {
@@ -5891,10 +5925,10 @@ catch your eye?"
   /**
    "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories."
 
-   - **es**: "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories."
-   - **ja**: "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories."
-   - **de**: "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories."
-   - **fr**: "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories."
+   - **es**: "Recibe la actualidad en tu correo electrónico a través de nuevos proyectos e historias interesantes."
+   - **ja**: "気になる話題や最新プロジェクトなど、この時代を特徴づける思想「ツァイトガイスト」をいち早くお届けします。"
+   - **de**: "Hol dir den Zeitgeist direkt in deine Inbox: neue Projekte und Stories, die in aller Munde sind."
+   - **fr**: "Nouveaux projets et témoignages qui illustrent l'esprit du temps s'invitent dans votre boîte de réception."
    - **en**: "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories."
   */
   public static func The_zeitgeist_delivered_to_your_inbox_via_new() -> String {
@@ -6526,10 +6560,10 @@ Please try again later."
   /**
    "Welcome to our library. Peruse the stacks with us."
 
-   - **es**: "Welcome to our library. Peruse the stacks with us."
-   - **ja**: "Welcome to our library. Peruse the stacks with us."
-   - **de**: "Welcome to our library. Peruse the stacks with us."
-   - **fr**: "Welcome to our library. Peruse the stacks with us."
+   - **es**: "Bienvenidos a nuestra biblioteca. Descubre montones de libros con nosotros."
+   - **ja**: "Kickstarter ライブラリーへようこそ。色んなストーリーを一緒に読み漁ろう！"
+   - **de**: "Willkommen in unserer Bibliothek. Viel Spaß beim Stöbern."
+   - **fr**: "Bienvenue dans notre bibliothèque. Flânons ensemble parmi ses rayons."
    - **en**: "Welcome to our library. Peruse the stacks with us."
   */
   public static func Welcome_to_our_library_Peruse_the_stacks_with_us() -> String {
