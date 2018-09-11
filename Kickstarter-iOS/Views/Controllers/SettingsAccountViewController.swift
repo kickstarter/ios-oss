@@ -46,7 +46,7 @@ final class SettingsAccountViewController: UIViewController {
       |> UIViewController.lens.title %~ { _ in Strings.Account() }
 
     _ = tableView
-      |> UITableView.lens.backgroundColor .~ .ksr_grey_200
+      |> settingsTableViewStyle
       |> UITableView.lens.separatorStyle .~ .none
   }
 }

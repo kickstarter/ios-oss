@@ -27,7 +27,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
         return cellType.hideDescriptionLabel
       }
       |> UILabel.lens.text %~ { _ in
-        return SettingsTableViewCell.descriptionString(for: cellType)
+        return cellType.description ?? ""
     }
   }
 
@@ -49,25 +49,5 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
     _ = self
       |> UITableViewCell.lens.backgroundColor .~ highlightedColor
-  }
-
-  private static func descriptionString(for cellType: SettingsCellTypeProtocol) -> String {
-    switch cellType {
-    case is SettingsCellType:
-      return SettingsTableViewCell.appVersion
-    case is SettingsAccountCellType:
-      return "$ Dollar (USD)"
-    default:
-      return ""
-    }
-  }
-
-  private static var appVersion: String {
-
-    let versionString = AppEnvironment.current.mainBundle.shortVersionString
-    let build = AppEnvironment.current.mainBundle.isRelease
-      ? ""
-      : " #\(AppEnvironment.current.mainBundle.version)"
-    return "\(versionString)\(build)"
   }
 }

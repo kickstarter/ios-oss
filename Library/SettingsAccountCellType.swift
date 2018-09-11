@@ -8,7 +8,7 @@ public enum SettingsAccountSectionType: Int {
   case payment
 
   public static var sectionHeaderHeight: CGFloat {
-    return 30.0
+    return Styles.grid(5)
   }
 
   public static var allCases: [SettingsAccountSectionType] = [.emailPassword,
@@ -75,6 +75,13 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
       return Strings.Payment_methods()
     case .currency:
       return Strings.Currency()
+    }
+  }
+
+  public var description: String? {
+    switch self {
+    case .currency: return "$ Dollar (USD)"
+    default: return nil
     }
   }
 }

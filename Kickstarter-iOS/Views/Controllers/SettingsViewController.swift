@@ -35,7 +35,7 @@ final class SettingsViewController: UIViewController {
       |> UIViewController.lens.title %~ { _ in Strings.profile_buttons_settings() }
 
     _ = tableView
-      |> UITableView.lens.backgroundColor .~ .ksr_grey_200
+      |> settingsTableViewStyle
   }
 
   override func bindViewModel() {

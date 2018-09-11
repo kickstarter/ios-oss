@@ -4,7 +4,7 @@ import Library
 final class SettingsAccountDataSource: ValueCellDataSource {
 
   func configureRows() {
-    _ = SettingsAccountSectionType.allCases.map { section -> Void in
+    SettingsAccountSectionType.allCases.forEach { section -> Void in
      self.set(values: section.cellRowsForSection,
               cellClass: SettingsTableViewCell.self, inSection: section.rawValue)
     }
