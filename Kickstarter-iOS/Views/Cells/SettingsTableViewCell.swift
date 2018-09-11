@@ -27,28 +27,8 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
         return cellType.hideDescriptionLabel
       }
       |> UILabel.lens.text %~ { _ in
-        return self.descriptionString(for: cellType)
+        return SettingsTableViewCell.descriptionString(for: cellType)
     }
-  }
-
-  private func descriptionString(for cellType: SettingsCellTypeProtocol) -> String {
-    switch cellType {
-    case is SettingsCellType:
-      return self.appVersion
-    case is SettingsAccountCellType:
-      return "$ Dollar (USD)"
-    default:
-      return ""
-    }
-  }
-
-  private var appVersion: String {
-
-    let versionString = AppEnvironment.current.mainBundle.shortVersionString
-    let build = AppEnvironment.current.mainBundle.isRelease
-      ? ""
-      : " #\(AppEnvironment.current.mainBundle.version)"
-    return "\(versionString)\(build)"
   }
 
   override func bindStyles() {
@@ -69,5 +49,25 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
     _ = self
       |> UITableViewCell.lens.backgroundColor .~ highlightedColor
+  }
+
+  private static func descriptionString(for cellType: SettingsCellTypeProtocol) -> String {
+    switch cellType {
+    case is SettingsCellType:
+      return SettingsTableViewCell.appVersion
+    case is SettingsAccountCellType:
+      return "$ Dollar (USD)"
+    default:
+      return ""
+    }
+  }
+
+  private static var appVersion: String {
+
+    let versionString = AppEnvironment.current.mainBundle.shortVersionString
+    let build = AppEnvironment.current.mainBundle.isRelease
+      ? ""
+      : " #\(AppEnvironment.current.mainBundle.version)"
+    return "\(versionString)\(build)"
   }
 }
