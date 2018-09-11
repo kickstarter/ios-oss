@@ -46,7 +46,6 @@ final class SettingsAccountViewController: UIViewController {
 
     _ = tableView
       |> settingsTableViewStyle
-      |> UITableView.lens.separatorStyle .~ .none
   }
 }
 
