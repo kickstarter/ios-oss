@@ -386,21 +386,21 @@ RewardPledgeViewModelOutputs {
       .map { currencySymbol(forCountry: $0.country).trimmed() }
 
     let initialPledgeTextFieldText = projectAndReward
-      .map { project, reward -> Int in
+      .map { project, reward -> Double in
         guard let backing = project.personalization.backing,
           userIsBacking(reward: reward, inProject: project) else {
 
             return reward == Reward.noReward
-              ? minAndMaxPledgeAmount(forProject: project, reward: reward).min
-              : reward.minimum
+              ? Double(minAndMaxPledgeAmount(forProject: project, reward: reward).min)
+              : Double(reward.minimum)
         }
 
-        return backing.amount - (backing.shippingAmount ?? 0)
+        return Double(backing.amount) - Double(backing.shippingAmount ?? 0)
     }
 
     let userEnteredPledgeAmount = Signal.merge(
       initialPledgeTextFieldText,
-      self.pledgeTextChangedProperty.signal.map { Int($0) ?? 0 }
+      self.pledgeTextChangedProperty.signal.map { Double($0) ?? 0.00 }
       )
 
     let pledgeTextFieldWhenReturnWithBadAmount = Signal.combineLatest(
@@ -408,8 +408,9 @@ RewardPledgeViewModelOutputs {
       projectAndReward.map(minAndMaxPledgeAmount(forProject:reward:))
       )
       .takeWhen(self.pledgeTextFieldDidEndEditingProperty.signal)
-      .filter { pledgeAmount, minAndMax in pledgeAmount < minAndMax.0 || pledgeAmount > minAndMax.1 }
-      .map { _, minAndMax in minAndMax.0 }
+      .filter { pledgeAmount, minAndMax in pledgeAmount < Double(minAndMax.0)
+        || pledgeAmount > Double(minAndMax.1) }
+      .map { _, minAndMax in Double(minAndMax.0) }
 
     let pledgeAmount = Signal.merge(
       userEnteredPledgeAmount,
@@ -420,7 +421,7 @@ RewardPledgeViewModelOutputs {
       initialPledgeTextFieldText,
       pledgeTextFieldWhenReturnWithBadAmount
       )
-      .map { String($0) }
+      .map { String(format: "%.2f", $0) }
 
     let paymentMethodTapped = Signal.merge(
       self.continueToPaymentsButtonTappedProperty.signal,
@@ -942,7 +943,7 @@ RewardPledgeViewModelOutputs {
 
 private func paymentRequest(forProject project: Project,
                             reward: Reward,
-                            pledgeAmount: Int,
+                            pledgeAmount: Double,
                             selectedShippingRule: ShippingRule?,
                             merchantIdentifier: String) -> PKPaymentRequest {
   let request = PKPaymentRequest()
@@ -963,7 +964,7 @@ private func paymentRequest(forProject project: Project,
 
 private func paymentSummaryItems(forProject project: Project,
                                  reward: Reward,
-                                 pledgeAmount: Int,
+                                 pledgeAmount: Double,
                                  selectedShippingRule: ShippingRule?) -> [PKPaymentSummaryItem] {
 
   var paymentSummaryItems: [PKPaymentSummaryItem] = []
@@ -1025,11 +1026,11 @@ private func projectNeedsCurrencyCode(_ project: Project) -> Bool {
     && project.country.currencySymbol == "$"
 }
 
-private func backingError(forProject project: Project, amount: Int, reward: Reward?) -> PledgeError? {
+private func backingError(forProject project: Project, amount: Double, reward: Reward?) -> PledgeError? {
 
   let (min, max) = minAndMaxPledgeAmount(forProject: project, reward: reward)
 
-  guard amount >= min else {
+  guard amount >= Double(min) else {
     let message = Strings.Please_enter_an_amount_of_amount_or_more(
       amount: Format.currency(min, country: project.country)
     )
@@ -1037,7 +1038,7 @@ private func backingError(forProject project: Project, amount: Int, reward: Rewa
     return .minimumAmount(.init(errorMessages: [message], ksrCode: nil, httpCode: 400, exception: nil))
   }
 
-  guard amount <= max else {
+  guard amount <= Double(max) else {
     let message = Strings.Please_enter_an_amount_of_amount_or_less(
       amount: Format.currency(max, country: project.country)
     )
@@ -1050,7 +1051,7 @@ private func backingError(forProject project: Project, amount: Int, reward: Rewa
 
 private func createPledge(project: Project,
                           reward: Reward?,
-                          amount: Int,
+                          amount: Double,
                           shipping: ShippingRule?) -> SignalProducer<URLRequest, PledgeError> {
 
   if let error = backingError(forProject: project, amount: amount, reward: reward) {
@@ -1080,7 +1081,7 @@ private func createPledge(project: Project,
 
 private func updatePledge(project: Project,
                           reward: Reward?,
-                          amount: Int,
+                          amount: Double,
                           shipping: ShippingRule?) -> SignalProducer<URLRequest?, PledgeError> {
 
   if let error = backingError(forProject: project, amount: amount, reward: reward) {
@@ -1110,7 +1111,7 @@ private func updatePledge(project: Project,
 private func createApplePayPledge(
   project: Project,
   reward: Reward?,
-  amount: Int,
+  amount: Double,
   shipping: ShippingRule?,
   paymentData: PaymentData,
   stripeToken: String) -> SignalProducer<SubmitApplePayEnvelope, PledgeError> {
