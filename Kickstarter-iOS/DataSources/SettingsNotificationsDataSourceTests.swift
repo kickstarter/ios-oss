@@ -8,15 +8,14 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
   private let dataSource = SettingsNotificationsDataSource()
   private let tableView = UITableView(frame: .zero)
 
-  func testLoadUser() {
+  func testLoadUser_NonCreator() {
     let user = User.template
 
     dataSource.load(user: user)
 
-    XCTAssertEqual(3, dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(2, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(1, dataSource.tableView(tableView, numberOfRowsInSection: 2))
   }
 
   func testLoadUser_isCreator_pledgeActivityDisabled() {
@@ -24,11 +23,10 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     dataSource.load(user: user)
 
-    XCTAssertEqual(4, dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(3, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(4, dataSource.tableView(tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 2))
-    XCTAssertEqual(1, dataSource.tableView(tableView, numberOfRowsInSection: 3))
   }
 
   func testLoadUser_isCreator_pledgeActivityEnabled() {
@@ -39,11 +37,10 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     dataSource.load(user: user)
 
-    XCTAssertEqual(4, dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(3, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(5, dataSource.tableView(tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 2))
-    XCTAssertEqual(1, dataSource.tableView(tableView, numberOfRowsInSection: 3))
   }
 
   func testCellTypeForIndexPath() {

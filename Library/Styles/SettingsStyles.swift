@@ -6,6 +6,8 @@ import UIKit
 public let settingsSectionButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
 
+public let settingsArrowViewStyle = UIImageView.lens.tintColor .~ .ksr_dark_grey_400
+
 public let settingsSectionLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_dark_grey_900
     <> UILabel.lens.font .~ .ksr_subhead()

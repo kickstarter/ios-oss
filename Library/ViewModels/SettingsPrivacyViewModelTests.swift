@@ -23,19 +23,31 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testRefreshFollowingSection() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: false)
+    let user = User.template
+    let mockService = MockService(fetchUserSelfResponse: user)
 
-    self.updateCurrentUser.assertValueCount(1)
-    self.refreshFollowingSection.assertValueCount(1)
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
+
+      self.scheduler.advance()
+
+      self.updateCurrentUser.assertValueCount(1)
+      self.refreshFollowingSection.assertValueCount(1)
+    }
   }
 
   func testReloadData() {
     let user = User.template
+    let mockService = MockService(fetchUserSelfResponse: user)
 
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
 
-    self.reloadData.assertValues([user])
+      self.scheduler.advance()
+
+      self.reloadData.assertValues([user, user])
+    }
   }
 
   func testUnableToSaveError() {
@@ -57,14 +69,19 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testUpdateCurrentUser() {
+    let mockService = MockService(fetchUserSelfResponse: User.template)
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.updateCurrentUser.assertValueCount(0)
 
-    self.vm.inputs.viewDidLoad()
-    self.updateCurrentUser.assertValueCount(1)
+      self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
+      self.updateCurrentUser.assertValueCount(0)
 
-    self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
-    self.updateCurrentUser.assertValueCount(2)
+      self.vm.followingSwitchTapped(on: false, didShowPrompt: true)
 
-    self.vm.followingSwitchTapped(on: false, didShowPrompt: true)
-    self.updateCurrentUser.assertValueCount(3)
+      self.scheduler.advance()
+
+      self.updateCurrentUser.assertValueCount(1)
+    }
   }
 }

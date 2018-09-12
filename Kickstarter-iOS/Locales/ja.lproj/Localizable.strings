@@ -44,7 +44,6 @@
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
 "Cancel" = "キャンセル";
 "Cancel_your_pledge" = "プレッジを取り消す";
-"Change_email" = "Change email";
 "Change_password" = "パスワードを変更";
 "Change_payment_method" = "支払方法の変更";
 "Chat" = "チャット";
@@ -76,20 +75,6 @@
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} は%{in_duration} にライブ配信を行います";
 "Creator_tips" = "アドバイス";
 "Currency" = "通貨";
-"Currency_AUD" = "$ Australian Dollar (AUD)";
-"Currency_CAD" = "$ Canadian Dollar (CAD)";
-"Currency_CHF" = "Fr Swiss Franc (CHF)";
-"Currency_DKK" = "kr Danish Krone (DKK)";
-"Currency_EUR" = "€ Euro (EUR)";
-"Currency_GBP" = "£ Pound Sterling (GBP)";
-"Currency_HKD" = "$ Hong Kong Dollar (HKD)";
-"Currency_JPY" = "¥ Yen (JPY)";
-"Currency_MXN" = "$ Mexican Peso (MXN)";
-"Currency_NOK" = "kr Norwegian Krone (NOK)";
-"Currency_NZD" = "$ New Zealand Dollar (NZD)";
-"Currency_SEK" = "kr Swedish Krona (SEK)";
-"Currency_SGD" = "$ Singapore Dollar (SGD)";
-"Currency_USD" = "$ US Dollar (USD)";
 "Daily_digest" = "デイリーダイジェスト";
 "Data_will_appear_here_once" = "誰かがプロジェクトをバック（支援）すると、ここにデータが表示されます。";
 "Delete_my_Kickstarter_Account" = "Kickstarter アカウントを削除";
@@ -181,8 +166,6 @@
 "How_backers_found_your_project" = "バッカ―があなたのプロジェクトを見つけた経緯";
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
 "If_you_turn_following_off" = "フォローをオフにすると、あなたは誰もフォローすることができなくなり、また他の人があなたをフォローすることもできなくなります。また、既存のフォロワーとのつながりも絶たれます。この操作は後から元に戻すことはできませんのでご注意ください。";
-"If_your_profile_is_private" = "If your profile is private, others can see your name and picture.";
-"If_your_profile_is_public" = "If your profile is not private, others can also see the projects you've backed, your location, bio and websites.";
 "Individual_Emails" = "個人メール";
 "Info" = "インフォメーション";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "データの収集には最大で24時間かかる場合があります。ダウンロードの準備が整いましたら、このアカウントに登録されているメールアドレス宛てにデータのダウンロード手順が記載されたメールをお送りします。メールが届かなかった場合には、お手数ですがこちらに戻って再試行してください。";

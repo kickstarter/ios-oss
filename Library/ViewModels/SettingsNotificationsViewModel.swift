@@ -15,7 +15,6 @@ public protocol SettingsNotificationsViewModelInputs {
 }
 
 public protocol SettingsNotificationsViewModelOutputs {
-  var goToFindFriends: Signal<Void, NoError> { get }
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
   var pickerViewIsHidden: Signal<Bool, NoError> { get }
   var pickerViewSelectedRow: Signal<EmailFrequency, NoError> { get }
@@ -97,12 +96,6 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
         return creatorDigest ? EmailFrequency.daily : EmailFrequency.individualEmails
     }
 
-    let findFriendsTapped = self.selectedCellType.signal
-      .skipNil()
-      .filter { $0 == .findFacebookFriends }
-
-    self.goToFindFriends = findFriendsTapped.signal.ignoreValues()
-
     let manageProjectNotificationsSelected = self.selectedCellType.signal
       .skipNil()
       .filter { $0 == .projectNotifications }
@@ -122,7 +115,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
   public func shouldSelectRow(for cellType: SettingsNotificationCellType) -> Bool {
     switch cellType {
-    case .projectNotifications, .findFacebookFriends, .emailFrequency: return true
+    case .projectNotifications, .emailFrequency: return true
     default: return false
     }
   }
@@ -147,7 +140,6 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.updateUserErrorProperty.value = error
   }
 
-  public let goToFindFriends: Signal<Void, NoError>
   public let goToManageProjectNotifications: Signal<Void, NoError>
   public let pickerViewIsHidden: Signal<Bool, NoError>
   public let pickerViewSelectedRow: Signal<EmailFrequency, NoError>

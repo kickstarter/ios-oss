@@ -78,20 +78,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.goToFindFriends
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToFindFriends()
-    }
-
     self.viewModel.outputs.goToManageProjectNotifications
       .observeForControllerAction()
       .observeValues { [weak self] _ in self?.goToManageProjectNotifications() }
-  }
-
-  fileprivate func goToFindFriends() {
-    let vc = FindFriendsViewController.configuredWith(source: .settings)
-    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   fileprivate func goToManageProjectNotifications() {

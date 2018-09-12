@@ -12,6 +12,7 @@ public enum SettingsSectionType: Int {
   case account
   case notificationNewsletters
   case helpPrivacy
+  case findFriends
   case logout
   case ratingAppVersion
 
@@ -27,6 +28,8 @@ public enum SettingsSectionType: Int {
       return [.notifications, .newsletters]
     case .helpPrivacy:
       return [.help, .privacy]
+    case .findFriends:
+      return [.findFriends]
     case .logout:
       return [SettingsCellType.logout]
     case .ratingAppVersion:
@@ -37,6 +40,7 @@ public enum SettingsSectionType: Int {
   public static var allCases: [SettingsSectionType] = [.account,
                                                        .notificationNewsletters,
                                                        .helpPrivacy,
+                                                       .findFriends,
                                                        .logout,
                                                        .ratingAppVersion]
 }
@@ -50,6 +54,7 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   case logout
   case rateInAppStore
   case appVersion
+  case findFriends
 
   public var title: String {
     switch self {
@@ -68,7 +73,9 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
     case .rateInAppStore:
       return Strings.Rate_us_in_the_App_Store()
     case .appVersion:
-      return "App version"
+      return Strings.App_version()
+    case .findFriends:
+      return Strings.profile_settings_social_find_friends()
     }
   }
 
@@ -83,7 +90,7 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
 
   public var showArrowImageView: Bool {
     switch self {
-    case .account, .notifications, .newsletters, .help, .privacy, .rateInAppStore:
+    case .account, .notifications, .newsletters, .help, .privacy, .findFriends, .rateInAppStore:
       return true
     default:
       return false

@@ -44,7 +44,6 @@
 "Bring_creative_projects_to_life" = "Réalisez vos projets créatifs.";
 "Cancel" = "Annuler";
 "Cancel_your_pledge" = "Annuler mon engagement";
-"Change_email" = "Change email";
 "Change_password" = "Changer de mot de passe";
 "Change_payment_method" = "Changer de moyen de paiement";
 "Chat" = "Chat";
@@ -76,20 +75,6 @@
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} sera en direct sur Kickstarter %{in_duration}";
 "Creator_tips" = "Astuces pour créateurs";
 "Currency" = "Devise";
-"Currency_AUD" = "$ Australian Dollar (AUD)";
-"Currency_CAD" = "$ Canadian Dollar (CAD)";
-"Currency_CHF" = "Fr Swiss Franc (CHF)";
-"Currency_DKK" = "kr Danish Krone (DKK)";
-"Currency_EUR" = "€ Euro (EUR)";
-"Currency_GBP" = "£ Pound Sterling (GBP)";
-"Currency_HKD" = "$ Hong Kong Dollar (HKD)";
-"Currency_JPY" = "¥ Yen (JPY)";
-"Currency_MXN" = "$ Mexican Peso (MXN)";
-"Currency_NOK" = "kr Norwegian Krone (NOK)";
-"Currency_NZD" = "$ New Zealand Dollar (NZD)";
-"Currency_SEK" = "kr Swedish Krona (SEK)";
-"Currency_SGD" = "$ Singapore Dollar (SGD)";
-"Currency_USD" = "$ US Dollar (USD)";
 "Daily_digest" = "Résumé quotidien";
 "Data_will_appear_here_once" = "Ces données seront visibles dès que vous aurez reçu votre première contribution.";
 "Delete_my_Kickstarter_Account" = "Supprimer mon compte Kickstarter";
@@ -181,8 +166,6 @@
 "How_backers_found_your_project" = "Comment les contributeurs ont découvert votre projet";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
 "If_you_turn_following_off" = "Si vous désactivez les fonctionnalités de suivi, vous ne pourrez pas vous abonner aux activités des autres et plus personne ne pourra suivre les vôtres. Votre profil sera déconnecté de tous vos abonnés. Cette action ne pourra pas être annulée.";
-"If_your_profile_is_private" = "If your profile is private, others can see your name and picture.";
-"If_your_profile_is_public" = "If your profile is not private, others can also see the projects you've backed, your location, bio and websites.";
 "Individual_Emails" = "E-mails individuels";
 "Info" = "Info";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "La préparation de vos données personnelles peut prendre jusqu'à 24 heures. Nous vous enverrons des instructions de téléchargement à l'adresse e-mail associée à ce compte une fois que tout sera prêt. Si vous ne recevez rien, revenez ici pour réessayer.";

@@ -10,7 +10,7 @@ internal final class SettingsViewModelTests: TestCase {
 
   let goToAppStoreRating = TestObserver<String, NoError>()
   let logout = TestObserver<DiscoveryParams, NoError>()
-  let reloadData = TestObserver<Void, NoError>()
+  let reloadDataWithUserObserver = TestObserver<User, NoError>()
   let showConfirmLogout = TestObserver<Void, NoError>()
   let transitionToViewController = TestObserver<UIViewController, NoError>()
 
@@ -19,9 +19,19 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
     self.vm.outputs.logoutWithParams.observe(logout.observer)
-    self.vm.outputs.reloadData.observe(reloadData.observer)
+    self.vm.outputs.reloadDataWithUser.observe(reloadDataWithUserObserver.observer)
     self.vm.outputs.showConfirmLogoutPrompt.signal.mapConst(()).observe(showConfirmLogout.observer)
     self.vm.outputs.transitionToViewController.observe(transitionToViewController.observer)
+  }
+
+  func testViewDidLoad() {
+    let mockService = MockService(fetchUserSelfResponse: User.template)
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.viewDidLoad()
+
+      self.reloadDataWithUserObserver.assertValueCount(2)
+    }
   }
 
   func testLogoutCellTapped() {
@@ -62,9 +72,38 @@ internal final class SettingsViewModelTests: TestCase {
     XCTAssertTrue(self.vm.shouldSelectRow(for: .newsletters))
   }
 
+  func testShouldSelectRow_findFriends_FollowingEnabled() {
+    let user = User.template |> User.lens.social .~ true
+
+    withEnvironment(currentUser: user) {
+      XCTAssertTrue(self.vm.shouldSelectRow(for: .findFriends))
+    }
+  }
+
+  func testShouldSelectRow_findFriends_FollowingDisabled() {
+    let user = User.template |> User.lens.social .~ false
+
+    withEnvironment(currentUser: user) {
+      XCTAssertFalse(self.vm.shouldSelectRow(for: .findFriends))
+    }
+  }
+
   func testAppStoreRatingCellTapped() {
     self.goToAppStoreRating.assertValueCount(0)
     self.vm.settingsCellTapped(cellType: .rateInAppStore)
     self.goToAppStoreRating.assertValueCount(1, "Opens app store url")
+  }
+
+  func testUserUpdatedNotification() {
+    let updatedUser = User.template |> User.lens.social .~ true
+    let mockService = MockService(fetchUserSelfResponse: updatedUser)
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.currentUserUpdated()
+
+      self.scheduler.advance()
+
+      self.reloadDataWithUserObserver.assertValueCount(2)
+    }
   }
 }
