@@ -35,11 +35,13 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
              cellClass: SettingsPrivacyStaticCell.self,
              inSection: Section.recommendationsFooter.rawValue)
 
-    let cellValue = SettingsPrivacyCellValue(user: user, cellType: .privacy)
+    if !user.isCreator {
+      let cellValue = SettingsPrivacyCellValue(user: user, cellType: .privacy)
 
-    self.set(values: [cellValue],
-             cellClass: SettingsPrivacySwitchCell.self,
-             inSection: Section.privateProfile.rawValue)
+      self.set(values: [cellValue],
+               cellClass: SettingsPrivacySwitchCell.self,
+               inSection: Section.privateProfile.rawValue)
+    }
 
     self.set(values: [user],
              cellClass: SettingsPrivacyRequestDataCell.self,
