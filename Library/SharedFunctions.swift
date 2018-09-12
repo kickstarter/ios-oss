@@ -46,7 +46,8 @@ internal func pledgeContext(forProject project: Project, reward: Reward) -> Koal
 
  - returns: A pair of the minimum and maximum amount that can be pledged to a reward.
  */
-internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?) -> (min: Double, max: Double) {
+internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?)
+  -> (min: Double, max: Double) {
 
   // The country on the project cannot be trusted to have the min/max values, so first try looking
   // up the country in our launched countries array that we get back from the server config.

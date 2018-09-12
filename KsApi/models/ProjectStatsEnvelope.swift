@@ -233,7 +233,6 @@ private func stringToDouble(_ string: String?) -> Decoded<Double?> {
   return Double(string).map(Decoded.success) ?? .success(0)
 }
 
-
 private func stringToDouble(_ string: String) -> Decoded<Double> {
   return Double(string).map(Decoded.success) ?? .success(0)
 }
