@@ -1,3 +1,4 @@
+"A_weekly_roundup_of_the_best_and_brightest" = "Un resumen semanal de los mejores y más brillantes proyectos de Kickstarter, seleccionados por nuestro equipo.";
 "About_reward_amount" = "Aprox. %{reward_amount}";
 "Account" = "Cuenta";
 "Add_attachments" = "Agregar anexos …";
@@ -37,6 +38,7 @@
 "Backers_count_separator_backers.two" = "%{backers_count}\npatrocinadores";
 "Backers_count_separator_backers.zero" = "%{backers_count}\npatrocinadores";
 "Become_a_backer_to_leave_a_comment" = "Conviértete en patrocinador y deja un comentario.";
+"Big_Kickstarter_news_and_events_near_you" = "Unas cuantas veces al año: Noticias sobresalientes de Kickstarter y eventos cerca de ti.";
 "Biography" = "Biografía";
 "Bookmarks" = "Marcadores";
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
@@ -45,7 +47,7 @@
 "Change_password" = "Cambiar contraseña";
 "Change_payment_method" = "Cambiar método de pago";
 "Chat" = "Chat";
-"Check_back_later_for_an_update_on_your_export_progress" = "Check back later for an update on your export progress.";
+"Check_back_later_for_an_update_on_your_export" = "Vuelve más tarde para obtener una actualización sobre tu progreso de exportación.";
 "Chooses_location_for_shipping" = "Destino determinado: %{location}.";
 "Close_live_stream" = "Cerrar Live Stream";
 "Close_project" = "Cerrar proyecto";
@@ -80,6 +82,7 @@
 "Developer" = "Desarrollador";
 "Discover_arts_news" = "Descubre proyectos e ideas innovadores, seleccionados exclusivamente para ti dos veces al mes por el equipo de Diseño & Tecnología de Kickstarter.";
 "Discover_more_projects" = "Descubre más proyectos.";
+"Discover_the_future_of_Design_and_Tech" = "Descubre el futuro del diseño y la tecnología.";
 "Dismiss" = "Descartar";
 "Done" = "Listo";
 "Download_your_personal_data" = "Descarga tus datos personales";
@@ -128,6 +131,7 @@
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Sigue a tus amigos de Facebook y entérate cuando patrocinan o publican un proyecto.";
 "Followed" = "Siguiendo";
 "Following" = "Siguiendo";
+"Following_Disabled_Info" = "El seguimiento debe estar activado para encontrar amigos de Facebook. El seguimiento se puede cambiar en Configuración > Privacidad.";
 "Following_More_Info" = "Más información sobre el seguimiento";
 "Follows_friend_name" = "Sigue a %{friend_name}.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Arte</i>.";
@@ -167,8 +171,10 @@
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Puede demorar hasta 24 horas recopilar tus datos. Cuando estén listos, te enviaremos instrucciones para descargar tus datos al correo electrónico asociado con esta cuenta. Si no recibes noticias nuestras, vuelve aquí e inténtalo de nuevo.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
 "Its_better_with_friends" = "Todo en la vida es mejor con amigos ...";
+"Join_our_secret_society" = "Únete a nuestra sociedad secreta.";
 "Joining_the_live_stream" = "Abriendo conexión a Live Stream";
 "Just_for_you" = "Sólo para ti.";
+"Keep_in_touch_after_your_campaign" = "Mantente en contacto después de tu campaña y planifica tu próximo proyecto.";
 "Keep_reading" = "Leer más";
 "Keep_up_with_future_live_streams" = "Recibe info sobre live streams futuros";
 "Kickstarter_if_funded" = "Kickstarter (si la financiación es exitosa)";
@@ -194,6 +200,7 @@
 "Log_in_or_sign_up_to_subscribe" = "Para activar la suscripción, por favor inicia sesión o regístrate";
 "Log_in_to_leave_a_comment" = "Inicia sesión para dejar un comentario.";
 "Log_out" = "Cerrar sesión";
+"Love_film_We_do_too" = "¿Te encanta el cine? A nosotros también.";
 "Make_a_pledge_without_a_reward" = "Contribuir sin recompensa";
 "Manage_your_pledge" = "Administra tu contribución";
 "Manage_your_pledge_below" = "Administra tu contribución:";
@@ -205,6 +212,7 @@
 "Name" = "Nombre";
 "Never" = "Nunca";
 "New_pledge_activity" = "Nueva actividad de contribución";
+"New_work_and_big_ideas_from_established_and" = "Nuevos trabajos y grandes ideas de artistas establecidos y emergentes.";
 "News_events" = "Unas cuantas veces al año: Noticias sobresalientes y eventos cerca de ti.";
 "Newsletters" = "Boletines informativos";
 "No_Results" = "Sin resultados";
@@ -292,7 +300,7 @@
 "Replay_past_live_stream" = "Repetir live stream pasado";
 "Replay_past_live_streams" = "Repetir live streams pasados";
 "Reply_to_user_name" = "Responder a %{user_name}…";
-"Request_my_personal_data" = "Request my personal data";
+"Request_my_personal_data" = "Solicitar mis datos personales";
 "Reward_Surveys.few" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.many" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.one" = "Cuestionario";
@@ -339,7 +347,7 @@
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
-"Start_the_request" = "Start the request";
+"Start_the_request" = "Comenzar la recopilación de datos";
 "Starting_soon" = "Comienza en breve";
 "Status" = "Estado:";
 "Stay_up_to_date" = "¿Deseas mantenerte actualizado?";
@@ -361,6 +369,7 @@
 "The_live_stream_will_start_soon" = "Transmisión en vivo comienza en breve";
 "The_live_stream_will_start_time" = "Live-Stream comienza en %{time}.";
 "The_replay_will_start_soon" = "Repetición comienza en breve";
+"The_zeitgeist_delivered_to_your_inbox_via_new" = "Recibe la actualidad en tu correo electrónico a través de nuevos proyectos e historias interesantes.";
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Este proyecto sólo será financiado si se contribuye al menos un monto de %{amount} antes del %{date}.";
@@ -373,7 +382,7 @@
 "Top_ten_pledge_sources" = "Las 10 principales fuentes de contribución";
 "Top_ten_rewards" = "Las 10 mejores recompensas";
 "Total_pledged" = "Contribuciones en total";
-"Unable_to_request_data" = "Unable to request data.";
+"Unable_to_request" = "No se pueden solicitar datos.";
 "Unfollow_friend_name" = "Dejar de seguir a %{friend_name}";
 "Unfollows_friend_name" = "Dejar de seguir a %{friend_name}.";
 "Unsaved" = "Sin guardar";
@@ -397,6 +406,7 @@
 "We_were_unable_to_connect_to_the_live_stream_chat" = "No se pudo conectar al chat de live stream.";
 "We_were_unable_to_load_the_shipping_destinations" = "No se pudieron cargar los destinos de envío.\nPor favor inténtalo de nuevo más tarde.";
 "Websites" = "Sitios web";
+"Welcome_to_our_library_Peruse_the_stacks_with_us" = "Bienvenidos a nuestra biblioteca. Descubre montones de libros con nosotros.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";

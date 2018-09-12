@@ -8,6 +8,7 @@ final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var tableView: UITableView!
 
   private let dataSource = SettingsDataSource()
+  private var userUpdatedObserver: Any?
   private let viewModel: SettingsViewModelType = SettingsViewModel()
 
   internal static func instantiate() -> SettingsViewController {
@@ -17,13 +18,33 @@ final class SettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    tableView.dataSource = dataSource
-    tableView.delegate = self
+    self.tableView.dataSource = dataSource
+    self.tableView.delegate = self
 
-    tableView.register(nib: .SettingsTableViewCell)
-    tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+    self.tableView.register(nib: .SettingsTableViewCell)
+    self.tableView.register(nib: .FindFriendsCell)
+    self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+
+    if self.presentingViewController != nil {
+      let image = UIImage(named: "icon--cross")
+      self.navigationItem.leftBarButtonItem =
+        UIBarButtonItem(image: image,
+                        style: .plain,
+                        target: self,
+                        action: #selector(closeButtonPressed))
+    }
+
+    self.userUpdatedObserver = NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_userUpdated,
+                   object: nil, queue: nil) { [weak self] _ in
+                      self?.viewModel.inputs.currentUserUpdated()
+    }
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.userUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   override func bindStyles() {
@@ -39,10 +60,10 @@ final class SettingsViewController: UIViewController {
   }
 
   override func bindViewModel() {
-    self.viewModel.outputs.reloadData
+    self.viewModel.outputs.reloadDataWithUser
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.dataSource.configureRows()
+      .observeValues { [weak self] user in
+        self?.dataSource.configureRows(with: user)
         self?.tableView.reloadData()
     }
 
@@ -65,6 +86,10 @@ final class SettingsViewController: UIViewController {
     self.viewModel.outputs.goToAppStoreRating
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
+  }
+
+  @objc fileprivate func closeButtonPressed() {
+    self.dismiss(animated: true, completion: nil)
   }
 
   private func logout(params: DiscoveryParams) {

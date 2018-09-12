@@ -11,16 +11,18 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     super.init(coder: aDecoder)
   }
 
-  func configureWith(value cellType: SettingsCellTypeProtocol) {
+  func configureWith(value cellValue: SettingsCellValue) {
+    let cellType = cellValue.cellType
+
     _ = titleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text .~ cellType.title
       |> UILabel.lens.textColor .~ cellType.textColor
 
     _ = arrowImageView
+      |> settingsArrowViewStyle
       |> UIImageView.lens.isHidden
       .~ !cellType.showArrowImageView
-      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_400
 
     _ = appVersionLabel
       |> UILabel.lens.isHidden %~ { _ in

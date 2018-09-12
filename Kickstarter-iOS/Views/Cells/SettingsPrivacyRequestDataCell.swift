@@ -74,7 +74,7 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
     _ = self.checkBackLaterLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ .ksr_body(size: 13)
-      |> UILabel.lens.text %~ { _ in Strings.Check_back_later_for_an_update_on_your_export_progress() }
+      |> UILabel.lens.text %~ { _ in Strings.Check_back_later_for_an_update_on_your_export() }
 
     _ = self.requestDataActivityIndicator
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
