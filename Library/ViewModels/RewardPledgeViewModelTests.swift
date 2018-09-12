@@ -610,7 +610,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
             ],
             [
               "label": "Kickstarter (if funded)",
-              "amount": NSDecimalNumber(value: Int(defaultShippingRule.cost) + reward.minimum),
+              "amount": NSDecimalNumber(value: Double(defaultShippingRule.cost) + reward.minimum),
               "type": PKPaymentSummaryItemType.final.rawValue
             ]
           )
@@ -718,7 +718,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
             ],
             [
               "label": "Kickstarter (if funded)",
-              "amount": NSDecimalNumber(value: Int(changedShippingRule.cost) + reward.minimum),
+              "amount": NSDecimalNumber(value: Double(changedShippingRule.cost) + reward.minimum),
               "type": PKPaymentSummaryItemType.final.rawValue
             ]
           )
@@ -1175,7 +1175,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.amount .~ Double(reward.minimum)
+          |> Backing.lens.amount .~ reward.minimum
           |> Backing.lens.shippingAmount .~ 0
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
@@ -1339,7 +1339,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.amount .~ Double(reward.minimum)
+          |> Backing.lens.amount .~ reward.minimum
           |> Backing.lens.shippingAmount .~ 0
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
@@ -1757,27 +1757,27 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum))],
+    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum)],
                                           "Sets initial value of pledge text field.")
     XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
     self.vm.inputs.pledgeTextFieldChanged("48")
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum))],
+    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum)],
                                           "Pledge field isn't set while editing.")
     XCTAssertEqual(["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
                    self.trackingClient.events)
 
     self.vm.inputs.pledgeTextFieldDidEndEditing()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum))],
+    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum)],
                                           "Pledge field isn't set when done editing with valid value.")
     XCTAssertEqual(["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
                    self.trackingClient.events)
 
     self.vm.inputs.pledgeTextFieldChanged("20")
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum))],
+    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum)],
                                           "Pledge field isn't set while editing.")
     XCTAssertEqual(
       ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
@@ -1787,8 +1787,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     self.vm.inputs.pledgeTextFieldDidEndEditing()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum)),
-                                           String(format: "%.2f", Double(reward.minimum))],
+    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum),
+                                           String(format: "%.2f", reward.minimum)],
                                           "Pledge field is reset when done editing with invalid value.")
 
     XCTAssertEqual(
@@ -1807,12 +1807,12 @@ internal final class RewardPledgeViewModelTests: TestCase {
   }
 
   func testPledgeTextFieldText_ManageReward_NoShipping() {
-    let reward = .template |> Reward.lens.minimum .~ 42
+    let reward = .template |> Reward.lens.minimum .~ 42.00
     let project = .template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.amount .~ Double(reward.minimum)
+          |> Backing.lens.amount .~ reward.minimum
           |> Backing.lens.shippingAmount .~ nil
           |> Backing.lens.reward .~ reward
 
@@ -1820,17 +1820,17 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum))],
+    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum)],
                                           "Sets initial value of pledge text field.")
   }
 
   func testPledgeTextFieldText_ManageReward_PledgedExtra_NoShipping() {
-    let reward = .template |> Reward.lens.minimum .~ 42
+    let reward = .template |> Reward.lens.minimum .~ 42.00
     let project = .template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.amount .~ Double(reward.minimum + 10)
+          |> Backing.lens.amount .~ (reward.minimum + 10.00)
           |> Backing.lens.shippingAmount .~ nil
           |> Backing.lens.reward .~ reward
 
@@ -1838,17 +1838,17 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum + 10))],
+    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum + 10.00)],
                                           "Sets initial value of pledge text field.")
   }
 
   func testPledgeTextFieldText_ManageReward_WithShipping() {
-    let reward = .template |> Reward.lens.minimum .~ 42
+    let reward = .template |> Reward.lens.minimum .~ 42.00
     let project = .template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.amount .~ Double(reward.minimum + 10)
+          |> Backing.lens.amount .~ (reward.minimum + 10.00)
           |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.reward .~ reward
 
@@ -1861,12 +1861,12 @@ internal final class RewardPledgeViewModelTests: TestCase {
   }
 
   func testPledgeTextFieldText_ManageReward_PledgedExtra_WithShipping() {
-    let reward = .template |> Reward.lens.minimum .~ 42
+    let reward = .template |> Reward.lens.minimum .~ 42.00
     let project = .template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.amount .~ Double(reward.minimum + 20 + 10)
+          |> Backing.lens.amount .~ (reward.minimum + 20.00 + 10.00)
           |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.reward .~ reward
 
@@ -1874,7 +1874,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum + 20))],
+    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum + 20.00)],
                                           "Sets initial value of pledge text field.")
   }
 
@@ -1884,7 +1884,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.amount .~ 123
+          |> Backing.lens.amount .~ 123.00
           |> Backing.lens.shippingAmount .~ nil
           |> Backing.lens.reward .~ nil
           |> Backing.lens.rewardId .~ nil

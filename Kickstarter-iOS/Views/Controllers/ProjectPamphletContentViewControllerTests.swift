@@ -93,7 +93,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
         .template
-          |> Backing.lens.amount .~ Double(project.rewards.first!.minimum + 5)
+          |> Backing.lens.amount .~ (project.rewards.first!.minimum + 5.00)
           |> Backing.lens.rewardId .~ project.rewards.first?.id
           |> Backing.lens.reward .~ project.rewards.first
     }
@@ -142,7 +142,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let deadline = self.dateType.init().addingTimeInterval(-100).timeIntervalSince1970
 
     let backing = .template
-      |> Backing.lens.amount .~ Double(self.cosmicSurgery.rewards.first!.minimum + 5)
+      |> Backing.lens.amount .~ (self.cosmicSurgery.rewards.first!.minimum + 5.00)
       |> Backing.lens.rewardId .~ self.cosmicSurgery.rewards.first?.id
       |> Backing.lens.reward .~ self.cosmicSurgery.rewards.first
 
@@ -176,7 +176,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
         .template
-          |> Backing.lens.amount .~ Double(project.rewards.first!.minimum + 5)
+          |> Backing.lens.amount .~ (project.rewards.first!.minimum + 5.00)
           |> Backing.lens.rewardId .~ project.rewards.first?.id
           |> Backing.lens.reward .~ project.rewards.first
     }

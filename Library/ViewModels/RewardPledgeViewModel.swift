@@ -392,10 +392,10 @@ RewardPledgeViewModelOutputs {
 
             return reward == Reward.noReward
               ? Double(minAndMaxPledgeAmount(forProject: project, reward: reward).min)
-              : Double(reward.minimum)
+              : reward.minimum
         }
 
-        return Double(backing.amount) - Double(backing.shippingAmount ?? 0)
+        return backing.amount - Double(backing.shippingAmount ?? 0)
     }
 
     let userEnteredPledgeAmount = Signal.merge(
@@ -408,9 +408,9 @@ RewardPledgeViewModelOutputs {
       projectAndReward.map(minAndMaxPledgeAmount(forProject:reward:))
       )
       .takeWhen(self.pledgeTextFieldDidEndEditingProperty.signal)
-      .filter { pledgeAmount, minAndMax in pledgeAmount < Double(minAndMax.0)
-        || pledgeAmount > Double(minAndMax.1) }
-      .map { _, minAndMax in Double(minAndMax.0) }
+      .filter { pledgeAmount, minAndMax in pledgeAmount < minAndMax.0
+        || pledgeAmount > minAndMax.1 }
+      .map { _, minAndMax in minAndMax.0 }
 
     let pledgeAmount = Signal.merge(
       userEnteredPledgeAmount,
@@ -1030,7 +1030,7 @@ private func backingError(forProject project: Project, amount: Double, reward: R
 
   let (min, max) = minAndMaxPledgeAmount(forProject: project, reward: reward)
 
-  guard amount >= Double(min) else {
+  guard amount >= min else {
     let message = Strings.Please_enter_an_amount_of_amount_or_more(
       amount: Format.currency(min, country: project.country)
     )
@@ -1038,7 +1038,7 @@ private func backingError(forProject project: Project, amount: Double, reward: R
     return .minimumAmount(.init(errorMessages: [message], ksrCode: nil, httpCode: 400, exception: nil))
   }
 
-  guard amount <= Double(max) else {
+  guard amount <= max else {
     let message = Strings.Please_enter_an_amount_of_amount_or_less(
       amount: Format.currency(max, country: project.country)
     )
@@ -1058,7 +1058,7 @@ private func createPledge(project: Project,
     return SignalProducer(error: error)
   }
 
-  let totalAmount = Double(amount) + (shipping?.cost ?? 0)
+  let totalAmount = amount + (shipping?.cost ?? 0)
 
   return AppEnvironment.current.apiService.createPledge(
     project: project,
@@ -1088,7 +1088,7 @@ private func updatePledge(project: Project,
     return SignalProducer(error: error)
   }
 
-  let totalAmount = Double(amount) + (shipping?.cost ?? 0)
+  let totalAmount = amount + (shipping?.cost ?? 0)
 
   return AppEnvironment.current.apiService.updatePledge(
     project: project,
@@ -1120,7 +1120,7 @@ private func createApplePayPledge(
     return SignalProducer(error: error)
   }
 
-  let totalAmount = Double(amount) + (shipping?.cost ?? 0)
+  let totalAmount = amount + (shipping?.cost ?? 0)
 
   return AppEnvironment.current.apiService.createPledge(
     project: project,

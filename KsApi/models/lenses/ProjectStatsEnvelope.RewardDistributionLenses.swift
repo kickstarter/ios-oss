@@ -14,7 +14,7 @@ extension ProjectStatsEnvelope.RewardStats {
         minimum: $1.minimum, pledged: $1.pledged) }
     )
 
-    public static let minimum = Lens<ProjectStatsEnvelope.RewardStats, Int?>(
+    public static let minimum = Lens<ProjectStatsEnvelope.RewardStats, Double?>(
       view: { $0.minimum },
       set: { ProjectStatsEnvelope.RewardStats(backersCount: $1.backersCount,
         rewardId: $1.rewardId, minimum: $0, pledged: $1.pledged) }
