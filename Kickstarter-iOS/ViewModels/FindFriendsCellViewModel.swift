@@ -5,7 +5,7 @@ import ReactiveSwift
 import Result
 
 protocol FindFriendsCellViewModelOutputs {
-  var disabledDescriptionLabelShouldHide: Signal<Bool, NoError> { get }
+  var disabledDescriptionLabelIsHidden: Signal<Bool, NoError> { get }
   var isDisabled: Signal<Bool, NoError> { get }
 }
 
@@ -27,7 +27,7 @@ FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
       .skipNil()
 
     self.isDisabled = isFollowingEnabled.negate()
-    self.disabledDescriptionLabelShouldHide = isFollowingEnabled
+    self.disabledDescriptionLabelIsHidden = isFollowingEnabled
   }
 
   fileprivate var userProperty = MutableProperty<User?>(nil)
@@ -35,7 +35,7 @@ FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
     self.userProperty.value = user
   }
 
-  public let disabledDescriptionLabelShouldHide: Signal<Bool, NoError>
+  public let disabledDescriptionLabelIsHidden: Signal<Bool, NoError>
   public let isDisabled: Signal<Bool, NoError>
 
   var outputs: FindFriendsCellViewModelOutputs {

@@ -131,6 +131,7 @@
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Follow your Facebook friends and keep up with the projects they back and launch.";
 "Followed" = "Followed";
 "Following" = "Following";
+"Following_Disabled_Info" = "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy.";
 "Following_More_Info" = "Following More Info";
 "Follows_friend_name" = "Follows %{friend_name}.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> backed an <i>Art</i> project.";
@@ -173,6 +174,7 @@
 "Join_our_secret_society" = "Join our secret society.";
 "Joining_the_live_stream" = "Joining the live stream";
 "Just_for_you" = "Just for you.";
+"Keep_in_touch_after_your_campaign" = "Keep in touch after your campaign and plan your next project.";
 "Keep_reading" = "Keep reading";
 "Keep_up_with_future_live_streams" = "Keep up with future live streams";
 "Kickstarter_if_funded" = "Kickstarter (if funded)";
