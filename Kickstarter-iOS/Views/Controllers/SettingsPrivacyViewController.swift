@@ -79,13 +79,13 @@ internal final class SettingsPrivacyViewController: UITableViewController {
 }
 
 extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
-  internal func settingsFollowCellDidDisableFollowing(_ cell: SettingsFollowCell) {
+  internal func settingsFollowCellDidPresentPrompt(_ cell: SettingsFollowCell) {
     let followingAlert = UIAlertController.turnOffPrivacyFollowing(
       turnOnHandler: { [weak self] _ in
         self?.viewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
       },
       turnOffHandler: { [weak self] _ in
-        self?.viewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
+        self?.viewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true) //changing to false
       }
     )
     self.present(followingAlert, animated: true, completion: nil)

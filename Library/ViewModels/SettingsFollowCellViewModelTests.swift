@@ -11,13 +11,11 @@ internal final class SettingsFollowCellViewModelTests: TestCase {
   internal let vm = SettingsFollowCellViewModel()
 
   internal let followingPrivacyOn = TestObserver<Bool, NoError>()
-  internal let followingPrivacySwitchIsEnabled = TestObserver<Bool, NoError>()
   internal let showPrivacyFollowingPrompt = TestObserver<(), NoError>()
 
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.followingPrivacyOn.observe(self.followingPrivacyOn.observer)
-    self.vm.outputs.followingPrivacySwitchIsEnabled.observe(self.followingPrivacySwitchIsEnabled.observer)
     self.vm.outputs.showPrivacyFollowingPrompt.observe(self.showPrivacyFollowingPrompt.observer)
   }
 
@@ -27,7 +25,7 @@ internal final class SettingsFollowCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(user: user)
     self.followingPrivacyOn.assertValues([true])
-    self.vm.inputs.followTapped()
+    self.vm.inputs.followTapped(on: true)
     self.showPrivacyFollowingPrompt.assertValueCount(1)
   }
 
@@ -53,9 +51,8 @@ internal final class SettingsFollowCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(user: user)
     self.followingPrivacyOn.assertValues([true])
-    self.followingPrivacySwitchIsEnabled.assertValues([true])
 
-    self.vm.inputs.followTapped()
+    self.vm.inputs.followTapped(on: false)
     self.showPrivacyFollowingPrompt.assertValueCount(1)
 
     let userOptedOut = .template
@@ -63,6 +60,5 @@ internal final class SettingsFollowCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(user: userOptedOut)
     self.followingPrivacyOn.assertValues([true, false])
-    self.followingPrivacySwitchIsEnabled.assertValues([true, false])
   }
 }

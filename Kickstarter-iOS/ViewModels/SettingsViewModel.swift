@@ -10,6 +10,7 @@ public protocol SettingsViewModelInputs {
   func logoutConfirmed()
   func settingsCellTapped(cellType: SettingsCellType)
   func viewDidLoad()
+  func viewWillAppear()
 }
 
 public protocol SettingsViewModelOutputs {
@@ -33,6 +34,7 @@ SettingsViewModelOutputs, SettingsViewModelType {
   public init() {
     let user = Signal.merge(
       viewDidLoadProperty.signal,
+      viewWillAppearProperty.signal,
       currentUserUpdatedProperty.signal)
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()
@@ -110,11 +112,18 @@ SettingsViewModelOutputs, SettingsViewModelType {
      self.viewDidLoadProperty.value = ()
   }
 
+  fileprivate let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
+
+
   public let goToAppStoreRating: Signal<String, NoError>
   public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
   public let reloadDataWithUser: Signal<User, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
+
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }

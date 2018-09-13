@@ -34,13 +34,17 @@ final class SettingsViewController: UIViewController {
                         action: #selector(closeButtonPressed))
     }
 
+    self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
     self.userUpdatedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_userUpdated,
                    object: nil, queue: nil) { [weak self] _ in
-                      self?.viewModel.inputs.currentUserUpdated()
+                    self?.viewModel.inputs.currentUserUpdated()
     }
 
-    self.viewModel.inputs.viewDidLoad()
+    self.viewModel.inputs.viewWillAppear()
   }
 
   deinit {

@@ -7,7 +7,7 @@ import UIKit
 
 internal protocol SettingsFollowCellDelegate: class {
   /// Called when follow switch is tapped
-  func settingsFollowCellDidDisableFollowing(_ cell: SettingsFollowCell)
+  func settingsFollowCellDidPresentPrompt(_ cell: SettingsFollowCell)
 }
 
 internal final class SettingsFollowCell: UITableViewCell, ValueCell {
@@ -46,18 +46,24 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.updateCurrentUser
+      .observeForUI()
+      .observeValues { user in
+        AppEnvironment.updateCurrentUser(user)
+        NotificationCenter.default.post(Notification(name: .ksr_userUpdated))
+    }
+
     self.viewModel.outputs.showPrivacyFollowingPrompt
       .observeForUI()
       .observeValues { [weak self] in
         guard let _self = self else { return }
-        self?.delegate?.settingsFollowCellDidDisableFollowing(_self)
+        self?.delegate?.settingsFollowCellDidPresentPrompt(_self)
     }
 
     self.followingSwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
-    self.followingSwitch.rac.enabled = self.viewModel.outputs.followingPrivacySwitchIsEnabled
   }
 
   @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
-    self.viewModel.inputs.followTapped()
+    self.viewModel.inputs.followTapped(on: followingPrivacySwitch.isOn)
   }
 }
