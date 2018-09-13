@@ -2717,18 +2717,52 @@ backers"
     )
   }
   /**
-   "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
+   "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers."
 
    - **es**: "Si desactivas el seguimiento, no podrás seguir a nadie y nadie podrá seguirte. Tu perfil se desconectará de todos tus seguidores. Esto no se puede deshacer."
    - **ja**: "フォローをオフにすると、あなたは誰もフォローすることができなくなり、また他の人があなたをフォローすることもできなくなります。また、既存のフォロワーとのつながりも絶たれます。この操作は後から元に戻すことはできませんのでご注意ください。"
    - **de**: "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden."
    - **fr**: "Si vous désactivez les fonctionnalités de suivi, vous ne pourrez pas vous abonner aux activités des autres et plus personne ne pourra suivre les vôtres. Votre profil sera déconnecté de tous vos abonnés. Cette action ne pourra pas être annulée."
-   - **en**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone."
+   - **en**: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers."
   */
   public static func If_you_turn_following_off() -> String {
     return localizedString(
       key: "If_you_turn_following_off",
-      defaultValue: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers. This can’t be undone.",
+      defaultValue: "If you turn following off, you won't be able to follow anyone and no one will be able to follow you. Your profile will be disconnected from all of your followers.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "If your profile is private, others can see your name and picture."
+
+   - **es**: "If your profile is private, others can see your name and picture."
+   - **ja**: "If your profile is private, others can see your name and picture."
+   - **de**: "If your profile is private, others can see your name and picture."
+   - **fr**: "If your profile is private, others can see your name and picture."
+   - **en**: "If your profile is private, others can see your name and picture."
+  */
+  public static func If_your_profile_is_private() -> String {
+    return localizedString(
+      key: "If_your_profile_is_private",
+      defaultValue: "If your profile is private, others can see your name and picture.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+
+   - **es**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+   - **ja**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+   - **de**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+   - **fr**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+   - **en**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+  */
+  public static func If_your_profile_is_public() -> String {
+    return localizedString(
+      key: "If_your_profile_is_public",
+      defaultValue: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites.",
       count: nil,
       substitutions: [:]
     )

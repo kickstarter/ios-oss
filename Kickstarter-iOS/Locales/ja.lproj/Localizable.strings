@@ -166,6 +166,8 @@
 "How_backers_found_your_project" = "バッカ―があなたのプロジェクトを見つけた経緯";
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
 "If_you_turn_following_off" = "フォローをオフにすると、あなたは誰もフォローすることができなくなり、また他の人があなたをフォローすることもできなくなります。また、既存のフォロワーとのつながりも絶たれます。この操作は後から元に戻すことはできませんのでご注意ください。";
+"If_your_profile_is_private" = "If your profile is private, others can see your name and picture.";
+"If_your_profile_is_public" = "If your profile is not private, others can also see the projects you've backed, your location, bio and websites.";
 "Individual_Emails" = "個人メール";
 "Info" = "インフォメーション";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "データの収集には最大で24時間かかる場合があります。ダウンロードの準備が整いましたら、このアカウントに登録されているメールアドレス宛てにデータのダウンロード手順が記載されたメールをお送りします。メールが届かなかった場合には、お手数ですがこちらに戻って再試行してください。";
