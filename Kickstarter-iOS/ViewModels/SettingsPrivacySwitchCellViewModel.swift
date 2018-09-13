@@ -5,7 +5,7 @@ import Result
 import ReactiveSwift
 
 protocol SettingsPrivacySwitchCellViewModelOutputs {
-  var privacySwitchEnabled: Signal<Bool, NoError> { get }
+  var privacySwitchIsOn: Signal<Bool, NoError> { get }
   var privacySwitchToggledOn: Signal<Bool, NoError> { get }
 }
 
@@ -22,7 +22,7 @@ protocol SettingsPrivacySwitchCellViewModelType {
 final class SettingsPrivacySwitchCellViewModel: SettingsPrivacySwitchCellViewModelType,
 SettingsPrivacySwitchCellViewModelInputs, SettingsPrivacySwitchCellViewModelOutputs {
   public init() {
-    self.privacySwitchEnabled = userProperty.signal
+    self.privacySwitchIsOn = userProperty.signal
       .skipNil()
       .map { ($0 |> User.lens.showPublicProfile.view) ?? false }
       .negate()
@@ -40,7 +40,7 @@ SettingsPrivacySwitchCellViewModelInputs, SettingsPrivacySwitchCellViewModelOutp
     self.switchToggledProperty.value = on
   }
 
-  public let privacySwitchEnabled: Signal<Bool, NoError>
+  public let privacySwitchIsOn: Signal<Bool, NoError>
   public let privacySwitchToggledOn: Signal<Bool, NoError>
 
   var inputs: SettingsPrivacySwitchCellViewModelInputs {

@@ -8,12 +8,11 @@ protocol SettingsPrivacySwitchCellDelegate: class {
 }
 
 final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
-  @IBOutlet fileprivate weak var lineLayer: UIView!
   @IBOutlet fileprivate weak var primaryDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
-  @IBOutlet fileprivate weak var topLineLayer: UIView!
   @IBOutlet fileprivate weak var secondaryDescriptionLabel: UILabel!
   @IBOutlet fileprivate weak var switchButton: UISwitch!
+  @IBOutlet fileprivate var separatorViews: [UIView]!
 
   private let viewModel = SettingsPrivacySwitchCellViewModel()
 
@@ -50,19 +49,14 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
     _ = self.switchButton
       |> settingsSwitchStyle
 
-    _ = self.lineLayer
-      |> settingsSeparatorStyle
-
-    _ = self.topLineLayer
-      |> settingsSeparatorStyle
-
-    self.bringSubview(toFront: topLineLayer)
+    _ = self.separatorViews
+      ||> settingsSeparatorStyle
   }
 
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.switchButton.rac.on = self.viewModel.privacySwitchEnabled
+    self.switchButton.rac.on = self.viewModel.privacySwitchIsOn
 
     self.viewModel.privacySwitchToggledOn
       .observeForControllerAction()

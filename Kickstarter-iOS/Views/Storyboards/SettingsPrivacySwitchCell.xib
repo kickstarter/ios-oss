@@ -16,13 +16,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ItP-7t-eYl" userLabel="Top Line">
-                    <rect key="frame" x="0.0" y="20" width="375" height="1"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="0.5" id="BOl-8T-w6z"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7cu-CT-WhZ">
                     <rect key="frame" x="0.0" y="20" width="375" height="570"/>
                     <subviews>
@@ -54,6 +47,13 @@
                         <constraint firstAttribute="trailing" secondItem="Cmu-c3-5lZ" secondAttribute="trailing" constant="12" id="MKs-M4-h4U"/>
                         <constraint firstAttribute="bottom" secondItem="Cmu-c3-5lZ" secondAttribute="bottom" constant="6" id="xGE-o8-bI7"/>
                         <constraint firstItem="Cmu-c3-5lZ" firstAttribute="leading" secondItem="7cu-CT-WhZ" secondAttribute="leading" constant="12" id="zBA-gJ-syU"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ItP-7t-eYl" userLabel="Top Line">
+                    <rect key="frame" x="0.0" y="20" width="375" height="1"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="0.5" id="BOl-8T-w6z"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iXy-hG-gUz" userLabel="Line">
@@ -98,12 +98,12 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="lineLayer" destination="iXy-hG-gUz" id="kqX-Gg-7Po"/>
                 <outlet property="primaryDescriptionLabel" destination="YVu-og-jIg" id="ypi-xo-XhU"/>
                 <outlet property="secondaryDescriptionLabel" destination="qch-mV-CcX" id="bsh-ZQ-vef"/>
                 <outlet property="switchButton" destination="O7B-q5-lbN" id="Qeh-Ix-oCO"/>
                 <outlet property="titleLabel" destination="S1S-GT-Hlq" id="JrT-y1-emd"/>
-                <outlet property="topLineLayer" destination="ItP-7t-eYl" id="7AB-yJ-t6B"/>
+                <outletCollection property="separatorViews" destination="ItP-7t-eYl" collectionClass="NSMutableArray" id="sHc-J5-hlB"/>
+                <outletCollection property="separatorViews" destination="iXy-hG-gUz" collectionClass="NSMutableArray" id="XDg-Ma-EWQ"/>
             </connections>
         </view>
     </objects>

@@ -7,7 +7,7 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 final class SettingsPrivacySwitchCellViewModelTests: TestCase {
-  private let privacySwitchEnabledObserver = TestObserver<Bool, NoError>()
+  private let privacySwitchIsOnObserver = TestObserver<Bool, NoError>()
   private let privacySwitchToggledOnObserver = TestObserver<Bool, NoError>()
 
   private let vm = SettingsPrivacySwitchCellViewModel()
@@ -15,11 +15,11 @@ final class SettingsPrivacySwitchCellViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.privacySwitchEnabled.observe(privacySwitchEnabledObserver.observer)
+    self.vm.privacySwitchIsOn.observe(privacySwitchIsOnObserver.observer)
     self.vm.privacySwitchToggledOn.observe(privacySwitchToggledOnObserver.observer)
   }
 
-  func testPrivacySwitchEnabled_configuredWithUser() {
+  func testPrivacySwitchIsOn_configuredWithUser() {
     let showPublicProfileUser = User.template
       |> UserAttribute.privacy(.showPublicProfile).lens .~ true
     let privateProfileUser = User.template
@@ -27,11 +27,11 @@ final class SettingsPrivacySwitchCellViewModelTests: TestCase {
 
     self.vm.configure(with: showPublicProfileUser)
 
-    self.privacySwitchEnabledObserver.assertValues([false])
+    self.privacySwitchIsOnObserver.assertValues([false])
 
     self.vm.configure(with: privateProfileUser)
 
-    self.privacySwitchEnabledObserver.assertValues([false, true])
+    self.privacySwitchIsOnObserver.assertValues([false, true])
   }
 
   func testPrivacySwitch() {
