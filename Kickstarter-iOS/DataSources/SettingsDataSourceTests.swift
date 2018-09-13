@@ -10,7 +10,7 @@ final class SettingsDataSourceTests: XCTestCase {
   func testConfigureRows() {
     dataSource.configureRows(with: User.template)
 
-    XCTAssertEqual(5, dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(6, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 2))

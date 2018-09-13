@@ -90,6 +90,8 @@
 "Currency_SEK" = "kr Swedish Krona (SEK)";
 "Currency_SGD" = "$ Singapore Dollar (SGD)";
 "Currency_USD" = "$ US Dollar (USD)";
+"Current_email" = "Current email";
+"Current_password" = "Current password";
 "Daily_digest" = "Daily digest";
 "Data_will_appear_here_once" = "Data will appear here once somebody backs your project.";
 "Delete_my_Kickstarter_Account" = "Delete my Kickstarter account";

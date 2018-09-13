@@ -5,8 +5,11 @@ final class SettingsAccountDataSource: ValueCellDataSource {
 
   func configureRows() {
     SettingsAccountSectionType.allCases.forEach { section -> Void in
-     self.set(values: section.cellRowsForSection,
-              cellClass: SettingsTableViewCell.self, inSection: section.rawValue)
+      let values = section.cellRowsForSection.map { SettingsCellValue(user: nil, cellType: $0) }
+
+      self.set(values: values,
+               cellClass: SettingsTableViewCell.self,
+               inSection: section.rawValue)
     }
   }
 
@@ -16,7 +19,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as SettingsTableViewCell, value as SettingsAccountCellType):
+    case let (cell as SettingsTableViewCell, value as SettingsCellValue):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
