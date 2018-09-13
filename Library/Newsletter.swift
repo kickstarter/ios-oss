@@ -45,21 +45,21 @@ public enum Newsletter {
   public var displayableDescription: String {
     switch self {
     case .arts:
-      return Strings.profile_settings_newsletter_arts_news_newsletter()
+      return Strings.New_work_and_big_ideas_from_established_and()
     case .games:
-      return Strings.Games_newsletter()
+      return Strings.Join_our_secret_society()
     case .happening:
-      return Strings.Happening_newsletter()
+      return Strings.The_zeitgeist_delivered_to_your_inbox_via_new()
     case .invent:
-      return Strings.Discover_arts_news()
+      return Strings.Discover_the_future_of_Design_and_Tech()
     case .promo:
-      return Strings.News_events()
+      return Strings.Big_Kickstarter_news_and_events_near_you()
     case .weekly:
-      return Strings.Sign_up_newsletter()
+      return Strings.A_weekly_roundup_of_the_best_and_brightest()
     case .films:
-      return Strings.profile_settings_newsletter_films_newsletter()
+      return Strings.Love_film_We_do_too()
     case .publishing:
-      return Strings.profile_settings_newsletter_publishing_newsletter()
+      return Strings.Welcome_to_our_library_Peruse_the_stacks_with_us()
     case .alumni:
       return Strings.profile_settings_newsletter_alumni_newsletter()
     }

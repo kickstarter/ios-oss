@@ -34,7 +34,6 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
           .demoteErrors()
     }
     .skipNil()
-    .skipRepeats()
 
     self.reloadData = initialUser
 
@@ -62,6 +61,8 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
           .materialize()
     }
 
+    let updatedFetchedUser = updateEvent.values()
+
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
@@ -72,10 +73,9 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
       .takeWhen(self.unableToSaveError)
       .map { previous, _ in previous }
 
-   self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
+   self.updateCurrentUser = Signal.merge(updatedFetchedUser, previousUserOnError)
 
    self.refreshFollowingSection = self.updateCurrentUser.ignoreValues()
-    .takeWhen(self.followingSwitchTappedProperty.signal.ignoreValues())
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

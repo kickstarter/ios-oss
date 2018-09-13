@@ -59,7 +59,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
 
     self.unableToRequestDataError = requestDataEvent.errors()
       .map { env in
-        env.errorMessages.first ?? Strings.Unable_to_request_data()
+        env.errorMessages.first ?? Strings.Unable_to_request()
     }
 
     self.requestDataLoadingIndicator = Signal.merge(

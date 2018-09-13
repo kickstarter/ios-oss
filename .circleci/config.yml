@@ -396,6 +396,54 @@ jobs:
       - store_artifacts:
           path: output
 
+  refresh_app_store_dsyms:
+    <<: *base_job
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+
+      - checkout
+
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
+
+      - run:
+          name: Store OpenTok Version
+          command: *store_opentok_version
+
+      - restore_cache:
+          keys:
+            - opentok-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys: 
+            - fabric-cache-{{ checksum "fabric_version.txt" }}
+
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
+      - restore_cache:
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Bundle install
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+      - save_cache:
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Download dSYMs and upload to Crashlytics
+          command: bundle exec fastlane refresh_dsyms
+
   # iTunes
   itunes:
     <<: *base_job
@@ -467,6 +515,10 @@ workflows:
       - library-tests
       - livestream-tests
       - ksapi-tests
+      - refresh_app_store_dsyms:
+          filters:
+            branches:
+              only: /alpha-dist-.*/
       - deploy_alpha:
           filters:
             branches:

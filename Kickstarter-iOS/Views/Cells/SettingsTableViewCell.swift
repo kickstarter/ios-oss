@@ -3,7 +3,7 @@ import Prelude
 
 final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet fileprivate weak var appVersionLabel: UILabel!
+  @IBOutlet fileprivate weak var detailLabel: UILabel!
   @IBOutlet fileprivate weak var lineLayer: UIView!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
 
@@ -11,34 +11,32 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     super.init(coder: aDecoder)
   }
 
-  func configureWith(value cellType: SettingsCellTypeProtocol) {
+  func configureWith(value cellValue: SettingsCellValue) {
+    let cellType = cellValue.cellType
+
     _ = titleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text .~ cellType.title
       |> UILabel.lens.textColor .~ cellType.textColor
 
     _ = arrowImageView
+      |> settingsArrowViewStyle
       |> UIImageView.lens.isHidden
       .~ !cellType.showArrowImageView
-      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_400
 
-    _ = appVersionLabel
+    _ = detailLabel
       |> UILabel.lens.isHidden %~ { _ in
         return cellType.hideDescriptionLabel
       }
       |> UILabel.lens.text %~ { _ in
-        let versionString = AppEnvironment.current.mainBundle.shortVersionString
-        let build = AppEnvironment.current.mainBundle.isRelease
-          ? ""
-          : " #\(AppEnvironment.current.mainBundle.version)"
-        return "\(versionString)\(build)"
+        return cellType.description ?? ""
     }
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = appVersionLabel
+    _ = detailLabel
     |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = lineLayer
