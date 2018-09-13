@@ -56,13 +56,6 @@ internal final class SettingsPrivacyViewController: UITableViewController {
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
     }
-
-    self.viewModel.outputs.refreshFollowingSection
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        let followingSection = IndexSet(integer: Section.following.rawValue)
-        self?.tableView.reloadSections(followingSection, with: .none)
-    }
   }
 
   internal override func tableView(_ tableView: UITableView,
