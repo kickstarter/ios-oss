@@ -69,10 +69,25 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testFollowingSwitchTapped_updatesCurrentUser() {
+
+    self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
+    self.updateCurrentUser.assertValueCount(0)
+
+    self.vm.followingSwitchTapped(on: false, didShowPrompt: true)
+
+    self.scheduler.advance()
+
+    self.updateCurrentUser.assertValueCount(1)
+  }
+
+  func testUpdateCurrentUser() {
+
     let mockService = MockService(fetchUserSelfResponse: User.template)
+
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
       self.updateCurrentUser.assertValueCount(0)
+
 
       self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
       self.updateCurrentUser.assertValueCount(0)

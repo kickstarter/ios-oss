@@ -1,10 +1,11 @@
 import UIKit
 
 public protocol SettingsCellTypeProtocol {
-  var title: String { get }
+  var description: String? { get }
+  var hideDescriptionLabel: Bool { get }
   var showArrowImageView: Bool { get }
   var textColor: UIColor { get }
-  var hideDescriptionLabel: Bool { get }
+  var title: String { get }
 }
 
 public enum SettingsSectionType: Int {
@@ -16,7 +17,7 @@ public enum SettingsSectionType: Int {
   case ratingAppVersion
 
   public static var sectionHeaderHeight: CGFloat {
-    return 30.0
+    return Styles.grid(5)
   }
 
   public var cellRowsForSection: [SettingsCellType] {
@@ -78,6 +79,15 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
     }
   }
 
+  public var description: String? {
+    switch self {
+    case .appVersion:
+      return SettingsCellType.appVersionString
+    default:
+      return nil
+    }
+  }
+
   public var showArrowImageView: Bool {
     switch self {
     case .account, .notifications, .newsletters, .help, .privacy, .findFriends, .rateInAppStore:
@@ -104,6 +114,15 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
       return true
     }
   }
+
+  private static var appVersionString: String {
+
+    let versionString = AppEnvironment.current.mainBundle.shortVersionString
+    let build = AppEnvironment.current.mainBundle.isRelease
+      ? ""
+      : " #\(AppEnvironment.current.mainBundle.version)"
+    return "\(versionString)\(build)"
+  }
 }
 
 public enum HelpSectionType: Int {
@@ -111,7 +130,7 @@ public enum HelpSectionType: Int {
   case privacy
 
   public static var sectionHeaderHeight: CGFloat {
-    return 30.0
+    return Styles.grid(5)
   }
 
   public static var allCases: [HelpSectionType] = [.help, .privacy]

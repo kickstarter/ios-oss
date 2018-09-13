@@ -124,6 +124,8 @@ SettingsViewModelOutputs, SettingsViewModelType {
 extension SettingsViewModel {
   static func viewController(for cellType: SettingsCellType) -> UIViewController? {
     switch cellType {
+    case .account:
+      return SettingsAccountViewController.instantiate()
     case .help:
       return HelpViewController.instantiate()
     case .privacy:
