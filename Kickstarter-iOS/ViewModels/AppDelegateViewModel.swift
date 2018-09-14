@@ -26,6 +26,7 @@ public enum NotificationAuthorizationStatus {
   case authorized
   case denied
   case notDetermined
+  case provisional
 }
 
 public protocol AppDelegateViewModelInputs {
@@ -616,7 +617,7 @@ AppDelegateViewModelOutputs {
           AppEnvironment.current.koala.trackPushPermissionOptIn()
         case .denied:
           AppEnvironment.current.koala.trackPushPermissionOptOut()
-        case .notDetermined: ()
+        case .notDetermined, .provisional: ()
         }
       }
 
@@ -1080,6 +1081,6 @@ private func authStatusType(for status: UNAuthorizationStatus) -> NotificationAu
   case .authorized: return .authorized
   case .denied: return .denied
   case .notDetermined: return .notDetermined
-  case .provisional: return .notDetermined
+  case .provisional: return .provisional
   }
 }
