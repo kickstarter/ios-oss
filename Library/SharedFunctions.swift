@@ -75,7 +75,7 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
  */
 internal func minPledgeAmount(forProject project: Project, reward: Reward?) -> Double {
 
-  return Double(Int(minAndMaxPledgeAmount(forProject: project, reward: reward).min))
+  return minAndMaxPledgeAmount(forProject: project, reward: reward).min
 }
 
 /**

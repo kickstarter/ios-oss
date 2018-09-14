@@ -391,7 +391,7 @@ RewardPledgeViewModelOutputs {
           userIsBacking(reward: reward, inProject: project) else {
 
             return reward == Reward.noReward
-              ? Double(minAndMaxPledgeAmount(forProject: project, reward: reward).min)
+              ? minAndMaxPledgeAmount(forProject: project, reward: reward).min
               : reward.minimum
         }
 
