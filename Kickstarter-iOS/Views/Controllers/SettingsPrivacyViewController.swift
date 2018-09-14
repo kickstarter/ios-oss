@@ -19,6 +19,8 @@ internal final class SettingsPrivacyViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
 
+    self.tableView.register(nib: Nib.SettingsPrivacySwitchCell)
+
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(4)))
     self.tableView.tableHeaderView?.backgroundColor = .ksr_grey_100
 
@@ -74,7 +76,15 @@ internal final class SettingsPrivacyViewController: UITableViewController {
       requestDataCell.delegate = self
     } else if let deleteAccountCell = cell as? SettingsPrivacyDeleteAccountCell {
       deleteAccountCell.delegate = self
+    } else if let privacySwitchCell = cell as? SettingsPrivacySwitchCell {
+      privacySwitchCell.delegate = self
     }
+  }
+}
+
+extension SettingsPrivacyViewController: SettingsPrivacySwitchCellDelegate {
+  func privacySettingsSwitchCell(_ cell: SettingsPrivacySwitchCell, didTogglePrivacySwitch on: Bool) {
+    self.viewModel.inputs.privateProfileToggled(on: on)
   }
 }
 

@@ -174,7 +174,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.pledgeAmount = Signal.merge(
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-        let basicPledge = backing.amount - (backing.shippingAmount ?? 0)
+        let basicPledge = backing.amount - Double((backing.shippingAmount ?? 0))
         return Format.currency(basicPledge, country: project.country)
       }
     )

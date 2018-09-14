@@ -51,10 +51,10 @@ public struct ProjectStatsEnvelope {
   public struct RewardStats {
     public let backersCount: Int
     public let rewardId: Int
-    public let minimum: Int?
+    public let minimum: Double?
     public let pledged: Int
 
-    public static let zero = RewardStats(backersCount: 0, rewardId: 0, minimum: 0, pledged: 0)
+    public static let zero = RewardStats(backersCount: 0, rewardId: 0, minimum: 0.00, pledged: 0)
   }
 
   public struct VideoStats {
@@ -169,7 +169,7 @@ extension ProjectStatsEnvelope.RewardStats: Argo.Decodable {
     return curry(ProjectStatsEnvelope.RewardStats.init)
       <^> json <| "backers_count"
       <*> json <| "reward_id"
-      <*> ((json <|? "minimum" >>- stringToInt) <|> (json <|? "minimum"))
+      <*> ((json <|? "minimum" >>- stringToDouble) <|> (json <|? "minimum"))
       <*> (json <| "pledged" >>- stringToIntOrZero)
   }
 }
@@ -225,6 +225,12 @@ private func stringToInt(_ string: String?) -> Decoded<Int?> {
     Double(string).flatMap(Int.init).map(Decoded.success)
       ?? Int(string).map(Decoded.success)
       ?? .failure(.custom("Could not parse string into int."))
+}
+
+private func stringToDouble(_ string: String?) -> Decoded<Double?> {
+  guard let string = string else { return .success(nil) }
+
+  return Double(string).map(Decoded.success) ?? .success(0)
 }
 
 private func stringToDouble(_ string: String) -> Decoded<Double> {
