@@ -117,13 +117,11 @@ SettingsViewModelOutputs, SettingsViewModelType {
     self.viewWillAppearProperty.value = ()
   }
 
-
   public let goToAppStoreRating: Signal<String, NoError>
   public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
   public let reloadDataWithUser: Signal<User, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
-
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }
