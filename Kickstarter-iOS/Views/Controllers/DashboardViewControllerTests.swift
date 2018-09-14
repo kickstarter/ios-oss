@@ -58,7 +58,7 @@ private let rewards = (1...6).map {
   .template
     |> Reward.lens.backersCount .~ ($0 * 5)
     |> Reward.lens.id .~ $0
-    |> Reward.lens.minimum .~ ($0 * 4)
+    |> Reward.lens.minimum .~ Double($0 * 4)
 }
 
 private let externalReferrerStats = .template
@@ -91,7 +91,7 @@ private let rewardStats = (1...6).map {
   .template
     |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ ($0 * 5)
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ $0
-    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ ($0 * 4)
+    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ Double($0 * 4)
     |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ ($0 * $0 * 4 * 5)
 }
 

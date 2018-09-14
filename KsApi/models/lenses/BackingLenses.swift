@@ -2,7 +2,7 @@ import Prelude
 
 extension Backing {
   public enum lens {
-    public static let amount = Lens<Backing, Int>(
+    public static let amount = Lens<Backing, Double>(
       view: { $0.amount },
       set: { Backing(amount: $0, backer: $1.backer, backerId: $1.backerId,
         backerCompleted: $1.backerCompleted, id: $1.id, locationId: $1.locationId,

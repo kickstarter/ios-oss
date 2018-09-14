@@ -46,7 +46,8 @@ internal func pledgeContext(forProject project: Project, reward: Reward) -> Koal
 
  - returns: A pair of the minimum and maximum amount that can be pledged to a reward.
  */
-internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?) -> (min: Int, max: Int) {
+internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?)
+  -> (min: Double, max: Double) {
 
   // The country on the project cannot be trusted to have the min/max values, so first try looking
   // up the country in our launched countries array that we get back from the server config.
@@ -57,9 +58,9 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
 
   switch reward {
   case .none, .some(Reward.noReward):
-    return (country.minPledge ?? 1, country.maxPledge ?? 10_000)
+    return (Double(country.minPledge ?? 1), Double(country.maxPledge ?? 10_000))
   case let .some(reward):
-    return (reward.minimum, country.maxPledge ?? 10_000)
+    return (reward.minimum, Double(country.maxPledge ?? 10_000))
   }
 }
 
@@ -72,7 +73,7 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
 
  - returns: The minimum amount needed to pledge to the reward.
  */
-internal func minPledgeAmount(forProject project: Project, reward: Reward?) -> Int {
+internal func minPledgeAmount(forProject project: Project, reward: Reward?) -> Double {
 
   return minAndMaxPledgeAmount(forProject: project, reward: reward).min
 }

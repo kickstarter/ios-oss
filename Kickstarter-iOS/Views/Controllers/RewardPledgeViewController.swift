@@ -356,7 +356,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UITextField.lens.borderStyle .~ .none
       |> UITextField.lens.textColor .~ UIColor.ksr_green_700
       |> UITextField.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UITextField.lens.keyboardType .~ .numberPad
+      |> UITextField.lens.keyboardType .~ .decimalPad
 
     _ = self.rootStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(4) + Styles.grid(2),
