@@ -64,7 +64,6 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-
         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
