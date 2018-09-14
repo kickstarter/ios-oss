@@ -85,7 +85,7 @@ extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
         self?.viewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
       },
       turnOffHandler: { [weak self] _ in
-        self?.viewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true) //changing to false
+        self?.viewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
       }
     )
     self.present(followingAlert, animated: true, completion: nil)
