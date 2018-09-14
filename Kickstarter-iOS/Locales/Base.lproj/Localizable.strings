@@ -44,6 +44,7 @@
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
 "Cancel" = "Cancel";
 "Cancel_your_pledge" = "Cancel your pledge";
+"Change_email" = "Change email";
 "Change_password" = "Change password";
 "Change_payment_method" = "Change payment method";
 "Chat" = "Chat";
@@ -57,6 +58,7 @@
 "Collapses_subcategories" = "Collapses subcategories.";
 "Collections" = "Collections";
 "Complete_payment" = "Complete payment";
+"Confirm_password" = "Confirm new password";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
 "Contact_creator" = "Contact creator";
 "Continue_to_payment" = "Continue to payment";
@@ -75,6 +77,22 @@
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} will be streaming live on Kickstarter %{in_duration}";
 "Creator_tips" = "Creator tips";
 "Currency" = "Currency";
+"Currency_AUD" = "$ Australian Dollar (AUD)";
+"Currency_CAD" = "$ Canadian Dollar (CAD)";
+"Currency_CHF" = "Fr Swiss Franc (CHF)";
+"Currency_DKK" = "kr Danish Krone (DKK)";
+"Currency_EUR" = "€ Euro (EUR)";
+"Currency_GBP" = "£ Pound Sterling (GBP)";
+"Currency_HKD" = "$ Hong Kong Dollar (HKD)";
+"Currency_JPY" = "¥ Yen (JPY)";
+"Currency_MXN" = "$ Mexican Peso (MXN)";
+"Currency_NOK" = "kr Norwegian Krone (NOK)";
+"Currency_NZD" = "$ New Zealand Dollar (NZD)";
+"Currency_SEK" = "kr Swedish Krona (SEK)";
+"Currency_SGD" = "$ Singapore Dollar (SGD)";
+"Currency_USD" = "$ US Dollar (USD)";
+"Current_email" = "Current email";
+"Current_password" = "Current password";
 "Daily_digest" = "Daily digest";
 "Data_will_appear_here_once" = "Data will appear here once somebody backs your project.";
 "Delete_my_Kickstarter_Account" = "Delete my Kickstarter account";
@@ -213,6 +231,7 @@
 "Messages" = "Messages";
 "Name" = "Name";
 "Never" = "Never";
+"New_password" = "New password";
 "New_pledge_activity" = "New pledge activity";
 "New_work_and_big_ideas_from_established_and" = "New work and big ideas from established and emerging artists.";
 "News_events" = "Big news and events happening near you, delivered just a few times a year.";

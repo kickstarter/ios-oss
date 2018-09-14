@@ -26,7 +26,7 @@ internal final class SettingsFollowCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(user: user)
     self.followingPrivacyOn.assertValues([true])
     self.vm.inputs.followTapped(on: true)
-    self.showPrivacyFollowingPrompt.assertValueCount(1)
+    self.showPrivacyFollowingPrompt.assertValueCount(0)
   }
 
   func testFollowPrivacyToggleOn() {

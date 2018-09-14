@@ -728,6 +728,23 @@ backers"
     )
   }
   /**
+   "Change email"
+
+   - **es**: "Cambiar correo electrónico"
+   - **ja**: "メールアドレスを変更"
+   - **de**: "E-Mail-Adresse ändern"
+   - **fr**: "Changer d'adresse e-mail"
+   - **en**: "Change email"
+  */
+  public static func Change_email() -> String {
+    return localizedString(
+      key: "Change_email",
+      defaultValue: "Change email",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Change password"
 
    - **es**: "Cambiar contraseña"
@@ -944,6 +961,23 @@ backers"
     return localizedString(
       key: "Complete_payment",
       defaultValue: "Complete payment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Confirm new password"
+
+   - **es**: "Confirmar nueva contraseña"
+   - **ja**: "Confirm new password"
+   - **de**: "Confirm new password"
+   - **fr**: "Confirm new password"
+   - **en**: "Confirm new password"
+  */
+  public static func Confirm_password() -> String {
+    return localizedString(
+      key: "Confirm_password",
+      defaultValue: "Confirm new password",
       count: nil,
       substitutions: [:]
     )
@@ -1250,6 +1284,278 @@ backers"
     return localizedString(
       key: "Currency",
       defaultValue: "Currency",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$ Australian Dollar (AUD)"
+
+   - **es**: "$ Dólar australiano (AUD)"
+   - **ja**: "$ オーストラリアドル (AUD)"
+   - **de**: "$ Australischer Dollar (AUD)"
+   - **fr**: "Dollar australien – $ (AUD)"
+   - **en**: "$ Australian Dollar (AUD)"
+  */
+  public static func Currency_AUD() -> String {
+    return localizedString(
+      key: "Currency_AUD",
+      defaultValue: "$ Australian Dollar (AUD)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$ Canadian Dollar (CAD)"
+
+   - **es**: "$ Dólar canadiense (CAD)"
+   - **ja**: "$ カナダドル (CAD)"
+   - **de**: "$ Kanadischer Dollar (CAD)"
+   - **fr**: "Dollar Canadien – $ (CAD)"
+   - **en**: "$ Canadian Dollar (CAD)"
+  */
+  public static func Currency_CAD() -> String {
+    return localizedString(
+      key: "Currency_CAD",
+      defaultValue: "$ Canadian Dollar (CAD)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Fr Swiss Franc (CHF)"
+
+   - **es**: "Fr Franco suizo (CHF)"
+   - **ja**: "Fr スイスフラン (CHF)"
+   - **de**: "Fr Schweizer Franken (CHF)"
+   - **fr**: "Franc suisse – Fr (CHF)"
+   - **en**: "Fr Swiss Franc (CHF)"
+  */
+  public static func Currency_CHF() -> String {
+    return localizedString(
+      key: "Currency_CHF",
+      defaultValue: "Fr Swiss Franc (CHF)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "kr Danish Krone (DKK)"
+
+   - **es**: "kr Corona danesa (DKK)"
+   - **ja**: "kr デンマーククローネ (DKK)"
+   - **de**: "kr Dänische Krone (DKK)"
+   - **fr**: "Couronne danoise – kr (DKK)"
+   - **en**: "kr Danish Krone (DKK)"
+  */
+  public static func Currency_DKK() -> String {
+    return localizedString(
+      key: "Currency_DKK",
+      defaultValue: "kr Danish Krone (DKK)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "€ Euro (EUR)"
+
+   - **es**: "€ Euro (EUR)"
+   - **ja**: "€ ユーロ (EUR)"
+   - **de**: "€ Euro (EUR)"
+   - **fr**: "Euro – € (EUR)"
+   - **en**: "€ Euro (EUR)"
+  */
+  public static func Currency_EUR() -> String {
+    return localizedString(
+      key: "Currency_EUR",
+      defaultValue: "€ Euro (EUR)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "£ Pound Sterling (GBP)"
+
+   - **es**: "£ Libra esterlina (GBP)"
+   - **ja**: "£ ポンド (GBP)"
+   - **de**: "£ Pfund Sterling (GBP)"
+   - **fr**: "Livre sterling – £ (GBP)"
+   - **en**: "£ Pound Sterling (GBP)"
+  */
+  public static func Currency_GBP() -> String {
+    return localizedString(
+      key: "Currency_GBP",
+      defaultValue: "£ Pound Sterling (GBP)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$ Hong Kong Dollar (HKD)"
+
+   - **es**: "$ Dólar de Hong Kong (HKD)"
+   - **ja**: "$ 香港ドル (HKD)"
+   - **de**: "$ Hongkong-Dollar (HKD)"
+   - **fr**: "Dollar de Hong Kong – $ (HKD)"
+   - **en**: "$ Hong Kong Dollar (HKD)"
+  */
+  public static func Currency_HKD() -> String {
+    return localizedString(
+      key: "Currency_HKD",
+      defaultValue: "$ Hong Kong Dollar (HKD)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "¥ Yen (JPY)"
+
+   - **es**: "¥ Yen (JPY)"
+   - **ja**: "¥ 円 (JPY)"
+   - **de**: "¥ Yen (JPY)"
+   - **fr**: "Yen – ¥ (JPY)"
+   - **en**: "¥ Yen (JPY)"
+  */
+  public static func Currency_JPY() -> String {
+    return localizedString(
+      key: "Currency_JPY",
+      defaultValue: "¥ Yen (JPY)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$ Mexican Peso (MXN)"
+
+   - **es**: "$ Peso mexicano (MXN)"
+   - **ja**: "$ メキシコペソ (MXN)"
+   - **de**: "$ Mexikanischer Peso (MXN)"
+   - **fr**: "Pesos mexicain – $ (MXN)"
+   - **en**: "$ Mexican Peso (MXN)"
+  */
+  public static func Currency_MXN() -> String {
+    return localizedString(
+      key: "Currency_MXN",
+      defaultValue: "$ Mexican Peso (MXN)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "kr Norwegian Krone (NOK)"
+
+   - **es**: "kr Corona noruega (NOK)"
+   - **ja**: "kr ノルウェークローネ (NOK)"
+   - **de**: "kr Norwegische Krone (NOK)"
+   - **fr**: "Couronne norvégienne – kr (NOK)"
+   - **en**: "kr Norwegian Krone (NOK)"
+  */
+  public static func Currency_NOK() -> String {
+    return localizedString(
+      key: "Currency_NOK",
+      defaultValue: "kr Norwegian Krone (NOK)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$ New Zealand Dollar (NZD)"
+
+   - **es**: "$ Dólar de Nueva Zelanda (NZD)"
+   - **ja**: "$ ニュージーランドドル (NZD)"
+   - **de**: "$ Neuseeland-Dollar (NZD)"
+   - **fr**: "Dollar néo-zélandais – $ (NZD)"
+   - **en**: "$ New Zealand Dollar (NZD)"
+  */
+  public static func Currency_NZD() -> String {
+    return localizedString(
+      key: "Currency_NZD",
+      defaultValue: "$ New Zealand Dollar (NZD)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "kr Swedish Krona (SEK)"
+
+   - **es**: "kr Corona sueca (SEK)"
+   - **ja**: "kr スウェーデンクローナ (SEK)"
+   - **de**: "kr Schwedische Krone (SEK)"
+   - **fr**: "Couronne suédoise – kr (SEK)"
+   - **en**: "kr Swedish Krona (SEK)"
+  */
+  public static func Currency_SEK() -> String {
+    return localizedString(
+      key: "Currency_SEK",
+      defaultValue: "kr Swedish Krona (SEK)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$ Singapore Dollar (SGD)"
+
+   - **es**: "$ Dólar de Singapur (SGD)"
+   - **ja**: "$ シンガポールドル (SGD)"
+   - **de**: "$ Singapur-Dollar (SGD)"
+   - **fr**: "Dollar singapourien – $ (SGD)"
+   - **en**: "$ Singapore Dollar (SGD)"
+  */
+  public static func Currency_SGD() -> String {
+    return localizedString(
+      key: "Currency_SGD",
+      defaultValue: "$ Singapore Dollar (SGD)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "$ US Dollar (USD)"
+
+   - **es**: "$ Dólar estadounidense (USD)"
+   - **ja**: "$ 米ドル (USD)"
+   - **de**: "$ US-Dollar (USD)"
+   - **fr**: "Dollar américain – $ (USD)"
+   - **en**: "$ US Dollar (USD)"
+  */
+  public static func Currency_USD() -> String {
+    return localizedString(
+      key: "Currency_USD",
+      defaultValue: "$ US Dollar (USD)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Current email"
+
+   - **es**: "Correo electrónico actual"
+   - **ja**: "現在のメールアドレス"
+   - **de**: "Derzeitige E-Mail"
+   - **fr**: "Adresse e-mail actuelle"
+   - **en**: "Current email"
+  */
+  public static func Current_email() -> String {
+    return localizedString(
+      key: "Current_email",
+      defaultValue: "Current email",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Current password"
+
+   - **es**: "Contraseña actual"
+   - **ja**: "現在のパスワード"
+   - **de**: "Derzeitiges Passwort"
+   - **fr**: "Mot de passe actuel"
+   - **en**: "Current password"
+  */
+  public static func Current_password() -> String {
+    return localizedString(
+      key: "Current_password",
+      defaultValue: "Current password",
       count: nil,
       substitutions: [:]
     )
@@ -2142,9 +2448,9 @@ backers"
    "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
 
    - **es**: "El seguimiento debe estar activado para encontrar amigos de Facebook. El seguimiento se puede cambiar en Configuración > Privacidad."
-   - **ja**: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
-   - **de**: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
-   - **fr**: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
+   - **ja**: "Facebook の友達を見つけるには、フォローをオンにする必要があります。フォローの設定は、「設定 > プライバシー」から変更することができます。"
+   - **de**: "Die Funktion "Abonnieren" muss aktiviert sein, um Freunde auf Facebook zu finden. Gehe dazu zu Einstellungen > Datenschutz."
+   - **fr**: "Pour retrouver vos amis Facebook, activez la fonction Abonnements sous Paramètres > Vie privée."
    - **en**: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
   */
   public static func Following_Disabled_Info() -> String {
@@ -2736,10 +3042,14 @@ backers"
   /**
    "If your profile is private, others can see your name and picture."
 
-   - **es**: "If your profile is private, others can see your name and picture."
-   - **ja**: "If your profile is private, others can see your name and picture."
-   - **de**: "If your profile is private, others can see your name and picture."
-   - **fr**: "If your profile is private, others can see your name and picture."
+   - **es**: "Si tu perfil es privado, otros usuarios podrán ver tu nombre e imagen.
+
+Si tu perfil no es privado, otros usuarios también podrán ver los proyectos que has patrocinado, tu ubicación, biografía y sitios web."
+   - **ja**: "プロフィールがプライベート (非公開) 設定の場合、あなたの名前と写真が表示されます。"
+   - **de**: "Wenn dein Profil privat ist, sind dein Namen und dein Profilbild für Andere sichtbar.
+
+Wenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, deine Biografie und deine Websites für Andere sichtbar."
+   - **fr**: "Si votre profil est privé, seuls votre nom et votre photo seront visibles."
    - **en**: "If your profile is private, others can see your name and picture."
   */
   public static func If_your_profile_is_private() -> String {
@@ -2753,10 +3063,10 @@ backers"
   /**
    "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
 
-   - **es**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
-   - **ja**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
-   - **de**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
-   - **fr**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
+   - **es**: "Si tu perfil no es privado, otros usuarios también podrán ver los proyectos que has patrocinado, tu ubicación, biografía y sitios web."
+   - **ja**: "プロフィールがプライベート (非公開) 設定でない場合は、過去にあなたがバックしたプロジェクトや、あなたの地域情報、あなたの自己紹介欄とウェブサイトも表示されます。"
+   - **de**: "Wenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, dein Standort, deine Biografie und deine Websites für Andere sichtbar."
+   - **fr**: "Si votre profil n'est pas privé, les projets que vous avez soutenus, votre bio, votre emplacement géographique et vos sites Web seront également visibles."
    - **en**: "If your profile is not private, others can also see the projects you've backed, your location, bio and websites."
   */
   public static func If_your_profile_is_public() -> String {
@@ -3462,6 +3772,23 @@ with friends."
     return localizedString(
       key: "Never",
       defaultValue: "Never",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "New password"
+
+   - **es**: "Contraseña nueva"
+   - **ja**: "New password"
+   - **de**: "New password"
+   - **fr**: "New password"
+   - **en**: "New password"
+  */
+  public static func New_password() -> String {
+    return localizedString(
+      key: "New_password",
+      defaultValue: "New password",
       count: nil,
       substitutions: [:]
     )

@@ -24,11 +24,13 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
   func testRefreshFollowingSection() {
     let user = User.template
+    |> User.lens.social .~ true
+
     let mockService = MockService(fetchUserSelfResponse: user)
 
     withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
+      self.vm.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
 
       self.scheduler.advance()
 
