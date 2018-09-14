@@ -50,13 +50,6 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
           .materialize()
     }
 
-    let followingOn = initialUser
-      .filter { $0.social == true }
-
-    self.showPrivacyFollowingPrompt = followingOn
-      .takeWhen(self.followTappedProperty.signal)
-      .ignoreValues()
-
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
@@ -68,6 +61,13 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
       .map { previous, _ in previous }
 
     self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
+
+    let followingOn = initialUser
+      .filter { $0.social == true }
+
+    self.showPrivacyFollowingPrompt = followingOn
+      .takeWhen(self.followTappedProperty.signal)
+      .ignoreValues()
 
     self.followingPrivacyOn = self.updateCurrentUser
       .map { $0.social }.skipNil()
