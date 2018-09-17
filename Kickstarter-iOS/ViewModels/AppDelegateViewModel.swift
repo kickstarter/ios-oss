@@ -26,6 +26,7 @@ public enum NotificationAuthorizationStatus {
   case authorized
   case denied
   case notDetermined
+  @available(iOS 12, *)
   case provisional
 }
 
@@ -1081,6 +1082,11 @@ private func authStatusType(for status: UNAuthorizationStatus) -> NotificationAu
   case .authorized: return .authorized
   case .denied: return .denied
   case .notDetermined: return .notDetermined
-  case .provisional: return .provisional
+  case .provisional:
+    if #available(iOS 12, *) {
+      return .provisional
+    } else {
+      return .notDetermined
+    }
   }
 }
