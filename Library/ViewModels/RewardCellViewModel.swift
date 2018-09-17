@@ -90,7 +90,8 @@ RewardCellViewModelOutputs {
             : currency
 
         case let .right(backing):
-          return Format.currency(backing.amount, country: project.country)
+          let backingAmount = String(format: "%.2f", backing.amount)
+          return Format.formattedCurrency(backingAmount, country: project.country)
         }
     }
 
