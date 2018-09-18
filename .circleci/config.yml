@@ -5,7 +5,6 @@ iphone_name: &iphone_name iPhone 8
 ios_version: &ios_version 12.0
 opentok_version: &opentok_version 2.10.2
 fabric_sdk_version: &fabric_sdk_version 3.10.5
-preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (12.0) [41A41D71-2B76-4D58-8791-E3ED43FCF18C]' || true
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
 store_opentok_version: &store_opentok_version echo "$OPENTOK_VERSION" > opentok_version.txt
 
@@ -112,10 +111,6 @@ jobs:
           command: make bootstrap
 
       - run:
-          name: Pre-load simulator
-          command: *preload_simulator
-
-      - run:
           name: Kickstarter tests
           command: PLATFORM=iOS make test
 
@@ -157,10 +152,6 @@ jobs:
           command: make bootstrap
 
       - run:
-          name: Pre-load simulator
-          command: *preload_simulator
-
-      - run:
           name: Library tests
           command: PLATFORM=iOS TARGET=Library make test
 
@@ -200,10 +191,6 @@ jobs:
           command: make bootstrap
 
       - run:
-          name: Pre-load simulator
-          command: *preload_simulator
-
-      - run:
           name: LiveStream tests
           command: SCHEME=LiveStream make test
 
@@ -241,10 +228,6 @@ jobs:
       - run:
           name: Make bootstrap
           command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
 
       - run:
           name: KsApi tests
