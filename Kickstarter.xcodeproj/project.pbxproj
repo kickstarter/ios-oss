@@ -140,6 +140,7 @@
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
+		776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */; };
 		77758157209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */; };
 		7775818E209CBF7700EE357F /* DiscoveryProjectCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */; };
 		777B70D82118CAD300E11032 /* SettingsNotificationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */; };
@@ -1777,6 +1778,7 @@
 		7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryView.swift; sourceTree = "<group>"; };
 		7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModel.swift; sourceTree = "<group>"; };
 		7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryProjectCategoryView.xib; sourceTree = "<group>"; };
+		776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
 		77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryViewModelTests.swift; sourceTree = "<group>"; };
 		777B70D92118D47700E11032 /* SettingsNotificationPickerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationPickerViewModelTests.swift; sourceTree = "<group>"; };
 		778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSourceTests.swift; sourceTree = "<group>"; };
@@ -3120,6 +3122,7 @@
 				A7ED202B1E8323E900BFFA01 /* BackingViewControllerTests.swift */,
 				774A76E820D841110012A71F /* BetaToolsViewController.swift */,
 				774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */,
+				776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */,
 				9DDE1F711D5925A90092D9A5 /* CheckoutViewController.swift */,
 				A7A0534C1CD19C68005AF5E2 /* CommentDialogViewController.swift */,
 				A7180BA81CCED598001711CA /* CommentsViewController.swift */,
@@ -5622,6 +5625,7 @@
 				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift in Sources */,
 				D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */,
 				A71199F91DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift in Sources */,
+				776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */,
 				D07227001E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift in Sources */,
 				0170E7701D25C55200E2CCE4 /* ProjectActivityCommentCell.swift in Sources */,
 				9D14FF901D133351005F4ABB /* ProjectActivityNegativeStateChangeCell.swift in Sources */,

@@ -125,7 +125,7 @@ extension SettingsViewModel {
   static func viewController(for cellType: SettingsCellType) -> UIViewController? {
     switch cellType {
     case .help:
-      return HelpViewController.instantiate()
+      return ChangeEmailViewController.instantiate()
     case .privacy:
       return SettingsPrivacyViewController.instantiate()
     case .findFriends:

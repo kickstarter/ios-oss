@@ -6,6 +6,9 @@ import UIKit
 public let settingsSectionButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
 
+public let settingsViewControllerStyle = baseControllerStyle()
+  <> UIViewController.lens.view.backgroundColor .~ .ksr_grey_200
+
 public let settingsArrowViewStyle = UIImageView.lens.tintColor .~ .ksr_dark_grey_400
 
 public let settingsSectionLabelStyle =
@@ -16,6 +19,11 @@ public let settingsSectionLabelStyle =
 public let settingsTitleLabelStyle =
   UILabel.lens.textColor .~ .ksr_text_dark_grey_500
     <> UILabel.lens.font .~ .ksr_body()
+
+public let settingsDetailLabelStyle = UILabel.lens.font .~ .ksr_body()
+  <> UILabel.lens.numberOfLines .~ 1
+  <> UILabel.lens.textColor .~ .ksr_dark_grey_400
+  <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
 public let settingsDescriptionLabelStyle = UILabel.lens.font .~ .ksr_body(size: 13)
     <> UILabel.lens.numberOfLines .~ 0
