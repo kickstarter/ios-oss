@@ -2,7 +2,6 @@ version: 2
 
 xcode_version: &xcode_version 10.0
 iphone_name: &iphone_name iPhone 8
-ios_version: &ios_version 12.0
 opentok_version: &opentok_version 2.10.2
 fabric_sdk_version: &fabric_sdk_version 3.10.5
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
@@ -20,7 +19,6 @@ base_job: &base_job
     LANG: en_US.UTF-8
     FABRIC_SDK_VERSION: *fabric_sdk_version
     OPENTOK_VERSION: *opentok_version
-    IOS_VERSION: *ios_version
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
 
