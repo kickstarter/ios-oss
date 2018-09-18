@@ -90,7 +90,7 @@ RewardCellViewModelOutputs {
             : currency
 
         case let .right(backing):
-          let backingAmount = shouldShowDecimal(backing)
+          let backingAmount = formattedAmount(for: backing)
           return Format.formattedCurrency(backingAmount, country: project.country)
         }
     }
@@ -373,7 +373,7 @@ private func footerString(project: Project, reward: Reward) -> String {
     .joined(separator: " • ")
 }
 
-private func shouldShowDecimal(_ backing: Backing) -> String {
+private func formattedAmount(for backing: Backing) -> String {
   let amount = backing.amount
   let backingAmount = floor(amount) == backing.amount
     ? String(Int(amount))
