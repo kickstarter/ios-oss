@@ -11,7 +11,7 @@ store_opentok_version: &store_opentok_version echo "$OPENTOK_VERSION" > opentok_
 
 base_job: &base_job
   macos:
-    xcode: "10.0"
+    xcode: "10.0.0"
   working_directory: ~/kickstarter
   environment:
     CIRCLE_ARTIFACTS: /tmp
