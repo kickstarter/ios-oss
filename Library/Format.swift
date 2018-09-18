@@ -84,16 +84,17 @@ public enum Format {
                                     env: env)
   }
 
-  private static func formattedCurrency(_ amount: Any,
-                                        country: Project.Country,
-                                        omitCurrencyCode: Bool = false,
-                                        env: Environment = AppEnvironment.current) -> String {
+  public static func formattedCurrency(_ amount: Any,
+                                       country: Project.Country,
+                                       omitCurrencyCode: Bool = false,
+                                       env: Environment = AppEnvironment.current) -> String {
 
     let formatter = NumberFormatterConfig.cachedFormatter(
       forConfig: .defaultCurrencyConfig
         |> NumberFormatterConfig.lens.locale .~ env.locale
         |> NumberFormatterConfig.lens.currencySymbol .~ currencySymbol(forCountry: country)
     )
+
     return formatter.string(for: amount)?
       .trimmed()
       .replacingOccurrences(of: String.nbsp + String.nbsp, with: String.nbsp)

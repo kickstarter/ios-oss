@@ -90,7 +90,8 @@ RewardCellViewModelOutputs {
             : currency
 
         case let .right(backing):
-          return Format.currency(backing.amount, country: project.country)
+          let backingAmount = formattedAmount(for: backing)
+          return Format.formattedCurrency(backingAmount, country: project.country)
         }
     }
 
@@ -370,6 +371,14 @@ private func footerString(project: Project, reward: Reward) -> String {
   return parts
     .map { part in part.nonBreakingSpaced() }
     .joined(separator: " • ")
+}
+
+private func formattedAmount(for backing: Backing) -> String {
+  let amount = backing.amount
+  let backingAmount = floor(amount) == backing.amount
+    ? String(Int(amount))
+    : String(format: "%.2f", backing.amount)
+  return backingAmount
 }
 
 private func shouldCollapse(reward: Reward, forProject project: Project) -> Bool {
