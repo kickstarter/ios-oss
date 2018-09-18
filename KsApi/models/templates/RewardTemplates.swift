@@ -9,7 +9,7 @@ extension Reward {
       timeIntervalSince1970: 1475361315).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 365.0,
     id: 1,
     limit: 100,
-    minimum: 10,
+    minimum: 10.00,
     remaining: 50,
     rewardsItems: [],
     shipping: Reward.Shipping(

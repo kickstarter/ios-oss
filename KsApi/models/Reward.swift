@@ -10,7 +10,7 @@ public struct Reward {
   public let estimatedDeliveryOn: TimeInterval?
   public let id: Int
   public let limit: Int?
-  public let minimum: Int
+  public let minimum: Double
   public let remaining: Int?
   public let rewardsItems: [RewardsItem]
   public let shipping: Shipping
