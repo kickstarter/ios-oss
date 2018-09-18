@@ -1,6 +1,0 @@
-framework module Stripe {
-  umbrella header "Stripe.h"
-
-  export *
-  module * { export * }
-}
