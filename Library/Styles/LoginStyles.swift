@@ -82,11 +82,9 @@ public let loginControllerStyle = baseControllerStyle()
 public let loginWithEmailButtonStyle = borderButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
 
-public let onePasswordButtonStyle =
-  UIButton.lens.titleLabel.font .~ .ksr_callout()
-    <> UIButton.lens.titleColor(for: .normal) .~ .ksr_onePasswordBlue
+public let onePasswordButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_onePasswordBlue
     <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_dark_grey_400
-    <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_one_password() }
+    <> UIButton.lens.accessibilityLabel %~ { _ in Strings.login_buttons_one_password() }
 
 public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
 
