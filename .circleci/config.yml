@@ -1,17 +1,17 @@
 version: 2
 
-xcode_version: &xcode_version 9.4
+xcode_version: &xcode_version 10.0
 iphone_name: &iphone_name iPhone 8
-ios_version: &ios_version 11.4
+ios_version: &ios_version 12.0
 opentok_version: &opentok_version 2.10.2
 fabric_sdk_version: &fabric_sdk_version 3.10.5
-preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.4) [2437FE39-2885-482D-A42F-A169C65AE271]' || true
+preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (12.0) [2437FE39-2885-482D-A42F-A169C65AE271]' || true
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
 store_opentok_version: &store_opentok_version echo "$OPENTOK_VERSION" > opentok_version.txt
 
 base_job: &base_job
   macos:
-    xcode: "9.4.0"
+    xcode: "10.0"
   working_directory: ~/kickstarter
   environment:
     CIRCLE_ARTIFACTS: /tmp
@@ -50,7 +50,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -104,7 +104,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -149,7 +149,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -181,7 +181,7 @@ jobs:
 
       - run:
           name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version      
+          command: *store_fabric_sdk_version
 
       - run:
           name: Store OpenTok Version
@@ -192,7 +192,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -235,7 +235,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -295,7 +295,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -360,7 +360,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -420,7 +420,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -469,7 +469,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
