@@ -68,7 +68,7 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
     }
   }
 
-  func testUpdateCurrentUser() {
+  func testFollowingSwitchTapped_updatesCurrentUser() {
     let mockService = MockService(fetchUserSelfResponse: User.template)
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -82,6 +82,23 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.updateCurrentUser.assertValueCount(1)
+    }
+  }
+
+  func testPrivateProfileToggled_updatesCurrentUser() {
+    let updatedUser = User.template
+      |> UserAttribute.privacy(.showPublicProfile).lens .~ false
+    let mockService = MockService(fetchUserSelfResponse: User.template)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.updateCurrentUser.assertValueCount(0)
+
+      self.vm.privateProfileToggled(on: true)
+
+      self.scheduler.advance()
+
+      self.updateCurrentUser.assertValue(updatedUser)
     }
   }
 }

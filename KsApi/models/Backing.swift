@@ -3,7 +3,7 @@ import Curry
 import Runes
 
 public struct Backing {
-  public let amount: Int
+  public let amount: Double
   public let backer: User?
   public let backerId: Int
   public let backerCompleted: Bool?

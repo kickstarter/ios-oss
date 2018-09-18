@@ -67,6 +67,28 @@ public enum Format {
                               omitCurrencyCode: Bool = false,
                               env: Environment = AppEnvironment.current) -> String {
 
+    return Format.formattedCurrency(amount,
+                                    country: country,
+                                    omitCurrencyCode: omitCurrencyCode,
+                                    env: env)
+  }
+
+  public static func currency(_ amount: Double,
+                              country: Project.Country,
+                              omitCurrencyCode: Bool = false,
+                              env: Environment = AppEnvironment.current) -> String {
+
+    return Format.formattedCurrency(amount,
+                                    country: country,
+                                    omitCurrencyCode: omitCurrencyCode,
+                                    env: env)
+  }
+
+  public static func formattedCurrency(_ amount: Any,
+                                       country: Project.Country,
+                                       omitCurrencyCode: Bool = false,
+                                       env: Environment = AppEnvironment.current) -> String {
+
     let formatter = NumberFormatterConfig.cachedFormatter(
       forConfig: .defaultCurrencyConfig
         |> NumberFormatterConfig.lens.locale .~ env.locale
@@ -76,7 +98,7 @@ public enum Format {
     return formatter.string(for: amount)?
       .trimmed()
       .replacingOccurrences(of: String.nbsp + String.nbsp, with: String.nbsp)
-      ?? (country.currencySymbol + String(amount))
+      ?? (country.currencySymbol + "\(amount)")
   }
 
   /**

@@ -7,6 +7,7 @@ import Result
 
 public protocol SettingsPrivacyViewModelInputs {
   func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
+  func privateProfileToggled(on: Bool)
   func viewDidLoad()
 }
 
@@ -37,14 +38,20 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
 
     self.reloadData = initialUser
 
-    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
-    self.followingSwitchTappedProperty.signal
+    let privateProfileAttributeChanged: Signal<(UserAttribute, Bool), NoError> = self.privateProfileProperty
+      .signal
+      .negate()
+      .map { (UserAttribute.privacy(UserAttribute.Privacy.showPublicProfile), $0) }
+
+    let followingAttributeChanged = self.followingSwitchTappedProperty.signal
       .filter { (on, didShowPrompt) in
         didShowPrompt == true || (on == true && didShowPrompt == false)
       }
       .map {
         (UserAttribute.privacy(UserAttribute.Privacy.following), $0.0)
     }
+
+    let userAttributeChanged = Signal.merge(privateProfileAttributeChanged, followingAttributeChanged)
 
     let updatedUser = initialUser
       .switchMap { user in
@@ -81,6 +88,11 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  fileprivate let privateProfileProperty = MutableProperty<Bool>(true)
+  public func privateProfileToggled(on: Bool) {
+    self.privateProfileProperty.value = on
   }
 
   fileprivate let updateUserProperty = MutableProperty<User?>(nil)

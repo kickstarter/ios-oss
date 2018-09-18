@@ -23,7 +23,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.9.10</string>
+	<string>3.9.11</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -49,6 +49,8 @@
 	<string>9999</string>
 	<key>Fabric</key>
 	<dict>
+		<key>APIKey</key>
+		<string>$(FABRIC_API_KEY)</string>
 		<key>Kits</key>
 		<array>
 			<dict>
@@ -56,8 +58,6 @@
 				<string>Crashlytics</string>
 			</dict>
 		</array>
-		<key>APIKey</key>
-		<string>$(FABRIC_API_KEY)</string>
 	</dict>
 	<key>FacebookAppID</key>
 	<string>69103156693</string>

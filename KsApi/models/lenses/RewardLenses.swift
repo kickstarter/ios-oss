@@ -50,7 +50,7 @@ extension Reward {
         title: $1.title) }
     )
 
-    public static let minimum = Lens<Reward, Int>(
+    public static let minimum = Lens<Reward, Double>(
       view: { $0.minimum },
       set: { Reward(backersCount: $1.backersCount, description: $1.description, endsAt: $1.endsAt,
         estimatedDeliveryOn: $1.estimatedDeliveryOn, id: $1.id, limit: $1.limit, minimum: $0,
