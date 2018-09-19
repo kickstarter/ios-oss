@@ -7,10 +7,12 @@ import Runes
 final class ConfigTests: XCTestCase {
 
   func testDecoding() {
+
     let abExperiments = [
       "2001_space_odyssey": "control",
       "dr_strangelove": "experiment"
     ]
+
     let features = [
       "feature1": true,
       "feature2": false,
