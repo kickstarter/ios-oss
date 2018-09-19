@@ -5,6 +5,7 @@ import Result
 protocol ChangeEmailViewModelOutputs {
   var dismissKeyboard: Signal<Void, NoError> { get }
   var errorLabelIsHidden: Signal<Bool, NoError> { get }
+  var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
   var resendVerificationEmailButtonIsHidden: Signal<Bool, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
   var showConfirmationEmailSentBanner: Signal<Bool, NoError> { get }
@@ -27,11 +28,12 @@ protocol ChangeEmailViewModelType {
 struct ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
 ChangeEmailViewModelOutputs {
   public init() {
-    self.errorLabelIsHidden = viewDidLoadProperty.signal.mapConst(true)
-    self.resendVerificationEmailButtonIsHidden = viewDidLoadProperty.signal.mapConst(true)
-    self.saveButtonIsEnabled = viewDidLoadProperty.signal.mapConst(false)
+    self.errorLabelIsHidden = viewDidLoadProperty.signal.mapConst(false)
+    self.resendVerificationEmailButtonIsHidden = viewDidLoadProperty.signal.mapConst(false)
+    self.saveButtonIsEnabled = viewDidLoadProperty.signal.mapConst(true)
     self.dismissKeyboard = saveButtonTappedProperty.signal.ignoreValues()
     self.showConfirmationEmailSentBanner = saveButtonTappedProperty.signal.mapConst(true)
+    self.messageBannerViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
   }
 
   private let emailProperty = MutableProperty<String?>(nil)
@@ -64,6 +66,7 @@ ChangeEmailViewModelOutputs {
 
   public let dismissKeyboard: Signal<Void, NoError>
   public let errorLabelIsHidden: Signal<Bool, NoError>
+  public let messageBannerViewIsHidden: Signal<Bool, NoError>
   public let resendVerificationEmailButtonIsHidden: Signal<Bool, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let showConfirmationEmailSentBanner: Signal<Bool, NoError>

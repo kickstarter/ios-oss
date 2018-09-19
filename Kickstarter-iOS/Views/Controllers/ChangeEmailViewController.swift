@@ -14,6 +14,8 @@ final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var currentEmail: UILabel!
   @IBOutlet fileprivate weak var errorLabel: UILabel!
   @IBOutlet fileprivate weak var errorView: UIView!
+  @IBOutlet fileprivate weak var messageBannerView: UIView!
+  @IBOutlet fileprivate weak var messageBannerLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
   @IBOutlet fileprivate weak var newEmail: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
@@ -41,7 +43,8 @@ final class ChangeEmailViewController: UIViewController {
     super.bindViewModel()
 
     self.resendVerificationEmailView.rac.hidden = self.viewModel.outputs.resendVerificationEmailButtonIsHidden
-    self.errorView.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
+    self.errorLabel.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
+    self.messageBannerView.rac.hidden = self.viewModel.outputs.messageBannerViewIsHidden
     self.saveBarButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
   }
 
@@ -59,12 +62,20 @@ final class ChangeEmailViewController: UIViewController {
 
     _ = errorLabel
       |> settingsDescriptionLabelStyle
+      |> UILabel.lens.text .~ "The email address is unverified."
 
     _ = currentEmailLabel
       |> settingsTitleLabelStyle
 
     _ = currentEmail
       |> settingsDetailLabelStyle
+
+    _ = messageBannerView
+      |> roundedStyle(cornerRadius: 4)
+
+    _ = messageBannerLabel
+      |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.text .~ "We've sent you a verification email. Click the link in it and your address will be verified."
 
     _ = newEmailLabel
       |> settingsTitleLabelStyle
@@ -83,6 +94,11 @@ final class ChangeEmailViewController: UIViewController {
       |> passwordFieldStyle
       |> UITextField.lens.textAlignment .~ .right
       |> UITextField.lens.returnKeyType .~ .go
+
+    _ = resendVerificationEmailButton
+      |> UIButton.lens.titleLabel.font .~ .ksr_body()
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
+      |> UIButton.lens.title(for: .normal) .~ "Re-send verification email"
   }
 
 
