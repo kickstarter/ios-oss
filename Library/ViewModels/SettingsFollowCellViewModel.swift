@@ -60,11 +60,10 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
       .takeWhen(self.unableToSaveError)
       .map { previous, _ in previous }
 
-    self.updateCurrentUser = Signal.merge(initialUser, updatedUser, previousUserOnError)
+    self.followingPrivacyOn = Signal.merge(initialUser, updatedUser, previousUserOnError)
+      .map { $0.social }.skipNil().skipRepeats()
 
-    self.followingPrivacyOn = self.updateCurrentUser
-      .map { $0.social }.skipNil()
-      .map { $0 ? true : false }.skipRepeats()
+    self.updateCurrentUser = Signal.merge(updatedUser, previousUserOnError)
 
     self.showPrivacyFollowingPrompt = self.followTappedProperty.signal
       .filter { $0 == false }

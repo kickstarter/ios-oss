@@ -100,6 +100,10 @@ extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
     )
     self.present(followingAlert, animated: true, completion: nil)
   }
+
+  internal func settingsFollowCellDidUpdate(user: User) {
+    self.viewModel.inputs.didUpdate(user: user)
+  }
 }
 
 extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {

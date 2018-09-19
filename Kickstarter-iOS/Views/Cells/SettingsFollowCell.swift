@@ -8,6 +8,7 @@ import UIKit
 internal protocol SettingsFollowCellDelegate: class {
   /// Called when follow switch is tapped
   func settingsFollowCellDidPresentPrompt(_ cell: SettingsFollowCell)
+  func settingsFollowCellDidUpdate(user: User)
 }
 
 internal final class SettingsFollowCell: UITableViewCell, ValueCell {
@@ -48,9 +49,10 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()
-      .observeValues { user in
+      .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         NotificationCenter.default.post(Notification(name: .ksr_userUpdated))
+        self?.delegate?.settingsFollowCellDidUpdate(user: user)
     }
 
     self.viewModel.outputs.showPrivacyFollowingPrompt
