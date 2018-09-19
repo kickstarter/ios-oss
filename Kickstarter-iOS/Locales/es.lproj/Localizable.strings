@@ -1,6 +1,7 @@
 "A_weekly_roundup_of_the_best_and_brightest" = "Un resumen semanal de los mejores y más brillantes proyectos de Kickstarter, seleccionados por nuestro equipo.";
 "About_reward_amount" = "Aprox. %{reward_amount}";
 "Account" = "Cuenta";
+"Add" = "Añadir";
 "Add_attachments" = "Agregar anexos …";
 "All_Art_Projects" = "Todos los proyectos de la categoría Arte";
 "All_Comics_Projects" = "Todos los proyectos de la categoría Comics";
@@ -44,6 +45,7 @@
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
 "Cancel" = "Cancelar";
 "Cancel_your_pledge" = "Cancela tu contribución";
+"Change_email" = "Cambiar correo electrónico";
 "Change_password" = "Cambiar contraseña";
 "Change_payment_method" = "Cambiar método de pago";
 "Chat" = "Chat";
@@ -57,6 +59,7 @@
 "Collapses_subcategories" = "Muestra menos subcategorías.";
 "Collections" = "Colecciones";
 "Complete_payment" = "Completar pago";
+"Confirm_password" = "Confirmar nueva contraseña";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Si te conectas via Facebook puedes seguir a tus amigos y te avisaremos cada vez que publican o patrocinan un proyecto.";
 "Contact_creator" = "Comunicarse con el creador";
 "Continue_to_payment" = "Continuar a pago";
@@ -75,6 +78,22 @@
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} estará trasnmitiendo en vivo en Kickstarter %{in_duration}";
 "Creator_tips" = "Consejos para el creador";
 "Currency" = "Moneda";
+"Currency_AUD" = "$ Dólar australiano (AUD)";
+"Currency_CAD" = "$ Dólar canadiense (CAD)";
+"Currency_CHF" = "Fr Franco suizo (CHF)";
+"Currency_DKK" = "kr Corona danesa (DKK)";
+"Currency_EUR" = "€ Euro (EUR)";
+"Currency_GBP" = "£ Libra esterlina (GBP)";
+"Currency_HKD" = "$ Dólar de Hong Kong (HKD)";
+"Currency_JPY" = "¥ Yen (JPY)";
+"Currency_MXN" = "$ Peso mexicano (MXN)";
+"Currency_NOK" = "kr Corona noruega (NOK)";
+"Currency_NZD" = "$ Dólar de Nueva Zelanda (NZD)";
+"Currency_SEK" = "kr Corona sueca (SEK)";
+"Currency_SGD" = "$ Dólar de Singapur (SGD)";
+"Currency_USD" = "$ Dólar estadounidense (USD)";
+"Current_email" = "Correo electrónico actual";
+"Current_password" = "Contraseña actual";
 "Daily_digest" = "Resumen diario";
 "Data_will_appear_here_once" = "Los datos aparecerán aquí una vez que alguien patrocine tu proyecto.";
 "Delete_my_Kickstarter_Account" = "Eliminar mi cuenta de Kickstarter";
@@ -166,10 +185,11 @@
 "How_backers_found_your_project" = "Cómo encontraron tu proyecto los patrocinadores";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
 "If_you_turn_following_off" = "Si desactivas el seguimiento, no podrás seguir a nadie y nadie podrá seguirte. Tu perfil se desconectará de todos tus seguidores. Esto no se puede deshacer.";
-"If_your_profile_is_private" = "If your profile is private, others can see your name and picture.";
-"If_your_profile_is_public" = "If your profile is not private, others can also see the projects you've backed, your location, bio and websites.";
+"If_your_profile_is_private" = "Si tu perfil es privado, otros usuarios podrán ver tu nombre e imagen.\n\nSi tu perfil no es privado, otros usuarios también podrán ver los proyectos que has patrocinado, tu ubicación, biografía y sitios web.";
+"If_your_profile_is_public" = "Si tu perfil no es privado, otros usuarios también podrán ver los proyectos que has patrocinado, tu ubicación, biografía y sitios web.";
 "Individual_Emails" = "Notificaciones por correo electrónico individuales";
 "Info" = "Información";
+"Introduce_yourself" = "Preséntate";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Puede demorar hasta 24 horas recopilar tus datos. Cuando estén listos, te enviaremos instrucciones para descargar tus datos al correo electrónico asociado con esta cuenta. Si no recibes noticias nuestras, vuelve aquí e inténtalo de nuevo.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
 "Its_better_with_friends" = "Todo en la vida es mejor con amigos ...";
@@ -213,6 +233,7 @@
 "Messages" = "Mensajes";
 "Name" = "Nombre";
 "Never" = "Nunca";
+"New_password" = "Contraseña nueva";
 "New_pledge_activity" = "Nueva actividad de contribución";
 "New_work_and_big_ideas_from_established_and" = "Nuevos trabajos y grandes ideas de artistas establecidos y emergentes.";
 "News_events" = "Unas cuantas veces al año: Noticias sobresalientes y eventos cerca de ti.";
@@ -412,6 +433,7 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
+"Write_a_bio" = "Escribe una biografía breve mediante una oración o dos.";
 "Yes_turn_off" = "Sí, desactivar";
 "You_Launched" = "¡Tu proyecto fue publicado!";
 "You_backed_this_project" = "Patrocinaste este proyecto.";
@@ -420,6 +442,7 @@
 "You_saved_this_project" = "Uno de tus proyectos guardados.";
 "Your_chat_message_wasnt_sent_successfully" = "Tu mensaje no fue enviado.";
 "Your_friends_havent_backed_any_projects_yet" = "Tus amigos todavía no han hecho contribuciones, pero en cuanto lo hagan, se verán reflejadas aquí.";
+"Your_name_displayed" = "Tu nombre siempre se muestra en tu perfil.";
 "Your_payment_method_was_successfully_charged" = "Se efectuó el cargo a tu método de pago.";
 "Your_pledge" = "Tu contribución";
 "Your_pledge_amount" = "Monto de tu contribución:";

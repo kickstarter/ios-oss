@@ -1,6 +1,7 @@
 "A_weekly_roundup_of_the_best_and_brightest" = "Eine wöchentliche Zusammenfassung der besten und cleversten Projekte auf Kickstarter, handverlesen von unserem Team.";
 "About_reward_amount" = "Ungefähr %{reward_amount}";
 "Account" = "Konto";
+"Add" = "Hinzufügen";
 "Add_attachments" = "Anhänge hinzufügen ...";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
@@ -44,6 +45,7 @@
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
 "Cancel" = "Abbrechen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
+"Change_email" = "E-Mail-Adresse ändern";
 "Change_password" = "Passwort ändern";
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Chat" = "Chat";
@@ -57,6 +59,7 @@
 "Collapses_subcategories" = "Reduziert die Anzeige der Unterkategorien.";
 "Collections" = "Sammlungen";
 "Complete_payment" = "Zahlung abschließen";
+"Confirm_password" = "Neues Passwort bestätigen";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, sobald sie ein Projekt veröffentlichen oder unterstützen.";
 "Contact_creator" = "Projektgründer kontaktieren";
 "Continue_to_payment" = "Weiter zur Zahlung";
@@ -75,6 +78,22 @@
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} wird in %{in_duration} live auf Kickstarter streamen";
 "Creator_tips" = "Tpps für Projektgründer";
 "Currency" = "Währung";
+"Currency_AUD" = "$ Australischer Dollar (AUD)";
+"Currency_CAD" = "$ Kanadischer Dollar (CAD)";
+"Currency_CHF" = "Fr Schweizer Franken (CHF)";
+"Currency_DKK" = "kr Dänische Krone (DKK)";
+"Currency_EUR" = "€ Euro (EUR)";
+"Currency_GBP" = "£ Pfund Sterling (GBP)";
+"Currency_HKD" = "$ Hongkong-Dollar (HKD)";
+"Currency_JPY" = "¥ Yen (JPY)";
+"Currency_MXN" = "$ Mexikanischer Peso (MXN)";
+"Currency_NOK" = "kr Norwegische Krone (NOK)";
+"Currency_NZD" = "$ Neuseeland-Dollar (NZD)";
+"Currency_SEK" = "kr Schwedische Krone (SEK)";
+"Currency_SGD" = "$ Singapur-Dollar (SGD)";
+"Currency_USD" = "$ US-Dollar (USD)";
+"Current_email" = "Derzeitige E-Mail";
+"Current_password" = "Derzeitiges Passwort";
 "Daily_digest" = "Tägliche Zusammenfassung";
 "Data_will_appear_here_once" = "Info wird hier angezeigt, sobald jemand dein Projekt unterstützt.";
 "Delete_my_Kickstarter_Account" = "Mein Kickstarter-Konto löschen";
@@ -131,7 +150,7 @@
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Folge deinen Facebook-Freunden - wir halten dich auf dem Laufenden, wenn sie ein Projekt unterstützen oder veröffentlichen.";
 "Followed" = "Abonniert";
 "Following" = "Abonniert";
-"Following_Disabled_Info" = "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy.";
+"Following_Disabled_Info" = "Die Funktion \"Abonnieren\" muss aktiviert sein, um Freunde auf Facebook zu finden. Gehe dazu zu Einstellungen > Datenschutz.";
 "Following_More_Info" = "Mehr Info zu Folgen";
 "Follows_friend_name" = "%{friend_name} folgen.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> hat ein <i>Kunst-Projekt</i> unterstützt.";
@@ -166,10 +185,11 @@
 "How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
 "If_you_turn_following_off" = "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden.";
-"If_your_profile_is_private" = "If your profile is private, others can see your name and picture.";
-"If_your_profile_is_public" = "If your profile is not private, others can also see the projects you've backed, your location, bio and websites.";
+"If_your_profile_is_private" = "Wenn dein Profil privat ist, sind dein Namen und dein Profilbild für Andere sichtbar.\n\nWenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, deine Biografie und deine Websites für Andere sichtbar.";
+"If_your_profile_is_public" = "Wenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, dein Standort, deine Biografie und deine Websites für Andere sichtbar.";
 "Individual_Emails" = "Individuelle E-Mails";
 "Info" = "Info";
+"Introduce_yourself" = "Stelle dich vor";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Die Zusammenstellung deiner Daten kann bis zu 24 Stunden dauern. Sobald sie zum Download bereitstehen, werden wir dir eine Anleitung dazu per E-Mail schicken. Solltest du nichts von uns hören, versuche es von hier aus noch einmal.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_better_with_friends" = "Gemeinsam mehr erreichen";
@@ -213,6 +233,7 @@
 "Messages" = "Nachrichten";
 "Name" = "Name";
 "Never" = "Niemals";
+"New_password" = "Neues Passwort";
 "New_pledge_activity" = "Neue Finanzierungsbeiträge";
 "New_work_and_big_ideas_from_established_and" = "Neue Arbeiten und großartige Ideen von etablierten und neuen Künstlern.";
 "News_events" = "Ein paar Mal pro Jahr: Neuigkeiten und Events in deiner Nähe.";
@@ -412,6 +433,7 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
+"Write_a_bio" = "Schreibe eine kurze Biografie, ein oder zwei Sätze genügen.";
 "Yes_turn_off" = "Ja, deaktivieren";
 "You_Launched" = "Dein Projekt ist live!";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
@@ -420,6 +442,7 @@
 "You_saved_this_project" = "Du hast dieses Projekt gespeichert.";
 "Your_chat_message_wasnt_sent_successfully" = "Deine Chat-Nachricht konnte leider nicht gesendet werden.";
 "Your_friends_havent_backed_any_projects_yet" = "Deine Freunde haben bisher noch kein Projekt unterstützt. Aber sobald sie das tun, wird es hier angezeigt.";
+"Your_name_displayed" = "Dein Name wird auf deinem Profil angezeigt.";
 "Your_payment_method_was_successfully_charged" = "Deine Zahlungsmethode wurde erfolgreich belastet.";
 "Your_pledge" = "Dein Beitrag";
 "Your_pledge_amount" = "Dein Beitrag:";

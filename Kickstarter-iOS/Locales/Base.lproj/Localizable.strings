@@ -1,6 +1,7 @@
 "A_weekly_roundup_of_the_best_and_brightest" = "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team.";
 "About_reward_amount" = "About %{reward_amount}";
 "Account" = "Account";
+"Add" = "Add";
 "Add_attachments" = "Add attachments…";
 "All_Art_Projects" = "All Art Projects";
 "All_Comics_Projects" = "All Comics Projects";
@@ -44,6 +45,7 @@
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
 "Cancel" = "Cancel";
 "Cancel_your_pledge" = "Cancel your pledge";
+"Change_email" = "Change email";
 "Change_password" = "Change password";
 "Change_payment_method" = "Change payment method";
 "Chat" = "Chat";
@@ -57,6 +59,7 @@
 "Collapses_subcategories" = "Collapses subcategories.";
 "Collections" = "Collections";
 "Complete_payment" = "Complete payment";
+"Confirm_password" = "Confirm new password";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
 "Contact_creator" = "Contact creator";
 "Continue_to_payment" = "Continue to payment";
@@ -75,6 +78,22 @@
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} will be streaming live on Kickstarter %{in_duration}";
 "Creator_tips" = "Creator tips";
 "Currency" = "Currency";
+"Currency_AUD" = "$ Australian Dollar (AUD)";
+"Currency_CAD" = "$ Canadian Dollar (CAD)";
+"Currency_CHF" = "Fr Swiss Franc (CHF)";
+"Currency_DKK" = "kr Danish Krone (DKK)";
+"Currency_EUR" = "€ Euro (EUR)";
+"Currency_GBP" = "£ Pound Sterling (GBP)";
+"Currency_HKD" = "$ Hong Kong Dollar (HKD)";
+"Currency_JPY" = "¥ Yen (JPY)";
+"Currency_MXN" = "$ Mexican Peso (MXN)";
+"Currency_NOK" = "kr Norwegian Krone (NOK)";
+"Currency_NZD" = "$ New Zealand Dollar (NZD)";
+"Currency_SEK" = "kr Swedish Krona (SEK)";
+"Currency_SGD" = "$ Singapore Dollar (SGD)";
+"Currency_USD" = "$ US Dollar (USD)";
+"Current_email" = "Current email";
+"Current_password" = "Current password";
 "Daily_digest" = "Daily digest";
 "Data_will_appear_here_once" = "Data will appear here once somebody backs your project.";
 "Delete_my_Kickstarter_Account" = "Delete my Kickstarter account";
@@ -170,6 +189,7 @@
 "If_your_profile_is_public" = "If your profile is not private, others can also see the projects you've backed, your location, bio and websites.";
 "Individual_Emails" = "Individual emails";
 "Info" = "Info";
+"Introduce_yourself" = "Introduce yourself";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
 "Its_a_way_to_bring_creative_projects_to_life" = "It’s a way to bring creative projects to life.";
 "Its_better_with_friends" = "It’s better\nwith friends.";
@@ -213,6 +233,7 @@
 "Messages" = "Messages";
 "Name" = "Name";
 "Never" = "Never";
+"New_password" = "New password";
 "New_pledge_activity" = "New pledge activity";
 "New_work_and_big_ideas_from_established_and" = "New work and big ideas from established and emerging artists.";
 "News_events" = "Big news and events happening near you, delivered just a few times a year.";
@@ -412,6 +433,7 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
+"Write_a_bio" = "Write a short bio. Just a sentence or two is great.";
 "Yes_turn_off" = "Yes, turn off";
 "You_Launched" = "You Launched!";
 "You_backed_this_project" = "You backed this project.";
@@ -420,6 +442,7 @@
 "You_saved_this_project" = "You saved this project.";
 "Your_chat_message_wasnt_sent_successfully" = "Your chat message wasn't sent successfully.";
 "Your_friends_havent_backed_any_projects_yet" = "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here.";
+"Your_name_displayed" = "Your name is always displayed on your profile.";
 "Your_payment_method_was_successfully_charged" = "Your payment method was successfully charged.";
 "Your_pledge" = "Your pledge";
 "Your_pledge_amount" = "Your pledge amount:";

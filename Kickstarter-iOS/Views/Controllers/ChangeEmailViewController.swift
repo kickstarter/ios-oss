@@ -51,7 +51,7 @@ final class ChangeEmailViewController: UIViewController {
     _ = self
       |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in
-        "Change Email"
+        Strings.Change_email()
     }
 
     _ = onePasswordButton

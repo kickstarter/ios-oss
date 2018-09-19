@@ -359,11 +359,32 @@
                                     <constraint firstItem="VyE-lE-aLQ" firstAttribute="top" secondItem="XfD-wg-Nx4" secondAttribute="top" id="qq8-aP-B9H"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lmb-Ri-Wpj">
+                                <rect key="frame" x="12" y="622.5" width="351" height="32.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vlc-ok-ln5">
+                                        <rect key="frame" x="12" y="6" width="327" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Vlc-ok-ln5" firstAttribute="top" secondItem="Lmb-Ri-Wpj" secondAttribute="top" constant="6" id="0hq-Or-cuf"/>
+                                    <constraint firstItem="Vlc-ok-ln5" firstAttribute="leading" secondItem="Lmb-Ri-Wpj" secondAttribute="leading" constant="12" id="DOi-WM-pD8"/>
+                                    <constraint firstAttribute="bottom" secondItem="Vlc-ok-ln5" secondAttribute="bottom" constant="6" id="RYa-Of-1mn"/>
+                                    <constraint firstAttribute="trailing" secondItem="Vlc-ok-ln5" secondAttribute="trailing" constant="12" id="U96-7e-6uQ"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Lmb-Ri-Wpj" firstAttribute="leading" secondItem="4qM-at-87e" secondAttribute="leading" constant="12" id="D0f-cV-z60"/>
+                            <constraint firstItem="4qM-at-87e" firstAttribute="trailing" secondItem="Lmb-Ri-Wpj" secondAttribute="trailing" constant="12" id="Igm-Bz-Ty2"/>
                             <constraint firstItem="4qM-at-87e" firstAttribute="trailing" secondItem="XfD-wg-Nx4" secondAttribute="trailing" id="KgC-DZ-wZU"/>
                             <constraint firstItem="XfD-wg-Nx4" firstAttribute="leading" secondItem="4qM-at-87e" secondAttribute="leading" id="fyv-9J-lle"/>
+                            <constraint firstItem="4qM-at-87e" firstAttribute="bottom" secondItem="Lmb-Ri-Wpj" secondAttribute="bottom" constant="12" id="gLg-f8-T87"/>
                             <constraint firstItem="XfD-wg-Nx4" firstAttribute="top" secondItem="4qM-at-87e" secondAttribute="top" id="v5z-7f-G0P"/>
                             <constraint firstItem="VyE-lE-aLQ" firstAttribute="width" secondItem="Sro-rn-6F2" secondAttribute="width" id="zbj-PW-ja6"/>
                         </constraints>
