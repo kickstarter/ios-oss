@@ -6,10 +6,12 @@ import ReactiveExtensions
 import Result
 
 public protocol SettingsPrivacyViewModelInputs {
+  func didCancelSocialOptOut()
+  func didConfirmSocialOptOut()
+  func didUpdate(user: User)
   func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
   func privateProfileToggled(on: Bool)
   func viewDidLoad()
-  func didUpdate(user: User)
 }
 
 public protocol SettingsPrivacyViewModelOutputs {
@@ -43,12 +45,9 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
       self.privateProfileProperty.signal.negate()
       .map { (UserAttribute.privacy(UserAttribute.Privacy.showPublicProfile), $0) }
 
-    let followingAttributeChanged = self.followingSwitchTappedProperty.signal
-      .filter { (on, didShowPrompt) in
-        didShowPrompt == true || (on == true && didShowPrompt == false)
-      }
+    let followingAttributeChanged = self.didConfirmSocialOptOutProperty.signal
       .map {
-        (UserAttribute.privacy(UserAttribute.Privacy.following), $0.0)
+        (UserAttribute.privacy(UserAttribute.Privacy.following), false)
     }
 
     let userAttributeChanged = Signal.merge(privateProfileAttributeChanged, followingAttributeChanged)
@@ -61,7 +60,7 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
         }
     }
 
-    let updateEvent = updatedUser
+    let updateEvent = Signal.merge(updatedUser, self.updateUserProperty.signal.skipNil())
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -83,10 +82,7 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
    self.updateCurrentUser = Signal.merge(updatedFetchedUser,
                                          previousUserOnError)
 
-   self.refreshFollowingSection = self.updateCurrentUser//, self.updateUserProperty.signal.skipNil())
-    .map { $0.social }
-    .filter { $0 == true ? true : false }
-    .ignoreValues()
+   self.refreshFollowingSection = self.didCancelSocialOptOutProperty.signal
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
@@ -109,6 +105,15 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
     self.followingSwitchTappedProperty.value = (on, didShowPrompt)
   }
 
+  fileprivate let didConfirmSocialOptOutProperty = MutableProperty(())
+  public func didConfirmSocialOptOut() {
+    self.didConfirmSocialOptOutProperty.value = ()
+  }
+
+  fileprivate let didCancelSocialOptOutProperty = MutableProperty(())
+  public func didCancelSocialOptOut() {
+    self.didCancelSocialOptOutProperty.value = ()
+  }
   public let refreshFollowingSection: Signal<Void, NoError>
   public let reloadData: Signal<User, NoError>
   public let unableToSaveError: Signal<String, NoError>

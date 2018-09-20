@@ -13,7 +13,6 @@ public protocol SettingsFollowCellViewModelInputs {
 public protocol SettingsFollowCellViewModelOutputs {
   var followingPrivacyOn: Signal<Bool, NoError> { get }
   var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
-  var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
 }
 
@@ -34,7 +33,7 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
         (UserAttribute.privacy(UserAttribute.Privacy.following), $0)
     }
 
-    let updatedUser = initialUser
+    self.updateCurrentUser = initialUser
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
           let (attribute, on) = attributeAndOn
@@ -42,27 +41,7 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
         }
     }
 
-    let updateEvent = updatedUser
-      .switchMap {
-        AppEnvironment.current.apiService.updateUserSelf($0)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on:
-            AppEnvironment.current.scheduler)
-          .materialize()
-    }
-
-    self.unableToSaveError = updateEvent.errors()
-      .map { env in
-        env.errorMessages.first ?? Strings.profile_settings_error()
-    }
-
-    let previousUserOnError = Signal.merge(initialUser, updatedUser)
-      .combinePrevious()
-      .takeWhen(self.unableToSaveError)
-      .map { previous, _ in previous }
-
-    self.updateCurrentUser = Signal.merge(updatedUser, previousUserOnError)
-
-    self.followingPrivacyOn = Signal.merge(initialUser, updatedUser, previousUserOnError)
+    self.followingPrivacyOn = initialUser
       .map { $0.social }.skipNil()
 
     self.showPrivacyFollowingPrompt = self.followTappedProperty.signal
@@ -82,7 +61,6 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
 
   public let followingPrivacyOn: Signal<Bool, NoError>
   public let showPrivacyFollowingPrompt: Signal<(), NoError>
-  public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
 
   public var inputs: SettingsFollowCellViewModelInputs { return self }
