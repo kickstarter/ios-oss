@@ -30,7 +30,7 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
       .skipNil()
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
-      self.followTappedProperty.signal.map {
+      self.followTappedProperty.signal.filter { $0 == true }.map {
         (UserAttribute.privacy(UserAttribute.Privacy.following), $0)
     }
 
@@ -60,10 +60,10 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
       .takeWhen(self.unableToSaveError)
       .map { previous, _ in previous }
 
-    self.followingPrivacyOn = Signal.merge(initialUser, updatedUser, previousUserOnError)
-      .map { $0.social }.skipNil().skipRepeats()
-
     self.updateCurrentUser = Signal.merge(updatedUser, previousUserOnError)
+
+    self.followingPrivacyOn = Signal.merge(initialUser, updatedUser, previousUserOnError)
+      .map { $0.social }.skipNil()
 
     self.showPrivacyFollowingPrompt = self.followTappedProperty.signal
       .filter { $0 == false }

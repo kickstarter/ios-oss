@@ -83,8 +83,9 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
    self.updateCurrentUser = Signal.merge(updatedFetchedUser,
                                          previousUserOnError)
 
-   self.refreshFollowingSection = Signal.merge(self.updateCurrentUser, self.updateUserProperty.signal.skipNil())
-    .filter { $0.social == true }
+   self.refreshFollowingSection = self.updateCurrentUser//, self.updateUserProperty.signal.skipNil())
+    .map { $0.social }
+    .filter { $0 == true ? true : false }
     .ignoreValues()
   }
 
