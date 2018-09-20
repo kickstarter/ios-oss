@@ -30,11 +30,11 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
+
+      self.vm.inputs.didCancelSocialOptOut()
 
       self.scheduler.advance()
 
-      self.updateCurrentUser.assertValueCount(1)
       self.refreshFollowingSection.assertValueCount(1)
     }
   }
@@ -62,7 +62,8 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(updateUserSelfError: error)) {
       self.vm.inputs.viewDidLoad()
-      self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
+
+      self.vm.inputs.didConfirmSocialOptOut()
 
       self.scheduler.advance()
 
@@ -71,16 +72,16 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testFollowingSwitchTapped_updatesCurrentUser() {
+
     let mockService = MockService(fetchUserSelfResponse: User.template)
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
       self.updateCurrentUser.assertValueCount(0)
 
-      self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
+      self.vm.inputs.didCancelSocialOptOut()
       self.updateCurrentUser.assertValueCount(0)
 
-      self.vm.followingSwitchTapped(on: false, didShowPrompt: true)
-
+      self.vm.inputs.didConfirmSocialOptOut()
       self.scheduler.advance()
 
       self.updateCurrentUser.assertValueCount(1)

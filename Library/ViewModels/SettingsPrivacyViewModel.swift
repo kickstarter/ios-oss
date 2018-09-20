@@ -9,7 +9,6 @@ public protocol SettingsPrivacyViewModelInputs {
   func didCancelSocialOptOut()
   func didConfirmSocialOptOut()
   func didUpdate(user: User)
-  func followingSwitchTapped(on: Bool, didShowPrompt: Bool)
   func privateProfileToggled(on: Bool)
   func viewDidLoad()
 }
@@ -85,9 +84,14 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
    self.refreshFollowingSection = self.didCancelSocialOptOutProperty.signal
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty(())
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
+  fileprivate let didCancelSocialOptOutProperty = MutableProperty(())
+  public func didCancelSocialOptOut() {
+    self.didCancelSocialOptOutProperty.value = ()
+  }
+
+  fileprivate let didConfirmSocialOptOutProperty = MutableProperty(())
+  public func didConfirmSocialOptOut() {
+    self.didConfirmSocialOptOutProperty.value = ()
   }
 
   fileprivate let privateProfileProperty = MutableProperty<Bool>(true)
@@ -100,20 +104,11 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
     self.updateUserProperty.value = user
   }
 
-  fileprivate let followingSwitchTappedProperty = MutableProperty((false, false))
-  public func followingSwitchTapped(on: Bool, didShowPrompt: Bool) {
-    self.followingSwitchTappedProperty.value = (on, didShowPrompt)
+  fileprivate let viewDidLoadProperty = MutableProperty(())
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let didConfirmSocialOptOutProperty = MutableProperty(())
-  public func didConfirmSocialOptOut() {
-    self.didConfirmSocialOptOutProperty.value = ()
-  }
-
-  fileprivate let didCancelSocialOptOutProperty = MutableProperty(())
-  public func didCancelSocialOptOut() {
-    self.didCancelSocialOptOutProperty.value = ()
-  }
   public let refreshFollowingSection: Signal<Void, NoError>
   public let reloadData: Signal<User, NoError>
   public let unableToSaveError: Signal<String, NoError>
