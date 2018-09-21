@@ -1,4 +1,5 @@
 // swiftlint:disable force_unwrapping
+// swiftlint:disable force_cast
 import XCTest
 @testable import Library
 @testable import KsApi
@@ -934,11 +935,16 @@ final class CheckoutViewModelTests: TestCase {
         self.trackingClient.properties(forKey: "pledge_context", as: String.self)
       )
 
-      self.evaluateJavascript.assertValues([
-        "window.checkout_apple_pay_next({\"apple_pay_token\":{\"transaction_identifier\":" +
-          "\"apple_pay_deadbeef\",\"payment_network\":\"AmEx\",\"payment_instrument_name\":\"AmEx 1111\"}," +
-        "\"stripe_token\":{\"id\":\"stripe_deadbeef\"}});"
-        ])
+      let javascriptDictionary: [String: Any] =
+        self.dictionaryFromJavascript(string: self.evaluateJavascript.lastValue!)
+
+      let applePayToken: [String: String] = javascriptDictionary["apple_pay_token"] as! [String: String]
+      XCTAssertEqual(applePayToken["payment_instrument_name"], "AmEx 1111")
+      XCTAssertEqual(applePayToken["payment_network"], "AmEx")
+      XCTAssertEqual(applePayToken["transaction_identifier"], "apple_pay_deadbeef")
+
+      let stripeToken: [String: String] = javascriptDictionary["stripe_token"] as! [String: String]
+      XCTAssertEqual(stripeToken["id"], "stripe_deadbeef")
 
       // 4: Submit payment form
       self.webViewLoadRequestURL.assertValueCount(2)
@@ -1028,6 +1034,19 @@ final class CheckoutViewModelTests: TestCase {
     }
   }
 
+  private func dictionaryFromJavascript(string: String) -> [String: Any] {
+
+    let formattedString = "{\"stripe_token\":{\"id\":\"stripe_deadbeef\"}," +
+    "\"apple_pay_token\":{\"payment_instrument_name\":\"AmEx 1111\",\"payment_network\":\"AmEx\"," +
+    "\"transaction_identifier\":\"apple_pay_deadbeef\"}}"
+
+    do {
+      return try JSONSerialization.jsonObject(with: formattedString.data(using: .utf8)!,
+                                              options: []) as! [String: Any]
+    } catch {
+      return [:]
+    }
+  }
 }
 
 internal extension URLRequest {
