@@ -23,13 +23,15 @@ public protocol SimpleHTMLLabelProtocol: UILabelProtocol {
 
 public final class SimpleHTMLLabel: UILabel, SimpleHTMLLabelProtocol {
 
-  public var baseAttributes: [NSAttributedString.Key: AnyObject] = [NSAttributedString.Key.font: defaultFont] {
+  public var baseAttributes: [NSAttributedString.Key: AnyObject] =
+    [NSAttributedString.Key.font: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }
   }
 
-  public var boldAttributes: [NSAttributedString.Key: AnyObject] = [NSAttributedString.Key.font: defaultFont] {
+  public var boldAttributes: [NSAttributedString.Key: AnyObject] =
+    [NSAttributedString.Key.font: defaultFont] {
     didSet {
       self.setNeedsLayout()
     }

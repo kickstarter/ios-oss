@@ -36,7 +36,9 @@ internal final class LiveStreamDiscoveryViewController: UITableViewController {
     super.bindViewModel()
 
     self.applicationWillEnterForegroundObserver = NotificationCenter.default
-      .addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: nil) { [weak self ]_ in
+      .addObserver(forName: UIApplication.willEnterForegroundNotification,
+                   object: nil,
+                   queue: nil) { [weak self ]_ in
         guard let _self = self else { return }
         _self.viewModel.inputs.appWillEnterForeground()
     }

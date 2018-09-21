@@ -60,7 +60,8 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
 
     super.init(transitionStyle: .scroll,
                navigationOrientation: .horizontal,
-               options: convertToOptionalUIPageViewControllerOptionsKeyDictionary([convertFromUIPageViewControllerOptionsKey(UIPageViewController.OptionsKey.interPageSpacing): Styles.grid(1)]))
+               options: convertToOptionalUIPageViewControllerOptionsKeyDictionary(
+                [convertFromUIPageViewControllerOptionsKey(UIPageViewController.OptionsKey.interPageSpacing): Styles.grid(1)]))
   }
 
   internal required init?(coder: NSCoder) {
@@ -223,12 +224,14 @@ extension ProjectNavigatorViewController: UIViewControllerTransitioningDelegate 
 }
 
 // Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToOptionalUIPageViewControllerOptionsKeyDictionary(_ input: [String: Any]?) -> [UIPageViewController.OptionsKey: Any]? {
+private func convertToOptionalUIPageViewControllerOptionsKeyDictionary(_ input: [String: Any]?) -> [UIPageViewController.OptionsKey: Any]? {
 	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIPageViewController.OptionsKey(rawValue: key), value)})
+	return Dictionary(uniqueKeysWithValues: input
+                                            .map { key, value in
+                                              (UIPageViewController.OptionsKey(rawValue: key), value)})
 }
 
 // Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIPageViewControllerOptionsKey(_ input: UIPageViewController.OptionsKey) -> String {
+private func convertFromUIPageViewControllerOptionsKey(_ input: UIPageViewController.OptionsKey) -> String {
 	return input.rawValue
 }

@@ -62,7 +62,9 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.deviceOrientationChangedObserver = NotificationCenter.default
-      .addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: UIDevice.orientationDidChangeNotification,
+                   object: nil,
+                   queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
         )

@@ -123,7 +123,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
     shareActivityCompletion
       .filter { _, completion in completion.activityType != nil }
       .observeValues { (arg) in
-        
+
         let (shareContext, completion) = arg
         AppEnvironment.current.koala.trackShowedShare(
           shareContext: shareContext, shareActivityType: completion.activityType
@@ -139,7 +139,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
           .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       }
       .observeValues { (arg) in
-        
+
         let (shareContext, completion) = arg
         AppEnvironment.current.koala.trackShared(
           shareContext: shareContext, shareActivityType: completion.activityType

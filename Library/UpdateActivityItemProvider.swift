@@ -12,8 +12,9 @@ public final class UpdateActivityItemProvider: UIActivityItemProvider {
     self.update = update
   }
 
-  public override func activityViewController(_ activityViewController: UIActivityViewController,
-                                              itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+  public override func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
 
     guard let update = self.update, let type = activityType else {
       return self.activityViewControllerPlaceholderItem(activityViewController)

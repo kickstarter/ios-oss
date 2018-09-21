@@ -49,7 +49,8 @@ public protocol DiscoveryViewModelOutputs {
   var loadFilterIntoDataSource: Signal<DiscoveryParams, NoError> { get }
 
   /// Emits when we should manually navigate to a sort's page.
-  var navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewController.NavigationDirection), NoError> { get }
+  var navigateToSort:
+    Signal<(DiscoveryParams.Sort, UIPageViewController.NavigationDirection), NoError> { get }
 
   /// Emits a sort that should be passed on to the sort pager view controller.
   var selectSortPage: Signal<DiscoveryParams.Sort, NoError> { get }

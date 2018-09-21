@@ -57,7 +57,8 @@ public protocol LiveStreamContainerPageViewModelOutputs {
   var loadViewControllersIntoPagesDataSource: Signal<[LiveStreamContainerPage], NoError> { get }
 
   /// Emits the page that should be paged to and in which direction.
-  var pagedToPage: Signal<(LiveStreamContainerPage, UIPageViewController.NavigationDirection), NoError> { get }
+  var pagedToPage:
+    Signal<(LiveStreamContainerPage, UIPageViewController.NavigationDirection), NoError> { get }
 
   /// Emits whether the pager tab strip stack view should be hidden.
   var pagerTabStripStackViewHidden: Signal<Bool, NoError> { get }
@@ -238,7 +239,8 @@ public enum LiveStreamContainerPage {
     }
   }
 
-  fileprivate func pageDirection(toPage: LiveStreamContainerPage) -> UIPageViewController.NavigationDirection {
+  fileprivate func pageDirection(toPage: LiveStreamContainerPage)
+    -> UIPageViewController.NavigationDirection {
     switch (self, toPage) {
     case (.info, .chat):
       return .forward

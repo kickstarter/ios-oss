@@ -49,12 +49,16 @@ public final class LiveVideoViewController: UIViewController {
     self.view.addSubview(self.videoGridView)
 
     self.applicationDidEnterBackgroundObserver = NotificationCenter.default
-      .addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: UIApplication.didEnterBackgroundNotification,
+                   object: nil,
+                   queue: nil) { [weak self] _ in
       self?.viewModel.inputs.didEnterBackground()
     }
 
     self.applicationWillEnterForegroundObserver = NotificationCenter.default
-      .addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: UIApplication.willEnterForegroundNotification,
+                   object: nil,
+                   queue: nil) { [weak self] _ in
       self?.viewModel.inputs.willEnterForeground()
     }
 
@@ -148,7 +152,7 @@ public final class LiveVideoViewController: UIViewController {
       if #available(iOS 10.0, *) {
         try AVAudioSession.sharedInstance().setCategory(.playback,
                                                         mode: .default,
-                                                        options:  [])
+                                                        options: [])
       } else {
         // Apple removed the deprecated method!. Since iOS 12 was release, an idea is to end supporting iOS 9
       }
@@ -280,11 +284,11 @@ extension LiveVideoViewController: OTSubscriberDelegate {
 }
 
 // Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+private func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
 	return input.rawValue
 }
 
 // Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToAVLayerVideoGravity(_ input: String) -> AVLayerVideoGravity {
+private func convertToAVLayerVideoGravity(_ input: String) -> AVLayerVideoGravity {
 	return AVLayerVideoGravity(rawValue: input)
 }

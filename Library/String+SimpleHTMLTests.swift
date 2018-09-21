@@ -74,7 +74,9 @@ final class StringSimpleHTMLTests: XCTestCase {
       XCTAssert(false, "Couldn't find font in attributed string")
     }
 
-    let extractedItalic = string?.attribute(NSAttributedString.Key.font, at: 7, effectiveRange: nil) as? UIFont
+    let extractedItalic = string?.attribute(NSAttributedString.Key.font,
+                                            at: 7,
+                                            effectiveRange: nil) as? UIFont
     if let testItalic = extractedItalic {
       XCTAssertEqual(testItalic.pointSize, font.pointSize)
       XCTAssert(testItalic.fontDescriptor.symbolicTraits.contains(.traitItalic))
@@ -82,7 +84,9 @@ final class StringSimpleHTMLTests: XCTestCase {
       XCTAssertTrue(false, "Couldn't find font in attributed string")
     }
 
-    let extractedBase = string?.attribute(NSAttributedString.Key.font, at: 16, effectiveRange: nil) as? UIFont
+    let extractedBase = string?.attribute(NSAttributedString.Key.font,
+                                          at: 16,
+                                          effectiveRange: nil) as? UIFont
     if let testBase = extractedBase {
       XCTAssertEqual(testBase.pointSize, font.pointSize)
       XCTAssertFalse(testBase.fontDescriptor.symbolicTraits.contains(.traitBold))

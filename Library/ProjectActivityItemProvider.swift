@@ -12,8 +12,9 @@ public final class ProjectActivityItemProvider: UIActivityItemProvider {
     self.project = project
   }
 
-  public override func activityViewController(_ activityViewController: UIActivityViewController,
-                                              itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+  public override func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
     if let project = self.project {
       if activityType == .mail || activityType == .message {
         return formattedString(for: project)

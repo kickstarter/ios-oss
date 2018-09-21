@@ -304,11 +304,13 @@ AppDelegateViewModelOutputs {
       .ignoreValues()
 
     let remoteNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
-      .map { _, options in options?[UIApplication.LaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] }
+      .map { _, options in
+        options?[UIApplication.LaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] }
       .skipNil()
 
     let localNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
-      .map { _, options in options?[UIApplication.LaunchOptionsKey.localNotification] as? UILocalNotification }
+      .map { _, options in
+        options?[UIApplication.LaunchOptionsKey.localNotification] as? UILocalNotification }
       .map { $0?.userInfo }
       .skipNil()
 
