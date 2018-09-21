@@ -58,6 +58,7 @@
 "Collapses_subcategories" = "Reduziert die Anzeige der Unterkategorien.";
 "Collections" = "Sammlungen";
 "Complete_payment" = "Zahlung abschließen";
+"Confirm_password" = "Confirm new password";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, sobald sie ein Projekt veröffentlichen oder unterstützen.";
 "Contact_creator" = "Projektgründer kontaktieren";
 "Continue_to_payment" = "Weiter zur Zahlung";
@@ -90,8 +91,8 @@
 "Currency_SEK" = "kr Schwedische Krone (SEK)";
 "Currency_SGD" = "$ Singapur-Dollar (SGD)";
 "Currency_USD" = "$ US-Dollar (USD)";
-"Current_email" = "Current email";
-"Current_password" = "Current password";
+"Current_email" = "Derzeitige E-Mail";
+"Current_password" = "Derzeitiges Passwort";
 "Daily_digest" = "Tägliche Zusammenfassung";
 "Data_will_appear_here_once" = "Info wird hier angezeigt, sobald jemand dein Projekt unterstützt.";
 "Delete_my_Kickstarter_Account" = "Mein Kickstarter-Konto löschen";
@@ -230,6 +231,7 @@
 "Messages" = "Nachrichten";
 "Name" = "Name";
 "Never" = "Niemals";
+"New_password" = "New password";
 "New_pledge_activity" = "Neue Finanzierungsbeiträge";
 "New_work_and_big_ideas_from_established_and" = "Neue Arbeiten und großartige Ideen von etablierten und neuen Künstlern.";
 "News_events" = "Ein paar Mal pro Jahr: Neuigkeiten und Events in deiner Nähe.";

@@ -58,6 +58,7 @@
 "Collapses_subcategories" = "Collapses subcategories.";
 "Collections" = "Collections";
 "Complete_payment" = "Complete payment";
+"Confirm_password" = "Confirm new password";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
 "Contact_creator" = "Contact creator";
 "Continue_to_payment" = "Continue to payment";
@@ -230,6 +231,7 @@
 "Messages" = "Messages";
 "Name" = "Name";
 "Never" = "Never";
+"New_password" = "New password";
 "New_pledge_activity" = "New pledge activity";
 "New_work_and_big_ideas_from_established_and" = "New work and big ideas from established and emerging artists.";
 "News_events" = "Big news and events happening near you, delivered just a few times a year.";
