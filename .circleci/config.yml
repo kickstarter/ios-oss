@@ -1,17 +1,15 @@
 version: 2
 
-xcode_version: &xcode_version 9.4
+xcode_version: &xcode_version 10.0
 iphone_name: &iphone_name iPhone 8
-ios_version: &ios_version 11.4
 opentok_version: &opentok_version 2.10.2
 fabric_sdk_version: &fabric_sdk_version 3.10.5
-preload_simulator: &preload_simulator xcrun instruments -w 'iPhone 8 (11.4) [2437FE39-2885-482D-A42F-A169C65AE271]' || true
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
 store_opentok_version: &store_opentok_version echo "$OPENTOK_VERSION" > opentok_version.txt
 
 base_job: &base_job
   macos:
-    xcode: "9.4.0"
+    xcode: "10.0.0"
   working_directory: ~/kickstarter
   environment:
     CIRCLE_ARTIFACTS: /tmp
@@ -21,7 +19,6 @@ base_job: &base_job
     LANG: en_US.UTF-8
     FABRIC_SDK_VERSION: *fabric_sdk_version
     OPENTOK_VERSION: *opentok_version
-    IOS_VERSION: *ios_version
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
 
@@ -50,7 +47,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -104,16 +101,12 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
           command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
 
       - run:
           name: Kickstarter tests
@@ -149,16 +142,12 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
           command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
 
       - run:
           name: Library tests
@@ -181,7 +170,7 @@ jobs:
 
       - run:
           name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version      
+          command: *store_fabric_sdk_version
 
       - run:
           name: Store OpenTok Version
@@ -192,16 +181,12 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
           command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
 
       - run:
           name: LiveStream tests
@@ -235,16 +220,12 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
           command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
 
       - run:
           name: KsApi tests
@@ -295,7 +276,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -360,7 +341,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -420,7 +401,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
@@ -469,7 +450,7 @@ jobs:
             - opentok-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
-          keys: 
+          keys:
             - fabric-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
