@@ -118,8 +118,9 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.gradientView.startPoint = .zero
     self.gradientView.endPoint = .init(x: 0, y: 1)
-    self.gradientView.setGradient([(UIColor.black.withAlphaComponent(0.5), 0),
-                                   (UIColor.black.withAlphaComponent(0), 1.0)])
+    let gradient: [(UIColor?, Float)] =  [(UIColor.black.withAlphaComponent(0.5), 0),
+                                          (UIColor.black.withAlphaComponent(0), 1)]
+    self.gradientView.setGradient(gradient)
   }
 
   public override func bindViewModel() {
