@@ -8,22 +8,21 @@ public struct SettingsCellValue {
 
 final class SettingsDataSource: ValueCellDataSource {
   func configureRows(with user: User) {
-    SettingsSectionType.allCases
-      .filter { $0 != .findFriends }
-      .forEach { section -> Void in
-        let values = section.cellRowsForSection.map { SettingsCellValue(user: user, cellType: $0) }
 
+    SettingsDataSource.sections.forEach { section -> Void in
+      let values = section.cellRowsForSection.map { SettingsCellValue(user: user, cellType: $0) }
+
+      switch section {
+      case .findFriends:
+        self.set(values: values,
+                 cellClass: FindFriendsCell.self,
+                 inSection: SettingsSectionType.findFriends.rawValue)
+      default:
         self.set(values: values,
                  cellClass: SettingsTableViewCell.self,
                  inSection: section.rawValue)
+      }
     }
-
-    let findFriendsValues: [SettingsCellValue] = SettingsSectionType.findFriends.cellRowsForSection
-      .map { SettingsCellValue(user: user, cellType: $0) }
-
-    self.set(values: findFriendsValues,
-             cellClass: FindFriendsCell.self,
-             inSection: SettingsSectionType.findFriends.rawValue)
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsCellType? {
@@ -41,5 +40,10 @@ final class SettingsDataSource: ValueCellDataSource {
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }
+  }
+
+  private static var sections: [SettingsSectionType] {
+    return AppEnvironment.current.mainBundle.isRelease ?
+      SettingsSectionType.allCases.filter { $0 != .account } : SettingsSectionType.allCases
   }
 }
