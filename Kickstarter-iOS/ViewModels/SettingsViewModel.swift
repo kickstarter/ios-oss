@@ -10,6 +10,7 @@ public protocol SettingsViewModelInputs {
   func logoutConfirmed()
   func settingsCellTapped(cellType: SettingsCellType)
   func viewDidLoad()
+  func viewWillAppear()
 }
 
 public protocol SettingsViewModelOutputs {
@@ -108,6 +109,11 @@ SettingsViewModelOutputs, SettingsViewModelType {
   fileprivate let viewDidLoadProperty = MutableProperty(())
   func viewDidLoad() {
      self.viewDidLoadProperty.value = ()
+  }
+
+  fileprivate let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
   }
 
   public let goToAppStoreRating: Signal<String, NoError>

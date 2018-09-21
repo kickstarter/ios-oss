@@ -44,6 +44,7 @@
 "Bring_creative_projects_to_life" = "Réalisez vos projets créatifs.";
 "Cancel" = "Annuler";
 "Cancel_your_pledge" = "Annuler mon engagement";
+"Change_email" = "Changer d'adresse e-mail";
 "Change_password" = "Changer de mot de passe";
 "Change_payment_method" = "Changer de moyen de paiement";
 "Chat" = "Chat";
@@ -57,6 +58,7 @@
 "Collapses_subcategories" = "Masque les sous-catégories.";
 "Collections" = "Collections";
 "Complete_payment" = "Payer";
+"Confirm_password" = "Confirm new password";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Si vous vous connectez avec votre compte Facebook, vous pourrez suivre vos amis et recevoir des notifications chaque fois qu'ils lancent ou soutiennent de nouveaux projets.";
 "Contact_creator" = "Contacter le créateur";
 "Continue_to_payment" = "Continuer vers le paiement";
@@ -75,6 +77,22 @@
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} sera en direct sur Kickstarter %{in_duration}";
 "Creator_tips" = "Astuces pour créateurs";
 "Currency" = "Devise";
+"Currency_AUD" = "Dollar australien – $ (AUD)";
+"Currency_CAD" = "Dollar Canadien – $ (CAD)";
+"Currency_CHF" = "Franc suisse – Fr (CHF)";
+"Currency_DKK" = "Couronne danoise – kr (DKK)";
+"Currency_EUR" = "Euro – € (EUR)";
+"Currency_GBP" = "Livre sterling – £ (GBP)";
+"Currency_HKD" = "Dollar de Hong Kong – $ (HKD)";
+"Currency_JPY" = "Yen – ¥ (JPY)";
+"Currency_MXN" = "Pesos mexicain – $ (MXN)";
+"Currency_NOK" = "Couronne norvégienne – kr (NOK)";
+"Currency_NZD" = "Dollar néo-zélandais – $ (NZD)";
+"Currency_SEK" = "Couronne suédoise – kr (SEK)";
+"Currency_SGD" = "Dollar singapourien – $ (SGD)";
+"Currency_USD" = "Dollar américain – $ (USD)";
+"Current_email" = "Adresse e-mail actuelle";
+"Current_password" = "Mot de passe actuel";
 "Daily_digest" = "Résumé quotidien";
 "Data_will_appear_here_once" = "Ces données seront visibles dès que vous aurez reçu votre première contribution.";
 "Delete_my_Kickstarter_Account" = "Supprimer mon compte Kickstarter";
@@ -131,7 +149,7 @@
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Suivez vos amis Facebook, les projets qu'ils soutiennent et les campagnes qu'ils lancent.";
 "Followed" = "Abonné";
 "Following" = "Projets soutenus par mes amis";
-"Following_Disabled_Info" = "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy.";
+"Following_Disabled_Info" = "Pour retrouver vos amis Facebook, activez la fonction Abonnements sous Paramètres > Vie privée.";
 "Following_More_Info" = "Plus d'informations sur le suivi et l'abonnement";
 "Follows_friend_name" = "Abonnement aux actus de %{friend_name}.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> a soutenu un projet <i>artistique</i>.";
@@ -166,8 +184,8 @@
 "How_backers_found_your_project" = "Comment les contributeurs ont découvert votre projet";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
 "If_you_turn_following_off" = "Si vous désactivez les fonctionnalités de suivi, vous ne pourrez pas vous abonner aux activités des autres et plus personne ne pourra suivre les vôtres. Votre profil sera déconnecté de tous vos abonnés. Cette action ne pourra pas être annulée.";
-"If_your_profile_is_private" = "If your profile is private, others can see your name and picture.";
-"If_your_profile_is_public" = "If your profile is not private, others can also see the projects you've backed, your location, bio and websites.";
+"If_your_profile_is_private" = "Si votre profil est privé, seuls votre nom et votre photo seront visibles.";
+"If_your_profile_is_public" = "Si votre profil n'est pas privé, les projets que vous avez soutenus, votre bio, votre emplacement géographique et vos sites Web seront également visibles.";
 "Individual_Emails" = "E-mails individuels";
 "Info" = "Info";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "La préparation de vos données personnelles peut prendre jusqu'à 24 heures. Nous vous enverrons des instructions de téléchargement à l'adresse e-mail associée à ce compte une fois que tout sera prêt. Si vous ne recevez rien, revenez ici pour réessayer.";
@@ -213,6 +231,7 @@
 "Messages" = "Messages";
 "Name" = "Nom";
 "Never" = "Jamais";
+"New_password" = "New password";
 "New_pledge_activity" = "Nouveaux engagements";
 "New_work_and_big_ideas_from_established_and" = "Grandes idées et nouveaux travaux signés par des artistes établis et émergents.";
 "News_events" = "Les grandes nouvelles et événements près de chez vous, quelques fois par an.";
