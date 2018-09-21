@@ -33,7 +33,7 @@ public final class VideoViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.playerController = self.childViewControllers.compactMap { $0 as? AVPlayerViewController }.first
+    self.playerController = self.children.compactMap { $0 as? AVPlayerViewController }.first
 
     self.playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
 
@@ -148,7 +148,7 @@ public final class VideoViewController: UIViewController {
     self.viewModel.outputs.seekToBeginning
       .observeForUI()
       .observeValues { [weak self] in
-        self?.playerController.player?.seek(to: kCMTimeZero)
+        self?.playerController.player?.seek(to: CMTime.zero)
     }
   }
 
@@ -164,7 +164,14 @@ public final class VideoViewController: UIViewController {
 
   internal func configurePlayer(withURL url: URL) {
     do {
-      try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+      if #available(iOS 10.0, *) {
+        try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback,
+                                                        mode: AVAudioSession.Mode.default,
+                                                        options: [])
+      } else {
+        // Apple removed the deprecated method!. Since iOS 12 was release, an idea is to end supporting iOS 9
+      }
+
     } catch let error as NSError {
       print("Audio playback error: \(error.localizedDescription)")
     }
@@ -205,4 +212,9 @@ public final class VideoViewController: UIViewController {
     self.playerController.player?.removeObserver(self, forKeyPath: rateKeyPath)
     self.playerController?.player?.replaceCurrentItem(with: nil)
   }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

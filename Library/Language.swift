@@ -25,7 +25,7 @@ public enum Language: String {
     guard let language = languages
       .lazy
       .map({ String($0.prefix(2)) })
-      .flatMap(Language.init(languageString:))
+      .compactMap(Language.init(languageString:))
       .first else {
         return nil
     }

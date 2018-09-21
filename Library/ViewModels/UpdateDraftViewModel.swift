@@ -548,7 +548,7 @@ public enum AttachmentSource: String {
   case camera = "camera"
   case cameraRoll = "camera_roll"
 
-  public init(sourceType: UIImagePickerControllerSourceType) {
+  public init(sourceType: UIImagePickerController.SourceType) {
     switch sourceType {
     case .camera:
       self = .camera
@@ -568,7 +568,7 @@ public enum AttachmentSource: String {
     }
   }
 
-  public var sourceType: UIImagePickerControllerSourceType {
+  public var sourceType: UIImagePickerController.SourceType {
     switch self {
     case .camera:
       return .camera

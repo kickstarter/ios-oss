@@ -48,7 +48,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     super.viewDidLayoutSubviews()
 
     if let headerView = projectsTableView.tableHeaderView {
-      let height = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+      let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
       self.updateHeaderView(height: height)
     }
   }
@@ -68,7 +68,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     _ = self.projectsTableView
       |> UITableView.lens.separatorStyle .~ .none
-      |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
+      |> UITableView.lens.rowHeight .~ UITableView.automaticDimension
       |> UITableView.lens.estimatedRowHeight .~ 550
 
     _ = self.thankYouLabel

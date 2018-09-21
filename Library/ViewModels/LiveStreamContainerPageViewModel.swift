@@ -57,7 +57,7 @@ public protocol LiveStreamContainerPageViewModelOutputs {
   var loadViewControllersIntoPagesDataSource: Signal<[LiveStreamContainerPage], NoError> { get }
 
   /// Emits the page that should be paged to and in which direction.
-  var pagedToPage: Signal<(LiveStreamContainerPage, UIPageViewControllerNavigationDirection), NoError> { get }
+  var pagedToPage: Signal<(LiveStreamContainerPage, UIPageViewController.NavigationDirection), NoError> { get }
 
   /// Emits whether the pager tab strip stack view should be hidden.
   var pagerTabStripStackViewHidden: Signal<Bool, NoError> { get }
@@ -110,7 +110,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
     let firstPage = self.loadViewControllersIntoPagesDataSource
       .takeWhen(self.didLoadViewControllersIntoPagesDataSourceProperty.signal)
       .filterMap { $0.filter { $0.isInfoPage }.first }
-      .map { ($0, UIPageViewControllerNavigationDirection.forward) }
+      .map { ($0, UIPageViewController.NavigationDirection.forward) }
 
     let pagedToPage = Signal.merge(
       firstPage.map(first),
@@ -209,7 +209,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
   public let infoButtonTextColor: Signal<UIColor, NoError>
   public let infoButtonTitleFont: Signal<UIFont, NoError>
   public let loadViewControllersIntoPagesDataSource: Signal<[LiveStreamContainerPage], NoError>
-  public let pagedToPage: Signal<(LiveStreamContainerPage, UIPageViewControllerNavigationDirection), NoError>
+  public let pagedToPage: Signal<(LiveStreamContainerPage, UIPageViewController.NavigationDirection), NoError>
   public let pagerTabStripStackViewHidden: Signal<Bool, NoError>
 
   public var inputs: LiveStreamContainerPageViewModelInputs { return self }
@@ -238,7 +238,7 @@ public enum LiveStreamContainerPage {
     }
   }
 
-  fileprivate func pageDirection(toPage: LiveStreamContainerPage) -> UIPageViewControllerNavigationDirection {
+  fileprivate func pageDirection(toPage: LiveStreamContainerPage) -> UIPageViewController.NavigationDirection {
     switch (self, toPage) {
     case (.info, .chat):
       return .forward

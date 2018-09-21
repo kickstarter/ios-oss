@@ -104,12 +104,12 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
 
   let attributedString = fullString.simpleHtmlAttributedString(
       base: [
-        NSAttributedStringKey.font: UIFont.ksr_footnote(),
-        NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900
+        NSAttributedString.Key.font: UIFont.ksr_footnote(),
+        NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900
       ],
       bold: [
-        NSAttributedStringKey.font: UIFont.ksr_headline(size: 13.0),
-        NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900
+        NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
+        NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900
       ]
     )
     ?? .init(string: "")
@@ -126,8 +126,8 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
       .distance(from: time.startIndex, to: timeNumber.startIndex)
 
     mutableString.addAttributes(
-      [NSAttributedStringKey.font: UIFont.ksr_headline(size: 13.0),
-       NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900],
+      [NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
+       NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900],
       range: NSRange(location: timeStartIndex + timeNumberStartIndex, length: timeNumber.count)
     )
   }

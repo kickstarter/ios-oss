@@ -25,7 +25,7 @@ internal final class LiveStreamContainerPageViewModelTests: TestCase {
   private let infoButtonTitleFontSize = TestObserver<CGFloat, NoError>()
   private let loadViewControllersIntoPagesDataSource = TestObserver<[LiveStreamContainerPage], NoError>()
   private let pagedToPage = TestObserver<LiveStreamContainerPage, NoError>()
-  private let pagedToPageDirection = TestObserver<UIPageViewControllerNavigationDirection, NoError>()
+  private let pagedToPageDirection = TestObserver<UIPageViewController.NavigationDirection, NoError>()
   private let pagerTabStripStackViewHidden = TestObserver<Bool, NoError>()
 
   internal override func setUp() {

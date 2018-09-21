@@ -304,11 +304,11 @@ AppDelegateViewModelOutputs {
       .ignoreValues()
 
     let remoteNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
-      .map { _, options in options?[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] }
+      .map { _, options in options?[UIApplication.LaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] }
       .skipNil()
 
     let localNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
-      .map { _, options in options?[UIApplicationLaunchOptionsKey.localNotification] as? UILocalNotification }
+      .map { _, options in options?[UIApplication.LaunchOptionsKey.localNotification] as? UILocalNotification }
       .map { $0?.userInfo }
       .skipNil()
 
@@ -369,7 +369,7 @@ AppDelegateViewModelOutputs {
     let performShortcutItem = Signal.merge(
       self.performActionForShortcutItemProperty.signal.skipNil(),
       self.applicationLaunchOptionsProperty.signal
-        .map { $0?.options?[UIApplicationLaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem }
+        .map { $0?.options?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem }
         .skipNil()
       )
       .map { ShortcutItem(typeString: $0.type) }
@@ -604,7 +604,7 @@ AppDelegateViewModelOutputs {
 
     self.applicationDidFinishLaunchingReturnValueProperty <~ self.applicationLaunchOptionsProperty.signal
       .skipNil()
-      .map { _, options in options?[UIApplicationLaunchOptionsKey.shortcutItem] == nil }
+      .map { _, options in options?[UIApplication.LaunchOptionsKey.shortcutItem] == nil }
 
     // Koala
 

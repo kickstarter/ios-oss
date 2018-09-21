@@ -50,7 +50,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.isAccessibilityElement .~ true
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))

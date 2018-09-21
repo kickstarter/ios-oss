@@ -13,7 +13,7 @@ public protocol BackingCellViewModelOutputs {
   var pledged: Signal<String, NoError> { get }
   var reward: Signal<String, NoError> { get }
   var delivery: Signal<String, NoError> { get }
-  var rootStackViewAlignment: Signal<UIStackViewAlignment, NoError> { get }
+  var rootStackViewAlignment: Signal<UIStackView.Alignment, NoError> { get }
 }
 
 public protocol BackingCellViewModelType {
@@ -59,7 +59,7 @@ BackingCellViewModelOutputs {
   public let pledged: Signal<String, NoError>
   public let reward: Signal<String, NoError>
   public let delivery: Signal<String, NoError>
-  public let rootStackViewAlignment: Signal<UIStackViewAlignment, NoError>
+  public let rootStackViewAlignment: Signal<UIStackView.Alignment, NoError>
 
   public var inputs: BackingCellViewModelInputs { return self }
   public var outputs: BackingCellViewModelOutputs { return self }

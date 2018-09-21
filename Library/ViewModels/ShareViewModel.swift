@@ -7,12 +7,12 @@ import Result
 import Social
 
 public struct ShareActivityCompletionData {
-  internal let activityType: UIActivityType?
+  internal let activityType: UIActivity.ActivityType?
   internal let completed: Bool
   internal let returnedItems: [Any]?
   internal let activityError: Error?
 
-  public init(activityType: UIActivityType?,
+  public init(activityType: UIActivity.ActivityType?,
               completed: Bool,
               returnedItems: [Any]?,
               activityError: Error?) {
@@ -25,7 +25,7 @@ public struct ShareActivityCompletionData {
 
 /// These share types provide us access to knowing when the user successfully shares through that method,
 /// or when the user cancels.
-private let firstPartyShareTypes: [UIActivityType] = [.postToFacebook, .postToTwitter, .postToWeibo,
+private let firstPartyShareTypes: [UIActivity.ActivityType] = [.postToFacebook, .postToTwitter, .postToWeibo,
                                                       .message, .mail, .copyToPasteboard, .addToReadingList,
                                                       .postToTencentWeibo, .airDrop, SafariActivityType]
 
@@ -87,8 +87,8 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       .skipNil()
 
     let directShareCompletion = Signal.merge(
-      self.facebookButtonTappedProperty.signal.mapConst(UIActivityType.postToFacebook),
-      self.twitterButtonTappedProperty.signal.mapConst(UIActivityType.postToTwitter)
+      self.facebookButtonTappedProperty.signal.mapConst(UIActivity.ActivityType.postToFacebook),
+      self.twitterButtonTappedProperty.signal.mapConst(UIActivity.ActivityType.postToTwitter)
       )
       .takePairWhen(self.shareComposeCompletionProperty.signal.skipNil())
       .map { service, result in
@@ -122,7 +122,9 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
     shareActivityCompletion
       .filter { _, completion in completion.activityType != nil }
-      .observeValues { shareContext, completion in
+      .observeValues { (arg) in
+        
+        let (shareContext, completion) = arg
         AppEnvironment.current.koala.trackShowedShare(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
@@ -136,7 +138,9 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
         SignalProducer(value: $0)
           .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       }
-      .observeValues { shareContext, completion in
+      .observeValues { (arg) in
+        
+        let (shareContext, completion) = arg
         AppEnvironment.current.koala.trackShared(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
@@ -148,7 +152,9 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
         SignalProducer(value: $0)
           .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       }
-      .observeValues { shareContext, completion in
+      .observeValues { (arg) in
+        
+        let (shareContext, completion) = arg
         AppEnvironment.current.koala.trackCanceledShare(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
@@ -223,7 +229,7 @@ private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
   }
 }
 
-private func excludedActivityTypes(forShareContext shareContext: ShareContext) -> [UIActivityType] {
+private func excludedActivityTypes(forShareContext shareContext: ShareContext) -> [UIActivity.ActivityType] {
 
   switch shareContext {
   case let .update(_, update) where !update.isPublic:

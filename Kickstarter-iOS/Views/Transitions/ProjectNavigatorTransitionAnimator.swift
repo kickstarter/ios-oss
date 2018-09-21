@@ -87,7 +87,7 @@ UIViewControllerAnimatedTransitioning {
     let finalFrame = CGRect(origin: bottomLeftCorner, size: containerView.bounds.size)
     toVC.view.frame = containerView.bounds
 
-    let animationCurve: UIViewAnimationOptions = transitionContext.isInteractive == .some(true)
+    let animationCurve: UIView.AnimationOptions = transitionContext.isInteractive == .some(true)
       ? .curveLinear
       : .curveEaseOut
 

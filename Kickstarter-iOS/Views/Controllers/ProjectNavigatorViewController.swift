@@ -60,7 +60,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
 
     super.init(transitionStyle: .scroll,
                navigationOrientation: .horizontal,
-               options: [UIPageViewControllerOptionInterPageSpacingKey: Styles.grid(1)])
+               options: convertToOptionalUIPageViewControllerOptionsKeyDictionary([convertFromUIPageViewControllerOptionsKey(UIPageViewController.OptionsKey.interPageSpacing): Styles.grid(1)]))
   }
 
   internal required init?(coder: NSCoder) {
@@ -125,11 +125,11 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     }
   }
 
-  internal override var childViewControllerForStatusBarStyle: UIViewController? {
+  internal override var childForStatusBarStyle: UIViewController? {
     return self.viewControllers?.first
   }
 
-  internal override var childViewControllerForStatusBarHidden: UIViewController? {
+  internal override var childForStatusBarHidden: UIViewController? {
     return self.viewControllers?.first
   }
 
@@ -220,4 +220,15 @@ extension ProjectNavigatorViewController: UIViewControllerTransitioningDelegate 
 
       return self.transitionAnimator.isInFlight ? self.transitionAnimator : nil
   }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalUIPageViewControllerOptionsKeyDictionary(_ input: [String: Any]?) -> [UIPageViewController.OptionsKey: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIPageViewController.OptionsKey(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIPageViewControllerOptionsKey(_ input: UIPageViewController.OptionsKey) -> String {
+	return input.rawValue
 }

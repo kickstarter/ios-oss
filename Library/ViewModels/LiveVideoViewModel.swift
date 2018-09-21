@@ -12,7 +12,7 @@ public protocol LiveVideoViewModelInputs {
   func didEnterBackground()
 
   /// Call when the HLS player's state changes.
-  func hlsPlayerStateChanged(state: AVPlayerItemStatus)
+  func hlsPlayerStateChanged(state: AVPlayerItem.Status)
 
   /// Call when the OpenTok session connects.
   func sessionDidConnect()
@@ -163,8 +163,8 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
     self.didEnterBackgroundProperty.value = ()
   }
 
-  private let hlsPlayerStateChangedProperty = MutableProperty<AVPlayerItemStatus?>(nil)
-  public func hlsPlayerStateChanged(state: AVPlayerItemStatus) {
+  private let hlsPlayerStateChangedProperty = MutableProperty<AVPlayerItem.Status?>(nil)
+  public func hlsPlayerStateChanged(state: AVPlayerItem.Status) {
     self.hlsPlayerStateChangedProperty.value = state
   }
 
@@ -231,7 +231,7 @@ public final class LiveVideoViewModel: LiveVideoViewModelType, LiveVideoViewMode
   public var outputs: LiveVideoViewModelOutputs { return self }
 }
 
-private func playbackState(fromHlsPlayState state: AVPlayerItemStatus) -> LiveVideoPlaybackState {
+private func playbackState(fromHlsPlayState state: AVPlayerItem.Status) -> LiveVideoPlaybackState {
   switch state {
   case .failed: return .error(error: .failedToConnect)
   case .unknown: return .loading

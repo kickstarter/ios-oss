@@ -25,10 +25,10 @@ internal final class VideoViewModelTests: TestCase {
 
   let pauseRate = 0.0
   let playRate = 1.0
-  let startTime = CMTimeMake(0, 1)
-  let halfwayTime = CMTimeMake(50, 1)
-  let completedThreshold = CMTimeMake(85, 1)
-  let duration = CMTimeMake(100, 1)
+  let startTime = CMTimeMake(value: 0, timescale: 1)
+  let halfwayTime = CMTimeMake(value: 50, timescale: 1)
+  let completedThreshold = CMTimeMake(value: 85, timescale: 1)
+  let duration = CMTimeMake(value: 100, timescale: 1)
 
   internal override func setUp() {
     super.setUp()

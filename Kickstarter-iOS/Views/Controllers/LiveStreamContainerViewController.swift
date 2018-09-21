@@ -52,7 +52,7 @@ public final class LiveStreamContainerViewController: UIViewController {
 
     self.navigationItem.titleView = self.navBarTitleView
 
-    self.liveStreamContainerPageViewController = self.childViewControllers
+    self.liveStreamContainerPageViewController = self.children
       .compactMap { $0 as? LiveStreamContainerPageViewController }
       .first
 
@@ -62,7 +62,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     }
 
     self.deviceOrientationChangedObserver = NotificationCenter.default
-      .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
         )
@@ -188,7 +188,7 @@ public final class LiveStreamContainerViewController: UIViewController {
     self.viewModel.outputs.removeVideoViewController
       .observeForUI()
       .observeValues { [weak self] in
-        self?.liveVideoViewController?.removeFromParentViewController()
+        self?.liveVideoViewController?.removeFromParent()
         self?.liveVideoViewController = nil
     }
 
@@ -213,7 +213,7 @@ public final class LiveStreamContainerViewController: UIViewController {
   }
 
   private func createAndAddChildVideoViewController(withLiveStreamType liveStreamType: LiveStreamType) {
-    self.liveVideoViewController?.removeFromParentViewController()
+    self.liveVideoViewController?.removeFromParent()
 
     let videoViewController = LiveVideoViewController(liveStreamType: liveStreamType, delegate: self)
     videoViewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -230,8 +230,8 @@ public final class LiveStreamContainerViewController: UIViewController {
         equalTo: self.liveStreamContainerView.bottomAnchor)
       ])
 
-    self.addChildViewController(videoViewController)
-    videoViewController.didMove(toParentViewController: self)
+    self.addChild(videoViewController)
+    videoViewController.didMove(toParent: self)
 
     self.liveVideoViewController = videoViewController
   }

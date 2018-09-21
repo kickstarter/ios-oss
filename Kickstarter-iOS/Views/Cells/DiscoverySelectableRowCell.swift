@@ -49,7 +49,7 @@ internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
 
     _ = self
       |> discoveryFilterRowMarginStyle
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
   }
 
   internal func willDisplay() {

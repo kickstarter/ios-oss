@@ -107,20 +107,20 @@ extension UIFont {
   }
 
   // swiftlint:disable cyclomatic_complexity
-  fileprivate static func preferredFont(style: UIFontTextStyle, size: CGFloat? = nil) -> UIFont {
+  fileprivate static func preferredFont(style: UIFont.TextStyle, size: CGFloat? = nil) -> UIFont {
 
     let defaultSize: CGFloat
     switch style {
-    case UIFontTextStyle.body:         defaultSize = 17
-    case UIFontTextStyle.callout:      defaultSize = 16
-    case UIFontTextStyle.caption1:     defaultSize = 12
-    case UIFontTextStyle.caption2:     defaultSize = 11
-    case UIFontTextStyle.footnote:     defaultSize = 13
-    case UIFontTextStyle.headline:     defaultSize = 17
-    case UIFontTextStyle.subheadline:  defaultSize = 15
-    case UIFontTextStyle.title1:       defaultSize = 28
-    case UIFontTextStyle.title2:       defaultSize = 22
-    case UIFontTextStyle.title3:       defaultSize = 20
+    case UIFont.TextStyle.body:         defaultSize = 17
+    case UIFont.TextStyle.callout:      defaultSize = 16
+    case UIFont.TextStyle.caption1:     defaultSize = 12
+    case UIFont.TextStyle.caption2:     defaultSize = 11
+    case UIFont.TextStyle.footnote:     defaultSize = 13
+    case UIFont.TextStyle.headline:     defaultSize = 17
+    case UIFont.TextStyle.subheadline:  defaultSize = 15
+    case UIFont.TextStyle.title1:       defaultSize = 28
+    case UIFont.TextStyle.title2:       defaultSize = 22
+    case UIFont.TextStyle.title3:       defaultSize = 20
     default:                           defaultSize = 17
     }
 
