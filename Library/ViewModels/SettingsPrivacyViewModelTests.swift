@@ -70,6 +70,8 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
   func testFollowingSwitchTapped_updatesCurrentUser() {
 
+    self.vm.viewDidLoad()
+
     self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
     self.updateCurrentUser.assertValueCount(0)
 
