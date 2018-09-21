@@ -88,7 +88,6 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.updateCurrentUser.assertValueCount(0)
 
-
       self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
       self.updateCurrentUser.assertValueCount(0)
 
