@@ -100,7 +100,6 @@ final class ChangeEmailViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Resend_verification_email() }
   }
 
-
   @IBAction func saveButtonTapped(_ sender: Any) {
     self.viewModel.inputs.saveButtonTapped()
   }
