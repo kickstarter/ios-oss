@@ -75,10 +75,10 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
     self.vm.viewDidLoad()
 
-    self.vm.followingSwitchTapped(on: true, didShowPrompt: false)
+    self.vm.didCancelSocialOptOut()
     self.updateCurrentUser.assertValueCount(0)
 
-    self.vm.followingSwitchTapped(on: false, didShowPrompt: true)
+    self.vm.didConfirmSocialOptOut()
 
     self.scheduler.advance()
 
