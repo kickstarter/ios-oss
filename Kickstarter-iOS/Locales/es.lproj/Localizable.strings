@@ -188,7 +188,7 @@
 "How_backers_found_your_project" = "Cómo encontraron tu proyecto los patrocinadores";
 "Id_just_like_to_support_the_project" = "Sólo quiero apoyar este proyecto.";
 "If_you_turn_following_off" = "Si desactivas el seguimiento, no podrás seguir a nadie y nadie podrá seguirte. Tu perfil se desconectará de todos tus seguidores. Esto no se puede deshacer.";
-"If_your_profile_is_private" = "Si tu perfil es privado, otros usuarios podrán ver tu nombre e imagen.\n\nSi tu perfil no es privado, otros usuarios también podrán ver los proyectos que has patrocinado, tu ubicación, biografía y sitios web.";
+"If_your_profile_is_private" = "Si tu perfil es privado, otros usuarios podrán ver tu nombre e imagen.\n";
 "If_your_profile_is_public" = "Si tu perfil no es privado, otros usuarios también podrán ver los proyectos que has patrocinado, tu ubicación, biografía y sitios web.";
 "Individual_Emails" = "Notificaciones por correo electrónico individuales";
 "Info" = "Información";

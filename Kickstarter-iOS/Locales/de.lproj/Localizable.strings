@@ -113,7 +113,7 @@
 "Email" = "E-Mail";
 "Email_frequency" = "Häufigkeit der E-Mails";
 "Email_notifications" = "Benachrichtigung per E-Mail";
-"Email_unverified" = "This email address is unverified.";
+"Email_unverified" = "Diese E-Mail-Adresse wurde noch nicht verifiziert.";
 "Ending_soon" = "Endet bald";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Expands_subcategories" = "Erweitert die Anzeige der Unterkategorien.";
@@ -188,7 +188,7 @@
 "How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
 "If_you_turn_following_off" = "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden.";
-"If_your_profile_is_private" = "Wenn dein Profil privat ist, sind dein Namen und dein Profilbild für Andere sichtbar.\n\nWenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, deine Biografie und deine Websites für Andere sichtbar.";
+"If_your_profile_is_private" = "Wenn dein Profil privat ist, sind dein Namen und dein Profilbild für Andere sichtbar.";
 "If_your_profile_is_public" = "Wenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, dein Standort, deine Biografie und deine Websites für Andere sichtbar.";
 "Individual_Emails" = "Individuelle E-Mails";
 "Info" = "Info";
@@ -328,7 +328,7 @@
 "Replay_past_live_streams" = "Wiedergabe vergangener Live-Streams";
 "Reply_to_user_name" = "%{user_name} antworten …";
 "Request_my_personal_data" = "Meine persönlichen Daten anfordern";
-"Resend_verification_email" = "Re-send verification email";
+"Resend_verification_email" = "Verifizierungs-E-Mail erneut senden";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";
@@ -423,7 +423,7 @@
 "Upcoming_with_creator_name" = "Demnächst: Video von <br/><b>%{creator_name}</b>";
 "Update_pledge" = "Beitrag aktualisieren";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Hier kannst du nachverfolgen, welche Belohnungen du bereits erhalten hast.";
-"Verification_email_sent" = "We've just sent you a verification email. Click the link in it and your address will be verified.";
+"Verification_email_sent" = "Wir haben dir gerade eine Bestätigungs-E-Mail geschickt. Bitte klicke auf den Link in der E-Mail, um deine Adresse zu bestätigen.";
 "Video_disabled_until_the_internet_connection_improves" = "Video bis zur Wiederherstellung der Internetverbindung deaktiviert";
 "View" = "Anzeigen";
 "View_project" = "Projekt ansehen";
