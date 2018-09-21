@@ -91,14 +91,18 @@ extension SettingsPrivacyViewController: SettingsPrivacySwitchCellDelegate {
 extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
   internal func settingsFollowCellDidDisableFollowing(_ cell: SettingsFollowCell) {
     let followingAlert = UIAlertController.turnOffPrivacyFollowing(
-      turnOnHandler: { [weak self] _ in
-        self?.viewModel.inputs.followingSwitchTapped(on: true, didShowPrompt: true)
+      cancelHandler: { [weak self] _ in
+        self?.viewModel.inputs.didCancelSocialOptOut()
       },
       turnOffHandler: { [weak self] _ in
-        self?.viewModel.inputs.followingSwitchTapped(on: false, didShowPrompt: true)
+        self?.viewModel.inputs.didConfirmSocialOptOut()
       }
     )
     self.present(followingAlert, animated: true, completion: nil)
+  }
+
+  internal func settingsFollowCellDidUpdate(user: User) {
+    self.viewModel.inputs.didUpdate(user: user)
   }
 }
 

@@ -6,8 +6,9 @@ import ReactiveSwift
 import UIKit
 
 internal protocol SettingsFollowCellDelegate: class {
-  /// Called when follow switch is tapped
+  /// Called when follow switch is switched off
   func settingsFollowCellDidDisableFollowing(_ cell: SettingsFollowCell)
+  func settingsFollowCellDidUpdate(user: User)
 }
 
 internal final class SettingsFollowCell: UITableViewCell, ValueCell {
@@ -46,6 +47,12 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.updateCurrentUser
+      .observeForUI()
+      .observeValues { [weak self] user in
+        self?.delegate?.settingsFollowCellDidUpdate(user: user)
+    }
+
     self.viewModel.outputs.showPrivacyFollowingPrompt
       .observeForUI()
       .observeValues { [weak self] in
@@ -54,10 +61,9 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
     }
 
     self.followingSwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
-    self.followingSwitch.rac.enabled = self.viewModel.outputs.followingPrivacySwitchIsEnabled
   }
 
   @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
-    self.viewModel.inputs.followTapped()
+    self.viewModel.inputs.followTapped(on: followingPrivacySwitch.isOn)
   }
 }
