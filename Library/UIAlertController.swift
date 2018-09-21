@@ -201,7 +201,7 @@ public extension UIAlertController {
   }
 
   public static func turnOffPrivacyFollowing(
-    turnOnHandler: @escaping ((UIAlertAction) -> Void),
+    cancelHandler: @escaping ((UIAlertAction) -> Void),
     turnOffHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
 
     let alertController = UIAlertController(
@@ -220,7 +220,7 @@ public extension UIAlertController {
       UIAlertAction(
         title: Strings.general_navigation_buttons_cancel(),
         style: .cancel,
-        handler: turnOnHandler
+        handler: cancelHandler
       )
     )
 

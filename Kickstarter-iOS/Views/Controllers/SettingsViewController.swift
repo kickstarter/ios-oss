@@ -37,7 +37,7 @@ final class SettingsViewController: UIViewController {
     self.userUpdatedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_userUpdated,
                    object: nil, queue: nil) { [weak self] _ in
-                      self?.viewModel.inputs.currentUserUpdated()
+                    self?.viewModel.inputs.currentUserUpdated()
     }
 
     self.viewModel.inputs.viewDidLoad()
