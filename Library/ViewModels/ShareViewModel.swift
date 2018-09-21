@@ -153,7 +153,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
           .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       }
       .observeValues { (arg) in
-        
+
         let (shareContext, completion) = arg
         AppEnvironment.current.koala.trackCanceledShare(
           shareContext: shareContext, shareActivityType: completion.activityType

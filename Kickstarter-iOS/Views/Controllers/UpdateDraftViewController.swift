@@ -334,14 +334,14 @@ private func after(_ seconds: TimeInterval,
 }
 
 // Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(
+private func convertFromUIImagePickerControllerInfoKeyDictionary(
   _ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
 
   return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }
 
 // Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKey(
+private func convertFromUIImagePickerControllerInfoKey(
   _ input: UIImagePickerController.InfoKey) -> String {
 
   return input.rawValue
