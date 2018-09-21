@@ -34,7 +34,6 @@ SettingsViewModelOutputs, SettingsViewModelType {
   public init() {
     let user = Signal.merge(
       viewDidLoadProperty.signal,
-      viewWillAppearProperty.signal,
       currentUserUpdatedProperty.signal)
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()

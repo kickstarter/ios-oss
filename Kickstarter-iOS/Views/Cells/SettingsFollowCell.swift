@@ -6,8 +6,8 @@ import ReactiveSwift
 import UIKit
 
 internal protocol SettingsFollowCellDelegate: class {
-  /// Called when follow switch is tapped
-  func settingsFollowCellDidPresentPrompt(_ cell: SettingsFollowCell)
+  /// Called when follow switch is switched off
+  func settingsFollowCellDidDisableFollowing(_ cell: SettingsFollowCell)
   func settingsFollowCellDidUpdate(user: User)
 }
 
@@ -57,7 +57,7 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] in
         guard let _self = self else { return }
-        self?.delegate?.settingsFollowCellDidPresentPrompt(_self)
+        self?.delegate?.settingsFollowCellDidDisableFollowing(_self)
     }
 
     self.followingSwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
