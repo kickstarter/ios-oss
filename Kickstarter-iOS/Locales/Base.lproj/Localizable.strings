@@ -23,6 +23,7 @@
 "All_gone" = "All gone";
 "Amount_previous_amount" = "Amount: %{amount}, previous amount: %{previous_amount}";
 "Amount_reward" = "Amount: %{amount}, %{reward}";
+"Amounts_shown" = "The amounts shown are an approximate conversion. If the project is successful, your pledge will be collected in the native currency of the project, which is also displayed.";
 "App_version" = "App version";
 "Are_you_sure" = "Are you sure?";
 "Ask_me_anything" = "Ask me anything";
@@ -45,6 +46,7 @@
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
 "Cancel" = "Cancel";
 "Cancel_your_pledge" = "Cancel your pledge";
+"Change_currency" = "Change currency";
 "Change_email" = "Change email";
 "Change_password" = "Change password";
 "Change_payment_method" = "Change payment method";
@@ -111,6 +113,7 @@
 "Email" = "Email";
 "Email_frequency" = "Email frequency";
 "Email_notifications" = "Email notifications";
+"Email_unverified" = "This email address is unverified.";
 "Ending_soon" = "Ending Soon";
 "Estimated_delivery" = "Estimated delivery:";
 "Expands_subcategories" = "Expands subcategories.";
@@ -224,6 +227,7 @@
 "Log_out" = "Log out";
 "Love_film_We_do_too" = "Love film? We do, too.";
 "Make_a_pledge_without_a_reward" = "Make a pledge without a reward";
+"Making_this_change" = "Making this change will allow you to see project goal and pledge amounts converted to your chosen currency.";
 "Manage_your_pledge" = "Manage your pledge";
 "Manage_your_pledge_below" = "Manage your pledge below";
 "Manage_your_reward" = "Manage your reward";
@@ -324,6 +328,7 @@
 "Replay_past_live_streams" = "Replay past live streams";
 "Reply_to_user_name" = "Reply to %{user_name}…";
 "Request_my_personal_data" = "Request my personal data";
+"Resend_verification_email" = "Re-send verification email";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.many" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.one" = "Reward Survey";
@@ -418,6 +423,7 @@
 "Upcoming_with_creator_name" = "Upcoming with<br/><b>%{creator_name}</b>";
 "Update_pledge" = "Update pledge";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Use this to keep track of which rewards you've received.";
+"Verification_email_sent" = "We've just sent you a verification email. Click the link in it and your address will be verified.";
 "Video_disabled_until_the_internet_connection_improves" = "Video disabled until the internet connection improves";
 "View" = "View";
 "View_project" = "View project";
@@ -434,6 +440,7 @@
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
 "Write_a_bio" = "Write a short bio. Just a sentence or two is great.";
+"Yes_change_currency" = "Yes, Change currency";
 "Yes_turn_off" = "Yes, turn off";
 "You_Launched" = "You Launched!";
 "You_backed_this_project" = "You backed this project.";

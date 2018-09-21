@@ -26,7 +26,6 @@ final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var saveBarButton: UIBarButtonItem!
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
-
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
 
   internal static func instantiate() -> ChangeEmailViewController {
@@ -62,7 +61,7 @@ final class ChangeEmailViewController: UIViewController {
 
     _ = errorLabel
       |> settingsDescriptionLabelStyle
-      |> UILabel.lens.text .~ "The email address is unverified."
+      |> UILabel.lens.text %~ { _ in Strings.Email_unverified() }
 
     _ = currentEmailLabel
       |> settingsTitleLabelStyle
@@ -75,7 +74,7 @@ final class ChangeEmailViewController: UIViewController {
 
     _ = messageBannerLabel
       |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.text .~ "We've sent you a verification email. Click the link in it and your address will be verified."
+      |> UILabel.lens.text %~ { _ in Strings.Verification_email_sent() }
 
     _ = newEmailLabel
       |> settingsTitleLabelStyle
@@ -98,7 +97,7 @@ final class ChangeEmailViewController: UIViewController {
     _ = resendVerificationEmailButton
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
-      |> UIButton.lens.title(for: .normal) .~ "Re-send verification email"
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Resend_verification_email() }
   }
 
 

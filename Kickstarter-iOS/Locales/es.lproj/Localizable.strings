@@ -23,6 +23,7 @@
 "All_gone" = "¡Recompensas agotadas!";
 "Amount_previous_amount" = "Monto actual: %{amount}, monto previo: %{previous_amount}";
 "Amount_reward" = "Monto: %{amount}, %{reward}";
+"Amounts_shown" = "Los montos mostrados son una conversión aproximada. Si el proyecto tiene éxito, tu contribución se recaudará en la moneda nativa del proyecto, que también se mostrará.";
 "App_version" = "Versión de la aplicación";
 "Are_you_sure" = "¿Estás seguro?";
 "Ask_me_anything" = "¡Pregúntame!";
@@ -45,6 +46,7 @@
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
 "Cancel" = "Cancelar";
 "Cancel_your_pledge" = "Cancela tu contribución";
+"Change_currency" = "Cambiar la moneda";
 "Change_email" = "Cambiar correo electrónico";
 "Change_password" = "Cambiar contraseña";
 "Change_payment_method" = "Cambiar método de pago";
@@ -111,6 +113,7 @@
 "Email" = "Correo electrónico";
 "Email_frequency" = "Frecuencia de aviso por correo electrónico";
 "Email_notifications" = "Notificaciones por correo electrónico";
+"Email_unverified" = "Esta dirección de correo electrónico no está verificada.";
 "Ending_soon" = "Finaliza pronto";
 "Estimated_delivery" = "Entrega estimada:";
 "Expands_subcategories" = "Muestra más subcategorías.";
@@ -224,6 +227,7 @@
 "Log_out" = "Cerrar sesión";
 "Love_film_We_do_too" = "¿Te encanta el cine? A nosotros también.";
 "Make_a_pledge_without_a_reward" = "Contribuir sin recompensa";
+"Making_this_change" = "Hacer este cambio te permitirá ver la meta del proyecto y los montos de las contribuciones convertidos a la moneda elegida.";
 "Manage_your_pledge" = "Administra tu contribución";
 "Manage_your_pledge_below" = "Administra tu contribución:";
 "Manage_your_reward" = "Administra tu recompensa";
@@ -324,6 +328,7 @@
 "Replay_past_live_streams" = "Repetir live streams pasados";
 "Reply_to_user_name" = "Responder a %{user_name}…";
 "Request_my_personal_data" = "Solicitar mis datos personales";
+"Resend_verification_email" = "Volver a enviar correo electrónico de verificación";
 "Reward_Surveys.few" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.many" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.one" = "Cuestionario";
@@ -418,6 +423,7 @@
 "Upcoming_with_creator_name" = "Próximamente: Video de <br/><b>%{creator_name}</b>";
 "Update_pledge" = "Actualizar contribución";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Aquí puedes ver las recompensas recibidas.";
+"Verification_email_sent" = "Te acabamos de enviar un correo electrónico de verificación. Haz clic en el enlace incluido y se verificará tu dirección.";
 "Video_disabled_until_the_internet_connection_improves" = "Video desactivado hasta se reestablezca la conexión de internet";
 "View" = "Ver";
 "View_project" = "Ver proyecto";
@@ -434,6 +440,7 @@
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
 "Write_a_bio" = "Escribe una biografía breve mediante una oración o dos.";
+"Yes_change_currency" = "Sí, cambiar la moneda";
 "Yes_turn_off" = "Sí, desactivar";
 "You_Launched" = "¡Tu proyecto fue publicado!";
 "You_backed_this_project" = "Patrocinaste este proyecto.";
