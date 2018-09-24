@@ -34,7 +34,7 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
     self.chatPagerButton.addTarget(self, action: #selector(chatButtonTapped), for: .touchUpInside)
     self.infoPagerButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
 
-    self.pageViewController = self.childViewControllers
+    self.pageViewController = self.children
       .compactMap { $0 as? UIPageViewController }
       .first
     self.pageViewController?.setViewControllers(

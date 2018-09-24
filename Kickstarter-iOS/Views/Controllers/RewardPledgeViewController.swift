@@ -260,7 +260,7 @@ internal final class RewardPledgeViewController: UIViewController {
       |> UILabel.lens.attributedText %~ { _ in
         NSAttributedString(
           string: Strings.Learn_more_about_accountability(),
-          attributes: [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
+          attributes: [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue]
         )
     }
 

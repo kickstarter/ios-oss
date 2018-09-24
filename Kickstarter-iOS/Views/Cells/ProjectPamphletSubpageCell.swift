@@ -25,7 +25,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> ProjectPamphletSubpageCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+      |> ProjectPamphletSubpageCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
       |> ProjectPamphletSubpageCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.gridHalf(5), leftRight: Styles.grid(16))

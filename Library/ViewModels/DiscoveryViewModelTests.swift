@@ -14,7 +14,7 @@ internal final class DiscoveryViewModelTests: TestCase {
   fileprivate let configureNavigationHeader = TestObserver<DiscoveryParams, NoError>()
   fileprivate let loadFilterIntoDataSource = TestObserver<DiscoveryParams, NoError>()
   fileprivate let navigateToSort = TestObserver<DiscoveryParams.Sort, NoError>()
-  fileprivate let navigateDirection = TestObserver<UIPageViewControllerNavigationDirection, NoError>()
+  fileprivate let navigateDirection = TestObserver<UIPageViewController.NavigationDirection, NoError>()
   fileprivate let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
   fileprivate let updateSortPagerStyle = TestObserver<Int?, NoError>()
 

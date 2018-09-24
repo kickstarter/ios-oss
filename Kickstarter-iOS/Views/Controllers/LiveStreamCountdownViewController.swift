@@ -174,14 +174,14 @@ public final class LiveStreamCountdownViewController: UIViewController {
       : UIFont.ksr_subhead(size: 14)
 
     let introLabelBaseAttributes = [
-      NSAttributedStringKey.font: introLabelBaseFont,
-      NSAttributedStringKey.foregroundColor: UIColor.ksr_navy_600,
-      NSAttributedStringKey.paragraphStyle: paragraphStyle
+      NSAttributedString.Key.font: introLabelBaseFont,
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_navy_600,
+      NSAttributedString.Key.paragraphStyle: paragraphStyle
     ]
 
     let introLabelBoldAttributes = [
-      NSAttributedStringKey.font: introLabelBaseFont.bolded,
-      NSAttributedStringKey.foregroundColor: UIColor.ksr_dark_grey_500
+      NSAttributedString.Key.font: introLabelBaseFont.bolded,
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_500
     ]
     _ = self.introLabel
       |> SimpleHTMLLabel.lens.baseAttributes .~ introLabelBaseAttributes

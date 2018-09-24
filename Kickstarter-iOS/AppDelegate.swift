@@ -30,7 +30,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(
     _ application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -246,13 +246,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication,
                    continue userActivity: NSUserActivity,
-                   restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+                   restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
 
     return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
   }
 
   func application(_ app: UIApplication, open url: URL,
-                   options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+                   options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     guard let sourceApplication = options[.sourceApplication] as? String else { return false }
 
     return self.viewModel.inputs.applicationOpenUrl(application: app,

@@ -116,12 +116,12 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
         titleLabel.attributedText = title.simpleHtmlAttributedString(
           base: [
-            NSAttributedStringKey.font: UIFont.ksr_title3(size: 14),
-            NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_400
+            NSAttributedString.Key.font: UIFont.ksr_title3(size: 14),
+            NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400
           ],
           bold: [
-            NSAttributedStringKey.font: UIFont.ksr_title3(size: 14),
-            NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_900
+            NSAttributedString.Key.font: UIFont.ksr_title3(size: 14),
+            NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900
           ],
           italic: nil
           )

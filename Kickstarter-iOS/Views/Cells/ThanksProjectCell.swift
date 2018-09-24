@@ -16,7 +16,7 @@ internal final class ThanksProjectCell: UICollectionViewCell, ValueCell {
       |> UICollectionViewCell.lens.isAccessibilityElement .~ true
       |> UICollectionViewCell.lens.accessibilityLabel %~ { _ in project.name }
       |> UICollectionViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
-      |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+      |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
 
     _ = self.projectNameLabel
       |> UILabel.lens.text .~ project.name

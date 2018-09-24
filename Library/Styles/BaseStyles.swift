@@ -28,7 +28,7 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
     <> TVC.lens.view.backgroundColor .~ .white
-    <> TVC.lens.tableView.rowHeight .~ UITableViewAutomaticDimension
+    <> TVC.lens.tableView.rowHeight .~ UITableView.automaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 
   #if os(iOS)
@@ -144,8 +144,8 @@ private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
 
 private let baseNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
-    NSAttributedStringKey.foregroundColor: UIColor.black,
-    NSAttributedStringKey.font: UIFont.ksr_headline()
+    NSAttributedString.Key.foregroundColor: UIColor.black,
+    NSAttributedString.Key.font: UIFont.ksr_headline()
     ]
     <> UINavigationBar.lens.isTranslucent .~ false
     <> UINavigationBar.lens.barTintColor .~ .white
@@ -153,8 +153,8 @@ private let baseNavigationBarStyle =
 
 private let clearNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
-    NSAttributedStringKey.foregroundColor: UIColor.white,
-    NSAttributedStringKey.font: UIFont.ksr_headline()
+    NSAttributedString.Key.foregroundColor: UIColor.white,
+    NSAttributedString.Key.font: UIFont.ksr_headline()
     ]
     <> UINavigationBar.lens.isTranslucent .~ true
     <> UINavigationBar.lens.shadowImage .~ UIImage()

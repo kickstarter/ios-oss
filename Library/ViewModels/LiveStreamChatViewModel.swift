@@ -198,8 +198,8 @@ LiveStreamChatViewModelOutputs {
         NSAttributedString(
           string: Strings.Say_something_kind(),
           attributes: [
-            NSAttributedStringKey.foregroundColor: UIColor.white.withAlphaComponent(0.8),
-            NSAttributedStringKey.font: UIFont.ksr_body(size: 14)
+            NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.8),
+            NSAttributedString.Key.font: UIFont.ksr_body(size: 14)
           ]
         )
     }

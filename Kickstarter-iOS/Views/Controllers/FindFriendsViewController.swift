@@ -23,7 +23,7 @@ internal final class FindFriendsViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.estimatedRowHeight = 100.0
-    self.tableView.rowHeight = UITableViewAutomaticDimension
+    self.tableView.rowHeight = UITableView.automaticDimension
 
     self.tableView.backgroundView = self.backgroundView
 
