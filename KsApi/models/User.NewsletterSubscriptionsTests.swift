@@ -12,6 +12,13 @@ final class NewsletterSubscriptionsTests: XCTestCase {
     ]
 
     let newsletter = User.NewsletterSubscriptions.decodeJSONDictionary(json)
+    let encodedNewsletter = newsletter.value?.encode() ?? [String: Any]()
+
+    // swiftlint:disable force_cast
+    XCTAssertFalse(encodedNewsletter["games_newsletter"] as! Bool)
+    XCTAssertFalse(encodedNewsletter["promo_newsletter"] as! Bool)
+    XCTAssertFalse(encodedNewsletter["happening_newsletter"] as! Bool)
+    XCTAssertFalse(encodedNewsletter["weekly_newsletter"] as! Bool)
 
     XCTAssertEqual(false, newsletter.value?.weekly)
     XCTAssertEqual(false, newsletter.value?.promo)
@@ -28,6 +35,13 @@ final class NewsletterSubscriptionsTests: XCTestCase {
     ]
 
     let newsletter = User.NewsletterSubscriptions.decodeJSONDictionary(json)
+    let encodedNewsletter = newsletter.value?.encode() ?? [String: Any]()
+
+    // swiftlint:disable force_cast
+    XCTAssertTrue(encodedNewsletter["games_newsletter"] as! Bool)
+    XCTAssertTrue(encodedNewsletter["promo_newsletter"] as! Bool)
+    XCTAssertTrue(encodedNewsletter["happening_newsletter"] as! Bool)
+    XCTAssertTrue(encodedNewsletter["weekly_newsletter"] as! Bool)
 
     XCTAssertEqual(true, newsletter.value?.weekly)
     XCTAssertEqual(true, newsletter.value?.promo)
