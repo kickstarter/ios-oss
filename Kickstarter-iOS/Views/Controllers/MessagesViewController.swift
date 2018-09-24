@@ -28,7 +28,7 @@ internal final class MessagesViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.rowHeight = UITableViewAutomaticDimension
+    self.tableView.rowHeight = UITableView.automaticDimension
     self.tableView.dataSource = self.dataSource
 
     self.viewModel.inputs.viewDidLoad()
@@ -91,7 +91,7 @@ internal final class MessagesViewController: UITableViewController {
 
   internal override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath)
     -> CGFloat {
-    return UITableViewAutomaticDimension
+    return UITableView.automaticDimension
   }
 
   internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

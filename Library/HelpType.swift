@@ -45,6 +45,10 @@ public enum HelpType: SettingsCellTypeProtocol {
     return true
   }
 
+  public var description: String? {
+    return nil
+  }
+
   public var trackingString: String {
     switch self {
     case .contact:

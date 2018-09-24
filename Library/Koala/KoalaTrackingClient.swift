@@ -12,7 +12,7 @@ public final class KoalaTrackingClient: TrackingClientType {
   fileprivate let queue = DispatchQueue(label: "com.kickstarter.KoalaTrackingClient")
   fileprivate var buffer: [[String: Any]] = []
   fileprivate var timer: Timer?
-  fileprivate var taskId = UIBackgroundTaskInvalid
+  fileprivate var taskId = UIBackgroundTaskIdentifier.invalid
 
   public enum Endpoint {
     case staging
@@ -35,19 +35,19 @@ public final class KoalaTrackingClient: TrackingClientType {
     let notifications = NotificationCenter.default
     notifications.addObserver(self,
                               selector: #selector(applicationDidBecomeActive),
-                              name: .UIApplicationDidBecomeActive, object: nil)
+                              name: UIApplication.didBecomeActiveNotification, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationDidEnterBackground),
-                              name: .UIApplicationDidEnterBackground, object: nil)
+                              name: UIApplication.didEnterBackgroundNotification, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationWillEnterForeground),
-                              name: .UIApplicationWillEnterForeground, object: nil)
+                              name: UIApplication.willEnterForegroundNotification, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationWillResignActive),
-                              name: .UIApplicationWillResignActive, object: nil)
+                              name: UIApplication.willResignActiveNotification, object: nil)
     notifications.addObserver(self,
                               selector: #selector(applicationWillTerminate),
-                              name: .UIApplicationWillTerminate, object: nil)
+                              name: UIApplication.willTerminateNotification, object: nil)
 
     self.load()
     self.startTimer()
@@ -171,15 +171,15 @@ extension KoalaTrackingClient {
 
   @objc fileprivate func applicationDidEnterBackground() {
     let handler = {
-      UIApplication.shared.endBackgroundTask(self.taskId)
-      self.taskId = UIBackgroundTaskInvalid
+      UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(self.taskId.rawValue))
+      self.taskId = UIBackgroundTaskIdentifier.invalid
     }
 
     self.taskId = UIApplication.shared.beginBackgroundTask(expirationHandler: handler)
     self.flush()
     self.save()
     self.queue.async {
-      if self.taskId != UIBackgroundTaskInvalid {
+      if self.taskId != UIBackgroundTaskIdentifier.invalid {
         handler()
       }
     }
@@ -187,9 +187,9 @@ extension KoalaTrackingClient {
 
   @objc fileprivate func applicationWillEnterForeground() {
     self.queue.async {
-      guard self.taskId != UIBackgroundTaskInvalid else { return }
-      UIApplication.shared.endBackgroundTask(self.taskId)
-      self.taskId = UIBackgroundTaskInvalid
+      guard self.taskId != UIBackgroundTaskIdentifier.invalid else { return }
+      UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(self.taskId.rawValue))
+      self.taskId = UIBackgroundTaskIdentifier.invalid
     }
   }
 
@@ -200,4 +200,9 @@ extension KoalaTrackingClient {
   @objc fileprivate func applicationWillTerminate() {
     self.save()
   }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+private func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
+	return UIBackgroundTaskIdentifier(rawValue: input)
 }

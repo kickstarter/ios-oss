@@ -33,7 +33,7 @@ internal final class LiveStreamNavTitleViewTests: TestCase {
 
     view.bindStyles()
     view.configureWith(liveStreamEvent: liveStreamEvent, delegate: nil)
-    let size = view.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+    let size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     view.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
     Language.allLanguages.forEach { language in
@@ -56,7 +56,7 @@ internal final class LiveStreamNavTitleViewTests: TestCase {
 
     view.bindStyles()
     view.configureWith(liveStreamEvent: liveStreamEvent, delegate: nil)
-    let size = view.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+    let size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     view.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
     Language.allLanguages.forEach { language in
@@ -83,7 +83,7 @@ internal final class LiveStreamNavTitleViewTests: TestCase {
 
     self.scheduler.run()
 
-    let size = view.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+    let size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     view.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
     Language.allLanguages.forEach { language in

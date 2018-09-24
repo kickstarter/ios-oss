@@ -88,7 +88,7 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
 
   internal func webView(_ webView: UIWebView,
                         shouldStartLoadWith request: URLRequest,
-                        navigationType: UIWebViewNavigationType) -> Bool {
+                        navigationType: UIWebView.NavigationType) -> Bool {
     let result = self.viewModel.inputs.shouldStartLoad(withRequest: request, navigationType: navigationType)
     return result
   }

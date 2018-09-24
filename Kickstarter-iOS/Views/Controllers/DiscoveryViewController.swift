@@ -18,7 +18,7 @@ internal final class DiscoveryViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.pageViewController = self.childViewControllers
+    self.pageViewController = self.children
       .compactMap { $0 as? UIPageViewController }.first
     self.pageViewController.setViewControllers(
       [.init()],
@@ -28,15 +28,15 @@ internal final class DiscoveryViewController: UIViewController {
     )
     self.pageViewController.delegate = self
 
-    self.sortPagerViewController = self.childViewControllers
+    self.sortPagerViewController = self.children
       .compactMap { $0 as? SortPagerViewController }.first
     self.sortPagerViewController.delegate = self
 
-    self.navigationHeaderViewController = self.childViewControllers
+    self.navigationHeaderViewController = self.children
       .compactMap { $0 as? DiscoveryNavigationHeaderViewController }.first
     self.navigationHeaderViewController.delegate = self
 
-    self.liveStreamDiscoveryViewController = self.childViewControllers
+    self.liveStreamDiscoveryViewController = self.children
       .compactMap { $0 as? LiveStreamDiscoveryViewController }.first
 
     self.viewModel.inputs.viewDidLoad()

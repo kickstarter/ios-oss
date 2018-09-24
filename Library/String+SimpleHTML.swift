@@ -2,7 +2,7 @@ import UIKit
 import Foundation
 
 public extension String {
-  public typealias Attributes = [NSAttributedStringKey: Any]
+  public typealias Attributes = [NSAttributedString.Key: Any]
 
   /**
    Interprets `self` as an HTML string to produce an attributed string.
@@ -20,11 +20,11 @@ public extension String {
                                          bold optionalBold: Attributes? = nil,
                                          italic optionalItalic: Attributes? = nil) -> NSAttributedString? {
 
-    let baseFont = (base[NSAttributedStringKey.font] as? UIFont) ?? UIFont.systemFont(ofSize: 12.0)
+    let baseFont = (base[NSAttributedString.Key.font] as? UIFont) ?? UIFont.systemFont(ofSize: 12.0)
 
     // If bold or italic are not specified we can derive them from `font`.
-    let bold = optionalBold ?? [NSAttributedStringKey.font: baseFont.bolded]
-    let italic = optionalItalic ?? [NSAttributedStringKey.font: baseFont.italicized]
+    let bold = optionalBold ?? [NSAttributedString.Key.font: baseFont.bolded]
+    let italic = optionalItalic ?? [NSAttributedString.Key.font: baseFont.italicized]
 
     guard let data = self.data(using: String.Encoding.utf8) else { return nil }
 
@@ -40,7 +40,7 @@ public extension String {
     // Sub all bold and italic fonts in the attributed html string
     let stringRange = NSRange(location: 0, length: string.length)
     string.beginEditing()
-    string.enumerateAttribute(NSAttributedStringKey.font, in: stringRange, options: []) { value, range, _ in
+    string.enumerateAttribute(NSAttributedString.Key.font, in: stringRange, options: []) { value, range, _ in
 
       guard let htmlFont = value as? UIFont else { return }
       let newAttributes: Attributes
@@ -76,9 +76,9 @@ public extension String {
                                          italic optionalItalic: UIFont? = nil) -> NSAttributedString? {
 
     return self.simpleHtmlAttributedString(
-      base: [NSAttributedStringKey.font: font],
-      bold: optionalBold.flatMap { [NSAttributedStringKey.font: $0] },
-      italic: optionalItalic.flatMap { [NSAttributedStringKey.font: $0] })
+      base: [NSAttributedString.Key.font: font],
+      bold: optionalBold.flatMap { [NSAttributedString.Key.font: $0] },
+      italic: optionalItalic.flatMap { [NSAttributedString.Key.font: $0] })
   }
 
   /**

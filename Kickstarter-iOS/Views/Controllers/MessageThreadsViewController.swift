@@ -20,7 +20,7 @@ internal final class MessageThreadsViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.rowHeight = UITableViewAutomaticDimension
+    self.tableView.rowHeight = UITableView.automaticDimension
     self.tableView.estimatedRowHeight = 100.0
     self.tableView.dataSource = self.dataSource
 

@@ -44,3 +44,9 @@ public let notificationButtonStyle = UIButton.lens.layer.cornerRadius .~ 9
   <> UIButton.lens.backgroundColor(for: .selected) .~ .ksr_grey_200
   <> UIButton.lens.title(for: .normal) .~ nil
   <> UIButton.lens.clipsToBounds .~ true
+
+public let settingsViewControllerStyle = baseControllerStyle()
+  <> UIViewController.lens.view.backgroundColor .~ .ksr_grey_200
+
+public let settingsTableViewStyle = UITableView.lens.backgroundColor .~ .ksr_grey_200
+  <> UITableView.lens.separatorStyle .~ .none

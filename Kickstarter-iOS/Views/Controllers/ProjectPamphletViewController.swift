@@ -32,11 +32,11 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.navBarController = self.childViewControllers
+    self.navBarController = self.children
       .compactMap { $0 as? ProjectNavBarViewController }.first
     self.navBarController.delegate = self
 
-    self.contentController = self.childViewControllers
+    self.contentController = self.children
       .compactMap { $0 as? ProjectPamphletContentViewController }.first
     self.contentController.delegate = self
 

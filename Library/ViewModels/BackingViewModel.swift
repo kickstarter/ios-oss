@@ -71,7 +71,7 @@ public protocol BackingViewModelOutputs {
   var rewardTitleWithAmount: Signal<String, NoError> { get }
 
   /// Emits the axis of the stackview.
-  var rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError> { get }
+  var rootStackViewAxis: Signal<NSLayoutConstraint.Axis, NoError> { get }
 
   /// Emits the backer's shipping amount.
   var shippingAmount: Signal<String, NoError> { get }
@@ -297,7 +297,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let rewardSectionAndShippingIsHidden: Signal<Bool, NoError>
   public var rewardTitleWithAmount: Signal<String, NoError>
   public var rewardSectionTitle: Signal<NSAttributedString, NoError>
-  public let rootStackViewAxis: Signal<UILayoutConstraintAxis, NoError>
+  public let rootStackViewAxis: Signal<NSLayoutConstraint.Axis, NoError>
   public let shippingAmount: Signal<String, NoError>
   public let statusDescription: Signal<NSAttributedString, NoError>
   public let totalPledgeAmount: Signal<String, NoError>
@@ -357,13 +357,13 @@ private func statusDescString(for backing: Backing, project: Project, backerIsCu
 
   if backing.status == .collected {
     return NSAttributedString(string: string, attributes: [
-      NSAttributedStringKey.font: UIFont.ksr_headline(size: 13),
-      NSAttributedStringKey.foregroundColor: UIColor.ksr_green_700
+      NSAttributedString.Key.font: UIFont.ksr_headline(size: 13),
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_green_700
     ])
   } else {
     return NSAttributedString(string: string, attributes: [
-      NSAttributedStringKey.font: UIFont.ksr_subhead(size: 13),
-      NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_400
+      NSAttributedString.Key.font: UIFont.ksr_subhead(size: 13),
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400
     ])
   }
 }
@@ -379,12 +379,12 @@ private func pledgeTitle(for project: Project, backing: Backing, backerIsCurrent
 
   return titleString.simpleHtmlAttributedString(
     base: [
-      NSAttributedStringKey.font: UIFont.ksr_subhead(size: 13),
-      NSAttributedStringKey.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.font: UIFont.ksr_subhead(size: 13),
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
     ],
     bold: [
-      NSAttributedStringKey.font: UIFont.ksr_headline(size: 15),
-      NSAttributedStringKey.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.font: UIFont.ksr_headline(size: 15),
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
     ])
     ?? .init()
 }
@@ -404,12 +404,12 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
 
   return titleString.simpleHtmlAttributedString(
     base: [
-      NSAttributedStringKey.font: UIFont.ksr_subhead(size: 13),
-      NSAttributedStringKey.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.font: UIFont.ksr_subhead(size: 13),
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
     ],
     bold: [
-      NSAttributedStringKey.font: UIFont.ksr_headline(size: 15),
-      NSAttributedStringKey.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.font: UIFont.ksr_headline(size: 15),
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
     ])
     ?? .init()
 }

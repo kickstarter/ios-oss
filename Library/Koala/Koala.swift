@@ -875,7 +875,7 @@ public final class Koala {
    - parameter shareContext:      The context in which the sharing is happening.
    - parameter shareActivityType: The type of share that was shown.
    */
-  public func trackShowedShare(shareContext: ShareContext, shareActivityType: UIActivityType?) {
+  public func trackShowedShare(shareContext: ShareContext, shareActivityType: UIActivity.ActivityType?) {
     let props = properties(shareContext: shareContext,
                            loggedInUser: self.loggedInUser,
                            shareActivityType: shareActivityType)
@@ -897,7 +897,7 @@ public final class Koala {
    - parameter shareContext:      The context in which the sharing is happening.
    - parameter shareActivityType: The type of share that was shown.
    */
-  public func trackCanceledShare(shareContext: ShareContext, shareActivityType: UIActivityType?) {
+  public func trackCanceledShare(shareContext: ShareContext, shareActivityType: UIActivity.ActivityType?) {
     let props = properties(shareContext: shareContext,
                            loggedInUser: self.loggedInUser,
                            shareActivityType: shareActivityType)
@@ -918,7 +918,7 @@ public final class Koala {
    - parameter shareContext:      The context in which the sharing is happening.
    - parameter shareActivityType: The type of share that was shown.
    */
-  public func trackShared(shareContext: ShareContext, shareActivityType: UIActivityType?) {
+  public func trackShared(shareContext: ShareContext, shareActivityType: UIActivity.ActivityType?) {
     let props = properties(shareContext: shareContext,
                            loggedInUser: self.loggedInUser,
                            shareActivityType: shareActivityType)
@@ -2011,7 +2011,7 @@ private func properties(category: KsApi.Category) -> [String: Any] {
 
 private func properties(shareContext: ShareContext,
                         loggedInUser: User?,
-                        shareActivityType: UIActivityType? = nil) -> [String: Any] {
+                        shareActivityType: UIActivity.ActivityType? = nil) -> [String: Any] {
 
   var result: [String: Any] = [:]
 
@@ -2072,7 +2072,7 @@ private func properties(liveStreamEvent: LiveStreamEvent,
   return properties.prefixedKeys(prefix)
 }
 
-private func shareTypeProperty(_ shareType: UIActivityType?) -> String? {
+private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String? {
   #if os(iOS)
     guard let shareType = shareType else { return nil }
 
@@ -2086,7 +2086,7 @@ private func shareTypeProperty(_ shareType: UIActivityType?) -> String? {
       return "copy link"
     } else if shareType == .postToTwitter {
       return "twitter"
-    } else if shareType == UIActivityType("com.apple.mobilenotes.SharingExtension") {
+    } else if shareType == UIActivity.ActivityType("com.apple.mobilenotes.SharingExtension") {
       return "notes"
     } else if shareType == SafariActivityType {
       return "safari"
