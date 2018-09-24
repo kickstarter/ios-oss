@@ -28,7 +28,7 @@ internal final class ProfileProjectCell: UICollectionViewCell, ValueCell {
       |> UICollectionViewCell.lens.backgroundColor .~ .clear
       |> UICollectionViewCell.lens.isAccessibilityElement .~ true
       |> UICollectionViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_project() }
-      |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+      |> UICollectionViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
 
     _ = self.cardView
       |> dropShadowStyle()

@@ -18,7 +18,7 @@ internal final class SearchMessagesViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.estimatedRowHeight = 120.0
-    self.tableView.rowHeight = UITableViewAutomaticDimension
+    self.tableView.rowHeight = UITableView.automaticDimension
     self.tableView.dataSource = self.dataSource
 
     self.viewModel.inputs.viewDidLoad()

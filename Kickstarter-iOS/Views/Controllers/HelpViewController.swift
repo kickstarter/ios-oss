@@ -36,7 +36,8 @@ final class HelpViewController: UIViewController {
       |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_about_title() }
 
-    _ = tableView |> UITableView.lens.backgroundColor .~ .ksr_grey_200
+    _ = tableView
+      |> settingsTableViewStyle
   }
 
   override func bindViewModel() {

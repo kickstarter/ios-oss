@@ -49,7 +49,8 @@ internal final class LiveStreamChatViewController: UIViewController {
     }
 
     self.deviceOrientationChangedObserver = NotificationCenter.default
-      .addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(forName: UIDevice.orientationDidChangeNotification,
+                   object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.deviceOrientationDidChange(
           orientation: UIApplication.shared.statusBarOrientation
         )
@@ -76,7 +77,7 @@ internal final class LiveStreamChatViewController: UIViewController {
     _ = self.tableView
       |> UITableView.lens.backgroundColor .~ .ksr_dark_grey_900
       |> UITableView.lens.separatorStyle .~ .none
-      |> UITableView.lens.rowHeight .~ UITableViewAutomaticDimension
+      |> UITableView.lens.rowHeight .~ UITableView.automaticDimension
       |> UITableView.lens.estimatedRowHeight .~ 200
 
     self.tableView.contentInset = .init(topBottom: Styles.grid(1))
@@ -132,7 +133,7 @@ internal final class LiveStreamChatViewController: UIViewController {
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
-        if change.notificationName == .UIKeyboardWillShow {
+        if change.notificationName == UIResponder.keyboardWillShowNotification {
           self?.chatInputViewBottomConstraint.constant = change.frame.height
         } else {
           self?.chatInputViewBottomConstraint.constant = 0

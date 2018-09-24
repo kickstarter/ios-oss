@@ -97,17 +97,17 @@ public func discoverySortPagerButtonStyle <B: UIButtonProtocol> (sort: Discovery
   let sortString = string(forSort: sort)
 
   let normalTitleString = NSAttributedString(string: sortString, attributes: [
-    NSAttributedStringKey.font: isRegularRegular
+    NSAttributedString.Key.font: isRegularRegular
       ? UIFont.ksr_subhead(size: 16.0)
       : UIFont.ksr_subhead(size: 15.0),
-    NSAttributedStringKey.foregroundColor: discoverySecondaryColor().withAlphaComponent(0.6)
+    NSAttributedString.Key.foregroundColor: discoverySecondaryColor().withAlphaComponent(0.6)
   ])
 
   let selectedTitleString = NSAttributedString(string: sortString, attributes: [
-    NSAttributedStringKey.font: isRegularRegular
+    NSAttributedString.Key.font: isRegularRegular
       ? UIFont.ksr_subhead(size: 16.0).bolded
       : UIFont.ksr_subhead(size: 15.0),
-    NSAttributedStringKey.foregroundColor: UIColor.black
+    NSAttributedString.Key.foregroundColor: UIColor.black
   ])
 
   return

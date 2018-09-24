@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 
-public let SafariActivityType = UIActivityType("com.kickstarter.kickstarter.safari")
+public let SafariActivityType = UIActivity.ActivityType("com.kickstarter.kickstarter.safari")
 public struct SafariURL {
   public let url: URL
 }
@@ -16,7 +16,7 @@ public final class SafariActivity: UIActivity {
     self.url = url.url
   }
 
-  public override var activityType: UIActivityType? {
+  public override var activityType: UIActivity.ActivityType? {
     return SafariActivityType
   }
 

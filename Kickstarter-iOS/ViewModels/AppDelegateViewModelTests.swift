@@ -799,7 +799,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testOpenPushNotification_LaunchApp() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: friendBackingPushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: friendBackingPushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -836,7 +836,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: backingForCreatorPushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: backingForCreatorPushData]
     )
 
     self.goToProjectActivities.assertValues([param])
@@ -850,7 +850,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: badPushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: badPushData]
     )
 
     self.goToDashboard.assertValueCount(0)
@@ -859,7 +859,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testOpenNotification_ProjectUpdate() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: updatePushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: updatePushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -871,7 +871,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: badPushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: badPushData]
     )
 
     self.presentViewController.assertValueCount(0)
@@ -880,7 +880,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testOpenNotification_SurveyResponse() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: surveyResponsePushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: surveyResponsePushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -892,7 +892,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: badPushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: badPushData]
     )
 
     self.presentViewController.assertValueCount(0)
@@ -901,7 +901,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testOpenNotification_UpdateComment() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: updateCommentPushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: updateCommentPushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -913,7 +913,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: badPushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: badPushData]
     )
 
     self.presentViewController.assertValueCount(0)
@@ -922,7 +922,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testOpenNotification_ProjectComment() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: projectCommentPushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: projectCommentPushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -934,7 +934,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: badPushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: badPushData]
     )
 
     self.presentViewController.assertValueCount(0)
@@ -943,7 +943,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testOpenNotification_GenericProject() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: genericProjectPushData]
+      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: genericProjectPushData]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -1059,7 +1059,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
-      launchOptions: [UIApplicationLaunchOptionsKey.localNotification: localNotification]
+      launchOptions: [UIApplication.LaunchOptionsKey.localNotification: localNotification]
     )
 
     self.presentViewController.assertValueCount(1)
@@ -1175,7 +1175,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [
-        UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.creatorDashboard.applicationShortcutItem
+        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.creatorDashboard.applicationShortcutItem
       ]
     )
 
@@ -1203,7 +1203,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [
-        UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.projectsWeLove.applicationShortcutItem
+        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.projectsWeLove.applicationShortcutItem
       ]
     )
 
@@ -1234,7 +1234,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [
-        UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.recommendedForYou.applicationShortcutItem
+        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.recommendedForYou.applicationShortcutItem
       ]
     )
 
@@ -1260,7 +1260,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [
-        UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.search.applicationShortcutItem
+        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.search.applicationShortcutItem
       ]
     )
 
@@ -1317,7 +1317,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [
-        UIApplicationLaunchOptionsKey.shortcutItem: ShortcutItem.projectsWeLove.applicationShortcutItem
+        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.projectsWeLove.applicationShortcutItem
       ]
     )
 
@@ -1515,7 +1515,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationWillEnterForeground()
       self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
-        launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: updatePushData]
+        launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: updatePushData]
       )
       self.vm.inputs.showNotificationDialog(notification: notification)
       self.vm.inputs.notificationAuthorizationStatusReceived(.notDetermined)
@@ -1537,7 +1537,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationWillEnterForeground()
       self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
-        launchOptions: [UIApplicationLaunchOptionsKey.remoteNotification: updatePushData]
+        launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: updatePushData]
       )
       self.vm.inputs.showNotificationDialog(notification: notification)
       self.vm.inputs.notificationAuthorizationStatusReceived(.notDetermined)

@@ -111,7 +111,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
 
   internal func webView(_ webView: UIWebView,
                         shouldStartLoadWith request: URLRequest,
-                        navigationType: UIWebViewNavigationType) -> Bool {
+                        navigationType: UIWebView.NavigationType) -> Bool {
     return self.viewModel.inputs.shouldStartLoad(withRequest: request, navigationType: navigationType)
   }
 

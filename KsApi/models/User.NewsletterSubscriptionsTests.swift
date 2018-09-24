@@ -1,3 +1,5 @@
+// swiftlint:disable force_unwrapping
+
 import XCTest
 @testable import KsApi
 
@@ -12,13 +14,13 @@ final class NewsletterSubscriptionsTests: XCTestCase {
     ]
 
     let newsletter = User.NewsletterSubscriptions.decodeJSONDictionary(json)
-    let encodedNewsletter = newsletter.value?.encode() ?? [String: Any]()
 
-    // swiftlint:disable force_cast
-    XCTAssertFalse(encodedNewsletter["games_newsletter"] as! Bool)
-    XCTAssertFalse(encodedNewsletter["promo_newsletter"] as! Bool)
-    XCTAssertFalse(encodedNewsletter["happening_newsletter"] as! Bool)
-    XCTAssertFalse(encodedNewsletter["weekly_newsletter"] as! Bool)
+    let newsletterDescription = newsletter.value!.encode().description
+
+    XCTAssertTrue(newsletterDescription.contains("games_newsletter\": false"))
+    XCTAssertTrue(newsletterDescription.contains("happening_newsletter\": false"))
+    XCTAssertTrue(newsletterDescription.contains("promo_newsletter\": false"))
+    XCTAssertTrue(newsletterDescription.contains("weekly_newsletter\": false"))
 
     XCTAssertEqual(false, newsletter.value?.weekly)
     XCTAssertEqual(false, newsletter.value?.promo)
@@ -35,13 +37,13 @@ final class NewsletterSubscriptionsTests: XCTestCase {
     ]
 
     let newsletter = User.NewsletterSubscriptions.decodeJSONDictionary(json)
-    let encodedNewsletter = newsletter.value?.encode() ?? [String: Any]()
 
-    // swiftlint:disable force_cast
-    XCTAssertTrue(encodedNewsletter["games_newsletter"] as! Bool)
-    XCTAssertTrue(encodedNewsletter["promo_newsletter"] as! Bool)
-    XCTAssertTrue(encodedNewsletter["happening_newsletter"] as! Bool)
-    XCTAssertTrue(encodedNewsletter["weekly_newsletter"] as! Bool)
+    let newsletterDescription = newsletter.value!.encode().description
+
+    XCTAssertTrue(newsletterDescription.contains("games_newsletter\": true"))
+    XCTAssertTrue(newsletterDescription.contains("promo_newsletter\": true"))
+    XCTAssertTrue(newsletterDescription.contains("happening_newsletter\": true"))
+    XCTAssertTrue(newsletterDescription.contains("weekly_newsletter\": true"))
 
     XCTAssertEqual(true, newsletter.value?.weekly)
     XCTAssertEqual(true, newsletter.value?.promo)

@@ -1,6 +1,6 @@
-import enum UIKit.UIGestureRecognizerState
+import UIKit
 
-public extension UIGestureRecognizerState {
+public extension UIGestureRecognizer.State {
   public var isStartingState: Bool {
     return self == .began
   }

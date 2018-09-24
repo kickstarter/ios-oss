@@ -95,7 +95,7 @@ internal final class SearchViewController: UITableViewController {
 
     self.searchTextField.attributedPlaceholder = NSAttributedString(
       string: Strings.tabbar_search(),
-      attributes: [NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_500]
+      attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_500]
     )
 
     _ = self.tableView
