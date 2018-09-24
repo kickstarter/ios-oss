@@ -89,7 +89,7 @@ staticStringsLines.append("")
 
 let staticVars: [String] = colors.map { name, hex in
   var staticVar: [String] = []
-  staticVar.append("  /* 0x\(hex) */ ")
+  staticVar.append("  /// 0x\(hex)")
   staticVar.append("  public static var ksr_\(name): UIColor {")
   staticVar.append("    return .hex(0x\(hex))")
   staticVar.append("  }")
