@@ -13,8 +13,6 @@ final class NewsletterSubscriptionsTests: XCTestCase {
 
     let newsletter = User.NewsletterSubscriptions.decodeJSONDictionary(json)
 
-    XCTAssertEqual(newsletter.value?.encode().description, json.description)
-
     XCTAssertEqual(false, newsletter.value?.weekly)
     XCTAssertEqual(false, newsletter.value?.promo)
     XCTAssertEqual(false, newsletter.value?.happening)
@@ -30,8 +28,6 @@ final class NewsletterSubscriptionsTests: XCTestCase {
     ]
 
     let newsletter = User.NewsletterSubscriptions.decodeJSONDictionary(json)
-
-    XCTAssertEqual(newsletter.value?.encode().description, json.description)
 
     XCTAssertEqual(true, newsletter.value?.weekly)
     XCTAssertEqual(true, newsletter.value?.promo)
