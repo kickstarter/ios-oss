@@ -28,7 +28,7 @@ internal final class BackingViewModelTests: TestCase {
   private let rewardSectionAndShippingIsHidden = TestObserver<Bool, NoError>()
   private let rewardSectionTitle = TestObserver<String, NoError>()
   private let rewardTitleWithAmount = TestObserver<String, NoError>()
-  private let rootStackViewAxis = TestObserver<UILayoutConstraintAxis, NoError>()
+  private let rootStackViewAxis = TestObserver<NSLayoutConstraint.Axis, NoError>()
   private let shippingAmount = TestObserver<String, NoError>()
   private let statusDescription = TestObserver<String, NoError>()
   private let totalPledgeAmount = TestObserver<String, NoError>()
@@ -460,7 +460,7 @@ internal final class BackingViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.rootStackViewAxis.assertValues([UILayoutConstraintAxis.vertical])
+      self.rootStackViewAxis.assertValues([NSLayoutConstraint.Axis.vertical])
     }
   }
 }

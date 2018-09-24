@@ -123,13 +123,13 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .filter { rateCurrentTime, duration in rateCurrentTime.0 == pauseRate && rateCurrentTime.1 != duration }
 
     let videoResumed = rateCurrentTime
-      .filter { rate, currentTime in currentTime > kCMTimeZero && rate == playRate }
+      .filter { rate, currentTime in currentTime > CMTime.zero && rate == playRate }
 
     let videoStarted = rateCurrentTime
-      .filter { rate, currentTime in currentTime == kCMTimeZero && rate == playRate }
+      .filter { rate, currentTime in currentTime == CMTime.zero && rate == playRate }
       .take(first: 1)
 
-    self.addCompletionObserver = completionThreshold.map { CMTimeMakeWithSeconds($0, 1) }
+    self.addCompletionObserver = completionThreshold.map { CMTimeMakeWithSeconds($0, preferredTimescale: 1) }
 
     self.configurePlayerWithURL = project
       .filter { $0.video != nil }

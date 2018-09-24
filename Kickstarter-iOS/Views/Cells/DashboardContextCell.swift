@@ -16,7 +16,7 @@ internal final class DashboardContextCell: UITableViewCell, ValueCell {
     _ = self
       |> dashboardContextCellStyle
       |> UITableViewCell.lens.selectionStyle .~ .gray
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraitButton
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
       |> UITableViewCell.lens.accessibilityHint %~ { _ in
         Strings.dashboard_tout_accessibility_hint_opens_project()
     }

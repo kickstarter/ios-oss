@@ -30,7 +30,7 @@ public protocol CheckoutViewModelInputs {
   func paymentAuthorizationWillAuthorizePayment()
 
   /// Call when the webview decides whether to load a request.
-  func shouldStartLoad(withRequest request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool
+  func shouldStartLoad(withRequest request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool
 
   /// Call from the Stripe callback method once a stripe token has been created.
   func stripeCreatedToken(stripeToken: String?, error: Error?) -> PKPaymentAuthorizationStatus
@@ -358,10 +358,10 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     self.paymentAuthorizationWillAuthorizeProperty.value = ()
   }
 
-  fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebViewNavigationType)?>(nil)
+  fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebView.NavigationType)?>(nil)
   fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
   public func shouldStartLoad(withRequest request: URLRequest,
-                              navigationType: UIWebViewNavigationType) -> Bool {
+                              navigationType: UIWebView.NavigationType) -> Bool {
     self.shouldStartLoadProperty.value = (request, navigationType)
     return self.shouldStartLoadResponseProperty.value
   }
@@ -491,5 +491,5 @@ private struct RequestData {
   fileprivate let request: URLRequest
   fileprivate let navigation: Navigation?
   fileprivate let shouldStartLoad: Bool
-  fileprivate let webViewNavigationType: UIWebViewNavigationType
+  fileprivate let webViewNavigationType: UIWebView.NavigationType
 }

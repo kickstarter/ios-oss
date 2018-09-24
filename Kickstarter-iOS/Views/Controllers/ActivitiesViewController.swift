@@ -51,9 +51,9 @@ internal final class ActivitiesViewController: UITableViewController {
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
     self.emptyStatesController = emptyVC
     emptyVC.delegate = self
-    self.addChildViewController(emptyVC)
+    self.addChild(emptyVC)
     self.view.addSubview(emptyVC.view)
-    emptyVC.didMove(toParentViewController: self)
+    emptyVC.didMove(toParent: self)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -104,7 +104,7 @@ internal final class ActivitiesViewController: UITableViewController {
         self?.tableView.bounces = false
         if let emptyVC = self?.emptyStatesController {
           self?.emptyStatesController?.view.isHidden = false
-          self?.view.bringSubview(toFront: emptyVC.view)
+          self?.view.bringSubviewToFront(emptyVC.view)
         }
     }
 

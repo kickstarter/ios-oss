@@ -39,7 +39,7 @@ internal final class LiveStreamNavTitleView: UIView {
 
     self.delegate?.liveStreamNavTitleView(
       self,
-      requiresLayoutWithPreferredSize: self.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+      requiresLayoutWithPreferredSize: self.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     )
   }
 

@@ -37,7 +37,8 @@ class ProjectActivityItemProviderTests: XCTestCase {
     let pasteboardType = provider.activityViewController(activityVC, itemForActivityType: .copyToPasteboard)
     XCTAssertEqual(pasteboardType as? String, project.urls.web.project)
 
-    let otherTypes =  provider.activityViewController(activityVC, itemForActivityType: UIActivityType(""))
+    let otherTypes =  provider.activityViewController(activityVC,
+                                                      itemForActivityType: UIActivity.ActivityType(""))
     XCTAssertEqual(otherTypes as? String, formattedString)
   }
 

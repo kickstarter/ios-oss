@@ -258,7 +258,7 @@ internal final class DashboardViewController: UITableViewController {
   }
 
   private func accessibilityFocusOnTitleView() {
-    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.titleView)
+    UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: self.titleView)
   }
 
   @objc fileprivate func shareButtonTapped() {

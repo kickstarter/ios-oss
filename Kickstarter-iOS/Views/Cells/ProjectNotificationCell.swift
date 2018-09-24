@@ -23,7 +23,7 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
     self.notificationSwitch.addTarget(
       self,
       action: #selector(notificationTapped),
-      for: UIControlEvents.valueChanged
+      for: UIControl.Event.valueChanged
     )
   }
 

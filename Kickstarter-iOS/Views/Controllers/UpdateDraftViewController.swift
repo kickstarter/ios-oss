@@ -295,11 +295,17 @@ extension UpdateDraftViewController: UITextViewDelegate {
 }
 
 extension UpdateDraftViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-  @objc internal func imagePickerController(_ picker: UIImagePickerController,
-                                            didFinishPickingMediaWithInfo info: [String: Any]) {
+  @objc internal func imagePickerController(
+    _ picker: UIImagePickerController,
+    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+    let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
     guard
-      let image = info[UIImagePickerControllerOriginalImage] as? UIImage,
-      let imageData = UIImageJPEGRepresentation(image, 0.9),
+      let image = info[
+          convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)
+        ] as? UIImage,
+      let imageData = image.jpegData(compressionQuality: 0.9),
       let caches = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
       else { fatalError() }
 
@@ -325,4 +331,18 @@ private func after(_ seconds: TimeInterval,
     deadline: DispatchTime.now() + Double(Int64(seconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC),
     execute: body
   )
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+private func convertFromUIImagePickerControllerInfoKeyDictionary(
+  _ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+
+  return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+private func convertFromUIImagePickerControllerInfoKey(
+  _ input: UIImagePickerController.InfoKey) -> String {
+
+  return input.rawValue
 }

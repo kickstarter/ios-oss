@@ -52,7 +52,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
     self.emptyStatesController = emptyVC
     emptyVC.delegate = self
-    self.addChildViewController(emptyVC)
+    self.addChild(emptyVC)
     self.view.addSubview(emptyVC.view)
     NSLayoutConstraint.activate([
       emptyVC.view.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -60,7 +60,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       emptyVC.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       emptyVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
       ])
-    emptyVC.didMove(toParentViewController: self)
+    emptyVC.didMove(toParent: self)
   }
 
   deinit {
@@ -263,7 +263,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     emptyVC.setEmptyState(emptyState)
     emptyVC.view.isHidden = false
-    self.view.bringSubview(toFront: emptyVC.view)
+    self.view.bringSubviewToFront(emptyVC.view)
     UIView.animate(withDuration: 0.3,
                    animations: {
       self.emptyStatesController?.view.alpha = 1.0

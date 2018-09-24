@@ -38,7 +38,7 @@ internal final class BackerDashboardViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.pageViewController = self.childViewControllers
+    self.pageViewController = self.children
       .compactMap { $0 as? UIPageViewController }.first
     self.pageViewController.setViewControllers(
       [.init()],
@@ -203,17 +203,17 @@ internal final class BackerDashboardViewController: UIViewController {
 
   private func setAttributedTitles(for button: UIButton, with string: String) {
     let normalTitleString = NSAttributedString(string: string, attributes: [
-      NSAttributedStringKey.font: self.traitCollection.isRegularRegular
+      NSAttributedString.Key.font: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSAttributedStringKey.foregroundColor: UIColor.ksr_text_dark_grey_500
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_500
       ])
 
     let selectedTitleString = NSAttributedString(string: string, attributes: [
-      NSAttributedStringKey.font: self.traitCollection.isRegularRegular
+      NSAttributedString.Key.font: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSAttributedStringKey.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
       ])
 
     _ = button

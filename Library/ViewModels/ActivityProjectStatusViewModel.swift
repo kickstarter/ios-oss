@@ -134,7 +134,7 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
   let percentage = Format.percentage(project.stats.percentFunded)
 
   return NSAttributedString(string: percentage, attributes: [
-    NSAttributedStringKey.font: UIFont.ksr_caption1(size: 10),
-    NSAttributedStringKey.foregroundColor: UIColor.ksr_green_700
+    NSAttributedString.Key.font: UIFont.ksr_caption1(size: 10),
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_green_700
     ])
 }
