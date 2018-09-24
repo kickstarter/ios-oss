@@ -40,5 +40,4 @@ internal final class FindFriendsCellViewModelTests: TestCase {
     self.disabledDescriptionLabelIsHiddenObserver.assertValue(false)
     self.isDisabledObserver.assertValue(true)
   }
-
 }

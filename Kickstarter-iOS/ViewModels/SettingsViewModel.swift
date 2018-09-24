@@ -10,6 +10,7 @@ public protocol SettingsViewModelInputs {
   func logoutConfirmed()
   func settingsCellTapped(cellType: SettingsCellType)
   func viewDidLoad()
+  func viewWillAppear()
 }
 
 public protocol SettingsViewModelOutputs {
@@ -110,6 +111,11 @@ SettingsViewModelOutputs, SettingsViewModelType {
      self.viewDidLoadProperty.value = ()
   }
 
+  fileprivate let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
+
   public let goToAppStoreRating: Signal<String, NoError>
   public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
@@ -124,6 +130,8 @@ SettingsViewModelOutputs, SettingsViewModelType {
 extension SettingsViewModel {
   static func viewController(for cellType: SettingsCellType) -> UIViewController? {
     switch cellType {
+    case .account:
+      return SettingsAccountViewController.instantiate()
     case .help:
       return HelpViewController.instantiate()
     case .privacy:
