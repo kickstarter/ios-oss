@@ -1,13 +1,15 @@
 import UIKit
 
 public protocol SettingsCellTypeProtocol {
-  var title: String { get }
+  var description: String? { get }
+  var hideDescriptionLabel: Bool { get }
   var showArrowImageView: Bool { get }
   var textColor: UIColor { get }
-  var hideDescriptionLabel: Bool { get }
+  var title: String { get }
 }
 
 public enum SettingsSectionType: Int {
+  case account
   case notificationNewsletters
   case helpPrivacy
   case findFriends
@@ -15,11 +17,13 @@ public enum SettingsSectionType: Int {
   case ratingAppVersion
 
   public static var sectionHeaderHeight: CGFloat {
-    return 30.0
+    return Styles.grid(5)
   }
 
   public var cellRowsForSection: [SettingsCellType] {
     switch self {
+    case .account:
+      return [SettingsCellType.account]
     case .notificationNewsletters:
       return [.notifications, .newsletters]
     case .helpPrivacy:
@@ -33,7 +37,8 @@ public enum SettingsSectionType: Int {
     }
   }
 
-  public static var allCases: [SettingsSectionType] = [.notificationNewsletters,
+  public static var allCases: [SettingsSectionType] = [.account,
+                                                       .notificationNewsletters,
                                                        .helpPrivacy,
                                                        .findFriends,
                                                        .logout,
@@ -41,6 +46,7 @@ public enum SettingsSectionType: Int {
 }
 
 public enum SettingsCellType: SettingsCellTypeProtocol {
+  case account
   case notifications
   case newsletters
   case help
@@ -52,6 +58,8 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
 
   public var title: String {
     switch self {
+    case .account:
+      return Strings.Account()
     case .notifications:
       return Strings.profile_settings_navbar_title_notifications()
     case .newsletters:
@@ -71,9 +79,18 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
     }
   }
 
+  public var description: String? {
+    switch self {
+    case .appVersion:
+      return SettingsCellType.appVersionString
+    default:
+      return nil
+    }
+  }
+
   public var showArrowImageView: Bool {
     switch self {
-    case .notifications, .newsletters, .help, .privacy, .findFriends, .rateInAppStore:
+    case .account, .notifications, .newsletters, .help, .privacy, .findFriends, .rateInAppStore:
       return true
     default:
       return false
@@ -97,6 +114,15 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
       return true
     }
   }
+
+  private static var appVersionString: String {
+
+    let versionString = AppEnvironment.current.mainBundle.shortVersionString
+    let build = AppEnvironment.current.mainBundle.isRelease
+      ? ""
+      : " #\(AppEnvironment.current.mainBundle.version)"
+    return "\(versionString)\(build)"
+  }
 }
 
 public enum HelpSectionType: Int {
@@ -104,7 +130,7 @@ public enum HelpSectionType: Int {
   case privacy
 
   public static var sectionHeaderHeight: CGFloat {
-    return 30.0
+    return Styles.grid(5)
   }
 
   public static var allCases: [HelpSectionType] = [.help, .privacy]
