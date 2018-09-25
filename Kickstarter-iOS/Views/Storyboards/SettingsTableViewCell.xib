@@ -17,10 +17,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="LGq-5Q-Deu">
-                    <rect key="frame" x="10" y="20" width="355" height="419"/>
+                    <rect key="frame" x="10" y="20" width="355" height="45"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thh-A9-lgV">
-                            <rect key="frame" x="0.0" y="189.5" width="340" height="40"/>
+                            <rect key="frame" x="0.0" y="2.5" width="340" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="bf2-LN-n0O"/>
                             </constraints>
@@ -29,18 +29,21 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="600" verticalCompressionResistancePriority="600" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBo-D1-v2F">
-                            <rect key="frame" x="343" y="199.5" width="0.0" height="20.5"/>
+                            <rect key="frame" x="343" y="12.5" width="0.0" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="255" verticalHuggingPriority="255" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="rD1-XM-7lR">
-                            <rect key="frame" x="346" y="202" width="9" height="15"/>
+                            <rect key="frame" x="346" y="15" width="9" height="15"/>
                         </imageView>
                     </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="ncc-Nt-UZO"/>
+                    </constraints>
                 </stackView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="keX-TX-HOV">
-                    <rect key="frame" x="0.0" y="439" width="375" height="227"/>
+                    <rect key="frame" x="0.0" y="65" width="375" height="601"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Eg-u5-cng" userLabel="Line Layer">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
@@ -50,7 +53,7 @@
                             </constraints>
                         </view>
                         <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sht-aM-3H4">
-                            <rect key="frame" x="0.0" y="11" width="375" height="216"/>
+                            <rect key="frame" x="0.0" y="11" width="375" height="590"/>
                         </pickerView>
                     </subviews>
                 </stackView>
