@@ -1,6 +1,7 @@
 "A_weekly_roundup_of_the_best_and_brightest" = "Eine wöchentliche Zusammenfassung der besten und cleversten Projekte auf Kickstarter, handverlesen von unserem Team.";
 "About_reward_amount" = "Ungefähr %{reward_amount}";
 "Account" = "Konto";
+"Add" = "Hinzufügen";
 "Add_attachments" = "Anhänge hinzufügen ...";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
@@ -22,6 +23,7 @@
 "All_gone" = "Alle weg";
 "Amount_previous_amount" = "Jetziger Betrag: %{amount}, vorheriger Betrag: %{previous_amount}";
 "Amount_reward" = "Betrag: %{amount}, %{reward}";
+"Amounts_shown" = "Die angezeigten Beträge stellen nur eine ungefähre Umrechnung dar. Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Dieser Betrag wird ebenso angezeigt.";
 "App_version" = "App-Version";
 "Are_you_sure" = "Bist du sicher?";
 "Ask_me_anything" = "Frage stellen";
@@ -44,6 +46,7 @@
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
 "Cancel" = "Abbrechen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
+"Change_currency" = "Währung ändern";
 "Change_email" = "E-Mail-Adresse ändern";
 "Change_password" = "Passwort ändern";
 "Change_payment_method" = "Zahlungsmethode ändern";
@@ -58,7 +61,7 @@
 "Collapses_subcategories" = "Reduziert die Anzeige der Unterkategorien.";
 "Collections" = "Sammlungen";
 "Complete_payment" = "Zahlung abschließen";
-"Confirm_password" = "Confirm new password";
+"Confirm_password" = "Neues Passwort bestätigen";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, sobald sie ein Projekt veröffentlichen oder unterstützen.";
 "Contact_creator" = "Projektgründer kontaktieren";
 "Continue_to_payment" = "Weiter zur Zahlung";
@@ -110,6 +113,7 @@
 "Email" = "E-Mail";
 "Email_frequency" = "Häufigkeit der E-Mails";
 "Email_notifications" = "Benachrichtigung per E-Mail";
+"Email_unverified" = "Diese E-Mail-Adresse wurde noch nicht verifiziert.";
 "Ending_soon" = "Endet bald";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Expands_subcategories" = "Erweitert die Anzeige der Unterkategorien.";
@@ -184,10 +188,11 @@
 "How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
 "If_you_turn_following_off" = "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden.";
-"If_your_profile_is_private" = "Wenn dein Profil privat ist, sind dein Namen und dein Profilbild für Andere sichtbar.\n\nWenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, deine Biografie und deine Websites für Andere sichtbar.";
+"If_your_profile_is_private" = "Wenn dein Profil privat ist, sind dein Namen und dein Profilbild für Andere sichtbar.";
 "If_your_profile_is_public" = "Wenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, dein Standort, deine Biografie und deine Websites für Andere sichtbar.";
 "Individual_Emails" = "Individuelle E-Mails";
 "Info" = "Info";
+"Introduce_yourself" = "Stelle dich vor";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Die Zusammenstellung deiner Daten kann bis zu 24 Stunden dauern. Sobald sie zum Download bereitstehen, werden wir dir eine Anleitung dazu per E-Mail schicken. Solltest du nichts von uns hören, versuche es von hier aus noch einmal.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_better_with_friends" = "Gemeinsam mehr erreichen";
@@ -222,6 +227,7 @@
 "Log_out" = "Abmelden";
 "Love_film_We_do_too" = "Du bist Kino-Fan? Wir auch.";
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
+"Making_this_change" = "Wenn du die Währung wechselst, werden das Finanzierungsziel und die Finanzierungsbeiträge in der von dir gewählten Währung angezeigt.";
 "Manage_your_pledge" = "Meinen Beitrag verwalten";
 "Manage_your_pledge_below" = "Folgenden Beitrag verwalten";
 "Manage_your_reward" = "Belohnung verwalten";
@@ -231,7 +237,7 @@
 "Messages" = "Nachrichten";
 "Name" = "Name";
 "Never" = "Niemals";
-"New_password" = "New password";
+"New_password" = "Neues Passwort";
 "New_pledge_activity" = "Neue Finanzierungsbeiträge";
 "New_work_and_big_ideas_from_established_and" = "Neue Arbeiten und großartige Ideen von etablierten und neuen Künstlern.";
 "News_events" = "Ein paar Mal pro Jahr: Neuigkeiten und Events in deiner Nähe.";
@@ -322,6 +328,7 @@
 "Replay_past_live_streams" = "Wiedergabe vergangener Live-Streams";
 "Reply_to_user_name" = "%{user_name} antworten …";
 "Request_my_personal_data" = "Meine persönlichen Daten anfordern";
+"Resend_verification_email" = "Verifizierungs-E-Mail erneut senden";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";
@@ -416,6 +423,7 @@
 "Upcoming_with_creator_name" = "Demnächst: Video von <br/><b>%{creator_name}</b>";
 "Update_pledge" = "Beitrag aktualisieren";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Hier kannst du nachverfolgen, welche Belohnungen du bereits erhalten hast.";
+"Verification_email_sent" = "Wir haben dir gerade eine Bestätigungs-E-Mail geschickt. Bitte klicke auf den Link in der E-Mail, um deine Adresse zu bestätigen.";
 "Video_disabled_until_the_internet_connection_improves" = "Video bis zur Wiederherstellung der Internetverbindung deaktiviert";
 "View" = "Anzeigen";
 "View_project" = "Projekt ansehen";
@@ -431,6 +439,8 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
+"Write_a_bio" = "Schreibe eine kurze Biografie, ein oder zwei Sätze genügen.";
+"Yes_change_currency" = "Ja, Währung ändern";
 "Yes_turn_off" = "Ja, deaktivieren";
 "You_Launched" = "Dein Projekt ist live!";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
@@ -439,6 +449,7 @@
 "You_saved_this_project" = "Du hast dieses Projekt gespeichert.";
 "Your_chat_message_wasnt_sent_successfully" = "Deine Chat-Nachricht konnte leider nicht gesendet werden.";
 "Your_friends_havent_backed_any_projects_yet" = "Deine Freunde haben bisher noch kein Projekt unterstützt. Aber sobald sie das tun, wird es hier angezeigt.";
+"Your_name_displayed" = "Dein Name wird auf deinem Profil angezeigt.";
 "Your_payment_method_was_successfully_charged" = "Deine Zahlungsmethode wurde erfolgreich belastet.";
 "Your_pledge" = "Dein Beitrag";
 "Your_pledge_amount" = "Dein Beitrag:";
