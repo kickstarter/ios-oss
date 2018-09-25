@@ -35,6 +35,12 @@ final class SettingsAccountViewController: UIViewController {
         self?.dataSource.configureRows()
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.transitionToViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] (viewController) in
+        self?.navigationController?.pushViewController(viewController, animated: true)
+    }
   }
 
   override func bindStyles() {
