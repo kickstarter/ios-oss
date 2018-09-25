@@ -38,9 +38,7 @@ final class ChangePasswordViewController: UIViewController {
       |> formFieldStyle
       |> UITextField.lens.secureTextEntry .~ true
       |> UITextField.lens.textAlignment .~ .right
-      |> UITextField.lens.placeholder %~ { _ in
-        Strings.login_placeholder_password()
-    }
+      |> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_password() }
 
     _ = currentPasswordLabel
       |> settingsTitleLabelStyle

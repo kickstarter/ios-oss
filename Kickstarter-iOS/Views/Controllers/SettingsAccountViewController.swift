@@ -58,6 +58,8 @@ final class SettingsAccountViewController: UIViewController {
 extension SettingsAccountViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+
     guard let cellType = dataSource.cellTypeForIndexPath(indexPath: indexPath) else {
       return
     }
