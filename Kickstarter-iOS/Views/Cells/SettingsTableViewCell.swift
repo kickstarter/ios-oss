@@ -1,14 +1,25 @@
 import Library
 import Prelude
+import UIKit
 
-final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
+final class SettingsTableViewCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource, ValueCell, NibLoading {
+
+
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
   @IBOutlet fileprivate weak var detailLabel: UILabel!
-  @IBOutlet fileprivate weak var lineLayer: UIView!
+  @IBOutlet fileprivate var lineLayer: [UIView]!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var pickerView: UIPickerView!
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+  }
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.pickerView.delegate = self
+    self.pickerView.dataSource = self
   }
 
   func configureWith(value cellValue: SettingsCellValue) {
@@ -30,6 +41,11 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
       }
       |> UILabel.lens.text %~ { _ in
         return cellType.description ?? ""
+      }
+
+    _ = pickerView
+      |> UIPickerView.lens.isHidden %~ { _ in
+        return cellType.hidePickerView
     }
   }
 
@@ -40,7 +56,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = lineLayer
-    |> separatorStyle
+    ||> separatorStyle
   }
 
   override func setHighlighted(_ highlighted: Bool, animated: Bool) {
@@ -51,5 +67,13 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
     _ = self
       |> UITableViewCell.lens.backgroundColor .~ highlightedColor
+  }
+
+  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    return 5
+  }
+
+  func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    return 1
   }
 }

@@ -1,6 +1,7 @@
 import UIKit
 
 public enum HelpType: SettingsCellTypeProtocol {
+
   case helpCenter
   case contact
   case howItWorks
@@ -48,6 +49,11 @@ public enum HelpType: SettingsCellTypeProtocol {
   public var description: String? {
     return nil
   }
+
+  public var hidePickerView: Bool {
+    return true
+  }
+
 
   public var trackingString: String {
     switch self {

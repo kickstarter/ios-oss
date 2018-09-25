@@ -4,6 +4,7 @@ public protocol SettingsCellTypeProtocol {
   var description: String? { get }
   var hideDescriptionLabel: Bool { get }
   var showArrowImageView: Bool { get }
+  var hidePickerView: Bool { get }
   var textColor: UIColor { get }
   var title: String { get }
 }
@@ -91,6 +92,15 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   public var showArrowImageView: Bool {
     switch self {
     case .account, .notifications, .newsletters, .help, .privacy, .findFriends, .rateInAppStore:
+      return true
+    default:
+      return false
+    }
+  }
+
+  public var hidePickerView: Bool {
+    switch self {
+    case .account, .notifications, .newsletters, .help, .logout, .privacy, .findFriends, .appVersion, .rateInAppStore:
       return true
     default:
       return false
