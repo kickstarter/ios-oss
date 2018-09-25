@@ -12,6 +12,7 @@ final class ChangePasswordViewController: UIViewController {
   @IBOutlet fileprivate weak var newPassword: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
   @IBOutlet fileprivate weak var saveButton: UIBarButtonItem!
+  @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
   internal static func instantiate() -> ChangePasswordViewController {
     return Storyboard.Settings.instantiate(ChangePasswordViewController.self)
@@ -67,5 +68,24 @@ final class ChangePasswordViewController: UIViewController {
       |> UITextField.lens.placeholder %~ { _ in
         Strings.login_placeholder_password()
     }
+  }
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        self?.handleKeyboardVisibilityDidChange(change)
+    }
+  }
+
+  private func handleKeyboardVisibilityDidChange(_ change: Keyboard.Change) {
+    UIView.animate(withDuration: change.duration,
+                   delay: 0.0,
+                   options: change.options,
+                   animations: { [weak self] in
+      self?.scrollView.contentInset.bottom = change.frame.height
+    }, completion: nil)
   }
 }
