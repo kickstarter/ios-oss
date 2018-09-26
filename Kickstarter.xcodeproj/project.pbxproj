@@ -939,13 +939,13 @@
 		D0D2ABA91E9677E8008D298A /* LiveStreamTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA51E9677DD008D298A /* LiveStreamTypes.swift */; };
 		D0D2ABAA1E9677EC008D298A /* LiveStreamTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2ABA61E9677DD008D298A /* LiveStreamTypesTests.swift */; };
 		D6089E8F209106CD0032CC99 /* PushNotificationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */; };
-		D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */; };
 		D60C8BE42142CD7600D96152 /* SettingsAccount.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D60C8BE32142CD7600D96152 /* SettingsAccount.storyboard */; };
 		D60C8BE62142D01E00D96152 /* SettingsAccountDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */; };
 		D60C8BE92142D61A00D96152 /* SettingsAccountCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE72142D60800D96152 /* SettingsAccountCellType.swift */; };
 		D60C8BEE2143148B00D96152 /* SettingsAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */; };
 		D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */; };
 		D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */; };
+		D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */; };
 		D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */; };
 		D6508F6C2049C83C002DCC01 /* UIStackView+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
@@ -995,13 +995,14 @@
 		D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */; };
 		D74E66B0212B7AB500C61708 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E66AF212B7AB500C61708 /* SettingsViewControllerTests.swift */; };
 		D74E6758212CB5A400C61708 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E6757212CB5A400C61708 /* SettingsViewControllerTests.swift */; };
-		D74E66B0212B7AB500C61708 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E66AF212B7AB500C61708 /* SettingsViewControllerTests.swift */; };
 		D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */; };
 		D775EC3020812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */; };
 		D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */; };
 		D796867C20FE655300E54C61 /* SettingsFollowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */; };
 		D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */; };
 		D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */; };
+		D798A648215BE9B20053D097 /* SettingsAccountPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D798A647215BE9B10053D097 /* SettingsAccountPickerCell.xib */; };
+		D798A680215BFB720053D097 /* SettingsAccountPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A67F215BFB720053D097 /* SettingsAccountPickerCell.swift */; };
 		D79D61151FD0979D000F958B /* String+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D61141FD0979D000F958B /* String+Base64.swift */; };
 		D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */; };
 		D79F0F6F2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */; };
@@ -2571,13 +2572,13 @@
 		D0FD4CC61E2642F200488660 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D0FD4CC81E26433C00488660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationDialog.swift; sourceTree = "<group>"; };
-		D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDataSourceTests.swift; sourceTree = "<group>"; };
 		D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewController.swift; sourceTree = "<group>"; };
 		D60C8BE32142CD7600D96152 /* SettingsAccount.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsAccount.storyboard; sourceTree = "<group>"; };
 		D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountDataSource.swift; sourceTree = "<group>"; };
 		D60C8BE72142D60800D96152 /* SettingsAccountCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountCellType.swift; sourceTree = "<group>"; };
 		D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewModel.swift; sourceTree = "<group>"; };
 		D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewControllerTests.swift; sourceTree = "<group>"; };
+		D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDataSourceTests.swift; sourceTree = "<group>"; };
 		D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectActivityItemProviderTests.swift; sourceTree = "<group>"; };
 		D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+BackgroundColor.swift"; sourceTree = "<group>"; };
 		D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSourceTests.swift; sourceTree = "<group>"; };
@@ -2630,14 +2631,14 @@
 		D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportStateEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D74E66AF212B7AB500C61708 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
 		D74E6757212CB5A400C61708 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
-		D74E66AF212B7AB500C61708 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
-		D74E6757212CB5A400C61708 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
 		D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift; sourceTree = "<group>"; };
 		D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift; sourceTree = "<group>"; };
 		D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossDissolveTransitionAnimator.swift; sourceTree = "<group>"; };
 		D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFollowCellViewModel.swift; sourceTree = "<group>"; };
 		D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDataSource.swift; sourceTree = "<group>"; };
 		D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyStaticCell.swift; sourceTree = "<group>"; };
+		D798A647215BE9B10053D097 /* SettingsAccountPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsAccountPickerCell.xib; sourceTree = "<group>"; };
+		D798A67F215BFB720053D097 /* SettingsAccountPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountPickerCell.swift; sourceTree = "<group>"; };
 		D79D61141FD0979D000F958B /* String+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64.swift"; sourceTree = "<group>"; };
 		D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyRecommendationCell.swift; sourceTree = "<group>"; };
 		D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyRequestDataCell.swift; sourceTree = "<group>"; };
@@ -2941,6 +2942,7 @@
 				77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */,
 				770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */,
 				77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */,
+				D798A647215BE9B10053D097 /* SettingsAccountPickerCell.xib */,
 				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
 				D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */,
 				77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */,
@@ -3129,6 +3131,7 @@
 				A747A8ED1D45899F00AF199A /* RewardCell.swift */,
 				A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */,
 				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
+				D798A67F215BFB720053D097 /* SettingsAccountPickerCell.swift */,
 				77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */,
 				770E441221137E7400396D46 /* SettingsNotificationPickerCell.swift */,
 				D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */,
@@ -3229,8 +3232,6 @@
 				D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */,
 				D72370932119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift */,
 				77216D9720F3D2E40061BE82 /* SettingsViewController.swift */,
-				D74E66AF212B7AB500C61708 /* SettingsViewControllerTests.swift */,
-				D74E6757212CB5A400C61708 /* SettingsViewControllerTests.swift */,
 				D74E66AF212B7AB500C61708 /* SettingsViewControllerTests.swift */,
 				D74E6757212CB5A400C61708 /* SettingsViewControllerTests.swift */,
 				A749001D1D00E27100BC3BE7 /* SignupViewController.swift */,
@@ -5170,6 +5171,7 @@
 				014D62FF1E7211220033D2BD /* BackerDashboardProjectCell.xib in Resources */,
 				A78852391D6CC5DE00617930 /* RewardPledge.storyboard in Resources */,
 				77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */,
+				D798A648215BE9B20053D097 /* SettingsAccountPickerCell.xib in Resources */,
 				A73923C81D272242004524C3 /* ProjectActivity.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5803,6 +5805,7 @@
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */,
 				D6B6766920FF8D850082717D /* SettingsNewslettersDataSource.swift in Sources */,
+				D798A680215BFB720053D097 /* SettingsAccountPickerCell.swift in Sources */,
 				59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */,
 				A75CBDE81C8A26F800758C55 /* AppDelegateViewModel.swift in Sources */,
 				A72C3AA71D00F7A30075227E /* SortPagerViewController.swift in Sources */,

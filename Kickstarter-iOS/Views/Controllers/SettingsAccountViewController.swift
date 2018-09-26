@@ -23,6 +23,8 @@ final class SettingsAccountViewController: UIViewController {
     self.tableView.delegate = self
 
     self.tableView.register(nib: .SettingsTableViewCell)
+    self.tableView.register(nib: .SettingsAccountPickerCell)
+
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
     self.viewModel.inputs.viewDidLoad()

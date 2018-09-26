@@ -2,7 +2,6 @@ import KsApi
 import UIKit
 
 public enum SettingsAccountSectionType: Int {
-
   case emailPassword
   case privacy
   case payment
@@ -22,7 +21,7 @@ public enum SettingsAccountSectionType: Int {
     case .privacy:
       return [.privacy]
     case .payment:
-      return [.paymentMethods, .currency]
+      return [.paymentMethods]
     }
   }
 }
@@ -89,7 +88,7 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
 
   public var description: String? {
     switch self {
-    case .currency: return "$ Dollar (USD)"
+    case .currency: return Strings.Currency_USD()
     default: return nil
     }
   }

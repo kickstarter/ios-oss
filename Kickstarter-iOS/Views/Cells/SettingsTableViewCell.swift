@@ -4,7 +4,6 @@ import UIKit
 
 final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
-
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
   @IBOutlet fileprivate weak var detailLabel: UILabel!
   @IBOutlet fileprivate var lineLayer: [UIView]!
@@ -13,13 +12,6 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-  }
-
-  override func awakeFromNib() {
-    super.awakeFromNib()
-
-    self.pickerView.delegate = self
-    self.pickerView.dataSource = self
   }
 
   func configureWith(value cellValue: SettingsCellValue) {
@@ -67,22 +59,6 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
     _ = self
       |> UITableViewCell.lens.backgroundColor .~ highlightedColor
-  }
-}
-
-extension SettingsTableViewCell: UIPickerViewDataSource {
-  func numberOfComponents(in pickerView: UIPickerView) -> Int {
-    return 1
-  }
-
-  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    return Currencies.allCases.count
-  }
-}
-
-extension SettingsTableViewCell: UIPickerViewDelegate {
-  func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return Currencies(rawValue: row)?.descriptionText
   }
 }
 
