@@ -14,7 +14,8 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {
-    return self[indexPath] as? SettingsAccountCellType
+    let value = self[indexPath] as? SettingsCellValue
+    return value?.cellType as? SettingsAccountCellType
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

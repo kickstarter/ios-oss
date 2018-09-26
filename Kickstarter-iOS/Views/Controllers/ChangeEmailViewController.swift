@@ -2,13 +2,6 @@ import Foundation
 import Library
 import Prelude
 
-enum ChangeEmailCellType {
-  case currentEmail
-  case resendVerificationEmail
-  case newEmail
-  case password
-}
-
 final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var currentEmailLabel: UILabel!
   @IBOutlet fileprivate weak var currentEmail: UILabel!
@@ -45,6 +38,12 @@ final class ChangeEmailViewController: UIViewController {
     self.errorLabel.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
     self.messageBannerView.rac.hidden = self.viewModel.outputs.messageBannerViewIsHidden
     self.saveBarButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
+
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        self?.handleKeyboardVisibilityDidChange(change)
+    }
   }
 
   override func bindStyles() {
@@ -121,5 +120,14 @@ final class ChangeEmailViewController: UIViewController {
 
   @IBAction func passwordFieldTextDidChange(_ sender: UITextField) {
     self.viewModel.inputs.passwordFieldTextDidChange(text: sender.text)
+  }
+
+  private func handleKeyboardVisibilityDidChange(_ change: Keyboard.Change) {
+    UIView.animate(withDuration: change.duration,
+                   delay: 0.0,
+                   options: change.options,
+                   animations: { [weak self] in
+                    self?.scrollView.contentInset.bottom = change.frame.height
+      }, completion: nil)
   }
 }
