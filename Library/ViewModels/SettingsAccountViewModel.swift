@@ -2,6 +2,7 @@ import Prelude
 import ReactiveSwift
 import Result
 import KsApi
+import Library
 
 public protocol SettingsAccountViewModelInputs {
 
@@ -54,6 +55,13 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 // MARK: Helpers
 extension SettingsAccountViewModel {
   static func viewController(for cellType: SettingsAccountCellType) -> UIViewController? {
-    return nil
+    switch cellType {
+    case .changeEmail:
+      return ChangeEmailViewController.instantiate()
+    case .changePassword:
+      return ChangePasswordViewController.instantiate()
+    default:
+      return nil
+    }
   }
 }

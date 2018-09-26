@@ -35,6 +35,12 @@ final class SettingsAccountViewController: UIViewController {
         self?.dataSource.configureRows()
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.transitionToViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] (viewController) in
+        self?.navigationController?.pushViewController(viewController, animated: true)
+    }
   }
 
   override func bindStyles() {
@@ -52,6 +58,8 @@ final class SettingsAccountViewController: UIViewController {
 extension SettingsAccountViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+
     guard let cellType = dataSource.cellTypeForIndexPath(indexPath: indexPath) else {
       return
     }
