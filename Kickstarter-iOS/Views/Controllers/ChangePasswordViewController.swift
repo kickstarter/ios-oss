@@ -79,6 +79,10 @@ final class ChangePasswordViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
+    self.errorMessageLabel.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
+    self.errorMessageLabel.rac.text = self.viewModel.outputs.errorLabelMessage
+
     self.viewModel.outputs.testPasswordInput
       .observeForUI()
       .observeValues { (passwordInput) in

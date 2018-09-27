@@ -13,6 +13,7 @@ protocol ChangePasswordViewModelOutputs {
   var currentPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
   var errorLabelIsHidden: Signal<Bool, NoError> { get }
+  var errorLabelMessage: Signal<String, NoError> { get }
   var messageControllerIsHidden: Signal<Bool, NoError> { get }
   var newPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
@@ -21,7 +22,6 @@ protocol ChangePasswordViewModelOutputs {
 protocol ChangePasswordViewModelInputs {
   func currentPasswordFieldTextChanged(text: String)
   func currentPasswordFieldDidEndEditing(currentPassword: String)
-  func fieldDidBeginEditing()
   func newPasswordFieldTextChanged(text: String)
   func newPasswordFieldDidEndEditing(newPassword: String)
   func newPasswordConfirmationFieldTextChanged(text: String)
@@ -35,32 +35,37 @@ protocol ChangePasswordViewModelType {
   var outputs: ChangePasswordViewModelOutputs { get }
 }
 
-struct ChangePasswordViewModel: ChangePasswordViewModelType, ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
+struct ChangePasswordViewModel: ChangePasswordViewModelType,
+ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public init() {
-    self.saveButtonIsEnabled = fieldDidBeginEditingProperty.signal.mapConst(true)
+    let combinedPasswords = Signal.combineLatest(newPasswordProperty.signal, confirmNewPasswordProperty.signal)
 
-    let zippedPasswords = Signal.combineLatest(newPasswordProperty.signal, confirmNewPasswordProperty.signal)
+    let fieldsNotEmpty = Signal
+      .combineLatest(
+        self.currentPasswordProperty.signal,
+        self.newPasswordProperty.signal,
+        self.confirmNewPasswordProperty.signal)
+      .map { valuesInFields in
+        return !valuesInFields.0.isEmpty && !valuesInFields.1.isEmpty && !valuesInFields.2.isEmpty
+    }
 
-    let passwordsMatch: Signal<Bool, NoError> = zippedPasswords
-      .takeWhen(self.saveButtonTappedProperty.signal)
+    let passwordsMatch: Signal<Bool, NoError> = combinedPasswords
       .map { (newPassword, confirmNewPassword) -> Bool in
         return newPassword == confirmNewPassword
     }
 
-    let lengthMeetsReq: Signal<Bool, NoError> = zippedPasswords
-      .takeWhen(self.saveButtonTappedProperty.signal)
-      .map { (newPassword, confirmNewPassword) -> Bool in
-        return newPassword.count > 6 && confirmNewPassword.count > 6
+    let lengthMeetsReq: Signal<Bool, NoError> = self.newPasswordProperty.signal
+      .map { newPassword -> Bool in
+        return newPassword.count > 6
     }
 
-    let combinedInput = Signal.combineLatest(currentPasswordProperty.signal, zippedPasswords)
+    let combinedInput = Signal.combineLatest(currentPasswordProperty.signal, combinedPasswords)
 
     self.testPasswordInput = combinedInput
       .takeWhen(self.saveButtonTappedProperty.signal)
       .map(unpack)
 
     self.activityIndicatorShouldShow = saveButtonTappedProperty.signal.mapConst(true)
-    self.errorLabelIsHidden = Signal.merge(passwordsMatch, lengthMeetsReq)
     self.dismissKeyboard = Signal.merge(
       self.saveButtonTappedProperty.signal,
       self.confirmNewPasswordDoneEditingProperty.signal)
@@ -70,6 +75,30 @@ struct ChangePasswordViewModel: ChangePasswordViewModelType, ChangePasswordViewM
     self.currentPasswordBecomeFirstResponder = self.viewDidAppearProperty.signal
     self.newPasswordBecomeFirstResponder = self.currentPasswordDoneEditingProperty.signal
     self.confirmNewPasswordBecomeFirstResponder = self.newPasswordDoneEditingProperty.signal
+
+    // Save button should enable WHEN:
+    // all fields have string values,
+    // passwords match
+    // password is > 6 chars
+    self.saveButtonIsEnabled = Signal
+      .combineLatest(fieldsNotEmpty, passwordsMatch, lengthMeetsReq)
+      .map { requirements in
+        return requirements.0 && requirements.1 && requirements.2
+    }
+
+    self.errorLabelIsHidden = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
+      .map { $0.0 && $0.1 }
+
+    self.errorLabelMessage = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
+      .map { requirements -> String in
+        if !requirements.1 {
+          return "Your password must be at least 6 characters long."
+        } else if !requirements.0 {
+          return "New passwords must match."
+        } else {
+          return ""
+        }
+    }
   }
 
   private var currentPasswordDoneEditingProperty = MutableProperty(())
@@ -81,11 +110,6 @@ struct ChangePasswordViewModel: ChangePasswordViewModelType, ChangePasswordViewM
   private var currentPasswordProperty = MutableProperty<String>("")
   func currentPasswordFieldTextChanged(text: String) {
     self.currentPasswordProperty.value = text
-  }
-
-  private var fieldDidBeginEditingProperty = MutableProperty(())
-  func fieldDidBeginEditing() {
-    self.fieldDidBeginEditingProperty.value = ()
   }
 
   private var newPasswordDoneEditingProperty = MutableProperty(())
@@ -125,6 +149,7 @@ struct ChangePasswordViewModel: ChangePasswordViewModelType, ChangePasswordViewM
   public let currentPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
   public let errorLabelIsHidden: Signal<Bool, NoError>
+  public let errorLabelMessage: Signal<String, NoError>
   public let messageControllerIsHidden: Signal<Bool, NoError>
   public let newPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
