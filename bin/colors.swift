@@ -1,6 +1,8 @@
-#!/usr/bin/env xcrun swift
+#!/usr/bin/swift
 
 import Foundation
+
+// swiftlint:disable force_try force_cast force_unwrapping
 
 extension Dictionary {
   func withAllValuesFrom(_ other: Dictionary) -> Dictionary {
@@ -20,14 +22,22 @@ let colors =
     .map { (key: $0, value: $1) }
     .sorted { $0.key < $1.key }
 
+let prettyColors = colors.map { (color, value) in
+  return "  \(color): #\(value)"
+  }.joined(separator: "\n")
+
+print("All colors: \n\(prettyColors)")
+
 let allColors = colors
   .reduce([String: [Int: String]]()) { accum, pair in
     let (name, _) = pair
 
     let components = name.components(separatedBy: "_")
     guard components.count > 1 else { return accum }
-    let (color, weight) = (components[0..<components.count-1].joined(separator: " "),
-                           Int(components.last!)!)
+    let colorWeight: Int? = Int(components.last!)
+    let colorName = colorWeight == nil
+      ? components.joined(separator: " ") : components[0..<components.count-1].joined(separator: " ")
+    let (color, weight) = (colorName, colorWeight ?? 0)
     let label = color.capitalized
 
     return accum.withAllValuesFrom(
@@ -93,3 +103,5 @@ staticStringsLines.append("") // trailing newline
 try! staticStringsLines
   .joined(separator: "\n")
   .write(toFile: outPath, atomically: true, encoding: .utf8)
+
+print("✨ Done regenerating Colors.swift ✨")
