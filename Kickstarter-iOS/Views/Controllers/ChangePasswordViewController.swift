@@ -20,6 +20,13 @@ final class ChangePasswordViewController: UIViewController {
     return Storyboard.Settings.instantiate(ChangePasswordViewController.self)
   }
 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    self.viewModel
+      .inputs.onePasswordIsAvailable(available: OnePasswordExtension.shared().isAppExtensionAvailable())
+  }
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
@@ -79,6 +86,8 @@ final class ChangePasswordViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.currentPassword.rac.text = self.viewModel.outputs.currentPasswordPrefillValue
+    self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
     self.errorMessageLabel.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
     self.errorMessageLabel.rac.text = self.viewModel.outputs.errorLabelMessage
@@ -113,6 +122,11 @@ final class ChangePasswordViewController: UIViewController {
         self?.confirmNewPassword.resignFirstResponder()
     }
 
+    self.viewModel.outputs.onePasswordFindPasswordForURLString
+      .observeValues { [weak self] urlString in
+        self?.onePasswordFindPassword(forURLString: urlString)
+    }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -120,6 +134,7 @@ final class ChangePasswordViewController: UIViewController {
     }
   }
 
+  // MARK: Private Functions
   private func handleKeyboardVisibilityDidChange(_ change: Keyboard.Change) {
     UIView.animate(withDuration: change.duration,
                    delay: 0.0,
@@ -129,6 +144,18 @@ final class ChangePasswordViewController: UIViewController {
     }, completion: nil)
   }
 
+  private func onePasswordFindPassword(forURLString string: String) {
+    OnePasswordExtension.shared()
+      .findLogin(forURLString: string, for: self, sender: self.onePasswordButton) { result, _ in
+        guard let result = result, let password =  result[AppExtensionPasswordKey] as? String else {
+          return
+        }
+
+        self.viewModel.inputs.onePasswordFoundPassword(password: password)
+    }
+  }
+
+  // MARK: Actions
   @IBAction func currentPasswordTextDidChange(_ sender: UITextField) {
     guard let text = sender.text else {
       return
@@ -142,7 +169,7 @@ final class ChangePasswordViewController: UIViewController {
       return
     }
 
-    self.viewModel.inputs.currentPasswordFieldDidEndEditing(currentPassword: currentPassword)
+    self.viewModel.inputs.currentPasswordFieldTextChanged(text: currentPassword)
   }
 
   @IBAction func currentPasswordDidReturn(_ sender: UITextField) {
@@ -150,7 +177,7 @@ final class ChangePasswordViewController: UIViewController {
       return
     }
 
-    self.viewModel.inputs.currentPasswordFieldDidEndEditing(currentPassword: currentPassword)
+    self.viewModel.inputs.currentPasswordFieldDidReturn(currentPassword: currentPassword)
   }
 
   @IBAction func newPasswordTextDidChange(_ sender: UITextField) {
@@ -166,7 +193,7 @@ final class ChangePasswordViewController: UIViewController {
       return
     }
 
-    self.viewModel.inputs.newPasswordFieldDidEndEditing(newPassword: newPassword)
+    self.viewModel.inputs.newPasswordFieldTextChanged(text: newPassword)
   }
 
   @IBAction func newPasswordDidReturn(_ sender: UITextField) {
@@ -174,7 +201,7 @@ final class ChangePasswordViewController: UIViewController {
       return
     }
 
-    self.viewModel.inputs.newPasswordFieldDidEndEditing(newPassword: newPassword)
+    self.viewModel.inputs.newPasswordFieldDidReturn(newPassword: newPassword)
   }
 
   @IBAction func confirmNewPasswordTextDidChange(_ sender: UITextField) {
@@ -191,7 +218,7 @@ final class ChangePasswordViewController: UIViewController {
     }
 
     self.viewModel.inputs
-      .newPasswordConfirmationFieldDidEndEditing(newPasswordConfirmed: newPasswordConfirmed)
+      .newPasswordConfirmationFieldTextChanged(text: newPasswordConfirmed)
   }
 
   @IBAction func confirmNewPasswordDidReturn(_ sender: UITextField) {
@@ -200,10 +227,15 @@ final class ChangePasswordViewController: UIViewController {
     }
 
     self.viewModel.inputs
-      .newPasswordConfirmationFieldDidEndEditing(newPasswordConfirmed: newPasswordConfirmed)
+      .newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: newPasswordConfirmed)
   }
 
   @IBAction func saveButtonTapped(_ sender: Any) {
     self.viewModel.inputs.saveButtonTapped()
+  }
+
+
+  @IBAction func onePasswordButtonTapped(_ sender: Any) {
+    self.viewModel.inputs.onePasswordButtonTapped()
   }
 }

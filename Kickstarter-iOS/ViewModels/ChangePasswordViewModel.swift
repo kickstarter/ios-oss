@@ -11,21 +11,27 @@ protocol ChangePasswordViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var currentPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
+  var currentPasswordPrefillValue: Signal<String, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
   var errorLabelIsHidden: Signal<Bool, NoError> { get }
   var errorLabelMessage: Signal<String, NoError> { get }
   var messageControllerIsHidden: Signal<Bool, NoError> { get }
   var newPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
+  var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
+  var onePasswordFindPasswordForURLString: Signal<String, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
 }
 
 protocol ChangePasswordViewModelInputs {
   func currentPasswordFieldTextChanged(text: String)
-  func currentPasswordFieldDidEndEditing(currentPassword: String)
+  func currentPasswordFieldDidReturn(currentPassword: String)
   func newPasswordFieldTextChanged(text: String)
-  func newPasswordFieldDidEndEditing(newPassword: String)
+  func newPasswordFieldDidReturn(newPassword: String)
   func newPasswordConfirmationFieldTextChanged(text: String)
-  func newPasswordConfirmationFieldDidEndEditing(newPasswordConfirmed: String)
+  func newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: String)
+  func onePasswordButtonTapped()
+  func onePasswordIsAvailable(available: Bool)
+  func onePasswordFoundPassword(password: String)
   func saveButtonTapped()
   func viewDidAppear()
 }
@@ -39,10 +45,13 @@ struct ChangePasswordViewModel: ChangePasswordViewModelType,
 ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public init() {
     let combinedPasswords = Signal.combineLatest(newPasswordProperty.signal, confirmNewPasswordProperty.signal)
+    let currentPasswordSignal: Signal<String, NoError> = Signal
+      .merge(self.currentPasswordProperty.signal,
+             self.onePasswordPrefillPasswordProperty.signal.skipNil())
 
     let fieldsNotEmpty = Signal
       .combineLatest(
-        self.currentPasswordProperty.signal,
+        currentPasswordSignal,
         self.newPasswordProperty.signal,
         self.confirmNewPasswordProperty.signal)
       .map { valuesInFields in
@@ -56,10 +65,10 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
     let lengthMeetsReq: Signal<Bool, NoError> = self.newPasswordProperty.signal
       .map { newPassword -> Bool in
-        return newPassword.count > 6
+        return newPassword.count > 5
     }
 
-    let combinedInput = Signal.combineLatest(currentPasswordProperty.signal, combinedPasswords)
+    let combinedInput = Signal.combineLatest(currentPasswordSignal, combinedPasswords)
 
     self.testPasswordInput = combinedInput
       .takeWhen(self.saveButtonTappedProperty.signal)
@@ -74,7 +83,11 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
     self.currentPasswordBecomeFirstResponder = self.viewDidAppearProperty.signal
     self.newPasswordBecomeFirstResponder = self.currentPasswordDoneEditingProperty.signal
+    self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.negate()
     self.confirmNewPasswordBecomeFirstResponder = self.newPasswordDoneEditingProperty.signal
+    self.currentPasswordPrefillValue = self.onePasswordPrefillPasswordProperty.signal.skipNil()
+    self.onePasswordFindPasswordForURLString = self.onePasswordButtonTappedProperty.signal
+      .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
 
     // Save button should enable WHEN:
     // all fields have string values,
@@ -102,7 +115,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   }
 
   private var currentPasswordDoneEditingProperty = MutableProperty(())
-  func currentPasswordFieldDidEndEditing(currentPassword: String) {
+  func currentPasswordFieldDidReturn(currentPassword: String) {
     self.currentPasswordProperty.value = currentPassword
     self.currentPasswordDoneEditingProperty.value = ()
   }
@@ -113,7 +126,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   }
 
   private var newPasswordDoneEditingProperty = MutableProperty(())
-  func newPasswordFieldDidEndEditing(newPassword: String) {
+  func newPasswordFieldDidReturn(newPassword: String) {
     self.newPasswordProperty.value = newPassword
     self.newPasswordDoneEditingProperty.value = ()
   }
@@ -124,7 +137,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   }
 
   private var confirmNewPasswordDoneEditingProperty = MutableProperty(())
-  func newPasswordConfirmationFieldDidEndEditing(newPasswordConfirmed: String) {
+  func newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: String) {
     self.confirmNewPasswordProperty.value = newPasswordConfirmed
     self.confirmNewPasswordDoneEditingProperty.value = ()
   }
@@ -139,6 +152,21 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.saveButtonTappedProperty.value = ()
   }
 
+  private var onePasswordIsAvailableProperty = MutableProperty(true)
+  func onePasswordIsAvailable(available: Bool) {
+    self.onePasswordIsAvailableProperty.value = available
+  }
+
+  private var onePasswordButtonTappedProperty = MutableProperty(())
+  func onePasswordButtonTapped() {
+    self.onePasswordButtonTappedProperty.value = ()
+  }
+
+  private var onePasswordPrefillPasswordProperty = MutableProperty<String?>(nil)
+  func onePasswordFoundPassword(password: String) {
+    self.onePasswordPrefillPasswordProperty.value = password
+  }
+
   private var viewDidAppearProperty = MutableProperty(())
   func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
@@ -147,11 +175,14 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let currentPasswordBecomeFirstResponder: Signal<Void, NoError>
+  public let currentPasswordPrefillValue: Signal<String, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
   public let errorLabelIsHidden: Signal<Bool, NoError>
   public let errorLabelMessage: Signal<String, NoError>
   public let messageControllerIsHidden: Signal<Bool, NoError>
   public let newPasswordBecomeFirstResponder: Signal<Void, NoError>
+  public let onePasswordButtonIsHidden: Signal<Bool, NoError>
+  public let onePasswordFindPasswordForURLString: Signal<String, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
 
   public let testPasswordInput: Signal<(String, String, String), NoError>

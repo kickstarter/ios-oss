@@ -471,6 +471,9 @@
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="755" verticalCompressionResistancePriority="755" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ml8-qx-02m">
                                                                 <rect key="frame" x="324" y="0.0" width="27" height="40"/>
                                                                 <state key="normal" image="onepassword-button"/>
+                                                                <connections>
+                                                                    <action selector="onePasswordButtonTapped:" destination="uOz-em-9Ir" eventType="touchUpInside" id="rKN-6F-Ybw"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <constraints>
