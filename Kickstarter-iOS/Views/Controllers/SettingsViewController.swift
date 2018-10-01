@@ -93,6 +93,7 @@ final class SettingsViewController: UIViewController {
 
   private func logout(params: DiscoveryParams) {
     AppEnvironment.logout()
+    PushNotificationDialog.reset(value: .login)
 
     self.view.window?.rootViewController
       .flatMap { $0 as? RootTabBarViewController }
