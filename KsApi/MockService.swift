@@ -429,7 +429,7 @@ internal struct MockService: ServiceType {
       )
   }
 
-  internal func changePassword(input: GraphMutationInput) ->
+  internal func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
     return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
   }

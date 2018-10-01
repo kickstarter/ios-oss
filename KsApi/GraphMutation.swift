@@ -5,7 +5,9 @@ public protocol GraphMutationInput {
 }
 
 protocol GraphMutation: CustomStringConvertible {
-  var input: GraphMutationInput { get set }
+  associatedtype Input: GraphMutationInput
+
+  var input: Input { get }
 }
 
 public struct GraphMutationEmptyResponseEnvelope: Decodable {}

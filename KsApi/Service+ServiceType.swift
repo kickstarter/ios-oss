@@ -42,7 +42,7 @@ extension Service: ServiceType {
       return request(.changePaymentMethod(project: project))
   }
 
-  public func changePassword(input: GraphMutationInput) ->
+  public func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
     return applyMutation(mutation: ChangePasswordMutation(input: input))
   }

@@ -1,9 +1,9 @@
 import Foundation
 
 public struct ChangePasswordMutation: GraphMutation {
-  var input: GraphMutationInput
+  var input: ChangePasswordInput
 
-  public init(input: GraphMutationInput) {
+  public init(input: ChangePasswordInput) {
     self.input = input
   }
 

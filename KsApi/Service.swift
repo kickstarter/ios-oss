@@ -122,7 +122,7 @@ public struct Service {
     return performRequest(request: request)
   }
 
-  func applyMutation<A: Swift.Decodable>(mutation: GraphMutation) -> SignalProducer<A, GraphError> {
+  func applyMutation<A: Swift.Decodable, B: GraphMutation>(mutation: B) -> SignalProducer<A, GraphError> {
     do {
       let request = try self.preparedGraphRequest(forURL: self.serverConfig.graphQLEndpointUrl,
                                                   queryString: mutation.description,
