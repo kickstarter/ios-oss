@@ -95,7 +95,7 @@ final class ChangePasswordViewController: UIViewController {
     self.viewModel.outputs.testPasswordInput
       .observeForUI()
       .observeValues { (passwordInput) in
-        print("Current password: \(passwordInput.0) \n New password: \(passwordInput.1) \n Confirm new password: \(passwordInput.2)")
+        print(passwordInput)
     }
 
     self.viewModel.outputs.currentPasswordBecomeFirstResponder
@@ -233,7 +233,6 @@ final class ChangePasswordViewController: UIViewController {
   @IBAction func saveButtonTapped(_ sender: Any) {
     self.viewModel.inputs.saveButtonTapped()
   }
-
 
   @IBAction func onePasswordButtonTapped(_ sender: Any) {
     self.viewModel.inputs.onePasswordButtonTapped()
