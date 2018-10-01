@@ -69,7 +69,7 @@ final class SettingsAccountViewController: UIViewController {
   func insertCurrencyPickerCell() {
     self.tableView.beginUpdates()
 
-    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerCell()], with: .fade)
+    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerCell()], with: .top)
 
     self.tableView.endUpdates()
   }
@@ -83,8 +83,6 @@ extension SettingsAccountViewController: UITableViewDelegate {
     guard let cellType = dataSource.cellTypeForIndexPath(indexPath: indexPath) else {
       return
     }
-
-
 
 //    if cellType == .changeEmail {
 //      tableView.beginUpdates()

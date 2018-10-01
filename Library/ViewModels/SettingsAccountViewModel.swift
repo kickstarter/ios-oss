@@ -30,6 +30,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     let currencyCellSelected = self.selectedCellType.signal
       .skipNil()
       .filter {  $0 == .currency }
+      .skipRepeats()
 
     self.showCurrencyPicker =
       currencyCellSelected.signal.mapConst(true).ignoreValues()
