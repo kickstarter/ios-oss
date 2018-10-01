@@ -55,7 +55,8 @@ public struct Service {
       }
   }
 
-  private func decodeModels<M: Argo.Decodable>(_ json: Any) ->    SignalProducer<[M], ErrorEnvelope> where M == M.DecodedType {
+  private func decodeModels<M: Argo.Decodable>(_ json: Any)
+    -> SignalProducer<[M], ErrorEnvelope> where M == M.DecodedType {
 
       return SignalProducer(value: json)
         .map { json in decode(json) as Decoded<[M]> }

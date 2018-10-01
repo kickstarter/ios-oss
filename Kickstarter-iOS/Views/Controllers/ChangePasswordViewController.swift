@@ -246,7 +246,6 @@ final class ChangePasswordViewController: UIViewController {
     self.viewModel.inputs.saveButtonTapped()
   }
 
-
   @IBAction func onePasswordButtonTapped(_ sender: Any) {
     self.viewModel.inputs.onePasswordButtonTapped()
   }
