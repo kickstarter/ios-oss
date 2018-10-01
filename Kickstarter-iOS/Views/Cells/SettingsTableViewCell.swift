@@ -6,9 +6,8 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
   @IBOutlet fileprivate weak var detailLabel: UILabel!
-  @IBOutlet fileprivate var lineLayer: [UIView]!
+  @IBOutlet fileprivate weak var lineLayer: UIView!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
-  @IBOutlet fileprivate weak var pickerView: UIPickerView!
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -34,11 +33,6 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
       |> UILabel.lens.text %~ { _ in
         return cellType.description ?? ""
       }
-
-    _ = pickerView
-      |> UIPickerView.lens.isHidden %~ { _ in
-        return cellType.hidePickerView
-    }
   }
 
   override func bindStyles() {
@@ -48,7 +42,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = lineLayer
-    ||> separatorStyle
+    |> separatorStyle
   }
 
   override func setHighlighted(_ highlighted: Bool, animated: Bool) {

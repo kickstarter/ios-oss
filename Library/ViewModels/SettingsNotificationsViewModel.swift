@@ -32,7 +32,6 @@ public protocol SettingsNotificationsViewModelType {
 public final class SettingsNotificationsViewModel: SettingsNotificationsViewModelType,
 SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   public init() {
-
     let initialUser = viewDidLoadProperty.signal
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()

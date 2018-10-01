@@ -1003,6 +1003,7 @@
 		D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */; };
 		D798A648215BE9B20053D097 /* SettingsAccountPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D798A647215BE9B10053D097 /* SettingsAccountPickerCell.xib */; };
 		D798A680215BFB720053D097 /* SettingsAccountPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A67F215BFB720053D097 /* SettingsAccountPickerCell.swift */; };
+		D798A682215C25AC0053D097 /* SettingsAccountPickerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A681215C25AC0053D097 /* SettingsAccountPickerCellViewModel.swift */; };
 		D79D61151FD0979D000F958B /* String+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D61141FD0979D000F958B /* String+Base64.swift */; };
 		D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */; };
 		D79F0F6F2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */; };
@@ -2639,6 +2640,7 @@
 		D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyStaticCell.swift; sourceTree = "<group>"; };
 		D798A647215BE9B10053D097 /* SettingsAccountPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsAccountPickerCell.xib; sourceTree = "<group>"; };
 		D798A67F215BFB720053D097 /* SettingsAccountPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountPickerCell.swift; sourceTree = "<group>"; };
+		D798A681215C25AC0053D097 /* SettingsAccountPickerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountPickerCellViewModel.swift; sourceTree = "<group>"; };
 		D79D61141FD0979D000F958B /* String+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64.swift"; sourceTree = "<group>"; };
 		D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyRecommendationCell.swift; sourceTree = "<group>"; };
 		D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyRequestDataCell.swift; sourceTree = "<group>"; };
@@ -3028,6 +3030,7 @@
 				A7ED20611E83256700BFFA01 /* UpdateViewModelTests.swift */,
 				7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */,
 				77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */,
+				D798A681215C25AC0053D097 /* SettingsAccountPickerCellViewModel.swift */,
 				77FA6CAE20F405E300809E31 /* SettingsViewModel.swift */,
 				77FA6D0920F541CA00809E31 /* SettingsViewModelTests.swift */,
 				7793B13421067D62007857C0 /* SettingsNotificationCellViewModel.swift */,
@@ -5829,6 +5832,7 @@
 				77FA6CA920F3E18F00809E31 /* SettingsTableViewCell.swift in Sources */,
 				770DF32A2106210900A6D0F1 /* SettingsNotificationsDataSource.swift in Sources */,
 				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
+				D798A682215C25AC0053D097 /* SettingsAccountPickerCellViewModel.swift in Sources */,
 				597073A01D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
 				A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */,
 				D0AA77C71FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift in Sources */,

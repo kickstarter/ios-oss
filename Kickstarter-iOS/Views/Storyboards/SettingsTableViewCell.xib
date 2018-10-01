@@ -42,21 +42,6 @@
                         <constraint firstAttribute="height" constant="45" id="ncc-Nt-UZO"/>
                     </constraints>
                 </stackView>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="keX-TX-HOV">
-                    <rect key="frame" x="0.0" y="65" width="375" height="601"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Eg-u5-cng" userLabel="Line Layer">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                            <color key="backgroundColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="MLm-uP-mAI"/>
-                            </constraints>
-                        </view>
-                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sht-aM-3H4">
-                            <rect key="frame" x="0.0" y="11" width="375" height="590"/>
-                        </pickerView>
-                    </subviews>
-                </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nBB-tu-8Zn" userLabel="Line Layer">
                     <rect key="frame" x="0.0" y="666" width="375" height="1"/>
                     <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
@@ -68,22 +53,17 @@
             <constraints>
                 <constraint firstItem="nBB-tu-8Zn" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="CDb-91-nkQ"/>
                 <constraint firstItem="nBB-tu-8Zn" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="SEW-z4-xvb"/>
-                <constraint firstItem="nBB-tu-8Zn" firstAttribute="top" secondItem="keX-TX-HOV" secondAttribute="bottom" id="Vzl-cJ-iDx"/>
                 <constraint firstItem="LGq-5Q-Deu" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="aWN-nq-oa6"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="LGq-5Q-Deu" secondAttribute="trailing" constant="10" id="bC9-F3-DgL"/>
-                <constraint firstItem="keX-TX-HOV" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="egi-8r-TSU"/>
-                <constraint firstItem="keX-TX-HOV" firstAttribute="top" secondItem="LGq-5Q-Deu" secondAttribute="bottom" id="jsL-hT-igd"/>
                 <constraint firstItem="nBB-tu-8Zn" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="kra-8g-xAk"/>
-                <constraint firstItem="keX-TX-HOV" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="mdS-d8-1nf"/>
                 <constraint firstItem="LGq-5Q-Deu" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="y79-gH-VVD"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="arrowImageView" destination="rD1-XM-7lR" id="9zq-S4-pcd"/>
                 <outlet property="detailLabel" destination="QBo-D1-v2F" id="ZXw-xy-LEd"/>
-                <outlet property="pickerView" destination="sht-aM-3H4" id="Vls-6d-0i1"/>
+                <outlet property="lineLayer" destination="nBB-tu-8Zn" id="HBp-pj-hYu"/>
                 <outlet property="titleLabel" destination="thh-A9-lgV" id="2mZ-pA-KY5"/>
-                <outletCollection property="lineLayer" destination="8Eg-u5-cng" collectionClass="NSMutableArray" id="tO0-PR-r3m"/>
             </connections>
             <point key="canvasLocation" x="-159" y="30"/>
         </view>

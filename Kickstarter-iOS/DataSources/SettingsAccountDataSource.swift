@@ -11,21 +11,21 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                cellClass: SettingsTableViewCell.self,
                inSection: section.rawValue)
     }
-
-    self.insertCurrencyCell()
   }
 
-  func insertCurrencyCell() {
+  func insertCurrencyPickerCell() -> IndexPath {
     let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currency)
 
-    self.insertRow(value: cellValue,
+    return self.insertRow(value: cellValue,
                           cellClass: SettingsAccountPickerCell.self,
-                          atIndex: 1,
+                          atIndex: 2,
                           inSection: SettingsAccountSectionType.payment.rawValue)
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {
-    return self[indexPath] as? SettingsAccountCellType
+    let value = self[indexPath] as? SettingsCellValue
+
+    return value?.cellType as? SettingsAccountCellType
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

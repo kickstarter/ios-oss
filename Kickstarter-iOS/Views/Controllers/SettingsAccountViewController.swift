@@ -11,6 +11,7 @@ final class SettingsAccountViewController: UIViewController {
 
   private let dataSource = SettingsAccountDataSource()
   fileprivate let viewModel: SettingsAccountViewModelType = SettingsAccountViewModel()
+//  fileprivate var currencyPickerIndexPath: IndexPath?
 
   internal static func instantiate() -> SettingsAccountViewController {
     return Storyboard.SettingsAccount.instantiate(SettingsAccountViewController.self)
@@ -37,6 +38,12 @@ final class SettingsAccountViewController: UIViewController {
         self?.dataSource.configureRows()
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.showCurrencyPicker
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.insertCurrencyPickerCell()
+    }
   }
 
   override func bindStyles() {
@@ -49,16 +56,60 @@ final class SettingsAccountViewController: UIViewController {
     _ = tableView
       |> settingsTableViewStyle
   }
+
+//  func indexPathToInsertCurrencyPicker(indexPath: IndexPath) -> IndexPath {
+//    if let currencyPickerIndexPath = currencyPickerIndexPath,
+//      currencyPickerIndexPath.row < indexPath.row {
+//      return indexPath
+//    } else {
+//      return IndexPath(row: indexPath.row + 1, section: indexPath.section)
+//    }
+//  }
+
+  func insertCurrencyPickerCell() {
+    self.tableView.beginUpdates()
+
+    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerCell()], with: .fade)
+
+    self.tableView.endUpdates()
+  }
 }
 
 extension SettingsAccountViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+
     guard let cellType = dataSource.cellTypeForIndexPath(indexPath: indexPath) else {
       return
     }
 
-    self.viewModel.inputs.settingsCellTapped(cellType: cellType)
+
+
+//    if cellType == .changeEmail {
+//      tableView.beginUpdates()
+//
+//      if let currencyPickerIndexPath = currencyPickerIndexPath,
+//        currencyPickerIndexPath.row - 1 == indexPath.row {
+//
+//        tableView.deleteRows(at: [currencyPickerIndexPath], with: .fade)
+//
+//        self.currencyPickerIndexPath == nil
+//      } else {
+//
+//        if let currencyPickerIndexPath = currencyPickerIndexPath {
+//          tableView.deleteRows(at: [currencyPickerIndexPath], with: .fade)
+//        }
+//        currencyPickerIndexPath = indexPathToInsertCurrencyPicker(indexPath: indexPath)
+//
+//        tableView.insertRows(at: [currencyPickerIndexPath!], with: .fade)
+//        tableView.deselectRow(at: indexPath, animated: true)
+//      }
+//
+//      tableView.endUpdates()
+//    }
+
+    self.viewModel.inputs.didSelectRow(cellType: cellType)
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -71,5 +122,23 @@ extension SettingsAccountViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
+  }
+
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+
+    if  let cell = cell as? SettingsAccountPickerCell {
+      cell.delegate = self
+    }
+  }
+}
+
+
+
+extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
+  internal func currencyPickerCellExpansion(_ cell: SettingsAccountPickerCell) {
+
+//    cell.contentView.setNeedsUpdateConstraints()
+//    self.tableView.beginUpdates()
+//    self.tableView.endUpdates()
   }
 }
