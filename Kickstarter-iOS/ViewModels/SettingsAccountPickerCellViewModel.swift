@@ -6,11 +6,12 @@ import Result
 
 protocol SettingsAccountPickerCellViewModelInputs {
   func configure(with cellValue: SettingsCellValue)
+  func didSelectCurrency(currency: Currencies)
 }
 
 protocol SettingsAccountPickerCellViewModelOutputs {
   var currencyPickerHidden: Signal<Bool, NoError> { get }
-  var notifyCurrencyPickerShouldCollapse: Signal<(), NoError> { get }
+  var notifyCurrencySelected: Signal<String, NoError> { get }
 }
 
 protocol SettingsAccountPickerCellViewModelType {
@@ -29,7 +30,12 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
 //      .map { $0.hidePickerView }
 //      .negate()
 
-    self.notifyCurrencyPickerShouldCollapse =  .empty //self.tappedProperty.signal
+    self.notifyCurrencySelected = selectedCurrencyProperty.signal.map { $0?.descriptionText ?? "" }
+  }
+
+  fileprivate let selectedCurrencyProperty = MutableProperty<Currencies?>(nil)
+  public func didSelectCurrency(currency: Currencies) {
+    self.selectedCurrencyProperty.value = currency
   }
 
   private let cellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
@@ -38,7 +44,7 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
   }
 
   public let currencyPickerHidden: Signal<Bool, NoError>
-  public let notifyCurrencyPickerShouldCollapse: Signal<(), NoError>
+  public let notifyCurrencySelected: Signal<String, NoError>
 
   var inputs: SettingsAccountPickerCellViewModelInputs { return self }
   var outputs: SettingsAccountPickerCellViewModelOutputs { return self }

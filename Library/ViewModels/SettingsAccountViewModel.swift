@@ -16,7 +16,6 @@ public protocol SettingsAccountViewModelOutputs {
 }
 
 public protocol SettingsAccountViewModelType {
-
   var inputs: SettingsAccountViewModelInputs { get }
   var outputs: SettingsAccountViewModelOutputs { get }
 }
@@ -31,6 +30,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .skipNil()
       .filter {  $0 == .currency }
       .skipRepeats()
+
 
     self.showCurrencyPicker =
       currencyCellSelected.signal.mapConst(true).ignoreValues()

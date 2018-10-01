@@ -6,6 +6,7 @@ public protocol SettingsCellTypeProtocol {
   var hidePickerView: Bool { get }
   var showArrowImageView: Bool { get }
   var textColor: UIColor { get }
+  var detailTextColor: UIColor { get }
   var title: String { get }
 }
 
@@ -109,6 +110,10 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
     default:
       return .ksr_text_dark_grey_500
     }
+  }
+
+  public var detailTextColor: UIColor {
+    return .ksr_text_dark_grey_400
   }
 
   public var hideDescriptionLabel: Bool {

@@ -28,7 +28,6 @@ public enum SettingsAccountSectionType: Int {
 }
 
 public enum SettingsAccountCellType: SettingsCellTypeProtocol {
-
   case changeEmail
   case changePassword
   case privacy
@@ -52,6 +51,15 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
 
   public var textColor: UIColor {
     return .ksr_text_dark_grey_500
+  }
+
+  public var detailTextColor: UIColor {
+    switch self {
+    case .currency:
+      return .ksr_text_green_700
+    default:
+      return .ksr_text_dark_grey_400
+    }
   }
 
   public var hideDescriptionLabel: Bool {

@@ -1,7 +1,6 @@
 import UIKit
 
 public enum HelpType: SettingsCellTypeProtocol {
-
   case helpCenter
   case contact
   case howItWorks
@@ -54,6 +53,9 @@ public enum HelpType: SettingsCellTypeProtocol {
     return true
   }
 
+  public var detailTextColor: UIColor {
+    return .ksr_text_dark_grey_400
+  }
 
   public var trackingString: String {
     switch self {

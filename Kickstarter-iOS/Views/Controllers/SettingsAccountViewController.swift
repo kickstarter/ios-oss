@@ -11,7 +11,6 @@ final class SettingsAccountViewController: UIViewController {
 
   private let dataSource = SettingsAccountDataSource()
   fileprivate let viewModel: SettingsAccountViewModelType = SettingsAccountViewModel()
-//  fileprivate var currencyPickerIndexPath: IndexPath?
 
   internal static func instantiate() -> SettingsAccountViewController {
     return Storyboard.SettingsAccount.instantiate(SettingsAccountViewController.self)
@@ -124,19 +123,20 @@ extension SettingsAccountViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 
-    if  let cell = cell as? SettingsAccountPickerCell {
+    if let cell = cell as? SettingsAccountPickerCell {
       cell.delegate = self
     }
   }
 }
 
-
-
 extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
-  internal func currencyPickerCellExpansion(_ cell: SettingsAccountPickerCell) {
-
-//    cell.contentView.setNeedsUpdateConstraints()
-//    self.tableView.beginUpdates()
-//    self.tableView.endUpdates()
+  internal func currencyPicker(text: String) {
+    tableView.beginUpdates()
+    let parentIndexPath = IndexPath(row: 1, section: SettingsAccountSectionType.payment.rawValue)
+    let cell = tableView.cellForRow(at: parentIndexPath)
+    if let cell = cell as? SettingsTableViewCell {
+      cell.detailLabel.text = text
+    }
+    tableView.endUpdates()
   }
 }

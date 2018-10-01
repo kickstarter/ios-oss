@@ -3,7 +3,7 @@ import Library
 import KsApi
 
 internal protocol SettingsAccountPickerCellDelegate: class {
-  func currencyPickerCellExpansion(_ cell: SettingsAccountPickerCell)
+  func currencyPicker(text: String)
 }
 
 final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
@@ -18,10 +18,7 @@ final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
 
     self.pickerView.delegate = self
     self.pickerView.dataSource = self
-
-
   }
-
 
   func configureWith(value cellValue: SettingsCellValue) {
     let cellType = cellValue.cellType
@@ -39,13 +36,11 @@ final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.notifyCurrencyPickerShouldCollapse
+    self.viewModel.outputs.notifyCurrencySelected
       .observeForUI()
-      .observeValues { [weak self] in
-        self.doIfSome { $0.delegate?.currencyPickerCellExpansion($0)}
+      .observeValues { [weak self] currency in
+        self.doIfSome { $0.delegate?.currencyPicker(text: currency) }
     }
-
-    //self.pickerView.rac.hidden = self.viewModel.outputs.currencyPickerHidden
   }
 }
 
@@ -67,6 +62,10 @@ extension SettingsAccountPickerCell: UIPickerViewDelegate {
   }
 
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-   // self.detailLabel.text = Currencies(rawValue: row)?.descriptionText
+    guard let selectedCurrency = Currencies(rawValue: row) else {
+      return
+    }
+
+    self.viewModel.inputs.didSelectCurrency(currency: selectedCurrency)
   }
 }
