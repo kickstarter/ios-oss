@@ -259,26 +259,6 @@ public struct AppEnvironment {
       )
     }
 
-    // Try restoring the base urls for the api service
-    if let apiBaseUrlString = data["apiService.serverConfig.apiBaseUrl"] as? String,
-      let apiBaseUrl = URL(string: apiBaseUrlString),
-      let webBaseUrlString = data["apiService.serverConfig.webBaseUrl"] as? String,
-      let webBaseUrl = URL(string: webBaseUrlString) {
-
-      service = Service(
-        serverConfig: ServerConfig(
-          apiBaseUrl: apiBaseUrl,
-          webBaseUrl: webBaseUrl,
-          apiClientAuth: service.serverConfig.apiClientAuth,
-          basicHTTPAuth: service.serverConfig.basicHTTPAuth,
-          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl
-        ),
-        oauthToken: service.oauthToken,
-        language: current.language.rawValue,
-        currency: current.locale.currencyCode ?? "USD"
-      )
-    }
-
     // Try restoring the basic auth data for the api service
     if let username = data["apiService.serverConfig.basicHTTPAuth.username"] as? String,
       let password = data["apiService.serverConfig.basicHTTPAuth.password"] as? String {
@@ -300,15 +280,10 @@ public struct AppEnvironment {
     // Try restoring the environment
     if let environment = data["apiService.serverConfig.environment"] as? String,
       let environmentType = EnvironmentType(rawValue: environment) {
+      let serverConfig = ServerConfig.config(for: environmentType)
+
       service = Service(
-        serverConfig: ServerConfig(
-          apiBaseUrl: service.serverConfig.apiBaseUrl,
-          webBaseUrl: service.serverConfig.webBaseUrl,
-          apiClientAuth: service.serverConfig.apiClientAuth,
-          basicHTTPAuth: service.serverConfig.basicHTTPAuth,
-          graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl,
-          environment: environmentType
-        ),
+        serverConfig: serverConfig,
         oauthToken: service.oauthToken,
         language: current.language.rawValue,
         currency: current.locale.currencyCode ?? "USD"
