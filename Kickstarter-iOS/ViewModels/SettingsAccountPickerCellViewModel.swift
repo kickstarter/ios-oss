@@ -25,7 +25,7 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
   public init() {
     let cellType = cellTypeProperty.signal.skipNil().skipRepeats()
 
-    self.notifyCurrencyPickerHidden = selectedCurrencyProperty.signal.mapConst(true).skipRepeats()
+    self.notifyCurrencyPickerHidden = selectedCurrencyProperty.signal.mapConst(true)
 
     self.notifyCurrencySelected = selectedCurrencyProperty.signal.map { $0?.descriptionText ?? "" }
   }

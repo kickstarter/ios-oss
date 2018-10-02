@@ -3,7 +3,7 @@ import UIKit
 public protocol SettingsCellTypeProtocol {
   var description: String? { get }
   var hideDescriptionLabel: Bool { get }
-  var hidePickerView: Bool { get }
+ // var hidePickerView: Bool { get }
   var showArrowImageView: Bool { get }
   var textColor: UIColor { get }
   var detailTextColor: UIColor { get }
@@ -99,9 +99,9 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
     }
   }
 
-  public var hidePickerView: Bool {
-    return true
-  }
+//  public var hidePickerView: Bool {
+//    return true
+//  }
 
   public var textColor: UIColor {
     switch self {

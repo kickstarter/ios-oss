@@ -6,12 +6,13 @@ import KsApi
 public protocol SettingsAccountViewModelInputs {
   func settingsCellTapped(cellType: SettingsAccountCellType)
   func didSelectRow(cellType: SettingsAccountCellType)
+  func currencyPickerShown()
   func viewDidLoad()
 }
 
 public protocol SettingsAccountViewModelOutputs {
   var reloadData: Signal<Void, NoError> { get }
-  var showCurrencyPicker: Signal<Void, NoError> { get }
+  var showCurrencyPicker: Signal<Bool, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
 }
 
@@ -26,17 +27,15 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public init() {
     self.reloadData = self.viewDidLoadProperty.signal
 
-    let currencyCellSelected = self.selectedCellType.signal
-      .skipNil()
-      .filter {  $0 == .currency }
-      .skipRepeats()
+    let currencyCellSelected = self.selectedCellType.signal.skipNil()
+      .filter { $0 == .currency }
 
+    self.showCurrencyPicker = Signal.merge(
+      currencyCellSelected.signal.mapConst(true),
+      currencyPickerShownProperty.signal.mapConst(false)
+      ).skipRepeats()
 
-    self.showCurrencyPicker =
-      currencyCellSelected.signal.mapConst(true).ignoreValues()
-
-    self.transitionToViewController = self.selectedCellTypeProperty.signal
-      .skipNil()
+    self.transitionToViewController = self.selectedCellTypeProperty.signal.skipNil()
       .map { SettingsAccountViewModel.viewController(for: $0) }
       .skipNil()
   }
@@ -56,8 +55,13 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.selectedCellType.value = cellType
   }
 
+  fileprivate let currencyPickerShownProperty = MutableProperty(())
+  public func currencyPickerShown() {
+    self.currencyPickerShownProperty.value = ()
+  }
+
   public let reloadData: Signal<Void, NoError>
-  public let showCurrencyPicker: Signal<Void, NoError>
+  public let showCurrencyPicker: Signal<Bool, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }

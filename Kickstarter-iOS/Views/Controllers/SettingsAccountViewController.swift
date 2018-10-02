@@ -40,8 +40,8 @@ final class SettingsAccountViewController: UIViewController {
 
     self.viewModel.outputs.showCurrencyPicker
       .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.insertCurrencyPickerCell()
+      .observeValues { [weak self] show in
+        self?.showCurrencyPickerCell(show)
     }
   }
 
@@ -56,10 +56,12 @@ final class SettingsAccountViewController: UIViewController {
       |> settingsTableViewStyle
   }
 
-  func insertCurrencyPickerCell() {
-    self.tableView.beginUpdates()
-    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerCell()], with: .top)
-    self.tableView.endUpdates()
+  func showCurrencyPickerCell(_ show: Bool) {
+    if show {
+      self.tableView.beginUpdates()
+      self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerCell()], with: .top)
+      self.tableView.endUpdates()
+    }
   }
 }
 
@@ -108,8 +110,8 @@ extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
 
   internal func notifyCurrencyPickerIs(hidden: Bool) {
     tableView.beginUpdates()
-
     self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
     tableView.endUpdates()
+    self.viewModel.inputs.currencyPickerShown()
   }
 }
