@@ -92,12 +92,6 @@ final class ChangePasswordViewController: UIViewController {
     self.errorMessageLabel.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
     self.errorMessageLabel.rac.text = self.viewModel.outputs.errorLabelMessage
 
-    self.viewModel.outputs.testPasswordInput
-      .observeForUI()
-      .observeValues { (passwordInput) in
-        print(passwordInput)
-    }
-
     self.viewModel.outputs.currentPasswordBecomeFirstResponder
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -125,6 +119,24 @@ final class ChangePasswordViewController: UIViewController {
     self.viewModel.outputs.onePasswordFindPasswordForURLString
       .observeValues { [weak self] urlString in
         self?.onePasswordFindPassword(forURLString: urlString)
+    }
+
+    self.viewModel.outputs.testPasswordInput
+      .observeValues {
+        print("CHANGE PASSWORD SUCCESS")
+    }
+
+    self.viewModel.outputs.changePasswordFailure
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        let alert = UIAlertController(title: "Error",
+                                      message: errorMessage,
+                                      preferredStyle: UIAlertController.Style.alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+
+        alert.addAction(okAction)
+
+        self?.present(alert, animated: true, completion: nil)
     }
 
     Keyboard.change

@@ -211,6 +211,26 @@ final class ServiceTypeTests: XCTestCase {
       request.allHTTPHeaderFields!
     )
   }
+
+  func testPreparedGraphRequest() {
+    let url = self.service.serverConfig.graphQLEndpointUrl
+    let request = try? self.service.preparedGraphRequest(forURL: url,
+                                                         queryString: "mutation",
+                                                         input: ["mutation_input": 123])
+
+    let jsonBody = try? JSONSerialization.jsonObject(with: request?.httpBody ?? Data(capacity: 1),
+    options: [])
+
+    XCTAssertNotNil(request)
+    XCTAssertEqual(request?.httpMethod, "POST")
+    XCTAssertEqual(request?.allHTTPHeaderFields?["Content-Type"], "application/json; charset=utf-8")
+    XCTAssertNotNil(jsonBody)
+    XCTAssertEqual(request?.allHTTPHeaderFields?["Accept-Language"], self.service.language)
+    XCTAssertEqual(request?.allHTTPHeaderFields?["Authorization"], "token cafebeef")
+    XCTAssertEqual(request?.allHTTPHeaderFields?["Kickstarter-App-Id"], self.service.appId)
+    XCTAssertEqual(request?.allHTTPHeaderFields?["Kickstarter-iOS-App"], self.service.buildVersion)
+    XCTAssertEqual(request?.allHTTPHeaderFields?["User-Agent"], userAgent())
+  }
 }
 
 private func userAgent() -> String {

@@ -429,6 +429,11 @@ internal struct MockService: ServiceType {
       )
   }
 
+  internal func changePassword(input: ChangePasswordInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+  }
+
   internal func fetchCheckout(checkoutUrl url: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope> {
     if let response = fetchCheckoutResponse {
       return SignalProducer(value: response)
