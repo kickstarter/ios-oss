@@ -56,20 +56,9 @@ final class SettingsAccountViewController: UIViewController {
       |> settingsTableViewStyle
   }
 
-//  func indexPathToInsertCurrencyPicker(indexPath: IndexPath) -> IndexPath {
-//    if let currencyPickerIndexPath = currencyPickerIndexPath,
-//      currencyPickerIndexPath.row < indexPath.row {
-//      return indexPath
-//    } else {
-//      return IndexPath(row: indexPath.row + 1, section: indexPath.section)
-//    }
-//  }
-
   func insertCurrencyPickerCell() {
     self.tableView.beginUpdates()
-
     self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerCell()], with: .top)
-
     self.tableView.endUpdates()
   }
 }
@@ -82,29 +71,6 @@ extension SettingsAccountViewController: UITableViewDelegate {
     guard let cellType = dataSource.cellTypeForIndexPath(indexPath: indexPath) else {
       return
     }
-
-//    if cellType == .changeEmail {
-//      tableView.beginUpdates()
-//
-//      if let currencyPickerIndexPath = currencyPickerIndexPath,
-//        currencyPickerIndexPath.row - 1 == indexPath.row {
-//
-//        tableView.deleteRows(at: [currencyPickerIndexPath], with: .fade)
-//
-//        self.currencyPickerIndexPath == nil
-//      } else {
-//
-//        if let currencyPickerIndexPath = currencyPickerIndexPath {
-//          tableView.deleteRows(at: [currencyPickerIndexPath], with: .fade)
-//        }
-//        currencyPickerIndexPath = indexPathToInsertCurrencyPicker(indexPath: indexPath)
-//
-//        tableView.insertRows(at: [currencyPickerIndexPath!], with: .fade)
-//        tableView.deselectRow(at: indexPath, animated: true)
-//      }
-//
-//      tableView.endUpdates()
-//    }
 
     self.viewModel.inputs.didSelectRow(cellType: cellType)
   }
@@ -135,8 +101,15 @@ extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
     let parentIndexPath = IndexPath(row: 1, section: SettingsAccountSectionType.payment.rawValue)
     let cell = tableView.cellForRow(at: parentIndexPath)
     if let cell = cell as? SettingsTableViewCell {
-      cell.detailLabel.text = text
+      cell.detailLabel.text = text // Fix this
     }
+    tableView.endUpdates()
+  }
+
+  internal func notifyCurrencyPickerIs(hidden: Bool) {
+    tableView.beginUpdates()
+
+    self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
     tableView.endUpdates()
   }
 }

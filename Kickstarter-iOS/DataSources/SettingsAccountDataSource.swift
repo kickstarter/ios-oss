@@ -16,10 +16,18 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   func insertCurrencyPickerCell() -> IndexPath {
     let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currency)
 
-    return self.insertRow(value: cellValue,
+    return self.appendRow(value: cellValue,
                           cellClass: SettingsAccountPickerCell.self,
-                          atIndex: 2,
-                          inSection: SettingsAccountSectionType.payment.rawValue)
+                          toSection: SettingsAccountSectionType.payment.rawValue)
+  }
+
+  func removeCurrencyPickerRow() -> IndexPath {
+    let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currency)
+
+    return self.deleteRow(value: cellValue,
+                           cellClass: SettingsAccountPickerCell.self,
+                           atIndex: 2,
+                           inSection: SettingsAccountSectionType.payment.rawValue)
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {

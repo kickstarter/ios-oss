@@ -10,7 +10,7 @@ protocol SettingsAccountPickerCellViewModelInputs {
 }
 
 protocol SettingsAccountPickerCellViewModelOutputs {
-  var currencyPickerHidden: Signal<Bool, NoError> { get }
+  var notifyCurrencyPickerHidden: Signal<Bool, NoError> { get }
   var notifyCurrencySelected: Signal<String, NoError> { get }
 }
 
@@ -25,10 +25,7 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
   public init() {
     let cellType = cellTypeProperty.signal.skipNil().skipRepeats()
 
-    self.currencyPickerHidden = .empty
-//      cellType
-//      .map { $0.hidePickerView }
-//      .negate()
+    self.notifyCurrencyPickerHidden = selectedCurrencyProperty.signal.mapConst(true).skipRepeats()
 
     self.notifyCurrencySelected = selectedCurrencyProperty.signal.map { $0?.descriptionText ?? "" }
   }
@@ -43,7 +40,7 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
     self.cellTypeProperty.value = cellValue.cellType as? SettingsAccountCellType
   }
 
-  public let currencyPickerHidden: Signal<Bool, NoError>
+  public let notifyCurrencyPickerHidden: Signal<Bool, NoError>
   public let notifyCurrencySelected: Signal<String, NoError>
 
   var inputs: SettingsAccountPickerCellViewModelInputs { return self }

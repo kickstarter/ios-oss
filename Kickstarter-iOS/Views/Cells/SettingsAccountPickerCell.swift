@@ -4,6 +4,7 @@ import KsApi
 
 internal protocol SettingsAccountPickerCellDelegate: class {
   func currencyPicker(text: String)
+  func notifyCurrencyPickerIs(hidden: Bool)
 }
 
 final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
@@ -40,6 +41,12 @@ final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
       .observeForUI()
       .observeValues { [weak self] currency in
         self.doIfSome { $0.delegate?.currencyPicker(text: currency) }
+    }
+
+    self.viewModel.outputs.notifyCurrencyPickerHidden
+      .observeForUI()
+      .observeValues { [weak self] hidden in
+        self.doIfSome { $0.delegate?.notifyCurrencyPickerIs(hidden: hidden) }
     }
   }
 }
