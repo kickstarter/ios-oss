@@ -14,6 +14,8 @@ final class ChangePasswordViewController: UIViewController {
   @IBOutlet fileprivate weak var saveButton: UIBarButtonItem!
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
+  private var messageBannerView: MessageBannerViewController!
+
   private let viewModel: ChangePasswordViewModelType = ChangePasswordViewModel()
 
   internal static func instantiate() -> ChangePasswordViewController {
@@ -22,6 +24,12 @@ final class ChangePasswordViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    guard let messageViewController = self.children.first as? MessageBannerViewController else {
+      fatalError("Missing message View Controller")
+    }
+
+    self.messageBannerView = messageViewController
 
     self.viewModel
       .inputs.onePasswordIsAvailable(available: OnePasswordExtension.shared().isAppExtensionAvailable())
@@ -94,8 +102,11 @@ final class ChangePasswordViewController: UIViewController {
 
     self.viewModel.outputs.testPasswordInput
       .observeForUI()
-      .observeValues { (passwordInput) in
+      .observeValues { [weak self] (passwordInput) in
         print(passwordInput)
+        self?.messageBannerView.setBannerType(type: .success,
+                                              message: "Changed password to \(passwordInput.1)")
+        self?.messageBannerView.showBannerView()
     }
 
     self.viewModel.outputs.currentPasswordBecomeFirstResponder
