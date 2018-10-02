@@ -7,8 +7,6 @@ final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var currentEmail: UILabel!
   @IBOutlet fileprivate weak var errorLabel: UILabel!
   @IBOutlet fileprivate weak var errorView: UIView!
-  @IBOutlet fileprivate weak var messageBannerView: UIView!
-  @IBOutlet fileprivate weak var messageBannerLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
   @IBOutlet fileprivate weak var newEmail: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
@@ -19,6 +17,8 @@ final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var saveBarButton: UIBarButtonItem!
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
+  private var messageBannerView: MessageBannerViewController!
+
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
 
   internal static func instantiate() -> ChangeEmailViewController {
@@ -28,6 +28,12 @@ final class ChangeEmailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    guard let messageBannerView = self.children.first as? MessageBannerViewController else {
+      fatalError("MessageBannerView missing")
+    }
+
+    self.messageBannerView = messageBannerView
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -36,8 +42,14 @@ final class ChangeEmailViewController: UIViewController {
 
     self.resendVerificationEmailView.rac.hidden = self.viewModel.outputs.resendVerificationEmailButtonIsHidden
     self.errorLabel.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
-    self.messageBannerView.rac.hidden = self.viewModel.outputs.messageBannerViewIsHidden
     self.saveBarButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
+
+    self.viewModel.outputs.messageBannerViewIsHidden
+      .observeForUI()
+      .observeValues { [weak self] (isHidden) in
+        self?.messageBannerView.setBannerType(type: .success, message: Strings.Verification_email_sent())
+        self?.messageBannerView.showBannerView()
+    }
 
     Keyboard.change
       .observeForUI()
@@ -67,13 +79,6 @@ final class ChangeEmailViewController: UIViewController {
 
     _ = currentEmail
       |> settingsDetailLabelStyle
-
-    _ = messageBannerView
-      |> roundedStyle(cornerRadius: 4)
-
-    _ = messageBannerLabel
-      |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.text %~ { _ in Strings.Verification_email_sent() }
 
     _ = newEmailLabel
       |> settingsTitleLabelStyle

@@ -6,13 +6,13 @@ import Result
 protocol MessageBannerViewModelOutputs {
   var bannerBackgroundColor: Signal<UIColor, NoError> { get }
   var bannerMessage: Signal<String, NoError> { get }
-  var messageBannerIsHidden: Signal<Bool, NoError> { get }
+  var messageBannerViewShouldShow: Signal<Void, NoError> { get }
 }
 
 protocol MessageBannerViewModelInputs {
   func setBannerType(type: MessageBannerType)
   func setBannerMessage(message: String)
-  func setHidden(isHidden: Bool)
+  func showBannerView()
 }
 
 protocol MessageBannerViewModelType {
@@ -20,14 +20,13 @@ protocol MessageBannerViewModelType {
   var outputs: MessageBannerViewModelOutputs { get }
 }
 
-
 struct MessageBannerViewModel: MessageBannerViewModelType, MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
   public init() {
     self.bannerBackgroundColor = self.bannerBackgroundColorProperty.signal
       .skipNil()
     self.bannerMessage = self.bannerMessageProperty.signal
       .skipNil()
-    self.messageBannerIsHidden = self.isHiddenProperty.signal
+    self.messageBannerViewShouldShow = self.showBannerViewProperty.signal
   }
 
   private var bannerBackgroundColorProperty = MutableProperty<UIColor?>(nil)
@@ -40,15 +39,14 @@ struct MessageBannerViewModel: MessageBannerViewModelType, MessageBannerViewMode
     self.bannerMessageProperty.value = message
   }
 
-
-  private var isHiddenProperty = MutableProperty<Bool>(true)
-  func setHidden(isHidden: Bool) {
-    self.isHiddenProperty.value = isHidden
+  private var showBannerViewProperty = MutableProperty(())
+  func showBannerView() {
+    self.showBannerViewProperty.value = ()
   }
 
   public let bannerBackgroundColor: Signal<UIColor, NoError>
   public let bannerMessage: Signal<String, NoError>
-  public let messageBannerIsHidden: Signal<Bool, NoError>
+  public let messageBannerViewShouldShow: Signal<Void, NoError>
 
   var inputs: MessageBannerViewModelInputs {
     return self

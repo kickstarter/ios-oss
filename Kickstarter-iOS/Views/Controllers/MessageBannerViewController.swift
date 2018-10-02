@@ -9,7 +9,7 @@ public enum MessageBannerType {
   var backgroundColor: UIColor {
     switch self {
     case .success:
-      return UIColor.ksr_facebookBlue
+      return UIColor.ksr_azure_blue
     case .error:
       return UIColor.ksr_orange_600
     }
@@ -38,10 +38,10 @@ final class MessageBannerViewController: UIViewController {
     self.messageLabel.rac.text = self.viewModel.outputs.bannerMessage
     self.backgroundView.rac.backgroundColor = self.viewModel.outputs.bannerBackgroundColor
 
-    self.viewModel.outputs.messageBannerIsHidden
+    self.viewModel.outputs.messageBannerViewShouldShow
       .observeForUI()
-      .observeValues { [weak self] isHidden in
-        self?.animateHidden(isHidden)
+      .observeValues { [weak self] _ in
+        self?.showViewAndAnimate()
     }
   }
 
@@ -51,11 +51,20 @@ final class MessageBannerViewController: UIViewController {
   }
 
   func showBannerView() {
-    self.viewModel.inputs.setHidden(isHidden: false)
+    self.viewModel.inputs.showBannerView()
   }
 
-  private func animateHidden(_ isHidden: Bool) {
-    // TODO: animate
-    self.view.isHidden = isHidden
+  private func showViewAndAnimate() {
+    self.view.alpha = 0.0
+    self.view.isHidden = false
+
+    UIView.animate(withDuration: 0.3, animations: { [weak self] in
+      self?.view.alpha = 1.0
+      },
+    completion: { (_) in
+      UIView.animate(withDuration: 0.3, delay: 3.0, options: [], animations: { [weak self] in
+        self?.view.alpha = 0.0
+      }, completion: nil)
+    })
   }
 }
