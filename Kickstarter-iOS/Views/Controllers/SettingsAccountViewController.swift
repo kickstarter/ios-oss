@@ -52,6 +52,12 @@ final class SettingsAccountViewController: UIViewController {
       .observeValues { [weak self] in
         self?.dismissPicker()
     }
+
+    self.viewModel.outputs.transitionToViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] (viewController) in
+        self?.navigationController?.pushViewController(viewController, animated: true)
+    }
   }
 
   override func bindStyles() {

@@ -83,11 +83,6 @@ extension UIColor {
     return .hex(0x282828)
   }
 
-  /// 0xD6D6D6
-  public static var ksr_dropShadow: UIColor {
-    return .hex(0xD6D6D6)
-  }
-
   /// 0x3B5998
   public static var ksr_facebookBlue: UIColor {
     return .hex(0x3B5998)
