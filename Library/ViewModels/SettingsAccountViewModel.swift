@@ -37,7 +37,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       currencyCellSelected.signal.mapConst(true),
       currencyPickerShownProperty.signal.mapConst(false),
       dismissedCurrencyPickerProperty.signal.mapConst(false)
-      ).skipRepeats()
+    ).skipRepeats()
 
     self.dismissPicker = self.tappedProperty.signal
 
