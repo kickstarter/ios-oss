@@ -27,6 +27,10 @@ final class SettingsAccountViewController: UIViewController {
 
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureNotifier))
+    tapRecognizer.cancelsTouchesInView = false
+    self.view.addGestureRecognizer(tapRecognizer)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -42,6 +46,12 @@ final class SettingsAccountViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] show in
         self?.showCurrencyPickerCell(show)
+    }
+
+    self.viewModel.outputs.dismissPicker
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dismissPicker()
     }
   }
 
@@ -63,10 +73,22 @@ final class SettingsAccountViewController: UIViewController {
       self.tableView.endUpdates()
     }
   }
+
+  func dismissPicker() {
+    if self.tableView.numberOfRows(inSection: 2) == 3 {
+      tableView.beginUpdates()
+      self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
+      tableView.endUpdates()
+      self.viewModel.inputs.dismissedCurrencyPicker()
+    }
+  }
+
+  @objc private func tapGestureNotifier() {
+    self.viewModel.inputs.tapped()
+  }
 }
 
 extension SettingsAccountViewController: UITableViewDelegate {
-
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
 

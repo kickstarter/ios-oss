@@ -7,6 +7,8 @@ public protocol SettingsAccountViewModelInputs {
   func settingsCellTapped(cellType: SettingsAccountCellType)
   func didSelectRow(cellType: SettingsAccountCellType)
   func currencyPickerShown()
+  func dismissedCurrencyPicker()
+  func tapped()
   func viewDidLoad()
 }
 
@@ -14,6 +16,7 @@ public protocol SettingsAccountViewModelOutputs {
   var reloadData: Signal<Void, NoError> { get }
   var showCurrencyPicker: Signal<Bool, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
+  var dismissPicker: Signal<Void, NoError> { get }
 }
 
 public protocol SettingsAccountViewModelType {
@@ -32,8 +35,11 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     self.showCurrencyPicker = Signal.merge(
       currencyCellSelected.signal.mapConst(true),
-      currencyPickerShownProperty.signal.mapConst(false)
+      currencyPickerShownProperty.signal.mapConst(false),
+      dismissedCurrencyPickerProperty.signal.mapConst(false)
       ).skipRepeats()
+
+    self.dismissPicker = self.tappedProperty.signal
 
     self.transitionToViewController = self.selectedCellTypeProperty.signal.skipNil()
       .map { SettingsAccountViewModel.viewController(for: $0) }
@@ -60,9 +66,20 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.currencyPickerShownProperty.value = ()
   }
 
+  fileprivate let dismissedCurrencyPickerProperty = MutableProperty(())
+  public func dismissedCurrencyPicker() {
+    self.dismissedCurrencyPickerProperty.value = ()
+  }
+
+  fileprivate let tappedProperty = MutableProperty(())
+  public func tapped() {
+    self.tappedProperty.value = ()
+  }
+
   public let reloadData: Signal<Void, NoError>
   public let showCurrencyPicker: Signal<Bool, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
+  public let dismissPicker: Signal<Void, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }
