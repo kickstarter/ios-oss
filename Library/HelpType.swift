@@ -49,10 +49,6 @@ public enum HelpType: SettingsCellTypeProtocol {
     return nil
   }
 
-//  public var hidePickerView: Bool {
-//    return true
-//  }
-
   public var detailTextColor: UIColor {
     return .ksr_text_dark_grey_400
   }

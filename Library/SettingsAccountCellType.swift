@@ -71,15 +71,6 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
     }
   }
 
-//  public var hidePickerView: Bool {
-//    switch self {
-//    case .currency:
-//      return false
-//    default:
-//      return true
-//    }
-//  }
-
   public var title: String {
     switch self {
     case .changeEmail:
