@@ -100,7 +100,6 @@ extension SettingsAccountViewController: UITableViewDelegate {
     guard let cellType = dataSource.cellTypeForIndexPath(indexPath: indexPath) else {
       return
     }
-
     self.viewModel.inputs.didSelectRow(cellType: cellType)
   }
 
@@ -124,7 +123,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
 }
 
 extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
-  internal func currencyPicker(text: String) {
+  internal func currencyCellDetailTextUpdated(_ text: String) {
     tableView.beginUpdates()
     let parentIndexPath = IndexPath(row: 1, section: SettingsAccountSectionType.payment.rawValue)
     let cell = tableView.cellForRow(at: parentIndexPath)
@@ -134,7 +133,7 @@ extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
     tableView.endUpdates()
   }
 
-  internal func notifyCurrencyPickerIs(hidden: Bool) {
+  internal func shouldRemoveCell() {
     tableView.beginUpdates()
     self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
     tableView.endUpdates()

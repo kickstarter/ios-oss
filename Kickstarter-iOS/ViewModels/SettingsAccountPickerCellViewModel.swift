@@ -10,8 +10,8 @@ protocol SettingsAccountPickerCellViewModelInputs {
 }
 
 protocol SettingsAccountPickerCellViewModelOutputs {
-  var notifyCurrencyPickerHidden: Signal<Bool, NoError> { get }
-  var notifyCurrencySelected: Signal<String, NoError> { get }
+  var notifyCurrencyPickerCellRemoved: Signal<Bool, NoError> { get }
+  var updateCurrencyDetailText: Signal<String, NoError> { get }
 }
 
 protocol SettingsAccountPickerCellViewModelType {
@@ -23,11 +23,10 @@ final class SettingsAccountPickerCellViewModel: SettingsAccountPickerCellViewMod
 SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType {
 
   public init() {
-    let cellType = cellTypeProperty.signal.skipNil().skipRepeats()
 
-    self.notifyCurrencyPickerHidden = selectedCurrencyProperty.signal.mapConst(true)
+    self.notifyCurrencyPickerCellRemoved = selectedCurrencyProperty.signal.mapConst(true)
 
-    self.notifyCurrencySelected = selectedCurrencyProperty.signal.map { $0?.descriptionText ?? "" }
+    self.updateCurrencyDetailText = selectedCurrencyProperty.signal.map { $0?.descriptionText ?? "" }
   }
 
   fileprivate let selectedCurrencyProperty = MutableProperty<Currencies?>(nil)
@@ -40,8 +39,8 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
     self.cellTypeProperty.value = cellValue.cellType as? SettingsAccountCellType
   }
 
-  public let notifyCurrencyPickerHidden: Signal<Bool, NoError>
-  public let notifyCurrencySelected: Signal<String, NoError>
+  public let notifyCurrencyPickerCellRemoved: Signal<Bool, NoError>
+  public let updateCurrencyDetailText: Signal<String, NoError>
 
   var inputs: SettingsAccountPickerCellViewModelInputs { return self }
   var outputs: SettingsAccountPickerCellViewModelOutputs { return self }

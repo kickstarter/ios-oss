@@ -2,7 +2,6 @@ import KsApi
 import UIKit
 
 public enum SettingsAccountSectionType: Int {
-
   case emailPassword
   case privacy
   case payment

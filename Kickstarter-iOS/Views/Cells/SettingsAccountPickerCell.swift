@@ -3,8 +3,10 @@ import Library
 import KsApi
 
 internal protocol SettingsAccountPickerCellDelegate: class {
-  func currencyPicker(text: String)
-  func notifyCurrencyPickerIs(hidden: Bool)
+  /// Called when user did select currency in picker to update detail text in currency cell
+  func currencyCellDetailTextUpdated(_ text: String)
+  /// Called after user selects currency in picker to remove picker cell
+  func shouldRemoveCell()
 }
 
 final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
@@ -22,8 +24,6 @@ final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
   }
 
   func configureWith(value cellValue: SettingsCellValue) {
-    let cellType = cellValue.cellType
-
     self.viewModel.inputs.configure(with: cellValue)
   }
 
@@ -37,16 +37,16 @@ final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.notifyCurrencySelected
+    self.viewModel.outputs.updateCurrencyDetailText
       .observeForUI()
-      .observeValues { [weak self] currency in
-        self.doIfSome { $0.delegate?.currencyPicker(text: currency) }
+      .observeValues { [weak self] text in
+        self.doIfSome { $0.delegate?.currencyCellDetailTextUpdated(text) } // CHECK THIS
     }
 
-    self.viewModel.outputs.notifyCurrencyPickerHidden
+    self.viewModel.outputs.notifyCurrencyPickerCellRemoved
       .observeForUI()
-      .observeValues { [weak self] hidden in
-        self.doIfSome { $0.delegate?.notifyCurrencyPickerIs(hidden: hidden) }
+      .observeValues { [weak self] remove in
+        self.doIfSome { $0.delegate?.shouldRemoveCell() }
     }
   }
 }
