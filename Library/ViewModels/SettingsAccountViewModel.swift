@@ -4,19 +4,19 @@ import Result
 import KsApi
 
 public protocol SettingsAccountViewModelInputs {
-  func settingsCellTapped(cellType: SettingsAccountCellType)
-  func didSelectRow(cellType: SettingsAccountCellType)
   func currencyPickerShown()
+  func didSelectRow(cellType: SettingsAccountCellType)
   func dismissedCurrencyPicker()
+  func settingsCellTapped(cellType: SettingsAccountCellType)
   func tapped()
   func viewDidLoad()
 }
 
 public protocol SettingsAccountViewModelOutputs {
+  var dismissPicker: Signal<Void, NoError> { get }
   var reloadData: Signal<Void, NoError> { get }
   var showCurrencyPicker: Signal<Bool, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
-  var dismissPicker: Signal<Void, NoError> { get }
 }
 
 public protocol SettingsAccountViewModelType {
@@ -46,9 +46,14 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .skipNil()
   }
 
-  private let viewDidLoadProperty = MutableProperty(())
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
+  fileprivate let currencyPickerShownProperty = MutableProperty(())
+  public func currencyPickerShown() {
+    self.currencyPickerShownProperty.value = ()
+  }
+
+  fileprivate let dismissedCurrencyPickerProperty = MutableProperty(())
+  public func dismissedCurrencyPicker() {
+    self.dismissedCurrencyPickerProperty.value = ()
   }
 
   private let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
@@ -61,25 +66,20 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.selectedCellType.value = cellType
   }
 
-  fileprivate let currencyPickerShownProperty = MutableProperty(())
-  public func currencyPickerShown() {
-    self.currencyPickerShownProperty.value = ()
-  }
-
-  fileprivate let dismissedCurrencyPickerProperty = MutableProperty(())
-  public func dismissedCurrencyPicker() {
-    self.dismissedCurrencyPickerProperty.value = ()
-  }
-
   fileprivate let tappedProperty = MutableProperty(())
   public func tapped() {
     self.tappedProperty.value = ()
   }
 
+  private let viewDidLoadProperty = MutableProperty(())
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+
+  public let dismissPicker: Signal<Void, NoError>
   public let reloadData: Signal<Void, NoError>
   public let showCurrencyPicker: Signal<Bool, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
-  public let dismissPicker: Signal<Void, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }

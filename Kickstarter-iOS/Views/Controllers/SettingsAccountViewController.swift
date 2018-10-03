@@ -6,7 +6,6 @@ import Result
 import UIKit
 
 final class SettingsAccountViewController: UIViewController {
-
   @IBOutlet private weak var tableView: UITableView!
 
   private let dataSource = SettingsAccountDataSource()
@@ -112,7 +111,6 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-
     if let cell = cell as? SettingsAccountPickerCell {
       cell.delegate = self
     }
