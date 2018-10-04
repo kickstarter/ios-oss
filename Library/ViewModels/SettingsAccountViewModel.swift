@@ -14,9 +14,9 @@ public protocol SettingsAccountViewModelInputs {
 }
 
 public protocol SettingsAccountViewModelOutputs {
-  var dismissPicker: Signal<Void, NoError> { get }
+  var dismissCurrencyPicker: Signal<Void, NoError> { get }
   var reloadData: Signal<Void, NoError> { get }
-  var showCurrencyPicker: Signal<Bool, NoError> { get }
+  var presentCurrencyPicker: Signal<Bool, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
 }
 
@@ -34,13 +34,13 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     let currencyCellSelected = self.selectedCellType.signal.skipNil()
       .filter { $0 == .currency }
 
-    self.showCurrencyPicker = Signal.merge(
+    self.presentCurrencyPicker = Signal.merge(
       currencyCellSelected.signal.mapConst(true),
       currencyPickerShownProperty.signal.mapConst(false),
       dismissedCurrencyPickerProperty.signal.mapConst(false)
     ).skipRepeats()
 
-    self.dismissPicker = self.tappedProperty.signal
+    self.dismissCurrencyPicker = self.tappedProperty.signal
 
     self.transitionToViewController = self.selectedCellTypeProperty.signal.skipNil()
       .map { SettingsAccountViewModel.viewController(for: $0) }
@@ -77,9 +77,9 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let dismissPicker: Signal<Void, NoError>
+  public let dismissCurrencyPicker: Signal<Void, NoError>
   public let reloadData: Signal<Void, NoError>
-  public let showCurrencyPicker: Signal<Bool, NoError>
+  public let presentCurrencyPicker: Signal<Bool, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }

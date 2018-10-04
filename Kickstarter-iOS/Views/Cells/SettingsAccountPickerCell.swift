@@ -6,7 +6,7 @@ internal protocol SettingsAccountPickerCellDelegate: class {
   /// Called when user did select currency in picker to update detail text in currency cell
   func currencyCellDetailTextUpdated(_ text: String)
   /// Called after user selects currency in picker to remove picker cell
-  func shouldRemoveCell()
+  func shouldDismissCurrencyPicker()
 }
 
 final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
@@ -40,13 +40,13 @@ final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
     self.viewModel.outputs.updateCurrencyDetailText
       .observeForUI()
       .observeValues { [weak self] text in
-        self.doIfSome { $0.delegate?.currencyCellDetailTextUpdated(text) } // CHECK THIS
+         self?.delegate?.currencyCellDetailTextUpdated(text)
     }
 
     self.viewModel.outputs.notifyCurrencyPickerCellRemoved
       .observeForUI()
-      .observeValues { [weak self] remove in
-        self.doIfSome { $0.delegate?.shouldRemoveCell() }
+      .observeValues { [weak self] _ in
+        self?.delegate?.shouldDismissCurrencyPicker()
     }
   }
 }
@@ -59,17 +59,17 @@ extension SettingsAccountPickerCell: UIPickerViewDataSource {
   }
 
   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    return Currencies.allCases.count
+    return Currency.allCases.count
   }
 }
 
 extension SettingsAccountPickerCell: UIPickerViewDelegate {
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return Currencies(rawValue: row)?.descriptionText
+    return Currency(rawValue: row)?.descriptionText
   }
 
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    guard let selectedCurrency = Currencies(rawValue: row) else {
+    guard let selectedCurrency = Currency(rawValue: row) else {
       return
     }
 

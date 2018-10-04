@@ -6,7 +6,7 @@ import Result
 
 protocol SettingsAccountPickerCellViewModelInputs {
   func configure(with cellValue: SettingsCellValue)
-  func didSelectCurrency(currency: Currencies)
+  func didSelectCurrency(currency: Currency)
 }
 
 protocol SettingsAccountPickerCellViewModelOutputs {
@@ -24,15 +24,14 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
 
   public init() {
 
-    let cellType = self.cellTypeProperty.signal.skipNil().skipRepeats() 
-
     self.notifyCurrencyPickerCellRemoved = self.selectedCurrencyProperty.signal.mapConst(true)
 
-    self.updateCurrencyDetailText = self.selectedCurrencyProperty.signal.map { $0?.descriptionText ?? "" }
+    self.updateCurrencyDetailText = self.selectedCurrencyProperty.signal.skipNil()
+      .map { $0.descriptionText }
   }
 
-  fileprivate let selectedCurrencyProperty = MutableProperty<Currencies?>(nil)
-  public func didSelectCurrency(currency: Currencies) {
+  fileprivate let selectedCurrencyProperty = MutableProperty<Currency?>(nil)
+  public func didSelectCurrency(currency: Currency) {
     self.selectedCurrencyProperty.value = currency
   }
 

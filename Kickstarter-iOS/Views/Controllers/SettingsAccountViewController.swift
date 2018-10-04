@@ -41,16 +41,16 @@ final class SettingsAccountViewController: UIViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.showCurrencyPicker
+    self.viewModel.outputs.presentCurrencyPicker
       .observeForUI()
       .observeValues { [weak self] show in
         self?.showCurrencyPickerCell(show)
     }
 
-    self.viewModel.outputs.dismissPicker
+    self.viewModel.outputs.dismissCurrencyPicker
       .observeForUI()
       .observeValues { [weak self] in
-        self?.dismissPicker()
+        self?.dismissCurrencyPickerCell()
     }
 
     self.viewModel.outputs.transitionToViewController
@@ -74,12 +74,12 @@ final class SettingsAccountViewController: UIViewController {
   func showCurrencyPickerCell(_ show: Bool) {
     if show {
       self.tableView.beginUpdates()
-      self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerCell()], with: .top)
+      self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow()], with: .top)
       self.tableView.endUpdates()
     }
   }
 
-  func dismissPicker() {
+  func dismissCurrencyPickerCell() {
     if self.tableView.numberOfRows(inSection: 2) == 3 {
       tableView.beginUpdates()
       self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)

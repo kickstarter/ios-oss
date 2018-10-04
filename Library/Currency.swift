@@ -1,6 +1,6 @@
 import UIKit
 
-public enum Currencies: Int {
+public enum Currency: Int {
   case euro
   case australianDollar
   case canadianDollar
@@ -16,7 +16,7 @@ public enum Currencies: Int {
   case singaporeDollar
   case usDollar
 
-  public static let allCases: [Currencies] = [
+  public static let allCases: [Currency] = [
     .euro,
     .australianDollar,
     .canadianDollar,
