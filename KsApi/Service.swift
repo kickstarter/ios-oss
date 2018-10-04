@@ -57,7 +57,6 @@ public struct Service: ServiceType {
 
   public func addImage(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
-
       return request(Route.addImage(fileUrl: fileURL, toDraft: draft))
   }
 

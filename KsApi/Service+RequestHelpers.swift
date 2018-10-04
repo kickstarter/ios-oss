@@ -48,8 +48,6 @@ extension Service {
 
   private func performRequest<A: Swift.Decodable>(request: URLRequest) -> SignalProducer<A, GraphError> {
     return SignalProducer<A, GraphError> { observer, disposable in
-      print(request)
-
       let task = URLSession.shared.dataTask(with: request) {  data, response, error in
         if let error = error {
           observer.send(error: .requestError(error, response))
