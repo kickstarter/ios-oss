@@ -24,11 +24,9 @@ public struct PushNotificationDialog {
     }
   }
 
-  static public func reset(value context: Context) {
-
-    if let idx = AppEnvironment.current.userDefaults.deniedNotificationContexts.index(of: context.rawValue) {
-      AppEnvironment.current.userDefaults.deniedNotificationContexts.remove(at: idx)
-    }
+  static public func resetAllContexts() {
+    
+      AppEnvironment.current.userDefaults.deniedNotificationContexts.removeAll()
   }
 
   static public var titleForDismissal: String {
