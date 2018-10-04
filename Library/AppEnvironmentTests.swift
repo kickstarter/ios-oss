@@ -162,6 +162,32 @@ final class AppEnvironmentTests: XCTestCase {
                    "No token stored.")
   }
 
+  func testRestoreFromEnvironment() {
+    let apiService = MockService(serverConfig: ServerConfig.production,
+                                 oauthToken: OauthToken(token: "deadbeef"))
+
+    let currentUser = User.template
+    let userDefaults = MockKeyValueStore()
+    let ubiquitousStore = MockKeyValueStore()
+
+    AppEnvironment.saveEnvironment(environment: Environment(apiService: apiService, currentUser: currentUser),
+                                   ubiquitousStore: ubiquitousStore,
+                                   userDefaults: userDefaults)
+
+    let env = AppEnvironment.fromStorage(ubiquitousStore: ubiquitousStore, userDefaults: userDefaults)
+
+    XCTAssertEqual("deadbeef", env.apiService.oauthToken?.token)
+    XCTAssertEqual(ServerConfig.production.apiBaseUrl.absoluteString,
+                   env.apiService.serverConfig.apiBaseUrl.absoluteString)
+    XCTAssertEqual(ServerConfig.production.apiClientAuth.clientId,
+                   env.apiService.serverConfig.apiClientAuth.clientId)
+    XCTAssertNil(ServerConfig.production.basicHTTPAuth)
+    XCTAssertEqual(ServerConfig.production.webBaseUrl.absoluteString,
+                   env.apiService.serverConfig.webBaseUrl.absoluteString)
+    XCTAssertEqual(currentUser, env.currentUser)
+    XCTAssertEqual(currentUser, env.koala.loggedInUser)
+  }
+
   func testPushPopSave() {
     AppEnvironment.pushEnvironment(ubiquitousStore: MockKeyValueStore(),
                                    userDefaults: MockKeyValueStore())

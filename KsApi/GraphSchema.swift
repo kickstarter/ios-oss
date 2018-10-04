@@ -4,6 +4,7 @@ import Prelude
 
 public struct GraphResponse<T: Decodable>: Decodable {
   let data: T?
+  let errors: [GraphResponseError]?
 }
 
 /// Base Query Types
@@ -101,9 +102,12 @@ public enum Nodes<Q: QueryType> {
   case nodes(NonEmptySet<Q>)
 }
 
-public typealias GraphResponseError = [[String: Any]]
+public struct GraphResponseError: Decodable {
+  public let message: String
+}
 
 public enum GraphError: Error {
+  case invalidInput
   case invalidJson(responseString: String?)
   case requestError(Error, URLResponse?)
   case emptyResponse(URLResponse?)
