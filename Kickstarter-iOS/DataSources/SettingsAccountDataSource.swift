@@ -13,7 +13,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     }
   }
 
-  func insertCurrencyPickerCell() -> IndexPath {
+  func insertCurrencyPickerRow() -> IndexPath {
     let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currency)
 
     return self.appendRow(value: cellValue,

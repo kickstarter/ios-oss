@@ -24,9 +24,11 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
 
   public init() {
 
-    self.notifyCurrencyPickerCellRemoved = selectedCurrencyProperty.signal.mapConst(true)
+    let cellType = self.cellTypeProperty.signal.skipNil().skipRepeats() 
 
-    self.updateCurrencyDetailText = selectedCurrencyProperty.signal.map { $0?.descriptionText ?? "" }
+    self.notifyCurrencyPickerCellRemoved = self.selectedCurrencyProperty.signal.mapConst(true)
+
+    self.updateCurrencyDetailText = self.selectedCurrencyProperty.signal.map { $0?.descriptionText ?? "" }
   }
 
   fileprivate let selectedCurrencyProperty = MutableProperty<Currencies?>(nil)
