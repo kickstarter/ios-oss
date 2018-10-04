@@ -148,10 +148,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XfD-wg-Nx4" customClass="UIScrollView">
-                                <rect key="frame" x="0.0" y="20" width="375" height="631"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VyE-lE-aLQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="631"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eOl-CY-t3g">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="36"/>
@@ -294,7 +294,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9uR-ng-0BU" userLabel="Password">
-                                                <rect key="frame" x="0.0" y="272" width="375" height="359"/>
+                                                <rect key="frame" x="0.0" y="272" width="375" height="395"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="lrH-yX-xHX">
                                                         <rect key="frame" x="12" y="6" width="351" height="40"/>
@@ -328,7 +328,7 @@
                                                         </constraints>
                                                     </stackView>
                                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PLh-cR-QEi" userLabel="Separator">
-                                                        <rect key="frame" x="0.0" y="358.5" width="375" height="0.5"/>
+                                                        <rect key="frame" x="0.0" y="394.5" width="375" height="0.5"/>
                                                         <color key="backgroundColor" red="0.86274509799999999" green="0.87058823529999996" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="0.5" id="GaB-uM-BIX"/>
@@ -358,10 +358,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z5v-98-lpx">
-                                <rect key="frame" x="6" y="497" width="363" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="rOU-6G-GVa"/>
-                                </constraints>
+                                <rect key="frame" x="6" y="533" width="363" height="128"/>
                                 <connections>
                                     <segue destination="zRn-GV-so4" kind="embed" id="npK-7h-4nS"/>
                                 </connections>
@@ -377,6 +374,7 @@
                             <constraint firstItem="XfD-wg-Nx4" firstAttribute="leading" secondItem="4qM-at-87e" secondAttribute="leading" id="fyv-9J-lle"/>
                             <constraint firstItem="XfD-wg-Nx4" firstAttribute="width" secondItem="Sro-rn-6F2" secondAttribute="width" id="hwK-NS-ATo"/>
                             <constraint firstItem="XfD-wg-Nx4" firstAttribute="top" secondItem="4qM-at-87e" secondAttribute="top" id="v5z-7f-G0P"/>
+                            <constraint firstItem="Z5v-98-lpx" firstAttribute="top" secondItem="VyE-lE-aLQ" secondAttribute="bottom" id="wZM-tz-1ae"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4qM-at-87e"/>
                     </view>
@@ -685,6 +683,7 @@
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="dBT-44-UWs" appends="YES" id="c4v-xi-KDY"/>
+                                    <outletCollection property="gestureRecognizers" destination="Rvo-tH-f7d" appends="YES" id="WOU-Ox-q9u"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -695,6 +694,9 @@
                             <constraint firstItem="7uY-xq-yHM" firstAttribute="bottom" secondItem="hnu-dC-hff" secondAttribute="bottom" constant="120" id="nXz-cb-N4B"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="hnu-dC-hff"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Rvo-tH-f7d" appends="YES" id="4Es-FU-TcA"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="backgroundView" destination="7uY-xq-yHM" id="qEd-NC-rMB"/>
@@ -709,6 +711,11 @@
                         <action selector="bannerViewPanned:" destination="zRn-GV-so4" id="fts-Gd-iFY"/>
                     </connections>
                 </panGestureRecognizer>
+                <tapGestureRecognizer id="Rvo-tH-f7d">
+                    <connections>
+                        <action selector="bannerViewTapped:" destination="zRn-GV-so4" id="2m2-uq-39J"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-1121" y="685"/>
         </scene>
@@ -731,6 +738,6 @@
         <image name="onepassword-button" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="S9b-Nx-mWW"/>
+        <segue reference="npK-7h-4nS"/>
     </inferredMetricsTieBreakers>
 </document>

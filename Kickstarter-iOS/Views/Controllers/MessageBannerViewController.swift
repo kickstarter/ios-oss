@@ -71,12 +71,6 @@ final class MessageBannerViewController: UIViewController {
 
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    self.viewModel.inputs.showBannerView(shouldShow: false)
-  }
-
   override func bindStyles() {
     super.bindStyles()
 
@@ -131,6 +125,10 @@ final class MessageBannerViewController: UIViewController {
   private func showViewAndAnimate(_ shouldShow: Bool) {
     let duration = shouldShow ? 0.4 : 0.25
 
+    if shouldShow {
+      self.view.isHidden = false
+    }
+
     UIView.animate(withDuration: duration, delay: 0.0,
                    options: UIView.AnimationOptions.curveEaseInOut,
                    animations: { [weak self] in
@@ -139,7 +137,9 @@ final class MessageBannerViewController: UIViewController {
       self.backgroundViewBottomConstraint.constant = shouldShow
         ? self.bottomMarginConstraintConstant : frameHeight
       self.view.layoutIfNeeded()
-    }, completion: nil)
+    }, completion: { [weak self] _ in
+      self?.view.isHidden = !shouldShow
+    })
   }
 
   @IBAction func bannerViewPanned(_ sender: UIPanGestureRecognizer) {
@@ -156,18 +156,22 @@ final class MessageBannerViewController: UIViewController {
     }
 
     let yPos = currentTouchPoint.y
-    let heightLimit = bannerView.frame.height / 2
+    let heightLimit = bannerView.frame.height / 8
 
     if yPos == 0 {
       return
     } else if yPos < -heightLimit {
       // "rubber band" effect
       let absYPos = abs(yPos)
-      let adjustedYPos = heightLimit * (1 + log10(absYPos / heightLimit))
+      let adjustedYPos =  heightLimit * (1 + log10(absYPos / heightLimit))
 
-      self.backgroundViewBottomConstraint.constant = -adjustedYPos - self.bottomMarginConstraintConstant
+      self.backgroundViewBottomConstraint.constant = -adjustedYPos + self.bottomMarginConstraintConstant
     } else {
-      self.backgroundViewBottomConstraint.constant = yPos - self.bottomMarginConstraintConstant
+      self.backgroundViewBottomConstraint.constant = yPos + self.bottomMarginConstraintConstant
     }
+  }
+
+  @IBAction func bannerViewTapped(_ sender: Any) {
+    self.viewModel.inputs.showBannerView(shouldShow: false)
   }
 }
