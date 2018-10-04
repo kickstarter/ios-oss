@@ -236,16 +236,13 @@ final class ServiceTypeTests: XCTestCase {
     let body: [String: Any] = self.service.graphMutationRequestBody(mutation: "my_mutation",
                                                                     input: ["foo_bar": 123])
     let variables = body["variables"] as? [String: Any]
-    let input = variables?["variables"] as? [String: Any]
-    let foobar = input?["input"] as? [String: Any]
-    let foobarValue = foobar?["foo_bar"] as? Int
+    let input = variables?["input"] as? [String: Any]
+    let foobar = input?["foo_bar"] as? Int
 
     XCTAssertEqual(body["query"] as? String, "my_mutation")
     XCTAssertNotNil(variables)
     XCTAssertNotNil(input)
-    XCTAssertNotNil(foobar)
-    XCTAssertNotNil(foobar?["foo_bar"])
-    XCTAssertEqual(foobarValue, 123)
+    XCTAssertEqual(foobar, 123)
   }
 }
 
