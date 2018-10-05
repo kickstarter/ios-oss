@@ -38,7 +38,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.reloadData.assertValueCount(1)
     self.vm.inputs.didSelectRow(cellType: .currency)
     self.presentCurrencyPicker.assertValues([true])
-    self.vm.inputs.tapped()
+    self.vm.inputs.dismissPickerTap()
     self.dismissCurrencyPicker.assertValueCount(1)
   }
 }
