@@ -26,7 +26,7 @@ final class SettingsAccountViewController: UIViewController {
 
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
-    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureNotifier))
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureToDismissCurrencyPicker))
     tapRecognizer.cancelsTouchesInView = false
     self.view.addGestureRecognizer(tapRecognizer)
 
@@ -80,16 +80,17 @@ final class SettingsAccountViewController: UIViewController {
   }
 
   func dismissCurrencyPickerCell() {
-    if self.tableView.numberOfRows(inSection: 2) == 3 {
+    if self.tableView.numberOfRows(inSection: SettingsAccountSectionType.payment.rawValue) == 3 {
       tableView.beginUpdates()
       self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
       tableView.endUpdates()
-      self.viewModel.inputs.dismissedCurrencyPicker()
     }
   }
 
-  @objc private func tapGestureNotifier() {
-    self.viewModel.inputs.tapped()
+  @objc private func tapGestureToDismissCurrencyPicker() {
+    if self.tableView.numberOfRows(inSection: SettingsAccountSectionType.payment.rawValue) == 3 {
+      self.viewModel.inputs.dismissPickerTap()
+    }
   }
 }
 
@@ -123,7 +124,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
 }
 
 extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
-  internal func currencyCellDetailTextUpdated(_ text: String) {
+  func currencyCellDetailTextUpdated(_ text: String) {
     tableView.beginUpdates()
     let parentIndexPath = IndexPath(row: 1, section: SettingsAccountSectionType.payment.rawValue)
     let cell = tableView.cellForRow(at: parentIndexPath)
@@ -133,10 +134,9 @@ extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
     tableView.endUpdates()
   }
 
-  internal func shouldRemoveCell() {
+  internal func shouldDismissCurrencyPicker() {
     tableView.beginUpdates()
     self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
     tableView.endUpdates()
-    self.viewModel.inputs.currencyPickerShown()
   }
 }

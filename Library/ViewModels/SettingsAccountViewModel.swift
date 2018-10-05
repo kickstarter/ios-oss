@@ -5,11 +5,8 @@ import KsApi
 import Library
 
 public protocol SettingsAccountViewModelInputs {
-  func currencyPickerShown()
   func didSelectRow(cellType: SettingsAccountCellType)
-  func dismissedCurrencyPicker()
-  func settingsCellTapped(cellType: SettingsAccountCellType)
-  func tapped()
+  func dismissPickerTap()
   func viewDidLoad()
 }
 
@@ -31,45 +28,27 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public init() {
     self.reloadData = self.viewDidLoadProperty.signal
 
-    let currencyCellSelected = self.selectedCellType.signal.skipNil()
+    let currencyCellSelected = self.selectedCellTypeProperty.signal
+      .skipNil()
       .filter { $0 == .currency }
 
-    self.presentCurrencyPicker = Signal.merge(
-      currencyCellSelected.signal.mapConst(true),
-      currencyPickerShownProperty.signal.mapConst(false),
-      dismissedCurrencyPickerProperty.signal.mapConst(false)
-    ).skipRepeats()
+    self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true)
 
-    self.dismissCurrencyPicker = self.tappedProperty.signal
+    self.dismissCurrencyPicker = self.dismissPickerTapProperty.signal
 
     self.transitionToViewController = self.selectedCellTypeProperty.signal.skipNil()
       .map { SettingsAccountViewModel.viewController(for: $0) }
       .skipNil()
   }
 
-  fileprivate let currencyPickerShownProperty = MutableProperty(())
-  public func currencyPickerShown() {
-    self.currencyPickerShownProperty.value = ()
-  }
-
-  fileprivate let dismissedCurrencyPickerProperty = MutableProperty(())
-  public func dismissedCurrencyPicker() {
-    self.dismissedCurrencyPickerProperty.value = ()
-  }
-
-  private let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
-  public func settingsCellTapped(cellType: SettingsAccountCellType) {
+  fileprivate let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
+  public func didSelectRow(cellType: SettingsAccountCellType) {
     self.selectedCellTypeProperty.value = cellType
   }
 
-  fileprivate let selectedCellType = MutableProperty<SettingsAccountCellType?>(nil)
-  public func didSelectRow(cellType: SettingsAccountCellType) {
-    self.selectedCellType.value = cellType
-  }
-
-  fileprivate let tappedProperty = MutableProperty(())
-  public func tapped() {
-    self.tappedProperty.value = ()
+  fileprivate let dismissPickerTapProperty = MutableProperty(())
+  public func dismissPickerTap() {
+    self.dismissPickerTapProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())

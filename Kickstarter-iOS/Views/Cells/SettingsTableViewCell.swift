@@ -5,7 +5,7 @@ import UIKit
 final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet public weak var detailLabel: UILabel! // FIX
+  @IBOutlet public weak var detailLabel: UILabel!
   @IBOutlet fileprivate weak var lineLayer: UIView!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
 

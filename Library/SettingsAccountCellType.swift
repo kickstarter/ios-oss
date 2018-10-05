@@ -32,12 +32,14 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
   case privacy
   case paymentMethods
   case currency
+  case currencyPicker
 
   public static var allCases: [SettingsAccountCellType] = [.changeEmail,
                                                            .changePassword,
                                                            .privacy,
                                                            .paymentMethods,
-                                                           .currency]
+                                                           .currency,
+                                                           .currencyPicker]
 
   public var showArrowImageView: Bool {
     switch self {
@@ -82,6 +84,8 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
       return Strings.Payment_methods()
     case .currency:
       return Strings.Currency()
+    case .currencyPicker:
+     return ""
     }
   }
 

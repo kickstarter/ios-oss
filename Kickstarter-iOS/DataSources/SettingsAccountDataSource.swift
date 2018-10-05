@@ -4,7 +4,8 @@ import Library
 final class SettingsAccountDataSource: ValueCellDataSource {
 
   func configureRows() {
-    SettingsAccountSectionType.allCases.forEach { section -> Void in
+    SettingsAccountSectionType.allCases
+      .forEach { section -> Void in
       let values = section.cellRowsForSection.map { SettingsCellValue(user: nil, cellType: $0) }
 
       self.set(values: values,
@@ -14,7 +15,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   }
 
   func insertCurrencyPickerRow() -> IndexPath {
-    let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currency)
+    let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currencyPicker)
 
     return self.appendRow(value: cellValue,
                           cellClass: SettingsAccountPickerCell.self,
@@ -22,7 +23,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   }
 
   func removeCurrencyPickerRow() -> IndexPath {
-    let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currency)
+    let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currencyPicker)
 
     return self.deleteRow(value: cellValue,
                            cellClass: SettingsAccountPickerCell.self,
