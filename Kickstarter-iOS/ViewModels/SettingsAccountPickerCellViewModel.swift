@@ -23,7 +23,6 @@ final class SettingsAccountPickerCellViewModel: SettingsAccountPickerCellViewMod
 SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType {
 
   public init() {
-
     self.notifyCurrencyPickerCellRemoved = self.selectedCurrencyProperty.signal.mapConst(true)
 
     self.updateCurrencyDetailText = self.selectedCurrencyProperty.signal.skipNil()
@@ -35,7 +34,7 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
     self.selectedCurrencyProperty.value = currency
   }
 
-  private let cellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
+  fileprivate let cellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
   func configure(with cellValue: SettingsCellValue) {
     self.cellTypeProperty.value = cellValue.cellType as? SettingsAccountCellType
   }
