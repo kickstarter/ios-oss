@@ -26,7 +26,8 @@ final class SettingsAccountViewController: UIViewController {
 
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
-    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureToDismissCurrencyPicker))
+    let tapRecognizer = UITapGestureRecognizer(target: self,
+                                               action: #selector(tapGestureToDismissCurrencyPicker))
     tapRecognizer.cancelsTouchesInView = false
     self.view.addGestureRecognizer(tapRecognizer)
 
