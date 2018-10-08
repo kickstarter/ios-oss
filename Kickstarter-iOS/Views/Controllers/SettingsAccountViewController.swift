@@ -125,6 +125,31 @@ extension SettingsAccountViewController: UITableViewDelegate {
 }
 
 extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
+
+  func settingsCurrencyPickerCellDidChangeCurrency(_ cell: SettingsAccountPickerCell) {
+    let alertController = UIAlertController(
+      title: Strings.Change_currency(),
+      message: "\(Strings.This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency()) \n\n \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())",
+      preferredStyle: .alert
+    ) // Improve this string
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Yes_change_currency(),
+        style: .default,
+        handler: nil
+      )
+    )
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Cancel(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    self.present(alertController, animated: true, completion: nil)
+  }
+
   func currencyCellDetailTextUpdated(_ text: String) {
     tableView.beginUpdates()
     let parentIndexPath = IndexPath(row: 1, section: SettingsAccountSectionType.payment.rawValue)

@@ -7,6 +7,8 @@ internal protocol SettingsAccountPickerCellDelegate: class {
   func currencyCellDetailTextUpdated(_ text: String)
   /// Called after user selects currency in picker to remove picker cell
   func shouldDismissCurrencyPicker()
+  /// Called after user did select a currency in picker to present alert
+  func settingsCurrencyPickerCellDidChangeCurrency(_ cell: SettingsAccountPickerCell) // rename cell to SettingsCurrencyPickerCell
 }
 
 final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
@@ -37,11 +39,19 @@ final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
+//    self.viewModel.outputs.updateCurrencyDetailText
+//      .observeForUI()
+//      .observeValues { [weak self] text in
+//         self?.delegate?.currencyCellDetailTextUpdated(text)
+//    }
+
     self.viewModel.outputs.updateCurrencyDetailText
       .observeForUI()
-      .observeValues { [weak self] text in
-         self?.delegate?.currencyCellDetailTextUpdated(text)
+      .observeValues { [weak self] _ in
+        guard let _self = self else { return }
+        self?.delegate?.settingsCurrencyPickerCellDidChangeCurrency(_self)
     }
+
 
     self.viewModel.outputs.notifyCurrencyPickerCellRemoved
       .observeForUI()
