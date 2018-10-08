@@ -211,6 +211,39 @@ final class ServiceTypeTests: XCTestCase {
       request.allHTTPHeaderFields!
     )
   }
+
+  func testPreparedGraphRequest() {
+    let url = self.service.serverConfig.graphQLEndpointUrl
+    let request = try? self.service.preparedGraphRequest(forURL: url,
+                                                         queryString: "mutation",
+                                                         input: ["mutation_input": 123])
+
+    let jsonBody = try? JSONSerialization.jsonObject(with: request?.httpBody ?? Data(capacity: 1),
+    options: [])
+
+    XCTAssertNotNil(request)
+    XCTAssertEqual(request?.httpMethod, "POST")
+    XCTAssertEqual(request?.allHTTPHeaderFields?["Content-Type"], "application/json; charset=utf-8")
+    XCTAssertNotNil(jsonBody)
+    XCTAssertEqual(request?.allHTTPHeaderFields?["Accept-Language"], self.service.language)
+    XCTAssertEqual(request?.allHTTPHeaderFields?["Authorization"], "token cafebeef")
+    XCTAssertEqual(request?.allHTTPHeaderFields?["Kickstarter-App-Id"], self.service.appId)
+    XCTAssertEqual(request?.allHTTPHeaderFields?["Kickstarter-iOS-App"], self.service.buildVersion)
+    XCTAssertEqual(request?.allHTTPHeaderFields?["User-Agent"], userAgent())
+  }
+
+  func testGraphMutationRequestBody() {
+    let body: [String: Any] = self.service.graphMutationRequestBody(mutation: "my_mutation",
+                                                                    input: ["foo_bar": 123])
+    let variables = body["variables"] as? [String: Any]
+    let input = variables?["input"] as? [String: Any]
+    let foobar = input?["foo_bar"] as? Int
+
+    XCTAssertEqual(body["query"] as? String, "my_mutation")
+    XCTAssertNotNil(variables)
+    XCTAssertNotNil(input)
+    XCTAssertEqual(foobar, 123)
+  }
 }
 
 private func userAgent() -> String {
