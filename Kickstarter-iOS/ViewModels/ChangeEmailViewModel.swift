@@ -1,23 +1,26 @@
-import Foundation
+import KsApi
 import ReactiveSwift
 import Result
+
+protocol ChangeEmailViewModelInputs {
+  func emailFieldDidEndEditing(email: String?)
+  func emailFieldTextDidChange(text: String?)
+  func onePasswordButtonTapped()
+  func onePassword(isAvailable available: Bool)
+  func passwordFieldDidEndEditing(password: String?)
+  func passwordFieldTextDidChange(text: String?)
+  func viewDidLoad()
+  func saveButtonTapped()
+}
 
 protocol ChangeEmailViewModelOutputs {
   var dismissKeyboard: Signal<Void, NoError> { get }
   var errorLabelIsHidden: Signal<Bool, NoError> { get }
   var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
+  var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
   var resendVerificationEmailButtonIsHidden: Signal<Bool, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
   var showConfirmationEmailSentBanner: Signal<Bool, NoError> { get }
-}
-
-protocol ChangeEmailViewModelInputs {
-  func emailFieldDidEndEditing(email: String?)
-  func emailFieldTextDidChange(text: String?)
-  func passwordFieldDidEndEditing(password: String?)
-  func passwordFieldTextDidChange(text: String?)
-  func viewDidLoad()
-  func saveButtonTapped()
 }
 
 protocol ChangeEmailViewModelType {
@@ -34,6 +37,11 @@ ChangeEmailViewModelOutputs {
     self.dismissKeyboard = saveButtonTappedProperty.signal.ignoreValues()
     self.showConfirmationEmailSentBanner = saveButtonTappedProperty.signal.mapConst(true)
     self.messageBannerViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
+
+    self.onePasswordButtonIsHidden = self.onePasswordIsAvailable.signal.map { $0 }
+
+    self.onePasswordIsAvailable.signal
+      .observeValues { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
   }
 
   private let emailProperty = MutableProperty<String?>(nil)
@@ -43,6 +51,16 @@ ChangeEmailViewModelOutputs {
 
   func emailFieldDidEndEditing(email: String?) {
     self.emailProperty.value = email
+  }
+
+  private let onePasswordIsAvailable = MutableProperty(false)
+  public func onePassword(isAvailable available: Bool) {
+    self.onePasswordIsAvailable.value = available
+  }
+
+  private let onePasswordButtonTappedProperty = MutableProperty(())
+  func onePasswordButtonTapped() {
+    self.onePasswordButtonTappedProperty.value = ()
   }
 
   private let passwordProperty = MutableProperty<String?>(nil)
@@ -67,6 +85,7 @@ ChangeEmailViewModelOutputs {
   public let dismissKeyboard: Signal<Void, NoError>
   public let errorLabelIsHidden: Signal<Bool, NoError>
   public let messageBannerViewIsHidden: Signal<Bool, NoError>
+  public let onePasswordButtonIsHidden: Signal<Bool, NoError>
   public let resendVerificationEmailButtonIsHidden: Signal<Bool, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let showConfirmationEmailSentBanner: Signal<Bool, NoError>

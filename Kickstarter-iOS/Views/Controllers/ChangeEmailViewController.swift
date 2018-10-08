@@ -28,6 +28,10 @@ final class ChangeEmailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.onePasswordButton.addTarget(self,
+                                     action: #selector(self.onePasswordButtonTapped),
+                                     for: .touchUpInside)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -104,6 +108,7 @@ final class ChangeEmailViewController: UIViewController {
   }
 
   @IBAction func onePasswordButtonTapped(_ sender: Any) {
+
   }
 
   @IBAction func emailFieldDidEndEditing(_ sender: UITextField) {
