@@ -26,11 +26,6 @@ final class SettingsAccountViewController: UIViewController {
 
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
-    let tapRecognizer = UITapGestureRecognizer(target: self,
-                                               action: #selector(tapGestureToDismissCurrencyPicker))
-    tapRecognizer.cancelsTouchesInView = false
-    self.view.addGestureRecognizer(tapRecognizer)
-
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -76,6 +71,10 @@ final class SettingsAccountViewController: UIViewController {
     if show {
       self.tableView.beginUpdates()
       self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow()], with: .top)
+      let tapRecognizer = UITapGestureRecognizer(target: self,
+                                                 action: #selector(tapGestureToDismissCurrencyPicker))
+      tapRecognizer.cancelsTouchesInView = false
+      self.view.addGestureRecognizer(tapRecognizer)
       self.tableView.endUpdates()
     }
   }
@@ -89,9 +88,7 @@ final class SettingsAccountViewController: UIViewController {
   }
 
   @objc private func tapGestureToDismissCurrencyPicker() {
-    if self.tableView.numberOfRows(inSection: SettingsAccountSectionType.payment.rawValue) == 3 {
-      self.viewModel.inputs.dismissPickerTap()
-    }
+    self.viewModel.inputs.dismissPickerTap()
   }
 }
 
@@ -125,7 +122,6 @@ extension SettingsAccountViewController: UITableViewDelegate {
 }
 
 extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
-
   internal func shouldDismissCurrencyPicker() {
     tableView.beginUpdates()
     self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)

@@ -1,6 +1,6 @@
 import UIKit
 
-public enum Currency: Int {
+public enum Currency: Int, CaseIterable {
   case euro
   case australianDollar
   case canadianDollar
@@ -15,23 +15,6 @@ public enum Currency: Int {
   case swedishKrona
   case singaporeDollar
   case usDollar
-
-  public static let allCases: [Currency] = [
-    .euro,
-    .australianDollar,
-    .canadianDollar,
-    .swissFranc,
-    .danishKrone,
-    .poundSterling,
-    .hongKongDollar,
-    .yen,
-    .mexicanPeso,
-    .norwegianKrone,
-    .newZealandDollar,
-    .swedishKrona,
-    .singaporeDollar,
-    .usDollar
-  ]
 
   public static var rowHeight: CGFloat {
     return Styles.grid(7)
