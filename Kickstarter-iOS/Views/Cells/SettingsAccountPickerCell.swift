@@ -67,7 +67,7 @@ extension SettingsAccountPickerCell: UIPickerViewDelegate {
 
     NotificationCenter.default.post(name: Notification.Name.ksr_updatedCurrencyCellDetailText,
                                     object: nil,
-                                    userInfo:["text": selectedCurrency.descriptionText ]
+                                    userInfo: ["text": selectedCurrency.descriptionText]
     )
 
     self.viewModel.inputs.didSelectCurrency(currency: selectedCurrency)
