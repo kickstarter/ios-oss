@@ -1,7 +1,9 @@
 import Library
 import Prelude
+import UIKit
 
 final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
+
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
   @IBOutlet fileprivate weak var detailLabel: UILabel!
   @IBOutlet fileprivate weak var lineLayer: UIView!
@@ -14,6 +16,17 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
   func configureWith(value cellValue: SettingsCellValue) {
     let cellType = cellValue.cellType
 
+    switch cellType {
+    case SettingsAccountCellType.currency:
+      NotificationCenter.default
+        .addObserver(self,
+                     selector: #selector(updateCurrencyDetailText),
+                     name: .ksr_updatedCurrencyCellDetailText,
+                     object: nil)
+    default:
+      break
+    }
+
     _ = titleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text .~ cellType.title
@@ -25,6 +38,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
       .~ !cellType.showArrowImageView
 
     _ = detailLabel
+      |> UILabel.lens.textColor .~ cellType.detailTextColor
       |> UILabel.lens.isHidden %~ { _ in
         return cellType.hideDescriptionLabel
       }
@@ -33,11 +47,14 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     }
   }
 
+  @objc internal func updateCurrencyDetailText(notification: NSNotification) {
+    if let currencyText = notification.userInfo?["text"] as? String {
+      self.detailLabel.text = currencyText
+    }
+  }
+
   override func bindStyles() {
     super.bindStyles()
-
-    _ = detailLabel
-    |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = lineLayer
     |> separatorStyle

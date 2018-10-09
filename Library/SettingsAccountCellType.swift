@@ -2,7 +2,6 @@ import KsApi
 import UIKit
 
 public enum SettingsAccountSectionType: Int {
-
   case emailPassword
   case privacy
   case payment
@@ -28,18 +27,19 @@ public enum SettingsAccountSectionType: Int {
 }
 
 public enum SettingsAccountCellType: SettingsCellTypeProtocol {
-
   case changeEmail
   case changePassword
   case privacy
   case paymentMethods
   case currency
+  case currencyPicker
 
   public static var allCases: [SettingsAccountCellType] = [.changeEmail,
                                                            .changePassword,
                                                            .privacy,
                                                            .paymentMethods,
-                                                           .currency]
+                                                           .currency,
+                                                           .currencyPicker]
 
   public var showArrowImageView: Bool {
     switch self {
@@ -52,6 +52,15 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
 
   public var textColor: UIColor {
     return .ksr_text_dark_grey_500
+  }
+
+  public var detailTextColor: UIColor {
+    switch self {
+    case .currency:
+      return .ksr_text_green_700
+    default:
+      return .ksr_text_dark_grey_400
+    }
   }
 
   public var hideDescriptionLabel: Bool {
@@ -75,12 +84,14 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
       return Strings.Payment_methods()
     case .currency:
       return Strings.Currency()
+    case .currencyPicker:
+     return ""
     }
   }
 
   public var description: String? {
     switch self {
-    case .currency: return "$ Dollar (USD)"
+    case .currency: return Strings.Currency_USD()
     default: return nil
     }
   }
