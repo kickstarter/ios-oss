@@ -1,4 +1,3 @@
-import Argo
 import Foundation
 import Prelude
 import ReactiveExtensions
@@ -58,7 +57,6 @@ public struct Service: ServiceType {
 
   public func addImage(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
-
       return request(Route.addImage(fileUrl: fileURL, toDraft: draft))
   }
 
@@ -72,6 +70,11 @@ public struct Service: ServiceType {
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
 
       return request(.changePaymentMethod(project: project))
+  }
+
+  public func changePassword(input: ChangePasswordInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return applyMutation(mutation: ChangePasswordMutation(input: input))
   }
 
   public func createPledge(project: Project,
@@ -108,7 +111,7 @@ public struct Service: ServiceType {
 
   public func exportDataState()
     -> SignalProducer<ExportDataEnvelope, ErrorEnvelope> {
-    return request(.exportDataState)
+      return request(.exportDataState)
   }
 
   public func previewUrl(forDraft draft: UpdateDraft) -> URL? {
@@ -187,7 +190,7 @@ public struct Service: ServiceType {
 
   public func fetchGraphCategories(query: NonEmptySet<Query>)
     -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-    return fetch(query: query)
+      return fetch(query: query)
   }
 
   public func fetchGraphCategory(query: NonEmptySet<Query>)
@@ -303,7 +306,7 @@ public struct Service: ServiceType {
 
   public func backingUpdate(forProject project: Project, forUser user: User, received: Bool) ->
     SignalProducer<Backing, ErrorEnvelope> {
-    return request(.backingUpdate(projectId: project.id, backerId: user.id, received: received))
+      return request(.backingUpdate(projectId: project.id, backerId: user.id, received: received))
   }
 
   public func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
@@ -357,7 +360,7 @@ public struct Service: ServiceType {
   }
 
   public func markAsRead(messageThread: MessageThread) -> SignalProducer<MessageThread, ErrorEnvelope> {
-      return request(.markAsRead(messageThread))
+    return request(.markAsRead(messageThread))
   }
 
   public func postComment(_ body: String, toProject project: Project) ->
@@ -475,142 +478,5 @@ public struct Service: ServiceType {
 
   public func updateUserSelf(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
     return request(.updateUserSelf(user))
-  }
-
-  private func decodeModel<M: Argo.Decodable>(_ json: Any) ->
-    SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
-
-      return SignalProducer(value: json)
-        .map { json in decode(json) as Decoded<M> }
-        .flatMap(.concat) { (decoded: Decoded<M>) -> SignalProducer<M, ErrorEnvelope> in
-          switch decoded {
-          case let .success(value):
-            return .init(value: value)
-          case let .failure(error):
-            print("Argo decoding model \(M.self) error: \(error)")
-            return .init(error: .couldNotDecodeJSON(error))
-          }
-      }
-  }
-
-  private func decodeModels<M: Argo.Decodable>(_ json: Any) ->
-    SignalProducer<[M], ErrorEnvelope> where M == M.DecodedType {
-
-      return SignalProducer(value: json)
-        .map { json in decode(json) as Decoded<[M]> }
-        .flatMap(.concat) { (decoded: Decoded<[M]>) -> SignalProducer<[M], ErrorEnvelope> in
-          switch decoded {
-          case let .success(value):
-            return .init(value: value)
-          case let .failure(error):
-            print("Argo decoding model error: \(error)")
-            return .init(error: .couldNotDecodeJSON(error))
-          }
-      }
-  }
-
-  private static let session = URLSession(configuration: .default)
-
-  private func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
-
-    return SignalProducer<A, GraphError> { observer, disposable in
-
-      let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
-                                         queryString: Query.build(query))
-      let task = URLSession.shared.dataTask(with: request) {  data, response, error in
-        if let error = error {
-          observer.send(error: .requestError(error, response))
-          return
-        }
-
-        guard let data = data else {
-          observer.send(error: .emptyResponse(response))
-          return
-        }
-
-        do {
-          let decodedObject = try JSONDecoder().decode(GraphResponse<A>.self, from: data)
-          if let value = decodedObject.data {
-            observer.send(value: value)
-          }
-        } catch let error {
-          observer.send(error: .jsonDecodingError(responseString: String(data: data, encoding: .utf8),
-                                                  error: error))
-        }
-        observer.sendCompleted()
-      }
-      disposable.observeEnded {
-        task.cancel()
-      }
-      task.resume()
-    }
-  }
-
-  private func requestPagination<M: Argo.Decodable>(_ paginationUrl: String)
-    -> SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
-
-      guard let paginationUrl = URL(string: paginationUrl) else {
-        return .init(error: .invalidPaginationUrl)
-      }
-
-      return Service.session.rac_JSONResponse(preparedRequest(forURL: paginationUrl))
-        .flatMap(decodeModel)
-  }
-
-  private func request<M: Argo.Decodable>(_ route: Route)
-    -> SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
-
-      let properties = route.requestProperties
-
-      guard let URL = URL(string: properties.path, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
-        fatalError(
-          "URL(string: \(properties.path), relativeToURL: \(self.serverConfig.apiBaseUrl)) == nil"
-        )
-      }
-
-      return Service.session.rac_JSONResponse(
-        preparedRequest(forURL: URL, method: properties.method, query: properties.query),
-        uploading: properties.file.map { ($1, $0.rawValue) }
-        )
-        .flatMap(decodeModel)
-  }
-
-  private func request<M: Argo.Decodable>(_ route: Route)
-    -> SignalProducer<[M], ErrorEnvelope> where M == M.DecodedType {
-
-      let properties = route.requestProperties
-
-      let url = self.serverConfig.apiBaseUrl.appendingPathComponent(properties.path)
-
-      return Service.session.rac_JSONResponse(
-        preparedRequest(forURL: url, method: properties.method, query: properties.query),
-        uploading: properties.file.map { ($1, $0.rawValue) }
-        )
-        .flatMap(decodeModels)
-  }
-
-  private func request<M: Argo.Decodable>(_ route: Route)
-    -> SignalProducer<M?, ErrorEnvelope> where M == M.DecodedType {
-
-      let properties = route.requestProperties
-
-      guard let URL = URL(string: properties.path, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
-        fatalError(
-          "URL(string: \(properties.path), relativeToURL: \(self.serverConfig.apiBaseUrl)) == nil"
-        )
-      }
-
-      return Service.session.rac_JSONResponse(
-        preparedRequest(forURL: URL, method: properties.method, query: properties.query),
-        uploading: properties.file.map { ($1, $0.rawValue) }
-        )
-        .flatMap(decodeModel)
-  }
-
-  private func decodeModel<M: Argo.Decodable>(_ json: Any) ->
-    SignalProducer<M?, ErrorEnvelope> where M == M.DecodedType {
-
-      return SignalProducer(value: json)
-        .map { json in decode(json) as M? }
   }
 }
