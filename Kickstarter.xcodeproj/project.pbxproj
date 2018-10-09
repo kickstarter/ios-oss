@@ -173,7 +173,7 @@
 		77E643FF20F55324005F6B38 /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6D0920F541CA00809E31 /* SettingsViewModelTests.swift */; };
 		77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440020F64F0B005F6B38 /* HelpDataSource.swift */; };
 		77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440220F65074005F6B38 /* HelpViewController.swift */; };
-		77E84DB22166792300DA8891 /* Mutations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84DB12166792300DA8891 /* Mutations.swift */; };
+		77E84DB22166792300DA8891 /* ChangePasswordMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84DB12166792300DA8891 /* ChangePasswordMutation.swift */; };
 		77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73421222E7C005A5C55 /* EmailFrequency.swift */; };
 		77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73621222E97005A5C55 /* SettingsCellType.swift */; };
 		77F6E73921222F4B005A5C55 /* SettingsNotificationCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73821222F4B005A5C55 /* SettingsNotificationCellType.swift */; };
@@ -986,6 +986,8 @@
 		D6ED1B35216CFB7F007F7547 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62CE467216CFA0700F667EF /* ChangeEmailViewModel.swift */; };
 		D6ED1B37216D0C64007F7547 /* ChangeEmailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B36216D0C64007F7547 /* ChangeEmailViewModelTests.swift */; };
 		D6ED1B39216D50BE007F7547 /* GraphUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B38216D50BE007F7547 /* GraphUser.swift */; };
+		D6ED1B3B216D525B007F7547 /* ChangeEmailInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */; };
+		D6ED1B3E216D61E0007F7547 /* ChangeEmailMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B3D216D61E0007F7547 /* ChangeEmailMutation.swift */; };
 		D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */; };
 		D6ED38A21F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */; };
 		D6FB2A3D1FA27D0300B0D282 /* CategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */; };
@@ -1833,7 +1835,7 @@
 		77D7A7722142CA55003F258C /* SettingsPrivacySwitchCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCellViewModelTests.swift; sourceTree = "<group>"; };
 		77E6440020F64F0B005F6B38 /* HelpDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSource.swift; sourceTree = "<group>"; };
 		77E6440220F65074005F6B38 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
-		77E84DB12166792300DA8891 /* Mutations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutations.swift; sourceTree = "<group>"; };
+		77E84DB12166792300DA8891 /* ChangePasswordMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordMutation.swift; sourceTree = "<group>"; };
 		77F6E73421222E7C005A5C55 /* EmailFrequency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailFrequency.swift; sourceTree = "<group>"; };
 		77F6E73621222E97005A5C55 /* SettingsCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCellType.swift; sourceTree = "<group>"; };
 		77F6E73821222F4B005A5C55 /* SettingsNotificationCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellType.swift; sourceTree = "<group>"; };
@@ -2630,6 +2632,8 @@
 		D6C9A2551F75921500981E64 /* CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTemplates.swift; sourceTree = "<group>"; };
 		D6ED1B36216D0C64007F7547 /* ChangeEmailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModelTests.swift; sourceTree = "<group>"; };
 		D6ED1B38216D50BE007F7547 /* GraphUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUser.swift; sourceTree = "<group>"; };
+		D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailInput.swift; sourceTree = "<group>"; };
+		D6ED1B3D216D61E0007F7547 /* ChangeEmailMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailMutation.swift; sourceTree = "<group>"; };
 		D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeLenses.swift; sourceTree = "<group>"; };
 		D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTests.swift; sourceTree = "<group>"; };
@@ -2835,7 +2839,9 @@
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
-				77E84DB12166792300DA8891 /* Mutations.swift */,
+				D6ED1B3C216D617E007F7547 /* mutation inputs */,
+				77E84DB12166792300DA8891 /* ChangePasswordMutation.swift */,
+				D6ED1B3D216D61E0007F7547 /* ChangeEmailMutation.swift */,
 			);
 			path = mutations;
 			sourceTree = "<group>";
@@ -4017,7 +4023,6 @@
 				D01587801EEB2ED6006E7684 /* CategoryTests.swift */,
 				D01587EE1EEB2ED7006E7684 /* templates */,
 				D01587971EEB2ED6006E7684 /* lenses */,
-				775DFAD82162A43F00620CED /* ChangePasswordInput.swift */,
 				D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */,
 				D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */,
 				D01587831EEB2ED6006E7684 /* CheckoutEnvelope.swift */,
@@ -4299,6 +4304,15 @@
 				D0745B481EEB0B5E00FA53D3 /* ReactiveSwiftTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D6ED1B3C216D617E007F7547 /* mutation inputs */ = {
+			isa = PBXGroup;
+			children = (
+				775DFAD82162A43F00620CED /* ChangePasswordInput.swift */,
+				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
+			);
+			path = "mutation inputs";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -6050,6 +6064,7 @@
 				D01589831EEB2ED7006E7684 /* UpdateDraft.swift in Sources */,
 				D0158A1F1EEB30A2006E7684 /* ProjectStatsEnvelope.ReferrerStatsTemplates.swift in Sources */,
 				D01588F11EEB2ED7006E7684 /* MessageThreadEnvelope.swift in Sources */,
+				D6ED1B3B216D525B007F7547 /* ChangeEmailInput.swift in Sources */,
 				D015886F1EEB2ED7006E7684 /* ErrorEnvelope.swift in Sources */,
 				D01588E11EEB2ED7006E7684 /* UserLenses.swift in Sources */,
 				D01588B91EEB2ED7006E7684 /* ProjectStatsEnvelope.FundingDateStatsLenses.swift in Sources */,
@@ -6102,6 +6117,7 @@
 				D01589171EEB2ED7006E7684 /* RewardsItem.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
+				D6ED1B3E216D61E0007F7547 /* ChangeEmailMutation.swift in Sources */,
 				D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */,
 				D01588B11EEB2ED7006E7684 /* ProjectLenses.swift in Sources */,
 				D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */,
@@ -6164,7 +6180,7 @@
 				D0158A131EEB30A2006E7684 /* DiscoveryEnvelopeTemplates.swift in Sources */,
 				D01588431EEB2ED7006E7684 /* Activity.swift in Sources */,
 				D01588CD1EEB2ED7006E7684 /* ShippingRulesEnvelopeLenses.swift in Sources */,
-				77E84DB22166792300DA8891 /* Mutations.swift in Sources */,
+				77E84DB22166792300DA8891 /* ChangePasswordMutation.swift in Sources */,
 				D01589871EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift in Sources */,
 				D01588DD1EEB2ED7006E7684 /* User.NotificationsLenses.swift in Sources */,
 				D015886B1EEB2ED7006E7684 /* DiscoveryParams.swift in Sources */,

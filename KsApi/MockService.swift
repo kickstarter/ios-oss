@@ -52,6 +52,8 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
+  fileprivate let fetchGraphUserEmailResponse: GraphUser?
+
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
   fileprivate let addAttachmentError: ErrorEnvelope?
   fileprivate let removeAttachmentResponse: UpdateDraft.Image?
@@ -156,6 +158,7 @@ internal struct MockService: ServiceType {
                 language: String = "en",
                 currency: String = "USD",
                 buildVersion: String = "1",
+                changeEmailResponse: GraphUser? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
                 facebookConnectResponse: User? = nil,
@@ -181,6 +184,7 @@ internal struct MockService: ServiceType {
                 exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
+                fetchGraphUserEmailResponse: GraphUser? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
                 addAttachmentError: ErrorEnvelope? = nil,
                 removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -265,6 +269,8 @@ internal struct MockService: ServiceType {
         .documentary
       ]
     )
+
+    self.fetchGraphUserEmailResponse = fetchGraphUserEmailResponse
 
     self.fetchCheckoutResponse = fetchCheckoutResponse
     self.fetchCheckoutError = fetchCheckoutError
@@ -400,6 +406,16 @@ internal struct MockService: ServiceType {
     self.updateUserSelfError = updateUserSelfError
   }
 
+  internal func changeEmail(input: ChangeEmailInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+  }
+
+  internal func changePassword(input: ChangePasswordInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+  }
+
   internal func createPledge(project: Project,
                              amount: Double,
                              reward: Reward?,
@@ -427,11 +443,6 @@ internal struct MockService: ServiceType {
           |> User.lens.id .~ 1
           |> User.lens.facebookConnected .~ true
       )
-  }
-
-  internal func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
   }
 
   internal func fetchCheckout(checkoutUrl url: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope> {
@@ -558,7 +569,7 @@ internal struct MockService: ServiceType {
 
   internal func fetchGraphUserEmail(query: NonEmptySet<Query>)
     -> SignalProducer<GraphUser, GraphError> {
-      return .empty
+      return SignalProducer(value: fetchGraphUserEmailResponse ?? GraphUser(email: "kick@starter.com"))
   }
 
   internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {

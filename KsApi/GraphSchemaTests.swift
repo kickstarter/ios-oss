@@ -5,7 +5,7 @@ import XCTest
 
 class GraphSchemaTests: XCTestCase {
 
-  func testProjectUpdatesQuery() {
+  func testRootCategoriesQuery() {
     let query = Query.rootCategories(
       .id +| [
         .name,

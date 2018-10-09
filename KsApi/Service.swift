@@ -66,6 +66,11 @@ public struct Service: ServiceType {
       return request(Route.addVideo(fileUrl: fileURL, toDraft: draft))
   }
 
+  public func changeEmail(input: ChangeEmailInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return applyMutation(mutation: ChangeEmailMutation(input: input))
+  }
+
   public func changePaymentMethod(project: Project)
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
 

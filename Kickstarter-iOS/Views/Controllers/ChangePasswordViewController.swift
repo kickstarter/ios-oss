@@ -74,16 +74,7 @@ final class ChangePasswordViewController: UIViewController {
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
-        self?.handleKeyboardVisibilityDidChange(change)
+        self?.scrollView.handleKeyboardVisibilityDidChange(change)
     }
-  }
-
-  private func handleKeyboardVisibilityDidChange(_ change: Keyboard.Change) {
-    UIView.animate(withDuration: change.duration,
-                   delay: 0.0,
-                   options: change.options,
-                   animations: { [weak self] in
-      self?.scrollView.contentInset.bottom = change.frame.height
-    }, completion: nil)
   }
 }
