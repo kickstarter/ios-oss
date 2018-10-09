@@ -155,6 +155,7 @@
 		778215E820F6922100F3D09F /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD31CFFAB9400653B2F /* HelpType.swift */; };
 		778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */; };
 		778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */; };
+		7784557F216CFA49002DE57B /* MessageBannerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77845547216CF942002DE57B /* MessageBannerType.swift */; };
 		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
 		7793B13521067D62007857C0 /* SettingsNotificationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B13421067D62007857C0 /* SettingsNotificationCellViewModel.swift */; };
 		7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */; };
@@ -173,6 +174,7 @@
 		77E84E082166A45B00DA8891 /* MessageBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84DD12166A45B00DA8891 /* MessageBannerViewController.swift */; };
 		77E84E0A2166A46600DA8891 /* MessageBannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84E092166A46600DA8891 /* MessageBannerViewModel.swift */; };
 		77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */; };
+		77E84E0E2166AD6800DA8891 /* MessageBannerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84E0D2166AD6700DA8891 /* MessageBannerViewModelTests.swift */; };
 		77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73421222E7C005A5C55 /* EmailFrequency.swift */; };
 		77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73621222E97005A5C55 /* SettingsCellType.swift */; };
 		77F6E73921222F4B005A5C55 /* SettingsNotificationCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73821222F4B005A5C55 /* SettingsNotificationCellType.swift */; };
@@ -1813,6 +1815,7 @@
 		777B70D92118D47700E11032 /* SettingsNotificationPickerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationPickerViewModelTests.swift; sourceTree = "<group>"; };
 		778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSourceTests.swift; sourceTree = "<group>"; };
 		778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewControllerTests.swift; sourceTree = "<group>"; };
+		77845547216CF942002DE57B /* MessageBannerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerType.swift; sourceTree = "<group>"; };
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		7793B13421067D62007857C0 /* SettingsNotificationCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellViewModel.swift; sourceTree = "<group>"; };
 		7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
@@ -1829,6 +1832,7 @@
 		77E84DD12166A45B00DA8891 /* MessageBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewController.swift; sourceTree = "<group>"; };
 		77E84E092166A46600DA8891 /* MessageBannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewModel.swift; sourceTree = "<group>"; };
 		77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewControllerTests.swift; sourceTree = "<group>"; };
+		77E84E0D2166AD6700DA8891 /* MessageBannerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewModelTests.swift; sourceTree = "<group>"; };
 		77F6E73421222E7C005A5C55 /* EmailFrequency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailFrequency.swift; sourceTree = "<group>"; };
 		77F6E73621222E97005A5C55 /* SettingsCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCellType.swift; sourceTree = "<group>"; };
 		77F6E73821222F4B005A5C55 /* SettingsNotificationCellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellType.swift; sourceTree = "<group>"; };
@@ -2813,6 +2817,7 @@
 			children = (
 				9D1A29851D5A9508009E1B3F /* DeprecatedWebViewController.swift */,
 				015B78841D47FF51003216AC /* MFMailComposeViewController.swift */,
+				77845547216CF942002DE57B /* MessageBannerType.swift */,
 				A77DA9621E4D1F4D00DB3A66 /* Nib.swift */,
 				A724BA651D2C03930041863C /* NSBundle-Framework.swift */,
 				A77DA9631E4D1F4D00DB3A66 /* Storyboard.swift */,
@@ -3037,6 +3042,7 @@
 				7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */,
 				77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */,
 				77E84E092166A46600DA8891 /* MessageBannerViewModel.swift */,
+				77E84E0D2166AD6700DA8891 /* MessageBannerViewModelTests.swift */,
 				77FA6CAE20F405E300809E31 /* SettingsViewModel.swift */,
 				77FA6D0920F541CA00809E31 /* SettingsViewModelTests.swift */,
 				7793B13421067D62007857C0 /* SettingsNotificationCellViewModel.swift */,
@@ -5754,6 +5760,7 @@
 				D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */,
 				9DDE1F721D5925A90092D9A5 /* CheckoutViewController.swift in Sources */,
 				01940B2B1D46814E0074FCE3 /* HelpWebViewModel.swift in Sources */,
+				7784557F216CFA49002DE57B /* MessageBannerType.swift in Sources */,
 				D08A817B1DFAAD04000128DB /* LiveStreamContainerViewController.swift in Sources */,
 				598D96B61D426D80003F3F66 /* ActivitySampleFollowCell.swift in Sources */,
 				A72C3AB91D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */,
@@ -5968,6 +5975,7 @@
 				D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */,
 				D6B4F0032107B4760079159D /* SettingsNewslettersViewControllerTests.swift in Sources */,
 				A7ED205C1E83240D00BFFA01 /* FundingGraphViewTests.swift in Sources */,
+				77E84E0E2166AD6800DA8891 /* MessageBannerViewModelTests.swift in Sources */,
 				D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */,
 				A7ED20131E83229E00BFFA01 /* DashboardDataSourceTests.swift in Sources */,
 				A7ED20481E8323E900BFFA01 /* LoginViewControllerTests.swift in Sources */,
