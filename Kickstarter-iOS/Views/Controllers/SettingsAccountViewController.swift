@@ -22,14 +22,9 @@ final class SettingsAccountViewController: UIViewController {
     self.tableView.delegate = self
 
     self.tableView.register(nib: .SettingsTableViewCell)
-    self.tableView.register(nib: .SettingsAccountPickerCell)
+    self.tableView.register(nib: .SettingsCurrencyPickerCell)
 
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
-
-    let tapRecognizer = UITapGestureRecognizer(target: self,
-                                               action: #selector(tapGestureToDismissCurrencyPicker))
-    tapRecognizer.cancelsTouchesInView = false
-    self.view.addGestureRecognizer(tapRecognizer)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -76,22 +71,24 @@ final class SettingsAccountViewController: UIViewController {
     if show {
       self.tableView.beginUpdates()
       self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow()], with: .top)
+      let tapRecognizer = UITapGestureRecognizer(target: self,
+                                                 action: #selector(tapGestureToDismissCurrencyPicker))
+      tapRecognizer.cancelsTouchesInView = false
+      self.view.addGestureRecognizer(tapRecognizer)
       self.tableView.endUpdates()
     }
   }
 
   func dismissCurrencyPickerCell() {
-    if self.tableView.numberOfRows(inSection: SettingsAccountSectionType.payment.rawValue) == 3 {
-      tableView.beginUpdates()
-      self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
-      tableView.endUpdates()
-    }
+    tableView.beginUpdates()
+    self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
+    tableView.endUpdates()
+
+    self.view.gestureRecognizers?.removeAll()
   }
 
   @objc private func tapGestureToDismissCurrencyPicker() {
-    if self.tableView.numberOfRows(inSection: SettingsAccountSectionType.payment.rawValue) == 3 {
-      self.viewModel.inputs.dismissPickerTap()
-    }
+    self.viewModel.inputs.dismissPickerTap()
   }
 }
 
@@ -118,15 +115,15 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    if let cell = cell as? SettingsAccountPickerCell {
+    if let cell = cell as? SettingsCurrencyPickerCell {
       cell.delegate = self
     }
   }
 }
 
-extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
+extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
 
-  func settingsCurrencyPickerCellDidChangeCurrency(_ cell: SettingsAccountPickerCell) {
+  func settingsCurrencyPickerCellDidChangeCurrency(_ cell: SettingsCurrencyPickerCell) {
     let alertController = UIAlertController(
       title: Strings.Change_currency(),
       message: "\(Strings.This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency()) \n\n \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())",
@@ -150,19 +147,7 @@ extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
     self.present(alertController, animated: true, completion: nil)
   }
 
-  func currencyCellDetailTextUpdated(_ text: String) {
-    tableView.beginUpdates()
-    let parentIndexPath = IndexPath(row: 1, section: SettingsAccountSectionType.payment.rawValue)
-    let cell = tableView.cellForRow(at: parentIndexPath)
-    if let cell = cell as? SettingsTableViewCell {
-      cell.detailLabel.text = text // Fix this
-    }
-    tableView.endUpdates()
-  }
-
   internal func shouldDismissCurrencyPicker() {
-    tableView.beginUpdates()
-    self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
-    tableView.endUpdates()
+    self.dismissCurrencyPickerCell()
   }
 }
