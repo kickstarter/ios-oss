@@ -1,8 +1,10 @@
-import Foundation
+import KsApi
 import Library
 import Prelude
+import ReactiveSwift
+import UIKit
 
-final class ChangeEmailViewController: UIViewController {
+internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var currentEmailLabel: UILabel!
   @IBOutlet fileprivate weak var currentEmail: UILabel!
   @IBOutlet fileprivate weak var errorLabel: UILabel!
@@ -10,10 +12,10 @@ final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var messageBannerView: UIView!
   @IBOutlet fileprivate weak var messageBannerLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
-  @IBOutlet fileprivate weak var newEmail: UITextField!
+  @IBOutlet fileprivate weak var newEmailTextField: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
   @IBOutlet fileprivate weak var passwordLabel: UILabel!
-  @IBOutlet fileprivate weak var password: UITextField!
+  @IBOutlet fileprivate weak var passwordTextField: UITextField!
   @IBOutlet fileprivate weak var resendVerificationEmailView: UIView!
   @IBOutlet fileprivate weak var resendVerificationEmailButton: UIButton!
   @IBOutlet fileprivate weak var saveBarButton: UIBarButtonItem!
@@ -32,6 +34,11 @@ final class ChangeEmailViewController: UIViewController {
                                      action: #selector(self.onePasswordButtonTapped),
                                      for: .touchUpInside)
 
+
+    self.viewModel.inputs.onePassword(
+      isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
+    )
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -42,6 +49,14 @@ final class ChangeEmailViewController: UIViewController {
     self.errorLabel.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
     self.messageBannerView.rac.hidden = self.viewModel.outputs.messageBannerViewIsHidden
     self.saveBarButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
+
+    self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
+
+    self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
+
+    self.viewModel.outputs.onePasswordFindLoginForURLString
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.onePasswordFindLogin(forURLString: $0) }
 
     Keyboard.change
       .observeForUI()
@@ -82,7 +97,7 @@ final class ChangeEmailViewController: UIViewController {
     _ = newEmailLabel
       |> settingsTitleLabelStyle
 
-    _ = newEmail
+    _ = newEmailTextField
       |> formFieldStyle
       |> UITextField.lens.textAlignment .~ .right
       |> UITextField.lens.placeholder %~ { _ in
@@ -92,7 +107,7 @@ final class ChangeEmailViewController: UIViewController {
     _ = passwordLabel
       |> settingsTitleLabelStyle
 
-    _ = password
+    _ = passwordTextField
       |> passwordFieldStyle
       |> UITextField.lens.textAlignment .~ .right
       |> UITextField.lens.returnKeyType .~ .go
@@ -108,7 +123,7 @@ final class ChangeEmailViewController: UIViewController {
   }
 
   @IBAction func onePasswordButtonTapped(_ sender: Any) {
-
+    self.viewModel.inputs.onePasswordButtonTapped()
   }
 
   @IBAction func emailFieldDidEndEditing(_ sender: UITextField) {
@@ -134,5 +149,17 @@ final class ChangeEmailViewController: UIViewController {
                    animations: { [weak self] in
                     self?.scrollView.contentInset.bottom = change.frame.height
       }, completion: nil)
+  }
+
+  fileprivate func onePasswordFindLogin(forURLString string: String) {
+
+    OnePasswordExtension.shared()
+      .findLogin(forURLString: string, for: self, sender: self.onePasswordButton) { result, _ in
+        guard let result = result else { return }
+
+        self.viewModel.inputs.onePasswordFound(
+          password: result[AppExtensionPasswordKey] as? String
+        )
+    }
   }
 }
