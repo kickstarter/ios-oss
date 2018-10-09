@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Library
 import Prelude
 import ReactiveSwift
@@ -6,9 +7,10 @@ import Result
 
 protocol ChangePasswordViewModelOutputs {
   /* Test */
-  var testPasswordInput: Signal<(String, String, String), NoError> { get }
+  var testPasswordInput: Signal<Void, NoError> { get }
 
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
+  var changePasswordFailure: Signal<String, NoError> { get }
   var confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var currentPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var currentPasswordPrefillValue: Signal<String, NoError> { get }
@@ -71,9 +73,16 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
     let combinedInput = Signal.combineLatest(currentPasswordSignal, combinedPasswords)
 
-    self.testPasswordInput = combinedInput
+    let passwordUpdateEvent = combinedInput
       .takeWhen(self.saveButtonTappedProperty.signal)
       .map(unpack)
+      .map { ChangePasswordInput(currentPassword: $0.0, newPassword: $0.1, newPasswordConfirmation: $0.2) }
+      .flatMap {
+        AppEnvironment.current.apiService.changePassword(input: $0).materialize()
+    }
+
+    self.testPasswordInput = passwordUpdateEvent.values().ignoreValues()
+    self.changePasswordFailure = passwordUpdateEvent.errors().map { $0.localizedDescription }
 
     self.activityIndicatorShouldShow = saveButtonTappedProperty.signal.mapConst(true)
     self.dismissKeyboard = Signal.merge(
@@ -104,15 +113,15 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       .map { $0.0 && $0.1 }
 
     self.errorLabelMessage = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
-      .map { requirements -> String in
+      .map { requirements -> String? in
         if !requirements.1 {
           return "Your password must be at least 6 characters long."
         } else if !requirements.0 {
           return "New passwords must match."
         } else {
-          return ""
+          return nil
         }
-    }
+    }.skipNil()
   }
 
   private var currentPasswordDoneEditingProperty = MutableProperty(())
@@ -174,6 +183,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   }
 
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
+  public let changePasswordFailure: Signal<String, NoError>
   public let confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let currentPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let currentPasswordPrefillValue: Signal<String, NoError>
@@ -186,7 +196,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public let onePasswordFindPasswordForURLString: Signal<String, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
 
-  public let testPasswordInput: Signal<(String, String, String), NoError>
+  public let testPasswordInput: Signal<Void, NoError>
 
   var inputs: ChangePasswordViewModelInputs {
     return self

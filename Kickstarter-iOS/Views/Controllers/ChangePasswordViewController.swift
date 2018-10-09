@@ -138,6 +138,24 @@ final class ChangePasswordViewController: UIViewController {
         self?.onePasswordFindPassword(forURLString: urlString)
     }
 
+    self.viewModel.outputs.testPasswordInput
+      .observeValues {
+        print("CHANGE PASSWORD SUCCESS")
+    }
+
+    self.viewModel.outputs.changePasswordFailure
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        let alert = UIAlertController(title: "Error",
+                                      message: errorMessage,
+                                      preferredStyle: UIAlertController.Style.alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+
+        alert.addAction(okAction)
+
+        self?.present(alert, animated: true, completion: nil)
+    }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
