@@ -20,7 +20,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     case SettingsAccountCellType.currency:
       NotificationCenter.default
         .addObserver(self,
-                     selector: #selector(test),
+                     selector: #selector(updateCurrencyDetailText),
                      name: .ksr_updatedCurrencyCellDetailText,
                      object: nil)
     default:
@@ -47,7 +47,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     }
   }
 
-  @objc internal func test(notification: NSNotification) {
+  @objc internal func updateCurrencyDetailText(notification: NSNotification) {
     if let currencyText = notification.userInfo?["text"] as? String {
       self.detailLabel.text = currencyText
     }
