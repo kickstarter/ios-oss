@@ -453,7 +453,7 @@ extension ServiceType {
     return headers
   }
 
-  fileprivate func graphMutationRequestBody(mutation: String, input: [String: Any]) -> [String: Any] {
+  func graphMutationRequestBody(mutation: String, input: [String: Any]) -> [String: Any] {
     return [
     "query": mutation,
     "variables": ["input": input]

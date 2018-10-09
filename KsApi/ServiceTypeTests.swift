@@ -231,6 +231,19 @@ final class ServiceTypeTests: XCTestCase {
     XCTAssertEqual(request?.allHTTPHeaderFields?["Kickstarter-iOS-App"], self.service.buildVersion)
     XCTAssertEqual(request?.allHTTPHeaderFields?["User-Agent"], userAgent())
   }
+
+  func testGraphMutationRequestBody() {
+    let body: [String: Any] = self.service.graphMutationRequestBody(mutation: "my_mutation",
+                                                                    input: ["foo_bar": 123])
+    let variables = body["variables"] as? [String: Any]
+    let input = variables?["input"] as? [String: Any]
+    let foobar = input?["foo_bar"] as? Int
+
+    XCTAssertEqual(body["query"] as? String, "my_mutation")
+    XCTAssertNotNil(variables)
+    XCTAssertNotNil(input)
+    XCTAssertEqual(foobar, 123)
+  }
 }
 
 private func userAgent() -> String {
