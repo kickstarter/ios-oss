@@ -80,11 +80,11 @@ final class SettingsAccountViewController: UIViewController {
   }
 
   func dismissCurrencyPickerCell() {
-    if self.tableView.numberOfRows(inSection: SettingsAccountSectionType.payment.rawValue) == 3 {
-      tableView.beginUpdates()
-      self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
-      tableView.endUpdates()
-    }
+    tableView.beginUpdates()
+    self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
+    tableView.endUpdates()
+
+    self.view.gestureRecognizers?.removeAll()
   }
 
   @objc private func tapGestureToDismissCurrencyPicker() {
@@ -123,8 +123,6 @@ extension SettingsAccountViewController: UITableViewDelegate {
 
 extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
   internal func shouldDismissCurrencyPicker() {
-    tableView.beginUpdates()
-    self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
-    tableView.endUpdates()
+    self.dismissCurrencyPickerCell()
   }
 }
