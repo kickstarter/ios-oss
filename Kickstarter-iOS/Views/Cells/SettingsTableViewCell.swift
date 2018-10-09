@@ -5,7 +5,7 @@ import UIKit
 final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet public weak var detailLabel: UILabel!
+  @IBOutlet fileprivate weak var detailLabel: UILabel!
   @IBOutlet fileprivate weak var lineLayer: UIView!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
 
@@ -15,6 +15,17 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   func configureWith(value cellValue: SettingsCellValue) {
     let cellType = cellValue.cellType
+
+    switch cellType {
+    case SettingsAccountCellType.currency:
+      NotificationCenter.default
+        .addObserver(self,
+                     selector: #selector(test),
+                     name: .ksr_updatedCurrencyCellDetailText,
+                     object: nil)
+    default:
+      break
+    }
 
     _ = titleLabel
       |> settingsTitleLabelStyle
@@ -33,6 +44,12 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
       }
       |> UILabel.lens.text %~ { _ in
         return cellType.description ?? ""
+    }
+  }
+
+  @objc internal func test(notification: NSNotification) {
+    if let currencyText = notification.userInfo?["text"] as? String {
+      self.detailLabel.text = currencyText
     }
   }
 

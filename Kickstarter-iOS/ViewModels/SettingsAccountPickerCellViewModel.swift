@@ -11,7 +11,6 @@ protocol SettingsAccountPickerCellViewModelInputs {
 
 protocol SettingsAccountPickerCellViewModelOutputs {
   var notifyCurrencyPickerCellRemoved: Signal<Bool, NoError> { get }
-  var updateCurrencyDetailText: Signal<String, NoError> { get }
 }
 
 protocol SettingsAccountPickerCellViewModelType {
@@ -24,9 +23,6 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
 
   public init() {
     self.notifyCurrencyPickerCellRemoved = self.selectedCurrencyProperty.signal.mapConst(true)
-
-    self.updateCurrencyDetailText = self.selectedCurrencyProperty.signal.skipNil()
-      .map { $0.descriptionText }
   }
 
   fileprivate let selectedCurrencyProperty = MutableProperty<Currency?>(nil)
@@ -40,7 +36,6 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
   }
 
   public let notifyCurrencyPickerCellRemoved: Signal<Bool, NoError>
-  public let updateCurrencyDetailText: Signal<String, NoError>
 
   var inputs: SettingsAccountPickerCellViewModelInputs { return self }
   var outputs: SettingsAccountPickerCellViewModelOutputs { return self }

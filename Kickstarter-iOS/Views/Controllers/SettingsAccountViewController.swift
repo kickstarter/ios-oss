@@ -125,15 +125,6 @@ extension SettingsAccountViewController: UITableViewDelegate {
 }
 
 extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
-  func currencyCellDetailTextUpdated(_ text: String) {
-    tableView.beginUpdates()
-    let parentIndexPath = IndexPath(row: 1, section: SettingsAccountSectionType.payment.rawValue)
-    let cell = tableView.cellForRow(at: parentIndexPath)
-    if let cell = cell as? SettingsTableViewCell {
-      cell.detailLabel.text = text // Fix this
-    }
-    tableView.endUpdates()
-  }
 
   internal func shouldDismissCurrencyPicker() {
     tableView.beginUpdates()

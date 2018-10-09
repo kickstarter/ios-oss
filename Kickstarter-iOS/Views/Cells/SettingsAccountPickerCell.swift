@@ -3,8 +3,6 @@ import Library
 import KsApi
 
 internal protocol SettingsAccountPickerCellDelegate: class {
-  /// Called when user did select currency in picker to update detail text in currency cell
-  func currencyCellDetailTextUpdated(_ text: String)
   /// Called after user selects currency in picker to remove picker cell
   func shouldDismissCurrencyPicker()
 }
@@ -37,12 +35,6 @@ final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.updateCurrencyDetailText
-      .observeForUI()
-      .observeValues { [weak self] text in
-         self?.delegate?.currencyCellDetailTextUpdated(text)
-    }
-
     self.viewModel.outputs.notifyCurrencyPickerCellRemoved
       .observeForUI()
       .observeValues { [weak self] _ in
@@ -72,6 +64,11 @@ extension SettingsAccountPickerCell: UIPickerViewDelegate {
     guard let selectedCurrency = Currency(rawValue: row) else {
       return
     }
+
+    NotificationCenter.default.post(name: Notification.Name.ksr_updatedCurrencyCellDetailText,
+                                    object: nil,
+                                    userInfo:["text": selectedCurrency.descriptionText ]
+    )
 
     self.viewModel.inputs.didSelectCurrency(currency: selectedCurrency)
   }
