@@ -34,7 +34,6 @@ internal final class ChangeEmailViewController: UIViewController {
                                      action: #selector(self.onePasswordButtonTapped),
                                      for: .touchUpInside)
 
-
     self.viewModel.inputs.onePassword(
       isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
     )
