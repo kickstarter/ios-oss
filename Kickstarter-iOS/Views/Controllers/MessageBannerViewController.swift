@@ -3,18 +3,18 @@ import Library
 import Prelude
 
 final class MessageBannerViewController: UIViewController {
-  @IBOutlet fileprivate weak var messageLabel: UILabel!
   @IBOutlet fileprivate weak var backgroundView: UIView!
   @IBOutlet fileprivate weak var backgroundViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
+  @IBOutlet fileprivate weak var messageLabel: UILabel!
 
   private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
 
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
 
   struct AnimationConstants {
-    static let showDuration: TimeInterval = 0.3
     static let hideDuration: TimeInterval = 0.25
+    static let showDuration: TimeInterval = 0.3
   }
 
   override func bindStyles() {
@@ -30,10 +30,10 @@ final class MessageBannerViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.messageLabel.rac.text = self.viewModel.outputs.bannerMessage
-    self.messageLabel.rac.textColor = self.viewModel.outputs.messageTextColor
     self.iconImageView.rac.hidden = self.viewModel.outputs.iconIsHidden
     self.backgroundView.rac.backgroundColor = self.viewModel.outputs.bannerBackgroundColor
+    self.messageLabel.rac.text = self.viewModel.outputs.bannerMessage
+    self.messageLabel.rac.textColor = self.viewModel.outputs.messageTextColor
 
     self.viewModel.outputs.messageBannerViewIsHidden
       .observeForUI()
@@ -84,9 +84,9 @@ final class MessageBannerViewController: UIViewController {
                       ? frameHeight : self.bottomMarginConstraintConstant
                     self.view.layoutIfNeeded()
     }, completion: { [weak self] _ in
-      self?.view.isHidden = isHidden
+        self?.view.isHidden = isHidden
 
-      self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
+        self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
     })
   }
 

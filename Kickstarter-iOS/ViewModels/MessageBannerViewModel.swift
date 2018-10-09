@@ -55,7 +55,6 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
 
     let bannerViewShouldHide = self.showBannerViewProperty.signal
       .negate()
-      .skipRepeats()
 
     let postAnimationBannerViewShouldHide = self.bannerViewIsHiddenProperty.signal
       .filter { isFalse($0) }
@@ -63,6 +62,7 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
       .negate()
 
     self.messageBannerViewIsHidden = Signal.merge(bannerViewShouldHide, postAnimationBannerViewShouldHide)
+      .skipRepeats()
   }
 
   private var bannerTypeProperty = MutableProperty<MessageBannerType?>(nil)
@@ -89,8 +89,8 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
   public let bannerMessage: Signal<String, NoError>
   public let iconImage: Signal<UIImage, NoError>
   public let iconIsHidden: Signal<Bool, NoError>
-  public let messageTextAlignment: Signal<NSTextAlignment, NoError>
   public let messageBannerViewIsHidden: Signal<Bool, NoError>
+  public let messageTextAlignment: Signal<NSTextAlignment, NoError>
   public let messageTextColor: Signal<UIColor, NoError>
 
   var inputs: MessageBannerViewModelInputs {
