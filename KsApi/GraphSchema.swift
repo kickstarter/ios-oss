@@ -120,6 +120,7 @@ public enum Query {
   case category(id: String, NonEmptySet<Category>)
   case project(slug: String, NonEmptySet<Project>)
   case rootCategories(NonEmptySet<Category>)
+  case user(NonEmptySet<User>)
 
   public enum Amount {
     case amount
@@ -209,6 +210,8 @@ extension Query: QueryType {
       return "project(slug: \"\(slug)\") { \(join(fields)) }"
     case let .rootCategories(fields):
       return "rootCategories { \(join(fields)) }"
+    case let .user(fields):
+      return "me { \(join(fields)) }"
     }
   }
 }

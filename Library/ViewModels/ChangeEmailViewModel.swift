@@ -1,4 +1,5 @@
 import KsApi
+import Prelude
 import ReactiveSwift
 import Result
 
@@ -20,6 +21,7 @@ public protocol ChangeEmailViewModelOutputs {
   var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
   var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
   var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
+  var emailText: Signal<String, NoError> { get }
   var passwordText: Signal<String, NoError> { get }
   var resendVerificationEmailButtonIsHidden: Signal<Bool, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
@@ -31,11 +33,24 @@ public protocol ChangeEmailViewModelType {
   var outputs: ChangeEmailViewModelOutputs { get }
 }
 
+public let userEmailQuery: NonEmptySet<Query> = Query.user(.email +| []) +| []
+
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
 ChangeEmailViewModelOutputs {
 
   public init() {
-    self.errorLabelIsHidden = viewDidLoadProperty.signal.mapConst(false)
+
+    let userEmailEvent = self.viewDidLoadProperty.signal
+      .switchMap { _ in
+        AppEnvironment.current.apiService.fetchGraphUserEmail(query: userEmailQuery)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { $0.email }
+          .materialize()
+    }
+
+    self.emailText = userEmailEvent.values()
+
+    self.errorLabelIsHidden = viewDidLoadProperty.signal.mapConst(false).takeWhen(userEmailEvent.signal.ignoreValues())
     self.resendVerificationEmailButtonIsHidden = viewDidLoadProperty.signal.mapConst(false)
     self.saveButtonIsEnabled = viewDidLoadProperty.signal.mapConst(true)
     self.dismissKeyboard = saveButtonTappedProperty.signal.ignoreValues()
@@ -98,6 +113,7 @@ ChangeEmailViewModelOutputs {
   }
 
   public let dismissKeyboard: Signal<Void, NoError>
+  public let emailText: Signal<String, NoError>
   public let errorLabelIsHidden: Signal<Bool, NoError>
   public let messageBannerViewIsHidden: Signal<Bool, NoError>
   public let onePasswordButtonIsHidden: Signal<Bool, NoError>

@@ -114,6 +114,10 @@ public protocol ServiceType {
   func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError>
 
+  /// Fetch User's email objects using graphQL.
+  func fetchGraphUserEmail(query: NonEmptySet<Query>)
+    -> SignalProducer<GraphUser, GraphError>
+
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)
     -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope>

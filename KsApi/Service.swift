@@ -198,6 +198,11 @@ public struct Service: ServiceType {
       return fetch(query: query)
   }
 
+  public func fetchGraphUserEmail(query: NonEmptySet<Query>)
+    -> SignalProducer<GraphUser, GraphError> {
+      return fetch(query: query)
+  }
+
   public func fetchMessageThread(messageThreadId: Int)
     -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
 

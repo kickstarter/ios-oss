@@ -9,6 +9,7 @@ import XCTest
 
 final class ChangeEmailViewModelTests: TestCase {
   fileprivate let vm: ChangeEmailViewModelType = ChangeEmailViewModel()
+  
   fileprivate let dismissKeyboard = TestObserver<(), NoError>()
   fileprivate let onePasswordButtonHidden = TestObserver<Bool, NoError>()
   fileprivate let onePasswordFindLoginForURLString = TestObserver<String, NoError>()

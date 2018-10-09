@@ -49,6 +49,8 @@ internal final class ChangeEmailViewController: UIViewController {
     self.messageBannerView.rac.hidden = self.viewModel.outputs.messageBannerViewIsHidden
     self.saveBarButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
 
+    self.currentEmail.rac.text = self.viewModel.outputs.emailText
+
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
 
     self.passwordTextField.rac.text = self.viewModel.outputs.passwordText

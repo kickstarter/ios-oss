@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ChangePasswordMutation: GraphMutation {
+public struct Mutations: GraphMutation {
   var input: ChangePasswordInput
 
   public init(input: ChangePasswordInput) {
