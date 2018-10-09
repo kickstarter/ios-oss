@@ -18,7 +18,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currencyPicker)
 
     return self.appendRow(value: cellValue,
-                          cellClass: SettingsAccountPickerCell.self,
+                          cellClass: SettingsCurrencyPickerCell.self,
                           toSection: SettingsAccountSectionType.payment.rawValue)
   }
 
@@ -26,7 +26,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currencyPicker)
 
     return self.deleteRow(value: cellValue,
-                           cellClass: SettingsAccountPickerCell.self,
+                           cellClass: SettingsCurrencyPickerCell.self,
                            atIndex: 2,
                            inSection: SettingsAccountSectionType.payment.rawValue)
   }
@@ -41,7 +41,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as SettingsTableViewCell, value as SettingsCellValue):
       cell.configureWith(value: value)
-    case let (cell as SettingsAccountPickerCell, value as SettingsCellValue):
+    case let (cell as SettingsCurrencyPickerCell, value as SettingsCellValue):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

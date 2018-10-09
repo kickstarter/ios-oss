@@ -4,22 +4,22 @@ import Prelude
 import ReactiveSwift
 import Result
 
-protocol SettingsAccountPickerCellViewModelInputs {
+protocol SettingsCurrencyPickerCellViewModelInputs {
   func configure(with cellValue: SettingsCellValue)
   func didSelectCurrency(currency: Currency)
 }
 
-protocol SettingsAccountPickerCellViewModelOutputs {
+protocol SettingsCurrencyPickerCellViewModelOutputs {
   var notifyCurrencyPickerCellRemoved: Signal<Bool, NoError> { get }
 }
 
-protocol SettingsAccountPickerCellViewModelType {
-  var inputs: SettingsAccountPickerCellViewModelInputs { get }
-  var outputs: SettingsAccountPickerCellViewModelOutputs { get }
+protocol SettingsCurrencyPickerCellViewModelType {
+  var inputs: SettingsCurrencyPickerCellViewModelInputs { get }
+  var outputs: SettingsCurrencyPickerCellViewModelOutputs { get }
 }
 
-final class SettingsAccountPickerCellViewModel: SettingsAccountPickerCellViewModelOutputs,
-SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType {
+final class SettingsCurrencyPickerCellViewModel: SettingsCurrencyPickerCellViewModelOutputs,
+SettingsCurrencyPickerCellViewModelInputs, SettingsCurrencyPickerCellViewModelType {
 
   public init() {
     self.notifyCurrencyPickerCellRemoved = self.selectedCurrencyProperty.signal.mapConst(true)
@@ -37,6 +37,6 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
 
   public let notifyCurrencyPickerCellRemoved: Signal<Bool, NoError>
 
-  var inputs: SettingsAccountPickerCellViewModelInputs { return self }
-  var outputs: SettingsAccountPickerCellViewModelOutputs { return self }
+  var inputs: SettingsCurrencyPickerCellViewModelInputs { return self }
+  var outputs: SettingsCurrencyPickerCellViewModelOutputs { return self }
 }

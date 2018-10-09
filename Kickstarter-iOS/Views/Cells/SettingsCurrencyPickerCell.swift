@@ -2,17 +2,17 @@ import Prelude
 import Library
 import KsApi
 
-internal protocol SettingsAccountPickerCellDelegate: class {
+internal protocol SettingsCurrencyPickerCellDelegate: class {
   /// Called after user selects currency in picker to remove picker cell
   func shouldDismissCurrencyPicker()
 }
 
-final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
-  internal var delegate: SettingsAccountPickerCellDelegate?
+final class SettingsCurrencyPickerCell: UITableViewCell, NibLoading, ValueCell {
+  internal var delegate: SettingsCurrencyPickerCellDelegate?
   @IBOutlet fileprivate weak var pickerView: UIPickerView!
   @IBOutlet fileprivate var lineLayer: [UIView]!
 
-  private let viewModel: SettingsAccountPickerCellViewModelType = SettingsAccountPickerCellViewModel()
+  private let viewModel: SettingsCurrencyPickerCellViewModelType = SettingsCurrencyPickerCellViewModel()
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -45,7 +45,7 @@ final class SettingsAccountPickerCell: UITableViewCell, NibLoading, ValueCell {
 
 // MARK: UIPickerViewDataSource & UIPickerViewDelegate
 
-extension SettingsAccountPickerCell: UIPickerViewDataSource {
+extension SettingsCurrencyPickerCell: UIPickerViewDataSource {
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return 1
   }
@@ -55,7 +55,7 @@ extension SettingsAccountPickerCell: UIPickerViewDataSource {
   }
 }
 
-extension SettingsAccountPickerCell: UIPickerViewDelegate {
+extension SettingsCurrencyPickerCell: UIPickerViewDelegate {
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     return Currency(rawValue: row)?.descriptionText
   }

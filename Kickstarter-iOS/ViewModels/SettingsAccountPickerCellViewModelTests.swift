@@ -9,7 +9,7 @@ import Prelude
 @testable import Kickstarter_Framework
 
 internal final class SettingsAccountPickerCellViewModelTests: TestCase {
-  let vm = SettingsAccountPickerCellViewModel()
+  let vm = SettingsCurrencyPickerCellViewModel()
   let notifyCurrencyPickerCellRemoved = TestObserver<Bool, NoError>()
 
   internal override func setUp() {

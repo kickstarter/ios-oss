@@ -22,7 +22,7 @@ final class SettingsAccountViewController: UIViewController {
     self.tableView.delegate = self
 
     self.tableView.register(nib: .SettingsTableViewCell)
-    self.tableView.register(nib: .SettingsAccountPickerCell)
+    self.tableView.register(nib: .SettingsCurrencyPickerCell)
 
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
@@ -118,13 +118,13 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    if let cell = cell as? SettingsAccountPickerCell {
+    if let cell = cell as? SettingsCurrencyPickerCell {
       cell.delegate = self
     }
   }
 }
 
-extension SettingsAccountViewController: SettingsAccountPickerCellDelegate {
+extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
 
   internal func shouldDismissCurrencyPicker() {
     tableView.beginUpdates()
