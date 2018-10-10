@@ -5,6 +5,7 @@ import KsApi
 import Library
 
 public protocol SettingsAccountViewModelInputs {
+  func didConfirmChangeCurrency(currency: Currency)
   func didSelectRow(cellType: SettingsAccountCellType)
   func dismissPickerTap()
   func viewDidLoad()
@@ -15,6 +16,7 @@ public protocol SettingsAccountViewModelOutputs {
   var reloadData: Signal<Void, NoError> { get }
   var presentCurrencyPicker: Signal<Bool, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
+  var updateCurrency: Signal<(), NoError> { get }
 }
 
 public protocol SettingsAccountViewModelType {
@@ -31,6 +33,12 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     let currencyCellSelected = self.selectedCellTypeProperty.signal
       .skipNil()
       .filter { $0 == .currency }
+
+    let changeCurrencyEvent = self.didConfirmChangeCurrencyProperty.signal.skipNil()
+      .map { ChangeCurrencyInput(chosenCurrency: $0.descriptionText) }
+      .switchMap { AppEnvironment.current.apiService.changeCurrency(input: $0).materialize() }
+
+    self.updateCurrency = changeCurrencyEvent.values()
 
     self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true)
 
@@ -51,7 +59,12 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.dismissPickerTapProperty.value = ()
   }
 
-  private let viewDidLoadProperty = MutableProperty(())
+  fileprivate let didConfirmChangeCurrencyProperty = MutableProperty<Currency?>(nil)
+  public func didConfirmChangeCurrency(currency: Currency) {
+    self.didConfirmChangeCurrencyProperty.value = currency
+  }
+
+  fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -60,6 +73,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public let reloadData: Signal<Void, NoError>
   public let presentCurrencyPicker: Signal<Bool, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
+  public let updateCurrency: Signal<(), NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }

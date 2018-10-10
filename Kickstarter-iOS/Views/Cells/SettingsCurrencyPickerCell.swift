@@ -5,7 +5,7 @@ import KsApi
 internal protocol SettingsCurrencyPickerCellDelegate: class {
   /// Called after user selects currency in picker to remove picker cell
   func shouldDismissCurrencyPicker()
-  func settingsCurrencyPickerCellDidChangeCurrency(_ cell: SettingsCurrencyPickerCell)
+  func settingsCurrencyPickerCellDidChangeCurrency(_ currency: Currency) // TODO- rename
 }
 
 final class SettingsCurrencyPickerCell: UITableViewCell, NibLoading, ValueCell {
@@ -38,15 +38,14 @@ final class SettingsCurrencyPickerCell: UITableViewCell, NibLoading, ValueCell {
 
     self.viewModel.outputs.notifyCurrencyPickerCellRemoved
       .observeForUI()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] _ in //TODO - fix this not using bool
         self?.delegate?.shouldDismissCurrencyPicker()
     }
 
     self.viewModel.outputs.showCurrencyChangeAlert
       .observeForUI()
-      .observeValues { [weak self] in
-        guard let _self = self else { return }
-        self?.delegate?.settingsCurrencyPickerCellDidChangeCurrency(_self)
+      .observeValues { [weak self] currency in
+        self?.delegate?.settingsCurrencyPickerCellDidChangeCurrency(currency)
     }
   }
 }
@@ -75,10 +74,10 @@ extension SettingsCurrencyPickerCell: UIPickerViewDelegate {
 
     // swiftlint:disable:next todo
     //TODO - remove this notification once the currency can be read from the user object
-    NotificationCenter.default.post(name: Notification.Name.ksr_updatedCurrencyCellDetailText,
-                                    object: nil,
-                                    userInfo: ["text": selectedCurrency.descriptionText]
-    )
+//    NotificationCenter.default.post(name: Notification.Name.ksr_updatedCurrencyCellDetailText,
+//                                    object: nil,
+//                                    userInfo: ["text": selectedCurrency.descriptionText]
+//    )
 
     self.viewModel.inputs.didSelectCurrency(currency: selectedCurrency)
   }

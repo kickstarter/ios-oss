@@ -42,6 +42,9 @@ public protocol ServiceType {
   func addVideo(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Video, ErrorEnvelope>
 
+  func changeCurrency(input: ChangeCurrencyInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+
   func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 

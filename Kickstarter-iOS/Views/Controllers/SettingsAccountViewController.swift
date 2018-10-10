@@ -54,6 +54,12 @@ final class SettingsAccountViewController: UIViewController {
       .observeValues { [weak self] (viewController) in
         self?.navigationController?.pushViewController(viewController, animated: true)
     }
+
+    self.viewModel.outputs.updateCurrency
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        print("GETS HERE")
+    }
   }
 
   override func bindStyles() {
@@ -123,7 +129,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
 
 extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
 
-  func settingsCurrencyPickerCellDidChangeCurrency(_ cell: SettingsCurrencyPickerCell) {
+  func settingsCurrencyPickerCellDidChangeCurrency(_ currency: Currency) {
     let alertController = UIAlertController(
       title: Strings.Change_currency(),
       message: "\(Strings.This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency()) \n\n \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())",
@@ -133,7 +139,9 @@ extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
       UIAlertAction(
         title: Strings.Yes_change_currency(),
         style: .default,
-        handler: nil
+        handler: { [weak self] _ in
+          self?.viewModel.inputs.didConfirmChangeCurrency(currency: currency)
+        }
       )
     )
     alertController.addAction(
