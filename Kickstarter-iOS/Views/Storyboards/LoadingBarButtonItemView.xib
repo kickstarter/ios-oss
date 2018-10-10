@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view userInteractionEnabled="NO" contentMode="scaleToFill" id="iN0-l3-epB" customClass="LoadingBarButtonItemView" customModule="Kickstarter_Framework">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="WeI-gS-cT0">
+                    <rect key="frame" x="177.5" y="333.5" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="Gww-rc-lzH"/>
+                        <constraint firstAttribute="width" constant="20" id="jpA-AB-7sp"/>
+                    </constraints>
+                </activityIndicatorView>
+                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8e-UA-Yn2">
+                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                    <state key="normal" title="Button"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="WeI-gS-cT0" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="2sx-bb-5P4"/>
+                <constraint firstItem="WeI-gS-cT0" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="3zE-Fz-DRq"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="z8e-UA-Yn2" secondAttribute="trailing" id="4Fk-4N-wDR"/>
+                <constraint firstItem="z8e-UA-Yn2" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Son-a0-TnP"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="z8e-UA-Yn2" secondAttribute="bottom" id="erl-N0-o7c"/>
+                <constraint firstItem="z8e-UA-Yn2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="oJm-Wp-zMv"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="activityIndicator" destination="WeI-gS-cT0" id="uDM-R8-TKc"/>
+                <outlet property="titleButton" destination="z8e-UA-Yn2" id="uKO-dH-TYH"/>
+            </connections>
+        </view>
+    </objects>
+</document>

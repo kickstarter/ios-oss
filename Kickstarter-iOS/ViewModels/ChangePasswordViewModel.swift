@@ -6,11 +6,9 @@ import ReactiveSwift
 import Result
 
 protocol ChangePasswordViewModelOutputs {
-  /* Test */
-  var testPasswordInput: Signal<Void, NoError> { get }
-
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var changePasswordFailure: Signal<String, NoError> { get }
+  var changePasswordSuccess: Signal<DiscoveryParams?, NoError> { get }
   var confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var currentPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var currentPasswordPrefillValue: Signal<String, NoError> { get }
@@ -71,20 +69,44 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
         return newPassword.count > 5
     }
 
+    // Save button should enable WHEN:
+    // all fields have string values,
+    // passwords match
+    // password is > 6 chars
+    self.saveButtonIsEnabled = Signal
+      .combineLatest(fieldsNotEmpty, passwordsMatch, lengthMeetsReq)
+      .map { requirements in
+        return requirements.0 && requirements.1 && requirements.2
+    }
+
+    let autoSaveSignal = self.saveButtonIsEnabled
+      .takeWhen(self.confirmNewPasswordDoneEditingProperty.signal)
+      .filter { isTrue($0) }
+      .ignoreValues()
+
+    let triggerSaveAction = Signal.merge(autoSaveSignal, self.saveButtonTappedProperty.signal)
+
     let combinedInput = Signal.combineLatest(currentPasswordSignal, combinedPasswords)
 
     let passwordUpdateEvent = combinedInput
-      .takeWhen(self.saveButtonTappedProperty.signal)
+      .takeWhen(triggerSaveAction)
       .map(unpack)
       .map { ChangePasswordInput(currentPassword: $0.0, newPassword: $0.1, newPasswordConfirmation: $0.2) }
       .flatMap {
         AppEnvironment.current.apiService.changePassword(input: $0).materialize()
     }
 
-    self.testPasswordInput = passwordUpdateEvent.values().ignoreValues()
+    self.changePasswordSuccess = passwordUpdateEvent.values()
+      .map { _ in
+        return DiscoveryParams.defaults
+          |> DiscoveryParams.lens.includePOTD .~ true
+          |> DiscoveryParams.lens.sort .~ .magic
+    }
+
     self.changePasswordFailure = passwordUpdateEvent.errors().map { $0.localizedDescription }
 
     self.activityIndicatorShouldShow = saveButtonTappedProperty.signal.mapConst(true)
+
     self.dismissKeyboard = Signal.merge(
       self.saveButtonTappedProperty.signal,
       self.confirmNewPasswordDoneEditingProperty.signal)
@@ -98,16 +120,6 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.currentPasswordPrefillValue = self.onePasswordPrefillPasswordProperty.signal.skipNil()
     self.onePasswordFindPasswordForURLString = self.onePasswordButtonTappedProperty.signal
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
-
-    // Save button should enable WHEN:
-    // all fields have string values,
-    // passwords match
-    // password is > 6 chars
-    self.saveButtonIsEnabled = Signal
-      .combineLatest(fieldsNotEmpty, passwordsMatch, lengthMeetsReq)
-      .map { requirements in
-        return requirements.0 && requirements.1 && requirements.2
-    }
 
     self.errorLabelIsHidden = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
       .map { $0.0 && $0.1 }
@@ -184,6 +196,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let changePasswordFailure: Signal<String, NoError>
+  public let changePasswordSuccess: Signal<DiscoveryParams?, NoError>
   public let confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let currentPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let currentPasswordPrefillValue: Signal<String, NoError>
@@ -195,8 +208,6 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public let onePasswordButtonIsHidden: Signal<Bool, NoError>
   public let onePasswordFindPasswordForURLString: Signal<String, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
-
-  public let testPasswordInput: Signal<Void, NoError>
 
   var inputs: ChangePasswordViewModelInputs {
     return self

@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Library
 import Prelude
 
@@ -11,9 +12,9 @@ final class ChangePasswordViewController: UIViewController {
   @IBOutlet fileprivate weak var newPasswordLabel: UILabel!
   @IBOutlet fileprivate weak var newPassword: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
-  @IBOutlet fileprivate weak var saveButton: UIBarButtonItem!
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
+  private var saveButtonView: LoadingBarButtonItemView!
   private var messageBannerView: MessageBannerViewController!
 
   private let viewModel: ChangePasswordViewModelType = ChangePasswordViewModel()
@@ -30,6 +31,17 @@ final class ChangePasswordViewController: UIViewController {
     }
 
     self.messageBannerView = messageViewController
+
+    guard let saveButtonView = LoadingBarButtonItemView.fromNib(nib: Nib.LoadingBarButtonItemView) else {
+      fatalError("failed to load LoadingBarButtonItemView from Nib")
+    }
+
+    self.saveButtonView = saveButtonView
+    self.saveButtonView.setTitle(title: Strings.Save())
+    self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped(_:)))
+
+    let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
+    self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
     self.viewModel
       .inputs.onePasswordIsAvailable(available: OnePasswordExtension.shared().isAppExtensionAvailable())
@@ -61,6 +73,7 @@ final class ChangePasswordViewController: UIViewController {
       |> formFieldStyle
       |> UITextField.lens.secureTextEntry .~ true
       |> UITextField.lens.textAlignment .~ .right
+      |> UITextField.lens.returnKeyType .~ .done
       |> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_password() }
 
     _ = currentPasswordLabel
@@ -96,17 +109,23 @@ final class ChangePasswordViewController: UIViewController {
 
     self.currentPassword.rac.text = self.viewModel.outputs.currentPasswordPrefillValue
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
-    self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
     self.errorMessageLabel.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
     self.errorMessageLabel.rac.text = self.viewModel.outputs.errorLabelMessage
 
-    self.viewModel.outputs.testPasswordInput
+    self.viewModel.outputs.activityIndicatorShouldShow
       .observeForUI()
-      .observeValues { [weak self] (passwordInput) in
-        print(passwordInput)
-        self?.messageBannerView.setBannerType(type: .success,
-                                              message: "Changed password to \(passwordInput.1)")
-        self?.messageBannerView.showBannerView()
+      .observeValues { shouldShow in
+        if shouldShow {
+          self.saveButtonView.startAnimating()
+        } else {
+          self.saveButtonView.stopAnimating()
+        }
+    }
+
+    self.viewModel.outputs.saveButtonIsEnabled
+      .observeForUI()
+      .observeValues { [weak self] (isEnabled) in
+        self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
     }
 
     self.viewModel.outputs.currentPasswordBecomeFirstResponder
@@ -138,22 +157,20 @@ final class ChangePasswordViewController: UIViewController {
         self?.onePasswordFindPassword(forURLString: urlString)
     }
 
-    self.viewModel.outputs.testPasswordInput
-      .observeValues {
-        print("CHANGE PASSWORD SUCCESS")
-    }
-
     self.viewModel.outputs.changePasswordFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-        let alert = UIAlertController(title: "Error",
-                                      message: errorMessage,
-                                      preferredStyle: UIAlertController.Style.alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        self?.saveButtonView.stopAnimating()
 
-        alert.addAction(okAction)
+        let errorController = UIAlertController.genericError(errorMessage)
+        self?.present(errorController, animated: true, completion: nil)
+    }
 
-        self?.present(alert, animated: true, completion: nil)
+    self.viewModel.outputs.changePasswordSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] params in
+        self?.saveButtonView.stopAnimating()
+        self?.logoutAndDismiss(params: params)
     }
 
     Keyboard.change
@@ -164,6 +181,22 @@ final class ChangePasswordViewController: UIViewController {
   }
 
   // MARK: Private Functions
+  private func logoutAndDismiss(params: DiscoveryParams?) {
+    AppEnvironment.logout()
+
+    self.view.window?.rootViewController
+      .flatMap { $0 as? RootTabBarViewController }
+      .doIfSome { root in
+        UIView.transition(with: root.view, duration: 0.5, options: [.transitionCrossDissolve], animations: {
+          root.switchToDiscovery(params: params)
+        }, completion: { [weak self] _ in
+          NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
+
+          self?.dismiss(animated: false, completion: nil)
+        })
+    }
+  }
+
   private func handleKeyboardVisibilityDidChange(_ change: Keyboard.Change) {
     UIView.animate(withDuration: change.duration,
                    delay: 0.0,

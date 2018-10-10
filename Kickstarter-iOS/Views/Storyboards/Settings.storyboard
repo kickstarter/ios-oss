@@ -143,14 +143,14 @@
         <scene sceneID="sW7-08-TIc">
             <objects>
                 <viewController storyboardIdentifier="ChangeEmailViewController" title="Change Email" id="JTR-kW-WZp" customClass="ChangeEmailViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="Sro-rn-6F2">
+                    <view key="view" contentMode="scaleToFill" id="Sro-rn-6F2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XfD-wg-Nx4" customClass="UIScrollView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XfD-wg-Nx4" customClass="UIScrollView">
                                 <rect key="frame" x="0.0" y="20" width="375" height="667"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VyE-lE-aLQ">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VyE-lE-aLQ">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eOl-CY-t3g">
@@ -293,7 +293,7 @@
                                                     <constraint firstItem="9eu-AW-ocS" firstAttribute="leading" secondItem="9Ny-Zh-npT" secondAttribute="leading" constant="12" id="mMW-w3-7Dw"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9uR-ng-0BU" userLabel="Password">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uR-ng-0BU" userLabel="Password">
                                                 <rect key="frame" x="0.0" y="272" width="375" height="395"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="lrH-yX-xHX">
@@ -327,7 +327,7 @@
                                                             <constraint firstAttribute="height" constant="40" id="Hjo-Lt-1DM"/>
                                                         </constraints>
                                                     </stackView>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PLh-cR-QEi" userLabel="Separator">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PLh-cR-QEi" userLabel="Separator">
                                                         <rect key="frame" x="0.0" y="394.5" width="375" height="0.5"/>
                                                         <color key="backgroundColor" red="0.86274509799999999" green="0.87058823529999996" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
@@ -618,13 +618,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="AHX-Zg-JlP"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="YYT-as-fcL" userLabel="Save Button">
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Save" id="TJK-bo-wDP">
-                            <connections>
-                                <action selector="saveButtonTapped:" destination="uOz-em-9Ir" id="vn9-cx-8NS"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
                     <connections>
                         <outlet property="confirmNewPassword" destination="nrx-gx-3DV" id="7ne-sN-e2c"/>
                         <outlet property="confirmNewPasswordLabel" destination="w7Q-d1-hG0" id="vYo-9u-isR"/>
@@ -634,7 +627,6 @@
                         <outlet property="newPassword" destination="tPP-5U-zGh" id="ejC-0t-96q"/>
                         <outlet property="newPasswordLabel" destination="K1u-LI-jmm" id="RP0-n7-kMJ"/>
                         <outlet property="onePasswordButton" destination="Ml8-qx-02m" id="OXX-ho-87N"/>
-                        <outlet property="saveButton" destination="TJK-bo-wDP" id="SqC-Q0-qOL"/>
                         <outlet property="scrollView" destination="yhb-RA-0m0" id="46F-0F-DoG"/>
                     </connections>
                 </viewController>
@@ -738,6 +730,6 @@
         <image name="onepassword-button" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="npK-7h-4nS"/>
+        <segue reference="S9b-Nx-mWW"/>
     </inferredMetricsTieBreakers>
 </document>
