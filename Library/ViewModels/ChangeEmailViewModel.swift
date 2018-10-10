@@ -10,6 +10,7 @@ public protocol ChangeEmailViewModelInputs {
   func onePasswordFound(password: String?)
   func onePassword(isAvailable available: Bool)
   func passwordFieldDidEndEditing(password: String?)
+  func passwordFieldDidTapGo(newEmail: String, password: String)
   func passwordFieldTextDidChange(text: String?)
   func saveButtonTapped()
   func viewDidLoad()
@@ -17,6 +18,8 @@ public protocol ChangeEmailViewModelInputs {
 
 public protocol ChangeEmailViewModelOutputs {
   var dismissKeyboard: Signal<Void, NoError> { get }
+  var didChangeEmail: Signal<Void, NoError> { get }
+  var didFailToChangeEmail: Signal<String, NoError> { get }
   var errorLabelIsHidden: Signal<Bool, NoError> { get }
   var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
   var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
@@ -40,7 +43,18 @@ ChangeEmailViewModelOutputs {
 
   public init() {
 
-    let userEmailEvent = self.viewDidLoadProperty.signal
+    let changeEmailEvent = self.changePasswordProperty.signal.skipNil().map { email, password in
+      return ChangeEmailInput(email: email, currentPassword: password)
+      }.switchMap { input in
+        AppEnvironment.current.apiService.changeEmail(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
+
+    let userEmailEvent = Signal.merge(
+        self.viewDidLoadProperty.signal,
+        changeEmailEvent.values().ignoreValues()
+      )
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphUserEmail(query: userEmailQuery)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -67,6 +81,17 @@ ChangeEmailViewModelOutputs {
 
     self.onePasswordFindLoginForURLString = self.onePasswordButtonTappedProperty.signal
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
+
+    self.didChangeEmail = changeEmailEvent.values().ignoreValues()
+
+    self.didFailToChangeEmail = changeEmailEvent.errors().map { error in
+        error.localizedDescription
+    }
+  }
+
+  private let changePasswordProperty = MutableProperty<(String, String)?>(nil)
+  public func passwordFieldDidTapGo(newEmail: String, password: String) {
+    self.changePasswordProperty.value = (newEmail, password)
   }
 
   private let emailProperty = MutableProperty<String?>(nil)
@@ -112,6 +137,8 @@ ChangeEmailViewModelOutputs {
     self.saveButtonTappedProperty.value = ()
   }
 
+  public let didChangeEmail: Signal<Void, NoError>
+  public let didFailToChangeEmail: Signal<String, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
   public let emailText: Signal<String, NoError>
   public let errorLabelIsHidden: Signal<Bool, NoError>

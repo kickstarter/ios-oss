@@ -71,15 +71,15 @@ public struct Service: ServiceType {
       return applyMutation(mutation: ChangeEmailMutation(input: input))
   }
 
+  public func changePassword(input: ChangePasswordInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return applyMutation(mutation: ChangePasswordMutation(input: input))
+  }
+
   public func changePaymentMethod(project: Project)
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
 
       return request(.changePaymentMethod(project: project))
-  }
-
-  public func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      return applyMutation(mutation: ChangePasswordMutation(input: input))
   }
 
   public func createPledge(project: Project,

@@ -38,6 +38,9 @@ internal final class ChangeEmailViewController: UIViewController {
       isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
     )
 
+    self.passwordTextField.delegate = self
+    self.newEmailTextField.delegate = self
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -58,6 +61,12 @@ internal final class ChangeEmailViewController: UIViewController {
     self.viewModel.outputs.onePasswordFindLoginForURLString
       .observeForControllerAction()
       .observeValues { [weak self] in self?.onePasswordFindLogin(forURLString: $0) }
+
+    self.viewModel.outputs.didFailToChangeEmail
+      .observeForUI()
+      .observeValues { msg in
+        print(msg)
+    }
 
     Keyboard.change
       .observeForUI()
@@ -100,6 +109,7 @@ internal final class ChangeEmailViewController: UIViewController {
 
     _ = newEmailTextField
       |> formFieldStyle
+      |> UITextField.lens.returnKeyType .~ .next
       |> UITextField.lens.textAlignment .~ .right
       |> UITextField.lens.placeholder %~ { _ in
         Strings.login_placeholder_email()
@@ -153,5 +163,24 @@ internal final class ChangeEmailViewController: UIViewController {
           password: result[AppExtensionPasswordKey] as? String
         )
     }
+  }
+}
+
+extension ChangeEmailViewController: UITextFieldDelegate {
+  internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+
+    switch textField.returnKeyType {
+    case .next:
+      passwordTextField.becomeFirstResponder()
+    case .go:
+      if let email = newEmailTextField.text, let password = passwordTextField.text {
+        self.viewModel.inputs.passwordFieldDidTapGo(newEmail: email,
+                                                        password: password)
+      }
+    default:
+      break
+    }
+
+    return textField.resignFirstResponder()
   }
 }
