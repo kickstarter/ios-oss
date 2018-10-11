@@ -20,7 +20,8 @@ protocol LoadingBarButtonItemViewModelType {
   var outputs: LoadingBarButtonItemViewModelOutputs { get }
 }
 
-struct LoadingBarButtonItemViewModel: LoadingBarButtonItemViewModelType, LoadingBarButtonItemViewModelInputs, LoadingBarButtonItemViewModelOutputs {
+struct LoadingBarButtonItemViewModel: LoadingBarButtonItemViewModelType,
+LoadingBarButtonItemViewModelInputs, LoadingBarButtonItemViewModelOutputs {
 
   public init() {
     self.activityIndicatorIsLoading = self.isAnimatingProperty.signal

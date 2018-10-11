@@ -108,9 +108,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       self.changePasswordFailure.mapConst(false)
       )
 
-    self.dismissKeyboard = Signal.merge(
-      self.saveButtonTappedProperty.signal,
-      self.confirmNewPasswordDoneEditingProperty.signal)
+    self.dismissKeyboard = triggerSaveAction
 
     self.currentPasswordBecomeFirstResponder = self.viewDidAppearProperty.signal
     self.newPasswordBecomeFirstResponder = self.currentPasswordDoneEditingProperty.signal
@@ -136,7 +134,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     }.skipNil()
     .skipRepeats()
   }
-  
+
   private var currentPasswordDoneEditingProperty = MutableProperty(())
   func currentPasswordFieldDidReturn(currentPassword: String) {
     self.currentPasswordProperty.value = currentPassword

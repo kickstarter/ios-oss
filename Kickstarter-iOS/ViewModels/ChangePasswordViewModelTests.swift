@@ -62,6 +62,7 @@ final class ChangePasswordViewModelTests: TestCase {
       self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "123456")
 
       self.saveButtonIsEnabledObserver.assertValues([true])
+      self.dismissKeyboardObserver.assertValueCount(1)
       self.activityIndicatorShouldShowObserver.assertValues([true])
 
       scheduler.run()
@@ -126,6 +127,7 @@ final class ChangePasswordViewModelTests: TestCase {
 
       self.vm.inputs.saveButtonTapped()
 
+      self.dismissKeyboardObserver.assertValueCount(1)
       self.activityIndicatorShouldShowObserver.assertValues([true])
 
       scheduler.run()
