@@ -273,7 +273,9 @@
 "Or_select_a_different_reward_below_colon" = "Oder eine andere Belohnung wählen:";
 "Other_payment_methods" = "Weitere Zahlungsmethoden";
 "Other_projects_you_might_like" = "Ähnliche Projekte:";
+"Password_min_length_message" = "Your password must be at least 6 characters long.";
 "Password_visibility" = "Passwort-Anzeige";
+"Passwords_matching_message" = "New passwords must match.";
 "Past_live_stream" = "Früherer Live-Stream";
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Payment_methods" = "Zahlungsmethoden";

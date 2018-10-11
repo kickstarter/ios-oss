@@ -273,7 +273,9 @@
 "Or_select_a_different_reward_below_colon" = "別のリワードをみる：";
 "Other_payment_methods" = "その他の支払方法";
 "Other_projects_you_might_like" = "おすすめをさらに見る";
+"Password_min_length_message" = "Your password must be at least 6 characters long.";
 "Password_visibility" = "パスワードの表示/非表示";
+"Passwords_matching_message" = "New passwords must match.";
 "Past_live_stream" = "過去のプロジェクト";
 "Payment_method_was_successfully_charged" = "支払い方法が登録されました。";
 "Payment_methods" = "お支払い方法";

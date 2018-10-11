@@ -102,8 +102,6 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
     self.changePasswordFailure = passwordUpdateEvent.errors().map { $0.localizedDescription }
 
-
-
     self.activityIndicatorShouldShow = Signal.merge(
       triggerSaveAction.signal.mapConst(true),
       self.changePasswordSuccess.mapConst(false),
@@ -129,9 +127,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.validationErrorLabelMessage = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
       .map { requirements -> String? in
         if !requirements.1 {
-          return "Your password must be at least 6 characters long."
+          return Strings.Password_min_length_message()
         } else if !requirements.0 {
-          return "New passwords must match."
+          return Strings.Passwords_matching_message()
         } else {
           return nil
         }
