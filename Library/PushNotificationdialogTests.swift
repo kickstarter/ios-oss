@@ -81,4 +81,20 @@ class PushNotificationDialogTests: XCTestCase {
       XCTAssertEqual(["login", "save"], userDefaults.deniedNotificationContexts )
     }
   }
+
+  func testContextsReset_AfterLogout() {
+
+    withEnvironment(userDefaults: userDefaults) {
+
+      PushNotificationDialog.didDenyAccess(for: .login)
+      PushNotificationDialog.didDenyAccess(for: .save)
+      PushNotificationDialog.didDenyAccess(for: .message)
+      PushNotificationDialog.didDenyAccess(for: .pledge)
+
+      XCTAssertEqual(["login", "save", "message", "pledge"], userDefaults.deniedNotificationContexts )
+
+      PushNotificationDialog.resetAllContexts()
+      XCTAssertEqual([], userDefaults.deniedNotificationContexts )
+    }
+  }
 }

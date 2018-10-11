@@ -24,6 +24,11 @@ public struct PushNotificationDialog {
     }
   }
 
+  static public func resetAllContexts() {
+
+    AppEnvironment.current.userDefaults.deniedNotificationContexts.removeAll()
+  }
+
   static public var titleForDismissal: String {
     return (
         AppEnvironment.current.userDefaults.deniedNotificationContexts.count < 2
