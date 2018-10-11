@@ -160,8 +160,7 @@ final class ChangePasswordViewController: UIViewController {
     self.viewModel.outputs.changePasswordFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-        self?.messageBannerView.setBannerType(type: .error, message: errorMessage)
-        self?.messageBannerView.showBannerView()
+        self?.messageBannerView.showBanner(with: .error, message: errorMessage)
     }
 
     self.viewModel.outputs.changePasswordSuccess
