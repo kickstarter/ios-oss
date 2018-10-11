@@ -36,6 +36,8 @@ final class ChangePasswordViewModelTests: TestCase {
     self.vm.outputs.currentPasswordPrefillValue.observe(currentPasswordPrefillValueObserver.observer)
     self.vm.outputs.dismissKeyboard.observe(dismissKeyboardObserver.observer)
     self.vm.outputs.newPasswordBecomeFirstResponder.observe(newPasswordBecomeFirstResponderObserver.observer)
+    self.vm.outputs.onePasswordFindPasswordForURLString
+      .observe(onePasswordFindPasswordForURLStringObserver.observer)
     self.vm.outputs.onePasswordButtonIsHidden.observe(onePasswordButtonIsHiddenObserver.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(saveButtonIsEnabledObserver.observer)
     self.vm.outputs.validationErrorLabelIsHidden.observe(validationErrorLabelIsHiddenObserver.observer)
@@ -74,6 +76,26 @@ final class ChangePasswordViewModelTests: TestCase {
       self.changePasswordSuccessObserver.assertValues([discoverParams], "Change password succeeded")
 
       self.activityIndicatorShouldShowObserver.assertValues([true, false])
+    }
+  }
+
+  func testOnePasswordAutofill() {
+    let mockService = MockService(serverConfig: ServerConfig.local)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.onePasswordIsAvailable(available: true)
+      self.vm.inputs.viewDidAppear()
+
+      self.currentPasswordBecomeFirstResponder.assertValueCount(1)
+      self.onePasswordButtonIsHiddenObserver.assertValue(false)
+
+      self.vm.inputs.onePasswordButtonTapped()
+
+      self.onePasswordFindPasswordForURLStringObserver.assertValues(["http://ksr.test"])
+
+      self.vm.inputs.onePasswordFoundPassword(password: "password")
+
+      self.currentPasswordPrefillValueObserver.assertValue("password")
     }
   }
 
