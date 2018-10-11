@@ -36,7 +36,7 @@ public protocol ChangeEmailViewModelType {
   var outputs: ChangeEmailViewModelOutputs { get }
 }
 
-public let userEmailQuery: NonEmptySet<Query> = Query.user(.email +| []) +| []
+private let userEmailQuery: NonEmptySet<Query> = Query.user(.email +| []) +| []
 
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
 ChangeEmailViewModelOutputs {
@@ -66,11 +66,19 @@ ChangeEmailViewModelOutputs {
 
     self.errorLabelIsHidden = viewDidLoadProperty.signal.mapConst(false)
     self.resendVerificationEmailButtonIsHidden = viewDidLoadProperty.signal.mapConst(false)
-    self.saveButtonIsEnabled = viewDidLoadProperty.signal.mapConst(true)
     self.dismissKeyboard = saveButtonTappedProperty.signal.ignoreValues()
     self.showConfirmationEmailSentBanner = saveButtonTappedProperty.signal.mapConst(true)
 
     self.messageBannerViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
+
+    self.saveButtonIsEnabled = Signal.combineLatest (
+      self.emailText,
+      self.newEmailProperty.signal.skipNil(),
+      self.passwordProperty.signal.skipNil()
+    )
+    .map { (email, newEmail, password) in
+        return shouldEnableSaveButton(email: email, newEmail: newEmail, password: password)
+    }
 
     self.onePasswordButtonIsHidden = self.onePasswordIsAvailable.signal.map { $0 }.negate()
 
@@ -94,13 +102,13 @@ ChangeEmailViewModelOutputs {
     self.changePasswordProperty.value = (newEmail, password)
   }
 
-  private let emailProperty = MutableProperty<String?>(nil)
+  private let newEmailProperty = MutableProperty<String?>(nil)
   public func emailFieldTextDidChange(text: String?) {
-    self.emailProperty.value = text
+    self.newEmailProperty.value = text
   }
 
   public func emailFieldDidEndEditing(email: String?) {
-    self.emailProperty.value = email
+    self.newEmailProperty.value = email
   }
 
   private let onePasswordIsAvailable = MutableProperty(false)
@@ -157,4 +165,9 @@ ChangeEmailViewModelOutputs {
   public var outputs: ChangeEmailViewModelOutputs {
     return self
   }
+}
+
+private func shouldEnableSaveButton(email: String?, newEmail: String, password: String) -> Bool {
+
+  return newEmail != "" && password != "" && email != newEmail
 }

@@ -9,8 +9,6 @@ internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var currentEmail: UILabel!
   @IBOutlet fileprivate weak var errorLabel: UILabel!
   @IBOutlet fileprivate weak var errorView: UIView!
-  @IBOutlet fileprivate weak var messageBannerView: UIView!
-  @IBOutlet fileprivate weak var messageBannerLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailTextField: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
@@ -22,6 +20,7 @@ internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
+  private var messageBannerView: MessageBannerViewController!
 
   internal static func instantiate() -> ChangeEmailViewController {
     return Storyboard.Settings.instantiate(ChangeEmailViewController.self)
@@ -29,6 +28,12 @@ internal final class ChangeEmailViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    guard let messageBannerView = self.children.first as? MessageBannerViewController else {
+      fatalError("Couldn't instantiate MessageBannerViewController")
+    }
+
+    self.messageBannerView = messageBannerView
 
     self.onePasswordButton.addTarget(self,
                                      action: #selector(self.onePasswordButtonTapped),
@@ -49,9 +54,7 @@ internal final class ChangeEmailViewController: UIViewController {
 
     self.resendVerificationEmailView.rac.hidden = self.viewModel.outputs.resendVerificationEmailButtonIsHidden
     self.errorLabel.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
-    self.messageBannerView.rac.hidden = self.viewModel.outputs.messageBannerViewIsHidden
     self.saveBarButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
-
     self.currentEmail.rac.text = self.viewModel.outputs.emailText
 
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
@@ -64,8 +67,14 @@ internal final class ChangeEmailViewController: UIViewController {
 
     self.viewModel.outputs.didFailToChangeEmail
       .observeForUI()
-      .observeValues { msg in
-        print(msg)
+      .observeValues { [weak self] error in
+        self?.messageBannerView.showBanner(with: .error, message: error)
+    }
+
+    self.viewModel.outputs.didChangeEmail
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.messageBannerView.showBanner(with: .success, message: Strings.Change_email())
     }
 
     Keyboard.change
@@ -97,13 +106,6 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = currentEmail
       |> settingsDetailLabelStyle
 
-    _ = messageBannerView
-      |> roundedStyle(cornerRadius: 4)
-
-    _ = messageBannerLabel
-      |> UILabel.lens.font .~ .ksr_subhead()
-      |> UILabel.lens.text %~ { _ in Strings.Verification_email_sent() }
-
     _ = newEmailLabel
       |> settingsTitleLabelStyle
 
@@ -113,6 +115,11 @@ internal final class ChangeEmailViewController: UIViewController {
       |> UITextField.lens.textAlignment .~ .right
       |> UITextField.lens.placeholder %~ { _ in
         Strings.login_placeholder_email()
+    }
+
+    _ = saveBarButton
+      |> UIBarButtonItem.lens.isEnabled %~ { _ in
+        false
     }
 
     _ = passwordLabel
@@ -130,7 +137,11 @@ internal final class ChangeEmailViewController: UIViewController {
   }
 
   @IBAction func saveButtonTapped(_ sender: Any) {
-    self.viewModel.inputs.saveButtonTapped()
+
+    if let email = newEmailTextField.text, let password = passwordTextField.text {
+      self.viewModel.inputs.passwordFieldDidTapGo(newEmail: email,
+                                                  password: password)
+    }
   }
 
   @IBAction func onePasswordButtonTapped(_ sender: Any) {
