@@ -8,7 +8,7 @@ final class ChangePasswordViewController: UIViewController {
   @IBOutlet fileprivate weak var confirmNewPassword: UITextField!
   @IBOutlet fileprivate weak var currentPasswordLabel: UILabel!
   @IBOutlet fileprivate weak var currentPassword: UITextField!
-  @IBOutlet fileprivate weak var errorMessageLabel: UILabel!
+  @IBOutlet fileprivate weak var validationErrorMessageLabel: UILabel!
   @IBOutlet fileprivate weak var newPasswordLabel: UILabel!
   @IBOutlet fileprivate weak var newPassword: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
@@ -88,7 +88,7 @@ final class ChangePasswordViewController: UIViewController {
         Strings.login_placeholder_password()
     }
 
-    _ = errorMessageLabel
+    _ = validationErrorMessageLabel
       |> settingsDescriptionLabelStyle
 
     _ = newPasswordLabel
@@ -109,8 +109,8 @@ final class ChangePasswordViewController: UIViewController {
 
     self.currentPassword.rac.text = self.viewModel.outputs.currentPasswordPrefillValue
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
-    self.errorMessageLabel.rac.hidden = self.viewModel.outputs.errorLabelIsHidden
-    self.errorMessageLabel.rac.text = self.viewModel.outputs.errorLabelMessage
+    self.validationErrorMessageLabel.rac.hidden = self.viewModel.outputs.validationErrorLabelIsHidden
+    self.validationErrorMessageLabel.rac.text = self.viewModel.outputs.validationErrorLabelMessage
 
     self.viewModel.outputs.activityIndicatorShouldShow
       .observeForUI()
@@ -160,16 +160,13 @@ final class ChangePasswordViewController: UIViewController {
     self.viewModel.outputs.changePasswordFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-        self?.saveButtonView.stopAnimating()
-
-        let errorController = UIAlertController.genericError(errorMessage)
-        self?.present(errorController, animated: true, completion: nil)
+        self?.messageBannerView.setBannerType(type: .error, message: errorMessage)
+        self?.messageBannerView.showBannerView()
     }
 
     self.viewModel.outputs.changePasswordSuccess
       .observeForControllerAction()
       .observeValues { [weak self] params in
-        self?.saveButtonView.stopAnimating()
         self?.logoutAndDismiss(params: params)
     }
 

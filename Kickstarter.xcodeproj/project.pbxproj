@@ -167,6 +167,7 @@
 		7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */; };
 		77941C92216E452400398B89 /* LoadingBarButtonItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941C91216E452400398B89 /* LoadingBarButtonItemViewModel.swift */; };
 		77941C94216E4BEF00398B89 /* LoadingBarButtonItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941C93216E4BEF00398B89 /* LoadingBarButtonItemViewModelTests.swift */; };
+		77941CB2216F8B9A00398B89 /* ChangePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941CB1216F8B9A00398B89 /* ChangePasswordViewModelTests.swift */; };
 		77A7B64321026CAE008D12C1 /* SettingsNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */; };
 		77A7B67B21026F4F008D12C1 /* SettingsNotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */; };
 		77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */; };
@@ -1836,6 +1837,7 @@
 		7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
 		77941C91216E452400398B89 /* LoadingBarButtonItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItemViewModel.swift; sourceTree = "<group>"; };
 		77941C93216E4BEF00398B89 /* LoadingBarButtonItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItemViewModelTests.swift; sourceTree = "<group>"; };
+		77941CB1216F8B9A00398B89 /* ChangePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModelTests.swift; sourceTree = "<group>"; };
 		77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNotificationCell.xib; sourceTree = "<group>"; };
 		77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCell.swift; sourceTree = "<group>"; };
 		77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsPrivacySwitchCell.xib; sourceTree = "<group>"; };
@@ -3079,6 +3081,7 @@
 				77D7A7702141B630003F258C /* SettingsPrivacySwitchCellViewModel.swift */,
 				77D7A7722142CA55003F258C /* SettingsPrivacySwitchCellViewModelTests.swift */,
 				77941C93216E4BEF00398B89 /* LoadingBarButtonItemViewModelTests.swift */,
+				77941CB1216F8B9A00398B89 /* ChangePasswordViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -5954,6 +5957,7 @@
 				A7ED20161E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift in Sources */,
 				A7ED201D1E8322EC00BFFA01 /* TestCase.swift in Sources */,
 				A7ED201A1E83229E00BFFA01 /* ProfileDataSourceTests.swift in Sources */,
+				77941CB2216F8B9A00398B89 /* ChangePasswordViewModelTests.swift in Sources */,
 				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
 				777B70D82118CAD300E11032 /* SettingsNotificationsViewModelTests.swift in Sources */,

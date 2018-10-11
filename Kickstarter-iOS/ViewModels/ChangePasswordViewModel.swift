@@ -5,23 +5,6 @@ import Prelude
 import ReactiveSwift
 import Result
 
-protocol ChangePasswordViewModelOutputs {
-  var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
-  var changePasswordFailure: Signal<String, NoError> { get }
-  var changePasswordSuccess: Signal<DiscoveryParams?, NoError> { get }
-  var confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
-  var currentPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
-  var currentPasswordPrefillValue: Signal<String, NoError> { get }
-  var dismissKeyboard: Signal<Void, NoError> { get }
-  var errorLabelIsHidden: Signal<Bool, NoError> { get }
-  var errorLabelMessage: Signal<String, NoError> { get }
-  var messageControllerIsHidden: Signal<Bool, NoError> { get }
-  var newPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
-  var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
-  var onePasswordFindPasswordForURLString: Signal<String, NoError> { get }
-  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
-}
-
 protocol ChangePasswordViewModelInputs {
   func currentPasswordFieldTextChanged(text: String)
   func currentPasswordFieldDidReturn(currentPassword: String)
@@ -34,6 +17,22 @@ protocol ChangePasswordViewModelInputs {
   func onePasswordFoundPassword(password: String)
   func saveButtonTapped()
   func viewDidAppear()
+}
+
+protocol ChangePasswordViewModelOutputs {
+  var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
+  var changePasswordFailure: Signal<String, NoError> { get }
+  var changePasswordSuccess: Signal<DiscoveryParams?, NoError> { get }
+  var confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
+  var currentPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
+  var currentPasswordPrefillValue: Signal<String, NoError> { get }
+  var dismissKeyboard: Signal<Void, NoError> { get }
+  var newPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
+  var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
+  var onePasswordFindPasswordForURLString: Signal<String, NoError> { get }
+  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
+  var validationErrorLabelIsHidden: Signal<Bool, NoError> { get }
+  var validationErrorLabelMessage: Signal<String, NoError> { get }
 }
 
 protocol ChangePasswordViewModelType {
@@ -69,15 +68,11 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
         return newPassword.count > 5
     }
 
-    // Save button should enable WHEN:
-    // all fields have string values,
-    // passwords match
-    // password is > 6 chars
     self.saveButtonIsEnabled = Signal
       .combineLatest(fieldsNotEmpty, passwordsMatch, lengthMeetsReq)
       .map { requirements in
         return requirements.0 && requirements.1 && requirements.2
-    }
+    }.skipRepeats()
 
     let autoSaveSignal = self.saveButtonIsEnabled
       .takeWhen(self.confirmNewPasswordDoneEditingProperty.signal)
@@ -93,7 +88,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       .map(unpack)
       .map { ChangePasswordInput(currentPassword: $0.0, newPassword: $0.1, newPasswordConfirmation: $0.2) }
       .flatMap {
-        AppEnvironment.current.apiService.changePassword(input: $0).materialize()
+        AppEnvironment.current.apiService.changePassword(input: $0)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
     }
 
     self.changePasswordSuccess = passwordUpdateEvent.values()
@@ -105,13 +102,17 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
     self.changePasswordFailure = passwordUpdateEvent.errors().map { $0.localizedDescription }
 
-    self.activityIndicatorShouldShow = saveButtonTappedProperty.signal.mapConst(true)
+
+
+    self.activityIndicatorShouldShow = Signal.merge(
+      triggerSaveAction.signal.mapConst(true),
+      self.changePasswordSuccess.mapConst(false),
+      self.changePasswordFailure.mapConst(false)
+      )
 
     self.dismissKeyboard = Signal.merge(
       self.saveButtonTappedProperty.signal,
       self.confirmNewPasswordDoneEditingProperty.signal)
-
-    self.messageControllerIsHidden = MutableProperty(true).signal
 
     self.currentPasswordBecomeFirstResponder = self.viewDidAppearProperty.signal
     self.newPasswordBecomeFirstResponder = self.currentPasswordDoneEditingProperty.signal
@@ -121,10 +122,11 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.onePasswordFindPasswordForURLString = self.onePasswordButtonTappedProperty.signal
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
 
-    self.errorLabelIsHidden = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
+    self.validationErrorLabelIsHidden = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
       .map { $0.0 && $0.1 }
+      .skipRepeats()
 
-    self.errorLabelMessage = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
+    self.validationErrorLabelMessage = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
       .map { requirements -> String? in
         if !requirements.1 {
           return "Your password must be at least 6 characters long."
@@ -134,8 +136,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
           return nil
         }
     }.skipNil()
+    .skipRepeats()
   }
-
+  
   private var currentPasswordDoneEditingProperty = MutableProperty(())
   func currentPasswordFieldDidReturn(currentPassword: String) {
     self.currentPasswordProperty.value = currentPassword
@@ -201,9 +204,8 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public let currentPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let currentPasswordPrefillValue: Signal<String, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
-  public let errorLabelIsHidden: Signal<Bool, NoError>
-  public let errorLabelMessage: Signal<String, NoError>
-  public let messageControllerIsHidden: Signal<Bool, NoError>
+  public let validationErrorLabelIsHidden: Signal<Bool, NoError>
+  public let validationErrorLabelMessage: Signal<String, NoError>
   public let newPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let onePasswordButtonIsHidden: Signal<Bool, NoError>
   public let onePasswordFindPasswordForURLString: Signal<String, NoError>
