@@ -3,6 +3,13 @@ import Prelude
 import ReactiveSwift
 import Result
 
+protocol MessageBannerViewModelInputs {
+  func setBannerType(type: MessageBannerType)
+  func setBannerMessage(message: String)
+  func showBannerView(shouldShow: Bool)
+  func bannerViewAnimationFinished(isHidden: Bool)
+}
+
 protocol MessageBannerViewModelOutputs {
   var bannerBackgroundColor: Signal<UIColor, NoError> { get }
   var bannerMessage: Signal<String, NoError> { get }
@@ -11,13 +18,6 @@ protocol MessageBannerViewModelOutputs {
   var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
   var messageTextAlignment: Signal<NSTextAlignment, NoError> { get }
   var messageTextColor: Signal<UIColor, NoError> { get }
-}
-
-protocol MessageBannerViewModelInputs {
-  func setBannerType(type: MessageBannerType)
-  func setBannerMessage(message: String)
-  func showBannerView(shouldShow: Bool)
-  func bannerViewAnimationFinished(isHidden: Bool)
 }
 
 protocol MessageBannerViewModelType {

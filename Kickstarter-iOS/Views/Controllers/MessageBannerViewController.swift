@@ -59,12 +59,9 @@ final class MessageBannerViewController: UIViewController {
     }
   }
 
-  func setBannerType(type: MessageBannerType, message: String) {
+  func showBanner(with type: MessageBannerType, message: String) {
     self.viewModel.inputs.setBannerType(type: type)
     self.viewModel.inputs.setBannerMessage(message: message)
-  }
-
-  func showBannerView() {
     self.viewModel.inputs.showBannerView(shouldShow: true)
   }
 
@@ -72,7 +69,7 @@ final class MessageBannerViewController: UIViewController {
     let duration = isHidden ? AnimationConstants.hideDuration : AnimationConstants.showDuration
 
     if !isHidden {
-      self.view.isHidden = false
+      self.view.isHidden = isHidden
     }
 
     UIView.animate(withDuration: duration, delay: 0.0,

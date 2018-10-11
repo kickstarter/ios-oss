@@ -28,8 +28,7 @@ internal final class MessageBannerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: banner)
         parent.view.frame.size.height = 200
 
-        banner.setBannerType(type: .success, message: "Got it! Your password was saved.")
-        banner.showBannerView()
+        banner.showBanner(with: .success, message: "Got it! Your password was saved.")
 
         scheduler.run()
         scheduler.advance()
@@ -48,8 +47,7 @@ internal final class MessageBannerViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: banner)
         parent.view.frame.size.height = 200
 
-        banner.setBannerType(type: .error, message: "Oops! Something went wrong. Please try again.")
-        banner.showBannerView()
+        banner.showBanner(with: .error, message: "Oops! Something went wrong. Please try again.")
 
         scheduler.run()
         scheduler.advance()
@@ -69,9 +67,7 @@ internal final class MessageBannerViewControllerTests: TestCase {
         parent.view.frame.size.height = 200
 
         let message = "We need to inform you about something really important. Don't forget this message."
-        banner.setBannerType(type: .info,
-                             message: message)
-        banner.showBannerView()
+        banner.showBanner(with: .info, message: message)
 
         scheduler.run()
         scheduler.advance()

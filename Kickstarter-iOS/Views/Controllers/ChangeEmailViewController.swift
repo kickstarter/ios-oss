@@ -47,8 +47,7 @@ final class ChangeEmailViewController: UIViewController {
     self.viewModel.outputs.messageBannerViewIsHidden
       .observeForUI()
       .observeValues { [weak self] _ in
-        self?.messageBannerView.setBannerType(type: .success, message: Strings.Verification_email_sent())
-        self?.messageBannerView.showBannerView()
+        self?.messageBannerView.showBanner(with: .success, message: Strings.Verification_email_sent())
     }
 
     Keyboard.change
