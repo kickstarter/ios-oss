@@ -2,74 +2,20 @@ import Foundation
 import Library
 import Prelude
 
-public enum MessageBannerType {
-  case success
-  case error
-  case info
-
-  var backgroundColor: UIColor {
-    switch self {
-    case .success:
-      return UIColor.ksr_cobalt_500
-    case .error:
-      return UIColor.ksr_apricot_600
-    case .info:
-      return UIColor.ksr_cobalt_500
-    }
-  }
-
-  var iconImage: UIImage? {
-    switch self {
-    case .success:
-      return image(named: "icon--confirmation",
-                   inBundle: Bundle.framework,
-                   compatibleWithTraitCollection: nil)
-    case .error:
-      return image(named: "icon--alert",
-                   inBundle: Bundle.framework,
-                   compatibleWithTraitCollection: nil)
-    default:
-      return nil
-    }
-  }
-
-  var textColor: UIColor {
-    switch self {
-    case .success, .info:
-      return .white
-    case .error:
-      return UIColor.ksr_text_dark_grey_900
-    }
-  }
-
-  var textAlignment: NSTextAlignment {
-    switch self {
-    case .info:
-      return .center
-    default:
-      return .left
-    }
-  }
-
-  var shouldShowIconImage: Bool {
-    switch self {
-    case .info:
-      return false
-    default:
-      return true
-    }
-  }
-}
-
 final class MessageBannerViewController: UIViewController {
-  @IBOutlet fileprivate weak var messageLabel: UILabel!
   @IBOutlet fileprivate weak var backgroundView: UIView!
   @IBOutlet fileprivate weak var backgroundViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
+  @IBOutlet fileprivate weak var messageLabel: UILabel!
 
   private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
 
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
+
+  struct AnimationConstants {
+    static let hideDuration: TimeInterval = 0.25
+    static let showDuration: TimeInterval = 0.3
+  }
 
   override func bindStyles() {
     super.bindStyles()
@@ -84,15 +30,15 @@ final class MessageBannerViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.messageLabel.rac.text = self.viewModel.outputs.bannerMessage
-    self.messageLabel.rac.textColor = self.viewModel.outputs.messageTextColor
     self.iconImageView.rac.hidden = self.viewModel.outputs.iconIsHidden
     self.backgroundView.rac.backgroundColor = self.viewModel.outputs.bannerBackgroundColor
+    self.messageLabel.rac.text = self.viewModel.outputs.bannerMessage
+    self.messageLabel.rac.textColor = self.viewModel.outputs.messageTextColor
 
-    self.viewModel.outputs.messageBannerViewShouldShow
+    self.viewModel.outputs.messageBannerViewIsHidden
       .observeForUI()
-      .observeValues { [weak self] shouldShow in
-        self?.showViewAndAnimate(shouldShow)
+      .observeValues { [weak self] isHidden in
+        self?.showViewAndAnimate(isHidden)
     }
 
     self.viewModel.outputs.iconImage
@@ -113,32 +59,31 @@ final class MessageBannerViewController: UIViewController {
     }
   }
 
-  func setBannerType(type: MessageBannerType, message: String) {
+  func showBanner(with type: MessageBannerType, message: String) {
     self.viewModel.inputs.setBannerType(type: type)
     self.viewModel.inputs.setBannerMessage(message: message)
-  }
-
-  func showBannerView() {
     self.viewModel.inputs.showBannerView(shouldShow: true)
   }
 
-  private func showViewAndAnimate(_ shouldShow: Bool) {
-    let duration = shouldShow ? 0.4 : 0.25
+  private func showViewAndAnimate(_ isHidden: Bool) {
+    let duration = isHidden ? AnimationConstants.hideDuration : AnimationConstants.showDuration
 
-    if shouldShow {
-      self.view.isHidden = false
+    if !isHidden {
+      self.view.isHidden = isHidden
     }
 
     UIView.animate(withDuration: duration, delay: 0.0,
                    options: UIView.AnimationOptions.curveEaseInOut,
                    animations: { [weak self] in
                     guard let `self` = self else { return }
-      let frameHeight = self.view.frame.size.height
-      self.backgroundViewBottomConstraint.constant = shouldShow
-        ? self.bottomMarginConstraintConstant : frameHeight
-      self.view.layoutIfNeeded()
+                    let frameHeight = self.view.frame.size.height
+                    self.backgroundViewBottomConstraint.constant = isHidden
+                      ? frameHeight : self.bottomMarginConstraintConstant
+                    self.view.layoutIfNeeded()
     }, completion: { [weak self] _ in
-      self?.view.isHidden = !shouldShow
+        self?.view.isHidden = isHidden
+
+        self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
     })
   }
 
