@@ -12,6 +12,9 @@ internal struct MockService: ServiceType {
   internal let currency: String
   internal let buildVersion: String
 
+  fileprivate let changeEmailError: GraphError?
+  fileprivate let changeEmailResponse: GraphMutationEmptyResponseEnvelope?
+
   fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
   fileprivate let createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>?
@@ -158,7 +161,8 @@ internal struct MockService: ServiceType {
                 language: String = "en",
                 currency: String = "USD",
                 buildVersion: String = "1",
-                changeEmailResponse: GraphUser? = nil,
+                changeEmailError: GraphError? = nil,
+                changeEmailResponse: GraphMutationEmptyResponseEnvelope? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
                 facebookConnectResponse: User? = nil,
@@ -242,6 +246,9 @@ internal struct MockService: ServiceType {
     self.language = language
     self.currency = currency
     self.buildVersion = buildVersion
+
+    self.changeEmailResponse = changeEmailResponse
+    self.changeEmailError = changeEmailError
 
     self.changePaymentMethodResult = changePaymentMethodResult
     self.createPledgeResult = createPledgeResult
@@ -408,6 +415,11 @@ internal struct MockService: ServiceType {
 
   internal func changeEmail(input: ChangeEmailInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+
+      if let error = self.changeEmailError {
+        return SignalProducer(error: error)
+      }
+
       return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
   }
 

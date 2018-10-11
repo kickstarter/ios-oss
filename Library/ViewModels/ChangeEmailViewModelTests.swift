@@ -10,18 +10,46 @@ import XCTest
 final class ChangeEmailViewModelTests: TestCase {
   fileprivate let vm: ChangeEmailViewModelType = ChangeEmailViewModel()
 
-  fileprivate let dismissKeyboard = TestObserver<(), NoError>()
-  fileprivate let onePasswordButtonHidden = TestObserver<Bool, NoError>()
-  fileprivate let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-  fileprivate let passwordText = TestObserver<String, NoError>()
+  private let didChangeEmail = TestObserver<Void, NoError>()
+  private let didFailToChangeEmail = TestObserver<String, NoError>()
+  private let dismissKeyboard = TestObserver<(), NoError>()
+  private let emailText = TestObserver<String, NoError>()
+  private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
+  private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
+  private let passwordText = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
+
+    self.vm.outputs.didChangeEmail.observe(self.didChangeEmail.observer)
+    self.vm.outputs.didFailToChangeEmail.observe(self.didFailToChangeEmail.observer)
+    self.vm.outputs.emailText.observe(self.emailText.observer)
 
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonHidden.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
     self.vm.outputs.passwordText.observe(self.passwordText.observer)
+  }
+
+  func testDidChangeEmailEmits_OnSuccess() {
+
+    self.vm.inputs.passwordFieldDidTapGo(newEmail: "ksr@kickstarter.com", password: "123456")
+    self.scheduler.advance()
+
+    self.didChangeEmail.assertDidEmitValue()
+  }
+
+  func testDidFailToChangeEmailEmits_OnFailure() {
+
+    let error = GraphError.emptyResponse(nil)
+
+    withEnvironment(apiService: MockService(changeEmailError: error)) {
+
+      self.vm.inputs.passwordFieldDidTapGo(newEmail: "ksr@kickstarter.com", password: "123456")
+      self.scheduler.advance()
+
+      self.didFailToChangeEmail.assertDidEmitValue()
+    }
   }
 
   func testOnePasswordButtonHidesIfNotAvailable() {
@@ -51,10 +79,23 @@ final class ChangeEmailViewModelTests: TestCase {
                    self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self))
   }
 
-  func testPasswordText() {
+  func testPasswordText_OnePassword() {
 
     self.vm.inputs.onePasswordFound(password: "123456")
     self.passwordText.assertValues(["123456"])
+  }
+
+  func testEmailText_AfterFetchingUsersEmail() {
+
+    let response = GraphUser(email: "ksr@kickstarter.com")
+
+    withEnvironment(apiService: MockService(fetchGraphUserEmailResponse: response)) {
+
+      self.vm.inputs.passwordFieldDidTapGo(newEmail: "ksr@kickstarter.com", password: "123456")
+      self.scheduler.advance()
+
+      self.emailText.assertValues(["ksr@kickstarter.com"])
+    }
   }
 
   func testOnePasswordFindLoginForURLString() {
