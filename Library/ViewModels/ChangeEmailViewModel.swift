@@ -63,7 +63,7 @@ ChangeEmailViewModelOutputs {
 
     self.emailText = userEmailEvent.values()
 
-    self.resendVerificationStackViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
+    self.resendVerificationStackViewIsHidden = viewDidLoadProperty.signal.mapConst(true)
 
     self.dismissKeyboard = saveButtonTappedProperty.signal.ignoreValues()
     self.showConfirmationEmailSentBanner = saveButtonTappedProperty.signal.mapConst(true)

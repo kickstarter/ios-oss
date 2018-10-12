@@ -74,6 +74,9 @@ internal final class ChangeEmailViewController: UIViewController {
     self.viewModel.outputs.didChangeEmail
       .observeForUI()
       .observeValues { [weak self] in
+
+        _ = self?.passwordTextField ?|> UITextField.lens.text .~ ""
+        _ = self?.newEmailTextField ?|> UITextField.lens.text .~ ""
         self?.messageBannerView.showBanner(with: .success, message: Strings.Change_email())
     }
 
