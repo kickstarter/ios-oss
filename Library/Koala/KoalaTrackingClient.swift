@@ -143,7 +143,7 @@ public final class KoalaTrackingClient: TrackingClientType {
 
       if let httpResponse = response as? HTTPURLResponse {
         #if DEBUG
-          NSLog("[Koala Status Code]: \(httpResponse.statusCode)")
+          NSLog("🐨 [Koala Status Code]: \(httpResponse.statusCode)")
         #endif
         result = httpResponse
       }
