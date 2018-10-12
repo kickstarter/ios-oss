@@ -17,6 +17,7 @@ final class ChangeEmailViewModelTests: TestCase {
   private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
   private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
   private let passwordText = TestObserver<String, NoError>()
+  private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -29,6 +30,7 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonHidden.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
     self.vm.outputs.passwordText.observe(self.passwordText.observer)
+    self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
   }
 
   func testDidChangeEmailEmits_OnSuccess() {
@@ -105,5 +107,27 @@ final class ChangeEmailViewModelTests: TestCase {
     self.onePasswordFindLoginForURLString.assertValues(
       [AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString]
     )
+  }
+
+  func testSaveButtonEnabledStatus() {
+
+    let response = GraphUser(email: "ksr@kickstarter.com")
+
+    withEnvironment(apiService: MockService(fetchGraphUserEmailResponse: response)) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.emailFieldTextDidChange(text: "ksr@ksr.com")
+      self.saveButtonIsEnabled.assertDidNotEmitValue()
+
+      self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+      self.saveButtonIsEnabled.assertValues([true])
+
+      // Disabled if new email is equal to the old one.
+      self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
+      self.saveButtonIsEnabled.assertValues([true, false])
+    }
   }
 }
