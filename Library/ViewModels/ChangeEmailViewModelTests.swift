@@ -130,4 +130,22 @@ final class ChangeEmailViewModelTests: TestCase {
       self.saveButtonIsEnabled.assertValues([true, false])
     }
   }
+
+  func testSaveButtonEnablesAfter_OnePasswordPrefillsField() {
+
+    let response = GraphUser(email: "ksr@kickstarter.com")
+
+    withEnvironment(apiService: MockService(fetchGraphUserEmailResponse: response)) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.emailFieldTextDidChange(text: "ksr@ksr.com")
+      self.saveButtonIsEnabled.assertDidNotEmitValue()
+
+      self.vm.inputs.onePasswordFound(password: "123456")
+      self.saveButtonIsEnabled.assertValues([true])
+    }
+  }
 }

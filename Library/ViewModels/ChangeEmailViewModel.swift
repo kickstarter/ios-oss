@@ -119,6 +119,7 @@ ChangeEmailViewModelOutputs {
   private let prefillPasswordProperty = MutableProperty<String?>(nil)
   public func onePasswordFound(password: String?) {
     self.prefillPasswordProperty.value = password
+    self.passwordProperty.value = password
   }
 
   private let onePasswordButtonTappedProperty = MutableProperty(())
