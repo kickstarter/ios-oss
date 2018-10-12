@@ -20,7 +20,7 @@ internal extension URLSession {
 
       let producer = file.map { self.rac_dataWithRequest(request, uploading: $0, named: $1) }
         ?? self.reactive.data(with: request)
-      
+
       print("⚪️ [KsApi] Starting request \(self.sanitized(request))")
 
       return producer

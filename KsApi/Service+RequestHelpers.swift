@@ -91,7 +91,7 @@ extension Service {
     let queryString: String = Query.build(query)
     let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
                                        queryString: queryString)
-    
+
     print("⚪️ [KsApi] Starting query \(queryString)")
     return performRequest(request: request)
   }
