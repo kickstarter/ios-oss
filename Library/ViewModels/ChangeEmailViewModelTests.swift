@@ -17,6 +17,7 @@ final class ChangeEmailViewModelTests: TestCase {
   private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
   private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
   private let passwordText = TestObserver<String, NoError>()
+  private let resendVerificationStackViewIsHidden = TestObserver<Bool, NoError>()
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
 
   override func setUp() {
@@ -30,6 +31,9 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonHidden.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
     self.vm.outputs.passwordText.observe(self.passwordText.observer)
+    self.vm.outputs.resendVerificationStackViewIsHidden.observe(
+      self.resendVerificationStackViewIsHidden.observer
+    )
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
   }
 
@@ -147,5 +151,13 @@ final class ChangeEmailViewModelTests: TestCase {
       self.vm.inputs.onePasswordFound(password: "123456")
       self.saveButtonIsEnabled.assertValues([true])
     }
+  }
+
+  func testResendVerificationStackViewIsHidden_IfEmailIsVerified() {
+    self.resendVerificationStackViewIsHidden.assertDidNotEmitValue()
+  }
+
+  func testResendVerificationStackViewIsNotHidden_IfEmailIsNotVerified() {
+    self.resendVerificationStackViewIsHidden.assertDidNotEmitValue()
   }
 }

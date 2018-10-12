@@ -25,7 +25,7 @@ public protocol ChangeEmailViewModelOutputs {
   var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
   var emailText: Signal<String, NoError> { get }
   var passwordText: Signal<String, NoError> { get }
-  var resendVerificationEmailStackViewIsHidden: Signal<Bool, NoError> { get }
+  var resendVerificationStackViewIsHidden: Signal<Bool, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
   var showConfirmationEmailSentBanner: Signal<Bool, NoError> { get }
 }
@@ -63,7 +63,7 @@ ChangeEmailViewModelOutputs {
 
     self.emailText = userEmailEvent.values()
 
-    self.resendVerificationEmailStackViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
+    self.resendVerificationStackViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
 
     self.dismissKeyboard = saveButtonTappedProperty.signal.ignoreValues()
     self.showConfirmationEmailSentBanner = saveButtonTappedProperty.signal.mapConst(true)
@@ -153,7 +153,7 @@ ChangeEmailViewModelOutputs {
   public let onePasswordButtonIsHidden: Signal<Bool, NoError>
   public let onePasswordFindLoginForURLString: Signal<String, NoError>
   public let passwordText: Signal<String, NoError>
-  public let resendVerificationEmailStackViewIsHidden: Signal<Bool, NoError>
+  public let resendVerificationStackViewIsHidden: Signal<Bool, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let showConfirmationEmailSentBanner: Signal<Bool, NoError>
 
