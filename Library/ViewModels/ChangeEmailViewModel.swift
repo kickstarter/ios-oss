@@ -20,13 +20,12 @@ public protocol ChangeEmailViewModelOutputs {
   var dismissKeyboard: Signal<Void, NoError> { get }
   var didChangeEmail: Signal<Void, NoError> { get }
   var didFailToChangeEmail: Signal<String, NoError> { get }
-  var errorLabelIsHidden: Signal<Bool, NoError> { get }
   var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
   var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
   var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
   var emailText: Signal<String, NoError> { get }
   var passwordText: Signal<String, NoError> { get }
-  var resendVerificationEmailButtonIsHidden: Signal<Bool, NoError> { get }
+  var resendVerificationEmailStackViewIsHidden: Signal<Bool, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
   var showConfirmationEmailSentBanner: Signal<Bool, NoError> { get }
 }
@@ -64,8 +63,8 @@ ChangeEmailViewModelOutputs {
 
     self.emailText = userEmailEvent.values()
 
-    self.errorLabelIsHidden = viewDidLoadProperty.signal.mapConst(false)
-    self.resendVerificationEmailButtonIsHidden = viewDidLoadProperty.signal.mapConst(false)
+    self.resendVerificationEmailStackViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
+
     self.dismissKeyboard = saveButtonTappedProperty.signal.ignoreValues()
     self.showConfirmationEmailSentBanner = saveButtonTappedProperty.signal.mapConst(true)
 
@@ -150,12 +149,11 @@ ChangeEmailViewModelOutputs {
   public let didFailToChangeEmail: Signal<String, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
   public let emailText: Signal<String, NoError>
-  public let errorLabelIsHidden: Signal<Bool, NoError>
   public let messageBannerViewIsHidden: Signal<Bool, NoError>
   public let onePasswordButtonIsHidden: Signal<Bool, NoError>
   public let onePasswordFindLoginForURLString: Signal<String, NoError>
   public let passwordText: Signal<String, NoError>
-  public let resendVerificationEmailButtonIsHidden: Signal<Bool, NoError>
+  public let resendVerificationEmailStackViewIsHidden: Signal<Bool, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let showConfirmationEmailSentBanner: Signal<Bool, NoError>
 
