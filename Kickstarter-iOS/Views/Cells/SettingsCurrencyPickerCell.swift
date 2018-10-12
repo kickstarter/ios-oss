@@ -71,14 +71,6 @@ extension SettingsCurrencyPickerCell: UIPickerViewDelegate {
     guard let selectedCurrency = Currency(rawValue: row) else {
       return
     }
-
-    // swiftlint:disable:next todo
-    //TODO - remove this notification once the currency can be read from the user object
-//    NotificationCenter.default.post(name: Notification.Name.ksr_updatedCurrencyCellDetailText,
-//                                    object: nil,
-//                                    userInfo: ["text": selectedCurrency.descriptionText]
-//    )
-
     self.viewModel.inputs.didSelectCurrency(currency: selectedCurrency)
   }
 }

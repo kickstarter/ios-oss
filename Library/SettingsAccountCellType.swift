@@ -21,7 +21,7 @@ public enum SettingsAccountSectionType: Int {
     case .privacy:
       return [.privacy]
     case .payment:
-      return [.paymentMethods, .currency]
+      return [.paymentMethods]
     }
   }
 }

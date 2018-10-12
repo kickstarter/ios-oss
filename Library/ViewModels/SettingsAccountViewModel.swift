@@ -16,7 +16,7 @@ public protocol SettingsAccountViewModelOutputs {
   var reloadData: Signal<Void, NoError> { get }
   var presentCurrencyPicker: Signal<Bool, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
-  var updateCurrency: Signal<(), NoError> { get }
+  var updateCurrency: Signal<Currency, NoError> { get }
 }
 
 public protocol SettingsAccountViewModelType {
@@ -38,7 +38,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .map { ChangeCurrencyInput(chosenCurrency: $0.descriptionText) }
       .switchMap { AppEnvironment.current.apiService.changeCurrency(input: $0).materialize() }
 
-    self.updateCurrency = changeCurrencyEvent.values()
+    self.updateCurrency = self.didConfirmChangeCurrencyProperty.signal.skipNil()
 
     self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true)
 
@@ -73,7 +73,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public let reloadData: Signal<Void, NoError>
   public let presentCurrencyPicker: Signal<Bool, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
-  public let updateCurrency: Signal<(), NoError>
+  public let updateCurrency: Signal<Currency, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }

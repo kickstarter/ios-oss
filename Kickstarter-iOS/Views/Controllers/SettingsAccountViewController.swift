@@ -23,6 +23,7 @@ final class SettingsAccountViewController: UIViewController {
 
     self.tableView.register(nib: .SettingsTableViewCell)
     self.tableView.register(nib: .SettingsCurrencyPickerCell)
+    self.tableView.register(nib: .SettingsCurrencyCell)
 
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
@@ -57,8 +58,10 @@ final class SettingsAccountViewController: UIViewController {
 
     self.viewModel.outputs.updateCurrency
       .observeForUI()
-      .observeValues { [weak self] _ in
-        print("GETS HERE")
+      .observeValues { [weak self] selectedCurrency in
+        NotificationCenter.default.post(name: Notification.Name.ksr_updatedCurrencyCellDetailText,
+                                                                            object: nil,
+                                            userInfo: ["text": selectedCurrency.descriptionText])
     }
   }
 

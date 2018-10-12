@@ -12,6 +12,16 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                cellClass: SettingsTableViewCell.self,
                inSection: section.rawValue)
     }
+    insertCurrencyCell()
+  }
+
+  func insertCurrencyCell() -> IndexPath {
+    let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currency)
+
+    return self.insertRow(value: cellValue,
+                          cellClass: SettingsCurrencyCell.self, // Make a new cell here
+                          atIndex: 1,
+                          inSection: SettingsAccountSectionType.payment.rawValue)
   }
 
   func insertCurrencyPickerRow() -> IndexPath {
@@ -42,6 +52,8 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     case let (cell as SettingsTableViewCell, value as SettingsCellValue):
       cell.configureWith(value: value)
     case let (cell as SettingsCurrencyPickerCell, value as SettingsCellValue):
+      cell.configureWith(value: value)
+    case let (cell as SettingsCurrencyCell, value as SettingsCellValue):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
