@@ -26,7 +26,7 @@ public struct ChangeCurrencyInput: GraphMutationInput {
     self.chosenCurrency = chosenCurrency
   }
 
-  public func toInputDictionary() -> [String : Any] {
+  public func toInputDictionary() -> [String: Any] {
     return ["chosenCurrency": chosenCurrency]
   }
 }

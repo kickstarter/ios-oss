@@ -10,7 +10,7 @@ protocol SettingsCurrencyPickerCellViewModelInputs {
 }
 
 protocol SettingsCurrencyPickerCellViewModelOutputs {
-  var notifyCurrencyPickerCellRemoved: Signal<Bool, NoError> { get }
+  var notifyCurrencyPickerCellRemoved: Signal<Void, NoError> { get }
   var showCurrencyChangeAlert: Signal<Currency, NoError> { get }
 }
 
@@ -23,7 +23,7 @@ final class SettingsCurrencyPickerCellViewModel: SettingsCurrencyPickerCellViewM
 SettingsCurrencyPickerCellViewModelInputs, SettingsCurrencyPickerCellViewModelType {
 
   public init() {
-    self.notifyCurrencyPickerCellRemoved = self.selectedCurrencyProperty.signal.mapConst(true) // fix this
+    self.notifyCurrencyPickerCellRemoved = self.selectedCurrencyProperty.signal.ignoreValues()
 
     self.showCurrencyChangeAlert = self.selectedCurrencyProperty.signal.skipNil()
   }
@@ -38,7 +38,7 @@ SettingsCurrencyPickerCellViewModelInputs, SettingsCurrencyPickerCellViewModelTy
     self.cellTypeProperty.value = cellValue.cellType as? SettingsAccountCellType
   }
 
-  public let notifyCurrencyPickerCellRemoved: Signal<Bool, NoError>
+  public let notifyCurrencyPickerCellRemoved: Signal<Void, NoError>
   public let showCurrencyChangeAlert: Signal<Currency, NoError>
 
   var inputs: SettingsCurrencyPickerCellViewModelInputs { return self }

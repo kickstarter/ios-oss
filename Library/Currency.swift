@@ -1,6 +1,5 @@
 import UIKit
 
-
 public enum Currency: Int, CaseIterable {
   case euro
   case australianDollar

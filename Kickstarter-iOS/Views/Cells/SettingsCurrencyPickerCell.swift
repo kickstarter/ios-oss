@@ -5,7 +5,7 @@ import KsApi
 internal protocol SettingsCurrencyPickerCellDelegate: class {
   /// Called after user selects currency in picker to remove picker cell
   func shouldDismissCurrencyPicker()
-  func settingsCurrencyPickerCellDidChangeCurrency(_ currency: Currency) // TODO- rename
+  func settingsCurrencyPickerCellDidChangeCurrency(_ currency: Currency)
 }
 
 final class SettingsCurrencyPickerCell: UITableViewCell, NibLoading, ValueCell {
