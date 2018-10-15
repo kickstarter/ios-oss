@@ -51,12 +51,12 @@ extension Service {
       let task = URLSession.shared.dataTask(with: request) {  data, response, error in
         if let error = error {
           observer.send(error: .requestError(error, response))
-          print("🔴 [KsApi] Failure \(error.localizedDescription)")
+          print("🔴 [KsApi] Failure - Request error \(error.localizedDescription)")
           return
         }
 
         guard let data = data else {
-          print("🔴 [KsApi] Failure emptyResponse")
+          print("🔴 [KsApi] Failure - Empty response")
           observer.send(error: .emptyResponse(response))
           return
         }
@@ -65,13 +65,13 @@ extension Service {
           let decodedObject = try JSONDecoder().decode(GraphResponse<A>.self, from: data)
           if let errors = decodedObject.errors, let error = errors.first {
             observer.send(error: .decodeError(error))
-            print("🔴 [KsApi] Failure decodeError \(error.message)")
+            print("🔴 [KsApi] Failure - Decoding error: \(error.message)")
           } else if let value = decodedObject.data {
             print("🔵 [KsApi] Success")
             observer.send(value: value)
           }
         } catch let error {
-          print("🔴 [KsApi] Failure jsonDecodingError \(error.localizedDescription)")
+          print("🔴 [KsApi] Failure - JSON decoding error: \(error.localizedDescription)")
           observer.send(error: .jsonDecodingError(responseString: String(data: data, encoding: .utf8),
                                                   error: error))
         }

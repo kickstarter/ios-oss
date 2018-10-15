@@ -145,6 +145,7 @@ public final class KoalaTrackingClient: TrackingClientType {
         #if DEBUG
           NSLog("🐨 [Koala Status Code]: \(httpResponse.statusCode)")
         #endif
+        
         result = httpResponse
       }
 
