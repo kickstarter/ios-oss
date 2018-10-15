@@ -429,11 +429,6 @@ internal struct MockService: ServiceType {
       )
   }
 
-  internal func changeCurrency(input: ChangeCurrencyInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
-  }
-
   internal func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
     return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
