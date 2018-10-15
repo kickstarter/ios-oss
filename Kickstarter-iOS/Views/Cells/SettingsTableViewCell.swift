@@ -16,17 +16,6 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
   func configureWith(value cellValue: SettingsCellValue) {
     let cellType = cellValue.cellType
 
-    switch cellType {
-    case SettingsAccountCellType.currency:
-      NotificationCenter.default
-        .addObserver(self,
-                     selector: #selector(updateCurrencyDetailText),
-                     name: .ksr_updatedCurrencyCellDetailText,
-                     object: nil)
-    default:
-      break
-    }
-
     _ = titleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text .~ cellType.title
@@ -47,13 +36,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     }
   }
 
-  @objc internal func updateCurrencyDetailText(notification: NSNotification) {
-    if let currencyText = notification.userInfo?["text"] as? String {
-      self.detailLabel.text = currencyText
-    }
-  }
-
-  override func bindStyles() {
+   override func bindStyles() {
     super.bindStyles()
 
     _ = lineLayer
