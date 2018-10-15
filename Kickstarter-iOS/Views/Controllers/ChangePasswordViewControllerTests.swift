@@ -13,7 +13,7 @@ final class ChangePasswordViewControllerTests: TestCase {
   }
 
   func testChangePassword() {
-    combos(Language.allLanguages, Device.allDevices).forEach { language, device in
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(language: language) {
         let controller = ChangePasswordViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)

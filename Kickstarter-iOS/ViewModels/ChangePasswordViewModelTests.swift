@@ -46,9 +46,8 @@ final class ChangePasswordViewModelTests: TestCase {
 
   func testChangePassword() {
     let service = MockService()
-    let delay: DispatchTimeInterval = .milliseconds(500)
 
-    withEnvironment(apiService: service, apiDelayInterval: delay) {
+    withEnvironment(apiService: service) {
       self.vm.inputs.viewDidAppear()
 
       self.currentPasswordBecomeFirstResponder.assertValueCount(1)
@@ -67,7 +66,7 @@ final class ChangePasswordViewModelTests: TestCase {
       self.dismissKeyboardObserver.assertValueCount(1)
       self.activityIndicatorShouldShowObserver.assertValues([true])
 
-      scheduler.run()
+      scheduler.advance()
 
       let discoverParams = DiscoveryParams.defaults
         |> DiscoveryParams.lens.includePOTD .~ true
@@ -128,9 +127,7 @@ final class ChangePasswordViewModelTests: TestCase {
     let graphError = GraphError.decodeError(GraphResponseError(message: "Error changing password"))
     let service = MockService(changePasswordError: graphError)
 
-    let delay: DispatchTimeInterval = .milliseconds(500)
-
-    withEnvironment(apiService: service, apiDelayInterval: delay) {
+    withEnvironment(apiService: service) {
       self.vm.inputs.viewDidAppear()
 
       self.currentPasswordBecomeFirstResponder.assertValueCount(1)
@@ -152,7 +149,7 @@ final class ChangePasswordViewModelTests: TestCase {
       self.dismissKeyboardObserver.assertValueCount(1)
       self.activityIndicatorShouldShowObserver.assertValues([true])
 
-      scheduler.run()
+      scheduler.advance()
 
       self.changePasswordFailureObserver.assertValues(["Error changing password"])
 

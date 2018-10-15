@@ -5,12 +5,12 @@ import Prelude
 
 final class ChangePasswordViewController: UIViewController {
   @IBOutlet fileprivate weak var confirmNewPasswordLabel: UILabel!
-  @IBOutlet fileprivate weak var confirmNewPassword: UITextField!
+  @IBOutlet fileprivate weak var confirmNewPasswordTextField: UITextField!
   @IBOutlet fileprivate weak var currentPasswordLabel: UILabel!
-  @IBOutlet fileprivate weak var currentPassword: UITextField!
+  @IBOutlet fileprivate weak var currentPasswordTextField: UITextField!
   @IBOutlet fileprivate weak var validationErrorMessageLabel: UILabel!
   @IBOutlet fileprivate weak var newPasswordLabel: UILabel!
-  @IBOutlet fileprivate weak var newPassword: UITextField!
+  @IBOutlet fileprivate weak var newPasswordTextField: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
@@ -69,7 +69,7 @@ final class ChangePasswordViewController: UIViewController {
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Confirm_password() }
 
-    _ = confirmNewPassword
+    _ = confirmNewPasswordTextField
       |> formFieldStyle
       |> UITextField.lens.secureTextEntry .~ true
       |> UITextField.lens.textAlignment .~ .right
@@ -80,7 +80,7 @@ final class ChangePasswordViewController: UIViewController {
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Current_password() }
 
-    _ = currentPassword
+    _ = currentPasswordTextField
       |> formFieldStyle
       |> UITextField.lens.secureTextEntry .~ true
       |> UITextField.lens.textAlignment .~ .right
@@ -95,7 +95,7 @@ final class ChangePasswordViewController: UIViewController {
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.New_password() }
 
-    _ = newPassword
+    _ = newPasswordTextField
       |> formFieldStyle
       |> UITextField.lens.secureTextEntry .~ true
       |> UITextField.lens.textAlignment .~ .right
@@ -107,7 +107,7 @@ final class ChangePasswordViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.currentPassword.rac.text = self.viewModel.outputs.currentPasswordPrefillValue
+    self.currentPasswordTextField.rac.text = self.viewModel.outputs.currentPasswordPrefillValue
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
     self.validationErrorMessageLabel.rac.hidden = self.viewModel.outputs.validationErrorLabelIsHidden
     self.validationErrorMessageLabel.rac.text = self.viewModel.outputs.validationErrorLabelMessage
@@ -131,25 +131,25 @@ final class ChangePasswordViewController: UIViewController {
     self.viewModel.outputs.currentPasswordBecomeFirstResponder
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.currentPassword.becomeFirstResponder()
+        self?.currentPasswordTextField.becomeFirstResponder()
     }
 
     self.viewModel.outputs.newPasswordBecomeFirstResponder
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.newPassword.becomeFirstResponder()
+        self?.newPasswordTextField.becomeFirstResponder()
     }
 
     self.viewModel.outputs.confirmNewPasswordBecomeFirstResponder
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.confirmNewPassword.becomeFirstResponder()
+        self?.confirmNewPasswordTextField.becomeFirstResponder()
     }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.confirmNewPassword.resignFirstResponder()
+        self?.confirmNewPasswordTextField.resignFirstResponder()
     }
 
     self.viewModel.outputs.onePasswordFindPasswordForURLString

@@ -1,13 +1,11 @@
 import UIKit
 
-internal enum Device {
+internal enum Device: CaseIterable {
   case phone4inch   // iPhone SE
   case phone4_7inch // iPhone 8, 7, 6S
   case phone5_5inch // iPhone 8 Plus, 7 Plus, 6S Plus
   case phone5_8inch // iPhone X
   case pad
-
-  static let allDevices: [Device] = [.phone4inch, .phone4_7inch, .phone5_5inch, .phone5_8inch, .pad]
 }
 
 internal enum Orientation {
