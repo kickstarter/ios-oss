@@ -19,7 +19,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currency)
 
     return self.insertRow(value: cellValue,
-                          cellClass: SettingsCurrencyCell.self, // Make a new cell here
+                          cellClass: SettingsCurrencyCell.self,
                           atIndex: 1,
                           inSection: SettingsAccountSectionType.payment.rawValue)
   }
