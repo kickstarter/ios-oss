@@ -16,10 +16,4 @@ final class UserQueriesTests: XCTestCase {
     XCTAssertEqual("me { chosenCurrency id name uid }", query.description)
     XCTAssertEqual("{ me { chosenCurrency id name uid } }", Query.build(NonEmptySet(query)))
   }
-
-  func testAllQueryFields() {
-    let query = Query.user(allUserQueryFields())
-
-    print(query.description)
-  }
 }
