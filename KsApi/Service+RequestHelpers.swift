@@ -51,7 +51,7 @@ extension Service {
       let task = URLSession.shared.dataTask(with: request) {  data, response, error in
         if let error = error {
           observer.send(error: .requestError(error, response))
-          print("🔴 [KsApi] Failure - Request error \(error.localizedDescription)")
+          print("🔴 [KsApi] Failure - Request error: \(error.localizedDescription)")
           return
         }
 
