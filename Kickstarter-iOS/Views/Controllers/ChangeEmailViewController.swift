@@ -77,7 +77,8 @@ internal final class ChangeEmailViewController: UIViewController {
 
         _ = self?.passwordTextField ?|> UITextField.lens.text .~ ""
         _ = self?.newEmailTextField ?|> UITextField.lens.text .~ ""
-        self?.messageBannerView.showBanner(with: .success, message: Strings.Change_email())
+        self?.messageBannerView.showBanner(with: .success,
+                                           message: Strings.Got_it_your_changes_have_been_saved())
     }
 
     Keyboard.change
