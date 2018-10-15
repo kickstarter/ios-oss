@@ -38,7 +38,7 @@ final class SettingsCurrencyPickerCell: UITableViewCell, NibLoading, ValueCell {
 
     self.viewModel.outputs.notifyCurrencyPickerCellRemoved
       .observeForUI()
-      .observeValues { [weak self] _ in //TODO - fix this not using bool
+      .observeValues { [weak self] _ in
         self?.delegate?.shouldDismissCurrencyPicker()
     }
 
