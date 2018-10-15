@@ -179,6 +179,7 @@ final class ChangePasswordViewController: UIViewController {
   // MARK: Private Functions
   private func logoutAndDismiss(params: DiscoveryParams?) {
     AppEnvironment.logout()
+    PushNotificationDialog.resetAllContexts()
 
     self.view.window?.rootViewController
       .flatMap { $0 as? RootTabBarViewController }
