@@ -73,7 +73,6 @@ SettingsNotificationCellViewModelType {
     .map { cellType, notificationType, enabled -> (UserAttribute.Notification?, Bool) in
         let notification = SettingsNotificationCellViewModel.notificationFor(cellType: cellType,
                                                                  notificationType: notificationType)
-
         return (notification, enabled)
     }
 

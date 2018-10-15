@@ -58,10 +58,10 @@ final class SettingsAccountViewController: UIViewController {
 
     self.viewModel.outputs.updateCurrency
       .observeForUI()
-      .observeValues { [weak self] selectedCurrency in
+      .observeValues { selectedCurrency in
         NotificationCenter.default.post(name: Notification.Name.ksr_updatedCurrencyCellDetailText,
-                                                                            object: nil,
-                                            userInfo: ["text": selectedCurrency.descriptionText])
+                                        object: nil,
+                                        userInfo: ["text": selectedCurrency.descriptionText])
     }
   }
 
@@ -135,9 +135,13 @@ extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
   func settingsCurrencyPickerCellDidChangeCurrency(_ currency: Currency) {
     let alertController = UIAlertController(
       title: Strings.Change_currency(),
-      message: "\(Strings.This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency()) \n\n \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())",
+      message: """
+      \(Strings.This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency()) \n
+      \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())
+      """,
       preferredStyle: .alert
-    ) // Improve this string
+    )
+
     alertController.addAction(
       UIAlertAction(
         title: Strings.Yes_change_currency(),
@@ -147,6 +151,7 @@ extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
         }
       )
     )
+
     alertController.addAction(
       UIAlertAction(
         title: Strings.Cancel(),
