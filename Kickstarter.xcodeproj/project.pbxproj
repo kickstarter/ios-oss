@@ -1020,7 +1020,7 @@
 		D798A682215C25AC0053D097 /* SettingsCurrencyPickerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A681215C25AC0053D097 /* SettingsCurrencyPickerCellViewModel.swift */; };
 		D798A6AE21656D970053D097 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A6AD21656D970053D097 /* Currency.swift */; };
 		D798A748216698CE0053D097 /* SettingsAccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */; };
-		D798A74C2167F24B0053D097 /* SettingsAccountPickerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A74B2167F24B0053D097 /* SettingsAccountPickerCellViewModelTests.swift */; };
+		D798A74C2167F24B0053D097 /* SettingsCurrencyPickerCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A74B2167F24B0053D097 /* SettingsCurrencyPickerCellViewModelTests.swift */; };
 		D79D61151FD0979D000F958B /* String+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79D61141FD0979D000F958B /* String+Base64.swift */; };
 		D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */; };
 		D79F0F6F2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */; };
@@ -2683,7 +2683,7 @@
 		D798A681215C25AC0053D097 /* SettingsCurrencyPickerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCurrencyPickerCellViewModel.swift; sourceTree = "<group>"; };
 		D798A6AD21656D970053D097 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewModelTests.swift; sourceTree = "<group>"; };
-		D798A74B2167F24B0053D097 /* SettingsAccountPickerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountPickerCellViewModelTests.swift; sourceTree = "<group>"; };
+		D798A74B2167F24B0053D097 /* SettingsCurrencyPickerCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCurrencyPickerCellViewModelTests.swift; sourceTree = "<group>"; };
 		D79D61141FD0979D000F958B /* String+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64.swift"; sourceTree = "<group>"; };
 		D79F0F3621028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyRecommendationCell.swift; sourceTree = "<group>"; };
 		D79F0F6E2102944500D3B32C /* SettingsPrivacyRequestDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyRequestDataCell.swift; sourceTree = "<group>"; };
@@ -3088,7 +3088,7 @@
 				7758A83320979C4A0018B96D /* DiscoveryProjectCategoryViewModel.swift */,
 				77758156209CBDF700EE357F /* DiscoveryProjectCategoryViewModelTests.swift */,
 				D798A681215C25AC0053D097 /* SettingsCurrencyPickerCellViewModel.swift */,
-				D798A74B2167F24B0053D097 /* SettingsAccountPickerCellViewModelTests.swift */,
+				D798A74B2167F24B0053D097 /* SettingsCurrencyPickerCellViewModelTests.swift */,
 				77E84E092166A46600DA8891 /* MessageBannerViewModel.swift */,
 				77E84E0D2166AD6700DA8891 /* MessageBannerViewModelTests.swift */,
 				77FA6CAE20F405E300809E31 /* SettingsViewModel.swift */,
@@ -5581,7 +5581,7 @@
 				A7ED1F331E830FDC00BFFA01 /* RefTagTests.swift in Sources */,
 				A7ED1FDE1E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */,
 				A7ED1FEC1E831C5C00BFFA01 /* LiveStreamContainerViewModelTests.swift in Sources */,
-				D798A74C2167F24B0053D097 /* SettingsAccountPickerCellViewModelTests.swift in Sources */,
+				D798A74C2167F24B0053D097 /* SettingsCurrencyPickerCellViewModelTests.swift in Sources */,
 				A7ED1FD31E831C5C00BFFA01 /* ProfileProjectCellViewModelTests.swift in Sources */,
 				A7ED1FC41E831C5C00BFFA01 /* ProjectActivitySuccessCellViewModelTests.swift in Sources */,
 				A7ED1FE31E831C5C00BFFA01 /* FindFriendsFaceookConnectCellViewModelTests.swift in Sources */,

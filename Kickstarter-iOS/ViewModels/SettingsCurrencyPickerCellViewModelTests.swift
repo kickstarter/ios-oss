@@ -8,9 +8,9 @@ import Prelude
 @testable import ReactiveExtensions_TestHelpers
 @testable import Kickstarter_Framework
 
-internal final class SettingsAccountPickerCellViewModelTests: TestCase {
+internal final class SettingsCurrencyPickerCellViewModelTests: TestCase {
   let vm = SettingsCurrencyPickerCellViewModel()
-  let notifyCurrencyPickerCellRemoved = TestObserver<Bool, NoError>()
+  let notifyCurrencyPickerCellRemoved = TestObserver<Void, NoError>()
 
   internal override func setUp() {
     super.setUp()
