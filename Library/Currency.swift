@@ -1,54 +1,71 @@
 import UIKit
+import KsApi
 
-public enum Currency: Int, CaseIterable {
-  case euro
-  case australianDollar
-  case canadianDollar
-  case swissFranc
-  case danishKrone
-  case poundSterling
-  case hongKongDollar
-  case yen
-  case mexicanPeso
-  case norwegianKrone
-  case newZealandDollar
-  case swedishKrona
-  case singaporeDollar
-  case usDollar
+public enum Currency: String {
+  case EUR
+  case AUD
+  case CAD
+  case CHF
+  case DKK
+  case GBP
+  case HKD
+  case JPY
+  case MXN
+  case NOK
+  case NZD
+  case SEK
+  case SGD
+  case USD
 
   public static var rowHeight: CGFloat {
     return Styles.grid(7)
   }
+  
+  public static var allCases: [Currency] = [.EUR,
+                                            .AUD,
+                                            .CAD,
+                                            .CHF,
+                                            .DKK,
+                                            .GBP,
+                                            .HKD,
+                                            .JPY,
+                                            .MXN,
+                                            .NOK,
+                                            .NZD,
+                                            .SEK,
+                                            .SGD,
+                                            .USD
+                                            ]
 
   public var descriptionText: String {
     switch self {
-    case .euro:
+    case .EUR:
       return Strings.Currency_EUR()
-    case .australianDollar:
+    case .AUD:
       return Strings.Currency_AUD()
-    case .canadianDollar:
+    case .CAD:
       return Strings.Currency_CAD()
-    case .swissFranc:
+    case .CHF:
       return Strings.Currency_CHF()
-    case .danishKrone:
+    case .DKK:
       return Strings.Currency_DKK()
-    case .poundSterling:
+    case .GBP:
       return Strings.Currency_GBP()
-    case .hongKongDollar:
+    case .HKD:
       return Strings.Currency_HKD()
-    case .yen:
+    case .JPY:
       return Strings.Currency_JPY()
-    case .mexicanPeso:
+    case .MXN:
       return Strings.Currency_MXN()
-    case .norwegianKrone:
+    case .NOK:
       return Strings.Currency_NOK()
-    case .newZealandDollar:
+    case .NZD:
       return Strings.Currency_NZD()
-    case .swedishKrona:
+    case .SEK:
       return Strings.Currency_SEK()
-    case .singaporeDollar:
+    case .SGD:
       return Strings.Currency_SGD()
-    case .usDollar:
+    case .USD:
       return Strings.Currency_USD()
     }
   }
