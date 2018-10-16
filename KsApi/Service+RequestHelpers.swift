@@ -92,7 +92,7 @@ extension Service {
     let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
                                        queryString: queryString)
 
-    print("⚪️ [KsApi] Starting query \(queryString)")
+    print("⚪️ [KsApi] Starting query:\n \(queryString)")
     return performRequest(request: request)
   }
 
@@ -101,7 +101,7 @@ extension Service {
       let request = try self.preparedGraphRequest(forURL: self.serverConfig.graphQLEndpointUrl,
                                                   queryString: mutation.description,
                                                   input: mutation.input.toInputDictionary())
-      print("⚪️ [KsApi] Starting \(mutation.description)")
+      print("⚪️ [KsApi] Starting mutation:\n \(mutation.description)")
       return performRequest(request: request)
     } catch {
       return SignalProducer(error: .invalidInput)

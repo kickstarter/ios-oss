@@ -119,7 +119,7 @@ public final class KoalaTrackingClient: TrackingClientType {
 
   fileprivate func koalaURL(_ dataString: String) -> URL? {
     if dataString.count >= 10_000 {
-      print("🐨 [Koala Error] Base64 payload is longer than 10,000 characters.")
+      print("🐨 [Koala Error]: Base64 payload is longer than 10,000 characters.")
     }
     return URL(string: "\(self.endpoint.base)?data=\(dataString)")
   }
