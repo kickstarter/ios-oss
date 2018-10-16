@@ -120,6 +120,7 @@ public enum Query {
   case category(id: String, NonEmptySet<Category>)
   case project(slug: String, NonEmptySet<Project>)
   case rootCategories(NonEmptySet<Category>)
+  case user(NonEmptySet<User>)
 
   public enum Amount {
     case amount
@@ -148,9 +149,29 @@ public enum Query {
     case id
   }
 
-  public enum Location {
+  public enum Location: String {
+    case country
+    case displayableName
     case id
     case name
+  }
+
+  public enum NewsletterSubscriptions: String {
+    case alumniNewsletter
+    case artsCultureNewsletter
+    case filmNewsletter
+    case gamesNewsletter
+    case happeningNewsletter
+    case inventNewsletter
+    case promoNewsletter
+    case publishingNewsletter
+    case weeklyNewsletter
+  }
+
+  public enum Notifications: String {
+    case email
+    case mobile
+    case topic
   }
 
   public enum Project {
@@ -175,22 +196,33 @@ public enum Query {
   public enum User {
     case biography
     case backedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
+    case chosenCurrency
     case conversations(Set<QueryArg<Never>>, NonEmptySet<Connection<Conversation>>)
     case createdProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case drop
     case email
     indirect case followers(Set<QueryArg<Never>>, NonEmptySet<Connection<User>>)
     indirect case following(Set<QueryArg<Never>>, NonEmptySet<Connection<User>>)
+    case hasUnreadMessages
     case id
-    case image(width: Int)
-    case imageUrl(blur: Bool, width: Int)
+    case image(alias: String, width: Int)
+    case imageUrl(alias: String, blur: Bool, width: Int)
     case isEmailVerified
     case isFollowing
+    case isSocializing
+    case ksrLiveAuthToken
     case location(NonEmptySet<Location>)
+    case membershipProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case name
+    case needsFreshFacebookToken
+    case newletterSubscriptions(NonEmptySet<NewsletterSubscriptions>)
+    case notifications(NonEmptySet<Notifications>)
+    case optedOutOfRecommendations
+    case showPublicProfile
     case savedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case slug
     case url
+    case userId
   }
 }
 
@@ -209,6 +241,8 @@ extension Query: QueryType {
       return "project(slug: \"\(slug)\") { \(join(fields)) }"
     case let .rootCategories(fields):
       return "rootCategories { \(join(fields)) }"
+    case let .user(fields):
+      return "me { \(join(fields)) }"
     }
   }
 }
@@ -335,30 +369,55 @@ extension Query.Project.Update: QueryType {
   }
 }
 
-/// User
+// MARK: User
 
 extension Query.User: QueryType {
   public var description: String {
     switch self {
-    case .biography:                         return "biography"
-    case let .backedProjects(args, fields):  return "backedProjects\(connection(args, fields))"
-    case let .conversations(args, fields):   return "conversations\(connection(args, fields))"
-    case let .createdProjects(args, fields): return "createdProjects\(connection(args, fields))"
-    case .drop:                              return "drop"
-    case .email:                             return "email"
-    case let .followers(args, fields):       return "followers\(connection(args, fields))"
-    case let .following(args, fields):       return "following\(connection(args, fields))"
-    case .id:                                return "id"
-    case let .image(width):                  return "image(width: \(width))"
-    case let .imageUrl(blur, width):         return "imageUrl(blur: \(blur), width: \(width))"
-    case .isEmailVerified:                   return "isEmailVerified"
-    case .isFollowing:                       return "isFollowing"
-    case let .location(fields):              return "location { \(join(fields)) }"
-    case .name:                              return "name"
-    case let .savedProjects(args, fields):   return "savedProjects\(connection(args, fields))"
-    case .slug:                              return "slug"
-    case .url:                               return "url"
+    case .biography:                            return "biography"
+    case let .backedProjects(args, fields):     return "backedProjects\(connection(args, fields))"
+    case let .conversations(args, fields):      return "conversations\(connection(args, fields))"
+    case .chosenCurrency:                       return "chosenCurrency"
+    case let .createdProjects(args, fields):    return "createdProjects\(connection(args, fields))"
+    case .drop:                                 return "drop"
+    case .email:                                return "email"
+    case let .followers(args, fields):          return "followers\(connection(args, fields))"
+    case let .following(args, fields):          return "following\(connection(args, fields))"
+    case .hasUnreadMessages:                    return "hasUnreadMessages"
+    case .id:                                   return "id"
+    case let .image(alias, width):              return "\(alias): imageUrl(width: \(width))"
+    case let .imageUrl(alias, blur, width):     return "\(alias): imageUrl(blur: \(blur), width: \(width))"
+    case .isEmailVerified:                      return "isEmailVerified"
+    case .isFollowing:                          return "isFollowing"
+    case .isSocializing:                        return "isSocializing"
+    case .ksrLiveAuthToken:                     return "ksrLiveAuthToken"
+    case let .location(fields):                 return "location { \(join(fields)) }"
+    case let .membershipProjects(args, fields): return "membershipProjects\(connection(args, fields))"
+    case .name:                                 return "name"
+    case .needsFreshFacebookToken:              return "needsFreshFacebookToken"
+    case let .newletterSubscriptions(fields):   return "newslettersSubscriptions { \(join(fields)) }"
+    case let .notifications(fields):            return "notifications { \(join(fields)) }"
+    case .optedOutOfRecommendations:            return "optedOutOfRecommendations"
+    case let .savedProjects(args, fields):      return "savedProjects\(connection(args, fields))"
+    case .showPublicProfile:                    return "showPublicProfile"
+    case .slug:                                 return "slug"
+    case .url:                                  return "url"
+    case .userId:                               return "uid"
     }
+  }
+}
+
+// MARK: NewsletterSubscriptions
+extension Query.NewsletterSubscriptions: QueryType {
+  public var description: String {
+    return self.rawValue
+  }
+}
+
+// MARK: Notifications
+extension Query.Notifications: QueryType {
+  public var description: String {
+    return self.rawValue
   }
 }
 
@@ -366,10 +425,7 @@ extension Query.User: QueryType {
 
 extension Query.Location: QueryType {
   public var description: String {
-    switch self {
-    case .id:   return "id"
-    case .name: return "name"
-    }
+    return self.rawValue
   }
 }
 

@@ -113,6 +113,7 @@
 "Either_the_pledge_or_the_project_was_canceled" = "Entweder der Finanzierungsbeitrag wurde zurückgezogen oder das Projekt wurde abgebrochen, bevor die Frist abgelaufen war.";
 "Email" = "E-Mail";
 "Email_frequency" = "Häufigkeit der E-Mails";
+"Email_must_be_a_valid_email_address" = "Email must be a valid email address.";
 "Email_notifications" = "Benachrichtigung per E-Mail";
 "Email_unverified" = "Diese E-Mail-Adresse wurde noch nicht verifiziert.";
 "Ending_soon" = "Endet bald";
@@ -272,7 +273,9 @@
 "Or_select_a_different_reward_below_colon" = "Oder eine andere Belohnung wählen:";
 "Other_payment_methods" = "Weitere Zahlungsmethoden";
 "Other_projects_you_might_like" = "Ähnliche Projekte:";
+"Password_min_length_message" = "Your password must be at least 6 characters long.";
 "Password_visibility" = "Passwort-Anzeige";
+"Passwords_matching_message" = "New passwords must match.";
 "Past_live_stream" = "Früherer Live-Stream";
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Payment_methods" = "Zahlungsmethoden";
