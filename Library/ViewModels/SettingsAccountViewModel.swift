@@ -34,10 +34,6 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .skipNil()
       .filter { $0 == .currency }
 
-    let changeCurrencyEvent = self.didConfirmChangeCurrencyProperty.signal.skipNil()
-      .map { ChangeCurrencyInput(chosenCurrency: $0.descriptionText) }
-      .switchMap { AppEnvironment.current.apiService.changeCurrency(input: $0).materialize() }
-
     self.updateCurrency = self.didConfirmChangeCurrencyProperty.signal.skipNil()
 
     self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true)
