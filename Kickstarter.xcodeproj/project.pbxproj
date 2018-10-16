@@ -166,6 +166,10 @@
 		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
 		7793B13521067D62007857C0 /* SettingsNotificationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B13421067D62007857C0 /* SettingsNotificationCellViewModel.swift */; };
 		7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */; };
+		7798B5612174F3CD008BC50D /* UserQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5602174F3CD008BC50D /* UserQueries.swift */; };
+		7798B5632174F494008BC50D /* UserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5622174F494008BC50D /* UserEnvelope.swift */; };
+		7798B56521750041008BC50D /* UserCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B56421750041008BC50D /* UserCurrency.swift */; };
+		7798B56821750368008BC50D /* UserQueriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5662175035E008BC50D /* UserQueriesTests.swift */; };
 		77941C92216E452400398B89 /* LoadingBarButtonItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941C91216E452400398B89 /* LoadingBarButtonItemViewModel.swift */; };
 		77941C94216E4BEF00398B89 /* LoadingBarButtonItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941C93216E4BEF00398B89 /* LoadingBarButtonItemViewModelTests.swift */; };
 		77941CB2216F8B9A00398B89 /* ChangePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941CB1216F8B9A00398B89 /* ChangePasswordViewModelTests.swift */; };
@@ -1842,6 +1846,10 @@
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		7793B13421067D62007857C0 /* SettingsNotificationCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellViewModel.swift; sourceTree = "<group>"; };
 		7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
+		7798B5602174F3CD008BC50D /* UserQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQueries.swift; sourceTree = "<group>"; };
+		7798B5622174F494008BC50D /* UserEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEnvelope.swift; sourceTree = "<group>"; };
+		7798B56421750041008BC50D /* UserCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCurrency.swift; sourceTree = "<group>"; };
+		7798B5662175035E008BC50D /* UserQueriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQueriesTests.swift; sourceTree = "<group>"; };
 		77941C91216E452400398B89 /* LoadingBarButtonItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItemViewModel.swift; sourceTree = "<group>"; };
 		77941C93216E4BEF00398B89 /* LoadingBarButtonItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItemViewModelTests.swift; sourceTree = "<group>"; };
 		77941CB1216F8B9A00398B89 /* ChangePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -2866,6 +2874,15 @@
 				77E84DB12166792300DA8891 /* Mutations.swift */,
 			);
 			path = mutations;
+			sourceTree = "<group>";
+		};
+		7798B5292174F3BC008BC50D /* queries */ = {
+			isa = PBXGroup;
+			children = (
+				7798B5602174F3CD008BC50D /* UserQueries.swift */,
+				7798B5662175035E008BC50D /* UserQueriesTests.swift */,
+			);
+			path = queries;
 			sourceTree = "<group>";
 		};
 		802800561C88F62500141235 /* Configs */ = {
@@ -3992,6 +4009,7 @@
 		D01587511EEB2DE4006E7684 /* KsApi */ = {
 			isa = PBXGroup;
 			children = (
+				7798B5292174F3BC008BC50D /* queries */,
 				775DFADB2162A56D00620CED /* mutations */,
 				D01587531EEB2DE4006E7684 /* Info.plist */,
 				D67F29351F68333800E399A6 /* GraphSchema.swift */,
@@ -4126,6 +4144,8 @@
 				D01588211EEB2ED7006E7684 /* User.NewsletterSubscriptionsTests.swift */,
 				D01588221EEB2ED7006E7684 /* User.NotificationsTests.swift */,
 				D01588231EEB2ED7006E7684 /* User.swift */,
+				7798B56421750041008BC50D /* UserCurrency.swift */,
+				7798B5622174F494008BC50D /* UserEnvelope.swift */,
 				D01588241EEB2ED7006E7684 /* UserTests.swift */,
 				D01588251EEB2ED7006E7684 /* VoidEnvelope.swift */,
 				D01587971EEB2ED6006E7684 /* lenses */,
@@ -6063,6 +6083,7 @@
 				D01588451EEB2ED7006E7684 /* ActivityEnvelope.swift in Sources */,
 				D01588991EEB2ED7006E7684 /* FriendStatsEnvelopeLenses.swift in Sources */,
 				D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */,
+				7798B56521750041008BC50D /* UserCurrency.swift in Sources */,
 				D0158A111EEB30A2006E7684 /* ConfigTemplates.swift in Sources */,
 				D015885D1EEB2ED7006E7684 /* CommentsEnvelope.swift in Sources */,
 				D0158A151EEB30A2006E7684 /* FriendStatsEnvelopeTemplates.swift in Sources */,
@@ -6072,6 +6093,7 @@
 				D0158A321EEB30A2006E7684 /* User.StatsTemplates.swift in Sources */,
 				D01588C31EEB2ED7006E7684 /* PushEnvelopeLenses.swift in Sources */,
 				D015887B1EEB2ED7006E7684 /* Item.swift in Sources */,
+				7798B5612174F3CD008BC50D /* UserQueries.swift in Sources */,
 				D0158A231EEB30A2006E7684 /* ProjectTemplates.swift in Sources */,
 				D0158A0E1EEB30A2006E7684 /* CheckoutEnvelopeTemplates.swift in Sources */,
 				D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */,
@@ -6179,6 +6201,7 @@
 				D015889B1EEB2ED7006E7684 /* ItemLenses.swift in Sources */,
 				D01588951EEB2ED7006E7684 /* FindFriendsEnvelopeLenses.swift in Sources */,
 				D0158A331EEB30A2006E7684 /* UserTemplates.swift in Sources */,
+				7798B5632174F494008BC50D /* UserEnvelope.swift in Sources */,
 				D01588491EEB2ED7006E7684 /* Backing.swift in Sources */,
 				D01588CB1EEB2ED7006E7684 /* ShippingRuleLenses.swift in Sources */,
 				D72370902118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift in Sources */,
@@ -6232,6 +6255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0D10C0A1EEB4550005EBAD0 /* DiscoveryParamsTests.swift in Sources */,
+				7798B56821750368008BC50D /* UserQueriesTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
 				D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */,
 				D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */,
