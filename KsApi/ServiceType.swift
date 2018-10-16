@@ -117,6 +117,10 @@ public protocol ServiceType {
   func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError>
 
+  /// Fetch a User's preferred currency
+  func fetchGraphCurrency(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserCurrency>, GraphError>
+
   /// Fetch User's email objects using graphQL.
   func fetchGraphUserEmail(query: NonEmptySet<Query>)
     -> SignalProducer<GraphUser, GraphError>

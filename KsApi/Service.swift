@@ -68,12 +68,12 @@ public struct Service: ServiceType {
 
   public func changeEmail(input: ChangeEmailInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      return applyMutation(mutation: ChangeEmailMutation(input: input))
+      return applyMutation(mutation: UpdateUserAccountMutation(input: input))
   }
 
   public func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      return applyMutation(mutation: ChangePasswordMutation(input: input))
+      return applyMutation(mutation: UpdateUserAccountMutation(input: input))
   }
 
   public func changePaymentMethod(project: Project)
@@ -200,6 +200,11 @@ public struct Service: ServiceType {
 
   public func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError> {
+      return fetch(query: query)
+  }
+
+  public func fetchGraphCurrency(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserCurrency>, GraphError> {
       return fetch(query: query)
   }
 

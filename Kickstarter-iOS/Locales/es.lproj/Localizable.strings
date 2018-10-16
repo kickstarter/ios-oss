@@ -113,7 +113,7 @@
 "Either_the_pledge_or_the_project_was_canceled" = "Se canceló la contribución o el proyecto antes de que el plazo terminara.";
 "Email" = "Correo electrónico";
 "Email_frequency" = "Frecuencia de aviso por correo electrónico";
-"Email_must_be_a_valid_email_address" = "El correo electrónico debe tener una dirección de correo electrónico válida.";
+"Email_must_be_a_valid_email_address" = "Email must be a valid email address.";
 "Email_notifications" = "Notificaciones por correo electrónico";
 "Email_unverified" = "Esta dirección de correo electrónico no está verificada.";
 "Ending_soon" = "Finaliza pronto";
@@ -273,9 +273,9 @@
 "Or_select_a_different_reward_below_colon" = "También puedes seleccionar una de las siguientes recompensas:";
 "Other_payment_methods" = "Otros métodos de pago";
 "Other_projects_you_might_like" = "Otros proyectos que te pueden gustar.";
-"Password_min_length_message" = "Tu contraseña debe tener al menos 6 caracteres.";
+"Password_min_length_message" = "Your password must be at least 6 characters long.";
 "Password_visibility" = "Visibilidad de la contraseña";
-"Passwords_matching_message" = "Las nuevas contraseñas deben coincidir.";
+"Passwords_matching_message" = "New passwords must match.";
 "Past_live_stream" = "Live Stream pasado";
 "Payment_method_was_successfully_charged" = "Cargo efectuado a método de pago indicado.";
 "Payment_methods" = "Métodos de pago";

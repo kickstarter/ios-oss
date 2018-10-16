@@ -38,8 +38,6 @@ public protocol ChangeEmailViewModelType {
   var outputs: ChangeEmailViewModelOutputs { get }
 }
 
-private let userEmailQuery: NonEmptySet<Query> = Query.user(.email +| []) +| []
-
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
 ChangeEmailViewModelOutputs {
 
@@ -58,13 +56,12 @@ ChangeEmailViewModelOutputs {
         changeEmailEvent.values().ignoreValues()
       )
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraphUserEmail(query: userEmailQuery)
+        AppEnvironment.current.apiService.fetchGraphUserEmail(query: UserQueries.email.query)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0.email }
           .materialize()
     }
 
-    self.emailText = userEmailEvent.values()
+    self.emailText = userEmailEvent.values().map { $0.email }
 
     self.resendVerificationStackViewIsHidden = viewDidLoadProperty.signal.mapConst(true)
 
@@ -107,9 +104,8 @@ ChangeEmailViewModelOutputs {
                         .ignoreValues()
                         .mapConst("")
 
-    self.didFailToChangeEmail = changeEmailEvent.errors().map { error in
-        error.localizedDescription
-    }
+    self.didFailToChangeEmail = changeEmailEvent.errors()
+      .map { $0.localizedDescription  }
   }
 
   private let newEmailProperty = MutableProperty<String?>(nil)
