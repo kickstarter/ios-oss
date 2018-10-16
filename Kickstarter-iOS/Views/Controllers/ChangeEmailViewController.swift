@@ -74,11 +74,15 @@ internal final class ChangeEmailViewController: UIViewController {
     self.viewModel.outputs.didChangeEmail
       .observeForUI()
       .observeValues { [weak self] in
-
-        _ = self?.passwordTextField ?|> UITextField.lens.text .~ ""
-        _ = self?.newEmailTextField ?|> UITextField.lens.text .~ ""
+        self?.resetFields()
         self?.messageBannerView.showBanner(with: .success,
                                            message: Strings.Got_it_your_changes_have_been_saved())
+    }
+
+    self.viewModel.outputs.dismissKeyboard
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dismissKeyboard()
     }
 
     Keyboard.change
@@ -178,6 +182,18 @@ internal final class ChangeEmailViewController: UIViewController {
           password: result[AppExtensionPasswordKey] as? String
         )
     }
+  }
+
+  private func dismissKeyboard() {
+    self.passwordTextField.resignFirstResponder()
+    self.newEmailTextField.resignFirstResponder()
+  }
+
+  private func resetFields() {
+    _ = self.passwordTextField
+      ?|> UITextField.lens.text .~ ""
+    _ = self.newEmailTextField
+      ?|> UITextField.lens.text .~ ""
   }
 }
 

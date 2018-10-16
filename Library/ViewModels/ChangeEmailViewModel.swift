@@ -66,6 +66,7 @@ ChangeEmailViewModelOutputs {
     self.resendVerificationStackViewIsHidden = viewDidLoadProperty.signal.mapConst(true)
 
     self.dismissKeyboard = saveButtonTappedProperty.signal.ignoreValues()
+
     self.showConfirmationEmailSentBanner = saveButtonTappedProperty.signal.mapConst(true)
 
     self.messageBannerViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
@@ -94,11 +95,6 @@ ChangeEmailViewModelOutputs {
     self.didFailToChangeEmail = changeEmailEvent.errors().map { error in
         error.localizedDescription
     }
-  }
-
-  private let changePasswordProperty = MutableProperty<(String, String)?>(nil)
-  public func passwordFieldDidTapGo(newEmail: String, password: String) {
-    self.changePasswordProperty.value = (newEmail, password)
   }
 
   private let newEmailProperty = MutableProperty<String?>(nil)
@@ -145,6 +141,12 @@ ChangeEmailViewModelOutputs {
     self.saveButtonTappedProperty.value = ()
   }
 
+  private let changePasswordProperty = MutableProperty<(String, String)?>(nil)
+  public func passwordFieldDidTapGo(newEmail: String, password: String) {
+    self.changePasswordProperty.value = (newEmail, password)
+    self.saveButtonTappedProperty.value = ()
+  }
+
   public let didChangeEmail: Signal<Void, NoError>
   public let didFailToChangeEmail: Signal<String, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
@@ -168,5 +170,5 @@ ChangeEmailViewModelOutputs {
 
 private func shouldEnableSaveButton(email: String?, newEmail: String, password: String) -> Bool {
 
-  return newEmail != "" && password != "" && email != newEmail
+  return !newEmail.isEmpty && !password.isEmpty && email != newEmail
 }

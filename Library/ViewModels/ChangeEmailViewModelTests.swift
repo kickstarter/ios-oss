@@ -160,4 +160,15 @@ final class ChangeEmailViewModelTests: TestCase {
   func testResendVerificationStackViewIsNotHidden_IfEmailIsNotVerified() {
     self.resendVerificationStackViewIsHidden.assertDidNotEmitValue()
   }
+
+  func testDismissKeyboard() {
+
+    self.dismissKeyboard.assertDidNotEmitValue()
+
+    self.vm.inputs.passwordFieldDidTapGo(newEmail: "new@email.com", password: "123456")
+    self.dismissKeyboard.assertValueCount(1)
+
+    self.vm.inputs.saveButtonTapped()
+    self.dismissKeyboard.assertValueCount(2)
+  }
 }
