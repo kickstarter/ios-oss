@@ -1,3 +1,4 @@
+"A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "A successfully funded project will collect your pledge in its native currency. The amounts shown are approximate.";
 "A_weekly_roundup_of_the_best_and_brightest" = "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team.";
 "About_reward_amount" = "About %{reward_amount}";
 "Account" = "Account";
@@ -112,6 +113,7 @@
 "Either_the_pledge_or_the_project_was_canceled" = "Either the pledge or the project was canceled before the deadline.";
 "Email" = "Email";
 "Email_frequency" = "Email frequency";
+"Email_must_be_a_valid_email_address" = "Email must be a valid email address.";
 "Email_notifications" = "Email notifications";
 "Email_unverified" = "This email address is unverified.";
 "Ending_soon" = "Ending Soon";
@@ -179,6 +181,7 @@
 "Get_reminded_about_this_project" = "Get reminded about this project?";
 "Go_to_project_page" = "Go to project page";
 "Got_it" = "Got it";
+"Got_it_your_changes_have_been_saved" = "Got it! Your changes have been saved.";
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
 "Happening_newsletter" = "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week.";
 "Help" = "Help";
@@ -270,7 +273,9 @@
 "Or_select_a_different_reward_below_colon" = "Or select a different reward below:";
 "Other_payment_methods" = "Other payment methods";
 "Other_projects_you_might_like" = "Other projects you might like.";
+"Password_min_length_message" = "Your password must be at least 6 characters long.";
 "Password_visibility" = "Password visibility";
+"Passwords_matching_message" = "New passwords must match.";
 "Past_live_stream" = "Past live stream";
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Payment_methods" = "Payment methods";
@@ -399,6 +404,7 @@
 "The_replay_will_start_soon" = "The replay will start soon";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories.";
 "There_was_a_problem_with_this_payment" = "There was a problem with this payment.";
+"This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "This allows you to see project goal and pledge amounts in your preferred currency.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "This project will only be funded on if at least %{amount} is pledged by %{date}.";
 "Time_left_left" = "%{time_left} left";
