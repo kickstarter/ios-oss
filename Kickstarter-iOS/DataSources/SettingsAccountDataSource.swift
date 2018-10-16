@@ -3,7 +3,7 @@ import Library
 
 final class SettingsAccountDataSource: ValueCellDataSource {
 
-  func configureRows() {
+  func configureRows(user: User) {
     SettingsAccountSectionType.allCases
       .forEach { section -> Void in
       let values = section.cellRowsForSection.map { SettingsCellValue(user: nil, cellType: $0) }
@@ -12,11 +12,11 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                cellClass: SettingsTableViewCell.self,
                inSection: section.rawValue)
     }
-    _ = insertCurrencyCell()
+    _ = insertCurrencyCell(user: user)
   }
 
-  func insertCurrencyCell() -> IndexPath {
-    let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currency)
+  func insertCurrencyCell(user: User) -> IndexPath {
+    let cellValue = SettingsCellValue(user: user, cellType: SettingsAccountCellType.currency)
 
     return self.insertRow(value: cellValue,
                           cellClass: SettingsCurrencyCell.self,

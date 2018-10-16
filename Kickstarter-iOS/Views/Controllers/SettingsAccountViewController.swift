@@ -33,8 +33,8 @@ final class SettingsAccountViewController: UIViewController {
   override func bindViewModel() {
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.dataSource.configureRows()
+      .observeValues { [weak self] user in
+        self?.dataSource.configureRows(user: user)
         self?.tableView.reloadData()
     }
 

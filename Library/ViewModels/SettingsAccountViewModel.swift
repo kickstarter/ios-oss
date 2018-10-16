@@ -13,7 +13,7 @@ public protocol SettingsAccountViewModelInputs {
 
 public protocol SettingsAccountViewModelOutputs {
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
-  var reloadData: Signal<Void, NoError> { get }
+  var reloadData: Signal<User, NoError> { get }
   var presentCurrencyPicker: Signal<Bool, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
   var updateCurrency: Signal<Currency, NoError> { get }
@@ -28,7 +28,16 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
 SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
   public init() {
-    self.reloadData = self.viewDidLoadProperty.signal
+    let initialUser = self.viewDidLoadProperty.signal
+      .flatMap {
+        AppEnvironment.current.apiService.fetchUserSelf()
+          .wrapInOptional()
+          .prefix(value: AppEnvironment.current.currentUser)
+          .demoteErrors()
+      }
+      .skipNil()
+
+    self.reloadData = initialUser
 
     let currencyCellSelected = self.selectedCellTypeProperty.signal
       .skipNil()
@@ -66,7 +75,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   }
 
   public let dismissCurrencyPicker: Signal<Void, NoError>
-  public let reloadData: Signal<Void, NoError>
+  public let reloadData: Signal<User, NoError>
   public let presentCurrencyPicker: Signal<Bool, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
   public let updateCurrency: Signal<Currency, NoError>
