@@ -39,7 +39,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testDidChangeEmailEmits_OnSuccess() {
 
-    self.vm.inputs.passwordFieldDidTapGo(newEmail: "ksr@kickstarter.com", password: "123456")
+    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
     self.scheduler.advance()
 
     self.didChangeEmail.assertDidEmitValue()
@@ -51,7 +51,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(changeEmailError: error)) {
 
-      self.vm.inputs.passwordFieldDidTapGo(newEmail: "ksr@kickstarter.com", password: "123456")
+      self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
       self.scheduler.advance()
 
       self.didFailToChangeEmail.assertDidEmitValue()
@@ -93,14 +93,14 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testEmailText_AfterFetchingUsersEmail() {
 
-    let response = GraphUser(email: "ksr@kickstarter.com")
+    let response = GraphUser(email: "ksr@ksr.com")
 
     withEnvironment(apiService: MockService(fetchGraphUserEmailResponse: response)) {
 
-      self.vm.inputs.passwordFieldDidTapGo(newEmail: "ksr@kickstarter.com", password: "123456")
+      self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.emailText.assertValues(["ksr@kickstarter.com"])
+      self.emailText.assertValues(["ksr@ksr.com"])
     }
   }
 
@@ -165,10 +165,10 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.dismissKeyboard.assertDidNotEmitValue()
 
-    self.vm.inputs.passwordFieldDidTapGo(newEmail: "new@email.com", password: "123456")
+    self.vm.inputs.submitForm(newEmail: "new@email.com", password: "123456")
     self.dismissKeyboard.assertValueCount(1)
 
-    self.vm.inputs.saveButtonTapped()
+    self.vm.inputs.submitForm(newEmail: "new@test.com", password: "123456")
     self.dismissKeyboard.assertValueCount(2)
   }
 }

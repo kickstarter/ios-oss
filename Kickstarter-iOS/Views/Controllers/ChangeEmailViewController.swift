@@ -50,48 +50,6 @@ internal final class ChangeEmailViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func bindViewModel() {
-    super.bindViewModel()
-
-    self.resendVerificationStackView.rac.hidden = self.viewModel.outputs.resendVerificationStackViewIsHidden
-    self.saveBarButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
-    self.currentEmail.rac.text = self.viewModel.outputs.emailText
-
-    self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
-
-    self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
-
-    self.viewModel.outputs.onePasswordFindLoginForURLString
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.onePasswordFindLogin(forURLString: $0) }
-
-    self.viewModel.outputs.didFailToChangeEmail
-      .observeForUI()
-      .observeValues { [weak self] error in
-        self?.messageBannerView.showBanner(with: .error, message: error)
-    }
-
-    self.viewModel.outputs.didChangeEmail
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.resetFields()
-        self?.messageBannerView.showBanner(with: .success,
-                                           message: Strings.Got_it_your_changes_have_been_saved())
-    }
-
-    self.viewModel.outputs.dismissKeyboard
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.dismissKeyboard()
-    }
-
-    Keyboard.change
-      .observeForUI()
-      .observeValues { [weak self] change in
-        self?.scrollView.handleKeyboardVisibilityDidChange(change)
-    }
-  }
-
   override func bindStyles() {
     super.bindStyles()
 
@@ -144,12 +102,69 @@ internal final class ChangeEmailViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Resend_verification_email() }
   }
 
-  @IBAction func saveButtonTapped(_ sender: Any) {
+  override func bindViewModel() {
+    super.bindViewModel()
 
-    if let email = newEmailTextField.text, let password = passwordTextField.text {
-      self.viewModel.inputs.passwordFieldDidTapGo(newEmail: email,
-                                                  password: password)
+    self.resendVerificationStackView.rac.hidden = self.viewModel.outputs.resendVerificationStackViewIsHidden
+    self.saveBarButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
+    self.currentEmail.rac.text = self.viewModel.outputs.emailText
+
+    self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
+
+    self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
+
+    self.viewModel.outputs.onePasswordFindLoginForURLString
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.onePasswordFindLogin(forURLString: $0) }
+
+    self.viewModel.outputs.didFailToChangeEmail
+      .observeForUI()
+      .observeValues { [weak self] error in
+        self?.messageBannerView.showBanner(with: .error, message: error)
     }
+
+    self.viewModel.outputs.didChangeEmail
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.messageBannerView.showBanner(with: .success,
+                                           message: Strings.Got_it_your_changes_have_been_saved())
+    }
+
+    self.viewModel.outputs.shouldSubmitForm
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.viewModel.inputs.submitForm(newEmail: self?.newEmailTextField.text,
+                                          password: self?.passwordTextField.text)
+    }
+
+    self.viewModel.outputs.passwordFieldBecomeFirstResponder
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.passwordTextField.becomeFirstResponder()
+    }
+
+    self.viewModel.outputs.resetFields
+      .observeForUI()
+      .observeValues { [weak self] emptyString in
+        self?.resetFields(string: emptyString)
+    }
+
+    self.viewModel.outputs.dismissKeyboard
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dismissKeyboard()
+    }
+
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        self?.scrollView.handleKeyboardVisibilityDidChange(change)
+    }
+  }
+
+  @IBAction func saveButtonTapped(_ sender: Any) {
+    self.viewModel.inputs.submitForm(newEmail: self.newEmailTextField.text,
+                                     password: self.passwordTextField.text)
   }
 
   @IBAction func onePasswordButtonTapped(_ sender: Any) {
@@ -189,29 +204,16 @@ internal final class ChangeEmailViewController: UIViewController {
     self.newEmailTextField.resignFirstResponder()
   }
 
-  private func resetFields() {
-    _ = self.passwordTextField
-      ?|> UITextField.lens.text .~ ""
-    _ = self.newEmailTextField
-      ?|> UITextField.lens.text .~ ""
-  }
+  private func resetFields(string: String) {
+    _ = [self.passwordTextField, self.newEmailTextField]
+      ||> UITextField.lens.text .~ string
+    }
 }
 
 extension ChangeEmailViewController: UITextFieldDelegate {
   internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 
-    switch textField.returnKeyType {
-    case .next:
-      passwordTextField.becomeFirstResponder()
-    case .go:
-      if let email = newEmailTextField.text, let password = passwordTextField.text {
-        self.viewModel.inputs.passwordFieldDidTapGo(newEmail: email,
-                                                        password: password)
-      }
-    default:
-      break
-    }
-
+    self.viewModel.inputs.textFieldShouldReturn(with: textField.returnKeyType)
     return textField.resignFirstResponder()
   }
 }

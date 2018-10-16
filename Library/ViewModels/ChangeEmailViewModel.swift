@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import Result
+import UIKit
 
 public protocol ChangeEmailViewModelInputs {
   func emailFieldDidEndEditing(email: String?)
@@ -10,24 +11,26 @@ public protocol ChangeEmailViewModelInputs {
   func onePasswordFound(password: String?)
   func onePassword(isAvailable available: Bool)
   func passwordFieldDidEndEditing(password: String?)
-  func passwordFieldDidTapGo(newEmail: String, password: String)
+  func submitForm(newEmail: String?, password: String?)
   func passwordFieldTextDidChange(text: String?)
-  func saveButtonTapped()
+  func textFieldShouldReturn(with returnKeyType: UIReturnKeyType)
   func viewDidLoad()
 }
 
 public protocol ChangeEmailViewModelOutputs {
-  var dismissKeyboard: Signal<Void, NoError> { get }
   var didChangeEmail: Signal<Void, NoError> { get }
   var didFailToChangeEmail: Signal<String, NoError> { get }
+  var dismissKeyboard: Signal<Void, NoError> { get }
+  var emailText: Signal<String, NoError> { get }
   var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
   var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
   var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
-  var emailText: Signal<String, NoError> { get }
   var passwordText: Signal<String, NoError> { get }
+  var passwordFieldBecomeFirstResponder: Signal<Void, NoError> { get }
   var resendVerificationStackViewIsHidden: Signal<Bool, NoError> { get }
+  var resetFields: Signal<String, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
-  var showConfirmationEmailSentBanner: Signal<Bool, NoError> { get }
+  var shouldSubmitForm: Signal<Void, NoError> { get }
 }
 
 public protocol ChangeEmailViewModelType {
@@ -65,9 +68,7 @@ ChangeEmailViewModelOutputs {
 
     self.resendVerificationStackViewIsHidden = viewDidLoadProperty.signal.mapConst(true)
 
-    self.dismissKeyboard = saveButtonTappedProperty.signal.ignoreValues()
-
-    self.showConfirmationEmailSentBanner = saveButtonTappedProperty.signal.mapConst(true)
+    self.dismissKeyboard = self.changePasswordProperty.signal.ignoreValues()
 
     self.messageBannerViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
 
@@ -80,6 +81,16 @@ ChangeEmailViewModelOutputs {
         return shouldEnableSaveButton(email: email, newEmail: newEmail, password: password)
     }
 
+    self.passwordFieldBecomeFirstResponder = self.textFieldShouldReturnProperty.signal
+                                              .skipNil()
+                                              .filter { $0 == .next }
+                                              .ignoreValues()
+
+    self.shouldSubmitForm = self.textFieldShouldReturnProperty.signal
+                              .skipNil()
+                              .filter { $0 == .go }
+                              .ignoreValues()
+
     self.onePasswordButtonIsHidden = self.onePasswordIsAvailable.signal.map { $0 }.negate()
 
     self.onePasswordIsAvailable.signal
@@ -91,6 +102,10 @@ ChangeEmailViewModelOutputs {
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
 
     self.didChangeEmail = changeEmailEvent.values().ignoreValues()
+
+    self.resetFields = changeEmailEvent.values()
+                        .ignoreValues()
+                        .mapConst("")
 
     self.didFailToChangeEmail = changeEmailEvent.errors().map { error in
         error.localizedDescription
@@ -136,15 +151,17 @@ ChangeEmailViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let saveButtonTappedProperty = MutableProperty(())
-  public func saveButtonTapped() {
-    self.saveButtonTappedProperty.value = ()
+  private let changePasswordProperty = MutableProperty<(String, String)?>(nil)
+  public func submitForm(newEmail: String?, password: String?) {
+
+    if let newEmail = newEmail, let password = password {
+      self.changePasswordProperty.value = (newEmail, password)
+    }
   }
 
-  private let changePasswordProperty = MutableProperty<(String, String)?>(nil)
-  public func passwordFieldDidTapGo(newEmail: String, password: String) {
-    self.changePasswordProperty.value = (newEmail, password)
-    self.saveButtonTappedProperty.value = ()
+  private let textFieldShouldReturnProperty = MutableProperty<UIReturnKeyType?>(nil)
+  public func textFieldShouldReturn(with returnKeyType: UIReturnKeyType) {
+    self.textFieldShouldReturnProperty.value = returnKeyType
   }
 
   public let didChangeEmail: Signal<Void, NoError>
@@ -154,10 +171,12 @@ ChangeEmailViewModelOutputs {
   public let messageBannerViewIsHidden: Signal<Bool, NoError>
   public let onePasswordButtonIsHidden: Signal<Bool, NoError>
   public let onePasswordFindLoginForURLString: Signal<String, NoError>
+  public let passwordFieldBecomeFirstResponder: Signal<Void, NoError>
   public let passwordText: Signal<String, NoError>
   public let resendVerificationStackViewIsHidden: Signal<Bool, NoError>
+  public let resetFields: Signal<String, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
-  public let showConfirmationEmailSentBanner: Signal<Bool, NoError>
+  public let shouldSubmitForm: Signal<Void, NoError>
 
   public var inputs: ChangeEmailViewModelInputs {
     return self
