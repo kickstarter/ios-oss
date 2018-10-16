@@ -12,7 +12,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                cellClass: SettingsTableViewCell.self,
                inSection: section.rawValue)
     }
-    insertCurrencyCell()
+    _ = insertCurrencyCell()
   }
 
   func insertCurrencyCell() -> IndexPath {
