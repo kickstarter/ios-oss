@@ -1,3 +1,4 @@
+"A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Bis dahin können nur ungefähre Beträge angezeigt werden.";
 "A_weekly_roundup_of_the_best_and_brightest" = "Eine wöchentliche Zusammenfassung der besten und cleversten Projekte auf Kickstarter, handverlesen von unserem Team.";
 "About_reward_amount" = "Ungefähr %{reward_amount}";
 "Account" = "Konto";
@@ -112,6 +113,7 @@
 "Either_the_pledge_or_the_project_was_canceled" = "Entweder der Finanzierungsbeitrag wurde zurückgezogen oder das Projekt wurde abgebrochen, bevor die Frist abgelaufen war.";
 "Email" = "E-Mail";
 "Email_frequency" = "Häufigkeit der E-Mails";
+"Email_must_be_a_valid_email_address" = "Email must be a valid email address.";
 "Email_notifications" = "Benachrichtigung per E-Mail";
 "Email_unverified" = "Diese E-Mail-Adresse wurde noch nicht verifiziert.";
 "Ending_soon" = "Endet bald";
@@ -179,6 +181,7 @@
 "Get_reminded_about_this_project" = "Möchtest du an dieses Projekt erinnert werden?";
 "Go_to_project_page" = "Zu Projektseite";
 "Got_it" = "Alles klar!";
+"Got_it_your_changes_have_been_saved" = "Alles klar! Deine Änderungen wurden gespeichert.";
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
 "Happening_newsletter" = "Abonniere diesen Newsletter und du bekommst ein- oder zweimal die Woche einen interessanten Mix aus neuen Projekten, Stories und visueller Inspiration.";
 "Help" = "Hilfe";
@@ -270,7 +273,9 @@
 "Or_select_a_different_reward_below_colon" = "Oder eine andere Belohnung wählen:";
 "Other_payment_methods" = "Weitere Zahlungsmethoden";
 "Other_projects_you_might_like" = "Ähnliche Projekte:";
+"Password_min_length_message" = "Your password must be at least 6 characters long.";
 "Password_visibility" = "Passwort-Anzeige";
+"Passwords_matching_message" = "New passwords must match.";
 "Past_live_stream" = "Früherer Live-Stream";
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Payment_methods" = "Zahlungsmethoden";
@@ -399,6 +404,7 @@
 "The_replay_will_start_soon" = "Wiedergabe started in Kürze";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "Hol dir den Zeitgeist direkt in deine Inbox: neue Projekte und Stories, die in aller Munde sind.";
 "There_was_a_problem_with_this_payment" = "Es ist ein Problem bei der Zahlung aufgetreten.";
+"This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "Hier kannst du das Finanzierungsziel und die Finanzierungsbeiträge in deiner bevorzugten Währung ansehen.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Dieses Projekt wird nur finanziert, wenn bis am %{date} Unterstützungsbeiträge von mindestens %{amount} geleistet werden.";
 "Time_left_left" = "%{time_left} übrig";

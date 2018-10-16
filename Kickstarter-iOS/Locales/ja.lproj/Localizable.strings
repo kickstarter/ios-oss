@@ -1,3 +1,4 @@
+"A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "プロジェクトのファンディングが成功した際には、プレッジ額はプロジェクトをローンチした国の通貨で集められます。表示されている金額はおおよその換算額ですのでご注意ください。";
 "A_weekly_roundup_of_the_best_and_brightest" = "Kickstarter スタッフがセレクトした今週のおすすめプロジェクト総まとめ。";
 "About_reward_amount" = "約 %{reward_amount}　";
 "Account" = "アカウント";
@@ -112,8 +113,9 @@
 "Either_the_pledge_or_the_project_was_canceled" = "プレッジもプロジェクトも期限前にキャンセル済";
 "Email" = "メールアドレス";
 "Email_frequency" = "通知頻度";
+"Email_must_be_a_valid_email_address" = "Email must be a valid email address.";
 "Email_notifications" = "メール通知設定";
-"Email_unverified" = "This email address is unverified.";
+"Email_unverified" = "このメールアドレスは認証されていません。";
 "Ending_soon" = "終了直前";
 "Estimated_delivery" = "配達予定日：";
 "Expands_subcategories" = "サブカテゴリーを表示";
@@ -179,6 +181,7 @@
 "Get_reminded_about_this_project" = "このプロジェクトについてリマインダーを希望しますか？";
 "Go_to_project_page" = "プロジェクトページを見る";
 "Got_it" = "完了";
+"Got_it_your_changes_have_been_saved" = "変更が保存されました。";
 "Got_it_your_survey_response_has_been_submitted" = "サーベイを送信しました！";
 "Happening_newsletter" = "新しいプロジェクトや、感動的なストーリー、視覚的なインスピレーションなどが週に1回 (時には2回) 届くニュースレターにサインアップしましょう。";
 "Help" = "ヘルプ";
@@ -270,7 +273,9 @@
 "Or_select_a_different_reward_below_colon" = "別のリワードをみる：";
 "Other_payment_methods" = "その他の支払方法";
 "Other_projects_you_might_like" = "おすすめをさらに見る";
+"Password_min_length_message" = "Your password must be at least 6 characters long.";
 "Password_visibility" = "パスワードの表示/非表示";
+"Passwords_matching_message" = "New passwords must match.";
 "Past_live_stream" = "過去のプロジェクト";
 "Payment_method_was_successfully_charged" = "支払い方法が登録されました。";
 "Payment_methods" = "お支払い方法";
@@ -328,7 +333,7 @@
 "Replay_past_live_streams" = "過去のライブ配信をリプレイ";
 "Reply_to_user_name" = "%{user_nameに返信";
 "Request_my_personal_data" = "自分の個人データをリクエストする";
-"Resend_verification_email" = "Re-send verification email";
+"Resend_verification_email" = "認証メールをもう一度送信";
 "Reward_Surveys.few" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.many" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.one" = "リワードサーベイ";
@@ -399,6 +404,7 @@
 "The_replay_will_start_soon" = "リプレイが始まります";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "気になる話題や最新プロジェクトなど、この時代を特徴づける思想「ツァイトガイスト」をいち早くお届けします。";
 "There_was_a_problem_with_this_payment" = "支払いに問題があります。";
+"This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "これにより、プロジェクトのファンディングゴールとプレッジ金額をご希望の通貨で表示することができます。";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "このFacebookアカウントはすでに他のKickstarterユーザーとつながっています";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "このプロジェクトは%{date} までに、少なくとも%{amount}プレッジされるでしょう。";
 "Time_left_left" = "あと%{time_left}";
@@ -423,7 +429,7 @@
 "Upcoming_with_creator_name" = "<br/><b>%{creator_name}</b>が近日配信";
 "Update_pledge" = "プレッジをアップデートする";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "受け取ったリワードを確認するにはこちらをご利用ください。";
-"Verification_email_sent" = "We've just sent you a verification email. Click the link in it and your address will be verified.";
+"Verification_email_sent" = "認証メールを送信しました。メール内のリンクをクリックすればメールアドレスが認証済みとなります。";
 "Video_disabled_until_the_internet_connection_improves" = "インターネット通信状態が向上するまでビデオはご利用いいただけません。";
 "View" = "みる";
 "View_project" = "プロジェクトを見る";
