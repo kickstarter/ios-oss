@@ -16,6 +16,11 @@ final class ChangeEmailViewModelTests: TestCase {
   private let emailText = TestObserver<String, NoError>()
   private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
   private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
+
+  private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
+  private let resetFields = TestObserver<String, NoError>()
+  private let shouldSubmitForm = TestObserver<Void, NoError>()
+
   private let passwordText = TestObserver<String, NoError>()
   private let resendVerificationStackViewIsHidden = TestObserver<Bool, NoError>()
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
@@ -30,11 +35,14 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonHidden.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
+    self.vm.outputs.passwordFieldBecomeFirstResponder.observe(self.passwordFieldBecomeFirstResponder.observer)
     self.vm.outputs.passwordText.observe(self.passwordText.observer)
     self.vm.outputs.resendVerificationStackViewIsHidden.observe(
       self.resendVerificationStackViewIsHidden.observer
     )
+    self.vm.outputs.resetFields.observe(self.resetFields.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
+    self.vm.outputs.shouldSubmitForm.observe(self.shouldSubmitForm.observer)
   }
 
   func testDidChangeEmailEmits_OnSuccess() {
@@ -170,5 +178,40 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.vm.inputs.submitForm(newEmail: "new@test.com", password: "123456")
     self.dismissKeyboard.assertValueCount(2)
+  }
+
+  func testPasswordFieldBecomeFirstResponder_WhenTappingNext() {
+
+    self.vm.inputs.viewDidLoad()
+    self.passwordFieldBecomeFirstResponder.assertValueCount(0)
+
+    self.vm.inputs.textFieldShouldReturn(with: .go)
+    self.passwordFieldBecomeFirstResponder.assertValueCount(0)
+
+    self.vm.inputs.textFieldShouldReturn(with: .next)
+    self.passwordFieldBecomeFirstResponder.assertValueCount(1)
+  }
+
+  func testFieldsResetWithEmptyString_AfterChangingEmail() {
+
+    withEnvironment(apiService: MockService()) {
+
+      self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+      self.scheduler.advance()
+
+      self.resetFields.assertValue("")
+    }
+  }
+
+  func testShouldSubmitFormEmits_WhenTappingSaveOrGo() {
+
+    self.vm.inputs.viewDidLoad()
+    self.shouldSubmitForm.assertValueCount(0)
+
+    self.vm.inputs.textFieldShouldReturn(with: .go)
+    self.shouldSubmitForm.assertValueCount(1)
+
+    self.vm.inputs.saveButtonTapped(newEmail: "", password: "")
+    self.shouldSubmitForm.assertValueCount(2)
   }
 }

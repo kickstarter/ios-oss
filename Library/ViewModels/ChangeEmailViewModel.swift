@@ -5,6 +5,7 @@ import Result
 import UIKit
 
 public protocol ChangeEmailViewModelInputs {
+  func saveButtonTapped(newEmail: String?, password: String?)
   func emailFieldDidEndEditing(email: String?)
   func emailFieldTextDidChange(text: String?)
   func onePasswordButtonTapped()
@@ -43,7 +44,11 @@ ChangeEmailViewModelOutputs {
 
   public init() {
 
-    let changeEmailEvent = self.changePasswordProperty.signal.skipNil().map { email, password in
+    let changeEmailEvent = Signal.merge(
+        self.changePasswordProperty.signal.skipNil(),
+        self.saveButtonTappedProperty.signal.skipNil()
+      )
+      .map { email, password in
       return ChangeEmailInput(email: email, currentPassword: password)
       }.switchMap { input in
         AppEnvironment.current.apiService.changeEmail(input: input)
@@ -65,7 +70,10 @@ ChangeEmailViewModelOutputs {
 
     self.resendVerificationStackViewIsHidden = viewDidLoadProperty.signal.mapConst(true)
 
-    self.dismissKeyboard = self.changePasswordProperty.signal.ignoreValues()
+    self.dismissKeyboard = Signal.merge(
+      self.changePasswordProperty.signal.ignoreValues(),
+      self.saveButtonTappedProperty.signal.ignoreValues()
+    )
 
     self.messageBannerViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
 
@@ -83,10 +91,11 @@ ChangeEmailViewModelOutputs {
                                               .filter { $0 == .next }
                                               .ignoreValues()
 
-    self.shouldSubmitForm = self.textFieldShouldReturnProperty.signal
-                              .skipNil()
-                              .filter { $0 == .go }
-                              .ignoreValues()
+    self.shouldSubmitForm = Signal.merge(
+      self.textFieldShouldReturnProperty.signal.skipNil()
+        .filter { $0 == .go }
+        .ignoreValues(),
+      self.saveButtonTappedProperty.signal.ignoreValues())
 
     self.onePasswordButtonIsHidden = self.onePasswordIsAvailable.signal.map { $0 }.negate()
 
@@ -152,6 +161,13 @@ ChangeEmailViewModelOutputs {
 
     if let newEmail = newEmail, let password = password {
       self.changePasswordProperty.value = (newEmail, password)
+    }
+  }
+
+  private let saveButtonTappedProperty = MutableProperty<(String, String)?>(nil)
+  public func saveButtonTapped(newEmail: String?, password: String?) {
+    if let newEmail = newEmail, let password = password {
+      self.saveButtonTappedProperty.value = (newEmail, password)
     }
   }
 
