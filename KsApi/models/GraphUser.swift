@@ -1,6 +1,6 @@
 import Foundation
 
-public struct GraphUser: Swift.Decodable {
+public struct GraphUserEmail: Swift.Decodable {
 
   public let email: String
 
@@ -13,7 +13,7 @@ public struct GraphUser: Swift.Decodable {
   }
 }
 
-extension GraphUser {
+extension GraphUserEmail {
 
   private enum CodingKeys: String, CodingKey {
     case me, email
@@ -21,6 +21,6 @@ extension GraphUser {
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-    self.email = try values.decode(GraphUser.Me.self, forKey: .me).email
+    self.email = try values.decode(GraphUserEmail.Me.self, forKey: .me).email
   }
 }

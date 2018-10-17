@@ -19,6 +19,7 @@ public protocol ChangeEmailViewModelInputs {
 }
 
 public protocol ChangeEmailViewModelOutputs {
+  var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var didChangeEmail: Signal<Void, NoError> { get }
   var didFailToChangeEmail: Signal<String, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
@@ -115,6 +116,12 @@ ChangeEmailViewModelOutputs {
 
     self.didFailToChangeEmail = changeEmailEvent.errors()
       .map { $0.localizedDescription  }
+
+    self.activityIndicatorShouldShow = Signal.merge(
+      self.shouldSubmitForm.signal.mapConst(true),
+      self.didChangeEmail.mapConst(false),
+      self.didFailToChangeEmail.mapConst(false)
+    ).logEvents(identifier: "\n\n EMITE \n\n")
   }
 
   private let newEmailProperty = MutableProperty<String?>(nil)
@@ -176,6 +183,7 @@ ChangeEmailViewModelOutputs {
     self.textFieldShouldReturnProperty.value = returnKeyType
   }
 
+  public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let didChangeEmail: Signal<Void, NoError>
   public let didFailToChangeEmail: Signal<String, NoError>
   public let dismissKeyboard: Signal<Void, NoError>

@@ -10,6 +10,7 @@ import XCTest
 final class ChangeEmailViewModelTests: TestCase {
   fileprivate let vm: ChangeEmailViewModelType = ChangeEmailViewModel()
 
+  private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
   private let didChangeEmail = TestObserver<Void, NoError>()
   private let didFailToChangeEmail = TestObserver<String, NoError>()
   private let dismissKeyboard = TestObserver<(), NoError>()
@@ -28,6 +29,7 @@ final class ChangeEmailViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.activityIndicatorShouldShow.observe(self.activityIndicatorShouldShow.observer)
     self.vm.outputs.didChangeEmail.observe(self.didChangeEmail.observer)
     self.vm.outputs.didFailToChangeEmail.observe(self.didFailToChangeEmail.observer)
     self.vm.outputs.emailText.observe(self.emailText.observer)
@@ -59,10 +61,15 @@ final class ChangeEmailViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(changeEmailError: error)) {
 
-      self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+      self.vm.inputs.saveButtonTapped(newEmail: "ksr@kickstarter.com", password: "123456")
+
+      self.activityIndicatorShouldShow.assertValues([true])
+
       self.scheduler.advance()
 
       self.didFailToChangeEmail.assertDidEmitValue()
+
+      self.activityIndicatorShouldShow.assertValues([true, false])
     }
   }
 
@@ -101,7 +108,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testEmailText_AfterFetchingUsersEmail() {
 
-    let response = GraphUser(email: "ksr@ksr.com")
+    let response = GraphUserEmail(email: "ksr@ksr.com")
 
     withEnvironment(apiService: MockService(fetchGraphUserEmailResponse: response)) {
 
@@ -123,7 +130,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testSaveButtonEnabledStatus() {
 
-    let response = GraphUser(email: "ksr@kickstarter.com")
+    let response = GraphUserEmail(email: "ksr@kickstarter.com")
 
     withEnvironment(apiService: MockService(fetchGraphUserEmailResponse: response)) {
 
@@ -145,7 +152,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testSaveButtonEnablesAfter_OnePasswordPrefillsField() {
 
-    let response = GraphUser(email: "ksr@kickstarter.com")
+    let response = GraphUserEmail(email: "ksr@kickstarter.com")
 
     withEnvironment(apiService: MockService(fetchGraphUserEmailResponse: response)) {
 

@@ -16,12 +16,14 @@ internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var passwordTextField: UITextField!
   @IBOutlet fileprivate weak var resendVerificationEmailButton: UIButton!
   @IBOutlet fileprivate weak var resendVerificationStackView: UIStackView!
-  @IBOutlet fileprivate weak var saveBarButton: UIBarButtonItem!
+
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
   @IBOutlet fileprivate weak var resendVerificationEmailStackView: UIStackView!
 
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
   private var messageBannerView: MessageBannerViewController!
+
+  private weak var saveButtonView: LoadingBarButtonItemView!
 
   internal static func instantiate() -> ChangeEmailViewController {
     return Storyboard.Settings.instantiate(ChangeEmailViewController.self)
@@ -35,6 +37,16 @@ internal final class ChangeEmailViewController: UIViewController {
     }
 
     self.messageBannerView = messageBannerView
+
+    guard let saveButtonView = LoadingBarButtonItemView.fromNib(nib: Nib.LoadingBarButtonItemView) else {
+      fatalError("failed to load LoadingBarButtonItemView from Nib")
+    }
+
+    self.saveButtonView = saveButtonView
+    self.saveButtonView.setTitle(title: Strings.Save())
+    self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped(_:)))
+    let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
+    self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
     self.onePasswordButton.addTarget(self,
                                      action: #selector(self.onePasswordButtonTapped),
@@ -83,11 +95,6 @@ internal final class ChangeEmailViewController: UIViewController {
         Strings.login_placeholder_email()
     }
 
-    _ = saveBarButton
-      |> UIBarButtonItem.lens.isEnabled %~ { _ in
-        false
-    }
-
     _ = passwordLabel
       |> settingsTitleLabelStyle
 
@@ -106,12 +113,27 @@ internal final class ChangeEmailViewController: UIViewController {
     super.bindViewModel()
 
     self.resendVerificationStackView.rac.hidden = self.viewModel.outputs.resendVerificationStackViewIsHidden
-    self.saveBarButton.rac.enabled = self.viewModel.outputs.saveButtonIsEnabled
     self.currentEmail.rac.text = self.viewModel.outputs.emailText
 
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
 
     self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
+
+    self.viewModel.outputs.activityIndicatorShouldShow
+      .observeForUI()
+      .observeValues { shouldShow in
+        if shouldShow {
+          self.saveButtonView.startAnimating()
+        } else {
+          self.saveButtonView.stopAnimating()
+        }
+    }
+
+    self.viewModel.outputs.saveButtonIsEnabled
+      .observeForUI()
+      .observeValues { isEnabled in
+        self.saveButtonView.setIsEnabled(isEnabled: isEnabled)
+    }
 
     self.viewModel.outputs.onePasswordFindLoginForURLString
       .observeForControllerAction()

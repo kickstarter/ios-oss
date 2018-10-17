@@ -57,7 +57,7 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
-  fileprivate let fetchGraphUserEmailResponse: GraphUser?
+  fileprivate let fetchGraphUserEmailResponse: GraphUserEmail?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
   fileprivate let addAttachmentError: ErrorEnvelope?
@@ -191,7 +191,7 @@ internal struct MockService: ServiceType {
                 exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
-                fetchGraphUserEmailResponse: GraphUser? = nil,
+                fetchGraphUserEmailResponse: GraphUserEmail? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
                 addAttachmentError: ErrorEnvelope? = nil,
                 removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -589,8 +589,8 @@ internal struct MockService: ServiceType {
   }
 
   internal func fetchGraphUserEmail(query: NonEmptySet<Query>)
-    -> SignalProducer<GraphUser, GraphError> {
-      return SignalProducer(value: fetchGraphUserEmailResponse ?? GraphUser(email: "kick@starter.com"))
+    -> SignalProducer<GraphUserEmail, GraphError> {
+      return SignalProducer(value: fetchGraphUserEmailResponse ?? GraphUserEmail(email: "kick@starter.com"))
   }
 
   internal func fetchGraphCurrency(query: NonEmptySet<Query>)
