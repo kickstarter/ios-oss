@@ -186,7 +186,7 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     let projectAndNeedsConversion = project.map { project -> (Project, Bool) in
       (
         project,
-        AppEnvironment.current.config?.countryCode == "US" && project.country != .us
+        project.stats.currency != project.stats.currentCurrency
       )
     }
 
@@ -205,21 +205,11 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.locationNameLabelText = project.map { $0.location.displayableName }
 
     self.pledgedTitleLabelText = projectAndNeedsConversion.map { project, needsConversion in
-      needsConversion
-        ? Format.currency(project.stats.pledgedUsd, country: .us)
-        : Format.currency(project.stats.pledged, country: project.country)
+      return pledgedText(for: project, needsConversion)
     }
 
     self.pledgedSubtitleLabelText = projectAndNeedsConversion.map { project, needsConversion in
-      guard needsConversion else {
-        return Strings.activity_project_state_change_pledged_of_goal(
-          goal: Format.currency(project.stats.goal, country: project.country)
-        )
-      }
-
-      return Strings.activity_project_state_change_pledged_of_goal(
-        goal: Format.currency(project.stats.goalUsd, country: .us)
-      )
+      return goalText(for: project, needsConversion)
     }
 
     self.statsStackViewAccessibilityLabel = projectAndNeedsConversion
@@ -353,6 +343,39 @@ private func fundingStatus(forProject project: Project) -> String {
     return ""
   }
  }
+
+private func goalText(for project: Project, _ needsConversion: Bool) -> String {
+  if needsConversion {
+    if let goalCurrentCurrency = project.stats.goalCurrentCurrency,
+        let currentCountry = project.stats.currentCountry {
+      return Strings
+        .activity_project_state_change_pledged_of_goal(goal: Format.currency(goalCurrentCurrency,
+                                                                             country: currentCountry))
+    } else {
+      return Strings
+        .activity_project_state_change_pledged_of_goal(goal: Format.currency(project.stats.goalUsd,
+                                                                             country: .us))
+    }
+  } else {
+    return Strings.activity_project_state_change_pledged_of_goal(
+      goal: Format.currency(project.stats.goal, country: project.country))
+  }
+}
+
+private func pledgedText(for project: Project, _ needsConversion: Bool) -> String {
+  if needsConversion {
+    if let pledgedCurrentCurrency = project.stats.pledgedCurrentCurrency,
+        let currentCountry = project.stats.currentCountry {
+      return Format.currency(pledgedCurrentCurrency,
+                      country: currentCountry)
+    } else {
+      // Default to USD
+      return Format.currency(project.stats.pledgedUsd, country: .us)
+    }
+  } else {
+    return Format.currency(project.stats.pledged, country: project.country)
+  }
+}
 
 private func progressColor(forProject project: Project) -> UIColor {
   switch project.state {

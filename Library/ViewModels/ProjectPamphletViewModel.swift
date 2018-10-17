@@ -63,15 +63,15 @@ ProjectPamphletViewModelOutputs {
   public var fetchUserError: Signal<GraphError, NoError>
 
   public init() {
-    let fetchedUser = self.viewDidLoadProperty.signal
+    let fetchedCurrency = self.viewDidLoadProperty.signal
       .switchMap { _ in
         return AppEnvironment.current.apiService
           .fetchGraphCurrency(query: UserQueries.chosenCurrency.query)
           .materialize()
       }
 
-    self.fetchedUser = fetchedUser.values().map { $0.me }
-    self.fetchUserError = fetchedUser.errors()
+    self.fetchedUser = fetchedCurrency.values().map { $0.me }
+    self.fetchUserError = fetchedCurrency.errors()
 
     let freshProjectAndLiveStreamsAndRefTag = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(

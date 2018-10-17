@@ -37,6 +37,7 @@ extension Project {
     stats: Project.Stats(
       backersCount: 10,
       commentsCount: 10,
+      currency: "USD",
       currentCurrency: "USD",
       currentCurrencyRate: 1.5,
       goal: 2_000,
