@@ -38,11 +38,7 @@ internal final class ChangeEmailViewController: UIViewController {
 
     self.messageBannerView = messageBannerView
 
-    guard let saveButtonView = LoadingBarButtonItemView.fromNib(nib: Nib.LoadingBarButtonItemView) else {
-      fatalError("failed to load LoadingBarButtonItemView from Nib")
-    }
-
-    self.saveButtonView = saveButtonView
+    self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
     self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped(_:)))
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
