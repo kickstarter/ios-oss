@@ -54,9 +54,7 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   public func track(event: String, properties: [String: Any]) {
-    #if DEBUG
-      NSLog("[Koala Track]: \(event), properties: \(properties)")
-    #endif
+    print("🐨 [Koala Track]: \(event), properties: \(properties)")
 
     self.queue.async {
       BITHockeyManager.shared().metricsManager.trackEvent(withName: event)
@@ -120,11 +118,9 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   fileprivate func koalaURL(_ dataString: String) -> URL? {
-    #if DEBUG
-      if dataString.count >= 10_000 {
-        print("[Koala Error] Base64 payload is longer than 10,000 characters.")
-      }
-    #endif
+    if dataString.count >= 10_000 {
+      print("🐨 [Koala Error]: Base64 payload is longer than 10,000 characters.")
+    }
     return URL(string: "\(self.endpoint.base)?data=\(dataString)")
   }
 
@@ -142,9 +138,8 @@ public final class KoalaTrackingClient: TrackingClientType {
       defer { semaphore.signal() }
 
       if let httpResponse = response as? HTTPURLResponse {
-        #if DEBUG
-          NSLog("[Koala Status Code]: \(httpResponse.statusCode)")
-        #endif
+        print("🐨 [Koala Status Code]: \(httpResponse.statusCode)")
+
         result = httpResponse
       }
 
