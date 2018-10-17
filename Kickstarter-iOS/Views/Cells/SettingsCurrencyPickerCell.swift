@@ -68,9 +68,7 @@ extension SettingsCurrencyPickerCell: UIPickerViewDelegate {
   }
 
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//    guard let selectedCurrency = Currency(rawValue: row) else {
-//      return
-//    }
-//    self.viewModel.inputs.didSelectCurrency(currency: selectedCurrency)
+    let selectedCurrency = Currency.allCases[row]
+    self.viewModel.inputs.didSelectCurrency(currency: selectedCurrency)
   }
 }

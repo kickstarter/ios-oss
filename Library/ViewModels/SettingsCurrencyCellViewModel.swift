@@ -34,7 +34,8 @@ SettingsCurrencyCellViewModelInputs, SettingsCurrencyCellViewModelOutputs {
 
     self.fetchedCurrency = fetchedCurrency.values().map { $0.me }
 
-    self.chosenCurrencyText = fetchedCurrency.values().map { Currency(rawValue: $0.me.chosenCurrency ?? "")?.descriptionText ?? "" }
+    self.chosenCurrencyText = fetchedCurrency.values().map {
+      Currency(rawValue: $0.me.chosenCurrency ?? "")?.descriptionText ?? "" }
 
     self.fetchUserError = fetchedCurrency.errors()
   }

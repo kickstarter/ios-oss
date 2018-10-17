@@ -20,7 +20,7 @@ public enum Currency: String {
   public static var rowHeight: CGFloat {
     return Styles.grid(7)
   }
-  
+
   public static var allCases: [Currency] = [.EUR,
                                             .AUD,
                                             .CAD,
