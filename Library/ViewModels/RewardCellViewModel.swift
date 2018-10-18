@@ -66,7 +66,7 @@ RewardCellViewModelOutputs {
       .filter(first >>> needsConversion(project:))
       .map { project, rewardOrBacking in
         let (country, rate) = zip(
-          project.stats.currentCurrency.flatMap(Project.Country.init(currencyCode:)),
+          project.stats.currentCountry,
           project.stats.currentCurrencyRate
         ) ?? (.us, project.stats.staticUsdRate)
         switch rewardOrBacking {
@@ -307,20 +307,11 @@ private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> U
 }
 
 private func needsConversion(project: Project) -> Bool {
-  guard let currentCurrency = project.stats.currentCurrency else {
-    return needsConversion(projectCountry: project.country,
-                           userCountry: AppEnvironment.current.config?.countryCode)
-  }
-  return currentCurrency == AppEnvironment.current.apiService.currency
-    && needsConversion(projectCountry: project.country, currentCurrency: currentCurrency)
+  return needsConversion(projectCurrency: project.stats.currency, currentCurrency: project.stats.currentCurrency)
 }
 
-private func needsConversion(projectCountry: Project.Country, userCountry: String?) -> Bool {
-  return userCountry == "US" && projectCountry != .us
-}
-
-private func needsConversion(projectCountry: Project.Country, currentCurrency: String) -> Bool {
-  return projectCountry.currencyCode != currentCurrency
+private func needsConversion(projectCurrency: String, currentCurrency: String) -> Bool {
+  return projectCurrency != currentCurrency
 }
 
 private func backingReward(fromProject project: Project) -> Reward? {

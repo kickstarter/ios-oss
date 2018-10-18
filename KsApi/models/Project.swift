@@ -53,8 +53,8 @@ public struct Project {
   public struct Stats {
     public private(set) var backersCount: Int
     public private(set) var commentsCount: Int?
-    public private(set) var currency: String?
-    public private(set) var currentCurrency: String?
+    public private(set) var currency: String
+    public private(set) var currentCurrency: String
     public private(set) var currentCurrencyRate: Float?
     public private(set) var goal: Int
     public private(set) var pledged: Int
@@ -94,10 +94,6 @@ public struct Project {
 
     /// Country determined by current currency.
     public var currentCountry: Project.Country? {
-      guard let currentCurrency = self.currentCurrency else {
-        return nil
-      }
-
       return Project.Country(currencyCode: currentCurrency)
     }
   }
@@ -214,7 +210,7 @@ extension Project.Stats: Argo.Decodable {
     let tmp1 = curry(Project.Stats.init)
       <^> json <| "backers_count"
       <*> json <|? "comments_count"
-      <*> json <|? "currency"
+      <*> json <| "currency"
       <*> (json <| "current_currency" <|> .success("USD"))
       <*> json <|? "fx_rate"
     return tmp1
