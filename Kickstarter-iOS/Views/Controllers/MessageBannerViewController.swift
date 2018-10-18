@@ -87,7 +87,7 @@ final class MessageBannerViewController: UIViewController {
     })
   }
 
-  @IBAction func bannerViewPanned(_ sender: UIPanGestureRecognizer) {
+  @IBAction private func bannerViewPanned(_ sender: UIPanGestureRecognizer) {
     guard let bannerView = sender.view else {
       return
     }
@@ -116,7 +116,7 @@ final class MessageBannerViewController: UIViewController {
     }
   }
 
-  @IBAction func bannerViewTapped(_ sender: Any) {
+  @IBAction private func bannerViewTapped(_ sender: Any) {
     self.viewModel.inputs.showBannerView(shouldShow: false)
   }
 }

@@ -8,6 +8,14 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
 
   private let viewModel: LoadingBarButtonItemViewModelType = LoadingBarButtonItemViewModel()
 
+  public static func instantiate() -> LoadingBarButtonItemView {
+    guard let saveButtonView = LoadingBarButtonItemView.fromNib(nib: Nib.LoadingBarButtonItemView) else {
+      fatalError("failed to load LoadingBarButtonItemView from Nib")
+    }
+
+    return saveButtonView
+  }
+
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }

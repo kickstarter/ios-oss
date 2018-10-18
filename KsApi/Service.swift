@@ -66,6 +66,16 @@ public struct Service: ServiceType {
       return request(Route.addVideo(fileUrl: fileURL, toDraft: draft))
   }
 
+  public func changeEmail(input: ChangeEmailInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return applyMutation(mutation: UpdateUserAccountMutation(input: input))
+  }
+
+  public func changePassword(input: ChangePasswordInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return applyMutation(mutation: UpdateUserAccountMutation(input: input))
+  }
+
   public func changePaymentMethod(project: Project)
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
 
@@ -205,7 +215,12 @@ public struct Service: ServiceType {
 
   public func fetchGraphCurrency(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserCurrency>, GraphError> {
-    return fetch(query: query)
+      return fetch(query: query)
+  }
+
+  public func fetchGraphUserEmail(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphUserEmail>, GraphError> {
+      return fetch(query: query)
   }
 
   public func fetchMessageThread(messageThreadId: Int)
