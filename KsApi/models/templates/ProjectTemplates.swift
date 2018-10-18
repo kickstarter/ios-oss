@@ -34,17 +34,7 @@ extension Project {
     slug: "a-fun-project",
     staffPick: false,
     state: .live,
-    stats: Project.Stats(
-      backersCount: 10,
-      commentsCount: 10,
-      currency: "USD",
-      currentCurrency: "USD",
-      currentCurrencyRate: 1.5,
-      goal: 2_000,
-      pledged: 1_000,
-      staticUsdRate: 1.0,
-      updatesCount: 1
-    ),
+    stats: Project.Stats.template,
     urls: Project.UrlsEnvelope(
       web: Project.UrlsEnvelope.WebEnvelope(
         project: "https://www.kickstarter.com/projects/creator/a-fun-project",

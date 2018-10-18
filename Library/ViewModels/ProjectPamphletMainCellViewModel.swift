@@ -366,8 +366,7 @@ private func pledgedText(for project: Project, _ needsConversion: Bool) -> Strin
   if needsConversion {
     if let pledgedCurrentCurrency = project.stats.pledgedCurrentCurrency,
         let currentCountry = project.stats.currentCountry {
-      return Format.currency(pledgedCurrentCurrency,
-                      country: currentCountry)
+      return Format.currency(pledgedCurrentCurrency, country: currentCountry)
     } else {
       // Default to USD
       return Format.currency(project.stats.pledgedUsd, country: .us)

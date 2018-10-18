@@ -307,7 +307,8 @@ private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> U
 }
 
 private func needsConversion(project: Project) -> Bool {
-  return needsConversion(projectCurrency: project.stats.currency, currentCurrency: project.stats.currentCurrency)
+  return needsConversion(projectCurrency: project.stats.currency,
+                         currentCurrency: project.stats.currentCurrency)
 }
 
 private func needsConversion(projectCurrency: String, currentCurrency: String) -> Bool {

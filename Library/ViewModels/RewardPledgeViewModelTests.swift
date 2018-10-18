@@ -221,7 +221,6 @@ internal final class RewardPledgeViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template
       |> Reward.lens.minimum .~ 1_000

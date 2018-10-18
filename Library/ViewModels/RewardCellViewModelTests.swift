@@ -184,7 +184,6 @@ final class RewardCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .ca
       |> Project.lens.stats.staticUsdRate .~ 0.76
-      |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1
 
@@ -223,7 +222,6 @@ final class RewardCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .ca
       |> Project.lens.stats.staticUsdRate .~ 0.76
-      |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1
     let backing = .template
@@ -256,7 +254,6 @@ final class RewardCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
