@@ -1026,6 +1026,7 @@
 		D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */; };
 		D775EC3020812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */; };
 		D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */; };
+		D77743732177E3F9008D679F /* ChangeCurrencyInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77743722177E3F9008D679F /* ChangeCurrencyInput.swift */; };
 		D796867C20FE655300E54C61 /* SettingsFollowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */; };
 		D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */; };
 		D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */; };
@@ -2702,6 +2703,7 @@
 		D76E9BEE2174EF580049F64E /* SettingsCurrencyCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCurrencyCellViewModel.swift; sourceTree = "<group>"; };
 		D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift; sourceTree = "<group>"; };
 		D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift; sourceTree = "<group>"; };
+		D77743722177E3F9008D679F /* ChangeCurrencyInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCurrencyInput.swift; sourceTree = "<group>"; };
 		D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossDissolveTransitionAnimator.swift; sourceTree = "<group>"; };
 		D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFollowCellViewModel.swift; sourceTree = "<group>"; };
 		D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDataSource.swift; sourceTree = "<group>"; };
@@ -4107,6 +4109,7 @@
 				D01587801EEB2ED6006E7684 /* CategoryTests.swift */,
 				D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */,
 				775DFAD82162A43F00620CED /* ChangePasswordInput.swift */,
+				D77743722177E3F9008D679F /* ChangeCurrencyInput.swift */,
 				D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */,
 				D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */,
 				D01587831EEB2ED6006E7684 /* CheckoutEnvelope.swift */,
@@ -6207,6 +6210,7 @@
 				D0158A2F1EEB30A2006E7684 /* User.MemberDataTemplates.swift in Sources */,
 				D015883D1EEB2ED7006E7684 /* Route.swift in Sources */,
 				D0158A2B1EEB30A2006E7684 /* UpdateDraftTemplates.swift in Sources */,
+				D77743732177E3F9008D679F /* ChangeCurrencyInput.swift in Sources */,
 				D015888F1EEB2ED7006E7684 /* CreatePledgeEnvelopeLenses.swift in Sources */,
 				D0158A531EEB3734006E7684 /* Secrets.swift in Sources */,
 				D01588A71EEB2ED7006E7684 /* Project.MemberDataLenses.swift in Sources */,

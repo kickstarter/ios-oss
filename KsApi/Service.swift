@@ -72,6 +72,11 @@ public struct Service: ServiceType {
       return request(.changePaymentMethod(project: project))
   }
 
+  public func changeCurrency(input: ChangeCurrencyInput) ->
+   SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return applyMutation(mutation: ChangeCurrencyMutation(input: input))
+  }
+
   public func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
       return applyMutation(mutation: ChangePasswordMutation(input: input))

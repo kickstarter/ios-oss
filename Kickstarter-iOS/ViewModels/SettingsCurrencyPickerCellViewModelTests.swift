@@ -18,7 +18,7 @@ internal final class SettingsCurrencyPickerCellViewModelTests: TestCase {
   }
 
   func testNotifyCurrencyPickerCellRemoveAndUpdateText() {
-    self.vm.inputs.didSelectCurrency(currency: Currency.usDollar)
+    self.vm.inputs.didSelectCurrency(currency: Currency.USD)
     self.notifyCurrencyPickerCellRemoved.assertValueCount(1)
   }
 }

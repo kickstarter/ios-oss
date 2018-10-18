@@ -1,7 +1,7 @@
 import UIKit
 import KsApi
 
-public enum Currency: String {
+public enum Currency: String, Encodable {
   case EUR
   case AUD
   case CAD

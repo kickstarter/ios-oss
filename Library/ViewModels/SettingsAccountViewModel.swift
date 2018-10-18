@@ -1,8 +1,8 @@
+import KsApi
+import Library
 import Prelude
 import ReactiveSwift
 import Result
-import KsApi
-import Library
 
 public protocol SettingsAccountViewModelInputs {
   func didConfirmChangeCurrency(currency: Currency)
@@ -16,7 +16,8 @@ public protocol SettingsAccountViewModelOutputs {
   var reloadData: Signal<User, NoError> { get }
   var presentCurrencyPicker: Signal<Bool, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
-  var updateCurrency: Signal<Currency, NoError> { get }
+  var updateCurrency: Signal<String, NoError> { get }
+  var updateCurrencyFailure: Signal<String, NoError> { get }
 }
 
 public protocol SettingsAccountViewModelType {
@@ -43,7 +44,20 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .skipNil()
       .filter { $0 == .currency }
 
-    self.updateCurrency = self.didConfirmChangeCurrencyProperty.signal.skipNil()
+    let updateCurrencyEvent = self.didConfirmChangeCurrencyProperty.signal.skipNil()
+      .map { ChangeCurrencyInput(chosenCurrency: $0.rawValue) }
+      .switchMap {
+        AppEnvironment.current.apiService.changeCurrency(input: $0)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
+
+    self.updateCurrencyFailure = updateCurrencyEvent.errors().map
+      { $0.localizedDescription }
+
+    self.updateCurrency = updateCurrencyEvent.values().map { _ in
+      ""
+    }
 
     self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true)
 
@@ -78,7 +92,8 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public let reloadData: Signal<User, NoError>
   public let presentCurrencyPicker: Signal<Bool, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
-  public let updateCurrency: Signal<Currency, NoError>
+  public let updateCurrency: Signal<String, NoError>
+  public var updateCurrencyFailure: Signal<String, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }

@@ -25,6 +25,8 @@ SettingsCurrencyCellViewModelInputs, SettingsCurrencyCellViewModelOutputs {
   public init() {
     let initialUser = self.initialUserProperty.signal.skipNil()
 
+    let emptyStringOnLoad = initialUser.signal.mapConst("")
+
     let fetchedCurrency = initialUser.signal
       .switchMap { _ in
         return AppEnvironment.current.apiService
@@ -34,8 +36,13 @@ SettingsCurrencyCellViewModelInputs, SettingsCurrencyCellViewModelOutputs {
 
     self.fetchedCurrency = fetchedCurrency.values().map { $0.me }
 
-    self.chosenCurrencyText = fetchedCurrency.values().map {
+    let chosenCurrency = fetchedCurrency.values().map {
       Currency(rawValue: $0.me.chosenCurrency ?? "")?.descriptionText ?? "" }
+
+    self.chosenCurrencyText = Signal.merge(
+      emptyStringOnLoad,
+      chosenCurrency
+    )
 
     self.fetchUserError = fetchedCurrency.errors()
   }
