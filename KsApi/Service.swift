@@ -83,13 +83,8 @@ public struct Service: ServiceType {
   }
 
   public func changeCurrency(input: ChangeCurrencyInput) ->
-   SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      return applyMutation(mutation: ChangeCurrencyMutation(input: input))
-  }
-
-  public func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      return applyMutation(mutation: ChangePasswordMutation(input: input))
+      return applyMutation(mutation: ChangeCurrencyMutation(input: input))
   }
 
   public func createPledge(project: Project,
