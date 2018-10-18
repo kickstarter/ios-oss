@@ -42,6 +42,9 @@ public protocol ServiceType {
   func addVideo(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Video, ErrorEnvelope>
 
+  func changeEmail(input: ChangeEmailInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+
   func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
@@ -113,6 +116,14 @@ public protocol ServiceType {
   /// Fetch Category objects using graphQL.
   func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError>
+
+  /// Fetch a User's preferred currency
+  func fetchGraphCurrency(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserCurrency>, GraphError>
+
+  /// Fetch User's email objects using graphQL.
+  func fetchGraphUserEmail(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphUserEmail>, GraphError>
 
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)

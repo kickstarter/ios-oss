@@ -10,6 +10,14 @@ import UIKit
 extension UIColor {
   public static var ksr_allColors: [String: [Int: UIColor]] {
     return [
+      "Apricot": [
+        600: .ksr_apricot_600
+      ],
+
+      "Cobalt": [
+        500: .ksr_cobalt_500
+      ],
+
       "Dark Grey": [
         400: .ksr_dark_grey_400,
         500: .ksr_dark_grey_500,
@@ -66,6 +74,16 @@ extension UIColor {
         500: .ksr_violet_500
       ]
     ]
+  }
+
+  /// 0xFFCBA9
+  public static var ksr_apricot_600: UIColor {
+    return .hex(0xFFCBA9)
+  }
+
+  /// 0x4C6CF8
+  public static var ksr_cobalt_500: UIColor {
+    return .hex(0x4C6CF8)
   }
 
   /// 0x9B9E9E
