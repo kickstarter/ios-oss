@@ -13,7 +13,7 @@ internal struct MockService: ServiceType {
   internal let buildVersion: String
 
   fileprivate let changeCurrencyError: GraphError?
-  
+
   fileprivate let changeEmailError: GraphError?
   fileprivate let changeEmailResponse: UserEnvelope<GraphUserEmail>?
 
