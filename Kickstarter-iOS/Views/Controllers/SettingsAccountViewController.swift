@@ -43,11 +43,11 @@ final class SettingsAccountViewController: UIViewController {
       .observeValues { [weak self] show in
         self?.showCurrencyPickerCell(show)
     }
-    
+
     self.viewModel.outputs.updateCurrencyFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-          self?.present(UIAlertController.genericError(errorMessage), 
+          self?.present(UIAlertController.genericError(errorMessage),
                         animated: true, completion: nil)
     }
 

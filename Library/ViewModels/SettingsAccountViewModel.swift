@@ -55,9 +55,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.updateCurrencyFailure = updateCurrencyEvent.errors().map
       { $0.localizedDescription }
 
-    self.updateCurrency = updateCurrencyEvent.values().map { _ in
-      ""
-    }
+    self.updateCurrency = updateCurrencyEvent.values().map { _ in "" }
 
     self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true)
 

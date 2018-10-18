@@ -11,7 +11,7 @@ internal struct MockService: ServiceType {
   internal let language: String
   internal let currency: String
   internal let buildVersion: String
-  
+
   fileprivate let changeCurrencyError: GraphError?
 
   fileprivate let changePasswordError: GraphError?
@@ -445,8 +445,8 @@ internal struct MockService: ServiceType {
         return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
       }
   }
-  
-  internal func changeCurrency(input: ChangeCurrencyInput) -> 
+
+  internal func changeCurrency(input: ChangeCurrencyInput) ->
    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
       if let error = self.changeCurrencyError {
         return SignalProducer(error: error)
