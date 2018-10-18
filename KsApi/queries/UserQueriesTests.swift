@@ -9,4 +9,11 @@ final class UserQueriesTests: XCTestCase {
     XCTAssertEqual("me { chosenCurrency }", query.description)
     XCTAssertEqual("{ me { chosenCurrency } }", Query.build(NonEmptySet(query)))
   }
+
+  func testUserEmailQuery() {
+    let query = Query.user(userEmailQueryFields())
+
+    XCTAssertEqual("me { email }", query.description)
+    XCTAssertEqual("{ me { email } }", Query.build(NonEmptySet(query)))
+  }
 }

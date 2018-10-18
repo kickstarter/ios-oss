@@ -32,11 +32,7 @@ final class ChangePasswordViewController: UIViewController {
 
     self.messageBannerView = messageViewController
 
-    guard let saveButtonView = LoadingBarButtonItemView.fromNib(nib: Nib.LoadingBarButtonItemView) else {
-      fatalError("failed to load LoadingBarButtonItemView from Nib")
-    }
-
-    self.saveButtonView = saveButtonView
+    self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
     self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped(_:)))
 
@@ -172,7 +168,7 @@ final class ChangePasswordViewController: UIViewController {
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
-        self?.handleKeyboardVisibilityDidChange(change)
+        self?.scrollView.handleKeyboardVisibilityDidChange(change)
     }
   }
 

@@ -12,6 +12,9 @@ internal struct MockService: ServiceType {
   internal let currency: String
   internal let buildVersion: String
 
+  fileprivate let changeEmailError: GraphError?
+  fileprivate let changeEmailResponse: UserEnvelope<GraphUserEmail>?
+
   fileprivate let changePasswordError: GraphError?
 
   fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
@@ -53,6 +56,8 @@ internal struct MockService: ServiceType {
 
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
+
+  fileprivate let fetchGraphUserEmailResponse: GraphUserEmail?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
   fileprivate let addAttachmentError: ErrorEnvelope?
@@ -158,6 +163,10 @@ internal struct MockService: ServiceType {
                 language: String = "en",
                 currency: String = "USD",
                 buildVersion: String = "1",
+                changeEmailError: GraphError? = nil,
+                changeEmailResponse: UserEnvelope<GraphUserEmail>? = UserEnvelope<GraphUserEmail>(
+                                                                       me: .template
+                                                                     ),
                 changePasswordError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
@@ -184,6 +193,7 @@ internal struct MockService: ServiceType {
                 exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
+                fetchGraphUserEmailResponse: GraphUserEmail? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
                 addAttachmentError: ErrorEnvelope? = nil,
                 removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -242,7 +252,11 @@ internal struct MockService: ServiceType {
     self.currency = currency
     self.buildVersion = buildVersion
 
+    self.changeEmailResponse = changeEmailResponse
+    self.changeEmailError = changeEmailError
+
     self.changePasswordError = changePasswordError
+
     self.changePaymentMethodResult = changePaymentMethodResult
     self.createPledgeResult = createPledgeResult
 
@@ -269,6 +283,8 @@ internal struct MockService: ServiceType {
         .documentary
       ]
     )
+
+    self.fetchGraphUserEmailResponse = fetchGraphUserEmailResponse
 
     self.fetchCheckoutResponse = fetchCheckoutResponse
     self.fetchCheckoutError = fetchCheckoutError
@@ -402,6 +418,16 @@ internal struct MockService: ServiceType {
     self.updateProjectNotificationError = updateProjectNotificationError
 
     self.updateUserSelfError = updateUserSelfError
+  }
+
+  internal func changeEmail(input: ChangeEmailInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+
+      if let error = self.changeEmailError {
+        return SignalProducer(error: error)
+      }
+
+      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
   }
 
   internal func createPledge(project: Project,
@@ -562,6 +588,11 @@ internal struct MockService: ServiceType {
   internal func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError> {
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
+  }
+
+  internal func fetchGraphUserEmail(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphUserEmail>, GraphError> {
+      return SignalProducer(value: changeEmailResponse ?? UserEnvelope<GraphUserEmail>(me: .template))
   }
 
   internal func fetchGraphCurrency(query: NonEmptySet<Query>)
