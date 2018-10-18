@@ -67,7 +67,7 @@ ChangeEmailViewModelOutputs {
           .materialize()
     }
 
-    self.emailText = userEmailEvent.values().map { $0.email }
+    self.emailText = userEmailEvent.values().map { $0.me.email }.skipNil()
 
     self.resendVerificationStackViewIsHidden = viewDidLoadProperty.signal.mapConst(true)
 

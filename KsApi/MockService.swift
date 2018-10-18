@@ -13,7 +13,7 @@ internal struct MockService: ServiceType {
   internal let buildVersion: String
 
   fileprivate let changeEmailError: GraphError?
-  fileprivate let changeEmailResponse: GraphMutationEmptyResponseEnvelope?
+  fileprivate let changeEmailResponse: UserEnvelope<GraphUserEmail>?
 
   fileprivate let changePasswordError: GraphError?
 
@@ -164,7 +164,9 @@ internal struct MockService: ServiceType {
                 currency: String = "USD",
                 buildVersion: String = "1",
                 changeEmailError: GraphError? = nil,
-                changeEmailResponse: GraphMutationEmptyResponseEnvelope? = nil,
+                changeEmailResponse: UserEnvelope<GraphUserEmail>? = UserEnvelope<GraphUserEmail>(
+                                                                       me: .template
+                                                                     ),
                 changePasswordError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
@@ -589,8 +591,8 @@ internal struct MockService: ServiceType {
   }
 
   internal func fetchGraphUserEmail(query: NonEmptySet<Query>)
-    -> SignalProducer<GraphUserEmail, GraphError> {
-      return SignalProducer(value: fetchGraphUserEmailResponse ?? GraphUserEmail(email: "kick@starter.com"))
+    -> SignalProducer<UserEnvelope<GraphUserEmail>, GraphError> {
+      return SignalProducer(value: changeEmailResponse ?? UserEnvelope<GraphUserEmail>(me: .template))
   }
 
   internal func fetchGraphCurrency(query: NonEmptySet<Query>)

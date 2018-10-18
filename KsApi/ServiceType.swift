@@ -123,7 +123,7 @@ public protocol ServiceType {
 
   /// Fetch User's email objects using graphQL.
   func fetchGraphUserEmail(query: NonEmptySet<Query>)
-    -> SignalProducer<GraphUserEmail, GraphError>
+    -> SignalProducer<UserEnvelope<GraphUserEmail>, GraphError>
 
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)

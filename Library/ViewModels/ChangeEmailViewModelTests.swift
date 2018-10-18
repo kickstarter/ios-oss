@@ -108,14 +108,14 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testEmailText_AfterFetchingUsersEmail() {
 
-    let response = GraphUserEmail(email: "ksr@ksr.com")
+    let response = UserEnvelope<GraphUserEmail>(me: .template)
 
-    withEnvironment(apiService: MockService(fetchGraphUserEmailResponse: response)) {
+    withEnvironment(apiService: MockService(changeEmailResponse: response)) {
 
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.emailText.assertValues(["ksr@ksr.com"])
+      self.emailText.assertValues(["ksr@kickstarter.com"])
     }
   }
 
@@ -130,9 +130,9 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testSaveButtonEnabledStatus() {
 
-    let response = GraphUserEmail(email: "ksr@kickstarter.com")
+    let response = UserEnvelope<GraphUserEmail>(me: .template)
 
-    withEnvironment(apiService: MockService(fetchGraphUserEmailResponse: response)) {
+    withEnvironment(apiService: MockService(changeEmailResponse: response)) {
 
       self.vm.inputs.viewDidLoad()
 
@@ -152,9 +152,9 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testSaveButtonEnablesAfter_OnePasswordPrefillsField() {
 
-    let response = GraphUserEmail(email: "ksr@kickstarter.com")
+    let response = UserEnvelope<GraphUserEmail>(me: .template)
 
-    withEnvironment(apiService: MockService(fetchGraphUserEmailResponse: response)) {
+    withEnvironment(apiService: MockService(changeEmailResponse: response)) {
 
       self.vm.inputs.viewDidLoad()
 

@@ -209,7 +209,7 @@ public struct Service: ServiceType {
   }
 
   public func fetchGraphUserEmail(query: NonEmptySet<Query>)
-    -> SignalProducer<GraphUserEmail, GraphError> {
+    -> SignalProducer<UserEnvelope<GraphUserEmail>, GraphError> {
       return fetch(query: query)
   }
 
