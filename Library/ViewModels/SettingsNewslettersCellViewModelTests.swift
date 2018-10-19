@@ -92,7 +92,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
     self.switchIsOn.assertValues([false])
 
     self.vm.inputs.newslettersSwitchTapped(on: true)
-    let user1 = User.template |> UserAttribute.newsletter(newsletter).lens .~ true
+    let user1 = User.template |> UserAttribute.newsletter(newsletter).keyPath .~ true
 
     self.vm.inputs.configureWith(value: user1)
 
@@ -100,7 +100,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
     XCTAssertEqual(["Subscribed To Newsletter"], self.trackingClient.events)
 
     self.vm.inputs.newslettersSwitchTapped(on: false)
-    let user2 = User.template |> UserAttribute.newsletter(newsletter).lens .~ false
+    let user2 = User.template |> UserAttribute.newsletter(newsletter).keyPath .~ false
 
     self.vm.inputs.configureWith(value: user2)
     self.switchIsOn.assertValues([false, true, false])

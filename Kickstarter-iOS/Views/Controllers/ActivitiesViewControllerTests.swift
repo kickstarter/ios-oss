@@ -5,10 +5,10 @@ import Prelude
 import Result
 import XCTest
 
-private let creator = .template |> \.avatar.small .~ ""
+private let creator = User.template |> \.avatar.small .~ ""
 private let survey = .template |> SurveyResponse.lens.project .~
   (.cosmicSurgery |> Project.lens.creator .~ creator)
-private let you = .template
+private let you = User.template
   |> \.avatar.small .~ ""
   |> \.id .~ 355
   |> \.name .~ "Gina B"

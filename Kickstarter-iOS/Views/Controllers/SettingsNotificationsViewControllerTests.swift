@@ -21,8 +21,8 @@ final class SettingsNotificationsViewControllerTests: TestCase {
 
   func testSettingsNotificationsViewController() {
     let currentUser = .template
-      |> UserAttribute.notification(.friendActivity).lens .~ true
-      |> UserAttribute.notification(.mobileFollower).lens .~ true
+      |> UserAttribute.notification(.friendActivity).keyPath .~ true
+      |> UserAttribute.notification(.mobileFollower).keyPath .~ true
       |> \.stats.backedProjectsCount .~ 1234
       |> \.stats.memberProjectsCount .~ 2
 
@@ -48,8 +48,8 @@ final class SettingsNotificationsViewControllerTests: TestCase {
 
   func testSettingsNotificationsViewController_isCreator() {
     let currentUser = .template
-      |> UserAttribute.notification(.pledgeActivity).lens .~ true
-      |> UserAttribute.notification(.creatorTips).lens .~ true
+      |> UserAttribute.notification(.pledgeActivity).keyPath .~ true
+      |> UserAttribute.notification(.creatorTips).keyPath .~ true
       |> \.stats.backedProjectsCount .~ 5
       |> \.stats.memberProjectsCount .~ 2
       |> \.stats.createdProjectsCount .~ 4

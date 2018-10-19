@@ -43,7 +43,7 @@ internal final class MessageDialogViewModelTests: TestCase {
     let backing = .template
         |> Backing.lens.backer .~ nil
     let name = "Blobber"
-    let backer = .template
+    let backer = User.template
       |> \.name .~ name
 
     withEnvironment(apiService: MockService(fetchUserResponse: backer)) {
@@ -155,7 +155,7 @@ internal final class MessageDialogViewModelTests: TestCase {
 
   func testPostingMessageToBacker() {
     let name = "Blobster"
-    let backer = .template
+    let backer = User.template
       |> \.name .~ name
     let backing = .template
       |> Backing.lens.backer .~ backer

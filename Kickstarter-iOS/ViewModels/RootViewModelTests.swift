@@ -241,8 +241,8 @@ final class RootViewModelTests: TestCase {
   }
 
   func testTabBarItemStyles() {
-    let user = .template |> \.avatar.small .~ "http://image.com/image"
-    let creator = .template
+    let user = User.template |> \.avatar.small .~ "http://image.com/image"
+    let creator = User.template
       |> \.stats.memberProjectsCount .~ 1
       |> \.avatar.small .~ "http://image.com/image2"
 

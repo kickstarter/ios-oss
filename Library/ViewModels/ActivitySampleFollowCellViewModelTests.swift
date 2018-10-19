@@ -21,7 +21,7 @@ internal final class ActivitySampleFollowCellViewModelTests: TestCase {
   }
 
   func testFriendFollowDataEmits() {
-    let user = .template
+    let user = User.template
       |> \.name .~ "Cool Person"
       |> \.avatar.medium .~ "http://coolpic.com/cool.png"
 

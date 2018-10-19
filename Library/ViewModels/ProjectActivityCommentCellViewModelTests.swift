@@ -12,7 +12,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   fileprivate let body = TestObserver<String, NoError>()
   fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
   fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
-  fileprivate let defaultUser = .template |> \.id .~ 9
+  fileprivate let defaultUser = User.template |> \.id .~ 9
   fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
   fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, Comment), NoError>()
   fileprivate let pledgeFooterIsHidden = TestObserver<Bool, NoError>()
@@ -36,7 +36,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
 
   func testAuthorImage() {
     let project = Project.template
-    let user = .template
+    let user = User.template
       |> \.avatar.medium .~ "http://coolpic.com/cool.jpg"
     let activity = .template
       |> Activity.lens.project .~ project
@@ -201,7 +201,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   }
 
   func testHideReplyAndPledgeInfoButtons_IfUserIsCreator() {
-    let creator = .template |> \.name .~ "Benny"
+    let creator = User.template |> \.name .~ "Benny"
     let project = .template |> Project.lens.creator .~ creator
     let activity = .template
       |> Activity.lens.category .~ .commentPost

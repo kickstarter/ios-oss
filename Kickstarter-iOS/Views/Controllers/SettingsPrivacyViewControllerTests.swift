@@ -20,7 +20,7 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
   }
 
   func testSocialOptedOut_And_DownloadDataCopy() {
-    let currentUser = .template
+    let currentUser = User.template
       |> \.social .~ false
     let exportData = ExportDataEnvelope.template
 
@@ -44,7 +44,7 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
   }
 
   func testSocialOptedIn_And_RequestDataCopy() {
-    let currentUser = .template
+    let currentUser = User.template
       |> \.social .~ true
 
     let exportData = .template

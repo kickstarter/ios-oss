@@ -20,15 +20,15 @@ internal final class MessageThreadViewControllerTests: TestCase {
   func testView() {
     let project = Project.template
 
-    let backer = .template
+    let backer = User.template
       |> \.avatar.large .~ ""
       |> \.avatar.medium .~ ""
       |> \.avatar.small .~ ""
 
-    let nativeSquadTheCreator = .template
+    let nativeSquadTheCreator = User.template
       |> \.name .~ "Native Squad"
 
-    let bobTheCreator = .template
+    let bobTheCreator = User.template
       |> \.name .~ "Bob"
 
     let unreadMessage = .template

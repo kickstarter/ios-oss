@@ -23,7 +23,7 @@ internal final class CommentsViewControllerTests: TestCase {
       |> \.avatar.medium .~ ""
       |> \.avatar.small .~ ""
 
-    let creator = .template
+    let creator = User.template
       |> \.id .~ 808
       |> \.name .~ "Native Squad"
 

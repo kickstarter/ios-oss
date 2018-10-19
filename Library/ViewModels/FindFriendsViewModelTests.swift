@@ -240,7 +240,7 @@ final class FindFriendsViewModelTests: TestCase {
 
   func testFollowAllFriendsFlow() {
     let friendsResponse = FindFriendsEnvelope.template
-    let user = .template
+    let user = User.template
       |> \.facebookConnected .~ true
 
     withEnvironment(apiService: MockService(fetchFriendsResponse: friendsResponse), currentUser: user) {

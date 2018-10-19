@@ -11,7 +11,7 @@ internal final class BackingViewControllerTests: TestCase {
   private let backing = Backing.template
     |> Backing.lens.pledgedAt .~ 1468527587.32843
   private let brando = User.brando |> \.avatar.small .~ ""
-  private let creator = .template |> \.id .~ 42
+  private let creator = User.template |> \.id .~ 42
 
   override func setUp() {
     super.setUp()

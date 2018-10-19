@@ -12,7 +12,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
   fileprivate let backerImage = TestObserver<String?, NoError>()
   fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
   fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
-  fileprivate let defaultUser = .template |> \.id .~ 90
+  fileprivate let defaultUser = User.template |> \.id .~ 90
   fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
   fileprivate let notifyDelegateGoToSendMessage = TestObserver<(Project, Backing), NoError>()
   fileprivate let pledgeAmount = TestObserver<String, NoError>()
@@ -49,7 +49,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
 
   func testBackerImage() {
     let project = Project.template
-    let user = .template
+    let user = User.template
       |> \.avatar.medium .~ "http://coolpic.com/cool.jpg"
     let activity = .template
       |> Activity.lens.category .~ .backing

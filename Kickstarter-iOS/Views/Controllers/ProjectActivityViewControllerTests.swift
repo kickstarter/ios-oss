@@ -76,7 +76,7 @@ private let project =
     |> Project.lens.photo.full .~ ""
 
 private let user =
-  .brando
+  User.brando
     |> \.avatar.large .~ ""
     |> \.avatar.medium .~ ""
     |> \.avatar.small .~ ""

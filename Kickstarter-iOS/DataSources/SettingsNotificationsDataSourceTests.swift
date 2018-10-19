@@ -32,8 +32,8 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
   func testLoadUser_isCreator_pledgeActivityEnabled() {
     let user = User.template
       |> \.stats.createdProjectsCount .~ 2
-      |> UserAttribute.notification(.pledgeActivity).lens .~ true
-      |> UserAttribute.notification(.creatorDigest).lens .~ true
+      |> UserAttribute.notification(.pledgeActivity).keyPath .~ true
+      |> UserAttribute.notification(.creatorDigest).keyPath .~ true
 
     dataSource.load(user: user)
 

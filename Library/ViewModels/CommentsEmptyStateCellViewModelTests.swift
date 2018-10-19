@@ -19,7 +19,7 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
   fileprivate let subtitleIsHidden = TestObserver<Bool, NoError>()
   fileprivate let subtitleText = TestObserver<String, NoError>()
 
-  fileprivate let creator = .template
+  fileprivate let creator = User.template
     |> \.name .~ "Fuzzy Wuzzy"
     |> \.id .~ 400
 

@@ -54,7 +54,7 @@ internal final class BackerDashboardViewModelTests: TestCase {
     let location = Location.template
       |> Location.lens.displayableName .~ "Siberia"
 
-    let user = .template
+    let user = User.template
       |> \.name .~ "Princess Vespa"
       |> \.location .~ location
       |> \.stats.backedProjectsCount .~ 45

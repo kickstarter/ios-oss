@@ -48,7 +48,7 @@ final class KoalaTests: TestCase {
 
   func testDefaultPropertiesWithLoggedInUser() {
     let client = MockTrackingClient()
-    let user = .template
+    let user = User.template
       |> \.stats.backedProjectsCount .~ 2
       |> \.stats.createdProjectsCount .~ 3
       |> \.stats.starredProjectsCount .~ 4

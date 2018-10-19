@@ -105,7 +105,7 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
   func testPrivateProfileToggled_updatesCurrentUser() {
     let updatedUser = User.template
-      |> UserAttribute.privacy(.showPublicProfile).lens .~ false
+      |> UserAttribute.privacy(.showPublicProfile).keyPath .~ false
     let mockService = MockService(fetchUserSelfResponse: User.template)
 
     withEnvironment(apiService: mockService) {

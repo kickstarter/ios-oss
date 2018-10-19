@@ -343,18 +343,18 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   }
 
   func testSocialData() {
-    let oneFriend = [.template |> \.name .~ "Milky"]
+    let oneFriend = [User.template |> \.name .~ "Milky"]
 
     let twoFriends = [
-      .template |> \.name .~ "Chad",
-      .template |> \.name .~ "Brad"
+      User.template |> \.name .~ "Chad",
+      User.template |> \.name .~ "Brad"
     ]
 
     let manyFriends = [
-      .template |> \.name .~ "Gayle",
-      .template |> \.name .~ "Eugene",
-      .template |> \.name .~ "Nancy",
-      .template |> \.name .~ "Phillis"
+      User.template |> \.name .~ "Gayle",
+      User.template |> \.name .~ "Eugene",
+      User.template |> \.name .~ "Nancy",
+      User.template |> \.name .~ "Phillis"
     ]
 
     let projectNoSocial = .template

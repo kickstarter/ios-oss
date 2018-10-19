@@ -34,7 +34,7 @@ final class CommentCellViewModelTest: TestCase {
   func testOutputs() {
     let comment = Comment.template
     let project = .template |> Project.lens.creator.id .~ 222
-    let viewer = .template |> \.id .~ 12345
+    let viewer = User.template |> \.id .~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
@@ -67,7 +67,7 @@ final class CommentCellViewModelTest: TestCase {
   func testPersonalizedLabels_ViewerIs_NotCreator_NotAuthor() {
     let comment = Comment.template
     let project = .template |> Project.lens.creator.id .~ 222
-    let viewer = .template |> \.id .~ 12345
+    let viewer = User.template |> \.id .~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 

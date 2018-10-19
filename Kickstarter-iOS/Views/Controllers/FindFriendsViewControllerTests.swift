@@ -44,10 +44,10 @@ internal final class FindFriendsViewControllerTests: TestCase {
   }
 
   func testView_ShowFriends() {
-    let currentUser = .template
+    let currentUser = User.template
       |> \.facebookConnected .~ true
 
-    let friendNoAvatar = .template
+    let friendNoAvatar = User.template
       |> \.avatar.medium .~ ""
 
     let friend1 = friendNoAvatar
