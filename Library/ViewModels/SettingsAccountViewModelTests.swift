@@ -13,7 +13,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   let dismissCurrencyPicker = TestObserver<Void, NoError>()
   let reloadData = TestObserver<User, NoError>()
   let presentCurrencyPicker = TestObserver<Bool, NoError>()
-  let updateCurrency = TestObserver<UserCurrency, NoError>()
+  let updateCurrency = TestObserver<String, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -52,6 +52,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.reloadData.assertValueCount(1)
     self.vm.inputs.didConfirmChangeCurrency(currency: .CHF)
     scheduler.advance()
-    self.updateCurrency.assertValues([currency])
+    self.updateCurrency.assertValues([""])
   }
 }

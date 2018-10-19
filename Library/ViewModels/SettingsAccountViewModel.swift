@@ -55,8 +55,9 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.updateCurrencyFailure = updateCurrencyEvent.errors()
       .map { $0.localizedDescription }
 
-    self.updateCurrency = updateCurrencyEvent.values().map { _ in "" }
-
+    self.updateCurrency = self.didConfirmChangeCurrencyProperty.signal.skipNil()
+      .map { $0.descriptionText }
+    
     self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true)
 
     self.dismissCurrencyPicker = self.dismissPickerTapProperty.signal
