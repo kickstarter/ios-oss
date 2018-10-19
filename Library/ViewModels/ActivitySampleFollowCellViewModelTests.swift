@@ -22,8 +22,8 @@ internal final class ActivitySampleFollowCellViewModelTests: TestCase {
 
   func testFriendFollowDataEmits() {
     let user = .template
-      |> User.lens.name .~ "Cool Person"
-      |> User.lens.avatar.medium .~ "http://coolpic.com/cool.png"
+      |> \.name .~ "Cool Person"
+      |> \.avatar.medium .~ "http://coolpic.com/cool.png"
 
     let activity = .template
       |> Activity.lens.category .~ .follow

@@ -21,15 +21,15 @@ internal final class MessageThreadViewControllerTests: TestCase {
     let project = Project.template
 
     let backer = .template
-      |> User.lens.avatar.large .~ ""
-      |> User.lens.avatar.medium .~ ""
-      |> User.lens.avatar.small .~ ""
+      |> \.avatar.large .~ ""
+      |> \.avatar.medium .~ ""
+      |> \.avatar.small .~ ""
 
     let nativeSquadTheCreator = .template
-      |> User.lens.name .~ "Native Squad"
+      |> \.name .~ "Native Squad"
 
     let bobTheCreator = .template
-      |> User.lens.name .~ "Bob"
+      |> \.name .~ "Bob"
 
     let unreadMessage = .template
       |> Message.lens.body .~ "Hello there. You have not read this message."

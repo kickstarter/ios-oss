@@ -28,7 +28,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
   func test_SubscribeToAll_Toggled() {
 
     let user = User.template
-      |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: true)
+      |> \.newsletters .~ User.NewsletterSubscriptions.all(on: true)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
@@ -39,7 +39,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
   func test_SubscribeToAll_Untoggled_IfAtLeastOneNewsletterIsUntoggled() {
 
     let user = User.template
-      |> User.lens.newsletters.arts .~ nil
+      |> \.newsletters.arts .~ nil
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
@@ -151,7 +151,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
 
       self.vm.inputs.newslettersSwitchTapped(on: true)
       let user1 = User.template
-        |> User.lens.newsletters.arts .~ true
+        |> \.newsletters.arts .~ true
 
       self.vm.inputs.configureWith(value: user1)
       self.switchIsOn.assertValues([false, true], "Newsletter immediately turned on on tap.")

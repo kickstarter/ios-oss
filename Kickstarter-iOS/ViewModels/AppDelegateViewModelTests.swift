@@ -1122,7 +1122,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testSetApplicationShortcutItems_LoggedInUser_NonMember() {
     let currentUser = .template
-      |> User.lens.stats.memberProjectsCount .~ 0
+      |> \.stats.memberProjectsCount .~ 0
 
     withEnvironment(apiService: MockService(fetchUserSelfResponse: currentUser), currentUser: currentUser) {
       self.setApplicationShortcutItems.assertValues([])
@@ -1141,7 +1141,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testSetApplicationShortcutItems_LoggedInUser_Member() {
     let currentUser = .template
-      |> User.lens.stats.memberProjectsCount .~ 2
+      |> \.stats.memberProjectsCount .~ 2
 
     withEnvironment(apiService: MockService(fetchUserSelfResponse: currentUser), currentUser: currentUser) {
       self.setApplicationShortcutItems.assertValues([])

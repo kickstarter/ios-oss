@@ -192,7 +192,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testManageProjectNotificationsButtonAccesibilityHint() {
-    let user = User.template |> User.lens.stats.backedProjectsCount .~ 5
+    let user = User.template |> \.stats.backedProjectsCount .~ 5
     let value = SettingsNotificationCellValue(cellType: .projectNotifications, user: user)
 
     self.vm.inputs.configure(with: value)
@@ -201,7 +201,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testProjectTextCount() {
-    let user = User.template |> User.lens.stats.backedProjectsCount .~ 5
+    let user = User.template |> \.stats.backedProjectsCount .~ 5
     let value = SettingsNotificationCellValue(cellType: .projectNotifications, user: user)
 
     self.vm.inputs.configure(with: value)

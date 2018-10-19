@@ -107,7 +107,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
               isLoadingFollowRequest.value = false
           })
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .mapConst(user |> User.lens.isFriend .~ true)
+          .mapConst(user |> \.isFriend .~ true)
           .materialize()
     }
 
@@ -123,7 +123,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
               isLoadingUnfollowRequest.value = false
           })
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .mapConst(user |> User.lens.isFriend .~ false)
+          .mapConst(user |> \.isFriend .~ false)
           .materialize()
     }
 
@@ -207,7 +207,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
 private func cached(friend: User) -> User {
   if let friendCache = AppEnvironment.current.cache[KSCache.ksr_findFriendsFollowing] as? [Int: Bool] {
     let isFriend = friendCache[friend.id] ?? friend.isFriend
-    return friend |> User.lens.isFriend .~ isFriend
+    return friend |> \.isFriend .~ isFriend
   } else {
     return friend
   }

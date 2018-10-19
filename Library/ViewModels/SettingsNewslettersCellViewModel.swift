@@ -58,7 +58,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
       .takePairWhen(self.allNewslettersSwitchProperty.signal.skipNil())
       .map { user, on in
         return user
-          |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: on)
+          |> \.newsletters .~ User.NewsletterSubscriptions.all(on: on)
     }
 
     let updateEvent = Signal.merge(updatedUser, updateUserAllOn)

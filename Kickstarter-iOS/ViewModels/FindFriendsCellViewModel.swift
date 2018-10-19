@@ -23,7 +23,7 @@ FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
   init() {
     let isFollowingEnabled = userProperty.signal
       .skipNil()
-      .map { $0 |> User.lens.social.view }
+      .map { $0 |> \.social.view }
       .skipNil()
 
     self.isDisabled = isFollowingEnabled.negate()

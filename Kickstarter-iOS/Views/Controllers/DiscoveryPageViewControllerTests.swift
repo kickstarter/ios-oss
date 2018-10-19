@@ -177,7 +177,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     |> Project.lens.photo.full .~ ""
 
   fileprivate let brandoNoAvatar = .brando
-    |> User.lens.avatar.medium .~ ""
+    |> \.avatar.medium .~ ""
 
   fileprivate let cosmicSurgeryNoPhoto = .cosmicSurgery
     |> Project.lens.id .~ 2222

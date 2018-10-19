@@ -170,7 +170,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
     let backing = Backing.template
     let currentUser = User.template
-      |> User.lens.id .~ 42
+      |> \.id .~ 42
     let messageThread = .template
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
@@ -199,7 +199,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> Project.lens.id .~ 42
     let backing = Backing.template
     let currentUser = User.template
-      |> User.lens.id .~ 42
+      |> \.id .~ 42
     let messageThread = .template
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
@@ -275,7 +275,7 @@ internal final class MessagesViewModelTests: TestCase {
     let project = .template
       |> Project.lens.id .~ 42
       |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.creator..User.lens.id .~ 20
+      |> Project.lens.creator..\.id .~ 20
     let backing = .template
       |> Backing.lens.backer .~ .template
 
@@ -297,7 +297,7 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testEmptyStateIsVisibleAndMessage_CurrentUserIsCreator() {
-    let creator = .template |> User.lens.id .~ 20
+    let creator = .template |> \.id .~ 20
     let project = .template
       |> Project.lens.id .~ 42
       |> Project.lens.creator .~ creator
@@ -321,9 +321,9 @@ internal final class MessagesViewModelTests: TestCase {
   }
 
   func testEmptyStateIsVisibleAndMessage_CurrentUserIsCollaboratorAndBacker() {
-    let collaborator = .template |> User.lens.id .~ 20
+    let collaborator = .template |> \.id .~ 20
     let project = .template
-      |> Project.lens.creator..User.lens.id .~ 40
+      |> Project.lens.creator..\.id .~ 40
       |> Project.lens.memberData.permissions .~ [.viewPledges]
     let backing = .template
       |> Backing.lens.backer .~ collaborator

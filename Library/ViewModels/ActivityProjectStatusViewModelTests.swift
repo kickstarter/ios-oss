@@ -42,8 +42,8 @@ internal final class ActivityProjectStatusViewModelTests: TestCase {
 
   func testProject_You_Launched() {
     let you = .template
-      |> User.lens.id .~ 4
-      |> User.lens.name .~ "Gina B"
+      |> \.id .~ 4
+      |> \.name .~ "Gina B"
 
     let project = .cosmicSurgery
       |> Project.lens.name .~ "A Very Important Project About Kittens and Puppies"
@@ -67,8 +67,8 @@ internal final class ActivityProjectStatusViewModelTests: TestCase {
 
   func testProject_Success() {
     let you = .template
-      |> User.lens.id .~ 4
-      |> User.lens.name .~ "Gina B"
+      |> \.id .~ 4
+      |> \.name .~ "Gina B"
 
     let project = .cosmicSurgery
       |> Project.lens.name .~ "A Very Important Project About Kittens and Puppies"

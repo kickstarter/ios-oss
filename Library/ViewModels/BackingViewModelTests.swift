@@ -62,8 +62,8 @@ internal final class BackingViewModelTests: TestCase {
 
   func testHeaderBackerInfo() {
     let user = .template
-      |> User.lens.name .~ "Stella"
-      |> User.lens.avatar.small .~ "http://www.image.com/lit.jpg"
+      |> \.name .~ "Stella"
+      |> \.avatar.small .~ "http://www.image.com/lit.jpg"
 
     let backing = .template
       |> Backing.lens.sequence .~ 5
@@ -100,7 +100,7 @@ internal final class BackingViewModelTests: TestCase {
   }
 
   func testBackerIsNil() {
-    withEnvironment(currentUser: .template |> User.lens.name .~ "Carla") {
+    withEnvironment(currentUser: .template |> \.name .~ "Carla") {
       self.vm.inputs.configureWith(project: .template, backer: nil)
 
       self.backerName.assertValueCount(0)
@@ -113,7 +113,7 @@ internal final class BackingViewModelTests: TestCase {
 
   func testPledgeInfo_BackerView() {
     let user = .template
-      |> User.lens.name .~ "Stella"
+      |> \.name .~ "Stella"
 
     let backing = .template
       |> Backing.lens.amount .~ 35
@@ -153,7 +153,7 @@ internal final class BackingViewModelTests: TestCase {
 
   func testPledgeInfo_CreatorView() {
     let creator = .template
-      |> User.lens.id .~ 12
+      |> \.id .~ 12
 
     let backing = .template
       |> Backing.lens.pledgedAt .~ 1468527587.32843
@@ -229,7 +229,7 @@ internal final class BackingViewModelTests: TestCase {
     calEST.timeZone = EST
 
     let creator = .template
-      |> User.lens.id .~ 12
+      |> \.id .~ 12
 
     let reward = .template
       |> Reward.lens.estimatedDeliveryOn .~ date
@@ -317,7 +317,7 @@ internal final class BackingViewModelTests: TestCase {
   }
 
   func testMarkReceivedSectionNotHidden_UserIsCollaboratorAndBacker() {
-    let backer = .template |> User.lens.id .~ 20
+    let backer = .template |> \.id .~ 20
 
     let backing = .template
       |> Backing.lens.status .~ .collected
@@ -342,8 +342,8 @@ internal final class BackingViewModelTests: TestCase {
   }
 
   func testMarkReceivedSectionHidden_UserIsCollaborator() {
-    let collaborator = .template |> User.lens.id .~ 20
-    let backer = .template |> User.lens.id .~ 10
+    let collaborator = .template |> \.id .~ 20
+    let backer = .template |> \.id .~ 10
     let backing = .template
       |> Backing.lens.backer .~ backer
 
@@ -363,7 +363,7 @@ internal final class BackingViewModelTests: TestCase {
   }
 
   func testRewardMarkedReceived() {
-    let backer = .template |> User.lens.id .~ 20
+    let backer = .template |> \.id .~ 20
     let backing = Backing.template
 
     withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: backer) {
@@ -451,7 +451,7 @@ internal final class BackingViewModelTests: TestCase {
 
   func testRootStackViewAxis() {
     let project = Project.template
-    let backer = .template |> User.lens.id .~ 20
+    let backer = .template |> \.id .~ 20
 
     withEnvironment(currentUser: backer, language: .de) {
       self.vm.inputs.configureWith(project: project, backer: backer)

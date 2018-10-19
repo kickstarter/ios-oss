@@ -343,18 +343,18 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   }
 
   func testSocialData() {
-    let oneFriend = [.template |> User.lens.name .~ "Milky"]
+    let oneFriend = [.template |> \.name .~ "Milky"]
 
     let twoFriends = [
-      .template |> User.lens.name .~ "Chad",
-      .template |> User.lens.name .~ "Brad"
+      .template |> \.name .~ "Chad",
+      .template |> \.name .~ "Brad"
     ]
 
     let manyFriends = [
-      .template |> User.lens.name .~ "Gayle",
-      .template |> User.lens.name .~ "Eugene",
-      .template |> User.lens.name .~ "Nancy",
-      .template |> User.lens.name .~ "Phillis"
+      .template |> \.name .~ "Gayle",
+      .template |> \.name .~ "Eugene",
+      .template |> \.name .~ "Nancy",
+      .template |> \.name .~ "Phillis"
     ]
 
     let projectNoSocial = .template
@@ -561,7 +561,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   func testShowNotificationDialogEmits_IfStarredProjectsCountIsZero() {
 
     let project = Project.template
-    let user = User.template |> User.lens.stats.starredProjectsCount .~ 0
+    let user = User.template |> \.stats.starredProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(project: project, category: nil)
@@ -575,7 +575,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   func testShowNotificationDialogDoesNotEmits_IfStarredProjectsCountIsNotZero() {
 
     let project = Project.template
-    let user = User.template |> User.lens.stats.starredProjectsCount .~ 3
+    let user = User.template |> \.stats.starredProjectsCount .~ 3
 
     withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(project: project, category: nil)

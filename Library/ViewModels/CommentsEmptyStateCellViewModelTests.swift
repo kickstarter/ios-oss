@@ -20,8 +20,8 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
   fileprivate let subtitleText = TestObserver<String, NoError>()
 
   fileprivate let creator = .template
-    |> User.lens.name .~ "Fuzzy Wuzzy"
-    |> User.lens.id .~ 400
+    |> \.name .~ "Fuzzy Wuzzy"
+    |> \.id .~ 400
 
   internal override func setUp() {
     super.setUp()

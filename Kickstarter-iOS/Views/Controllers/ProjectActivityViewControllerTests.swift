@@ -77,9 +77,9 @@ private let project =
 
 private let user =
   .brando
-    |> User.lens.avatar.large .~ ""
-    |> User.lens.avatar.medium .~ ""
-    |> User.lens.avatar.small .~ ""
+    |> \.avatar.large .~ ""
+    |> \.avatar.medium .~ ""
+    |> \.avatar.small .~ ""
 
 private let baseActivity =
   .template
