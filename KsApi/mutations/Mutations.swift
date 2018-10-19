@@ -17,5 +17,3 @@ public struct ChangePasswordMutation: GraphMutation {
     """
   }
 }
-
-
