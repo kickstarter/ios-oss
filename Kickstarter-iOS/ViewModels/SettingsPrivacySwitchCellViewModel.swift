@@ -24,7 +24,7 @@ SettingsPrivacySwitchCellViewModelInputs, SettingsPrivacySwitchCellViewModelOutp
   public init() {
     self.privacySwitchIsOn = userProperty.signal
       .skipNil()
-      .map { ($0 |> User.lens.showPublicProfile.view) ?? false }
+      .map { ($0 |> get(\User.showPublicProfile)) ?? false }
       .negate()
 
     self.privacySwitchToggledOn = switchToggledProperty.signal

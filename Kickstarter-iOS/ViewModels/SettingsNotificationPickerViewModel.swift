@@ -25,7 +25,7 @@ final class SettingsNotificationPickerViewModel: SettingsNotificationPickerViewM
 
     let userDefinedEmailFrequency = initialUser.signal
       .map { user in
-        user |> UserAttribute.notification(.creatorDigest).lens.view
+        user |> get(UserAttribute.notification(.creatorDigest).keyPath)
       }.skipNil()
       .map { creatorDigestEnabled in
         return creatorDigestEnabled ? EmailFrequency.daily : EmailFrequency.individualEmails

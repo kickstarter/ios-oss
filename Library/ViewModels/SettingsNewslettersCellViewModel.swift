@@ -50,7 +50,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
           let (attribute, on) = attributeAndOn
-          return user |> attribute.lens .~ on
+          return user |> attribute.keyPath .~ on
         }
     }
 
@@ -147,24 +147,5 @@ private func userIsSubscribedToAll(user: User) -> Bool? {
 
 private func userIsSubscribed(user: User, newsletter: Newsletter) -> Bool? {
 
-  switch newsletter {
-  case .arts:
-    return user.newsletters.arts
-  case .games:
-    return user.newsletters.games
-  case .happening:
-    return user.newsletters.happening
-  case .invent:
-    return user.newsletters.invent
-  case .promo:
-    return user.newsletters.promo
-  case .weekly:
-    return user.newsletters.weekly
-  case .films:
-    return user.newsletters.films
-  case .publishing:
-    return user.newsletters.publishing
-  case .alumni:
-    return user.newsletters.alumni
-  }
+  return user |> get(UserAttribute.newsletter(newsletter).keyPath)
 }

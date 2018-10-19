@@ -52,7 +52,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
           let (attribute, on) = attributeAndOn
-          return user |> attribute.lens .~ on
+          return user |> attribute.keyPath .~ on
         }
     }
 
@@ -90,7 +90,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal
-      .map { $0 |> UserAttribute.notification(.creatorDigest).lens.view }
+      .map { $0 |> get(UserAttribute.notification(.creatorDigest).keyPath) }
       .skipNil()
       .map { creatorDigest -> EmailFrequency in
         return creatorDigest ? EmailFrequency.daily : EmailFrequency.individualEmails
