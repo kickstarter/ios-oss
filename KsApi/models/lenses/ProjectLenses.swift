@@ -191,15 +191,15 @@ extension Project.UrlsEnvelope.WebEnvelope {
 
 extension Lens where Whole == Project, Part == User {
   public var avatar: Lens<Project, User.Avatar> {
-    return Project.lens.creator..\User.avatar
+    return Project.lens.creator..User.lens.avatar
   }
 
   public var id: Lens<Project, Int> {
-    return Project.lens.creator..\User.id
+    return Project.lens.creator..User.lens.id
   }
 
   public var name: Lens<Project, String> {
-    return Project.lens.creator..\User.name
+    return Project.lens.creator..User.lens.name
   }
 }
 

@@ -156,7 +156,7 @@ extension SettingsViewModel {
         return true
       }
 
-      return (user |> \.social.view) ?? true
+      return (user |> User.lens.social.view) ?? true
     default:
       return true
     }
