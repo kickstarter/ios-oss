@@ -45,13 +45,10 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testUpdateCurrency() {
-    let currency = UserCurrency
-      .template |> UserCurrency.lens.chosenCurrency .~ "CHF"
-
     self.vm.inputs.viewDidLoad()
     self.reloadData.assertValueCount(1)
     self.vm.inputs.didConfirmChangeCurrency(currency: .CHF)
     scheduler.advance()
-    self.updateCurrency.assertValues([""])
+    self.updateCurrency.assertValues([Strings.Currency_CHF()])
   }
 }
