@@ -54,7 +54,8 @@ internal final class AddNewCardViewController: UIViewController {
          self.securityCodeLabel, self.zipCodeLabel]
       ||> settingsTitleLabelStyle
 
-    _ = [self.cardNumberTextField, self.expirationTextField, self.securityCodeTextField, self.zipCodeTextField]
+    _ = [self.cardNumberTextField, self.expirationTextField, self.securityCodeTextField, 
+         self.zipCodeTextField]
       ||> UITextField.lens.keyboardType .~ .numberPad
   }
 
