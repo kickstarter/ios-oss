@@ -59,6 +59,7 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
+  fileprivate let fetchGraphCurrencyResponse: UserCurrency?
   fileprivate let fetchGraphUserEmailResponse: GraphUserEmail?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -197,6 +198,7 @@ internal struct MockService: ServiceType {
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
                 fetchGraphUserEmailResponse: GraphUserEmail? = nil,
+                fetchGraphCurrencyResponse: UserCurrency? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
                 addAttachmentError: ErrorEnvelope? = nil,
                 removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -288,6 +290,8 @@ internal struct MockService: ServiceType {
         .documentary
       ]
     )
+
+    self.fetchGraphCurrencyResponse = fetchGraphCurrencyResponse
 
     self.fetchGraphUserEmailResponse = fetchGraphUserEmailResponse
 

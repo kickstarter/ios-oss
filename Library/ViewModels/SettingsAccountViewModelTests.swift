@@ -14,6 +14,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   let reloadData = TestObserver<User, NoError>()
   let presentCurrencyPicker = TestObserver<Bool, NoError>()
   let updateCurrency = TestObserver<String, NoError>()
+  let updateCurrencyFailure = TestObserver<String, NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -21,6 +22,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.vm.outputs.reloadData.observe(self.reloadData.observer)
     self.vm.outputs.presentCurrencyPicker.observe(self.presentCurrencyPicker.observer)
     self.vm.outputs.updateCurrency.observe(self.updateCurrency.observer)
+    self.vm.outputs.updateCurrencyFailure.observe(self.updateCurrencyFailure.observer)
   }
 
   func testReloadData() {
@@ -48,7 +50,19 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.reloadData.assertValueCount(1)
     self.vm.inputs.didConfirmChangeCurrency(currency: .CHF)
-    scheduler.advance()
+    self.scheduler.advance()
     self.updateCurrency.assertValues([Strings.Currency_CHF()])
+  }
+
+  func testUpdateCurrencyFailure() {
+    let graphError = GraphError.emptyResponse(nil)
+
+    withEnvironment(apiService: MockService(changeCurrencyError: graphError)) {
+      self.vm.inputs.viewDidLoad()
+      self.reloadData.assertValueCount(1)
+      self.vm.inputs.didConfirmChangeCurrency(currency: .AUD)
+      self.scheduler.advance()
+      self.updateCurrencyFailure.assertDidEmitValue()
+    }
   }
 }

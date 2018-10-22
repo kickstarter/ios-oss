@@ -1032,6 +1032,7 @@
 		D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */; };
 		D777442F217A3382008D679F /* ChangeCurrencyInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D777442E217A3382008D679F /* ChangeCurrencyInput.swift */; };
 		D7774466217A345D008D679F /* UpdateUserProfileMutation .swift in Sources */ = {isa = PBXBuildFile; fileRef = D77743E2217A2D67008D679F /* UpdateUserProfileMutation .swift */; };
+		D77744C1217A47D5008D679F /* SettingsCurrencyCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7774483217A465D008D679F /* SettingsCurrencyCellViewModelTests.swift */; };
 		D796867C20FE655300E54C61 /* SettingsFollowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */; };
 		D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */; };
 		D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */; };
@@ -2715,6 +2716,7 @@
 		D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift; sourceTree = "<group>"; };
 		D77743E2217A2D67008D679F /* UpdateUserProfileMutation .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateUserProfileMutation .swift"; sourceTree = "<group>"; };
 		D777442E217A3382008D679F /* ChangeCurrencyInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCurrencyInput.swift; sourceTree = "<group>"; };
+		D7774483217A465D008D679F /* SettingsCurrencyCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCurrencyCellViewModelTests.swift; sourceTree = "<group>"; };
 		D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossDissolveTransitionAnimator.swift; sourceTree = "<group>"; };
 		D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFollowCellViewModel.swift; sourceTree = "<group>"; };
 		D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDataSource.swift; sourceTree = "<group>"; };
@@ -4019,6 +4021,7 @@
 				D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */,
 				D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */,
 				D76E9BEE2174EF580049F64E /* SettingsCurrencyCellViewModel.swift */,
+				D7774483217A465D008D679F /* SettingsCurrencyCellViewModelTests.swift */,
 				D79F0F7421068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift */,
 				D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */,
 				D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */,
@@ -5699,6 +5702,7 @@
 				A7ED1FFF1E831C5C00BFFA01 /* RewardShippingPickerViewModelTests.swift in Sources */,
 				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
 				A7ED1FDC1E831C5C00BFFA01 /* DashboardVideoCellViewModelTests.swift in Sources */,
+				D77744C1217A47D5008D679F /* SettingsCurrencyCellViewModelTests.swift in Sources */,
 				A7ED1F2C1E830FDC00BFFA01 /* KSCacheTests.swift in Sources */,
 				D7237096211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift in Sources */,
 				A7ED1FCF1E831C5C00BFFA01 /* CheckoutRacingViewModelTests.swift in Sources */,

@@ -9,9 +9,7 @@ public protocol SettingsCurrencyCellViewModelInputs {
 }
 
 public protocol SettingsCurrencyCellViewModelOutputs {
-  var fetchedCurrency: Signal<UserCurrency, NoError> { get }
   var chosenCurrencyText: Signal<String, NoError> { get }
-  var fetchUserError: Signal<GraphError, NoError> { get }
 }
 
 public protocol SettingsCurrencyCellViewModelType {
@@ -34,8 +32,6 @@ SettingsCurrencyCellViewModelInputs, SettingsCurrencyCellViewModelOutputs {
           .materialize()
       }
 
-    self.fetchedCurrency = fetchedCurrency.values().map { $0.me }
-
     let chosenCurrency = fetchedCurrency.values().map {
       Currency(rawValue: $0.me.chosenCurrency ?? "")?.descriptionText ?? "" }
 
@@ -43,8 +39,6 @@ SettingsCurrencyCellViewModelInputs, SettingsCurrencyCellViewModelOutputs {
       emptyStringOnLoad,
       chosenCurrency
     )
-
-    self.fetchUserError = fetchedCurrency.errors()
   }
 
   fileprivate let initialUserProperty = MutableProperty<User?>(nil)
@@ -52,8 +46,6 @@ SettingsCurrencyCellViewModelInputs, SettingsCurrencyCellViewModelOutputs {
     self.initialUserProperty.value = cellValue.user
   }
 
-  public let fetchedCurrency: Signal<UserCurrency, NoError>
-  public let fetchUserError: Signal<GraphError, NoError>
   public let chosenCurrencyText: Signal<String, NoError>
 
   public var inputs: SettingsCurrencyCellViewModelInputs { return self }

@@ -45,7 +45,6 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public init() {
     let combinedPasswords = Signal
       .combineLatest(newPasswordProperty.signal, confirmNewPasswordProperty.signal)
-
     let currentPasswordSignal: Signal<String, NoError> = Signal
       .merge(self.currentPasswordProperty.signal,
              self.onePasswordPrefillPasswordProperty.signal.skipNil())
