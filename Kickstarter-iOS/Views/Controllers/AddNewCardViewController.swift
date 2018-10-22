@@ -42,6 +42,9 @@ internal final class AddNewCardViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> settingsViewControllerStyle
+
     _ = [self.cardNumberTextField, self.cardholderNameTextField, self.expirationTextField,
          self.securityCodeTextField, self.zipCodeTextField]
       ||> formFieldStyle
