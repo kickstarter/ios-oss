@@ -1660,6 +1660,13 @@
 			remoteGlobalIDString = A7DB1D391C9F355E008244DA;
 			remoteInfo = "ReactiveExtensions-TestHelpers-iOS";
 		};
+		D0B9FA9F217E76880066E6E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80762DE71D071BCF0074189D /* AlamofireImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4C11830B2150517E007A8298;
+			remoteInfo = "iOS Example";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -2910,6 +2917,7 @@
 				80762DFB1D071BCF0074189D /* AlamofireImage.framework */,
 				80762DFD1D071BCF0074189D /* AlamofireImage tvOS Tests.xctest */,
 				80762DFF1D071BCF0074189D /* AlamofireImage.framework */,
+				D0B9FAA0217E76880066E6E6 /* iOS Example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5193,6 +5201,13 @@
 			remoteRef = D0745B471EEB0B5E00FA53D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		D0B9FAA0217E76880066E6E6 /* iOS Example.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "iOS Example.app";
+			remoteRef = D0B9FA9F217E76880066E6E6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -6535,6 +6550,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.kickstarter.kickstarter.beta";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -6982,6 +6998,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -7006,6 +7023,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.kickstarter.kickstarter";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -7448,6 +7466,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.kickstarter.kickstarter.kickalpha";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
