@@ -5,7 +5,7 @@ extension Project.Stats {
     backersCount: 10,
     commentsCount: 10,
     currency: "USD",
-    currentCurrency: "USD",
+    currentCurrency: nil,
     currentCurrencyRate: 1.5,
     goal: 2_000,
     pledged: 1_000,

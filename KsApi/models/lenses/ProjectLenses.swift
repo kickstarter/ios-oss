@@ -240,7 +240,7 @@ extension Lens where Whole == Project, Part == Project.Stats {
     return Project.lens.stats..lens(\Project.Stats.currency)
   }
 
-  public var currentCurrency: Lens<Project, String> {
+  public var currentCurrency: Lens<Project, String?> {
     return Project.lens.stats..lens(\Project.Stats.currentCurrency)
   }
 

@@ -55,10 +55,8 @@ public struct Project {
     public private(set) var commentsCount: Int?
     /// The currency code of the project ex. USD
     public private(set) var currency: String
-    /// The currency code of the User's preferred currency
-    /// Defaults to USD if no preferred currency is set OR
-    /// If no User is logged in ex. SEK
-    public private(set) var currentCurrency: String
+    /// The currency code of the User's preferred currency ex. SEK
+    public private(set) var currentCurrency: String?
     /// The currency conversion rate between the User's preferred currency
     /// and the Project's currency
     public private(set) var currentCurrencyRate: Float?
@@ -100,7 +98,27 @@ public struct Project {
 
     /// Country determined by current currency.
     public var currentCountry: Project.Country? {
+      guard let currentCurrency = self.currentCurrency else {
+        return nil
+      }
+
       return Project.Country(currencyCode: currentCurrency)
+    }
+
+    /// Omit US currency code
+    public var omitUSCurrencyCode: Bool {
+      guard let currentCurrency = self.currentCurrency else {
+        return false
+      }
+
+      return currentCurrency == Project.Country.us.currencyCode
+    }
+
+    /// Project pledge & goal values need conversion
+    public var needsConversion: Bool {
+      let currentCurrency = self.currentCurrency ?? "USD"
+
+      return self.currency != currentCurrency
     }
   }
 
@@ -217,7 +235,7 @@ extension Project.Stats: Argo.Decodable {
       <^> json <| "backers_count"
       <*> json <|? "comments_count"
       <*> json <| "currency"
-      <*> (json <| "current_currency" <|> .success("USD"))
+      <*> json <|? "current_currency"
       <*> json <|? "fx_rate"
     return tmp1
       <*> json <| "goal"

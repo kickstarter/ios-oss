@@ -179,7 +179,7 @@
 		77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */; };
 		77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */; };
 		77CC2AB72151A09D006ED664 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CC2AB62151A09D006ED664 /* ChangeEmailViewModel.swift */; };
-		77CD894921791B05003066DA /* StatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD894821791B05003066DA /* StatsTemplate.swift */; };
+		77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD894821791B05003066DA /* ProjectStatsTemplate.swift */; };
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
 		77D7A7712141B630003F258C /* SettingsPrivacySwitchCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A7702141B630003F258C /* SettingsPrivacySwitchCellViewModel.swift */; };
 		77D7A7732142CA55003F258C /* SettingsPrivacySwitchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A7722142CA55003F258C /* SettingsPrivacySwitchCellViewModelTests.swift */; };
@@ -1860,7 +1860,7 @@
 		77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsPrivacySwitchCell.xib; sourceTree = "<group>"; };
 		77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCell.swift; sourceTree = "<group>"; };
 		77CC2AB62151A09D006ED664 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
-		77CD894821791B05003066DA /* StatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTemplate.swift; sourceTree = "<group>"; };
+		77CD894821791B05003066DA /* ProjectStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsTemplate.swift; sourceTree = "<group>"; };
 		77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCellType.swift; sourceTree = "<group>"; };
 		77D7A7702141B630003F258C /* SettingsPrivacySwitchCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCellViewModel.swift; sourceTree = "<group>"; };
 		77D7A7722142CA55003F258C /* SettingsPrivacySwitchCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -4251,7 +4251,7 @@
 				D015880C1EEB2ED7006E7684 /* ShippingRulesEnvelopeTemplates.swift */,
 				D015880D1EEB2ED7006E7684 /* ShippingRuleTemplates.swift */,
 				D015880E1EEB2ED7006E7684 /* StarEnvelopeTemplates.swift */,
-				77CD894821791B05003066DA /* StatsTemplate.swift */,
+				77CD894821791B05003066DA /* ProjectStatsTemplate.swift */,
 				D015880F1EEB2ED7006E7684 /* SubmitApplePayTemplates.swift */,
 				D01588101EEB2ED7006E7684 /* SurveyResponseTemplates.swift */,
 				D01588111EEB2ED7006E7684 /* UpdateDraftTemplates.swift */,
@@ -6182,7 +6182,7 @@
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
 				D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */,
-				77CD894921791B05003066DA /* StatsTemplate.swift in Sources */,
+				77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */,
 				D01588B11EEB2ED7006E7684 /* ProjectLenses.swift in Sources */,
 				D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */,
 				775DFADA2162A48900620CED /* ChangePasswordInput.swift in Sources */,
