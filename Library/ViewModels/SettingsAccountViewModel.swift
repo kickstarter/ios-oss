@@ -60,6 +60,8 @@ extension SettingsAccountViewModel {
       return ChangeEmailViewController.instantiate()
     case .changePassword:
       return ChangePasswordViewController.instantiate()
+    case .paymentMethods:
+      return AddNewCardViewController.instantiate()
     default:
       return nil
     }
