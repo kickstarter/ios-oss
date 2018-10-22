@@ -36,6 +36,12 @@ final class SettingsAccountViewController: UIViewController {
         self?.tableView.reloadData()
     }
 
+    self.viewModel.outputs.goToAddCard
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToAddCard()
+    }
+
     self.viewModel.outputs.transitionToViewController
       .observeForControllerAction()
       .observeValues { [weak self] (viewController) in
@@ -52,6 +58,14 @@ final class SettingsAccountViewController: UIViewController {
 
     _ = tableView
       |> settingsTableViewStyle
+  }
+
+ func goToAddCard() {
+    let vc = AddNewCardViewController.instantiate()
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 }
 

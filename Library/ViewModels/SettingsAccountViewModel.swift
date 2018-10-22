@@ -14,6 +14,7 @@ public protocol SettingsAccountViewModelOutputs {
 
   var reloadData: Signal<Void, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
+  var goToAddCard: Signal<Void, NoError> { get }
 }
 
 public protocol SettingsAccountViewModelType {
@@ -33,6 +34,10 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .skipNil()
       .map { SettingsAccountViewModel.viewController(for: $0) }
       .skipNil()
+
+    self.goToAddCard = self.selectedCellTypeProperty.signal.skipNil()
+      .filter { $0 == .paymentMethods }
+      .ignoreValues()
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -47,6 +52,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
   public let reloadData: Signal<Void, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
+  public let goToAddCard: Signal<Void, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }
@@ -60,8 +66,6 @@ extension SettingsAccountViewModel {
       return ChangeEmailViewController.instantiate()
     case .changePassword:
       return ChangePasswordViewController.instantiate()
-    case .paymentMethods:
-      return AddNewCardViewController.instantiate()
     default:
       return nil
     }
