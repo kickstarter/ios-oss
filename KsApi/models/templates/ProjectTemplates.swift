@@ -34,7 +34,7 @@ extension Project {
     slug: "a-fun-project",
     staffPick: false,
     state: .live,
-    stats: Project.Stats.template,
+    stats: .template,
     urls: Project.UrlsEnvelope(
       web: Project.UrlsEnvelope.WebEnvelope(
         project: "https://www.kickstarter.com/projects/creator/a-fun-project",

@@ -304,13 +304,11 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 }
 
 private func statsStackViewAccessibilityLabel(forProject project: Project, needsConversion: Bool) -> String {
+  let pledgedGoalCountry = pledgeAmountAndGoalAndCountry(forProject: project,
+                                                         needsConversion: needsConversion)
 
-  let pledged = needsConversion
-    ? Format.currency(project.stats.pledged, country: project.country)
-    : Format.currency(project.stats.pledgedUsd, country: .us)
-  let goal = needsConversion
-    ? Format.currency(project.stats.goal, country: project.country)
-    : Format.currency(project.stats.goalUsd, country: .us)
+  let pledged = Format.currency(pledgedGoalCountry.0, country: pledgedGoalCountry.2)
+  let goal = Format.currency(pledgedGoalCountry.1, country: pledgedGoalCountry.2)
 
   let backersCount = project.stats.backersCount
   let (time, unit) = Format.duration(secondsInUTC: project.dates.deadline, useToGo: true)
@@ -344,36 +342,34 @@ private func fundingStatus(forProject project: Project) -> String {
   }
  }
 
-private func goalText(for project: Project, _ needsConversion: Bool) -> String {
-  if needsConversion {
-    if let goalCurrentCurrency = project.stats.goalCurrentCurrency,
-        let currentCountry = project.stats.currentCountry {
-      return Strings
-        .activity_project_state_change_pledged_of_goal(goal: Format.currency(goalCurrentCurrency,
-                                                                             country: currentCountry))
-    } else {
-      return Strings
-        .activity_project_state_change_pledged_of_goal(goal: Format.currency(project.stats.goalUsd,
-                                                                             country: .us))
-    }
-  } else {
-    return Strings.activity_project_state_change_pledged_of_goal(
-      goal: Format.currency(project.stats.goal, country: project.country))
+private func pledgeAmountAndGoalAndCountry(forProject project: Project,
+                                           needsConversion: Bool) -> (Int, Int, Project.Country) {
+  guard needsConversion else {
+    return (project.stats.pledged, project.stats.goal, project.country)
   }
+
+  guard let goalCurrentCurrency = project.stats.goalCurrentCurrency,
+    let pledgedCurrentCurrency = project.stats.pledgedCurrentCurrency,
+    let currentCountry = project.stats.currentCountry else {
+      return (project.stats.pledgedUsd, project.stats.goalUsd, Project.Country.us)
+  }
+
+  return (pledgedCurrentCurrency, goalCurrentCurrency, currentCountry)
+}
+
+private func goalText(for project: Project, _ needsConversion: Bool) -> String {
+  let pledgedGoalCountry = pledgeAmountAndGoalAndCountry(forProject: project,
+                                                         needsConversion: needsConversion)
+
+  return Strings.activity_project_state_change_pledged_of_goal(
+    goal: Format.currency(pledgedGoalCountry.1, country: pledgedGoalCountry.2))
 }
 
 private func pledgedText(for project: Project, _ needsConversion: Bool) -> String {
-  if needsConversion {
-    if let pledgedCurrentCurrency = project.stats.pledgedCurrentCurrency,
-        let currentCountry = project.stats.currentCountry {
-      return Format.currency(pledgedCurrentCurrency, country: currentCountry)
-    } else {
-      // Default to USD
-      return Format.currency(project.stats.pledgedUsd, country: .us)
-    }
-  } else {
-    return Format.currency(project.stats.pledged, country: project.country)
-  }
+  let pledgedGoalCountry = pledgeAmountAndGoalAndCountry(forProject: project,
+                                                         needsConversion: needsConversion)
+
+  return Format.currency(pledgedGoalCountry.0, country: pledgedGoalCountry.2)
 }
 
 private func progressColor(forProject project: Project) -> UIColor {

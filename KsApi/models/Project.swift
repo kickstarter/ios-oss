@@ -53,8 +53,14 @@ public struct Project {
   public struct Stats {
     public private(set) var backersCount: Int
     public private(set) var commentsCount: Int?
+    /// The currency code of the project ex. USD
     public private(set) var currency: String
+    /// The currency code of the User's preferred currency
+    /// Defaults to USD if no preferred currency is set OR
+    /// If no User is logged in ex. SEK
     public private(set) var currentCurrency: String
+    /// The currency conversion rate between the User's preferred currency
+    /// and the Project's currency
     public private(set) var currentCurrencyRate: Float?
     public private(set) var goal: Int
     public private(set) var pledged: Int
