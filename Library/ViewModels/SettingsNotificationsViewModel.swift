@@ -90,7 +90,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal
-      .map { $0 |> get(UserAttribute.notification(.creatorDigest).keyPath) }
+      .map { $0 |> UserAttribute.notification(.creatorDigest).keyPath.view }
       .skipNil()
       .map { creatorDigest -> EmailFrequency in
         return creatorDigest ? EmailFrequency.daily : EmailFrequency.individualEmails

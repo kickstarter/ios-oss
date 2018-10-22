@@ -147,5 +147,5 @@ private func userIsSubscribedToAll(user: User) -> Bool? {
 
 private func userIsSubscribed(user: User, newsletter: Newsletter) -> Bool? {
 
-  return user |> get(UserAttribute.newsletter(newsletter).keyPath)
+  return user |> UserAttribute.newsletter(newsletter).keyPath.view
 }
