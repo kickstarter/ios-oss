@@ -974,6 +974,7 @@
 		D63BBCDB217E7802007E01F0 /* CreditCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D63BBCD9217E7802007E01F0 /* CreditCardCell.xib */; };
 		D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */; };
 		D63BBD31217F7212007E01F0 /* UserCreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD30217F7212007E01F0 /* UserCreditCard.swift */; };
+		D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */; };
 		D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */; };
 		D6508F6C2049C83C002DCC01 /* UIStackView+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
@@ -2642,6 +2643,7 @@
 		D63BBCD9217E7802007E01F0 /* CreditCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreditCardCell.xib; sourceTree = "<group>"; };
 		D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsDataSource.swift; sourceTree = "<group>"; };
 		D63BBD30217F7212007E01F0 /* UserCreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCreditCard.swift; sourceTree = "<group>"; };
+		D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCreditCardTemplate.swift; sourceTree = "<group>"; };
 		D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectActivityItemProviderTests.swift; sourceTree = "<group>"; };
 		D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+BackgroundColor.swift"; sourceTree = "<group>"; };
 		D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSourceTests.swift; sourceTree = "<group>"; };
@@ -4251,9 +4253,12 @@
 				D01587F71EEB2ED7006E7684 /* ConfigTemplates.swift */,
 				D01587F81EEB2ED7006E7684 /* CreatePledgeEnvelopeTemplates.swift */,
 				D01587F91EEB2ED7006E7684 /* DiscoveryEnvelopeTemplates.swift */,
+				D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */,
 				D01587FA1EEB2ED7006E7684 /* FindFriendsEnvelopeTemplates.swift */,
 				D01587FB1EEB2ED7006E7684 /* FriendStatsEnvelopeTemplates.swift */,
-				D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */,
+				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
+				D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */,
+				D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */,
 				D01587FC1EEB2ED7006E7684 /* ItemTemplates.swift */,
 				D01587FD1EEB2ED7006E7684 /* LocationTemplates.swift */,
 				D01587FE1EEB2ED7006E7684 /* MessageTemplates.swift */,
@@ -4262,8 +4267,8 @@
 				D01588011EEB2ED7006E7684 /* Project.VideoTemplates.swift */,
 				D01588021EEB2ED7006E7684 /* ProjectNotificationTemplates.swift */,
 				D01588031EEB2ED7006E7684 /* ProjectStatsEnvelope.CumulativeStatsTemplates.swift */,
-				D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */,
 				D01588041EEB2ED7006E7684 /* ProjectStatsEnvelope.FundingDateStatsTemplates.swift */,
+				D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */,
 				D01588051EEB2ED7006E7684 /* ProjectStatsEnvelope.ReferrerStatsTemplates.swift */,
 				D01588061EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionTemplates.swift */,
 				D01588071EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsTemplates.swift */,
@@ -4285,8 +4290,6 @@
 				D01588171EEB2ED7006E7684 /* User.NotificationsTemplates.swift */,
 				D01588181EEB2ED7006E7684 /* User.StatsTemplates.swift */,
 				D01588191EEB2ED7006E7684 /* UserTemplates.swift */,
-				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
-				D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -6158,6 +6161,7 @@
 				D0158A091EEB30A2006E7684 /* ActivityTemplates.swift in Sources */,
 				D01589811EEB2ED7006E7684 /* Update.swift in Sources */,
 				D0158A161EEB30A2006E7684 /* ItemTemplates.swift in Sources */,
+				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
 				D01588D71EEB2ED7006E7684 /* UpdateLenses.swift in Sources */,
 				D01588FF1EEB2ED7006E7684 /* Project.swift in Sources */,
 				D0158A1D1EEB30A2006E7684 /* ProjectStatsEnvelope.CumulativeStatsTemplates.swift in Sources */,
