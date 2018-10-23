@@ -193,6 +193,12 @@ public enum Query {
     }
   }
 
+  public enum ProjectsConnection {
+    public enum Argument {
+      case state(Project.State)
+    }
+  }
+
   public enum User {
     case biography
     case backedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
@@ -220,9 +226,17 @@ public enum Query {
     case optedOutOfRecommendations
     case showPublicProfile
     case savedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
+    case storedCards(Set<QueryArg<Never>>, NonEmptySet<Connection<StoredCards>>)
     case slug
     case url
     case userId
+
+    public enum StoredCards {
+      case expirationDate
+      case id
+      case lastFour
+      case type
+    }
   }
 }
 
@@ -400,9 +414,21 @@ extension Query.User: QueryType {
     case .optedOutOfRecommendations:            return "optedOutOfRecommendations"
     case let .savedProjects(args, fields):      return "savedProjects\(connection(args, fields))"
     case .showPublicProfile:                    return "showPublicProfile"
+    case let .storedCards(args, fields):        return "storedCards\(connection(args, fields))"
     case .slug:                                 return "slug"
     case .url:                                  return "url"
     case .userId:                               return "uid"
+    }
+  }
+}
+
+extension Query.User.StoredCards: QueryType {
+  public var description: String {
+    switch self {
+    case .expirationDate: return "expirationDate"
+    case .id: return "id"
+    case .lastFour: return "lastFour"
+    case .type: return "type"
     }
   }
 }
