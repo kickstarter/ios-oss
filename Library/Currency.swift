@@ -1,7 +1,7 @@
 import UIKit
 import KsApi
 
-public enum Currency: String, Encodable {
+public enum Currency: String, Encodable, CaseIterable {
   case EUR
   case AUD
   case CAD
@@ -20,22 +20,6 @@ public enum Currency: String, Encodable {
   public static var rowHeight: CGFloat {
     return Styles.grid(7)
   }
-
-  public static var allCases: [Currency] = [.EUR,
-                                            .AUD,
-                                            .CAD,
-                                            .CHF,
-                                            .DKK,
-                                            .GBP,
-                                            .HKD,
-                                            .JPY,
-                                            .MXN,
-                                            .NOK,
-                                            .NZD,
-                                            .SEK,
-                                            .SGD,
-                                            .USD
-                                            ]
 
   public var descriptionText: String {
     switch self {

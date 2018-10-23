@@ -1,7 +1,7 @@
 import Prelude
 
 public struct UserCurrency: Swift.Decodable {
-  public let chosenCurrency: String?
+  public private(set) var chosenCurrency: String?
 }
 
 extension UserCurrency: Equatable {

@@ -33,7 +33,8 @@ SettingsCurrencyCellViewModelInputs, SettingsCurrencyCellViewModelOutputs {
       }
 
     let chosenCurrency = fetchedCurrency.values().map {
-      Currency(rawValue: $0.me.chosenCurrency ?? "")?.descriptionText ?? "" }
+      Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue)?.descriptionText
+        ?? Strings.Currency_USD() }
 
     self.chosenCurrencyText = Signal.merge(
       emptyStringOnLoad,
