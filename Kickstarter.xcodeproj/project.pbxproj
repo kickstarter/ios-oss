@@ -975,6 +975,7 @@
 		D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */; };
 		D63BBD31217F7212007E01F0 /* UserCreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD30217F7212007E01F0 /* UserCreditCard.swift */; };
 		D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */; };
+		D63BBD35217FAB85007E01F0 /* PaymentMethodsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD34217FAB85007E01F0 /* PaymentMethodsViewModel.swift */; };
 		D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */; };
 		D6508F6C2049C83C002DCC01 /* UIStackView+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
@@ -2644,6 +2645,7 @@
 		D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsDataSource.swift; sourceTree = "<group>"; };
 		D63BBD30217F7212007E01F0 /* UserCreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCreditCard.swift; sourceTree = "<group>"; };
 		D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCreditCardTemplate.swift; sourceTree = "<group>"; };
+		D63BBD34217FAB85007E01F0 /* PaymentMethodsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewModel.swift; sourceTree = "<group>"; };
 		D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectActivityItemProviderTests.swift; sourceTree = "<group>"; };
 		D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+BackgroundColor.swift"; sourceTree = "<group>"; };
 		D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSourceTests.swift; sourceTree = "<group>"; };
@@ -3939,6 +3941,7 @@
 				A7ED1F6C1E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift */,
 				D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */,
 				D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */,
+				D63BBD34217FAB85007E01F0 /* PaymentMethodsViewModel.swift */,
 				A7F441A11D005A9400FE6FC5 /* ProfileHeaderViewModel.swift */,
 				A7ED1F611E831C5C00BFFA01 /* ProfileHeaderViewModelTests.swift */,
 				015572701E79C426005FB8CC /* ProfileProjectCellViewModel.swift */,
@@ -5557,6 +5560,7 @@
 				A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
+				D63BBD35217FAB85007E01F0 /* PaymentMethodsViewModel.swift in Sources */,
 				8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */,
 				A7F441B71D005A9400FE6FC5 /* BackingCellViewModel.swift in Sources */,
 				A7CC13DB1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,

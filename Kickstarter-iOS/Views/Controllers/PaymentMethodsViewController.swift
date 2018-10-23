@@ -1,8 +1,12 @@
+import KsApi
 import Library
 import Prelude
 import UIKit
 
-class PaymentMethodsViewController: UIViewController {
+internal final class PaymentMethodsViewController: UIViewController {
+
+  private let dataSource = PaymentMethodsDataSource()
+  private let viewModel: PaymentMethodsViewModelType = PaymentMethodsViewModel()
 
   @IBOutlet private weak var headerLabel: UILabel!
   @IBOutlet private weak var tableView: UITableView! {
@@ -16,8 +20,11 @@ class PaymentMethodsViewController: UIViewController {
   }
 
   override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    super.viewDidLoad()
+
+    self.viewModel.inputs.viewDidLoad()
+    self.tableView.dataSource = self.dataSource
+  }
 
   override func bindStyles() {
     super.bindStyles()
@@ -26,6 +33,17 @@ class PaymentMethodsViewController: UIViewController {
       |> settingsSectionLabelStyle
       |> UILabel.lens.text %~ { _ in
         Strings.Change_payment_method()
+    }
+  }
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.didFetchPaymentMethods
+      .observeForUI()
+      .observeValues { [weak self] result in
+        self?.dataSource.load(creditCards: result)
+        self?.tableView.reloadData()
     }
   }
 }
