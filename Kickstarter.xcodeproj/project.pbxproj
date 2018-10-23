@@ -180,6 +180,7 @@
 		77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */; };
 		77CC2AB72151A09D006ED664 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CC2AB62151A09D006ED664 /* ChangeEmailViewModel.swift */; };
 		77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD894821791B05003066DA /* ProjectStatsTemplate.swift */; };
+		77CD8981217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */; };
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
 		77D7A7712141B630003F258C /* SettingsPrivacySwitchCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A7702141B630003F258C /* SettingsPrivacySwitchCellViewModel.swift */; };
 		77D7A7732142CA55003F258C /* SettingsPrivacySwitchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A7722142CA55003F258C /* SettingsPrivacySwitchCellViewModelTests.swift */; };
@@ -1861,6 +1862,7 @@
 		77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCell.swift; sourceTree = "<group>"; };
 		77CC2AB62151A09D006ED664 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		77CD894821791B05003066DA /* ProjectStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsTemplate.swift; sourceTree = "<group>"; };
+		77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletContentViewControllerConversionTests.swift; sourceTree = "<group>"; };
 		77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCellType.swift; sourceTree = "<group>"; };
 		77D7A7702141B630003F258C /* SettingsPrivacySwitchCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCellViewModel.swift; sourceTree = "<group>"; };
 		77D7A7722142CA55003F258C /* SettingsPrivacySwitchCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -3298,6 +3300,7 @@
 				77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */,
 				A7C93FB81D4415E700C2DF9B /* ProjectPamphletContentViewController.swift */,
 				A7ED20391E8323E900BFFA01 /* ProjectPamphletContentViewControllerTests.swift */,
+				77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */,
 				A70F1F311D8A3E85007DA8E9 /* ProjectPamphletViewController.swift */,
 				59392BEB1D7094B0001C99A4 /* ProjectUpdatesViewController.swift */,
 				019DDFEB1CB6FF4500BDC113 /* ResetPasswordViewController.swift */,
@@ -6065,6 +6068,7 @@
 				D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */,
 				A7ED20131E83229E00BFFA01 /* DashboardDataSourceTests.swift in Sources */,
 				A7ED20481E8323E900BFFA01 /* LoginViewControllerTests.swift in Sources */,
+				77CD8981217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift in Sources */,
 				A7A625B51E859FDB004C931A /* LiveStreamChatDataSourceTests.swift in Sources */,
 				A7ED201C1E83229E00BFFA01 /* ProjectPamphletContentDataSourceTests.swift in Sources */,
 				77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */,

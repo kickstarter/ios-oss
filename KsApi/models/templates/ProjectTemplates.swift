@@ -66,6 +66,7 @@ extension Project {
     |> Project.lens.stats.pledged .~ 22_318
     |> Project.lens.stats.goal .~ 22_000
     |> Project.lens.stats.staticUsdRate .~ 1.31
+    |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
     |> Project.lens.stats.currentCurrency .~ "USD"
     |> Project.lens.stats.currentCurrencyRate .~ 1.31
     |> (Project.lens.location..Location.lens.displayableName) .~ "Hastings, UK"

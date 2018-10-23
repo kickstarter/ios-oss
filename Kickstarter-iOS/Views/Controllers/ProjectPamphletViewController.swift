@@ -79,18 +79,6 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.navBarController.configureWith(project: project, refTag: refTag)
     }
 
-    self.viewModel.outputs.fetchedUser
-      .observeForUI()
-      .observeValues({ (userEnvelope) in
-        print(userEnvelope)
-      })
-
-    self.viewModel.outputs.fetchUserError
-      .observeForUI()
-      .observeValues({ (error) in
-        print(error)
-      })
-
     self.viewModel.outputs.setNavigationBarHiddenAnimated
       .observeForUI()
       .observeValues { [weak self] in self?.navigationController?.setNavigationBarHidden($0, animated: $1) }
@@ -105,18 +93,6 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] value in
         self?.navBarTopConstraint.constant = value
-    }
-
-    self.viewModel.outputs.fetchedUser
-      .observeForUI()
-      .observeValues { userEnvelope in
-        print(userEnvelope)
-    }
-
-    self.viewModel.outputs.fetchUserError
-      .observeForUI()
-      .observeValues { error in
-        print(error)
     }
   }
 

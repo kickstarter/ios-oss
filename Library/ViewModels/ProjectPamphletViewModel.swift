@@ -24,9 +24,6 @@ public protocol ProjectPamphletViewModelInputs {
 }
 
 public protocol ProjectPamphletViewModelOutputs {
-  var fetchedUser: Signal<UserCurrency, NoError> { get }
-  var fetchUserError: Signal<GraphError, NoError> { get }
-
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
     RefTag?), NoError> { get }
@@ -59,20 +56,7 @@ private var userQuery: Query = Query.user(.id +| fields)
 
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
 ProjectPamphletViewModelOutputs {
-  public var fetchedUser: Signal<UserCurrency, NoError>
-  public var fetchUserError: Signal<GraphError, NoError>
-
   public init() {
-    let fetchedCurrency = self.viewDidLoadProperty.signal
-      .switchMap { _ in
-        return AppEnvironment.current.apiService
-          .fetchGraphCurrency(query: UserQueries.chosenCurrency.query)
-          .materialize()
-      }
-
-    self.fetchedUser = fetchedCurrency.values().map { $0.me }
-    self.fetchUserError = fetchedCurrency.errors()
-
     let freshProjectAndLiveStreamsAndRefTag = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
