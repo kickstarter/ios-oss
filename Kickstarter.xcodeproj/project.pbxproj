@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		013672E01E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */; };
 		013672E11E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */; };
 		013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */; };
 		013744C11D999BE200E50C78 /* EmptyStates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 013744C01D999BE200E50C78 /* EmptyStates.storyboard */; };
@@ -41,7 +40,6 @@
 		015A06F71D219513007AE210 /* DashboardRewardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015A06F51D219513007AE210 /* DashboardRewardsCell.swift */; };
 		015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */; };
 		015B78851D47FF51003216AC /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015B78841D47FF51003216AC /* MFMailComposeViewController.swift */; };
-		0160E50F1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */; };
 		0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0160E50E1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift */; };
 		0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F8C01D6CA27500C8D5C5 /* RootCategory.swift */; };
 		0169F9841D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0169F9831D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift */; };
@@ -5994,9 +5992,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				013672E01E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */,
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
-				0160E50F1EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
