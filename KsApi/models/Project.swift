@@ -107,9 +107,7 @@ public struct Project {
 
     /// Omit US currency code
     public var omitUSCurrencyCode: Bool {
-      guard let currentCurrency = self.currentCurrency else {
-        return false
-      }
+      let currentCurrency = self.currentCurrency ?? "USD"
 
       return currentCurrency == Project.Country.us.currencyCode
     }

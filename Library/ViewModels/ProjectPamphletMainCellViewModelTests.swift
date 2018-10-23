@@ -74,6 +74,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let nonUSProject = project
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 1.2
     self.vm.inputs.configureWith(project: nonUSProject)
 
@@ -295,6 +296,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
 
     withEnvironment(countryCode: "US") {

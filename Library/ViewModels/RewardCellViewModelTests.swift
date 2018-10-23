@@ -132,6 +132,7 @@ final class RewardCellViewModelTests: TestCase {
     self.titleLabelText.assertValues(["The goods"])
   }
 
+  // MARK: Conversion Label
   func testConversionLabel_US_User_US_Project_ConfiguredWithReward() {
     let project = .template |> Project.lens.country .~ .us
     let reward = .template |> Reward.lens.minimum .~ 1_000
@@ -183,7 +184,7 @@ final class RewardCellViewModelTests: TestCase {
   func testConversionLabel_US_User_NonUS_Project_ConfiguredWithReward_WithoutCurrentCurrency() {
     let project = .template
       |> Project.lens.country .~ .ca
-      |> Project.lens.stats.currentCurrency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
       |> Project.lens.stats.staticUsdRate .~ 0.76
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1
