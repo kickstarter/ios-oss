@@ -5,7 +5,11 @@ import UIKit
 class PaymentMethodsViewController: UIViewController {
 
   @IBOutlet private weak var headerLabel: UILabel!
-  @IBOutlet private weak var tableView: UITableView!
+  @IBOutlet private weak var tableView: UITableView! {
+    didSet {
+      self.tableView.register(nib: .CreditCardCell)
+    }
+  }
 
   public static func instantiate() -> PaymentMethodsViewController {
     return Storyboard.Settings.instantiate(PaymentMethodsViewController.self)
