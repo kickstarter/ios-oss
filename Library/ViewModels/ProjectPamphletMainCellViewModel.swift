@@ -301,8 +301,12 @@ private func statsStackViewAccessibilityLabel(forProject project: Project, needs
   let pledgedGoalCountry = pledgeAmountAndGoalAndCountry(forProject: project,
                                                          needsConversion: needsConversion)
 
-  let pledged = Format.currency(pledgedGoalCountry.0, country: pledgedGoalCountry.2)
-  let goal = Format.currency(pledgedGoalCountry.1, country: pledgedGoalCountry.2)
+  let pledged = Format.currency(pledgedGoalCountry.0,
+                                country: pledgedGoalCountry.2,
+                                omitCurrencyCode: project.stats.omitUSCurrencyCode)
+  let goal = Format.currency(pledgedGoalCountry.1,
+                             country: pledgedGoalCountry.2,
+                             omitCurrencyCode: project.stats.omitUSCurrencyCode)
 
   let backersCount = project.stats.backersCount
   let (time, unit) = Format.duration(secondsInUTC: project.dates.deadline, useToGo: true)

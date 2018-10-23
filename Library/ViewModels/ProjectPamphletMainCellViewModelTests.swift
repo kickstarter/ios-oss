@@ -82,6 +82,34 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       [ "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
         "$1,200 of $2,400 goal, 10 backers so far, 10 days to go to go"]
     )
+
+    let nonUSUserCurrency = project
+      |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+
+    self.vm.inputs.configureWith(project: nonUSUserCurrency)
+
+    self.statsStackViewAccessibilityLabel.assertValues(
+      [ "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
+        "$1,200 of $2,400 goal, 10 backers so far, 10 days to go to go",
+        "£2,000 of £4,000 goal, 10 backers so far, 10 days to go to go"
+        ]
+    )
+  }
+
+  func testStatsStackViewAccessibilityLabel_defaultCurrency_nonUSUser() {
+    let defaultUserCurrency = Project.template
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.staticUsdRate .~ 2.0
+
+    withEnvironment(countryCode: "CA") {
+      self.vm.inputs.configureWith(project: defaultUserCurrency)
+
+      self.statsStackViewAccessibilityLabel.assertValues(
+        ["US$ 2,000 of US$ 4,000 goal, 10 backers so far, 10 days to go to go"]
+      )
+    }
   }
 
   func testYoureABackerLabelHidden_NotABacker() {
@@ -174,6 +202,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.backersTitleLabelText.assertValues([Format.wholeNumber(project.stats.backersCount)])
   }
 
+  // MARK: Conversion Label
+
   func testConversionLabel_WhenConversionNotNeeded_US_Project_US_User() {
     let project = Project.template
 
@@ -263,6 +293,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
   }
 
+  // MARK: Pledged Label
+
   func testPledgedLabels_WhenConversionNotNeeded() {
     let project = .template
       |> Project.lens.country .~ .us
@@ -307,7 +339,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     }
   }
 
-  func testPledgedLabels_InNonUSCountry() {
+  func testPledgedLabels_ConversionNotNeeded_NonUSCountry() {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
