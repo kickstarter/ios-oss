@@ -120,6 +120,10 @@ public protocol ServiceType {
   func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError>
 
+  /// Fetch User's stored cards.
+  func fetchGraphCreditCards(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError>
+
   /// Fetch a User's preferred currency
   func fetchGraphCurrency(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserCurrency>, GraphError>

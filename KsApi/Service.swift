@@ -208,6 +208,11 @@ public struct Service: ServiceType {
       return fetch(query: query)
   }
 
+  public func fetchGraphCreditCards(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError> {
+      return fetch(query: query)
+  }
+
   public func fetchGraphCurrency(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserCurrency>, GraphError> {
       return fetch(query: query)

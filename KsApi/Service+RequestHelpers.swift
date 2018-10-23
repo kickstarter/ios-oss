@@ -88,6 +88,7 @@ extension Service {
   // MARK: Public Request Functions
   func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
     let queryString: String = Query.build(query)
+
     let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
                                        queryString: queryString)
 
@@ -168,3 +169,19 @@ extension Service {
         .flatMap(decodeModel)
   }
 }
+
+let string = """
+            query {
+              me {
+                id
+                storedCards {
+                    nodes {
+                      id
+                      expirationDate
+                      type
+                      lastFour
+                    }
+                  }
+                }
+              }
+            """
