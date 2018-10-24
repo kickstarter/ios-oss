@@ -5,7 +5,7 @@ import ReactiveSwift
 import Result
 
 public protocol SettingsCurrencyCellViewModelInputs {
-  func configure(with cellValue: SettingsCellValue)
+  func configure(with cellValue: SettingsCurrencyCellValue)
 }
 
 public protocol SettingsCurrencyCellViewModelOutputs {
@@ -21,30 +21,14 @@ public final class SettingsCurrencyCellViewModel: SettingsCurrencyCellViewModelT
 SettingsCurrencyCellViewModelInputs, SettingsCurrencyCellViewModelOutputs {
 
   public init() {
-    let initialUser = self.initialUserProperty.signal.skipNil()
 
-    let emptyStringOnLoad = initialUser.signal.mapConst("")
-
-    let fetchedCurrency = initialUser.signal
-      .switchMap { _ in
-        return AppEnvironment.current.apiService
-          .fetchGraphCurrency(query: UserQueries.chosenCurrency.query)
-          .materialize()
-      }
-
-    let chosenCurrency = fetchedCurrency.values().map {
-      Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue)?.descriptionText
-        ?? Strings.Currency_USD() }
-
-    self.chosenCurrencyText = Signal.merge(
-      emptyStringOnLoad,
-      chosenCurrency
-    )
+    self.chosenCurrencyText = self.currencyProperty.signal.skipNil()
+      .map { $0.descriptionText }
   }
 
-  fileprivate let initialUserProperty = MutableProperty<User?>(nil)
-  public func configure(with cellValue: SettingsCellValue) {
-    self.initialUserProperty.value = cellValue.user
+  fileprivate let currencyProperty = MutableProperty<Currency?>(nil)
+  public func configure(with cellValue: SettingsCurrencyCellValue) {
+    self.currencyProperty.value = cellValue.currency
   }
 
   public let chosenCurrencyText: Signal<String, NoError>

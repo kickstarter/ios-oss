@@ -5,19 +5,23 @@ import ReactiveSwift
 import Result
 
 public protocol SettingsAccountViewModelInputs {
-  func didConfirmChangeCurrency(currency: Currency)
+  func didConfirmChangeCurrency()
   func didSelectRow(cellType: SettingsAccountCellType)
   func dismissPickerTap()
+  func showChangeCurrencyAlert(for currency: Currency)
   func viewDidLoad()
 }
+// TODO
+// remove outputs, testing
 
 public protocol SettingsAccountViewModelOutputs {
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
-  var reloadData: Signal<User, NoError> { get }
+  var reloadData: Signal<(User, Currency), NoError> { get }
   var presentCurrencyPicker: Signal<Bool, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
-  var updateCurrency: Signal<String, NoError> { get }
+  var updateCurrency: Signal<Currency, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
+  var showAlert: Signal<(), NoError> { get }
 }
 
 public protocol SettingsAccountViewModelType {
@@ -38,13 +42,25 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       }
       .skipNil()
 
-    self.reloadData = initialUser
+
+    let fetchedCurrency = self.viewDidLoadProperty.signal
+      .switchMap { _ in
+        return AppEnvironment.current.apiService
+          .fetchGraphCurrency(query: UserQueries.chosenCurrency.query)
+          .materialize()
+    }
+
+    let chosenCurrency = fetchedCurrency.values().map {
+      Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue)
+        ?? Currency.USD } // TODO : test
+
 
     let currencyCellSelected = self.selectedCellTypeProperty.signal
       .skipNil()
       .filter { $0 == .currency }
 
-    let updateCurrencyEvent = self.didConfirmChangeCurrencyProperty.signal.skipNil()
+    let updateCurrencyEvent = self.changeCurrencyAlertProperty.signal.skipNil()
+      .takeWhen(self.didConfirmChangeCurrencyProperty.signal)
       .map { ChangeCurrencyInput(chosenCurrency: $0.rawValue) }
       .switchMap {
         AppEnvironment.current.apiService.changeCurrency(input: $0)
@@ -55,8 +71,12 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.updateCurrencyFailure = updateCurrencyEvent.errors()
       .map { $0.localizedDescription }
 
-    self.updateCurrency = self.didConfirmChangeCurrencyProperty.signal.skipNil()
-      .map { $0.descriptionText }
+    self.updateCurrency = self.changeCurrencyAlertProperty.signal.skipNil()
+      .takeWhen(updateCurrencyEvent.values().ignoreValues())
+
+    let currency = Signal.merge(chosenCurrency, self.updateCurrency)
+
+    self.reloadData = Signal.combineLatest(initialUser, currency)
 
     self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true)
 
@@ -65,6 +85,8 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.transitionToViewController = self.selectedCellTypeProperty.signal.skipNil()
       .map { SettingsAccountViewModel.viewController(for: $0) }
       .skipNil()
+
+    self.showAlert = self.changeCurrencyAlertProperty.signal.skipNil().ignoreValues()
   }
 
   fileprivate let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
@@ -72,14 +94,19 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.selectedCellTypeProperty.value = cellType
   }
 
+  fileprivate let changeCurrencyAlertProperty = MutableProperty<Currency?>(nil)
+  public func showChangeCurrencyAlert(for currency: Currency) {
+    self.changeCurrencyAlertProperty.value = currency
+  }
+
   fileprivate let dismissPickerTapProperty = MutableProperty(())
   public func dismissPickerTap() {
     self.dismissPickerTapProperty.value = ()
   }
 
-  fileprivate let didConfirmChangeCurrencyProperty = MutableProperty<Currency?>(nil)
-  public func didConfirmChangeCurrency(currency: Currency) {
-    self.didConfirmChangeCurrencyProperty.value = currency
+  fileprivate let didConfirmChangeCurrencyProperty = MutableProperty(())
+  public func didConfirmChangeCurrency() {
+    self.didConfirmChangeCurrencyProperty.value = ()
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
@@ -88,11 +115,12 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   }
 
   public let dismissCurrencyPicker: Signal<Void, NoError>
-  public let reloadData: Signal<User, NoError>
+  public let reloadData: Signal<(User, Currency), NoError>
   public let presentCurrencyPicker: Signal<Bool, NoError>
+  public let showAlert: Signal<(), NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
-  public let updateCurrency: Signal<String, NoError>
-  public var updateCurrencyFailure: Signal<String, NoError>
+  public let updateCurrency: Signal<Currency, NoError>
+  public let updateCurrencyFailure: Signal<String, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }

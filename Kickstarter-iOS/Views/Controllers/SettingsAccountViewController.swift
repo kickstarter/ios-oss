@@ -33,8 +33,8 @@ final class SettingsAccountViewController: UIViewController {
   override func bindViewModel() {
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] user in
-        self?.dataSource.configureRows(user: user)
+      .observeValues { [weak self] user, currency in
+        self?.dataSource.configureRows(user: user, currency: currency)
         self?.tableView.reloadData()
     }
 
@@ -63,12 +63,10 @@ final class SettingsAccountViewController: UIViewController {
         self?.navigationController?.pushViewController(viewController, animated: true)
     }
 
-    self.viewModel.outputs.updateCurrency
+    self.viewModel.outputs.showAlert
       .observeForUI()
-      .observeValues { selectedCurrency in
-        NotificationCenter.default.post(name: Notification.Name.ksr_updatedCurrencyCellDetailText,
-                                        object: nil,
-                                        userInfo: ["text": selectedCurrency])
+      .observeValues { [weak self] _ in
+        self?.showChangeCurrencyAlert()
     }
   }
 
@@ -101,6 +99,37 @@ final class SettingsAccountViewController: UIViewController {
     tableView.endUpdates()
 
     self.view.gestureRecognizers?.removeAll()
+  }
+
+  func showChangeCurrencyAlert() {
+    let alertController = UIAlertController(
+      title: Strings.Change_currency(),
+      message: """
+      \(Strings.This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency()) \n
+      \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())
+      """,
+      preferredStyle: .alert
+    )
+
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Yes_change_currency(),
+        style: .default,
+        handler: { [weak self] _ in
+          self?.viewModel.inputs.didConfirmChangeCurrency()
+        }
+      )
+    )
+
+    alertController.addAction(
+      UIAlertAction(
+        title: Strings.Cancel(),
+        style: .cancel,
+        handler: nil
+      )
+    )
+
+    self.present(alertController, animated: true, completion: nil)
   }
 
   @objc private func tapGestureToDismissCurrencyPicker() {
@@ -138,36 +167,8 @@ extension SettingsAccountViewController: UITableViewDelegate {
 }
 
 extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
-
   func settingsCurrencyPickerCellDidChangeCurrency(_ currency: Currency) {
-    let alertController = UIAlertController(
-      title: Strings.Change_currency(),
-      message: """
-      \(Strings.This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency()) \n
-      \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())
-      """,
-      preferredStyle: .alert
-    )
-
-    alertController.addAction(
-      UIAlertAction(
-        title: Strings.Yes_change_currency(),
-        style: .default,
-        handler: { [weak self] _ in
-          self?.viewModel.inputs.didConfirmChangeCurrency(currency: currency)
-        }
-      )
-    )
-
-    alertController.addAction(
-      UIAlertAction(
-        title: Strings.Cancel(),
-        style: .cancel,
-        handler: nil
-      )
-    )
-
-    self.present(alertController, animated: true, completion: nil)
+    self.viewModel.inputs.showChangeCurrencyAlert(for: currency)
   }
 
   internal func shouldDismissCurrencyPicker() {

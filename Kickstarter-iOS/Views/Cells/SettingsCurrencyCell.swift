@@ -9,28 +9,11 @@ final class SettingsCurrencyCell: UITableViewCell, NibLoading, ValueCell {
 
   private let viewModel: SettingsCurrencyCellViewModelType = SettingsCurrencyCellViewModel()
 
-  func configureWith(value: SettingsCellValue) {
-    switch value.cellType {
-    case SettingsAccountCellType.currency:
-      NotificationCenter.default
-        .addObserver(self,
-                     selector: #selector(updateCurrencyDetailText),
-                     name: .ksr_updatedCurrencyCellDetailText,
-                     object: nil)
-    default:
-      break
-    }
-
+  func configureWith(value: SettingsCurrencyCellValue) {
     self.viewModel.inputs.configure(with: value)
 
     _ = titleLabel
       |> UILabel.lens.text .~ value.cellType.title
-  }
-
-  @objc internal func updateCurrencyDetailText(notification: NSNotification) {
-    if let currencyText = notification.userInfo?["text"] as? String {
-      self.currentCurrencyLabel.text = currencyText
-    }
   }
 
   override func bindStyles() {

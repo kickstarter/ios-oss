@@ -1,9 +1,14 @@
 import KsApi
 import Library
 
-final class SettingsAccountDataSource: ValueCellDataSource {
+public struct SettingsCurrencyCellValue {
+  public let cellType: SettingsCellTypeProtocol
+  public let currency: Currency
+}
 
-  func configureRows(user: User) {
+final class SettingsAccountDataSource: ValueCellDataSource {
+  func configureRows(user: User, currency: Currency) {
+    clearValues()
     SettingsAccountSectionType.allCases
       .forEach { section -> Void in
       let values = section.cellRowsForSection.map { SettingsCellValue(user: nil, cellType: $0) }
@@ -12,11 +17,11 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                cellClass: SettingsTableViewCell.self,
                inSection: section.rawValue)
     }
-    _ = insertCurrencyCell(user: user)
+    _ = insertCurrencyCell(currency: currency)
   }
 
-  func insertCurrencyCell(user: User) -> IndexPath {
-    let cellValue = SettingsCellValue(user: user, cellType: SettingsAccountCellType.currency)
+  func insertCurrencyCell(currency: Currency) -> IndexPath {
+    let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency )
 
     return self.insertRow(value: cellValue,
                           cellClass: SettingsCurrencyCell.self,
@@ -42,9 +47,13 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {
-    let value = self[indexPath] as? SettingsCellValue
-
-    return value?.cellType as? SettingsAccountCellType
+    if let value = self[indexPath] as? SettingsCellValue {
+      return value.cellType as? SettingsAccountCellType
+    } else if let currencyValue = self[indexPath] as? SettingsCurrencyCellValue {
+      return currencyValue.cellType as? SettingsAccountCellType
+    } else {
+      return nil
+    }
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
@@ -53,7 +62,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as SettingsCurrencyPickerCell, value as SettingsCellValue):
       cell.configureWith(value: value)
-    case let (cell as SettingsCurrencyCell, value as SettingsCellValue):
+    case let (cell as SettingsCurrencyCell, value as SettingsCurrencyCellValue):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
