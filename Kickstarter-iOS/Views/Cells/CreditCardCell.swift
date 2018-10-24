@@ -6,13 +6,14 @@ import UIKit
 
 internal final class CreditCardCell: UITableViewCell, ValueCell {
 
+  private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
+
   @IBOutlet fileprivate weak var cardImageView: UIImageView!
   @IBOutlet fileprivate weak var cardNumberLabel: UILabel!
   @IBOutlet fileprivate weak var expirationDateLabel: UILabel!
 
   public func configureWith(value card: GraphUserCreditCard.CreditCard) {
-    self.cardNumberLabel.text = card.lastFour
-    self.expirationDateLabel.text = card.expirationDate
+    self.viewModel.inputs.configureWith(creditCard: card)
   }
 
   override func bindStyles() {
@@ -23,5 +24,12 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
 
     _ = self.expirationDateLabel
       |> settingsSectionLabelStyle
+  }
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.cardNumberLabel.rac.text = self.viewModel.outputs.cardNumberText
+    self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
   }
 }
