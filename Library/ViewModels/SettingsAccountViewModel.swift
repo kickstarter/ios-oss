@@ -6,20 +6,20 @@ import Result
 
 public protocol SettingsAccountViewModelInputs {
   func didConfirmChangeCurrency()
-  func didSelectRow(cellType: SettingsAccountCellType)
   func dismissPickerTap()
+  func didSelectRow(cellType: SettingsAccountCellType)
   func showChangeCurrencyAlert(for currency: Currency)
   func viewDidLoad()
 }
 
 public protocol SettingsAccountViewModelOutputs {
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
-  var reloadData: Signal<(User, Currency), NoError> { get }
   var presentCurrencyPicker: Signal<Bool, NoError> { get }
+  var reloadData: Signal<(User, Currency), NoError> { get }
+  var showAlert: Signal<(), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
   var updateCurrency: Signal<Currency, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
-  var showAlert: Signal<(), NoError> { get }
 }
 
 public protocol SettingsAccountViewModelType {
@@ -64,11 +64,11 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
           .materialize()
     }
 
-    self.updateCurrencyFailure = updateCurrencyEvent.errors()
-      .map { $0.localizedDescription }
-
     self.updateCurrency = self.changeCurrencyAlertProperty.signal.skipNil()
       .takeWhen(updateCurrencyEvent.values().ignoreValues())
+
+    self.updateCurrencyFailure = updateCurrencyEvent.errors()
+      .map { $0.localizedDescription }
 
     let currency = Signal.merge(chosenCurrency, self.updateCurrency)
 

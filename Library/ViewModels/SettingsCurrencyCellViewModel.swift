@@ -21,7 +21,6 @@ public final class SettingsCurrencyCellViewModel: SettingsCurrencyCellViewModelT
 SettingsCurrencyCellViewModelInputs, SettingsCurrencyCellViewModelOutputs {
 
   public init() {
-
     self.chosenCurrencyText = self.currencyProperty.signal.skipNil()
       .map { $0.descriptionText }
   }

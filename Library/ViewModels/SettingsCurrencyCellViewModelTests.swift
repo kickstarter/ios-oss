@@ -20,14 +20,13 @@ internal final class SettingsCurrencyCellViewModelTests: TestCase {
   }
 
   internal func testChosenCurrencyText() {
-    let user = User.template
-
-    let value = SettingsCellValue(user: user, cellType: SettingsAccountCellType.currency)
+    let currency = Currency.USD
+    let value = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency)
 
     withEnvironment(apiService: MockService(fetchGraphCurrencyResponse: .template)) {
       self.vm.inputs.configure(with: value)
       self.scheduler.advance()
-      self.chosenCurrencyText.assertValues(["", Strings.Currency_USD()])
+      self.chosenCurrencyText.assertValues([Strings.Currency_USD()])
     }
   }
 }
