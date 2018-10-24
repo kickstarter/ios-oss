@@ -320,11 +320,20 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   }
 
   @objc fileprivate func saveButtonTapped() {
-    if #available(iOS 10.0, *) {
-      let notification = UIImpactFeedbackGenerator(style: .light)
-      notification.impactOccurred()
+    if self.saveButton.isSelected {
+      if #available(iOS 10.0, *) {
+        let notification = UISelectionFeedbackGenerator()
+        notification.selectionChanged()
+      } else {
+        // Fallback on earlier versions
+        }
     } else {
-      // Fallback on earlier versions
+      if #available(iOS 10.0, *) {
+        let notification = UINotificationFeedbackGenerator()
+        notification.notificationOccurred(.success)
+      } else {
+        // Fallback on earlier versions
+      }
     }
     self.viewModel.inputs.saveButtonTapped()
   }
