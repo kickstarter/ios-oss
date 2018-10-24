@@ -11,8 +11,6 @@ public protocol SettingsAccountViewModelInputs {
   func showChangeCurrencyAlert(for currency: Currency)
   func viewDidLoad()
 }
-// TODO
-// remove outputs, testing
 
 public protocol SettingsAccountViewModelOutputs {
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
@@ -42,7 +40,6 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       }
       .skipNil()
 
-
     let fetchedCurrency = self.viewDidLoadProperty.signal
       .switchMap { _ in
         return AppEnvironment.current.apiService
@@ -52,8 +49,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     let chosenCurrency = fetchedCurrency.values().map {
       Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue)
-        ?? Currency.USD } // TODO : test
-
+        ?? Currency.USD }
 
     let currencyCellSelected = self.selectedCellTypeProperty.signal
       .skipNil()

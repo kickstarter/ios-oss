@@ -10,7 +10,6 @@ public enum CurrentUserNotifications {
   public static let userUpdated = "CurrentUserNotifications.userUpdated"
   public static let languageChanged = "CurrentUserNotification.languageChanged"
   public static let environmentChanged = "CurrentUserNotification.environmentChanged"
-  public static let updatedCurrencyCellDetailText = "CurrentUserNotification.updatedCurrencyCellDetailText"
 }
 
 public enum UserInfoKeys {
@@ -34,6 +33,4 @@ extension Notification.Name {
   public static let ksr_environmentChanged = Notification.Name(rawValue:
     CurrentUserNotifications.environmentChanged
   )
-  public static let ksr_updatedCurrencyCellDetailText = Notification.Name(rawValue:
-    CurrentUserNotifications.updatedCurrencyCellDetailText)
 }
