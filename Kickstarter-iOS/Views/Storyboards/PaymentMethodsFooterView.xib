@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PaymentMethodsFooterView" customModule="Kickstarter_Framework" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--cross" translatesAutoresizingMaskIntoConstraints="NO" id="hvO-Fi-1vi">
+                    <rect key="frame" x="16" y="44" width="19" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="19" id="5N3-Es-1DY"/>
+                        <constraint firstAttribute="height" constant="22" id="9NL-a2-j7r"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uK7-rQ-yzD">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                    <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="nDJ-JW-rci"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6W5-lQ-0Yl">
+                    <rect key="frame" x="43" y="39" width="324" height="33"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVF-Hv-L8e">
+                    <rect key="frame" x="0.0" y="28" width="375" height="52"/>
+                    <connections>
+                        <action selector="addNewCardButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="gaO-4r-vlv"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="hvO-Fi-1vi" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="1ih-aX-3hQ"/>
+                <constraint firstItem="ZVF-Hv-L8e" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="7dI-hL-ekl"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="hvO-Fi-1vi" secondAttribute="bottom" constant="14" id="FUx-HG-sNH"/>
+                <constraint firstItem="ZVF-Hv-L8e" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="Pmu-nX-r0M"/>
+                <constraint firstItem="6W5-lQ-0Yl" firstAttribute="top" secondItem="uK7-rQ-yzD" secondAttribute="bottom" constant="9" id="QMl-nQ-NeW"/>
+                <constraint firstItem="uK7-rQ-yzD" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="RAy-az-ON4"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="6W5-lQ-0Yl" secondAttribute="trailing" constant="8" id="SNX-Ge-6lH"/>
+                <constraint firstAttribute="bottom" secondItem="ZVF-Hv-L8e" secondAttribute="bottom" id="WNj-j8-6wK"/>
+                <constraint firstItem="uK7-rQ-yzD" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="ab0-oH-Rlf"/>
+                <constraint firstItem="6W5-lQ-0Yl" firstAttribute="leading" secondItem="hvO-Fi-1vi" secondAttribute="trailing" constant="8" id="fGa-Zu-Vmh"/>
+                <constraint firstItem="ZVF-Hv-L8e" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="28" id="iRq-ZL-gBs"/>
+                <constraint firstItem="uK7-rQ-yzD" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="iY6-mO-iZz"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="6W5-lQ-0Yl" secondAttribute="bottom" constant="8" id="xAB-au-1Ek"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="addIconImageView" destination="hvO-Fi-1vi" id="ooI-f3-FGn"/>
+                <outlet property="titleLabel" destination="6W5-lQ-0Yl" id="mPq-3u-hcw"/>
+            </connections>
+            <point key="canvasLocation" x="138.40000000000001" y="-127.736131934033"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon--cross" width="22" height="22"/>
+    </resources>
+</document>

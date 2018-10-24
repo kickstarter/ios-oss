@@ -24,16 +24,23 @@ internal final class PaymentMethodsViewController: UIViewController {
 
     self.viewModel.inputs.viewDidLoad()
     self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = headerLabel
-      |> settingsSectionLabelStyle
-      |> UILabel.lens.text %~ { _ in
-        Strings.Change_payment_method()
+    _ = self
+      |> \.view.backgroundColor .~ .ksr_grey_200
+
+    _ = self.headerLabel
+      |> settingsDescriptionLabelStyle
+      |> \.text %~ { _ in
+        "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience."
     }
+
+    _ = self.tableView
+      |> \.backgroundColor .~ .clear
   }
 
   override func bindViewModel() {
@@ -45,5 +52,16 @@ internal final class PaymentMethodsViewController: UIViewController {
         self?.dataSource.load(creditCards: result)
         self?.tableView.reloadData()
     }
+  }
+}
+
+extension PaymentMethodsViewController: UITableViewDelegate {
+
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return CGFloat.zero()
+  }
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return 0.1
   }
 }
