@@ -46,17 +46,11 @@ public protocol ProjectPamphletViewModelType {
   var outputs: ProjectPamphletViewModelOutputs { get }
 }
 
-private var fields: Set<Query.User> = [.id,
-                                       .name,
-                                       .image(alias: "avatarSmall", width: 25),
-                                       .image(alias: "avatarMedium", width: 50),
-                                       .chosenCurrency]
-
-private var userQuery: Query = Query.user(.id +| fields)
-
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
 ProjectPamphletViewModelOutputs {
+
   public init() {
+
     let freshProjectAndLiveStreamsAndRefTag = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
