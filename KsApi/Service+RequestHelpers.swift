@@ -90,7 +90,7 @@ extension Service {
     let queryString: String = Query.build(query)
 
     let request = self.preparedRequest(forURL: self.serverConfig.graphQLEndpointUrl,
-                                       queryString: string)
+                                       queryString: queryString)
 
     print("⚪️ [KsApi] Starting query:\n \(queryString)")
     return performRequest(request: request)
@@ -169,19 +169,3 @@ extension Service {
         .flatMap(decodeModel)
   }
 }
-
-let string = """
-            query {
-              me {
-                id
-                storedCards {
-                    nodes {
-                      id
-                      expirationDate
-                      type
-                      lastFour
-                    }
-                  }
-                }
-              }
-            """
