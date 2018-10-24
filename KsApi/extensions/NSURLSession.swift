@@ -21,6 +21,8 @@ internal extension URLSession {
       let producer = file.map { self.rac_dataWithRequest(request, uploading: $0, named: $1) }
         ?? self.reactive.data(with: request)
 
+      print("⚪️ [KsApi] Starting request \(self.sanitized(request))")
+
       return producer
         .start(on: scheduler)
         .flatMapError { _ in SignalProducer(error: .couldNotParseErrorEnvelopeJSON) } // NSError
@@ -33,7 +35,7 @@ internal extension URLSession {
             let contentType = headers["Content-Type"], contentType.hasPrefix("application/json")
             else {
 
-              print("[KsApi] Failure \(self.sanitized(request))")
+              print("🔴 [KsApi] Failure \(self.sanitized(request))")
 
               if let json = parseJSONData(data) {
                 switch decode(json) as Decoded<ErrorEnvelope> {
@@ -50,7 +52,7 @@ internal extension URLSession {
               }
             }
 
-          print("[KsApi] Success \(self.sanitized(request))")
+          print("🔵 [KsApi] Success \(self.sanitized(request))")
           return SignalProducer(value: data)
         }
   }

@@ -1,8 +1,7 @@
 import Foundation
-import Library
 import KsApi
 
-extension GraphError {
+public extension GraphError {
   var localizedDescription: String {
     switch self {
     case .decodeError(let responseError):

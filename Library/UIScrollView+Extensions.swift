@@ -16,4 +16,16 @@ extension UIScrollView {
       self.setContentOffset(CGPoint(x: 0.0, y: -self.contentInset.top), animated: true)
     }
   }
+
+  /**
+   Adjusts its contentInset according to Keyboard visibility.
+   */
+  public func handleKeyboardVisibilityDidChange(_ change: Keyboard.Change) {
+    UIView.animate(withDuration: change.duration,
+                   delay: 0.0,
+                   options: change.options,
+                   animations: { [weak self] in
+                    self?.contentInset.bottom = change.frame.height
+      }, completion: nil)
+  }
 }
