@@ -12,6 +12,7 @@ internal final class PaymentMethodsViewController: UIViewController {
   @IBOutlet private weak var tableView: UITableView! {
     didSet {
       self.tableView.register(nib: .CreditCardCell)
+      self.tableView.registerHeaderFooter(nib: .PaymentMethodsFooterView)
     }
   }
 
@@ -41,6 +42,8 @@ internal final class PaymentMethodsViewController: UIViewController {
 
     _ = self.tableView
       |> \.backgroundColor .~ .clear
+      |> \.separatorStyle .~ .none
+      |> \.estimatedRowHeight .~ 77
   }
 
   override func bindViewModel() {
@@ -57,11 +60,26 @@ internal final class PaymentMethodsViewController: UIViewController {
 
 extension PaymentMethodsViewController: UITableViewDelegate {
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return CGFloat.zero()
-  }
-
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 0.1
+  }
+
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 80
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    let footer = tableView.dequeueReusableHeaderFooterView(
+      withIdentifier: Nib.PaymentMethodsFooterView.rawValue
+    ) as? PaymentMethodsFooterView
+    footer?.delegate = self
+    return footer
+  }
+}
+
+extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
+
+  internal func didTapAddNewCardButton() {
+    print("Did tap button")
   }
 }

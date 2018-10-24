@@ -11,6 +11,7 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var cardImageView: UIImageView!
   @IBOutlet fileprivate weak var cardNumberLabel: UILabel!
   @IBOutlet fileprivate weak var expirationDateLabel: UILabel!
+  @IBOutlet fileprivate weak var separatorView: UIView!
 
   public func configureWith(value card: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: card)
@@ -19,11 +20,17 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.cardImageView
+      |> \.contentMode .~ .scaleAspectFill
+
     _ = self.cardNumberLabel
       |> settingsTitleLabelStyle
 
     _ = self.expirationDateLabel
-      |> settingsSectionLabelStyle
+      |> settingsDescriptionLabelStyle
+
+    _ = self.separatorView
+      |> separatorStyle
   }
 
   override func bindViewModel() {
@@ -31,5 +38,13 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
 
     self.cardNumberLabel.rac.text = self.viewModel.outputs.cardNumberText
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
+
+    self.viewModel.outputs.cardImage
+      .observeForUI()
+      .observeValues { [weak self] image in
+        guard let _self = self else { return }
+        _ = _self.imageView
+          ?|> \.image .~ image
+    }
   }
 }
