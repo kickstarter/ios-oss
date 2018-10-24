@@ -226,12 +226,12 @@ public enum Query {
     case optedOutOfRecommendations
     case showPublicProfile
     case savedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
-    case storedCards(Set<QueryArg<Never>>, NonEmptySet<Connection<StoredCards>>)
+    case storedCards(Set<QueryArg<Never>>, NonEmptySet<Connection<CreditCard>>)
     case slug
     case url
     case userId
 
-    public enum StoredCards {
+    public enum CreditCard {
       case expirationDate
       case id
       case lastFour
@@ -422,7 +422,7 @@ extension Query.User: QueryType {
   }
 }
 
-extension Query.User.StoredCards: QueryType {
+extension Query.User.CreditCard: QueryType {
   public var description: String {
     switch self {
     case .expirationDate: return "expirationDate"
