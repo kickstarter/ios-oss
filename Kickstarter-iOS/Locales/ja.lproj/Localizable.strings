@@ -45,8 +45,11 @@
 "Biography" = "自己紹介";
 "Bookmarks" = "ブックマーク";
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
+"CVC" = "CVC";
 "Cancel" = "キャンセル";
 "Cancel_your_pledge" = "プレッジを取り消す";
+"Card_number" = "Card number";
+"Cardholder_name" = "Cardholder name";
 "Change_currency" = "通貨の変更";
 "Change_email" = "メールアドレスを変更";
 "Change_password" = "パスワードを変更";
@@ -119,6 +122,7 @@
 "Ending_soon" = "終了直前";
 "Estimated_delivery" = "配達予定日：";
 "Expands_subcategories" = "サブカテゴリーを表示";
+"Expiration" = "Expiration";
 "Expired_date_at_time" = "有効期限: %{date} %{time}";
 "Expires_date_at_time" = "有効期限: %{date} %{time}";
 "Explore" = "さがす";
@@ -229,6 +233,7 @@
 "Log_in_to_leave_a_comment" = "ログインしてコメントを残す。";
 "Log_out" = "ログアウト";
 "Love_film_We_do_too" = "映画ファン？そんなあなたに必須のニュースレター。";
+"MMYY" = "MM/YY";
 "Make_a_pledge_without_a_reward" = "リワードなしでプレッジ";
 "Making_this_change" = "この変更によって、プロジェクトゴールとプレッジ額が選択された通貨で表示されます。";
 "Manage_your_pledge" = "プレッジを変更";
@@ -360,6 +365,7 @@
 "Saved_projects" = "プロジェクトを保存";
 "Saves_project" = "プロジェクトを保存";
 "Say_something_kind" = "言葉に注意";
+"Security_code" = "Security code";
 "See_all_category_name_projects" = "%{category_name} プロジェクトをすべて見る";
 "Select_another_project" = "他のプロジェクトを選ぶ";
 "Select_this_reward" = "このリワードを選ぶ";
@@ -467,6 +473,7 @@
 "Youre_a_backer" = "バッカーになりました！";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
 "Youve_pledged_to_support_this_project" = "このプレッジ済のプロジェクトは、現在もファンド中";
+"Zip_code" = "Zip code";
 "accessibility.dashboard.buttons.activity" = "アクティビティ";
 "accessibility.dashboard.buttons.activity_hint" = "アクティビティをみる";
 "accessibility.dashboard.buttons.messages" = "メッセージ";

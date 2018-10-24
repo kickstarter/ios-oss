@@ -45,8 +45,11 @@
 "Biography" = "Biografie";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
+"CVC" = "CVC";
 "Cancel" = "Abbrechen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
+"Card_number" = "Card number";
+"Cardholder_name" = "Cardholder name";
 "Change_currency" = "Währung ändern";
 "Change_email" = "E-Mail-Adresse ändern";
 "Change_password" = "Passwort ändern";
@@ -119,6 +122,7 @@
 "Ending_soon" = "Endet bald";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Expands_subcategories" = "Erweitert die Anzeige der Unterkategorien.";
+"Expiration" = "Expiration";
 "Expired_date_at_time" = "Abgelaufen am %{date} um %{time}";
 "Expires_date_at_time" = "Läuft am %{date} um %{time} ab";
 "Explore" = "Erkunden";
@@ -229,6 +233,7 @@
 "Log_in_to_leave_a_comment" = "Melde dich an, um einen Kommentar zu hinterlassen.";
 "Log_out" = "Abmelden";
 "Love_film_We_do_too" = "Du bist Kino-Fan? Wir auch.";
+"MMYY" = "MM/YY";
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
 "Making_this_change" = "Wenn du die Währung wechselst, werden das Finanzierungsziel und die Finanzierungsbeiträge in der von dir gewählten Währung angezeigt.";
 "Manage_your_pledge" = "Meinen Beitrag verwalten";
@@ -360,6 +365,7 @@
 "Saved_projects" = "Gespeicherte Projekte";
 "Saves_project" = "Speichert dieses Projekt.";
 "Say_something_kind" = "Sag etwas Nettes ...";
+"Security_code" = "Security code";
 "See_all_category_name_projects" = "Alle %{category_name}-Projekte anzeigen";
 "Select_another_project" = "Wähle ein anderes Projekt aus";
 "Select_this_reward" = "Diese Belohnung wählen";
@@ -467,6 +473,7 @@
 "Youre_a_backer" = "Du unterstützt das Projekt!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
 "Youve_pledged_to_support_this_project" = "Du hast einen Finazierungsbeitrag zu diesem Projekt geleistet. Die Frist für die Finanzierung ist noch nicht abgelaufen.";
+"Zip_code" = "Zip code";
 "accessibility.dashboard.buttons.activity" = "Aktivität";
 "accessibility.dashboard.buttons.activity_hint" = "Öffnet Sparte Aktivität.";
 "accessibility.dashboard.buttons.messages" = "Nachrichten";

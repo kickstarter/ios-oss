@@ -58,8 +58,29 @@ internal final class AddNewCardViewController: UIViewController {
          self.zipCodeTextField]
       ||> UITextField.lens.keyboardType .~ .numberPad
 
+    _ = self.cardNumberLabel
+      |> UILabel.lens.text %~ { _ in Strings.Card_number() }
+
+    _ = self.cardholderNameLabel
+      |> UILabel.lens.text %~ { _ in Strings.Cardholder_name() }
+
+    _ = self.expirationLabel
+      |> UILabel.lens.text %~ { _ in Strings.Expiration() }
+
+    _ = self.securityCodeLabel
+      |> UILabel.lens.text %~ { _ in Strings.Security_code() }
+
+    _ = self.zipCodeLabel
+      |> UILabel.lens.text %~ { _ in Strings.Zip_code() }
+
     _ = self.cardholderNameTextField
       |> UITextField.lens.placeholder %~ { _ in Strings.Name() }
+
+    _ = self.expirationTextField
+      |> UITextField.lens.placeholder %~ { _ in Strings.MMYY() }
+
+    _ = self.securityCodeTextField
+      |> UITextField.lens.placeholder %~ { _ in Strings.CVC() }
   }
 
   @objc fileprivate func cancelButtonTapped() {

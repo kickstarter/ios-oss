@@ -45,8 +45,11 @@
 "Biography" = "Biography";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
+"CVC" = "CVC";
 "Cancel" = "Cancel";
 "Cancel_your_pledge" = "Cancel your pledge";
+"Card_number" = "Card number";
+"Cardholder_name" = "Cardholder name";
 "Change_currency" = "Change currency";
 "Change_email" = "Change email";
 "Change_password" = "Change password";
@@ -119,6 +122,7 @@
 "Ending_soon" = "Ending Soon";
 "Estimated_delivery" = "Estimated delivery:";
 "Expands_subcategories" = "Expands subcategories.";
+"Expiration" = "Expiration";
 "Expired_date_at_time" = "Expired %{date} at %{time}";
 "Expires_date_at_time" = "Expires %{date} at %{time}";
 "Explore" = "Explore";
@@ -229,6 +233,7 @@
 "Log_in_to_leave_a_comment" = "Log in to leave a comment.";
 "Log_out" = "Log out";
 "Love_film_We_do_too" = "Love film? We do, too.";
+"MMYY" = "MM/YY";
 "Make_a_pledge_without_a_reward" = "Make a pledge without a reward";
 "Making_this_change" = "Making this change will allow you to see project goal and pledge amounts converted to your chosen currency.";
 "Manage_your_pledge" = "Manage your pledge";
@@ -360,6 +365,7 @@
 "Saved_projects" = "Saved projects";
 "Saves_project" = "Saves project.";
 "Say_something_kind" = "Say something kind...";
+"Security_code" = "Security code";
 "See_all_category_name_projects" = "See all %{category_name} projects";
 "Select_another_project" = "Select another project";
 "Select_this_reward" = "Select this reward";
@@ -467,6 +473,7 @@
 "Youre_a_backer" = "You’re a backer!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.";
 "Youve_pledged_to_support_this_project" = "You’ve pledged to support this project and it’s currently still funding.";
+"Zip_code" = "Zip code";
 "accessibility.dashboard.buttons.activity" = "Activity";
 "accessibility.dashboard.buttons.activity_hint" = "Opens activity.";
 "accessibility.dashboard.buttons.messages" = "Messages";
