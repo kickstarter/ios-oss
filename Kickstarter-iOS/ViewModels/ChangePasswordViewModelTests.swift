@@ -151,7 +151,7 @@ final class ChangePasswordViewModelTests: TestCase {
 
       scheduler.advance()
 
-      self.changePasswordFailureObserver.assertValues(["Error changing password"])
+      self.changePasswordFailureObserver.assertValueCount(1)
 
       self.activityIndicatorShouldShowObserver.assertValues([true, false])
     }
