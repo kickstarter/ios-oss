@@ -1,7 +1,7 @@
 import Prelude
 import UIKit
 
-public protocol PaymentMethodsFooterViewDelegate {
+internal protocol PaymentMethodsFooterViewDelegate: class {
   func didTapAddNewCardButton()
 }
 
@@ -9,8 +9,8 @@ internal final class PaymentMethodsFooterView: UIView {
 
   public var delegate: PaymentMethodsFooterViewDelegate?
 
-  @IBOutlet weak var addIconImageView: UIImageView!
-  @IBOutlet weak var titleLabel: UILabel!
+  @IBOutlet private weak var addIconImageView: UIImageView!
+  @IBOutlet private weak var titleLabel: UILabel!
 
   override func bindStyles() {
     super.bindViewModel()
