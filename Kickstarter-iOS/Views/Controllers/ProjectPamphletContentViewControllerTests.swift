@@ -22,6 +22,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     self.cosmicSurgery = project
 
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
+
     UIView.setAnimationsEnabled(false)
   }
 
