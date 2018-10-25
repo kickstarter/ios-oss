@@ -62,6 +62,7 @@ internal struct MockService: ServiceType {
   fileprivate let fetchGraphCurrencyResponse: UserCurrency?
   fileprivate let fetchGraphUserEmailResponse: GraphUserEmail?
 
+  fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard.CreditCard>?
   fileprivate let fetchGraphCreditCardsError: GraphError?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -196,7 +197,8 @@ internal struct MockService: ServiceType {
                 fetchFriendStatsError: ErrorEnvelope? = nil,
                 fetchExportStateResponse: ExportDataEnvelope? = nil,
                 fetchExportStateError: ErrorEnvelope? = nil,
-                fetchGraphUserCreditCardsError: GraphError? = nil,
+                fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard.CreditCard>? = nil,
+                fetchGraphCreditCardsError: GraphError? = nil,
                 exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
@@ -385,7 +387,8 @@ internal struct MockService: ServiceType {
     self.fetchUserResponse = fetchUserResponse
     self.fetchUserError = fetchUserError
 
-    self.fetchGraphCreditCardsError = fetchGraphUserCreditCardsError
+    self.fetchGraphCreditCardsError = fetchGraphCreditCardsError
+    self.fetchGraphCreditCardsResponse = fetchGraphCreditCardsResponse
 
     self.fetchUserSelfResponse = fetchUserSelfResponse ?? .template
     self.fetchUserSelfError = fetchUserSelfError
