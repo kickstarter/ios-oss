@@ -1682,6 +1682,7 @@
 			proxyType = 1;
 			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
 			remoteInfo = "Kickstarter-iOS";
+		};
 		D0B9FA9F217E76880066E6E6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 80762DE71D071BCF0074189D /* AlamofireImage.xcodeproj */;
