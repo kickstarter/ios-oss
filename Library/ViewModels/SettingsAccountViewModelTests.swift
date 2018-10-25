@@ -15,7 +15,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
   let reloadDataUser = TestObserver<User, NoError>()
   let reloadDataCurrency = TestObserver<Currency, NoError>()
   let showAlert = TestObserver<(), NoError>()
-  let updateCurrency = TestObserver<Currency, NoError>()
   let updateCurrencyFailure = TestObserver<String, NoError>()
 
   internal override func setUp() {
@@ -25,7 +24,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.vm.outputs.reloadData.map(first).observe(self.reloadDataUser.observer)
     self.vm.outputs.reloadData.map(second).observe(self.reloadDataCurrency.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
-    self.vm.outputs.updateCurrency.observe(self.updateCurrency.observer)
     self.vm.outputs.updateCurrencyFailure.observe(self.updateCurrencyFailure.observer)
   }
 
@@ -33,6 +31,9 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.reloadDataUser.assertValueCount(1)
     self.reloadDataCurrency.assertValueCount(1)
+    self.vm.inputs.showChangeCurrencyAlert(for: Currency.CHF)
+    self.vm.inputs.didConfirmChangeCurrency()
+    self.scheduler.advance()
   }
 
   func testPresentCurrencyPicker() {
@@ -59,16 +60,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.reloadDataCurrency.assertValueCount(1)
     self.vm.inputs.showChangeCurrencyAlert(for: Currency.EUR)
     self.showAlert.assertDidEmitValue()
-  }
-
-  func testUpdateCurrency() {
-    self.vm.inputs.viewDidLoad()
-    self.reloadDataUser.assertValueCount(1)
-    self.reloadDataCurrency.assertValueCount(1)
-    self.vm.inputs.showChangeCurrencyAlert(for: Currency.CHF)
-    self.vm.inputs.didConfirmChangeCurrency()
-    self.scheduler.advance()
-    self.updateCurrency.assertValues([Currency.CHF])
   }
 
   func testUpdateCurrencyFailure() {
