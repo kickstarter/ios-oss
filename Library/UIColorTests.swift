@@ -14,7 +14,7 @@ final class UIColorTests: XCTestCase {
 
     var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
     redAlpha.getRed(&r, green: &g, blue: &b, alpha: &a)
-    XCTAssertEqualWithAccuracy(0.5, a, accuracy: 0.01)
+    XCTAssertEqual(0.5, a, accuracy: 0.01)
 
     XCTAssertEqual(UIColor.hex(0xA6000000), UIColor.hex(0x000000))
 
