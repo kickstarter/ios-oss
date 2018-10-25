@@ -121,9 +121,9 @@ private func stringToBool(_ string: String?) -> Decoded<Bool?> {
   guard let string = string else { return .success(nil) }
   switch string {
   // taken from server's `value_to_boolean` function
-  case "true", "1", "t", "T", "true", "TRUE", "on", "ON":
+  case "true", "1", "t", "T", "TRUE", "on", "ON":
     return .success(true)
-  case "false", "0", "f", "F", "false", "FALSE", "off", "OFF":
+  case "false", "0", "f", "F", "FALSE", "off", "OFF":
     return .success(false)
   default:
     return .failure(.custom("Could not parse string into bool."))
