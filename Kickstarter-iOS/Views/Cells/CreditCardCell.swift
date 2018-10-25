@@ -20,9 +20,6 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.cardImageView
-      |> \.contentMode .~ .scaleAspectFill
-
     _ = self.cardNumberLabel
       |> settingsTitleLabelStyle
 
