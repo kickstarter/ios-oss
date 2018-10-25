@@ -55,6 +55,16 @@ internal final class PaymentMethodsViewController: UIViewController {
         self?.dataSource.load(creditCards: result)
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.goToAddCardScreen
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.goToAddCardScreen()
+    }
+  }
+
+  private func goToAddCardScreen() {
+    
   }
 }
 
@@ -80,6 +90,6 @@ extension PaymentMethodsViewController: UITableViewDelegate {
 extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
 
   internal func didTapAddNewCardButton() {
-    print("Did tap button")
+    self.viewModel.inputs.didTapAddNewCardButton()
   }
 }
