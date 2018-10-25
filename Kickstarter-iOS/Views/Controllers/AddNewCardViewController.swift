@@ -29,7 +29,7 @@ internal final class AddNewCardViewController: UIViewController {
                                        style: .plain,
                                        target: self,
                                        action: #selector(cancelButtonTapped))
-    cancelButton.tintColor = UIColor.ksr_green_700
+    cancelButton.tintColor = .ksr_green_700
     self.navigationItem.leftBarButtonItem = cancelButton
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
