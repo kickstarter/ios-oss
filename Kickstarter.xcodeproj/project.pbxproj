@@ -144,10 +144,7 @@
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
-		775DFA9D215E758400620CED /* GraphMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DFA9C215E758400620CED /* GraphMutation.swift */; };
-		775DFAD5215EB2AB00620CED /* Service+RequestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DFAD4215EB2AB00620CED /* Service+RequestHelpers.swift */; };
 		775DFADA2162A48900620CED /* ChangePasswordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DFAD82162A43F00620CED /* ChangePasswordInput.swift */; };
-		775DFB092162C08800620CED /* MessageBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DFB082162C08800620CED /* MessageBannerViewController.swift */; };
 		776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */; };
 		776E31CE2147DE6A00EFC09A /* Stripe.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		776E31CF2147DE8000EFC09A /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
@@ -161,7 +158,6 @@
 		778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */; };
 		778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */; };
 		7784557F216CFA49002DE57B /* MessageBannerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77845547216CF942002DE57B /* MessageBannerType.swift */; };
-		77883BD62162C2E100BC46CA /* MessageBannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77883BD52162C2E100BC46CA /* MessageBannerViewModel.swift */; };
 		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
 		7793B13521067D62007857C0 /* SettingsNotificationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B13421067D62007857C0 /* SettingsNotificationCellViewModel.swift */; };
 		7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */; };
@@ -852,6 +848,9 @@
 		D01673A31E3A2CC800651DBA /* LiveStreamEventsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01673A21E3A2CC800651DBA /* LiveStreamEventsEnvelope.swift */; };
 		D01673DF1E3A354B00651DBA /* LiveStreamEventsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01673DE1E3A354B00651DBA /* LiveStreamEventsEnvelopeTemplates.swift */; };
 		D01673E41E3A35ED00651DBA /* LiveStreamEventsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01673E21E3A35E700651DBA /* LiveStreamEventsEnvelopeTests.swift */; };
+		D0198F3421793FCF0090A9EC /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E66AF212B7AB500C61708 /* SettingsViewControllerTests.swift */; };
+		D0198F3521793FCF0090A9EC /* GraphMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DFA9C215E758400620CED /* GraphMutation.swift */; };
+		D0198F3621793FCF0090A9EC /* Service+RequestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DFAD4215EB2AB00620CED /* Service+RequestHelpers.swift */; };
 		D01BEA081F0259A30064C1D9 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01BE9E71F02598A0064C1D9 /* Result.framework */; };
 		D01BEA091F0259A30064C1D9 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01BE9E71F02598A0064C1D9 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D01BEA0C1F0259AC0064C1D9 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01BE9FB1F02598F0064C1D9 /* Runes.framework */; };
@@ -1683,6 +1682,12 @@
 			proxyType = 1;
 			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
 			remoteInfo = "Kickstarter-iOS";
+		D0B9FA9F217E76880066E6E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80762DE71D071BCF0074189D /* AlamofireImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4C11830B2150517E007A8298;
+			remoteInfo = "iOS Example";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -2950,6 +2955,7 @@
 				80762DFB1D071BCF0074189D /* AlamofireImage.framework */,
 				80762DFD1D071BCF0074189D /* AlamofireImage tvOS Tests.xctest */,
 				80762DFF1D071BCF0074189D /* AlamofireImage.framework */,
+				D0B9FAA0217E76880066E6E6 /* iOS Example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4657,7 +4663,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = Kickstarter;
 				TargetAttributes = {
 					A755113B1C8642B3005355CF = {
@@ -5245,6 +5251,13 @@
 			fileType = wrapper.cfbundle;
 			path = ReactiveSwiftTests.xctest;
 			remoteRef = D0745B471EEB0B5E00FA53D3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D0B9FAA0217E76880066E6E6 /* iOS Example.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "iOS Example.app";
+			remoteRef = D0B9FA9F217E76880066E6E6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -5873,7 +5886,6 @@
 				014D63011E721D500033D2BD /* BackerDashboardProjectCell.swift in Sources */,
 				598D96B41D41790C003F3F66 /* ActivitySampleBackingCell.swift in Sources */,
 				A7CC143C1D00E74F00035C52 /* FindFriendsFacebookConnectCell.swift in Sources */,
-				775DFB092162C08800620CED /* MessageBannerViewController.swift in Sources */,
 				014A8DEB1CE3C350003BF51C /* ThanksProjectsDataSource.swift in Sources */,
 				A74FFDF01CE3E33300C7BCB9 /* MessageDialogViewController.swift in Sources */,
 				01515F8C1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift in Sources */,
@@ -6035,7 +6047,6 @@
 				01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				A731BF901D1EE4CD00A734AC /* UpdateViewModel.swift in Sources */,
-				77883BD62162C2E100BC46CA /* MessageBannerViewModel.swift in Sources */,
 				A72C3AB51D00FB1F0075227E /* DiscoveryExpandableRowCell.swift in Sources */,
 				A7FA38D91D9068AD0041FC9C /* RewardsTitleCell.swift in Sources */,
 				A75AB1FA1C8A84B5002FC3E6 /* ActivitiesDataSource.swift in Sources */,
@@ -6089,9 +6100,7 @@
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
 				777B70D82118CAD300E11032 /* SettingsNotificationsViewModelTests.swift in Sources */,
 				A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */,
-				D74E66B0212B7AB500C61708 /* SettingsViewControllerTests.swift in Sources */,
-				D74E6758212CB5A400C61708 /* SettingsViewControllerTests.swift in Sources */,
-				D74E66B0212B7AB500C61708 /* SettingsViewControllerTests.swift in Sources */,
+				D0198F3421793FCF0090A9EC /* SettingsViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
@@ -6164,7 +6173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				775DFA9D215E758400620CED /* GraphMutation.swift in Sources */,
+				D0198F3521793FCF0090A9EC /* GraphMutation.swift in Sources */,
 				D01588451EEB2ED7006E7684 /* ActivityEnvelope.swift in Sources */,
 				D01588991EEB2ED7006E7684 /* FriendStatsEnvelopeLenses.swift in Sources */,
 				D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */,
@@ -6233,7 +6242,7 @@
 				D01588DF1EEB2ED7006E7684 /* User.StatsLenses.swift in Sources */,
 				D7417CD620BF12F4004DABA6 /* ExportDataEnvelope.swift in Sources */,
 				D6DC65522178CDDD008CF69C /* GraphUserEmailTemplate.swift in Sources */,
-				775DFAD5215EB2AB00620CED /* Service+RequestHelpers.swift in Sources */,
+				D0198F3621793FCF0090A9EC /* Service+RequestHelpers.swift in Sources */,
 				D01588CF1EEB2ED7006E7684 /* StarEnvelopeLenses.swift in Sources */,
 				D01589151EEB2ED7006E7684 /* Reward.swift in Sources */,
 				D015891F1EEB2ED7006E7684 /* ShippingRulesEnvelope.swift in Sources */,
@@ -6264,7 +6273,6 @@
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,
 				D770DDE8217D729300B5319A /* UserCurrencyTemplates.swift in Sources */,
 				D01589171EEB2ED7006E7684 /* RewardsItem.swift in Sources */,
-				775DFA9D215E758400620CED /* GraphMutation.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
 				D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */,
@@ -6309,7 +6317,6 @@
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
 				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
-				775DFAD5215EB2AB00620CED /* Service+RequestHelpers.swift in Sources */,
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				D0158A271EEB30A2006E7684 /* ShippingRuleTemplates.swift in Sources */,
 				D01588891EEB2ED7006E7684 /* CheckoutEnvelopeLenses.swift in Sources */,
@@ -6566,7 +6573,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
@@ -6590,7 +6596,8 @@
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				STRIP_STYLE = debugging;
-				SWIFT_VERSION = 4.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -6617,7 +6624,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.kickstarter.kickstarter.beta";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Hockey Beta";
@@ -6663,7 +6669,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6726,7 +6731,6 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6753,7 +6757,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6780,7 +6783,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6862,7 +6864,6 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6891,7 +6892,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -6920,7 +6920,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7005,7 +7004,6 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7038,7 +7036,6 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7067,7 +7064,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -7091,7 +7087,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.kickstarter.kickstarter";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -7173,7 +7168,6 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
@@ -7206,7 +7200,8 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = debugging;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -7247,7 +7242,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
@@ -7272,7 +7266,8 @@
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				STRIP_STYLE = debugging;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -7304,7 +7299,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7337,7 +7331,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7370,7 +7363,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7482,7 +7474,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 					"$(PROJECT_DIR)/Frameworks",
@@ -7506,7 +7497,8 @@
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				STRIP_STYLE = debugging;
-				SWIFT_VERSION = 4.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -7533,7 +7525,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.kickstarter.kickstarter.kickalpha";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Hockey Alpha";
@@ -7558,7 +7549,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7621,7 +7611,6 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Kickstarter-iOS/Kickstarter-iOS-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7675,7 +7664,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7728,7 +7716,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
