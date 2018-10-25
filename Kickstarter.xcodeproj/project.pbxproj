@@ -177,6 +177,7 @@
 		77A7B67B21026F4F008D12C1 /* SettingsNotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */; };
 		77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */; };
 		77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */; };
+		77CD89F2218215CB003066DA /* GraphError+LocalizedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DFAD621627D9C00620CED /* GraphError+LocalizedDescription.swift */; };
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
 		77D7A7712141B630003F258C /* SettingsPrivacySwitchCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A7702141B630003F258C /* SettingsPrivacySwitchCellViewModel.swift */; };
 		77D7A7732142CA55003F258C /* SettingsPrivacySwitchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A7722142CA55003F258C /* SettingsPrivacySwitchCellViewModelTests.swift */; };
@@ -5595,6 +5596,7 @@
 				A7F441B71D005A9400FE6FC5 /* BackingCellViewModel.swift in Sources */,
 				A7CC13DB1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,
 				9DD1E3881D50035E00D4829E /* ProjectActivityData.swift in Sources */,
+				77CD89F2218215CB003066DA /* GraphError+LocalizedDescription.swift in Sources */,
 				778215E820F6922100F3D09F /* HelpType.swift in Sources */,
 				01940B261D42DC1A0074FCE3 /* HelpViewModel.swift in Sources */,
 				D6B6766520FE85010082717D /* SettingsNewslettersCellViewModel.swift in Sources */,
