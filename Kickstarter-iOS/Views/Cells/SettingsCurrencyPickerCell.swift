@@ -3,8 +3,6 @@ import Library
 import KsApi
 
 internal protocol SettingsCurrencyPickerCellDelegate: class {
-  /// Called after user selects currency in picker to remove picker cell
-  func shouldDismissCurrencyPicker()
   func settingsCurrencyPickerCellDidChangeCurrency(_ currency: Currency)
 }
 
@@ -22,9 +20,7 @@ final class SettingsCurrencyPickerCell: UITableViewCell, NibLoading, ValueCell {
     self.pickerView.dataSource = self
   }
 
-  func configureWith(value cellValue: SettingsCellValue) {
-    self.viewModel.inputs.configure(with: cellValue)
-  }
+  func configureWith(value cellValue: SettingsCellValue) { }
 
   override func bindStyles() {
     super.bindStyles()
@@ -35,12 +31,6 @@ final class SettingsCurrencyPickerCell: UITableViewCell, NibLoading, ValueCell {
 
   override func bindViewModel() {
     super.bindViewModel()
-
-    self.viewModel.outputs.notifyCurrencyPickerCellRemoved
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.delegate?.shouldDismissCurrencyPicker()
-    }
 
     self.viewModel.outputs.showCurrencyChangeAlert
       .observeForUI()

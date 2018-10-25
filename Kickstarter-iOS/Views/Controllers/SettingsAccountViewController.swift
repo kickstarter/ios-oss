@@ -169,9 +169,6 @@ extension SettingsAccountViewController: UITableViewDelegate {
 extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
   func settingsCurrencyPickerCellDidChangeCurrency(_ currency: Currency) {
     self.viewModel.inputs.showChangeCurrencyAlert(for: currency)
-  }
-
-  internal func shouldDismissCurrencyPicker() {
     self.dismissCurrencyPickerCell()
   }
 }

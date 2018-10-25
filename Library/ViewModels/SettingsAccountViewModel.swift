@@ -18,7 +18,6 @@ public protocol SettingsAccountViewModelOutputs {
   var reloadData: Signal<(User, Currency), NoError> { get }
   var showAlert: Signal<(), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
-  var updateCurrency: Signal<Currency, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
 }
 
@@ -64,13 +63,13 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
           .materialize()
     }
 
-    self.updateCurrency = self.changeCurrencyAlertProperty.signal.skipNil()
+    let updateCurrency = self.changeCurrencyAlertProperty.signal.skipNil()
       .takeWhen(updateCurrencyEvent.values().ignoreValues())
 
     self.updateCurrencyFailure = updateCurrencyEvent.errors()
       .map { $0.localizedDescription }
 
-    let currency = Signal.merge(chosenCurrency, self.updateCurrency)
+    let currency = Signal.merge(chosenCurrency, updateCurrency)
 
     self.reloadData = Signal.combineLatest(initialUser, currency)
 
@@ -115,7 +114,6 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public let presentCurrencyPicker: Signal<Bool, NoError>
   public let showAlert: Signal<(), NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
-  public let updateCurrency: Signal<Currency, NoError>
   public let updateCurrencyFailure: Signal<String, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }

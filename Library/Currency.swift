@@ -17,10 +17,6 @@ public enum Currency: String, Encodable, CaseIterable {
   case SGD
   case USD
 
-  public static var rowHeight: CGFloat {
-    return Styles.grid(7)
-  }
-
   public var descriptionText: String {
     switch self {
     case .EUR:
