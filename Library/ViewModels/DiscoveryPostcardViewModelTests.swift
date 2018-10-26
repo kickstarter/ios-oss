@@ -157,7 +157,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.saveButtonSelected.assertValues([false, false],
                                            "Emits false because the project personalization value is nil.")
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.saveButtonSelected.assertValues([false, false, false], "Emits again with error.")
     }

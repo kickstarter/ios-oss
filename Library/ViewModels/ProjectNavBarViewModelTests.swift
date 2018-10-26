@@ -225,7 +225,7 @@ final class ProjectNavBarViewModelTests: TestCase {
                                             "Once logged in, the save button selects immediately.")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.saveButtonSelected.assertValues([false, true],
                                            "Save button stays selected after API request.")
@@ -255,7 +255,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.saveButtonSelected.assertValues([false, true],
                                            "Save button remains selected.")
@@ -274,7 +274,7 @@ final class ProjectNavBarViewModelTests: TestCase {
                                              "Save button deselects immediately.")
         self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved", "Unsaved"])
 
-        self.scheduler.advance()
+        self.scheduler.advance(by: .seconds(1))
 
         self.saveButtonSelected.assertValues([false, true, false],
                                              "The save button remains unselected.")
@@ -303,7 +303,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.saveButtonTapped(selected: true)
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.showProjectSavedPrompt.assertValueCount(
         0, "The save project prompt doesn't show cause it's less than 48hrs."
@@ -326,7 +326,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.saveButtonTapped(selected: true)
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.showProjectSavedPrompt.assertValueCount(0, "The save project prompt does not show.")
 
@@ -354,7 +354,7 @@ final class ProjectNavBarViewModelTests: TestCase {
 
       self.saveButtonSelected.assertValues([false, true])
 
-      self.scheduler.advance()
+      self.scheduler.advance(by: .seconds(1))
 
       self.saveButtonSelected.assertValues([false, true, false])
 

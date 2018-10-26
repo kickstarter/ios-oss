@@ -309,6 +309,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .takeWhen(.merge(loggedInUserTappedSaveButton, userLoginAfterTappingSaveButton))
 
     let saveProjectEvent = projectOnSaveButtonToggle
+      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)

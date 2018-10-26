@@ -117,6 +117,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .skipNil()
 
     let projectOnSaveButtonToggleAndSuccess = projectOnSaveButtonToggle
+      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
       .switchMap { project in
         AppEnvironment.current.apiService.toggleStar(project)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
