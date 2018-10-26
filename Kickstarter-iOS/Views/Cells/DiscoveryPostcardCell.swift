@@ -227,7 +227,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
     self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
-    self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
     self.projectIsStaffPickView.rac.hidden = viewModel.outputs.projectIsStaffPickLabelHidden
     self.projectCategoryView.rac.hidden = viewModel.outputs.projectCategoryViewHidden
     self.projectCategoriesStackView.rac.hidden = viewModel.outputs.projectCategoryStackViewHidden

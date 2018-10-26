@@ -116,7 +116,6 @@ public final class ProjectNavBarViewController: UIViewController {
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
     self.saveButton.rac.accessibilityValue = self.viewModel.outputs.saveButtonAccessibilityValue
     self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
-    self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
 
     self.viewModel.outputs.generateSuccessFeedback
       .observeForUI()

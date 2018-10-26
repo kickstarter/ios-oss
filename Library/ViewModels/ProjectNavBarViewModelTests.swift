@@ -21,7 +21,6 @@ final class ProjectNavBarViewModelTests: TestCase {
   fileprivate let generateSuccessFeedback = TestObserver<(), NoError>()
   fileprivate let goToLoginTout = TestObserver<(), NoError>()
   fileprivate let projectName = TestObserver<String, NoError>()
-  fileprivate let saveButtonEnabled = TestObserver<Bool, NoError>()
   fileprivate let saveButtonSelected = TestObserver<Bool, NoError>()
   fileprivate let showProjectSavedPrompt = TestObserver<Void, NoError>()
   fileprivate let saveButtonAccessibilityValue = TestObserver<String, NoError>()
@@ -43,7 +42,6 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.projectName.observe(self.projectName.observer)
     self.vm.outputs.showProjectSavedPrompt.observe(self.showProjectSavedPrompt.observer)
-    self.vm.outputs.saveButtonEnabled.observe(self.saveButtonEnabled.observer)
     self.vm.outputs.saveButtonSelected.observe(self.saveButtonSelected.observer)
     self.vm.outputs.saveButtonAccessibilityValue.observe(self.saveButtonAccessibilityValue.observer)
     self.vm.outputs.titleHiddenAndAnimate.map(second).observe(self.titleAnimate.observer)
@@ -206,13 +204,11 @@ final class ProjectNavBarViewModelTests: TestCase {
       |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
 
     withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
-      self.saveButtonEnabled.assertDidNotEmitValue()
       self.saveButtonSelected.assertDidNotEmitValue("No values emitted at first.")
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
 
       self.saveButtonSelected.assertValues([false], "Save button is not selected at first")
-      self.saveButtonEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.saveButtonTapped(selected: true)
 
@@ -220,7 +216,6 @@ final class ProjectNavBarViewModelTests: TestCase {
                                             "Nothing is emitted when save button tapped while logged out.")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved"])
 
-      self.saveButtonEnabled.assertDidNotEmitValue()
 
       self.goToLoginTout.assertValueCount(1, "Prompt to login when saving while logged out.")
 
@@ -229,14 +224,12 @@ final class ProjectNavBarViewModelTests: TestCase {
 
       self.saveButtonSelected.assertValues([false, true],
                                             "Once logged in, the save button selects immediately.")
-      self.saveButtonEnabled.assertValues([false], "Save button is disabled during request.")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
 
       self.scheduler.advance()
 
       self.saveButtonSelected.assertValues([false, true],
                                            "Save button stays selected after API request.")
-      self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
       self.showProjectSavedPrompt.assertValueCount(0, "The save project prompt does not show.")
       XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"],
                      trackingClient.events, "A star koala event is tracked.")
@@ -257,19 +250,16 @@ final class ProjectNavBarViewModelTests: TestCase {
 
       self.saveButtonSelected.assertValues([false], "Save button is not selected at first")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved"])
-      self.saveButtonEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.saveButtonTapped(selected: true)
 
       self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
-      self.saveButtonEnabled.assertValues([false], "Save button is disabled during request." )
 
       self.scheduler.advance()
 
       self.saveButtonSelected.assertValues([false, true],
                                            "Save button remains selected.")
-      self.saveButtonEnabled.assertValues([false, true], "Save button is enabled after request.")
 
       self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt shows.")
       XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"],
@@ -284,15 +274,12 @@ final class ProjectNavBarViewModelTests: TestCase {
         self.saveButtonSelected.assertValues([false, true, false],
                                              "Save button deselects immediately.")
         self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved", "Unsaved"])
-        self.saveButtonEnabled.assertValues([false, true, false], "Save button is disabled during request")
 
         self.scheduler.advance()
 
         self.saveButtonSelected.assertValues([false, true, false],
                                              "The save button remains unselected.")
-          self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved", "Unsaved"])
-        self.saveButtonEnabled.assertValues([false, true, false, true],
-                                            "Save button is enabled after request")
+        self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved", "Unsaved"])
 
         self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt only showed for starring.")
         XCTAssertEqual(["Project Star", "Starred Project", "Saved Project", "Project Unstar",
