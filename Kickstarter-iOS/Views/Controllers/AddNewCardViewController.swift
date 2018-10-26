@@ -48,7 +48,7 @@ internal final class AddNewCardViewController: UIViewController {
     _ = [self.cardNumberTextField, self.cardholderNameTextField, self.expirationTextField,
          self.securityCodeTextField, self.zipCodeTextField]
       ||> formFieldStyle
-      ||> UITextField.lens.textAlignment .~ .right
+      ||> \.textAlignment .~ .right
 
     _ = [self.cardNumberLabel, self.cardholderNameLabel, self.expirationLabel,
          self.securityCodeLabel, self.zipCodeLabel]
@@ -56,31 +56,31 @@ internal final class AddNewCardViewController: UIViewController {
 
     _ = [self.cardNumberTextField, self.expirationTextField, self.securityCodeTextField,
          self.zipCodeTextField]
-      ||> UITextField.lens.keyboardType .~ .numberPad
+      ||> \.keyboardType .~ .numberPad
 
     _ = self.cardNumberLabel
-      |> UILabel.lens.text %~ { _ in Strings.Card_number() }
+      |> \.text %~ { _ in Strings.Card_number() }
 
     _ = self.cardholderNameLabel
-      |> UILabel.lens.text %~ { _ in Strings.Cardholder_name() }
+      |> \.text %~ { _ in Strings.Cardholder_name() }
 
     _ = self.expirationLabel
-      |> UILabel.lens.text %~ { _ in Strings.Expiration() }
+      |> \.text %~ { _ in Strings.Expiration() }
 
     _ = self.securityCodeLabel
-      |> UILabel.lens.text %~ { _ in Strings.Security_code() }
+      |> \.text %~ { _ in Strings.Security_code() }
 
     _ = self.zipCodeLabel
-      |> UILabel.lens.text %~ { _ in Strings.Zip_code() }
+      |> \.text %~ { _ in Strings.Zip_code() }
 
     _ = self.cardholderNameTextField
-      |> UITextField.lens.placeholder %~ { _ in Strings.Name() }
+      |> \.placeholder %~ { _ in Strings.Name() }
 
     _ = self.expirationTextField
-      |> UITextField.lens.placeholder %~ { _ in Strings.MMYY() }
+      |> \.placeholder %~ { _ in Strings.MMYY() }
 
     _ = self.securityCodeTextField
-      |> UITextField.lens.placeholder %~ { _ in Strings.CVC() }
+      |> \.placeholder %~ { _ in Strings.CVC() }
   }
 
   @objc fileprivate func cancelButtonTapped() {
