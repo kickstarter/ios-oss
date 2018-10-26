@@ -19,13 +19,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MzS-MO-XR7">
-                        <rect key="frame" x="88" y="43" width="232" height="15"/>
+                        <rect key="frame" x="92" y="43" width="228" height="15"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWr-rV-dIM">
-                        <rect key="frame" x="88" y="16" width="232" height="29"/>
+                        <rect key="frame" x="92" y="16" width="228" height="29"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="29" id="6II-BH-Gy4"/>
                         </constraints>
@@ -34,7 +34,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b6V-DZ-ihX">
-                        <rect key="frame" x="8" y="16" width="72" height="45"/>
+                        <rect key="frame" x="12" y="16" width="72" height="45"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="45" id="hvh-HG-epv"/>
                             <constraint firstAttribute="width" constant="72" id="jIO-nX-Udv"/>
@@ -59,7 +59,7 @@
                     <constraint firstItem="MzS-MO-XR7" firstAttribute="leading" secondItem="uWr-rV-dIM" secondAttribute="leading" id="eXO-6h-uDm"/>
                     <constraint firstItem="uWr-rV-dIM" firstAttribute="leading" secondItem="b6V-DZ-ihX" secondAttribute="trailing" constant="8" id="lvO-Kj-gZm"/>
                     <constraint firstItem="MzS-MO-XR7" firstAttribute="top" secondItem="uWr-rV-dIM" secondAttribute="bottom" constant="-2" id="n61-AH-A3V"/>
-                    <constraint firstItem="b6V-DZ-ihX" firstAttribute="leading" secondItem="eaL-oG-LUu" secondAttribute="leading" constant="8" id="wRG-k5-Re9"/>
+                    <constraint firstItem="b6V-DZ-ihX" firstAttribute="leading" secondItem="eaL-oG-LUu" secondAttribute="leading" constant="12" id="wRG-k5-Re9"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
