@@ -43,7 +43,7 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] image in
         guard let _self = self else { return }
-        _ = _self.imageView
+        _ = _self.cardImageView
           ?|> \.image .~ image
     }
   }

@@ -38,7 +38,10 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
       .map { Strings.Card_ending_in_last_four(last_four: $0.lastFour) }
 
     self.expirationDateText = self.cardProperty.signal.skipNil()
-      .map { Strings.Credit_card_expiration(expiration_date: formatted(dateString: $0.expirationDate)) }
+      .map { Strings.Credit_card_expiration(
+        expiration_date: formatted(dateString: $0.formattedExpirationDate)
+        )
+    }
   }
 
   fileprivate let cardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -62,7 +65,7 @@ private func cardImage(with card: GraphUserCreditCard.CreditCard) -> UIImage? {
 private func formatted(dateString: String) -> String {
 
   let date = toDate(dateString: dateString)
-  let format = DateFormatter.dateFormat(fromTemplate: "MM-dd-yyyy",
+  let format = DateFormatter.dateFormat(fromTemplate: "MM-yyyy",
                                         options: 0,
                                         locale: AppEnvironment.current.locale) ?? "MMM d yyyy"
 
@@ -79,6 +82,6 @@ private func toDate(dateString: String) -> Date {
 
 private let dateFormatter: DateFormatter = {
   let dateFormatter = DateFormatter()
-  dateFormatter.dateFormat = "yyyy-dd-MM"
+  dateFormatter.dateFormat = "yyyy-MM"
   return dateFormatter
 }()
