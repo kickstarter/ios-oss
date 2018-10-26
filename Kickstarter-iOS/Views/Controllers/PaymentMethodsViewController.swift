@@ -75,8 +75,7 @@ internal final class PaymentMethodsViewController: UIViewController {
   }
 
   private func goToAddCardScreen() {
-    let vc = FindFriendsViewController.configuredWith(source: .activity)
-    self.navigationController?.pushViewController(vc, animated: true)
+    // Push AddNewCardScreen from here.
   }
 }
 
