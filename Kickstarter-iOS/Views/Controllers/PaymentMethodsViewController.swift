@@ -39,7 +39,7 @@ internal final class PaymentMethodsViewController: UIViewController {
     _ = self
       |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in
-        Strings.Change_email()
+        Strings.Payment_methods()
     }
 
     _ = self
