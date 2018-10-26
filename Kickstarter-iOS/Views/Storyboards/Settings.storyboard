@@ -755,7 +755,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jMz-Pn-EqP">
-                                <rect key="frame" x="8" y="58" width="359" height="21"/>
+                                <rect key="frame" x="8" y="48" width="359" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -774,13 +774,13 @@
                             <constraint firstItem="JiT-6r-zd1" firstAttribute="bottom" secondItem="1CW-RA-xOi" secondAttribute="bottom" id="4Nh-0Z-prq"/>
                             <constraint firstItem="jMz-Pn-EqP" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" constant="8" id="7lh-q4-iIB"/>
                             <constraint firstItem="JiT-6r-zd1" firstAttribute="trailing" secondItem="1CW-RA-xOi" secondAttribute="trailing" id="Cik-RG-ixZ"/>
-                            <constraint firstItem="JiT-6r-zd1" firstAttribute="top" secondItem="jMz-Pn-EqP" secondAttribute="bottom" constant="8" id="EIp-Eb-b1X"/>
+                            <constraint firstItem="JiT-6r-zd1" firstAttribute="top" secondItem="jMz-Pn-EqP" secondAttribute="bottom" constant="18" id="EIp-Eb-b1X"/>
                             <constraint firstItem="jMz-Pn-EqP" firstAttribute="trailing" secondItem="1CW-RA-xOi" secondAttribute="trailing" constant="-8" id="GRO-wX-XE7"/>
                             <constraint firstItem="JiT-6r-zd1" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" id="LAA-IF-JdQ"/>
                             <constraint firstItem="xml-QE-znh" firstAttribute="trailing" secondItem="1CW-RA-xOi" secondAttribute="trailing" id="jTT-55-ex7"/>
                             <constraint firstItem="xml-QE-znh" firstAttribute="top" secondItem="1CW-RA-xOi" secondAttribute="top" id="npt-gn-SPf"/>
                             <constraint firstItem="xml-QE-znh" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" id="pKO-tq-7Te"/>
-                            <constraint firstItem="jMz-Pn-EqP" firstAttribute="top" secondItem="xml-QE-znh" secondAttribute="bottom" constant="8" id="sMh-hh-sd0"/>
+                            <constraint firstItem="jMz-Pn-EqP" firstAttribute="top" secondItem="xml-QE-znh" secondAttribute="bottom" constant="-2" id="sMh-hh-sd0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1CW-RA-xOi"/>
                     </view>

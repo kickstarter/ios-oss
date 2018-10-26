@@ -10,7 +10,6 @@ internal final class PaymentMethodsFooterView: UITableViewHeaderFooterView {
 
   public weak var delegate: PaymentMethodsFooterViewDelegate?
 
-  @IBOutlet private weak var addIconImageView: UIImageView!
   @IBOutlet private weak var titleLabel: UILabel!
   @IBOutlet private weak var separatorView: UIView!
 
@@ -21,8 +20,8 @@ internal final class PaymentMethodsFooterView: UITableViewHeaderFooterView {
       |> \.backgroundColor .~ .ksr_grey_200
 
     _ = self.titleLabel
-      |> \.text .~ "Add a new card"
-      |> \.textColor .~ .ksr_green_400
+      |> \.text .~ "+  Add a new card"
+      |> \.textColor .~ .ksr_green_700
 
     _ = self.separatorView
       |> separatorStyle
