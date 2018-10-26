@@ -26,8 +26,14 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rxR-Rr-zSv">
                     <rect key="frame" x="0.0" y="28" width="375" height="53"/>
                     <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVF-Hv-L8e">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="53"/>
+                            <connections>
+                                <action selector="addNewCardButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="gaO-4r-vlv"/>
+                            </connections>
+                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6W5-lQ-0Yl">
-                            <rect key="frame" x="8" y="9.5" width="359" height="34"/>
+                            <rect key="frame" x="35" y="10" width="332" height="34"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="34" id="p3E-vH-haQ"/>
                             </constraints>
@@ -35,23 +41,29 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVF-Hv-L8e">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="53"/>
-                            <connections>
-                                <action selector="addNewCardButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="gaO-4r-vlv"/>
-                            </connections>
-                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7b-yE-u96">
+                            <rect key="frame" x="8" y="13" width="21" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="9ro-0i-dNu"/>
+                                <constraint firstAttribute="width" constant="21" id="bXI-Or-hHL"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="mnr-ui-7L5"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="28"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="ZVF-Hv-L8e" secondAttribute="trailing" id="3IW-Bp-AWL"/>
                         <constraint firstAttribute="trailing" secondItem="6W5-lQ-0Yl" secondAttribute="trailing" constant="8" id="BO0-kz-snw"/>
+                        <constraint firstItem="L7b-yE-u96" firstAttribute="leading" secondItem="rxR-Rr-zSv" secondAttribute="leading" constant="8" id="HBV-xU-Zui"/>
                         <constraint firstItem="ZVF-Hv-L8e" firstAttribute="leading" secondItem="rxR-Rr-zSv" secondAttribute="leading" id="PPj-sy-JWX"/>
                         <constraint firstItem="6W5-lQ-0Yl" firstAttribute="centerY" secondItem="rxR-Rr-zSv" secondAttribute="centerY" id="fPT-nH-Tqm"/>
                         <constraint firstAttribute="height" constant="53" id="gWl-5J-HkM"/>
                         <constraint firstAttribute="trailing" secondItem="6W5-lQ-0Yl" secondAttribute="trailing" constant="8" id="iZn-cZ-h7T"/>
                         <constraint firstAttribute="bottom" secondItem="ZVF-Hv-L8e" secondAttribute="bottom" id="vTL-72-Ity"/>
-                        <constraint firstItem="6W5-lQ-0Yl" firstAttribute="leading" secondItem="rxR-Rr-zSv" secondAttribute="leading" constant="8" id="yDo-nl-NeA"/>
+                        <constraint firstItem="6W5-lQ-0Yl" firstAttribute="leading" secondItem="rxR-Rr-zSv" secondAttribute="leading" constant="35" id="yDo-nl-NeA"/>
                         <constraint firstItem="ZVF-Hv-L8e" firstAttribute="top" secondItem="rxR-Rr-zSv" secondAttribute="top" id="zd7-Vz-noz"/>
                     </constraints>
                 </view>
@@ -70,6 +82,7 @@
                 <constraint firstItem="SB4-Lk-Ajb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="HT2-D1-2g9"/>
                 <constraint firstItem="rxR-Rr-zSv" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="IIx-vE-624"/>
                 <constraint firstItem="uK7-rQ-yzD" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="RAy-az-ON4"/>
+                <constraint firstItem="L7b-yE-u96" firstAttribute="top" secondItem="uK7-rQ-yzD" secondAttribute="bottom" constant="11" id="Xbr-8K-BVC"/>
                 <constraint firstItem="uK7-rQ-yzD" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="ab0-oH-Rlf"/>
                 <constraint firstAttribute="trailing" secondItem="SB4-Lk-Ajb" secondAttribute="trailing" id="cIh-ev-BAM"/>
                 <constraint firstItem="uK7-rQ-yzD" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="iY6-mO-iZz"/>
@@ -78,6 +91,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="plusLabel" destination="L7b-yE-u96" id="SAR-WP-8gn"/>
                 <outlet property="separatorView" destination="SB4-Lk-Ajb" id="khu-HH-QZj"/>
                 <outlet property="titleLabel" destination="6W5-lQ-0Yl" id="mPq-3u-hcw"/>
             </connections>
