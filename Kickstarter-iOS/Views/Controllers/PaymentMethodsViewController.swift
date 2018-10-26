@@ -11,6 +11,8 @@ internal final class PaymentMethodsViewController: UIViewController {
   @IBOutlet private weak var headerLabel: UILabel!
   @IBOutlet private weak var tableView: UITableView! {
     didSet {
+      self.tableView.dataSource = self.dataSource
+      self.tableView.delegate = self
       self.tableView.register(nib: .CreditCardCell)
       self.tableView.registerHeaderFooter(nib: .PaymentMethodsFooterView)
     }
@@ -24,12 +26,21 @@ internal final class PaymentMethodsViewController: UIViewController {
     super.viewDidLoad()
 
     self.viewModel.inputs.viewDidLoad()
-    self.tableView.dataSource = self.dataSource
-    self.tableView.delegate = self
+    self.navigationItem.rightBarButtonItem =
+      UIBarButtonItem(title: Strings.discovery_favorite_categories_buttons_edit(),
+                      style: .plain,
+                      target: self,
+                      action: nil)
   }
 
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self
+      |> settingsViewControllerStyle
+      |> UIViewController.lens.title %~ { _ in
+        Strings.Change_email()
+    }
 
     _ = self
       |> \.view.backgroundColor .~ .ksr_grey_200
