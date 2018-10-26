@@ -147,7 +147,6 @@ public final class RefTagTests: XCTestCase {
                    RefTag(code: RefTag.starredWithSort(.endingSoon).stringTag))
     XCTAssertEqual(RefTag.starredWithSort(.magic),
                    RefTag(code: RefTag.starredWithSort(.magic).stringTag))
-   
     XCTAssertEqual(RefTag.starredWithSort(.newest), RefTag(code: RefTag.starredWithSort(.newest).stringTag))
     XCTAssertEqual(RefTag.starredWithSort(.popular), RefTag(code: RefTag.starredWithSort(.popular).stringTag))
 
