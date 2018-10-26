@@ -35,10 +35,10 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
       .map(cardImage(with:))
 
     self.cardNumberText = self.cardProperty.signal.skipNil()
-      .map { "Card ending in " + $0.lastFour }
+      .map { Strings.Card_ending_in_last_four(last_four: $0.lastFour) }
 
     self.expirationDateText = self.cardProperty.signal.skipNil()
-      .map { "Expires " + formatted(dateString: $0.expirationDate) }
+      .map { Strings.Credit_card_expiration(expiration_date: formatted(dateString: $0.expirationDate)) }
   }
 
   fileprivate let cardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -52,10 +52,10 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
 
   public var inputs: CreditCardCellViewModelInputs { return self }
   public var outputs: CreditCardCellViewModelOutputs { return self }
-
 }
 
 private func cardImage(with card: GraphUserCreditCard.CreditCard) -> UIImage? {
+
   return image(named: "icon--" + card.type.lowercased()) ?? image(named: "icon--generic")
 }
 

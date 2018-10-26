@@ -37,7 +37,7 @@ internal final class PaymentMethodsViewController: UIViewController {
     _ = self.headerLabel
       |> settingsDescriptionLabelStyle
       |> \.text %~ { _ in
-        "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience."
+        Strings.Any_payment_methods_you_saved_to_Kickstarter()
     }
 
     _ = self.tableView
@@ -64,7 +64,8 @@ internal final class PaymentMethodsViewController: UIViewController {
   }
 
   private func goToAddCardScreen() {
-    
+    let vc = FindFriendsViewController.configuredWith(source: .activity)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 

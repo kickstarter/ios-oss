@@ -26,17 +26,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rxR-Rr-zSv">
                     <rect key="frame" x="0.0" y="28" width="375" height="53"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--cross" translatesAutoresizingMaskIntoConstraints="NO" id="hvO-Fi-1vi">
-                            <rect key="frame" x="8" y="15.5" width="19" height="22"/>
-                            <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="55F-hf-WzH"/>
-                                <constraint firstAttribute="width" constant="19" id="5N3-Es-1DY"/>
-                                <constraint firstAttribute="height" constant="22" id="9NL-a2-j7r"/>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="19" id="YyB-8I-ANe"/>
-                            </constraints>
-                        </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6W5-lQ-0Yl">
-                            <rect key="frame" x="35" y="9.5" width="332" height="34"/>
+                            <rect key="frame" x="8" y="9.5" width="359" height="34"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="34" id="p3E-vH-haQ"/>
                             </constraints>
@@ -54,14 +45,13 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="ZVF-Hv-L8e" secondAttribute="trailing" id="3IW-Bp-AWL"/>
-                        <constraint firstItem="6W5-lQ-0Yl" firstAttribute="centerY" secondItem="hvO-Fi-1vi" secondAttribute="centerY" id="83j-bj-5Dh"/>
                         <constraint firstAttribute="trailing" secondItem="6W5-lQ-0Yl" secondAttribute="trailing" constant="8" id="BO0-kz-snw"/>
                         <constraint firstItem="ZVF-Hv-L8e" firstAttribute="leading" secondItem="rxR-Rr-zSv" secondAttribute="leading" id="PPj-sy-JWX"/>
+                        <constraint firstItem="6W5-lQ-0Yl" firstAttribute="centerY" secondItem="rxR-Rr-zSv" secondAttribute="centerY" id="fPT-nH-Tqm"/>
                         <constraint firstAttribute="height" constant="53" id="gWl-5J-HkM"/>
-                        <constraint firstItem="hvO-Fi-1vi" firstAttribute="centerY" secondItem="rxR-Rr-zSv" secondAttribute="centerY" id="oyq-gr-eTi"/>
+                        <constraint firstAttribute="trailing" secondItem="6W5-lQ-0Yl" secondAttribute="trailing" constant="8" id="iZn-cZ-h7T"/>
                         <constraint firstAttribute="bottom" secondItem="ZVF-Hv-L8e" secondAttribute="bottom" id="vTL-72-Ity"/>
-                        <constraint firstItem="6W5-lQ-0Yl" firstAttribute="leading" secondItem="hvO-Fi-1vi" secondAttribute="trailing" constant="8" id="xKg-ns-Suz"/>
-                        <constraint firstItem="hvO-Fi-1vi" firstAttribute="leading" secondItem="rxR-Rr-zSv" secondAttribute="leading" constant="8" id="yuk-Md-HYk"/>
+                        <constraint firstItem="6W5-lQ-0Yl" firstAttribute="leading" secondItem="rxR-Rr-zSv" secondAttribute="leading" constant="8" id="yDo-nl-NeA"/>
                         <constraint firstItem="ZVF-Hv-L8e" firstAttribute="top" secondItem="rxR-Rr-zSv" secondAttribute="top" id="zd7-Vz-noz"/>
                     </constraints>
                 </view>
@@ -88,14 +78,10 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="addIconImageView" destination="hvO-Fi-1vi" id="ooI-f3-FGn"/>
                 <outlet property="separatorView" destination="SB4-Lk-Ajb" id="khu-HH-QZj"/>
                 <outlet property="titleLabel" destination="6W5-lQ-0Yl" id="mPq-3u-hcw"/>
             </connections>
             <point key="canvasLocation" x="138.40000000000001" y="-129.08545727136433"/>
         </view>
     </objects>
-    <resources>
-        <image name="icon--cross" width="22" height="22"/>
-    </resources>
 </document>
