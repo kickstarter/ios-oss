@@ -216,7 +216,6 @@ final class ProjectNavBarViewModelTests: TestCase {
                                             "Nothing is emitted when save button tapped while logged out.")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved"])
 
-
       self.goToLoginTout.assertValueCount(1, "Prompt to login when saving while logged out.")
 
       AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
