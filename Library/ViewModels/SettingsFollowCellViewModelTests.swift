@@ -22,8 +22,8 @@ internal final class SettingsFollowCellViewModelTests: TestCase {
   }
 
   func testPresentPrivacyFollowingPrompt() {
-    let user = .template
-     |> User.lens.social .~ true
+    let user = User.template
+     |> \.social .~ true
 
     self.vm.inputs.configureWith(user: user)
     self.followingPrivacyOn.assertValues([true])
@@ -32,24 +32,24 @@ internal final class SettingsFollowCellViewModelTests: TestCase {
   }
 
   func testFollowPrivacyToggleOn() {
-    let user = .template
-      |> User.lens.social .~ false
+    let user = User.template
+      |> \.social .~ false
 
     self.vm.inputs.configureWith(user: user)
     self.followingPrivacyOn.assertValues([false])
   }
 
   func testFollowPrivacyToggleOff() {
-    let user = .template
-      |> User.lens.social .~ true
+    let user = User.template
+      |> \.social .~ true
 
     self.vm.inputs.configureWith(user: user)
     self.followingPrivacyOn.assertValues([true])
   }
 
   func testFollowOptingOut() {
-    let user = .template
-      |> User.lens.social .~ true
+    let user = User.template
+      |> \.social .~ true
 
     self.vm.inputs.configureWith(user: user)
     self.followingPrivacyOn.assertValues([true])
@@ -57,8 +57,8 @@ internal final class SettingsFollowCellViewModelTests: TestCase {
     self.vm.inputs.followTapped(on: false)
     self.showPrivacyFollowingPrompt.assertValueCount(1)
 
-    let userOptedOut = .template
-      |> User.lens.social .~ false
+    let userOptedOut = User.template
+      |> \.social .~ false
 
     self.vm.inputs.configureWith(user: userOptedOut)
     self.followingPrivacyOn.assertValues([true, false])

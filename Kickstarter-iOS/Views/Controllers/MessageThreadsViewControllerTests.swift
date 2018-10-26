@@ -20,16 +20,16 @@ internal final class MessageThreadViewControllerTests: TestCase {
   func testView() {
     let project = Project.template
 
-    let backer = .template
-      |> User.lens.avatar.large .~ ""
-      |> User.lens.avatar.medium .~ ""
-      |> User.lens.avatar.small .~ ""
+    let backer = User.template
+      |> \.avatar.large .~ ""
+      |> \.avatar.medium .~ ""
+      |> \.avatar.small .~ ""
 
-    let nativeSquadTheCreator = .template
-      |> User.lens.name .~ "Native Squad"
+    let nativeSquadTheCreator = User.template
+      |> \.name .~ "Native Squad"
 
-    let bobTheCreator = .template
-      |> User.lens.name .~ "Bob"
+    let bobTheCreator = User.template
+      |> \.name .~ "Bob"
 
     let unreadMessage = .template
       |> Message.lens.body .~ "Hello there. You have not read this message."

@@ -13,7 +13,7 @@ internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
   fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
   fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
   fileprivate let commentsCount = TestObserver<String, NoError>()
-  fileprivate let defaultUser = .template |> User.lens.name .~ "Christopher"
+  fileprivate let defaultUser = User.template |> \.name .~ "Christopher"
   fileprivate let likesCount = TestObserver<String, NoError>()
   fileprivate let updateTitle = TestObserver<String, NoError>()
 

@@ -39,7 +39,7 @@ internal final class SettingsViewControllerTests: TestCase {
 
   func testView_isFollowingOn() {
     let currentUser = User.template
-      |> User.lens.social .~ true
+      |> \.social .~ true
 
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchUserSelfResponse: currentUser),
@@ -58,7 +58,7 @@ internal final class SettingsViewControllerTests: TestCase {
 
   func testView_isFollowingOff() {
     let currentUser = User.template
-      |> User.lens.social .~ false
+      |> \.social .~ false
 
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: MockService(fetchUserSelfResponse: currentUser),
