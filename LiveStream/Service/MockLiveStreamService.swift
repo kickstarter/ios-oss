@@ -3,15 +3,6 @@ import Prelude
 import ReactiveSwift
 import Result
 
-extension Result {
-  private var value: T? {
-    switch self {
-    case let .success(value): return value
-    case .failure:            return nil
-    }
-  }
-}
-
 internal struct MockLiveStreamService: LiveStreamServiceProtocol {
   private let chatMessagesAddedResult: Result<[LiveStreamChatMessage], LiveApiError>?
   private let greenRoomOffStatusResult: Result<[Bool], LiveApiError>?
