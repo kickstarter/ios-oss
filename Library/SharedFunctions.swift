@@ -97,7 +97,7 @@ public func currencySymbol(forCountry country: Project.Country,
     return country.currencySymbol
   }
 
-  if country == .us && env.countryCode == "US" && omitCurrencyCode {
+  if country == .us && env.countryCode == Project.Country.us.countryCode && omitCurrencyCode {
     // US people looking at US projects just get the currency symbol
     return country.currencySymbol
   } else if country == .sg {

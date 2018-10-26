@@ -107,14 +107,14 @@ public struct Project {
 
     /// Omit US currency code
     public var omitUSCurrencyCode: Bool {
-      let currentCurrency = self.currentCurrency ?? "USD"
+      let currentCurrency = self.currentCurrency ?? Project.Country.us.currencyCode
 
       return currentCurrency == Project.Country.us.currencyCode
     }
 
     /// Project pledge & goal values need conversion
     public var needsConversion: Bool {
-      let currentCurrency = self.currentCurrency ?? "USD"
+      let currentCurrency = self.currentCurrency ?? Project.Country.us.currencyCode
 
       return self.currency != currentCurrency
     }
