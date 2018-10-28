@@ -288,6 +288,55 @@ final class ProjectNavBarViewModelTests: TestCase {
     }
   }
 
+  func testLoggedInUser_SaveProjectDebouncing() {
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
+
+    let project = Project.template
+    let toggleSaveResponse = .template
+      |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
+
+    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
+      self.vm.inputs.configureWith(project: project, refTag: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.saveButtonSelected.assertValues([false], "Save button is not selected at first")
+      self.saveButtonAccessibilityValue.assertValues(["Unsaved"])
+
+      self.vm.inputs.saveButtonTapped()
+
+      self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
+      self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
+
+      self.scheduler.advance(by: .milliseconds(500))
+
+      self.vm.inputs.saveButtonTapped()
+
+      self.scheduler.advance(by: .milliseconds(500))
+
+      self.vm.inputs.saveButtonTapped()
+
+      self.scheduler.advance(by: .milliseconds(500))
+
+      self.vm.inputs.saveButtonTapped()
+
+      self.saveButtonSelected.assertValues(
+        [false, true, false, true, false],
+        "State flips back and forth as button is tapped."
+      )
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.saveButtonSelected.assertValues(
+        [false, true, false, true, false, true],
+        "Network call is made after 1 second of no taps, value from response is always used"
+      )
+
+      self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt shows.")
+      XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"],
+                     trackingClient.events, "A star koala event is tracked.")
+    }
+  }
+
   // Tests a logged in user saving a project that ends soon.
   func testLoggedInUser_SaveEndingSoonProject() {
     AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))

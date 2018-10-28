@@ -334,8 +334,14 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       projectOnSaveError
     )
 
+    let projectOnSaveButtonToggleAndFromResponse = Signal.merge(
+      projectSaved.map { cache(project: $0, shouldToggle: false, overwrite: true) },
+      projectOnSaveButtonToggle.map { cache(project: $0, shouldToggle: true) }
+    )
+    .skipRepeats()
+
     self.saveButtonSelected = Signal.merge(
-      projectOnSaveButtonToggle.map { cache(project: $0, shouldToggle: true) },
+      projectOnSaveButtonToggleAndFromResponse,
       configuredProject.map { cache(project: $0, shouldToggle: false) },
       projectSavedFromNotification.map { cache(project: $0, shouldToggle: true) },
       projectOnSaveError.map { cache(project: $0, shouldToggle: true) }
@@ -465,7 +471,7 @@ private func cached(project: Project) -> Project {
 }
 
 // Function returns a boolean that determines if the star button should be toggled
-private func cache(project: Project, shouldToggle: Bool) -> Bool {
+private func cache(project: Project, shouldToggle: Bool, overwrite: Bool = false) -> Bool {
 
   guard let isSaved = project.personalization.isStarred else { return false }
 
@@ -474,7 +480,7 @@ private func cache(project: Project, shouldToggle: Bool) -> Bool {
 
   var cache = AppEnvironment.current.cache[KSCache.ksr_projectSaved] as? [Int: Bool]
 
-  let value = cache?[project.id] ?? isSaved
+  let value = overwrite ? isSaved : (cache?[project.id] ?? isSaved)
   cache?[project.id] = shouldToggle ? !value : value
 
   AppEnvironment.current.cache[KSCache.ksr_projectSaved] = cache
