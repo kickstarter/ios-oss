@@ -55,7 +55,7 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
           let (attribute, on) = attributeAndOn
-          return user |> attribute.lens .~ on
+          return user |> attribute.keyPath .~ on
         }
     }
 

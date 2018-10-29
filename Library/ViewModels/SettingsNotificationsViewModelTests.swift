@@ -59,7 +59,7 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
   func testCorrectPickerViewRowSelected() {
     let user = User.template
-      |> UserAttribute.notification(.creatorDigest).lens .~ true
+      |> UserAttribute.notification(.creatorDigest).keyPath .~ true
 
     let mockService = MockService(fetchUserSelfResponse: user)
 
@@ -72,7 +72,7 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
   func testEmailFrequencySelected_updateSuccess() {
     let user = User.template
-      |> UserAttribute.notification(.creatorDigest).lens .~ true
+      |> UserAttribute.notification(.creatorDigest).keyPath .~ true
 
     let mockService = MockService(fetchUserSelfResponse: user)
 
@@ -95,7 +95,7 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
   func testEmailFrequencySelected_updateError() {
     let user = User.template
-      |> UserAttribute.notification(.creatorDigest).lens .~ true
+      |> UserAttribute.notification(.creatorDigest).keyPath .~ true
 
     let errorEnvelope = ErrorEnvelope(errorMessages: ["Something went wrong"],
                               ksrCode: nil,

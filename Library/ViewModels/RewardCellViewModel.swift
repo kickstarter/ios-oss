@@ -66,15 +66,19 @@ RewardCellViewModelOutputs {
       .filter(first >>> needsConversion(project:))
       .map { project, rewardOrBacking in
         let (country, rate) = zip(
-          project.stats.currentCurrency.flatMap(Project.Country.init(currencyCode:)),
+          project.stats.currentCountry,
           project.stats.currentCurrencyRate
         ) ?? (.us, project.stats.staticUsdRate)
         switch rewardOrBacking {
         case let .left(reward):
           let min = minPledgeAmount(forProject: project, reward: reward)
-          return Format.currency(max(1, Int(Float(min) * rate)), country: country)
+          return Format.currency(max(1, Int(Float(min) * rate)),
+                                 country: country,
+                                 omitCurrencyCode: project.stats.omitUSCurrencyCode)
         case let .right(backing):
-          return Format.currency(Int(ceil(Float(backing.amount) * rate)), country: country)
+          return Format.currency(Int(ceil(Float(backing.amount) * rate)),
+                                 country: country,
+                                 omitCurrencyCode: project.stats.omitUSCurrencyCode)
         }
       }
       .map(Strings.About_reward_amount(reward_amount:))
@@ -84,14 +88,18 @@ RewardCellViewModelOutputs {
         switch rewardOrBacking {
         case let .left(reward):
           let min = minPledgeAmount(forProject: project, reward: reward)
-          let currency = Format.currency(min, country: project.country)
+          let currency = Format.currency(min,
+                                         country: project.country,
+                                         omitCurrencyCode: project.stats.omitUSCurrencyCode)
           return reward == Reward.noReward
             ? Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: currency)
             : currency
 
         case let .right(backing):
           let backingAmount = formattedAmount(for: backing)
-          return Format.formattedCurrency(backingAmount, country: project.country)
+          return Format.formattedCurrency(backingAmount,
+                                          country: project.country,
+                                          omitCurrencyCode: project.stats.omitUSCurrencyCode)
         }
     }
 
@@ -307,20 +315,7 @@ private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> U
 }
 
 private func needsConversion(project: Project) -> Bool {
-  guard let currentCurrency = project.stats.currentCurrency else {
-    return needsConversion(projectCountry: project.country,
-                           userCountry: AppEnvironment.current.config?.countryCode)
-  }
-  return currentCurrency == AppEnvironment.current.apiService.currency
-    && needsConversion(projectCountry: project.country, currentCurrency: currentCurrency)
-}
-
-private func needsConversion(projectCountry: Project.Country, userCountry: String?) -> Bool {
-  return userCountry == "US" && projectCountry != .us
-}
-
-private func needsConversion(projectCountry: Project.Country, currentCurrency: String) -> Bool {
-  return projectCountry.currencyCode != currentCurrency
+  return project.stats.needsConversion
 }
 
 private func backingReward(fromProject project: Project) -> Reward? {

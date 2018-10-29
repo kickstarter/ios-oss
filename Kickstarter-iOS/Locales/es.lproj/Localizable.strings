@@ -4,6 +4,7 @@
 "Account" = "Cuenta";
 "Add" = "Añadir";
 "Add_attachments" = "Agregar anexos …";
+"Add_new_card" = "Añadir una nueva tarjeta";
 "All_Art_Projects" = "Todos los proyectos de la categoría Arte";
 "All_Comics_Projects" = "Todos los proyectos de la categoría Comics";
 "All_Crafts_Projects" = "Todos los proyectos de la categoría Artesanías";
@@ -25,6 +26,7 @@
 "Amount_previous_amount" = "Monto actual: %{amount}, monto previo: %{previous_amount}";
 "Amount_reward" = "Monto: %{amount}, %{reward}";
 "Amounts_shown" = "Los montos mostrados son una conversión aproximada. Si el proyecto tiene éxito, tu contribución se recaudará en la moneda nativa del proyecto, que también se mostrará.";
+"Any_payment_methods_you_saved_to_Kickstarter" = "Para tu comodidad, aquí se enumeran (de manera absolutamente segura) los métodos de pago que guardaste en Kickstarter.";
 "App_version" = "Versión de la aplicación";
 "Are_you_sure" = "¿Estás seguro?";
 "Ask_me_anything" = "¡Pregúntame!";
@@ -45,8 +47,12 @@
 "Biography" = "Biografía";
 "Bookmarks" = "Marcadores";
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
+"CVC" = "CVC";
 "Cancel" = "Cancelar";
 "Cancel_your_pledge" = "Cancela tu contribución";
+"Card_ending_in_last_four" = "Tarjeta que termina en %{last_four}";
+"Card_number" = "Número de tarjeta";
+"Cardholder_name" = "Nombre del titular de la tarjeta";
 "Change_currency" = "Cambiar la moneda";
 "Change_email" = "Cambiar correo electrónico";
 "Change_password" = "Cambiar contraseña";
@@ -80,6 +86,7 @@
 "Creator_name_was_streaming_live_on_Kickstarter" = "%{creator_name} estuvo transmitiendo en vivo en Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} estará trasnmitiendo en vivo en Kickstarter %{in_duration}";
 "Creator_tips" = "Consejos para el creador";
+"Credit_card_expiration" = "Caduca %{expiration_date}";
 "Currency" = "Moneda";
 "Currency_AUD" = "$ Dólar australiano (AUD)";
 "Currency_CAD" = "$ Dólar canadiense (CAD)";
@@ -113,12 +120,13 @@
 "Either_the_pledge_or_the_project_was_canceled" = "Se canceló la contribución o el proyecto antes de que el plazo terminara.";
 "Email" = "Correo electrónico";
 "Email_frequency" = "Frecuencia de aviso por correo electrónico";
-"Email_must_be_a_valid_email_address" = "Email must be a valid email address.";
+"Email_must_be_a_valid_email_address" = "El correo electrónico debe tener una dirección de correo electrónico válida.";
 "Email_notifications" = "Notificaciones por correo electrónico";
 "Email_unverified" = "Esta dirección de correo electrónico no está verificada.";
 "Ending_soon" = "Finaliza pronto";
 "Estimated_delivery" = "Entrega estimada:";
 "Expands_subcategories" = "Muestra más subcategorías.";
+"Expiration" = "Vencimiento";
 "Expired_date_at_time" = "Venció el %{date} a la(s) %{time}";
 "Expires_date_at_time" = "Vence el %{date} a la(s) %{time}";
 "Explore" = "Explora";
@@ -229,6 +237,7 @@
 "Log_in_to_leave_a_comment" = "Inicia sesión para dejar un comentario.";
 "Log_out" = "Cerrar sesión";
 "Love_film_We_do_too" = "¿Te encanta el cine? A nosotros también.";
+"MMYY" = "MM/AA";
 "Make_a_pledge_without_a_reward" = "Contribuir sin recompensa";
 "Making_this_change" = "Hacer este cambio te permitirá ver la meta del proyecto y los montos de las contribuciones convertidos a la moneda elegida.";
 "Manage_your_pledge" = "Administra tu contribución";
@@ -273,9 +282,9 @@
 "Or_select_a_different_reward_below_colon" = "También puedes seleccionar una de las siguientes recompensas:";
 "Other_payment_methods" = "Otros métodos de pago";
 "Other_projects_you_might_like" = "Otros proyectos que te pueden gustar.";
-"Password_min_length_message" = "Your password must be at least 6 characters long.";
+"Password_min_length_message" = "Tu contraseña debe tener al menos 6 caracteres.";
 "Password_visibility" = "Visibilidad de la contraseña";
-"Passwords_matching_message" = "New passwords must match.";
+"Passwords_matching_message" = "Las nuevas contraseñas deben coincidir.";
 "Past_live_stream" = "Live Stream pasado";
 "Payment_method_was_successfully_charged" = "Cargo efectuado a método de pago indicado.";
 "Payment_methods" = "Métodos de pago";
@@ -360,11 +369,13 @@
 "Saved_projects" = "Proyectos guardados";
 "Saves_project" = "Guarda este proyecto.";
 "Say_something_kind" = "Di algo amable...";
+"Security_code" = "Código de seguridad";
 "See_all_category_name_projects" = "Ver todos los proyectos de %{category_name}";
 "Select_another_project" = "Selecciona otro proyecto";
 "Select_this_reward" = "Seleccionar esta recompensa";
 "Select_this_reward_instead" = "Selecciona esta recompensa";
 "Send" = "Enviar";
+"Send_verfication_email" = "Send verification email";
 "Share" = "Compartir";
 "Share_an_update_about_your_project" = "Comparte una actualización de tu proyecto …";
 "Share_this_live_stream" = "Compartir este Live-Stream.";
@@ -438,6 +449,7 @@
 "Watch_live" = "Ver en vivo";
 "We_couldnt_find_anything_for_search_term" = "La búsqueda \"%{search_term}\" no dio resultados.";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "Utilizamos tu actividad internamente para hacerte recomendaciones. Desactiva las recomendaciones si no quieres recibirlas.";
+"We_ve_been_unable_to_send_email" = "We've been unable to send email to this address. Please make sure it is typed correctly.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "No se pudo conectar al chat de live stream.";
 "We_were_unable_to_load_the_shipping_destinations" = "No se pudieron cargar los destinos de envío.\nPor favor inténtalo de nuevo más tarde.";
 "Websites" = "Sitios web";
@@ -467,6 +479,7 @@
 "Youre_a_backer" = "¡Eres un patrocinador!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder.";
 "Youve_pledged_to_support_this_project" = "Hiciste una contribución a este proyecto. El plazo de financiamiento todavía no ha terminado.";
+"Zip_code" = "Código postal";
 "accessibility.dashboard.buttons.activity" = "Actividad";
 "accessibility.dashboard.buttons.activity_hint" = "Abre actividades.";
 "accessibility.dashboard.buttons.messages" = "Mensajes";

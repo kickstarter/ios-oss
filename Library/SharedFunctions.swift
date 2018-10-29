@@ -83,17 +83,21 @@ internal func minPledgeAmount(forProject project: Project, reward: Reward?) -> D
  with country/currency codes based on a variety of factors.
 
  - parameter country: The country.
+ - parameter omitCurrencyCode: Safe to omit the US currencyCode
+ - parameter env: Current Environment.
 
  - returns: The currency symbol that can be used for currency display.
  */
-public func currencySymbol(forCountry country: Project.Country) -> String {
+public func currencySymbol(forCountry country: Project.Country,
+                           omitCurrencyCode: Bool = true,
+                           env: Environment = AppEnvironment.current) -> String {
 
-  guard AppEnvironment.current.launchedCountries.currencyNeedsCode(country.currencySymbol) else {
+  guard env.launchedCountries.currencyNeedsCode(country.currencySymbol) else {
     // Currencies that dont have ambigious currencies can just use their symbol.
     return country.currencySymbol
   }
 
-  if country == .us && AppEnvironment.current.countryCode == "US" {
+  if country == .us && env.countryCode == Project.Country.us.countryCode && omitCurrencyCode {
     // US people looking at US projects just get the currency symbol
     return country.currencySymbol
   } else if country == .sg {

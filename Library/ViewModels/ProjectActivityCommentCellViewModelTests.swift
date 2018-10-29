@@ -12,7 +12,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   fileprivate let body = TestObserver<String, NoError>()
   fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
   fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
-  fileprivate let defaultUser = .template |> User.lens.id .~ 9
+  fileprivate let defaultUser = User.template |> \.id .~ 9
   fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
   fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, Comment), NoError>()
   fileprivate let pledgeFooterIsHidden = TestObserver<Bool, NoError>()
@@ -36,8 +36,8 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
 
   func testAuthorImage() {
     let project = Project.template
-    let user = .template
-      |> User.lens.avatar.medium .~ "http://coolpic.com/cool.jpg"
+    let user = User.template
+      |> \.avatar.medium .~ "http://coolpic.com/cool.jpg"
     let activity = .template
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ user
@@ -73,7 +73,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
       |> Activity.lens.category .~ .commentProject
       |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Will this ship to Europe?")
       |> Activity.lens.project .~ project
-      |> Activity.lens.user .~ (.template |> User.lens.name .~ "Christopher")
+      |> Activity.lens.user .~ (.template |> \.name .~ "Christopher")
 
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.dashboard_activity_user_name_commented_on_your_project(user_name: "Christopher")
@@ -111,7 +111,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
 
   func testNotifyDelegateGoToSendReply_Project() {
     let project = Project.template
-    let user = User.template |> User.lens.name .~ "Christopher"
+    let user = User.template |> \.name .~ "Christopher"
     let activity = .template
       |> Activity.lens.category .~ .commentProject
       |> Activity.lens.comment .~ .template
@@ -126,7 +126,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   func testNotifyDelegateGoToSendReply_Update() {
     let project = Project.template
     let update = Update.template
-    let user = User.template |> User.lens.name .~ "Christopher"
+    let user = User.template |> \.name .~ "Christopher"
     let activity = .template
       |> Activity.lens.category .~ .commentPost
       |> Activity.lens.comment .~ .template
@@ -145,7 +145,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
       |> Activity.lens.category .~ .commentProject
       |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Love this project!")
       |> Activity.lens.project .~ project
-      |> Activity.lens.user .~ (.template |> User.lens.name .~ "Christopher")
+      |> Activity.lens.user .~ (.template |> \.name .~ "Christopher")
 
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.dashboard_activity_user_name_commented_on_your_project(user_name: "Christopher")
@@ -172,7 +172,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
       |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Good update!")
       |> Activity.lens.project .~ project
       |> Activity.lens.update .~ (.template |> Update.lens.sequence .~ 5)
-      |> Activity.lens.user .~ (.template |> User.lens.name .~ "Christopher")
+      |> Activity.lens.user .~ (.template |> \.name .~ "Christopher")
 
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.dashboard_activity_user_name_commented_on_update_number(
@@ -201,7 +201,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   }
 
   func testHideReplyAndPledgeInfoButtons_IfUserIsCreator() {
-    let creator = .template |> User.lens.name .~ "Benny"
+    let creator = User.template |> \.name .~ "Benny"
     let project = .template |> Project.lens.creator .~ creator
     let activity = .template
       |> Activity.lens.category .~ .commentPost

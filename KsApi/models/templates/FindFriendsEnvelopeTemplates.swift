@@ -8,6 +8,6 @@ extension FindFriendsEnvelope {
         moreUsers: "http://somelink.com/more"
       )
     ),
-    users: (1...3).map { User.template |> User.lens.id .~ $0 }
+    users: (1...3).map { User.template |> \.id .~ $0 }
   )
 }
