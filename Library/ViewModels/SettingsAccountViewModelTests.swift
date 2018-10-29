@@ -11,7 +11,7 @@ import Prelude
 internal final class SettingsAccountViewModelTests: TestCase {
   let vm = SettingsAccountViewModel()
   let dismissCurrencyPicker = TestObserver<Void, NoError>()
-  let presentCurrencyPicker = TestObserver<Bool, NoError>()
+  let presentCurrencyPicker = TestObserver<Void, NoError>()
   let reloadDataUser = TestObserver<User, NoError>()
   let reloadDataCurrency = TestObserver<Currency, NoError>()
   let showAlert = TestObserver<(), NoError>()
@@ -41,7 +41,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.reloadDataUser.assertValueCount(1)
     self.reloadDataCurrency.assertValueCount(1)
     self.vm.inputs.didSelectRow(cellType: .currency)
-    self.presentCurrencyPicker.assertValues([true])
+    self.presentCurrencyPicker.assertValueCount(1)
   }
 
   func testDismissCurrencyPicker() {
@@ -49,7 +49,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.reloadDataUser.assertValueCount(1)
     self.reloadDataCurrency.assertValueCount(1)
     self.vm.inputs.didSelectRow(cellType: .currency)
-    self.presentCurrencyPicker.assertValues([true])
+    self.presentCurrencyPicker.assertValueCount(1)
     self.vm.inputs.dismissPickerTap()
     self.dismissCurrencyPicker.assertValueCount(1)
   }
