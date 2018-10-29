@@ -14,9 +14,11 @@ public final class Koala {
   fileprivate let client: TrackingClientType
   fileprivate let config: Config?
   fileprivate let device: UIDeviceType
-  internal let loggedInUser: User?
-  fileprivate let screen: UIScreenType
   fileprivate let distinctId: String
+  internal let loggedInUser: User?
+  private var preferredContentSizeCategory: UIContentSizeCategory
+  private var preferredContentSizeCategoryObserver: Any?
+  fileprivate let screen: UIScreenType
 
   /// Determines the authentication type for login or signup events.
   public enum AuthType {
@@ -319,20 +321,38 @@ public final class Koala {
     }
   }
 
-  public init(bundle: NSBundleType = Bundle.main,
-              client: TrackingClientType,
-              config: Config? = nil,
-              device: UIDeviceType = UIDevice.current,
-              loggedInUser: User? = nil,
-              screen: UIScreenType = UIScreen.main,
-              distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString) {
-    self.bundle = bundle
-    self.client = client
-    self.config = config
-    self.device = device
-    self.loggedInUser = loggedInUser
-    self.screen = screen
-    self.distinctId = distinctId
+  public init(
+    bundle: NSBundleType = Bundle.main,
+    client: TrackingClientType,
+    config: Config? = nil,
+    device: UIDeviceType = UIDevice.current,
+    loggedInUser: User? = nil,
+    screen: UIScreenType = UIScreen.main,
+    distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString,
+    preferredContentSizeCategory: UIContentSizeCategory = UIApplication.shared.preferredContentSizeCategory) {
+      self.bundle = bundle
+      self.client = client
+      self.config = config
+      self.device = device
+      self.loggedInUser = loggedInUser
+      self.screen = screen
+      self.distinctId = distinctId
+      self.preferredContentSizeCategory = preferredContentSizeCategory
+
+      self.observePreferredContentSizeCategory()
+  }
+
+  private func observePreferredContentSizeCategory() {
+    self.preferredContentSizeCategoryObserver = NotificationCenter.default.addObserver(
+      forName: UIContentSizeCategory.didChangeNotification,
+      object: nil,
+      queue: OperationQueue.main) { [weak self] _ in
+        self?.preferredContentSizeCategory = UIApplication.shared.preferredContentSizeCategory
+    }
+  }
+
+  deinit {
+    self.preferredContentSizeCategoryObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   /// Call when the activities screen is shown.
@@ -1820,7 +1840,7 @@ public final class Koala {
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["screen_height"] = UInt(self.screen.bounds.height)
     props["device_orientation"] = Koala.deviceOrientation
-    props["preferred_content_size_category"] = UIApplication.shared.preferredContentSizeCategory
+    props["preferred_content_size_category"] = self.preferredContentSizeCategory
 
     props["mp_lib"] = "kickstarter_ios"
     props["koala_lib"] = "kickstarter_ios"
