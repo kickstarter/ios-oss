@@ -11,7 +11,6 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
   weak var cellDelegate: SettingsNotificationCellDelegate?
 
   func load(user: User) {
-
     _ = SettingsNotificationSectionType.allCases
       .filter { filterCreatorForSection($0, user: user) }
       .enumerated()

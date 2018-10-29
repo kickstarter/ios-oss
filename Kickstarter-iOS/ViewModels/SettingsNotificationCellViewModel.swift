@@ -32,7 +32,6 @@ SettingsNotificationCellViewModelOutputs,
 SettingsNotificationCellViewModelType {
 
   public init() {
-
     let initialUser = self.initialUserProperty.signal.skipNil()
 
     let cellType = cellTypeProperty.signal.skipNil().skipRepeats()
@@ -74,7 +73,6 @@ SettingsNotificationCellViewModelType {
     .map { cellType, notificationType, enabled -> (UserAttribute.Notification?, Bool) in
         let notification = SettingsNotificationCellViewModel.notificationFor(cellType: cellType,
                                                                  notificationType: notificationType)
-
         return (notification, enabled)
     }
 
@@ -137,7 +135,7 @@ SettingsNotificationCellViewModelType {
       .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
 
     self.projectCountText = initialUser
-      .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0)}
+      .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
 
     // Koala tracking
     userAttributeChanged.observeValues { (notification, enabled) in
