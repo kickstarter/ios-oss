@@ -34,6 +34,8 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.vm.inputs.showChangeCurrencyAlert(for: Currency.CHF)
     self.vm.inputs.didConfirmChangeCurrency()
     self.scheduler.advance()
+    self.reloadDataUser.assertValueCount(2)
+    self.reloadDataCurrency.assertValueCount(2)
   }
 
   func testPresentCurrencyPicker() {

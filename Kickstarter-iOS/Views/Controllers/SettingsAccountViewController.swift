@@ -81,7 +81,7 @@ final class SettingsAccountViewController: UIViewController {
       |> settingsTableViewStyle
   }
 
-  func showCurrencyPickerCell() {
+  private func showCurrencyPickerCell() {
     self.tableView.beginUpdates()
     self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow()], with: .top)
     let tapRecognizer = UITapGestureRecognizer(target: self,

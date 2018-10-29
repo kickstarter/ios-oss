@@ -91,7 +91,6 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
 
   public var description: String? {
     switch self {
-    case .currency: return Strings.Currency_USD()
     default: return nil
     }
   }
