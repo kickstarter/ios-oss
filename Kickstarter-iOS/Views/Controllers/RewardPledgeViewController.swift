@@ -582,6 +582,10 @@ internal final class RewardPledgeViewController: UIViewController {
   fileprivate func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(thanksVC, animated: true)
+    if #available(iOS 10.0, *) {
+      let notification = UINotificationFeedbackGenerator()
+      notification.notificationOccurred(.success)
+    }
   }
 
   fileprivate func load(items: [String]) {
