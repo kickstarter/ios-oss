@@ -7,44 +7,44 @@ public enum UserAttribute {
   case notification(Notification)
   case privacy(Privacy)
 
-  public var lens: Lens<User, Bool?> {
+  public var keyPath: WritableKeyPath<User, Bool?> {
     switch self {
     case let .newsletter(newsletter):
       switch newsletter {
-      case .arts:       return User.lens.newsletters.arts
-      case .games:      return User.lens.newsletters.games
-      case .happening:  return User.lens.newsletters.happening
-      case .invent:     return User.lens.newsletters.invent
-      case .promo:      return User.lens.newsletters.promo
-      case .weekly:     return User.lens.newsletters.weekly
-      case .films:      return User.lens.newsletters.films
-      case .publishing: return User.lens.newsletters.publishing
-      case .alumni:     return User.lens.newsletters.alumni
+      case .arts:       return \.newsletters.arts
+      case .games:      return \.newsletters.games
+      case .happening:  return \.newsletters.happening
+      case .invent:     return \.newsletters.invent
+      case .promo:      return \.newsletters.promo
+      case .weekly:     return \.newsletters.weekly
+      case .films:      return \.newsletters.films
+      case .publishing: return \.newsletters.publishing
+      case .alumni:     return \.newsletters.alumni
       }
     case let .notification(notification):
       switch notification {
-      case .comments:             return User.lens.notifications.comments
-      case .creatorTips:          return User.lens.notifications.creatorTips
-      case .creatorDigest:        return User.lens.notifications.creatorDigest
-      case .follower:             return User.lens.notifications.follower
-      case .friendActivity:       return User.lens.notifications.friendActivity
-      case .messages:             return User.lens.notifications.messages
-      case .mobileComments:       return User.lens.notifications.mobileComments
-      case .mobileFollower:       return User.lens.notifications.mobileFollower
-      case .mobileFriendActivity: return User.lens.notifications.mobileFriendActivity
-      case .mobileMessages:       return User.lens.notifications.mobileMessages
-      case .mobilePledgeActivity: return User.lens.notifications.mobileBackings
-      case .mobilePostLikes:      return User.lens.notifications.mobilePostLikes
-      case .mobileUpdates:        return User.lens.notifications.mobileUpdates
-      case .pledgeActivity:       return User.lens.notifications.backings
-      case .postLikes:            return User.lens.notifications.postLikes
-      case .updates:              return User.lens.notifications.updates
+      case .comments:             return \.notifications.comments
+      case .creatorTips:          return \.notifications.creatorTips
+      case .creatorDigest:        return \.notifications.creatorDigest
+      case .follower:             return \.notifications.follower
+      case .friendActivity:       return \.notifications.friendActivity
+      case .messages:             return \.notifications.messages
+      case .mobileComments:       return \.notifications.mobileComments
+      case .mobileFollower:       return \.notifications.mobileFollower
+      case .mobileFriendActivity: return \.notifications.mobileFriendActivity
+      case .mobileMessages:       return \.notifications.mobileMessages
+      case .mobilePledgeActivity: return \.notifications.mobileBackings
+      case .mobilePostLikes:      return \.notifications.mobilePostLikes
+      case .mobileUpdates:        return \.notifications.mobileUpdates
+      case .pledgeActivity:       return \.notifications.backings
+      case .postLikes:            return \.notifications.postLikes
+      case .updates:              return \.notifications.updates
       }
     case let .privacy(privacy):
       switch privacy {
-      case .following:          return User.lens.social
-      case .recommendations:    return User.lens.optedOutOfRecommendations
-      case .showPublicProfile:  return User.lens.showPublicProfile
+      case .following:          return \.social
+      case .recommendations:    return \.optedOutOfRecommendations
+      case .showPublicProfile:  return \.showPublicProfile
       }
     }
   }

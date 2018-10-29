@@ -6,7 +6,7 @@ extension Project {
     blurb: "A fun project.",
     category: .template,
     country: .us,
-    creator: .template |> User.lens.stats.createdProjectsCount .~ 1,
+    creator: User.template |> \.stats.createdProjectsCount .~ 1,
     memberData: Project.MemberData(
       lastUpdatePublishedAt: nil,
       permissions: [],
@@ -34,16 +34,7 @@ extension Project {
     slug: "a-fun-project",
     staffPick: false,
     state: .live,
-    stats: Project.Stats(
-      backersCount: 10,
-      commentsCount: 10,
-      currentCurrency: "USD",
-      currentCurrencyRate: 1.5,
-      goal: 2_000,
-      pledged: 1_000,
-      staticUsdRate: 1.0,
-      updatesCount: 1
-    ),
+    stats: .template,
     urls: Project.UrlsEnvelope(
       web: Project.UrlsEnvelope.WebEnvelope(
         project: "https://www.kickstarter.com/projects/creator/a-fun-project",
@@ -53,7 +44,7 @@ extension Project {
     video: .template
   )
 
-  internal static let todayByScottThrift = .template
+  internal static let todayByScottThrift = Project.template
     |> Project.lens.photo.full .~ "https://ksr-ugc.imgix.net/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?w=560&h=315&fit=fill&bg=FBFAF8&v=1464773625&auto=format&q=92&s=bb3773aebc4ad41e145ed8735cb3a221"
     |> Project.lens.photo.med .~ "https://ksr-ugc.imgix.net/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?w=266&h=150&fit=fill&bg=FBFAF8&v=1464773625&auto=format&q=92&s=79a8051e6475e417ead9b0bfae63798b"
     |> Project.lens.photo.small .~ "https://ksr-ugc.imgix.net/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?w=160&h=90&fit=fill&bg=FBFAF8&v=1464773625&auto=format&q=92&s=fc738d87d861a96333e9f93bee680c27"
@@ -75,6 +66,7 @@ extension Project {
     |> Project.lens.stats.pledged .~ 22_318
     |> Project.lens.stats.goal .~ 22_000
     |> Project.lens.stats.staticUsdRate .~ 1.31
+    |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
     |> Project.lens.stats.currentCurrency .~ "USD"
     |> Project.lens.stats.currentCurrencyRate .~ 1.31
     |> (Project.lens.location..Location.lens.displayableName) .~ "Hastings, UK"
@@ -144,12 +136,12 @@ extension Project {
     ]
     |> Project.lens.country .~ .gb
     |> Project.lens.creator .~ (
-      .template
-        |> User.lens.id .~ "Alma Haser".hash
-        |> User.lens.name .~ "Alma Haser"
-        |> User.lens.avatar.large .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
-        |> User.lens.avatar.medium .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
-        |> User.lens.avatar.small .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
+      User.template
+        |> \.id .~ "Alma Haser".hash
+        |> \.name .~ "Alma Haser"
+        |> \.avatar.large .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
+        |> \.avatar.medium .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
+        |> \.avatar.small .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
     )
     |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1171937901/cosmic-surgery"
 

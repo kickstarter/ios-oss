@@ -95,8 +95,8 @@ internal final class DashboardActionCellViewModelTests: TestCase {
   }
 
   func testLastUpdatePublishedAtEmits_CollaboratorNoUpdates() {
-    let collaborator = .template
-      |> User.lens.id .~ 9
+    let collaborator = User.template
+      |> \.id .~ 9
     let project = Project.template
 
     withEnvironment(currentUser: collaborator) {
@@ -107,7 +107,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
   }
 
   func testLastUpdatePublishedAtEmits_CreatorNoUpdates() {
-    let creator = .template |> User.lens.id .~ 42
+    let creator = User.template |> \.id .~ 42
     let project = .template |> Project.lens.creator .~ creator
 
     withEnvironment(currentUser: creator) {
@@ -120,7 +120,7 @@ internal final class DashboardActionCellViewModelTests: TestCase {
   }
 
   func testPermissionsWithCreator() {
-    let creator = .template |> User.lens.id .~ 42
+    let creator = User.template |> \.id .~ 42
     let project = .template
       |> Project.lens.creator .~ creator
       |> Project.lens.memberData.permissions .~ [.post]
@@ -135,8 +135,8 @@ internal final class DashboardActionCellViewModelTests: TestCase {
   }
 
   func testPermissionsWithCollaborator() {
-    let creator = .template |> User.lens.id .~ 42
-    let collaborator = .template |> User.lens.id .~ 99
+    let creator = User.template |> \.id .~ 42
+    let collaborator = User.template |> \.id .~ 99
     let project = .template
       |> Project.lens.creator .~ creator
       |> Project.lens.memberData.permissions .~ [.post]
@@ -151,8 +151,8 @@ internal final class DashboardActionCellViewModelTests: TestCase {
   }
 
   func testPermissionsWithCollaboratorWithoutPostPermission() {
-    let creator = .template |> User.lens.id .~ 42
-    let collaborator = .template |> User.lens.id .~ 99
+    let creator = User.template |> \.id .~ 42
+    let collaborator = User.template |> \.id .~ 99
     let project = .template
       |> Project.lens.creator .~ creator
       |> Project.lens.memberData.permissions .~ []
