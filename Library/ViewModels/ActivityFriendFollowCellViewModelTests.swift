@@ -24,8 +24,8 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
   func testFriendDetails_Complete() {
     let user = User.template
-      |> User.lens.avatar.small .~ "http://coolpic.com/cool.jpg"
-      |> User.lens.name .~ "Squiggles McTwiddle"
+      |> \.avatar.small .~ "http://coolpic.com/cool.jpg"
+      |> \.name .~ "Squiggles McTwiddle"
 
     let activity = Activity.template
       |> Activity.lens.user .~ user
@@ -41,7 +41,7 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
   func testFriendDetails_Incomplete() {
     let user = User.template
-      |> User.lens.name .~ "Squiggles McTwiddle"
+      |> \.name .~ "Squiggles McTwiddle"
 
     let activity = Activity.template
       |> Activity.lens.user .~ user
@@ -57,9 +57,9 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
   func testFriendFollowing_Friend() {
     let user = User.template
-      |> User.lens.avatar.small .~ "http://coolpic.com/cool.jpg"
-      |> User.lens.isFriend .~ true
-      |> User.lens.name .~ "Squiggles McTwiddle"
+      |> \.avatar.small .~ "http://coolpic.com/cool.jpg"
+      |> \.isFriend .~ true
+      |> \.name .~ "Squiggles McTwiddle"
 
     let activity = Activity.template
       |> Activity.lens.user .~ user
@@ -75,9 +75,9 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
   func testFriendFollowing_NonFriend() {
     let user = User.template
-      |> User.lens.avatar.medium .~ "http://coolpic.com/cool.jpg"
-      |> User.lens.isFriend .~ false
-      |> User.lens.name .~ "Squiggles McTwiddle"
+      |> \.avatar.medium .~ "http://coolpic.com/cool.jpg"
+      |> \.isFriend .~ false
+      |> \.name .~ "Squiggles McTwiddle"
 
     let activity = Activity.template
       |> Activity.lens.user .~ user
@@ -99,9 +99,9 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
   func testRetainFriendStatusOnReuse_After_Following() {
     let user = User.template
-      |> User.lens.avatar.small .~ "http://coolpic.com/cool.jpg"
-      |> User.lens.isFriend .~ false
-      |> User.lens.name .~ "Squiggles McTwiddle"
+      |> \.avatar.small .~ "http://coolpic.com/cool.jpg"
+      |> \.isFriend .~ false
+      |> \.name .~ "Squiggles McTwiddle"
 
     let activity = Activity.template
       |> Activity.lens.user .~ user

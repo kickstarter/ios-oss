@@ -21,12 +21,12 @@ internal final class ActivitySampleBackingCellViewModelTests: TestCase {
   }
 
   func testBackingDataEmits() {
-    let backer = .template
-      |> User.lens.name .~ "Best Friend"
-      |> User.lens.avatar.medium .~ "http://coolpic.com/cool.png"
+    let backer = User.template
+      |> \.name .~ "Best Friend"
+      |> \.avatar.medium .~ "http://coolpic.com/cool.png"
 
-    let creator = .template
-      |> User.lens.name .~ "Super Cool Creator"
+    let creator = User.template
+      |> \.name .~ "Super Cool Creator"
 
     let project = .template
       |> Project.lens.name .~ "Super Sweet Project Name"

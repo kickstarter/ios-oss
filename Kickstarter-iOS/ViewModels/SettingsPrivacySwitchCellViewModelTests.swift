@@ -21,9 +21,9 @@ final class SettingsPrivacySwitchCellViewModelTests: TestCase {
 
   func testPrivacySwitchIsOn_configuredWithUser() {
     let showPublicProfileUser = User.template
-      |> UserAttribute.privacy(.showPublicProfile).lens .~ true
+      |> UserAttribute.privacy(.showPublicProfile).keyPath .~ true
     let privateProfileUser = User.template
-      |> UserAttribute.privacy(.showPublicProfile).lens .~ false
+      |> UserAttribute.privacy(.showPublicProfile).keyPath .~ false
 
     self.vm.configure(with: showPublicProfileUser)
 

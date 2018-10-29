@@ -8,7 +8,7 @@ import PlaygroundSupport
 
 let controller = Storyboard.Activity.instantiate(ActivitiesViewController.self)
 
-let creator = .template |> User.lens.avatar.small .~ ""
+let creator = User.template |> \.avatar.small .~ ""
 let survey = .template |> SurveyResponse.lens.project .~
   (.cosmicSurgery |> Project.lens.creator .~ creator)
 
@@ -16,7 +16,7 @@ let daysAgoDate = NSDate().timeIntervalSince1970 - 60 * 60 * 24 * 4
 
 let follow = .template
   |> Activity.lens.id .~ 85
-  |> Activity.lens.user .~ (.template |> User.lens.name .~ "Brandon Williams")
+  |> Activity.lens.user .~ (.template |> \.name .~ "Brandon Williams")
   |> Activity.lens.category .~ .follow
 
 let update = .template
@@ -29,7 +29,7 @@ let update = .template
 let backing = .template
   |> Activity.lens.id .~ 62
   |> Activity.lens.project .~ (.cosmicSurgery |> Project.lens.stats.fundingProgress .~ 0.88)
-  |> Activity.lens.user .~ (.template |> User.lens.name .~ "Judith Light")
+  |> Activity.lens.user .~ (.template |> \.name .~ "Judith Light")
   |> Activity.lens.category .~ .backing
 
 let launch = .template
@@ -45,8 +45,8 @@ let following = .template
   |> Activity.lens.id .~ 0
   |> Activity.lens.user .~ (
     .template
-      |> User.lens.name .~ "David Bowie"
-      |> User.lens.isFriend .~ true
+      |> \.name .~ "David Bowie"
+      |> \.isFriend .~ true
   )
   |> Activity.lens.category .~ .follow
 

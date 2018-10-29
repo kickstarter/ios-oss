@@ -25,18 +25,18 @@ public struct Project {
   public private(set) var video: Video?
 
   public struct UrlsEnvelope {
-    public let web: WebEnvelope
+    public private(set) var web: WebEnvelope
 
     public struct WebEnvelope {
-      public let project: String
-      public let updates: String?
+      public private(set) var project: String
+      public private(set) var updates: String?
     }
   }
 
   public struct Video {
-    public let id: Int
-    public let high: String
-    public let hls: String?
+    public private(set) var id: Int
+    public private(set) var high: String
+    public private(set) var hls: String?
   }
 
   public enum State: String, Argo.Decodable {
@@ -121,10 +121,10 @@ public struct Project {
   }
 
   public struct MemberData {
-    public let lastUpdatePublishedAt: TimeInterval?
-    public let permissions: [Permission]
-    public let unreadMessagesCount: Int?
-    public let unseenActivityCount: Int?
+    public private(set) var lastUpdatePublishedAt: TimeInterval?
+    public private(set) var permissions: [Permission]
+    public private(set) var unreadMessagesCount: Int?
+    public private(set) var unseenActivityCount: Int?
 
     public enum Permission: String {
       case editProject = "edit_project"
@@ -138,24 +138,24 @@ public struct Project {
   }
 
   public struct Dates {
-    public let deadline: TimeInterval
-    public let featuredAt: TimeInterval?
-    public let launchedAt: TimeInterval
-    public let stateChangedAt: TimeInterval
+    public private(set) var deadline: TimeInterval
+    public private(set) var featuredAt: TimeInterval?
+    public private(set) var launchedAt: TimeInterval
+    public private(set) var stateChangedAt: TimeInterval
   }
 
   public struct Personalization {
-    public let backing: Backing?
-    public let friends: [User]?
-    public let isBacking: Bool?
-    public let isStarred: Bool?
+    public private(set) var backing: Backing?
+    public private(set) var friends: [User]?
+    public private(set) var isBacking: Bool?
+    public private(set) var isStarred: Bool?
   }
 
   public struct Photo {
-    public let full: String
-    public let med: String
-    public let size1024x768: String?
-    public let small: String
+    public private(set) var full: String
+    public private(set) var med: String
+    public private(set) var size1024x768: String?
+    public private(set) var small: String
   }
 
   public func endsIn48Hours(today: Date = Date()) -> Bool {

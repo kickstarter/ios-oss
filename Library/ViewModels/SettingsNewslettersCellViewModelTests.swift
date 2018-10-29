@@ -28,7 +28,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
   func test_SubscribeToAll_Toggled() {
 
     let user = User.template
-      |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: true)
+      |> \.newsletters .~ User.NewsletterSubscriptions.all(on: true)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
@@ -39,7 +39,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
   func test_SubscribeToAll_Untoggled_IfAtLeastOneNewsletterIsUntoggled() {
 
     let user = User.template
-      |> User.lens.newsletters.arts .~ nil
+      |> \.newsletters.arts .~ nil
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 
@@ -92,7 +92,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
     self.switchIsOn.assertValues([false])
 
     self.vm.inputs.newslettersSwitchTapped(on: true)
-    let user1 = User.template |> UserAttribute.newsletter(newsletter).lens .~ true
+    let user1 = User.template |> UserAttribute.newsletter(newsletter).keyPath .~ true
 
     self.vm.inputs.configureWith(value: user1)
 
@@ -100,7 +100,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
     XCTAssertEqual(["Subscribed To Newsletter"], self.trackingClient.events)
 
     self.vm.inputs.newslettersSwitchTapped(on: false)
-    let user2 = User.template |> UserAttribute.newsletter(newsletter).lens .~ false
+    let user2 = User.template |> UserAttribute.newsletter(newsletter).keyPath .~ false
 
     self.vm.inputs.configureWith(value: user2)
     self.switchIsOn.assertValues([false, true, false])
@@ -151,7 +151,7 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
 
       self.vm.inputs.newslettersSwitchTapped(on: true)
       let user1 = User.template
-        |> User.lens.newsletters.arts .~ true
+        |> \.newsletters.arts .~ true
 
       self.vm.inputs.configureWith(value: user1)
       self.switchIsOn.assertValues([false, true], "Newsletter immediately turned on on tap.")
