@@ -59,6 +59,7 @@ public struct AppEnvironment {
   public static func updateConfig(_ config: Config) {
     replaceCurrentEnvironment(
       config: config,
+      countryCode: config.countryCode,
       koala: AppEnvironment.current.koala |> Koala.lens.config .~ config
     )
   }
