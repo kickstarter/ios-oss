@@ -508,7 +508,13 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
-      .observeValues { [weak self] project in self?.goToThanks(project: project) }
+      .observeValues { [weak self] project in
+        if #available(iOS 10.0, *) {
+          let notification = UINotificationFeedbackGenerator()
+          notification.notificationOccurred(.success)
+        }
+        self?.goToThanks(project: project)
+      }
 
     self.viewModel.outputs.paddingViewHeightConstant
       .observeForUI()
@@ -582,10 +588,6 @@ internal final class RewardPledgeViewController: UIViewController {
   fileprivate func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(thanksVC, animated: true)
-    if #available(iOS 10.0, *) {
-      let notification = UINotificationFeedbackGenerator()
-      notification.notificationOccurred(.success)
-    }
   }
 
   fileprivate func load(items: [String]) {

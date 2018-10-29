@@ -324,15 +324,11 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       if #available(iOS 10.0, *) {
         let notification = UISelectionFeedbackGenerator()
         notification.selectionChanged()
-      } else {
-        // Fallback on earlier versions
-        }
+      }
     } else {
       if #available(iOS 10.0, *) {
         let notification = UINotificationFeedbackGenerator()
         notification.notificationOccurred(.success)
-      } else {
-        // Fallback on earlier versions
       }
     }
     self.viewModel.inputs.saveButtonTapped()
