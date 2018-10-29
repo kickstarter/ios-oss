@@ -5,13 +5,13 @@ import Prelude
 import Result
 import XCTest
 
-private let creator = .template |> User.lens.avatar.small .~ ""
+private let creator = User.template |> \.avatar.small .~ ""
 private let survey = .template |> SurveyResponse.lens.project .~
   (.cosmicSurgery |> Project.lens.creator .~ creator)
-private let you = .template
-  |> User.lens.avatar.small .~ ""
-  |> User.lens.id .~ 355
-  |> User.lens.name .~ "Gina B"
+private let you = User.template
+  |> \.avatar.small .~ ""
+  |> \.id .~ 355
+  |> \.name .~ "Gina B"
 
 internal final class ActivitiesViewControllerTests: TestCase {
   override func setUp() {
@@ -38,8 +38,8 @@ internal final class ActivitiesViewControllerTests: TestCase {
     let follow = .template
       |> Activity.lens.id .~ 84
       |> Activity.lens.user .~ (.template
-        |> User.lens.name .~ "Brandon Williams"
-        |> User.lens.avatar.small .~ ""
+        |> \.name .~ "Brandon Williams"
+        |> \.avatar.small .~ ""
       )
       |> Activity.lens.category .~ .follow
 
@@ -62,8 +62,8 @@ internal final class ActivitiesViewControllerTests: TestCase {
         |> Project.lens.category .~ games
       )
       |> Activity.lens.user .~ (.template
-        |> User.lens.name .~ "Judith Light"
-        |> User.lens.avatar.small .~ ""
+        |> \.name .~ "Judith Light"
+        |> \.avatar.small .~ ""
       )
       |> Activity.lens.category .~ .backing
 
@@ -80,9 +80,9 @@ internal final class ActivitiesViewControllerTests: TestCase {
     let following = .template
       |> Activity.lens.id .~ 0
       |> Activity.lens.user .~ (.template
-        |> User.lens.name .~ "David Bowie"
-        |> User.lens.isFriend .~ true
-        |> User.lens.avatar.small .~ ""
+        |> \.name .~ "David Bowie"
+        |> \.isFriend .~ true
+        |> \.avatar.small .~ ""
       )
       |> Activity.lens.category .~ .follow
 
@@ -133,7 +133,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: activities,
         fetchUnansweredSurveyResponsesResponse: [survey]),
-        currentUser: .template |> User.lens.facebookConnected .~ true,
+        currentUser: .template |> \.facebookConnected .~ true,
         language: language,
         userDefaults: MockKeyValueStore()
       ) {
@@ -169,7 +169,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: [launch],
           fetchUnansweredSurveyResponsesResponse: [survey, survey2]),
-        currentUser: you |> User.lens.facebookConnected .~ false |> User.lens.needsFreshFacebookToken .~ true,
+        currentUser: you |> \.facebookConnected .~ false |> \.needsFreshFacebookToken .~ true,
         language: language,
         userDefaults: MockKeyValueStore()
       ) {
@@ -202,7 +202,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: [launch],
                                 fetchUnansweredSurveyResponsesResponse: [survey, survey2]),
-        currentUser: you |> User.lens.facebookConnected .~ true |> User.lens.needsFreshFacebookToken .~ true,
+        currentUser: you |> \.facebookConnected .~ true |> \.needsFreshFacebookToken .~ true,
         language: language,
         userDefaults: MockKeyValueStore()
       ) {

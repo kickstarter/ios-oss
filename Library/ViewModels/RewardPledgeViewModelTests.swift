@@ -202,6 +202,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
   func testConversionLabel_Shown() {
     let project = .template
       |> Project.lens.country .~ .gb
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.currentCurrency .~ "USD"
       |> Project.lens.stats.currentCurrencyRate .~ 2
@@ -220,8 +221,8 @@ internal final class RewardPledgeViewModelTests: TestCase {
   func testConversionLabel_Shown_WithoutCurrentCurrency() {
     let project = .template
       |> Project.lens.country .~ .gb
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template
       |> Reward.lens.minimum .~ 1_000
@@ -232,6 +233,43 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
       self.conversionLabelText.assertValues(["About $2,000"])
+    }
+  }
+
+  func testConversionLabel_Shown_NonUS_User() {
+    let project = .template
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.staticUsdRate .~ 2
+      |> Project.lens.stats.currentCurrencyRate .~ 1.2
+    let reward = .template
+      |> Reward.lens.minimum .~ 1_000
+
+    withEnvironment(countryCode: "CA") {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.conversionLabelHidden.assertValues([false], "Non-US user viewing US project sees conversion.")
+      self.conversionLabelText.assertValues(["About CA$ 1,200"])
+    }
+  }
+
+  func testConversionLabel_Shown_USUser_NonUS_Location() {
+    let project = .template
+      |> Project.lens.country .~ .gb
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.staticUsdRate .~ 2
+      |> Project.lens.stats.currentCurrencyRate .~ nil
+    let reward = .template
+      |> Reward.lens.minimum .~ 1_000
+
+    withEnvironment(countryCode: "CA") {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+
+      self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
+      self.conversionLabelText.assertValues(["About US$ 2,000"])
     }
   }
 

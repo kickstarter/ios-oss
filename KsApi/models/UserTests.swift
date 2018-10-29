@@ -6,7 +6,7 @@ final class UserTests: XCTestCase {
 
   func testEquatable() {
     XCTAssertEqual(User.template, User.template)
-    XCTAssertNotEqual(User.template, User.template |> User.lens.id %~ { $0 + 1 })
+    XCTAssertNotEqual(User.template, User.template |> \.id %~ { $0 + 1 })
   }
 
   func testDescription() {

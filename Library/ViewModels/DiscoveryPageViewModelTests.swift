@@ -576,8 +576,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     let projectEnv = .template
       |> DiscoveryEnvelope.lens.projects .~ [Project]()
 
-    let antisocialUser = .template |> User.lens.social .~ false
-    let socialUser = .template |> User.lens.social .~ true
+    let antisocialUser = User.template |> \.social .~ false
+    let socialUser = User.template |> \.social .~ true
 
     self.vm.inputs.configureWith(sort: .magic)
     self.vm.inputs.viewDidAppear()

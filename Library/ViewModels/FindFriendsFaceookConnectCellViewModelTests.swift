@@ -78,8 +78,8 @@ import Prelude
 
   func testLabels_needsReconnect() {
     withEnvironment(currentUser: User.template
-      |> User.lens.facebookConnected .~ true
-      |> User.lens.needsFreshFacebookToken .~ true) {
+      |> \.facebookConnected .~ true
+      |> \.needsFreshFacebookToken .~ true) {
         vm.inputs.configureWith(source: .activity)
 
         title.assertValue(Strings.Facebook_reconnect())

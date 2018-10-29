@@ -20,8 +20,8 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
   }
 
   func testSocialOptedOut_And_DownloadDataCopy() {
-    let currentUser = .template
-      |> User.lens.social .~ false
+    let currentUser = User.template
+      |> \.social .~ false
     let exportData = ExportDataEnvelope.template
 
     let mockService = MockService(fetchExportStateResponse: exportData,
@@ -44,8 +44,8 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
   }
 
   func testSocialOptedIn_And_RequestDataCopy() {
-    let currentUser = .template
-      |> User.lens.social .~ true
+    let currentUser = User.template
+      |> \.social .~ true
 
     let exportData = .template
       |> ExportDataEnvelope.lens.state .~ .expired

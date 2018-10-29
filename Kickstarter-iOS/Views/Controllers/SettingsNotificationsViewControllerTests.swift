@@ -21,10 +21,10 @@ final class SettingsNotificationsViewControllerTests: TestCase {
 
   func testSettingsNotificationsViewController() {
     let currentUser = .template
-      |> UserAttribute.notification(.friendActivity).lens .~ true
-      |> UserAttribute.notification(.mobileFollower).lens .~ true
-      |> User.lens.stats.backedProjectsCount .~ 1234
-      |> User.lens.stats.memberProjectsCount .~ 2
+      |> UserAttribute.notification(.friendActivity).keyPath .~ true
+      |> UserAttribute.notification(.mobileFollower).keyPath .~ true
+      |> \.stats.backedProjectsCount .~ 1234
+      |> \.stats.memberProjectsCount .~ 2
 
     let mockService = MockService(fetchUserSelfResponse: currentUser)
 
@@ -48,11 +48,11 @@ final class SettingsNotificationsViewControllerTests: TestCase {
 
   func testSettingsNotificationsViewController_isCreator() {
     let currentUser = .template
-      |> UserAttribute.notification(.pledgeActivity).lens .~ true
-      |> UserAttribute.notification(.creatorTips).lens .~ true
-      |> User.lens.stats.backedProjectsCount .~ 5
-      |> User.lens.stats.memberProjectsCount .~ 2
-      |> User.lens.stats.createdProjectsCount .~ 4
+      |> UserAttribute.notification(.pledgeActivity).keyPath .~ true
+      |> UserAttribute.notification(.creatorTips).keyPath .~ true
+      |> \.stats.backedProjectsCount .~ 5
+      |> \.stats.memberProjectsCount .~ 2
+      |> \.stats.createdProjectsCount .~ 4
 
     let mockService = MockService(fetchUserSelfResponse: currentUser)
 
