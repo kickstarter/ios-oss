@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SettingsCurrencyPickerCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Nmx-pM-a9A">
+                    <rect key="frame" x="0.0" y="20" width="375" height="646"/>
+                    <subviews>
+                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fhw-j7-H5O">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="646"/>
+                        </pickerView>
+                    </subviews>
+                </stackView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZyQ-vu-940" userLabel="Line Layer">
+                    <rect key="frame" x="0.0" y="666" width="375" height="1"/>
+                    <color key="backgroundColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="9bO-Rj-j71"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ZyQ-vu-940" firstAttribute="top" secondItem="Nmx-pM-a9A" secondAttribute="bottom" id="BbS-6h-0fR"/>
+                <constraint firstItem="Nmx-pM-a9A" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="HOC-Ip-EUG"/>
+                <constraint firstItem="ZyQ-vu-940" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="JrP-65-bbG"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ZyQ-vu-940" secondAttribute="bottom" id="PtC-O0-3su"/>
+                <constraint firstItem="Nmx-pM-a9A" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gVW-yy-M5t"/>
+                <constraint firstItem="Nmx-pM-a9A" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="iKu-3U-yzn"/>
+                <constraint firstAttribute="trailing" secondItem="ZyQ-vu-940" secondAttribute="trailing" id="qCW-bC-D0r"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="pickerView" destination="fhw-j7-H5O" id="nw5-5a-92g"/>
+                <outletCollection property="lineLayer" destination="ZyQ-vu-940" collectionClass="NSMutableArray" id="j5t-P3-hH4"/>
+            </connections>
+            <point key="canvasLocation" x="70" y="321"/>
+        </view>
+    </objects>
+</document>

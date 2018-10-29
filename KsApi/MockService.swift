@@ -12,6 +12,8 @@ internal struct MockService: ServiceType {
   internal let currency: String
   internal let buildVersion: String
 
+  fileprivate let changeCurrencyError: GraphError?
+
   fileprivate let changeEmailError: GraphError?
   fileprivate let changeEmailResponse: UserEnvelope<GraphUserEmail>?
 
@@ -57,6 +59,7 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
+  fileprivate let fetchGraphCurrencyResponse: UserCurrency?
   fileprivate let fetchGraphUserEmailResponse: GraphUserEmail?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -168,6 +171,7 @@ internal struct MockService: ServiceType {
                                                                        me: .template
                                                                      ),
                 changePasswordError: GraphError? = nil,
+                changeCurrencyError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
                 facebookConnectResponse: User? = nil,
@@ -194,6 +198,7 @@ internal struct MockService: ServiceType {
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
                 fetchGraphUserEmailResponse: GraphUserEmail? = nil,
+                fetchGraphCurrencyResponse: UserCurrency? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
                 addAttachmentError: ErrorEnvelope? = nil,
                 removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -252,6 +257,8 @@ internal struct MockService: ServiceType {
     self.currency = currency
     self.buildVersion = buildVersion
 
+    self.changeCurrencyError = changeCurrencyError
+
     self.changeEmailResponse = changeEmailResponse
     self.changeEmailError = changeEmailError
 
@@ -283,6 +290,8 @@ internal struct MockService: ServiceType {
         .documentary
       ]
     )
+
+    self.fetchGraphCurrencyResponse = fetchGraphCurrencyResponse
 
     self.fetchGraphUserEmailResponse = fetchGraphUserEmailResponse
 
@@ -462,6 +471,15 @@ internal struct MockService: ServiceType {
   internal func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
       if let error = self.changePasswordError {
+        return SignalProducer(error: error)
+      } else {
+        return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+      }
+  }
+
+  internal func changeCurrency(input: ChangeCurrencyInput) ->
+   SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      if let error = self.changeCurrencyError {
         return SignalProducer(error: error)
       } else {
         return SignalProducer(value: GraphMutationEmptyResponseEnvelope())

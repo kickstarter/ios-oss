@@ -136,6 +136,18 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
       return IndexPath(row: index, section: section)
   }
 
+  public final func deleteRow<Cell: ValueCell, Value: Any>(value: Value,
+                                                           cellClass: Cell.Type,
+                                                           atIndex index: Int,
+                                                           inSection section: Int) -> IndexPath
+    where Cell.Value == Value {
+      self.padValuesForSection(section)
+
+      self.values[section].remove(at: index)
+
+      return IndexPath(row: index, section: section)
+  }
+
   /**
    Adds a single row to the end of a section without specifying a value. This can be useful for
    providing static rows.
