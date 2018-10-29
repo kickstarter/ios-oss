@@ -54,7 +54,6 @@ public enum RefTag {
     case "discovery_activity_sample": self = .activitySample
     case "category_ending_soon":      self = .categoryWithSort(.endingSoon)
     case "category_home":             self = .categoryWithSort(.magic)
-    case "category_most_funded":      self = .categoryWithSort(.mostFunded)
     case "category_newest":           self = .categoryWithSort(.newest)
     case "category_popular":          self = .categoryWithSort(.popular)
     case "city":                      self = .city
@@ -63,7 +62,6 @@ public enum RefTag {
     case "discovery":                 self = .discovery
     case "discovery_ending_soon":     self = .discoveryWithSort(.endingSoon)
     case "discovery_home":            self = .discoveryWithSort(.magic)
-    case "discovery_most_funded":     self = .discoveryWithSort(.mostFunded)
     case "discovery_newest":          self = .discoveryWithSort(.newest)
     case "discovery_popular":         self = .discoveryWithSort(.popular)
     case "live_stream":               self = .liveStream
@@ -79,12 +77,10 @@ public enum RefTag {
     case "recommended":               self = .recommended
     case "recommended_ending_soon":   self = .recommendedWithSort(.endingSoon)
     case "recommended_home":          self = .recommendedWithSort(.magic)
-    case "recommended_most_funded":   self = .recommendedWithSort(.mostFunded)
     case "recommended_newest":        self = .recommendedWithSort(.newest)
     case "recommended_popular":       self = .recommendedWithSort(.popular)
     case "recs_ending_soon":          self = .recsWithSort(.endingSoon)
     case "recs_home":                 self = .recsWithSort(.magic)
-    case "recs_most_funded":          self = .recsWithSort(.mostFunded)
     case "recs_newest":               self = .recsWithSort(.newest)
     case "recs_popular":              self = .recsWithSort(.popular)
     case "search":                    self = .search
@@ -94,12 +90,10 @@ public enum RefTag {
     case "social":                    self = .social
     case "social_ending_soon":        self = .socialWithSort(.endingSoon)
     case "social_home":               self = .socialWithSort(.magic)
-    case "social_most_funded":        self = .socialWithSort(.mostFunded)
     case "social_newest":             self = .socialWithSort(.newest)
     case "social_popular":            self = .socialWithSort(.popular)
     case "starred_ending_soon":       self = .starredWithSort(.endingSoon)
     case "starred_home":              self = .starredWithSort(.magic)
-    case "starred_most_funded":       self = .starredWithSort(.mostFunded)
     case "starred_newest":            self = .starredWithSort(.newest)
     case "starred_popular":           self = .starredWithSort(.popular)
     case "thanks":                    self = .thanks
@@ -233,8 +227,6 @@ private func sortRefTagSuffix(_ sort: DiscoveryParams.Sort) -> String {
     return "_ending_soon"
   case .magic:
     return "_home"
-  case .mostFunded:
-    return "_most_funded"
   case .newest:
     return "_newest"
   case .popular:

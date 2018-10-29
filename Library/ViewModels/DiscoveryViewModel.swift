@@ -80,7 +80,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 DiscoveryViewModelOutputs {
 
   public init() {
-    let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon, .mostFunded]
+    let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon]
 
     self.configurePagerDataSource = self.viewDidLoadProperty.signal.mapConst(sorts)
     self.configureSortPager = self.configurePagerDataSource

@@ -177,8 +177,6 @@ private func string(forSort sort: DiscoveryParams.Sort) -> String {
     return Strings.Ending_soon()
   case .magic:
     return Strings.discovery_sort_types_magic()
-  case .mostFunded:
-    return Strings.discovery_sort_types_most_funded()
   case .newest:
     return Strings.discovery_sort_types_newest()
   case .popular:
