@@ -9,8 +9,8 @@ import PlaygroundSupport
 let backer = User.brando
 
 let creator = .template
-  |> User.lens.id .~ 808
-  |> User.lens.name .~ "Native Squad"
+  |> \.id .~ 808
+  |> \.name .~ "Native Squad"
 
 let project = .template
   |> Project.lens.creator .~ creator
@@ -25,7 +25,7 @@ let creatorComment = .template
   |> Comment.lens.body .~ "Thank you kindly for your feedback!"
 
 let deletedComment = .template
-  |> Comment.lens.author .~ (.template |> User.lens.name .~ "Naughty Blob")
+  |> Comment.lens.author .~ (.template |> \.name .~ "Naughty Blob")
   |> Comment.lens.body .~ "This comment has been deleted by Kickstarter."
   |> Comment.lens.deletedAt .~ NSDate().timeIntervalSince1970
 

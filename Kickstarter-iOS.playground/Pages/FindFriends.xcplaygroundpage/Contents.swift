@@ -5,7 +5,7 @@ import PlaygroundSupport
 @testable import KsApi
 
 let currentUser = .template
-  |> User.lens.facebookConnected .~ true
+  |> \.facebookConnected .~ true
 
 let friendsResponse = .template
   |> FindFriendsEnvelope.lens.users .~ [User.brando]

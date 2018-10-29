@@ -48,11 +48,11 @@ final class KoalaTests: TestCase {
 
   func testDefaultPropertiesWithLoggedInUser() {
     let client = MockTrackingClient()
-    let user = .template
-      |> User.lens.stats.backedProjectsCount .~ 2
-      |> User.lens.stats.createdProjectsCount .~ 3
-      |> User.lens.stats.starredProjectsCount .~ 4
-      |> User.lens.location .~ .template
+    let user = User.template
+      |> \.stats.backedProjectsCount .~ 2
+      |> \.stats.createdProjectsCount .~ 3
+      |> \.stats.starredProjectsCount .~ 4
+      |> \.location .~ .template
     let koala = Koala(client: client, loggedInUser: user)
 
     koala.trackAppOpen()
@@ -146,7 +146,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ false
       <> Project.lens.personalization.isStarred .~ false
-    let loggedInUser = User.template |> User.lens.id .~ 42
+    let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
     let liveStreamEvents = [LiveStreamEvent.template]
 
@@ -165,7 +165,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.isStarred .~ false
-    let loggedInUser = User.template |> User.lens.id .~ 42
+    let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
     let liveStreamEvents = [LiveStreamEvent.template]
 
@@ -184,7 +184,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.isStarred .~ true
-    let loggedInUser = User.template |> User.lens.id .~ 42
+    let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
     let liveStreamEvents = [LiveStreamEvent.template]
 
@@ -292,7 +292,7 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.query .~ "collage"
       <> DiscoveryParams.lens.sort .~ .popular
 
-    let loggedInUser = User.template |> User.lens.id .~ 42
+    let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackDiscovery(params: params, page: 1)
@@ -320,7 +320,7 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.category .~ nil
       <> DiscoveryParams.lens.sort .~ .popular
 
-    let loggedInUser = User.template |> User.lens.id .~ 42
+    let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackDiscovery(params: params, page: 1)
@@ -343,7 +343,7 @@ final class KoalaTests: TestCase {
     let params = .defaults
       |> DiscoveryParams.lens.sort .~ .magic
 
-    let loggedInUser = User.template |> User.lens.id .~ 42
+    let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackDiscovery(params: params, page: 1)

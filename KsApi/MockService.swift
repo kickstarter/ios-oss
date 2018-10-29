@@ -453,9 +453,9 @@ internal struct MockService: ServiceType {
       }
 
       return SignalProducer(value:
-        .template
-          |> User.lens.id .~ 1
-          |> User.lens.facebookConnected .~ true
+        User.template
+          |> \.id .~ 1
+          |> \.facebookConnected .~ true
       )
   }
 
@@ -571,9 +571,9 @@ internal struct MockService: ServiceType {
     }
 
     return SignalProducer(value:
-      .template
-        |> User.lens.id .~ id
-        |> User.lens.isFriend .~ true
+      User.template
+        |> \.id .~ id
+        |> \.isFriend .~ true
     )
   }
 
@@ -710,7 +710,7 @@ internal struct MockService: ServiceType {
 
       return SignalProducer(
         value: MessageThreadEnvelope(
-          participants: [.template, .template |> User.lens.id .~ 2],
+          participants: [.template, .template |> \.id .~ 2],
           messages: [
             .template |> Message.lens.id .~ 1,
             .template |> Message.lens.id .~ 2,
@@ -730,7 +730,7 @@ internal struct MockService: ServiceType {
       if let thread = self.fetchMessageThreadResult?.value as? MessageThread {
         return SignalProducer(
           value: MessageThreadEnvelope(
-            participants: [.template, .template |> User.lens.id .~ 2],
+            participants: [.template, .template |> \.id .~ 2],
             messages: [
               .template |> Message.lens.id .~ 1,
               .template |> Message.lens.id .~ 2,
@@ -959,7 +959,7 @@ internal struct MockService: ServiceType {
     if let error = self.fetchUserError {
       return SignalProducer(error: error)
     }
-    return SignalProducer(value: self.fetchUserResponse ?? (.template |> User.lens.id .~ userId))
+    return SignalProducer(value: self.fetchUserResponse ?? (.template |> \.id .~ userId))
   }
 
   internal func fetchUser(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
@@ -1130,8 +1130,8 @@ internal struct MockService: ServiceType {
       AccessTokenEnvelope(
         accessToken: "deadbeef",
         user: .template
-          |> User.lens.name .~ name
-          |> User.lens.newsletters.weekly .~ sendNewsletters
+          |> \.name .~ name
+          |> \.newsletters.weekly .~ sendNewsletters
       )
     )
   }

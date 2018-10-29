@@ -9,6 +9,6 @@ extension Message {
     createdAt: Date(timeIntervalSince1970: 1475361315).timeIntervalSince1970,
     id: 1,
     recipient: .template,
-    sender: .template |> User.lens.id %~ { $0 + 1 }
+    sender: User.template |> \.id %~ { $0 + 1 }
   )
 }

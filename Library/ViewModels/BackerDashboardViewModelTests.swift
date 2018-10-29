@@ -54,12 +54,12 @@ internal final class BackerDashboardViewModelTests: TestCase {
     let location = Location.template
       |> Location.lens.displayableName .~ "Siberia"
 
-    let user = .template
-      |> User.lens.name .~ "Princess Vespa"
-      |> User.lens.location .~ location
-      |> User.lens.stats.backedProjectsCount .~ 45
-      |> User.lens.stats.starredProjectsCount .~ 58
-      |> User.lens.avatar.large .~ "http://cats.com/furball.jpg"
+    let user = User.template
+      |> \.name .~ "Princess Vespa"
+      |> \.location .~ location
+      |> \.stats.backedProjectsCount .~ 45
+      |> \.stats.starredProjectsCount .~ 58
+      |> \.avatar.large .~ "http://cats.com/furball.jpg"
 
     withEnvironment(apiService: MockService(fetchUserSelfResponse: user)) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))

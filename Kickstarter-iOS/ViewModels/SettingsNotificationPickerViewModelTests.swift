@@ -19,7 +19,7 @@ final class SettingsNotificationPickerViewModelTests: TestCase {
 
   func testConfigure_userCreatorDigest_enabled() {
     let user = User.template
-      |> UserAttribute.notification(.creatorDigest).lens .~ true
+      |> UserAttribute.notification(.creatorDigest).keyPath .~ true
 
     let cellValue = SettingsNotificationCellValue(cellType: .emailFrequency,
                                                   user: user)
@@ -31,7 +31,7 @@ final class SettingsNotificationPickerViewModelTests: TestCase {
 
   func testConfigure_userCreatorDigest_disabled() {
     let user = User.template
-      |> UserAttribute.notification(.creatorDigest).lens .~ false
+      |> UserAttribute.notification(.creatorDigest).keyPath .~ false
 
     let cellValue = SettingsNotificationCellValue(cellType: .emailFrequency,
                                                   user: user)

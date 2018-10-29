@@ -170,7 +170,9 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
   func testPledge_NoReward() {
     let reward = Reward.noReward
-    let project = self.cosmicSurgery |> Project.lens.country .~ .us
+    let project = self.cosmicSurgery
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.country .~ .us
 
     combos(Language.allLanguages, [false, true]).forEach { language, applePayCapable in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
@@ -327,9 +329,12 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     let currentUserCountries = ["US", "GB"]
     combos(launchedCountries, currentUserCountries).forEach { country, currentUserCountry in
       withEnvironment(countryCode: currentUserCountry) {
-
+        let currentProject = project
+          |> Project.lens.stats.currency .~ country.currencyCode
+          |> Project.lens.country .~ country
         let vc = RewardPledgeViewController.configuredWith(
-          project: project |> Project.lens.country .~ country, reward: reward, applePayCapable: false
+          project: currentProject,
+          reward: reward, applePayCapable: false
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height -= 64

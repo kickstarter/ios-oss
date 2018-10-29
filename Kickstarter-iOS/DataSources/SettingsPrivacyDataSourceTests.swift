@@ -25,7 +25,7 @@ final class SettingsPrivacyDataSourceTests: XCTestCase {
   func testConfigureRows_Creator() {
 
     let user = User.template
-      |> User.lens.stats.createdProjectsCount .~ 1
+      |> \.stats.createdProjectsCount .~ 1
 
     self.dataSource.load(user: user)
 
