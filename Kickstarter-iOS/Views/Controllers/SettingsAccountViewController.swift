@@ -87,7 +87,8 @@ final class SettingsAccountViewController: UIViewController {
       self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow()], with: .top)
       let tapRecognizer = UITapGestureRecognizer(target: self,
                                                  action: #selector(tapGestureToDismissCurrencyPicker))
-      tapRecognizer.cancelsTouchesInView = false
+
+      tapRecognizer.cancelsTouchesInView = true
       self.view.addGestureRecognizer(tapRecognizer)
       self.tableView.endUpdates()
     }
@@ -97,7 +98,6 @@ final class SettingsAccountViewController: UIViewController {
     tableView.beginUpdates()
     self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
     tableView.endUpdates()
-
     self.view.gestureRecognizers?.removeAll()
   }
 
