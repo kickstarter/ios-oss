@@ -4,6 +4,7 @@
 "Account" = "Konto";
 "Add" = "Hinzufügen";
 "Add_attachments" = "Anhänge hinzufügen ...";
+"Add_new_card" = "Add a new card";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
 "All_Crafts_Projects" = "Alle Projekte der Kategorie Kunsthandwerk";
@@ -25,6 +26,7 @@
 "Amount_previous_amount" = "Jetziger Betrag: %{amount}, vorheriger Betrag: %{previous_amount}";
 "Amount_reward" = "Betrag: %{amount}, %{reward}";
 "Amounts_shown" = "Die angezeigten Beträge stellen nur eine ungefähre Umrechnung dar. Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Dieser Betrag wird ebenso angezeigt.";
+"Any_payment_methods_you_saved_to_Kickstarter" = "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience.";
 "App_version" = "App-Version";
 "Are_you_sure" = "Bist du sicher?";
 "Ask_me_anything" = "Frage stellen";
@@ -45,8 +47,12 @@
 "Biography" = "Biografie";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
+"CVC" = "CVC";
 "Cancel" = "Abbrechen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
+"Card_ending_in_last_four" = "Card ending in %{last_four}";
+"Card_number" = "Card number";
+"Cardholder_name" = "Cardholder name";
 "Change_currency" = "Währung ändern";
 "Change_email" = "E-Mail-Adresse ändern";
 "Change_password" = "Passwort ändern";
@@ -80,6 +86,7 @@
 "Creator_name_was_streaming_live_on_Kickstarter" = "Der Stream von %{creator_name} war gerade live auf Kickstarter";
 "Creator_name_will_be_streaming_live_on_Kickstarter_in_duration" = "%{creator_name} wird in %{in_duration} live auf Kickstarter streamen";
 "Creator_tips" = "Tpps für Projektgründer";
+"Credit_card_expiration" = "Expires %{expiration_date}";
 "Currency" = "Währung";
 "Currency_AUD" = "$ Australischer Dollar (AUD)";
 "Currency_CAD" = "$ Kanadischer Dollar (CAD)";
@@ -119,6 +126,7 @@
 "Ending_soon" = "Endet bald";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Expands_subcategories" = "Erweitert die Anzeige der Unterkategorien.";
+"Expiration" = "Expiration";
 "Expired_date_at_time" = "Abgelaufen am %{date} um %{time}";
 "Expires_date_at_time" = "Läuft am %{date} um %{time} ab";
 "Explore" = "Erkunden";
@@ -229,6 +237,7 @@
 "Log_in_to_leave_a_comment" = "Melde dich an, um einen Kommentar zu hinterlassen.";
 "Log_out" = "Abmelden";
 "Love_film_We_do_too" = "Du bist Kino-Fan? Wir auch.";
+"MMYY" = "MM/YY";
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
 "Making_this_change" = "Wenn du die Währung wechselst, werden das Finanzierungsziel und die Finanzierungsbeiträge in der von dir gewählten Währung angezeigt.";
 "Manage_your_pledge" = "Meinen Beitrag verwalten";
@@ -360,11 +369,13 @@
 "Saved_projects" = "Gespeicherte Projekte";
 "Saves_project" = "Speichert dieses Projekt.";
 "Say_something_kind" = "Sag etwas Nettes ...";
+"Security_code" = "Security code";
 "See_all_category_name_projects" = "Alle %{category_name}-Projekte anzeigen";
 "Select_another_project" = "Wähle ein anderes Projekt aus";
 "Select_this_reward" = "Diese Belohnung wählen";
 "Select_this_reward_instead" = "Diese Belohnung auswählen";
 "Send" = "Senden";
+"Send_verfication_email" = "Send verification email";
 "Share" = "Teilen";
 "Share_an_update_about_your_project" = "Teile einen Update zu deinem Projekt …";
 "Share_this_live_stream" = "Live-Stream teilen.";
@@ -438,6 +449,7 @@
 "Watch_live" = "Live ansehen";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "Deine Aktivitäten werden intern genutzt, um dir Empfehlungen zu unterbreiten. Um dies zu deaktivieren, wähle \"Empfehlungen\" einfach ab.";
+"We_ve_been_unable_to_send_email" = "We've been unable to send email to this address. Please make sure it is typed correctly.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden.";
 "We_were_unable_to_load_the_shipping_destinations" = "Das Laden der Versandadressen war leider nicht möglich.\nBitte versuche es später noch einmal.";
 "Websites" = "Webseiten";
@@ -467,6 +479,7 @@
 "Youre_a_backer" = "Du unterstützt das Projekt!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
 "Youve_pledged_to_support_this_project" = "Du hast einen Finazierungsbeitrag zu diesem Projekt geleistet. Die Frist für die Finanzierung ist noch nicht abgelaufen.";
+"Zip_code" = "Zip code";
 "accessibility.dashboard.buttons.activity" = "Aktivität";
 "accessibility.dashboard.buttons.activity_hint" = "Öffnet Sparte Aktivität.";
 "accessibility.dashboard.buttons.messages" = "Nachrichten";
