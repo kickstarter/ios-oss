@@ -62,7 +62,7 @@ internal struct MockService: ServiceType {
   fileprivate let fetchGraphCurrencyResponse: UserCurrency?
   fileprivate let fetchGraphUserEmailResponse: GraphUserEmail?
 
-  fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard.CreditCard>?
+  fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
   fileprivate let fetchGraphCreditCardsError: GraphError?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -197,7 +197,7 @@ internal struct MockService: ServiceType {
                 fetchFriendStatsError: ErrorEnvelope? = nil,
                 fetchExportStateResponse: ExportDataEnvelope? = nil,
                 fetchExportStateError: ErrorEnvelope? = nil,
-                fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard.CreditCard>? = nil,
+                fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>? = nil,
                 fetchGraphCreditCardsError: GraphError? = nil,
                 exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
@@ -622,7 +622,10 @@ internal struct MockService: ServiceType {
         return SignalProducer(error: error)
       }
 
-      return SignalProducer(value: UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template))
+      return SignalProducer(
+        value: fetchGraphCreditCardsResponse ??
+          UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+      )
   }
 
   internal func fetchGraphUserEmail(query: NonEmptySet<Query>)
