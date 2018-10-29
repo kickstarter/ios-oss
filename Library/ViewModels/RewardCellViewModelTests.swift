@@ -132,6 +132,7 @@ final class RewardCellViewModelTests: TestCase {
     self.titleLabelText.assertValues(["The goods"])
   }
 
+  // MARK: Conversion Label
   func testConversionLabel_US_User_US_Project_ConfiguredWithReward() {
     let project = .template |> Project.lens.country .~ .us
     let reward = .template |> Reward.lens.minimum .~ 1_000
@@ -183,12 +184,12 @@ final class RewardCellViewModelTests: TestCase {
   func testConversionLabel_US_User_NonUS_Project_ConfiguredWithReward_WithoutCurrentCurrency() {
     let project = .template
       |> Project.lens.country .~ .ca
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
       |> Project.lens.stats.staticUsdRate .~ 0.76
-      |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
+    withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
       self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
@@ -222,8 +223,8 @@ final class RewardCellViewModelTests: TestCase {
   func testConversionLabel_US_User_NonUS_Project_ConfiguredWithBacking_WithoutCurrentCurrency() {
     let project = .template
       |> Project.lens.country .~ .ca
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
       |> Project.lens.stats.staticUsdRate .~ 0.76
-      |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1
     let backing = .template
@@ -256,7 +257,6 @@ final class RewardCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1_000
 

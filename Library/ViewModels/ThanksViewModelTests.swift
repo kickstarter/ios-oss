@@ -290,7 +290,7 @@ final class ThanksViewModelTests: TestCase {
 
   func testGamesNewsletterAlert_ShouldNotShow_WhenUserIsSubscribed() {
     let newsletters = User.NewsletterSubscriptions.template |> User.NewsletterSubscriptions.lens.games .~ true
-    let user = .template |> User.lens.newsletters .~ newsletters
+    let user = User.template |> \.newsletters .~ newsletters
 
     withEnvironment(currentUser: user) {
       vm.inputs.project(.template |> Project.lens.category .~ .games)
@@ -324,7 +324,7 @@ final class ThanksViewModelTests: TestCase {
 
   func testContextualNotificationEmitsWhen_userPledgedFirstProject() {
 
-    let user = .template |> User.lens.stats.backedProjectsCount .~ 0
+    let user = User.template |> \.stats.backedProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
       vm.inputs.viewDidLoad()
@@ -334,7 +334,7 @@ final class ThanksViewModelTests: TestCase {
 
   func testContextualNotificationDoesNotEmitWhen_userPledgedMoreThanOneProject() {
 
-    let user = .template |> User.lens.stats.backedProjectsCount .~ 2
+    let user = User.template |> \.stats.backedProjectsCount .~ 2
 
     withEnvironment(currentUser: user) {
       vm.inputs.viewDidLoad()

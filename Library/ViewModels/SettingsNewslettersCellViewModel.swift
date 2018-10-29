@@ -50,7 +50,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
           let (attribute, on) = attributeAndOn
-          return user |> attribute.lens .~ on
+          return user |> attribute.keyPath .~ on
         }
     }
 
@@ -58,7 +58,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
       .takePairWhen(self.allNewslettersSwitchProperty.signal.skipNil())
       .map { user, on in
         return user
-          |> User.lens.newsletters .~ User.NewsletterSubscriptions.all(on: on)
+          |> \.newsletters .~ User.NewsletterSubscriptions.all(on: on)
     }
 
     let updateEvent = Signal.merge(updatedUser, updateUserAllOn)
@@ -147,5 +147,5 @@ private func userIsSubscribedToAll(user: User) -> Bool? {
 
 private func userIsSubscribed(user: User, newsletter: Newsletter) -> Bool? {
 
-  return user |> UserAttribute.newsletter(newsletter).lens.view
+  return user |> UserAttribute.newsletter(newsletter).keyPath.view
 }

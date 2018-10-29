@@ -8,8 +8,8 @@ import PlaygroundSupport
 
 // Set the user's backed project count stats.
 let user = .template
-  |> User.lens.stats.backedProjectsCount .~ 100
-  |> User.lens.stats.createdProjectsCount .~ 2
+  |> \.stats.backedProjectsCount .~ 100
+  |> \.stats.createdProjectsCount .~ 2
 
 // Set the device language and environment.
 AppEnvironment.replaceCurrentEnvironment(

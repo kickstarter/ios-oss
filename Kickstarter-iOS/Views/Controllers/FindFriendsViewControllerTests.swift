@@ -30,8 +30,8 @@ internal final class FindFriendsViewControllerTests: TestCase {
 
   func testView_ShowFacebookReconnect() {
     let facebookReconnectUser = User.template
-      |> User.lens.facebookConnected .~ true
-      |> User.lens.needsFreshFacebookToken .~ true
+      |> \.facebookConnected .~ true
+      |> \.needsFreshFacebookToken .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch]).forEach { language, device in
       withEnvironment(currentUser: facebookReconnectUser, language: language) {
@@ -44,26 +44,26 @@ internal final class FindFriendsViewControllerTests: TestCase {
   }
 
   func testView_ShowFriends() {
-    let currentUser = .template
-      |> User.lens.facebookConnected .~ true
+    let currentUser = User.template
+      |> \.facebookConnected .~ true
 
-    let friendNoAvatar = .template
-      |> User.lens.avatar.medium .~ ""
+    let friendNoAvatar = User.template
+      |> \.avatar.medium .~ ""
 
     let friend1 = friendNoAvatar
-      |> User.lens.name .~ "Ron Swanson"
-      |> User.lens.location .~
+      |> \.name .~ "Ron Swanson"
+      |> \.location .~
         (.template |> Location.lens.displayableName .~ "Pawnee, IN")
-      |> User.lens.stats.backedProjectsCount .~ 42
-      |> User.lens.stats.createdProjectsCount .~ 0
-      |> User.lens.isFriend .~ true
+      |> \.stats.backedProjectsCount .~ 42
+      |> \.stats.createdProjectsCount .~ 0
+      |> \.isFriend .~ true
 
     let friend2 = friendNoAvatar
-      |> User.lens.name .~ "David Byrne"
-      |> User.lens.location .~
+      |> \.name .~ "David Byrne"
+      |> \.location .~
         (.template |> Location.lens.displayableName .~ "New York, NY")
-      |> User.lens.stats.backedProjectsCount .~ 365
-      |> User.lens.stats.createdProjectsCount .~ 5
+      |> \.stats.backedProjectsCount .~ 365
+      |> \.stats.createdProjectsCount .~ 5
 
     let friendsResponse = .template
       |> FindFriendsEnvelope.lens.users .~ [friend1, friend2, friend2, friend1, friendNoAvatar]

@@ -6,12 +6,6 @@ let endpoint: String? =
   "https://\(Secrets.Api.Endpoint.production)/v1/app/ios/config?client_id=\(Secrets.Api.Client.production)&all_locales=true&oauth_token=\(oauthToken)"
 
 extension Dictionary {
-  public func withAllValuesFrom(_ other: Dictionary) -> Dictionary {
-    var result = self
-    other.forEach { result[$0] = $1 }
-    return result
-  }
-
   static func renamed(key fromKey: Key, to toKey: Key) -> ((Dictionary) -> Dictionary) {
     return { dict in
       var result = dict
@@ -42,7 +36,7 @@ func flatten(_ data: [String:AnyObject], prefix: String = "") -> [String:String]
     let newKey = prefix + key
 
     if let nested = nested as? [String:AnyObject] {
-      return accum.withAllValuesFrom(flatten(nested, prefix: newKey + "."))
+      return accum.merging(flatten(nested, prefix: newKey + ".")) { $1 }
     }
 
     if let string = nested as? String {
@@ -50,7 +44,7 @@ func flatten(_ data: [String:AnyObject], prefix: String = "") -> [String:String]
       if (counts.contains(key) && string.contains("_count}")) {
         values[prefix] = string
       }
-      return accum.withAllValuesFrom(values)
+      return accum.merging(values) { $1 }
     }
 
     return [:]
@@ -98,7 +92,7 @@ func funcSubstitutions(_ string: String, count: Bool) -> String {
     .map { _, x in "\"\(x)\": \(count && x.hasSuffix("_count") ? "Format.wholeNumber(\(x))" : x)" }
     .distincts(==)
     .joined(separator: ", ")
-  if insides.characters.isEmpty {
+  if insides.isEmpty {
     return "[:]"
   }
   return "[\(insides)]"
@@ -122,7 +116,7 @@ let stringsByLocale = stringsByLocale1
   .map {
     $0.reduce([String: [String: String]]()) { accum, localeAndStrings in
       let (locale, strings) = localeAndStrings
-      return accum.withAllValuesFrom([locale: flatten(strings)])
+      return accum.merging([locale: flatten(strings)]) { $1 }
     }
 }
 
@@ -153,13 +147,20 @@ stringsByLocale?["Base"]?.keys
 
     staticStringsLines.append("  /**")
     staticStringsLines.append("   \"\((stringsByLocale?["Base"]?[key])!)\"\n")
-    stringsByLocale?.forEach { locale, strings in
-      let trueLocale = locale == "Base" ? "en" : locale
-      staticStringsLines.append("   - **\(trueLocale)**: \"\(strings[key]!)\"")
+
+    if let stringsByLocale = stringsByLocale {
+      let sortedKeys = Array(stringsByLocale.keys).sorted()
+
+      for locale in sortedKeys {
+        guard let strings = stringsByLocale[locale] else { continue }
+        let trueLocale = locale == "Base" ? "en" : locale
+        staticStringsLines.append("   - **\(trueLocale)**: \"\(strings[key]!)\"")
+      }
     }
+
     staticStringsLines.append("  */")
     let pluralCount = key.hasSuffix(".")
-    let key = pluralCount ? String(key.characters.dropLast()) : key
+    let key = pluralCount ? String(key.dropLast()) : key
     let funcName = key.replacingOccurrences(of: ".", with: "_")
     let argumentNames = funcArgumentNames(string)
     staticStringsLines.append("  public static func \(funcName)(\(funcArguments(argumentNames, count: pluralCount))) -> String {")

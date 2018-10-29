@@ -12,7 +12,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
   fileprivate let backerImage = TestObserver<String?, NoError>()
   fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
   fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
-  fileprivate let defaultUser = .template |> User.lens.id .~ 90
+  fileprivate let defaultUser = User.template |> \.id .~ 90
   fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
   fileprivate let notifyDelegateGoToSendMessage = TestObserver<(Project, Backing), NoError>()
   fileprivate let pledgeAmount = TestObserver<String, NoError>()
@@ -49,8 +49,8 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
 
   func testBackerImage() {
     let project = Project.template
-    let user = .template
-      |> User.lens.avatar.medium .~ "http://coolpic.com/cool.jpg"
+    let user = User.template
+      |> \.avatar.medium .~ "http://coolpic.com/cool.jpg"
     let activity = .template
       |> Activity.lens.category .~ .backing
       |> Activity.lens.project .~ project
@@ -350,8 +350,8 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1001)
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template
-        |> User.lens.id .~ 1001
-        |> User.lens.name .~ "Christopher"
+        |> \.id .~ 1001
+        |> \.name .~ "Christopher"
         )
     self.vm.inputs.configureWith(activity: activity, project: project)
 
@@ -381,8 +381,8 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1001)
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template
-        |> User.lens.id .~ 1001
-        |> User.lens.name .~ "Christopher"
+        |> \.id .~ 1001
+        |> \.name .~ "Christopher"
         )
     self.vm.inputs.configureWith(activity: activity, project: project)
 
@@ -413,8 +413,8 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1001)
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template
-        |> User.lens.id .~ 1001
-        |> User.lens.name .~ "Christopher"
+        |> \.id .~ 1001
+        |> \.name .~ "Christopher"
         )
     self.vm.inputs.configureWith(activity: activity, project: project)
 
@@ -448,8 +448,8 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1001)
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template
-        |> User.lens.id .~ 1001
-        |> User.lens.name .~ "Christopher"
+        |> \.id .~ 1001
+        |> \.name .~ "Christopher"
         )
     self.vm.inputs.configureWith(activity: activity, project: project)
 

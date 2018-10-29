@@ -12,8 +12,8 @@ let controller = BackingViewController.configuredWith(project: .template, backer
 
 AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef",
   user: .template
-    |> User.lens.avatar.small .~ "https://s-media-cache-ak0.pinimg.com/564x/fd/9a/25/fd9a25f4f454d86cfef6fe75ea9c7129.jpg"
-    |> User.lens.name .~ "Darby"
+    |> \.avatar.small .~ "https://s-media-cache-ak0.pinimg.com/564x/fd/9a/25/fd9a25f4f454d86cfef6fe75ea9c7129.jpg"
+    |> \.name .~ "Darby"
   )
 )
 

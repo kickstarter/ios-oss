@@ -83,7 +83,7 @@ ActivityFriendFollowCellViewModelOutputs {
 private func cached(friend: User) -> User {
   if let friendCache = AppEnvironment.current.cache[KSCache.ksr_activityFriendsFollowing] as? [Int: Bool] {
     let isFriend = friendCache[friend.id] ?? friend.isFriend
-    return friend |> User.lens.isFriend .~ isFriend
+    return friend |> \.isFriend .~ isFriend
   } else {
     return friend
   }
