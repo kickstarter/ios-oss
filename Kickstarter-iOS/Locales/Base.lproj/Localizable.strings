@@ -26,7 +26,7 @@
 "Amount_previous_amount" = "Amount: %{amount}, previous amount: %{previous_amount}";
 "Amount_reward" = "Amount: %{amount}, %{reward}";
 "Amounts_shown" = "The amounts shown are an approximate conversion. If the project is successful, your pledge will be collected in the native currency of the project, which is also displayed.";
-"Any_payment_methods_you_saved_to_Kickstarter" = "Any payment methods you've saved to Kickstarter are listed here(securely) for your convenience.";
+"Any_payment_methods_you_saved_to_Kickstarter" = "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience.";
 "App_version" = "App version";
 "Are_you_sure" = "Are you sure?";
 "Ask_me_anything" = "Ask me anything";
@@ -375,6 +375,7 @@
 "Select_this_reward" = "Select this reward";
 "Select_this_reward_instead" = "Select this reward instead";
 "Send" = "Send";
+"Send_verfication_email" = "Send verification email";
 "Share" = "Share";
 "Share_an_update_about_your_project" = "Share an update about your project…";
 "Share_this_live_stream" = "Share this live stream.";
@@ -448,6 +449,7 @@
 "Watch_live" = "Watch live";
 "We_couldnt_find_anything_for_search_term" = "We couldn't find anything for “%{search_term}”.";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "We use your activity internally to make recommendations for you. Turn recommendations off to opt out of this.";
+"We_ve_been_unable_to_send_email" = "We've been unable to send email to this address. Please make sure it is typed correctly.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "We were unable to connect to the live stream chat.";
 "We_were_unable_to_load_the_shipping_destinations" = "We were unable to load the shipping destinations.\nPlease try again later.";
 "Websites" = "Websites";
