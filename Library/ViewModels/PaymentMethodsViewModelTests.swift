@@ -20,13 +20,12 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     self.vm.outputs.didFetchPaymentMethods.observe(didFetchPaymentMethods.observer)
     self.vm.outputs.goToAddCardScreen.observe(goToAddCardScreen.observer)
-
   }
 
   func testPaymentMethodsFetch_OnViewDidLoad() {
 
-    let response = UserEnvelope<GraphUserCreditCard.CreditCard>(
-      me: GraphUserCreditCard.template.storedCards.nodes.first!
+    let response = UserEnvelope<GraphUserCreditCard>(
+      me: GraphUserCreditCard.template
     )
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
     withEnvironment(apiService: apiService) {

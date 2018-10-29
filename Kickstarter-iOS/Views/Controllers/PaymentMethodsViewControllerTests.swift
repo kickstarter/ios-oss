@@ -21,10 +21,21 @@ class PaymentMethodsViewControllerTests: TestCase {
 
   func testView_WithCreditCards() {
 
-    let response = UserEnvelope<GraphUserCreditCard.CreditCard>(
-      me: GraphUserCreditCard.template.storedCards.nodes.first!
+    let response = UserEnvelope<GraphUserCreditCard>(
+      me: GraphUserCreditCard.template
     )
 
+    self.generateSnapshots(with: response)
+  }
+
+  func testView_NoCreditCards() {
+
+    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.emptyTemplate)
+
+    self.generateSnapshots(with: response)
+  }
+
+  private func generateSnapshots(with response: UserEnvelope<GraphUserCreditCard>) {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       (arg) in
 
