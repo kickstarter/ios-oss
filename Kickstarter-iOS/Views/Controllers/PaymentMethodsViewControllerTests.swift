@@ -1,5 +1,3 @@
-// swiftlint:disable force_unwrapping
-
 import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
