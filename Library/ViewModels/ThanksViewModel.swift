@@ -153,7 +153,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .map { AppEnvironment.current.currentUser ?? nil }
       .skipNil()
       .switchMap { user in
-        AppEnvironment.current.apiService.updateUserSelf(user |> User.lens.newsletters.games .~ true)
+        AppEnvironment.current.apiService.updateUserSelf(user |> \.newsletters.games .~ true)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
     }

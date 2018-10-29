@@ -8,7 +8,7 @@ import PlaygroundSupport
 
 let loggedOut: User? = nil
 let loggedIn = User.brando
-let member = User.brando |> User.lens.stats.memberProjectsCount .~ 1
+let member = User.brando |> \.stats.memberProjectsCount .~ 1
 
 //: Set the currentUser value to one of the states below.
 

@@ -45,7 +45,7 @@ SettingsNotificationCellViewModelType {
                             return nil
         }
 
-        return user |> UserAttribute.notification(notification).lens.view
+        return user |> UserAttribute.notification(notification).keyPath.view
     }.skipNil()
 
     let pushNotificationValueToggled = pushNotificationValueChangedProperty.signal.negate()
@@ -58,7 +58,7 @@ SettingsNotificationCellViewModelType {
                             return nil
         }
 
-        return user |> UserAttribute.notification(notification).lens.view
+        return user |> UserAttribute.notification(notification).keyPath.view
       }.skipNil()
 
     let emailNotificationValueToggled = emailNotificationValueChangedProperty.signal.negate()
@@ -87,7 +87,7 @@ SettingsNotificationCellViewModelType {
           return nil
         }
 
-        return user |> UserAttribute.notification(notificationType).lens .~ on
+        return user |> UserAttribute.notification(notificationType).keyPath .~ on
       }.skipNil()
 
     let updateEvent = updatedUser

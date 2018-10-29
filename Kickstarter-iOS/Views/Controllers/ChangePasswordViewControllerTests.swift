@@ -12,6 +12,12 @@ final class ChangePasswordViewControllerTests: TestCase {
     UIView.setAnimationsEnabled(false)
   }
 
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
+  }
+
   func testChangePassword() {
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(language: language) {

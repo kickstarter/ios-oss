@@ -375,7 +375,7 @@
 "Select_this_reward" = "Seleccionar esta recompensa";
 "Select_this_reward_instead" = "Selecciona esta recompensa";
 "Send" = "Enviar";
-"Send_verfication_email" = "Enviar correo de verificación";
+"Send_verfication_email" = "Send verification email";
 "Share" = "Compartir";
 "Share_an_update_about_your_project" = "Comparte una actualización de tu proyecto …";
 "Share_this_live_stream" = "Compartir este Live-Stream.";
@@ -449,7 +449,7 @@
 "Watch_live" = "Ver en vivo";
 "We_couldnt_find_anything_for_search_term" = "La búsqueda \"%{search_term}\" no dio resultados.";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "Utilizamos tu actividad internamente para hacerte recomendaciones. Desactiva las recomendaciones si no quieres recibirlas.";
-"We_ve_been_unable_to_send_email" = "No pudimos enviar el correo electrónico a esta dirección. Asegúrate de que esté escrita correctamente.";
+"We_ve_been_unable_to_send_email" = "We've been unable to send email to this address. Please make sure it is typed correctly.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "No se pudo conectar al chat de live stream.";
 "We_were_unable_to_load_the_shipping_destinations" = "No se pudieron cargar los destinos de envío.\nPor favor inténtalo de nuevo más tarde.";
 "Websites" = "Sitios web";

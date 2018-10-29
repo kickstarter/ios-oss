@@ -34,7 +34,7 @@ final class CommentCellViewModelTest: TestCase {
   func testOutputs() {
     let comment = Comment.template
     let project = .template |> Project.lens.creator.id .~ 222
-    let viewer = .template |> User.lens.id .~ 12345
+    let viewer = User.template |> \.id .~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
@@ -67,7 +67,7 @@ final class CommentCellViewModelTest: TestCase {
   func testPersonalizedLabels_ViewerIs_NotCreator_NotAuthor() {
     let comment = Comment.template
     let project = .template |> Project.lens.creator.id .~ 222
-    let viewer = .template |> User.lens.id .~ 12345
+    let viewer = User.template |> \.id .~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
@@ -76,7 +76,7 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_NotCreator_Author() {
-    let comment = Comment(author: User.template |> User.lens.id .~ 12345,
+    let comment = Comment(author: User.template |> \.id .~ 12345,
                           body: "HELLO",
                           createdAt: 123456789.0,
                           deletedAt: nil,
@@ -107,7 +107,7 @@ final class CommentCellViewModelTest: TestCase {
 
   func testPersonalizedLabels_ViewerIs_Creator_NonAuthor() {
     let project = .template |> Project.lens.creator.id .~ 11111
-    let comment = Comment(author: User.template |> User.lens.id .~ 12345,
+    let comment = Comment(author: User.template |> \.id .~ 12345,
                           body: "HELLO",
                           createdAt: 123456789.0,
                           deletedAt: nil,
@@ -123,7 +123,7 @@ final class CommentCellViewModelTest: TestCase {
   func testDeletedComment() {
     let comment = .template |> Comment.lens.deletedAt .~ 123456789.0
     let project = .template |> Project.lens.creator.id .~ 11111
-    let viewer = User.template |> User.lens.id .~ 12345
+    let viewer = User.template |> \.id .~ 12345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 

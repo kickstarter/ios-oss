@@ -62,7 +62,7 @@ final class RootViewModelTests: TestCase {
       "Show the logged in tabs."
     )
 
-    AppEnvironment.updateCurrentUser(.template |> User.lens.stats.memberProjectsCount .~ 1)
+    AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
     vm.inputs.currentUserUpdated()
 
     viewControllerNames.assertValues(
@@ -105,7 +105,7 @@ final class RootViewModelTests: TestCase {
         "Show the BackerDashboard instead of Profile."
       )
 
-      AppEnvironment.updateCurrentUser(.template |> User.lens.stats.memberProjectsCount .~ 1)
+      AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
       vm.inputs.currentUserUpdated()
 
       viewControllerNames.assertValues(
@@ -232,7 +232,7 @@ final class RootViewModelTests: TestCase {
     let param = Param.id(1)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template
-      |> User.lens.stats.memberProjectsCount .~ 1))
+      |> \.stats.memberProjectsCount .~ 1))
     self.vm.inputs.userSessionStarted()
 
     self.switchDashboardProject.assertValues([])
@@ -241,10 +241,10 @@ final class RootViewModelTests: TestCase {
   }
 
   func testTabBarItemStyles() {
-    let user = .template |> User.lens.avatar.small .~ "http://image.com/image"
-    let creator = .template
-      |> User.lens.stats.memberProjectsCount .~ 1
-      |> User.lens.avatar.small .~ "http://image.com/image2"
+    let user = User.template |> \.avatar.small .~ "http://image.com/image"
+    let creator = User.template
+      |> \.stats.memberProjectsCount .~ 1
+      |> \.avatar.small .~ "http://image.com/image2"
 
     let items: [TabBarItem] = [
       .home(index: 0),
@@ -313,7 +313,7 @@ final class RootViewModelTests: TestCase {
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
     vm.inputs.userSessionStarted()
 
-    AppEnvironment.updateCurrentUser(.template |> User.lens.stats.memberProjectsCount .~ 1)
+    AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
     vm.inputs.currentUserUpdated()
 
     AppEnvironment.logout()
