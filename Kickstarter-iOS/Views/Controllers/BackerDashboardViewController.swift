@@ -367,3 +367,11 @@ extension BackerDashboardViewController: UIGestureRecognizerDelegate {
       return true
   }
 }
+
+extension BackerDashboardViewController: TabBarControllerScrollable {
+  func scrollToTop() {
+    if let scrollView = self.pageViewController.viewControllers?.first?.view as? UIScrollView {
+      scrollView.scrollToTop()
+    }
+  }
+}

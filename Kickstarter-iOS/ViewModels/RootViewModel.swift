@@ -26,8 +26,11 @@ internal protocol RootViewModelInputs {
   /// Call when the language selection has changed
   func currentLanguageChanged()
 
+  /// Call before selected tab bar index changes.
+  func shouldSelect(index: Int?)
+
   /// Call when selected tab bar index changes.
-  func didSelectIndex(_ index: Int)
+  func didSelect(index: Int)
 
   /// Call when we should switch to the activities tab.
   func switchToActivities()
@@ -157,6 +160,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     self.selectedIndex =
       Signal.combineLatest(
         .merge(
+          self.viewDidLoadProperty.signal.mapConst(0),
           self.didSelectIndexProperty.signal,
           self.switchToActivitiesProperty.signal.mapConst(1),
           self.switchToDiscoveryProperty.signal.mapConst(0),
@@ -169,13 +173,21 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
         self.viewDidLoadProperty.signal)
         .map { idx, vcs, _ in clamp(0, vcs.count - 1)(idx) }
 
-    let selectedTabAgain = self.selectedIndex.combinePrevious()
-      .map { prev, next -> Int? in prev == next ? next : nil }
+    let shouldSelectIndex = self.shouldSelectIndexProperty.signal
       .skipNil()
 
-    self.scrollToTop = self.setViewControllers
-      .takePairWhen(selectedTabAgain)
+    let selectedTabAgain = self.selectedIndex
+      .takePairWhen(shouldSelectIndex)
+      .filter { prev, next in prev == next }
+      .map { $1 }
+
+    self.scrollToTop = Signal.combineLatest(
+      self.setViewControllers,
+      selectedTabAgain
+      )
       .map { vcs, idx in vcs[idx] }
+      .map(extractViewController)
+      .skipNil()
 
     self.tabBarItemsData = Signal.combineLatest(currentUser, .merge(
       self.viewDidLoadProperty.signal,
@@ -195,8 +207,13 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     self.currentLanguageProperty.value = ()
   }
 
+  fileprivate let shouldSelectIndexProperty = MutableProperty<Int?>(nil)
+  internal func shouldSelect(index: Int?) {
+    self.shouldSelectIndexProperty.value = index
+  }
+
   fileprivate let didSelectIndexProperty = MutableProperty(0)
-  internal func didSelectIndex(_ index: Int) {
+  internal func didSelect(index: Int) {
     self.didSelectIndexProperty.value = index
   }
   fileprivate let switchToActivitiesProperty = MutableProperty(())
@@ -318,4 +335,12 @@ private func first<VC: UIViewController>(_ viewController: VC.Type) -> ([UIViewC
 private func profileController() -> UIViewController {
 
   return BackerDashboardViewController.instantiate()
+}
+
+private func extractViewController(_ viewController: UIViewController) -> UIViewController? {
+  if let navigationController = viewController as? UINavigationController {
+    return navigationController.viewControllers.count == 1 ? navigationController.viewControllers.first : nil
+  } else {
+    return viewController
+  }
 }
