@@ -510,7 +510,7 @@ internal final class RewardPledgeViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project in
         if #available(iOS 10.0, *) {
-          UINotificationFeedbackGenerator().notificationOccurred(.success)
+          UIFeedbackGenerator().ksr_successFeedbackGenerator()
         }
         self?.goToThanks(project: project)
       }
