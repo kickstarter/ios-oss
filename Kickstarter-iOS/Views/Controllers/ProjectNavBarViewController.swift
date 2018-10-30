@@ -228,15 +228,9 @@ public final class ProjectNavBarViewController: UIViewController {
 
   @objc fileprivate func saveButtonTapped() {
     if self.saveButton.isSelected {
-      if #available(iOS 10.0, *) {
-        let notification = UISelectionFeedbackGenerator()
-        notification.selectionChanged()
-      }
+      self.saveButton.generateSelectionFeedback()
     } else {
-      if #available(iOS 10.0, *) {
-        let notification = UINotificationFeedbackGenerator()
-        notification.notificationOccurred(.success)
-      }
+      self.saveButton.generateSuccessFeedback()
     }
     self.viewModel.inputs.saveButtonTapped()
   }
