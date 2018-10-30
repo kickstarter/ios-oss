@@ -321,9 +321,13 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   @objc fileprivate func saveButtonTapped() {
     if self.saveButton.isSelected {
-      self.saveButton.generateSelectionFeedback()
+      if #available(iOS 10.0, *) {
+        self.saveButton.generateSelectionFeedback()
+      }
     } else {
-      self.saveButton.generateSuccessFeedback()
+      if #available(iOS 10.0, *) {
+        self.saveButton.generateSuccessFeedback()
+      }
     }
     self.viewModel.inputs.saveButtonTapped()
   }
