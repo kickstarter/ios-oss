@@ -55,6 +55,7 @@ internal final class PaymentMethodsViewController: UIViewController {
       |> \.backgroundColor .~ .clear
       |> \.separatorStyle .~ .none
       |> \.estimatedRowHeight .~ 77
+      |> \.allowsSelection .~ false
   }
 
   override func bindViewModel() {
