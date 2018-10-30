@@ -185,6 +185,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       self.setViewControllers,
       selectedTabAgain
       )
+      .filter { vcs, idx in idx < vcs.count }
       .map { vcs, idx in vcs[idx] }
       .map(extractViewController)
       .skipNil()
