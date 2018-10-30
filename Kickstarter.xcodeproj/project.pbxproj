@@ -857,6 +857,8 @@
 		D01BEA0D1F0259AC0064C1D9 /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01BE9FB1F02598F0064C1D9 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0247A961DF9F29100D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */; };
 		D03340841E8A71520066EC7B /* LiveStreamContainerPagesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03340831E8A71520066EC7B /* LiveStreamContainerPagesDataSourceTests.swift */; };
+		D04307A221853D530004FDC0 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 770E45ED2114E15D00396D46 /* Crashlytics.framework */; };
+		D04307DA21853D630004FDC0 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 770E46242114E15D00396D46 /* Fabric.framework */; };
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
 		D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */; };
@@ -2751,9 +2753,11 @@
 				7DD8EE501F02DD560070B63D /* Bolts.framework in Frameworks */,
 				01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */,
 				01D31A3F1CCA786A0037A178 /* FBSDKLoginKit.framework in Frameworks */,
+				D04307DA21853D630004FDC0 /* Fabric.framework in Frameworks */,
 				8067C6751F33CAE200B1ADCE /* HockeySDK.framework in Frameworks */,
 				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				D0745B9B1EEB226400FA53D3 /* Prelude.framework in Frameworks */,
+				D04307A221853D530004FDC0 /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
