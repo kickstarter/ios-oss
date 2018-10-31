@@ -15,6 +15,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let deadlineTitleLabelText = TestObserver<String, NoError>()
   internal let fundingProgressBarViewHidden = TestObserver<Bool, NoError>()
   internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
+  internal let generateSelectionFeedback = TestObserver<Bool, NoError>()
+  internal let generateSuccessFeedback = TestObserver<Bool, NoError>()
   internal let metadataIcon = TestObserver<UIImage?, NoError>()
   internal let metadataIconTintColor = TestObserver<UIColor, NoError>()
   internal let metadataTextColor = TestObserver<UIColor, NoError>()
@@ -53,6 +55,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.fundingProgressBarViewHidden.observe(self.fundingProgressBarViewHidden.observer)
     self.vm.outputs.fundingProgressContainerViewHidden
       .observe(self.fundingProgressContainerViewHidden.observer)
+    self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
+    self.vm.outputs.generateSuccessFeedback.observe(self.generateSuccessFeedback.observer)
     self.vm.outputs.metadataIcon.observe(self.metadataIcon.observer)
     self.vm.outputs.metadataTextColor.observe(self.metadataTextColor.observer)
     self.vm.outputs.metadataIconImageViewTintColor.observe(self.metadataIconTintColor.observer)
@@ -109,9 +113,29 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let project = .template |> Project.lens.personalization.isStarred .~ false
 
     self.vm.inputs.configureWith(project: project, category: nil)
-    self.vm.inputs.saveButtonTapped()
+    self.vm.inputs.saveButtonTapped(selected: true)
     self.scheduler.advance()
     self.notifyDelegateShowSaveAlert.assertValueCount(1)
+  }
+
+  func testGenerateSuccessFeedback() {
+    let project = .template |> Project.lens.personalization.isStarred .~ false
+
+    self.vm.inputs.configureWith(project: project, category: nil)
+    self.vm.inputs.saveButtonTapped(selected: true)
+    self.scheduler.advance()
+    self.generateSelectionFeedback.assertValues([true])
+    self.generateSuccessFeedback.assertValues([false])
+  }
+
+  func testGenerateSelectionFeedback() {
+    let project = .template |> Project.lens.personalization.isStarred .~ false
+
+    self.vm.inputs.configureWith(project: project, category: nil)
+    self.vm.inputs.saveButtonTapped(selected: false)
+    self.scheduler.advance()
+    self.generateSelectionFeedback.assertValues([false])
+    self.generateSuccessFeedback.assertValues([true])
   }
 
   func testSaveProject_WithError() {
@@ -131,7 +155,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
       self.saveButtonEnabled.assertValueCount(0)
 
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
 
       self.saveButtonSelected.assertValues([false, false],
                                            "Emits false because the project personalization value is nil.")
@@ -159,7 +183,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
         self.saveButtonSelected.assertValues([true], "Save button is selected at first.")
         self.saveButtonEnabled.assertValueCount(0)
 
-        self.vm.inputs.saveButtonTapped()
+        self.vm.inputs.saveButtonTapped(selected: true)
 
         self.saveButtonSelected.assertValues([true, false], "Emits false immediately.")
         self.saveButtonEnabled.assertValues([false], "Save button is disabled during request.")
@@ -184,7 +208,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
         self.saveButtonSelected.assertValues([false], "Save button is not selected for logged out user.")
         self.saveButtonEnabled.assertValueCount(0)
 
-        self.vm.inputs.saveButtonTapped()
+        self.vm.inputs.saveButtonTapped(selected: true)
 
         self.saveButtonSelected.assertValues([false],
                                               "Nothing is emitted when save button tapped while logged out.")
@@ -210,7 +234,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
 
         withEnvironment(apiService: MockService(toggleStarResponse: untoggleSaveResponse)) {
-          self.vm.inputs.saveButtonTapped()
+          self.vm.inputs.saveButtonTapped(selected: true)
 
           self.saveButtonSelected.assertValues([false, true, false],
                                                "Save button is deselected.")
@@ -541,7 +565,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(project: project, category: nil)
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
       self.scheduler.advance()
 
       self.showNotificationDialog.assertDidEmitValue()
@@ -555,7 +579,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
     withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(project: project, category: nil)
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
       self.scheduler.advance()
 
       self.showNotificationDialog.assertDidNotEmitValue()
