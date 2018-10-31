@@ -65,11 +65,8 @@ private func cardImage(with card: GraphUserCreditCard.CreditCard) -> UIImage? {
 private func formatted(dateString: String) -> String {
 
   let date = toDate(dateString: dateString)
-  let format = DateFormatter.dateFormat(fromTemplate: "MM-yyyy",
-                                        options: 0,
-                                        locale: AppEnvironment.current.locale) ?? "MMM d yyyy"
-
-  return Format.date(secondsInUTC: date.timeIntervalSince1970, template: format)
+  
+  return Format.date(secondsInUTC: date.timeIntervalSince1970, template: "MM-yyyy")
 }
 
 private func toDate(dateString: String) -> Date {

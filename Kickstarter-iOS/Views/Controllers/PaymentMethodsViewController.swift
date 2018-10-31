@@ -42,9 +42,6 @@ internal final class PaymentMethodsViewController: UIViewController {
         Strings.Payment_methods()
     }
 
-    _ = self
-      |> \.view.backgroundColor .~ .ksr_grey_200
-
     _ = self.headerLabel
       |> settingsDescriptionLabelStyle
       |> \.text %~ { _ in
@@ -54,14 +51,14 @@ internal final class PaymentMethodsViewController: UIViewController {
     _ = self.tableView
       |> \.backgroundColor .~ .clear
       |> \.separatorStyle .~ .none
-      |> \.estimatedRowHeight .~ 77
+      |> \.estimatedRowHeight .~ Styles.grid(13)
       |> \.allowsSelection .~ false
   }
 
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.didFetchPaymentMethods
+    self.viewModel.outputs.paymentMethods
       .observeForUI()
       .observeValues { [weak self] result in
         self?.dataSource.load(creditCards: result)
@@ -87,7 +84,7 @@ extension PaymentMethodsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 80
+    return Styles.grid(13)
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

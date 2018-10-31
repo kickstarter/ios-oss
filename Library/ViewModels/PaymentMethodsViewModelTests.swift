@@ -10,13 +10,13 @@ import Prelude
 internal final class PaymentMethodsViewModelTests: TestCase {
 
   let vm = PaymentMethodsViewModel()
-  let didFetchPaymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
+  let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
   let goToAddCardScreen = TestObserver<Void, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.didFetchPaymentMethods.observe(didFetchPaymentMethods.observer)
+    self.vm.outputs.paymentMethods.observe(paymentMethods.observer)
     self.vm.outputs.goToAddCardScreen.observe(goToAddCardScreen.observer)
   }
 
@@ -31,7 +31,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.didFetchPaymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
     }
   }
 
