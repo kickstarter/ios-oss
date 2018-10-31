@@ -12,7 +12,7 @@ final class ChangePasswordViewModelTests: TestCase {
 
   private let activityIndicatorShouldShowObserver = TestObserver<Bool, NoError>()
   private let changePasswordFailureObserver = TestObserver<String, NoError>()
-  private let changePasswordSuccessObserver = TestObserver<DiscoveryParams?, NoError>()
+  private let changePasswordSuccessObserver = TestObserver<Void, NoError>()
   private let confirmNewPasswordBecomeFirstResponderObserver = TestObserver<Void, NoError>()
   private let currentPasswordBecomeFirstResponder = TestObserver<Void, NoError>()
   private let currentPasswordPrefillValueObserver = TestObserver<String, NoError>()
@@ -72,7 +72,7 @@ final class ChangePasswordViewModelTests: TestCase {
         |> DiscoveryParams.lens.includePOTD .~ true
         |> DiscoveryParams.lens.sort .~ .magic
 
-      self.changePasswordSuccessObserver.assertValues([discoverParams], "Change password succeeded")
+      self.changePasswordSuccessObserver.assertValueCount(1)
 
       self.activityIndicatorShouldShowObserver.assertValues([true, false])
     }
