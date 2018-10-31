@@ -341,7 +341,9 @@ public final class Koala {
   }
 
   private func updateAndObservePreferredContentSizeCategory() {
-    let update = { self.preferredContentSizeCategory = UIApplication.shared.preferredContentSizeCategory }
+    let update = { [weak self] in
+      self?.preferredContentSizeCategory = UIApplication.shared.preferredContentSizeCategory
+    }
 
     self.preferredContentSizeCategoryObserver = NotificationCenter.default.addObserver(
       forName: UIContentSizeCategory.didChangeNotification,
