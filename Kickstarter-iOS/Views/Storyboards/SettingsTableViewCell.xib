@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,10 +17,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="LGq-5Q-Deu">
-                    <rect key="frame" x="12" y="26" width="351" height="634"/>
+                    <rect key="frame" x="10" y="26" width="355" height="635"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thh-A9-lgV">
-                            <rect key="frame" x="0.0" y="297" width="351" height="40"/>
+                            <rect key="frame" x="0.0" y="297.5" width="340" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="bf2-LN-n0O"/>
                             </constraints>
@@ -29,16 +29,19 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="600" verticalCompressionResistancePriority="600" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBo-D1-v2F">
-                            <rect key="frame" x="-12" y="307" width="0.0" height="20.5"/>
+                            <rect key="frame" x="343" y="307.5" width="0.0" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="255" verticalHuggingPriority="255" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="rD1-XM-7lR">
+                            <rect key="frame" x="346" y="310" width="9" height="15"/>
+                        </imageView>
                     </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="ncc-Nt-UZO"/>
+                    </constraints>
                 </stackView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="255" verticalHuggingPriority="255" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="rD1-XM-7lR">
-                    <rect key="frame" x="354" y="335.5" width="9" height="15"/>
-                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nBB-tu-8Zn" userLabel="Line Layer">
                     <rect key="frame" x="0.0" y="666" width="375" height="1"/>
                     <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
@@ -48,24 +51,22 @@
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="rD1-XM-7lR" firstAttribute="centerY" secondItem="LGq-5Q-Deu" secondAttribute="centerY" id="0mY-vd-PTU"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="LGq-5Q-Deu" secondAttribute="trailing" constant="12" id="57c-Cx-aDX"/>
                 <constraint firstItem="nBB-tu-8Zn" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="CDb-91-nkQ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="LGq-5Q-Deu" secondAttribute="bottom" constant="6" id="PgC-jp-NOX"/>
                 <constraint firstItem="nBB-tu-8Zn" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="SEW-z4-xvb"/>
-                <constraint firstItem="LGq-5Q-Deu" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="Val-u9-nKs"/>
-                <constraint firstItem="LGq-5Q-Deu" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="6" id="ZBg-Ih-Vqx"/>
+                <constraint firstItem="LGq-5Q-Deu" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="aWN-nq-oa6"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="LGq-5Q-Deu" secondAttribute="trailing" constant="10" id="bC9-F3-DgL"/>
                 <constraint firstItem="nBB-tu-8Zn" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="kra-8g-xAk"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rD1-XM-7lR" secondAttribute="trailing" constant="12" id="nXw-Ux-kit"/>
-                <constraint firstItem="nBB-tu-8Zn" firstAttribute="top" secondItem="LGq-5Q-Deu" secondAttribute="bottom" constant="6" id="xAB-t9-dPv"/>
+                <constraint firstItem="LGq-5Q-Deu" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="6" id="y79-gH-VVD"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="arrowImageView" destination="rD1-XM-7lR" id="9zq-S4-pcd"/>
                 <outlet property="detailLabel" destination="QBo-D1-v2F" id="ZXw-xy-LEd"/>
-                <outlet property="lineLayer" destination="nBB-tu-8Zn" id="BEm-b3-1Tx"/>
+                <outlet property="lineLayer" destination="nBB-tu-8Zn" id="HBp-pj-hYu"/>
                 <outlet property="titleLabel" destination="thh-A9-lgV" id="2mZ-pA-KY5"/>
             </connections>
-            <point key="canvasLocation" x="33.5" y="53.5"/>
+            <point key="canvasLocation" x="-159" y="30"/>
         </view>
     </objects>
     <resources>

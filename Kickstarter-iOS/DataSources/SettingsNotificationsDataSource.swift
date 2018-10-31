@@ -11,7 +11,6 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
   weak var cellDelegate: SettingsNotificationCellDelegate?
 
   func load(user: User) {
-
     _ = SettingsNotificationSectionType.allCases
       .filter { filterCreatorForSection($0, user: user) }
       .enumerated()
@@ -27,7 +26,7 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     }
 
     let pledgeActivityEnabled = (user
-      |> UserAttribute.notification(.pledgeActivity).lens.view) ?? false
+      |> UserAttribute.notification(.pledgeActivity).keyPath.view) ?? false
 
     if pledgeActivityEnabled {
       _ = self.insertEmailFrequencyCell(user: user)

@@ -229,35 +229,39 @@ extension Lens where Whole == Project, Part == Location {
 
 extension Lens where Whole == Project, Part == Project.Stats {
   public var backersCount: Lens<Project, Int> {
-    return Project.lens.stats..Project.Stats.lens.backersCount
+    return Project.lens.stats..lens(\Project.Stats.backersCount)
   }
 
   public var commentsCount: Lens<Project, Int?> {
-    return Project.lens.stats..Project.Stats.lens.commentsCount
+    return Project.lens.stats..lens(\Project.Stats.commentsCount)
+  }
+
+  public var currency: Lens<Project, String> {
+    return Project.lens.stats..lens(\Project.Stats.currency)
   }
 
   public var currentCurrency: Lens<Project, String?> {
-    return Project.lens.stats..Project.Stats.lens.currentCurrency
+    return Project.lens.stats..lens(\Project.Stats.currentCurrency)
   }
 
   public var currentCurrencyRate: Lens<Project, Float?> {
-    return Project.lens.stats..Project.Stats.lens.currentCurrencyRate
+    return Project.lens.stats..lens(\Project.Stats.currentCurrencyRate)
   }
 
   public var goal: Lens<Project, Int> {
-    return Project.lens.stats..Project.Stats.lens.goal
+    return Project.lens.stats..lens(\Project.Stats.goal)
   }
 
   public var pledged: Lens<Project, Int> {
-    return Project.lens.stats..Project.Stats.lens.pledged
+    return Project.lens.stats..lens(\Project.Stats.pledged)
   }
 
   public var staticUsdRate: Lens<Project, Float> {
-    return Project.lens.stats..Project.Stats.lens.staticUsdRate
+    return Project.lens.stats..lens(\Project.Stats.staticUsdRate)
   }
 
   public var updatesCount: Lens<Project, Int?> {
-    return Project.lens.stats..Project.Stats.lens.updatesCount
+    return Project.lens.stats..lens(\Project.Stats.updatesCount)
   }
 
   public var fundingProgress: Lens<Project, Float> {

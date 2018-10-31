@@ -32,7 +32,6 @@ public protocol SettingsNotificationsViewModelType {
 public final class SettingsNotificationsViewModel: SettingsNotificationsViewModelType,
 SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   public init() {
-
     let initialUser = viewDidLoadProperty.signal
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()
@@ -52,7 +51,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
           let (attribute, on) = attributeAndOn
-          return user |> attribute.lens .~ on
+          return user |> attribute.keyPath .~ on
         }
     }
 
@@ -90,7 +89,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal
-      .map { $0 |> UserAttribute.notification(.creatorDigest).lens.view }
+      .map { $0 |> UserAttribute.notification(.creatorDigest).keyPath.view }
       .skipNil()
       .map { creatorDigest -> EmailFrequency in
         return creatorDigest ? EmailFrequency.daily : EmailFrequency.individualEmails

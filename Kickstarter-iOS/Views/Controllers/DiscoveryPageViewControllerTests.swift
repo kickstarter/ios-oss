@@ -51,8 +51,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ [project]
     let config = Config.template
-      |> Config.lens.abExperiments
-        .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
@@ -84,8 +82,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let config = Config.template
-      |> Config.lens.abExperiments
-      .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
 
     combos(Language.allLanguages, devices, [("featured", featuredProj)])
       .forEach { language, device, labeledProj in
@@ -123,8 +119,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     let states = [Project.State.successful, .canceled, .failed, .suspended]
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let config = Config.template
-      |> Config.lens.abExperiments
-      .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
 
     combos(Language.allLanguages, devices, states )
       .forEach { language, device, state in
@@ -176,8 +170,8 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     |> Project.lens.id .~ 1111
     |> Project.lens.photo.full .~ ""
 
-  fileprivate let brandoNoAvatar = .brando
-    |> User.lens.avatar.medium .~ ""
+  fileprivate let brandoNoAvatar = User.brando
+    |> \.avatar.medium .~ ""
 
   fileprivate let cosmicSurgeryNoPhoto = .cosmicSurgery
     |> Project.lens.id .~ 2222

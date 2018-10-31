@@ -25,8 +25,7 @@ public final class SettingsFollowCellViewModel: SettingsFollowCellViewModelType,
 SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
 
   public init() {
-    let initialUser = configureWithProperty.signal
-      .skipNil()
+    let initialUser = configureWithProperty.signal.skipNil()
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
       self.followTappedProperty.signal.filter { $0 == true }.map {
@@ -37,7 +36,7 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
       .switchMap { user in
         userAttributeChanged.scan(user) { user, attributeAndOn in
           let (attribute, on) = attributeAndOn
-          return user |> attribute.lens .~ on
+          return user |> attribute.keyPath .~ on
         }
     }
 

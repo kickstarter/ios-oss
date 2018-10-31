@@ -19,7 +19,7 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
   }
 
   func testLoadUser_isCreator_pledgeActivityDisabled() {
-    let user = User.template |> User.lens.stats.createdProjectsCount .~ 2
+    let user = User.template |> \.stats.createdProjectsCount .~ 2
 
     dataSource.load(user: user)
 
@@ -31,9 +31,9 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
   func testLoadUser_isCreator_pledgeActivityEnabled() {
     let user = User.template
-      |> User.lens.stats.createdProjectsCount .~ 2
-      |> UserAttribute.notification(.pledgeActivity).lens .~ true
-      |> UserAttribute.notification(.creatorDigest).lens .~ true
+      |> \.stats.createdProjectsCount .~ 2
+      |> UserAttribute.notification(.pledgeActivity).keyPath .~ true
+      |> UserAttribute.notification(.creatorDigest).keyPath .~ true
 
     dataSource.load(user: user)
 
@@ -73,7 +73,7 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
   }
 
   func testSectionTypeForSection_isCreator() {
-    let user = User.template |> User.lens.stats.createdProjectsCount .~ 2
+    let user = User.template |> \.stats.createdProjectsCount .~ 2
 
     dataSource.load(user: user)
 
@@ -97,7 +97,7 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
   }
 
   func testSectionTypeForSection_OutOfBounds_isCreator() {
-    let user = User.template |> User.lens.stats.createdProjectsCount .~ 2
+    let user = User.template |> \.stats.createdProjectsCount .~ 2
 
     dataSource.load(user: user)
 

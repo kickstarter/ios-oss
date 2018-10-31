@@ -1,7 +1,8 @@
+import Prelude
+
 public struct UserCurrency: Swift.Decodable {
-  public let chosenCurrency: String?
+  public private(set) var chosenCurrency: String?
 }
 
-extension UserCurrency {
-  internal static let template = UserCurrency(chosenCurrency: "USD")
+extension UserCurrency: Equatable {
 }

@@ -52,7 +52,6 @@ extension Service {
         if let error = error {
           observer.send(error: .requestError(error, response))
           print("🔴 [KsApi] Failure - Request error: \(error.localizedDescription)")
-          return
         }
 
         guard let data = data else {

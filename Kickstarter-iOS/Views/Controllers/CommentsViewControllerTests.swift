@@ -19,13 +19,13 @@ internal final class CommentsViewControllerTests: TestCase {
 
   func testView() {
     let backer = User.brando
-      |> User.lens.avatar.large .~ ""
-      |> User.lens.avatar.medium .~ ""
-      |> User.lens.avatar.small .~ ""
+      |> \.avatar.large .~ ""
+      |> \.avatar.medium .~ ""
+      |> \.avatar.small .~ ""
 
-    let creator = .template
-      |> User.lens.id .~ 808
-      |> User.lens.name .~ "Native Squad"
+    let creator = User.template
+      |> \.id .~ 808
+      |> \.name .~ "Native Squad"
 
     let project = .template
       |> Project.lens.creator .~ creator
@@ -44,7 +44,7 @@ internal final class CommentsViewControllerTests: TestCase {
       |> Comment.lens.createdAt .~ 1473461640
 
     let deletedComment = .template
-      |> Comment.lens.author .~ (.template |> User.lens.name .~ "Naughty Blob")
+      |> Comment.lens.author .~ (.template |> \.name .~ "Naughty Blob")
       |> Comment.lens.body .~ "This comment has been deleted by Kickstarter."
       |> Comment.lens.createdAt .~ 1473461640
       |> Comment.lens.deletedAt .~ 1473461640

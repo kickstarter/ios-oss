@@ -24,7 +24,7 @@ internal final class FindFriendsCellViewModelTests: TestCase {
   }
 
   func testCell_userFollowingEnabled() {
-    let user = User.template |> User.lens.social .~ true
+    let user = User.template |> \.social .~ true
 
     self.vm.configure(with: user)
 
@@ -33,7 +33,7 @@ internal final class FindFriendsCellViewModelTests: TestCase {
   }
 
   func testCell_userFollowingDisabled() {
-    let user = User.template |> User.lens.social .~ false
+    let user = User.template |> \.social .~ false
 
     self.vm.configure(with: user)
 

@@ -73,7 +73,7 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testShouldSelectRow_findFriends_FollowingEnabled() {
-    let user = User.template |> User.lens.social .~ true
+    let user = User.template |> \.social .~ true
 
     withEnvironment(currentUser: user) {
       XCTAssertTrue(self.vm.shouldSelectRow(for: .findFriends))
@@ -81,7 +81,7 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testShouldSelectRow_findFriends_FollowingDisabled() {
-    let user = User.template |> User.lens.social .~ false
+    let user = User.template |> \.social .~ false
 
     withEnvironment(currentUser: user) {
       XCTAssertFalse(self.vm.shouldSelectRow(for: .findFriends))
@@ -95,7 +95,7 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testUserUpdatedNotification() {
-    let updatedUser = User.template |> User.lens.social .~ true
+    let updatedUser = User.template |> \.social .~ true
     let mockService = MockService(fetchUserSelfResponse: updatedUser)
 
     withEnvironment(apiService: mockService, currentUser: User.template) {

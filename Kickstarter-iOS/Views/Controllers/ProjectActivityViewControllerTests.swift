@@ -76,10 +76,10 @@ private let project =
     |> Project.lens.photo.full .~ ""
 
 private let user =
-  .brando
-    |> User.lens.avatar.large .~ ""
-    |> User.lens.avatar.medium .~ ""
-    |> User.lens.avatar.small .~ ""
+  User.brando
+    |> \.avatar.large .~ ""
+    |> \.avatar.medium .~ ""
+    |> \.avatar.small .~ ""
 
 private let baseActivity =
   .template

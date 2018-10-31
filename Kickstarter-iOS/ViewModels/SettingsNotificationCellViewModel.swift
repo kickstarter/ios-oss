@@ -32,7 +32,6 @@ SettingsNotificationCellViewModelOutputs,
 SettingsNotificationCellViewModelType {
 
   public init() {
-
     let initialUser = self.initialUserProperty.signal.skipNil()
 
     let cellType = cellTypeProperty.signal.skipNil().skipRepeats()
@@ -45,7 +44,7 @@ SettingsNotificationCellViewModelType {
                             return nil
         }
 
-        return user |> UserAttribute.notification(notification).lens.view
+        return user |> UserAttribute.notification(notification).keyPath.view
     }.skipNil()
 
     let pushNotificationValueToggled = pushNotificationValueChangedProperty.signal.negate()
@@ -58,7 +57,7 @@ SettingsNotificationCellViewModelType {
                             return nil
         }
 
-        return user |> UserAttribute.notification(notification).lens.view
+        return user |> UserAttribute.notification(notification).keyPath.view
       }.skipNil()
 
     let emailNotificationValueToggled = emailNotificationValueChangedProperty.signal.negate()
@@ -74,7 +73,6 @@ SettingsNotificationCellViewModelType {
     .map { cellType, notificationType, enabled -> (UserAttribute.Notification?, Bool) in
         let notification = SettingsNotificationCellViewModel.notificationFor(cellType: cellType,
                                                                  notificationType: notificationType)
-
         return (notification, enabled)
     }
 
@@ -87,7 +85,7 @@ SettingsNotificationCellViewModelType {
           return nil
         }
 
-        return user |> UserAttribute.notification(notificationType).lens .~ on
+        return user |> UserAttribute.notification(notificationType).keyPath .~ on
       }.skipNil()
 
     let updateEvent = updatedUser
@@ -137,7 +135,7 @@ SettingsNotificationCellViewModelType {
       .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
 
     self.projectCountText = initialUser
-      .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0)}
+      .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
 
     // Koala tracking
     userAttributeChanged.observeValues { (notification, enabled) in
