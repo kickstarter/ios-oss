@@ -48,7 +48,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
     self.closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
     self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
-    self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
     self.projectNameLabel.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(projectNameTapped))
     )
@@ -238,8 +238,8 @@ public final class ProjectNavBarViewController: UIViewController {
     self.shareViewModel.inputs.shareButtonTapped()
   }
 
-  @objc fileprivate func saveButtonTapped() {
-    self.viewModel.inputs.saveButtonTapped(selected: self.saveButton.isSelected)
+  @objc fileprivate func saveButtonTapped(_ button: UIButton) {
+    self.viewModel.inputs.saveButtonTapped(selected: button.isSelected)
   }
 
   @objc fileprivate func projectNameTapped() {

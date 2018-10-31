@@ -71,7 +71,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       projectCategoriesStackView.addArrangedSubview(projectIsStaffPickView)
     }
 
-    self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -326,7 +326,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     }
   }
 
-  @objc fileprivate func saveButtonTapped() {
-    self.viewModel.inputs.saveButtonTapped(selected: self.saveButton.isSelected)
+  @objc fileprivate func saveButtonTapped(_ button: UIButton) {
+    self.viewModel.inputs.saveButtonTapped(selected: button.isSelected)
   }
 }

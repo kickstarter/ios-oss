@@ -72,10 +72,10 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits a boolean to determine whether to create haptics
-  var generateSelectionFeedback: Signal<Void, NoError> { get }
+  var generateSelectionFeedback: Signal<(), NoError> { get }
 
   /// Emits a boolean to determine whether to create haptics
-  var generateSuccessFeedback: Signal<Void, NoError> { get }
+  var generateSuccessFeedback: Signal<(), NoError> { get }
 
   /// Emits metadata label text
   var metadataLabelText: Signal<String, NoError> { get }
@@ -93,10 +93,10 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var metadataViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits when we should notify the delegate that the heart button was tapped.
-  var notifyDelegateShowSaveAlert: Signal<Void, NoError> { get }
+  var notifyDelegateShowSaveAlert: Signal<(), NoError> { get }
 
   /// Emits when we should notify delegate that heart button was tapped by logged out user.
-  var notifyDelegateShowLoginTout: Signal<Void, NoError> { get }
+  var notifyDelegateShowLoginTout: Signal<(), NoError> { get }
 
   /// Emits the text for the pledged title label.
   var percentFundedTitleLabelText: Signal<String, NoError> { get }
@@ -431,15 +431,15 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
-  public let generateSuccessFeedback: Signal<Void, NoError>
-  public let generateSelectionFeedback: Signal<Void, NoError>
+  public let generateSuccessFeedback: Signal<(), NoError>
+  public let generateSelectionFeedback: Signal<(), NoError>
   public let metadataLabelText: Signal<String, NoError>
   public let metadataIcon: Signal<UIImage?, NoError>
   public let metadataIconImageViewTintColor: Signal<UIColor, NoError>
   public let metadataTextColor: Signal<UIColor, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
-  public let notifyDelegateShowLoginTout: Signal<Void, NoError>
-  public let notifyDelegateShowSaveAlert: Signal<Void, NoError>
+  public let notifyDelegateShowLoginTout: Signal<(), NoError>
+  public let notifyDelegateShowSaveAlert: Signal<(), NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<URL?, NoError>
