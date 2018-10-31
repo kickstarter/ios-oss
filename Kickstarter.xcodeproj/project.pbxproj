@@ -2882,7 +2882,7 @@
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
-				D6ED1B3C216D617E007F7547 /* mutation inputs */,
+				D6ED1B3C216D617E007F7547 /* inputs */,
 				D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */,
 			);
 			path = mutations;
@@ -4376,13 +4376,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D6ED1B3C216D617E007F7547 /* mutation inputs */ = {
+		D6ED1B3C216D617E007F7547 /* inputs */ = {
 			isa = PBXGroup;
 			children = (
 				775DFAD82162A43F00620CED /* ChangePasswordInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 			);
-			path = "mutation inputs";
+			path = inputs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
