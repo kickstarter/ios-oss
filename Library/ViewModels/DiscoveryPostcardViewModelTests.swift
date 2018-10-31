@@ -15,8 +15,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let deadlineTitleLabelText = TestObserver<String, NoError>()
   internal let fundingProgressBarViewHidden = TestObserver<Bool, NoError>()
   internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
-  internal let generateSelectionFeedback = TestObserver<Bool, NoError>()
-  internal let generateSuccessFeedback = TestObserver<Bool, NoError>()
+  internal let generateSelectionFeedback = TestObserver<(), NoError>()
+  internal let generateSuccessFeedback = TestObserver<(), NoError>()
   internal let metadataIcon = TestObserver<UIImage?, NoError>()
   internal let metadataIconTintColor = TestObserver<UIColor, NoError>()
   internal let metadataTextColor = TestObserver<UIColor, NoError>()
@@ -118,24 +118,24 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.notifyDelegateShowSaveAlert.assertValueCount(1)
   }
 
-  func testGenerateSuccessFeedback() {
+  func testGenerateSelectionFeedback() {
     let project = .template |> Project.lens.personalization.isStarred .~ false
 
     self.vm.inputs.configureWith(project: project, category: nil)
     self.vm.inputs.saveButtonTapped(selected: true)
     self.scheduler.advance()
-    self.generateSelectionFeedback.assertValues([true])
-    self.generateSuccessFeedback.assertValues([false])
+    self.generateSelectionFeedback.assertValueCount(1)
+    self.generateSuccessFeedback.assertValueCount(0)
   }
 
-  func testGenerateSelectionFeedback() {
+  func testGenerateSuccessFeedback() {
     let project = .template |> Project.lens.personalization.isStarred .~ false
 
     self.vm.inputs.configureWith(project: project, category: nil)
     self.vm.inputs.saveButtonTapped(selected: false)
     self.scheduler.advance()
-    self.generateSelectionFeedback.assertValues([false])
-    self.generateSuccessFeedback.assertValues([true])
+    self.generateSelectionFeedback.assertValueCount(0)
+    self.generateSuccessFeedback.assertValueCount(1)
   }
 
   func testSaveProject_WithError() {

@@ -72,10 +72,10 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits a boolean to determine whether to create haptics
-  var generateSelectionFeedback: Signal<Bool, NoError> { get }
+  var generateSelectionFeedback: Signal<Void, NoError> { get }
 
   /// Emits a boolean to determine whether to create haptics
-  var generateSuccessFeedback: Signal<Bool, NoError> { get }
+  var generateSuccessFeedback: Signal<Void, NoError> { get }
 
   /// Emits metadata label text
   var metadataLabelText: Signal<String, NoError> { get }
@@ -385,8 +385,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     projectSaved
       .observeValues { AppEnvironment.current.koala.trackProjectSave($0, context: .discovery) }
 
-    self.generateSuccessFeedback = self.saveButtonTappedProperty.signal.negate()
-    self.generateSelectionFeedback = self.saveButtonTappedProperty.signal.map { $0 }
+    self.generateSuccessFeedback = self.saveButtonTappedProperty.signal.filter(isFalse).ignoreValues()
+    self.generateSelectionFeedback = self.saveButtonTappedProperty.signal.filter(isTrue).ignoreValues()
 
     // a11y
     self.cellAccessibilityLabel = configuredProject.map(Project.lens.name.view)
@@ -431,8 +431,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
-  public let generateSuccessFeedback: Signal<Bool, NoError>
-  public let generateSelectionFeedback: Signal<Bool, NoError>
+  public let generateSuccessFeedback: Signal<Void, NoError>
+  public let generateSelectionFeedback: Signal<Void, NoError>
   public let metadataLabelText: Signal<String, NoError>
   public let metadataIcon: Signal<UIImage?, NoError>
   public let metadataIconImageViewTintColor: Signal<UIColor, NoError>

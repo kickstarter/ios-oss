@@ -36,10 +36,10 @@ public protocol ProjectNavBarViewModelOutputs {
   var dismissViewController: Signal<(), NoError> { get }
 
   /// Emits a boolean to determine whether to create haptics
-  var generateSelectionFeedback: Signal<Bool, NoError> { get }
+  var generateSelectionFeedback: Signal<(), NoError> { get }
 
   /// Emits a boolean to determine whether to create haptics
-  var generateSuccessFeedback: Signal<Bool, NoError> { get }
+  var generateSuccessFeedback: Signal<(), NoError> { get }
 
   /// Emits when the login tout should be shown to the user.
   var goToLoginTout: Signal<(), NoError> { get }
@@ -174,6 +174,9 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .map { $0.personalization.isStarred == true }
       .skipRepeats()
 
+    self.generateSuccessFeedback = self.saveButtonTappedProperty.signal.filter(isFalse).ignoreValues()
+    self.generateSelectionFeedback = self.saveButtonTappedProperty.signal.filter(isTrue).ignoreValues()
+
     self.saveButtonAccessibilityValue = self.saveButtonSelected
       .map { starred in starred ? Strings.Saved() : Strings.Unsaved() }
 
@@ -227,9 +230,6 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
 
     self.postNotificationWithProject = project
       .takeWhen(self.saveButtonTappedProperty.signal)
-
-    self.generateSuccessFeedback = self.saveButtonTappedProperty.signal.negate()
-    self.generateSelectionFeedback = self.saveButtonTappedProperty.signal.map { $0 }
 
     Signal.combineLatest(project, configuredRefTag)
       .takeWhen(self.closeButtonTappedProperty.signal)
@@ -300,8 +300,8 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public let categoryButtonTitleColor: Signal<UIColor, NoError>
   public let categoryHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>
   public let dismissViewController: Signal<(), NoError>
-  public let generateSuccessFeedback: Signal<Bool, NoError>
-  public let generateSelectionFeedback: Signal<Bool, NoError>
+  public let generateSuccessFeedback: Signal<(), NoError>
+  public let generateSelectionFeedback: Signal<(), NoError>
   public let goToLoginTout: Signal<(), NoError>
   public let navBarShadowVisible: Signal<Bool, NoError>
   public let postNotificationWithProject: Signal<Project, NoError>

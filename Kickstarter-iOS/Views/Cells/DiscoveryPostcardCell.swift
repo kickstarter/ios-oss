@@ -236,22 +236,14 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.generateSuccessFeedback
       .observeForUI()
-      .observeValues { [weak self] generateSuccessFeedback in
-        if generateSuccessFeedback {
-            if #available(iOS 10.0, *) {
-              self?.saveButton.generateSuccessFeedback()
-          }
-        }
+      .observeValues { [weak self] in
+        self?.saveButton.generateSuccessFeedback()
       }
 
     self.viewModel.outputs.generateSelectionFeedback
       .observeForUI()
-      .observeValues { [weak self] generateSelectionFeedback in
-        if generateSelectionFeedback {
-          if #available(iOS 10.0, *) {
-            self?.saveButton.generateSelectionFeedback()
-        }
-      }
+      .observeValues { [weak self]  in
+        self?.saveButton.generateSelectionFeedback()
     }
 
     viewModel.outputs.projectCategoryName

@@ -1,14 +1,15 @@
 import UIKit
 
 extension UIButton {
-
-  @available(iOS 10.0, *)
   public func generateSelectionFeedback() {
-    UISelectionFeedbackGenerator().selectionChanged()
+    if #available(iOS 10.0, *) {
+      UIFeedbackGenerator.ksr_selection()
+    }
   }
 
-  @available(iOS 10.0, *)
   public func generateSuccessFeedback() {
-    UINotificationFeedbackGenerator().notificationOccurred(.success)
+    if #available(iOS 10.0, *) {
+      UIFeedbackGenerator.ksr_success()
+    }
   }
 }
