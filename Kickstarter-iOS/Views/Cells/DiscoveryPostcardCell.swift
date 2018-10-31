@@ -316,11 +316,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         guard let _self = self else { return }
         _self.delegate?.discoveryPostcardCellGoToLoginTout()
     }
-
-    let showCategoriesExperiment =
-      Experiment.Name.showProjectCardCategory.isEnabled(in: AppEnvironment.current)
-
-    self.viewModel.inputs.enableProjectCategoryExperiment(showCategoriesExperiment)
   }
 
   internal func configureWith(value: DiscoveryProjectCellRowValue) {

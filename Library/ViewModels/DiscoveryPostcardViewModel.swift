@@ -36,9 +36,6 @@ public protocol DiscoveryPostcardViewModelInputs {
   /// Call when the cell has received a project notification.
   func projectFromNotification(project: Project?)
 
-  /// Call to set the project category experiment variable
-  func enableProjectCategoryExperiment(_ shouldEnable: Bool)
-
   /// Call when save button is tapped.
   func saveButtonTapped(selected: Bool)
 
@@ -272,15 +269,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       self.projectCategoryViewHidden.signal,
       self.projectIsStaffPickLabelHidden.signal)
 
-    self.projectCategoryStackViewHidden = Signal.combineLatest(
-      projectCategoryViewsHidden,
-      self.enableProjectCategoryExperimentProperty.signal)
-      .map { projectCategoryViews, experimentEnabled in
-        if experimentEnabled {
+    self.projectCategoryStackViewHidden = projectCategoryViewsHidden
+      .map { projectCategoryViews in
           return projectCategoryViews.0 && projectCategoryViews.1
-        }
-
-        return true
       }
 
     self.projectStatsStackViewHidden = self.projectStateStackViewHidden.map(negate)
@@ -430,11 +421,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   fileprivate let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
-  }
-
-  fileprivate let enableProjectCategoryExperimentProperty = MutableProperty<Bool>(false)
-  public func enableProjectCategoryExperiment(_ shouldEnable: Bool) {
-    self.enableProjectCategoryExperimentProperty.value = shouldEnable
   }
 
   public let backersTitleLabelText: Signal<String, NoError>
