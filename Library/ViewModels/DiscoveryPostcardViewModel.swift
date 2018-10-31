@@ -40,7 +40,7 @@ public protocol DiscoveryPostcardViewModelInputs {
   func enableProjectCategoryExperiment(_ shouldEnable: Bool)
 
   /// Call when save button is tapped.
-  func saveButtonTapped()
+  func saveButtonTapped(selected: Bool)
 
   /// Call when the cell has received a user session ended notification.
   func userSessionEnded()
@@ -73,6 +73,12 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits a boolean to determine whether or not to display funding progress container view.
   var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean to determine whether to create haptics
+  var generateSelectionFeedback: Signal<Bool, NoError> { get }
+
+  /// Emits a boolean to determine whether to create haptics
+  var generateSuccessFeedback: Signal<Bool, NoError> { get }
 
   /// Emits metadata label text
   var metadataLabelText: Signal<String, NoError> { get }
@@ -388,6 +394,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     projectSaved
       .observeValues { AppEnvironment.current.koala.trackProjectSave($0, context: .discovery) }
 
+    self.generateSuccessFeedback = self.saveButtonTappedProperty.signal.negate()
+    self.generateSelectionFeedback = self.saveButtonTappedProperty.signal.map { $0 }
+
     // a11y
     self.cellAccessibilityLabel = configuredProject.map(Project.lens.name.view)
 
@@ -408,9 +417,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectFromNotificationProperty.value = project
   }
 
-  fileprivate let saveButtonTappedProperty = MutableProperty(())
-  public func saveButtonTapped() {
-    self.saveButtonTappedProperty.value = ()
+  fileprivate let saveButtonTappedProperty = MutableProperty(false)
+  public func saveButtonTapped(selected: Bool) {
+    self.saveButtonTappedProperty.value = selected
   }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())
@@ -436,6 +445,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
+  public let generateSuccessFeedback: Signal<Bool, NoError>
+  public let generateSelectionFeedback: Signal<Bool, NoError>
   public let metadataLabelText: Signal<String, NoError>
   public let metadataIcon: Signal<UIImage?, NoError>
   public let metadataIconImageViewTintColor: Signal<UIColor, NoError>

@@ -234,6 +234,26 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     projectIsStaffPickView.configureWith(name: Strings.Projects_We_Love(), imageNameString: "icon--small-k")
 
+    self.viewModel.outputs.generateSuccessFeedback
+      .observeForUI()
+      .observeValues { [weak self] generateSuccessFeedback in
+        if generateSuccessFeedback {
+            if #available(iOS 10.0, *) {
+              self?.saveButton.generateSuccessFeedback()
+          }
+        }
+      }
+
+    self.viewModel.outputs.generateSelectionFeedback
+      .observeForUI()
+      .observeValues { [weak self] generateSelectionFeedback in
+        if generateSelectionFeedback {
+          if #available(iOS 10.0, *) {
+            self?.saveButton.generateSelectionFeedback()
+        }
+      }
+    }
+
     viewModel.outputs.projectCategoryName
       .signal
       .observeForUI()
@@ -320,15 +340,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   }
 
   @objc fileprivate func saveButtonTapped() {
-    if self.saveButton.isSelected {
-      if #available(iOS 10.0, *) {
-        self.saveButton.generateSelectionFeedback()
-      }
-    } else {
-      if #available(iOS 10.0, *) {
-        self.saveButton.generateSuccessFeedback()
-      }
-    }
-    self.viewModel.inputs.saveButtonTapped()
+    self.viewModel.inputs.saveButtonTapped(selected: self.saveButton.isSelected)
   }
 }
