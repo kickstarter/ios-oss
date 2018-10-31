@@ -118,6 +118,26 @@ public final class ProjectNavBarViewController: UIViewController {
     self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
     self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
 
+    self.viewModel.outputs.generateSuccessFeedback
+      .observeForUI()
+      .observeValues { [weak self] generateSuccessFeedback in
+        if generateSuccessFeedback {
+          if #available(iOS 10.0, *) {
+            self?.saveButton.generateSuccessFeedback()
+          }
+        }
+    }
+
+    self.viewModel.outputs.generateSelectionFeedback
+      .observeForUI()
+      .observeValues { [weak self] generateSelectionFeedback in
+        if generateSelectionFeedback {
+          if #available(iOS 10.0, *) {
+            self?.saveButton.generateSelectionFeedback()
+          }
+        }
+    }
+
     self.viewModel.outputs.showProjectSavedPrompt
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -227,16 +247,7 @@ public final class ProjectNavBarViewController: UIViewController {
   }
 
   @objc fileprivate func saveButtonTapped() {
-    if self.saveButton.isSelected {
-      if #available(iOS 10.0, *) {
-        self.saveButton.generateSelectionFeedback()
-      }
-    } else {
-      if #available(iOS 10.0, *) {
-        self.saveButton.generateSuccessFeedback()
-      }
-    }
-    self.viewModel.inputs.saveButtonTapped()
+    self.viewModel.inputs.saveButtonTapped(selected: self.saveButton.isSelected)
   }
 
   @objc fileprivate func projectNameTapped() {
