@@ -65,7 +65,6 @@ private func cardImage(with card: GraphUserCreditCard.CreditCard) -> UIImage? {
 private func formatted(dateString: String) -> String {
 
   let date = toDate(dateString: dateString)
-  
   return Format.date(secondsInUTC: date.timeIntervalSince1970, template: "MM-yyyy")
 }
 
