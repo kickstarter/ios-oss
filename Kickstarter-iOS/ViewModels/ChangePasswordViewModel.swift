@@ -22,7 +22,7 @@ protocol ChangePasswordViewModelInputs {
 protocol ChangePasswordViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var changePasswordFailure: Signal<String, NoError> { get }
-  var changePasswordSuccess: Signal<DiscoveryParams?, NoError> { get }
+  var changePasswordSuccess: Signal<Void, NoError> { get }
   var confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var currentPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var currentPasswordPrefillValue: Signal<String, NoError> { get }
@@ -93,13 +93,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
           .materialize()
     }
 
-    self.changePasswordSuccess = passwordUpdateEvent.values()
-      .map { _ in
-        return DiscoveryParams.defaults
-          |> DiscoveryParams.lens.includePOTD .~ true
-          |> DiscoveryParams.lens.sort .~ .magic
-    }
-
+    self.changePasswordSuccess = passwordUpdateEvent.values().ignoreValues()
     self.changePasswordFailure = passwordUpdateEvent.errors().map { $0.localizedDescription }
 
     self.activityIndicatorShouldShow = Signal.merge(
@@ -195,7 +189,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let changePasswordFailure: Signal<String, NoError>
-  public let changePasswordSuccess: Signal<DiscoveryParams?, NoError>
+  public let changePasswordSuccess: Signal<Void, NoError>
   public let confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let currentPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let currentPasswordPrefillValue: Signal<String, NoError>

@@ -2918,7 +2918,7 @@
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
-				D6ED1B3C216D617E007F7547 /* mutation inputs */,
+				D6ED1B3C216D617E007F7547 /* inputs */,
 				D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */,
 				D77743E2217A2D67008D679F /* UpdateUserProfileMutation .swift */,
 			);
@@ -4428,14 +4428,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D6ED1B3C216D617E007F7547 /* mutation inputs */ = {
+		D6ED1B3C216D617E007F7547 /* inputs */ = {
 			isa = PBXGroup;
 			children = (
 				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 				D777442E217A3382008D679F /* ChangeCurrencyInput.swift */,
 			);
-			path = "mutation inputs";
+			path = inputs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
