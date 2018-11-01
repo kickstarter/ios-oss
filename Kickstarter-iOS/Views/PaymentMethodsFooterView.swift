@@ -2,11 +2,11 @@ import Library
 import Prelude
 import UIKit
 
-internal protocol PaymentMethodsFooterViewDelegate: class {
-  func didTapAddNewCardButton()
+public protocol PaymentMethodsFooterViewDelegate: class {
+  func paymentMethodsFooterViewDidTapAddNewCardButton(_ footerView: PaymentMethodsFooterView)
 }
 
-internal final class PaymentMethodsFooterView: UITableViewHeaderFooterView {
+public final class PaymentMethodsFooterView: UITableViewHeaderFooterView {
 
   public weak var delegate: PaymentMethodsFooterViewDelegate?
 
@@ -14,7 +14,7 @@ internal final class PaymentMethodsFooterView: UITableViewHeaderFooterView {
   @IBOutlet private weak var titleLabel: UILabel!
   @IBOutlet private weak var separatorView: UIView!
 
-  override func bindStyles() {
+  override public func bindStyles() {
     super.bindViewModel()
 
     _ = self
@@ -34,6 +34,6 @@ internal final class PaymentMethodsFooterView: UITableViewHeaderFooterView {
   }
 
   @IBAction func addNewCardButtonTapped(_ sender: Any) {
-    self.delegate?.didTapAddNewCardButton()
+    self.delegate?.paymentMethodsFooterViewDidTapAddNewCardButton(self)
   }
 }

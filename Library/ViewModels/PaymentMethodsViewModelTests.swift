@@ -39,7 +39,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     self.goToAddCardScreen.assertValueCount(0)
 
-    self.vm.inputs.didTapAddNewCardButton()
+    self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
 
     self.goToAddCardScreen.assertValueCount(1, "Should emit after tapping button")
   }

@@ -1,3 +1,4 @@
+// swiftlint:disable todo
 import KsApi
 import Library
 import Prelude
@@ -9,14 +10,7 @@ internal final class PaymentMethodsViewController: UIViewController {
   private let viewModel: PaymentMethodsViewModelType = PaymentMethodsViewModel()
 
   @IBOutlet private weak var headerLabel: UILabel!
-  @IBOutlet private weak var tableView: UITableView! {
-    didSet {
-      self.tableView.dataSource = self.dataSource
-      self.tableView.delegate = self
-      self.tableView.register(nib: .CreditCardCell)
-      self.tableView.registerHeaderFooter(nib: .PaymentMethodsFooterView)
-    }
-  }
+  @IBOutlet private weak var tableView: UITableView!
 
   public static func instantiate() -> PaymentMethodsViewController {
     return Storyboard.Settings.instantiate(PaymentMethodsViewController.self)
@@ -25,12 +19,18 @@ internal final class PaymentMethodsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
+    self.tableView.register(nib: .CreditCardCell)
+    self.tableView.registerHeaderFooter(nib: .PaymentMethodsFooterView)
+
     self.viewModel.inputs.viewDidLoad()
-    self.navigationItem.rightBarButtonItem =
-      UIBarButtonItem(title: Strings.discovery_favorite_categories_buttons_edit(),
-                      style: .plain,
-                      target: self,
-                      action: nil)
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+      title: Strings.discovery_favorite_categories_buttons_edit(),
+      style: .plain,
+      target: self,
+      action: nil
+    )
   }
 
   override func bindStyles() {
@@ -73,7 +73,7 @@ internal final class PaymentMethodsViewController: UIViewController {
   }
 
   private func goToAddCardScreen() {
-    // Push AddNewCardScreen from here.
+    // FIXME: Push AddNewCardScreen from here.
   }
 }
 
@@ -98,7 +98,7 @@ extension PaymentMethodsViewController: UITableViewDelegate {
 
 extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
 
-  internal func didTapAddNewCardButton() {
-    self.viewModel.inputs.didTapAddNewCardButton()
+  internal func paymentMethodsFooterViewDidTapAddNewCardButton(_ footerView: PaymentMethodsFooterView) {
+    self.viewModel.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
   }
 }

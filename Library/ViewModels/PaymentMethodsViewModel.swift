@@ -6,7 +6,7 @@ import Result
 
 public protocol PaymentMethodsViewModelInputs {
   func viewDidLoad()
-  func didTapAddNewCardButton()
+  func paymentMethodsFooterViewDidTapAddNewCardButton()
 }
 
 public protocol PaymentMethodsViewModelOutputs {
@@ -43,7 +43,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   }
 
   fileprivate let didTapAddCardButtonProperty = MutableProperty(())
-  public func didTapAddNewCardButton() {
+  public func paymentMethodsFooterViewDidTapAddNewCardButton() {
     self.didTapAddCardButtonProperty.value = ()
   }
 
