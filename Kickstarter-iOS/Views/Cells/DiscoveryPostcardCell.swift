@@ -71,7 +71,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       projectCategoriesStackView.addArrangedSubview(projectIsStaffPickView)
     }
 
-    self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -234,6 +234,18 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     projectIsStaffPickView.configureWith(name: Strings.Projects_We_Love(), imageNameString: "icon--small-k")
 
+    self.viewModel.outputs.generateSuccessFeedback
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.saveButton.generateSuccessFeedback()
+      }
+
+    self.viewModel.outputs.generateSelectionFeedback
+      .observeForUI()
+      .observeValues { [weak self]  in
+        self?.saveButton.generateSelectionFeedback()
+    }
+
     viewModel.outputs.projectCategoryName
       .signal
       .observeForUI()
@@ -314,7 +326,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     }
   }
 
-  @objc fileprivate func saveButtonTapped() {
-    self.viewModel.inputs.saveButtonTapped()
+  @objc fileprivate func saveButtonTapped(_ button: UIButton) {
+    self.viewModel.inputs.saveButtonTapped(selected: button.isSelected)
   }
 }
