@@ -301,6 +301,9 @@ public protocol ServiceType {
   /// Updates the draft of a project update.
   func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
     -> SignalProducer<UpdateDraft, ErrorEnvelope>
+
+  func watchProject(input: WatchProjectInput) ->
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
 }
 
 extension ServiceType {

@@ -504,4 +504,9 @@ public struct Service: ServiceType {
   public func updateUserSelf(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
     return request(.updateUserSelf(user))
   }
+
+  public func watchProject(input: WatchProjectInput) ->
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      return applyMutation(mutation: WatchProjectMutation(input: input))
+  }
 }

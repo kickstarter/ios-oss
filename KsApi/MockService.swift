@@ -145,6 +145,8 @@ internal struct MockService: ServiceType {
 
   fileprivate let updateUserSelfError: ErrorEnvelope?
 
+  fileprivate let watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>?
+
   internal init(appId: String = "com.kickstarter.kickstarter.mock",
                 serverConfig: ServerConfigType,
                 oauthToken: OauthTokenAuthType?,
@@ -253,7 +255,9 @@ internal struct MockService: ServiceType {
                 updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>? = nil,
                 updateProjectNotificationResponse: ProjectNotification? = nil,
                 updateProjectNotificationError: ErrorEnvelope? = nil,
-                updateUserSelfError: ErrorEnvelope? = nil) {
+                updateUserSelfError: ErrorEnvelope? = nil,
+                // swiftlint:disable:next line_length
+                watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil) {
 
     self.appId = appId
     self.serverConfig = serverConfig
@@ -436,6 +440,8 @@ internal struct MockService: ServiceType {
     self.updateProjectNotificationError = updateProjectNotificationError
 
     self.updateUserSelfError = updateUserSelfError
+
+    self.watchProjectMutationResult = watchProjectMutationResult
   }
 
   internal func changeEmail(input: ChangeEmailInput) ->
@@ -1254,6 +1260,11 @@ internal struct MockService: ServiceType {
     return SignalProducer(value: self.updatePledgeResult?.value ?? .template)
   }
 
+  internal func watchProject(input: WatchProjectInput)
+    -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      return producer(for: self.watchProjectMutationResult)
+  }
+
   internal func addImage(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
 
@@ -1399,5 +1410,13 @@ private extension MockService {
     )
   }
   // swiftlint:enable type_name
+}
+
+private func producer<T, E>(for property: Result<T, E>?) -> SignalProducer<T, E> {
+  guard let result = property else { return .empty }
+  switch result {
+  case .success(let value): return .init(value: value)
+  case .failure(let error): return .init(error: error)
+  }
 }
 #endif
