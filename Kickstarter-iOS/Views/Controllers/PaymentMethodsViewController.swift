@@ -50,9 +50,9 @@ internal final class PaymentMethodsViewController: UIViewController {
 
     _ = self.tableView
       |> \.backgroundColor .~ .clear
-      |> \.separatorStyle .~ .none
       |> \.estimatedRowHeight .~ Styles.grid(13)
       |> \.allowsSelection .~ false
+      |> \.separatorStyle .~ .none
   }
 
   override func bindViewModel() {
