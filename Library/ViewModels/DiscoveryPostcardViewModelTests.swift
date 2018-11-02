@@ -204,17 +204,17 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
         self.saveButtonSelected.assertValues([true], "Save button is selected at first.")
 
-        self.vm.inputs.saveButtonTapped()
+        self.vm.inputs.saveButtonTapped(selected: true)
 
         self.saveButtonSelected.assertValues([true, false], "Emits false immediately.")
 
-        self.vm.inputs.saveButtonTapped()
+        self.vm.inputs.saveButtonTapped(selected: true)
         self.scheduler.advance(by: .milliseconds(500))
 
-        self.vm.inputs.saveButtonTapped()
+        self.vm.inputs.saveButtonTapped(selected: true)
         self.scheduler.advance(by: .milliseconds(500))
 
-        self.vm.inputs.saveButtonTapped()
+        self.vm.inputs.saveButtonTapped(selected: true)
         self.scheduler.advance(by: .milliseconds(500))
 
         self.saveButtonSelected.assertValues(

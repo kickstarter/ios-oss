@@ -302,22 +302,22 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.saveButtonSelected.assertValues([false], "Save button is not selected at first")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved"])
 
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
 
       self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
 
       self.scheduler.advance(by: .milliseconds(500))
 
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
 
       self.scheduler.advance(by: .milliseconds(500))
 
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
 
       self.scheduler.advance(by: .milliseconds(500))
 
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
 
       self.saveButtonSelected.assertValues(
         [false, true, false, true, false],
