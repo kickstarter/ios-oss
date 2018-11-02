@@ -4,6 +4,7 @@ import Library
 import Prelude
 
 final class ChangePasswordViewController: UIViewController {
+  @IBOutlet fileprivate weak var changePasswordLabel: UILabel!
   @IBOutlet fileprivate weak var confirmNewPasswordLabel: UILabel!
   @IBOutlet fileprivate weak var confirmNewPasswordTextField: UITextField!
   @IBOutlet fileprivate weak var currentPasswordLabel: UILabel!
@@ -56,6 +57,12 @@ final class ChangePasswordViewController: UIViewController {
       |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in
         Strings.Change_password()
+    }
+
+    _ = changePasswordLabel
+      |> settingsDescriptionLabelStyle
+      |> UILabel.lens.text %~ { _ in
+        Strings.Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password()
     }
 
     _ = onePasswordButton
