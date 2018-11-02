@@ -9,7 +9,9 @@ final class SettingsViewController: UIViewController {
 
   private let dataSource = SettingsDataSource()
   private var userUpdatedObserver: Any?
-  private let viewModel: SettingsViewModelType = SettingsViewModel(viewController(for:))
+  private let viewModel: SettingsViewModelType = SettingsViewModel(
+    SettingsViewController.viewController(for:)
+  )
 
   internal static func instantiate() -> SettingsViewController {
     return Storyboard.Settings.instantiate(SettingsViewController.self)
@@ -176,21 +178,23 @@ extension SettingsViewController: UITableViewDelegate {
   }
 }
 
-private func viewController(for cellType: SettingsCellType) -> UIViewController? {
-  switch cellType {
-  case .account:
-    return SettingsAccountViewController.instantiate()
-  case .help:
-    return HelpViewController.instantiate()
-  case .privacy:
-    return SettingsPrivacyViewController.instantiate()
-  case .findFriends:
-    return FindFriendsViewController.configuredWith(source: .settings)
-  case .newsletters:
-    return SettingsNewslettersViewController.instantiate()
-  case .notifications:
-    return SettingsNotificationsViewController.instantiate()
-  default:
-    return nil
+extension SettingsViewController {
+  static func viewController(for cellType: SettingsCellType) -> UIViewController? {
+    switch cellType {
+    case .account:
+      return SettingsAccountViewController.instantiate()
+    case .help:
+      return HelpViewController.instantiate()
+    case .privacy:
+      return SettingsPrivacyViewController.instantiate()
+    case .findFriends:
+      return FindFriendsViewController.configuredWith(source: .settings)
+    case .newsletters:
+      return SettingsNewslettersViewController.instantiate()
+    case .notifications:
+      return SettingsNotificationsViewController.instantiate()
+    default:
+      return nil
+    }
   }
 }
