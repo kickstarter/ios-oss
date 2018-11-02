@@ -1,7 +1,7 @@
 import Result
 import Prelude
 import XCTest
-@testable import Kickstarter_Framework
+@testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
 final class LoadingBarButtonItemViewModelTests: TestCase {

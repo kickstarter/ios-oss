@@ -2,11 +2,6 @@ import Library
 import KsApi
 import Prelude
 
-public struct SettingsNotificationCellValue {
-  let cellType: SettingsNotificationCellType
-  let user: User
-}
-
 final class SettingsNotificationsDataSource: ValueCellDataSource {
   weak var cellDelegate: SettingsNotificationCellDelegate?
 

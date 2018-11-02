@@ -9,7 +9,8 @@ import Prelude
 @testable import Kickstarter_Framework
 
 internal final class SettingsAccountViewModelTests: TestCase {
-  let vm = SettingsAccountViewModel()
+  let vm = SettingsAccountViewModel(SettingsAccountViewController.viewController(for:))
+
   let dismissCurrencyPicker = TestObserver<Void, NoError>()
   let presentCurrencyPicker = TestObserver<Void, NoError>()
   let reloadDataUser = TestObserver<User, NoError>()

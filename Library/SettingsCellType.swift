@@ -1,4 +1,25 @@
+import KsApi
 import UIKit
+
+public struct SettingsCurrencyCellValue {
+  public let cellType: SettingsCellTypeProtocol
+  public let currency: Currency
+
+  public init(cellType: SettingsCellTypeProtocol, currency: Currency) {
+    self.currency = currency
+    self.cellType = cellType
+  }
+}
+
+public struct SettingsCellValue {
+  public let user: User?
+  public let cellType: SettingsCellTypeProtocol
+
+  public init(user: User?, cellType: SettingsCellTypeProtocol) {
+    self.user = user
+    self.cellType = cellType
+  }
+}
 
 public protocol SettingsCellTypeProtocol {
   var description: String? { get }

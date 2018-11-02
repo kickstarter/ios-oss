@@ -3,7 +3,7 @@ import Prelude
 import ReactiveSwift
 import Result
 import XCTest
-@testable import Kickstarter_Framework
+@testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class MessageBannerViewModelTests: TestCase {

@@ -1,26 +1,25 @@
 import KsApi
-import Library
 import Prelude
 import ReactiveSwift
 import Result
 
-protocol SettingsNotificationPickerViewModelOutputs {
+public protocol SettingsNotificationPickerViewModelOutputs {
   var frequencyValueText: Signal<String, NoError> { get }
 }
 
-protocol SettingsNotificationPickerViewModelInputs {
+public protocol SettingsNotificationPickerViewModelInputs {
   func configure(with cellValue: SettingsNotificationCellValue)
 }
 
-protocol SettingsNotificationPickerViewModelType {
+public protocol SettingsNotificationPickerViewModelType {
   var inputs: SettingsNotificationPickerViewModelInputs { get }
   var outputs: SettingsNotificationPickerViewModelOutputs { get }
 }
 
-final class SettingsNotificationPickerViewModel: SettingsNotificationPickerViewModelOutputs,
+public final class SettingsNotificationPickerViewModel: SettingsNotificationPickerViewModelOutputs,
   SettingsNotificationPickerViewModelInputs, SettingsNotificationPickerViewModelType {
 
-  init() {
+  public init() {
     let initialUser = initialUserProperty.signal.skipNil()
 
     let userDefinedEmailFrequency = initialUser.signal
@@ -36,17 +35,17 @@ final class SettingsNotificationPickerViewModel: SettingsNotificationPickerViewM
   }
 
   fileprivate var initialUserProperty = MutableProperty<User?>(nil)
-  func configure(with cellValue: SettingsNotificationCellValue) {
+  public func configure(with cellValue: SettingsNotificationCellValue) {
     self.initialUserProperty.value = cellValue.user
   }
 
   public let frequencyValueText: Signal<String, NoError>
 
-  var outputs: SettingsNotificationPickerViewModelOutputs {
+  public var outputs: SettingsNotificationPickerViewModelOutputs {
     return self
   }
 
-  var inputs: SettingsNotificationPickerViewModelInputs {
+  public var inputs: SettingsNotificationPickerViewModelInputs {
     return self
   }
 }
