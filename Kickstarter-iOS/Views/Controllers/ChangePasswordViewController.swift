@@ -61,7 +61,9 @@ final class ChangePasswordViewController: UIViewController {
 
     _ = changePasswordLabel
       |> settingsDescriptionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password() }
+      |> UILabel.lens.text %~ { _ in
+        Strings.Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password()
+    }
 
     _ = onePasswordButton
       |> onePasswordButtonStyle
