@@ -4,7 +4,7 @@ import Result
 import XCTest
 
 @testable import KsApi
-@testable import Kickstarter_Framework
+@testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
 final class ChangePasswordViewModelTests: TestCase {

@@ -41,8 +41,9 @@ final class MessageBannerViewController: UIViewController {
         self?.showViewAndAnimate(isHidden)
     }
 
-    self.viewModel.outputs.iconImage
+    self.viewModel.outputs.iconImageName
       .observeForUI()
+      .map { image(named: $0) }
       .observeValues { [weak self] image in
         guard let `self` = self else { return }
         _ = self.iconImageView

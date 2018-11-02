@@ -2,11 +2,12 @@ import Prelude
 import XCTest
 import Result
 @testable import KsApi
+@testable import Library
 @testable import Kickstarter_Framework
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class SettingsViewModelTests: TestCase {
-  let vm = SettingsViewModel()
+  let vm = SettingsViewModel(SettingsViewController.viewController(for:))
 
   let goToAppStoreRating = TestObserver<String, NoError>()
   let logout = TestObserver<DiscoveryParams, NoError>()

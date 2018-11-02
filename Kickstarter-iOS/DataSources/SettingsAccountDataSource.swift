@@ -1,11 +1,6 @@
 import KsApi
 import Library
 
-public struct SettingsCurrencyCellValue {
-  public let cellType: SettingsCellTypeProtocol
-  public let currency: Currency
-}
-
 final class SettingsAccountDataSource: ValueCellDataSource {
   func configureRows(user: User, currency: Currency) {
     clearValues()
