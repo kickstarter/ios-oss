@@ -1,23 +1,22 @@
 import KsApi
-import Library
 import Prelude
 import ReactiveSwift
 import Result
 
-protocol SettingsCurrencyPickerCellViewModelInputs {
+public protocol SettingsCurrencyPickerCellViewModelInputs {
   func didSelectCurrency(currency: Currency)
 }
 
-protocol SettingsCurrencyPickerCellViewModelOutputs {
+public protocol SettingsCurrencyPickerCellViewModelOutputs {
   var showCurrencyChangeAlert: Signal<Currency, NoError> { get }
 }
 
-protocol SettingsCurrencyPickerCellViewModelType {
+public protocol SettingsCurrencyPickerCellViewModelType {
   var inputs: SettingsCurrencyPickerCellViewModelInputs { get }
   var outputs: SettingsCurrencyPickerCellViewModelOutputs { get }
 }
 
-final class SettingsCurrencyPickerCellViewModel: SettingsCurrencyPickerCellViewModelOutputs,
+public final class SettingsCurrencyPickerCellViewModel: SettingsCurrencyPickerCellViewModelOutputs,
 SettingsCurrencyPickerCellViewModelInputs, SettingsCurrencyPickerCellViewModelType {
 
   public init() {
@@ -31,6 +30,6 @@ SettingsCurrencyPickerCellViewModelInputs, SettingsCurrencyPickerCellViewModelTy
 
   public let showCurrencyChangeAlert: Signal<Currency, NoError>
 
-  var inputs: SettingsCurrencyPickerCellViewModelInputs { return self }
-  var outputs: SettingsCurrencyPickerCellViewModelOutputs { return self }
+  public var inputs: SettingsCurrencyPickerCellViewModelInputs { return self }
+  public var outputs: SettingsCurrencyPickerCellViewModelOutputs { return self }
 }

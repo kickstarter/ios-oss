@@ -9,7 +9,7 @@ final class SettingsAccountViewController: UIViewController {
   @IBOutlet private weak var tableView: UITableView!
 
   private let dataSource = SettingsAccountDataSource()
-  fileprivate let viewModel: SettingsAccountViewModelType = SettingsAccountViewModel()
+  fileprivate let viewModel: SettingsAccountViewModelType = SettingsAccountViewModel(viewController(for:))
 
   internal static func instantiate() -> SettingsAccountViewController {
     return Storyboard.SettingsAccount.instantiate(SettingsAccountViewController.self)
@@ -166,5 +166,16 @@ extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
   func settingsCurrencyPickerCellDidChangeCurrency(_ currency: Currency) {
     self.viewModel.inputs.showChangeCurrencyAlert(for: currency)
     self.dismissCurrencyPickerCell()
+  }
+}
+
+private func viewController(for cellType: SettingsAccountCellType) -> UIViewController? {
+  switch cellType {
+  case .changeEmail:
+    return ChangeEmailViewController.instantiate()
+  case .changePassword:
+    return ChangePasswordViewController.instantiate()
+  default:
+    return nil
   }
 }

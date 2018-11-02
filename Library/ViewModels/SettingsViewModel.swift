@@ -2,7 +2,6 @@ import Prelude
 import ReactiveSwift
 import Result
 import KsApi
-import Library
 
 public protocol SettingsViewModelInputs {
   func currentUserUpdated()
@@ -28,10 +27,10 @@ public protocol SettingsViewModelType {
   func shouldSelectRow(for cellType: SettingsCellType) -> Bool
 }
 
-final class SettingsViewModel: SettingsViewModelInputs,
+public final class SettingsViewModel: SettingsViewModelInputs,
 SettingsViewModelOutputs, SettingsViewModelType {
 
-  public init() {
+  public init(_ viewControllerFactory: @escaping (SettingsCellType) -> UIViewController?) {
     let user = Signal.merge(
       viewDidLoadProperty.signal,
       currentUserUpdatedProperty.signal)
@@ -68,7 +67,7 @@ SettingsViewModelOutputs, SettingsViewModelType {
 
     self.transitionToViewController = selectedCellTypeProperty.signal
       .skipNil()
-      .map { SettingsViewModel.viewController(for: $0) }
+      .map(viewControllerFactory)
       .skipNil()
 
     self.viewDidLoadProperty.signal.observeValues { _ in AppEnvironment.current.koala.trackSettingsView() }
@@ -87,12 +86,12 @@ SettingsViewModelOutputs, SettingsViewModelType {
   }
 
   private var currentUserUpdatedProperty = MutableProperty(())
-  func currentUserUpdated() {
+  public func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
   }
 
   private var selectedCellTypeProperty = MutableProperty<SettingsCellType?>(nil)
-  func settingsCellTapped(cellType: SettingsCellType) {
+  public func settingsCellTapped(cellType: SettingsCellType) {
     self.selectedCellTypeProperty.value = cellType
   }
 
@@ -102,12 +101,12 @@ SettingsViewModelOutputs, SettingsViewModelType {
   }
 
   fileprivate let logoutConfirmedProperty = MutableProperty(())
-  func logoutConfirmed() {
+  public func logoutConfirmed() {
     self.logoutConfirmedProperty.value = ()
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
-  func viewDidLoad() {
+  public func viewDidLoad() {
      self.viewDidLoadProperty.value = ()
   }
 
@@ -128,26 +127,7 @@ SettingsViewModelOutputs, SettingsViewModelType {
 
 // MARK: Helpers
 extension SettingsViewModel {
-  static func viewController(for cellType: SettingsCellType) -> UIViewController? {
-    switch cellType {
-    case .account:
-      return SettingsAccountViewController.instantiate()
-    case .help:
-      return HelpViewController.instantiate()
-    case .privacy:
-      return SettingsPrivacyViewController.instantiate()
-    case .findFriends:
-      return FindFriendsViewController.configuredWith(source: .settings)
-    case .newsletters:
-      return SettingsNewslettersViewController.instantiate()
-    case .notifications:
-      return SettingsNotificationsViewController.instantiate()
-    default:
-      return nil
-    }
-  }
-
-  func shouldSelectRow(for cellType: SettingsCellType) -> Bool {
+  public func shouldSelectRow(for cellType: SettingsCellType) -> Bool {
     switch cellType {
     case .appVersion:
       return false

@@ -1,5 +1,4 @@
 import KsApi
-import Library
 import Prelude
 import ReactiveSwift
 import Result
@@ -29,7 +28,7 @@ public protocol SettingsAccountViewModelType {
 public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
 SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
-  public init() {
+  public init(_ viewControllerFactory: @escaping (SettingsAccountCellType) -> UIViewController?) {
     let initialUser = self.viewDidLoadProperty.signal
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()
@@ -78,7 +77,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.dismissCurrencyPicker = self.dismissPickerTapProperty.signal
 
     self.transitionToViewController = self.selectedCellTypeProperty.signal.skipNil()
-      .map { SettingsAccountViewModel.viewController(for: $0) }
+      .map(viewControllerFactory)
       .skipNil()
 
     self.showAlert = self.changeCurrencyAlertProperty.signal.skipNil().ignoreValues()
@@ -118,18 +117,4 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }
-}
-
-// MARK: Helpers
-extension SettingsAccountViewModel {
-  static func viewController(for cellType: SettingsAccountCellType) -> UIViewController? {
-    switch cellType {
-    case .changeEmail:
-      return ChangeEmailViewController.instantiate()
-    case .changePassword:
-      return ChangePasswordViewController.instantiate()
-    default:
-      return nil
-    }
-  }
 }

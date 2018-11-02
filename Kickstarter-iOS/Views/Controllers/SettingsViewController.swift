@@ -9,7 +9,7 @@ final class SettingsViewController: UIViewController {
 
   private let dataSource = SettingsDataSource()
   private var userUpdatedObserver: Any?
-  private let viewModel: SettingsViewModelType = SettingsViewModel()
+  private let viewModel: SettingsViewModelType = SettingsViewModel(viewController(for:))
 
   internal static func instantiate() -> SettingsViewController {
     return Storyboard.Settings.instantiate(SettingsViewController.self)
@@ -173,5 +173,24 @@ extension SettingsViewController: UITableViewDelegate {
     }
 
     self.viewModel.inputs.settingsCellTapped(cellType: cellType)
+  }
+}
+
+private func viewController(for cellType: SettingsCellType) -> UIViewController? {
+  switch cellType {
+  case .account:
+    return SettingsAccountViewController.instantiate()
+  case .help:
+    return HelpViewController.instantiate()
+  case .privacy:
+    return SettingsPrivacyViewController.instantiate()
+  case .findFriends:
+    return FindFriendsViewController.configuredWith(source: .settings)
+  case .newsletters:
+    return SettingsNewslettersViewController.instantiate()
+  case .notifications:
+    return SettingsNotificationsViewController.instantiate()
+  default:
+    return nil
   }
 }
