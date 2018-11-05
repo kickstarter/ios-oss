@@ -73,13 +73,43 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     let nonUSProject = project
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.staticUsdRate .~ 1.2
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 1.2
     self.vm.inputs.configureWith(project: nonUSProject)
 
     self.statsStackViewAccessibilityLabel.assertValues(
       [ "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
-        "£1,000 of £2,000 goal, 10 backers so far, 10 days to go to go" ]
+        "$1,200 of $2,400 goal, 10 backers so far, 10 days to go to go"]
     )
+
+    let nonUSUserCurrency = project
+      |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+
+    self.vm.inputs.configureWith(project: nonUSUserCurrency)
+
+    self.statsStackViewAccessibilityLabel.assertValues(
+      [ "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
+        "$1,200 of $2,400 goal, 10 backers so far, 10 days to go to go",
+        "£2,000 of £4,000 goal, 10 backers so far, 10 days to go to go"
+        ]
+    )
+  }
+
+  func testStatsStackViewAccessibilityLabel_defaultCurrency_nonUSUser() {
+    let defaultUserCurrency = Project.template
+      |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.staticUsdRate .~ 2.0
+
+    withEnvironment(countryCode: "CA") {
+      self.vm.inputs.configureWith(project: defaultUserCurrency)
+
+      self.statsStackViewAccessibilityLabel.assertValues(
+        ["US$ 2,000 of US$ 4,000 goal, 10 backers so far, 10 days to go to go"]
+      )
+    }
   }
 
   func testYoureABackerLabelHidden_NotABacker() {
@@ -172,11 +202,12 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.backersTitleLabelText.assertValues([Format.wholeNumber(project.stats.backersCount)])
   }
 
-  func testConversionLabel_WhenConversionNotNeeded_US_Project_US_User() {
-    let project = .template
-      |> Project.lens.country .~ .us
+  // MARK: Conversion Label
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
+  func testConversionLabel_WhenConversionNotNeeded_US_Project_US_User() {
+    let project = Project.template
+
+    withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(project: project)
 
       self.conversionLabelText.assertValueCount(0)
@@ -184,31 +215,34 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     }
   }
 
-  func testConversionLabel_WhenConversionNotNeeded_US_Project_NonUS_User() {
+  func testConversionLabel_WhenConversionNeeded_US_Project_NonUS_User() {
     let project = .template
       |> Project.lens.country .~ .us
+      |> Project.lens.stats.pledged .~ 1000
+      |> Project.lens.stats.goal .~ 2000
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 1.3
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "FR") {
+    withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(project: project)
 
-      self.conversionLabelText.assertValueCount(0)
-      self.conversionLabelHidden.assertValues([true])
+      self.conversionLabelText.assertValues(["Converted from US$ 1,000 pledged of US$ 2,000 goal."])
+      self.conversionLabelHidden.assertValues([false])
     }
   }
 
   func testConversionLabel_WhenConversionNeeded_NonUS_Project_US_User() {
     let project = .template
       |> Project.lens.country .~ .gb
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.goal .~ 2
       |> Project.lens.stats.pledged .~ 1
-      |> Project.lens.stats.staticUsdRate .~ 2.0
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project)
 
-      self.conversionLabelText.assertValues(
-        [Strings.discovery_baseball_card_stats_convert_from_pledged_of_goal(pledged: "£1", goal: "£2")]
-      )
+      self.conversionLabelText.assertValues(["Converted from £1 pledged of £2 goal."])
       self.conversionLabelHidden.assertValues([false])
     }
   }
@@ -259,24 +293,33 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
   }
 
+  // MARK: Pledged Label
+
   func testPledgedLabels_WhenConversionNotNeeded() {
     let project = .template
       |> Project.lens.country .~ .us
       |> Project.lens.stats.pledged .~ 1_000
       |> Project.lens.stats.goal .~ 2_000
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
+    withEnvironment(countryCode: "US") {
+      self.vm.inputs.configureWith(project: project)
+
+      self.pledgedTitleLabelText.assertValues(["$1,000"])
+      self.pledgedSubtitleLabelText.assertValues(["pledged of $2,000"])
+    }
+  }
+
+  func testPledgedLabels_WhenConversionNotNeeded_NonUS_Location() {
+    let project = Project.template
+
+    withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(project: project)
 
       self.pledgedTitleLabelText.assertValues(
-        [Format.currency(project.stats.pledged, country: project.country)]
+        ["US$ 1,000"]
       )
       self.pledgedSubtitleLabelText.assertValues(
-        [
-          Strings.discovery_baseball_card_stats_pledged_of_goal(
-            goal: Format.currency(project.stats.goal, country: project.country)
-          )
-        ]
+        ["pledged of US$ 2,000"]
       )
     }
   }
@@ -284,34 +327,31 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testPledgedLabels_WhenConversionNeeded() {
     let project = .template
       |> Project.lens.country .~ .gb
-      |> Project.lens.stats.pledged .~ 1
-      |> Project.lens.stats.goal .~ 2
-      |> Project.lens.stats.staticUsdRate .~ 2.0
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
+    withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(project: project)
 
-      self.pledgedTitleLabelText.assertValues(["$2"])
-      self.pledgedSubtitleLabelText.assertValues(
-        [Strings.discovery_baseball_card_stats_pledged_of_goal(goal: "$4")]
-      )
+      self.pledgedTitleLabelText.assertValues(["$2,000"])
+      self.pledgedSubtitleLabelText.assertValues(["pledged of $4,000"])
     }
   }
 
-  func testPledgedLabels_InNonUSCountry() {
+  func testPledgedLabels_ConversionNotNeeded_NonUSCountry() {
     let project = .template
       |> Project.lens.country .~ .gb
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.pledged .~ 1
       |> Project.lens.stats.goal .~ 2
-      |> Project.lens.stats.staticUsdRate .~ 2.0
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
+    withEnvironment(countryCode: "GB") {
       self.vm.inputs.configureWith(project: project)
 
       self.pledgedTitleLabelText.assertValues(["£1"])
-      self.pledgedSubtitleLabelText.assertValues(
-        [Strings.discovery_baseball_card_stats_pledged_of_goal(goal: "£2")]
-      )
+      self.pledgedSubtitleLabelText.assertValues(["pledged of £2"])
     }
   }
 

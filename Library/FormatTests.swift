@@ -109,6 +109,8 @@ final class FormatTests: TestCase {
 
         XCTAssertEqual(Format.currency(1_000, country: .ca, omitCurrencyCode: true), "CA$ 1,000")
         XCTAssertEqual(Format.currency(1_000, country: .ca, omitCurrencyCode: false), "CA$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .us, omitCurrencyCode: true), "$1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .us, omitCurrencyCode: false), "US$ 1,000")
       }
 
       withEnvironment(countryCode: "CA") {
@@ -118,6 +120,9 @@ final class FormatTests: TestCase {
         XCTAssertEqual(Format.currency(1_000, country: .dk), "DKK 1,000")
         XCTAssertEqual(Format.currency(1_000, country: .de), "€1,000")
         XCTAssertEqual(Format.currency(1_000, country: .jp), "¥1,000")
+
+        XCTAssertEqual(Format.currency(1_000, country: .us, omitCurrencyCode: true), "US$ 1,000")
+        XCTAssertEqual(Format.currency(1_000, country: .us, omitCurrencyCode: false), "US$ 1,000")
       }
 
       withEnvironment(countryCode: "GB") {

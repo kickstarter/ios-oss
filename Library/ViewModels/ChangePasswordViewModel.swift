@@ -1,11 +1,10 @@
 import Foundation
 import KsApi
-import Library
 import Prelude
 import ReactiveSwift
 import Result
 
-protocol ChangePasswordViewModelInputs {
+public protocol ChangePasswordViewModelInputs {
   func currentPasswordFieldTextChanged(text: String)
   func currentPasswordFieldDidReturn(currentPassword: String)
   func newPasswordFieldTextChanged(text: String)
@@ -19,10 +18,10 @@ protocol ChangePasswordViewModelInputs {
   func viewDidAppear()
 }
 
-protocol ChangePasswordViewModelOutputs {
+public protocol ChangePasswordViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var changePasswordFailure: Signal<String, NoError> { get }
-  var changePasswordSuccess: Signal<DiscoveryParams?, NoError> { get }
+  var changePasswordSuccess: Signal<Void, NoError> { get }
   var confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var currentPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
   var currentPasswordPrefillValue: Signal<String, NoError> { get }
@@ -35,12 +34,12 @@ protocol ChangePasswordViewModelOutputs {
   var validationErrorLabelMessage: Signal<String, NoError> { get }
 }
 
-protocol ChangePasswordViewModelType {
+public protocol ChangePasswordViewModelType {
   var inputs: ChangePasswordViewModelInputs { get }
   var outputs: ChangePasswordViewModelOutputs { get }
 }
 
-struct ChangePasswordViewModel: ChangePasswordViewModelType,
+public class ChangePasswordViewModel: ChangePasswordViewModelType,
 ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public init() {
     let combinedPasswords = Signal
@@ -93,13 +92,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
           .materialize()
     }
 
-    self.changePasswordSuccess = passwordUpdateEvent.values()
-      .map { _ in
-        return DiscoveryParams.defaults
-          |> DiscoveryParams.lens.includePOTD .~ true
-          |> DiscoveryParams.lens.sort .~ .magic
-    }
-
+    self.changePasswordSuccess = passwordUpdateEvent.values().ignoreValues()
     self.changePasswordFailure = passwordUpdateEvent.errors().map { $0.localizedDescription }
 
     self.activityIndicatorShouldShow = Signal.merge(
@@ -136,66 +129,66 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   }
 
   private var currentPasswordDoneEditingProperty = MutableProperty(())
-  func currentPasswordFieldDidReturn(currentPassword: String) {
+  public func currentPasswordFieldDidReturn(currentPassword: String) {
     self.currentPasswordProperty.value = currentPassword
     self.currentPasswordDoneEditingProperty.value = ()
   }
 
   private var currentPasswordProperty = MutableProperty<String>("")
-  func currentPasswordFieldTextChanged(text: String) {
+  public func currentPasswordFieldTextChanged(text: String) {
     self.currentPasswordProperty.value = text
   }
 
   private var newPasswordDoneEditingProperty = MutableProperty(())
-  func newPasswordFieldDidReturn(newPassword: String) {
+  public func newPasswordFieldDidReturn(newPassword: String) {
     self.newPasswordProperty.value = newPassword
     self.newPasswordDoneEditingProperty.value = ()
   }
 
   private var newPasswordProperty = MutableProperty<String>("")
-  func newPasswordFieldTextChanged(text: String) {
+  public func newPasswordFieldTextChanged(text: String) {
     self.newPasswordProperty.value = text
   }
 
   private var confirmNewPasswordDoneEditingProperty = MutableProperty(())
-  func newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: String) {
+  public func newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: String) {
     self.confirmNewPasswordProperty.value = newPasswordConfirmed
     self.confirmNewPasswordDoneEditingProperty.value = ()
   }
 
   private var confirmNewPasswordProperty = MutableProperty<String>("")
-  func newPasswordConfirmationFieldTextChanged(text: String) {
+  public func newPasswordConfirmationFieldTextChanged(text: String) {
     self.confirmNewPasswordProperty.value = text
   }
 
   private var saveButtonTappedProperty = MutableProperty(())
-  func saveButtonTapped() {
+  public func saveButtonTapped() {
     self.saveButtonTappedProperty.value = ()
   }
 
   private var onePasswordIsAvailableProperty = MutableProperty(true)
-  func onePasswordIsAvailable(available: Bool) {
+  public func onePasswordIsAvailable(available: Bool) {
     self.onePasswordIsAvailableProperty.value = available
   }
 
   private var onePasswordButtonTappedProperty = MutableProperty(())
-  func onePasswordButtonTapped() {
+  public func onePasswordButtonTapped() {
     self.onePasswordButtonTappedProperty.value = ()
   }
 
   private var onePasswordPrefillPasswordProperty = MutableProperty<String?>(nil)
-  func onePasswordFoundPassword(password: String) {
+  public func onePasswordFoundPassword(password: String) {
     self.onePasswordPrefillPasswordProperty.value = password
   }
 
   private var viewDidAppearProperty = MutableProperty(())
-  func viewDidAppear() {
+  public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
 
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let changePasswordFailure: Signal<String, NoError>
-  public let changePasswordSuccess: Signal<DiscoveryParams?, NoError>
+  public let changePasswordSuccess: Signal<Void, NoError>
   public let confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let currentPasswordBecomeFirstResponder: Signal<Void, NoError>
   public let currentPasswordPrefillValue: Signal<String, NoError>
@@ -207,11 +200,11 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public let onePasswordFindPasswordForURLString: Signal<String, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
 
-  var inputs: ChangePasswordViewModelInputs {
+  public var inputs: ChangePasswordViewModelInputs {
     return self
   }
 
-  var outputs: ChangePasswordViewModelOutputs {
+  public var outputs: ChangePasswordViewModelOutputs {
     return self
   }
 }

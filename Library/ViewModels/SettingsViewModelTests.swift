@@ -2,11 +2,12 @@ import Prelude
 import XCTest
 import Result
 @testable import KsApi
+@testable import Library
 @testable import Kickstarter_Framework
 @testable import ReactiveExtensions_TestHelpers
 
 internal final class SettingsViewModelTests: TestCase {
-  let vm = SettingsViewModel()
+  let vm = SettingsViewModel(SettingsViewController.viewController(for:))
 
   let goToAppStoreRating = TestObserver<String, NoError>()
   let logout = TestObserver<DiscoveryParams, NoError>()
@@ -73,7 +74,7 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testShouldSelectRow_findFriends_FollowingEnabled() {
-    let user = User.template |> User.lens.social .~ true
+    let user = User.template |> \.social .~ true
 
     withEnvironment(currentUser: user) {
       XCTAssertTrue(self.vm.shouldSelectRow(for: .findFriends))
@@ -81,7 +82,7 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testShouldSelectRow_findFriends_FollowingDisabled() {
-    let user = User.template |> User.lens.social .~ false
+    let user = User.template |> \.social .~ false
 
     withEnvironment(currentUser: user) {
       XCTAssertFalse(self.vm.shouldSelectRow(for: .findFriends))
@@ -95,7 +96,7 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testUserUpdatedNotification() {
-    let updatedUser = User.template |> User.lens.social .~ true
+    let updatedUser = User.template |> \.social .~ true
     let mockService = MockService(fetchUserSelfResponse: updatedUser)
 
     withEnvironment(apiService: mockService, currentUser: User.template) {

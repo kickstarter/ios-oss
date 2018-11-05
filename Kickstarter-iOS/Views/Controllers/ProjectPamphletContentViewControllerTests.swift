@@ -22,10 +22,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     self.cosmicSurgery = project
 
-    AppEnvironment.pushEnvironment(
-      config: .template |> Config.lens.countryCode .~ self.cosmicSurgery.country.countryCode,
-      mainBundle: Bundle.framework
-    )
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
 
     UIView.setAnimationsEnabled(false)
   }
@@ -183,13 +180,14 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-    parent.view.frame.size.height = 1_000
+    parent.view.frame.size.height = 1_500
 
     FBSnapshotVerifyView(vc.view, tolerance: 0.0001)
   }
 
   func testFailedProject() {
     let project = self.cosmicSurgery
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3/4)
       |> Project.lens.dates.stateChangedAt .~ 1234567890.0
       |> Project.lens.state .~ .failed
 

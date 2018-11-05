@@ -243,7 +243,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
   func testTopFilters_Logged_In_Social() {
     AppEnvironment.login(
-      AccessTokenEnvelope(accessToken: "deadbeef", user: .template |> User.lens.social .~ true)
+      AccessTokenEnvelope(accessToken: "deadbeef", user: .template |> \.social .~ true)
     )
 
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
@@ -272,7 +272,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
   func testTopFilters_Logged_In_OptedOutOfRecommendations() {
     AppEnvironment.login(
       AccessTokenEnvelope(accessToken: "deadbeef", user: .template
-        |> User.lens.optedOutOfRecommendations .~ true)
+        |> \.optedOutOfRecommendations .~ true)
     )
 
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)

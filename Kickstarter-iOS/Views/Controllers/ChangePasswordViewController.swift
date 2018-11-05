@@ -4,6 +4,7 @@ import Library
 import Prelude
 
 final class ChangePasswordViewController: UIViewController {
+  @IBOutlet fileprivate weak var changePasswordLabel: UILabel!
   @IBOutlet fileprivate weak var confirmNewPasswordLabel: UILabel!
   @IBOutlet fileprivate weak var confirmNewPasswordTextField: UITextField!
   @IBOutlet fileprivate weak var currentPasswordLabel: UILabel!
@@ -56,6 +57,12 @@ final class ChangePasswordViewController: UIViewController {
       |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in
         Strings.Change_password()
+    }
+
+    _ = changePasswordLabel
+      |> settingsDescriptionLabelStyle
+      |> UILabel.lens.text %~ { _ in
+        Strings.Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password()
     }
 
     _ = onePasswordButton
@@ -161,8 +168,8 @@ final class ChangePasswordViewController: UIViewController {
 
     self.viewModel.outputs.changePasswordSuccess
       .observeForControllerAction()
-      .observeValues { [weak self] params in
-        self?.logoutAndDismiss(params: params)
+      .observeValues { [weak self] in
+        self?.logoutAndDismiss()
     }
 
     Keyboard.change
@@ -173,21 +180,13 @@ final class ChangePasswordViewController: UIViewController {
   }
 
   // MARK: Private Functions
-  private func logoutAndDismiss(params: DiscoveryParams?) {
+  private func logoutAndDismiss() {
     AppEnvironment.logout()
     PushNotificationDialog.resetAllContexts()
 
-    self.view.window?.rootViewController
-      .flatMap { $0 as? RootTabBarViewController }
-      .doIfSome { root in
-        UIView.transition(with: root.view, duration: 0.5, options: [.transitionCrossDissolve], animations: {
-          root.switchToDiscovery(params: params)
-        }, completion: { [weak self] _ in
-          NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
+    NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
 
-          self?.dismiss(animated: false, completion: nil)
-        })
-    }
+    self.dismiss(animated: true, completion: nil)
   }
 
   private func handleKeyboardVisibilityDidChange(_ change: Keyboard.Change) {

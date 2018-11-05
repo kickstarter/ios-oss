@@ -273,7 +273,7 @@ final class ActivitiesViewModelTests: TestCase {
     self.showFacebookConnectSection.assertValueCount(0)
 
     // logged in && Facebook connected && doesn't need new token
-    let user = User.template |> User.lens.facebookConnected .~ true
+    let user = User.template |> \.facebookConnected .~ true
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()
@@ -297,8 +297,8 @@ final class ActivitiesViewModelTests: TestCase {
     // logged in && FB connected, needs new token
 
     let facebookReconnectUser = User.template
-      |> User.lens.facebookConnected .~ true
-      |> User.lens.needsFreshFacebookToken .~ true
+      |> \.facebookConnected .~ true
+      |> \.needsFreshFacebookToken .~ true
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: facebookReconnectUser))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()
@@ -344,8 +344,8 @@ final class ActivitiesViewModelTests: TestCase {
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
     let userConnected = User.template
-      |> User.lens.facebookConnected .~ true
-      |> User.lens.needsFreshFacebookToken .~ true
+      |> \.facebookConnected .~ true
+      |> \.needsFreshFacebookToken .~ true
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: userConnected))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()
@@ -358,8 +358,8 @@ final class ActivitiesViewModelTests: TestCase {
     AppEnvironment.logout()
     self.vm.inputs.userSessionEnded()
     let fbConnected = User.template
-      |> User.lens.facebookConnected .~ true
-      |> User.lens.needsFreshFacebookToken .~ false
+      |> \.facebookConnected .~ true
+      |> \.needsFreshFacebookToken .~ false
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: fbConnected))
     self.vm.inputs.userSessionStarted()
     self.scheduler.advance()

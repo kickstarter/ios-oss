@@ -12,6 +12,8 @@ internal struct MockService: ServiceType {
   internal let currency: String
   internal let buildVersion: String
 
+  fileprivate let changeCurrencyError: GraphError?
+
   fileprivate let changeEmailError: GraphError?
   fileprivate let changeEmailResponse: UserEnvelope<GraphUserEmail>?
 
@@ -57,6 +59,7 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
+  fileprivate let fetchGraphCurrencyResponse: UserCurrency?
   fileprivate let fetchGraphUserEmailResponse: GraphUserEmail?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -168,6 +171,7 @@ internal struct MockService: ServiceType {
                                                                        me: .template
                                                                      ),
                 changePasswordError: GraphError? = nil,
+                changeCurrencyError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
                 facebookConnectResponse: User? = nil,
@@ -194,6 +198,7 @@ internal struct MockService: ServiceType {
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
                 fetchGraphUserEmailResponse: GraphUserEmail? = nil,
+                fetchGraphCurrencyResponse: UserCurrency? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
                 addAttachmentError: ErrorEnvelope? = nil,
                 removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -252,6 +257,8 @@ internal struct MockService: ServiceType {
     self.currency = currency
     self.buildVersion = buildVersion
 
+    self.changeCurrencyError = changeCurrencyError
+
     self.changeEmailResponse = changeEmailResponse
     self.changeEmailError = changeEmailError
 
@@ -283,6 +290,8 @@ internal struct MockService: ServiceType {
         .documentary
       ]
     )
+
+    self.fetchGraphCurrencyResponse = fetchGraphCurrencyResponse
 
     self.fetchGraphUserEmailResponse = fetchGraphUserEmailResponse
 
@@ -453,15 +462,24 @@ internal struct MockService: ServiceType {
       }
 
       return SignalProducer(value:
-        .template
-          |> User.lens.id .~ 1
-          |> User.lens.facebookConnected .~ true
+        User.template
+          |> \.id .~ 1
+          |> \.facebookConnected .~ true
       )
   }
 
   internal func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
       if let error = self.changePasswordError {
+        return SignalProducer(error: error)
+      } else {
+        return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+      }
+  }
+
+  internal func changeCurrency(input: ChangeCurrencyInput) ->
+   SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      if let error = self.changeCurrencyError {
         return SignalProducer(error: error)
       } else {
         return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
@@ -571,9 +589,9 @@ internal struct MockService: ServiceType {
     }
 
     return SignalProducer(value:
-      .template
-        |> User.lens.id .~ id
-        |> User.lens.isFriend .~ true
+      User.template
+        |> \.id .~ id
+        |> \.isFriend .~ true
     )
   }
 
@@ -710,7 +728,7 @@ internal struct MockService: ServiceType {
 
       return SignalProducer(
         value: MessageThreadEnvelope(
-          participants: [.template, .template |> User.lens.id .~ 2],
+          participants: [.template, .template |> \.id .~ 2],
           messages: [
             .template |> Message.lens.id .~ 1,
             .template |> Message.lens.id .~ 2,
@@ -730,7 +748,7 @@ internal struct MockService: ServiceType {
       if let thread = self.fetchMessageThreadResult?.value as? MessageThread {
         return SignalProducer(
           value: MessageThreadEnvelope(
-            participants: [.template, .template |> User.lens.id .~ 2],
+            participants: [.template, .template |> \.id .~ 2],
             messages: [
               .template |> Message.lens.id .~ 1,
               .template |> Message.lens.id .~ 2,
@@ -959,7 +977,7 @@ internal struct MockService: ServiceType {
     if let error = self.fetchUserError {
       return SignalProducer(error: error)
     }
-    return SignalProducer(value: self.fetchUserResponse ?? (.template |> User.lens.id .~ userId))
+    return SignalProducer(value: self.fetchUserResponse ?? (.template |> \.id .~ userId))
   }
 
   internal func fetchUser(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
@@ -1130,8 +1148,8 @@ internal struct MockService: ServiceType {
       AccessTokenEnvelope(
         accessToken: "deadbeef",
         user: .template
-          |> User.lens.name .~ name
-          |> User.lens.newsletters.weekly .~ sendNewsletters
+          |> \.name .~ name
+          |> \.newsletters.weekly .~ sendNewsletters
       )
     )
   }

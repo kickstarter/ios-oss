@@ -1,10 +1,32 @@
+import KsApi
 import UIKit
+
+public struct SettingsCurrencyCellValue {
+  public let cellType: SettingsCellTypeProtocol
+  public let currency: Currency
+
+  public init(cellType: SettingsCellTypeProtocol, currency: Currency) {
+    self.currency = currency
+    self.cellType = cellType
+  }
+}
+
+public struct SettingsCellValue {
+  public let user: User?
+  public let cellType: SettingsCellTypeProtocol
+
+  public init(user: User?, cellType: SettingsCellTypeProtocol) {
+    self.user = user
+    self.cellType = cellType
+  }
+}
 
 public protocol SettingsCellTypeProtocol {
   var description: String? { get }
   var hideDescriptionLabel: Bool { get }
   var showArrowImageView: Bool { get }
   var textColor: UIColor { get }
+  var detailTextColor: UIColor { get }
   var title: String { get }
 }
 
@@ -104,6 +126,10 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
     default:
       return .ksr_text_dark_grey_500
     }
+  }
+
+  public var detailTextColor: UIColor {
+    return .ksr_text_dark_grey_400
   }
 
   public var hideDescriptionLabel: Bool {

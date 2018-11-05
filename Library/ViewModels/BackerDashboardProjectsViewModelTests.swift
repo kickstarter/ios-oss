@@ -65,7 +65,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.emptyStateIsVisible.assertValues([false])
       self.isRefreshing.assertValues([true, false], "Projects don't refresh.")
 
-      let updatedUser = .template |> User.lens.stats.backedProjectsCount .~ 1
+      let updatedUser = User.template |> \.stats.backedProjectsCount .~ 1
 
       // Come back after backing a project.
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: env2), currentUser: updatedUser) {

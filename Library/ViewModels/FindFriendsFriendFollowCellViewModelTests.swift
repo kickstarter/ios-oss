@@ -49,12 +49,12 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
       |> Location.lens.displayableName .~ "Brooklyn, NY"
 
     let friend = User.template
-      |> User.lens.avatar.medium .~ "http://coolpic.com/cool.jpg"
-      |> User.lens.id .~ 145
-      |> User.lens.location .~ brooklyn
-      |> User.lens.name .~ "Jed"
-      |> User.lens.stats.backedProjectsCount .~ 20
-      |> User.lens.stats.createdProjectsCount .~ 2
+      |> \.avatar.medium .~ "http://coolpic.com/cool.jpg"
+      |> \.id .~ 145
+      |> \.location .~ brooklyn
+      |> \.name .~ "Jed"
+      |> \.stats.backedProjectsCount .~ 20
+      |> \.stats.createdProjectsCount .~ 2
 
     imageURL.assertValueCount(0)
     location.assertValueCount(0)
@@ -75,7 +75,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
 
   func testFriendDetails_Incomplete() {
     let friend = User.template
-      |> User.lens.name .~ "Ned"
+      |> \.name .~ "Ned"
 
     location.assertValueCount(0)
     friendName.assertValueCount(0)
@@ -94,9 +94,9 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
 
   func testFollowing_Friend() {
     let friend = User.template
-      |> User.lens.name .~ "Jed"
-      |> User.lens.id .~ 245
-      |> User.lens.isFriend .~ true
+      |> \.name .~ "Jed"
+      |> \.id .~ 245
+      |> \.isFriend .~ true
 
     hideFollowButton.assertValueCount(0)
     hideUnfollowButton.assertValueCount(0)
@@ -192,9 +192,9 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
 
   func testFollowing_NonFriend() {
     let friend = User.template
-      |> User.lens.name .~ "Zed"
-      |> User.lens.id .~ 200
-      |> User.lens.isFriend .~ false
+      |> \.name .~ "Zed"
+      |> \.id .~ 200
+      |> \.isFriend .~ false
 
     hideFollowButton.assertValueCount(0)
     hideUnfollowButton.assertValueCount(0)
@@ -298,9 +298,9 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     )
 
     let friend = User.template
-      |> User.lens.name .~ "Zed"
-      |> User.lens.id .~ 200
-      |> User.lens.isFriend .~ false
+      |> \.name .~ "Zed"
+      |> \.id .~ 200
+      |> \.isFriend .~ false
 
     withEnvironment(apiService: MockService(followFriendError: error)) {
       hideFollowButton.assertValueCount(0)
@@ -349,9 +349,9 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     )
 
     let friend = User.template
-      |> User.lens.name .~ "Jed"
-      |> User.lens.id .~ 245
-      |> User.lens.isFriend .~ true
+      |> \.name .~ "Jed"
+      |> \.id .~ 245
+      |> \.isFriend .~ true
 
     withEnvironment(apiService: MockService(unfollowFriendError: error)) {
       hideFollowButton.assertValueCount(0)
@@ -393,7 +393,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
 
   func testFriendDetails_NilCreatedProjectsCount() {
     let friend = User.template
-      |> User.lens.stats.createdProjectsCount .~ nil
+      |> \.stats.createdProjectsCount .~ nil
 
     hideProjectsCreated.assertValues([])
 

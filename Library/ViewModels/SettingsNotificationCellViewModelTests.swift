@@ -62,7 +62,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     }
 
     let user = User.template
-      |> UserAttribute.notification(notification).lens .~ true
+      |> UserAttribute.notification(notification).keyPath .~ true
 
     let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 
@@ -81,7 +81,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     }
 
     let user = User.template
-      |> UserAttribute.notification(notification).lens .~ false
+      |> UserAttribute.notification(notification).keyPath .~ false
 
     let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 
@@ -100,7 +100,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     }
 
     let user = User.template
-      |> UserAttribute.notification(notification).lens .~ true
+      |> UserAttribute.notification(notification).keyPath .~ true
 
     let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 
@@ -119,7 +119,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     }
 
     let user = User.template
-      |> UserAttribute.notification(notification).lens .~ false
+      |> UserAttribute.notification(notification).keyPath .~ false
 
     let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 
@@ -192,7 +192,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testManageProjectNotificationsButtonAccesibilityHint() {
-    let user = User.template |> User.lens.stats.backedProjectsCount .~ 5
+    let user = User.template |> \.stats.backedProjectsCount .~ 5
     let value = SettingsNotificationCellValue(cellType: .projectNotifications, user: user)
 
     self.vm.inputs.configure(with: value)
@@ -201,7 +201,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testProjectTextCount() {
-    let user = User.template |> User.lens.stats.backedProjectsCount .~ 5
+    let user = User.template |> \.stats.backedProjectsCount .~ 5
     let value = SettingsNotificationCellValue(cellType: .projectNotifications, user: user)
 
     self.vm.inputs.configure(with: value)
@@ -217,7 +217,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
                               facebookUser: nil)
     let mockService = MockService(updateUserSelfError: error)
 
-    let user = User.template |> UserAttribute.notification(.updates).lens .~ true
+    let user = User.template |> UserAttribute.notification(.updates).keyPath .~ true
     let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 
     withEnvironment(apiService: mockService, currentUser: user) {
@@ -242,8 +242,8 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   func testUpdateCurrentUser_Success() {
     let mockService = MockService()
     let user = User.template
-      |> UserAttribute.notification(.updates).lens .~ true
-      |> UserAttribute.notification(.mobileUpdates).lens .~ true
+      |> UserAttribute.notification(.updates).keyPath .~ true
+      |> UserAttribute.notification(.mobileUpdates).keyPath .~ true
 
     let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 

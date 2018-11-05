@@ -142,4 +142,12 @@ internal final class ValueCellDataSourceTests: XCTestCase {
     XCTAssertEqual(4, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(1, dataSource.itemIndexAt(IndexPath(item: 1, section: 0)))
   }
+
+  func testDeleteRow() {
+    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 1))
+
+    _ = dataSource.deleteRow(value: 1, cellClass: IntTableCell.self, atIndex: 1, inSection: 1)
+
+    XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 1))
+  }
 }

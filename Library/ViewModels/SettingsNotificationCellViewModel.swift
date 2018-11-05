@@ -1,16 +1,15 @@
 import ReactiveSwift
 import Result
-import Library
 import KsApi
 import Prelude
 
-protocol SettingsNotificationCellViewModelInputs {
+public protocol SettingsNotificationCellViewModelInputs {
   func didTapPushNotificationsButton(selected: Bool)
   func didTapEmailNotificationsButton(selected: Bool)
   func configure(with cellValue: SettingsNotificationCellValue)
 }
 
-protocol SettingsNotificationCellViewModelOutputs {
+public protocol SettingsNotificationCellViewModelOutputs {
   var enableButtonAnimation: Signal<Bool, NoError> { get }
   var emailNotificationsEnabled: Signal<Bool, NoError> { get }
   var emailNotificationButtonIsHidden: Signal<Bool, NoError> { get }
@@ -22,17 +21,16 @@ protocol SettingsNotificationCellViewModelOutputs {
   var updateCurrentUser: Signal<User, NoError> { get }
 }
 
-protocol SettingsNotificationCellViewModelType {
+public protocol SettingsNotificationCellViewModelType {
   var inputs: SettingsNotificationCellViewModelInputs { get }
   var outputs: SettingsNotificationCellViewModelOutputs { get }
 }
 
-final class SettingsNotificationCellViewModel: SettingsNotificationCellViewModelInputs,
+public final class SettingsNotificationCellViewModel: SettingsNotificationCellViewModelInputs,
 SettingsNotificationCellViewModelOutputs,
 SettingsNotificationCellViewModelType {
 
   public init() {
-
     let initialUser = self.initialUserProperty.signal.skipNil()
 
     let cellType = cellTypeProperty.signal.skipNil().skipRepeats()
@@ -45,7 +43,7 @@ SettingsNotificationCellViewModelType {
                             return nil
         }
 
-        return user |> UserAttribute.notification(notification).lens.view
+        return user |> UserAttribute.notification(notification).keyPath.view
     }.skipNil()
 
     let pushNotificationValueToggled = pushNotificationValueChangedProperty.signal.negate()
@@ -58,7 +56,7 @@ SettingsNotificationCellViewModelType {
                             return nil
         }
 
-        return user |> UserAttribute.notification(notification).lens.view
+        return user |> UserAttribute.notification(notification).keyPath.view
       }.skipNil()
 
     let emailNotificationValueToggled = emailNotificationValueChangedProperty.signal.negate()
@@ -74,7 +72,6 @@ SettingsNotificationCellViewModelType {
     .map { cellType, notificationType, enabled -> (UserAttribute.Notification?, Bool) in
         let notification = SettingsNotificationCellViewModel.notificationFor(cellType: cellType,
                                                                  notificationType: notificationType)
-
         return (notification, enabled)
     }
 
@@ -87,7 +84,7 @@ SettingsNotificationCellViewModelType {
           return nil
         }
 
-        return user |> UserAttribute.notification(notificationType).lens .~ on
+        return user |> UserAttribute.notification(notificationType).keyPath .~ on
       }.skipNil()
 
     let updateEvent = updatedUser
@@ -137,7 +134,7 @@ SettingsNotificationCellViewModelType {
       .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
 
     self.projectCountText = initialUser
-      .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0)}
+      .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
 
     // Koala tracking
     userAttributeChanged.observeValues { (notification, enabled) in
@@ -147,18 +144,18 @@ SettingsNotificationCellViewModelType {
   }
 
   fileprivate let pushNotificationValueChangedProperty = MutableProperty(false)
-  func didTapPushNotificationsButton(selected: Bool) {
+  public func didTapPushNotificationsButton(selected: Bool) {
     self.pushNotificationValueChangedProperty.value = selected
   }
 
   fileprivate let emailNotificationValueChangedProperty = MutableProperty(false)
-  func didTapEmailNotificationsButton(selected: Bool) {
+  public func didTapEmailNotificationsButton(selected: Bool) {
     self.emailNotificationValueChangedProperty.value = selected
   }
 
   fileprivate let initialUserProperty = MutableProperty<User?>(nil)
   fileprivate let cellTypeProperty = MutableProperty<SettingsNotificationCellType?>(nil)
-  func configure(with cellValue: SettingsNotificationCellValue) {
+  public func configure(with cellValue: SettingsNotificationCellValue) {
     self.cellTypeProperty.value = cellValue.cellType
     self.initialUserProperty.value = cellValue.user
   }
@@ -177,7 +174,7 @@ SettingsNotificationCellViewModelType {
   public var outputs: SettingsNotificationCellViewModelOutputs { return self }
 }
 
-enum NotificationType {
+public enum NotificationType {
   case email
   case push
 }

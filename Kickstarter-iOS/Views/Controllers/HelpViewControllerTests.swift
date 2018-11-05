@@ -6,7 +6,6 @@ import Library
 internal final class HelpViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
-
     UIView.setAnimationsEnabled(false)
   }
 

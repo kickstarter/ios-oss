@@ -17,6 +17,8 @@ final class ProjectNavBarViewModelTests: TestCase {
   fileprivate let categoryHidden = TestObserver<Bool, NoError>()
   fileprivate let categoryAnimate = TestObserver<Bool, NoError>()
   fileprivate let dismissViewController = TestObserver<(), NoError>()
+  fileprivate let generateSelectionFeedback = TestObserver<(), NoError>()
+  fileprivate let generateSuccessFeedback = TestObserver<(), NoError>()
   fileprivate let goToLoginTout = TestObserver<(), NoError>()
   fileprivate let projectName = TestObserver<String, NoError>()
   fileprivate let saveButtonEnabled = TestObserver<Bool, NoError>()
@@ -36,6 +38,8 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.vm.outputs.categoryHiddenAndAnimate.map(first).observe(self.categoryHidden.observer)
     self.vm.outputs.categoryHiddenAndAnimate.map(second).observe(self.categoryAnimate.observer)
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
+    self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
+    self.vm.outputs.generateSuccessFeedback.observe(self.generateSuccessFeedback.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.projectName.observe(self.projectName.observer)
     self.vm.outputs.showProjectSavedPrompt.observe(self.showProjectSavedPrompt.observer)
@@ -173,6 +177,28 @@ final class ProjectNavBarViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
+  func testGenerateSelectionFeedback() {
+    let project = .template |> Project.lens.personalization.isStarred .~ false
+
+    self.vm.inputs.configureWith(project: project, refTag: nil)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.saveButtonTapped(selected: true)
+    self.scheduler.advance()
+    self.generateSelectionFeedback.assertValueCount(1)
+    self.generateSuccessFeedback.assertValueCount(0)
+  }
+
+  func testGenerateSuccessFeedback() {
+    let project = .template |> Project.lens.personalization.isStarred .~ false
+
+    self.vm.inputs.configureWith(project: project, refTag: nil)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.saveButtonTapped(selected: false)
+    self.scheduler.advance()
+    self.generateSelectionFeedback.assertValueCount(0)
+    self.generateSuccessFeedback.assertValueCount(1)
+  }
+
   // Tests the flow of a logged out user trying to save a project, and then going through the login flow.
   func testLoggedOutUser_SavesProject() {
     let project = .template |> Project.lens.personalization.isStarred .~ false
@@ -188,7 +214,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.saveButtonSelected.assertValues([false], "Save button is not selected at first")
       self.saveButtonEnabled.assertDidNotEmitValue()
 
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
 
       self.saveButtonSelected.assertValues([false],
                                             "Nothing is emitted when save button tapped while logged out.")
@@ -233,7 +259,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.saveButtonAccessibilityValue.assertValues(["Unsaved"])
       self.saveButtonEnabled.assertDidNotEmitValue()
 
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
 
       self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
@@ -253,7 +279,7 @@ final class ProjectNavBarViewModelTests: TestCase {
         |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
 
       withEnvironment(apiService: MockService(toggleStarResponse: untoggleSaveResponse)) {
-        self.vm.inputs.saveButtonTapped()
+        self.vm.inputs.saveButtonTapped(selected: true)
 
         self.saveButtonSelected.assertValues([false, true, false],
                                              "Save button deselects immediately.")
@@ -290,7 +316,7 @@ final class ProjectNavBarViewModelTests: TestCase {
     withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
       self.scheduler.advance()
 
       self.showProjectSavedPrompt.assertValueCount(
@@ -313,7 +339,7 @@ final class ProjectNavBarViewModelTests: TestCase {
     withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
       self.vm.inputs.configureWith(project: project, refTag: nil)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
       self.scheduler.advance()
 
       self.showProjectSavedPrompt.assertValueCount(0, "The save project prompt does not show.")
@@ -338,7 +364,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, refTag: nil)
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
 
       self.saveButtonSelected.assertValues([false, true])
 
@@ -349,7 +375,7 @@ final class ProjectNavBarViewModelTests: TestCase {
       self.showProjectSavedPrompt.assertValueCount(1, "The save project prompt shows.")
       XCTAssertEqual([], trackingClient.events, "The star event does not track.")
 
-      self.vm.inputs.saveButtonTapped()
+      self.vm.inputs.saveButtonTapped(selected: true)
     }
 
     // fix:

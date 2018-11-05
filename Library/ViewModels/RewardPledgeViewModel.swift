@@ -329,7 +329,7 @@ RewardPledgeViewModelOutputs {
           shipping_cost: Format.currency(
             Int(shippingRule.cost),
             country: project.country,
-            omitCurrencyCode: !projectNeedsCurrencyCode(project)
+            omitCurrencyCode: project.stats.omitUSCurrencyCode
           )
         )
     }
@@ -1019,11 +1019,6 @@ private func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]
     .first
 
   return shippingRuleInUSA ?? shippingRules.first
-}
-
-private func projectNeedsCurrencyCode(_ project: Project) -> Bool {
-  return (project.country.countryCode != "US" || AppEnvironment.current.config?.countryCode != "US")
-    && project.country.currencySymbol == "$"
 }
 
 private func backingError(forProject project: Project, amount: Double, reward: Reward?) -> PledgeError? {

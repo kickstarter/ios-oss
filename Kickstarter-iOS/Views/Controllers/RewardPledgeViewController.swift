@@ -508,7 +508,12 @@ internal final class RewardPledgeViewController: UIViewController {
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
-      .observeValues { [weak self] project in self?.goToThanks(project: project) }
+      .observeValues { [weak self] project in
+        if #available(iOS 10.0, *) {
+          UIFeedbackGenerator.ksr_success()
+        }
+        self?.goToThanks(project: project)
+      }
 
     self.viewModel.outputs.paddingViewHeightConstant
       .observeForUI()

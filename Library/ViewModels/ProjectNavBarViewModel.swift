@@ -11,7 +11,7 @@ public protocol ProjectNavBarViewModelInputs {
   func projectImageIsVisible(_ visible: Bool)
   func projectVideoDidFinish()
   func projectVideoDidStart()
-  func saveButtonTapped()
+  func saveButtonTapped(selected: Bool)
   func userSessionEnded()
   func userSessionStarted()
   func viewDidLoad()
@@ -34,6 +34,12 @@ public protocol ProjectNavBarViewModelOutputs {
 
   /// Emits when the controller should be dismissed.
   var dismissViewController: Signal<(), NoError> { get }
+
+  /// Emits a boolean to determine whether to create haptics
+  var generateSelectionFeedback: Signal<(), NoError> { get }
+
+  /// Emits a boolean to determine whether to create haptics
+  var generateSuccessFeedback: Signal<(), NoError> { get }
 
   /// Emits when the login tout should be shown to the user.
   var goToLoginTout: Signal<(), NoError> { get }
@@ -168,6 +174,9 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .map { $0.personalization.isStarred == true }
       .skipRepeats()
 
+    self.generateSuccessFeedback = self.saveButtonTappedProperty.signal.filter(isFalse).ignoreValues()
+    self.generateSelectionFeedback = self.saveButtonTappedProperty.signal.filter(isTrue).ignoreValues()
+
     self.saveButtonAccessibilityValue = self.saveButtonSelected
       .map { starred in starred ? Strings.Saved() : Strings.Unsaved() }
 
@@ -265,9 +274,9 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public func categoryButtonTapped() {
   }
 
-  fileprivate let saveButtonTappedProperty = MutableProperty(())
-  public func saveButtonTapped() {
-    self.saveButtonTappedProperty.value = ()
+  fileprivate let saveButtonTappedProperty = MutableProperty(false)
+  public func saveButtonTapped(selected: Bool) {
+    self.saveButtonTappedProperty.value = selected
   }
 
   fileprivate let userSessionEndedProperty = MutableProperty(())
@@ -291,6 +300,8 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public let categoryButtonTitleColor: Signal<UIColor, NoError>
   public let categoryHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>
   public let dismissViewController: Signal<(), NoError>
+  public let generateSuccessFeedback: Signal<(), NoError>
+  public let generateSelectionFeedback: Signal<(), NoError>
   public let goToLoginTout: Signal<(), NoError>
   public let navBarShadowVisible: Signal<Bool, NoError>
   public let postNotificationWithProject: Signal<Project, NoError>

@@ -44,31 +44,4 @@ class ThanksViewControllerTests: TestCase {
         }
       }
     }
-
-  func testThanksViewController_CategoriesExperimentEnabled() {
-    let discoveryEnvelope = DiscoveryEnvelope.template
-    let rootCategories = RootCategoriesEnvelope(rootCategories: [Category.tabletopGames])
-    let mockService = MockService(fetchGraphCategoriesResponse: rootCategories,
-                                  fetchDiscoveryResponse: discoveryEnvelope)
-    let config = AppEnvironment.current.config ?? Config.template
-      |> Config.lens.abExperiments
-      .~ [Experiment.Name.showProjectCardCategory.rawValue: Experiment.Variant.experimental.rawValue]
-
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(apiService: mockService, config: config, language: language) {
-        let project = Project.cosmicSurgery
-          |> Project.lens.id .~ 3
-
-        let controller = ThanksViewController.configuredWith(project: project)
-
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1000
-
-        self.scheduler.run()
-
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
-      }
-    }
-  }
 }
