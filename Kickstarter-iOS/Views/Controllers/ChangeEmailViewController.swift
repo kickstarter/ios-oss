@@ -7,8 +7,8 @@ import UIKit
 internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var currentEmailLabel: UILabel!
   @IBOutlet fileprivate weak var currentEmail: UILabel!
-  @IBOutlet fileprivate weak var errorLabel: UILabel!
-  @IBOutlet fileprivate weak var errorView: UIView!
+  @IBOutlet fileprivate weak var emailUnverifiedLabel: UILabel!
+  @IBOutlet fileprivate weak var messageLabelsView: UIView!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailTextField: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
@@ -16,6 +16,7 @@ internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var passwordTextField: UITextField!
   @IBOutlet fileprivate weak var resendVerificationEmailButton: UIButton!
   @IBOutlet fileprivate weak var resendVerificationStackView: UIStackView!
+  @IBOutlet fileprivate weak var undeliverableEmailLabel: UILabel!
 
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
   @IBOutlet fileprivate weak var resendVerificationEmailStackView: UIStackView!
@@ -70,7 +71,7 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = onePasswordButton
       |> onePasswordButtonStyle
 
-    _ = errorLabel
+    _ = emailUnverifiedLabel
       |> settingsDescriptionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Email_unverified() }
 
@@ -110,6 +111,7 @@ internal final class ChangeEmailViewController: UIViewController {
 
     self.resendVerificationStackView.rac.hidden = self.viewModel.outputs.resendVerificationStackViewIsHidden
     self.currentEmail.rac.text = self.viewModel.outputs.emailText
+    self.emailUnverifiedLabel.rac.hidden = self.viewModel.outputs.emailUnverifiedLabelIsHidden
 
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
 

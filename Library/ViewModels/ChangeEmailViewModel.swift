@@ -24,7 +24,7 @@ public protocol ChangeEmailViewModelOutputs {
   var didFailToChangeEmail: Signal<String, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
   var emailText: Signal<String, NoError> { get }
-  var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
+  var emailUnverifiedLabelIsHidden: Signal<Bool, NoError> { get }
   var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
   var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
   var passwordText: Signal<String, NoError> { get }
@@ -62,7 +62,9 @@ ChangeEmailViewModelOutputs {
         changeEmailEvent.values().ignoreValues()
       )
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraphUserEmail(query: UserQueries.email.query)
+        AppEnvironment.current
+          .apiService
+          .fetchGraphUserEmail(query: NonEmptySet(Query.user(changeEmailQueryFields())))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
