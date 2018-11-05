@@ -72,7 +72,11 @@ internal final class PaymentMethodsViewController: UIViewController {
   }
 
   private func goToAddCardScreen() {
-    // FIXME: Push AddNewCardScreen from here.
+    let vc = AddNewCardViewController.instantiate()
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 }
 
