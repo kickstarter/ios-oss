@@ -94,10 +94,13 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = passwordLabel
       |> settingsTitleLabelStyle
 
+    _ = resendVerificationStackView
+      |> \.isHidden .~ true
+
     _ = passwordTextField
       |> passwordFieldStyle
-      |> UITextField.lens.textAlignment .~ .right
-      |> UITextField.lens.returnKeyType .~ .go
+      |> \.textAlignment .~ .right
+      |> \.returnKeyType .~ .go
 
     _ = resendVerificationEmailButton
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
