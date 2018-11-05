@@ -114,6 +114,8 @@ internal final class ChangeEmailViewController: UIViewController {
     self.resendVerificationStackView.rac.hidden = self.viewModel.outputs.resendVerificationStackViewIsHidden
     self.currentEmail.rac.text = self.viewModel.outputs.emailText
 
+    self.resendVerificationEmailButton.rac.title = self.viewModel.outputs.verificationEmailButtonTitle
+
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
 
     self.passwordTextField.rac.text = self.viewModel.outputs.passwordText

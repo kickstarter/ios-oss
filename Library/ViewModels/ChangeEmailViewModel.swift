@@ -33,7 +33,7 @@ public protocol ChangeEmailViewModelOutputs {
   var resetFields: Signal<String, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
   var shouldSubmitForm: Signal<Void, NoError> { get }
-  var verificationButtonTitle: Signal<String, NoError> { get }
+  var verificationEmailButtonTitle: Signal<String, NoError> { get }
 }
 
 public protocol ChangeEmailViewModelType {
@@ -118,9 +118,9 @@ ChangeEmailViewModelOutputs {
     self.didFailToChangeEmail = changeEmailEvent.errors()
       .map { $0.localizedDescription  }
 
-    self.verificationButtonTitle = self.viewDidLoadProperty.signal.map { _ in
+    self.verificationEmailButtonTitle = self.viewWillAppearProperty.signal.map { _ in
       guard let user = AppEnvironment.current.currentUser else { return "" }
-      return user.isCreator ? Strings.Send_verfication_email() : Strings.Resend_verification_email()
+      return user.isCreator ? Strings.Resend_verification_email() : Strings.Send_verfication_email()
     }
 
     self.activityIndicatorShouldShow = Signal.merge(
@@ -203,7 +203,7 @@ ChangeEmailViewModelOutputs {
   public let resetFields: Signal<String, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let shouldSubmitForm: Signal<Void, NoError>
-  public let verificationButtonTitle: Signal<String, NoError>
+  public let verificationEmailButtonTitle: Signal<String, NoError>
 
   public var inputs: ChangeEmailViewModelInputs {
     return self
