@@ -84,32 +84,31 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.goToAddCard = self.selectedCellTypeProperty.signal.skipNil()
       .filter { $0 == .paymentMethods }
       .ignoreValues()
-  }
 
     self.showAlert = self.changeCurrencyAlertProperty.signal.skipNil().ignoreValues()
   }
 
-  fileprivate let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
+  private let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
   public func didSelectRow(cellType: SettingsAccountCellType) {
     self.selectedCellTypeProperty.value = cellType
   }
 
-  fileprivate let changeCurrencyAlertProperty = MutableProperty<Currency?>(nil)
+  private let changeCurrencyAlertProperty = MutableProperty<Currency?>(nil)
   public func showChangeCurrencyAlert(for currency: Currency) {
     self.changeCurrencyAlertProperty.value = currency
   }
 
-  fileprivate let dismissPickerTapProperty = MutableProperty(())
+  private let dismissPickerTapProperty = MutableProperty(())
   public func dismissPickerTap() {
     self.dismissPickerTapProperty.value = ()
   }
 
-  fileprivate let didConfirmChangeCurrencyProperty = MutableProperty(())
+  private let didConfirmChangeCurrencyProperty = MutableProperty(())
   public func didConfirmChangeCurrency() {
     self.didConfirmChangeCurrencyProperty.value = ()
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty(())
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
