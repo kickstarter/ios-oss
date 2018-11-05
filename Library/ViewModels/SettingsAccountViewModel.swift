@@ -17,6 +17,7 @@ public protocol SettingsAccountViewModelOutputs {
   var reloadData: Signal<(User, Currency), NoError> { get }
   var showAlert: Signal<(), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
+  var goToAddCard: Signal<Void, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
 }
 
@@ -80,30 +81,34 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .map(viewControllerFactory)
       .skipNil()
 
+    self.goToAddCard = self.selectedCellTypeProperty.signal.skipNil()
+      .filter { $0 == .paymentMethods }
+      .ignoreValues()
+
     self.showAlert = self.changeCurrencyAlertProperty.signal.skipNil().ignoreValues()
   }
 
-  fileprivate let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
+  private let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
   public func didSelectRow(cellType: SettingsAccountCellType) {
     self.selectedCellTypeProperty.value = cellType
   }
 
-  fileprivate let changeCurrencyAlertProperty = MutableProperty<Currency?>(nil)
+  private let changeCurrencyAlertProperty = MutableProperty<Currency?>(nil)
   public func showChangeCurrencyAlert(for currency: Currency) {
     self.changeCurrencyAlertProperty.value = currency
   }
 
-  fileprivate let dismissPickerTapProperty = MutableProperty(())
+  private let dismissPickerTapProperty = MutableProperty(())
   public func dismissPickerTap() {
     self.dismissPickerTapProperty.value = ()
   }
 
-  fileprivate let didConfirmChangeCurrencyProperty = MutableProperty(())
+  private let didConfirmChangeCurrencyProperty = MutableProperty(())
   public func didConfirmChangeCurrency() {
     self.didConfirmChangeCurrencyProperty.value = ()
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty(())
+  private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -113,6 +118,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public let presentCurrencyPicker: Signal<Void, NoError>
   public let showAlert: Signal<(), NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
+  public let goToAddCard: Signal<Void, NoError>
   public let updateCurrencyFailure: Signal<String, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
