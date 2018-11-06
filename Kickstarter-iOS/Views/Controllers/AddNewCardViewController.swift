@@ -2,21 +2,15 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
+import Stripe
 import UIKit
 
-internal final class AddNewCardViewController: UIViewController {
-  @IBOutlet fileprivate weak var cardNumberLabel: UILabel!
-  @IBOutlet fileprivate weak var cardNumberTextField: UITextField!
-  @IBOutlet fileprivate weak var cardholderNameLabel: UILabel!
-  @IBOutlet fileprivate weak var cardholderNameTextField: UITextField!
-  @IBOutlet fileprivate weak var expirationLabel: UILabel!
-  @IBOutlet fileprivate weak var expirationTextField: UITextField!
-  @IBOutlet fileprivate weak var securityCodeLabel: UILabel!
-  @IBOutlet fileprivate weak var securityCodeTextField: UITextField!
-  @IBOutlet fileprivate weak var zipCodeLabel: UILabel!
-  @IBOutlet fileprivate weak var zipCodeTextField: UITextField!
+internal final class AddNewCardViewController: UIViewController, STPPaymentCardTextFieldDelegate {
 
   private weak var saveButtonView: LoadingBarButtonItemView!
+  @IBOutlet private weak var cardholderNameLabel: UILabel!
+  @IBOutlet private weak var cardholderNameTextField: UITextField!
+  @IBOutlet private weak var paymentField: STPPaymentCardTextField!
 
   internal static func instantiate() -> AddNewCardViewController {
     return Storyboard.Settings.instantiate(AddNewCardViewController.self)
@@ -37,6 +31,8 @@ internal final class AddNewCardViewController: UIViewController {
     self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped))
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
+
+    self.paymentField.delegate = self
   }
 
   override func bindStyles() {
@@ -45,42 +41,18 @@ internal final class AddNewCardViewController: UIViewController {
     _ = self
       |> settingsViewControllerStyle
 
-    _ = [self.cardNumberTextField, self.cardholderNameTextField, self.expirationTextField,
-         self.securityCodeTextField, self.zipCodeTextField]
-      ||> formFieldStyle
-      ||> \.textAlignment .~ .right
-
-    _ = [self.cardNumberLabel, self.cardholderNameLabel, self.expirationLabel,
-         self.securityCodeLabel, self.zipCodeLabel]
-      ||> settingsTitleLabelStyle
-
-    _ = [self.cardNumberTextField, self.expirationTextField, self.securityCodeTextField,
-         self.zipCodeTextField]
-      ||> \.keyboardType .~ .numberPad
-
-    _ = self.cardNumberLabel
-      |> \.text %~ { _ in Strings.Card_number() }
-
     _ = self.cardholderNameLabel
+      |> settingsTitleLabelStyle
       |> \.text %~ { _ in Strings.Cardholder_name() }
 
-    _ = self.expirationLabel
-      |> \.text %~ { _ in Strings.Expiration() }
-
-    _ = self.securityCodeLabel
-      |> \.text %~ { _ in Strings.Security_code() }
-
-    _ = self.zipCodeLabel
-      |> \.text %~ { _ in Strings.Zip_code() }
-
     _ = self.cardholderNameTextField
+      |> formFieldStyle
+      |> \.textAlignment .~ .right
       |> \.placeholder %~ { _ in Strings.Name() }
 
-    _ = self.expirationTextField
-      |> \.placeholder %~ { _ in Strings.MMYY() }
+    _ = self.paymentField
+      |> \.borderColor .~ nil
 
-    _ = self.securityCodeTextField
-      |> \.placeholder %~ { _ in Strings.CVC() }
   }
 
   @objc fileprivate func cancelButtonTapped() {
