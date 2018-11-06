@@ -153,6 +153,19 @@ internal final class ChangeEmailViewController: UIViewController {
                                            message: Strings.Got_it_your_changes_have_been_saved())
     }
 
+    self.viewModel.outputs.didSendVerificationEmail
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.messageBannerView.showBanner(with: .success,
+                                           message: Strings.Verification_email_sent())
+    }
+
+    self.viewModel.outputs.didFailToSendVerificationEmail
+      .observeForUI()
+      .observeValues { [weak self] error in
+        self?.messageBannerView.showBanner(with: .error, message: error)
+    }
+
     self.viewModel.outputs.shouldSubmitForm
       .observeForUI()
       .observeValues { [weak self] in
