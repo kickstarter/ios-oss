@@ -40,12 +40,6 @@ final class SettingsAccountViewController: UIViewController {
         self?.tableView.reloadData()
     }
 
-    self.viewModel.outputs.goToAddCard
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToAddCard()
-    }
-
     self.viewModel.outputs.presentCurrencyPicker
       .observeForUI()
       .observeValues { [weak self] in
@@ -87,14 +81,6 @@ final class SettingsAccountViewController: UIViewController {
 
     _ = tableView
       |> settingsTableViewStyle
-  }
-
- func goToAddCard() {
-    let vc = AddNewCardViewController.instantiate()
-    let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
-
-    self.present(nav, animated: true, completion: nil)
   }
 
   private func showCurrencyPickerCell() {
@@ -190,6 +176,8 @@ extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
       return ChangeEmailViewController.instantiate()
     case .changePassword:
       return ChangePasswordViewController.instantiate()
+    case .paymentMethods:
+      return PaymentMethodsViewController.instantiate()
     default:
       return nil
     }

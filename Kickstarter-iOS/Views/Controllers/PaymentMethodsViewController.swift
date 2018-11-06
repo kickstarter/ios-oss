@@ -55,6 +55,7 @@ internal final class PaymentMethodsViewController: UIViewController {
       |> \.backgroundColor .~ .clear
       |> \.separatorStyle .~ .none
       |> \.estimatedRowHeight .~ 77
+      |> \.allowsSelection .~ false
   }
 
   override func bindViewModel() {
@@ -75,7 +76,11 @@ internal final class PaymentMethodsViewController: UIViewController {
   }
 
   private func goToAddCardScreen() {
-    // Push AddNewCardScreen from here.
+    let vc = AddNewCardViewController.instantiate()
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 }
 
