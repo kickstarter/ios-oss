@@ -145,8 +145,8 @@ internal struct MockService: ServiceType {
 
   fileprivate let updateUserSelfError: ErrorEnvelope?
 
-  fileprivate let unwatchProjectMutationResult:
-    Result<GraphMutationUnwatchProjectResponseEnvelope, GraphError>?
+  fileprivate let unwatchProjectMutationResult: Result<GraphMutationUnwatchProjectResponseEnvelope,
+  GraphError>?
 
   fileprivate let watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>?
 
