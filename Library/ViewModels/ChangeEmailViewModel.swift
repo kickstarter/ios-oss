@@ -85,7 +85,7 @@ ChangeEmailViewModelOutputs {
 
     self.emailText = userEmailEvent.values().map { $0.me.email }
 
-    self.resendVerificationStackViewIsHidden = changeEmailEvent.values().ignoreValues().map { false }
+    self.resendVerificationStackViewIsHidden = changeEmailEvent.values().ignoreValues().mapConst(false)
 
     self.dismissKeyboard = Signal.merge(
       self.changePasswordProperty.signal.ignoreValues(),

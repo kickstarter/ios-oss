@@ -95,7 +95,7 @@ internal final class ChangeEmailViewController: UIViewController {
       |> settingsTitleLabelStyle
 
     _ = resendVerificationStackView
-      |> \.isHidden .~ true
+      |> \.isHidden .~ false
 
     _ = passwordTextField
       |> passwordFieldStyle
@@ -105,7 +105,6 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = resendVerificationEmailButton
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Resend_verification_email() }
   }
 
   override func bindViewModel() {
@@ -201,6 +200,10 @@ internal final class ChangeEmailViewController: UIViewController {
   @IBAction func saveButtonTapped(_ sender: Any) {
     self.viewModel.inputs.saveButtonTapped(newEmail: self.newEmailTextField.text,
                                            password: self.passwordTextField.text)
+  }
+
+  @IBAction func resendVerificationEmailButtonTapped(_ sender: Any) {
+    self.viewModel.inputs.resendVerificationEmailButtonTapped()
   }
 
   @IBAction func onePasswordButtonTapped(_ sender: Any) {

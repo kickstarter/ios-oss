@@ -10,7 +10,7 @@ public struct UserSendEmailVerificationMutation<T: GraphMutationInput>: GraphMut
   public var description: String {
     return """
     mutation userSendEmailVerification($input: UserSendEmailVerificationInput!) {
-      updateUserProfile(input: $input) {
+      userSendEmailVerification(input: $input) {
         clientMutationId
       }
     }
