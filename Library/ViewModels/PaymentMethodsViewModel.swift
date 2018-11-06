@@ -6,12 +6,12 @@ import Result
 
 public protocol PaymentMethodsViewModelInputs {
   func viewDidLoad()
-  func didTapAddNewCardButton()
+  func paymentMethodsFooterViewDidTapAddNewCardButton()
 }
 
 public protocol PaymentMethodsViewModelOutputs {
   /// Emits the user's stored cards
-  var didFetchPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError> { get }
+  var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError> { get }
   var goToAddCardScreen: Signal<Void, NoError> { get }
 }
 
@@ -32,7 +32,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
           .materialize()
       }
 
-    self.didFetchPaymentMethods = paymentMethodsEvent.values().map { $0.me.storedCards.nodes }
+    self.paymentMethods = paymentMethodsEvent.values().map { $0.me.storedCards.nodes }
 
     self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
   }
@@ -43,11 +43,11 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   }
 
   fileprivate let didTapAddCardButtonProperty = MutableProperty(())
-  public func didTapAddNewCardButton() {
+  public func paymentMethodsFooterViewDidTapAddNewCardButton() {
     self.didTapAddCardButtonProperty.value = ()
   }
 
-  public let didFetchPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError>
+  public let paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError>
   public let goToAddCardScreen: Signal<Void, NoError>
 
   public var inputs: PaymentMethodsViewModelInputs { return self }

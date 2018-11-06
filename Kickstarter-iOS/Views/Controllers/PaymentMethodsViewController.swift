@@ -9,14 +9,7 @@ internal final class PaymentMethodsViewController: UIViewController {
   private let viewModel: PaymentMethodsViewModelType = PaymentMethodsViewModel()
 
   @IBOutlet private weak var headerLabel: UILabel!
-  @IBOutlet private weak var tableView: UITableView! {
-    didSet {
-      self.tableView.dataSource = self.dataSource
-      self.tableView.delegate = self
-      self.tableView.register(nib: .CreditCardCell)
-      self.tableView.registerHeaderFooter(nib: .PaymentMethodsFooterView)
-    }
-  }
+  @IBOutlet private weak var tableView: UITableView!
 
   public static func instantiate() -> PaymentMethodsViewController {
     return Storyboard.Settings.instantiate(PaymentMethodsViewController.self)
@@ -25,12 +18,18 @@ internal final class PaymentMethodsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
+    self.tableView.register(nib: .CreditCardCell)
+    self.tableView.registerHeaderFooter(nib: .PaymentMethodsFooterView)
+
     self.viewModel.inputs.viewDidLoad()
-    self.navigationItem.rightBarButtonItem =
-      UIBarButtonItem(title: Strings.discovery_favorite_categories_buttons_edit(),
-                      style: .plain,
-                      target: self,
-                      action: nil)
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+      title: Strings.discovery_favorite_categories_buttons_edit(),
+      style: .plain,
+      target: self,
+      action: nil
+    )
   }
 
   override func bindStyles() {
@@ -42,9 +41,6 @@ internal final class PaymentMethodsViewController: UIViewController {
         Strings.Payment_methods()
     }
 
-    _ = self
-      |> \.view.backgroundColor .~ .ksr_grey_200
-
     _ = self.headerLabel
       |> settingsDescriptionLabelStyle
       |> \.text %~ { _ in
@@ -53,15 +49,15 @@ internal final class PaymentMethodsViewController: UIViewController {
 
     _ = self.tableView
       |> \.backgroundColor .~ .clear
-      |> \.separatorStyle .~ .none
-      |> \.estimatedRowHeight .~ 77
+      |> \.estimatedRowHeight .~ Styles.grid(13)
       |> \.allowsSelection .~ false
+      |> \.separatorStyle .~ .none
   }
 
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.didFetchPaymentMethods
+    self.viewModel.outputs.paymentMethods
       .observeForUI()
       .observeValues { [weak self] result in
         self?.dataSource.load(creditCards: result)
@@ -91,7 +87,7 @@ extension PaymentMethodsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 80
+    return Styles.grid(13)
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -105,7 +101,7 @@ extension PaymentMethodsViewController: UITableViewDelegate {
 
 extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
 
-  internal func didTapAddNewCardButton() {
-    self.viewModel.inputs.didTapAddNewCardButton()
+  internal func paymentMethodsFooterViewDidTapAddNewCardButton(_ footerView: PaymentMethodsFooterView) {
+    self.viewModel.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
   }
 }

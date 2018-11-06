@@ -193,12 +193,6 @@ public enum Query {
     }
   }
 
-  public enum ProjectsConnection {
-    public enum Argument {
-      case state(Project.State)
-    }
-  }
-
   public enum User {
     case biography
     case backedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
@@ -231,7 +225,7 @@ public enum Query {
     case url
     case userId
 
-    public enum CreditCard {
+    public enum CreditCard: String {
       case expirationDate
       case id
       case lastFour
@@ -424,12 +418,7 @@ extension Query.User: QueryType {
 
 extension Query.User.CreditCard: QueryType {
   public var description: String {
-    switch self {
-    case .expirationDate: return "expirationDate"
-    case .id: return "id"
-    case .lastFour: return "lastFour"
-    case .type: return "type"
-    }
+    return self.rawValue
   }
 }
 
