@@ -131,9 +131,6 @@ internal struct MockService: ServiceType {
 
   fileprivate let submitApplePayResponse: SubmitApplePayEnvelope
 
-  fileprivate let toggleStarResponse: StarEnvelope?
-  fileprivate let toggleStarError: ErrorEnvelope?
-
   fileprivate let unfollowFriendError: ErrorEnvelope?
 
   fileprivate let updateDraftError: ErrorEnvelope?
@@ -251,8 +248,6 @@ internal struct MockService: ServiceType {
                 signupResponse: AccessTokenEnvelope? = nil,
                 signupError: ErrorEnvelope? = nil,
                 submitApplePayResponse: SubmitApplePayEnvelope = .template,
-                toggleStarResponse: StarEnvelope? = nil,
-                toggleStarError: ErrorEnvelope? = nil,
                 unfollowFriendError: ErrorEnvelope? = nil,
                 updateDraftError: ErrorEnvelope? = nil,
                 updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>? = nil,
@@ -430,9 +425,6 @@ internal struct MockService: ServiceType {
     self.signupError = signupError
 
     self.submitApplePayResponse = submitApplePayResponse
-
-    self.toggleStarResponse = toggleStarResponse
-    self.toggleStarError = toggleStarError
 
     self.unfollowFriendError = unfollowFriendError
 
@@ -1037,21 +1029,6 @@ internal struct MockService: ServiceType {
       }
   }
 
-  internal func toggleStar(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
-   if let error = self.toggleStarError {
-        return SignalProducer(error: error)
-      } else if let toggleStar = self.toggleStarResponse {
-        return SignalProducer(value: toggleStar)
-      }
-
-      return SignalProducer(value: .template)
-  }
-
-  internal func star(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
-    let project = project |> Project.lens.personalization.isStarred .~ true
-    return .init(value: .template |> StarEnvelope.lens.project .~ project)
-  }
-
   internal func login(email: String, password: String, code: String?) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
 
@@ -1409,8 +1386,6 @@ private extension MockService {
           signupResponse: $1.signupResponse,
           signupError: $1.signupError,
           submitApplePayResponse: $1.submitApplePayResponse,
-          toggleStarResponse: $1.toggleStarResponse,
-          toggleStarError: $1.toggleStarError,
           unfollowFriendError: $1.unfollowFriendError,
           updateDraftError: $1.updateDraftError,
           updatePledgeResult: $1.updatePledgeResult,

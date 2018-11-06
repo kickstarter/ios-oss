@@ -181,10 +181,7 @@ internal final class WatchProjectViewModelTests: TestCase {
       self.saveButtonSelected.assertValues([false, true],
                                            "Save button stays selected after API request.")
 
-      let untoggleSaveResponse = .template
-        |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
-
-      withEnvironment(apiService: MockService(toggleStarResponse: untoggleSaveResponse)) {
+      withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.template))) {
         self.vm.inputs.saveButtonTapped(selected: true)
 
         self.saveButtonSelected.assertValues([false, true, false],

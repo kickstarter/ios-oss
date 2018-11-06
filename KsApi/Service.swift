@@ -442,10 +442,6 @@ public struct Service: ServiceType {
       return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
   }
 
-  public func star(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
-    return request(.star(project))
-  }
-
   public func submitApplePay(
     checkoutUrl: String,
     stripeToken: String,
@@ -462,10 +458,6 @@ public struct Service: ServiceType {
         transactionIdentifier: transactionIdentifier
       )
     )
-  }
-
-  public func toggleStar(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
-    return request(.toggleStar(project))
   }
 
   public func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {

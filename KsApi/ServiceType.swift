@@ -269,17 +269,11 @@ public protocol ServiceType {
   func signup(facebookAccessToken: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
 
-  /// Star a project.
-  func star(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope>
-
   func submitApplePay(checkoutUrl: String,
                       stripeToken: String,
                       paymentInstrumentName: String,
                       paymentNetwork: String,
                       transactionIdentifier: String) -> SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope>
-
-  /// Toggle the starred state on a project.
-  func toggleStar(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope>
 
   /// Unfollow a user with their id.
   func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope>
