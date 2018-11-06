@@ -64,12 +64,13 @@ ChangeEmailViewModelOutputs {
       .switchMap { _ in
         AppEnvironment.current
           .apiService
-          .fetchGraphUserEmail(query: NonEmptySet(Query.user(changeEmailQueryFields())))
+          .fetchGraphUserEmailFields(query: NonEmptySet(Query.user(changeEmailQueryFields())))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
 
     self.emailText = userEmailEvent.values().map { $0.me.email }
+    self.emailUnverifiedLabelIsHidden = userEmailEvent.values().map { $0.me.isEmailVerified ?? true }
 
     self.resendVerificationStackViewIsHidden = viewDidLoadProperty.signal.mapConst(true)
 
@@ -190,6 +191,7 @@ ChangeEmailViewModelOutputs {
   public let didFailToChangeEmail: Signal<String, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
   public let emailText: Signal<String, NoError>
+  public let emailUnverifiedLabelIsHidden: Signal<Bool, NoError>
   public let messageBannerViewIsHidden: Signal<Bool, NoError>
   public let onePasswordButtonIsHidden: Signal<Bool, NoError>
   public let onePasswordFindLoginForURLString: Signal<String, NoError>
