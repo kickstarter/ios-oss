@@ -407,7 +407,7 @@ final class FormatTests: TestCase {
       XCTAssertEqual(date?.description, "2018-01-01 05:00:00 +0000")
     }
 
-    withEnvironment() {
+    withEnvironment {
       let date = Format.date(from: dateString, dateFormat: format, timeZone: PST)
       XCTAssertEqual(date?.description, "2018-01-01 08:00:00 +0000")
     }
