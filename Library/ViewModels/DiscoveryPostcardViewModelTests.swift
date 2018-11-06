@@ -15,15 +15,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let deadlineTitleLabelText = TestObserver<String, NoError>()
   internal let fundingProgressBarViewHidden = TestObserver<Bool, NoError>()
   internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
-  internal let generateSelectionFeedback = TestObserver<(), NoError>()
-  internal let generateSuccessFeedback = TestObserver<(), NoError>()
   internal let metadataIcon = TestObserver<UIImage?, NoError>()
   internal let metadataIconTintColor = TestObserver<UIColor, NoError>()
   internal let metadataTextColor = TestObserver<UIColor, NoError>()
   internal let metadataLabelText = TestObserver<String, NoError>()
   internal let metadataViewHidden = TestObserver<Bool, NoError>()
-  internal let notifyDelegateShowLoginTout = TestObserver<Void, NoError>()
-  internal let notifyDelegateShowSaveAlert = TestObserver<Void, NoError>()
   internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
   internal let progressPercentage = TestObserver<Float, NoError>()
   internal let projectImageURL = TestObserver<String?, NoError>()
@@ -34,8 +30,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let projectStateTitleLabelColor = TestObserver<UIColor, NoError>()
   internal let projectStateTitleLabelText = TestObserver<String, NoError>()
   internal let projectStatsStackViewHidden = TestObserver<Bool, NoError>()
-  internal let saveButtonSelected = TestObserver<Bool, NoError>()
-  private let showNotificationDialog = TestObserver<Notification.Name, NoError>()
   internal let socialImageURL = TestObserver<String?, NoError>()
   internal let socialLabelText = TestObserver<String, NoError>()
   internal let socialStackViewHidden = TestObserver<Bool, NoError>()
@@ -54,15 +48,11 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.fundingProgressBarViewHidden.observe(self.fundingProgressBarViewHidden.observer)
     self.vm.outputs.fundingProgressContainerViewHidden
       .observe(self.fundingProgressContainerViewHidden.observer)
-    self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
-    self.vm.outputs.generateSuccessFeedback.observe(self.generateSuccessFeedback.observer)
     self.vm.outputs.metadataIcon.observe(self.metadataIcon.observer)
     self.vm.outputs.metadataTextColor.observe(self.metadataTextColor.observer)
     self.vm.outputs.metadataIconImageViewTintColor.observe(self.metadataIconTintColor.observer)
     self.vm.outputs.metadataLabelText.observe(self.metadataLabelText.observer)
     self.vm.outputs.metadataViewHidden.observe(self.metadataViewHidden.observer)
-    self.vm.outputs.notifyDelegateShowLoginTout.observe(self.notifyDelegateShowLoginTout.observer)
-    self.vm.notifyDelegateShowSaveAlert.observe(self.notifyDelegateShowSaveAlert.observer)
     self.vm.outputs.percentFundedTitleLabelText.observe(self.percentFundedTitleLabelText.observer)
     self.vm.outputs.progressPercentage.observe(self.progressPercentage.observer)
     self.vm.outputs.projectImageURL.map { $0?.absoluteString }.observe(self.projectImageURL.observer)
@@ -74,8 +64,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.projectStateTitleLabelColor.observe(self.projectStateTitleLabelColor.observer)
     self.vm.outputs.projectStateTitleLabelText.observe(self.projectStateTitleLabelText.observer)
     self.vm.outputs.projectStatsStackViewHidden.observe(self.projectStatsStackViewHidden.observer)
-    self.vm.outputs.saveButtonSelected.observe(self.saveButtonSelected.observer)
-    self.vm.outputs.showNotificationDialog.map { $0.name }.observe(self.showNotificationDialog.observer)
     self.vm.outputs.socialImageURL.map { $0?.absoluteString }.observe(self.socialImageURL.observer)
     self.vm.outputs.socialLabelText.observe(self.socialLabelText.observer)
     self.vm.outputs.socialStackViewHidden.observe(self.socialStackViewHidden.observer)
@@ -105,196 +93,6 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, category: nil)
     self.cellAccessibilityLabel.assertValues([project.name])
     self.cellAccessibilityValue.assertValues([project.blurb + ". " + "Project cancelled"])
-  }
-
-  func testSaveAlertNotification() {
-    let project = .template |> Project.lens.personalization.isStarred .~ false
-
-    self.vm.inputs.configureWith(project: project, category: nil)
-    self.vm.inputs.saveButtonTapped(selected: true)
-    self.scheduler.advance(by: .seconds(1))
-    self.notifyDelegateShowSaveAlert.assertValueCount(1)
-  }
-
-  func testGenerateSelectionFeedback() {
-    let project = .template |> Project.lens.personalization.isStarred .~ false
-
-    self.vm.inputs.configureWith(project: project, category: nil)
-    self.vm.inputs.saveButtonTapped(selected: true)
-    self.scheduler.advance()
-    self.generateSelectionFeedback.assertValueCount(1)
-    self.generateSuccessFeedback.assertValueCount(0)
-  }
-
-  func testGenerateSuccessFeedback() {
-    let project = .template |> Project.lens.personalization.isStarred .~ false
-
-    self.vm.inputs.configureWith(project: project, category: nil)
-    self.vm.inputs.saveButtonTapped(selected: false)
-    self.scheduler.advance()
-    self.generateSelectionFeedback.assertValueCount(0)
-    self.generateSuccessFeedback.assertValueCount(1)
-  }
-
-  func testSaveProject_WithError() {
-    let error = ErrorEnvelope(
-      errorMessages: ["Something went wrong."],
-      ksrCode: .UnknownCode,
-      httpCode: 404,
-      exception: nil
-    )
-
-    let project = Project.template
-
-    withEnvironment(apiService: MockService(toggleStarError: error), currentUser: .template) {
-
-      self.vm.inputs.configureWith(project: project, category: nil)
-
-      self.saveButtonSelected.assertValues([false], "Save button is not selected at first.")
-
-      self.vm.inputs.saveButtonTapped(selected: true)
-
-      self.saveButtonSelected.assertValues([false, false],
-                                           "Emits false because the project personalization value is nil.")
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.saveButtonSelected.assertValues([false, false, false], "Emits again with error.")
-    }
-  }
-
-  func testTappedSaveButton_LoggedIn_User() {
-    let project = Project.template
-      |> Project.lens.personalization.isStarred .~ true
-    let toggleSaveResponse = .template
-      |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
-
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse),
-                    currentUser: .template) {
-
-        self.vm.inputs.configureWith(project: project, category: nil)
-
-        self.saveButtonSelected.assertValues([true], "Save button is selected at first.")
-
-        self.vm.inputs.saveButtonTapped(selected: true)
-
-        self.saveButtonSelected.assertValues([true, false], "Emits false immediately.")
-
-        self.scheduler.advance(by: .seconds(1))
-
-        self.saveButtonSelected.assertValues(
-          [true, false],
-          "Save button remains deselected after request."
-        )
-    }
-  }
-
-  func testTappedSaveButton_LoggedIn_User_Debouncing() {
-    let project = Project.template
-      |> Project.lens.personalization.isStarred .~ true
-
-    let toggleSaveResponse = .template
-      |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
-
-    withEnvironment(
-      apiService: MockService(toggleStarResponse: toggleSaveResponse),
-      currentUser: .template) {
-
-        self.vm.inputs.configureWith(project: project, category: nil)
-
-        self.saveButtonSelected.assertValues([true], "Save button is selected at first.")
-
-        self.vm.inputs.saveButtonTapped(selected: true)
-
-        self.saveButtonSelected.assertValues([true, false], "Emits false immediately.")
-
-        self.vm.inputs.saveButtonTapped(selected: true)
-        self.scheduler.advance(by: .milliseconds(500))
-
-        self.vm.inputs.saveButtonTapped(selected: true)
-        self.scheduler.advance(by: .milliseconds(500))
-
-        self.vm.inputs.saveButtonTapped(selected: true)
-        self.scheduler.advance(by: .milliseconds(500))
-
-        self.saveButtonSelected.assertValues(
-          [true, false, true, false, true], "State flips back and forth as button is tapped."
-        )
-
-        self.scheduler.advance(by: .seconds(1))
-
-        self.saveButtonSelected.assertValues(
-          [true, false, true, false, true, false],
-          "Network call is made after 1 second of no taps, value from response is always used"
-        )
-    }
-  }
-
-  func testTappedSaveButton_LoggedOut_User() {
-    let project = Project.template
-      |> Project.lens.personalization.isStarred .~ false
-    let toggleSaveResponse = .template
-      |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ true)
-
-      withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
-
-        self.vm.inputs.configureWith(project: project, category: nil)
-
-        self.saveButtonSelected.assertValues([false], "Save button is not selected for logged out user.")
-
-        self.vm.inputs.saveButtonTapped(selected: true)
-
-        self.saveButtonSelected.assertValues([false],
-                                              "Nothing is emitted when save button tapped while logged out.")
-
-        self.notifyDelegateShowLoginTout.assertValueCount(1,
-                                                "Prompt to login when save button tapped while logged out.")
-
-        AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
-        self.vm.inputs.userSessionStarted()
-
-        self.saveButtonSelected.assertValues([false, true],
-                                              "Once logged in, the save button is selected immediately.")
-
-        self.scheduler.advance(by: .seconds(1))
-
-        self.saveButtonSelected.assertValues([false, true],
-                                             "Save button stays selected after API request.")
-
-        let untoggleSaveResponse = .template
-          |> StarEnvelope.lens.project .~ (project |> Project.lens.personalization.isStarred .~ false)
-
-        withEnvironment(apiService: MockService(toggleStarResponse: untoggleSaveResponse)) {
-          self.vm.inputs.saveButtonTapped(selected: true)
-
-          self.saveButtonSelected.assertValues([false, true, false],
-                                               "Save button is deselected.")
-
-          self.scheduler.advance(by: .seconds(1))
-
-          self.saveButtonSelected.assertValues([false, true, false],
-                                               "The save button remains unselected.")
-      }
-    }
-  }
-
-  func testSaveProjectFromPamphlet() {
-    let project = Project.template
-      |> Project.lens.personalization.isStarred .~ false
-    let toggleSaveResponse = .template
-      |> StarEnvelope.lens.project .~ project
-    let projectUpdated = project
-      |> Project.lens.personalization.isStarred .~ true
-
-    withEnvironment(apiService: MockService(toggleStarResponse: toggleSaveResponse)) {
-      self.vm.inputs.configureWith(project: project, category: nil)
-
-      self.saveButtonSelected.assertValues([false])
-
-      self.vm.inputs.projectFromNotification(project: projectUpdated)
-
-      self.saveButtonSelected.assertValues([false, true])
-    }
   }
 
   func testMetadata() {
@@ -582,34 +380,5 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectCategoryStackViewHidden.assertValue(true)
     self.projectCategoryName.assertValue(KsApi.Category.illustration.name)
     self.projectCategoryViewHidden.assertValue(true)
-  }
-
-  // MARK: Notification Dialog
-  func testShowNotificationDialogEmits_IfStarredProjectsCountIsZero() {
-
-    let project = Project.template
-    let user = User.template |> \.stats.starredProjectsCount .~ 0
-
-    withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(project: project, category: nil)
-      self.vm.inputs.saveButtonTapped(selected: true)
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showNotificationDialog.assertDidEmitValue()
-    }
-  }
-
-  func testShowNotificationDialogDoesNotEmits_IfStarredProjectsCountIsNotZero() {
-
-    let project = Project.template
-    let user = User.template |> \.stats.starredProjectsCount .~ 3
-
-    withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(project: project, category: nil)
-      self.vm.inputs.saveButtonTapped(selected: true)
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showNotificationDialog.assertDidNotEmitValue()
-    }
   }
 }

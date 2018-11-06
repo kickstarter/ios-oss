@@ -301,7 +301,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         self?.socialAvatarImageView.ksr_setImageWithURL(url)
     }
 
-    self.watchProjectViewModel.outputs.showProjectSavedPrompt
+    self.watchProjectViewModel.outputs.showProjectSavedAlert
       .observeForUI()
       .observeValues { [weak self] in
         guard let _self = self else { return }

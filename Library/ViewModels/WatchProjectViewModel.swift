@@ -36,7 +36,7 @@ public protocol WatchProjectViewModelOutputs {
   var showNotificationDialog: Signal<Notification, NoError> { get }
 
   /// Emits when the project has been successfully saved and a prompt should be shown to the user.
-  var showProjectSavedPrompt: Signal<Void, NoError> { get }
+  var showProjectSavedAlert: Signal<Void, NoError> { get }
 }
 
 public protocol WatchProjectViewModelType {
@@ -128,10 +128,9 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
 
     self.goToLoginTout = loggedOutUserTappedSaveButton.ignoreValues()
 
-    self.showProjectSavedPrompt = project
+    self.showProjectSavedAlert = project
       .takeWhen(saveButtonTapped)
-      .filter { $0.personalization.isStarred == true && !$0.endsIn48Hours(
-        today: AppEnvironment.current.dateType.init().date ) }
+      .filter { !$0.endsIn48Hours(today: AppEnvironment.current.dateType.init().date ) }
       .filter { _ in
         !AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert ||
           !AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert
@@ -216,7 +215,7 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
   public let saveButtonAccessibilityValue: Signal<String, NoError>
   public let saveButtonSelected: Signal<Bool, NoError>
   public let showNotificationDialog: Signal<Notification, NoError>
-  public let showProjectSavedPrompt: Signal<Void, NoError>
+  public let showProjectSavedAlert: Signal<Void, NoError>
 
   public var inputs: WatchProjectViewModelInputs { return self }
   public var outputs: WatchProjectViewModelOutputs { return self }

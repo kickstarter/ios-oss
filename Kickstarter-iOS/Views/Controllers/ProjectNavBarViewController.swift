@@ -132,7 +132,7 @@ public final class ProjectNavBarViewController: UIViewController {
         self?.saveButton.generateSelectionFeedback()
     }
 
-    self.watchProjectViewModel.outputs.showProjectSavedPrompt
+    self.watchProjectViewModel.outputs.showProjectSavedAlert
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showProjectStarredPrompt()

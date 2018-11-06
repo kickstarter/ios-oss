@@ -1,14 +1,14 @@
 import Foundation
 
 public struct GraphMutationUnwatchProjectResponseEnvelope: Decodable {
-  public let unwatchProject: UnwatchProject
+  public private(set) var unwatchProject: UnwatchProject
 
   public struct UnwatchProject: Decodable {
-    public let project: Project
+    public private(set) var project: Project
 
     public struct Project: Decodable {
-      public let id: String
-      public let isWatched: Bool
+      public private(set) var id: String
+      public private(set) var isWatched: Bool
     }
   }
 }
