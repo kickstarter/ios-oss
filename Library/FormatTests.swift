@@ -388,6 +388,31 @@ final class FormatTests: TestCase {
     }
   }
 
+  func testDateFromString() {
+    let format = "yyyy-MM"
+    let dateString = "2018-01"
+    let timeZone = UTCTimeZone
+    let PST = TimeZone(abbreviation: "PST")
+    let EST = TimeZone(abbreviation: "EST")!
+    var calEST = Calendar.current
+    calEST.timeZone = EST
+
+    withEnvironment(calendar: calEST) {
+      let date = Format.date(from: dateString, dateFormat: format, timeZone: timeZone)
+      XCTAssertEqual(date?.description, "2018-01-01 00:00:00 +0000")
+    }
+
+    withEnvironment(calendar: calEST) {
+      let date = Format.date(from: dateString, dateFormat: format)
+      XCTAssertEqual(date?.description, "2018-01-01 05:00:00 +0000")
+    }
+
+    withEnvironment() {
+      let date = Format.date(from: dateString, dateFormat: format, timeZone: PST)
+      XCTAssertEqual(date?.description, "2018-01-01 08:00:00 +0000")
+    }
+  }
+
   func testDuration() {
     let now = self.dateType.init()
     let thirtyMins = now.timeIntervalSince1970 + 60 * 30

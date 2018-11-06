@@ -58,26 +58,21 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
 }
 
 private func cardImage(with card: GraphUserCreditCard.CreditCard) -> UIImage? {
-
   return image(named: "icon--" + card.type.lowercased()) ?? image(named: "icon--generic")
 }
 
 private func formatted(dateString: String) -> String {
-
   let date = toDate(dateString: dateString)
   return Format.date(secondsInUTC: date.timeIntervalSince1970, template: "MM-yyyy")
 }
 
 private func toDate(dateString: String) -> Date {
-
-  guard let date = dateFormatter.date(from: dateString) else {
+  // Always use UTC timezone here this date should be timezone agnostic
+  guard let date = Format.date(from: dateString,
+                               dateFormat: "yyyy-MM",
+                               timeZone: UTCTimeZone) else {
     fatalError("Unable to parse date format")
   }
+
   return date
 }
-
-private let dateFormatter: DateFormatter = {
-  let dateFormatter = DateFormatter()
-  dateFormatter.dateFormat = "yyyy-MM"
-  return dateFormatter
-}()
