@@ -189,7 +189,7 @@ platform :ios do
     download_dsyms(
       username: ENV["ITUNES_CONNECT_ACCOUNT"],
       app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
-      team_id: ENV["ITUNES_TEAM_ID"],
+      team_name: ENV["ITUNES_TEAM_NAME"],
       version: "latest"
     )
 

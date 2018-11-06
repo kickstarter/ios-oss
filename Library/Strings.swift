@@ -113,10 +113,10 @@ public enum Strings {
    "Add a new card"
 
    - **en**: "Add a new card"
-   - **de**: "Add a new card"
+   - **de**: "Kreditkarte hinzufügen"
    - **es**: "Añadir una nueva tarjeta"
    - **fr**: "Ajouter une autre carte"
-   - **ja**: "Add a new card"
+   - **ja**: "新しいカードを追加"
   */
   public static func Add_new_card() -> String {
     return localizedString(
@@ -487,10 +487,10 @@ public enum Strings {
    "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience."
 
    - **en**: "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience."
-   - **de**: "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience."
+   - **de**: "Sämtliche auf Kickstarter gespeicherten Zahlungsmethoden sind hier (sicher) hinterlegt."
    - **es**: "Para tu comodidad, aquí se enumeran (de manera absolutamente segura) los métodos de pago que guardaste en Kickstarter."
    - **fr**: "Voici une liste (sécurisée) de tous les moyens de paiement que vous avez ajoutés à votre compte Kickstarter."
-   - **ja**: "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience."
+   - **ja**: "Kickstarter に保存されたお支払い方法は、こちらに (安全に) リストアップされます。"
   */
   public static func Any_payment_methods_you_saved_to_Kickstarter() -> String {
     return localizedString(
@@ -833,10 +833,10 @@ contributeurs"
    "Card ending in %{last_four}"
 
    - **en**: "Card ending in %{last_four}"
-   - **de**: "Card ending in %{last_four}"
+   - **de**: "Kartennummer endet auf %{last_four}"
    - **es**: "Tarjeta que termina en %{last_four}"
    - **fr**: "Numéro de carte se terminant par : %{last_four}"
-   - **ja**: "Card ending in %{last_four}"
+   - **ja**: "下4桁が %{last_four} のカード"
   */
   public static func Card_ending_in_last_four(last_four: String) -> String {
     return localizedString(
@@ -850,10 +850,10 @@ contributeurs"
    "Card number"
 
    - **en**: "Card number"
-   - **de**: "Card number"
+   - **de**: "Kartennummer"
    - **es**: "Número de tarjeta"
    - **fr**: "N° de carte"
-   - **ja**: "Card number"
+   - **ja**: "カード番号"
   */
   public static func Card_number() -> String {
     return localizedString(
@@ -867,10 +867,10 @@ contributeurs"
    "Cardholder name"
 
    - **en**: "Cardholder name"
-   - **de**: "Cardholder name"
+   - **de**: "Name des Karteninhabers"
    - **es**: "Nombre del titular de la tarjeta"
    - **fr**: "Nom du titulaire"
-   - **ja**: "Cardholder name"
+   - **ja**: "カード名義"
   */
   public static func Cardholder_name() -> String {
     return localizedString(
@@ -1445,10 +1445,10 @@ contributeurs"
    "Expires %{expiration_date}"
 
    - **en**: "Expires %{expiration_date}"
-   - **de**: "Expires %{expiration_date}"
+   - **de**: "Ablaufdatum: %{expiration_date}"
    - **es**: "Caduca %{expiration_date}"
    - **fr**: "Expiration : %{expiration_date}"
-   - **ja**: "Expires %{expiration_date}"
+   - **ja**: "有効期限 %{expiration_date}"
   */
   public static func Credit_card_expiration(expiration_date: String) -> String {
     return localizedString(
@@ -2023,10 +2023,10 @@ contributeurs"
    "Email must be a valid email address."
 
    - **en**: "Email must be a valid email address."
-   - **de**: "Email must be a valid email address."
+   - **de**: "E-Mail-Adresse muss gültig sein."
    - **es**: "El correo electrónico debe tener una dirección de correo electrónico válida."
    - **fr**: "L'adresse e-mail doit être valide."
-   - **ja**: "Email must be a valid email address."
+   - **ja**: "有効なメールアドレスを入力してください。"
   */
   public static func Email_must_be_a_valid_email_address() -> String {
     return localizedString(
@@ -2125,10 +2125,10 @@ contributeurs"
    "Expiration"
 
    - **en**: "Expiration"
-   - **de**: "Expiration"
+   - **de**: "Verfallsdatum"
    - **es**: "Vencimiento"
    - **fr**: "Expiration"
-   - **ja**: "Expiration"
+   - **ja**: "有効期限"
   */
   public static func Expiration() -> String {
     return localizedString(
@@ -3879,10 +3879,10 @@ with friends."
    "MM/YY"
 
    - **en**: "MM/YY"
-   - **de**: "MM/YY"
+   - **de**: "MM/JJ"
    - **es**: "MM/AA"
    - **fr**: "MM/AA"
-   - **ja**: "MM/YY"
+   - **ja**: "月月/年年"
   */
   public static func MMYY() -> String {
     return localizedString(
@@ -4647,10 +4647,10 @@ n'ont rien soutenu."
    "Your password must be at least 6 characters long."
 
    - **en**: "Your password must be at least 6 characters long."
-   - **de**: "Your password must be at least 6 characters long."
+   - **de**: "Dein Passwort muss mindestens 6 Zeichen lang sein."
    - **es**: "Tu contraseña debe tener al menos 6 caracteres."
    - **fr**: "Votre mot de passe doit contenir au moins 6 caractères."
-   - **ja**: "Your password must be at least 6 characters long."
+   - **ja**: "パスワードは6文字以上で入力してください。"
   */
   public static func Password_min_length_message() -> String {
     return localizedString(
@@ -4681,10 +4681,10 @@ n'ont rien soutenu."
    "New passwords must match."
 
    - **en**: "New passwords must match."
-   - **de**: "New passwords must match."
+   - **de**: "Neues Passwort stimmt nicht überein."
    - **es**: "Las nuevas contraseñas deben coincidir."
    - **fr**: "Le nouveau mot de passe doit être identique."
-   - **ja**: "New passwords must match."
+   - **ja**: "新しいパスワードが一致しません。"
   */
   public static func Passwords_matching_message() -> String {
     return localizedString(
@@ -5925,10 +5925,10 @@ daring ideas."
    "Security code"
 
    - **en**: "Security code"
-   - **de**: "Security code"
+   - **de**: "Sicherheitscode"
    - **es**: "Código de seguridad"
    - **fr**: "Code de sécurité"
-   - **ja**: "Security code"
+   - **ja**: "セキュリティーコード"
   */
   public static func Security_code() -> String {
     return localizedString(
@@ -6027,10 +6027,10 @@ daring ideas."
    "Send verification email"
 
    - **en**: "Send verification email"
-   - **de**: "Send verification email"
-   - **es**: "Send verification email"
+   - **de**: "Verifizeirungs-E-Mail senden"
+   - **es**: "Enviar correo de verificación"
    - **fr**: "Envoyer un e-mail de vérification"
-   - **ja**: "Send verification email"
+   - **ja**: "認証メールを送信する"
   */
   public static func Send_verfication_email() -> String {
     return localizedString(
@@ -7287,10 +7287,10 @@ catch your eye?"
    "We've been unable to send email to this address. Please make sure it is typed correctly."
 
    - **en**: "We've been unable to send email to this address. Please make sure it is typed correctly."
-   - **de**: "We've been unable to send email to this address. Please make sure it is typed correctly."
-   - **es**: "We've been unable to send email to this address. Please make sure it is typed correctly."
+   - **de**: "Wir konnten keine E-Mails an diese Adresse senden. Bitte prüfe, ob sie richtig eingegeben wurde."
+   - **es**: "No pudimos enviar el correo electrónico a esta dirección. Asegúrate de que esté escrita correctamente."
    - **fr**: "Échec de l'envoi. Veuillez vérifier l'orthographe de votre adresse e-mail."
-   - **ja**: "We've been unable to send email to this address. Please make sure it is typed correctly."
+   - **ja**: "このアドレスにメールを送信できませんでした。メールアドレスが正確に入力されていることをご確認ください。"
   */
   public static func We_ve_been_unable_to_send_email() -> String {
     return localizedString(
@@ -7370,6 +7370,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Welcome_to_our_library_Peruse_the_stacks_with_us",
       defaultValue: "Welcome to our library. Peruse the stacks with us.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "We'll ask you to sign back into the Kickstarter app once you've changed your password."
+
+   - **en**: "We'll ask you to sign back into the Kickstarter app once you've changed your password."
+   - **de**: "Sobald du dein Passwort geändert hast, wirst du aufgefordert, dich erneut auf der Kickstarter App anzumelden."
+   - **es**: "Te pediremos que inicies sesión de nuevo en la aplicación de Kickstarter una vez que hayas cambiado tu contraseña."
+   - **fr**: "Une fois votre mot de passe changé, vous serez invité à vous reconnecter à l'application Kickstarter."
+   - **ja**: "We'll ask you to sign back into the Kickstarter app once you've changed your password."
+  */
+  public static func Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password() -> String {
+    return localizedString(
+      key: "Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password",
+      defaultValue: "We'll ask you to sign back into the Kickstarter app once you've changed your password.",
       count: nil,
       substitutions: [:]
     )
@@ -7803,10 +7820,10 @@ Veuillez réessayer ultérieurement."
    "Zip code"
 
    - **en**: "Zip code"
-   - **de**: "Zip code"
+   - **de**: "Postleitzahl"
    - **es**: "Código postal"
    - **fr**: "Code postal"
-   - **ja**: "Zip code"
+   - **ja**: "郵便番号"
   */
   public static func Zip_code() -> String {
     return localizedString(
@@ -12838,7 +12855,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -16062,7 +16079,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -19071,7 +19088,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -19893,7 +19910,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

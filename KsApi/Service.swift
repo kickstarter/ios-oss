@@ -82,6 +82,11 @@ public struct Service: ServiceType {
       return request(.changePaymentMethod(project: project))
   }
 
+  public func changeCurrency(input: ChangeCurrencyInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return applyMutation(mutation: UpdateUserProfileMutation(input: input))
+  }
+
   public func createPledge(project: Project,
                            amount: Double,
                            reward: Reward?,

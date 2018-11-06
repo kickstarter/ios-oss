@@ -1,11 +1,6 @@
 import Library
 import KsApi
 
-public struct SettingsCellValue {
-  let user: User?
-  let cellType: SettingsCellTypeProtocol
-}
-
 final class SettingsDataSource: ValueCellDataSource {
   func configureRows(with user: User) {
 

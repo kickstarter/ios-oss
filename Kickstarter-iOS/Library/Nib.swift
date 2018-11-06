@@ -11,6 +11,8 @@ public enum Nib: String {
   case LoadingBarButtonItemView
   case PaymentMethodsFooterView
   case RewardCell
+  case SettingsCurrencyCell
+  case SettingsCurrencyPickerCell
   case SettingsHeaderView
   case SettingsNewslettersCell
   case SettingsNewslettersTopCell

@@ -1,5 +1,4 @@
 import UIKit
-import Library
 
 public enum MessageBannerType {
   case success
@@ -9,24 +8,20 @@ public enum MessageBannerType {
   var backgroundColor: UIColor {
     switch self {
     case .success:
-      return UIColor.ksr_cobalt_500
+      return .ksr_cobalt_500
     case .error:
-      return UIColor.ksr_apricot_600
+      return .ksr_apricot_600
     case .info:
-      return UIColor.ksr_cobalt_500
+      return .ksr_cobalt_500
     }
   }
 
-  var iconImage: UIImage? {
+  var iconImageName: String? {
     switch self {
     case .success:
-      return image(named: "icon--confirmation",
-                   inBundle: Bundle.framework,
-                   compatibleWithTraitCollection: nil)
+      return "icon--confirmation"
     case .error:
-      return image(named: "icon--alert",
-                   inBundle: Bundle.framework,
-                   compatibleWithTraitCollection: nil)
+      return "icon--alert"
     default:
       return nil
     }
@@ -37,7 +32,7 @@ public enum MessageBannerType {
     case .success, .info:
       return .white
     case .error:
-      return UIColor.ksr_text_dark_grey_900
+      return .ksr_text_dark_grey_900
     }
   }
 

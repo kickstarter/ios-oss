@@ -36,11 +36,8 @@ public protocol DiscoveryPostcardViewModelInputs {
   /// Call when the cell has received a project notification.
   func projectFromNotification(project: Project?)
 
-  /// Call to set the project category experiment variable
-  func enableProjectCategoryExperiment(_ shouldEnable: Bool)
-
   /// Call when save button is tapped.
-  func saveButtonTapped()
+  func saveButtonTapped(selected: Bool)
 
   /// Call when the cell has received a user session ended notification.
   func userSessionEnded()
@@ -74,6 +71,12 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean to determine whether or not to display funding progress container view.
   var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
 
+  /// Emits a boolean to determine whether to create haptics
+  var generateSelectionFeedback: Signal<(), NoError> { get }
+
+  /// Emits a boolean to determine whether to create haptics
+  var generateSuccessFeedback: Signal<(), NoError> { get }
+
   /// Emits metadata label text
   var metadataLabelText: Signal<String, NoError> { get }
 
@@ -90,10 +93,10 @@ public protocol DiscoveryPostcardViewModelOutputs {
   var metadataViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits when we should notify the delegate that the heart button was tapped.
-  var notifyDelegateShowSaveAlert: Signal<Void, NoError> { get }
+  var notifyDelegateShowSaveAlert: Signal<(), NoError> { get }
 
   /// Emits when we should notify delegate that heart button was tapped by logged out user.
-  var notifyDelegateShowLoginTout: Signal<Void, NoError> { get }
+  var notifyDelegateShowLoginTout: Signal<(), NoError> { get }
 
   /// Emits the text for the pledged title label.
   var percentFundedTitleLabelText: Signal<String, NoError> { get }
@@ -266,15 +269,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       self.projectCategoryViewHidden.signal,
       self.projectIsStaffPickLabelHidden.signal)
 
-    self.projectCategoryStackViewHidden = Signal.combineLatest(
-      projectCategoryViewsHidden,
-      self.enableProjectCategoryExperimentProperty.signal)
-      .map { projectCategoryViews, experimentEnabled in
-        if experimentEnabled {
+    self.projectCategoryStackViewHidden = projectCategoryViewsHidden
+      .map { projectCategoryViews in
           return projectCategoryViews.0 && projectCategoryViews.1
-        }
-
-        return true
       }
 
     self.projectStatsStackViewHidden = self.projectStateStackViewHidden.map(negate)
@@ -388,6 +385,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     projectSaved
       .observeValues { AppEnvironment.current.koala.trackProjectSave($0, context: .discovery) }
 
+    self.generateSuccessFeedback = self.saveButtonTappedProperty.signal.filter(isFalse).ignoreValues()
+    self.generateSelectionFeedback = self.saveButtonTappedProperty.signal.filter(isTrue).ignoreValues()
+
     // a11y
     self.cellAccessibilityLabel = configuredProject.map(Project.lens.name.view)
 
@@ -408,9 +408,9 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectFromNotificationProperty.value = project
   }
 
-  fileprivate let saveButtonTappedProperty = MutableProperty(())
-  public func saveButtonTapped() {
-    self.saveButtonTappedProperty.value = ()
+  fileprivate let saveButtonTappedProperty = MutableProperty(false)
+  public func saveButtonTapped(selected: Bool) {
+    self.saveButtonTappedProperty.value = selected
   }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())
@@ -423,11 +423,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.userSessionEndedProperty.value = ()
   }
 
-  fileprivate let enableProjectCategoryExperimentProperty = MutableProperty<Bool>(false)
-  public func enableProjectCategoryExperiment(_ shouldEnable: Bool) {
-    self.enableProjectCategoryExperimentProperty.value = shouldEnable
-  }
-
   public let backersTitleLabelText: Signal<String, NoError>
   public let backersSubtitleLabelText: Signal<String, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
@@ -436,13 +431,15 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
+  public let generateSuccessFeedback: Signal<(), NoError>
+  public let generateSelectionFeedback: Signal<(), NoError>
   public let metadataLabelText: Signal<String, NoError>
   public let metadataIcon: Signal<UIImage?, NoError>
   public let metadataIconImageViewTintColor: Signal<UIColor, NoError>
   public let metadataTextColor: Signal<UIColor, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
-  public let notifyDelegateShowLoginTout: Signal<Void, NoError>
-  public let notifyDelegateShowSaveAlert: Signal<Void, NoError>
+  public let notifyDelegateShowLoginTout: Signal<(), NoError>
+  public let notifyDelegateShowSaveAlert: Signal<(), NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<URL?, NoError>

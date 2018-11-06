@@ -16,7 +16,7 @@ public final class Koala {
   fileprivate let device: UIDeviceType
   fileprivate let distinctId: String
   internal let loggedInUser: User?
-  private var preferredContentSizeCategory: UIContentSizeCategory
+  private var preferredContentSizeCategory: UIContentSizeCategory?
   private var preferredContentSizeCategoryObserver: Any?
   fileprivate let screen: UIScreenType
 
@@ -328,8 +328,7 @@ public final class Koala {
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
-    distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString,
-    preferredContentSizeCategory: UIContentSizeCategory = UIApplication.shared.preferredContentSizeCategory) {
+    distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString) {
       self.bundle = bundle
       self.client = client
       self.config = config
@@ -337,17 +336,26 @@ public final class Koala {
       self.loggedInUser = loggedInUser
       self.screen = screen
       self.distinctId = distinctId
-      self.preferredContentSizeCategory = preferredContentSizeCategory
 
-      self.observePreferredContentSizeCategory()
+      self.updateAndObservePreferredContentSizeCategory()
   }
 
-  private func observePreferredContentSizeCategory() {
+  private func updateAndObservePreferredContentSizeCategory() {
+    let update = { [weak self] in
+      self?.preferredContentSizeCategory = UIApplication.shared.preferredContentSizeCategory
+    }
+
     self.preferredContentSizeCategoryObserver = NotificationCenter.default.addObserver(
       forName: UIContentSizeCategory.didChangeNotification,
       object: nil,
-      queue: OperationQueue.main) { [weak self] _ in
-        self?.preferredContentSizeCategory = UIApplication.shared.preferredContentSizeCategory
+      queue: OperationQueue.main) { _ in update() }
+
+    if Thread.isMainThread {
+      update()
+    } else {
+      DispatchQueue.main.async {
+        update()
+      }
     }
   }
 

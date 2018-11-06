@@ -33,7 +33,6 @@ public struct DiscoveryParams {
   public enum Sort: String, Argo.Decodable {
     case endingSoon = "end_date"
     case magic
-    case mostFunded = "most_funded"
     case newest
     case popular = "popularity"
   }

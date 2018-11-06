@@ -1,6 +1,16 @@
 import KsApi
 import UIKit
 
+public struct SettingsNotificationCellValue {
+  public let cellType: SettingsNotificationCellType
+  public let user: User
+
+  public init(cellType: SettingsNotificationCellType, user: User) {
+    self.cellType = cellType
+    self.user = user
+  }
+}
+
 public enum SettingsNotificationSectionType: Int {
   case backedProjects
   case creator
