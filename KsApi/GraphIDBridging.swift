@@ -8,7 +8,6 @@ public protocol GraphIDBridging {
 
 extension GraphIDBridging {
   public var graphID: String {
-    //swiftlint:disable:next force_unwrapping
-    return "\(type(of: self).modelName)-\(self.id)".data(using: .utf8)!.base64EncodedString()
+    return Data(bytes: "\(type(of: self).modelName)-\(self.id)".utf8).base64EncodedString()
   }
 }
