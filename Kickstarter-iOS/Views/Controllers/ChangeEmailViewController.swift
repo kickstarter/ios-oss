@@ -95,7 +95,7 @@ internal final class ChangeEmailViewController: UIViewController {
       |> settingsTitleLabelStyle
 
     _ = resendVerificationStackView
-      |> \.isHidden .~ false
+      |> \.isHidden .~ true
 
     _ = passwordTextField
       |> passwordFieldStyle
