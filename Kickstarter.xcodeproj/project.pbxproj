@@ -897,6 +897,11 @@
 		D08A817A1DFAACF8000128DB /* LiveStreamEventDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A901DF9F0EF00D7A7C1 /* LiveStreamEventDetailsViewModel.swift */; };
 		D08A817B1DFAAD04000128DB /* LiveStreamContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */; };
 		D08A817C1DFAAD08000128DB /* LiveStreamCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */; };
+		D08CD1C021910C97009F89F0 /* GraphIDBridging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */; };
+		D08CD1F921910DF5009F89F0 /* UnwatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1F821910DF5009F89F0 /* UnwatchProjectMutation.swift */; };
+		D08CD1FB21910E39009F89F0 /* UnwatchProjectInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1FA21910E39009F89F0 /* UnwatchProjectInput.swift */; };
+		D08CD1FD21910F23009F89F0 /* GraphMutationUnwatchProjectResponseEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1FC21910F23009F89F0 /* GraphMutationUnwatchProjectResponseEnvelope.swift */; };
+		D08CD1FF21913166009F89F0 /* WatchProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */; };
 		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B45B6F1EF858DE0020A8DA /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D042780C1EEB08EA00600E9C /* Prelude_UIKit.framework */; };
@@ -2642,6 +2647,11 @@
 		D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClearNavigationBar.swift; sourceTree = "<group>"; };
 		D08A81711DFAA815000128DB /* LiveStreamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewController.swift; sourceTree = "<group>"; };
 		D08A81721DFAA815000128DB /* LiveStreamCountdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewController.swift; sourceTree = "<group>"; };
+		D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphIDBridging.swift; sourceTree = "<group>"; };
+		D08CD1F821910DF5009F89F0 /* UnwatchProjectMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnwatchProjectMutation.swift; sourceTree = "<group>"; };
+		D08CD1FA21910E39009F89F0 /* UnwatchProjectInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnwatchProjectInput.swift; sourceTree = "<group>"; };
+		D08CD1FC21910F23009F89F0 /* GraphMutationUnwatchProjectResponseEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationUnwatchProjectResponseEnvelope.swift; sourceTree = "<group>"; };
+		D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectViewModel.swift; sourceTree = "<group>"; };
 		D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSource.swift; sourceTree = "<group>"; };
 		D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelope.swift; sourceTree = "<group>"; };
 		D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -2943,6 +2953,7 @@
 			isa = PBXGroup;
 			children = (
 				D6ED1B3C216D617E007F7547 /* inputs */,
+				D08CD1F821910DF5009F89F0 /* UnwatchProjectMutation.swift */,
 				D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */,
 				D77743E2217A2D67008D679F /* UpdateUserProfileMutation .swift */,
 				D6B686EA2191FEEE005F5DA7 /* UserSendEmailVerificationMutation.swift */,
@@ -4096,6 +4107,7 @@
 				A7ED1FA81E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift */,
 				59673CBE1D50EE9B0035AFD9 /* VideoViewModel.swift */,
 				A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */,
+				D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
 			);
@@ -4105,12 +4117,11 @@
 		D01587511EEB2DE4006E7684 /* KsApi */ = {
 			isa = PBXGroup;
 			children = (
-				7798B5292174F3BC008BC50D /* queries */,
-				775DFADB2162A56D00620CED /* mutations */,
 				D01587531EEB2DE4006E7684 /* Info.plist */,
+				D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */,
+				775DFA9C215E758400620CED /* GraphMutation.swift */,
 				D67F29351F68333800E399A6 /* GraphSchema.swift */,
 				D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */,
-				775DFA9C215E758400620CED /* GraphMutation.swift */,
 				D01587761EEB2ED6006E7684 /* MockService.swift */,
 				D01588261EEB2ED7006E7684 /* ServerConfig.swift */,
 				D01588271EEB2ED7006E7684 /* Service.swift */,
@@ -4121,6 +4132,8 @@
 				D01587691EEB2ED6006E7684 /* extensions */,
 				D015876B1EEB2ED6006E7684 /* lib */,
 				D01587771EEB2ED6006E7684 /* models */,
+				775DFADB2162A56D00620CED /* mutations */,
+				7798B5292174F3BC008BC50D /* queries */,
 			);
 			path = KsApi;
 			sourceTree = "<group>";
@@ -4190,6 +4203,7 @@
 				D01587921EEB2ED6006E7684 /* FindFriendsEnvelopeTests.swift */,
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
 				D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */,
+				D08CD1FC21910F23009F89F0 /* GraphMutationUnwatchProjectResponseEnvelope.swift */,
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
 				D6ED1B38216D50BE007F7547 /* GraphUser.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
@@ -4469,6 +4483,7 @@
 				D0467DFB218A709A004831E5 /* WatchProjectInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
+				D08CD1FA21910E39009F89F0 /* UnwatchProjectInput.swift */,
 				D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */,
 			);
 			path = inputs;
@@ -5634,6 +5649,7 @@
 				0156B4191D10B419000C4252 /* UIAlertController.swift in Sources */,
 				A757EAF01D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */,
 				A7CC13D91D00E6CF00035C52 /* FindFriendsStatsCellViewModel.swift in Sources */,
+				D08CD1FF21913166009F89F0 /* WatchProjectViewModel.swift in Sources */,
 				A77A95411E44DE2200733D03 /* LiveStreamDiscoveryLiveNowCellViewModel.swift in Sources */,
 				D6B4EFC6210686270079159D /* SettingsNewslettersViewModel.swift in Sources */,
 				018422BB1D2C483000CA7566 /* DashboardTitleViewViewModel.swift in Sources */,
@@ -6300,6 +6316,7 @@
 				D0158A2F1EEB30A2006E7684 /* User.MemberDataTemplates.swift in Sources */,
 				D015883D1EEB2ED7006E7684 /* Route.swift in Sources */,
 				D0158A2B1EEB30A2006E7684 /* UpdateDraftTemplates.swift in Sources */,
+				D08CD1FB21910E39009F89F0 /* UnwatchProjectInput.swift in Sources */,
 				D015888F1EEB2ED7006E7684 /* CreatePledgeEnvelopeLenses.swift in Sources */,
 				D0158A531EEB3734006E7684 /* Secrets.swift in Sources */,
 				D01588A71EEB2ED7006E7684 /* Project.MemberDataLenses.swift in Sources */,
@@ -6309,6 +6326,7 @@
 				D015887F1EEB2ED7006E7684 /* Activity.MemberDataLenses.swift in Sources */,
 				D015889F1EEB2ED7006E7684 /* MessageLenses.swift in Sources */,
 				D0158A121EEB30A2006E7684 /* CreatePledgeEnvelopeTemplates.swift in Sources */,
+				D08CD1C021910C97009F89F0 /* GraphIDBridging.swift in Sources */,
 				D015888D1EEB2ED7006E7684 /* ConfigLenses.swift in Sources */,
 				D0158A1E1EEB30A2006E7684 /* ProjectStatsEnvelope.FundingDateStatsTemplates.swift in Sources */,
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
@@ -6379,7 +6397,9 @@
 				D01589011EEB2ED7006E7684 /* Project.Video.swift in Sources */,
 				D0158A1A1EEB30A2006E7684 /* Project.PhotoTemplates.swift in Sources */,
 				D01588B51EEB2ED7006E7684 /* ProjectNotificationLenses.swift in Sources */,
+				D08CD1FD21910F23009F89F0 /* GraphMutationUnwatchProjectResponseEnvelope.swift in Sources */,
 				D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */,
+				D08CD1F921910DF5009F89F0 /* UnwatchProjectMutation.swift in Sources */,
 				D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */,
 				D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */,
 				D0158A4D1EEB3220006E7684 /* MockService.swift in Sources */,

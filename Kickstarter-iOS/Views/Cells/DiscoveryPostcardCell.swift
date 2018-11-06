@@ -15,6 +15,7 @@ internal protocol DiscoveryPostcardCellDelegate: class {
 
 internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
+  private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
   internal weak var delegate: DiscoveryPostcardCellDelegate?
 
   @IBOutlet fileprivate weak var cardView: UIView!
@@ -54,40 +55,44 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   internal override func awakeFromNib() {
     if let categoryView = DiscoveryProjectCategoryView.fromNib(nib: Nib.DiscoveryProjectCategoryView) {
-      projectCategoryView = categoryView
+      self.projectCategoryView = categoryView
 
-      projectCategoryView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-      projectCategoryView.setContentHuggingPriority(.required, for: .horizontal)
+      self.projectCategoryView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+      self.projectCategoryView.setContentHuggingPriority(.required, for: .horizontal)
 
-      projectCategoriesStackView.addArrangedSubview(projectCategoryView)
+      projectCategoriesStackView.addArrangedSubview(self.projectCategoryView)
     }
 
     if let staffPickView = DiscoveryProjectCategoryView.fromNib(nib: Nib.DiscoveryProjectCategoryView) {
-      projectIsStaffPickView = staffPickView
+      self.projectIsStaffPickView = staffPickView
 
-      projectIsStaffPickView.setContentCompressionResistancePriority(.required, for: .horizontal)
-      projectIsStaffPickView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+      self.projectIsStaffPickView.setContentCompressionResistancePriority(.required, for: .horizontal)
+      self.projectIsStaffPickView.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
-      projectCategoriesStackView.addArrangedSubview(projectIsStaffPickView)
+      projectCategoriesStackView.addArrangedSubview(self.projectIsStaffPickView)
     }
 
     self.saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionStarted()
+        self?.watchProjectViewModel.inputs.userSessionStarted()
     }
 
     self.sessionEndedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionEnded()
+        self?.watchProjectViewModel.inputs.userSessionEnded()
     }
 
     self.projectSavedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
         notification in
-        self?.viewModel.inputs.projectFromNotification(project: notification.userInfo?["project"] as? Project)
+        self?.watchProjectViewModel.inputs.projectFromNotification(
+          project: notification.userInfo?["project"] as? Project
+        )
       }
+
+    self.watchProjectViewModel.inputs.awakeFromNib()
 
     super.awakeFromNib()
   }
@@ -226,26 +231,28 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.projectStatsStackView.rac.hidden = self.viewModel.outputs.projectStatsStackViewHidden
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
-    self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
+    self.saveButton.rac.selected = self.watchProjectViewModel.outputs.saveButtonSelected
     self.projectIsStaffPickView.rac.hidden = viewModel.outputs.projectIsStaffPickLabelHidden
     self.projectCategoryView.rac.hidden = viewModel.outputs.projectCategoryViewHidden
     self.projectCategoriesStackView.rac.hidden = viewModel.outputs.projectCategoryStackViewHidden
 
-    projectIsStaffPickView.configureWith(name: Strings.Projects_We_Love(), imageNameString: "icon--small-k")
+    self.projectIsStaffPickView.configureWith(
+      name: Strings.Projects_We_Love(), imageNameString: "icon--small-k"
+    )
 
-    self.viewModel.outputs.generateSuccessFeedback
+    self.watchProjectViewModel.outputs.generateSuccessFeedback
       .observeForUI()
       .observeValues { [weak self] in
         self?.saveButton.generateSuccessFeedback()
       }
 
-    self.viewModel.outputs.generateSelectionFeedback
+    self.watchProjectViewModel.outputs.generateSelectionFeedback
       .observeForUI()
       .observeValues { [weak self]  in
         self?.saveButton.generateSelectionFeedback()
     }
 
-    viewModel.outputs.projectCategoryName
+    self.viewModel.outputs.projectCategoryName
       .signal
       .observeForUI()
       .observeValues { [weak self] (name) in
@@ -277,7 +284,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         self?.projectImageView.ksr_setImageWithURL(url)
     }
 
-    self.viewModel.outputs.showNotificationDialog
+    self.watchProjectViewModel.outputs.showNotificationDialog
       .observeForUI()
       .observeValues { n in
         NotificationCenter.default.post(n)
@@ -294,14 +301,14 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         self?.socialAvatarImageView.ksr_setImageWithURL(url)
     }
 
-    self.viewModel.outputs.notifyDelegateShowSaveAlert
+    self.watchProjectViewModel.outputs.showProjectSavedPrompt
       .observeForUI()
       .observeValues { [weak self] in
         guard let _self = self else { return }
         _self.delegate?.discoveryPostcardCellProjectSaveAlert()
     }
 
-    self.viewModel.outputs.notifyDelegateShowLoginTout
+    self.watchProjectViewModel.outputs.goToLoginTout
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let _self = self else { return }
@@ -311,6 +318,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value: DiscoveryProjectCellRowValue) {
     self.viewModel.inputs.configureWith(project: value.project, category: value.category)
+    self.watchProjectViewModel.inputs.configure(with: value.project)
   }
 
   internal override func layoutSubviews() {
@@ -326,6 +334,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   }
 
   @objc fileprivate func saveButtonTapped(_ button: UIButton) {
-    self.viewModel.inputs.saveButtonTapped(selected: button.isSelected)
+    self.watchProjectViewModel.inputs.saveButtonTapped(selected: button.isSelected)
   }
 }

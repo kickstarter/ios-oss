@@ -1,6 +1,6 @@
 import Foundation
 
-public struct WatchProjectMutation<T: GraphMutationInput>: GraphMutation {
+public struct UnwatchProjectMutation<T: GraphMutationInput>: GraphMutation {
   var input: T
 
   public init(input: T) {
@@ -9,8 +9,8 @@ public struct WatchProjectMutation<T: GraphMutationInput>: GraphMutation {
 
   public var description: String {
     let desc = """
-    mutation watchProject($input: WatchProjectInput!) {
-      watchProject(input: $input) {
+    mutation unwatchProject($input: UnwatchProjectInput!) {
+      unwatchProject(input: $input) {
         clientMutationId
         project {
           id

@@ -1,9 +1,9 @@
 import Foundation
 
-public struct GraphMutationWatchProjectResponseEnvelope: Decodable {
-  public let watchProject: WatchProject
+public struct GraphMutationUnwatchProjectResponseEnvelope: Decodable {
+  public let unwatchProject: UnwatchProject
 
-  public struct WatchProject: Decodable {
+  public struct UnwatchProject: Decodable {
     public let project: Project
 
     public struct Project: Decodable {
