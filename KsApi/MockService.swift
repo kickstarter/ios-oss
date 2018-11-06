@@ -1143,7 +1143,8 @@ internal struct MockService: ServiceType {
       )
   }
 
-  internal func sendVerificationEmail(input: EmptyInput) -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+  internal func sendVerificationEmail(input: EmptyInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
 
     if let error = sendEmailVerificationError {
       return SignalProducer(error: error)
