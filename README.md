@@ -15,6 +15,7 @@ and read more about our journey to open source [here](https://kickstarter.engine
 
 1. [Download](https://developer.apple.com/xcode/download/) the Xcode 9 release.
 1. Clone this repository.
+1. Run `bundle install` to install dependencies.
 1. Run `make bootstrap` to install tools and dependencies.
 1. Run `make test-all` to build and run tests on all platforms.  
 
