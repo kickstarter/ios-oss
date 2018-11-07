@@ -4,15 +4,16 @@ import ReactiveSwift
 import Result
 
 public protocol ChangeEmailViewModelInputs {
-  func saveButtonTapped(newEmail: String?, password: String?)
   func emailFieldDidEndEditing(email: String?)
   func emailFieldTextDidChange(text: String?)
   func onePasswordButtonTapped()
   func onePasswordFound(password: String?)
   func onePassword(isAvailable available: Bool)
   func passwordFieldDidEndEditing(password: String?)
-  func submitForm(newEmail: String?, password: String?)
   func passwordFieldTextDidChange(text: String?)
+  func resendVerificationEmailButtonTapped()
+  func saveButtonTapped(newEmail: String?, password: String?)
+  func submitForm(newEmail: String?, password: String?)
   func textFieldShouldReturn(with returnKeyType: UIReturnKeyType)
   func viewDidLoad()
 }
@@ -21,6 +22,8 @@ public protocol ChangeEmailViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var didChangeEmail: Signal<Void, NoError> { get }
   var didFailToChangeEmail: Signal<String, NoError> { get }
+  var didFailToSendVerificationEmail: Signal<String, NoError> { get }
+  var didSendVerificationEmail: Signal<Void, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
   var emailText: Signal<String, NoError> { get }
   var messageLabelViewHidden: Signal<Bool, NoError> { get }
@@ -34,6 +37,7 @@ public protocol ChangeEmailViewModelOutputs {
   var shouldSubmitForm: Signal<Void, NoError> { get }
   var unverifiedEmailLabelHidden: Signal<Bool, NoError> { get }
   var warningMessageLabelHidden: Signal<Bool, NoError> { get }
+  var verificationEmailButtonTitle: Signal<String, NoError> { get }
 }
 
 public protocol ChangeEmailViewModelType {
@@ -68,6 +72,18 @@ ChangeEmailViewModelOutputs {
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }.logEvents()
+
+    let resendEmailVerificationEvent = self.resendVerificationEmailButtonProperty.signal
+      .switchMap { _ in
+        AppEnvironment.current.apiService.sendVerificationEmail(input: EmptyInput())
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
+
+    self.didSendVerificationEmail = resendEmailVerificationEvent.values().ignoreValues()
+
+    self.didFailToSendVerificationEmail = resendEmailVerificationEvent.errors()
+      .map { $0.localizedDescription }
 
     self.emailText = userEmailEvent.values().map { $0.me.email }
 
@@ -139,6 +155,11 @@ ChangeEmailViewModelOutputs {
     self.didFailToChangeEmail = changeEmailEvent.errors()
       .map { $0.localizedDescription  }
 
+    self.verificationEmailButtonTitle = self.viewDidLoadProperty.signal.map { _ in
+      guard let user = AppEnvironment.current.currentUser else { return "" }
+      return user.isCreator ? Strings.Resend_verification_email() : Strings.Send_verfication_email()
+    }
+
     self.activityIndicatorShouldShow = Signal.merge(
       self.shouldSubmitForm.signal.mapConst(true),
       self.didChangeEmail.mapConst(false),
@@ -180,6 +201,11 @@ ChangeEmailViewModelOutputs {
     self.passwordProperty.value = text
   }
 
+  private let resendVerificationEmailButtonProperty = MutableProperty(())
+  public func resendVerificationEmailButtonTapped() {
+    self.resendVerificationEmailButtonProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -208,6 +234,8 @@ ChangeEmailViewModelOutputs {
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let didChangeEmail: Signal<Void, NoError>
   public let didFailToChangeEmail: Signal<String, NoError>
+  public let didFailToSendVerificationEmail: Signal<String, NoError>
+  public let didSendVerificationEmail: Signal<Void, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
   public let emailText: Signal<String, NoError>
   public let messageLabelViewHidden: Signal<Bool, NoError>
@@ -221,6 +249,7 @@ ChangeEmailViewModelOutputs {
   public let shouldSubmitForm: Signal<Void, NoError>
   public let unverifiedEmailLabelHidden: Signal<Bool, NoError>
   public let warningMessageLabelHidden: Signal<Bool, NoError>
+  public let verificationEmailButtonTitle: Signal<String, NoError>
 
   public var inputs: ChangeEmailViewModelInputs {
     return self

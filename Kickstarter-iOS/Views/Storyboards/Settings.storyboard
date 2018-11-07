@@ -238,13 +238,35 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bpy-Ch-0sb" userLabel="Resend verification email">
                                                         <rect key="frame" x="12" y="6" width="351" height="40"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="40" id="19c-2j-WX5"/>
+                                                            <constraint firstAttribute="trailing" secondItem="lz0-3G-6S5" secondAttribute="trailing" constant="12" id="Dso-59-amV"/>
+                                                            <constraint firstItem="lz0-3G-6S5" firstAttribute="leading" secondItem="Cdr-bL-P2W" secondAttribute="leading" constant="12" id="F9U-w0-cG9"/>
+                                                            <constraint firstAttribute="height" constant="50" id="OVy-Nj-CWX"/>
+                                                            <constraint firstAttribute="bottom" secondItem="lz0-3G-6S5" secondAttribute="bottom" id="oYd-G5-Rzy"/>
+                                                            <constraint firstItem="lz0-3G-6S5" firstAttribute="top" secondItem="Cdr-bL-P2W" secondAttribute="top" constant="12" id="zQu-Q0-42I"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button"/>
-                                                    </button>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Awm-aQ-s2g" userLabel="Separator">
-                                                        <rect key="frame" x="0.0" y="51.5" width="375" height="0.5"/>
-                                                        <color key="backgroundColor" red="0.86274509799999999" green="0.87058823529999996" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </view>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ioz-I8-SoZ" userLabel="Resend Verification Email Button View">
+                                                        <rect key="frame" x="0.0" y="50" width="375" height="52"/>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bpy-Ch-0sb" userLabel="Resend verification email">
+                                                                <rect key="frame" x="12" y="6" width="351" height="40"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="40" id="19c-2j-WX5"/>
+                                                                </constraints>
+                                                                <state key="normal" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="resendVerificationEmailButtonTapped:" destination="JTR-kW-WZp" eventType="touchUpInside" id="YrV-co-XB6"/>
+                                                                </connections>
+                                                            </button>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Awm-aQ-s2g" userLabel="Separator">
+                                                                <rect key="frame" x="0.0" y="51.5" width="375" height="0.5"/>
+                                                                <color key="backgroundColor" red="0.86274509799999999" green="0.87058823529999996" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="0.5" id="yL7-4J-tV8"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="0.5" id="yL7-4J-tV8"/>
                                                         </constraints>

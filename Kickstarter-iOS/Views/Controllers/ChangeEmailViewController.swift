@@ -102,15 +102,17 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = passwordLabel
       |> settingsTitleLabelStyle
 
+    _ = resendVerificationStackView
+      |> \.isHidden .~ true
+
     _ = passwordTextField
       |> passwordFieldStyle
-      |> UITextField.lens.textAlignment .~ .right
-      |> UITextField.lens.returnKeyType .~ .go
+      |> \.textAlignment .~ .right
+      |> \.returnKeyType .~ .go
 
     _ = resendVerificationEmailButton
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Resend_verification_email() }
   }
 
   override func bindViewModel() {
@@ -118,6 +120,9 @@ internal final class ChangeEmailViewController: UIViewController {
 
     self.currentEmail.rac.text = self.viewModel.outputs.emailText
     self.resendVerificationEmailView.rac.hidden = self.viewModel.outputs.resendVerificationEmailViewIsHidden
+
+    self.resendVerificationEmailButton.rac.title = self.viewModel.outputs.verificationEmailButtonTitle
+
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
     self.messageLabelView.rac.hidden = self.viewModel.outputs.messageLabelViewHidden
     self.unverifiedEmailLabel.rac.hidden = self.viewModel.outputs.unverifiedEmailLabelHidden
@@ -157,6 +162,19 @@ internal final class ChangeEmailViewController: UIViewController {
                                            message: Strings.Got_it_your_changes_have_been_saved())
     }
 
+    self.viewModel.outputs.didSendVerificationEmail
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.messageBannerView.showBanner(with: .success,
+                                           message: Strings.Verification_email_sent())
+    }
+
+    self.viewModel.outputs.didFailToSendVerificationEmail
+      .observeForUI()
+      .observeValues { [weak self] error in
+        self?.messageBannerView.showBanner(with: .error, message: error)
+    }
+
     self.viewModel.outputs.shouldSubmitForm
       .observeForUI()
       .observeValues { [weak self] in
@@ -192,6 +210,10 @@ internal final class ChangeEmailViewController: UIViewController {
   @IBAction func saveButtonTapped(_ sender: Any) {
     self.viewModel.inputs.saveButtonTapped(newEmail: self.newEmailTextField.text,
                                            password: self.passwordTextField.text)
+  }
+
+  @IBAction func resendVerificationEmailButtonTapped(_ sender: Any) {
+    self.viewModel.inputs.resendVerificationEmailButtonTapped()
   }
 
   @IBAction func onePasswordButtonTapped(_ sender: Any) {

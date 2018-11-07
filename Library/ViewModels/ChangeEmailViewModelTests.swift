@@ -13,6 +13,8 @@ final class ChangeEmailViewModelTests: TestCase {
   private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
   private let didChangeEmail = TestObserver<Void, NoError>()
   private let didFailToChangeEmail = TestObserver<String, NoError>()
+  private let didFailToSendVerificationEmail = TestObserver<String, NoError>()
+  private let didSendVerificationEmail = TestObserver<Void, NoError>()
   private let dismissKeyboard = TestObserver<(), NoError>()
   private let emailText = TestObserver<String, NoError>()
   private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
@@ -27,6 +29,7 @@ final class ChangeEmailViewModelTests: TestCase {
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
   private let unverifiedEmailLabelHiddenObserver = TestObserver<Bool, NoError>()
   private let warningMessageLabelHiddenObserver = TestObserver<Bool, NoError>()
+  private let verificationEmailButtonTitle = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -45,11 +48,18 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.resendVerificationEmailViewIsHidden.observe(
       self.resendVerificationEmailViewIsHiddenObserver.observer
     )
+    self.vm.outputs.didSendVerificationEmail.observe(
+      self.didSendVerificationEmail.observer
+    )
+    self.vm.outputs.didFailToSendVerificationEmail.observe(
+      self.didFailToSendVerificationEmail.observer
+    )
     self.vm.outputs.resetFields.observe(self.resetFields.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.vm.outputs.shouldSubmitForm.observe(self.shouldSubmitForm.observer)
     self.vm.outputs.unverifiedEmailLabelHidden.observe(self.unverifiedEmailLabelHiddenObserver.observer)
     self.vm.outputs.warningMessageLabelHidden.observe(self.warningMessageLabelHiddenObserver.observer)
+    self.vm.outputs.verificationEmailButtonTitle.observe(self.verificationEmailButtonTitle.observer)
   }
 
   func testDidChangeEmailEmits_OnSuccess() {
@@ -278,6 +288,61 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.unverifiedEmailLabelHiddenObserver
         .assertValues([true], "Email is not verified, but deliverable message takes precendent")
+    }
+  }
+
+  func testResendVerificationStackViewAppears_AfterChangingEmail() {
+
+    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+    self.scheduler.advance()
+
+    self.resendVerificationStackViewIsHidden.assertValues([false])
+  }
+
+  func testDidFailToSendVerificationEmailEmits_OnFailure() {
+
+    let error = GraphError.invalidInput
+
+    withEnvironment(apiService: MockService(sendEmailVerificationError: error)) {
+
+      self.vm.inputs.resendVerificationEmailButtonTapped()
+      self.scheduler.advance()
+
+      self.didFailToSendVerificationEmail.assertValue(GraphError.invalidInput.localizedDescription)
+    }
+  }
+
+  func testDidSendVerificationEmailEmits_OnSuccess() {
+
+      self.vm.inputs.resendVerificationEmailButtonTapped()
+      self.scheduler.advance()
+
+      self.didSendVerificationEmail.assertDidEmitValue()
+  }
+
+  func testVerificationEmailButtonTitle_Backer() {
+
+    let user = User.template
+      |> \.stats.createdProjectsCount .~ 0
+
+    withEnvironment(currentUser: user) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.verificationEmailButtonTitle.assertValue(Strings.Send_verfication_email())
+    }
+  }
+
+  func testVerificationEmailButtonTitle_Creator() {
+
+    let user = User.template
+      |> \.stats.createdProjectsCount .~ 1
+
+    withEnvironment(currentUser: user) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.verificationEmailButtonTitle.assertValue(Strings.Resend_verification_email())
     }
   }
 

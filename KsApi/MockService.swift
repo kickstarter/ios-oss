@@ -123,6 +123,9 @@ internal struct MockService: ServiceType {
   fileprivate let resetPasswordResponse: User?
   fileprivate let resetPasswordError: ErrorEnvelope?
 
+  fileprivate let sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope?
+  fileprivate let sendEmailVerificationError: GraphError?
+
   fileprivate let signupResponse: AccessTokenEnvelope?
   fileprivate let signupError: ErrorEnvelope?
 
@@ -238,6 +241,8 @@ internal struct MockService: ServiceType {
                 resendCodeError: ErrorEnvelope? = nil,
                 resetPasswordResponse: User? = nil,
                 resetPasswordError: ErrorEnvelope? = nil,
+                sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope? = nil,
+                sendEmailVerificationError: GraphError? = nil,
                 signupResponse: AccessTokenEnvelope? = nil,
                 signupError: ErrorEnvelope? = nil,
                 submitApplePayResponse: SubmitApplePayEnvelope = .template,
@@ -406,6 +411,10 @@ internal struct MockService: ServiceType {
     self.resetPasswordResponse = resetPasswordResponse
 
     self.resetPasswordError = resetPasswordError
+
+    self.sendEmailVerificationResponse = sendEmailVerificationResponse
+
+    self.sendEmailVerificationError = sendEmailVerificationError
 
     self.signupResponse = signupResponse
 
@@ -1132,6 +1141,15 @@ internal struct MockService: ServiceType {
           |> Message.lens.id .~ body.hashValue
           |> Message.lens.body .~ body
       )
+  }
+
+  internal func sendVerificationEmail(input: EmptyInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+
+    if let error = sendEmailVerificationError {
+      return SignalProducer(error: error)
+    }
+    return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
   }
 
   internal func signup(name: String,
