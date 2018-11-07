@@ -52,7 +52,9 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
 
     _ = self.paymentField
       |> \.borderColor .~ nil
-
+      |> \.font .~ .ksr_body()
+      |> \.cursorColor .~ .ksr_green_700
+      |> \.placeholderColor .~  UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.17)
   }
 
   @objc fileprivate func cancelButtonTapped() {
