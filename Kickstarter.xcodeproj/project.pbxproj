@@ -3163,16 +3163,16 @@
 				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
 				D0CDA89E1E7434AF00AA3450 /* LiveStreamNavTitleView.swift */,
 				D0D2AA301E9623F4008D298A /* LiveStreamNavTitleViewTests.swift */,
+				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
-				D0D2AB1A1E96444B008D298A /* VideoGridView.swift */,
 				7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */,
+				D0D2AB1A1E96444B008D298A /* VideoGridView.swift */,
 				A751A51C1C85EAD8009C5DEA /* Cells */,
 				A751A51D1C85EAD8009C5DEA /* Controllers */,
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
-				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
