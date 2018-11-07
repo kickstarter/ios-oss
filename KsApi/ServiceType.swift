@@ -257,6 +257,10 @@ public protocol ServiceType {
   func sendMessage(body: String, toSubject subject: MessageSubject)
     -> SignalProducer<Message, ErrorEnvelope>
 
+  /// Sends a verification email (after updating the email from account settings).
+  func sendVerificationEmail(input: EmptyInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+
   /// Signup with email.
   func signup(name: String, email: String, password: String, passwordConfirmation: String,
               sendNewsletters: Bool) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope>

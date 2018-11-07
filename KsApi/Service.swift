@@ -419,6 +419,11 @@ public struct Service: ServiceType {
       return request(.sendMessage(body: body, messageSubject: subject))
   }
 
+  public func sendVerificationEmail(input: EmptyInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return applyMutation(mutation: UserSendEmailVerificationMutation(input: input))
+  }
+
   public func signup(name: String,
                      email: String,
                      password: String,
