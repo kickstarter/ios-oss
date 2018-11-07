@@ -102,6 +102,7 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { _ in (project, project.personalization.isStarred ?? false, success: true) }
           .flatMapError { _ in .init(value: (project, !shouldWatch, success: false)) }
+          .take(until: saveButtonTapped.ignoreValues())
     }
 
     let projectOnSaveButtonToggleSuccess = watchProjectResult
