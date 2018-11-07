@@ -156,7 +156,6 @@
 		77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */; };
 		77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD894821791B05003066DA /* ProjectStatsTemplate.swift */; };
 		77CD8981217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */; };
-		77CD89F2218215CB003066DA /* GraphError+LocalizedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DFAD621627D9C00620CED /* GraphError+LocalizedDescription.swift */; };
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
 		77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E44B7321823A56006446B8 /* ChangePasswordInput.swift */; };
 		77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440020F64F0B005F6B38 /* HelpDataSource.swift */; };
@@ -231,7 +230,6 @@
 		A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD41CFFAB9400653B2F /* LoginIntent.swift */; };
 		A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD51CFFAB9400653B2F /* Notifications.swift */; };
 		A707F4051E96FA2A00BAC378 /* LiveApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707F4041E96FA2A00BAC378 /* LiveApiError.swift */; };
-		A708F0ED1E42512000599688 /* UIView+LivePulsatingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A708F0EC1E42512000599688 /* UIView+LivePulsatingAnimation.swift */; };
 		A709697E1D143D1300DB39D3 /* AlertError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A709697D1D143D1300DB39D3 /* AlertError.swift */; };
 		A709698C1D1468A200DB39D3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80762E311D071BFE0074189D /* Alamofire.framework */; };
 		A709698D1D1468A200DB39D3 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80762DF31D071BCF0074189D /* AlamofireImage.framework */; };
@@ -830,6 +828,9 @@
 		D01BEA091F0259A30064C1D9 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01BE9E71F02598A0064C1D9 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D01BEA0C1F0259AC0064C1D9 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01BE9FB1F02598F0064C1D9 /* Runes.framework */; };
 		D01BEA0D1F0259AC0064C1D9 /* Runes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01BE9FB1F02598F0064C1D9 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */; };
+		D0200A5721935F2D00F5CC27 /* GraphError+LocalizedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0200A5221935EDF00F5CC27 /* GraphError+LocalizedDescription.swift */; };
+		D0200A5821935FD100F5CC27 /* UIView+LivePulsatingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0200A5021935E7800F5CC27 /* UIView+LivePulsatingAnimation.swift */; };
 		D0247A961DF9F29100D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */; };
 		D03340841E8A71520066EC7B /* LiveStreamContainerPagesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03340831E8A71520066EC7B /* LiveStreamContainerPagesDataSourceTests.swift */; };
 		D04307A221853D530004FDC0 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 770E45ED2114E15D00396D46 /* Crashlytics.framework */; };
@@ -861,7 +862,6 @@
 		D04AACAD218BB72100CF713E /* SettingsNotificationPickerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC19218BB70B00CF713E /* SettingsNotificationPickerViewModelTests.swift */; };
 		D04AACAE218BB72100CF713E /* SettingsPrivacySwitchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC0C218BB70900CF713E /* SettingsPrivacySwitchCellViewModelTests.swift */; };
 		D04AACAF218BB72100CF713E /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC09218BB70800CF713E /* SettingsViewModelTests.swift */; };
-		D04AACBD218BC03B00CF713E /* MessageBannerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77845547216CF942002DE57B /* MessageBannerType.swift */; };
 		D04AACBF218BC9FE00CF713E /* SettingsCurrencyPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AACBE218BC9FE00CF713E /* SettingsCurrencyPickerCell.swift */; };
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
@@ -1857,13 +1857,11 @@
 		7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryProjectCategoryView.xib; sourceTree = "<group>"; };
 		775DFA9C215E758400620CED /* GraphMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutation.swift; sourceTree = "<group>"; };
 		775DFAD4215EB2AB00620CED /* Service+RequestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+RequestHelpers.swift"; sourceTree = "<group>"; };
-		775DFAD621627D9C00620CED /* GraphError+LocalizedDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraphError+LocalizedDescription.swift"; sourceTree = "<group>"; };
 		775DFAD82162A43F00620CED /* ChangePasswordInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordInput.swift; sourceTree = "<group>"; };
 		775DFB082162C08800620CED /* MessageBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerViewController.swift; sourceTree = "<group>"; };
 		776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
 		778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSourceTests.swift; sourceTree = "<group>"; };
 		778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewControllerTests.swift; sourceTree = "<group>"; };
-		77845547216CF942002DE57B /* MessageBannerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBannerType.swift; sourceTree = "<group>"; };
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
 		77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewControllerTests.swift; sourceTree = "<group>"; };
@@ -1952,7 +1950,6 @@
 		A707BAD41CFFAB9400653B2F /* LoginIntent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginIntent.swift; sourceTree = "<group>"; };
 		A707BAD51CFFAB9400653B2F /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		A707F4041E96FA2A00BAC378 /* LiveApiError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveApiError.swift; sourceTree = "<group>"; };
-		A708F0EC1E42512000599688 /* UIView+LivePulsatingAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LivePulsatingAnimation.swift"; sourceTree = "<group>"; };
 		A709697D1D143D1300DB39D3 /* AlertError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertError.swift; sourceTree = "<group>"; };
 		A70E9EDB1E859C96009E67F2 /* LiveStreamChatMessageCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatMessageCellViewModelTests.swift; sourceTree = "<group>"; };
 		A70E9EDE1E859C96009E67F2 /* LiveStreamContainerPageViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPageViewModelTests.swift; sourceTree = "<group>"; };
@@ -2575,6 +2572,9 @@
 		D01673E21E3A35E700651DBA /* LiveStreamEventsEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventsEnvelopeTests.swift; sourceTree = "<group>"; };
 		D01BE9D81F02598A0064C1D9 /* Result.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Result.xcodeproj; path = Frameworks/ReactiveExtensions/Frameworks/ReactiveSwift/Carthage/Checkouts/Result/Result.xcodeproj; sourceTree = "<group>"; };
 		D01BE9F01F02598F0064C1D9 /* Runes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Runes.xcodeproj; path = Frameworks/Prelude/Frameworks/Runes/Runes.xcodeproj; sourceTree = "<group>"; };
+		D0200A5021935E7800F5CC27 /* UIView+LivePulsatingAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+LivePulsatingAnimation.swift"; path = "Library/UIView+LivePulsatingAnimation.swift"; sourceTree = "<group>"; };
+		D0200A5221935EDF00F5CC27 /* GraphError+LocalizedDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GraphError+LocalizedDescription.swift"; sourceTree = "<group>"; };
+		D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBannerType.swift; sourceTree = "<group>"; };
 		D0247A8E1DF9F0EF00D7A7C1 /* LiveStreamContainerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerViewModel.swift; sourceTree = "<group>"; };
 		D0247A8F1DF9F0EF00D7A7C1 /* LiveStreamCountdownViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamCountdownViewModel.swift; sourceTree = "<group>"; };
 		D0247A901DF9F0EF00D7A7C1 /* LiveStreamEventDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -2909,14 +2909,12 @@
 			children = (
 				9D1A29851D5A9508009E1B3F /* DeprecatedWebViewController.swift */,
 				015B78841D47FF51003216AC /* MFMailComposeViewController.swift */,
-				77845547216CF942002DE57B /* MessageBannerType.swift */,
 				A77DA9621E4D1F4D00DB3A66 /* Nib.swift */,
 				A724BA651D2C03930041863C /* NSBundle-Framework.swift */,
 				A77DA9631E4D1F4D00DB3A66 /* Storyboard.swift */,
 				A74BEF181DE3474C008D5E63 /* UIImageView+URL.swift */,
-				A708F0EC1E42512000599688 /* UIView+LivePulsatingAnimation.swift */,
+				D0200A5021935E7800F5CC27 /* UIView+LivePulsatingAnimation.swift */,
 				A731BF581D1ED60800A734AC /* WebViewController.swift */,
-				775DFAD621627D9C00620CED /* GraphError+LocalizedDescription.swift */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -3534,13 +3532,13 @@
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7ED1F131E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift */,
 				D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */,
-				D798A6AD21656D970053D097 /* Currency.swift */,
 				77556F1C20A09993008CEA57 /* Config+Helpers.swift */,
 				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
+				D798A6AD21656D970053D097 /* Currency.swift */,
 				A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */,
+				77F6E73421222E7C005A5C55 /* EmailFrequency.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A7ED1F141E830FDC00BFFA01 /* EnvironmentTests.swift */,
-				77F6E73421222E7C005A5C55 /* EmailFrequency.swift */,
 				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
 				A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */,
 				77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */,
@@ -3548,6 +3546,7 @@
 				A7ED1F151E830FDC00BFFA01 /* FormatTests.swift */,
 				A7CC14641D00E81B00035C52 /* FriendsSource.swift */,
 				A7C725811C85D36D005A016B /* GradientView.swift */,
+				D0200A5221935EDF00F5CC27 /* GraphError+LocalizedDescription.swift */,
 				A707BAD31CFFAB9400653B2F /* HelpType.swift */,
 				80E8EAC71D3EC65A007BDA4B /* Image.swift */,
 				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
@@ -3566,6 +3565,7 @@
 				A7C725841C85D36D005A016B /* LocalizedString.swift */,
 				A7ED1F1A1E830FDC00BFFA01 /* LocalizedStringTests.swift */,
 				A707BAD41CFFAB9400653B2F /* LoginIntent.swift */,
+				D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */,
 				80E26A121D500C6A007B3022 /* Navigation.swift */,
 				A7ED1F1B1E830FDC00BFFA01 /* NavigationTests.swift */,
 				59E877371DC9419700BCD1F7 /* Newsletter.swift */,
@@ -3597,10 +3597,10 @@
 				A7ED1F1F1E830FDC00BFFA01 /* SharedFunctionsTests.swift */,
 				A718885C1DE0DDCE0094856D /* ShortcutItem.swift */,
 				A7A882BE1D31745500E9046E /* SimpleHTMLLabel.swift */,
-				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
-				A7ED1F201E830FDC00BFFA01 /* String+SimpleHTMLTests.swift */,
 				D79D61141FD0979D000F958B /* String+Base64.swift */,
 				D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */,
+				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
+				A7ED1F201E830FDC00BFFA01 /* String+SimpleHTMLTests.swift */,
 				9D10B91A1D35407C008B8045 /* String+Truncate.swift */,
 				A7ED1F211E830FDC00BFFA01 /* String+TruncateTests.swift */,
 				8016BFE71D0F582D00067956 /* String+Whitespace.swift */,
@@ -3608,8 +3608,8 @@
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
 				0156B4181D10B419000C4252 /* UIAlertController.swift */,
 				0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */,
-				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
 				D78E4E472188CB4300E99295 /* UIButton+HapticFeedback.swift */,
+				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
 				0151AE871C8F60370067F1BE /* UIColor.swift */,
 				A7ED1F231E830FDC00BFFA01 /* UIColorTests.swift */,
 				A78537BB1CB5416700385B73 /* UIDeviceType.swift */,
@@ -5478,7 +5478,6 @@
 				A73379111D0E33A600C91445 /* ButtonStyles.swift in Sources */,
 				A73378FB1D0AE33B00C91445 /* BaseStyles.swift in Sources */,
 				A755115C1C8642C3005355CF /* AssetImageGeneratorType.swift in Sources */,
-				D04AACBD218BC03B00CF713E /* MessageBannerType.swift in Sources */,
 				A721DF6B1C8CFAF6000CB97C /* MockTrackingClient.swift in Sources */,
 				A72C3A971D00F6C70075227E /* SortPagerViewModel.swift in Sources */,
 				9DC572E51D36CA9800AE209C /* ProjectActivityStyles.swift in Sources */,
@@ -5550,6 +5549,7 @@
 				D04AAC2D218BB70D00CF713E /* SettingsNotificationPickerViewModel.swift in Sources */,
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
+				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
 				D04AAC35218BB70D00CF713E /* SettingsCurrencyPickerCellViewModel.swift in Sources */,
 				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
 				0199545F1D2D818E00BC1390 /* DashboardProjectsDrawerViewModel.swift in Sources */,
@@ -5574,6 +5574,7 @@
 				D04AABF9218BB31100CF713E /* SettingsCurrencyCellViewModel.swift in Sources */,
 				A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
 				9D89B7E51D6B8DB90021F6FF /* WebModalViewModel.swift in Sources */,
+				D0200A5721935F2D00F5CC27 /* GraphError+LocalizedDescription.swift in Sources */,
 				D78E4EE3218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift in Sources */,
 				A75C81261D210F1F00B5AD03 /* ShareContext.swift in Sources */,
 				A75511671C8642C3005355CF /* UIButton+LocalizedKey.swift in Sources */,
@@ -5630,7 +5631,6 @@
 				A7F441B71D005A9400FE6FC5 /* BackingCellViewModel.swift in Sources */,
 				A7CC13DB1D00E6CF00035C52 /* FindFriendsViewModel.swift in Sources */,
 				9DD1E3881D50035E00D4829E /* ProjectActivityData.swift in Sources */,
-				77CD89F2218215CB003066DA /* GraphError+LocalizedDescription.swift in Sources */,
 				778215E820F6922100F3D09F /* HelpType.swift in Sources */,
 				01940B261D42DC1A0074FCE3 /* HelpViewModel.swift in Sources */,
 				D6B6766520FE85010082717D /* SettingsNewslettersCellViewModel.swift in Sources */,
@@ -5942,7 +5942,6 @@
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				D6B6766B20FF8F890082717D /* SettingsNewslettersCell.swift in Sources */,
 				015A06F41D219156007AE210 /* DashboardRewardRowStackView.swift in Sources */,
-				A708F0ED1E42512000599688 /* UIView+LivePulsatingAnimation.swift in Sources */,
 				A78838A91D8A32060081E94D /* ProjectNavBarViewController.swift in Sources */,
 				A72C3AA41D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */,
 				D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */,
@@ -5990,6 +5989,7 @@
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
 				77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */,
 				A71C7FB21E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift in Sources */,
+				D0200A5821935FD100F5CC27 /* UIView+LivePulsatingAnimation.swift in Sources */,
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */,
@@ -6584,7 +6584,9 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Fabric",
 					"$(PROJECT_DIR)/Frameworks/OpenTok",
-					"$(PROJECT_DIR)/Frameworks/Firebase/**",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Analytics",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Auth",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Database",
 					"$(PROJECT_DIR)/Frameworks/Stripe",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -7179,7 +7181,9 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Fabric",
 					"$(PROJECT_DIR)/Frameworks/OpenTok",
-					"$(PROJECT_DIR)/Frameworks/Firebase/**",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Analytics",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Auth",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Database",
 					"$(PROJECT_DIR)/Frameworks/Stripe",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -7253,7 +7257,9 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Fabric",
 					"$(PROJECT_DIR)/Frameworks/OpenTok",
-					"$(PROJECT_DIR)/Frameworks/Firebase/**",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Analytics",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Auth",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Database",
 					"$(PROJECT_DIR)/Frameworks/Stripe",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -7485,7 +7491,9 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Fabric",
 					"$(PROJECT_DIR)/Frameworks/OpenTok",
-					"$(PROJECT_DIR)/Frameworks/Firebase/**",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Analytics",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Auth",
+					"$(PROJECT_DIR)/Frameworks/Firebase/Database",
 					"$(PROJECT_DIR)/Frameworks/Stripe",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
