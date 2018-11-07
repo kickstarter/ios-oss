@@ -58,7 +58,7 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
 }
 
 private func cardImage(with card: GraphUserCreditCard.CreditCard) -> UIImage? {
-  return image(named: "icon--" + card.type.lowercased()) ?? image(named: "icon--generic")
+  return image(named: "icon--" + card.type.rawValue.lowercased()) ?? image(named: "icon--generic")
 }
 
 private func formatted(dateString: String) -> String {

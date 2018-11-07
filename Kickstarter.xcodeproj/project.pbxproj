@@ -1007,6 +1007,7 @@
 		D6B6766720FF8D3C0082717D /* SettingsNewslettersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6766620FF8D3C0082717D /* SettingsNewslettersViewController.swift */; };
 		D6B6766920FF8D850082717D /* SettingsNewslettersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6766820FF8D850082717D /* SettingsNewslettersDataSource.swift */; };
 		D6B6766B20FF8F890082717D /* SettingsNewslettersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6766A20FF8F890082717D /* SettingsNewslettersCell.swift */; };
+		D6B6876E21937182005F5DA7 /* CreditCardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */; };
 		D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */; };
 		D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */; };
 		D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* Category.swift */; };
@@ -1042,11 +1043,9 @@
 		D7237099211A3DA9001EA4CA /* SettingsFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7237097211A3925001EA4CA /* SettingsFollowCell.swift */; };
 		D7417CD620BF12F4004DABA6 /* ExportDataEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7417CD520BF12F4004DABA6 /* ExportDataEnvelope.swift */; };
 		D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */; };
-		D74E66B0212B7AB500C61708 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E66AF212B7AB500C61708 /* SettingsViewControllerTests.swift */; };
-		D74E6758212CB5A400C61708 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E6757212CB5A400C61708 /* SettingsViewControllerTests.swift */; };
+		D770DDE8217D729300B5319A /* UserCurrencyTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DDE7217D729300B5319A /* UserCurrencyTemplates.swift */; };
 		D770DE75217E598C00B5319A /* AddNewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DE3D217E339500B5319A /* AddNewCardViewController.swift */; };
 		D770DE78217E876000B5319A /* AddNewCardViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */; };
-		D770DDE8217D729300B5319A /* UserCurrencyTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DDE7217D729300B5319A /* UserCurrencyTemplates.swift */; };
 		D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */; };
 		D775EC3020812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */; };
 		D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */; };
@@ -2717,6 +2716,7 @@
 		D6B6766620FF8D3C0082717D /* SettingsNewslettersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewController.swift; sourceTree = "<group>"; };
 		D6B6766820FF8D850082717D /* SettingsNewslettersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSource.swift; sourceTree = "<group>"; };
 		D6B6766A20FF8F890082717D /* SettingsNewslettersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersCell.swift; sourceTree = "<group>"; };
+		D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardCellViewModelTests.swift; sourceTree = "<group>"; };
 		D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewModelTests.swift; sourceTree = "<group>"; };
 		D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewControllerTests.swift; sourceTree = "<group>"; };
 		D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAttribute.swift; sourceTree = "<group>"; };
@@ -2753,10 +2753,10 @@
 		D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportStateEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D74E66AF212B7AB500C61708 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
 		D74E6757212CB5A400C61708 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
-		D770DE3D217E339500B5319A /* AddNewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewController.swift; sourceTree = "<group>"; };
-		D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewControllerTests.swift; sourceTree = "<group>"; };
 		D76E9BEE2174EF580049F64E /* SettingsCurrencyCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCurrencyCellViewModel.swift; sourceTree = "<group>"; };
 		D770DDE7217D729300B5319A /* UserCurrencyTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCurrencyTemplates.swift; sourceTree = "<group>"; };
+		D770DE3D217E339500B5319A /* AddNewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewController.swift; sourceTree = "<group>"; };
+		D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewControllerTests.swift; sourceTree = "<group>"; };
 		D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift; sourceTree = "<group>"; };
 		D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift; sourceTree = "<group>"; };
 		D77743E2217A2D67008D679F /* UpdateUserProfileMutation .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateUserProfileMutation .swift"; sourceTree = "<group>"; };
@@ -3913,6 +3913,7 @@
 				A7F441961D005A9400FE6FC5 /* CommentsViewModel.swift */,
 				A7ED1F5F1E831C5C00BFFA01 /* CommentsViewModelTests.swift */,
 				D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */,
+				D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */,
 				59B0E0051D1207070081D2DC /* DashboardActionCellViewModel.swift */,
 				A7ED1F741E831C5C00BFFA01 /* DashboardActionCellViewModelTests.swift */,
 				593AC6001D33F517002613F4 /* DashboardFundingCellViewModel.swift */,
@@ -5794,6 +5795,7 @@
 				A7ED1F3D1E831B4F00BFFA01 /* ValueCellDataSourceTests.swift in Sources */,
 				A7ED1FEE1E831C5C00BFFA01 /* ProjectActivityNegativeStateChangeCellViewModelTests.swift in Sources */,
 				A7ED1F4C1E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
+				D6B6876E21937182005F5DA7 /* CreditCardCellViewModelTests.swift in Sources */,
 				A7ED1FFC1E831C5C00BFFA01 /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */,
 				A7ED20031E831C5C00BFFA01 /* TwoFactorViewModelTests.swift in Sources */,
 				A7ED1FFF1E831C5C00BFFA01 /* RewardShippingPickerViewModelTests.swift in Sources */,
@@ -6041,7 +6043,6 @@
 				D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */,
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
 				77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */,
-				774A76ED20D845770012A71F /* BetaToolsViewModel.swift in Sources */,
 				D63BBD392180BE5D007E01F0 /* PaymentMethodsFooterView.swift in Sources */,
 				A71C7FB21E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift in Sources */,
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
@@ -6103,9 +6104,7 @@
 				018F1F841C8E182200643DAA /* LoginViewController.swift in Sources */,
 				597073A01D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
 				A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */,
-				D0AA77C71FBE400E00A382B5 /* UITableViewCell+SeparatorCatch.swift in Sources */,
 				D63BBCDA217E7802007E01F0 /* CreditCardCell.swift in Sources */,
-				7793B13521067D62007857C0 /* SettingsNotificationCellViewModel.swift in Sources */,
 				A724BA661D2C03930041863C /* NSBundle-Framework.swift in Sources */,
 				9D14FF921D133351005F4ABB /* ProjectActivitySuccessCell.swift in Sources */,
 				014A8E191CE3CD86003BF51C /* ThanksProjectCell.swift in Sources */,
