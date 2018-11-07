@@ -23,5 +23,5 @@ public func userEmailQueryFields() -> NonEmptySet<Query.User> {
 }
 
 public func changeEmailQueryFields() -> NonEmptySet<Query.User> {
-  return .email +| [.isEmailVerified]
+  return .email +| [.isEmailVerified, .isEmailDeliverable]
 }

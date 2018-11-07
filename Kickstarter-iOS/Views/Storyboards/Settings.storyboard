@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.15" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.9"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -151,7 +151,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VyE-lE-aLQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="392"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="222"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eOl-CY-t3g">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="36"/>
@@ -203,45 +203,37 @@
                                                     <constraint firstAttribute="trailing" secondItem="44i-Jb-zGG" secondAttribute="trailing" constant="12" id="tgZ-SK-b5u"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B1c-Ha-07F" userLabel="Message labels view">
-                                                <rect key="frame" x="0.0" y="88" width="375" height="118"/>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B1c-Ha-07F" userLabel="Message label view">
+                                                <rect key="frame" x="0.0" y="88" width="375" height="24"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8iO-aX-CcU">
-                                                        <rect key="frame" x="6" y="8" width="363" height="102"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="or4-R3-Cdk">
+                                                        <rect key="frame" x="12" y="6" width="351" height="0.0"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="84k-88-uG4">
-                                                                <rect key="frame" x="0.0" y="0.0" width="363" height="102"/>
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="255" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lz0-3G-6S5">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="42" height="20.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOq-8H-XMj">
-                                                                        <rect key="frame" x="0.0" y="32.5" width="42" height="69.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                </subviews>
-                                                            </stackView>
+                                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mt4-eb-NAA">
+                                                                <rect key="frame" x="0.0" y="0.0" width="42" height="0.0"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="255" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lz0-3G-6S5" userLabel="Warning message label">
+                                                                <rect key="frame" x="0.0" y="0.0" width="42" height="0.0"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
                                                         </subviews>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="102" id="MXb-0N-dvm"/>
-                                                        </constraints>
                                                     </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="8iO-aX-CcU" firstAttribute="top" secondItem="B1c-Ha-07F" secondAttribute="top" constant="8" id="Gb7-XL-t8m"/>
-                                                    <constraint firstAttribute="bottom" secondItem="8iO-aX-CcU" secondAttribute="bottom" constant="8" id="IYT-Az-9hU"/>
-                                                    <constraint firstAttribute="trailing" secondItem="8iO-aX-CcU" secondAttribute="trailing" constant="6" id="UBu-oy-oeu"/>
-                                                    <constraint firstItem="8iO-aX-CcU" firstAttribute="leading" secondItem="B1c-Ha-07F" secondAttribute="leading" constant="6" id="czo-r1-d0C"/>
+                                                    <constraint firstItem="or4-R3-Cdk" firstAttribute="leading" secondItem="B1c-Ha-07F" secondAttribute="leading" constant="12" id="D36-cs-Ht8"/>
+                                                    <constraint firstItem="or4-R3-Cdk" firstAttribute="top" secondItem="B1c-Ha-07F" secondAttribute="top" constant="6" id="FFn-5N-2DT"/>
+                                                    <constraint firstAttribute="trailing" secondItem="or4-R3-Cdk" secondAttribute="trailing" constant="12" id="GNs-gN-RFE"/>
+                                                    <constraint firstAttribute="bottom" secondItem="or4-R3-Cdk" secondAttribute="bottom" constant="18" id="m4t-NJ-Oot"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ioz-I8-SoZ" userLabel="Resend Verification Email Button View">
-                                                <rect key="frame" x="0.0" y="206" width="375" height="52"/>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ioz-I8-SoZ" userLabel="Resend Verification Email Button View">
+                                                <rect key="frame" x="0.0" y="88" width="375" height="52"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bpy-Ch-0sb" userLabel="Resend verification email">
                                                         <rect key="frame" x="12" y="6" width="351" height="40"/>
@@ -270,14 +262,14 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cld-2o-zvE">
-                                                <rect key="frame" x="0.0" y="258" width="375" height="30"/>
+                                                <rect key="frame" x="0.0" y="88" width="375" height="30"/>
                                                 <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="IxN-w9-UTF"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ny-Zh-npT" userLabel="New email">
-                                                <rect key="frame" x="0.0" y="288" width="375" height="52"/>
+                                                <rect key="frame" x="0.0" y="118" width="375" height="52"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="9eu-AW-ocS">
                                                         <rect key="frame" x="12" y="6" width="351" height="40"/>
@@ -313,7 +305,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uR-ng-0BU" userLabel="Password">
-                                                <rect key="frame" x="0.0" y="340" width="375" height="52"/>
+                                                <rect key="frame" x="0.0" y="170" width="375" height="52"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="lrH-yX-xHX">
                                                         <rect key="frame" x="12" y="6" width="351" height="40"/>
@@ -410,17 +402,17 @@
                     <connections>
                         <outlet property="currentEmail" destination="dhC-lf-MHP" id="W6i-3P-BKo"/>
                         <outlet property="currentEmailLabel" destination="hbC-wV-1kr" id="hSG-qw-h93"/>
-                        <outlet property="emailUnverifiedLabel" destination="lz0-3G-6S5" id="yv2-2f-vo9"/>
-                        <outlet property="messageLabelsView" destination="B1c-Ha-07F" id="9oE-1L-c0G"/>
+                        <outlet property="messageLabelView" destination="B1c-Ha-07F" id="hI9-IH-ihB"/>
                         <outlet property="newEmailLabel" destination="shM-z1-cjb" id="tnq-XP-h0n"/>
                         <outlet property="newEmailTextField" destination="uEZ-83-bce" id="IEP-yb-Kq6"/>
                         <outlet property="onePasswordButton" destination="TiS-uY-zEM" id="vTU-O5-Id8"/>
                         <outlet property="passwordLabel" destination="zt7-F9-bX6" id="vpc-Or-Xdx"/>
                         <outlet property="passwordTextField" destination="Aeh-uW-FDy" id="2FS-bt-XQ8"/>
                         <outlet property="resendVerificationEmailButton" destination="bpy-Ch-0sb" id="8m9-Ij-LOb"/>
-                        <outlet property="resendVerificationStackView" destination="8iO-aX-CcU" id="g4X-sY-U8A"/>
+                        <outlet property="resendVerificationEmailView" destination="ioz-I8-SoZ" id="LGW-Ia-xT8"/>
                         <outlet property="scrollView" destination="XfD-wg-Nx4" id="Hhx-4c-F1h"/>
-                        <outlet property="undeliverableEmailLabel" destination="KOq-8H-XMj" id="Xpr-2H-QjE"/>
+                        <outlet property="unverifiedEmailLabel" destination="Mt4-eb-NAA" id="Yur-b8-0em"/>
+                        <outlet property="warningMessageLabel" destination="lz0-3G-6S5" id="eEU-hq-rLz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GqB-W2-mTS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -768,6 +760,6 @@
         <image name="onepassword-button" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="S9b-Nx-mWW"/>
+        <segue reference="npK-7h-4nS"/>
     </inferredMetricsTieBreakers>
 </document>
