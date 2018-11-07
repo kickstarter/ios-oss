@@ -207,7 +207,7 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testdidSendVerificationEmailEmits_OnSuccess() {
+  func testDidSendVerificationEmailEmits_OnSuccess() {
 
       self.vm.inputs.resendVerificationEmailButtonTapped()
       self.scheduler.advance()
