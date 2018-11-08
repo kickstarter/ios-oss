@@ -100,6 +100,7 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
       .switchMap { project, shouldWatch in
         watchProjectProducer(with: project, shouldWatch: shouldWatch)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { $0.watchProject.project.isWatched }
           .map { _ in (project, project.personalization.isStarred ?? false, success: true) }
           .flatMapError { _ in .init(value: (project, !shouldWatch, success: false)) }
           .take(until: saveButtonTapped.ignoreValues())
@@ -223,15 +224,14 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
 
 }
 
-private func watchProjectProducer(with project: Project,
-                                  shouldWatch: Bool) -> SignalProducer<Bool, GraphError> {
+private func watchProjectProducer(
+  with project: Project,
+  shouldWatch: Bool) -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
   guard shouldWatch else {
-    return AppEnvironment.current.apiService.unwatchProject(input: UnwatchProjectInput(id: project.graphID))
-      .map { $0.unwatchProject.project.isWatched }
+    return AppEnvironment.current.apiService.unwatchProject(input: .init(id: project.graphID))
   }
 
-  return AppEnvironment.current.apiService.watchProject(input: WatchProjectInput(id: project.graphID))
-    .map { $0.watchProject.project.isWatched }
+  return AppEnvironment.current.apiService.watchProject(input: .init(id: project.graphID))
 }
 
 private func cached(project: Project) -> Project {

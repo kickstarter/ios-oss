@@ -296,8 +296,8 @@ public protocol ServiceType {
   func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
     -> SignalProducer<UpdateDraft, ErrorEnvelope>
 
-  func unwatchProject(input: UnwatchProjectInput) ->
-    SignalProducer<GraphMutationUnwatchProjectResponseEnvelope, GraphError>
+  func unwatchProject(input: WatchProjectInput) ->
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
 
   func watchProject(input: WatchProjectInput) ->
     SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>

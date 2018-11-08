@@ -10,7 +10,7 @@ public struct UnwatchProjectMutation<T: GraphMutationInput>: GraphMutation {
   public var description: String {
     let desc = """
     mutation unwatchProject($input: UnwatchProjectInput!) {
-      unwatchProject(input: $input) {
+      watchProject: unwatchProject(input: $input) {
         clientMutationId
         project {
           id

@@ -90,7 +90,7 @@ internal final class WatchProjectViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isStarred .~ true
 
-    withEnvironment(apiService: MockService(unwatchProjectMutationResult: .success(.template)),
+    withEnvironment(apiService: MockService(unwatchProjectMutationResult: .success(.unwatchTemplate)),
                     currentUser: .template) {
 
       self.vm.inputs.configure(with: project)
@@ -116,7 +116,7 @@ internal final class WatchProjectViewModelTests: TestCase {
       |> Project.lens.personalization.isStarred .~ true
 
     withEnvironment(
-      apiService: MockService(unwatchProjectMutationResult: .success(.template)),
+      apiService: MockService(unwatchProjectMutationResult: .success(.unwatchTemplate)),
       currentUser: .template) {
 
         self.vm.inputs.configure(with: project)
@@ -155,7 +155,7 @@ internal final class WatchProjectViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isStarred .~ false
 
-    withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.template))) {
+    withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.watchTemplate))) {
 
       self.vm.inputs.configure(with: project)
       self.vm.inputs.viewDidLoad()
@@ -181,7 +181,7 @@ internal final class WatchProjectViewModelTests: TestCase {
       self.saveButtonSelected.assertValues([false, true],
                                            "Save button stays selected after API request.")
 
-      withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.template))) {
+      withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.watchTemplate))) {
         self.vm.inputs.saveButtonTapped(selected: true)
 
         self.saveButtonSelected.assertValues([false, true, false],
@@ -246,7 +246,7 @@ internal final class WatchProjectViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isStarred .~ false
 
-    withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.template))) {
+    withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.watchTemplate))) {
       self.vm.inputs.configure(with: project)
       self.vm.inputs.viewDidLoad()
 
@@ -267,7 +267,7 @@ internal final class WatchProjectViewModelTests: TestCase {
       XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"],
                      trackingClient.events, "A star koala event is tracked.")
 
-      withEnvironment(apiService: MockService(unwatchProjectMutationResult: .success(.template))) {
+      withEnvironment(apiService: MockService(unwatchProjectMutationResult: .success(.unwatchTemplate))) {
         self.vm.inputs.saveButtonTapped(selected: true)
 
         self.saveButtonSelected.assertValues([false, true, false],
@@ -295,7 +295,7 @@ internal final class WatchProjectViewModelTests: TestCase {
       |> Project.lens.personalization.isStarred .~ false
       |> Project.lens.dates.deadline .~ (MockDate().date.timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
 
-    withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.template))) {
+    withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.watchTemplate))) {
       self.vm.inputs.configure(with: project)
       self.vm.inputs.viewDidLoad()
 

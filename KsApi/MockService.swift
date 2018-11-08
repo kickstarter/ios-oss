@@ -142,7 +142,7 @@ internal struct MockService: ServiceType {
 
   fileprivate let updateUserSelfError: ErrorEnvelope?
 
-  fileprivate let unwatchProjectMutationResult: Result<GraphMutationUnwatchProjectResponseEnvelope,
+  fileprivate let unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope,
   GraphError>?
 
   fileprivate let watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>?
@@ -255,7 +255,7 @@ internal struct MockService: ServiceType {
                 updateProjectNotificationError: ErrorEnvelope? = nil,
                 updateUserSelfError: ErrorEnvelope? = nil,
                 // swiftlint:disable:next line_length
-                unwatchProjectMutationResult: Result<GraphMutationUnwatchProjectResponseEnvelope, GraphError>? = nil,
+                unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil,
                 // swiftlint:disable:next line_length
                 watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil) {
 
@@ -1244,8 +1244,8 @@ internal struct MockService: ServiceType {
     return SignalProducer(value: self.updatePledgeResult?.value ?? .template)
   }
 
-  internal func unwatchProject(input: UnwatchProjectInput)
-    -> SignalProducer<GraphMutationUnwatchProjectResponseEnvelope, GraphError> {
+  internal func unwatchProject(input: WatchProjectInput)
+    -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
       return producer(for: self.unwatchProjectMutationResult)
   }
 
