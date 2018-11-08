@@ -90,6 +90,7 @@ internal final class ChangeEmailViewController: UIViewController {
 
     _ = newEmailLabel
       |> settingsTitleLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.New_email() }
 
     _ = newEmailTextField
       |> formFieldStyle
