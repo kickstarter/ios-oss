@@ -102,9 +102,6 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = passwordLabel
       |> settingsTitleLabelStyle
 
-    _ = resendVerificationStackView
-      |> \.isHidden .~ true
-
     _ = passwordTextField
       |> passwordFieldStyle
       |> \.textAlignment .~ .right
@@ -120,7 +117,6 @@ internal final class ChangeEmailViewController: UIViewController {
 
     self.currentEmail.rac.text = self.viewModel.outputs.emailText
     self.resendVerificationEmailView.rac.hidden = self.viewModel.outputs.resendVerificationEmailViewIsHidden
-
     self.resendVerificationEmailButton.rac.title = self.viewModel.outputs.verificationEmailButtonTitle
 
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden

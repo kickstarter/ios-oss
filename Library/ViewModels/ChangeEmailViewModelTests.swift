@@ -291,14 +291,6 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testResendVerificationStackViewAppears_AfterChangingEmail() {
-
-    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
-    self.scheduler.advance()
-
-    self.resendVerificationStackViewIsHidden.assertValues([false])
-  }
-
   func testDidFailToSendVerificationEmailEmits_OnFailure() {
 
     let error = GraphError.invalidInput
