@@ -71,7 +71,7 @@ ChangeEmailViewModelOutputs {
           .fetchGraphUserEmailFields(query: NonEmptySet(Query.user(changeEmailQueryFields())))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }.logEvents()
+    }
 
     let resendEmailVerificationEvent = self.resendVerificationEmailButtonProperty.signal
       .switchMap { _ in
@@ -248,8 +248,8 @@ ChangeEmailViewModelOutputs {
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let shouldSubmitForm: Signal<Void, NoError>
   public let unverifiedEmailLabelHidden: Signal<Bool, NoError>
-  public let warningMessageLabelHidden: Signal<Bool, NoError>
   public let verificationEmailButtonTitle: Signal<String, NoError>
+  public let warningMessageLabelHidden: Signal<Bool, NoError>
 
   public var inputs: ChangeEmailViewModelInputs {
     return self

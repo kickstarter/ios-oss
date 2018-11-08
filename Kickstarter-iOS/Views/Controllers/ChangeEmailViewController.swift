@@ -14,10 +14,10 @@ internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var passwordLabel: UILabel!
   @IBOutlet fileprivate weak var passwordTextField: UITextField!
   @IBOutlet fileprivate weak var resendVerificationEmailButton: UIButton!
-  @IBOutlet fileprivate weak var scrollView: UIScrollView!
   @IBOutlet fileprivate weak var resendVerificationEmailView: UIView!
-  @IBOutlet fileprivate weak var warningMessageLabel: UILabel!
+  @IBOutlet fileprivate weak var scrollView: UIScrollView!
   @IBOutlet fileprivate weak var unverifiedEmailLabel: UILabel!
+  @IBOutlet fileprivate weak var warningMessageLabel: UILabel!
 
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
   private var messageBannerView: MessageBannerViewController!
@@ -120,7 +120,6 @@ internal final class ChangeEmailViewController: UIViewController {
     self.currentEmail.rac.text = self.viewModel.outputs.emailText
     self.resendVerificationEmailView.rac.hidden = self.viewModel.outputs.resendVerificationEmailViewIsHidden
     self.resendVerificationEmailButton.rac.title = self.viewModel.outputs.verificationEmailButtonTitle
-
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
     self.messageLabelView.rac.hidden = self.viewModel.outputs.messageLabelViewHidden
     self.unverifiedEmailLabel.rac.hidden = self.viewModel.outputs.unverifiedEmailLabelHidden
