@@ -21,6 +21,7 @@ public enum Storyboard: String {
   case Login
   case Main
   case Messages
+  case PaymentMethods
   case Profile
   case ProjectActivity
   case ProjectPamphlet
@@ -28,9 +29,9 @@ public enum Storyboard: String {
   case Search
   case Settings
   case SettingsAccount
+  case SettingsNewsletters
   case SettingsNotifications
   case SettingsPrivacy
-  case SettingsNewsletters
   case Thanks
   case Update
   case UpdateDraft
