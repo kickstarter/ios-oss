@@ -9,10 +9,10 @@ public struct UpdateUserAccountMutation<T: GraphMutationInput>: GraphMutation {
 
   public var description: String {
     return """
-    mutation updateUserAccount($input: UpdateUserAccountInput!) {\
-      updateUserAccount(input: $input) {\
+    mutation updateUserAccount($input: UpdateUserAccountInput!) {
+      updateUserAccount(input: $input) {
         clientMutationId\
-      }\
+      }
     }
     """
   }

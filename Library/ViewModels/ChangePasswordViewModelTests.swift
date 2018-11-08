@@ -66,11 +66,7 @@ final class ChangePasswordViewModelTests: TestCase {
       self.dismissKeyboardObserver.assertValueCount(1)
       self.activityIndicatorShouldShowObserver.assertValues([true])
 
-      scheduler.advance()
-
-      let discoverParams = DiscoveryParams.defaults
-        |> DiscoveryParams.lens.includePOTD .~ true
-        |> DiscoveryParams.lens.sort .~ .magic
+      self.scheduler.advance()
 
       self.changePasswordSuccessObserver.assertValueCount(1)
 
@@ -149,7 +145,7 @@ final class ChangePasswordViewModelTests: TestCase {
       self.dismissKeyboardObserver.assertValueCount(1)
       self.activityIndicatorShouldShowObserver.assertValues([true])
 
-      scheduler.advance()
+      self.scheduler.advance()
 
       self.changePasswordFailureObserver.assertValues(["Error changing password"])
 
