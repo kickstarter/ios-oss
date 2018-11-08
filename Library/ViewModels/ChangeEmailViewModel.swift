@@ -94,22 +94,18 @@ ChangeEmailViewModelOutputs {
       .map { $0 && $1 }
 
     self.unverifiedEmailLabelHidden = Signal
-      .combineLatest(isEmailVerified.negate(), isEmailDeliverable.negate())
-      .map { arg -> Bool in
-        let (isEmailUnverified, isEmailUndeliverable) = arg
+      .combineLatest(isEmailVerified, isEmailDeliverable)
+      .map { isEmailVerified, isEmailDeliverable -> Bool in
+        guard isEmailVerified else { return !isEmailDeliverable }
 
-        if isEmailUnverified {
-          return isEmailUndeliverable
-        }
-
-        return !isEmailUnverified
+        return true
       }
 
     self.warningMessageLabelHidden = isEmailDeliverable
 
     self.messageLabelViewHidden = Signal
       .merge(self.unverifiedEmailLabelHidden, self.warningMessageLabelHidden)
-      .filter { isFalse($0) }
+      .filter(isFalse)
 
     self.dismissKeyboard = Signal.merge(
       self.changePasswordProperty.signal.ignoreValues(),

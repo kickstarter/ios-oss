@@ -184,14 +184,12 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testResendVerificationStackViewIsHidden_IfEmailIsVerified() {
-    withEnvironment {
-      self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
+    self.scheduler.advance()
 
-      self.resendVerificationEmailViewIsHiddenObserver
-        .assertValues([true], "Email is deliverable and verified")
-    }
+    self.resendVerificationEmailViewIsHiddenObserver
+      .assertValues([true], "Email is deliverable and verified")
   }
 
   func testResendVerificationStackViewIsNotHidden_IfEmailIsNotVerified() {
@@ -205,8 +203,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.resendVerificationEmailViewIsHiddenObserver
-        .assertValues([false], "Email is unverified")
+      self.resendVerificationEmailViewIsHiddenObserver.assertValues([false], "Email is unverified")
     }
   }
 
@@ -222,19 +219,16 @@ final class ChangeEmailViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.resendVerificationEmailViewIsHiddenObserver
-        .assertValues([false], "Email is underliverable")
+        .assertValues([false], "Email is undeliverable")
     }
   }
 
   func testWarningMessageLabel_isHidden() {
-    withEnvironment {
-      self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
+    self.scheduler.advance()
 
-      self.warningMessageLabelHiddenObserver
-        .assertValues([true], "Email is deliverable")
-    }
+    self.warningMessageLabelHiddenObserver.assertValues([true], "Email is deliverable")
   }
 
   func testWarningMessageLabel_isNotHidden() {
@@ -252,14 +246,11 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testUnverifiedEmailLabel_isHidden() {
-    withEnvironment {
-      self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
+    self.scheduler.advance()
 
-      self.unverifiedEmailLabelHiddenObserver
-        .assertValues([true], "Email is verified & deliverable")
-    }
+    self.unverifiedEmailLabelHiddenObserver.assertValues([true], "Email is verified & deliverable")
   }
 
   func testUnverifiedEmailLabel_isNotHidden() {
@@ -305,7 +296,6 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testDidSendVerificationEmailEmits_OnSuccess() {
-
       self.vm.inputs.resendVerificationEmailButtonTapped()
       self.scheduler.advance()
 
@@ -313,7 +303,6 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testVerificationEmailButtonTitle_Backer() {
-
     let user = User.template
       |> \.stats.createdProjectsCount .~ 0
 
@@ -362,18 +351,13 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
+    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+    self.scheduler.advance()
 
-    withEnvironment(apiService: MockService()) {
-
-      self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
-      self.scheduler.advance()
-
-      self.resetFields.assertValue("")
-    }
+    self.resetFields.assertValue("")
   }
 
   func testShouldSubmitFormEmits_WhenTappingSaveOrGo() {
-
     self.vm.inputs.viewDidLoad()
     self.shouldSubmitForm.assertValueCount(0)
 

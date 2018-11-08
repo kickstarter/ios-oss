@@ -66,33 +66,33 @@ internal final class ChangeEmailViewController: UIViewController {
         Strings.Change_email()
     }
 
-    _ = onePasswordButton
+    _ = self.onePasswordButton
       |> onePasswordButtonStyle
 
-    _ = messageLabelView
+    _ = self.messageLabelView
       |> UIView.lens.backgroundColor .~ .ksr_grey_200
 
-    _ = unverifiedEmailLabel
+    _ = self.unverifiedEmailLabel
       |> settingsDescriptionLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Email_unverified() }
 
-    _ = warningMessageLabel
+    _ = self.warningMessageLabel
       |> settingsDescriptionLabelStyle
       |> UILabel.lens.textColor .~ .ksr_red_400
       |> UILabel.lens.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
 
-    _ = currentEmailLabel
+    _ = self.currentEmailLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Current_email() }
 
-    _ = currentEmail
+    _ = self.currentEmail
       |> settingsDetailLabelStyle
 
-    _ = newEmailLabel
+    _ = self.newEmailLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.New_email() }
 
-    _ = newEmailTextField
+    _ = self.newEmailTextField
       |> formFieldStyle
       |> UITextField.lens.returnKeyType .~ .next
       |> UITextField.lens.textAlignment .~ .right
@@ -100,16 +100,16 @@ internal final class ChangeEmailViewController: UIViewController {
         Strings.login_placeholder_email()
     }
 
-    _ = passwordLabel
+    _ = self.passwordLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Current_password() }
 
-    _ = passwordTextField
+    _ = self.passwordTextField
       |> passwordFieldStyle
       |> \.textAlignment .~ .right
       |> \.returnKeyType .~ .go
 
-    _ = resendVerificationEmailButton
+    _ = self.resendVerificationEmailButton
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
   }
