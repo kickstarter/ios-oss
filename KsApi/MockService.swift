@@ -62,6 +62,9 @@ internal struct MockService: ServiceType {
   fileprivate let fetchGraphCurrencyResponse: UserCurrency?
   fileprivate let fetchGraphUserEmailResponse: GraphUserEmail?
 
+  fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
+  fileprivate let fetchGraphCreditCardsError: GraphError?
+
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
   fileprivate let addAttachmentError: ErrorEnvelope?
   fileprivate let removeAttachmentResponse: UpdateDraft.Image?
@@ -194,6 +197,8 @@ internal struct MockService: ServiceType {
                 fetchFriendStatsError: ErrorEnvelope? = nil,
                 fetchExportStateResponse: ExportDataEnvelope? = nil,
                 fetchExportStateError: ErrorEnvelope? = nil,
+                fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>? = nil,
+                fetchGraphCreditCardsError: GraphError? = nil,
                 exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
@@ -381,6 +386,9 @@ internal struct MockService: ServiceType {
 
     self.fetchUserResponse = fetchUserResponse
     self.fetchUserError = fetchUserError
+
+    self.fetchGraphCreditCardsError = fetchGraphCreditCardsError
+    self.fetchGraphCreditCardsResponse = fetchGraphCreditCardsResponse
 
     self.fetchUserSelfResponse = fetchUserSelfResponse ?? .template
     self.fetchUserSelfError = fetchUserSelfError
@@ -606,6 +614,18 @@ internal struct MockService: ServiceType {
   internal func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError> {
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
+  }
+
+  internal func fetchGraphCreditCards(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError> {
+      if let error = fetchGraphCreditCardsError {
+        return SignalProducer(error: error)
+      }
+
+      return SignalProducer(
+        value: fetchGraphCreditCardsResponse ??
+          UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+      )
   }
 
   internal func fetchGraphUserEmail(query: NonEmptySet<Query>)
