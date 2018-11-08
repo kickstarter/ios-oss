@@ -73,7 +73,7 @@ final class ChangeEmailViewControllerTests: TestCase {
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        
+
         scheduler.advance()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")

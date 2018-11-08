@@ -104,7 +104,7 @@ ChangeEmailViewModelOutputs {
 
         return !isEmailUnverified
       }
-    
+
     self.warningMessageLabelHidden = isEmailDeliverable
 
     self.messageLabelViewHidden = Signal

@@ -29,6 +29,7 @@
 "Any_payment_methods_you_saved_to_Kickstarter" = "Para tu comodidad, aquí se enumeran (de manera absolutamente segura) los métodos de pago que guardaste en Kickstarter.";
 "App_version" = "Versión de la aplicación";
 "Are_you_sure" = "¿Estás seguro?";
+"Are_you_sure_you_wish_to_remove_this_card" = "Are you sure you wish to remove this card from your payment method options?";
 "Ask_me_anything" = "¡Pregúntame!";
 "Available_to_watch_for_time_more_units" = "Disponible para reproducción %{time} %{units} más";
 "Back" = "Atrás";
@@ -257,6 +258,7 @@
 "No_Results" = "Sin resultados";
 "No_comments_yet" = "No hay comentarios todavia.";
 "No_messages" = "No hay mensajes";
+"No_nevermind" = "No, nevermind";
 "No_one_has_posted_an_update_yet" = "Todavía no se han publicado actualizaciones.";
 "No_pledges_from_friends_yet" = "Todavía no hay contribuciones de amigos.";
 "No_replay_is_available_for_this_live_stream" = "Este Live Stream no cuenta con repetición.";
@@ -335,6 +337,7 @@
 "Recommended_For_You" = "Recomendaciones para ti";
 "Recorded_Live" = "Grabado en vivo";
 "Recorded_live_with_creator_name" = "Grabado en vivo por <b>%{creator_name}</b>";
+"Remove_this_card" = "Remove this card";
 "Replay" = "Repetición";
 "Replay_available_for_time_more_units" = "Repetición disponible por %{time} %{units} más";
 "Replay_live_stream_with_creator_name" = "Repetir live stream de<br><b>%{creator_name}</b>";
@@ -460,6 +463,7 @@
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
 "Write_a_bio" = "Escribe una biografía breve mediante una oración o dos.";
 "Yes_change_currency" = "Sí, cambiar la moneda";
+"Yes_remove" = "Yes, remove";
 "Yes_turn_off" = "Sí, desactivar";
 "You_Launched" = "¡Tu proyecto fue publicado!";
 "You_backed_this_project" = "Patrocinaste este proyecto.";

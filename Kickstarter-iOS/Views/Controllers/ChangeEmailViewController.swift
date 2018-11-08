@@ -101,6 +101,7 @@ internal final class ChangeEmailViewController: UIViewController {
 
     _ = passwordLabel
       |> settingsTitleLabelStyle
+      |> UILabel.lens.text %~ { _ in Strings.Current_password() }
 
     _ = passwordTextField
       |> passwordFieldStyle

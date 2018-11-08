@@ -535,6 +535,23 @@ public enum Strings {
     )
   }
   /**
+   "Are you sure you wish to remove this card from your payment method options?"
+
+   - **en**: "Are you sure you wish to remove this card from your payment method options?"
+   - **de**: "Are you sure you wish to remove this card from your payment method options?"
+   - **es**: "Are you sure you wish to remove this card from your payment method options?"
+   - **fr**: "Are you sure you wish to remove this card from your payment method options?"
+   - **ja**: "Are you sure you wish to remove this card from your payment method options?"
+  */
+  public static func Are_you_sure_you_wish_to_remove_this_card() -> String {
+    return localizedString(
+      key: "Are_you_sure_you_wish_to_remove_this_card",
+      defaultValue: "Are you sure you wish to remove this card from your payment method options?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Ask me anything"
 
    - **en**: "Ask me anything"
@@ -4216,6 +4233,23 @@ with friends."
     )
   }
   /**
+   "No, nevermind"
+
+   - **en**: "No, nevermind"
+   - **de**: "No, nevermind"
+   - **es**: "No, nevermind"
+   - **fr**: "No, nevermind"
+   - **ja**: "No, nevermind"
+  */
+  public static func No_nevermind() -> String {
+    return localizedString(
+      key: "No_nevermind",
+      defaultValue: "No, nevermind",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No one has posted an update yet."
 
    - **en**: "No one has posted an update yet."
@@ -5545,6 +5579,23 @@ daring ideas."
       defaultValue: "Recorded live with <b>%{creator_name}</b>",
       count: nil,
       substitutions: ["creator_name": creator_name]
+    )
+  }
+  /**
+   "Remove this card"
+
+   - **en**: "Remove this card"
+   - **de**: "Remove this card"
+   - **es**: "Remove this card"
+   - **fr**: "Remove this card"
+   - **ja**: "Remove this card"
+  */
+  public static func Remove_this_card() -> String {
+    return localizedString(
+      key: "Remove_this_card",
+      defaultValue: "Remove this card",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -7472,6 +7523,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Yes_change_currency",
       defaultValue: "Yes, Change currency",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Yes, remove"
+
+   - **en**: "Yes, remove"
+   - **de**: "Yes, remove"
+   - **es**: "Yes, remove"
+   - **fr**: "Yes, remove"
+   - **ja**: "Yes, remove"
+  */
+  public static func Yes_remove() -> String {
+    return localizedString(
+      key: "Yes_remove",
+      defaultValue: "Yes, remove",
       count: nil,
       substitutions: [:]
     )
@@ -12855,7 +12923,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -16079,7 +16147,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -19088,7 +19156,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -19910,7 +19978,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

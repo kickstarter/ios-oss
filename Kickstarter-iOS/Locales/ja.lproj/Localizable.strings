@@ -29,6 +29,7 @@
 "Any_payment_methods_you_saved_to_Kickstarter" = "Kickstarter に保存されたお支払い方法は、こちらに (安全に) リストアップされます。";
 "App_version" = "アプリ版";
 "Are_you_sure" = "オフにしてもよろしいですか？";
+"Are_you_sure_you_wish_to_remove_this_card" = "Are you sure you wish to remove this card from your payment method options?";
 "Ask_me_anything" = "お問い合わせ";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
 "Back" = "バック";
@@ -257,6 +258,7 @@
 "No_Results" = "該当結果なし";
 "No_comments_yet" = "まだコメントはありません。";
 "No_messages" = "メッセージがありません。";
+"No_nevermind" = "No, nevermind";
 "No_one_has_posted_an_update_yet" = "まだアップデートの投稿はありません。";
 "No_pledges_from_friends_yet" = "友達からのプレッジはありません。";
 "No_replay_is_available_for_this_live_stream" = "このライブ配信を再生することはできません";
@@ -335,6 +337,7 @@
 "Recommended_For_You" = "あなたへのおすすめ";
 "Recorded_Live" = "配信済ライブ";
 "Recorded_live_with_creator_name" = "配信された<b>%{creator_name}</b>のライブ";
+"Remove_this_card" = "Remove this card";
 "Replay" = "リプレイ";
 "Replay_available_for_time_more_units" = "あと%{time}%{units} リプレイ可能";
 "Replay_live_stream_with_creator_name" = "<b>%{creator_name}</b>のライブ配信を再生";
@@ -460,6 +463,7 @@
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "プロジェクトを保存し、終了の48時間前にリマインドする。";
 "Write_a_bio" = "簡単な自己紹介を書いてください。ほんの１～２文で構いません。";
 "Yes_change_currency" = "はい、通貨を変更します";
+"Yes_remove" = "Yes, remove";
 "Yes_turn_off" = "はい、オフにします";
 "You_Launched" = "発表されました！";
 "You_backed_this_project" = "バック済";
