@@ -269,17 +269,11 @@ public protocol ServiceType {
   func signup(facebookAccessToken: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
 
-  /// Star a project.
-  func star(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope>
-
   func submitApplePay(checkoutUrl: String,
                       stripeToken: String,
                       paymentInstrumentName: String,
                       paymentNetwork: String,
                       transactionIdentifier: String) -> SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope>
-
-  /// Toggle the starred state on a project.
-  func toggleStar(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope>
 
   /// Unfollow a user with their id.
   func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope>
@@ -301,6 +295,12 @@ public protocol ServiceType {
   /// Updates the draft of a project update.
   func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
     -> SignalProducer<UpdateDraft, ErrorEnvelope>
+
+  func unwatchProject(input: WatchProjectInput) ->
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
+
+  func watchProject(input: WatchProjectInput) ->
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
 }
 
 extension ServiceType {

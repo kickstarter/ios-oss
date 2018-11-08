@@ -52,11 +52,9 @@ internal enum Route {
   case shippingRules(projectId: Int, rewardId: Int)
   case signup(name: String, email: String, password: String, passwordConfirmation: String,
     sendNewsletters: Bool)
-  case star(Project)
   case submitApplePay(checkoutUrl: String, stripeToken: String, paymentInstrumentName: String,
     paymentNetwork: String, transactionIdentifier: String)
   case surveyResponse(surveyResponseId: Int)
-  case toggleStar(Project)
   case unansweredSurveyResponses
   case unfollowFriend(userId: Int)
   case update(updateId: Int, projectParam: Param)
@@ -276,9 +274,6 @@ internal enum Route {
       ]
       return (.POST, "/v1/users", params, nil)
 
-    case let .star(p):
-      return (.PUT, "/v1/projects/\(p.id)/star", [:], nil)
-
     case let .submitApplePay(checkoutUrl, stripeToken, paymentInstrumentName, paymentNetwork,
       transactionIdentifier):
 
@@ -295,9 +290,6 @@ internal enum Route {
 
     case let.surveyResponse(surveyResponseId):
       return (.GET, "/v1/users/self/surveys/\(surveyResponseId)", [:], nil)
-
-    case let .toggleStar(p):
-      return (.POST, "/v1/projects/\(p.id)/star/toggle", [:], nil)
 
     case .unansweredSurveyResponses:
       return (.GET, "/v1/users/self/surveys/unanswered", [:], nil)

@@ -14,6 +14,7 @@ public final class ProjectNavBarViewController: UIViewController {
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
+  private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
 
   @IBOutlet fileprivate weak var backgroundView: UIView!
   @IBOutlet fileprivate weak var closeButton: UIButton!
@@ -25,6 +26,7 @@ public final class ProjectNavBarViewController: UIViewController {
   internal func configureWith(project: Project, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, refTag: refTag)
     self.shareViewModel.inputs.configureWith(shareContext: .project(project), shareContextView: nil)
+    self.watchProjectViewModel.inputs.configure(with: project)
   }
 
   internal func setDidScrollToTop(_ didScrollToTop: Bool) {
@@ -56,16 +58,17 @@ public final class ProjectNavBarViewController: UIViewController {
     self.sessionStartedObserver = NotificationCenter
       .default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionStarted()
+        self?.watchProjectViewModel.inputs.userSessionStarted()
     }
 
     self.sessionEndedObserver = NotificationCenter
       .default
       .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.userSessionEnded()
+        self?.watchProjectViewModel.inputs.userSessionEnded()
     }
 
     self.viewModel.inputs.viewDidLoad()
+    self.watchProjectViewModel.inputs.viewDidLoad()
   }
 
   deinit {
@@ -110,33 +113,32 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Toggle_saving_this_project() }
   }
 
-    public override func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
 
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
-    self.saveButton.rac.accessibilityValue = self.viewModel.outputs.saveButtonAccessibilityValue
-    self.saveButton.rac.selected = self.viewModel.outputs.saveButtonSelected
-    self.saveButton.rac.enabled = self.viewModel.outputs.saveButtonEnabled
+    self.saveButton.rac.accessibilityValue = self.watchProjectViewModel.outputs.saveButtonAccessibilityValue
+    self.saveButton.rac.selected = self.watchProjectViewModel.outputs.saveButtonSelected
 
-    self.viewModel.outputs.generateSuccessFeedback
+    self.watchProjectViewModel.outputs.generateSuccessFeedback
       .observeForUI()
       .observeValues { [weak self] in
         self?.saveButton.generateSuccessFeedback()
     }
 
-    self.viewModel.outputs.generateSelectionFeedback
+    self.watchProjectViewModel.outputs.generateSelectionFeedback
       .observeForUI()
       .observeValues { [weak self] in
         self?.saveButton.generateSelectionFeedback()
     }
 
-    self.viewModel.outputs.showProjectSavedPrompt
+    self.watchProjectViewModel.outputs.showProjectSavedAlert
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showProjectStarredPrompt()
     }
 
-    self.viewModel.outputs.goToLoginTout
+    self.watchProjectViewModel.outputs.goToLoginTout
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToLoginTout()
@@ -148,7 +150,7 @@ public final class ProjectNavBarViewController: UIViewController {
         UIView.animate(withDuration: 0.0) {
           self?.backgroundView.layer.shadowOpacity = didScrollToTop ? 0 : 1
         }
-      }
+    }
 
     self.viewModel.outputs.titleHiddenAndAnimate
       .observeForUI()
@@ -172,7 +174,7 @@ public final class ProjectNavBarViewController: UIViewController {
         self?.dismiss(animated: true, completion: nil)
     }
 
-    self.viewModel.outputs.postNotificationWithProject
+    self.watchProjectViewModel.outputs.postNotificationWithProject
       .observeForUI()
       .observeValues { project in
         NotificationCenter.default.post(name: Notification.Name.ksr_projectSaved,
@@ -239,7 +241,7 @@ public final class ProjectNavBarViewController: UIViewController {
   }
 
   @objc fileprivate func saveButtonTapped(_ button: UIButton) {
-    self.viewModel.inputs.saveButtonTapped(selected: button.isSelected)
+    self.watchProjectViewModel.inputs.saveButtonTapped(selected: button.isSelected)
   }
 
   @objc fileprivate func projectNameTapped() {
