@@ -32,18 +32,6 @@ private enum PostcardMetadataType {
 public protocol DiscoveryPostcardViewModelInputs {
   /// Call with the project provided to the view controller.
   func configureWith(project: Project, category: KsApi.Category?)
-
-  /// Call when the cell has received a project notification.
-  func projectFromNotification(project: Project?)
-
-  /// Call when save button is tapped.
-  func saveButtonTapped(selected: Bool)
-
-  /// Call when the cell has received a user session ended notification.
-  func userSessionEnded()
-
-  /// Call when the cell has received a user session started notification.
-  func userSessionStarted()
 }
 
 public protocol DiscoveryPostcardViewModelOutputs {
@@ -71,12 +59,6 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean to determine whether or not to display funding progress container view.
   var fundingProgressContainerViewHidden: Signal<Bool, NoError> { get }
 
-  /// Emits a boolean to determine whether to create haptics
-  var generateSelectionFeedback: Signal<(), NoError> { get }
-
-  /// Emits a boolean to determine whether to create haptics
-  var generateSuccessFeedback: Signal<(), NoError> { get }
-
   /// Emits metadata label text
   var metadataLabelText: Signal<String, NoError> { get }
 
@@ -91,12 +73,6 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits a boolean to determine whether or not the metadata view should be hidden.
   var metadataViewHidden: Signal<Bool, NoError> { get }
-
-  /// Emits when we should notify the delegate that the heart button was tapped.
-  var notifyDelegateShowSaveAlert: Signal<(), NoError> { get }
-
-  /// Emits when we should notify delegate that heart button was tapped by logged out user.
-  var notifyDelegateShowLoginTout: Signal<(), NoError> { get }
 
   /// Emits the text for the pledged title label.
   var percentFundedTitleLabelText: Signal<String, NoError> { get }
@@ -140,12 +116,6 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a boolean that determines if the project stats should be hidden.
   var projectStatsStackViewHidden: Signal<Bool, NoError> { get }
 
-  /// Emits a boolean that determines if the save button should be selected.
-  var saveButtonSelected: Signal<Bool, NoError> { get }
-
-  /// Emits when a contextual Push Notification dialog should be shown.
-  var showNotificationDialog: Signal<Notification, NoError> { get }
-
   /// Emits the URL to be loaded into the social avatar's image view.
   var socialImageURL: Signal<URL?, NoError> { get }
 
@@ -166,15 +136,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
   public init() {
     let configuredProject = self.projectProperty.signal.skipNil()
-      .map(cached(project:))
-
-    let currentUser = Signal.merge([
-      self.userSessionStartedProperty.signal,
-      self.userSessionEndedProperty.signal,
-      configuredProject.ignoreValues()
-      ])
-      .map { AppEnvironment.current.currentUser }
-      .skipRepeats(==)
 
     let backersTitleAndSubtitleText = configuredProject.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
@@ -289,102 +250,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.fundingProgressBarViewHidden = configuredProject
       .map { $0.state == .failed }
 
-    let loggedOutUserTappedSaveButton = currentUser
-      .takeWhen(self.saveButtonTappedProperty.signal)
-      .filter(isNil)
-      .ignoreValues()
-
-    let loggedInUserTappedSaveButton = currentUser
-      .takeWhen(self.saveButtonTappedProperty.signal)
-      .filter(isNotNil)
-      .ignoreValues()
-
-    let userLoginAfterTappingSaveButton = Signal.combineLatest(
-      self.userSessionStartedProperty.signal,
-      loggedOutUserTappedSaveButton
-      )
-      .ignoreValues()
-
-    let projectOnSaveButtonToggle = configuredProject
-      .takeWhen(.merge(loggedInUserTappedSaveButton, userLoginAfterTappingSaveButton))
-
-    let saveProjectEvent = projectOnSaveButtonToggle
-      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
-      .switchMap { project in
-        AppEnvironment.current.apiService.toggleStar(project)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-    }
-
-    let projectSaved = saveProjectEvent.values()
-      .map { $0.project }
-
-    let projectOnSaveError = configuredProject
-      .takeWhen(saveProjectEvent.errors())
-
-    let projectSavedFromNotification = configuredProject
-      .takePairWhen(self.projectFromNotificationProperty.signal.skipNil())
-      .filter { $0.id == $1.id }
-      .map { $0.1 }
-
-    let project = Signal.merge(
-      projectOnSaveButtonToggle,
-      configuredProject,
-      projectSavedFromNotification,
-      projectOnSaveError
-    )
-
-    let projectOnSaveButtonToggleAndFromResponse = Signal.merge(
-      projectSaved.map { cache(project: $0, shouldToggle: false, overwrite: true) },
-      projectOnSaveButtonToggle.map { cache(project: $0, shouldToggle: true) }
-    )
-    .skipRepeats()
-
-    self.saveButtonSelected = Signal.merge(
-      projectOnSaveButtonToggleAndFromResponse,
-      configuredProject.map { cache(project: $0, shouldToggle: false) },
-      projectSavedFromNotification.map { cache(project: $0, shouldToggle: true) },
-      projectOnSaveError.map { cache(project: $0, shouldToggle: true) }
-    )
-
-    self.notifyDelegateShowLoginTout = loggedOutUserTappedSaveButton
-
-    self.showNotificationDialog = project
-      .takeWhen(self.saveButtonTappedProperty.signal)
-      .filter { _ in shouldShowNotificationDialog() }
-      .on(value: { _ in
-        AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert = true
-        AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert = true
-      })
-      .ignoreValues()
-      .map { _ in
-        Notification(name: .ksr_showNotificationsDialog,
-                     userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.save])
-    }
-
-    self.notifyDelegateShowSaveAlert = project
-      .takeWhen(self.saveButtonTappedProperty.signal)
-      .filter { _ in
-        shouldShowNotificationDialog() == false
-      }
-      .filter { $0.personalization.isStarred == false && !$0.endsIn48Hours(
-        today: AppEnvironment.current.dateType.init().date) }
-      .filter { _ in
-        !AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert ||
-          !AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert
-      }
-      .on(value: { _ in
-        AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert = true
-        AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert = true
-      })
-      .ignoreValues()
-
-    projectSaved
-      .observeValues { AppEnvironment.current.koala.trackProjectSave($0, context: .discovery) }
-
-    self.generateSuccessFeedback = self.saveButtonTappedProperty.signal.filter(isFalse).ignoreValues()
-    self.generateSelectionFeedback = self.saveButtonTappedProperty.signal.filter(isTrue).ignoreValues()
-
     // a11y
     self.cellAccessibilityLabel = configuredProject.map(Project.lens.name.view)
 
@@ -400,26 +265,6 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.categoryProperty.value = category
   }
 
-  fileprivate let projectFromNotificationProperty = MutableProperty<Project?>(nil)
-  public func projectFromNotification(project: Project?) {
-    self.projectFromNotificationProperty.value = project
-  }
-
-  fileprivate let saveButtonTappedProperty = MutableProperty(false)
-  public func saveButtonTapped(selected: Bool) {
-    self.saveButtonTappedProperty.value = selected
-  }
-
-  fileprivate let userSessionStartedProperty = MutableProperty(())
-  public func userSessionStarted() {
-    self.userSessionStartedProperty.value = ()
-  }
-
-  fileprivate let userSessionEndedProperty = MutableProperty(())
-  public func userSessionEnded() {
-    self.userSessionEndedProperty.value = ()
-  }
-
   public let backersTitleLabelText: Signal<String, NoError>
   public let backersSubtitleLabelText: Signal<String, NoError>
   public let cellAccessibilityLabel: Signal<String, NoError>
@@ -428,15 +273,11 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let deadlineTitleLabelText: Signal<String, NoError>
   public let fundingProgressBarViewHidden: Signal<Bool, NoError>
   public let fundingProgressContainerViewHidden: Signal<Bool, NoError>
-  public let generateSuccessFeedback: Signal<(), NoError>
-  public let generateSelectionFeedback: Signal<(), NoError>
   public let metadataLabelText: Signal<String, NoError>
   public let metadataIcon: Signal<UIImage?, NoError>
   public let metadataIconImageViewTintColor: Signal<UIColor, NoError>
   public let metadataTextColor: Signal<UIColor, NoError>
   public let metadataViewHidden: Signal<Bool, NoError>
-  public let notifyDelegateShowLoginTout: Signal<(), NoError>
-  public let notifyDelegateShowSaveAlert: Signal<(), NoError>
   public let percentFundedTitleLabelText: Signal<String, NoError>
   public let progressPercentage: Signal<Float, NoError>
   public let projectImageURL: Signal<URL?, NoError>
@@ -451,45 +292,12 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public var projectCategoryViewHidden: Signal<Bool, NoError>
   public var projectCategoryStackViewHidden: Signal<Bool, NoError>
   public let projectStateTitleLabelColor: Signal<UIColor, NoError>
-  public let saveButtonSelected: Signal<Bool, NoError>
-  public let showNotificationDialog: Signal<Notification, NoError>
   public let socialImageURL: Signal<URL?, NoError>
   public let socialLabelText: Signal<String, NoError>
   public let socialStackViewHidden: Signal<Bool, NoError>
 
   public var inputs: DiscoveryPostcardViewModelInputs { return self }
   public var outputs: DiscoveryPostcardViewModelOutputs { return self }
-}
-
-private func cached(project: Project) -> Project {
-  if let projectCache = AppEnvironment.current.cache[KSCache.ksr_projectSaved] as? [Int: Bool] {
-    let isSaved = projectCache[project.id] ?? project.personalization.isStarred
-    return project |> Project.lens.personalization.isStarred .~ isSaved
-  } else {
-    return project
-  }
-}
-
-// Function returns a boolean that determines if the star button should be toggled
-private func cache(project: Project, shouldToggle: Bool, overwrite: Bool = false) -> Bool {
-
-  guard let isSaved = project.personalization.isStarred else { return false }
-
-  AppEnvironment.current.cache[KSCache.ksr_projectSaved] =
-    AppEnvironment.current.cache[KSCache.ksr_projectSaved] ?? [Int: Bool]()
-
-  var cache = AppEnvironment.current.cache[KSCache.ksr_projectSaved] as? [Int: Bool]
-
-  let value = overwrite ? isSaved : (cache?[project.id] ?? isSaved)
-  cache?[project.id] = shouldToggle ? !value : value
-
-  AppEnvironment.current.cache[KSCache.ksr_projectSaved] = cache
-  return cache?[project.id] ?? false
-}
-
-private func shouldShowNotificationDialog() -> Bool {
-  return PushNotificationDialog.canShowDialog(for: .save) &&
-    AppEnvironment.current.currentUser?.stats.starredProjectsCount == 0
 }
 
 private func socialText(forFriends friends: [User]) -> String? {

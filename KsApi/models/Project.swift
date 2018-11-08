@@ -346,3 +346,9 @@ private func categoryInfo(_ json: [String: JSON]) -> (String, String, String?) {
     return("", "", nil)
   }
 }
+
+extension Project: GraphIDBridging {
+  public static var modelName: String {
+    return "Project"
+  }
+}
