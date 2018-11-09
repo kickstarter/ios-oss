@@ -677,10 +677,13 @@ final class AppDelegateViewModelTests: TestCase {
       self.authorizeForRemoteNotifications.assertValueCount(1)
       self.registerForRemoteNotifications.assertValueCount(1)
       self.unregisterForRemoteNotifications.assertValueCount(0)
+      
+      self.vm.inputs.applicationDidEnterBackground()
+      self.vm.inputs.applicationWillEnterForeground()
 
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
 
-      self.getNotificationAuthorizationStatus.assertValueCount(2)
+      self.getNotificationAuthorizationStatus.assertValueCount(3)
       self.authorizeForRemoteNotifications.assertValueCount(1)
       self.registerForRemoteNotifications.assertValueCount(2)
       self.unregisterForRemoteNotifications.assertValueCount(0)
