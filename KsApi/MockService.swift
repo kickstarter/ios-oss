@@ -123,13 +123,13 @@ internal struct MockService: ServiceType {
   fileprivate let resetPasswordResponse: User?
   fileprivate let resetPasswordError: ErrorEnvelope?
 
+  fileprivate let sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope?
+  fileprivate let sendEmailVerificationError: GraphError?
+
   fileprivate let signupResponse: AccessTokenEnvelope?
   fileprivate let signupError: ErrorEnvelope?
 
   fileprivate let submitApplePayResponse: SubmitApplePayEnvelope
-
-  fileprivate let toggleStarResponse: StarEnvelope?
-  fileprivate let toggleStarError: ErrorEnvelope?
 
   fileprivate let unfollowFriendError: ErrorEnvelope?
 
@@ -141,6 +141,11 @@ internal struct MockService: ServiceType {
   fileprivate let updateProjectNotificationError: ErrorEnvelope?
 
   fileprivate let updateUserSelfError: ErrorEnvelope?
+
+  fileprivate let unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope,
+  GraphError>?
+
+  fileprivate let watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>?
 
   internal init(appId: String = "com.kickstarter.kickstarter.mock",
                 serverConfig: ServerConfigType,
@@ -238,17 +243,21 @@ internal struct MockService: ServiceType {
                 resendCodeError: ErrorEnvelope? = nil,
                 resetPasswordResponse: User? = nil,
                 resetPasswordError: ErrorEnvelope? = nil,
+                sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope? = nil,
+                sendEmailVerificationError: GraphError? = nil,
                 signupResponse: AccessTokenEnvelope? = nil,
                 signupError: ErrorEnvelope? = nil,
                 submitApplePayResponse: SubmitApplePayEnvelope = .template,
-                toggleStarResponse: StarEnvelope? = nil,
-                toggleStarError: ErrorEnvelope? = nil,
                 unfollowFriendError: ErrorEnvelope? = nil,
                 updateDraftError: ErrorEnvelope? = nil,
                 updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>? = nil,
                 updateProjectNotificationResponse: ProjectNotification? = nil,
                 updateProjectNotificationError: ErrorEnvelope? = nil,
-                updateUserSelfError: ErrorEnvelope? = nil) {
+                updateUserSelfError: ErrorEnvelope? = nil,
+                // swiftlint:disable:next line_length
+                unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil,
+                // swiftlint:disable:next line_length
+                watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil) {
 
     self.appId = appId
     self.serverConfig = serverConfig
@@ -407,14 +416,15 @@ internal struct MockService: ServiceType {
 
     self.resetPasswordError = resetPasswordError
 
+    self.sendEmailVerificationResponse = sendEmailVerificationResponse
+
+    self.sendEmailVerificationError = sendEmailVerificationError
+
     self.signupResponse = signupResponse
 
     self.signupError = signupError
 
     self.submitApplePayResponse = submitApplePayResponse
-
-    self.toggleStarResponse = toggleStarResponse
-    self.toggleStarError = toggleStarError
 
     self.unfollowFriendError = unfollowFriendError
 
@@ -427,6 +437,10 @@ internal struct MockService: ServiceType {
     self.updateProjectNotificationError = updateProjectNotificationError
 
     self.updateUserSelfError = updateUserSelfError
+
+    self.unwatchProjectMutationResult = unwatchProjectMutationResult
+
+    self.watchProjectMutationResult = watchProjectMutationResult
   }
 
   internal func changeEmail(input: ChangeEmailInput) ->
@@ -1015,21 +1029,6 @@ internal struct MockService: ServiceType {
       }
   }
 
-  internal func toggleStar(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
-   if let error = self.toggleStarError {
-        return SignalProducer(error: error)
-      } else if let toggleStar = self.toggleStarResponse {
-        return SignalProducer(value: toggleStar)
-      }
-
-      return SignalProducer(value: .template)
-  }
-
-  internal func star(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
-    let project = project |> Project.lens.personalization.isStarred .~ true
-    return .init(value: .template |> StarEnvelope.lens.project .~ project)
-  }
-
   internal func login(email: String, password: String, code: String?) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
 
@@ -1134,6 +1133,15 @@ internal struct MockService: ServiceType {
       )
   }
 
+  internal func sendVerificationEmail(input: EmptyInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+
+    if let error = sendEmailVerificationError {
+      return SignalProducer(error: error)
+    }
+    return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+  }
+
   internal func signup(name: String,
                        email: String,
                        password: String,
@@ -1234,6 +1242,16 @@ internal struct MockService: ServiceType {
     }
 
     return SignalProducer(value: self.updatePledgeResult?.value ?? .template)
+  }
+
+  internal func unwatchProject(input: WatchProjectInput)
+    -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      return producer(for: self.unwatchProjectMutationResult)
+  }
+
+  internal func watchProject(input: WatchProjectInput)
+    -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      return producer(for: self.watchProjectMutationResult)
   }
 
   internal func addImage(file fileURL: URL, toDraft draft: UpdateDraft)
@@ -1368,18 +1386,26 @@ private extension MockService {
           signupResponse: $1.signupResponse,
           signupError: $1.signupError,
           submitApplePayResponse: $1.submitApplePayResponse,
-          toggleStarResponse: $1.toggleStarResponse,
-          toggleStarError: $1.toggleStarError,
           unfollowFriendError: $1.unfollowFriendError,
           updateDraftError: $1.updateDraftError,
           updatePledgeResult: $1.updatePledgeResult,
           updateProjectNotificationResponse: $1.updateProjectNotificationResponse,
           updateProjectNotificationError: $1.updateProjectNotificationError,
-          updateUserSelfError: $1.updateUserSelfError
+          updateUserSelfError: $1.updateUserSelfError,
+          unwatchProjectMutationResult: $1.unwatchProjectMutationResult,
+          watchProjectMutationResult: $1.watchProjectMutationResult
         )
       }
     )
   }
   // swiftlint:enable type_name
+}
+
+private func producer<T, E>(for property: Result<T, E>?) -> SignalProducer<T, E> {
+  guard let result = property else { return .empty }
+  switch result {
+  case .success(let value): return .init(value: value)
+  case .failure(let error): return .init(error: error)
+  }
 }
 #endif

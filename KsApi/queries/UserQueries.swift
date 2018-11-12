@@ -9,7 +9,7 @@ public enum UserQueries: Queryable {
     case .chosenCurrency:
       return NonEmptySet(Query.user(chosenCurrencyQueryFields()))
     case .email:
-      return NonEmptySet(Query.user(.email +| []))
+      return NonEmptySet(Query.user(userEmailQueryFields()))
     }
   }
 }
