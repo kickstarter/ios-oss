@@ -183,7 +183,7 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testResendVerificationStackViewIsHidden_IfEmailIsVerified() {
+  func testResendVerificationViewIsHidden_IfEmailIsVerified() {
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance()
@@ -192,7 +192,7 @@ final class ChangeEmailViewModelTests: TestCase {
       .assertValues([true], "Email is deliverable and verified")
   }
 
-  func testResendVerificationStackViewIsNotHidden_IfEmailIsNotVerified() {
+  func testResendVerificationViewIsNotHidden_IfEmailIsNotVerified() {
     let userEmailFields = UserEmailFields.template
       |> \.isEmailVerified .~ false
 
@@ -207,7 +207,7 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testResendVerificationStackViewIsNotHidden_IfEmailIsUndeliverable() {
+  func testResendVerificationViewIsNotHidden_IfEmailIsUndeliverable() {
     let userEmailFields = UserEmailFields.template
       |> \.isDeliverable .~ false
 
@@ -231,7 +231,7 @@ final class ChangeEmailViewModelTests: TestCase {
     self.warningMessageLabelHiddenObserver.assertValues([true], "Email is deliverable")
   }
 
-  func testWarningMessageLabel_isNotHidden() {
+  func testWarningMessageLabel_isNotHidden_whenEmailIsNotDeliverable() {
     let userEmailFields = UserEmailFields.template
       |> \.isDeliverable .~ false
 
@@ -245,7 +245,7 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testUnverifiedEmailLabel_isHidden() {
+  func testUnverifiedEmailLabel_isHidden_whenEmailIsVerified() {
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance()
@@ -253,7 +253,7 @@ final class ChangeEmailViewModelTests: TestCase {
     self.unverifiedEmailLabelHiddenObserver.assertValues([true], "Email is verified & deliverable")
   }
 
-  func testUnverifiedEmailLabel_isNotHidden() {
+  func testUnverifiedEmailLabel_isNotHidden_whenEmailIsUnverified() {
     let userEmailFields = UserEmailFields.template
       |> \.isEmailVerified .~ false
 
@@ -267,7 +267,7 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testUnverifiedEmailLabel_isHidden_whenUndeliverable() {
+  func testUnverifiedEmailLabel_isHidden_whenEmailIsUnverifiedAndUndeliverable() {
     let userEmailFields = UserEmailFields.template
       |> \.isDeliverable .~ false
       |> \.isEmailVerified .~ false
