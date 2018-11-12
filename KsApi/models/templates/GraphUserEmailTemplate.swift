@@ -1,6 +1,7 @@
 import Foundation
 
-extension GraphUserEmail {
-
-  internal static let template = GraphUserEmail(email: "ksr@kickstarter.com")
+extension UserEmailFields {
+  internal static let template = UserEmailFields(email: "ksr@kickstarter.com",
+                                                 isEmailVerified: true,
+                                                 isDeliverable: true)
 }

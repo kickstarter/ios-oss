@@ -21,3 +21,7 @@ public func chosenCurrencyQueryFields() -> NonEmptySet<Query.User> {
 public func userEmailQueryFields() -> NonEmptySet<Query.User> {
   return .email +| []
 }
+
+public func changeEmailQueryFields() -> NonEmptySet<Query.User> {
+  return .email +| [.isEmailVerified, .isEmailDeliverable]
+}
