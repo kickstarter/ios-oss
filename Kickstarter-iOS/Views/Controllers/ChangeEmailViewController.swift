@@ -62,7 +62,7 @@ internal final class ChangeEmailViewController: UIViewController {
 
     _ = self
       |> settingsViewControllerStyle
-      |> UIViewController.lens.title %~ { _ in
+      |> \.title %~ { _ in
         Strings.Change_email()
     }
 
@@ -70,39 +70,39 @@ internal final class ChangeEmailViewController: UIViewController {
       |> onePasswordButtonStyle
 
     _ = self.messageLabelView
-      |> UIView.lens.backgroundColor .~ .ksr_grey_200
+      |> \.backgroundColor .~ .ksr_grey_200
 
     _ = self.unverifiedEmailLabel
       |> settingsDescriptionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Email_unverified() }
+      |> \.text %~ { _ in Strings.Email_unverified() }
 
     _ = self.warningMessageLabel
       |> settingsDescriptionLabelStyle
-      |> UILabel.lens.textColor .~ .ksr_red_400
-      |> UILabel.lens.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
+      |> \.textColor .~ .ksr_red_400
+      |> \.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
 
     _ = self.currentEmailLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Current_email() }
+      |> \.text %~ { _ in Strings.Current_email() }
 
     _ = self.currentEmail
       |> settingsDetailLabelStyle
 
     _ = self.newEmailLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.New_email() }
+      |> \.text %~ { _ in Strings.New_email() }
 
     _ = self.newEmailTextField
       |> formFieldStyle
-      |> UITextField.lens.returnKeyType .~ .next
-      |> UITextField.lens.textAlignment .~ .right
-      |> UITextField.lens.placeholder %~ { _ in
+      |> \.returnKeyType .~ .next
+      |> \.textAlignment .~ .right
+      |> \.placeholder %~ { _ in
         Strings.login_placeholder_email()
     }
 
     _ = self.passwordLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Current_password() }
+      |> \.text %~ { _ in Strings.Current_password() }
 
     _ = self.passwordTextField
       |> passwordFieldStyle
