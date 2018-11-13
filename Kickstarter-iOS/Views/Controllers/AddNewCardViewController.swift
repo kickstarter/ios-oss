@@ -48,15 +48,16 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     _ = self.cardholderNameTextField
       |> formFieldStyle
       |> \.textAlignment .~ .right
-      |> \.attributedPlaceholder .~
-        NSAttributedString(string: Strings.Name(),
-                           attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+      |> \.attributedPlaceholder .~ NSAttributedString(
+          string: Strings.Name(),
+          attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400])
 
     _ = self.paymentField
       |> \.borderColor .~ nil
       |> \.font .~ .ksr_body()
       |> \.cursorColor .~ .ksr_green_700
       |> \.textColor .~ .ksr_text_dark_grey_500
+      |> \.placeholderColor .~ .ksr_text_dark_grey_400
   }
 
   @objc fileprivate func cancelButtonTapped() {
