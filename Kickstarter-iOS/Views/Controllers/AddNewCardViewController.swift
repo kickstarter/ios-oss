@@ -42,8 +42,8 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
       |> settingsViewControllerStyle
 
     _ = self.cardholderNameLabel
+      |> settingsSectionLabelStyle
       |> \.text %~ { _ in Strings.Cardholder_name() }
-      |> \.textColor .~ .ksr_text_dark_grey_900
 
     _ = self.cardholderNameTextField
       |> formFieldStyle

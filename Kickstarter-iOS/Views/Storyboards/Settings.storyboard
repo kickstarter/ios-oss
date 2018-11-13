@@ -797,7 +797,7 @@
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gOJ-8S-md7">
+                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gOJ-8S-md7">
                                                                 <rect key="frame" x="54" y="0.0" width="297" height="28"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -839,7 +839,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0rS-r2-TWS" customClass="STPPaymentCardTextField">
-                                                        <rect key="frame" x="0.0" y="0.5" width="375" height="51"/>
+                                                        <rect key="frame" x="0.0" y="0.5" width="381" height="51"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOu-68-PJO" userLabel="Separator">
@@ -854,7 +854,7 @@
                                                 <constraints>
                                                     <constraint firstItem="0rS-r2-TWS" firstAttribute="leading" secondItem="BMB-LZ-IRH" secondAttribute="leading" id="0UU-lj-GUy"/>
                                                     <constraint firstAttribute="height" constant="52" id="Fes-R7-l5F"/>
-                                                    <constraint firstAttribute="trailing" secondItem="0rS-r2-TWS" secondAttribute="trailing" id="LKV-u2-d3x"/>
+                                                    <constraint firstAttribute="trailing" secondItem="0rS-r2-TWS" secondAttribute="trailing" constant="-6" id="LKV-u2-d3x"/>
                                                     <constraint firstItem="0rS-r2-TWS" firstAttribute="top" secondItem="ygp-ig-bdL" secondAttribute="bottom" id="ZOi-wY-lfD"/>
                                                     <constraint firstAttribute="trailing" secondItem="ygp-ig-bdL" secondAttribute="trailing" id="aCV-Sr-nws"/>
                                                     <constraint firstAttribute="bottom" secondItem="gOu-68-PJO" secondAttribute="bottom" id="alE-iC-kBe"/>
