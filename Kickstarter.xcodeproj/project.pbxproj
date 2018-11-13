@@ -1021,7 +1021,7 @@
 		D6DC65522178CDDD008CF69C /* GraphUserEmailTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */; };
 		D6E925CE211107CD00E13010 /* SettingsNewslettersDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */; };
 		D6ED1B37216D0C64007F7547 /* ChangeEmailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B36216D0C64007F7547 /* ChangeEmailViewModelTests.swift */; };
-		D6ED1B39216D50BE007F7547 /* GraphUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B38216D50BE007F7547 /* GraphUser.swift */; };
+		D6ED1B39216D50BE007F7547 /* UserEmailFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */; };
 		D6ED1B3B216D525B007F7547 /* ChangeEmailInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */; };
 		D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */; };
 		D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */; };
@@ -2736,7 +2736,7 @@
 		D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmailTemplate.swift; sourceTree = "<group>"; };
 		D6ED1B36216D0C64007F7547 /* ChangeEmailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModelTests.swift; sourceTree = "<group>"; };
-		D6ED1B38216D50BE007F7547 /* GraphUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUser.swift; sourceTree = "<group>"; };
+		D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEmailFields.swift; sourceTree = "<group>"; };
 		D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailInput.swift; sourceTree = "<group>"; };
 		D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserAccountMutation.swift; sourceTree = "<group>"; };
 		D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeLenses.swift; sourceTree = "<group>"; };
@@ -4212,6 +4212,7 @@
 				D01587921EEB2ED6006E7684 /* FindFriendsEnvelopeTests.swift */,
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
 				D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */,
+				D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */,
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
 				D6ED1B38216D50BE007F7547 /* GraphUser.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
@@ -6341,7 +6342,7 @@
 				D015888D1EEB2ED7006E7684 /* ConfigLenses.swift in Sources */,
 				D0158A1E1EEB30A2006E7684 /* ProjectStatsEnvelope.FundingDateStatsTemplates.swift in Sources */,
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
-				D6ED1B39216D50BE007F7547 /* GraphUser.swift in Sources */,
+				D6ED1B39216D50BE007F7547 /* UserEmailFields.swift in Sources */,
 				D01588731EEB2ED7006E7684 /* FindFriendsEnvelope.swift in Sources */,
 				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,

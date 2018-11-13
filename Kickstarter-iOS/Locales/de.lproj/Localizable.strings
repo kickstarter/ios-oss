@@ -29,6 +29,7 @@
 "Any_payment_methods_you_saved_to_Kickstarter" = "Sämtliche auf Kickstarter gespeicherten Zahlungsmethoden sind hier (sicher) hinterlegt.";
 "App_version" = "App-Version";
 "Are_you_sure" = "Bist du sicher?";
+"Are_you_sure_you_wish_to_remove_this_card" = "Are you sure you wish to remove this card from your payment method options?";
 "Ask_me_anything" = "Frage stellen";
 "Available_to_watch_for_time_more_units" = "Kann noch %{time} %{units} angesehen werden";
 "Back" = "Zurück";
@@ -249,6 +250,7 @@
 "Messages" = "Nachrichten";
 "Name" = "Name";
 "Never" = "Niemals";
+"New_email" = "New email";
 "New_password" = "Neues Passwort";
 "New_pledge_activity" = "Neue Finanzierungsbeiträge";
 "New_work_and_big_ideas_from_established_and" = "Neue Arbeiten und großartige Ideen von etablierten und neuen Künstlern.";
@@ -257,6 +259,7 @@
 "No_Results" = "Keine Ergebnisse";
 "No_comments_yet" = "Bisher noch keine Kommentare.";
 "No_messages" = "Keine Nachrichten";
+"No_nevermind" = "No, nevermind";
 "No_one_has_posted_an_update_yet" = "Es wurden noch keine Updates gepostet.";
 "No_pledges_from_friends_yet" = "Es gibt noch keine Beiträge von Freunden.";
 "No_replay_is_available_for_this_live_stream" = "Keine Wiedergabe verügbar für diesen Live-Stream.";
@@ -335,6 +338,7 @@
 "Recommended_For_You" = "Empfehlungen für dich";
 "Recorded_Live" = "Live aufgenommen";
 "Recorded_live_with_creator_name" = "Live aufgenommen von <b>%{creator_name}</b>";
+"Remove_this_card" = "Remove this card";
 "Replay" = "Wiedergabe";
 "Replay_available_for_time_more_units" = "Wiedergabe verfügbar für weitere %{time} %{units}";
 "Replay_live_stream_with_creator_name" = "Wiedergabe des Live-Streams von<br><b>%{creator_name}</b>";
@@ -460,6 +464,7 @@
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
 "Write_a_bio" = "Schreibe eine kurze Biografie, ein oder zwei Sätze genügen.";
 "Yes_change_currency" = "Ja, Währung ändern";
+"Yes_remove" = "Yes, remove";
 "Yes_turn_off" = "Ja, deaktivieren";
 "You_Launched" = "Dein Projekt ist live!";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";

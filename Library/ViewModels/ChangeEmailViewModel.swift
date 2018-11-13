@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import Result
-import UIKit
 
 public protocol ChangeEmailViewModelInputs {
   func emailFieldDidEndEditing(email: String?)
@@ -27,15 +26,17 @@ public protocol ChangeEmailViewModelOutputs {
   var didSendVerificationEmail: Signal<Void, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
   var emailText: Signal<String, NoError> { get }
-  var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
+  var messageLabelViewHidden: Signal<Bool, NoError> { get }
   var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
   var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
   var passwordText: Signal<String, NoError> { get }
   var passwordFieldBecomeFirstResponder: Signal<Void, NoError> { get }
-  var resendVerificationStackViewIsHidden: Signal<Bool, NoError> { get }
+  var resendVerificationEmailViewIsHidden: Signal<Bool, NoError> { get }
   var resetFields: Signal<String, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
   var shouldSubmitForm: Signal<Void, NoError> { get }
+  var unverifiedEmailLabelHidden: Signal<Bool, NoError> { get }
+  var warningMessageLabelHidden: Signal<Bool, NoError> { get }
   var verificationEmailButtonTitle: Signal<String, NoError> { get }
 }
 
@@ -46,7 +47,6 @@ public protocol ChangeEmailViewModelType {
 
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
 ChangeEmailViewModelOutputs {
-
   public init() {
 
     let changeEmailEvent = Signal.merge(
@@ -66,7 +66,9 @@ ChangeEmailViewModelOutputs {
         changeEmailEvent.values().ignoreValues()
       )
       .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraphUserEmail(query: UserQueries.email.query)
+        AppEnvironment.current
+          .apiService
+          .fetchGraphUserEmailFields(query: NonEmptySet(Query.user(changeEmailQueryFields())))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }
@@ -85,14 +87,30 @@ ChangeEmailViewModelOutputs {
 
     self.emailText = userEmailEvent.values().map { $0.me.email }
 
-    self.resendVerificationStackViewIsHidden = changeEmailEvent.values().ignoreValues().mapConst(false)
+    let isEmailVerified = userEmailEvent.values().map { $0.me.isEmailVerified }.skipNil()
+    let isEmailDeliverable = userEmailEvent.values().map { $0.me.isDeliverable }.skipNil()
+
+    self.resendVerificationEmailViewIsHidden = Signal.combineLatest(isEmailVerified, isEmailDeliverable)
+      .map { $0 && $1 }
+
+    self.unverifiedEmailLabelHidden = Signal
+      .combineLatest(isEmailVerified, isEmailDeliverable)
+      .map { isEmailVerified, isEmailDeliverable -> Bool in
+        guard isEmailVerified else { return !isEmailDeliverable }
+
+        return true
+      }
+
+    self.warningMessageLabelHidden = isEmailDeliverable
+
+    self.messageLabelViewHidden = Signal
+      .merge(self.unverifiedEmailLabelHidden, self.warningMessageLabelHidden)
+      .filter(isFalse)
 
     self.dismissKeyboard = Signal.merge(
       self.changePasswordProperty.signal.ignoreValues(),
       self.saveButtonTappedProperty.signal.ignoreValues()
     )
-
-    self.messageBannerViewIsHidden = viewDidLoadProperty.signal.mapConst(false)
 
     self.saveButtonIsEnabled = Signal.combineLatest (
       self.emailText,
@@ -142,7 +160,7 @@ ChangeEmailViewModelOutputs {
       self.shouldSubmitForm.signal.mapConst(true),
       self.didChangeEmail.mapConst(false),
       self.didFailToChangeEmail.mapConst(false)
-    ).logEvents(identifier: "\n\n EMITE \n\n")
+    )
   }
 
   private let newEmailProperty = MutableProperty<String?>(nil)
@@ -216,16 +234,18 @@ ChangeEmailViewModelOutputs {
   public let didSendVerificationEmail: Signal<Void, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
   public let emailText: Signal<String, NoError>
-  public let messageBannerViewIsHidden: Signal<Bool, NoError>
+  public let messageLabelViewHidden: Signal<Bool, NoError>
   public let onePasswordButtonIsHidden: Signal<Bool, NoError>
   public let onePasswordFindLoginForURLString: Signal<String, NoError>
   public let passwordFieldBecomeFirstResponder: Signal<Void, NoError>
   public let passwordText: Signal<String, NoError>
-  public let resendVerificationStackViewIsHidden: Signal<Bool, NoError>
+  public let resendVerificationEmailViewIsHidden: Signal<Bool, NoError>
   public let resetFields: Signal<String, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let shouldSubmitForm: Signal<Void, NoError>
+  public let unverifiedEmailLabelHidden: Signal<Bool, NoError>
   public let verificationEmailButtonTitle: Signal<String, NoError>
+  public let warningMessageLabelHidden: Signal<Bool, NoError>
 
   public var inputs: ChangeEmailViewModelInputs {
     return self

@@ -15,7 +15,7 @@ internal struct MockService: ServiceType {
   fileprivate let changeCurrencyError: GraphError?
 
   fileprivate let changeEmailError: GraphError?
-  fileprivate let changeEmailResponse: UserEnvelope<GraphUserEmail>?
+  fileprivate let changeEmailResponse: UserEnvelope<UserEmailFields>?
 
   fileprivate let changePasswordError: GraphError?
 
@@ -60,7 +60,7 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftError: ErrorEnvelope?
 
   fileprivate let fetchGraphCurrencyResponse: UserCurrency?
-  fileprivate let fetchGraphUserEmailResponse: GraphUserEmail?
+  fileprivate let fetchGraphUserEmailResponse: UserEmailFields?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
   fileprivate let addAttachmentError: ErrorEnvelope?
@@ -172,7 +172,7 @@ internal struct MockService: ServiceType {
                 currency: String = "USD",
                 buildVersion: String = "1",
                 changeEmailError: GraphError? = nil,
-                changeEmailResponse: UserEnvelope<GraphUserEmail>? = UserEnvelope<GraphUserEmail>(
+                changeEmailResponse: UserEnvelope<UserEmailFields>? = UserEnvelope<UserEmailFields>(
                                                                        me: .template
                                                                      ),
                 changePasswordError: GraphError? = nil,
@@ -202,7 +202,7 @@ internal struct MockService: ServiceType {
                 exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
-                fetchGraphUserEmailResponse: GraphUserEmail? = nil,
+                fetchGraphUserEmailResponse: UserEmailFields? = nil,
                 fetchGraphCurrencyResponse: UserCurrency? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
                 addAttachmentError: ErrorEnvelope? = nil,
@@ -622,9 +622,9 @@ internal struct MockService: ServiceType {
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
   }
 
-  internal func fetchGraphUserEmail(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUserEmail>, GraphError> {
-      return SignalProducer(value: changeEmailResponse ?? UserEnvelope<GraphUserEmail>(me: .template))
+  internal func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
+      return SignalProducer(value: changeEmailResponse ?? UserEnvelope<UserEmailFields>(me: .template))
   }
 
   internal func fetchGraphCurrency(query: NonEmptySet<Query>)
