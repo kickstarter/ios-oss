@@ -77,7 +77,8 @@ internal final class PaymentMethodsViewController: UIViewController {
     self.viewModel.outputs.tableViewIsEditing
       .observeForUI()
       .observeValues { [weak self] isEditing in
-        self?.tableView.isEditing = isEditing
+        _ = self?.tableView
+          ?|> \.isEditing .~ isEditing
     }
 
     self.viewModel.outputs.showAlert

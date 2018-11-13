@@ -22,10 +22,6 @@ internal final class PaymentMethodsDataSourceTests: XCTestCase {
     let cards = GraphUserCreditCard.template.storedCards.nodes
     self.dataSource.load(creditCards: cards)
 
-    XCTAssertEqual(7, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
-
-    XCTAssertEqual("CreditCardCell", self.dataSource.reusableId(item: 0, section: 0))
-
     guard let card = cards.first else {
       XCTFail("Card should exist")
       return

@@ -18,8 +18,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.goToAddCardScreen.observe(goToAddCardScreen.observer)
-    self.vm.outputs.paymentMethods.observe(paymentMethods.observer)
+    self.vm.outputs.goToAddCardScreen.observe(self.goToAddCardScreen.observer)
+    self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.tableViewIsEditing.observe(self.tableViewIsEditing.observer)
   }
@@ -63,8 +63,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
-
       self.vm.inputs.editButtonTapped()
 
       self.tableViewIsEditing.assertValues([true], "Editing mode enabled")
@@ -97,8 +95,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.tableViewIsEditing.assertValues([])
       self.showAlert.assertValues([])
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
-
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
       self.vm.inputs.editButtonTapped()
