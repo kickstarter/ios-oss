@@ -23,7 +23,7 @@ internal final class SettingsCurrencyCellViewModelTests: TestCase {
     let currency = Currency.USD
     let value = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency)
 
-    withEnvironment(apiService: MockService(fetchGraphCurrencyResponse: .template)) {
+    withEnvironment(apiService: MockService(fetchGraphUserAccountFieldsResponse: .template)) {
       self.vm.inputs.configure(with: value)
       self.scheduler.advance()
       self.chosenCurrencyText.assertValues([Strings.Currency_USD()])

@@ -59,7 +59,7 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
-  fileprivate let fetchGraphCurrencyResponse: UserCurrency?
+  fileprivate let fetchGraphUserAccountFieldsResponse: UserAccountFields?
   fileprivate let fetchGraphUserEmailResponse: UserEmailFields?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -203,7 +203,7 @@ internal struct MockService: ServiceType {
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
                 fetchGraphUserEmailResponse: UserEmailFields? = nil,
-                fetchGraphCurrencyResponse: UserCurrency? = nil,
+                fetchGraphUserAccountFieldsResponse: UserAccountFields? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
                 addAttachmentError: ErrorEnvelope? = nil,
                 removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -300,7 +300,7 @@ internal struct MockService: ServiceType {
       ]
     )
 
-    self.fetchGraphCurrencyResponse = fetchGraphCurrencyResponse
+    self.fetchGraphUserAccountFieldsResponse = fetchGraphUserAccountFieldsResponse
 
     self.fetchGraphUserEmailResponse = fetchGraphUserEmailResponse
 
@@ -627,9 +627,9 @@ internal struct MockService: ServiceType {
       return SignalProducer(value: changeEmailResponse ?? UserEnvelope<UserEmailFields>(me: .template))
   }
 
-  internal func fetchGraphCurrency(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserCurrency>, GraphError> {
-      return SignalProducer(value: UserEnvelope<UserCurrency>(me: UserCurrency.template))
+  internal func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError> {
+      return SignalProducer(value: UserEnvelope<UserAccountFields>(me: UserAccountFields.template))
   }
 
   internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {

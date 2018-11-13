@@ -26,17 +26,22 @@ final class SettingsAccountViewController: UIViewController {
     self.tableView.register(nib: .SettingsTableViewCell)
     self.tableView.register(nib: .SettingsCurrencyPickerCell)
     self.tableView.register(nib: .SettingsCurrencyCell)
-
+    self.tableView.register(nib: .SettingsAccountWarningCell)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+  }
 
-    self.viewModel.inputs.viewDidLoad()
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
   }
 
   override func bindViewModel() {
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] user, currency in
-        self?.dataSource.configureRows(user: user, currency: currency)
+      .observeValues { [weak self] currency, shouldHideEmailWarning in
+        self?.dataSource.configureRows(currency: currency,
+                                       shouldHideEmailWarning: shouldHideEmailWarning)
         self?.tableView.reloadData()
     }
 
