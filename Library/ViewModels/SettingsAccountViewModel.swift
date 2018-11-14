@@ -13,6 +13,7 @@ public protocol SettingsAccountViewModelInputs {
 
 public protocol SettingsAccountViewModelOutputs {
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
+  var fetchAccountFieldsError: Signal<Void, NoError> { get }
   var presentCurrencyPicker: Signal<Void, NoError> { get }
   var reloadData: Signal<(Currency, Bool), NoError> { get }
   var showAlert: Signal<(), NoError> { get }
@@ -35,6 +36,8 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
           .fetchGraphUserAccountFields(query: UserQueries.account.query)
           .materialize()
     }
+
+    self.fetchAccountFieldsError = userAccountFields.errors().ignoreValues()
 
     let shouldHideEmailWarning = userAccountFields.values()
       .map { response -> Bool in
@@ -109,6 +112,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   }
 
   public let dismissCurrencyPicker: Signal<Void, NoError>
+  public let fetchAccountFieldsError: Signal<Void, NoError>
   public let reloadData: Signal<(Currency, Bool), NoError>
   public let presentCurrencyPicker: Signal<Void, NoError>
   public let showAlert: Signal<(), NoError>

@@ -3,9 +3,9 @@ import UIKit
 
 public struct SettingsCurrencyCellValue {
   public let cellType: SettingsCellTypeProtocol
-  public let currency: Currency
+  public let currency: Currency?
 
-  public init(cellType: SettingsCellTypeProtocol, currency: Currency) {
+  public init(cellType: SettingsCellTypeProtocol, currency: Currency?) {
     self.currency = currency
     self.cellType = cellType
   }

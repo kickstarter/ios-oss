@@ -8,17 +8,25 @@ import UIKit
 final class SettingsAccountViewController: UIViewController {
   @IBOutlet private weak var tableView: UITableView!
 
+  private var messageBannerView: MessageBannerViewController!
+
   private let dataSource = SettingsAccountDataSource()
   fileprivate let viewModel: SettingsAccountViewModelType = SettingsAccountViewModel(
     SettingsAccountViewController.viewController(for:)
   )
 
   internal static func instantiate() -> SettingsAccountViewController {
-    return Storyboard.SettingsAccount.instantiate(SettingsAccountViewController.self)
+    return Storyboard.Settings.instantiate(SettingsAccountViewController.self)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    guard let messageBannerView = self.children.first as? MessageBannerViewController else {
+      fatalError("Couldn't instantiate MessageBannerViewController")
+    }
+
+    self.messageBannerView = messageBannerView
 
     self.tableView.dataSource = dataSource
     self.tableView.delegate = self
@@ -43,6 +51,15 @@ final class SettingsAccountViewController: UIViewController {
         self?.dataSource.configureRows(currency: currency,
                                        shouldHideEmailWarning: shouldHideEmailWarning)
         self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.fetchAccountFieldsError
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dataSource.configureRows(currency: nil, shouldHideEmailWarning: true)
+        self?.tableView.reloadData()
+
+        self?.showGeneralError()
     }
 
     self.viewModel.outputs.presentCurrencyPicker
@@ -97,14 +114,18 @@ final class SettingsAccountViewController: UIViewController {
     self.tableView.endUpdates()
   }
 
-  func dismissCurrencyPickerCell() {
+  private func showGeneralError() {
+    self.messageBannerView.showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+  }
+
+  private func dismissCurrencyPickerCell() {
     tableView.beginUpdates()
     self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
     tableView.endUpdates()
     self.view.gestureRecognizers?.removeAll()
   }
 
-  func showChangeCurrencyAlert() {
+  private func showChangeCurrencyAlert() {
     let alertController = UIAlertController(
       title: Strings.Change_currency(),
       message: """

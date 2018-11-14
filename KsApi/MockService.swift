@@ -59,7 +59,9 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
-  fileprivate let fetchGraphUserAccountFieldsResponse: UserAccountFields?
+  fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>?
+  fileprivate let fetchGraphUserAccountFieldsError: GraphError?
+
   fileprivate let fetchGraphUserEmailResponse: UserEmailFields?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
@@ -203,7 +205,8 @@ internal struct MockService: ServiceType {
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
                 fetchGraphUserEmailResponse: UserEmailFields? = nil,
-                fetchGraphUserAccountFieldsResponse: UserAccountFields? = nil,
+                fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>? = nil,
+                fetchGraphUserAccountFieldsError: GraphError? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
                 addAttachmentError: ErrorEnvelope? = nil,
                 removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -301,6 +304,8 @@ internal struct MockService: ServiceType {
     )
 
     self.fetchGraphUserAccountFieldsResponse = fetchGraphUserAccountFieldsResponse
+      ?? UserEnvelope(me: UserAccountFields.template)
+    self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
 
     self.fetchGraphUserEmailResponse = fetchGraphUserEmailResponse
 
@@ -629,7 +634,13 @@ internal struct MockService: ServiceType {
 
   internal func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError> {
-      return SignalProducer(value: UserEnvelope<UserAccountFields>(me: UserAccountFields.template))
+      if let error = self.fetchGraphUserAccountFieldsError {
+        return SignalProducer(error: error)
+      } else if let response = self.fetchGraphUserAccountFieldsResponse {
+        return SignalProducer(value: response)
+      } else {
+        return .empty
+      }
   }
 
   internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {

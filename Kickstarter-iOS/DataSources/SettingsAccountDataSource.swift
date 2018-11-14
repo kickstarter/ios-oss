@@ -2,7 +2,7 @@ import KsApi
 import Library
 
 final class SettingsAccountDataSource: ValueCellDataSource {
-  func configureRows(currency: Currency, shouldHideEmailWarning: Bool) {
+  func configureRows(currency: Currency?, shouldHideEmailWarning: Bool) {
     clearValues()
     SettingsAccountSectionType.allCases
       .forEach { section -> Void in
@@ -25,7 +25,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                     inSection: SettingsAccountSectionType.emailPassword.rawValue)
   }
 
-  func insertCurrencyCell(currency: Currency) -> IndexPath {
+  func insertCurrencyCell(currency: Currency?) -> IndexPath {
     let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency )
 
     return self.insertRow(value: cellValue,

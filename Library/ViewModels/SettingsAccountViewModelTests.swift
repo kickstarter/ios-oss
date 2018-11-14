@@ -12,6 +12,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   let vm = SettingsAccountViewModel(SettingsAccountViewController.viewController(for:))
 
   let dismissCurrencyPicker = TestObserver<Void, NoError>()
+  let fetchAccountFieldsErrorObserver = TestObserver<Void, NoError>()
   let presentCurrencyPicker = TestObserver<Void, NoError>()
   let reloadDataShouldHideWarningIcon = TestObserver<Bool, NoError>()
   let reloadDataCurrency = TestObserver<Currency, NoError>()
@@ -21,6 +22,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.dismissCurrencyPicker.observe(self.dismissCurrencyPicker.observer)
+    self.vm.outputs.fetchAccountFieldsError.observe(self.fetchAccountFieldsErrorObserver.observer)
     self.vm.outputs.presentCurrencyPicker.observe(self.presentCurrencyPicker.observer)
     self.vm.outputs.reloadData.map(first).observe(self.reloadDataCurrency.observer)
     self.vm.outputs.reloadData.map(second).observe(self.reloadDataShouldHideWarningIcon.observer)
@@ -63,6 +65,18 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.reloadDataCurrency.assertValueCount(1)
     self.vm.inputs.showChangeCurrencyAlert(for: Currency.EUR)
     self.showAlert.assertDidEmitValue()
+  }
+
+  func testFetchUserAccountFields_Failure() {
+    let graphError = GraphError.emptyResponse(nil)
+    let mockService = MockService(fetchGraphUserAccountFieldsError: graphError)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewWillAppear()
+      self.reloadDataShouldHideWarningIcon.assertValueCount(0)
+      self.reloadDataCurrency.assertValueCount(0)
+      self.fetchAccountFieldsErrorObserver.assertValueCount(1)
+    }
   }
 
   func testUpdateCurrencyFailure() {
