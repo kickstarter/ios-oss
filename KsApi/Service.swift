@@ -218,8 +218,8 @@ public struct Service: ServiceType {
       return fetch(query: query)
   }
 
-  public func fetchGraphUserEmail(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUserEmail>, GraphError> {
+  public func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
       return fetch(query: query)
   }
 

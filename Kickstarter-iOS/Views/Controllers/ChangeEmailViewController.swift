@@ -7,18 +7,17 @@ import UIKit
 internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var currentEmailLabel: UILabel!
   @IBOutlet fileprivate weak var currentEmail: UILabel!
-  @IBOutlet fileprivate weak var errorLabel: UILabel!
-  @IBOutlet fileprivate weak var errorView: UIView!
+  @IBOutlet fileprivate weak var messageLabelView: UIView!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailTextField: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
   @IBOutlet fileprivate weak var passwordLabel: UILabel!
   @IBOutlet fileprivate weak var passwordTextField: UITextField!
   @IBOutlet fileprivate weak var resendVerificationEmailButton: UIButton!
-  @IBOutlet fileprivate weak var resendVerificationStackView: UIStackView!
-
+  @IBOutlet fileprivate weak var resendVerificationEmailView: UIView!
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
-  @IBOutlet fileprivate weak var resendVerificationEmailStackView: UIStackView!
+  @IBOutlet fileprivate weak var unverifiedEmailLabel: UILabel!
+  @IBOutlet fileprivate weak var warningMessageLabel: UILabel!
 
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
   private var messageBannerView: MessageBannerViewController!
@@ -63,46 +62,54 @@ internal final class ChangeEmailViewController: UIViewController {
 
     _ = self
       |> settingsViewControllerStyle
-      |> UIViewController.lens.title %~ { _ in
+      |> \.title %~ { _ in
         Strings.Change_email()
     }
 
-    _ = onePasswordButton
+    _ = self.onePasswordButton
       |> onePasswordButtonStyle
 
-    _ = errorLabel
+    _ = self.messageLabelView
+      |> \.backgroundColor .~ .ksr_grey_200
+
+    _ = self.unverifiedEmailLabel
       |> settingsDescriptionLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.Email_unverified() }
+      |> \.text %~ { _ in Strings.Email_unverified() }
 
-    _ = currentEmailLabel
+    _ = self.warningMessageLabel
+      |> settingsDescriptionLabelStyle
+      |> \.textColor .~ .ksr_red_400
+      |> \.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
+
+    _ = self.currentEmailLabel
       |> settingsTitleLabelStyle
+      |> \.text %~ { _ in Strings.Current_email() }
 
-    _ = currentEmail
+    _ = self.currentEmail
       |> settingsDetailLabelStyle
 
-    _ = newEmailLabel
+    _ = self.newEmailLabel
       |> settingsTitleLabelStyle
+      |> \.text %~ { _ in Strings.New_email() }
 
-    _ = newEmailTextField
+    _ = self.newEmailTextField
       |> formFieldStyle
-      |> UITextField.lens.returnKeyType .~ .next
-      |> UITextField.lens.textAlignment .~ .right
-      |> UITextField.lens.placeholder %~ { _ in
+      |> \.returnKeyType .~ .next
+      |> \.textAlignment .~ .right
+      |> \.placeholder %~ { _ in
         Strings.login_placeholder_email()
     }
 
-    _ = passwordLabel
+    _ = self.passwordLabel
       |> settingsTitleLabelStyle
+      |> \.text %~ { _ in Strings.Current_password() }
 
-    _ = resendVerificationStackView
-      |> \.isHidden .~ true
-
-    _ = passwordTextField
+    _ = self.passwordTextField
       |> passwordFieldStyle
       |> \.textAlignment .~ .right
       |> \.returnKeyType .~ .go
 
-    _ = resendVerificationEmailButton
+    _ = self.resendVerificationEmailButton
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
   }
@@ -110,13 +117,13 @@ internal final class ChangeEmailViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.resendVerificationStackView.rac.hidden = self.viewModel.outputs.resendVerificationStackViewIsHidden
     self.currentEmail.rac.text = self.viewModel.outputs.emailText
-
+    self.resendVerificationEmailView.rac.hidden = self.viewModel.outputs.resendVerificationEmailViewIsHidden
     self.resendVerificationEmailButton.rac.title = self.viewModel.outputs.verificationEmailButtonTitle
-
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
-
+    self.messageLabelView.rac.hidden = self.viewModel.outputs.messageLabelViewHidden
+    self.unverifiedEmailLabel.rac.hidden = self.viewModel.outputs.unverifiedEmailLabelHidden
+    self.warningMessageLabel.rac.hidden = self.viewModel.outputs.warningMessageLabelHidden
     self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
 
     self.viewModel.outputs.activityIndicatorShouldShow

@@ -535,6 +535,23 @@ public enum Strings {
     )
   }
   /**
+   "Are you sure you wish to remove this card from your payment method options?"
+
+   - **en**: "Are you sure you wish to remove this card from your payment method options?"
+   - **de**: "Are you sure you wish to remove this card from your payment method options?"
+   - **es**: "Are you sure you wish to remove this card from your payment method options?"
+   - **fr**: "Are you sure you wish to remove this card from your payment method options?"
+   - **ja**: "Are you sure you wish to remove this card from your payment method options?"
+  */
+  public static func Are_you_sure_you_wish_to_remove_this_card() -> String {
+    return localizedString(
+      key: "Are_you_sure_you_wish_to_remove_this_card",
+      defaultValue: "Are you sure you wish to remove this card from your payment method options?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Ask me anything"
 
    - **en**: "Ask me anything"
@@ -4080,6 +4097,23 @@ with friends."
     )
   }
   /**
+   "New email"
+
+   - **en**: "New email"
+   - **de**: "New email"
+   - **es**: "New email"
+   - **fr**: "New email"
+   - **ja**: "New email"
+  */
+  public static func New_email() -> String {
+    return localizedString(
+      key: "New_email",
+      defaultValue: "New email",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "New password"
 
    - **en**: "New password"
@@ -4211,6 +4245,23 @@ with friends."
     return localizedString(
       key: "No_messages",
       defaultValue: "No messages",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "No, nevermind"
+
+   - **en**: "No, nevermind"
+   - **de**: "No, nevermind"
+   - **es**: "No, nevermind"
+   - **fr**: "No, nevermind"
+   - **ja**: "No, nevermind"
+  */
+  public static func No_nevermind() -> String {
+    return localizedString(
+      key: "No_nevermind",
+      defaultValue: "No, nevermind",
       count: nil,
       substitutions: [:]
     )
@@ -5545,6 +5596,23 @@ daring ideas."
       defaultValue: "Recorded live with <b>%{creator_name}</b>",
       count: nil,
       substitutions: ["creator_name": creator_name]
+    )
+  }
+  /**
+   "Remove this card"
+
+   - **en**: "Remove this card"
+   - **de**: "Remove this card"
+   - **es**: "Remove this card"
+   - **fr**: "Remove this card"
+   - **ja**: "Remove this card"
+  */
+  public static func Remove_this_card() -> String {
+    return localizedString(
+      key: "Remove_this_card",
+      defaultValue: "Remove this card",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -7472,6 +7540,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Yes_change_currency",
       defaultValue: "Yes, Change currency",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Yes, remove"
+
+   - **en**: "Yes, remove"
+   - **de**: "Yes, remove"
+   - **es**: "Yes, remove"
+   - **fr**: "Yes, remove"
+   - **ja**: "Yes, remove"
+  */
+  public static func Yes_remove() -> String {
+    return localizedString(
+      key: "Yes_remove",
+      defaultValue: "Yes, remove",
       count: nil,
       substitutions: [:]
     )
