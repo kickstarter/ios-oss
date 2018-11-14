@@ -47,9 +47,9 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       .ignoreValues()
       .map {
         localizedString(
-          key: "Something_went_wrong_and_we_were_unable_to_remove_your_credit_card_please_try_again",
+          key: "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again",
           //swiftlint:disable:next line_length
-          defaultValue: "Something went wrong and we were unable to remove your credit card, please try again."
+          defaultValue: "Something went wrong and we were unable to remove your payment method, please try again."
         )
     }
 
