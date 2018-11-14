@@ -23,10 +23,12 @@ final class ChangeEmailViewModelTests: TestCase {
   private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let resetFields = TestObserver<String, NoError>()
   private let shouldSubmitForm = TestObserver<Void, NoError>()
-
+  private let messageLabelViewHiddenObserver = TestObserver<Bool, NoError>()
   private let passwordText = TestObserver<String, NoError>()
-  private let resendVerificationStackViewIsHidden = TestObserver<Bool, NoError>()
+  private let resendVerificationEmailViewIsHiddenObserver = TestObserver<Bool, NoError>()
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
+  private let unverifiedEmailLabelHiddenObserver = TestObserver<Bool, NoError>()
+  private let warningMessageLabelHiddenObserver = TestObserver<Bool, NoError>()
   private let verificationEmailButtonTitle = TestObserver<String, NoError>()
 
   override func setUp() {
@@ -38,12 +40,13 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.emailText.observe(self.emailText.observer)
 
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
+    self.vm.outputs.messageLabelViewHidden.observe(self.messageLabelViewHiddenObserver.observer)
     self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonHidden.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
     self.vm.outputs.passwordFieldBecomeFirstResponder.observe(self.passwordFieldBecomeFirstResponder.observer)
     self.vm.outputs.passwordText.observe(self.passwordText.observer)
-    self.vm.outputs.resendVerificationStackViewIsHidden.observe(
-      self.resendVerificationStackViewIsHidden.observer
+    self.vm.outputs.resendVerificationEmailViewIsHidden.observe(
+      self.resendVerificationEmailViewIsHiddenObserver.observer
     )
     self.vm.outputs.didSendVerificationEmail.observe(
       self.didSendVerificationEmail.observer
@@ -54,6 +57,8 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.resetFields.observe(self.resetFields.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.vm.outputs.shouldSubmitForm.observe(self.shouldSubmitForm.observer)
+    self.vm.outputs.unverifiedEmailLabelHidden.observe(self.unverifiedEmailLabelHiddenObserver.observer)
+    self.vm.outputs.warningMessageLabelHidden.observe(self.warningMessageLabelHiddenObserver.observer)
     self.vm.outputs.verificationEmailButtonTitle.observe(self.verificationEmailButtonTitle.observer)
   }
 
@@ -118,7 +123,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testEmailText_AfterFetchingUsersEmail() {
 
-    let response = UserEnvelope<GraphUserEmail>(me: .template)
+    let response = UserEnvelope<UserEmailFields>(me: .template)
 
     withEnvironment(apiService: MockService(changeEmailResponse: response)) {
 
@@ -140,7 +145,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testSaveButtonEnabledStatus() {
 
-    let response = UserEnvelope<GraphUserEmail>(me: .template)
+    let response = UserEnvelope<UserEmailFields>(me: .template)
 
     withEnvironment(apiService: MockService(changeEmailResponse: response)) {
 
@@ -162,7 +167,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testSaveButtonEnablesAfter_OnePasswordPrefillsField() {
 
-    let response = UserEnvelope<GraphUserEmail>(me: .template)
+    let response = UserEnvelope<UserEmailFields>(me: .template)
 
     withEnvironment(apiService: MockService(changeEmailResponse: response)) {
 
@@ -178,20 +183,103 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testResendVerificationStackViewIsHidden_IfEmailIsVerified() {
-    self.resendVerificationStackViewIsHidden.assertDidNotEmitValue()
-  }
+  func testResendVerificationViewIsHidden_IfEmailIsVerified() {
+    self.vm.inputs.viewDidLoad()
 
-  func testResendVerificationStackViewIsNotHidden_IfEmailIsNotVerified() {
-    self.resendVerificationStackViewIsHidden.assertDidNotEmitValue()
-  }
-
-  func testResendVerificationStackViewAppears_AfterChangingEmail() {
-
-    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
     self.scheduler.advance()
 
-    self.resendVerificationStackViewIsHidden.assertValues([false])
+    self.resendVerificationEmailViewIsHiddenObserver
+      .assertValues([true], "Email is deliverable and verified")
+  }
+
+  func testResendVerificationViewIsNotHidden_IfEmailIsNotVerified() {
+    let userEmailFields = UserEmailFields.template
+      |> \.isEmailVerified .~ false
+
+    let mockService = MockService(changeEmailResponse: UserEnvelope(me: userEmailFields))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.resendVerificationEmailViewIsHiddenObserver.assertValues([false], "Email is unverified")
+    }
+  }
+
+  func testResendVerificationViewIsNotHidden_IfEmailIsUndeliverable() {
+    let userEmailFields = UserEmailFields.template
+      |> \.isDeliverable .~ false
+
+    let mockService = MockService(changeEmailResponse: UserEnvelope(me: userEmailFields))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.resendVerificationEmailViewIsHiddenObserver
+        .assertValues([false], "Email is undeliverable")
+    }
+  }
+
+  func testWarningMessageLabel_isHidden() {
+    self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
+
+    self.warningMessageLabelHiddenObserver.assertValues([true], "Email is deliverable")
+  }
+
+  func testWarningMessageLabel_isNotHidden_whenEmailIsNotDeliverable() {
+    let userEmailFields = UserEmailFields.template
+      |> \.isDeliverable .~ false
+
+    withEnvironment(apiService: MockService(changeEmailResponse: UserEnvelope(me: userEmailFields))) {
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.warningMessageLabelHiddenObserver
+        .assertValues([false], "Email is not deliverable")
+    }
+  }
+
+  func testUnverifiedEmailLabel_isHidden_whenEmailIsVerified() {
+    self.vm.inputs.viewDidLoad()
+
+    self.scheduler.advance()
+
+    self.unverifiedEmailLabelHiddenObserver.assertValues([true], "Email is verified & deliverable")
+  }
+
+  func testUnverifiedEmailLabel_isNotHidden_whenEmailIsUnverified() {
+    let userEmailFields = UserEmailFields.template
+      |> \.isEmailVerified .~ false
+
+    withEnvironment(apiService: MockService(changeEmailResponse: UserEnvelope(me: userEmailFields))) {
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.unverifiedEmailLabelHiddenObserver
+        .assertValues([false], "Email is not verified, but deliverable")
+    }
+  }
+
+  func testUnverifiedEmailLabel_isHidden_whenEmailIsUnverifiedAndUndeliverable() {
+    let userEmailFields = UserEmailFields.template
+      |> \.isDeliverable .~ false
+      |> \.isEmailVerified .~ false
+
+    withEnvironment(apiService: MockService(changeEmailResponse: UserEnvelope(me: userEmailFields))) {
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.unverifiedEmailLabelHiddenObserver
+        .assertValues([true], "Email is not verified, but deliverable message takes precendent")
+    }
   }
 
   func testDidFailToSendVerificationEmailEmits_OnFailure() {
@@ -208,7 +296,6 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testDidSendVerificationEmailEmits_OnSuccess() {
-
       self.vm.inputs.resendVerificationEmailButtonTapped()
       self.scheduler.advance()
 
@@ -216,7 +303,6 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testVerificationEmailButtonTitle_Backer() {
-
     let user = User.template
       |> \.stats.createdProjectsCount .~ 0
 
@@ -265,18 +351,13 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
+    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+    self.scheduler.advance()
 
-    withEnvironment(apiService: MockService()) {
-
-      self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
-      self.scheduler.advance()
-
-      self.resetFields.assertValue("")
-    }
+    self.resetFields.assertValue("")
   }
 
   func testShouldSubmitFormEmits_WhenTappingSaveOrGo() {
-
     self.vm.inputs.viewDidLoad()
     self.shouldSubmitForm.assertValueCount(0)
 
