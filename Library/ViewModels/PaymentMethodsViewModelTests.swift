@@ -108,8 +108,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.tableViewIsEditing.assertValues([true], "Editing mode remains enabled")
       self.showAlert.assertValues([
-        "Something went wrong and we were unable to remove your credit card, please try again."
-      ], "Error occurred")
+        "Something went wrong and we were unable to remove your payment method, please try again."])
       self.paymentMethods.assertValues(
         [GraphUserCreditCard.template.storedCards.nodes, GraphUserCreditCard.template.storedCards.nodes],
         "Emits again to reload the tableview after an error occurred"
