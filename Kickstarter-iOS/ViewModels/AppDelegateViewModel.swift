@@ -263,8 +263,16 @@ AppDelegateViewModelOutputs {
     if #available(iOS 10.0, *) {
       self.getNotificationAuthorizationStatus = applicationIsReadyForRegisteringNotifications
 
-      self.registerForRemoteNotifications = self.notificationAuthorizationCompletedProperty.signal
-        .filter(isTrue)
+      let userHasAuthorizedRemoteNotifications = self.notificationAuthorizationStatusProperty.signal
+        .filter { $0 == .authorized }
+        .take(first: 1)
+        .mapConst(true)
+      let authorizationCompletedAndGranted = self.notificationAuthorizationCompletedProperty
+        .signal.filter(isTrue)
+
+      self.registerForRemoteNotifications = Signal.merge(
+        authorizationCompletedAndGranted,
+        userHasAuthorizedRemoteNotifications)
         .ignoreValues()
     } else {
       //Never firing signal in ios 9

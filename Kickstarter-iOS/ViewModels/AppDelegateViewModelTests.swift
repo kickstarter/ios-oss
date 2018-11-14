@@ -662,13 +662,6 @@ final class AppDelegateViewModelTests: TestCase {
       self.registerForRemoteNotifications.assertValueCount(0)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
-      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
-
-      self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(0)
-      self.registerForRemoteNotifications.assertValueCount(0)
-      self.unregisterForRemoteNotifications.assertValueCount(0)
-
       //Simulate initial notification authorization
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.notDetermined)
       self.vm.inputs.didAcceptReceivingRemoteNotifications()
@@ -685,18 +678,48 @@ final class AppDelegateViewModelTests: TestCase {
       self.registerForRemoteNotifications.assertValueCount(1)
       self.unregisterForRemoteNotifications.assertValueCount(0)
 
+      self.vm.inputs.applicationDidEnterBackground()
+      self.vm.inputs.applicationWillEnterForeground()
+
       self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
 
-      self.getNotificationAuthorizationStatus.assertValueCount(2)
+      self.getNotificationAuthorizationStatus.assertValueCount(3)
       self.authorizeForRemoteNotifications.assertValueCount(1)
-      self.registerForRemoteNotifications.assertValueCount(1)
+      self.registerForRemoteNotifications.assertValueCount(2)
       self.unregisterForRemoteNotifications.assertValueCount(0)
     }
 
     self.vm.inputs.userSessionEnded()
 
-    self.registerForRemoteNotifications.assertValueCount(1)
+    self.registerForRemoteNotifications.assertValueCount(2)
     self.unregisterForRemoteNotifications.assertValueCount(1)
+  }
+
+  @available(iOS 10.0, *)
+  func testSilentRegistration() {
+    withEnvironment(currentUser: User.template) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                   launchOptions: [:])
+
+      self.getNotificationAuthorizationStatus.assertValueCount(1)
+
+      self.vm.inputs.notificationAuthorizationStatusReceived(.authorized)
+
+      self.registerForRemoteNotifications.assertValueCount(1)
+      self.unregisterForRemoteNotifications.assertValueCount(0)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
+
+      self.vm.inputs.applicationDidEnterBackground()
+      self.vm.inputs.applicationWillEnterForeground()
+
+      self.getNotificationAuthorizationStatus.assertValueCount(2)
+
+      self.vm.inputs.notificationAuthorizationStatusReceived(.authorized)
+
+      self.registerForRemoteNotifications.assertValueCount(1, "Registration only happens once per app launch")
+      self.unregisterForRemoteNotifications.assertValueCount(0)
+      self.authorizeForRemoteNotifications.assertValueCount(0)
+    }
   }
 
   @available(iOS 10.0, *)
