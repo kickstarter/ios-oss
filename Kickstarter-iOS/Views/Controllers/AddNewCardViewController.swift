@@ -42,12 +42,14 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
       |> settingsViewControllerStyle
 
     _ = self.cardholderNameLabel
-      |> settingsSectionLabelStyle
+      |> \.textColor .~ .ksr_text_dark_grey_900
+      |> \.font .~ .ksr_body()
       |> \.text %~ { _ in Strings.Cardholder_name() }
 
     _ = self.cardholderNameTextField
       |> formFieldStyle
       |> \.textAlignment .~ .right
+      |> \.textColor .~ .ksr_text_dark_grey_500
       |> \.attributedPlaceholder .~ NSAttributedString(
           string: Strings.Name(),
           attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400])
