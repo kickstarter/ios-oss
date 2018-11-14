@@ -57,7 +57,7 @@ public final class KoalaTrackingClient: TrackingClientType {
     print("🐨 [Koala Track]: \(event), properties: \(properties)")
 
     self.queue.async {
-      Answers.logCustomEvent(withName: event, customAttributes: nil)
+      CLSLogv("%@", getVaList([event]))
       self.buffer.append(["event": event, "properties": properties])
     }
   }
