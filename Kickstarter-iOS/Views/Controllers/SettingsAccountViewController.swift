@@ -176,6 +176,8 @@ extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
       return ChangeEmailViewController.instantiate()
     case .changePassword:
       return ChangePasswordViewController.instantiate()
+    case .paymentMethods:
+      return PaymentMethodsViewController.instantiate()
     default:
       return nil
     }
