@@ -221,9 +221,17 @@ public enum Query {
     case optedOutOfRecommendations
     case showPublicProfile
     case savedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
+    case storedCards(Set<QueryArg<Never>>, NonEmptySet<Connection<CreditCard>>)
     case slug
     case url
     case userId
+
+    public enum CreditCard: String {
+      case expirationDate
+      case id
+      case lastFour
+      case type
+    }
   }
 }
 
@@ -402,10 +410,17 @@ extension Query.User: QueryType {
     case .optedOutOfRecommendations:            return "optedOutOfRecommendations"
     case let .savedProjects(args, fields):      return "savedProjects\(connection(args, fields))"
     case .showPublicProfile:                    return "showPublicProfile"
+    case let .storedCards(args, fields):        return "storedCards\(connection(args, fields))"
     case .slug:                                 return "slug"
     case .url:                                  return "url"
     case .userId:                               return "uid"
     }
+  }
+}
+
+extension Query.User.CreditCard: QueryType {
+  public var description: String {
+    return self.rawValue
   }
 }
 

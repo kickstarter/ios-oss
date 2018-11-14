@@ -114,8 +114,8 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   }
 
   public let dismissCurrencyPicker: Signal<Void, NoError>
-  public let reloadData: Signal<(User, Currency), NoError>
   public let presentCurrencyPicker: Signal<Void, NoError>
+  public let reloadData: Signal<(User, Currency), NoError>
   public let showAlert: Signal<(), NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
   public let goToAddCard: Signal<Void, NoError>
