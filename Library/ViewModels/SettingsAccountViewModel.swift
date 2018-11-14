@@ -17,7 +17,6 @@ public protocol SettingsAccountViewModelOutputs {
   var reloadData: Signal<(User, Currency), NoError> { get }
   var showAlert: Signal<(), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
-  var goToAddCard: Signal<Void, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
 }
 
@@ -81,10 +80,6 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .map(viewControllerFactory)
       .skipNil()
 
-    self.goToAddCard = self.selectedCellTypeProperty.signal.skipNil()
-      .filter { $0 == .paymentMethods }
-      .ignoreValues()
-
     self.showAlert = self.changeCurrencyAlertProperty.signal.skipNil().ignoreValues()
   }
 
@@ -114,11 +109,10 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   }
 
   public let dismissCurrencyPicker: Signal<Void, NoError>
-  public let reloadData: Signal<(User, Currency), NoError>
   public let presentCurrencyPicker: Signal<Void, NoError>
+  public let reloadData: Signal<(User, Currency), NoError>
   public let showAlert: Signal<(), NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
-  public let goToAddCard: Signal<Void, NoError>
   public let updateCurrencyFailure: Signal<String, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }

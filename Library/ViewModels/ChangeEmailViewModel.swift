@@ -68,7 +68,7 @@ ChangeEmailViewModelOutputs {
       .switchMap { _ in
         AppEnvironment.current
           .apiService
-          .fetchGraphUserEmailFields(query: NonEmptySet(Query.user(changeEmailQueryFields())))
+          .fetchGraphUserEmailFields(query: NonEmptySet(Query.user(userEmailQueryFields())))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
     }

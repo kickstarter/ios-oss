@@ -38,7 +38,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lYP-2e-Lmy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2145" y="139"/>
+            <point key="canvasLocation" x="-2278" y="139"/>
         </scene>
         <!--HelpViewController-->
         <scene sceneID="gLr-Hi-uhd">
@@ -744,19 +744,58 @@
             </objects>
             <point key="canvasLocation" x="-1121" y="685"/>
         </scene>
-        <!--View Controller-->
+        <!--Payment Methods View Controller-->
         <scene sceneID="zHg-cw-mrH">
             <objects>
-                <viewController id="x6I-vC-YEC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PaymentMethodsViewController" id="x6I-vC-YEC" customClass="PaymentMethodsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YT3-jR-gw6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xml-QE-znh">
+                                <rect key="frame" x="0.0" y="20" width="375" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="jwd-Sk-5Hc"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jMz-Pn-EqP">
+                                <rect key="frame" x="12" y="48" width="351" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="77" estimatedRowHeight="77" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="JiT-6r-zd1">
+                                <rect key="frame" x="0.0" y="87" width="375" height="580"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="x6I-vC-YEC" id="Pql-Bp-jeX"/>
+                                    <outlet property="delegate" destination="x6I-vC-YEC" id="wDz-Vt-liF"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="JiT-6r-zd1" firstAttribute="bottom" secondItem="1CW-RA-xOi" secondAttribute="bottom" id="4Nh-0Z-prq"/>
+                            <constraint firstItem="jMz-Pn-EqP" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" constant="12" id="7lh-q4-iIB"/>
+                            <constraint firstItem="JiT-6r-zd1" firstAttribute="trailing" secondItem="1CW-RA-xOi" secondAttribute="trailing" id="Cik-RG-ixZ"/>
+                            <constraint firstItem="JiT-6r-zd1" firstAttribute="top" secondItem="jMz-Pn-EqP" secondAttribute="bottom" constant="18" id="EIp-Eb-b1X"/>
+                            <constraint firstItem="jMz-Pn-EqP" firstAttribute="trailing" secondItem="1CW-RA-xOi" secondAttribute="trailing" constant="-12" id="GRO-wX-XE7"/>
+                            <constraint firstItem="JiT-6r-zd1" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" id="LAA-IF-JdQ"/>
+                            <constraint firstItem="xml-QE-znh" firstAttribute="trailing" secondItem="1CW-RA-xOi" secondAttribute="trailing" id="jTT-55-ex7"/>
+                            <constraint firstItem="xml-QE-znh" firstAttribute="top" secondItem="1CW-RA-xOi" secondAttribute="top" id="npt-gn-SPf"/>
+                            <constraint firstItem="xml-QE-znh" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" id="pKO-tq-7Te"/>
+                            <constraint firstItem="jMz-Pn-EqP" firstAttribute="top" secondItem="xml-QE-znh" secondAttribute="bottom" constant="-2" id="sMh-hh-sd0"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="1CW-RA-xOi"/>
                     </view>
+                    <connections>
+                        <outlet property="headerLabel" destination="jMz-Pn-EqP" id="Cry-Vr-ZXF"/>
+                        <outlet property="tableView" destination="JiT-6r-zd1" id="Xan-Kn-plO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o7T-ks-zrI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="2621.5999999999999" y="123.68815592203899"/>
         </scene>
         <!--Add New Card-->
         <scene sceneID="6WC-ed-5CL">
