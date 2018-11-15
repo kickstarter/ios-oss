@@ -2,7 +2,7 @@ import Library
 import Prelude
 import UIKit
 
-class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
+final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
   @IBOutlet fileprivate weak var detailLabel: UILabel!

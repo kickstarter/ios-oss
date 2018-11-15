@@ -9,8 +9,8 @@ internal final class SettingsAccountViewControllerTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
   }
 
   override func tearDown() {
