@@ -53,6 +53,9 @@ final class ChangePasswordViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.scrollView
+      |> \.alwaysBounceVertical .~ true
+
     _ = self
       |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in

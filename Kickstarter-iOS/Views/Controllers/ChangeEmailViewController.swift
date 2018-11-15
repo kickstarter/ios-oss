@@ -60,6 +60,9 @@ internal final class ChangeEmailViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.scrollView
+      |> \.alwaysBounceVertical .~ true
+
     _ = self
       |> settingsViewControllerStyle
       |> \.title %~ { _ in
@@ -94,6 +97,7 @@ internal final class ChangeEmailViewController: UIViewController {
 
     _ = self.newEmailTextField
       |> formFieldStyle
+      |> \.keyboardType .~ .emailAddress
       |> \.returnKeyType .~ .next
       |> \.textAlignment .~ .right
       |> \.placeholder %~ { _ in
