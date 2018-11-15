@@ -126,6 +126,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.registerForRemoteNotifications
       .observeForUI()
       .observeValues {
+        print("📲 [Push Registration] Registering for push notifications")
         if #available(iOS 10.0, *) {
           UIApplication.shared.registerForRemoteNotifications()
         } else {
@@ -136,6 +137,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           UIApplication.shared.registerForRemoteNotifications()
         }
       }
+
+      self.viewModel.outputs.pushTokenSuccessfullyRegistered
+      .observeForUI()
+      .observeValues {
+        print("📲 [Push Registration] Push token successfully registered ✨")
+    }
 
       if #available(iOS 10.0, *) {
         self.viewModel.outputs.getNotificationAuthorizationStatus
