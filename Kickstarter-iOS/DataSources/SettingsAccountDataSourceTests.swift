@@ -8,12 +8,6 @@ final class SettingsAccountDataSourceTests: XCTestCase {
   private let dataSource = SettingsAccountDataSource()
   private let tableView = UITableView()
 
-  override func tearDown() {
-    super.tearDown()
-
-    dataSource.clearValues()
-  }
-
   func testConfigureRows() {
     dataSource.configureRows(currency: Currency.USD, shouldHideEmailWarning: true)
 
