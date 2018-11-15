@@ -83,6 +83,33 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
     }
   }
 
+  func test_USProject_USUser_NonUSLocation_Backer() {
+    let deadline = self.dateType.init().addingTimeInterval(-100).timeIntervalSince1970
+    let backing = .template
+      // swiftlint:disable force_unwrapping
+      |> Backing.lens.amount .~ (self.cosmicSurgery.rewards.first!.minimum + 5.00)
+      |> Backing.lens.rewardId .~ self.cosmicSurgery.rewards.first?.id
+      |> Backing.lens.reward .~ self.cosmicSurgery.rewards.first
+
+    cosmicSurgery = cosmicSurgery
+      |> Project.lens.rewards %~ { rewards in [rewards[0], rewards[2]] }
+      |> Project.lens.dates.stateChangedAt .~ deadline
+      |> Project.lens.dates.deadline .~ deadline
+      |> Project.lens.state .~ .successful
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ "USD"
+      |> Project.lens.stats.currentCurrencyRate .~ 1.0
+      |> Project.lens.personalization.backing .~ backing
+
+    withEnvironment(countryCode: "CA") {
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
+      let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
+      parent.view.frame.size.height =  2_200
+
+      FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_US_userLocation_CA")
+    }
+  }
+
   func test_USProject_NonUSUser_NonUSLocation() {
     cosmicSurgery = cosmicSurgery
       |> Project.lens.country .~ .us
@@ -146,4 +173,5 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_nil_userLocation_SE")
     }
   }
+
 }
