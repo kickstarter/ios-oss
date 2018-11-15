@@ -56,7 +56,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
       return value.cellType as? SettingsAccountCellType
     } else if let currencyValue = self[indexPath] as? SettingsCurrencyCellValue {
       return currencyValue.cellType as? SettingsAccountCellType
-    } else if let _ = self[indexPath] as? Bool {
+    } else if self[indexPath] is Bool {
       return SettingsAccountCellType.changeEmail
     } else {
       return nil

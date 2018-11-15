@@ -22,7 +22,9 @@ final class SettingsAccountDataSourceTests: XCTestCase {
 
     _ = dataSource.insertCurrencyPickerRow()
 
-    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: SettingsAccountSectionType.payment.rawValue))
+    // swiftlint:disable line_length
+    XCTAssertEqual(3, dataSource.tableView(tableView,
+                                           numberOfRowsInSection: SettingsAccountSectionType.payment.rawValue))
 
     _ = dataSource.removeCurrencyPickerRow()
 
