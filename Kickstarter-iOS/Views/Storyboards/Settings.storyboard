@@ -202,7 +202,7 @@
                                                     <constraint firstAttribute="trailing" secondItem="44i-Jb-zGG" secondAttribute="trailing" constant="12" id="tgZ-SK-b5u"/>
                                                 </constraints>
                                             </view>
-                                            <view hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalHuggingPriority="255" translatesAutoresizingMaskIntoConstraints="NO" id="Cdr-bL-P2W" userLabel="Message Label View">
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cdr-bL-P2W" userLabel="Message Label View">
                                                 <rect key="frame" x="0.0" y="88" width="375" height="24"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="IjC-cR-RB2">
