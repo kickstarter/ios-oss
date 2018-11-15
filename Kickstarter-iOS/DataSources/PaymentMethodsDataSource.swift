@@ -4,6 +4,8 @@ import UIKit
 
 final class PaymentMethodsDataSource: ValueCellDataSource {
 
+  public var deletionHandler: ((GraphUserCreditCard.CreditCard) -> Void)?
+
   func load(creditCards: [GraphUserCreditCard.CreditCard]) {
 
     self.set(values: creditCards,
@@ -18,5 +20,16 @@ final class PaymentMethodsDataSource: ValueCellDataSource {
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }
+  }
+
+  func tableView(_ tableView: UITableView,
+                 commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    guard let creditCard = self[indexPath] as? GraphUserCreditCard.CreditCard else { return }
+
+    _ = self.deleteRow(value: creditCard, cellClass: CreditCardCell.self,
+                       atIndex: indexPath.row, inSection: indexPath.section)
+    tableView.deleteRows(at: [indexPath], with: .left)
+
+    self.deletionHandler?(creditCard)
   }
 }
