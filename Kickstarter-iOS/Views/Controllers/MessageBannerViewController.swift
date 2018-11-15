@@ -43,7 +43,7 @@ final class MessageBannerViewController: UIViewController {
 
     self.viewModel.outputs.iconImageName
       .observeForUI()
-      .map { image(named: $0) }
+      .map { image(named: $0, inBundle: Bundle.framework) }
       .observeValues { [weak self] image in
         guard let `self` = self else { return }
         _ = self.iconImageView
