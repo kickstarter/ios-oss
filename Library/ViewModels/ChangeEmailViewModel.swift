@@ -50,7 +50,6 @@ ChangeEmailViewModelOutputs {
   public init() {
 
     let changeEmailEvent = Signal.merge(
-        self.changePasswordProperty.signal.skipNil(),
         self.saveButtonTappedProperty.signal.skipNil()
       )
       .map { email, password in

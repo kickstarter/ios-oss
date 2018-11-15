@@ -64,7 +64,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testDidChangeEmailEmits_OnSuccess() {
 
-    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+    self.vm.inputs.saveButtonTapped(newEmail: "ksr@kickstarter.com", password: "123456")
     self.scheduler.advance()
 
     self.didChangeEmail.assertDidEmitValue()
@@ -351,7 +351,7 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
-    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+    self.vm.inputs.saveButtonTapped(newEmail: "ksr@kickstarter.com", password: "123456")
     self.scheduler.advance()
 
     self.resetFields.assertValue("")
