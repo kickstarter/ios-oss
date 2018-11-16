@@ -608,7 +608,7 @@ final class KoalaTests: TestCase {
     }
 
     koala.trackAppOpen()
-    
+
     XCTAssertEqual(["App Open", "Opened App"], client.events)
     XCTAssertEqual(["App Open", "Opened App"], callBackEvents)
     XCTAssertEqual("Apple", client.properties.last?["manufacturer"] as? String)
