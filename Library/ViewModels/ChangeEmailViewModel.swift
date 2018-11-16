@@ -13,7 +13,6 @@ public protocol ChangeEmailViewModelInputs {
   func passwordFieldTextDidChange(text: String?)
   func resendVerificationEmailButtonTapped()
   func saveButtonTapped(newEmail: String?, password: String?)
-  func submitForm(newEmail: String?, password: String?)
   func textFieldShouldReturn(with returnKeyType: UIReturnKeyType)
   func viewDidLoad()
 }
@@ -34,7 +33,6 @@ public protocol ChangeEmailViewModelOutputs {
   var resendVerificationEmailViewIsHidden: Signal<Bool, NoError> { get }
   var resetFields: Signal<String, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
-  var shouldSubmitForm: Signal<Void, NoError> { get }
   var unverifiedEmailLabelHidden: Signal<Bool, NoError> { get }
   var warningMessageLabelHidden: Signal<Bool, NoError> { get }
   var verificationEmailButtonTitle: Signal<String, NoError> { get }
@@ -107,11 +105,13 @@ ChangeEmailViewModelOutputs {
       .filter(isFalse)
 
     self.dismissKeyboard = Signal.merge(
-      self.changePasswordProperty.signal.ignoreValues(),
+      self.textFieldShouldReturnProperty.signal.skipNil()
+        .filter { $0 == .done }
+        .ignoreValues(),
       self.saveButtonTappedProperty.signal.ignoreValues()
     )
 
-    self.saveButtonIsEnabled = Signal.combineLatest (
+    self.saveButtonIsEnabled = Signal.combineLatest(
       self.emailText,
       self.newEmailProperty.signal.skipNil(),
       self.passwordProperty.signal.skipNil()
@@ -124,12 +124,6 @@ ChangeEmailViewModelOutputs {
                                               .skipNil()
                                               .filter { $0 == .next }
                                               .ignoreValues()
-
-    self.shouldSubmitForm = Signal.merge(
-      self.textFieldShouldReturnProperty.signal.skipNil()
-        .filter { $0 == .go }
-        .ignoreValues(),
-      self.saveButtonTappedProperty.signal.ignoreValues())
 
     self.onePasswordButtonIsHidden = self.onePasswordIsAvailable.signal.map { $0 }.negate()
 
@@ -156,7 +150,7 @@ ChangeEmailViewModelOutputs {
     }
 
     self.activityIndicatorShouldShow = Signal.merge(
-      self.shouldSubmitForm.signal.mapConst(true),
+      self.saveButtonTappedProperty.signal.ignoreValues().mapConst(true),
       self.didChangeEmail.mapConst(false),
       self.didFailToChangeEmail.mapConst(false)
     )
@@ -206,14 +200,6 @@ ChangeEmailViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  private let changePasswordProperty = MutableProperty<(String, String)?>(nil)
-  public func submitForm(newEmail: String?, password: String?) {
-
-    if let newEmail = newEmail, let password = password {
-      self.changePasswordProperty.value = (newEmail, password)
-    }
-  }
-
   private let saveButtonTappedProperty = MutableProperty<(String, String)?>(nil)
   public func saveButtonTapped(newEmail: String?, password: String?) {
     if let newEmail = newEmail, let password = password {
@@ -241,7 +227,6 @@ ChangeEmailViewModelOutputs {
   public let resendVerificationEmailViewIsHidden: Signal<Bool, NoError>
   public let resetFields: Signal<String, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
-  public let shouldSubmitForm: Signal<Void, NoError>
   public let unverifiedEmailLabelHidden: Signal<Bool, NoError>
   public let verificationEmailButtonTitle: Signal<String, NoError>
   public let warningMessageLabelHidden: Signal<Bool, NoError>
@@ -256,6 +241,5 @@ ChangeEmailViewModelOutputs {
 }
 
 private func shouldEnableSaveButton(email: String?, newEmail: String, password: String) -> Bool {
-
   return !newEmail.isEmpty && !password.isEmpty && email != newEmail && isValidEmail(newEmail)
 }

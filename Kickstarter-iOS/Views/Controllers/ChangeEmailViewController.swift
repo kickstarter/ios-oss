@@ -107,7 +107,7 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = self.passwordTextField
       |> passwordFieldStyle
       |> \.textAlignment .~ .right
-      |> \.returnKeyType .~ .go
+      |> \.returnKeyType .~ .done
 
     _ = self.resendVerificationEmailButton
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
@@ -170,13 +170,6 @@ internal final class ChangeEmailViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] error in
         self?.messageBannerView.showBanner(with: .error, message: error)
-    }
-
-    self.viewModel.outputs.shouldSubmitForm
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.viewModel.inputs.submitForm(newEmail: self?.newEmailTextField.text,
-                                          password: self?.passwordTextField.text)
     }
 
     self.viewModel.outputs.passwordFieldBecomeFirstResponder

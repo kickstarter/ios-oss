@@ -22,7 +22,6 @@ final class ChangeEmailViewModelTests: TestCase {
 
   private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let resetFields = TestObserver<String, NoError>()
-  private let shouldSubmitForm = TestObserver<Void, NoError>()
   private let messageLabelViewHiddenObserver = TestObserver<Bool, NoError>()
   private let passwordText = TestObserver<String, NoError>()
   private let resendVerificationEmailViewIsHiddenObserver = TestObserver<Bool, NoError>()
@@ -56,7 +55,6 @@ final class ChangeEmailViewModelTests: TestCase {
     )
     self.vm.outputs.resetFields.observe(self.resetFields.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
-    self.vm.outputs.shouldSubmitForm.observe(self.shouldSubmitForm.observer)
     self.vm.outputs.unverifiedEmailLabelHidden.observe(self.unverifiedEmailLabelHiddenObserver.observer)
     self.vm.outputs.warningMessageLabelHidden.observe(self.warningMessageLabelHiddenObserver.observer)
     self.vm.outputs.verificationEmailButtonTitle.observe(self.verificationEmailButtonTitle.observer)
@@ -331,10 +329,10 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.dismissKeyboard.assertDidNotEmitValue()
 
-    self.vm.inputs.submitForm(newEmail: "new@email.com", password: "123456")
+    self.vm.inputs.saveButtonTapped(newEmail: "new@email.com", password: "123456")
     self.dismissKeyboard.assertValueCount(1)
 
-    self.vm.inputs.submitForm(newEmail: "new@test.com", password: "123456")
+    self.vm.inputs.textFieldShouldReturn(with: .done)
     self.dismissKeyboard.assertValueCount(2)
   }
 
@@ -343,7 +341,7 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.passwordFieldBecomeFirstResponder.assertValueCount(0)
 
-    self.vm.inputs.textFieldShouldReturn(with: .go)
+    self.vm.inputs.textFieldShouldReturn(with: .done)
     self.passwordFieldBecomeFirstResponder.assertValueCount(0)
 
     self.vm.inputs.textFieldShouldReturn(with: .next)
@@ -355,16 +353,5 @@ final class ChangeEmailViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.resetFields.assertValue("")
-  }
-
-  func testShouldSubmitFormEmits_WhenTappingSaveOrGo() {
-    self.vm.inputs.viewDidLoad()
-    self.shouldSubmitForm.assertValueCount(0)
-
-    self.vm.inputs.textFieldShouldReturn(with: .go)
-    self.shouldSubmitForm.assertValueCount(1)
-
-    self.vm.inputs.saveButtonTapped(newEmail: "", password: "")
-    self.shouldSubmitForm.assertValueCount(2)
   }
 }
