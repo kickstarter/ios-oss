@@ -198,6 +198,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues {
         Fabric.with([Crashlytics.self])
+        AppEnvironment.current.koala.logEventCallback = { event, _ in
+          CLSLogv("%@", getVaList([event]))
+        }
     }
     #endif
 
