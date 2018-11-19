@@ -12,7 +12,7 @@ public final class Koala {
 
   fileprivate let bundle: NSBundleType
   fileprivate let client: TrackingClientType
-  fileprivate var config: Config?
+  internal private(set) var config: Config?
   fileprivate let device: UIDeviceType
   fileprivate let distinctId: String
   internal private(set) var loggedInUser: User?
