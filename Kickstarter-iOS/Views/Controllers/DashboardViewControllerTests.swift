@@ -2,6 +2,7 @@ import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import XCTest
 
 internal final class DashboardViewControllerTests: TestCase {
 
@@ -51,6 +52,12 @@ internal final class DashboardViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.004)
       }
     }
+  }
+
+  func testScrollToTop() {
+    let controller = ActivitiesViewController.instantiate()
+
+    XCTAssertNotNil(controller.view as? UIScrollView)
   }
 }
 
