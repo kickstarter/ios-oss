@@ -590,4 +590,28 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["live_stream_live"], client.properties(forKey: "live_stream_state", as: String.self))
     XCTAssertEqual(["Cool Live Stream"], client.properties(forKey: "live_stream_name", as: String.self))
   }
+
+  func testLogEventsCallback() {
+    let bundle = MockBundle()
+    let client = MockTrackingClient()
+    let config = Config.template
+    let device = MockDevice(userInterfaceIdiom: .phone)
+    let screen = MockScreen()
+    let koala = Koala(bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
+                      screen: screen)
+
+    var callBackEvents = [String]()
+    var callBackProperties: [String: Any]?
+    koala.logEventCallback = { event, properties in
+      callBackEvents.append(event)
+      callBackProperties = properties
+    }
+
+    koala.trackAppOpen()
+
+    XCTAssertEqual(["App Open", "Opened App"], client.events)
+    XCTAssertEqual(["App Open", "Opened App"], callBackEvents)
+    XCTAssertEqual("Apple", client.properties.last?["manufacturer"] as? String)
+    XCTAssertEqual("Apple", callBackProperties?["manufacturer"] as? String)
+  }
 }
