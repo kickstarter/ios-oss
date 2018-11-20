@@ -198,8 +198,7 @@ internal final class ChangeEmailViewController: UIViewController {
   }
 
   @IBAction func saveButtonTapped(_ sender: Any) {
-    self.viewModel.inputs.saveButtonTapped(newEmail: self.newEmailTextField.text,
-                                           password: self.passwordTextField.text)
+    self.viewModel.inputs.saveButtonTapped()
   }
 
   @IBAction func resendVerificationEmailButtonTapped(_ sender: Any) {
