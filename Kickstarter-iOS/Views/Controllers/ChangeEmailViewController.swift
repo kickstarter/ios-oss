@@ -209,16 +209,8 @@ internal final class ChangeEmailViewController: UIViewController {
     self.viewModel.inputs.onePasswordButtonTapped()
   }
 
-  @IBAction func emailFieldDidEndEditing(_ sender: UITextField) {
-    self.viewModel.inputs.emailFieldDidEndEditing(email: sender.text)
-  }
-
   @IBAction func emailFieldTextDidChange(_ sender: UITextField) {
     self.viewModel.inputs.emailFieldTextDidChange(text: sender.text)
-  }
-
-  @IBAction func passwordFieldDidEndEditing(_ sender: UITextField) {
-    self.viewModel.inputs.passwordFieldDidEndEditing(password: sender.text)
   }
 
   @IBAction func passwordFieldTextDidChange(_ sender: UITextField) {

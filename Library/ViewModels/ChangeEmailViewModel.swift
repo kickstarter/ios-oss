@@ -4,12 +4,10 @@ import ReactiveSwift
 import Result
 
 public protocol ChangeEmailViewModelInputs {
-  func emailFieldDidEndEditing(email: String?)
   func emailFieldTextDidChange(text: String?)
   func onePasswordButtonTapped()
   func onePasswordFound(password: String?)
   func onePassword(isAvailable available: Bool)
-  func passwordFieldDidEndEditing(password: String?)
   func passwordFieldTextDidChange(text: String?)
   func resendVerificationEmailButtonTapped()
   func saveButtonTapped()
@@ -156,16 +154,15 @@ ChangeEmailViewModelOutputs {
       return user.isCreator ? Strings.Resend_verification_email() : Strings.Send_verfication_email()
     }
 
-    self.activityIndicatorShouldShow = changeEmailEvent.map { !$0.isTerminating }
+    self.activityIndicatorShouldShow = Signal.merge(
+      self.saveButtonTappedProperty.signal.ignoreValues().mapConst(true),
+      changeEmailEvent.map { $0.isTerminating }.mapConst(false)
+    )
   }
 
   private let newEmailProperty = MutableProperty<String?>(nil)
   public func emailFieldTextDidChange(text: String?) {
     self.newEmailProperty.value = text
-  }
-
-  public func emailFieldDidEndEditing(email: String?) {
-//    self.newEmailProperty.value = email
   }
 
   private let onePasswordIsAvailable = MutableProperty(false)
@@ -185,10 +182,6 @@ ChangeEmailViewModelOutputs {
   }
 
   private let passwordProperty = MutableProperty<String?>(nil)
-  public func passwordFieldDidEndEditing(password: String?) {
-//    self.passwordProperty.value = password
-  }
-
   public func passwordFieldTextDidChange(text: String?) {
     self.passwordProperty.value = text
   }
@@ -243,11 +236,11 @@ ChangeEmailViewModelOutputs {
 
 private func shouldEnableSaveButton(email: String?, newEmail: String?, password: String?) -> Bool {
   guard
-    email != newEmail,
-    newEmail != nil,
-    password != nil,
     let newEmail = newEmail,
-    isValidEmail(newEmail)
+    isValidEmail(newEmail),
+    email != newEmail,
+    password != nil
+
   else { return false }
 
   return ![newEmail, password]

@@ -19,12 +19,11 @@ final class ChangeEmailViewModelTests: TestCase {
   private let emailText = TestObserver<String, NoError>()
   private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
   private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-
-  private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
-  private let resetFields = TestObserver<String, NoError>()
   private let messageLabelViewHiddenObserver = TestObserver<Bool, NoError>()
+  private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let passwordText = TestObserver<String, NoError>()
   private let resendVerificationEmailViewIsHiddenObserver = TestObserver<Bool, NoError>()
+  private let resetFields = TestObserver<String, NoError>()
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
   private let unverifiedEmailLabelHiddenObserver = TestObserver<Bool, NoError>()
   private let warningMessageLabelHiddenObserver = TestObserver<Bool, NoError>()
@@ -62,7 +61,11 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testDidChangeEmailEmits_OnSuccess() {
 
-    self.vm.inputs.saveButtonTapped(newEmail: "ksr@kickstarter.com", password: "123456")
+    self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+    self.vm.inputs.saveButtonTapped()
+
     self.scheduler.advance()
 
     self.didChangeEmail.assertDidEmitValue()
@@ -74,7 +77,10 @@ final class ChangeEmailViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(changeEmailError: error)) {
 
-      self.vm.inputs.saveButtonTapped(newEmail: "ksr@kickstarter.com", password: "123456")
+      self.vm.inputs.emailFieldTextDidChange(text: "ksr@ksr.com")
+      self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+      self.vm.inputs.saveButtonTapped()
 
       self.activityIndicatorShouldShow.assertValues([true])
 
@@ -329,7 +335,11 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.dismissKeyboard.assertDidNotEmitValue()
 
-    self.vm.inputs.saveButtonTapped(newEmail: "new@email.com", password: "123456")
+    self.vm.inputs.emailFieldTextDidChange(text: "new@email.com")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+    self.vm.inputs.saveButtonTapped()
+
     self.dismissKeyboard.assertValueCount(1)
 
     self.vm.inputs.textFieldShouldReturn(with: .done)
@@ -349,7 +359,12 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
-    self.vm.inputs.saveButtonTapped(newEmail: "ksr@kickstarter.com", password: "123456")
+
+    self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+    self.vm.inputs.saveButtonTapped()
+
     self.scheduler.advance()
 
     self.resetFields.assertValue("")
