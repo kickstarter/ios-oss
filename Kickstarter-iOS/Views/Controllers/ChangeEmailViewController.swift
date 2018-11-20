@@ -271,6 +271,6 @@ extension ChangeEmailViewController: UITextFieldDelegate {
 
 extension ChangeEmailViewController: MessageBannerViewControllerDelegate {
   func messageBannerViewControllerIsHidden(_ isHidden: Bool) {
-    self.messageBannerContainer.isHidden = isHidden
+    _ = self.messageBannerContainer |> \.isHidden .~ isHidden
   }
 }
