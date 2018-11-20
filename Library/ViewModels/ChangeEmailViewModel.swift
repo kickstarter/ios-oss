@@ -241,5 +241,9 @@ ChangeEmailViewModelOutputs {
 }
 
 private func shouldEnableSaveButton(email: String?, newEmail: String, password: String) -> Bool {
-  return !newEmail.isEmpty && !password.isEmpty && email != newEmail && isValidEmail(newEmail)
+  guard email != newEmail, isValidEmail(newEmail) else { return false }
+
+  return ![newEmail, password]
+    .map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    .contains(false)
 }

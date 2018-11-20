@@ -10,11 +10,6 @@ private let pattern = "(?:[a-zA-Z0-9!#$%\\&‘*+/=?\\^_`{|}~-]+(?:\\.[a-zA-Z0-9!
 
 public func isValidEmail(_ email: String) -> Bool {
 
-  let regex = try? NSRegularExpression(
-    pattern: pattern,
-    options: []
-  )
-
-  let range = NSRange.init(location: 0, length: email.count)
-  return regex?.firstMatch(in: email, options: [], range: range) != nil
+  let predicate = NSPredicate(format:"SELF MATCHES %@", pattern)
+  return predicate.evaluate(with: email)
 }
