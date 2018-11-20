@@ -73,6 +73,15 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
         self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
     }
 
+    self.viewModel.outputs.paymentDetails
+      .observeForUI()
+      .observeValues { [weak self] cardholderName, cardNumber, expMonth, expYear, cvc in
+        self?.stripeToken(cardholderName: cardholderName,
+                         cardNumber: cardNumber,
+                         expirationMonth: expMonth,
+                         expirationYear: expYear,
+                         cvc: cvc)
+    }
   }
 
   @objc fileprivate func cancelButtonTapped() {
@@ -80,10 +89,88 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
   }
 
   @objc fileprivate func saveButtonTapped() {
-    self.dismiss(animated: true, completion: nil)
+    self.viewModel.inputs.saveButtonTapped()
+  }
+
+  @IBAction func cardholderNameTextDidChange(_ sender: UITextField) {
+    guard let text = sender.text else {
+      return
+    }
+
+    self.viewModel.inputs.cardholderNameFieldTextChanged(text: text)
+  }
+
+  @IBAction func cardholderNameFieldDidEndEditing(_ sender: UITextField) {
+    guard let cardholderName = sender.text else {
+      return
+    }
+
+    self.viewModel.inputs.cardholderNameFieldTextChanged(text: cardholderName)
+  }
+
+  @IBAction func cardholderNameDidReturn(_ sender: UITextField) {
+    guard let cardholderName = sender.text else {
+      return
+    }
+
+    self.viewModel.inputs.cardholderNameFieldDidReturn(cardholderName: cardholderName)
+  }
+
+  @IBAction func paymentCardTextDidChange(_ sender: STPPaymentCardTextField) {
+    guard let cardnumber = sender.cardNumber, let cvc = sender.cvc else {
+      return
+    }
+
+    self.viewModel.inputs.paymentCardFieldTextChanged(cardNumber: cardnumber,
+                                                      expMonth: Int(sender.expirationMonth),
+                                                      expYear: Int(sender.expirationYear),
+                                                      cvc: cvc)
+  }
+
+  @IBAction func paymentCardFieldDidEndEditing(_ sender: STPPaymentCardTextField) {
+    guard let cardnumber = sender.cardNumber, let cvc = sender.cvc else {
+      return
+    }
+
+    self.viewModel.inputs.paymentCardFieldTextChanged(cardNumber: cardnumber,
+                                                      expMonth: Int(sender.expirationMonth),
+                                                      expYear: Int(sender.expirationYear),
+                                                      cvc: cvc)
+  }
+
+  @IBAction func paymentCardDidReturn(_ sender: STPPaymentCardTextField) {
+    guard let cardnumber = sender.cardNumber, let cvc = sender.cvc else {
+      return
+    }
+
+    self.viewModel.inputs.paymentCardFieldDidReturn(cardNumber: cardnumber,
+                                                    expMonth: Int(sender.expirationMonth),
+                                                    expYear: Int(sender.expirationYear),
+                                                    cvc: cvc)
   }
 
   func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
     self.viewModel.inputs.paymentInfo(valid: textField.isValid)
+  }
+
+  func stripeToken(cardholderName: String,
+                   cardNumber: String,
+                   expirationMonth: Int,
+                   expirationYear: Int,
+                   cvc: String) {
+
+    let cardParams = STPCardParams()
+    cardParams.name = cardholderName
+    cardParams.number = cardNumber
+    cardParams.expMonth = UInt(expirationMonth)
+    cardParams.expYear = UInt(expirationYear)
+    cardParams.cvc = cvc
+
+    STPAPIClient.shared().createToken(withCard: cardParams) { token, error in
+      guard let token = token, let error = error else {
+        return
+      }
+      self.viewModel.inputs.stripeCreatedToken(stripeToken: token.tokenId, error: error)
+    }
   }
 }

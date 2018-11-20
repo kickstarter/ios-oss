@@ -842,6 +842,11 @@
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits"/>
+                                                                <connections>
+                                                                    <action selector="cardholderNameDidReturn:" destination="jgC-cC-z8A" eventType="primaryActionTriggered" id="niQ-xD-KNX"/>
+                                                                    <action selector="cardholderNameFieldDidEndEditing:" destination="jgC-cC-z8A" eventType="editingDidEnd" id="5PD-8G-YaC"/>
+                                                                    <action selector="cardholderNameTextDidChange:" destination="jgC-cC-z8A" eventType="editingChanged" id="ETB-fC-mNq"/>
+                                                                </connections>
                                                             </textField>
                                                         </subviews>
                                                     </stackView>
@@ -881,6 +886,11 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0rS-r2-TWS" customClass="STPPaymentCardTextField">
                                                         <rect key="frame" x="0.0" y="0.5" width="381" height="51"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <connections>
+                                                            <action selector="paymentCardDidReturn:" destination="jgC-cC-z8A" eventType="primaryActionTriggered" id="n8B-f1-0aJ"/>
+                                                            <action selector="paymentCardFieldDidEndEditing:" destination="jgC-cC-z8A" eventType="editingDidEnd" id="rZs-c7-9fX"/>
+                                                            <action selector="paymentCardTextDidChange:" destination="jgC-cC-z8A" eventType="editingChanged" id="yp9-tp-Ozp"/>
+                                                        </connections>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOu-68-PJO" userLabel="Separator">
                                                         <rect key="frame" x="0.0" y="51.5" width="375" height="0.5"/>
@@ -941,6 +951,6 @@
         <image name="onepassword-button" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="npK-7h-4nS"/>
+        <segue reference="S9b-Nx-mWW"/>
     </inferredMetricsTieBreakers>
 </document>
