@@ -10,6 +10,6 @@ private let pattern = "(?:[a-zA-Z0-9!#$%\\&‘*+/=?\\^_`{|}~-]+(?:\\.[a-zA-Z0-9!
 
 public func isValidEmail(_ email: String) -> Bool {
 
-  let predicate = NSPredicate(format:"SELF MATCHES %@", pattern)
+  let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
   return predicate.evaluate(with: email)
 }
