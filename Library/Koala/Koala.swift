@@ -1824,6 +1824,35 @@ public final class Koala {
     }
   }
 
+  public func trackChangedCurrency(_ currency: Currency) {
+    let prop = ["currency": currency.descriptionText]
+    self.track(event: "Selected Chosen Currency", properties: prop)
+  }
+
+  public func trackViewedPaymentMethods() {
+     self.track(event: "Viewed Payment Methods")
+  }
+
+  public func trackViewedAddNewCard() {
+    self.track(event: "Viewed Add New Card")
+  }
+
+  public func trackDeletedPaymentMethod() {
+    self.track(event: "Deleted Payment Method")
+  }
+
+  public func trackSavedPaymentMethod() {
+    self.track(event: "Saved Payment Method")
+  }
+
+  public func trackFailedPaymentMethodCreation() {
+    self.track(event: "Failed Payment Method Creation")
+  }
+
+  public func trackFailedStripeTokenCreation() {
+    self.track(event: "Failed Stripe Token Creation")
+  }
+
   // Private tracking method that merges in default properties.
   private func track(event: String, properties: [String: Any] = [:]) {
     self.client.track(

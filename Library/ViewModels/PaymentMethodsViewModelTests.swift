@@ -35,6 +35,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
+      XCTAssertEqual(["Viewed Payment Methods"], self.trackingClient.events)
     }
   }
 
@@ -78,6 +79,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         [GraphUserCreditCard.template.storedCards.nodes],
         "Emits once"
       )
+
+      XCTAssertEqual(["Viewed Payment Methods", "Deleted Payment Method"], self.trackingClient.events)
     }
   }
 

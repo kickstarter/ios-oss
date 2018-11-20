@@ -63,6 +63,18 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
 
     self.tableViewIsEditing = self.editButtonTappedSignal.scan(false) { current, _ in !current }
+
+    // Koala:
+    self.viewDidLoadProperty.signal
+      .observeValues { _ in
+        AppEnvironment.current.koala.trackViewedPaymentMethods()
+    }
+
+    deletePaymentMethodEvents.values()
+      .ignoreValues()
+      .observeValues { _ in
+        AppEnvironment.current.koala.trackDeletedPaymentMethod()
+    }
   }
 
   let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) = Signal<GraphUserCreditCard.CreditCard,

@@ -21,6 +21,11 @@ SettingsCurrencyPickerCellViewModelInputs, SettingsCurrencyPickerCellViewModelTy
 
   public init() {
     self.showCurrencyChangeAlert = self.selectedCurrencyProperty.signal.skipNil()
+
+    self.selectedCurrencyProperty.signal.skipNil()
+      .observeValues { currency in
+        AppEnvironment.current.koala.trackChangedCurrency(currency)
+    }
   }
 
   fileprivate let selectedCurrencyProperty = MutableProperty<Currency?>(nil)
