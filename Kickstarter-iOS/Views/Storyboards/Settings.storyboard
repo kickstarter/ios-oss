@@ -370,7 +370,7 @@
                                     <constraint firstItem="VyE-lE-aLQ" firstAttribute="leading" secondItem="XfD-wg-Nx4" secondAttribute="leading" id="pUW-P0-AFT"/>
                                 </constraints>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z5v-98-lpx">
+                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z5v-98-lpx">
                                 <rect key="frame" x="6" y="533" width="363" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="KQp-mG-igY"/>
@@ -403,6 +403,7 @@
                     <connections>
                         <outlet property="currentEmail" destination="dhC-lf-MHP" id="W6i-3P-BKo"/>
                         <outlet property="currentEmailLabel" destination="hbC-wV-1kr" id="hSG-qw-h93"/>
+                        <outlet property="messageBannerContainer" destination="Z5v-98-lpx" id="liD-fX-zGL"/>
                         <outlet property="messageLabelView" destination="Cdr-bL-P2W" id="gSf-t3-n3p"/>
                         <outlet property="newEmailLabel" destination="shM-z1-cjb" id="tnq-XP-h0n"/>
                         <outlet property="newEmailTextField" destination="uEZ-83-bce" id="IEP-yb-Kq6"/>
@@ -621,7 +622,7 @@
                                     <constraint firstAttribute="trailing" secondItem="Jfc-kg-fPd" secondAttribute="trailing" id="ydu-rL-nNN"/>
                                 </constraints>
                             </scrollView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Orx-BR-Kot">
+                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Orx-BR-Kot">
                                 <rect key="frame" x="6" y="533" width="363" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="czY-l0-0k9"/>
@@ -650,6 +651,7 @@
                         <outlet property="confirmNewPasswordTextField" destination="nrx-gx-3DV" id="7ne-sN-e2c"/>
                         <outlet property="currentPasswordLabel" destination="RKC-vo-zm6" id="aSc-hB-eXt"/>
                         <outlet property="currentPasswordTextField" destination="l9b-mM-SUG" id="efL-Fe-Rqn"/>
+                        <outlet property="messageBannerContainer" destination="Orx-BR-Kot" id="9bc-mG-Asv"/>
                         <outlet property="newPasswordLabel" destination="K1u-LI-jmm" id="RP0-n7-kMJ"/>
                         <outlet property="newPasswordTextField" destination="tPP-5U-zGh" id="ejC-0t-96q"/>
                         <outlet property="onePasswordButton" destination="Ml8-qx-02m" id="OXX-ho-87N"/>
@@ -757,6 +759,6 @@
         <image name="onepassword-button" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="npK-7h-4nS"/>
+        <segue reference="S9b-Nx-mWW"/>
     </inferredMetricsTieBreakers>
 </document>

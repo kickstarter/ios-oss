@@ -2,6 +2,7 @@ import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import XCTest
 
 final class ChangeEmailViewControllerTests: TestCase {
   override func setUp() {
@@ -79,5 +80,39 @@ final class ChangeEmailViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
+  }
+
+  func testMessageBannerContainerIsHiddenByDefault() {
+    let controller = ChangeEmailViewController.instantiate()
+    _ = controller.view
+    let messageBannerViewController = controller.children
+      .compactMap { $0 as? MessageBannerViewController }.first
+
+    guard let containerView = messageBannerViewController?.view.superview else {
+        XCTFail("View should be created")
+        return
+    }
+
+    XCTAssertTrue(containerView.isHidden)
+  }
+
+  func testMessageBannerContainerIsHiddenIsSetProperly() {
+    let controller = ChangeEmailViewController.instantiate()
+    _ = controller.view
+    let messageBannerViewController = controller.children
+      .compactMap { $0 as? MessageBannerViewController }.first
+
+    guard let containerView = messageBannerViewController?.view.superview else {
+      XCTFail("View should be created")
+      return
+    }
+
+    controller.messageBannerViewControllerIsHidden(true)
+
+    XCTAssertTrue(containerView.isHidden)
+
+    controller.messageBannerViewControllerIsHidden(false)
+
+    XCTAssertFalse(containerView.isHidden)
   }
 }
