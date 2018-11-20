@@ -1,4 +1,3 @@
-import Crashlytics
 import KsApi
 import Prelude
 import Result
@@ -57,7 +56,6 @@ public final class KoalaTrackingClient: TrackingClientType {
     print("🐨 [Koala Track]: \(event), properties: \(properties)")
 
     self.queue.async {
-      CLSLogv("%@", getVaList([event]))
       self.buffer.append(["event": event, "properties": properties])
     }
   }

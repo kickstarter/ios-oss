@@ -175,3 +175,19 @@ extension DiscoveryViewController: DiscoveryNavigationHeaderViewDelegate {
     self.filter(with: params)
   }
 }
+
+extension DiscoveryViewController: TabBarControllerScrollable {
+  func scrollToTop() {
+    let view: UIView?
+
+    if let superview = self.liveStreamDiscoveryViewController.view.superview, superview.isHidden {
+      view = self.pageViewController.viewControllers?.first?.view
+    } else {
+      view = self.liveStreamDiscoveryViewController.view
+    }
+
+    if let scrollView = view as? UIScrollView {
+      scrollView.scrollToTop()
+    }
+  }
+}

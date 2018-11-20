@@ -4,6 +4,18 @@ import Library
 import Prelude
 import UIKit
 
+internal protocol TabBarControllerScrollable {
+  func scrollToTop()
+}
+
+extension TabBarControllerScrollable where Self: UIViewController {
+  func scrollToTop() {
+    if let scrollView = self.view as? UIScrollView {
+      scrollView.scrollToTop()
+    }
+  }
+}
+
 public final class RootTabBarViewController: UITabBarController {
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
@@ -220,8 +232,15 @@ public final class RootTabBarViewController: UITabBarController {
 
 extension RootTabBarViewController: UITabBarControllerDelegate {
   public func tabBarController(_ tabBarController: UITabBarController,
+                               shouldSelect viewController: UIViewController) -> Bool {
+    let index = tabBarController.viewControllers?.firstIndex(of: viewController)
+    self.viewModel.inputs.shouldSelect(index: index)
+    return true
+  }
+
+  public func tabBarController(_ tabBarController: UITabBarController,
                                didSelect viewController: UIViewController) {
-    self.viewModel.inputs.didSelectIndex(tabBarController.selectedIndex)
+    self.viewModel.inputs.didSelect(index: tabBarController.selectedIndex)
   }
 
   public func tabBarController(_ tabBarController: UITabBarController,
@@ -233,11 +252,8 @@ extension RootTabBarViewController: UITabBarControllerDelegate {
 }
 
 private func scrollToTop(_ viewController: UIViewController) {
-
-  if let scrollView = (viewController.view as? UIScrollView) ??
-    ((viewController as? UINavigationController)?.viewControllers.first?.view as? UIScrollView) {
-
-    scrollView.scrollToTop()
+  if let scrollable = viewController as? TabBarControllerScrollable {
+    scrollable.scrollToTop()
   }
 }
 

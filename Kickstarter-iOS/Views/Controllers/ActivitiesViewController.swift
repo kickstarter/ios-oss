@@ -296,3 +296,5 @@ extension ActivitiesViewController: SurveyResponseViewControllerDelegate {
     self.viewModel.inputs.surveyResponseViewControllerDismissed()
   }
 }
+
+extension ActivitiesViewController: TabBarControllerScrollable { }
