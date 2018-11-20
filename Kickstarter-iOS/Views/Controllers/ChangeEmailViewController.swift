@@ -20,7 +20,7 @@ internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var warningMessageLabel: UILabel!
 
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
-  private var messageBannerView: MessageBannerViewController!
+  private var messageBannerViewController: MessageBannerViewController!
 
   private weak var saveButtonView: LoadingBarButtonItemView!
 
@@ -31,11 +31,10 @@ internal final class ChangeEmailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let messageBannerView = self.children.first as? MessageBannerViewController else {
+    guard let messageBannerViewController = self.children.first as? MessageBannerViewController else {
       fatalError("Couldn't instantiate MessageBannerViewController")
     }
-
-    self.messageBannerView = messageBannerView
+    self.messageBannerViewController = messageBannerViewController
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
@@ -153,27 +152,27 @@ internal final class ChangeEmailViewController: UIViewController {
     self.viewModel.outputs.didFailToChangeEmail
       .observeForUI()
       .observeValues { [weak self] error in
-        self?.messageBannerView.showBanner(with: .error, message: error)
+        self?.messageBannerViewController.showBanner(with: .error, message: error)
     }
 
     self.viewModel.outputs.didChangeEmail
       .observeForUI()
       .observeValues { [weak self] in
-        self?.messageBannerView.showBanner(with: .success,
+        self?.messageBannerViewController.showBanner(with: .success,
                                            message: Strings.Got_it_your_changes_have_been_saved())
     }
 
     self.viewModel.outputs.didSendVerificationEmail
       .observeForUI()
       .observeValues { [weak self] in
-        self?.messageBannerView.showBanner(with: .success,
+        self?.messageBannerViewController.showBanner(with: .success,
                                            message: Strings.Verification_email_sent())
     }
 
     self.viewModel.outputs.didFailToSendVerificationEmail
       .observeForUI()
       .observeValues { [weak self] error in
-        self?.messageBannerView.showBanner(with: .error, message: error)
+        self?.messageBannerViewController.showBanner(with: .error, message: error)
     }
 
     self.viewModel.outputs.shouldSubmitForm

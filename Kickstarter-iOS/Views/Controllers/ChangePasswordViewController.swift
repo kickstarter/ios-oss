@@ -16,7 +16,7 @@ final class ChangePasswordViewController: UIViewController {
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
   private var saveButtonView: LoadingBarButtonItemView!
-  private var messageBannerView: MessageBannerViewController!
+  private var messageBannerViewController: MessageBannerViewController!
 
   private let viewModel: ChangePasswordViewModelType = ChangePasswordViewModel()
 
@@ -27,11 +27,10 @@ final class ChangePasswordViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let messageViewController = self.children.first as? MessageBannerViewController else {
+    guard let messageBannerViewController = self.children.first as? MessageBannerViewController else {
       fatalError("Missing message View Controller")
     }
-
-    self.messageBannerView = messageViewController
+    self.messageBannerViewController = messageBannerViewController
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
@@ -166,7 +165,7 @@ final class ChangePasswordViewController: UIViewController {
     self.viewModel.outputs.changePasswordFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-        self?.messageBannerView.showBanner(with: .error, message: errorMessage)
+        self?.messageBannerViewController.showBanner(with: .error, message: errorMessage)
     }
 
     self.viewModel.outputs.changePasswordSuccess
