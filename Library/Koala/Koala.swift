@@ -12,10 +12,11 @@ public final class Koala {
 
   fileprivate let bundle: NSBundleType
   fileprivate let client: TrackingClientType
-  fileprivate let config: Config?
+  internal private(set) var config: Config?
   fileprivate let device: UIDeviceType
   fileprivate let distinctId: String
-  internal let loggedInUser: User?
+  internal private(set) var loggedInUser: User?
+  public var logEventCallback: ((String, [String: Any]) -> Void)?
   private var preferredContentSizeCategory: UIContentSizeCategory?
   private var preferredContentSizeCategoryObserver: Any?
   fileprivate let screen: UIScreenType
@@ -1826,9 +1827,13 @@ public final class Koala {
 
   // Private tracking method that merges in default properties.
   private func track(event: String, properties: [String: Any] = [:]) {
+    let props = self.defaultProperties().withAllValuesFrom(properties)
+
+    self.logEventCallback?(event, props)
+
     self.client.track(
       event: event,
-      properties: self.defaultProperties().withAllValuesFrom(properties)
+      properties: props
     )
   }
 
@@ -2130,14 +2135,12 @@ extension Koala {
   public enum lens {
     public static let loggedInUser = Lens<Koala, User?>(
       view: { $0.loggedInUser },
-      set: { Koala(bundle: $1.bundle, client: $1.client, config: $1.config, device: $1.device,
-        loggedInUser: $0, screen: $1.screen, distinctId: $1.distinctId) }
+      set: { $1.loggedInUser = $0; return $1 }
     )
 
     public static let config = Lens<Koala, Config?>(
       view: { $0.config },
-      set: { Koala(bundle: $1.bundle, client: $1.client, config: $0, device: $1.device,
-        loggedInUser: $1.loggedInUser, screen: $1.screen, distinctId: $1.distinctId) }
+      set: { $1.config = $0; return $1 }
     )
   }
 }
