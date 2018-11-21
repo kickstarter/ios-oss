@@ -35,7 +35,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
-      XCTAssertEqual(["Viewed Payment Methods"], self.trackingClient.events)
     }
   }
 
@@ -79,8 +78,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         [GraphUserCreditCard.template.storedCards.nodes],
         "Emits once"
       )
-
-      XCTAssertEqual(["Viewed Payment Methods", "Deleted Payment Method"], self.trackingClient.events)
     }
   }
 
@@ -117,5 +114,30 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         "Emits again to reload the tableview after an error occurred"
       )
     }
+  }
+
+  func testTrackPaymentMethodsView() {
+
+    XCTAssertEqual([], self.trackingClient.events)
+    self.vm.inputs.viewDidLoad()
+    XCTAssertEqual(["Viewed Payment Methods"], self.trackingClient.events)
+  }
+
+  func testTrackDeletePaymentMethods() {
+
+    guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
+      XCTFail("Card should exist")
+      return
+    }
+      let apiService = MockService(deletePaymentMethodResult: .success(GraphMutationEmptyResponseEnvelope()))
+      withEnvironment(apiService: apiService) {
+
+        self.vm.inputs.viewDidLoad()
+
+        self.vm.inputs.didDelete(card)
+        self.scheduler.advance()
+
+        XCTAssertEqual(["Viewed Payment Methods", "Deleted Payment Method"], self.trackingClient.events)
+      }
   }
 }
