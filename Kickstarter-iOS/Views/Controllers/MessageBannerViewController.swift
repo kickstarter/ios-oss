@@ -3,7 +3,14 @@ import Library
 import Prelude
 
 internal protocol MessageBannerViewControllerDelegate: class {
+  var messageBannerViewControllerContainer: UIView { get }
   func messageBannerViewControllerIsHidden(_ isHidden: Bool)
+}
+
+extension MessageBannerViewControllerDelegate {
+  func messageBannerViewControllerIsHidden(_ isHidden: Bool) {
+    _ = self.messageBannerViewControllerContainer |> \.isHidden .~ isHidden
+  }
 }
 
 final class MessageBannerViewController: UIViewController {

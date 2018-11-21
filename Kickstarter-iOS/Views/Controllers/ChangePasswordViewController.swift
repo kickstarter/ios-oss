@@ -301,7 +301,7 @@ final class ChangePasswordViewController: UIViewController {
 }
 
 extension ChangePasswordViewController: MessageBannerViewControllerDelegate {
-  func messageBannerViewControllerIsHidden(_ isHidden: Bool) {
-    _ = self.messageBannerContainer |> \.isHidden .~ isHidden
+  var messageBannerViewControllerContainer: UIView {
+    return self.messageBannerContainer
   }
 }
