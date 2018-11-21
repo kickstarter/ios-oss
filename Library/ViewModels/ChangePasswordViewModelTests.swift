@@ -152,4 +152,20 @@ final class ChangePasswordViewModelTests: TestCase {
       self.activityIndicatorShouldShowObserver.assertValues([true, false])
     }
   }
+
+  func testTrackViewedChangePassword() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Change Password"], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Change Password", "Viewed Change Password"], client.events)
+    }
+  }
 }

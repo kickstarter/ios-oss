@@ -126,6 +126,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
         }
     }.skipNil()
     .skipRepeats()
+
+    self.viewDidAppearProperty.signal
+      .observeValues { _ in AppEnvironment.current.koala.trackChangePasswordView() }
   }
 
   private var currentPasswordDoneEditingProperty = MutableProperty(())
