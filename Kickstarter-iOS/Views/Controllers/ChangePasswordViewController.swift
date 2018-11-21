@@ -98,6 +98,9 @@ final class ChangePasswordViewController: UIViewController {
     _ = validationErrorMessageLabel
       |> settingsDescriptionLabelStyle
 
+    _ = self.messageBannerContainer
+      |> \.isHidden .~ true
+
     _ = newPasswordLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.New_password() }

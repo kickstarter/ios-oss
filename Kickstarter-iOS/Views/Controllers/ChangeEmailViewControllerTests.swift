@@ -82,9 +82,11 @@ final class ChangeEmailViewControllerTests: TestCase {
     }
   }
 
-  func testMessageBannerContainerIsHiddenByDefault() {
+  func testMessageBannerContainerIsSetToHiddenByDefault() {
     let controller = ChangeEmailViewController.instantiate()
-    _ = controller.view
+    controller.beginAppearanceTransition(true, animated: false)
+    controller.endAppearanceTransition()
+
     let messageBannerViewController = controller.children
       .compactMap { $0 as? MessageBannerViewController }.first
 
@@ -99,6 +101,7 @@ final class ChangeEmailViewControllerTests: TestCase {
   func testMessageBannerContainerIsHiddenIsSetProperly() {
     let controller = ChangeEmailViewController.instantiate()
     _ = controller.view
+
     let messageBannerViewController = controller.children
       .compactMap { $0 as? MessageBannerViewController }.first
 

@@ -73,6 +73,9 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = self.onePasswordButton
       |> onePasswordButtonStyle
 
+    _ = self.messageBannerContainer
+      |> \.isHidden .~ true
+
     _ = self.messageLabelView
       |> \.backgroundColor .~ .ksr_grey_200
 

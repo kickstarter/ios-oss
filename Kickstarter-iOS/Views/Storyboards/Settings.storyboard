@@ -370,7 +370,7 @@
                                     <constraint firstItem="VyE-lE-aLQ" firstAttribute="leading" secondItem="XfD-wg-Nx4" secondAttribute="leading" id="pUW-P0-AFT"/>
                                 </constraints>
                             </view>
-                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z5v-98-lpx">
+                            <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z5v-98-lpx">
                                 <rect key="frame" x="6" y="533" width="363" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="KQp-mG-igY"/>
@@ -622,7 +622,7 @@
                                     <constraint firstAttribute="trailing" secondItem="Jfc-kg-fPd" secondAttribute="trailing" id="ydu-rL-nNN"/>
                                 </constraints>
                             </scrollView>
-                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Orx-BR-Kot">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Orx-BR-Kot">
                                 <rect key="frame" x="6" y="533" width="363" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="czY-l0-0k9"/>

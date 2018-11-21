@@ -32,7 +32,9 @@ final class ChangePasswordViewControllerTests: TestCase {
 
   func testMessageBannerContainerIsHiddenByDefault() {
     let controller = ChangePasswordViewController.instantiate()
-    _ = controller.view
+    controller.beginAppearanceTransition(true, animated: false)
+    controller.endAppearanceTransition()
+
     let messageBannerViewController = controller.children
       .compactMap { $0 as? MessageBannerViewController }.first
 
@@ -47,6 +49,7 @@ final class ChangePasswordViewControllerTests: TestCase {
   func testMessageBannerContainerIsHiddenIsSetProperly() {
     let controller = ChangePasswordViewController.instantiate()
     _ = controller.view
+
     let messageBannerViewController = controller.children
       .compactMap { $0 as? MessageBannerViewController }.first
 
