@@ -385,4 +385,60 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.textFieldsAreEnabled.assertValues([false, true])
   }
+
+  func testTrackViewedChangeEmail() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Change Email"], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Change Email", "Viewed Change Email"], client.events)
+    }
+  }
+
+  func testTrackChangeEmail() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.emailFieldTextDidChange(text: "new@email.com")
+      self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+      self.vm.inputs.saveButtonTapped()
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Changed Email"], client.events)
+
+      self.vm.inputs.saveButtonTapped()
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Changed Email", "Changed Email"], client.events)
+    }
+  }
+
+  func testTrackResendVerificationEmail() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.resendVerificationEmailButtonTapped()
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Resent Verification Email"], client.events)
+
+      self.vm.inputs.resendVerificationEmailButtonTapped()
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Resent Verification Email", "Resent Verification Email"], client.events)
+    }
+  }
 }
