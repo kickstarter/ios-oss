@@ -81,6 +81,9 @@ ChangeEmailViewModelOutputs {
           .materialize()
     }
 
+    resendEmailVerificationEvent.values()
+      .observeValues { _ in AppEnvironment.current.koala.trackResentVerificationEmail() }
+
     self.didSendVerificationEmail = resendEmailVerificationEvent.values().ignoreValues()
 
     self.didFailToSendVerificationEmail = resendEmailVerificationEvent.errors()
