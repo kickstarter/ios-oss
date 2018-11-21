@@ -438,7 +438,7 @@ public final class Koala {
     self.track(event: "Triggered 1Password")
   }
 
-  // MARK: Discovery Events
+  // MARK: - Discovery Events
 
   /**
    Call when a discovery search is made, including pagination.
@@ -534,7 +534,7 @@ public final class Koala {
       ])
   }
 
-  // MARK: Checkout Events
+  // MARK: - Checkout Events
   public func trackCheckoutCancel(project: Project,
                                   reward: Reward,
                                   pledgeContext: PledgeContext) {
@@ -630,7 +630,7 @@ public final class Koala {
     self.track(event: "Closed Reward", properties: props)
   }
 
-  // MARK: Login Events
+  // MARK: - Login Events
   public func trackLoginTout(intent: LoginIntent) {
     // Deprecated event
     self.track(event: "Application Login or Signup",
@@ -712,7 +712,7 @@ public final class Koala {
     self.track(event: "Resent Two-Factor Code")
   }
 
-  // MARK: Signup
+  // MARK: - Signup
 
   // Call when an error is returned after attempting to signup.
   public func trackSignupError(authType: AuthType) {
@@ -738,7 +738,7 @@ public final class Koala {
     self.track(event: "Viewed Signup")
   }
 
-  // MARK: Comments Events
+  // MARK: - Comments Events
   public func trackLoadNewerComments(project: Project, update: Update?, context: CommentsContext) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
@@ -1007,7 +1007,7 @@ public final class Koala {
                properties: properties(project: project, loggedInUser: self.loggedInUser))
   }
 
-  // MARK: Dashboard
+  // MARK: - Dashboard
   public func trackDashboardClosedProjectSwitcher(onProject project: Project) {
     self.track(event: "Closed Project Switcher",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
@@ -1048,7 +1048,7 @@ public final class Koala {
                properties: props.withAllValuesFrom(deprecatedProps))
   }
 
-  // MARK: Project activity
+  // MARK: - Project activity
   public func trackViewedProjectActivity(project: Project) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
 
@@ -1077,7 +1077,7 @@ public final class Koala {
                properties: props.withAllValuesFrom(deprecatedProps))
   }
 
-  // MARK: Messages
+  // MARK: - Messages
 
   public func trackMessageThreadsView(mailbox: Mailbox, project: Project?, refTag: RefTag) {
     let props = (project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:])
@@ -1154,7 +1154,7 @@ public final class Koala {
     self.track(event: "Sent Message", properties: props)
   }
 
-  // MARK: Search Events
+  // MARK: - Search Events
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
     self.track(event: "Discover Search", properties: deprecatedProps)
@@ -1184,7 +1184,7 @@ public final class Koala {
     self.track(event: "Cleared Search Term")
   }
 
-  // MARK: Project Events
+  // MARK: - Project Events
   /**
    Call when a project page is viewed.
 
@@ -1253,7 +1253,7 @@ public final class Koala {
     self.track(event: "Opened External Link", properties: props)
   }
 
-  // MARK: Profile Events
+  // MARK: - Profile Events
   public func trackProfileView() {
     // deprecated
     self.track(event: "Profile View My", properties: deprecatedProps)
@@ -1265,7 +1265,7 @@ public final class Koala {
     self.track(event: "Viewed Profile Tab", properties: ["type": projectsType.trackingString])
   }
 
-  // MARK: Settings Events
+  // MARK: - Settings Events
   public func trackAppStoreRatingOpen() {
     // deprecated
     self.track(event: "App Store Rating Open", properties: deprecatedProps)
@@ -1290,6 +1290,30 @@ public final class Koala {
   public func trackChangeEmailNotification(type: String, on: Bool) {
     self.track(event: on ? "Enabled Email Notifications" : "Disabled Email Notifications",
                properties: ["type": type])
+  }
+
+  public func trackAccountView() {
+    self.track(event: "Viewed Account")
+  }
+
+  public func trackChangeEmailView() {
+    self.track(event: "Viewed Change Email")
+  }
+
+  public func trackChangeEmail() {
+    self.track(event: "Changed Email")
+  }
+
+  public func trackChangePasswordView() {
+    self.track(event: "Viewed Change Password")
+  }
+
+  public func trackChangePassword() {
+    self.track(event: "Changed Password")
+  }
+
+  public func trackResentVerificationEmail() {
+    self.track(event: "Resent Verification Email")
   }
 
   /**
@@ -1355,7 +1379,7 @@ public final class Koala {
     self.track(event: "Viewed Settings")
   }
 
-  // MARK: Find Friends Events
+  // MARK: - Find Friends Events
   public func trackCloseFacebookConnect(source: FriendsSource) {
     self.track(event: "Close Facebook Connect", properties: ["source": source.trackingString])
   }
@@ -1433,7 +1457,7 @@ public final class Koala {
       properties: ["source": source.trackingString, "page_count": pageCount])
   }
 
-  // MARK: Update Draft Events
+  // MARK: - Update Draft Events
 
   public func trackViewedUpdateDraft(forProject project: Project) {
     self.track(event: "Viewed Draft", properties: updateDraftProperties(project: project))
@@ -1528,7 +1552,7 @@ public final class Koala {
     return props
   }
 
-  // MARK: Pledge screen events
+  // MARK: - Pledge screen events
   public func trackViewedPledge(forProject project: Project) {
     self.track(event: "Viewed Pledge Info",
                properties: properties(project: project, loggedInUser: self.loggedInUser))
@@ -1538,7 +1562,7 @@ public final class Koala {
                properties: ["modal_class": "backer_info", Koala.DeprecatedKey: true])
   }
 
-  // MARK: Help events
+  // MARK: - Help events
   public func trackCanceledContactEmail(context: HelpContext) {
     self.track(event: "Canceled Contact Email", properties: ["context": context.trackingString])
   }
@@ -1570,7 +1594,7 @@ public final class Koala {
     self.track(event: "Showed Help Menu", properties: ["context": context.trackingString])
   }
 
-  // MARK: Video events
+  // MARK: - Video events
   public func trackVideoCompleted(forProject project: Project) {
     // deprecated
     self.track(event: "Project Video Complete", properties: deprecatedProps)
@@ -1603,7 +1627,7 @@ public final class Koala {
                properties: properties(project: project, loggedInUser: self.loggedInUser))
   }
 
-  // MARK: Apple Pay events
+  // MARK: - Apple Pay events
 
   public func trackShowApplePaySheet(project: Project,
                                      reward: Reward,
@@ -1683,7 +1707,7 @@ public final class Koala {
     self.track(event: "Canceled Apple Pay", properties: props)
   }
 
-  // MARK: Empty State Events
+  // MARK: - Empty State Events
   public func trackEmptyStateViewed(type: EmptyState) {
     self.track(event: "Viewed Empty State",
                properties: ["type": type.rawValue])
@@ -1727,7 +1751,7 @@ public final class Koala {
     )
   }
 
-  // MARK: Live streams
+  // MARK: - Live streams
   public func trackChangedLiveStreamOrientation(project: Project,
                                                 liveStreamEvent: LiveStreamEvent,
                                                 toOrientation: UIInterfaceOrientation) {

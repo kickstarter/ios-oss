@@ -614,4 +614,49 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("Apple", client.properties.last?["manufacturer"] as? String)
     XCTAssertEqual("Apple", callBackProperties?["manufacturer"] as? String)
   }
+
+  func testTrackViewedAccount() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackAccountView()
+
+    XCTAssertEqual(["Viewed Account"], client.events)
+  }
+
+  func testTrackViewedChangeEmail() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangeEmailView()
+
+    XCTAssertEqual(["Viewed Change Email"], client.events)
+  }
+
+  func testTrackChangeEmail() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangeEmail()
+
+    XCTAssertEqual(["Changed Email"], client.events)
+  }
+
+  func testTrackViewedChangePassword() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangePasswordView()
+
+    XCTAssertEqual(["Viewed Change Password"], client.events)
+  }
+
+  func testTrackChangePassword() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangePassword()
+
+    XCTAssertEqual(["Changed Password"], client.events)
+  }
 }
