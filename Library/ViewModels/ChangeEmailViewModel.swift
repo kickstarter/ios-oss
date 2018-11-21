@@ -134,7 +134,7 @@ ChangeEmailViewModelOutputs {
     self.onePasswordButtonIsHidden = self.onePasswordIsAvailable.signal.map { $0 }.negate()
 
     self.onePasswordIsAvailable.signal
-      .observeValues(AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable:))
+      .observeValues { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
 
     self.passwordText = self.prefillPasswordProperty.signal.skipNil().map { $0 }
 
