@@ -92,6 +92,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
           .materialize()
     }
 
+    passwordUpdateEvent.values()
+      .observeValues { _ in AppEnvironment.current.koala.trackChangePassword() }
+
     self.changePasswordSuccess = passwordUpdateEvent.values().ignoreValues()
     self.changePasswordFailure = passwordUpdateEvent.errors().map { $0.localizedDescription }
 

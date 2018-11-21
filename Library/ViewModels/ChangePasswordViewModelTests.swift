@@ -168,4 +168,19 @@ final class ChangePasswordViewModelTests: TestCase {
       XCTAssertEqual(["Viewed Change Password", "Viewed Change Password"], client.events)
     }
   }
+
+  func testTrackChangePassword() {
+    let service = MockService()
+    let client = MockTrackingClient()
+
+    withEnvironment(apiService: service, koala: Koala(client: client)) {
+      self.vm.inputs.currentPasswordFieldDidReturn(currentPassword: "password")
+      self.vm.inputs.newPasswordFieldDidReturn(newPassword: "123456")
+      self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "123456")
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Changed Password"], client.events)
+    }
+  }
 }
