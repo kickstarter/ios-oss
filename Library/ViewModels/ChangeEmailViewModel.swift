@@ -143,6 +143,9 @@ ChangeEmailViewModelOutputs {
     self.onePasswordFindLoginForURLString = self.onePasswordButtonTappedProperty.signal
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
 
+    changeEmailEvent.values()
+      .observeValues { _ in AppEnvironment.current.koala.trackChangeEmail() }
+
     self.didChangeEmail = changeEmailEvent.values().ignoreValues()
 
     self.resetFields = changeEmailEvent.values()

@@ -383,4 +383,22 @@ final class ChangeEmailViewModelTests: TestCase {
       XCTAssertEqual(["Viewed Change Email", "Viewed Change Email"], client.events)
     }
   }
+
+  func testTrackChangeEmail() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Changed Email"], client.events)
+
+      self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Changed Email", "Changed Email"], client.events)
+    }
+  }
 }
