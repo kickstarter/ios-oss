@@ -25,7 +25,7 @@ final class ChangeEmailViewModelTests: TestCase {
   private let resendVerificationEmailViewIsHiddenObserver = TestObserver<Bool, NoError>()
   private let resetFields = TestObserver<String, NoError>()
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
-  private let textFieldAreEnabled = TestObserver<Bool, NoError>()
+  private let textFieldsAreEnabled = TestObserver<Bool, NoError>()
   private let unverifiedEmailLabelHiddenObserver = TestObserver<Bool, NoError>()
   private let warningMessageLabelHiddenObserver = TestObserver<Bool, NoError>()
   private let verificationEmailButtonTitle = TestObserver<String, NoError>()
@@ -55,7 +55,7 @@ final class ChangeEmailViewModelTests: TestCase {
     )
     self.vm.outputs.resetFields.observe(self.resetFields.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
-    self.vm.outputs.textFieldsAreEnabled.observe(self.textFieldAreEnabled.observer)
+    self.vm.outputs.textFieldsAreEnabled.observe(self.textFieldsAreEnabled.observer)
     self.vm.outputs.unverifiedEmailLabelHidden.observe(self.unverifiedEmailLabelHiddenObserver.observer)
     self.vm.outputs.warningMessageLabelHidden.observe(self.warningMessageLabelHiddenObserver.observer)
     self.vm.outputs.verificationEmailButtonTitle.observe(self.verificationEmailButtonTitle.observer)
@@ -379,10 +379,10 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.vm.inputs.saveButtonTapped()
 
-    self.textFieldAreEnabled.assertValues([false])
+    self.textFieldsAreEnabled.assertValues([false])
 
     self.scheduler.advance()
 
-    self.textFieldAreEnabled.assertValues([false, true])
+    self.textFieldsAreEnabled.assertValues([false, true])
   }
 }
