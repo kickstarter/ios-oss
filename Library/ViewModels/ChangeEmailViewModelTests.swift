@@ -367,4 +367,20 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.inputs.saveButtonTapped(newEmail: "", password: "")
     self.shouldSubmitForm.assertValueCount(2)
   }
+
+  func testTrackViewedChangeEmail() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Change Email"], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Change Email", "Viewed Change Email"], client.events)
+    }
+  }
 }

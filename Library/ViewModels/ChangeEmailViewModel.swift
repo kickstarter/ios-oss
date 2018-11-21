@@ -16,6 +16,7 @@ public protocol ChangeEmailViewModelInputs {
   func submitForm(newEmail: String?, password: String?)
   func textFieldShouldReturn(with returnKeyType: UIReturnKeyType)
   func viewDidLoad()
+  func viewDidAppear()
 }
 
 public protocol ChangeEmailViewModelOutputs {
@@ -161,6 +162,9 @@ ChangeEmailViewModelOutputs {
       self.didChangeEmail.mapConst(false),
       self.didFailToChangeEmail.mapConst(false)
     )
+
+    self.viewDidAppearProperty.signal
+      .observeValues { _ in AppEnvironment.current.koala.trackChangeEmailView() }
   }
 
   private let newEmailProperty = MutableProperty<String?>(nil)
@@ -205,6 +209,11 @@ ChangeEmailViewModelOutputs {
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let viewDidAppearProperty = MutableProperty(())
+  public func viewDidAppear() {
+    self.viewDidAppearProperty.value = ()
   }
 
   private let changePasswordProperty = MutableProperty<(String, String)?>(nil)
