@@ -190,6 +190,12 @@ internal final class ChangeEmailViewController: UIViewController {
         self?.dismissKeyboard()
     }
 
+    self.viewModel.outputs.textFieldsAreEnabled
+      .observeForUI()
+      .observeValues { [weak self] isEnabled in
+        self?.enableTextFields(isEnabled)
+    }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -235,9 +241,17 @@ internal final class ChangeEmailViewController: UIViewController {
   }
 
   private func resetFields(string: String) {
-    _ = [self.passwordTextField, self.newEmailTextField]
-      ||> UITextField.lens.text .~ string
+    _ = self.passwordTextField
+      ?|> \.text %~ { _ in string }
+
+    _ =  self.newEmailTextField
+      ?|> \.text %~ { _ in string }
     }
+
+  private func enableTextFields(_ isEnabled: Bool) {
+    _ = [self.newEmailTextField, self.passwordTextField]
+      ||> \.isUserInteractionEnabled .~ isEnabled
+  }
 }
 
 extension ChangeEmailViewController: UITextFieldDelegate {

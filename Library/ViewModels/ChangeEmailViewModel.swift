@@ -31,6 +31,7 @@ public protocol ChangeEmailViewModelOutputs {
   var resendVerificationEmailViewIsHidden: Signal<Bool, NoError> { get }
   var resetFields: Signal<String, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
+  var textFieldsAreEnabled: Signal<Bool, NoError> { get }
   var unverifiedEmailLabelHidden: Signal<Bool, NoError> { get }
   var warningMessageLabelHidden: Signal<Bool, NoError> { get }
   var verificationEmailButtonTitle: Signal<String, NoError> { get }
@@ -133,7 +134,7 @@ ChangeEmailViewModelOutputs {
     self.onePasswordButtonIsHidden = self.onePasswordIsAvailable.signal.map { $0 }.negate()
 
     self.onePasswordIsAvailable.signal
-      .observeValues { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
+      .observeValues(AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable:))
 
     self.passwordText = self.prefillPasswordProperty.signal.skipNil().map { $0 }
 
@@ -156,8 +157,10 @@ ChangeEmailViewModelOutputs {
 
     self.activityIndicatorShouldShow = Signal.merge(
       self.saveButtonTappedProperty.signal.ignoreValues().mapConst(true),
-      changeEmailEvent.map { $0.isTerminating }.mapConst(false)
+      changeEmailEvent.filter { $0.isTerminating }.mapConst(false)
     )
+
+    self.textFieldsAreEnabled = self.activityIndicatorShouldShow.map { $0 }.negate()
   }
 
   private let newEmailProperty = MutableProperty<String?>(nil)
@@ -221,6 +224,7 @@ ChangeEmailViewModelOutputs {
   public let resendVerificationEmailViewIsHidden: Signal<Bool, NoError>
   public let resetFields: Signal<String, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
+  public let textFieldsAreEnabled: Signal<Bool, NoError>
   public let unverifiedEmailLabelHidden: Signal<Bool, NoError>
   public let verificationEmailButtonTitle: Signal<String, NoError>
   public let warningMessageLabelHidden: Signal<Bool, NoError>
