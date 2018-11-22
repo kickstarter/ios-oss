@@ -64,18 +64,17 @@ internal final class LoginViewController: UIViewController {
   }
 
   override func bindStyles() {
-    self.showHidePasswordButton.frame = CGRect(x: 0, y: 0, width: 45, height: 30)
-
     _ = self |> loginControllerStyle
 
     _ = self.loginButton |> loginButtonStyle
 
     _ = self.forgotPasswordButton |> forgotPasswordButtonStyle
 
-    _ = self.emailTextField |> emailFieldStyle
+    _ = self.emailTextField |> emailFieldAutoFillStyle
       |> UITextField.lens.returnKeyType .~ .next
 
     _ = self.showHidePasswordButton |> showHidePasswordButtonStyle
+      |> \.frame .~ CGRect(x: 0, y: 0, width: 45, height: 30)
       |> UIButton.lens.image(for: .normal) .~ image(named: "icon--eye",
                                                     inBundle: Bundle.framework,
                                                     compatibleWithTraitCollection: nil)
@@ -83,7 +82,7 @@ internal final class LoginViewController: UIViewController {
         Strings.Show_password()
       }
 
-    _ = self.passwordTextField |> passwordFieldStyle
+    _ = self.passwordTextField |> passwordFieldAutoFillStyle
       |> UITextField.lens.returnKeyType .~ .go
 
     _ = self.formDividerView |> separatorStyle
