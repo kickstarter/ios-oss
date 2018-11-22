@@ -43,6 +43,16 @@ public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_email() }
   <> UITextField.lens.keyboardType .~ .emailAddress
 
+public func emailFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
+  let style = emailFieldStyle(textField)
+
+  if #available(iOS 11, *) {
+    return style
+      |> \.textContentType .~ .username
+  }
+  return style
+}
+
 public let fbLoginButtonStyle = facebookButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_buttons_log_in_with_facebook()
@@ -91,6 +101,26 @@ public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
 public let passwordFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_password() }
   <> UITextField.lens.secureTextEntry .~ true
+
+public func passwordFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
+  let style = passwordFieldStyle(textField)
+
+  if #available(iOS 11, *) {
+    return style
+      |> \.textContentType .~ .password
+  }
+  return style
+}
+
+public func newPasswordFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
+  let style = passwordFieldAutoFillStyle(textField)
+
+  if #available(iOS 12, *) {
+    return style
+      |> \.textContentType .~ .newPassword
+  }
+  return style
+}
 
 public let resetPasswordButtonStyle = greenButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.forgot_password_buttons_reset_my_password() }
@@ -143,6 +173,16 @@ public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.font .~ .ksr_title1()
   <> UITextField.lens.keyboardType .~ .numberPad
   <> UITextField.lens.placeholder %~ { _ in Strings.two_factor_code_placeholder() }
+
+public func tfaCodeFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
+  let style = tfaCodeFieldStyle(textField)
+
+  if #available(iOS 12, *) {
+    return style
+      |> \.textContentType .~ .oneTimeCode
+  }
+  return style
+}
 
 public let twoFactorControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in Strings.two_factor_title() }

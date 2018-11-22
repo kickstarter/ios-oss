@@ -75,7 +75,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       |> UITextField.lens.placeholder %~ { _ in Strings.Name() }
 
     _ = self.emailTextField
-      |> emailFieldStyle
+      |> emailFieldAutoFillStyle
       |> UITextField.lens.returnKeyType .~ .next
 
     _ = self.formBackgroundView
@@ -85,7 +85,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       |> newsletterLabelStyle
 
     _ = self.passwordTextField
-      |> passwordFieldStyle
+      |> newPasswordFieldAutoFillStyle
       |> UITextField.lens.returnKeyType .~ .go
 
     _ = self.rootStackView

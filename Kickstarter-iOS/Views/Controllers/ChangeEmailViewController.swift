@@ -108,7 +108,7 @@ internal final class ChangeEmailViewController: UIViewController {
       |> \.text %~ { _ in Strings.New_email() }
 
     _ = self.newEmailTextField
-      |> formFieldStyle
+      |> emailFieldAutoFillStyle
       |> \.keyboardType .~ .emailAddress
       |> settingsFormFieldStyle
       |> \.returnKeyType .~ .next
