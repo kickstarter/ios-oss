@@ -260,8 +260,8 @@ AppDelegateViewModelOutputs {
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.showNotificationDialogProperty.signal.ignoreValues()
-      )
-      .filter { AppEnvironment.current.currentUser != nil }
+    )
+    .filter { AppEnvironment.current.currentUser != nil }
 
     if #available(iOS 10.0, *) {
       self.getNotificationAuthorizationStatus = applicationIsReadyForRegisteringNotifications
@@ -270,16 +270,24 @@ AppDelegateViewModelOutputs {
         .filter { $0 == .authorized }
         .take(first: 1)
         .mapConst(true)
-      let authorizationCompletedAndGranted = self.notificationAuthorizationCompletedProperty
-        .signal.filter(isTrue)
 
-      self.registerForRemoteNotifications = Signal.merge(
-        authorizationCompletedAndGranted,
-        userHasAuthorizedRemoteNotifications)
+      let authorizationCompletedAndGranted = self.notificationAuthorizationCompletedProperty
+        .signal
+        .filter(isTrue)
+
+      self.registerForRemoteNotifications = authorizationCompletedAndGranted
         .ignoreValues()
+
+      // We always re-authorize to ensure that clients that had previously allowed only .alert
+      // are again authorized to allow [.alert, .badge]
+      self.authorizeForRemoteNotifications = Signal.merge(
+        self.didAcceptReceivingRemoteNotificationsProperty.signal,
+        userHasAuthorizedRemoteNotifications.ignoreValues()
+      )
     } else {
       //Never firing signal in ios 9
       self.getNotificationAuthorizationStatus = .empty
+      self.authorizeForRemoteNotifications = .empty
 
       self.registerForRemoteNotifications = applicationIsReadyForRegisteringNotifications
     }
@@ -300,8 +308,6 @@ AppDelegateViewModelOutputs {
         }
         return false
     }
-
-    self.authorizeForRemoteNotifications = self.didAcceptReceivingRemoteNotificationsProperty.signal
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
@@ -682,7 +688,8 @@ AppDelegateViewModelOutputs {
     deepLinkFromNotification
       .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
 
-    self.applicationIconBadgeNumber = self.applicationWillEnterForegroundProperty.signal
+    self.applicationIconBadgeNumber = self.applicationLaunchOptionsProperty.signal
+      .ignoreValues()
       .flatMap { AppEnvironment.current.isRegisteredForPushNotifications }
       .filter(isTrue)
       .mapConst(0)
