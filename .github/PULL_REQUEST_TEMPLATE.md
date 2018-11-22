@@ -16,6 +16,12 @@ More in-depth discussion of the change or implementation.
 
 Trello, screenshots, external resources?
 
+# Acceptance criteria ✅
+
+- [ ] Steps to test this feature
+- [ ] Environment to test on
+- [ ] Issues to look out for
+
 # TODO ⏰
 
 - [ ] Got planned refactors to come
