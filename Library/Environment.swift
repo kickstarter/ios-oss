@@ -49,6 +49,9 @@ public struct Environment {
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
 
+  /// A SignalProducer that returns whether or not the user has registered to receive push notifications.
+  public let isRegisteredForPushNotifications: SignalProducer<Bool, NoError>
+
   /// A function that returns whether voice over mode is running.
   public let isVoiceOverRunning: () -> Bool
 
@@ -98,6 +101,8 @@ public struct Environment {
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     device: UIDeviceType = UIDevice.current,
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
+    isRegisteredForPushNotifications: SignalProducer<Bool, NoError> =
+      isRegisteredForPushNotificationsProducer(),
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
@@ -123,6 +128,7 @@ public struct Environment {
     self.debounceInterval = debounceInterval
     self.device = device
     self.facebookAppDelegate = facebookAppDelegate
+    self.isRegisteredForPushNotifications = isRegisteredForPushNotifications
     self.isVoiceOverRunning = isVoiceOverRunning
     self.koala = koala
     self.language = language

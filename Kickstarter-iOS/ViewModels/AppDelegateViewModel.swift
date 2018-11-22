@@ -682,7 +682,10 @@ AppDelegateViewModelOutputs {
     deepLinkFromNotification
       .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
 
-    self.applicationIconBadgeNumber = self.applicationWillEnterForegroundProperty.signal.mapConst(0)
+    self.applicationIconBadgeNumber = self.applicationWillEnterForegroundProperty.signal
+      .flatMap { AppEnvironment.current.isRegisteredForPushNotifications }
+      .filter(isTrue)
+      .mapConst(0)
   }
   // swiftlint:enable cyclomatic_complexity
 

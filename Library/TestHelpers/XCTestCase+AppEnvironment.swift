@@ -4,6 +4,7 @@ import AVFoundation
 import Foundation
 import KsApi
 import ReactiveSwift
+import Result
 import KsApi
 import LiveStream
 
@@ -31,6 +32,8 @@ extension XCTestCase {
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     device: UIDeviceType = AppEnvironment.current.device,
     facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
+    isRegisteredForPushNotifications: SignalProducer<Bool, NoError> =
+      AppEnvironment.current.isRegisteredForPushNotifications,
     isVoiceOverRunning: @escaping () -> Bool = AppEnvironment.current.isVoiceOverRunning,
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
@@ -58,6 +61,7 @@ extension XCTestCase {
         debounceInterval: debounceInterval,
         device: device,
         facebookAppDelegate: facebookAppDelegate,
+        isRegisteredForPushNotifications: isRegisteredForPushNotifications,
         isVoiceOverRunning: isVoiceOverRunning,
         koala: koala,
         language: language,

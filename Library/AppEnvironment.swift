@@ -124,6 +124,8 @@ public struct AppEnvironment {
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     device: UIDeviceType = AppEnvironment.current.device,
     facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
+    isRegisteredForPushNotifications: SignalProducer<Bool, NoError> =
+      AppEnvironment.current.isRegisteredForPushNotifications,
     isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
@@ -151,6 +153,7 @@ public struct AppEnvironment {
         debounceInterval: debounceInterval,
         device: device,
         facebookAppDelegate: facebookAppDelegate,
+        isRegisteredForPushNotifications: isRegisteredForPushNotifications,
         isVoiceOverRunning: isVoiceOverRunning,
         koala: koala,
         language: language,
@@ -182,6 +185,8 @@ public struct AppEnvironment {
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     device: UIDeviceType = AppEnvironment.current.device,
     facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
+    isRegisteredForPushNotifications: SignalProducer<Bool, NoError> =
+      AppEnvironment.current.isRegisteredForPushNotifications,
     isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
@@ -209,6 +214,7 @@ public struct AppEnvironment {
         debounceInterval: debounceInterval,
         device: device,
         facebookAppDelegate: facebookAppDelegate,
+        isRegisteredForPushNotifications: isRegisteredForPushNotifications,
         isVoiceOverRunning: isVoiceOverRunning,
         koala: koala,
         language: language,
