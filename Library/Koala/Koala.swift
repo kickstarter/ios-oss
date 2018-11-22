@@ -384,7 +384,11 @@ public final class Koala {
 
   /// Call when the app launches or enters foreground.
   public func trackAppOpen() {
-    self.track(event: "App Open", properties: deprecatedProps)
+    let props: [String: Any] = [
+      "badge_count": UIApplication.shared.applicationIconBadgeNumber,
+    ]
+
+    self.track(event: "App Open", properties: props.withAllValuesFrom(deprecatedProps))
     self.track(event: "Opened App")
   }
 
