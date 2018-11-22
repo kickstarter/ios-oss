@@ -104,7 +104,7 @@ internal final class LoginViewController: UIViewController {
     self.passwordTextField.rac.becomeFirstResponder =
       self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
     self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
-    self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonHidden
+    self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
 
     self.viewModel.outputs.showHidePasswordButtonToggled
     .observeForUI()
