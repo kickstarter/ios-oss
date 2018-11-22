@@ -135,9 +135,10 @@ ChangeEmailViewModelOutputs {
                                               .filter { $0 == .next }
                                               .ignoreValues()
 
-    self.onePasswordButtonIsHidden = self.onePasswordIsAvailable.signal.map { $0 }.negate()
+    self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.map(negate)
+      .map(is1PasswordButtonHidden)
 
-    self.onePasswordIsAvailable.signal
+    self.onePasswordIsAvailableProperty.signal
       .observeValues { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
 
     self.passwordText = self.prefillPasswordProperty.signal.skipNil().map { $0 }
@@ -178,9 +179,9 @@ ChangeEmailViewModelOutputs {
     self.newEmailProperty.value = text
   }
 
-  private let onePasswordIsAvailable = MutableProperty(false)
+  private let onePasswordIsAvailableProperty = MutableProperty(false)
   public func onePassword(isAvailable available: Bool) {
-    self.onePasswordIsAvailable.value = available
+    self.onePasswordIsAvailableProperty.value = available
   }
 
   private let prefillPasswordProperty = MutableProperty<String?>(nil)

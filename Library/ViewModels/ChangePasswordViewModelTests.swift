@@ -74,23 +74,42 @@ final class ChangePasswordViewModelTests: TestCase {
     }
   }
 
+  func testOnePasswordButtonHidesWhenNotAvailable() {
+    self.vm.inputs.onePassword(isAvailable: false)
+
+    self.onePasswordButtonIsHiddenObserver.assertValues([true])
+  }
+
+  func testOnePasswordButtonHidesBasedOnPasswordAutofillAvailabilityInIOS12AndPlus() {
+    self.vm.inputs.onePassword(isAvailable: true)
+
+    if #available(iOS 12, *) {
+      self.onePasswordButtonIsHiddenObserver.assertValues([true])
+    } else {
+      self.onePasswordButtonIsHiddenObserver.assertValues([false])
+    }
+  }
+
   func testOnePasswordAutofill() {
-    let mockService = MockService(serverConfig: ServerConfig.local)
+    guard #available(iOS 12, *) else {
+      let mockService = MockService(serverConfig: ServerConfig.local)
 
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.onePasswordIsAvailable(available: true)
-      self.vm.inputs.viewDidAppear()
+      withEnvironment(apiService: mockService) {
+        self.vm.inputs.onePassword(isAvailable: true)
+        self.vm.inputs.viewDidAppear()
 
-      self.currentPasswordBecomeFirstResponder.assertValueCount(1)
-      self.onePasswordButtonIsHiddenObserver.assertValue(false)
+        self.currentPasswordBecomeFirstResponder.assertValueCount(1)
+        self.onePasswordButtonIsHiddenObserver.assertValue(false)
 
-      self.vm.inputs.onePasswordButtonTapped()
+        self.vm.inputs.onePasswordButtonTapped()
 
-      self.onePasswordFindPasswordForURLStringObserver.assertValues(["http://ksr.test"])
+        self.onePasswordFindPasswordForURLStringObserver.assertValues(["http://ksr.test"])
 
-      self.vm.inputs.onePasswordFoundPassword(password: "password")
+        self.vm.inputs.onePasswordFoundPassword(password: "password")
 
-      self.currentPasswordPrefillValueObserver.assertValue("password")
+        self.currentPasswordPrefillValueObserver.assertValue("password")
+      }
+      return
     }
   }
 

@@ -17,7 +17,7 @@ final class ChangeEmailViewModelTests: TestCase {
   private let didSendVerificationEmail = TestObserver<Void, NoError>()
   private let dismissKeyboard = TestObserver<(), NoError>()
   private let emailText = TestObserver<String, NoError>()
-  private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
+  private let onePasswordButtonHiddenObserver = TestObserver<Bool, NoError>()
   private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
   private let messageLabelViewHiddenObserver = TestObserver<Bool, NoError>()
   private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
@@ -40,7 +40,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.messageLabelViewHidden.observe(self.messageLabelViewHiddenObserver.observer)
-    self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonHidden.observer)
+    self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonHiddenObserver.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
     self.vm.outputs.passwordFieldBecomeFirstResponder.observe(self.passwordFieldBecomeFirstResponder.observer)
     self.vm.outputs.passwordText.observe(self.passwordText.observer)
@@ -98,15 +98,18 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.onePassword(isAvailable: false)
 
-    self.onePasswordButtonHidden.assertValues([true])
+    self.onePasswordButtonHiddenObserver.assertValues([true])
   }
 
-  func testOnePasswordButtonVisibleIfAvailable() {
-
+  func testOnePasswordButtonHidesBasedOnPasswordAutofillAvailabilityInIOS12AndPlus() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.onePassword(isAvailable: true)
 
-    self.onePasswordButtonHidden.assertValues([false])
+    if #available(iOS 12, *) {
+      self.onePasswordButtonHiddenObserver.assertValues([true])
+    } else {
+      self.onePasswordButtonHiddenObserver.assertValues([false])
+    }
   }
 
   func testTrackingEventsIfOnePassword_IsAvailable() {

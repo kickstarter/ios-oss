@@ -20,7 +20,7 @@ final class LoginViewModelTests: TestCase {
   fileprivate let tfaChallenge = TestObserver<String, NoError>()
   fileprivate let emailText = TestObserver<String, NoError>()
   fileprivate let tfaChallengePasswordText = TestObserver<String, NoError>()
-  fileprivate let onePasswordButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let onePasswordButtonHiddenObserver = TestObserver<Bool, NoError>()
   fileprivate let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
   fileprivate let passwordText = TestObserver<String, NoError>()
   fileprivate let showHidePassword = TestObserver<Bool, NoError>()
@@ -41,7 +41,7 @@ final class LoginViewModelTests: TestCase {
     self.vm.outputs.tfaChallenge.map { $0.email }.observe(self.tfaChallenge.observer)
     self.vm.outputs.tfaChallenge.map { $0.password }.observe(self.tfaChallengePasswordText.observer)
     self.vm.outputs.emailText.observe(self.emailText.observer)
-    self.vm.outputs.onePasswordButtonHidden.observe(self.onePasswordButtonHidden.observer)
+    self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonHiddenObserver.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
     self.vm.outputs.passwordText.observe(self.passwordText.observer)
     self.vm.outputs.showHidePasswordButtonToggled.observe(self.showHidePassword.observer)
@@ -189,43 +189,60 @@ final class LoginViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.onePassword(isAvailable: false)
 
-    self.onePasswordButtonHidden.assertValues([true])
+    self.onePasswordButtonHiddenObserver.assertValues([true])
   }
 
-  func testOnePasswordFlow() {
+  func testOnePasswordButtonHidesBasedOnPasswordAutofillAvailabilityInIOS12AndPlus() {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.onePassword(isAvailable: true)
 
-    XCTAssertEqual([true, nil],
-                   self.trackingClient.properties(forKey: "1password_extension_available", as: Bool.self))
+    if #available(iOS 12, *) {
+      self.onePasswordButtonHiddenObserver.assertValues([true])
+    } else {
+      self.onePasswordButtonHiddenObserver.assertValues([false])
+    }
+  }
 
-    XCTAssertEqual([nil, true],
-                   self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self))
+  func testOnePasswordFlow() {
+    guard #available(iOS 12, *) else {
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.onePassword(isAvailable: true)
 
-    self.onePasswordButtonHidden.assertValues([false])
+      XCTAssertEqual(
+        [true, nil], self.trackingClient.properties(forKey: "1password_extension_available", as: Bool.self)
+      )
 
-    self.vm.inputs.onePasswordButtonTapped()
+      XCTAssertEqual(
+        [nil, true], self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self)
+      )
 
-    self.onePasswordFindLoginForURLString.assertValues(
-      [AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString]
-    )
+      self.onePasswordButtonHiddenObserver.assertValues([false])
 
-    self.vm.inputs.onePasswordFoundLogin(email: "nativesquad@gmail.com", password: "hello")
+      self.vm.inputs.onePasswordButtonTapped()
 
-    self.emailText.assertValues(["nativesquad@gmail.com"])
-    self.passwordText.assertValues(["hello"])
-    self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["User Login", "Viewed Login", "Login", "Logged In", "Attempting 1password Login",
-      "Triggered 1Password"], self.trackingClient.events, "Koala login is tracked")
+      self.onePasswordFindLoginForURLString.assertValues(
+        [AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString]
+      )
 
-    self.vm.inputs.environmentLoggedIn()
-    XCTAssertEqual(self.postNotificationName.values.first?.0, .ksr_sessionStarted,
-                   "Login notification posted.")
-    XCTAssertEqual(self.postNotificationName.values.first?.1, .ksr_showNotificationsDialog,
-                   "Contextual Dialog notification posted.")
+      self.vm.inputs.onePasswordFoundLogin(email: "nativesquad@gmail.com", password: "hello")
 
-    self.showError.assertValueCount(0, "Error did not happen")
-    self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
+      self.emailText.assertValues(["nativesquad@gmail.com"])
+      self.passwordText.assertValues(["hello"])
+      self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
+      XCTAssertEqual(["User Login", "Viewed Login", "Login", "Logged In", "Attempting 1password Login",
+                      "Triggered 1Password"], self.trackingClient.events, "Koala login is tracked")
+
+      self.vm.inputs.environmentLoggedIn()
+      XCTAssertEqual(self.postNotificationName.values.first?.0, .ksr_sessionStarted,
+                     "Login notification posted.")
+      XCTAssertEqual(self.postNotificationName.values.first?.1, .ksr_showNotificationsDialog,
+                     "Contextual Dialog notification posted.")
+
+      self.showError.assertValueCount(0, "Error did not happen")
+      self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
+
+      return
+    }
   }
 
   func testOnePasswordWithTfaFlow() {
