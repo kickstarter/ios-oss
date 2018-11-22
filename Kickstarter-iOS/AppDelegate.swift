@@ -135,7 +135,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           UIApplication.shared.registerForRemoteNotifications()
         } else {
           UIApplication.shared.registerUserNotificationSettings(
-            UIUserNotificationSettings(types: .alert, categories: [])
+            UIUserNotificationSettings(types: [.alert, .badge], categories: [])
           )
 
           UIApplication.shared.registerForRemoteNotifications()
@@ -160,8 +160,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self.viewModel.outputs.authorizeForRemoteNotifications
           .observeForUI()
           .observeValues { [weak self] in
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { (isGranted, _) in
-              self?.viewModel.inputs.notificationAuthorizationCompleted(isGranted: isGranted)
+            UNUserNotificationCenter.current()
+              .requestAuthorization(options: [.alert, .badge]) { (isGranted, _) in
+                self?.viewModel.inputs.notificationAuthorizationCompleted(isGranted: isGranted)
             }
           }
       }
