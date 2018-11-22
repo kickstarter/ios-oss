@@ -97,6 +97,9 @@ public protocol AppDelegateViewModelOutputs {
   /// The value to return from the delegate's `application:didFinishLaunchingWithOptions:` method.
   var applicationDidFinishLaunchingReturnValue: Bool { get }
 
+  /// Emits the application icon badge number
+  var applicationIconBadgeNumber: Signal<Int, NoError> { get }
+
   /// Emits when application should request authorizatoin for notifications.
   var authorizeForRemoteNotifications: Signal<(), NoError> { get }
 
@@ -678,6 +681,8 @@ AppDelegateViewModelOutputs {
 
     deepLinkFromNotification
       .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
+
+    self.applicationIconBadgeNumber = self.applicationWillEnterForegroundProperty.signal.mapConst(0)
   }
   // swiftlint:enable cyclomatic_complexity
 
@@ -805,6 +810,7 @@ AppDelegateViewModelOutputs {
   }
 
   public let authorizeForRemoteNotifications: Signal<(), NoError>
+  public let applicationIconBadgeNumber: Signal<Int, NoError>
   public let configureFabric: Signal<(), NoError>
   public let configureHockey: Signal<HockeyConfigData, NoError>
   public let continueUserActivityReturnValue = MutableProperty(false)

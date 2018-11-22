@@ -16,6 +16,7 @@ final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
   fileprivate let authorizeForRemoteNotifications = TestObserver<(), NoError>()
+  fileprivate let applicationIconBadgeNumber = TestObserver<Int, NoError>()
   fileprivate let configureFabric = TestObserver<(), NoError>()
   fileprivate let configureHockey = TestObserver<HockeyConfigData, NoError>()
   fileprivate let didAcceptReceivingRemoteNotifications = TestObserver<(), NoError>()
@@ -48,6 +49,7 @@ final class AppDelegateViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.authorizeForRemoteNotifications.observe(self.authorizeForRemoteNotifications.observer)
+    self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
     self.vm.outputs.configureFabric.observe(self.configureFabric.observer)
     self.vm.outputs.configureHockey.observe(self.configureHockey.observer)
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
@@ -76,6 +78,14 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
+  }
+
+  func testResetApplicationIconBadgeNumber() {
+    self.applicationIconBadgeNumber.assertValues([])
+
+    self.vm.inputs.applicationWillEnterForeground()
+
+    self.applicationIconBadgeNumber.assertValues([0])
   }
 
   func testConfigureFabric() {

@@ -123,6 +123,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { UIApplication.shared.openURL($0) }
 
+    self.viewModel.outputs.applicationIconBadgeNumber
+      .observeForUI()
+      .observeValues { UIApplication.shared.applicationIconBadgeNumber = $0 }
+
     self.viewModel.outputs.registerForRemoteNotifications
       .observeForUI()
       .observeValues {
