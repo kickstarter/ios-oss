@@ -80,12 +80,24 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
   }
 
-  func testResetApplicationIconBadgeNumber() {
-    self.applicationIconBadgeNumber.assertValues([])
+  func testResetApplicationIconBadgeNumber_registeredForPushNotifications() {
+    withEnvironment(isRegisteredForPushNotifications: .init(value: true)) {
+      self.applicationIconBadgeNumber.assertValues([])
 
-    self.vm.inputs.applicationWillEnterForeground()
+      self.vm.inputs.applicationWillEnterForeground()
 
-    self.applicationIconBadgeNumber.assertValues([0])
+      self.applicationIconBadgeNumber.assertValues([0])
+    }
+  }
+
+  func testResetApplicationIconBadgeNumber_notRegisteredForPushNotifications() {
+    withEnvironment(isRegisteredForPushNotifications: .init(value: false)) {
+      self.applicationIconBadgeNumber.assertValues([])
+
+      self.vm.inputs.applicationWillEnterForeground()
+
+      self.applicationIconBadgeNumber.assertValues([])
+    }
   }
 
   func testConfigureFabric() {

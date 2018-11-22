@@ -49,6 +49,7 @@ internal class TestCase: FBSnapshotTestCase {
       debounceInterval: .seconds(0),
       device: MockDevice(),
       facebookAppDelegate: self.facebookAppDelegate,
+      isRegisteredForPushNotifications: SignalProducer(value: false),
       isVoiceOverRunning: isVoiceOverRunning,
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
