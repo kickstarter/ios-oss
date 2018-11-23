@@ -58,7 +58,7 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
       .~ .ksr_text_dark_grey_400
     let arrowStyle = isDisabled ? disabledArrowStyle : settingsArrowViewStyle
     let backgroundColor: UIColor = isDisabled ? .ksr_grey_200 : .white
-    let titleLabelColor: UIColor = isDisabled ? .ksr_text_dark_grey_400 : .ksr_text_dark_grey_500
+    let titleLabelColor: UIColor = isDisabled ? .ksr_text_dark_grey_400 : .ksr_text_dark_grey_900
     let lineLayerColor: UIColor = isDisabled ? .ksr_grey_400 : .ksr_grey_500
 
     _ = self.arrowImageView |> arrowStyle

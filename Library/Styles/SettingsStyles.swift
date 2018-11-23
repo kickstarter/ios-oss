@@ -14,18 +14,21 @@ public let settingsSectionLabelStyle =
     <> UILabel.lens.numberOfLines .~ 2
 
 public let settingsTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
     <> UILabel.lens.font .~ .ksr_body()
 
 public let settingsDetailLabelStyle = UILabel.lens.font .~ .ksr_body()
   <> UILabel.lens.numberOfLines .~ 1
-  <> UILabel.lens.textColor .~ .ksr_dark_grey_400
+  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
   <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
 public let settingsDescriptionLabelStyle = UILabel.lens.font .~ .ksr_body(size: 13)
     <> UILabel.lens.numberOfLines .~ 0
     <> UILabel.lens.textColor .~ .ksr_dark_grey_400
     <> UILabel.lens.lineBreakMode .~ .byWordWrapping
+
+public let settingsFormFieldStyle =
+  UITextField.lens.textColor .~ .ksr_text_dark_grey_500
 
 public let settingsLogoutButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
@@ -55,3 +58,10 @@ public let settingsViewControllerStyle = baseControllerStyle()
 
 public let settingsTableViewStyle = UITableView.lens.backgroundColor .~ .ksr_grey_200
   <> UITableView.lens.separatorStyle .~ .none
+
+public func settingsAttributedPlaceholder(_ string: String) -> NSAttributedString {
+  return NSAttributedString(
+    string: string,
+    attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400]
+  )
+}
