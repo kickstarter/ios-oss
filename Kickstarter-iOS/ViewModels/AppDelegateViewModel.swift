@@ -271,8 +271,7 @@ AppDelegateViewModelOutputs {
         .take(first: 1)
         .mapConst(true)
 
-      let authorizationCompletedAndGranted = self.notificationAuthorizationCompletedProperty
-        .signal
+      let authorizationCompletedAndGranted = self.notificationAuthorizationCompletedProperty.signal
         .filter(isTrue)
 
       self.registerForRemoteNotifications = authorizationCompletedAndGranted
