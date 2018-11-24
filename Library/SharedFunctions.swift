@@ -155,19 +155,3 @@ public func countdownProducer(to date: Date)
       .take(while: { ($0.second ?? 0) >= 0 })
       .map(formattedComponents(dateComponents:))
 }
-
-/// Returns a signal producer that emits whether or not the user has registered to receive push notifications.
-///
-/// - returns: A signal producer.
-public func isRegisteredForPushNotificationsProducer() -> SignalProducer<Bool, NoError> {
-  guard #available(iOS 10.0, *) else {
-    return .init(value: UIApplication.shared.isRegisteredForRemoteNotifications)
-  }
-
-  return SignalProducer { observer, _ in
-    UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { settings in
-      observer.send(value: settings.authorizationStatus == .authorized)
-      observer.sendCompleted()
-    })
-  }
-}
