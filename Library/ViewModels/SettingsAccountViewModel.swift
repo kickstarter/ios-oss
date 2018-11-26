@@ -82,7 +82,6 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     self.showAlert = self.changeCurrencyAlertProperty.signal.skipNil().ignoreValues()
 
-
     // Koala
     updateCurrency.signal
       .observeValues { currency in
