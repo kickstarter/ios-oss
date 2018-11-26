@@ -5,6 +5,16 @@ import UIKit
 import UserNotifications
 
 public struct PushRegistration: PushRegistrationType {
+
+  /**
+   Returns a signal producer that emits an option `Bool` value representing whether or not the user
+   granted the requested push notification permissions. This value is not returned on iOS versions < 10.0.
+   The returned producer emits once and completes.
+
+   - parameter for: The types to register that we will request permissions for.
+
+   - returns: A signal producer.
+   */
   public static func register(for types: [PushNotificationType]) -> SignalProducer<Bool?, NoError> {
     func performRegistration() {
       DispatchQueue.main.async {
@@ -35,6 +45,13 @@ public struct PushRegistration: PushRegistrationType {
     }
   }
 
+  /**
+   Returns a signal producer that emits a `Bool` value representing whether the user has allowed push
+   notification permissions in the past.
+   The returned producer emits once and completes.
+
+   - returns: A signal producer.
+   */
   public static func currentAuthorization() -> SignalProducer<Bool, NoError> {
       guard #available(iOS 10.0, *) else {
         return .init(value: UIApplication.shared.isRegisteredForRemoteNotifications)
