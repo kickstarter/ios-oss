@@ -4,16 +4,13 @@ import ReactiveSwift
 import Result
 
 public protocol ChangeEmailViewModelInputs {
-  func emailFieldDidEndEditing(email: String?)
   func emailFieldTextDidChange(text: String?)
   func onePasswordButtonTapped()
   func onePasswordFound(password: String?)
   func onePassword(isAvailable available: Bool)
-  func passwordFieldDidEndEditing(password: String?)
   func passwordFieldTextDidChange(text: String?)
   func resendVerificationEmailButtonTapped()
-  func saveButtonTapped(newEmail: String?, password: String?)
-  func submitForm(newEmail: String?, password: String?)
+  func saveButtonTapped()
   func textFieldShouldReturn(with returnKeyType: UIReturnKeyType)
   func viewDidLoad()
   func viewDidAppear()
@@ -35,7 +32,7 @@ public protocol ChangeEmailViewModelOutputs {
   var resendVerificationEmailViewIsHidden: Signal<Bool, NoError> { get }
   var resetFields: Signal<String, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
-  var shouldSubmitForm: Signal<Void, NoError> { get }
+  var textFieldsAreEnabled: Signal<Bool, NoError> { get }
   var unverifiedEmailLabelHidden: Signal<Bool, NoError> { get }
   var warningMessageLabelHidden: Signal<Bool, NoError> { get }
   var verificationEmailButtonTitle: Signal<String, NoError> { get }
@@ -50,17 +47,22 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
 ChangeEmailViewModelOutputs {
   public init() {
 
-    let changeEmailEvent = Signal.merge(
-        self.changePasswordProperty.signal.skipNil(),
-        self.saveButtonTappedProperty.signal.skipNil()
+    let changeEmailEvent = Signal.combineLatest(
+      self.newEmailProperty.signal.skipNil(),
+      self.passwordProperty.signal.skipNil()
       )
-      .map { email, password in
-      return ChangeEmailInput(email: email, currentPassword: password)
-      }.switchMap { input in
+      .takeWhen(self.saveButtonTappedProperty.signal)
+      .map(ChangeEmailInput.init(email:currentPassword:))
+      .switchMap { input in
         AppEnvironment.current.apiService.changeEmail(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { _ in input.email }
           .materialize()
     }
+
+    let clearValues = changeEmailEvent.values().map { _ -> String? in nil }
+    self.newEmailProperty <~ clearValues
+    self.passwordProperty <~ clearValues
 
     let userEmailEvent = Signal.merge(
         self.viewDidLoadProperty.signal,
@@ -89,7 +91,10 @@ ChangeEmailViewModelOutputs {
     self.didFailToSendVerificationEmail = resendEmailVerificationEvent.errors()
       .map { $0.localizedDescription }
 
-    self.emailText = userEmailEvent.values().map { $0.me.email }
+    self.emailText = Signal.merge(
+      changeEmailEvent.values(),
+      userEmailEvent.values().map { $0.me.email }
+    )
 
     let isEmailVerified = userEmailEvent.values().map { $0.me.isEmailVerified }.skipNil()
     let isEmailDeliverable = userEmailEvent.values().map { $0.me.isDeliverable }.skipNil()
@@ -112,29 +117,23 @@ ChangeEmailViewModelOutputs {
       .filter(isFalse)
 
     self.dismissKeyboard = Signal.merge(
-      self.changePasswordProperty.signal.ignoreValues(),
+      self.textFieldShouldReturnProperty.signal.skipNil()
+        .filter { $0 == .done }
+        .ignoreValues(),
       self.saveButtonTappedProperty.signal.ignoreValues()
     )
 
-    self.saveButtonIsEnabled = Signal.combineLatest (
+    self.saveButtonIsEnabled = Signal.combineLatest(
       self.emailText,
-      self.newEmailProperty.signal.skipNil(),
-      self.passwordProperty.signal.skipNil()
+      self.newEmailProperty.signal,
+      self.passwordProperty.signal
     )
-    .map { (email, newEmail, password) in
-        return shouldEnableSaveButton(email: email, newEmail: newEmail, password: password)
-    }
+    .map(shouldEnableSaveButton(email:newEmail:password:))
 
     self.passwordFieldBecomeFirstResponder = self.textFieldShouldReturnProperty.signal
                                               .skipNil()
                                               .filter { $0 == .next }
                                               .ignoreValues()
-
-    self.shouldSubmitForm = Signal.merge(
-      self.textFieldShouldReturnProperty.signal.skipNil()
-        .filter { $0 == .go }
-        .ignoreValues(),
-      self.saveButtonTappedProperty.signal.ignoreValues())
 
     self.onePasswordButtonIsHidden = self.onePasswordIsAvailable.signal.map { $0 }.negate()
 
@@ -164,10 +163,11 @@ ChangeEmailViewModelOutputs {
     }
 
     self.activityIndicatorShouldShow = Signal.merge(
-      self.shouldSubmitForm.signal.mapConst(true),
-      self.didChangeEmail.mapConst(false),
-      self.didFailToChangeEmail.mapConst(false)
+      self.saveButtonTappedProperty.signal.ignoreValues().mapConst(true),
+      changeEmailEvent.filter { $0.isTerminating }.mapConst(false)
     )
+
+    self.textFieldsAreEnabled = self.activityIndicatorShouldShow.map { $0 }.negate()
 
     self.viewDidAppearProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackChangeEmailView() }
@@ -176,10 +176,6 @@ ChangeEmailViewModelOutputs {
   private let newEmailProperty = MutableProperty<String?>(nil)
   public func emailFieldTextDidChange(text: String?) {
     self.newEmailProperty.value = text
-  }
-
-  public func emailFieldDidEndEditing(email: String?) {
-    self.newEmailProperty.value = email
   }
 
   private let onePasswordIsAvailable = MutableProperty(false)
@@ -199,10 +195,6 @@ ChangeEmailViewModelOutputs {
   }
 
   private let passwordProperty = MutableProperty<String?>(nil)
-  public func passwordFieldDidEndEditing(password: String?) {
-    self.passwordProperty.value = password
-  }
-
   public func passwordFieldTextDidChange(text: String?) {
     self.passwordProperty.value = text
   }
@@ -217,24 +209,14 @@ ChangeEmailViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  private let saveButtonTappedProperty = MutableProperty(())
+  public func saveButtonTapped() {
+    self.saveButtonTappedProperty.value = ()
+  }
+
   private let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
-  }
-
-  private let changePasswordProperty = MutableProperty<(String, String)?>(nil)
-  public func submitForm(newEmail: String?, password: String?) {
-
-    if let newEmail = newEmail, let password = password {
-      self.changePasswordProperty.value = (newEmail, password)
-    }
-  }
-
-  private let saveButtonTappedProperty = MutableProperty<(String, String)?>(nil)
-  public func saveButtonTapped(newEmail: String?, password: String?) {
-    if let newEmail = newEmail, let password = password {
-      self.saveButtonTappedProperty.value = (newEmail, password)
-    }
   }
 
   private let textFieldShouldReturnProperty = MutableProperty<UIReturnKeyType?>(nil)
@@ -257,7 +239,7 @@ ChangeEmailViewModelOutputs {
   public let resendVerificationEmailViewIsHidden: Signal<Bool, NoError>
   public let resetFields: Signal<String, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
-  public let shouldSubmitForm: Signal<Void, NoError>
+  public let textFieldsAreEnabled: Signal<Bool, NoError>
   public let unverifiedEmailLabelHidden: Signal<Bool, NoError>
   public let verificationEmailButtonTitle: Signal<String, NoError>
   public let warningMessageLabelHidden: Signal<Bool, NoError>
@@ -271,7 +253,17 @@ ChangeEmailViewModelOutputs {
   }
 }
 
-private func shouldEnableSaveButton(email: String?, newEmail: String, password: String) -> Bool {
+private func shouldEnableSaveButton(email: String?, newEmail: String?, password: String?) -> Bool {
+  guard
+    let newEmail = newEmail,
+    isValidEmail(newEmail),
+    email != newEmail,
+    password != nil
 
-  return !newEmail.isEmpty && !password.isEmpty && email != newEmail
+  else { return false }
+
+  return ![newEmail, password]
+    .compactMap { $0 }
+    .map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    .contains(false)
 }
