@@ -1849,10 +1849,6 @@ public final class Koala {
     self.track(event: "Failed Payment Method Creation")
   }
 
-  public func trackFailedStripeTokenCreation() {
-    self.track(event: "Failed Stripe Token Creation")
-  }
-
   // Private tracking method that merges in default properties.
   private func track(event: String, properties: [String: Any] = [:]) {
     self.client.track(

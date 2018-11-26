@@ -590,4 +590,52 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["live_stream_live"], client.properties(forKey: "live_stream_state", as: String.self))
     XCTAssertEqual(["Cool Live Stream"], client.properties(forKey: "live_stream_name", as: String.self))
   }
+
+  func testTrackChangedCurrency() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangedCurrency(.CAD)
+    XCTAssertEqual(["Selected Chosen Currency"], client.events)
+  }
+
+  func testTrackViewedPaymentMethods() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackViewedPaymentMethods()
+    XCTAssertEqual(["Viewed Payment Methods"], client.events)
+  }
+
+  func testTrackViewedAddNewCard() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackViewedAddNewCard()
+    XCTAssertEqual(["Viewed Add New Card"], client.events)
+  }
+
+  func testTrackDeletedPaymentMethod() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackDeletedPaymentMethod()
+    XCTAssertEqual(["Deleted Payment Method"], client.events)
+  }
+
+  func testTrackSavedPaymentMethod() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackSavedPaymentMethod()
+    XCTAssertEqual(["Saved Payment Method"], client.events)
+  }
+
+  func testTrackFailedPaymentMethodCreation() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackFailedPaymentMethodCreation()
+    XCTAssertEqual(["Failed Payment Method Creation"], client.events)
+  }
 }
