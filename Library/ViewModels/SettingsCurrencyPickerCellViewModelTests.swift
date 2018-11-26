@@ -21,12 +21,4 @@ internal final class SettingsCurrencyPickerCellViewModelTests: TestCase {
     self.vm.inputs.didSelectCurrency(currency: Currency.SGD)
     self.showCurrencyChangeAlert.assertValue(Currency.SGD)
   }
-
-  func testTrackSelectedChosenCurrency() {
-    self.vm.inputs.didSelectCurrency(currency: Currency.SGD)
-
-    XCTAssertEqual(["Selected Chosen Currency"], self.trackingClient.events)
-    XCTAssertEqual(["$ Singapore Dollar (SGD)"], self.trackingClient.properties(forKey: "currency",
-                                                                                as: String.self))
-  }
 }
