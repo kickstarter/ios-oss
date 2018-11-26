@@ -1,6 +1,6 @@
 import Foundation
 
-public struct CreatePaymentSourceMutations<T: GraphMutationInput>: GraphMutation {
+public struct CreatePaymentSourceMutation<T: GraphMutationInput>: GraphMutation {
   var input: T
 
   public init(input: T) {

@@ -12,6 +12,8 @@ internal struct MockService: ServiceType {
   internal let currency: String
   internal let buildVersion: String
 
+  fileprivate let addNewCreditCardError: GraphError?
+
   fileprivate let changeCurrencyError: GraphError?
 
   fileprivate let changeEmailError: GraphError?
@@ -174,6 +176,7 @@ internal struct MockService: ServiceType {
                 language: String = "en",
                 currency: String = "USD",
                 buildVersion: String = "1",
+                addNewCreditCardError: GraphError? = nil,
                 changeEmailError: GraphError? = nil,
                 changeEmailResponse: UserEnvelope<UserEmailFields>? = UserEnvelope<UserEmailFields>(
                                                                        me: .template
@@ -270,6 +273,8 @@ internal struct MockService: ServiceType {
     self.language = language
     self.currency = currency
     self.buildVersion = buildVersion
+
+    self.addNewCreditCardError = addNewCreditCardError
 
     self.changeCurrencyError = changeCurrencyError
 
@@ -449,6 +454,14 @@ internal struct MockService: ServiceType {
     self.unwatchProjectMutationResult = unwatchProjectMutationResult
 
     self.watchProjectMutationResult = watchProjectMutationResult
+  }
+
+  internal func addNewCreditCard(input: CreatePaymentSourceInput) -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    if let error = self.addNewCreditCardError {
+      return SignalProducer(error: error)
+    } else {
+      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+    }
   }
 
   internal func changeEmail(input: ChangeEmailInput) ->

@@ -51,6 +51,9 @@ public protocol ServiceType {
   func changeCurrency(input: ChangeCurrencyInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
+  func addNewCreditCard(input: CreatePaymentSourceInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+
   func changePaymentMethod(project: Project)
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope>
 

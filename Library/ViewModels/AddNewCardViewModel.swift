@@ -12,12 +12,15 @@ public protocol AddNewCardViewModelInputs {
   func paymentCardFieldDidReturn(cardNumber: String, expMonth: Int, expYear: Int, cvc: String)
   func paymentInfo(valid: Bool)
   func saveButtonTapped()
-  func stripeCreatedToken(stripeToken: String?, error: Error)
+  func stripeCreatedToken(stripeToken: STPToken, error: Error)
 }
 
 public protocol AddNewCardViewModelOutputs {
-  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
+  var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
+  var addNewCardFailure: Signal<String, NoError> { get }
+  var addNewCardSuccess: Signal<Void, NoError> { get }
   var paymentDetails: Signal<(String, String, Int, Int, String), NoError> { get }
+  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
 }
 
 public protocol AddNewCardViewModelType {
@@ -29,7 +32,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 AddNewCardViewModelOutputs {
 
   public init() {
-    let cardholderName = self.cardholderNameProperty.signal // Add to STPCardParams()
+    let cardholderName = self.cardholderNameProperty.signal
     let paymentDetails = self.paymentCardProperty.signal.skipNil()
 
     self.saveButtonIsEnabled = Signal.combineLatest(
@@ -37,11 +40,43 @@ AddNewCardViewModelOutputs {
       self.paymentInfoIsValidProperty.signal
       ).map { cardholderName, validation in cardholderName && validation }
 
-    self.paymentDetails = Signal.combineLatest(cardholderName, paymentDetails)
-      .map { cardholderName, paymentInfo in (cardholderName, paymentInfo.0, paymentInfo.1, paymentInfo.2, paymentInfo.3) }
+    let autoSaveSignal = self.saveButtonIsEnabled
+      .takeWhen(self.paymentCardDoneEditingProperty.signal)
+      .filter { isTrue($0) }
+      .ignoreValues()
+
+    let triggerSaveAction = Signal.merge(
+      autoSaveSignal,
+      self.saveButtonTappedProperty.signal
+    )
+
+    let paymentInput = Signal.combineLatest(cardholderName, paymentDetails)
+      .map { cardholderName, paymentInfo in
+        (cardholderName, paymentInfo.0, paymentInfo.1, paymentInfo.2, paymentInfo.3) }
+
+    self.paymentDetails = paymentInput
       .takeWhen(self.saveButtonTappedProperty.signal)
 
-    let addNewCardEvent = "AddNewCard Event"
+    let stripeTokenId = self.stripeTokenAndErrorProperty.signal.map { $0?.0.tokenId }.skipNil()
+    let stripeCardId = self.stripeTokenAndErrorProperty.signal.map { $0?.0.stripeID }.skipNil()
+
+    let addNewCardEvent = Signal.combineLatest(stripeTokenId, stripeCardId)
+      .takeWhen(triggerSaveAction)
+      .map { CreatePaymentSourceInput(paymentType: PaymentType.creditCard, stripeToken: $0.0, stripeCardId: $0.1) }
+      .flatMap {
+        AppEnvironment.current.apiService.addNewCreditCard(input: $0)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
+
+    self.addNewCardSuccess = addNewCardEvent.values().ignoreValues()
+    self.addNewCardFailure = addNewCardEvent.errors().map { $0.localizedDescription }
+
+    self.activityIndicatorShouldShow = Signal.merge(
+      triggerSaveAction.signal.mapConst(true),
+      self.addNewCardSuccess.mapConst(false),
+      self.addNewCardFailure.mapConst(false)
+    )
   }
 
   private let cardholderNameDoneEditingProperty = MutableProperty(())
@@ -76,13 +111,16 @@ AddNewCardViewModelOutputs {
     self.saveButtonTappedProperty.value = ()
   }
 
-  private let stripeTokenAndErrorProperty = MutableProperty((String?.none, Error?.none))
-  public func stripeCreatedToken(stripeToken: String?, error: Error) {
+  private let stripeTokenAndErrorProperty = MutableProperty<(STPToken, Error)?>(nil)
+  public func stripeCreatedToken(stripeToken: STPToken, error: Error) {
     self.stripeTokenAndErrorProperty.value = (stripeToken, error)
   }
 
-  public let saveButtonIsEnabled: Signal<Bool, NoError>
+  public let activityIndicatorShouldShow: Signal<Bool, NoError>
+  public let addNewCardFailure: Signal<String, NoError>
+  public let addNewCardSuccess: Signal<Void, NoError>
   public let paymentDetails: Signal<(String, String, Int, Int, String), NoError>
+  public let saveButtonIsEnabled: Signal<Bool, NoError>
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }

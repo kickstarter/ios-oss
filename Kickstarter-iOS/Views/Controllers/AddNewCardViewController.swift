@@ -7,7 +7,7 @@ import UIKit
 
 internal final class AddNewCardViewController: UIViewController, STPPaymentCardTextFieldDelegate {
 
-  private weak var saveButtonView: LoadingBarButtonItemView!
+  private var saveButtonView: LoadingBarButtonItemView!
   @IBOutlet private weak var cardholderNameLabel: UILabel!
   @IBOutlet private weak var cardholderNameTextField: UITextField!
   @IBOutlet private weak var paymentTextField: STPPaymentCardTextField!
@@ -31,10 +31,13 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
     self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped))
+
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
     self.paymentTextField.delegate = self
+
+   // self.viewModel.inputs.viewDidLoad()
   }
 
   override func bindStyles() {
@@ -82,6 +85,20 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
                          expirationYear: expYear,
                          cvc: cvc)
     }
+
+    self.viewModel.outputs.activityIndicatorShouldShow
+      .observeForUI()
+      .observeValues { shouldShow in
+        if shouldShow {
+          self.saveButtonView.stopAnimating()
+        } else {
+          self.saveButtonView.stopAnimating()
+        }
+    }
+
+    self.viewModel.outputs.addNewCardSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.dismiss() }
   }
 
   @objc fileprivate func cancelButtonTapped() {
@@ -158,7 +175,6 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
                    expirationMonth: Int,
                    expirationYear: Int,
                    cvc: String) {
-
     let cardParams = STPCardParams()
     cardParams.name = cardholderName
     cardParams.number = cardNumber
@@ -170,7 +186,11 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
       guard let token = token, let error = error else {
         return
       }
-      self.viewModel.inputs.stripeCreatedToken(stripeToken: token.tokenId, error: error)
+      self.viewModel.inputs.stripeCreatedToken(stripeToken: token, error: error)
     }
+  }
+
+  func dismiss() {
+    self.navigationController?.dismiss(animated: true, completion: nil)
   }
 }
