@@ -75,6 +75,12 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       .observeValues { _ in
         AppEnvironment.current.koala.trackDeletedPaymentMethod()
     }
+
+    deletePaymentMethodEventsErrors
+      .ignoreValues()
+      .observeValues { _ in
+        AppEnvironment.current.koala.trackErroredDeletePaymentMethod()
+    }
   }
 
   let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) = Signal<GraphUserCreditCard.CreditCard,

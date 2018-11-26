@@ -1841,6 +1841,10 @@ public final class Koala {
     self.track(event: "Deleted Payment Method")
   }
 
+  public func trackErroredDeletePaymentMethod() {
+    self.track(event: "Errored Delete Payment Method")
+  }
+
   public func trackSavedPaymentMethod() {
     self.track(event: "Saved Payment Method")
   }

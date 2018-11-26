@@ -623,6 +623,14 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Deleted Payment Method"], client.events)
   }
 
+  func testTrackErroredDeletePaymentMethod() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackErroredDeletePaymentMethod()
+    XCTAssertEqual(["Errored Delete Payment Method"], client.events)
+  }
+
   func testTrackSavedPaymentMethod() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)

@@ -140,4 +140,22 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         XCTAssertEqual(["Viewed Payment Methods", "Deleted Payment Method"], self.trackingClient.events)
       }
   }
+
+  func testTrackErroredDeletePaymentMethod() {
+
+    guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
+      XCTFail("Card should exist")
+      return
+    }
+    let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput))
+    withEnvironment(apiService: apiService) {
+
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.didDelete(card)
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Viewed Payment Methods", "Errored Delete Payment Method"], self.trackingClient.events)
+    }
+  }
 }
