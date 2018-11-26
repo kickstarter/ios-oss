@@ -1,4 +1,4 @@
-# Kickstarter for iOS
+<a href="https://www.kickstarter.com"><img src=".github/ksr-wordmark.svg" width="100%" alt="Kickstarter for iOS"></a>
 
 [![Circle CI](https://circleci.com/gh/kickstarter/ios-oss.svg?style=svg)](https://circleci.com/gh/kickstarter/ios-oss)
 
@@ -8,8 +8,6 @@ build the app.
 
 We’ve also open sourced our [Android app](https://github.com/kickstarter/android-oss),
 and read more about our journey to open source [here](https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd).
-
-![Kickstarter for iOS](.github/ksr-wordmark.svg)
 
 ## Getting Started
 
