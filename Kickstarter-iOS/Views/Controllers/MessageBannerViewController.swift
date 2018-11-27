@@ -2,11 +2,24 @@ import Foundation
 import Library
 import Prelude
 
+internal protocol MessageBannerViewControllerDelegate: class {
+  var messageBannerViewControllerContainer: UIView { get }
+  func messageBannerViewControllerIsHidden(_ isHidden: Bool)
+}
+
+extension MessageBannerViewControllerDelegate {
+  func messageBannerViewControllerIsHidden(_ isHidden: Bool) {
+    _ = self.messageBannerViewControllerContainer |> \.isHidden .~ isHidden
+  }
+}
+
 final class MessageBannerViewController: UIViewController {
   @IBOutlet fileprivate weak var backgroundView: UIView!
   @IBOutlet fileprivate weak var backgroundViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
   @IBOutlet fileprivate weak var messageLabel: UILabel!
+
+  internal weak var delegate: MessageBannerViewControllerDelegate?
 
   private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
 
@@ -71,6 +84,7 @@ final class MessageBannerViewController: UIViewController {
 
     if !isHidden {
       self.view.isHidden = isHidden
+      self.delegate?.messageBannerViewControllerIsHidden(isHidden)
     }
 
     UIView.animate(withDuration: duration, delay: 0.0,
@@ -82,9 +96,13 @@ final class MessageBannerViewController: UIViewController {
                       ? frameHeight : self.bottomMarginConstraintConstant
                     self.view.layoutIfNeeded()
     }, completion: { [weak self] _ in
-        self?.view.isHidden = isHidden
+      self?.view.isHidden = isHidden
 
-        self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
+      if isHidden {
+        self?.delegate?.messageBannerViewControllerIsHidden(isHidden)
+      }
+
+      self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
     })
   }
 
