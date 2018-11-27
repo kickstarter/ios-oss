@@ -81,7 +81,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
       self.applicationIconBadgeNumber.assertValues([])
 
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationWillEnterForeground()
 
       self.applicationIconBadgeNumber.assertValues([0])
     }
@@ -93,7 +93,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
       self.applicationIconBadgeNumber.assertValues([])
 
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.applicationWillEnterForeground()
 
       self.applicationIconBadgeNumber.assertValues([])
     }
