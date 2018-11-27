@@ -114,6 +114,9 @@ internal final class ChangeEmailViewController: UIViewController {
         Strings.login_placeholder_email()
     }
 
+    _ = self.resendVerificationEmailView
+      |> \.isHidden .~ true
+
     _ = self.passwordLabel
       |> settingsTitleLabelStyle
       |> \.text %~ { _ in Strings.Current_password() }
