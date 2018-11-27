@@ -216,4 +216,10 @@ internal final class ActivitiesViewControllerTests: TestCase {
       }
     }
   }
+
+  func testScrollToTop() {
+    let controller = ActivitiesViewController.instantiate()
+
+    XCTAssertNotNil(controller.view as? UIScrollView)
+  }
 }

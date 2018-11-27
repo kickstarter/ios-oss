@@ -19,14 +19,13 @@ final class ChangeEmailViewModelTests: TestCase {
   private let emailText = TestObserver<String, NoError>()
   private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
   private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-
-  private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
-  private let resetFields = TestObserver<String, NoError>()
-  private let shouldSubmitForm = TestObserver<Void, NoError>()
   private let messageLabelViewHiddenObserver = TestObserver<Bool, NoError>()
+  private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let passwordText = TestObserver<String, NoError>()
   private let resendVerificationEmailViewIsHiddenObserver = TestObserver<Bool, NoError>()
+  private let resetFields = TestObserver<String, NoError>()
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
+  private let textFieldsAreEnabled = TestObserver<Bool, NoError>()
   private let unverifiedEmailLabelHiddenObserver = TestObserver<Bool, NoError>()
   private let warningMessageLabelHiddenObserver = TestObserver<Bool, NoError>()
   private let verificationEmailButtonTitle = TestObserver<String, NoError>()
@@ -56,7 +55,7 @@ final class ChangeEmailViewModelTests: TestCase {
     )
     self.vm.outputs.resetFields.observe(self.resetFields.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
-    self.vm.outputs.shouldSubmitForm.observe(self.shouldSubmitForm.observer)
+    self.vm.outputs.textFieldsAreEnabled.observe(self.textFieldsAreEnabled.observer)
     self.vm.outputs.unverifiedEmailLabelHidden.observe(self.unverifiedEmailLabelHiddenObserver.observer)
     self.vm.outputs.warningMessageLabelHidden.observe(self.warningMessageLabelHiddenObserver.observer)
     self.vm.outputs.verificationEmailButtonTitle.observe(self.verificationEmailButtonTitle.observer)
@@ -64,7 +63,11 @@ final class ChangeEmailViewModelTests: TestCase {
 
   func testDidChangeEmailEmits_OnSuccess() {
 
-    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+    self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+    self.vm.inputs.saveButtonTapped()
+
     self.scheduler.advance()
 
     self.didChangeEmail.assertDidEmitValue()
@@ -76,7 +79,10 @@ final class ChangeEmailViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(changeEmailError: error)) {
 
-      self.vm.inputs.saveButtonTapped(newEmail: "ksr@kickstarter.com", password: "123456")
+      self.vm.inputs.emailFieldTextDidChange(text: "ksr@ksr.com")
+      self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+      self.vm.inputs.saveButtonTapped()
 
       self.activityIndicatorShouldShow.assertValues([true])
 
@@ -331,10 +337,14 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.dismissKeyboard.assertDidNotEmitValue()
 
-    self.vm.inputs.submitForm(newEmail: "new@email.com", password: "123456")
+    self.vm.inputs.emailFieldTextDidChange(text: "new@email.com")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+    self.vm.inputs.saveButtonTapped()
+
     self.dismissKeyboard.assertValueCount(1)
 
-    self.vm.inputs.submitForm(newEmail: "new@test.com", password: "123456")
+    self.vm.inputs.textFieldShouldReturn(with: .done)
     self.dismissKeyboard.assertValueCount(2)
   }
 
@@ -343,7 +353,7 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.passwordFieldBecomeFirstResponder.assertValueCount(0)
 
-    self.vm.inputs.textFieldShouldReturn(with: .go)
+    self.vm.inputs.textFieldShouldReturn(with: .done)
     self.passwordFieldBecomeFirstResponder.assertValueCount(0)
 
     self.vm.inputs.textFieldShouldReturn(with: .next)
@@ -351,20 +361,84 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
-    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+
+    self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+    self.vm.inputs.saveButtonTapped()
+
     self.scheduler.advance()
 
     self.resetFields.assertValue("")
   }
 
-  func testShouldSubmitFormEmits_WhenTappingSaveOrGo() {
-    self.vm.inputs.viewDidLoad()
-    self.shouldSubmitForm.assertValueCount(0)
+  func testTextFieldsAreEnabled() {
 
-    self.vm.inputs.textFieldShouldReturn(with: .go)
-    self.shouldSubmitForm.assertValueCount(1)
+    self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
 
-    self.vm.inputs.saveButtonTapped(newEmail: "", password: "")
-    self.shouldSubmitForm.assertValueCount(2)
+    self.vm.inputs.saveButtonTapped()
+
+    self.textFieldsAreEnabled.assertValues([false])
+
+    self.scheduler.advance()
+
+    self.textFieldsAreEnabled.assertValues([false, true])
+  }
+
+  func testTrackViewedChangeEmail() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Change Email"], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Change Email", "Viewed Change Email"], client.events)
+    }
+  }
+
+  func testTrackChangeEmail() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.emailFieldTextDidChange(text: "new@email.com")
+      self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+      self.vm.inputs.saveButtonTapped()
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Changed Email"], client.events)
+
+      self.vm.inputs.saveButtonTapped()
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Changed Email", "Changed Email"], client.events)
+    }
+  }
+
+  func testTrackResendVerificationEmail() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.resendVerificationEmailButtonTapped()
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Resent Verification Email"], client.events)
+
+      self.vm.inputs.resendVerificationEmailButtonTapped()
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Resent Verification Email", "Resent Verification Email"], client.events)
+    }
   }
 }

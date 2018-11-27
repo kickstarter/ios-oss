@@ -288,7 +288,6 @@
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                                 <connections>
-                                                                    <action selector="emailFieldDidEndEditing:" destination="JTR-kW-WZp" eventType="editingDidEnd" id="eob-08-lHK"/>
                                                                     <action selector="emailFieldTextDidChange:" destination="JTR-kW-WZp" eventType="editingChanged" id="QaX-nV-5wW"/>
                                                                 </connections>
                                                             </textField>
@@ -324,7 +323,6 @@
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                                 <connections>
-                                                                    <action selector="passwordFieldDidEndEditing:" destination="JTR-kW-WZp" eventType="editingDidEnd" id="kqa-D1-Cxz"/>
                                                                     <action selector="passwordFieldTextDidChange:" destination="JTR-kW-WZp" eventType="editingChanged" id="bQa-yr-gMu"/>
                                                                 </connections>
                                                             </textField>

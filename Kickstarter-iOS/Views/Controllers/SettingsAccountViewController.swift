@@ -32,6 +32,12 @@ final class SettingsAccountViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.viewModel.inputs.viewDidAppear()
+  }
+
   override func bindViewModel() {
     self.viewModel.outputs.reloadData
       .observeForUI()
