@@ -9,6 +9,8 @@ public protocol SettingsAccountViewModelInputs {
   func didSelectRow(cellType: SettingsAccountCellType)
   func showChangeCurrencyAlert(for currency: Currency)
   func viewWillAppear()
+  func viewDidLoad()
+  func viewDidAppear()
 }
 
 public protocol SettingsAccountViewModelOutputs {
@@ -84,6 +86,9 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .skipNil()
 
     self.showAlert = self.changeCurrencyAlertProperty.signal.skipNil().ignoreValues()
+
+    self.viewDidAppearProperty.signal
+      .observeValues { _ in AppEnvironment.current.koala.trackAccountView() }
   }
 
   fileprivate let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
@@ -109,6 +114,11 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
+  }
+
+  fileprivate let viewDidAppearProperty = MutableProperty(())
+  public func viewDidAppear() {
+    self.viewDidAppearProperty.value = ()
   }
 
   public let dismissCurrencyPicker: Signal<Void, NoError>

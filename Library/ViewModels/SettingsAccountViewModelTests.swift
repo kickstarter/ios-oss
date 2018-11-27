@@ -92,4 +92,20 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.updateCurrencyFailure.assertDidEmitValue()
     }
   }
+
+  func testTrackViewedAccount() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Account"], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Account", "Viewed Account"], client.events)
+    }
+  }
 }
