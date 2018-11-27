@@ -125,8 +125,7 @@ internal final class ChangeEmailViewController: UIViewController {
       |> \.text %~ { _ in Strings.Current_password() }
 
     _ = self.passwordTextField
-      |> passwordFieldStyle
-      |> settingsFormFieldStyle
+      |> settingsPasswordFormFieldStyle
       |> \.textAlignment .~ .right
       |> \.returnKeyType .~ .done
       |> \.attributedPlaceholder %~ { _ in

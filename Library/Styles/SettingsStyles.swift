@@ -30,6 +30,10 @@ public let settingsDescriptionLabelStyle = UILabel.lens.font .~ .ksr_body(size: 
 public let settingsFormFieldStyle =
   UITextField.lens.textColor .~ .ksr_text_dark_grey_500
 
+public let settingsPasswordFormFieldStyle = passwordFieldStyle
+  <> settingsFormFieldStyle
+  <> UITextField.lens.textAlignment .~ .right
+
 public let settingsLogoutButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.profile_settings_log_out_button() }
