@@ -13,16 +13,16 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                inSection: section.rawValue)
     }
 
-    insertChangeEmailCell(shouldHideEmailWarning)
+    self.insertChangeEmailCell(shouldHideEmailWarning)
 
-    _ = insertCurrencyCell(currency: currency)
+    _ = self.insertCurrencyCell(currency: currency)
   }
 
   func insertChangeEmailCell(_ shouldHideEmailWarning: Bool) {
     self.insertRow(value: shouldHideEmailWarning,
-                    cellClass: SettingsAccountWarningCell.self,
-                    atIndex: 0,
-                    inSection: SettingsAccountSectionType.emailPassword.rawValue)
+                   cellClass: SettingsAccountWarningCell.self,
+                   atIndex: 0,
+                   inSection: SettingsAccountSectionType.emailPassword.rawValue)
   }
 
   func insertCurrencyCell(currency: Currency?) -> IndexPath {
@@ -46,9 +46,9 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currencyPicker)
 
     return self.deleteRow(value: cellValue,
-                           cellClass: SettingsCurrencyPickerCell.self,
-                           atIndex: 2,
-                           inSection: SettingsAccountSectionType.payment.rawValue)
+                          cellClass: SettingsCurrencyPickerCell.self,
+                          atIndex: 2,
+                          inSection: SettingsAccountSectionType.payment.rawValue)
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {
@@ -56,7 +56,8 @@ final class SettingsAccountDataSource: ValueCellDataSource {
       return value.cellType as? SettingsAccountCellType
     } else if let currencyValue = self[indexPath] as? SettingsCurrencyCellValue {
       return currencyValue.cellType as? SettingsAccountCellType
-    } else if self[indexPath] is Bool {
+      //swiftlint:disable unused_optional_binding
+    } else if let _ = self[indexPath] as? Bool {
       return SettingsAccountCellType.changeEmail
     } else {
       return nil

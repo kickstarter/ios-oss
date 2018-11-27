@@ -9,7 +9,7 @@ final class SettingsAccountDataSourceTests: XCTestCase {
   private let tableView = UITableView()
 
   func testConfigureRows() {
-    dataSource.configureRows(currency: Currency.USD, shouldHideEmailWarning: true)
+    self.dataSource.configureRows(currency: Currency.USD, shouldHideEmailWarning: true)
 
     XCTAssertEqual(3, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
@@ -18,15 +18,15 @@ final class SettingsAccountDataSourceTests: XCTestCase {
   }
 
   func testInsertRemoveCurrencyPickerRow() {
-    dataSource.configureRows(currency: Currency.USD, shouldHideEmailWarning: true)
+    self.dataSource.configureRows(currency: Currency.USD, shouldHideEmailWarning: true)
 
-    _ = dataSource.insertCurrencyPickerRow()
+    _ = self.dataSource.insertCurrencyPickerRow()
 
     // swiftlint:disable line_length
     XCTAssertEqual(3, dataSource.tableView(tableView,
                                            numberOfRowsInSection: SettingsAccountSectionType.payment.rawValue))
 
-    _ = dataSource.removeCurrencyPickerRow()
+    _ = self.dataSource.removeCurrencyPickerRow()
 
     //swiftlint:disable line_length
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: SettingsAccountSectionType.payment.rawValue))
@@ -37,7 +37,7 @@ final class SettingsAccountDataSourceTests: XCTestCase {
     let indexPath2 = IndexPath(item: 1, section: 0)
     let indexPath3 = IndexPath(item: 1, section: 2)
 
-    dataSource.configureRows(currency: nil, shouldHideEmailWarning: true)
+    self.dataSource.configureRows(currency: nil, shouldHideEmailWarning: true)
 
     //swiftlint:disable line_length
     XCTAssertEqual(SettingsAccountCellType.changeEmail, dataSource.cellTypeForIndexPath(indexPath: indexPath1))
