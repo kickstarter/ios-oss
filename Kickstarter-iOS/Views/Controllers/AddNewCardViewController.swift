@@ -37,7 +37,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
 
     self.paymentTextField.delegate = self
 
-   // self.viewModel.inputs.viewDidLoad()
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func bindStyles() {
@@ -53,6 +53,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
 
     _ = self.cardholderNameTextField
       |> formFieldStyle
+      |> \.returnKeyType .~ .next
       |> \.textAlignment .~ .right
       |> \.textColor .~ .ksr_text_dark_grey_500
       |> \.attributedPlaceholder .~ NSAttributedString(
@@ -69,6 +70,15 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
 
   override func bindViewModel() {
     super.bindViewModel()
+
+     self.cardholderNameTextField.rac.becomeFirstResponder =
+      self.viewModel.outputs.cardholderNameBecomeFirstResponder
+
+    self.viewModel.outputs.paymentDetailsBecomeFirstResponder
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.paymentTextField.becomeFirstResponder()
+    }
 
     self.viewModel.outputs.saveButtonIsEnabled
       .observeForUI()
@@ -133,37 +143,16 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.inputs.cardholderNameFieldDidReturn(cardholderName: cardholderName)
   }
 
-  @IBAction func paymentCardTextDidChange(_ sender: STPPaymentCardTextField) {
-    guard let cardnumber = sender.cardNumber, let cvc = sender.cvc else {
+  func paymentCardTextFieldDidEndEditing(_ textField: STPPaymentCardTextField) {
+    guard let cardnumber = textField.cardNumber, let cvc = textField.cvc else {
       return
     }
 
-    self.viewModel.inputs.paymentCardFieldTextChanged(cardNumber: cardnumber,
-                                                      expMonth: Int(sender.expirationMonth),
-                                                      expYear: Int(sender.expirationYear),
+    self.viewModel.inputs.paymentCardFieldDoneEditing(cardNumber: cardnumber,
+                                                      expMonth: Int(textField.expirationMonth),
+                                                      expYear: Int(textField.expirationYear),
                                                       cvc: cvc)
-  }
 
-  @IBAction func paymentCardFieldDidEndEditing(_ sender: STPPaymentCardTextField) {
-    guard let cardnumber = sender.cardNumber, let cvc = sender.cvc else {
-      return
-    }
-
-    self.viewModel.inputs.paymentCardFieldTextChanged(cardNumber: cardnumber,
-                                                      expMonth: Int(sender.expirationMonth),
-                                                      expYear: Int(sender.expirationYear),
-                                                      cvc: cvc)
-  }
-
-  @IBAction func paymentCardDidReturn(_ sender: STPPaymentCardTextField) {
-    guard let cardnumber = sender.cardNumber, let cvc = sender.cvc else {
-      return
-    }
-
-    self.viewModel.inputs.paymentCardFieldDidReturn(cardNumber: cardnumber,
-                                                    expMonth: Int(sender.expirationMonth),
-                                                    expYear: Int(sender.expirationYear),
-                                                    cvc: cvc)
   }
 
   func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
@@ -186,6 +175,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
       guard let token = token, let error = error else {
         return
       }
+
       self.viewModel.inputs.stripeCreatedToken(stripeToken: token, error: error)
     }
   }

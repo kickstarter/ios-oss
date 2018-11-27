@@ -886,11 +886,6 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0rS-r2-TWS" customClass="STPPaymentCardTextField">
                                                         <rect key="frame" x="0.0" y="0.5" width="381" height="51"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <connections>
-                                                            <action selector="paymentCardDidReturn:" destination="jgC-cC-z8A" eventType="primaryActionTriggered" id="n8B-f1-0aJ"/>
-                                                            <action selector="paymentCardFieldDidEndEditing:" destination="jgC-cC-z8A" eventType="editingDidEnd" id="rZs-c7-9fX"/>
-                                                            <action selector="paymentCardTextDidChange:" destination="jgC-cC-z8A" eventType="editingChanged" id="yp9-tp-Ozp"/>
-                                                        </connections>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOu-68-PJO" userLabel="Separator">
                                                         <rect key="frame" x="0.0" y="51.5" width="375" height="0.5"/>
