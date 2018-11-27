@@ -21,6 +21,17 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.cardholderNameTextField.addTarget(self,
+                                           action: #selector(cardholderNameTextFieldReturn),
+                                           for: .editingDidEndOnExit)
+
+    self.cardholderNameTextField.addTarget(self,
+                                           action: #selector(cardholderNameTextFieldChanged(_:)),
+                                           for: [.editingDidEndOnExit, .editingChanged])
+
+    self.paymentTextField.addTarget(self, action: #selector(paymentCardTextFieldReturn), for: [.editingDidEndOnExit])
+//    self.paymentTextField.addTarget(self, action: #selector(paymentCardTextFieldChanged(_:)), for: [.editingChanged])
+
     let cancelButton = UIBarButtonItem(title: Strings.Cancel(),
                                        style: .plain,
                                        target: self,
@@ -119,44 +130,44 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.inputs.saveButtonTapped()
   }
 
-  @IBAction func cardholderNameTextDidChange(_ sender: UITextField) {
-    guard let text = sender.text else {
-      return
-    }
-
-    self.viewModel.inputs.cardholderNameFieldTextChanged(text: text)
+  @objc func cardholderNameTextFieldChanged(_ textField: UITextField) {
+    self.viewModel.inputs.cardholderNameChanged(textField.text ?? "")
   }
 
-  @IBAction func cardholderNameFieldDidEndEditing(_ sender: UITextField) {
-    guard let cardholderName = sender.text else {
-      return
-    }
-
-    self.viewModel.inputs.cardholderNameFieldTextChanged(text: cardholderName)
+  @objc func cardholderNameTextFieldReturn(_ textField: UITextField
+    ) {
+    self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
 
-  @IBAction func cardholderNameDidReturn(_ sender: UITextField) {
-    guard let cardholderName = sender.text else {
-      return
-    }
+//  @objc func paymentCardTextFieldChanged(_ textField: STPPaymentCardTextField) {
+//    guard let cardnumber = textField.cardNumber, let cvc = textField.cvc else {
+//      return
+//    }
+//
+//    self.viewModel.inputs.paymentCardChanged(cardNumber: cardnumber,
+//                                                      expMonth: Int(textField.expirationMonth),
+//                                                      expYear: Int(textField.expirationYear),
+//                                                      cvc: cvc)
+//
+//
+//  }
 
-    self.viewModel.inputs.cardholderNameFieldDidReturn(cardholderName: cardholderName)
-  }
+  func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
 
-  func paymentCardTextFieldDidEndEditing(_ textField: STPPaymentCardTextField) {
     guard let cardnumber = textField.cardNumber, let cvc = textField.cvc else {
       return
     }
 
-    self.viewModel.inputs.paymentCardFieldDoneEditing(cardNumber: cardnumber,
-                                                      expMonth: Int(textField.expirationMonth),
-                                                      expYear: Int(textField.expirationYear),
-                                                      cvc: cvc)
+    self.viewModel.inputs.paymentCardChanged(cardNumber: cardnumber,
+                                             expMonth: Int(textField.expirationMonth),
+                                             expYear: Int(textField.expirationYear),
+                                             cvc: cvc)
 
+    self.viewModel.inputs.paymentInfo(valid: textField.isValid)
   }
 
-  func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
-    self.viewModel.inputs.paymentInfo(valid: textField.isValid)
+  @objc func paymentCardTextFieldReturn(_ textField: STPPaymentCardTextField) {
+    self.viewModel.inputs.paymentCardTextFieldReturn()
   }
 
   func stripeToken(cardholderName: String,
@@ -172,11 +183,18 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     cardParams.cvc = cvc
 
     STPAPIClient.shared().createToken(withCard: cardParams) { token, error in
-      guard let token = token, let error = error else {
-        return
-      }
 
-      self.viewModel.inputs.stripeCreatedToken(stripeToken: token, error: error)
+      if let token = token {
+        print(token)
+      } else {
+        print(error?.localizedDescription)
+      }
+//      guard let token = token, let error = error else {
+//        print(error.localizedDescription)
+//        return
+//      }
+
+//      self.viewModel.inputs.stripeCreatedToken(stripeToken: token, error: error)
     }
   }
 

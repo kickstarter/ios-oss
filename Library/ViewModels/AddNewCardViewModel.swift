@@ -6,10 +6,10 @@ import Result
 import Stripe
 
 public protocol AddNewCardViewModelInputs {
-  func cardholderNameFieldTextChanged(text: String)
-  func cardholderNameFieldDidReturn(cardholderName: String)
-//  func paymentCardFieldTextChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String)
-  func paymentCardFieldDoneEditing(cardNumber: String, expMonth: Int, expYear: Int, cvc: String)
+  func cardholderNameChanged(_ cardholderName: String)
+  func cardholderNameTextFieldReturn()
+  func paymentCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String)
+  func paymentCardTextFieldReturn()
   func paymentInfo(valid: Bool)
   func saveButtonTapped()
   func stripeCreatedToken(stripeToken: STPToken, error: Error)
@@ -35,36 +35,35 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 AddNewCardViewModelOutputs {
 
   public init() {
-    let cardholderName = self.cardholderNameProperty.signal
-    let paymentDetails = self.paymentCardProperty.signal.skipNil()
+    let cardholderName = self.cardholderNameChangedProperty.signal
+    let paymentDetails = self.paymentCardChangedProperty.signal.skipNil()
+
+    self.cardholderNameBecomeFirstResponder = self.viewDidLoadProperty.signal
+    self.paymentDetailsBecomeFirstResponder = self.cardholderNameTextFieldReturnProperty.signal
 
     self.saveButtonIsEnabled = Signal.combineLatest(
       cardholderName.map { !$0.isEmpty },
       self.paymentInfoIsValidProperty.signal
       ).map { cardholderName, validation in cardholderName && validation }
 
-    let autoSaveSignal = self.saveButtonIsEnabled
-      .takeWhen(self.paymentCardDoneEditingProperty.signal)
-      .filter { isTrue($0) }
-      .ignoreValues()
-
-    let triggerSaveAction = Signal.merge(
-      autoSaveSignal,
-      self.saveButtonTappedProperty.signal
-    )
-
     let paymentInput = Signal.combineLatest(cardholderName, paymentDetails)
       .map { cardholderName, paymentInfo in
         (cardholderName, paymentInfo.0, paymentInfo.1, paymentInfo.2, paymentInfo.3) }
 
     self.paymentDetails = paymentInput
-      .takeWhen(self.saveButtonTappedProperty.signal) // doesn't emit
+      .takeWhen(self.saveButtonTappedProperty.signal) // not emiting
+
 
     let stripeTokenId = self.stripeTokenAndErrorProperty.signal.map { $0?.0.tokenId }.skipNil()
     let stripeCardId = self.stripeTokenAndErrorProperty.signal.map { $0?.0.stripeID }.skipNil()
 
+    let tryAddingCard = Signal.merge(
+      self.paymentCardTextFieldReturnProperty.signal,
+      self.saveButtonTappedProperty.signal
+    )
+
     let addNewCardEvent = Signal.combineLatest(stripeTokenId, stripeCardId)
-      .takeWhen(triggerSaveAction)
+      .takeWhen(tryAddingCard)
       .map { CreatePaymentSourceInput(paymentType: PaymentType.creditCard, stripeToken: $0.0, stripeCardId: $0.1) }
       .flatMap {
         AppEnvironment.current.apiService.addNewCreditCard(input: $0)
@@ -76,37 +75,30 @@ AddNewCardViewModelOutputs {
     self.addNewCardFailure = addNewCardEvent.errors().map { $0.localizedDescription } // not emiting
 
     self.activityIndicatorShouldShow = Signal.merge(
-      triggerSaveAction.signal.mapConst(true),
       self.addNewCardSuccess.mapConst(false),
       self.addNewCardFailure.mapConst(false)
     ) //doesn't emit
-
-    self.cardholderNameBecomeFirstResponder = self.viewDidLoadProperty.signal
-    self.paymentDetailsBecomeFirstResponder = self.cardholderNameDoneEditingProperty.signal
   }
 
-  private let cardholderNameDoneEditingProperty = MutableProperty(())
-  public func cardholderNameFieldDidReturn(cardholderName: String) {
-    self.cardholderNameProperty.value = cardholderName
-    self.cardholderNameDoneEditingProperty.value = ()
+  private let cardholderNameChangedProperty = MutableProperty("")
+  public func cardholderNameChanged(_ cardholderName: String) {
+    self.cardholderNameChangedProperty.value = cardholderName
   }
 
-  private let cardholderNameProperty = MutableProperty<String>("")
-  public func cardholderNameFieldTextChanged(text: String) {
-    self.cardholderNameProperty.value = text
+  private let cardholderNameTextFieldReturnProperty = MutableProperty(())
+  public func cardholderNameTextFieldReturn() {
+    self.cardholderNameTextFieldReturnProperty.value = ()
   }
 
-  private let paymentCardDoneEditingProperty = MutableProperty(())
-  private let paymentCardProperty = MutableProperty<(String, Int, Int, String)?>(nil)
-
-  public func paymentCardFieldDoneEditing(cardNumber: String, expMonth: Int, expYear: Int, cvc: String) {
-    self.paymentCardProperty.value = (cardNumber, expMonth, expYear, cvc)
-    self.paymentCardDoneEditingProperty.value = ()
+  private let paymentCardChangedProperty = MutableProperty<(String, Int, Int, String)?>(nil)
+  public func paymentCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String) {
+    self.paymentCardChangedProperty.value = (cardNumber, expMonth, expYear, cvc)
   }
 
-//  public func paymentCardFieldTextChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String) {
-//    self.paymentCardProperty.value = (cardNumber, expMonth, expYear, cvc)
-//  }
+  private let paymentCardTextFieldReturnProperty = MutableProperty(())
+  public func paymentCardTextFieldReturn() {
+    self.paymentCardTextFieldReturnProperty.value = ()
+  }
 
   private let paymentInfoIsValidProperty = MutableProperty(false)
   public func paymentInfo(valid: Bool) {

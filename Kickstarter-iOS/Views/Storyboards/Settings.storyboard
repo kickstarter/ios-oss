@@ -842,11 +842,6 @@
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits"/>
-                                                                <connections>
-                                                                    <action selector="cardholderNameDidReturn:" destination="jgC-cC-z8A" eventType="primaryActionTriggered" id="niQ-xD-KNX"/>
-                                                                    <action selector="cardholderNameFieldDidEndEditing:" destination="jgC-cC-z8A" eventType="editingDidEnd" id="5PD-8G-YaC"/>
-                                                                    <action selector="cardholderNameTextDidChange:" destination="jgC-cC-z8A" eventType="editingChanged" id="ETB-fC-mNq"/>
-                                                                </connections>
                                                             </textField>
                                                         </subviews>
                                                     </stackView>
