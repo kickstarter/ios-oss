@@ -9,7 +9,6 @@ public protocol SettingsAccountViewModelInputs {
   func didSelectRow(cellType: SettingsAccountCellType)
   func showChangeCurrencyAlert(for currency: Currency)
   func viewWillAppear()
-  func viewDidLoad()
   func viewDidAppear()
 }
 
