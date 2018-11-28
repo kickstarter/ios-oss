@@ -272,6 +272,7 @@ AppDelegateViewModelOutputs {
 
     self.pushTokenSuccessfullyRegistered = self.deviceTokenDataProperty.signal
       .map(deviceToken(fromData:))
+      .on(value: { print("📲 [Push Registration] Push token generated: (\($0))") })
       .ksr_debounce(.seconds(5), on: AppEnvironment.current.scheduler)
       .switchMap { token in
         AppEnvironment.current.apiService.register(pushToken: token)
