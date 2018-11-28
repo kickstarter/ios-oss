@@ -265,6 +265,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   internal func application(_ application: UIApplication,
+                            didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    print("🔴 Failed to register for remote notifications: \(error.localizedDescription)")
+  }
+
+  internal func application(_ application: UIApplication,
                             didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
 
     self.viewModel.inputs.didReceive(remoteNotification: userInfo,
