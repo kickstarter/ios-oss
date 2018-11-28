@@ -20,7 +20,7 @@ final class LoginViewModelTests: TestCase {
   fileprivate let tfaChallenge = TestObserver<String, NoError>()
   fileprivate let emailText = TestObserver<String, NoError>()
   fileprivate let tfaChallengePasswordText = TestObserver<String, NoError>()
-  fileprivate let onePasswordButtonHiddenObserver = TestObserver<Bool, NoError>()
+  fileprivate let onePasswordButtonIsHidden = TestObserver<Bool, NoError>()
   fileprivate let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
   fileprivate let passwordText = TestObserver<String, NoError>()
   fileprivate let showHidePassword = TestObserver<Bool, NoError>()
@@ -41,7 +41,7 @@ final class LoginViewModelTests: TestCase {
     self.vm.outputs.tfaChallenge.map { $0.email }.observe(self.tfaChallenge.observer)
     self.vm.outputs.tfaChallenge.map { $0.password }.observe(self.tfaChallengePasswordText.observer)
     self.vm.outputs.emailText.observe(self.emailText.observer)
-    self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonHiddenObserver.observer)
+    self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonIsHidden.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
     self.vm.outputs.passwordText.observe(self.passwordText.observer)
     self.vm.outputs.showHidePasswordButtonToggled.observe(self.showHidePassword.observer)
@@ -189,7 +189,7 @@ final class LoginViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.onePassword(isAvailable: false)
 
-    self.onePasswordButtonHiddenObserver.assertValues([true])
+    self.onePasswordButtonIsHidden.assertValues([true])
   }
 
   func testOnePasswordButtonHidesBasedOnPasswordAutofillAvailabilityInIOS12AndPlus() {
@@ -197,9 +197,9 @@ final class LoginViewModelTests: TestCase {
     self.vm.inputs.onePassword(isAvailable: true)
 
     if #available(iOS 12, *) {
-      self.onePasswordButtonHiddenObserver.assertValues([true])
+      self.onePasswordButtonIsHidden.assertValues([true])
     } else {
-      self.onePasswordButtonHiddenObserver.assertValues([false])
+      self.onePasswordButtonIsHidden.assertValues([false])
     }
   }
 
@@ -216,7 +216,7 @@ final class LoginViewModelTests: TestCase {
         [nil, true], self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self)
       )
 
-      self.onePasswordButtonHiddenObserver.assertValues([false])
+      self.onePasswordButtonIsHidden.assertValues([false])
 
       self.vm.inputs.onePasswordButtonTapped()
 

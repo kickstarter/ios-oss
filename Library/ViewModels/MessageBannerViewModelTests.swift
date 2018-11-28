@@ -9,55 +9,55 @@ import XCTest
 internal final class MessageBannerViewModelTests: TestCase {
   let vm = MessageBannerViewModel()
 
-  let bannerBackgroundColorObserver = TestObserver<UIColor, NoError>()
-  let bannerMessageObserver = TestObserver<String, NoError>()
-  let iconIsHiddenObserver = TestObserver<Bool, NoError>()
-  let messageBannerViewIsHiddenObserver = TestObserver<Bool, NoError>()
-  let messageTextAlignmentObserver = TestObserver<NSTextAlignment, NoError>()
-  let messageTextColorObserver = TestObserver<UIColor, NoError>()
+  let bannerBackgroundColor = TestObserver<UIColor, NoError>()
+  let bannerMessage = TestObserver<String, NoError>()
+  let iconIsHidden = TestObserver<Bool, NoError>()
+  let messageBannerViewIsHidden = TestObserver<Bool, NoError>()
+  let messageTextAlignment = TestObserver<NSTextAlignment, NoError>()
+  let messageTextColor = TestObserver<UIColor, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.bannerBackgroundColor.observe(bannerBackgroundColorObserver.observer)
-    self.vm.outputs.bannerMessage.observe(bannerMessageObserver.observer)
-    self.vm.outputs.iconIsHidden.observe(iconIsHiddenObserver.observer)
-    self.vm.outputs.messageBannerViewIsHidden.observe(messageBannerViewIsHiddenObserver.observer)
-    self.vm.outputs.messageTextAlignment.observe(messageTextAlignmentObserver.observer)
-    self.vm.outputs.messageTextColor.observe(messageTextColorObserver.observer)
+    self.vm.outputs.bannerBackgroundColor.observe(bannerBackgroundColor.observer)
+    self.vm.outputs.bannerMessage.observe(bannerMessage.observer)
+    self.vm.outputs.iconIsHidden.observe(iconIsHidden.observer)
+    self.vm.outputs.messageBannerViewIsHidden.observe(messageBannerViewIsHidden.observer)
+    self.vm.outputs.messageTextAlignment.observe(messageTextAlignment.observer)
+    self.vm.outputs.messageTextColor.observe(messageTextColor.observer)
   }
 
   func testWithSuccessConfiguration() {
     self.vm.inputs.setBannerType(type: .success)
     self.vm.inputs.setBannerMessage(message: "Success")
 
-    self.bannerBackgroundColorObserver.assertValue(MessageBannerType.success.backgroundColor)
-    self.bannerMessageObserver.assertValue("Success")
-    self.iconIsHiddenObserver.assertValue(false)
-    self.messageTextAlignmentObserver.assertValue(.left)
-    self.messageTextColorObserver.assertValue(MessageBannerType.success.textColor)
+    self.bannerBackgroundColor.assertValue(MessageBannerType.success.backgroundColor)
+    self.bannerMessage.assertValue("Success")
+    self.iconIsHidden.assertValue(false)
+    self.messageTextAlignment.assertValue(.left)
+    self.messageTextColor.assertValue(MessageBannerType.success.textColor)
   }
 
   func testErrorConfiguration() {
     self.vm.inputs.setBannerType(type: .error)
     self.vm.inputs.setBannerMessage(message: "Something went wrong")
 
-    self.bannerBackgroundColorObserver.assertValue(MessageBannerType.error.backgroundColor)
-    self.bannerMessageObserver.assertValue("Something went wrong")
-    self.iconIsHiddenObserver.assertValue(false)
-    self.messageTextAlignmentObserver.assertValue(.left)
-    self.messageTextColorObserver.assertValue(MessageBannerType.error.textColor)
+    self.bannerBackgroundColor.assertValue(MessageBannerType.error.backgroundColor)
+    self.bannerMessage.assertValue("Something went wrong")
+    self.iconIsHidden.assertValue(false)
+    self.messageTextAlignment.assertValue(.left)
+    self.messageTextColor.assertValue(MessageBannerType.error.textColor)
   }
 
   func testInfoConfiguration() {
     self.vm.inputs.setBannerType(type: .info)
     self.vm.inputs.setBannerMessage(message: "Some information")
 
-    self.bannerBackgroundColorObserver.assertValue(MessageBannerType.info.backgroundColor)
-    self.bannerMessageObserver.assertValue("Some information")
-    self.iconIsHiddenObserver.assertValue(true)
-    self.messageTextAlignmentObserver.assertValue(.center)
-    self.messageTextColorObserver.assertValue(MessageBannerType.info.textColor)
+    self.bannerBackgroundColor.assertValue(MessageBannerType.info.backgroundColor)
+    self.bannerMessage.assertValue("Some information")
+    self.iconIsHidden.assertValue(true)
+    self.messageTextAlignment.assertValue(.center)
+    self.messageTextColor.assertValue(MessageBannerType.info.textColor)
   }
 
   func testShowHideBannerManual() {
@@ -66,13 +66,13 @@ internal final class MessageBannerViewModelTests: TestCase {
       self.vm.inputs.setBannerType(type: .success)
       self.vm.inputs.showBannerView(shouldShow: true)
 
-      self.messageBannerViewIsHiddenObserver.assertValues([false], "Message banner should show")
+      self.messageBannerViewIsHidden.assertValues([false], "Message banner should show")
 
       self.vm.inputs.showBannerView(shouldShow: false)
 
       scheduler.advance(by: .seconds(5))
 
-      self.messageBannerViewIsHiddenObserver.assertValues([false, true], "Message banner should hide")
+      self.messageBannerViewIsHidden.assertValues([false, true], "Message banner should hide")
     }
 
   }
@@ -84,7 +84,7 @@ internal final class MessageBannerViewModelTests: TestCase {
     self.vm.inputs.showBannerView(shouldShow: true)
     self.vm.inputs.showBannerView(shouldShow: true)
 
-    self.messageBannerViewIsHiddenObserver.assertValues([false], "Message banner should show")
+    self.messageBannerViewIsHidden.assertValues([false], "Message banner should show")
   }
 
   func testHideBannerAutomatically() {
@@ -95,7 +95,7 @@ internal final class MessageBannerViewModelTests: TestCase {
       self.vm.inputs.showBannerView(shouldShow: true)
 
       scheduler.schedule(after: .seconds(5), action: {
-        self.messageBannerViewIsHiddenObserver.assertValues([false, true],
+        self.messageBannerViewIsHidden.assertValues([false, true],
                                                             "Message banner should show then hide")
       })
     }

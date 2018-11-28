@@ -39,7 +39,7 @@ public protocol VideoViewModelInputs {
 
 public protocol VideoViewModelOutputs {
   /// Emits when should add a boundary observer for the 85% completion time.
-  var addCompletionObserver: Signal<CMTime, NoError> { get }
+  var addCompletion: Signal<CMTime, NoError> { get }
 
   /// Emits with the video url to be played.
   var configurePlayerWithURL: Signal<URL, NoError> { get }
@@ -129,7 +129,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .filter { rate, currentTime in currentTime == CMTime.zero && rate == playRate }
       .take(first: 1)
 
-    self.addCompletionObserver = completionThreshold.map { CMTimeMakeWithSeconds($0, preferredTimescale: 1) }
+    self.addCompletion = completionThreshold.map { CMTimeMakeWithSeconds($0, preferredTimescale: 1) }
 
     self.configurePlayerWithURL = project
       .filter { $0.video != nil }
@@ -244,7 +244,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.viewWillDisappearProperty.value = ()
   }
 
-  public let addCompletionObserver: Signal<CMTime, NoError>
+  public let addCompletion: Signal<CMTime, NoError>
   public let configurePlayerWithURL: Signal<URL, NoError>
   public let incrementVideoCompletion: Signal<VoidEnvelope, NoError>
   public let incrementVideoStart: Signal<VoidEnvelope, NoError>
