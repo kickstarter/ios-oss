@@ -44,7 +44,8 @@ public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.keyboardType .~ .emailAddress
 
 public func emailFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
-  let style = emailFieldStyle(textField)
+  let style = textField
+    |> emailFieldStyle
 
   if #available(iOS 11, *) {
     return style
@@ -103,7 +104,8 @@ public let passwordFieldStyle = formFieldStyle
   <> UITextField.lens.secureTextEntry .~ true
 
 public func passwordFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
-  let style = passwordFieldStyle(textField)
+  let style = textField
+    |> passwordFieldStyle
 
   if #available(iOS 11, *) {
     return style
@@ -175,7 +177,8 @@ public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.two_factor_code_placeholder() }
 
 public func tfaCodeFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
-  let style = tfaCodeFieldStyle(textField)
+  let style = textField
+    |> tfaCodeFieldStyle
 
   if #available(iOS 12, *) {
     return style
