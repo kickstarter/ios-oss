@@ -130,7 +130,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.pushTokenRegistrationStarted
       .observeForUI()
       .observeValues {
-        print("📲 [Push Registration] Push token registration started ✨")
+        print("📲 [Push Registration] Push token registration started 🚀")
     }
 
       self.viewModel.outputs.pushTokenSuccessfullyRegistered
@@ -258,6 +258,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
                                                     sourceApplication: sourceApplication,
                                                     annotation: annotation)
   }
+
+  // MARK: - Remote notifications
 
   internal func application(_ application: UIApplication,
                             didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
