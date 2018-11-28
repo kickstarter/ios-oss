@@ -92,6 +92,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
           .materialize()
     }
 
+    passwordUpdateEvent.values()
+      .observeValues { _ in AppEnvironment.current.koala.trackChangePassword() }
+
     self.changePasswordSuccess = passwordUpdateEvent.values().ignoreValues()
     self.changePasswordFailure = passwordUpdateEvent.errors().map { $0.localizedDescription }
 
@@ -126,6 +129,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
         }
     }.skipNil()
     .skipRepeats()
+
+    self.viewDidAppearProperty.signal
+      .observeValues { _ in AppEnvironment.current.koala.trackChangePasswordView() }
   }
 
   private var currentPasswordDoneEditingProperty = MutableProperty(())

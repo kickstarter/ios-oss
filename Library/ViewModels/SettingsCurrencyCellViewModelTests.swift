@@ -23,10 +23,15 @@ internal final class SettingsCurrencyCellViewModelTests: TestCase {
     let currency = Currency.USD
     let value = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency)
 
-    withEnvironment(apiService: MockService(fetchGraphCurrencyResponse: .template)) {
-      self.vm.inputs.configure(with: value)
-      self.scheduler.advance()
-      self.chosenCurrencyText.assertValues([Strings.Currency_USD()])
-    }
+    self.vm.inputs.configure(with: value)
+    self.chosenCurrencyText.assertValues([Strings.Currency_USD()])
+  }
+
+  internal func testChosenCurrencyText_WhenCurrencyNil() {
+    let value = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: nil)
+
+    self.vm.inputs.configure(with: value)
+    self.scheduler.advance()
+    self.chosenCurrencyText.assertValues(["🤷🏽‍♀️"])
   }
 }

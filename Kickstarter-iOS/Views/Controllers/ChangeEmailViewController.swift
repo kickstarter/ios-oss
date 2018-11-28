@@ -7,6 +7,7 @@ import UIKit
 internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var currentEmailLabel: UILabel!
   @IBOutlet fileprivate weak var currentEmail: UILabel!
+  @IBOutlet fileprivate weak var messageBannerContainer: UIView!
   @IBOutlet fileprivate weak var messageLabelView: UIView!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailTextField: UITextField!
@@ -20,7 +21,7 @@ internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var warningMessageLabel: UILabel!
 
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
-  private var messageBannerView: MessageBannerViewController!
+  private var messageBannerViewController: MessageBannerViewController!
 
   private weak var saveButtonView: LoadingBarButtonItemView!
 
@@ -31,11 +32,11 @@ internal final class ChangeEmailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let messageBannerView = self.children.first as? MessageBannerViewController else {
+    guard let messageBannerViewController = self.children.first as? MessageBannerViewController else {
       fatalError("Couldn't instantiate MessageBannerViewController")
     }
-
-    self.messageBannerView = messageBannerView
+    self.messageBannerViewController = messageBannerViewController
+    self.messageBannerViewController.delegate = self
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
@@ -57,8 +58,17 @@ internal final class ChangeEmailViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.viewModel.inputs.viewDidAppear()
+  }
+
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self.scrollView
+      |> \.alwaysBounceVertical .~ true
 
     _ = self
       |> settingsViewControllerStyle
@@ -68,6 +78,9 @@ internal final class ChangeEmailViewController: UIViewController {
 
     _ = self.onePasswordButton
       |> onePasswordButtonStyle
+
+    _ = self.messageBannerContainer
+      |> \.isHidden .~ true
 
     _ = self.messageLabelView
       |> \.backgroundColor .~ .ksr_grey_200
@@ -94,11 +107,15 @@ internal final class ChangeEmailViewController: UIViewController {
 
     _ = self.newEmailTextField
       |> formFieldStyle
+      |> \.keyboardType .~ .emailAddress
       |> \.returnKeyType .~ .next
       |> \.textAlignment .~ .right
       |> \.placeholder %~ { _ in
         Strings.login_placeholder_email()
     }
+
+    _ = self.resendVerificationEmailView
+      |> \.isHidden .~ true
 
     _ = self.passwordLabel
       |> settingsTitleLabelStyle
@@ -107,7 +124,7 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = self.passwordTextField
       |> passwordFieldStyle
       |> \.textAlignment .~ .right
-      |> \.returnKeyType .~ .go
+      |> \.returnKeyType .~ .done
 
     _ = self.resendVerificationEmailButton
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
@@ -149,34 +166,27 @@ internal final class ChangeEmailViewController: UIViewController {
     self.viewModel.outputs.didFailToChangeEmail
       .observeForUI()
       .observeValues { [weak self] error in
-        self?.messageBannerView.showBanner(with: .error, message: error)
+        self?.messageBannerViewController.showBanner(with: .error, message: error)
     }
 
     self.viewModel.outputs.didChangeEmail
       .observeForUI()
       .observeValues { [weak self] in
-        self?.messageBannerView.showBanner(with: .success,
+        self?.messageBannerViewController.showBanner(with: .success,
                                            message: Strings.Got_it_your_changes_have_been_saved())
     }
 
     self.viewModel.outputs.didSendVerificationEmail
       .observeForUI()
       .observeValues { [weak self] in
-        self?.messageBannerView.showBanner(with: .success,
+        self?.messageBannerViewController.showBanner(with: .success,
                                            message: Strings.Verification_email_sent())
     }
 
     self.viewModel.outputs.didFailToSendVerificationEmail
       .observeForUI()
       .observeValues { [weak self] error in
-        self?.messageBannerView.showBanner(with: .error, message: error)
-    }
-
-    self.viewModel.outputs.shouldSubmitForm
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.viewModel.inputs.submitForm(newEmail: self?.newEmailTextField.text,
-                                          password: self?.passwordTextField.text)
+        self?.messageBannerViewController.showBanner(with: .error, message: error)
     }
 
     self.viewModel.outputs.passwordFieldBecomeFirstResponder
@@ -197,6 +207,12 @@ internal final class ChangeEmailViewController: UIViewController {
         self?.dismissKeyboard()
     }
 
+    self.viewModel.outputs.textFieldsAreEnabled
+      .observeForUI()
+      .observeValues { [weak self] isEnabled in
+        self?.enableTextFields(isEnabled)
+    }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -205,8 +221,7 @@ internal final class ChangeEmailViewController: UIViewController {
   }
 
   @IBAction func saveButtonTapped(_ sender: Any) {
-    self.viewModel.inputs.saveButtonTapped(newEmail: self.newEmailTextField.text,
-                                           password: self.passwordTextField.text)
+    self.viewModel.inputs.saveButtonTapped()
   }
 
   @IBAction func resendVerificationEmailButtonTapped(_ sender: Any) {
@@ -217,16 +232,8 @@ internal final class ChangeEmailViewController: UIViewController {
     self.viewModel.inputs.onePasswordButtonTapped()
   }
 
-  @IBAction func emailFieldDidEndEditing(_ sender: UITextField) {
-    self.viewModel.inputs.emailFieldDidEndEditing(email: sender.text)
-  }
-
   @IBAction func emailFieldTextDidChange(_ sender: UITextField) {
     self.viewModel.inputs.emailFieldTextDidChange(text: sender.text)
-  }
-
-  @IBAction func passwordFieldDidEndEditing(_ sender: UITextField) {
-    self.viewModel.inputs.passwordFieldDidEndEditing(password: sender.text)
   }
 
   @IBAction func passwordFieldTextDidChange(_ sender: UITextField) {
@@ -251,9 +258,17 @@ internal final class ChangeEmailViewController: UIViewController {
   }
 
   private func resetFields(string: String) {
-    _ = [self.passwordTextField, self.newEmailTextField]
-      ||> UITextField.lens.text .~ string
+    _ = self.passwordTextField
+      ?|> \.text %~ { _ in string }
+
+    _ =  self.newEmailTextField
+      ?|> \.text %~ { _ in string }
     }
+
+  private func enableTextFields(_ isEnabled: Bool) {
+    _ = [self.newEmailTextField, self.passwordTextField]
+      ||> \.isUserInteractionEnabled .~ isEnabled
+  }
 }
 
 extension ChangeEmailViewController: UITextFieldDelegate {
@@ -261,5 +276,11 @@ extension ChangeEmailViewController: UITextFieldDelegate {
 
     self.viewModel.inputs.textFieldShouldReturn(with: textField.returnKeyType)
     return textField.resignFirstResponder()
+  }
+}
+
+extension ChangeEmailViewController: MessageBannerViewControllerDelegate {
+  var messageBannerViewControllerContainer: UIView {
+    return self.messageBannerContainer
   }
 }
