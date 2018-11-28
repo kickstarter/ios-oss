@@ -156,7 +156,7 @@ public func countdownProducer(to date: Date)
       .map(formattedComponents(dateComponents:))
 }
 
-func is1PasswordButtonHidden(_ isHidden: Bool) -> Bool {
+internal func is1PasswordButtonHidden(_ isHidden: Bool) -> Bool {
   if #available(iOS 12, *) {
     return true
   } else {
