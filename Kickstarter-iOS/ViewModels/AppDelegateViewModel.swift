@@ -650,8 +650,10 @@ AppDelegateViewModelOutputs {
     deepLinkFromNotification
       .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
 
-    self.applicationIconBadgeNumber = self.applicationWillEnterForegroundProperty.signal
-      .ignoreValues()
+    self.applicationIconBadgeNumber = Signal.merge(
+        self.applicationWillEnterForegroundProperty.signal,
+        self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      )
       .flatMap { AppEnvironment.current.pushRegistrationType.currentAuthorization() }
       .filter(isTrue)
       .mapConst(0)

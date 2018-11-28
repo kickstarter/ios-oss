@@ -75,7 +75,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
   }
 
-  func testResetApplicationIconBadgeNumber_registeredForPushNotifications() {
+  func testResetApplicationIconBadgeNumber_registeredForPushNotifications_WillEnterForeground() {
     MockPushRegistration.currentAuthorizationProducer = .init(value: true)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
@@ -87,13 +87,37 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testResetApplicationIconBadgeNumber_notRegisteredForPushNotifications() {
+  func testResetApplicationIconBadgeNumber_notRegisteredForPushNotifications_WillEnterForeground() {
     MockPushRegistration.currentAuthorizationProducer = .init(value: false)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
       self.applicationIconBadgeNumber.assertValues([])
 
       self.vm.inputs.applicationWillEnterForeground()
+
+      self.applicationIconBadgeNumber.assertValues([])
+    }
+  }
+
+  func testResetApplicationIconBadgeNumber_registeredForPushNotifications_AppLaunch() {
+    MockPushRegistration.currentAuthorizationProducer = .init(value: true)
+
+    withEnvironment(pushRegistrationType: MockPushRegistration.self) {
+      self.applicationIconBadgeNumber.assertValues([])
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.applicationIconBadgeNumber.assertValues([0])
+    }
+  }
+
+  func testResetApplicationIconBadgeNumber_notRegisteredForPushNotifications_AppLaunch() {
+    MockPushRegistration.currentAuthorizationProducer = .init(value: false)
+
+    withEnvironment(pushRegistrationType: MockPushRegistration.self) {
+      self.applicationIconBadgeNumber.assertValues([])
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
       self.applicationIconBadgeNumber.assertValues([])
     }
