@@ -76,7 +76,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testResetApplicationIconBadgeNumber_registeredForPushNotifications_WillEnterForeground() {
-    MockPushRegistration.currentAuthorizationProducer = .init(value: true)
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
       self.applicationIconBadgeNumber.assertValues([])
@@ -88,7 +88,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testResetApplicationIconBadgeNumber_notRegisteredForPushNotifications_WillEnterForeground() {
-    MockPushRegistration.currentAuthorizationProducer = .init(value: false)
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
       self.applicationIconBadgeNumber.assertValues([])
@@ -100,7 +100,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testResetApplicationIconBadgeNumber_registeredForPushNotifications_AppLaunch() {
-    MockPushRegistration.currentAuthorizationProducer = .init(value: true)
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
       self.applicationIconBadgeNumber.assertValues([])
@@ -112,7 +112,7 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testResetApplicationIconBadgeNumber_notRegisteredForPushNotifications_AppLaunch() {
-    MockPushRegistration.currentAuthorizationProducer = .init(value: false)
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
 
     withEnvironment(pushRegistrationType: MockPushRegistration.self) {
       self.applicationIconBadgeNumber.assertValues([])
@@ -674,7 +674,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testRegisterPushNotifications_Prompted() {
     let client = MockTrackingClient()
 
-    MockPushRegistration.currentAuthorizationProducer = .init(value: false)
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
     MockPushRegistration.registerProducer = .init(value: true)
 
     withEnvironment(
@@ -708,7 +708,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testRegisterPushNotifications_PreviouslyAccepted() {
     let client = MockTrackingClient()
 
-    MockPushRegistration.currentAuthorizationProducer = .init(value: true)
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
     MockPushRegistration.registerProducer = .init(value: true)
 
     withEnvironment(
@@ -742,7 +742,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testTrackingPushAuthorizationOptIn() {
     let client = MockTrackingClient()
 
-    MockPushRegistration.currentAuthorizationProducer = .init(value: false)
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
     MockPushRegistration.registerProducer = .init(value: true)
 
     withEnvironment(
@@ -761,7 +761,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testTrackingPushAuthorizationOptOut() {
     let client = MockTrackingClient()
 
-    MockPushRegistration.currentAuthorizationProducer = .init(value: false)
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
     MockPushRegistration.registerProducer = .init(value: false)
 
     withEnvironment(

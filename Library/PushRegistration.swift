@@ -52,7 +52,7 @@ public struct PushRegistration: PushRegistrationType {
 
    - returns: A signal producer.
    */
-  public static func currentAuthorization() -> SignalProducer<Bool, NoError> {
+  public static func hasAuthorizedNotifications() -> SignalProducer<Bool, NoError> {
       guard #available(iOS 10.0, *) else {
         return .init(value: UIApplication.shared.isRegisteredForRemoteNotifications)
       }

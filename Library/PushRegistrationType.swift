@@ -48,5 +48,5 @@ extension Sequence where Element == PushNotificationType {
 
 public protocol PushRegistrationType {
   static func register(for types: [PushNotificationType]) -> SignalProducer<Bool?, NoError>
-  static func currentAuthorization() -> SignalProducer<Bool, NoError>
+  static func hasAuthorizedNotifications() -> SignalProducer<Bool, NoError>
 }

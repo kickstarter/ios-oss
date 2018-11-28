@@ -244,7 +244,7 @@ AppDelegateViewModelOutputs {
     // Push notifications
 
     let pushNotificationsPreviouslyAuthorized = self.applicationLaunchOptionsProperty.signal
-      .flatMap { _ in AppEnvironment.current.pushRegistrationType.currentAuthorization() }
+      .flatMap { _ in AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
 
     let pushTokenRegistrationStartedEvents = Signal.merge(
       self.didAcceptReceivingRemoteNotificationsProperty.signal,
@@ -654,7 +654,7 @@ AppDelegateViewModelOutputs {
         self.applicationWillEnterForegroundProperty.signal,
         self.applicationLaunchOptionsProperty.signal.ignoreValues()
       )
-      .flatMap { AppEnvironment.current.pushRegistrationType.currentAuthorization() }
+      .flatMap { AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
       .filter(isTrue)
       .mapConst(0)
   }
