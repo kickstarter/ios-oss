@@ -916,12 +916,24 @@
                                     <constraint firstAttribute="bottom" secondItem="lnb-P0-tav" secondAttribute="bottom" id="y9W-Ob-6iH"/>
                                 </constraints>
                             </scrollView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hfQ-HH-l45">
+                                <rect key="frame" x="6" y="533" width="363" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="mXD-2Y-SI9"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="zRn-GV-so4" kind="embed" id="2yf-nW-xFt"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="hfQ-HH-l45" firstAttribute="leading" secondItem="uO6-wU-ph7" secondAttribute="leading" constant="6" id="DDG-F8-12m"/>
                             <constraint firstItem="uO6-wU-ph7" firstAttribute="trailing" secondItem="WND-4C-aQn" secondAttribute="trailing" id="EuV-qO-bni"/>
+                            <constraint firstItem="uO6-wU-ph7" firstAttribute="bottom" secondItem="hfQ-HH-l45" secondAttribute="bottom" constant="6" id="QwP-gB-dfk"/>
                             <constraint firstItem="WND-4C-aQn" firstAttribute="leading" secondItem="uO6-wU-ph7" secondAttribute="leading" id="bKt-mR-G6r"/>
                             <constraint firstItem="uO6-wU-ph7" firstAttribute="bottom" secondItem="WND-4C-aQn" secondAttribute="bottom" id="s0b-d5-aBB"/>
+                            <constraint firstItem="uO6-wU-ph7" firstAttribute="trailing" secondItem="hfQ-HH-l45" secondAttribute="trailing" constant="6" id="yPn-fH-OSw"/>
                             <constraint firstItem="WND-4C-aQn" firstAttribute="top" secondItem="uO6-wU-ph7" secondAttribute="top" id="zEv-LV-hOo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uO6-wU-ph7"/>
@@ -934,13 +946,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BRu-8c-SVG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1068" y="1191.4542728635683"/>
+            <point key="canvasLocation" x="-2014" y="1137"/>
         </scene>
     </scenes>
     <resources>
         <image name="onepassword-button" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="S9b-Nx-mWW"/>
+        <segue reference="2yf-nW-xFt"/>
     </inferredMetricsTieBreakers>
 </document>

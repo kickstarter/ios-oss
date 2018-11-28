@@ -7,10 +7,12 @@ import UIKit
 
 internal final class AddNewCardViewController: UIViewController, STPPaymentCardTextFieldDelegate {
 
-  private var saveButtonView: LoadingBarButtonItemView!
   @IBOutlet private weak var cardholderNameLabel: UILabel!
   @IBOutlet private weak var cardholderNameTextField: UITextField!
   @IBOutlet private weak var paymentTextField: STPPaymentCardTextField!
+
+  private var saveButtonView: LoadingBarButtonItemView!
+  private var messageBannerView: MessageBannerViewController!
 
   fileprivate let viewModel: AddNewCardViewModelType = AddNewCardViewModel()
 
@@ -21,6 +23,12 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    guard let messageViewController = self.children.first as? MessageBannerViewController else {
+      fatalError("Missing message View Controller")
+
+    }
+    self.messageBannerView = messageViewController
+
     self.cardholderNameTextField.addTarget(self,
                                            action: #selector(cardholderNameTextFieldReturn),
                                            for: .editingDidEndOnExit)
@@ -30,7 +38,6 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
                                            for: [.editingDidEndOnExit, .editingChanged])
 
     self.paymentTextField.addTarget(self, action: #selector(paymentCardTextFieldReturn), for: [.editingDidEndOnExit])
-//    self.paymentTextField.addTarget(self, action: #selector(paymentCardTextFieldChanged(_:)), for: [.editingChanged])
 
     let cancelButton = UIBarButtonItem(title: Strings.Cancel(),
                                        style: .plain,
@@ -97,6 +104,12 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
         self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
     }
 
+    self.viewModel.outputs.setStripePublishableKey
+      .observeForUI()
+      .observeValues {
+        STPPaymentConfiguration.shared().publishableKey = $0
+    }
+
     self.viewModel.outputs.paymentDetails
       .observeForUI()
       .observeValues { [weak self] cardholderName, cardNumber, expMonth, expYear, cvc in
@@ -111,7 +124,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
       .observeForUI()
       .observeValues { shouldShow in
         if shouldShow {
-          self.saveButtonView.stopAnimating()
+          self.saveButtonView.startAnimating()
         } else {
           self.saveButtonView.stopAnimating()
         }
@@ -119,7 +132,15 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
 
     self.viewModel.outputs.addNewCardSuccess
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.dismiss() }
+      .observeValues { [weak self] in
+        self?.dismiss()
+    }
+
+    self.viewModel.outputs.addNewCardFailure
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerView.showBanner(with: .error, message: errorMessage)
+    }
   }
 
   @objc fileprivate func cancelButtonTapped() {
@@ -138,19 +159,6 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     ) {
     self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
-
-//  @objc func paymentCardTextFieldChanged(_ textField: STPPaymentCardTextField) {
-//    guard let cardnumber = textField.cardNumber, let cvc = textField.cvc else {
-//      return
-//    }
-//
-//    self.viewModel.inputs.paymentCardChanged(cardNumber: cardnumber,
-//                                                      expMonth: Int(textField.expirationMonth),
-//                                                      expYear: Int(textField.expirationYear),
-//                                                      cvc: cvc)
-//
-//
-//  }
 
   func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
 
@@ -184,17 +192,16 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
 
     STPAPIClient.shared().createToken(withCard: cardParams) { token, error in
 
-      if let token = token {
-        print(token)
-      } else {
-        print(error?.localizedDescription)
-      }
+//      if let token = token {
+//        print("cool")
+//      } else {
+//        print(error?.localizedDescription as Any)
+//      }
 //      guard let token = token, let error = error else {
-//        print(error.localizedDescription)
 //        return
 //      }
+      self.viewModel.inputs.stripeCreatedToken(stripeToken: token, error: error)
 
-//      self.viewModel.inputs.stripeCreatedToken(stripeToken: token, error: error)
     }
   }
 
