@@ -8,14 +8,15 @@ public protocol SettingsAccountViewModelInputs {
   func dismissPickerTap()
   func didSelectRow(cellType: SettingsAccountCellType)
   func showChangeCurrencyAlert(for currency: Currency)
-  func viewDidLoad()
+  func viewWillAppear()
   func viewDidAppear()
 }
 
 public protocol SettingsAccountViewModelOutputs {
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
+  var fetchAccountFieldsError: Signal<Void, NoError> { get }
   var presentCurrencyPicker: Signal<Void, NoError> { get }
-  var reloadData: Signal<(User, Currency), NoError> { get }
+  var reloadData: Signal<(Currency, Bool), NoError> { get }
   var showAlert: Signal<(), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
@@ -30,25 +31,27 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
 SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
   public init(_ viewControllerFactory: @escaping (SettingsAccountCellType) -> UIViewController?) {
-    let initialUser = self.viewDidLoadProperty.signal
-      .flatMap {
-        AppEnvironment.current.apiService.fetchUserSelf()
-          .wrapInOptional()
-          .prefix(value: AppEnvironment.current.currentUser)
-          .demoteErrors()
-      }
-      .skipNil()
-
-    let fetchedCurrency = self.viewDidLoadProperty.signal
+    let userAccountFields = self.viewWillAppearProperty.signal
       .switchMap { _ in
         return AppEnvironment.current.apiService
-          .fetchGraphCurrency(query: UserQueries.chosenCurrency.query)
+          .fetchGraphUserAccountFields(query: UserQueries.account.query)
           .materialize()
     }
 
-    let chosenCurrency = fetchedCurrency.values().map {
-      Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue)
-        ?? Currency.USD }
+    self.fetchAccountFieldsError = userAccountFields.errors().ignoreValues()
+
+    let shouldHideEmailWarning = userAccountFields.values()
+      .map { response -> Bool in
+        guard let isEmailVerified = response.me.isEmailVerified,
+              let isDeliverable = response.me.isDeliverable else {
+          return true
+        }
+
+        return isEmailVerified && isDeliverable
+    }
+
+    let chosenCurrency = userAccountFields.values()
+      .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
 
     let currencyCellSelected = self.selectedCellTypeProperty.signal
       .skipNil()
@@ -71,7 +74,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     let currency = Signal.merge(chosenCurrency, updateCurrency)
 
-    self.reloadData = Signal.combineLatest(initialUser, currency)
+    self.reloadData = Signal.combineLatest(currency, shouldHideEmailWarning)
 
     self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true).ignoreValues()
 
@@ -107,9 +110,9 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.didConfirmChangeCurrencyProperty.value = ()
   }
 
-  fileprivate let viewDidLoadProperty = MutableProperty(())
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
+  fileprivate let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
   }
 
   fileprivate let viewDidAppearProperty = MutableProperty(())
@@ -118,7 +121,8 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   }
 
   public let dismissCurrencyPicker: Signal<Void, NoError>
-  public let reloadData: Signal<(User, Currency), NoError>
+  public let fetchAccountFieldsError: Signal<Void, NoError>
+  public let reloadData: Signal<(Currency, Bool), NoError>
   public let presentCurrencyPicker: Signal<Void, NoError>
   public let showAlert: Signal<(), NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>

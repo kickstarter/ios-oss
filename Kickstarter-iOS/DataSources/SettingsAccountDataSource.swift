@@ -2,7 +2,7 @@ import KsApi
 import Library
 
 final class SettingsAccountDataSource: ValueCellDataSource {
-  func configureRows(user: User, currency: Currency) {
+  func configureRows(currency: Currency?, shouldHideEmailWarning: Bool) {
     clearValues()
     SettingsAccountSectionType.allCases
       .forEach { section -> Void in
@@ -12,10 +12,20 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                cellClass: SettingsTableViewCell.self,
                inSection: section.rawValue)
     }
-    _ = insertCurrencyCell(currency: currency)
+
+    self.insertChangeEmailCell(shouldHideEmailWarning)
+
+    _ = self.insertCurrencyCell(currency: currency)
   }
 
-  func insertCurrencyCell(currency: Currency) -> IndexPath {
+  func insertChangeEmailCell(_ shouldHideEmailWarning: Bool) {
+    self.insertRow(value: shouldHideEmailWarning,
+                   cellClass: SettingsAccountWarningCell.self,
+                   atIndex: 0,
+                   inSection: SettingsAccountSectionType.emailPassword.rawValue)
+  }
+
+  func insertCurrencyCell(currency: Currency?) -> IndexPath {
     let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency )
 
     return self.insertRow(value: cellValue,
@@ -36,9 +46,9 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currencyPicker)
 
     return self.deleteRow(value: cellValue,
-                           cellClass: SettingsCurrencyPickerCell.self,
-                           atIndex: 2,
-                           inSection: SettingsAccountSectionType.payment.rawValue)
+                          cellClass: SettingsCurrencyPickerCell.self,
+                          atIndex: 2,
+                          inSection: SettingsAccountSectionType.payment.rawValue)
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {
@@ -46,6 +56,9 @@ final class SettingsAccountDataSource: ValueCellDataSource {
       return value.cellType as? SettingsAccountCellType
     } else if let currencyValue = self[indexPath] as? SettingsCurrencyCellValue {
       return currencyValue.cellType as? SettingsAccountCellType
+      //swiftlint:disable unused_optional_binding
+    } else if let _ = self[indexPath] as? Bool {
+      return SettingsAccountCellType.changeEmail
     } else {
       return nil
     }
@@ -53,6 +66,8 @@ final class SettingsAccountDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
+    case let (cell as SettingsAccountWarningCell, value as Bool):
+      cell.configureWith(value: value)
     case let (cell as SettingsTableViewCell, value as SettingsCellValue):
       cell.configureWith(value: value)
     case let (cell as SettingsCurrencyPickerCell, value as SettingsCellValue):

@@ -17,7 +17,7 @@ public enum SettingsAccountSectionType: Int {
   public var cellRowsForSection: [SettingsAccountCellType] {
     switch self {
     case .emailPassword:
-      return [.changeEmail, .changePassword]
+      return [.changePassword]
     case .privacy:
       return [.privacy]
     case .payment:
