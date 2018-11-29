@@ -127,45 +127,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { UIApplication.shared.applicationIconBadgeNumber = $0 }
 
-    self.viewModel.outputs.registerForRemoteNotifications
+    self.viewModel.outputs.pushTokenRegistrationStarted
       .observeForUI()
       .observeValues {
-        print("📲 [Push Registration] Registering for push notifications")
-        if #available(iOS 10.0, *) {
-          UIApplication.shared.registerForRemoteNotifications()
-        } else {
-          UIApplication.shared.registerUserNotificationSettings(
-            UIUserNotificationSettings(types: [.alert, .badge], categories: [])
-          )
-
-          UIApplication.shared.registerForRemoteNotifications()
-        }
-      }
+        print("📲 [Push Registration] Push token registration started 🚀")
+    }
 
       self.viewModel.outputs.pushTokenSuccessfullyRegistered
       .observeForUI()
-      .observeValues {
-        print("📲 [Push Registration] Push token successfully registered ✨")
+      .observeValues { token in
+        print("📲 [Push Registration] Push token successfully registered (\(token)) ✨")
     }
-
-      if #available(iOS 10.0, *) {
-        self.viewModel.outputs.getNotificationAuthorizationStatus
-          .observeForUI()
-          .observeValues { [weak self] in
-            UNUserNotificationCenter.current().getNotificationSettings { settings in
-              self?.viewModel.inputs.notificationAuthorizationStatusReceived(settings.authorizationStatus)
-            }
-          }
-
-        self.viewModel.outputs.authorizeForRemoteNotifications
-          .observeForUI()
-          .observeValues { [weak self] in
-            UNUserNotificationCenter.current()
-              .requestAuthorization(options: [.alert, .badge]) { (isGranted, _) in
-                self?.viewModel.inputs.notificationAuthorizationCompleted(isGranted: isGranted)
-            }
-          }
-      }
 
     self.viewModel.outputs.showAlert
       .observeForUI()
@@ -287,9 +259,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
                                                     annotation: annotation)
   }
 
+  // MARK: - Remote notifications
+
   internal func application(_ application: UIApplication,
                             didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     self.viewModel.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: deviceToken)
+  }
+
+  internal func application(_ application: UIApplication,
+                            didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    print("🔴 Failed to register for remote notifications: \(error.localizedDescription)")
   }
 
   internal func application(_ application: UIApplication,
