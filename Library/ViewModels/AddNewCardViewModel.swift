@@ -12,7 +12,8 @@ public protocol AddNewCardViewModelInputs {
   func paymentInfo(valid: Bool)
   func paymentCardTextFieldReturn()
   func saveButtonTapped()
-  func stripeCreatedToken(stripeToken: STPToken?, error: Error?)
+  func stripeCreated(_ token: STPToken?)
+  func stripeError(_ error: Error?)
   func viewDidLoad()
 }
 
@@ -21,6 +22,7 @@ public protocol AddNewCardViewModelOutputs {
   var addNewCardFailure: Signal<String, NoError> { get }
   var addNewCardSuccess: Signal<Void, NoError> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, NoError> { get }
+  var dismissKeyboard: Signal<Void, NoError> { get }
   var paymentDetails: Signal<(String, String, Int, Int, String), NoError> { get }
   var paymentDetailsBecomeFirstResponder: Signal<Void, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
@@ -51,16 +53,17 @@ AddNewCardViewModelOutputs {
       .map { cardholderName, paymentInfo in
         (cardholderName, paymentInfo.0, paymentInfo.1, paymentInfo.2, paymentInfo.3) }
 
-    self.paymentDetails = paymentInput
-      .takeWhen(self.saveButtonTappedProperty.signal)
-
-    let stripeTokenId = self.stripeTokenAndErrorProperty.signal.map { $0.0?.tokenId }.skipNil()
-    let stripeCardId = self.stripeTokenAndErrorProperty.signal.map { $0.0?.stripeID }.skipNil()
-
-    let tryAddingCard = Signal.merge(
+    let tryAddCardAction = Signal.merge(
       self.paymentCardTextFieldReturnProperty.signal,
       self.saveButtonTappedProperty.signal
     )
+    self.paymentDetails = paymentInput
+      .takeWhen(self.saveButtonTappedProperty.signal)
+
+    let stripeTokenId = self.stripeTokenProperty.signal.map { $0?.tokenId }.skipNil()
+    let stripeCardId = self.stripeTokenProperty.signal.map { $0?.stripeID }.skipNil()
+
+    self.dismissKeyboard = tryAddCardAction
 
     self.setStripePublishableKey = self.saveButtonIsEnabled
       .filter(isTrue)
@@ -68,7 +71,6 @@ AddNewCardViewModelOutputs {
       .skipNil()
 
     let addNewCardEvent = Signal.combineLatest(stripeTokenId, stripeCardId)
-      .takeWhen(tryAddingCard)
       .map { CreatePaymentSourceInput(paymentType: PaymentType.creditCard, stripeToken: $0.0, stripeCardId: $0.1) }
       .flatMap {
         AppEnvironment.current.apiService.addNewCreditCard(input: $0)
@@ -77,9 +79,10 @@ AddNewCardViewModelOutputs {
        }
 
     self.addNewCardSuccess = addNewCardEvent.values().ignoreValues()
-    self.addNewCardFailure = self.stripeTokenAndErrorProperty.signal.map { $0.1?.localizedDescription }.skipNil()
+    self.addNewCardFailure = self.stripeErrorProperty.signal.map { $0?.localizedDescription }.skipNil()
 
     self.activityIndicatorShouldShow = Signal.merge(
+      tryAddCardAction.signal.mapConst(true),
       self.addNewCardSuccess.mapConst(false),
       self.addNewCardFailure.mapConst(false)
     )
@@ -115,9 +118,14 @@ AddNewCardViewModelOutputs {
     self.saveButtonTappedProperty.value = ()
   }
 
-  private let stripeTokenAndErrorProperty = MutableProperty((STPToken?.none, Error?.none))
-  public func stripeCreatedToken(stripeToken: STPToken?, error: Error?) {
-    self.stripeTokenAndErrorProperty.value = (stripeToken, error)
+  private let stripeErrorProperty = MutableProperty(Error?.none)
+  public func stripeError(_ error: Error?) {
+    self.stripeErrorProperty.value = error
+  }
+
+  private let stripeTokenProperty = MutableProperty(STPToken?.none)
+  public func stripeCreated(_ token: STPToken?) {
+    self.stripeTokenProperty.value = token
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -129,6 +137,7 @@ AddNewCardViewModelOutputs {
   public let addNewCardFailure: Signal<String, NoError>
   public let addNewCardSuccess: Signal<Void, NoError>
   public let cardholderNameBecomeFirstResponder: Signal<Void, NoError>
+  public let dismissKeyboard: Signal<Void, NoError>
   public let paymentDetails: Signal<(String, String, Int, Int, String), NoError>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>

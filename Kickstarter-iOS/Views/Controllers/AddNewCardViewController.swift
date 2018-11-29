@@ -6,7 +6,6 @@ import Stripe
 import UIKit
 
 internal final class AddNewCardViewController: UIViewController, STPPaymentCardTextFieldDelegate {
-
   @IBOutlet private weak var cardholderNameLabel: UILabel!
   @IBOutlet private weak var cardholderNameTextField: UITextField!
   @IBOutlet private weak var paymentTextField: STPPaymentCardTextField!
@@ -71,6 +70,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
 
     _ = self.cardholderNameTextField
       |> formFieldStyle
+      |> \.autocapitalizationType .~ .words
       |> \.returnKeyType .~ .next
       |> \.textAlignment .~ .right
       |> \.textColor .~ .ksr_text_dark_grey_500
@@ -108,6 +108,12 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
       .observeForUI()
       .observeValues {
         STPPaymentConfiguration.shared().publishableKey = $0
+    }
+
+    self.viewModel.outputs.dismissKeyboard
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.paymentTextField.resignFirstResponder()
     }
 
     self.viewModel.outputs.paymentDetails
@@ -191,17 +197,11 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     cardParams.cvc = cvc
 
     STPAPIClient.shared().createToken(withCard: cardParams) { token, error in
-
-//      if let token = token {
-//        print("cool")
-//      } else {
-//        print(error?.localizedDescription as Any)
-//      }
-//      guard let token = token, let error = error else {
-//        return
-//      }
-      self.viewModel.inputs.stripeCreatedToken(stripeToken: token, error: error)
-
+      if let token = token {
+         self.viewModel.inputs.stripeCreated(token)
+      } else {
+        self.viewModel.inputs.stripeError(error)
+      }
     }
   }
 
