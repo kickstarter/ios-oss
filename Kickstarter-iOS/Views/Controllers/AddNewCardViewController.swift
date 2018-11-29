@@ -5,7 +5,13 @@ import ReactiveSwift
 import Stripe
 import UIKit
 
+internal protocol AddNewCardViewControllerDelegate: class {
+  func presentAddCardSuccessfulBanner(_ message: String)
+}
+
 internal final class AddNewCardViewController: UIViewController, STPPaymentCardTextFieldDelegate {
+  internal weak var delegate: AddNewCardViewControllerDelegate?
+
   @IBOutlet private weak var cardholderNameLabel: UILabel!
   @IBOutlet private weak var cardholderNameTextField: UITextField!
   @IBOutlet private weak var paymentTextField: STPPaymentCardTextField!
@@ -138,8 +144,13 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
 
     self.viewModel.outputs.addNewCardSuccess
       .observeForControllerAction()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] message in
         self?.dismiss()
+    }
+
+    self.viewModel.outputs.notifyMessageBannerPresent
+      .observeValues { [weak self] message in
+        self?.delegate?.presentAddCardSuccessfulBanner(message)
     }
 
     self.viewModel.outputs.addNewCardFailure

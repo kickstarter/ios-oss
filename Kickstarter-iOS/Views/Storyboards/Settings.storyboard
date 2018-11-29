@@ -742,7 +742,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1121" y="685"/>
+            <point key="canvasLocation" x="-1110" y="766"/>
         </scene>
         <!--Payment Methods View Controller-->
         <scene sceneID="zHg-cw-mrH">
@@ -795,7 +795,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o7T-ks-zrI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2621.5999999999999" y="123.68815592203899"/>
+            <point key="canvasLocation" x="-2300" y="964"/>
         </scene>
         <!--Add New Card-->
         <scene sceneID="6WC-ed-5CL">
@@ -946,13 +946,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BRu-8c-SVG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2014" y="1137"/>
+            <point key="canvasLocation" x="-1465" y="1262"/>
         </scene>
     </scenes>
     <resources>
         <image name="onepassword-button" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="S9b-Nx-mWW"/>
+        <segue reference="2yf-nW-xFt"/>
     </inferredMetricsTieBreakers>
 </document>

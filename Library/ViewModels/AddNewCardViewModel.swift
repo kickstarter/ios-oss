@@ -21,6 +21,7 @@ public protocol AddNewCardViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var addNewCardFailure: Signal<String, NoError> { get }
   var addNewCardSuccess: Signal<Void, NoError> { get }
+  var notifyMessageBannerPresent: Signal<String, NoError> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
   var paymentDetails: Signal<(String, String, Int, Int, String), NoError> { get }
@@ -81,6 +82,9 @@ AddNewCardViewModelOutputs {
     self.addNewCardSuccess = addNewCardEvent.values().ignoreValues()
     self.addNewCardFailure = self.stripeErrorProperty.signal.map { $0?.localizedDescription }.skipNil()
 
+    self.notifyMessageBannerPresent = self.addNewCardSuccess
+      .map { _ in Strings.Got_it_your_changes_have_been_saved() }
+
     self.activityIndicatorShouldShow = Signal.merge(
       tryAddCardAction.signal.mapConst(true),
       self.addNewCardSuccess.mapConst(false),
@@ -138,6 +142,7 @@ AddNewCardViewModelOutputs {
   public let addNewCardSuccess: Signal<Void, NoError>
   public let cardholderNameBecomeFirstResponder: Signal<Void, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
+  public let notifyMessageBannerPresent: Signal<String, NoError>
   public let paymentDetails: Signal<(String, String, Int, Int, String), NoError>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>

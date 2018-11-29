@@ -11,12 +11,20 @@ internal final class PaymentMethodsViewController: UIViewController {
   @IBOutlet private weak var headerLabel: UILabel!
   @IBOutlet private weak var tableView: UITableView!
 
+//  private var messageBannerView: MessageBannerViewController!
+
   public static func instantiate() -> PaymentMethodsViewController {
     return Storyboard.Settings.instantiate(PaymentMethodsViewController.self)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+//    guard let messageViewController = self.children.first as? MessageBannerViewController else {
+//      fatalError("Missing message View Controller")
+//
+//    }
+//    self.messageBannerView = messageViewController
 
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
@@ -30,6 +38,12 @@ internal final class PaymentMethodsViewController: UIViewController {
       target: self,
       action: nil
     )
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.viewModel.inputs.viewDidAppear()
   }
 
   override func bindStyles() {
@@ -69,6 +83,12 @@ internal final class PaymentMethodsViewController: UIViewController {
       .observeValues { [weak self] in
         self?.goToAddCardScreen()
     }
+
+    self.viewModel.outputs.presentBanner
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+//        self?.messageBannerView.showBanner(with: .success, message: message)
+    }
   }
 
   private func goToAddCardScreen() {
@@ -100,8 +120,13 @@ extension PaymentMethodsViewController: UITableViewDelegate {
 }
 
 extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
-
   internal func paymentMethodsFooterViewDidTapAddNewCardButton(_ footerView: PaymentMethodsFooterView) {
     self.viewModel.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
+  }
+}
+
+extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
+  internal func presentAddCardSuccessfulBanner(_ message: String) {
+    self.viewModel.inputs.cardAddedSuccessfully(message)
   }
 }
