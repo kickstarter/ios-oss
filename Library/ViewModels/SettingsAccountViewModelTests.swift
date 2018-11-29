@@ -12,7 +12,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   let vm = SettingsAccountViewModel(SettingsAccountViewController.viewController(for:))
 
   let dismissCurrencyPicker = TestObserver<Void, NoError>()
-  let fetchAccountFieldsErrorObserver = TestObserver<Void, NoError>()
+  let fetchAccountFieldsError = TestObserver<Void, NoError>()
   let presentCurrencyPicker = TestObserver<Void, NoError>()
   let reloadDataShouldHideWarningIcon = TestObserver<Bool, NoError>()
   let reloadDataCurrency = TestObserver<Currency, NoError>()
@@ -22,7 +22,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.dismissCurrencyPicker.observe(self.dismissCurrencyPicker.observer)
-    self.vm.outputs.fetchAccountFieldsError.observe(self.fetchAccountFieldsErrorObserver.observer)
+    self.vm.outputs.fetchAccountFieldsError.observe(self.fetchAccountFieldsError.observer)
     self.vm.outputs.presentCurrencyPicker.observe(self.presentCurrencyPicker.observer)
     self.vm.outputs.reloadData.map(first).observe(self.reloadDataCurrency.observer)
     self.vm.outputs.reloadData.map(second).observe(self.reloadDataShouldHideWarningIcon.observer)
@@ -75,7 +75,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.reloadDataShouldHideWarningIcon.assertValueCount(0)
       self.reloadDataCurrency.assertValueCount(0)
-      self.fetchAccountFieldsErrorObserver.assertValueCount(1)
+      self.fetchAccountFieldsError.assertValueCount(1)
     }
   }
 
