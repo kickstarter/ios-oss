@@ -12,7 +12,8 @@ extension User.NewsletterSubscriptions {
                                           weekly: $1.weekly,
                                           films: $1.films,
                                           publishing: $1.publishing,
-                                          alumni: $1.alumni) }
+                                          alumni: $1.alumni,
+                                          music: $1.music) }
     )
 
     public static let games = Lens<User.NewsletterSubscriptions, Bool?>(
@@ -25,7 +26,8 @@ extension User.NewsletterSubscriptions {
                                           weekly: $1.weekly,
                                           films: $1.films,
                                           publishing: $1.publishing,
-                                          alumni: $1.alumni) }
+                                          alumni: $1.alumni,
+                                          music: $1.music) }
     )
 
     public static let happening = Lens<User.NewsletterSubscriptions, Bool?>(
@@ -38,7 +40,8 @@ extension User.NewsletterSubscriptions {
                                           weekly: $1.weekly,
                                           films: $1.films,
                                           publishing: $1.publishing,
-                                          alumni: $1.alumni) }
+                                          alumni: $1.alumni,
+                                          music: $1.music) }
     )
 
     public static let invent = Lens<User.NewsletterSubscriptions, Bool?>(
@@ -51,7 +54,8 @@ extension User.NewsletterSubscriptions {
                                           weekly: $1.weekly,
                                           films: $1.films,
                                           publishing: $1.publishing,
-                                          alumni: $1.alumni) }
+                                          alumni: $1.alumni,
+                                          music: $1.music) }
     )
 
     public static let promo = Lens<User.NewsletterSubscriptions, Bool?>(
@@ -64,7 +68,8 @@ extension User.NewsletterSubscriptions {
                                           weekly: $1.weekly,
                                           films: $1.films,
                                           publishing: $1.publishing,
-                                          alumni: $1.alumni) }
+                                          alumni: $1.alumni,
+                                          music: $1.music) }
     )
 
     public static let weekly = Lens<User.NewsletterSubscriptions, Bool?>(
@@ -77,7 +82,8 @@ extension User.NewsletterSubscriptions {
                                           weekly: $0,
                                           films: $1.films,
                                           publishing: $1.publishing,
-                                          alumni: $1.alumni) }
+                                          alumni: $1.alumni,
+                                          music: $1.music) }
     )
 
     public static let films = Lens<User.NewsletterSubscriptions, Bool?>(
@@ -90,7 +96,8 @@ extension User.NewsletterSubscriptions {
                                           weekly: $1.weekly,
                                           films: $0,
                                           publishing: $1.publishing,
-                                          alumni: $1.alumni) }
+                                          alumni: $1.alumni,
+                                          music: $1.music) }
     )
 
     public static let publishing = Lens<User.NewsletterSubscriptions, Bool?>(
@@ -103,7 +110,8 @@ extension User.NewsletterSubscriptions {
                                           weekly: $1.weekly,
                                           films: $1.films,
                                           publishing: $0,
-                                          alumni: $1.alumni) }
+                                          alumni: $1.alumni,
+                                          music: $1.music) }
     )
 
     public static let alumni = Lens<User.NewsletterSubscriptions, Bool?>(
@@ -116,7 +124,22 @@ extension User.NewsletterSubscriptions {
                                           weekly: $1.weekly,
                                           films: $1.films,
                                           publishing: $1.publishing,
-                                          alumni: $0) }
+                                          alumni: $0,
+                                          music: $1.music) }
+    )
+
+    public static let music = Lens<User.NewsletterSubscriptions, Bool?>(
+      view: { $0.music },
+      set: { User.NewsletterSubscriptions(arts: $1.arts,
+                                          games: $1.games,
+                                          happening: $1.happening,
+                                          invent: $1.invent,
+                                          promo: $1.promo,
+                                          weekly: $1.weekly,
+                                          films: $1.films,
+                                          publishing: $1.publishing,
+                                          alumni: $1.alumni,
+                                          music: $0) }
     )
   }
 }

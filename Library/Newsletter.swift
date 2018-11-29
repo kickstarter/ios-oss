@@ -1,23 +1,14 @@
-public enum Newsletter {
-  case arts
-  case games
-  case happening
-  case invent
-  case promo
+public enum Newsletter: CaseIterable {
   case weekly
+  case happening
+  case promo
+  case games
+  case invent
+  case arts
   case films
   case publishing
   case alumni
-
-  public static var allCases: [Newsletter] = [.weekly,
-                                              .happening,
-                                              .promo,
-                                              .games,
-                                              .invent,
-                                              .arts,
-                                              .films,
-                                              .publishing,
-                                              .alumni]
+  case music
 
   public var displayableName: String {
     switch self {
@@ -39,6 +30,8 @@ public enum Newsletter {
       return Strings.profile_settings_newsletter_publishing()
     case .alumni:
       return Strings.profile_settings_newsletter_alumni()
+    case .music:
+      return "Kickstarter Music"
     }
   }
 
@@ -62,6 +55,8 @@ public enum Newsletter {
       return Strings.Welcome_to_our_library_Peruse_the_stacks_with_us()
     case .alumni:
       return Strings.profile_settings_newsletter_alumni_newsletter()
+    case .music:
+      return "It's like the radio but nothing sucks and also it’s a newsletter."
     }
   }
 
@@ -76,6 +71,7 @@ public enum Newsletter {
     case .films:              return "films"
     case .publishing:         return "publishing"
     case .alumni:             return "alumni"
+    case .music:              return "music"
     }
   }
 }

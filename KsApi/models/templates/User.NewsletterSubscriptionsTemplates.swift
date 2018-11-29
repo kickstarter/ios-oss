@@ -8,6 +8,7 @@ extension User.NewsletterSubscriptions {
     weekly: false,
     films: false,
     publishing: false,
-    alumni: false
+    alumni: false,
+    music: false
   )
 }
