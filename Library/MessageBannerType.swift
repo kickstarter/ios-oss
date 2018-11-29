@@ -30,7 +30,7 @@ public enum MessageBannerType {
   var iconImageTintColor: UIColor? {
     switch self {
     case .error:
-      return UIColor.black
+      return .black
     default:
       return nil
     }
