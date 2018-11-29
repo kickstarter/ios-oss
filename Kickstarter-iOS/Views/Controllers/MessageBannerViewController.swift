@@ -54,6 +54,14 @@ final class MessageBannerViewController: UIViewController {
         self?.showViewAndAnimate(isHidden)
     }
 
+    self.viewModel.outputs.iconTintColor
+      .observeForUI()
+      .observeValues { [weak self] color in
+        guard let `self` = self else { return }
+        _ = self.iconImageView
+          |> UIImageView.lens.tintColor .~ color
+    }
+
     self.viewModel.outputs.iconImageName
       .observeForUI()
       .map { image(named: $0, inBundle: Bundle.framework) }

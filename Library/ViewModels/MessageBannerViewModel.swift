@@ -14,6 +14,7 @@ public protocol MessageBannerViewModelOutputs {
   var bannerBackgroundColor: Signal<UIColor, NoError> { get }
   var bannerMessage: Signal<String, NoError> { get }
   var iconIsHidden: Signal<Bool, NoError> { get }
+  var iconTintColor: Signal<UIColor, NoError> { get }
   var iconImageName: Signal<String, NoError> { get }
   var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
   var messageTextAlignment: Signal<NSTextAlignment, NoError> { get }
@@ -31,6 +32,11 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
     self.bannerBackgroundColor = self.bannerTypeProperty.signal
       .skipNil()
       .map { $0.backgroundColor }
+
+    self.iconTintColor = self.bannerTypeProperty.signal
+      .skipNil()
+      .map { $0.iconImageTintColor }
+      .skipNil()
 
     self.iconImageName = self.bannerTypeProperty.signal
       .skipNil()
@@ -88,6 +94,7 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
   public let bannerBackgroundColor: Signal<UIColor, NoError>
   public let bannerMessage: Signal<String, NoError>
   public let iconImageName: Signal<String, NoError>
+  public let iconTintColor: Signal<UIColor, NoError>
   public let iconIsHidden: Signal<Bool, NoError>
   public let messageBannerViewIsHidden: Signal<Bool, NoError>
   public let messageTextAlignment: Signal<NSTextAlignment, NoError>
