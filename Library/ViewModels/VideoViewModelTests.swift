@@ -10,7 +10,7 @@ import XCTest
 
 internal final class VideoViewModelTests: TestCase {
   internal let vm = VideoViewModel()
-  internal let addCompletion = TestObserver<CMTime, NoError>()
+  internal let addCompletionObserver = TestObserver<CMTime, NoError>()
   internal let configurePlayerWithURL = TestObserver<String, NoError>()
   internal let incrementVideoCompletion = TestObserver<VoidEnvelope, NoError>()
   internal let incrementVideoStart = TestObserver<VoidEnvelope, NoError>()
@@ -32,7 +32,7 @@ internal final class VideoViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.addCompletion.observe(self.addCompletion.observer)
+    self.vm.outputs.addCompletionObserver.observe(self.addCompletionObserver.observer)
     self.vm.outputs.configurePlayerWithURL.map { $0.absoluteString }
       .observe(self.configurePlayerWithURL.observer)
     self.vm.outputs.incrementVideoCompletion.observe(self.incrementVideoCompletion.observer)
@@ -47,7 +47,7 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.outputs.videoViewHidden.observe(self.videoViewHidden.observer)
   }
 
-  func testAddCompletion() {
+  func testAddCompletionObserver() {
     self.vm.inputs.configureWith(project: Project.template)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear()
@@ -55,7 +55,7 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.playButtonTapped()
     self.vm.inputs.durationChanged(toNew: duration)
 
-    self.addCompletion.assertValues([completedThreshold], "Observer added to completion threshold.")
+    self.addCompletionObserver.assertValues([completedThreshold], "Observer added to completion threshold.")
   }
 
   func testConfigureVideoWithURL_setsHighURL_WhenHlsIsNil() {
@@ -193,7 +193,7 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
 
     self.configurePlayerWithURL.assertValueCount(0)
-    self.addCompletion.assertValues([])
+    self.addCompletionObserver.assertValues([])
     self.playButtonHidden.assertValues([true])
     self.projectImageHidden.assertValues([false])
     self.videoViewHidden.assertValues([true])

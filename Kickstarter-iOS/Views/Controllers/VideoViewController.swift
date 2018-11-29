@@ -88,10 +88,10 @@ public final class VideoViewController: UIViewController {
         }, completion: nil)
     }
 
-    self.viewModel.outputs.addCompletion
+    self.viewModel.outputs.addCompletionObserver
       .observeForUI()
       .observeValues { [weak self] time in
-        self?.addCompletion(atTime: time)
+        self?.addCompletionObserver(atTime: time)
     }
 
     self.viewModel.outputs.configurePlayerWithURL
@@ -152,7 +152,7 @@ public final class VideoViewController: UIViewController {
     }
   }
 
-  func addCompletion(atTime time: CMTime) {
+  func addCompletionObserver(atTime time: CMTime) {
     guard let player = self.playerController.player else { return }
 
     self.timeObserver = player.addBoundaryTimeObserver(
