@@ -20,7 +20,7 @@ public protocol AddNewCardViewModelInputs {
 public protocol AddNewCardViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var addNewCardFailure: Signal<String, NoError> { get }
-  var addNewCardSuccess: Signal<Void, NoError> { get }
+  var addNewCardSuccess: Signal<String, NoError> { get }
   var notifyMessageBannerPresent: Signal<String, NoError> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
@@ -139,7 +139,7 @@ AddNewCardViewModelOutputs {
 
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let addNewCardFailure: Signal<String, NoError>
-  public let addNewCardSuccess: Signal<Void, NoError>
+  public let addNewCardSuccess: Signal<String, NoError>
   public let cardholderNameBecomeFirstResponder: Signal<Void, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
   public let notifyMessageBannerPresent: Signal<String, NoError>

@@ -31,7 +31,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
   public init() {
-    let paymentMethodsEvent = self.viewDidLoadProperty.signal
+    let paymentMethodsEvent = self.viewDidAppearProperty.signal
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphCreditCards(query: UserQueries.storedCards.query)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)

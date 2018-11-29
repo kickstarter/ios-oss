@@ -145,12 +145,8 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.outputs.addNewCardSuccess
       .observeForControllerAction()
       .observeValues { [weak self] message in
-        self?.dismiss()
-    }
-
-    self.viewModel.outputs.notifyMessageBannerPresent
-      .observeValues { [weak self] message in
         self?.delegate?.presentAddCardSuccessfulBanner(message)
+        self?.navigationController?.dismiss(animated: true, completion: nil)
     }
 
     self.viewModel.outputs.addNewCardFailure
@@ -214,9 +210,5 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
         self.viewModel.inputs.stripeError(error)
       }
     }
-  }
-
-  func dismiss() {
-    self.navigationController?.dismiss(animated: true, completion: nil)
   }
 }

@@ -93,6 +93,7 @@ internal final class PaymentMethodsViewController: UIViewController {
       .observeValues { [weak self] message in
         self?.messageBannerView.showBanner(with: .success, message: message)
     }
+
     self.viewModel.outputs.tableViewIsEditing
       .observeForUI()
       .observeValues { [weak self] isEditing in
@@ -115,6 +116,7 @@ internal final class PaymentMethodsViewController: UIViewController {
 
   private func goToAddCardScreen() {
     let vc = AddNewCardViewController.instantiate()
+    vc.delegate = self
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
 
