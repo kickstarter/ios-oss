@@ -36,8 +36,12 @@ internal final class PaymentMethodsViewController: UIViewController {
       title: Strings.discovery_favorite_categories_buttons_edit(),
       style: .plain,
       target: self,
-      action: nil
+      action: #selector(edit)
     )
+
+    self.dataSource.deletionHandler = { [weak self] creditCard in
+      self?.viewModel.inputs.didDelete(creditCard)
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -89,6 +93,24 @@ internal final class PaymentMethodsViewController: UIViewController {
       .observeValues { [weak self] message in
         self?.messageBannerView.showBanner(with: .success, message: message)
     }
+    self.viewModel.outputs.tableViewIsEditing
+      .observeForUI()
+      .observeValues { [weak self] isEditing in
+        _ = self?.tableView
+          ?|> \.isEditing .~ isEditing
+    }
+
+    self.viewModel.outputs.showAlert
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true)
+    }
+  }
+
+  // MARK: - Actions
+
+  @objc private func edit() {
+    self.viewModel.inputs.editButtonTapped()
   }
 
   private func goToAddCardScreen() {

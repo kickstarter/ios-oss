@@ -23,6 +23,8 @@ internal struct MockService: ServiceType {
 
   fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
+  fileprivate let deletePaymentMethodResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>?
+
   fileprivate let createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>?
 
   fileprivate let facebookConnectResponse: User?
@@ -184,6 +186,7 @@ internal struct MockService: ServiceType {
                 changePasswordError: GraphError? = nil,
                 changeCurrencyError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
+                deletePaymentMethodResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
                 facebookConnectResponse: User? = nil,
                 facebookConnectError: ErrorEnvelope? = nil,
@@ -284,6 +287,7 @@ internal struct MockService: ServiceType {
     self.changePasswordError = changePasswordError
 
     self.changePaymentMethodResult = changePaymentMethodResult
+    self.deletePaymentMethodResult = deletePaymentMethodResult
     self.createPledgeResult = createPledgeResult
 
     self.facebookConnectResponse = facebookConnectResponse
@@ -1323,6 +1327,11 @@ internal struct MockService: ServiceType {
       return SignalProducer(value: self.changePaymentMethodResult?.value ?? .template)
   }
 
+  internal func deletePaymentMethod(input: PaymentSourceDeleteInput) -> SignalProducer<
+    GraphMutationEmptyResponseEnvelope, GraphError> {
+    return producer(for: self.deletePaymentMethodResult)
+  }
+
   internal func delete(video: UpdateDraft.Video, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
 
@@ -1357,6 +1366,7 @@ private extension MockService {
           language: $1.language,
           buildVersion: $1.buildVersion,
           changePaymentMethodResult: $1.changePaymentMethodResult,
+          deletePaymentMethodResult: $1.deletePaymentMethodResult,
           createPledgeResult: $1.createPledgeResult,
           facebookConnectResponse: $1.facebookConnectResponse,
           facebookConnectError: $1.facebookConnectError,

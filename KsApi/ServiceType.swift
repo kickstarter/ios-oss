@@ -57,6 +57,10 @@ public protocol ServiceType {
   func changePaymentMethod(project: Project)
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope>
 
+  /// Deletes a payment method
+  func deletePaymentMethod(input: PaymentSourceDeleteInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+
   /// Performs the first step of checkout by creating a pledge on the server.
   func createPledge(project: Project,
                     amount: Double,
