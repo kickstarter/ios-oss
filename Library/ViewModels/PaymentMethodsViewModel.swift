@@ -9,6 +9,7 @@ public protocol PaymentMethodsViewModelInputs {
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
   func viewDidLoad()
+  func viewWillAppear()
 }
 
 public protocol PaymentMethodsViewModelOutputs {
@@ -65,7 +66,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.tableViewIsEditing = self.editButtonTappedSignal.scan(false) { current, _ in !current }
 
     // Koala:
-    self.viewDidLoadProperty.signal
+    self.viewWillAppearProperty.signal
       .observeValues { _ in
         AppEnvironment.current.koala.trackViewedPaymentMethods()
     }
@@ -97,6 +98,11 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  fileprivate let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
   }
 
   fileprivate let didTapAddCardButtonProperty = MutableProperty(())

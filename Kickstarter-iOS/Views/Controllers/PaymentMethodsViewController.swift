@@ -36,6 +36,12 @@ internal final class PaymentMethodsViewController: UIViewController {
     }
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
+  }
+
   override func bindStyles() {
     super.bindStyles()
 

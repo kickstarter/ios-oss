@@ -119,7 +119,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   func testTrackPaymentMethodsView() {
 
     XCTAssertEqual([], self.trackingClient.events)
-    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
     XCTAssertEqual(["Viewed Payment Methods"], self.trackingClient.events)
   }
 
@@ -137,7 +137,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didDelete(card)
       self.scheduler.advance()
 
-      XCTAssertEqual(["Viewed Payment Methods", "Deleted Payment Method"], self.trackingClient.events)
+      XCTAssertEqual(["Deleted Payment Method"], self.trackingClient.events)
     }
   }
 
@@ -155,7 +155,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didDelete(card)
       self.scheduler.advance()
 
-      XCTAssertEqual(["Viewed Payment Methods", "Errored Delete Payment Method"], self.trackingClient.events)
+      XCTAssertEqual(["Errored Delete Payment Method"], self.trackingClient.events)
     }
   }
 }
