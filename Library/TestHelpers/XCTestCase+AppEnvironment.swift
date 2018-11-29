@@ -4,6 +4,7 @@ import AVFoundation
 import Foundation
 import KsApi
 import ReactiveSwift
+import Result
 import KsApi
 import LiveStream
 
@@ -38,6 +39,7 @@ extension XCTestCase {
     liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
@@ -65,6 +67,7 @@ extension XCTestCase {
         liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
+        pushRegistrationType: pushRegistrationType,
         scheduler: scheduler,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults
