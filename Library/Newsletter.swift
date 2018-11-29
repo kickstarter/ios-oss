@@ -6,9 +6,9 @@ public enum Newsletter: CaseIterable {
   case invent
   case arts
   case films
+  case music
   case publishing
   case alumni
-  case music
 
   public var displayableName: String {
     switch self {
