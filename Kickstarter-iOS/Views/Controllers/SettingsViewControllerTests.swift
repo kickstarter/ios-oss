@@ -6,7 +6,6 @@ import XCTest
 @testable import KsApi
 
 internal final class SettingsViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     UIView.setAnimationsEnabled(false)

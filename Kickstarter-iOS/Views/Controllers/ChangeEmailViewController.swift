@@ -97,9 +97,11 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = self.currentEmailLabel
       |> settingsTitleLabelStyle
       |> \.text %~ { _ in Strings.Current_email() }
+      |> \.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.currentEmail
       |> settingsDetailLabelStyle
+      |> \.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.newEmailLabel
       |> settingsTitleLabelStyle
@@ -108,10 +110,11 @@ internal final class ChangeEmailViewController: UIViewController {
     _ = self.newEmailTextField
       |> formFieldStyle
       |> \.keyboardType .~ .emailAddress
+      |> settingsFormFieldStyle
       |> \.returnKeyType .~ .next
       |> \.textAlignment .~ .right
-      |> \.placeholder %~ { _ in
-        Strings.login_placeholder_email()
+      |> \.attributedPlaceholder %~ { _ in
+        settingsAttributedPlaceholder(Strings.login_placeholder_email())
     }
 
     _ = self.resendVerificationEmailView
@@ -122,9 +125,12 @@ internal final class ChangeEmailViewController: UIViewController {
       |> \.text %~ { _ in Strings.Current_password() }
 
     _ = self.passwordTextField
-      |> passwordFieldStyle
+      |> settingsPasswordFormFieldStyle
       |> \.textAlignment .~ .right
       |> \.returnKeyType .~ .done
+      |> \.attributedPlaceholder %~ { _ in
+        settingsAttributedPlaceholder(Strings.login_placeholder_password())
+    }
 
     _ = self.resendVerificationEmailButton
       |> UIButton.lens.titleLabel.font .~ .ksr_body()

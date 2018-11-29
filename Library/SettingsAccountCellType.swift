@@ -51,7 +51,7 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
   }
 
   public var textColor: UIColor {
-    return .ksr_text_dark_grey_500
+    return .ksr_text_dark_grey_900
   }
 
   public var detailTextColor: UIColor {

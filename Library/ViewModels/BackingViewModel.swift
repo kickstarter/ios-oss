@@ -175,7 +175,9 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
         let basicPledge = backing.amount - Double((backing.shippingAmount ?? 0))
-        return Format.currency(basicPledge, country: project.country)
+        return Format.currency(basicPledge,
+                               country: project.country,
+                               omitCurrencyCode: project.stats.omitUSCurrencyCode)
       }
     )
 
@@ -190,7 +192,9 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.totalPledgeAmount = Signal.merge(
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-        Format.currency(backing.amount, country: project.country)
+        Format.currency(backing.amount,
+                        country: project.country,
+                        omitCurrencyCode: project.stats.omitUSCurrencyCode)
       }
     )
 
