@@ -108,11 +108,8 @@ internal final class ChangeEmailViewController: UIViewController {
       |> \.text %~ { _ in Strings.New_email() }
 
     _ = self.newEmailTextField
-      |> emailFieldAutoFillStyle
-      |> \.keyboardType .~ .emailAddress
-      |> settingsFormFieldStyle
+      |> settingsEmailFieldAutoFillStyle
       |> \.returnKeyType .~ .next
-      |> \.textAlignment .~ .right
       |> \.attributedPlaceholder %~ { _ in
         settingsAttributedPlaceholder(Strings.login_placeholder_email())
     }
@@ -125,8 +122,7 @@ internal final class ChangeEmailViewController: UIViewController {
       |> \.text %~ { _ in Strings.Current_password() }
 
     _ = self.passwordTextField
-      |> settingsPasswordFormFieldStyle
-      |> \.textAlignment .~ .right
+      |> settingsPasswordFormFieldAutoFillStyle
       |> \.returnKeyType .~ .done
       |> \.attributedPlaceholder %~ { _ in
         settingsAttributedPlaceholder(Strings.login_placeholder_password())
