@@ -772,6 +772,15 @@
                                     <outlet property="delegate" destination="x6I-vC-YEC" id="wDz-Vt-liF"/>
                                 </connections>
                             </tableView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AcZ-lA-bFy">
+                                <rect key="frame" x="6" y="533" width="363" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="ZY8-Om-t6M"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="zRn-GV-so4" kind="embed" id="YKC-QE-bEp"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -783,8 +792,11 @@
                             <constraint firstItem="JiT-6r-zd1" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" id="LAA-IF-JdQ"/>
                             <constraint firstItem="xml-QE-znh" firstAttribute="trailing" secondItem="1CW-RA-xOi" secondAttribute="trailing" id="jTT-55-ex7"/>
                             <constraint firstItem="xml-QE-znh" firstAttribute="top" secondItem="1CW-RA-xOi" secondAttribute="top" id="npt-gn-SPf"/>
+                            <constraint firstItem="1CW-RA-xOi" firstAttribute="trailing" secondItem="AcZ-lA-bFy" secondAttribute="trailing" constant="6" id="ofW-oI-TfB"/>
+                            <constraint firstItem="AcZ-lA-bFy" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" constant="6" id="pCF-g7-S35"/>
                             <constraint firstItem="xml-QE-znh" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" id="pKO-tq-7Te"/>
                             <constraint firstItem="jMz-Pn-EqP" firstAttribute="top" secondItem="xml-QE-znh" secondAttribute="bottom" constant="-2" id="sMh-hh-sd0"/>
+                            <constraint firstItem="1CW-RA-xOi" firstAttribute="bottom" secondItem="AcZ-lA-bFy" secondAttribute="bottom" constant="6" id="sbO-ft-wk8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1CW-RA-xOi"/>
                     </view>
@@ -795,7 +807,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o7T-ks-zrI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2300" y="964"/>
+            <point key="canvasLocation" x="-2532" y="868"/>
         </scene>
         <!--Add New Card-->
         <scene sceneID="6WC-ed-5CL">
@@ -946,13 +958,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BRu-8c-SVG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1465" y="1262"/>
+            <point key="canvasLocation" x="-1865" y="1119"/>
         </scene>
     </scenes>
     <resources>
         <image name="onepassword-button" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2yf-nW-xFt"/>
+        <segue reference="YKC-QE-bEp"/>
     </inferredMetricsTieBreakers>
 </document>
