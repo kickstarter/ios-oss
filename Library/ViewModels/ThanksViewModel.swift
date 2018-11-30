@@ -23,15 +23,6 @@ public protocol ThanksViewModelInputs {
   /// Call when signup button is tapped on games newsletter alert
   func gamesNewsletterSignupButtonTapped()
 
-  /// Call when "rate now" button is tapped on rating alert
-  func rateNowButtonTapped()
-
-  /// Call when "remind" button is tapped on rating alert
-  func rateRemindLaterButtonTapped()
-
-  /// Call when "no thanks" button is tapped on rating alert
-  func rateNoThanksButtonTapped()
-
   /// Call when the current user has been updated in the environment
   func userUpdated()
 }
@@ -42,9 +33,6 @@ public protocol ThanksViewModelOutputs {
 
   /// Emits when view controller should dismiss
   var dismissToRootViewController: Signal<(), NoError> { get }
-
-  /// Emits iTunes link when should go to App Store
-  var goToAppStoreRating: Signal<String, NoError> { get }
 
   /// Emits DiscoveryParams when should go to Discovery
   var goToDiscovery: Signal<DiscoveryParams, NoError> { get }
@@ -120,9 +108,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .ignoreValues()
       .on(value: { AppEnvironment.current.userDefaults.hasSeenAppRating = true })
 
-    self.goToAppStoreRating = self.rateNowButtonTappedProperty.signal
-      .map { AppEnvironment.current.config?.iTunesLink ?? "" }
-
     self.dismissToRootViewController = self.closeButtonTappedProperty.signal
 
     self.goToDiscovery = self.categoryCellTappedProperty.signal.skipNil()
@@ -168,19 +153,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .observeValues { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }
 
     project
-      .takeWhen(self.rateRemindLaterButtonTappedProperty.signal)
-      .observeValues { project in
-        AppEnvironment.current.userDefaults.hasSeenAppRating = false
-        AppEnvironment.current.koala.trackCheckoutFinishAppStoreRatingAlertRemindLater(project: project)
-    }
-
-    project
-      .takeWhen(self.rateNoThanksButtonTappedProperty.signal)
-      .observeValues { project in
-        AppEnvironment.current.koala.trackCheckoutFinishAppStoreRatingAlertNoThanks(project: project)
-    }
-
-    project
       .takeWhen(self.goToDiscovery)
       .observeValues { project in
         AppEnvironment.current.koala.trackCheckoutFinishJumpToDiscovery(project: project)
@@ -195,12 +167,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
           project: project,
           context: .thanks
         )
-    }
-
-    project
-      .takeWhen(self.goToAppStoreRating)
-      .observeValues { project in
-        AppEnvironment.current.koala.trackCheckoutFinishAppStoreRatingAlertRateNow(project: project)
     }
 
     project
@@ -251,21 +217,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     gamesNewsletterSignupButtonTappedProperty.value = ()
   }
 
-  fileprivate let rateNowButtonTappedProperty = MutableProperty(())
-  public func rateNowButtonTapped() {
-    rateNowButtonTappedProperty.value = ()
-  }
-
-  fileprivate let rateRemindLaterButtonTappedProperty = MutableProperty(())
-  public func rateRemindLaterButtonTapped() {
-    rateRemindLaterButtonTappedProperty.value = ()
-  }
-
-  fileprivate let rateNoThanksButtonTappedProperty = MutableProperty(())
-  public func rateNoThanksButtonTapped() {
-    rateNoThanksButtonTappedProperty.value = ()
-  }
-
   fileprivate let userUpdatedProperty = MutableProperty(())
   public func userUpdated() {
     userUpdatedProperty.value = ()
@@ -274,7 +225,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   // MARK: ThanksViewModelOutputs
   public let dismissToRootViewController: Signal<(), NoError>
   public let goToDiscovery: Signal<DiscoveryParams, NoError>
-  public let goToAppStoreRating: Signal<String, NoError>
   public let backedProjectText: Signal<NSAttributedString, NoError>
   public let goToProject: Signal<(Project, [Project], RefTag), NoError>
   public let postContextualNotification: Signal<(), NoError>

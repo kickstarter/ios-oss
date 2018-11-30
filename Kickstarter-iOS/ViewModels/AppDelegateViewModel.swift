@@ -593,7 +593,6 @@ AppDelegateViewModelOutputs {
     )
     .filter { _, previouslyAuthorized in !previouslyAuthorized }
     .map { isGranted, _ in isGranted }
-    .skipNil()
     .take(first: 1)
     .observeValues { isGranted in
       if isGranted {

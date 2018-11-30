@@ -120,12 +120,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
         self?.goToDiscovery(params: params)
     }
 
-    self.viewModel.outputs.goToAppStoreRating
-      .observeForControllerAction()
-      .observeValues { [weak self] link in
-        self?.goToAppStore(link: link)
-    }
-
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, refTag in
@@ -202,7 +196,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
   fileprivate func goToAppStore(link: String) {
     guard let url = URL(string: link) else { return }
-    UIApplication.shared.openURL(url)
+    UIApplication.shared.open(url)
   }
 
   fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
@@ -214,22 +208,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   }
 
   fileprivate func showRatingAlert() {
-    if #available(iOS 10.3, *) {
-      SKStoreReviewController.requestReview()
-    } else {
-      self.present(
-        UIAlertController.rating(
-          yesHandler: { [weak self] _ in
-            self?.viewModel.inputs.rateNowButtonTapped()
-          }, remindHandler: { [weak self] _ in
-            self?.viewModel.inputs.rateRemindLaterButtonTapped()
-          }, noHandler: { [weak self] _ in
-            self?.viewModel.inputs.rateNoThanksButtonTapped()
-        }),
-        animated: true,
-        completion: nil
-      )
-    }
+    SKStoreReviewController.requestReview()
   }
 
   fileprivate func showGamesNewsletterAlert() {

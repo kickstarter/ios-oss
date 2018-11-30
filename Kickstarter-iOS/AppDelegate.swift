@@ -121,7 +121,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.goToMobileSafari
       .observeForUI()
-      .observeValues { UIApplication.shared.openURL($0) }
+      .observeValues { UIApplication.shared.open($0) }
 
     self.viewModel.outputs.applicationIconBadgeNumber
       .observeForUI()
@@ -133,7 +133,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         print("📲 [Push Registration] Push token registration started 🚀")
     }
 
-      self.viewModel.outputs.pushTokenSuccessfullyRegistered
+    self.viewModel.outputs.pushTokenSuccessfullyRegistered
       .observeForUI()
       .observeValues { token in
         print("📲 [Push Registration] Push token successfully registered (\(token)) ✨")
@@ -220,6 +220,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.inputs.applicationDidFinishLaunching(application: application,
                                                         launchOptions: launchOptions)
 
+    UNUserNotificationCenter.current().delegate = self
+
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
 
@@ -269,21 +271,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   internal func application(_ application: UIApplication,
                             didFailToRegisterForRemoteNotificationsWithError error: Error) {
     print("🔴 Failed to register for remote notifications: \(error.localizedDescription)")
-  }
-
-  internal func application(_ application: UIApplication,
-                            didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-
-    self.viewModel.inputs.didReceive(remoteNotification: userInfo,
-                                     applicationIsActive: application.applicationState == .active)
-  }
-  internal func application(_ application: UIApplication,
-                            didReceive notification: UILocalNotification) {
-
-    if let userInfo = notification.userInfo, userInfo["aps"] != nil {
-      self.viewModel.inputs.didReceive(remoteNotification: userInfo,
-                                       applicationIsActive: application.applicationState == .active)
-    }
   }
 
   internal func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
@@ -405,5 +392,27 @@ extension AppDelegate: URLSessionTaskDelegate {
                          completionHandler: @escaping (URLRequest?) -> Void) {
     request.url.doIfSome(self.viewModel.inputs.foundRedirectUrl)
     completionHandler(nil)
+  }
+}
+
+// MARK: - UNUserNotificationCenterDelegate
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+  public func userNotificationCenter(
+    _: UNUserNotificationCenter,
+    willPresent _: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+    completionHandler(.alert)
+  }
+
+  public func userNotificationCenter(
+    _: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completion: @escaping () -> Void
+    ) {
+    self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo,
+                                     applicationIsActive: UIApplication.shared.applicationState == .active)
+    completion()
   }
 }
