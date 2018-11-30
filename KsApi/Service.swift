@@ -60,7 +60,8 @@ public struct Service: ServiceType {
       return request(Route.addImage(fileUrl: fileURL, toDraft: draft))
   }
 
-  public func addNewCreditCard(input: CreatePaymentSourceInput) -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+  public func addNewCreditCard(input: CreatePaymentSourceInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
     return applyMutation(mutation: CreatePaymentSourceMutation(input: input))
   }
 

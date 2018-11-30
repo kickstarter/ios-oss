@@ -65,7 +65,8 @@ AddNewCardViewModelOutputs {
       .skipNil()
 
     let addNewCardEvent = self.stripeTokenProperty.signal.skipNil()
-      .map { CreatePaymentSourceInput(paymentType: PaymentType.creditCard, stripeToken: $0.0, stripeCardId: $0.1) }
+      .map { CreatePaymentSourceInput(paymentType: PaymentType.creditCard,
+                                      stripeToken: $0.0, stripeCardId: $0.1) }
       .flatMap {
         AppEnvironment.current.apiService.addNewCreditCard(input: $0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)

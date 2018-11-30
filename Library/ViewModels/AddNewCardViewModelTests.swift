@@ -86,19 +86,17 @@ internal final class AddNewCardViewModelTests: TestCase {
 
     self.addNewCardFailure.assertValues([error.localizedDescription])
     self.activityIndicatorShouldShow.assertValues([true, false])
-
   }
 
   func testAddCardFailure_GraphError() {
     let error = GraphError.emptyResponse(nil)
 
-    withEnvironment(apiService: MockService(addNewCreditCardError: error)){
+    withEnvironment(apiService: MockService(addNewCreditCardError: error)) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.cardholderNameChanged("Native Squad")
       self.vm.inputs.cardholderNameTextFieldReturn()
       self.paymentDetailsBecomeFirstResponder
         .assertValueCount(1, "First responder after editing cardholder name.")
-
 
       self.vm.inputs.paymentCardChanged(cardNumber: "4242 4242 4242 4242",
                                         expMonth: 11,
@@ -189,7 +187,10 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
-    self.vm.inputs.paymentCardChanged(cardNumber: "4242 4242 4242 4242", expMonth: 11, expYear: 99, cvc: "123")
+    self.vm.inputs.paymentCardChanged(cardNumber: "4242 4242 4242 4242",
+                                      expMonth: 11,
+                                      expYear: 99,
+                                      cvc: "123")
 
     self.cardholderName.assertDidNotEmitValue()
     self.cardNumber.assertDidNotEmitValue()

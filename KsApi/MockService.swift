@@ -460,7 +460,8 @@ internal struct MockService: ServiceType {
     self.watchProjectMutationResult = watchProjectMutationResult
   }
 
-  internal func addNewCreditCard(input: CreatePaymentSourceInput) -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+  internal func addNewCreditCard(input: CreatePaymentSourceInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
     if let error = self.addNewCreditCardError {
       return SignalProducer(error: error)
     } else {
