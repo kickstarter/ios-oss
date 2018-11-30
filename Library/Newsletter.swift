@@ -31,7 +31,7 @@ public enum Newsletter: CaseIterable {
     case .alumni:
       return Strings.profile_settings_newsletter_alumni()
     case .music:
-      return "Kickstarter Music"
+      return Strings.Kickstarter_Music()
     }
   }
 
@@ -56,7 +56,7 @@ public enum Newsletter: CaseIterable {
     case .alumni:
       return Strings.profile_settings_newsletter_alumni_newsletter()
     case .music:
-      return "It's like the radio but nothing sucks and also it’s a newsletter."
+      return Strings.Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter()
     }
   }
 
