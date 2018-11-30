@@ -16,8 +16,8 @@ public protocol PaymentMethodsViewModelInputs {
 public protocol PaymentMethodsViewModelOutputs {
   /// Emits the user's stored cards
   var goToAddCardScreen: Signal<Void, NoError> { get }
-  var presentBanner: Signal<String, NoError> { get }
   var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError> { get }
+  var presentBanner: Signal<String, NoError> { get }
   var showAlert: Signal<String, NoError> { get }
   var tableViewIsEditing: Signal<Bool, NoError> { get }
 }

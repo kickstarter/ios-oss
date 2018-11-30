@@ -12,7 +12,7 @@ public protocol AddNewCardViewModelInputs {
   func paymentInfo(valid: Bool)
   func paymentCardTextFieldReturn()
   func saveButtonTapped()
-  func stripeCreated(_ token: STPToken?)
+  func stripeCreated(_ token: String?, stripeID: String?)
   func stripeError(_ error: Error?)
   func viewDidLoad()
 }
@@ -61,9 +61,6 @@ AddNewCardViewModelOutputs {
     self.paymentDetails = paymentInput
       .takeWhen(self.saveButtonTappedProperty.signal)
 
-    let stripeTokenId = self.stripeTokenProperty.signal.map { $0?.tokenId }.skipNil()
-    let stripeCardId = self.stripeTokenProperty.signal.map { $0?.stripeID }.skipNil()
-
     self.dismissKeyboard = tryAddCardAction
 
     self.setStripePublishableKey = self.saveButtonIsEnabled
@@ -71,7 +68,7 @@ AddNewCardViewModelOutputs {
       .map { _ in AppEnvironment.current.config?.stripePublishableKey }
       .skipNil()
 
-    let addNewCardEvent = Signal.combineLatest(stripeTokenId, stripeCardId)
+    let addNewCardEvent = self.stripeTokenProperty.signal.skipNil()
       .map { CreatePaymentSourceInput(paymentType: PaymentType.creditCard, stripeToken: $0.0, stripeCardId: $0.1) }
       .flatMap {
         AppEnvironment.current.apiService.addNewCreditCard(input: $0)
@@ -80,10 +77,10 @@ AddNewCardViewModelOutputs {
        }
 
     self.addNewCardSuccess = addNewCardEvent.values().ignoreValues()
+      .map { _ in Strings.Got_it_your_changes_have_been_saved() }
     self.addNewCardFailure = self.stripeErrorProperty.signal.map { $0?.localizedDescription }.skipNil()
 
-    self.notifyMessageBannerPresent = self.addNewCardSuccess
-      .map { _ in Strings.Got_it_your_changes_have_been_saved() }
+    self.notifyMessageBannerPresent = .empty
 
     self.activityIndicatorShouldShow = Signal.merge(
       tryAddCardAction.signal.mapConst(true),
@@ -127,9 +124,11 @@ AddNewCardViewModelOutputs {
     self.stripeErrorProperty.value = error
   }
 
-  private let stripeTokenProperty = MutableProperty(STPToken?.none)
-  public func stripeCreated(_ token: STPToken?) {
-    self.stripeTokenProperty.value = token
+  private let stripeTokenProperty = MutableProperty<(String, String)?>(nil)
+  public func stripeCreated(_ token: String?, stripeID: String?) {
+    if let token = token, let stripeID = stripeID {
+      self.stripeTokenProperty.value = (token, stripeID )
+    }
   }
 
   private let viewDidLoadProperty = MutableProperty(())

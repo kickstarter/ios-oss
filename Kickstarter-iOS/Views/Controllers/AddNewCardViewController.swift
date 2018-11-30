@@ -205,7 +205,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
 
     STPAPIClient.shared().createToken(withCard: cardParams) { token, error in
       if let token = token {
-         self.viewModel.inputs.stripeCreated(token)
+        self.viewModel.inputs.stripeCreated(token.tokenId, stripeID: token.stripeID)
       } else {
         self.viewModel.inputs.stripeError(error)
       }
