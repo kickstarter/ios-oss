@@ -56,6 +56,7 @@ internal class TestCase: FBSnapshotTestCase {
       liveStreamService: self.liveStreamService,
       locale: .init(identifier: "en_US"),
       mainBundle: mainBundle,
+      pushRegistrationType: MockPushRegistration.self,
       reachability: self.reachability.producer,
       scheduler: self.scheduler,
       ubiquitousStore: self.ubiquitousStore,
