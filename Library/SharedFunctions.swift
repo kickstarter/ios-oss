@@ -3,6 +3,7 @@ import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
+import UserNotifications
 
 /**
  Determines if the personalization data in the project implies that the current user is backing the
