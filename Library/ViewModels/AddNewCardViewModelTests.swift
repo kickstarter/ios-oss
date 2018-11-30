@@ -52,7 +52,6 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.paymentInfo(valid: true)
     self.saveButtonIsEnabled.assertValues([true])
 
-//    self.vm.inputs.paymentCardTextFieldReturn()
     self.vm.inputs.saveButtonTapped()
     self.activityIndicatorShouldShow.assertValues([true])
 
@@ -77,7 +76,6 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.paymentInfo(valid: true)
     self.saveButtonIsEnabled.assertValues([true])
 
-//    self.vm.inputs.paymentCardTextFieldReturn()
     self.vm.inputs.saveButtonTapped()
     self.activityIndicatorShouldShow.assertValues([true])
 
@@ -147,7 +145,6 @@ internal final class AddNewCardViewModelTests: TestCase {
                                       expMonth: 11,
                                       expYear: 99,
                                       cvc: "123")
-//    self.vm.inputs.paymentCardTextFieldReturn()
     self.cardholderNameBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.paymentDetailsBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.vm.inputs.paymentInfo(valid: true)
