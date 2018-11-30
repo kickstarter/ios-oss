@@ -42,8 +42,6 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
                                            action: #selector(cardholderNameTextFieldChanged(_:)),
                                            for: [.editingDidEndOnExit, .editingChanged])
 
-    self.paymentTextField.addTarget(self, action: #selector(paymentCardTextFieldReturn), for: [.editingDidEndOnExit])
-
     let cancelButton = UIBarButtonItem(title: Strings.Cancel(),
                                        style: .plain,
                                        target: self,
@@ -185,10 +183,6 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
                                              cvc: cvc)
 
     self.viewModel.inputs.paymentInfo(valid: textField.isValid)
-  }
-
-  @objc func paymentCardTextFieldReturn(_ textField: STPPaymentCardTextField) {
-    self.viewModel.inputs.paymentCardTextFieldReturn()
   }
 
   func stripeToken(cardholderName: String,

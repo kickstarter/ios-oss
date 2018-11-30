@@ -10,7 +10,6 @@ public protocol AddNewCardViewModelInputs {
   func cardholderNameTextFieldReturn()
   func paymentCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String)
   func paymentInfo(valid: Bool)
-  func paymentCardTextFieldReturn()
   func saveButtonTapped()
   func stripeCreated(_ token: String?, stripeID: String?)
   func stripeError(_ error: Error?)
@@ -21,7 +20,6 @@ public protocol AddNewCardViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var addNewCardFailure: Signal<String, NoError> { get }
   var addNewCardSuccess: Signal<String, NoError> { get }
-  var notifyMessageBannerPresent: Signal<String, NoError> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
   var paymentDetails: Signal<(String, String, Int, Int, String), NoError> { get }
@@ -54,10 +52,8 @@ AddNewCardViewModelOutputs {
       .map { cardholderName, paymentInfo in
         (cardholderName, paymentInfo.0, paymentInfo.1, paymentInfo.2, paymentInfo.3) }
 
-    let tryAddCardAction = Signal.merge(
-      self.paymentCardTextFieldReturnProperty.signal,
-      self.saveButtonTappedProperty.signal
-    )
+    let tryAddCardAction = self.saveButtonTappedProperty.signal
+
     self.paymentDetails = paymentInput
       .takeWhen(self.saveButtonTappedProperty.signal)
 
@@ -78,9 +74,14 @@ AddNewCardViewModelOutputs {
 
     self.addNewCardSuccess = addNewCardEvent.values().ignoreValues()
       .map { _ in Strings.Got_it_your_changes_have_been_saved() }
-    self.addNewCardFailure = self.stripeErrorProperty.signal.map { $0?.localizedDescription }.skipNil()
 
-    self.notifyMessageBannerPresent = .empty
+    let stripeInvalidToken = self.stripeErrorProperty.signal.map { $0?.localizedDescription }.skipNil()
+    let graphError = addNewCardEvent.errors().map { $0.localizedDescription }
+
+    self.addNewCardFailure = Signal.merge (
+      stripeInvalidToken,
+      graphError
+    )
 
     self.activityIndicatorShouldShow = Signal.merge(
       tryAddCardAction.signal.mapConst(true),
@@ -102,11 +103,6 @@ AddNewCardViewModelOutputs {
   private let paymentCardChangedProperty = MutableProperty<(String, Int, Int, String)?>(nil)
   public func paymentCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String) {
     self.paymentCardChangedProperty.value = (cardNumber, expMonth, expYear, cvc)
-  }
-
-  private let paymentCardTextFieldReturnProperty = MutableProperty(())
-  public func paymentCardTextFieldReturn() {
-    self.paymentCardTextFieldReturnProperty.value = ()
   }
 
   private let paymentInfoIsValidProperty = MutableProperty(false)
@@ -141,7 +137,6 @@ AddNewCardViewModelOutputs {
   public let addNewCardSuccess: Signal<String, NoError>
   public let cardholderNameBecomeFirstResponder: Signal<Void, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
-  public let notifyMessageBannerPresent: Signal<String, NoError>
   public let paymentDetails: Signal<(String, String, Int, Int, String), NoError>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
