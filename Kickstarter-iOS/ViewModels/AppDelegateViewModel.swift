@@ -65,16 +65,13 @@ public protocol AppDelegateViewModelInputs {
   func didAcceptReceivingRemoteNotifications()
 
   /// Call when the app delegate receives a remote notification.
-  func didReceive(remoteNotification notification: [AnyHashable: Any], applicationIsActive: Bool)
+  func didReceive(remoteNotification notification: [AnyHashable: Any])
 
   /// Call when the app delegate gets notice of a successful notification registration.
   func didRegisterForRemoteNotifications(withDeviceTokenData data: Data)
 
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
-
-  /// Call when the user taps "OK" from the notification alert.
-  func openRemoteNotificationTappedOk()
 
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
@@ -146,9 +143,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits an Notification that should be immediately posted.
   var postNotification: Signal<Notification, NoError> { get }
-
-  /// Emits a message when a remote notification alert should be displayed to the user.
-  var presentRemoteNotificationAlert: Signal<String, NoError> { get }
 
   /// Emits when a view controller should be presented.
   var presentViewController: Signal<UIViewController, NoError> { get }
@@ -280,44 +274,10 @@ AppDelegateViewModelOutputs {
           .map { _ in token }
       }
 
-    let remoteNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
-      .map { _, options in
-        options?[UIApplication.LaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] }
+    let deepLinkFromNotification = self.remoteNotificationProperty.signal.skipNil()
+      .map(decode)
+      .map { $0?.value }
       .skipNil()
-
-    let localNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
-      .map { _, options in
-        options?[UIApplication.LaunchOptionsKey.localNotification] as? UILocalNotification }
-      .map { $0?.userInfo }
-      .skipNil()
-
-    let notificationAndIsActive = Signal.merge(
-      self.remoteNotificationAndIsActiveProperty.signal.skipNil(),
-      remoteNotificationFromLaunch.map { ($0, false) },
-      localNotificationFromLaunch.map { ($0, false) }
-    )
-
-    let pushEnvelopeAndIsActive = notificationAndIsActive
-      .map { (notification, isActive) -> (PushEnvelope, Bool)? in
-        guard let envelope = (decode(notification) as Decoded<PushEnvelope>).value else { return nil }
-        return (envelope, isActive)
-      }
-      .skipNil()
-
-    self.presentRemoteNotificationAlert = pushEnvelopeAndIsActive
-      .filter(second)
-      .map { env, _ in env.aps.alert }
-
-    let explicitlyOpenedNotification = pushEnvelopeAndIsActive
-      .takeWhen(self.openRemoteNotificationTappedOkProperty.signal)
-
-    let pushEnvelope = Signal.merge(
-      pushEnvelopeAndIsActive.filter(second >>> isFalse),
-      explicitlyOpenedNotification
-      )
-      .map(first)
-
-    let deepLinkFromNotification = pushEnvelope
       .map(navigation(fromPushEnvelope:))
 
     // Deep links
@@ -705,9 +665,9 @@ AppDelegateViewModelOutputs {
     self.configUpdatedInEnvironmentProperty.value = ()
   }
 
-  fileprivate let remoteNotificationAndIsActiveProperty = MutableProperty<([AnyHashable: Any], Bool)?>(nil)
-  public func didReceive(remoteNotification notification: [AnyHashable: Any], applicationIsActive: Bool) {
-    self.remoteNotificationAndIsActiveProperty.value = (notification, applicationIsActive)
+  fileprivate let remoteNotificationProperty = MutableProperty<[AnyHashable: Any]?>(nil)
+  public func didReceive(remoteNotification notification: [AnyHashable: Any]) {
+    self.remoteNotificationProperty.value = notification
   }
 
   fileprivate let deviceTokenDataProperty = MutableProperty(Data())
@@ -789,7 +749,6 @@ AppDelegateViewModelOutputs {
   public let goToMobileSafari: Signal<URL, NoError>
   public let goToSearch: Signal<(), NoError>
   public let postNotification: Signal<Notification, NoError>
-  public let presentRemoteNotificationAlert: Signal<String, NoError>
   public let presentViewController: Signal<UIViewController, NoError>
   public let pushTokenRegistrationStarted: Signal<(), NoError>
   public let pushTokenSuccessfullyRegistered: Signal<String, NoError>

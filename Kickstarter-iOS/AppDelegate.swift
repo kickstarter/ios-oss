@@ -149,12 +149,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
 
-    self.viewModel.outputs.presentRemoteNotificationAlert
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.presentRemoteNotificationAlert($0)
-      }
-
     self.viewModel.outputs.configureHockey
       .observeForUI()
       .observeValues { [weak self] data in
@@ -314,22 +308,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
   }
 
-  fileprivate func presentRemoteNotificationAlert(_ message: String) {
-    let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-
-    alert.addAction(
-      UIAlertAction(title: Strings.View(), style: .default) { [weak self] _ in
-        self?.viewModel.inputs.openRemoteNotificationTappedOk()
-      }
-    )
-
-    alert.addAction(
-      UIAlertAction(title: Strings.Dismiss(), style: .cancel, handler: nil)
-    )
-
-    self.rootTabBarController?.present(alert, animated: true, completion: nil)
-  }
-
   private func goToLiveStream(project: Project,
                               liveStreamEvent: LiveStreamEvent,
                               refTag: RefTag?) {
@@ -411,8 +389,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
     ) {
-    self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo,
-                                     applicationIsActive: UIApplication.shared.applicationState == .active)
+    self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
     completion()
   }
 }
