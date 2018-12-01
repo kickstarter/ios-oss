@@ -5,60 +5,26 @@ import ReactiveSwift
 import Result
 
 public protocol SignupViewModelInputs {
-  /// Call when the user enters a new email address.
   func emailChanged(_ email: String)
-
-  /// Call when the user returns from email text field.
   func emailTextFieldReturn()
-
-  /// Call when the environment has been logged into
   func environmentLoggedIn()
-
-  /// Call when the user enters a new name.
   func nameChanged(_ name: String)
-
-  /// Call when the user returns from the name text field.
   func nameTextFieldReturn()
-
-  /// Call when the user enters a new password.
   func passwordChanged(_ password: String)
-
-  /// Call when the user returns from the password text field.
   func passwordTextFieldReturn()
-
-  /// Call when the user taps signup.
   func signupButtonPressed()
-
-  /// Call when the view did load.
   func viewDidLoad()
-
-  /// Call when the user toggles weekly newsletter.
   func weeklyNewsletterChanged(_ weeklyNewsletter: Bool)
 }
 
 public protocol SignupViewModelOutputs {
-  /// Sets whether the email text field is the first responder.
   var emailTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
-
-  /// Emits true when the signup button should be enabled, false otherwise.
   var isSignupButtonEnabled: Signal<Bool, NoError> { get }
-
-  /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
-
-  /// Sets whether the password text field is the first responder.
   var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
-
-  /// Emits when a notification should be posted.
   var postNotification: Signal<Notification, NoError> { get }
-
-  /// Sets whether the name text field is the first responder.
   var nameTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
-
-  /// Emits the value for the weekly newsletter.
   var setWeeklyNewsletterState: Signal<Bool, NoError> { get }
-
-  /// Emits when a signup error has occurred and a message should be displayed.
   var showError: Signal<String, NoError> { get }
 }
 
@@ -69,7 +35,10 @@ public protocol SignupViewModelType {
 
 public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, SignupViewModelOutputs {
 
-    public init() {
+  public var inputs: SignupViewModelInputs { return self }
+  public var outputs: SignupViewModelOutputs { return self }
+
+  public init() {
     let initialText = self.viewDidLoadProperty.signal.mapConst("")
     let name = Signal.merge(
       self.nameChangedProperty.signal,
@@ -212,7 +181,4 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   public let postNotification: Signal<Notification, NoError>
   public let setWeeklyNewsletterState: Signal<Bool, NoError>
   public let showError: Signal<String, NoError>
-
-  public var inputs: SignupViewModelInputs { return self }
-  public var outputs: SignupViewModelOutputs { return self }
 }

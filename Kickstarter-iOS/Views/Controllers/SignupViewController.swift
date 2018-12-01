@@ -2,6 +2,8 @@ import Library
 import MessageUI
 import Prelude
 import Prelude_UIKit
+import ReactiveCocoa
+import ReactiveSwift
 import UIKit
 
 internal final class SignupViewController: UIViewController, MFMailComposeViewControllerDelegate {
