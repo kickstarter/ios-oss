@@ -4,181 +4,117 @@ import Prelude
 import ReactiveSwift
 import Result
 
-public protocol SignupViewModelInputs {
-  func emailChanged(_ email: String)
-  func emailTextFieldReturn()
-  func environmentLoggedIn()
-  func nameChanged(_ name: String)
-  func nameTextFieldReturn()
-  func passwordChanged(_ password: String)
-  func passwordTextFieldReturn()
-  func signupButtonPressed()
-  func viewDidLoad()
-  func weeklyNewsletterChanged(_ weeklyNewsletter: Bool)
-}
+public func signupViewModel(
+  emailChanged: Signal<(String), NoError>,
+  emailTextFieldReturn: Signal<(), NoError>,
+  environmentLoggedIn: Signal<(), NoError>,
+  nameChanged: Signal<(String), NoError>,
+  nameTextFieldReturn: Signal<(), NoError>,
+  passwordChanged: Signal<(String), NoError>,
+  passwordTextFieldReturn: Signal<(), NoError>,
+  signupButtonPressed: Signal<(), NoError>,
+  viewDidLoad: Signal<(), NoError>,
+  weeklyNewsletterChanged: Signal<(Bool), NoError>
+) -> (
+  emailTextFieldBecomeFirstResponder: Signal<(), NoError>,
+  isSignupButtonEnabled: Signal<Bool, NoError>,
+  logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>,
+  passwordTextFieldBecomeFirstResponder: Signal<(), NoError>,
+  postNotification: Signal<Notification, NoError>,
+  nameTextFieldBecomeFirstResponder: Signal<(), NoError>,
+  setWeeklyNewsletterState: Signal<Bool, NoError>,
+  showError: Signal<String, NoError>
+) {
+  let initialText = viewDidLoad.mapConst("")
+  let name = Signal.merge(
+    nameChanged,
+    initialText
+  )
+  let email = Signal.merge(
+    emailChanged,
+    initialText
+  )
+  let password = Signal.merge(
+    passwordChanged,
+    initialText
+  )
 
-public protocol SignupViewModelOutputs {
-  var emailTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
-  var isSignupButtonEnabled: Signal<Bool, NoError> { get }
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
-  var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
-  var postNotification: Signal<Notification, NoError> { get }
-  var nameTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
-  var setWeeklyNewsletterState: Signal<Bool, NoError> { get }
-  var showError: Signal<String, NoError> { get }
-}
+  let newsletter = Signal.merge(
+    viewDidLoad.mapConst(false),
+    weeklyNewsletterChanged
+  )
 
-public protocol SignupViewModelType {
-  var inputs: SignupViewModelInputs { get }
-  var outputs: SignupViewModelOutputs { get }
-}
+  let nameIsPresent = name.map { !$0.isEmpty }
+  let emailIsPresent = email.map { !$0.isEmpty }
+  let passwordIsPresent = password.map { !$0.isEmpty }
 
-public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, SignupViewModelOutputs {
+  let nameTextFieldBecomeFirstResponder = viewDidLoad
+  let emailTextFieldBecomeFirstResponder = nameTextFieldReturn
+  let passwordTextFieldBecomeFirstResponder = emailTextFieldReturn
 
-  public var inputs: SignupViewModelInputs { return self }
-  public var outputs: SignupViewModelOutputs { return self }
+  let isSignupButtonEnabled = Signal.combineLatest(nameIsPresent, emailIsPresent, passwordIsPresent)
+    .map { $0 && $1 && $2 }
+    .skipRepeats()
 
-  public init() {
-    let initialText = self.viewDidLoadProperty.signal.mapConst("")
-    let name = Signal.merge(
-      self.nameChangedProperty.signal,
-      initialText
-    )
-    let email = Signal.merge(
-      self.emailChangedProperty.signal,
-      initialText
-    )
-    let password = Signal.merge(
-      self.passwordChangedProperty.signal,
-      initialText
-    )
+  let setWeeklyNewsletterState = newsletter.take(first: 1)
 
-    let newsletter = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
-      self.weeklyNewsletterChangedProperty.signal.skipNil()
-    )
+  let attemptSignup = Signal.merge(
+    passwordTextFieldReturn,
+    signupButtonPressed
+  )
 
-    let nameIsPresent = name.map { !$0.isEmpty }
-    let emailIsPresent = email.map { !$0.isEmpty }
-    let passwordIsPresent = password.map { !$0.isEmpty }
-
-    self.nameTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
-    self.emailTextFieldBecomeFirstResponder = self.nameTextFieldReturnProperty.signal
-    self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldReturnProperty.signal
-
-    self.isSignupButtonEnabled = Signal.combineLatest(nameIsPresent, emailIsPresent, passwordIsPresent)
-      .map { $0 && $1 && $2 }
-      .skipRepeats()
-
-    self.setWeeklyNewsletterState = newsletter.take(first: 1)
-
-    let attemptSignup = Signal.merge(
-      self.passwordTextFieldReturnProperty.signal,
-      self.signupButtonPressedProperty.signal
-    )
-
-    let signupEvent = Signal.combineLatest(name, email, password, newsletter)
-      .takeWhen(attemptSignup)
-      .switchMap { name, email, password, newsletter in
-        AppEnvironment.current.apiService.signup(
-          name: name,
-          email: email,
-          password: password,
-          passwordConfirmation: password,
-          sendNewsletters: newsletter)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
-
-    let signupError = signupEvent.errors()
-      .map {
-        $0.errorMessages.first ?? Strings.signup_error_something_wrong()
-    }
-
-    self.showError = signupError
-
-    self.logIntoEnvironment = signupEvent.values()
-
-    self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: .ksr_sessionStarted))
-
-    self.environmentLoggedInProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
-
-    self.showError
-      .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.email) }
-
-    self.weeklyNewsletterChangedProperty.signal
-      .skipNil()
-      .observeValues {
-        AppEnvironment.current.koala.trackChangeNewsletter(
-          newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .signup
-        )
-    }
-
-    signupEvent.values()
-      .observeValues { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email) }
-
-    self.viewDidLoadProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackSignupView() }
+  let signupEvent = Signal.combineLatest(name, email, password, newsletter)
+    .takeWhen(attemptSignup)
+    .switchMap { name, email, password, newsletter in
+      AppEnvironment.current.apiService.signup(
+        name: name,
+        email: email,
+        password: password,
+        passwordConfirmation: password,
+        sendNewsletters: newsletter)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
   }
 
-  fileprivate let emailChangedProperty = MutableProperty("")
-  public func emailChanged(_ email: String) {
-    self.emailChangedProperty.value = email
+  let signupError = signupEvent.errors()
+    .map {
+      $0.errorMessages.first ?? Strings.signup_error_something_wrong()
   }
 
-  fileprivate let emailTextFieldReturnProperty = MutableProperty(())
-  public func emailTextFieldReturn() {
-    self.emailTextFieldReturnProperty.value = ()
+  let showError = signupError
+
+  let logIntoEnvironment = signupEvent.values()
+
+  let postNotification = environmentLoggedIn
+    .mapConst(Notification(name: .ksr_sessionStarted))
+
+  environmentLoggedIn
+    .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
+
+  showError
+    .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.email) }
+
+  weeklyNewsletterChanged
+    .observeValues {
+      AppEnvironment.current.koala.trackChangeNewsletter(
+        newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .signup
+      )
   }
 
-  fileprivate let environmentLoggedInProperty = MutableProperty(())
-  public func environmentLoggedIn() {
-    self.environmentLoggedInProperty.value = ()
-  }
+  signupEvent.values()
+    .observeValues { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email) }
 
-  fileprivate let nameChangedProperty = MutableProperty("")
-  public func nameChanged(_ name: String) {
-    self.nameChangedProperty.value = name
-  }
+  viewDidLoad
+    .observeValues { AppEnvironment.current.koala.trackSignupView() }
 
-  fileprivate let nameTextFieldReturnProperty = MutableProperty(())
-  public func nameTextFieldReturn() {
-    self.nameTextFieldReturnProperty.value = ()
-  }
-
-  fileprivate let passwordChangedProperty = MutableProperty("")
-  public func passwordChanged(_ password: String) {
-    self.passwordChangedProperty.value = password
-  }
-
-  fileprivate let passwordTextFieldReturnProperty = MutableProperty(())
-  public func passwordTextFieldReturn() {
-    self.passwordTextFieldReturnProperty.value = ()
-  }
-
-  fileprivate let signupButtonPressedProperty = MutableProperty(())
-  public func signupButtonPressed() {
-    self.signupButtonPressedProperty.value = ()
-  }
-
-  fileprivate let viewDidLoadProperty = MutableProperty(())
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
-  }
-
-  fileprivate let weeklyNewsletterChangedProperty = MutableProperty<Bool?>(nil)
-  public func weeklyNewsletterChanged(_ weeklyNewsletter: Bool) {
-    self.weeklyNewsletterChangedProperty.value = weeklyNewsletter
-  }
-
-  public let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let isSignupButtonEnabled: Signal<Bool, NoError>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public let nameTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let postNotification: Signal<Notification, NoError>
-  public let setWeeklyNewsletterState: Signal<Bool, NoError>
-  public let showError: Signal<String, NoError>
+  return (
+    emailTextFieldBecomeFirstResponder: emailTextFieldBecomeFirstResponder,
+    isSignupButtonEnabled: isSignupButtonEnabled,
+    logIntoEnvironment: logIntoEnvironment,
+    passwordTextFieldBecomeFirstResponder: passwordTextFieldBecomeFirstResponder,
+    postNotification: postNotification,
+    nameTextFieldBecomeFirstResponder: nameTextFieldBecomeFirstResponder,
+    setWeeklyNewsletterState: setWeeklyNewsletterState,
+    showError: showError
+  )
 }

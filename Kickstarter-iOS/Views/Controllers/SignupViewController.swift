@@ -7,7 +7,6 @@ import ReactiveSwift
 import UIKit
 
 internal final class SignupViewController: UIViewController, MFMailComposeViewControllerDelegate {
-  fileprivate let viewModel: SignupViewModelType = SignupViewModel()
   fileprivate let helpViewModel = HelpViewModel()
 
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
@@ -31,36 +30,12 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.nameTextField.addTarget(self,
-                                 action: #selector(nameTextFieldReturn),
-                                 for: .editingDidEndOnExit)
-
-    self.nameTextField.addTarget(self,
-                                 action: #selector(nameTextFieldChanged(_:)),
-                                 for: [.editingDidEndOnExit, .editingChanged])
-
-    self.emailTextField.addTarget(self,
-                                  action: #selector(emailTextFieldReturn),
-                                  for: .editingDidEndOnExit)
-
-    self.emailTextField.addTarget(self,
-                                  action: #selector(emailTextFieldChanged(_:)),
-                                  for: [.editingDidEndOnExit, .editingChanged])
-
-    self.passwordTextField.addTarget(self,
-                                     action: #selector(passwordTextFieldReturn),
-                                     for: .editingDidEndOnExit)
-
-    self.passwordTextField.addTarget(self,
-                                     action: #selector(passwordTextFieldChanged(_:)),
-                                     for: [.editingChanged])
-
     self.disclaimerButton.addTarget(self, action: #selector(disclaimerButtonPressed), for: .touchUpInside)
     let newsletterLabelTapGesture = UITapGestureRecognizer(target: self,
                                                            action: #selector(newsletterLabelTapped))
     self.newsletterLabel.addGestureRecognizer(newsletterLabelTapGesture)
 
-    self.viewModel.inputs.viewDidLoad()
+    self.viewDidLoadProperty.value = ()
   }
 
   internal override func bindStyles() {
@@ -97,24 +72,48 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       |> signupButtonStyle
   }
 
-  internal override func bindViewModel() {
-    self.emailTextField.rac.becomeFirstResponder = self.viewModel.outputs.emailTextFieldBecomeFirstResponder
-    self.newsletterSwitch.rac.on = self.viewModel.outputs.setWeeklyNewsletterState
-    self.passwordTextField.rac.becomeFirstResponder =
-      self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
-    self.signupButton.rac.enabled = self.viewModel.outputs.isSignupButtonEnabled
+  fileprivate let environmentLoggedInProperty = MutableProperty(())
+  fileprivate let viewDidLoadProperty = MutableProperty(())
 
-    self.viewModel.outputs.logIntoEnvironment
+  internal override func bindViewModel() {
+    let (
+      emailTextFieldBecomeFirstResponder,
+      isSignupButtonEnabled,
+      logIntoEnvironment,
+      passwordTextFieldBecomeFirstResponder,
+      postNotification,
+      nameTextFieldBecomeFirstResponder,
+      setWeeklyNewsletterState,
+      showError
+    ) = signupViewModel(
+      emailChanged: self.emailTextField.reactive.continuousTextValues.skipNil(),
+      emailTextFieldReturn: self.emailTextField.reactive.controlEvents(.editingDidEndOnExit).ignoreValues(),
+      environmentLoggedIn: environmentLoggedInProperty.signal,
+      nameChanged: self.nameTextField.reactive.continuousTextValues.skipNil(),
+      nameTextFieldReturn: self.nameTextField.reactive.controlEvents(.editingDidEndOnExit).ignoreValues(),
+      passwordChanged: self.passwordTextField.reactive.continuousTextValues.skipNil(),
+      passwordTextFieldReturn: self.passwordTextField.reactive.controlEvents(.editingDidEndOnExit).ignoreValues(),
+      signupButtonPressed: self.signupButton.reactive.controlEvents(.touchUpInside).ignoreValues(),
+      viewDidLoad: viewDidLoadProperty.signal,
+      weeklyNewsletterChanged: newsletterSwitch.reactive.isOnValues
+    )
+
+    self.emailTextField.reactive.becomeFirstResponder <~ emailTextFieldBecomeFirstResponder
+    self.newsletterSwitch.reactive.isOn <~ setWeeklyNewsletterState
+    self.passwordTextField.reactive.becomeFirstResponder <~ passwordTextFieldBecomeFirstResponder
+    self.signupButton.reactive.isEnabled <~ isSignupButtonEnabled
+
+    logIntoEnvironment
       .observeValues { [weak self] in
         AppEnvironment.login($0)
-        self?.viewModel.inputs.environmentLoggedIn()
+        self?.environmentLoggedInProperty.value = ()
       }
 
-    self.viewModel.outputs.postNotification
+    postNotification
       .observeForUI()
       .observeValues(NotificationCenter.default.post)
 
-    self.viewModel.outputs.showError
+    showError
       .observeForControllerAction()
       .observeValues { [weak self] message in
         self?.present(
@@ -152,38 +151,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
     Keyboard.change.observeForUI()
       .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
-  }
-
-  @objc internal func emailTextFieldChanged(_ textField: UITextField) {
-    self.viewModel.inputs.emailChanged(textField.text ?? "")
-  }
-
-  @objc internal func emailTextFieldReturn(_ textField: UITextField) {
-    self.viewModel.inputs.emailTextFieldReturn()
-  }
-
-  @objc internal func nameTextFieldChanged(_ textField: UITextField) {
-    self.viewModel.inputs.nameChanged(textField.text ?? "")
-  }
-
-  @objc internal func nameTextFieldReturn(_ textField: UITextField) {
-    self.viewModel.inputs.nameTextFieldReturn()
-  }
-
-  @objc internal func passwordTextFieldChanged(_ textField: UITextField) {
-    self.viewModel.inputs.passwordChanged(textField.text ?? "")
-  }
-
-  @objc internal func passwordTextFieldReturn(_ textField: UITextField) {
-    self.viewModel.inputs.passwordTextFieldReturn()
-  }
-
-  @IBAction internal func weeklyNewsletterChanged(_ newsletterSwitch: UISwitch) {
-    self.viewModel.inputs.weeklyNewsletterChanged(newsletterSwitch.isOn)
-  }
-
-  @IBAction internal func signupButtonPressed() {
-    self.viewModel.inputs.signupButtonPressed()
   }
 
   @objc fileprivate func disclaimerButtonPressed() {
