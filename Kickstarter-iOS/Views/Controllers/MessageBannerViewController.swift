@@ -2,24 +2,16 @@ import Foundation
 import Library
 import Prelude
 
-internal protocol MessageBannerViewControllerDelegate: class {
-  var messageBannerViewControllerContainer: UIView { get }
-  func messageBannerViewControllerIsHidden(_ isHidden: Bool)
+protocol MessageBannerViewControllerPresenting {
+  func configureMessageBannerViewController() -> MessageBannerViewController?
 }
 
-extension MessageBannerViewControllerDelegate {
-  func messageBannerViewControllerIsHidden(_ isHidden: Bool) {
-    _ = self.messageBannerViewControllerContainer |> \.isHidden .~ isHidden
-  }
-}
-
-final class MessageBannerViewController: UIViewController {
+final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate weak var backgroundView: UIView!
   @IBOutlet fileprivate weak var backgroundViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
   @IBOutlet fileprivate weak var messageLabel: UILabel!
-
-  internal weak var delegate: MessageBannerViewControllerDelegate?
+  @IBOutlet fileprivate weak var backgroundViewTopConstraint: NSLayoutConstraint!
 
   private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
 
@@ -28,6 +20,13 @@ final class MessageBannerViewController: UIViewController {
   struct AnimationConstants {
     static let hideDuration: TimeInterval = 0.25
     static let showDuration: TimeInterval = 0.3
+  }
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.backgroundViewBottomConstraint.isActive = false
+    self.backgroundViewTopConstraint.isActive = true
   }
 
   override func bindStyles() {
@@ -84,7 +83,8 @@ final class MessageBannerViewController: UIViewController {
 
     if !isHidden {
       self.view.isHidden = isHidden
-      self.delegate?.messageBannerViewControllerIsHidden(isHidden)
+      self.backgroundViewBottomConstraint.isActive = true
+      self.backgroundViewTopConstraint.isActive = false
     }
 
     UIView.animate(withDuration: duration, delay: 0.0,
@@ -97,11 +97,8 @@ final class MessageBannerViewController: UIViewController {
                     self.view.layoutIfNeeded()
     }, completion: { [weak self] _ in
       self?.view.isHidden = isHidden
-
-      if isHidden {
-        self?.delegate?.messageBannerViewControllerIsHidden(isHidden)
-      }
-
+      self?.backgroundViewBottomConstraint.isActive = false
+      self?.backgroundViewTopConstraint.isActive = true
       self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
     })
   }
@@ -137,5 +134,54 @@ final class MessageBannerViewController: UIViewController {
 
   @IBAction private func bannerViewTapped(_ sender: Any) {
     self.viewModel.inputs.showBannerView(shouldShow: false)
+  }
+}
+
+extension MessageBannerViewControllerPresenting where Self: UIViewController {
+  func configureMessageBannerViewController() -> MessageBannerViewController? {
+    guard let messageBannerViewController = MessageBannerViewController.fromNib(nib: Nib.MessageBannerViewController),
+          let messageBannerView = messageBannerViewController.view else {
+      return nil
+    }
+
+    self.addChild(messageBannerViewController)
+
+    self.view.addSubview(messageBannerViewController.view)
+
+    // Constraints
+    messageBannerView.addConstraints([
+      NSLayoutConstraint(item: messageBannerView,
+                         attribute: .leading,
+                         relatedBy: .equal,
+                         toItem: self.view,
+                         attribute: .leading,
+                         multiplier: 1.0,
+                         constant: 0),
+      NSLayoutConstraint(item: messageBannerView,
+                         attribute: .bottom,
+                         relatedBy: .equal,
+                         toItem: self.view,
+                         attribute: .bottom,
+                         multiplier: 1.0,
+                         constant: 0.0),
+      NSLayoutConstraint(item: messageBannerView,
+                         attribute: .trailing,
+                         relatedBy: .equal,
+                         toItem: self.view,
+                         attribute: .trailing,
+                         multiplier: 1.0,
+                         constant: 0.0),
+      NSLayoutConstraint(item: messageBannerView,
+                         attribute: .height,
+                         relatedBy: .equal,
+                         toItem: nil,
+                         attribute: .height,
+                         multiplier: 1.0,
+                         constant: 140.0)
+      ])
+
+    messageBannerViewController.didMove(toParent: self)
+
+    return messageBannerViewController
   }
 }

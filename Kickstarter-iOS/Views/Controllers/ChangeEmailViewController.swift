@@ -7,7 +7,6 @@ import UIKit
 internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var currentEmailLabel: UILabel!
   @IBOutlet fileprivate weak var currentEmail: UILabel!
-  @IBOutlet fileprivate weak var messageBannerContainer: UIView!
   @IBOutlet fileprivate weak var messageLabelView: UIView!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailTextField: UITextField!
@@ -31,12 +30,6 @@ internal final class ChangeEmailViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    guard let messageBannerViewController = self.children.first as? MessageBannerViewController else {
-      fatalError("Couldn't instantiate MessageBannerViewController")
-    }
-    self.messageBannerViewController = messageBannerViewController
-    self.messageBannerViewController.delegate = self
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
@@ -78,9 +71,6 @@ internal final class ChangeEmailViewController: UIViewController {
 
     _ = self.onePasswordButton
       |> onePasswordButtonStyle
-
-    _ = self.messageBannerContainer
-      |> \.isHidden .~ true
 
     _ = self.messageLabelView
       |> \.backgroundColor .~ .ksr_grey_200
@@ -282,11 +272,5 @@ extension ChangeEmailViewController: UITextFieldDelegate {
 
     self.viewModel.inputs.textFieldShouldReturn(with: textField.returnKeyType)
     return textField.resignFirstResponder()
-  }
-}
-
-extension ChangeEmailViewController: MessageBannerViewControllerDelegate {
-  var messageBannerViewControllerContainer: UIView {
-    return self.messageBannerContainer
   }
 }

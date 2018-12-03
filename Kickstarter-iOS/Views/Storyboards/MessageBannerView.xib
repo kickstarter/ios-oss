@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <viewController id="h7y-fG-v9O" customClass="MessageBannerViewController">
+            <view key="view" contentMode="scaleToFill" id="Zcf-a3-qgT">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uBb-R8-koc" userLabel="Background View" customClass="MessageBanner">
+                        <rect key="frame" x="12" y="679" width="351" height="50"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="gUR-Ad-xmQ">
+                                <rect key="frame" x="12" y="12" width="327" height="26"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nK4-zs-uiJ">
+                                        <rect key="frame" x="0.0" y="0.5" width="25" height="25"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="2R8-5T-wya"/>
+                                            <constraint firstAttribute="width" constant="25" id="E9B-4d-r0T"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Wv-n2-rdf">
+                                        <rect key="frame" x="43" y="3" width="284" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="8FV-IZ-Hd5"/>
+                            <constraint firstAttribute="bottom" secondItem="gUR-Ad-xmQ" secondAttribute="bottom" constant="12" id="L3J-RQ-XRO"/>
+                            <constraint firstAttribute="trailing" secondItem="gUR-Ad-xmQ" secondAttribute="trailing" constant="12" id="QQx-ZE-F5s"/>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="140" id="XN0-Jw-pJL"/>
+                            <constraint firstItem="gUR-Ad-xmQ" firstAttribute="top" secondItem="uBb-R8-koc" secondAttribute="top" constant="12" id="ZdC-Pd-0kQ"/>
+                            <constraint firstItem="gUR-Ad-xmQ" firstAttribute="leading" secondItem="uBb-R8-koc" secondAttribute="leading" constant="12" id="amX-DZ-fBN"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="SrO-tc-rR8" appends="YES" id="fwK-f5-fMN"/>
+                            <outletCollection property="gestureRecognizers" destination="W3s-gZ-kOg" appends="YES" id="tCf-my-3To"/>
+                        </connections>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <gestureRecognizers/>
+                <constraints>
+                    <constraint firstItem="hDq-aT-wUr" firstAttribute="trailing" secondItem="uBb-R8-koc" secondAttribute="trailing" constant="12" id="bam-XA-Cze"/>
+                    <constraint firstItem="uBb-R8-koc" firstAttribute="leading" secondItem="Zcf-a3-qgT" secondAttribute="leading" constant="12" id="bug-cL-gsn"/>
+                    <constraint firstItem="uBb-R8-koc" firstAttribute="top" secondItem="hDq-aT-wUr" secondAttribute="bottom" constant="12" id="qR6-D0-YrW"/>
+                    <constraint firstItem="hDq-aT-wUr" firstAttribute="bottom" secondItem="uBb-R8-koc" secondAttribute="bottom" constant="12" id="w6L-8d-wGJ"/>
+                </constraints>
+                <viewLayoutGuide key="safeArea" id="hDq-aT-wUr"/>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="w6L-8d-wGJ"/>
+                    </mask>
+                </variation>
+            </view>
+            <connections>
+                <outlet property="backgroundView" destination="uBb-R8-koc" id="yMJ-PM-0Vc"/>
+                <outlet property="backgroundViewBottomConstraint" destination="w6L-8d-wGJ" id="wpd-g2-y3T"/>
+                <outlet property="backgroundViewTopConstraint" destination="qR6-D0-YrW" id="LBg-H6-Ybu"/>
+                <outlet property="iconImageView" destination="nK4-zs-uiJ" id="QGa-mg-y9M"/>
+                <outlet property="messageLabel" destination="0Wv-n2-rdf" id="6yf-Ru-AAr"/>
+            </connections>
+        </viewController>
+        <panGestureRecognizer minimumNumberOfTouches="1" id="SrO-tc-rR8">
+            <connections>
+                <action selector="bannerViewPanned:" destination="h7y-fG-v9O" id="vAu-mx-0FK"/>
+            </connections>
+        </panGestureRecognizer>
+        <tapGestureRecognizer id="W3s-gZ-kOg">
+            <connections>
+                <action selector="bannerViewTapped:" destination="h7y-fG-v9O" id="prc-8y-Z3X"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+</document>

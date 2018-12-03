@@ -3,21 +3,20 @@ import KsApi
 import Library
 import Prelude
 
-final class ChangePasswordViewController: UIViewController {
+final class ChangePasswordViewController: UIViewController, MessageBannerViewControllerPresenting {
   @IBOutlet fileprivate weak var changePasswordLabel: UILabel!
   @IBOutlet fileprivate weak var confirmNewPasswordLabel: UILabel!
   @IBOutlet fileprivate weak var confirmNewPasswordTextField: UITextField!
   @IBOutlet fileprivate weak var currentPasswordLabel: UILabel!
   @IBOutlet fileprivate weak var currentPasswordTextField: UITextField!
   @IBOutlet fileprivate weak var validationErrorMessageLabel: UILabel!
-  @IBOutlet fileprivate weak var messageBannerContainer: UIView!
   @IBOutlet fileprivate weak var newPasswordLabel: UILabel!
   @IBOutlet fileprivate weak var newPasswordTextField: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
   private var saveButtonView: LoadingBarButtonItemView!
-  private var messageBannerViewController: MessageBannerViewController!
+  internal var messageBannerViewController: MessageBannerViewController?
 
   private let viewModel: ChangePasswordViewModelType = ChangePasswordViewModel()
 
@@ -28,11 +27,7 @@ final class ChangePasswordViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let messageBannerViewController = self.children.first as? MessageBannerViewController else {
-      fatalError("Missing message View Controller")
-    }
-    self.messageBannerViewController = messageBannerViewController
-    self.messageBannerViewController.delegate = self
+    self.messageBannerViewController = configureMessageBannerViewController()
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
@@ -99,9 +94,6 @@ final class ChangePasswordViewController: UIViewController {
 
     _ = validationErrorMessageLabel
       |> settingsDescriptionLabelStyle
-
-    _ = self.messageBannerContainer
-      |> \.isHidden .~ true
 
     _ = newPasswordLabel
       |> settingsTitleLabelStyle
@@ -172,7 +164,7 @@ final class ChangePasswordViewController: UIViewController {
     self.viewModel.outputs.changePasswordFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-        self?.messageBannerViewController.showBanner(with: .error, message: errorMessage)
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
     }
 
     self.viewModel.outputs.changePasswordSuccess
@@ -299,11 +291,5 @@ final class ChangePasswordViewController: UIViewController {
 
   @IBAction func onePasswordButtonTapped(_ sender: Any) {
     self.viewModel.inputs.onePasswordButtonTapped()
-  }
-}
-
-extension ChangePasswordViewController: MessageBannerViewControllerDelegate {
-  var messageBannerViewControllerContainer: UIView {
-    return self.messageBannerContainer
   }
 }
