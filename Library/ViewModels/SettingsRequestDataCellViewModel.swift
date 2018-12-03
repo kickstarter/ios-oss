@@ -84,8 +84,10 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
         dateFormatter(for: $0.expiresAt, state: $0.state)
       }
 
-    self.dataExpirationAndChevronHidden = exportEnvelope
-      .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil ? true : false }
+    self.dataExpirationAndChevronHidden = Signal.merge(
+      self.awakeFromNibProperty.signal.mapConst(true),
+      exportEnvelope
+      .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil ? true : false })
 
     self.goToSafari = exportEnvelope
       .filter { $0.state != .expired || $0.expiresAt != nil }
