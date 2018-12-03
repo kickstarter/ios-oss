@@ -705,11 +705,6 @@ AppDelegateViewModelOutputs {
     return self.facebookOpenURLReturnValue.value
   }
 
-  fileprivate let openRemoteNotificationTappedOkProperty = MutableProperty(())
-  public func openRemoteNotificationTappedOk() {
-    self.openRemoteNotificationTappedOkProperty.value = ()
-  }
-
   fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
   public func showNotificationDialog(notification: Notification) {
     self.showNotificationDialogProperty.value = notification
