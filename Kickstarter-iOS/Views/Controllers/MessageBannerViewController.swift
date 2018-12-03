@@ -58,7 +58,7 @@ final class MessageBannerViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] color in
         _ = self?.iconImageView
-          ?|> UIImageView.lens.tintColor .~ color
+          ?|> \.tintColor .~ color
     }
 
     self.viewModel.outputs.iconImageName
