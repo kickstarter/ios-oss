@@ -71,6 +71,9 @@ public struct Environment {
   /// A type that exposes how to interface with an NSBundle. Default value is `Bundle.main`.
   public let mainBundle: NSBundleType
 
+  /// A type that manages registration for push notifications.
+  public let pushRegistrationType: PushRegistrationType.Type
+
   /// A reachability signal producer.
   public let reachability: SignalProducer<Reachability, NoError>
 
@@ -105,6 +108,7 @@ public struct Environment {
     liveStreamService: LiveStreamServiceProtocol = LiveStreamService(),
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
+    pushRegistrationType: PushRegistrationType.Type = PushRegistration.self,
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
@@ -130,6 +134,7 @@ public struct Environment {
     self.liveStreamService = liveStreamService
     self.locale = locale
     self.mainBundle = mainBundle
+    self.pushRegistrationType = pushRegistrationType
     self.reachability = reachability
     self.scheduler = scheduler
     self.ubiquitousStore = ubiquitousStore
