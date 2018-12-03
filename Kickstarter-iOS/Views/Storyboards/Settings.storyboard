@@ -880,7 +880,7 @@
                                                     <constraint firstItem="lmn-J1-wDV" firstAttribute="leading" secondItem="CrV-4u-w6R" secondAttribute="leading" constant="12" id="vMk-NW-Rck"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BMB-LZ-IRH" userLabel="Payment Section">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BMB-LZ-IRH" userLabel="Credit Card Section">
                                                 <rect key="frame" x="0.0" y="88" width="375" height="52"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygp-ig-bdL" userLabel="Separator">
@@ -953,7 +953,7 @@
                     <connections>
                         <outlet property="cardholderNameLabel" destination="6Sc-O3-kKv" id="exe-ri-3u7"/>
                         <outlet property="cardholderNameTextField" destination="gOJ-8S-md7" id="KMQ-hl-wbF"/>
-                        <outlet property="paymentTextField" destination="0rS-r2-TWS" id="iTa-Xb-j75"/>
+                        <outlet property="creditCardTextField" destination="0rS-r2-TWS" id="Ya1-gS-6aM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BRu-8c-SVG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -965,6 +965,6 @@
         <image name="onepassword-button" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YKC-QE-bEp"/>
+        <segue reference="2yf-nW-xFt"/>
     </inferredMetricsTieBreakers>
 </document>

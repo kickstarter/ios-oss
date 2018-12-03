@@ -45,7 +45,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.cardholderNameChanged("Native Squad")
     self.vm.inputs.cardholderNameTextFieldReturn()
     self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
-    self.vm.inputs.paymentCardChanged(cardNumber: "4242 4242 4242 4242",
+    self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
                                       expMonth: 11,
                                       expYear: 99,
                                       cvc: "123")
@@ -69,7 +69,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.cardholderNameTextFieldReturn()
     self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
 
-    self.vm.inputs.paymentCardChanged(cardNumber: "4242 4242 4242 4242",
+    self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
                                       expMonth: 11,
                                       expYear: 99,
                                       cvc: "123")
@@ -98,7 +98,7 @@ internal final class AddNewCardViewModelTests: TestCase {
       self.paymentDetailsBecomeFirstResponder
         .assertValueCount(1, "First responder after editing cardholder name.")
 
-      self.vm.inputs.paymentCardChanged(cardNumber: "4242 4242 4242 4242",
+      self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
                                         expMonth: 11,
                                         expYear: 99,
                                         cvc: "123")
@@ -139,7 +139,7 @@ internal final class AddNewCardViewModelTests: TestCase {
       .assertValueCount(1, "First responder after editing cardholder name.")
     self.saveButtonIsEnabled.assertValues([false, false], "Disabled while form is incomplete.")
 
-    self.vm.inputs.paymentCardChanged(cardNumber: "4242 4242 4242 4242",
+    self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
                                       expMonth: 11,
                                       expYear: 99,
                                       cvc: "123")
@@ -187,7 +187,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
-    self.vm.inputs.paymentCardChanged(cardNumber: "4242 4242 4242 4242",
+    self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
                                       expMonth: 11,
                                       expYear: 99,
                                       cvc: "123")

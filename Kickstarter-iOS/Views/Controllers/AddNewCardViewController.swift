@@ -14,7 +14,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
 
   @IBOutlet private weak var cardholderNameLabel: UILabel!
   @IBOutlet private weak var cardholderNameTextField: UITextField!
-  @IBOutlet private weak var paymentTextField: STPPaymentCardTextField!
+  @IBOutlet private weak var creditCardTextField: STPPaymentCardTextField!
 
   private var saveButtonView: LoadingBarButtonItemView!
   private var messageBannerView: MessageBannerViewController!
@@ -56,7 +56,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
-    self.paymentTextField.delegate = self
+    self.creditCardTextField.delegate = self
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -82,7 +82,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
           string: Strings.Name(),
           attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400])
 
-    _ = self.paymentTextField
+    _ = self.creditCardTextField
       |> \.borderColor .~ nil
       |> \.font .~ .ksr_body()
       |> \.cursorColor .~ .ksr_green_700
@@ -99,7 +99,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.outputs.paymentDetailsBecomeFirstResponder
       .observeForUI()
       .observeValues { [weak self] in
-        self?.paymentTextField.becomeFirstResponder()
+        self?.creditCardTextField.becomeFirstResponder()
     }
 
     self.viewModel.outputs.saveButtonIsEnabled
@@ -117,7 +117,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.paymentTextField.resignFirstResponder()
+        self?.creditCardTextField.resignFirstResponder()
     }
 
     self.viewModel.outputs.paymentDetails
@@ -177,7 +177,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
       return
     }
 
-    self.viewModel.inputs.paymentCardChanged(cardNumber: cardnumber,
+    self.viewModel.inputs.creditCardChanged(cardNumber: cardnumber,
                                              expMonth: Int(textField.expirationMonth),
                                              expYear: Int(textField.expirationYear),
                                              cvc: cvc)

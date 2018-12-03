@@ -8,7 +8,7 @@ import Stripe
 public protocol AddNewCardViewModelInputs {
   func cardholderNameChanged(_ cardholderName: String)
   func cardholderNameTextFieldReturn()
-  func paymentCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String)
+  func creditCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String)
   func paymentInfo(valid: Bool)
   func saveButtonTapped()
   func stripeCreated(_ token: String?, stripeID: String?)
@@ -38,7 +38,7 @@ AddNewCardViewModelOutputs {
 
   public init() {
     let cardholderName = self.cardholderNameChangedProperty.signal
-    let paymentDetails = self.paymentCardChangedProperty.signal.skipNil()
+    let creditCardDetails = self.creditCardChangedProperty.signal.skipNil()
 
     self.cardholderNameBecomeFirstResponder = self.viewDidLoadProperty.signal
     self.paymentDetailsBecomeFirstResponder = self.cardholderNameTextFieldReturnProperty.signal
@@ -46,11 +46,12 @@ AddNewCardViewModelOutputs {
     self.saveButtonIsEnabled = Signal.combineLatest(
       cardholderName.map { !$0.isEmpty },
       self.paymentInfoIsValidProperty.signal
-      ).map { cardholderName, validation in cardholderName && validation }
+      ).map { cardholderNameFieldNotEmpty, creditCardIsValid in
+        cardholderNameFieldNotEmpty && creditCardIsValid }
 
-    let paymentInput = Signal.combineLatest(cardholderName, paymentDetails)
-      .map { cardholderName, paymentInfo in
-        (cardholderName, paymentInfo.0, paymentInfo.1, paymentInfo.2, paymentInfo.3) }
+    let paymentInput = Signal.combineLatest(cardholderName, creditCardDetails)
+      .map { cardholderName, creditCardDetails in
+        (cardholderName, creditCardDetails.0, creditCardDetails.1, creditCardDetails.2, creditCardDetails.3) }
 
     let tryAddCardAction = self.saveButtonTappedProperty.signal
 
@@ -76,8 +77,12 @@ AddNewCardViewModelOutputs {
     self.addNewCardSuccess = addNewCardEvent.values().ignoreValues()
       .map { _ in Strings.Got_it_your_changes_have_been_saved() }
 
-    let stripeInvalidToken = self.stripeErrorProperty.signal.map { $0?.localizedDescription }.skipNil()
-    let graphError = addNewCardEvent.errors().map { $0.localizedDescription }
+    let stripeInvalidToken = self.stripeErrorProperty.signal.map {
+      $0?.localizedDescription
+    }.skipNil()
+    let graphError = addNewCardEvent.errors().map {
+      $0.localizedDescription
+    }
 
     self.addNewCardFailure = Signal.merge (
       stripeInvalidToken,
@@ -101,9 +106,9 @@ AddNewCardViewModelOutputs {
     self.cardholderNameTextFieldReturnProperty.value = ()
   }
 
-  private let paymentCardChangedProperty = MutableProperty<(String, Int, Int, String)?>(nil)
-  public func paymentCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String) {
-    self.paymentCardChangedProperty.value = (cardNumber, expMonth, expYear, cvc)
+  private let creditCardChangedProperty = MutableProperty<(String, Int, Int, String)?>(nil)
+  public func creditCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String) {
+    self.creditCardChangedProperty.value = (cardNumber, expMonth, expYear, cvc)
   }
 
   private let paymentInfoIsValidProperty = MutableProperty(false)

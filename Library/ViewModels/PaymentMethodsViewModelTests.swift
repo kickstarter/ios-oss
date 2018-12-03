@@ -33,7 +33,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
     withEnvironment(apiService: apiService) {
 
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
       self.scheduler.advance()
 
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
@@ -67,7 +67,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(deletePaymentMethodResult: .success(GraphMutationEmptyResponseEnvelope()))
     withEnvironment(apiService: apiService) {
 
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
       self.scheduler.advance()
 
       self.tableViewIsEditing.assertValues([])
@@ -101,7 +101,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput))
     withEnvironment(apiService: apiService) {
 
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
       self.scheduler.advance()
 
       self.tableViewIsEditing.assertValues([])
