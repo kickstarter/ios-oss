@@ -20,6 +20,7 @@ public enum UserAttribute {
       case .films:      return \.newsletters.films
       case .publishing: return \.newsletters.publishing
       case .alumni:     return \.newsletters.alumni
+      case .music:      return \.newsletters.music
       }
     case let .notification(notification):
       switch notification {

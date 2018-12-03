@@ -166,6 +166,7 @@ public enum Query {
     case promoNewsletter
     case publishingNewsletter
     case weeklyNewsletter
+    case musicNewsletter
   }
 
   public enum Notifications: String {
