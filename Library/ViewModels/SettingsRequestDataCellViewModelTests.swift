@@ -116,7 +116,6 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
       self.requestDataText.assertValues([Strings.Request_my_personal_data()],
                                         "Should emit on awakeFromNib to set initial value")
       self.dataExpirationAndChevronHidden.assertValues([true])
-      
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
       self.requestDataText.assertValues([Strings.Request_my_personal_data(),
