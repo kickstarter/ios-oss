@@ -82,12 +82,15 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
       self.vm.inputs.awakeFromNib()
+      self.requestDataText.assertValues([Strings.Request_my_personal_data()],
+                                        "Should emit on awakeFromNib to set initial value")
 
       self.vm.inputs.configureWith(user: user)
 
       self.scheduler.advance()
 
-      self.requestDataText.assertValues([Strings.Request_my_personal_data()])
+      self.requestDataText.assertValues([Strings.Request_my_personal_data(),
+                                         Strings.Request_my_personal_data()])
 
       self.vm.inputs.exportDataTapped()
 
@@ -99,6 +102,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
         self.scheduler.advance()
 
         self.requestDataText.assertValues([Strings.Request_my_personal_data(),
+                                           Strings.Request_my_personal_data(),
                                            Strings.Download_your_personal_data()])
       }
     }
@@ -109,10 +113,15 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchExportStateResponse: .template)) {
       self.vm.inputs.awakeFromNib()
+      self.requestDataText.assertValues([Strings.Request_my_personal_data()],
+                                        "Should emit on awakeFromNib to set initial value")
+      self.dataExpirationAndChevronHidden.assertValues([true])
+      
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
-      self.requestDataText.assertValues([Strings.Download_your_personal_data()])
-      self.dataExpirationAndChevronHidden.assertValues([false])
+      self.requestDataText.assertValues([Strings.Request_my_personal_data(),
+                                         Strings.Download_your_personal_data()])
+      self.dataExpirationAndChevronHidden.assertValues([true, false])
     }
   }
 
