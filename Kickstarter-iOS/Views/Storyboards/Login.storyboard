@@ -208,6 +208,8 @@
                                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                                                                         <connections>
+                                                                                            <action selector="nameTextFieldChanged:" destination="NFm-bM-Ukr" eventType="editingChanged" id="KAM-Dm-nUG"/>
+                                                                                            <action selector="nameTextFieldReturn:" destination="NFm-bM-Ukr" eventType="editingDidEnd" id="b3I-aY-FEQ"/>
                                                                                             <outlet property="delegate" destination="NFm-bM-Ukr" id="Qng-i0-zxz"/>
                                                                                         </connections>
                                                                                     </textField>
@@ -237,6 +239,8 @@
                                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next"/>
                                                                                         <connections>
+                                                                                            <action selector="emailTextFieldChanged:" destination="NFm-bM-Ukr" eventType="editingChanged" id="5HD-KL-0nD"/>
+                                                                                            <action selector="emailTextFieldReturn:" destination="NFm-bM-Ukr" eventType="editingDidEnd" id="Nci-hC-PmQ"/>
                                                                                             <outlet property="delegate" destination="NFm-bM-Ukr" id="FT2-IS-SlG"/>
                                                                                         </connections>
                                                                                     </textField>
@@ -266,6 +270,8 @@
                                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
                                                                                         <connections>
+                                                                                            <action selector="passwordTextFieldChanged:" destination="NFm-bM-Ukr" eventType="editingChanged" id="EL8-IU-Oo3"/>
+                                                                                            <action selector="passwordTextFieldReturn:" destination="NFm-bM-Ukr" eventType="editingDidEnd" id="o3L-RS-r31"/>
                                                                                             <outlet property="delegate" destination="NFm-bM-Ukr" id="B9d-Lg-5kf"/>
                                                                                         </connections>
                                                                                     </textField>
@@ -298,6 +304,9 @@
                                                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vep-Pb-kEj">
                                                                                         <rect key="frame" x="299" y="12" width="51" height="31"/>
                                                                                         <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                        <connections>
+                                                                                            <action selector="weeklyNewsletterChanged:" destination="NFm-bM-Ukr" eventType="valueChanged" id="hw5-4K-Y5r"/>
+                                                                                        </connections>
                                                                                     </switch>
                                                                                 </subviews>
                                                                                 <edgeInsets key="layoutMargins" top="12" left="12" bottom="12" right="12"/>
@@ -320,7 +329,7 @@
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <action selector="signupButtonPressed" destination="NFm-bM-Ukr" eventType="touchUpInside" id="uSN-Yj-HLh"/>
+                                                                    <action selector="signupButtonPressed:" destination="NFm-bM-Ukr" eventType="touchUpInside" id="IVA-hB-Gvn"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>

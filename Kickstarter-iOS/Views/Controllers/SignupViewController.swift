@@ -2,12 +2,12 @@ import Library
 import MessageUI
 import Prelude
 import Prelude_UIKit
-import ReactiveCocoa
 import ReactiveSwift
 import UIKit
 
 internal final class SignupViewController: UIViewController, MFMailComposeViewControllerDelegate {
   fileprivate let helpViewModel = HelpViewModel()
+  fileprivate let viewModel = SignupViewModel()
 
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
   @IBOutlet fileprivate weak var disclaimerButton: UIButton!
@@ -35,7 +35,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
                                                            action: #selector(newsletterLabelTapped))
     self.newsletterLabel.addGestureRecognizer(newsletterLabelTapGesture)
 
-    self.viewDidLoadProperty.value = ()
+    self.viewModel.inputs.viewDidLoad.value = ()
   }
 
   internal override func bindStyles() {
@@ -72,9 +72,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       |> signupButtonStyle
   }
 
-  fileprivate let environmentLoggedInProperty = MutableProperty(())
-  fileprivate let viewDidLoadProperty = MutableProperty(())
-
   internal override func bindViewModel() {
     let (
       emailTextFieldBecomeFirstResponder,
@@ -85,28 +82,18 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       nameTextFieldBecomeFirstResponder,
       setWeeklyNewsletterState,
       showError
-    ) = signupViewModel(
-      emailChanged: self.emailTextField.reactive.continuousTextValues.skipNil(),
-      emailTextFieldReturn: self.emailTextField.reactive.controlEvents(.editingDidEndOnExit).ignoreValues(),
-      environmentLoggedIn: environmentLoggedInProperty.signal,
-      nameChanged: self.nameTextField.reactive.continuousTextValues.skipNil(),
-      nameTextFieldReturn: self.nameTextField.reactive.controlEvents(.editingDidEndOnExit).ignoreValues(),
-      passwordChanged: self.passwordTextField.reactive.continuousTextValues.skipNil(),
-      passwordTextFieldReturn: self.passwordTextField.reactive.controlEvents(.editingDidEndOnExit).ignoreValues(),
-      signupButtonPressed: self.signupButton.reactive.controlEvents(.touchUpInside).ignoreValues(),
-      viewDidLoad: viewDidLoadProperty.signal,
-      weeklyNewsletterChanged: newsletterSwitch.reactive.isOnValues
-    )
+    ) = self.viewModel.outputs(from: self.viewModel.inputs)
 
-    self.emailTextField.reactive.becomeFirstResponder <~ emailTextFieldBecomeFirstResponder
-    self.newsletterSwitch.reactive.isOn <~ setWeeklyNewsletterState
-    self.passwordTextField.reactive.becomeFirstResponder <~ passwordTextFieldBecomeFirstResponder
-    self.signupButton.reactive.isEnabled <~ isSignupButtonEnabled
+    self.nameTextField.rac.becomeFirstResponder = nameTextFieldBecomeFirstResponder
+    self.emailTextField.rac.becomeFirstResponder = emailTextFieldBecomeFirstResponder
+    self.newsletterSwitch.rac.on = setWeeklyNewsletterState
+    self.passwordTextField.rac.becomeFirstResponder = passwordTextFieldBecomeFirstResponder
+    self.signupButton.rac.enabled = isSignupButtonEnabled
 
     logIntoEnvironment
       .observeValues { [weak self] in
         AppEnvironment.login($0)
-        self?.environmentLoggedInProperty.value = ()
+        self?.viewModel.inputs.environmentLoggedIn.value = ()
       }
 
     postNotification
@@ -151,6 +138,38 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
     Keyboard.change.observeForUI()
       .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
+  }
+
+  @IBAction internal func emailTextFieldChanged(_ textField: UITextField) {
+    self.viewModel.inputs.emailTextChanged.value = textField.text ?? ""
+  }
+
+  @IBAction internal func emailTextFieldReturn(_ textField: UITextField) {
+    self.viewModel.inputs.emailTextFieldDidReturn.value = ()
+  }
+
+  @IBAction func nameTextFieldChanged(_ textField: UITextField) {
+    self.viewModel.inputs.nameTextChanged.value = textField.text ?? ""
+  }
+
+  @IBAction internal func nameTextFieldReturn(_ textField: UITextField) {
+    self.viewModel.inputs.nameTextFieldDidReturn.value = ()
+  }
+
+  @IBAction internal func passwordTextFieldChanged(_ textField: UITextField) {
+    self.viewModel.inputs.passwordTextChanged.value = textField.text ?? ""
+  }
+
+  @IBAction internal func passwordTextFieldReturn(_ textField: UITextField) {
+    self.viewModel.inputs.passwordTextFieldDidReturn.value = ()
+  }
+
+  @IBAction internal func weeklyNewsletterChanged(_ newsletterSwitch: UISwitch) {
+    self.viewModel.inputs.weeklyNewsletterChanged.value = newsletterSwitch.isOn
+  }
+
+  @IBAction func signupButtonPressed(_ sender: Any) {
+    self.viewModel.inputs.signupButtonPressed.value = ()
   }
 
   @objc fileprivate func disclaimerButtonPressed() {
@@ -200,5 +219,29 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
     self.present(helpSheet, animated: true, completion: nil)
+  }
+
+  func updateTextFromField(textField: UITextField, text: String?) {
+    if textField == self.emailTextField {
+      self.viewModel.inputs.emailTextChanged.value = text ?? ""
+    } else if textField == self.nameTextField {
+      self.viewModel.inputs.nameTextChanged.value = text ?? ""
+    } else if textField == self.passwordTextField {
+      self.viewModel.inputs.passwordTextChanged.value = text ?? ""
+    }
+  }
+}
+
+extension SignupViewController: UITextFieldDelegate {
+  func textField(_ textField: UITextField,
+                 shouldChangeCharactersIn range: NSRange,
+                 replacementString string: String) -> Bool {
+    self.updateTextFromField(textField: textField, text: textField.text)
+
+    return true
+  }
+
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    self.updateTextFromField(textField: textField, text: textField.text)
   }
 }
