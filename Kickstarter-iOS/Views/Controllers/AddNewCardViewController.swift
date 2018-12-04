@@ -124,10 +124,10 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
       .observeForUI()
       .observeValues { [weak self] cardholderName, cardNumber, expMonth, expYear, cvc in
         self?.createStripeToken(cardholderName: cardholderName,
-                         cardNumber: cardNumber,
-                         expirationMonth: expMonth,
-                         expirationYear: expYear,
-                         cvc: cvc)
+                                cardNumber: cardNumber,
+                                expirationMonth: expMonth,
+                                expirationYear: expYear,
+                                cvc: cvc)
     }
 
     self.viewModel.outputs.activityIndicatorShouldShow
