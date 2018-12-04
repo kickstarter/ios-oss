@@ -27,6 +27,15 @@ public enum MessageBannerType {
     }
   }
 
+  var iconImageTintColor: UIColor? {
+    switch self {
+    case .error:
+      return .black
+    default:
+      return nil
+    }
+  }
+
   var textColor: UIColor {
     switch self {
     case .success, .info:
