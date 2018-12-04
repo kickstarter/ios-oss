@@ -10,9 +10,9 @@ protocol MessageBannerViewControllerPresenting {
 final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate weak var backgroundView: UIView!
   @IBOutlet fileprivate weak var backgroundViewBottomConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate weak var backgroundViewTopConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
   @IBOutlet fileprivate weak var messageLabel: UILabel!
-  @IBOutlet fileprivate weak var backgroundViewTopConstraint: NSLayoutConstraint!
 
   private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
 

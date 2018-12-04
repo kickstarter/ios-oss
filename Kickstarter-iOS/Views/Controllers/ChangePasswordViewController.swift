@@ -16,7 +16,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
   private var saveButtonView: LoadingBarButtonItemView!
-  internal var messageBannerViewController: MessageBannerViewController?
+  private var messageBannerViewController: MessageBannerViewController?
 
   private let viewModel: ChangePasswordViewModelType = ChangePasswordViewModel()
 
