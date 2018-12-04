@@ -185,11 +185,8 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.inputs.paymentInfo(valid: textField.isValid)
   }
 
-  private func createStripeToken(cardholderName: String,
-                   cardNumber: String,
-                   expirationMonth: Int,
-                   expirationYear: Int,
-                   cvc: String) {
+  private func createStripeToken(cardholderName: String, cardNumber: String, expirationMonth: Int,
+                                 expirationYear: Int, cvc: String) {
     let cardParams = STPCardParams()
     cardParams.name = cardholderName
     cardParams.number = cardNumber
