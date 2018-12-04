@@ -143,14 +143,14 @@
         <scene sceneID="sW7-08-TIc">
             <objects>
                 <viewController storyboardIdentifier="ChangeEmailViewController" title="Change Email" id="JTR-kW-WZp" customClass="ChangeEmailViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="Sro-rn-6F2">
+                    <view key="view" contentMode="scaleToFill" id="Sro-rn-6F2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XfD-wg-Nx4" customClass="UIScrollView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XfD-wg-Nx4" customClass="UIScrollView">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VyE-lE-aLQ">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VyE-lE-aLQ">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eOl-CY-t3g">
@@ -305,7 +305,7 @@
                                                     <constraint firstItem="9eu-AW-ocS" firstAttribute="leading" secondItem="9Ny-Zh-npT" secondAttribute="leading" constant="12" id="mMW-w3-7Dw"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9uR-ng-0BU" userLabel="Password">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uR-ng-0BU" userLabel="Password">
                                                 <rect key="frame" x="0.0" y="222" width="375" height="425"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="lrH-yX-xHX">
@@ -338,7 +338,7 @@
                                                             <constraint firstAttribute="height" constant="40" id="QpO-Lf-gR6"/>
                                                         </constraints>
                                                     </stackView>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PLh-cR-QEi" userLabel="Separator">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PLh-cR-QEi" userLabel="Separator">
                                                         <rect key="frame" x="0.0" y="424" width="375" height="1"/>
                                                         <color key="backgroundColor" red="0.86274509799999999" green="0.87058823529999996" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
@@ -368,7 +368,7 @@
                                     <constraint firstItem="VyE-lE-aLQ" firstAttribute="leading" secondItem="XfD-wg-Nx4" secondAttribute="leading" id="pUW-P0-AFT"/>
                                 </constraints>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z5v-98-lpx">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z5v-98-lpx">
                                 <rect key="frame" x="6" y="533" width="363" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="KQp-mG-igY"/>
@@ -666,28 +666,28 @@
             <objects>
                 <viewController storyboardIdentifier="MessageBannerViewController" id="zRn-GV-so4" customClass="MessageBannerViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RZ3-dL-aaS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="323.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="363" height="128"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7uY-xq-yHM">
-                                <rect key="frame" x="6" y="393.5" width="363" height="50"/>
+                                <rect key="frame" x="6" y="170" width="351" height="78"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rH8-fu-Itm">
-                                        <rect key="frame" x="12" y="12" width="339" height="26"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="rH8-fu-Itm">
+                                        <rect key="frame" x="12" y="12" width="327" height="54"/>
                                         <subviews>
-                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fW-rv-LMw">
-                                                <rect key="frame" x="0.0" y="3" width="314" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JgN-WB-ctq">
-                                                <rect key="frame" x="314" y="0.5" width="25" height="25"/>
+                                                <rect key="frame" x="0.0" y="14.5" width="25" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="25" id="c3H-Wo-vRR"/>
                                                     <constraint firstAttribute="height" constant="25" id="teg-Jz-cRa"/>
                                                 </constraints>
                                             </imageView>
+                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fW-rv-LMw">
+                                                <rect key="frame" x="37" y="17" width="290" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -697,7 +697,7 @@
                                     <constraint firstAttribute="bottom" secondItem="rH8-fu-Itm" secondAttribute="bottom" constant="12" id="3In-N7-bjx"/>
                                     <constraint firstItem="rH8-fu-Itm" firstAttribute="leading" secondItem="7uY-xq-yHM" secondAttribute="leading" constant="12" id="7hO-uu-74M"/>
                                     <constraint firstItem="rH8-fu-Itm" firstAttribute="top" secondItem="7uY-xq-yHM" secondAttribute="top" constant="12" id="KVL-us-H3W"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="O7P-Ia-kE8"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="78" id="O7P-Ia-kE8"/>
                                     <constraint firstAttribute="trailing" secondItem="rH8-fu-Itm" secondAttribute="trailing" constant="12" id="hED-A0-5Qi"/>
                                 </constraints>
                                 <connections>
@@ -783,6 +783,6 @@
         <image name="onepassword-button" width="27" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="S9b-Nx-mWW"/>
+        <segue reference="npK-7h-4nS"/>
     </inferredMetricsTieBreakers>
 </document>
