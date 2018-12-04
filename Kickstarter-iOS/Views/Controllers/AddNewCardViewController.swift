@@ -123,7 +123,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.outputs.paymentDetails
       .observeForUI()
       .observeValues { [weak self] cardholderName, cardNumber, expMonth, expYear, cvc in
-        self?.stripeToken(cardholderName: cardholderName,
+        self?.createStripeToken(cardholderName: cardholderName,
                          cardNumber: cardNumber,
                          expirationMonth: expMonth,
                          expirationYear: expYear,
@@ -163,7 +163,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
   }
 
   @objc func cardholderNameTextFieldChanged(_ textField: UITextField) {
-    self.viewModel.inputs.cardholderNameChanged(textField.text ?? "")
+    self.viewModel.inputs.cardholderNameChanged(textField.text)
   }
 
   @objc func cardholderNameTextFieldReturn(_ textField: UITextField
@@ -171,7 +171,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
 
-  func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
+ internal func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
 
     guard let cardnumber = textField.cardNumber, let cvc = textField.cvc else {
       return
@@ -185,7 +185,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.inputs.paymentInfo(valid: textField.isValid)
   }
 
-  func stripeToken(cardholderName: String,
+  private func createStripeToken(cardholderName: String,
                    cardNumber: String,
                    expirationMonth: Int,
                    expirationYear: Int,

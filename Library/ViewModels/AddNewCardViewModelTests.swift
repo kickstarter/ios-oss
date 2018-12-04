@@ -119,8 +119,8 @@ internal final class AddNewCardViewModelTests: TestCase {
   func testBecomeFirstResponderAndSaveEnabled() {
     self.cardholderNameBecomeFirstResponder.assertDidNotEmitValue()
     self.paymentDetailsBecomeFirstResponder.assertDidNotEmitValue()
-    self.saveButtonIsEnabled.assertDidNotEmitValue()
     self.activityIndicatorShouldShow.assertDidNotEmitValue()
+    self.saveButtonIsEnabled.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
@@ -149,7 +149,21 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.saveButtonIsEnabled.assertValues([false, false, true], "Enabled when form is valid.")
   }
 
-  func testSetPublishableKey_CardInfoInValid() {
+  func testSaveButtonEnabled() {
+    self.saveButtonIsEnabled.assertDidNotEmitValue()
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.cardholderNameChanged("")
+    self.vm.inputs.paymentInfo(valid: false)
+    self.saveButtonIsEnabled.assertValues([false], "Disabled form is incomplete")
+
+    self.vm.inputs.cardholderNameChanged("Native Squad")
+    self.vm.inputs.paymentInfo(valid: true)
+
+    self.saveButtonIsEnabled.assertValues([false, false, true], "Enabled when form is valid.")
+  }
+
+  func testSetPublishableKey_CardInfoInvalid() {
     withEnvironment(config: .template |> Config.lens.stripePublishableKey .~ "stripePublishableKey") {
       self.vm.inputs.viewDidLoad()
 

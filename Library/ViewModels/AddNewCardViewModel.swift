@@ -6,7 +6,7 @@ import Result
 import Stripe
 
 public protocol AddNewCardViewModelInputs {
-  func cardholderNameChanged(_ cardholderName: String)
+  func cardholderNameChanged(_ cardholderName: String?)
   func cardholderNameTextFieldReturn()
   func creditCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String)
   func paymentInfo(valid: Bool)
@@ -37,7 +37,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 AddNewCardViewModelOutputs {
 
   public init() {
-    let cardholderName = self.cardholderNameChangedProperty.signal
+    let cardholderName = self.cardholderNameChangedProperty.signal.skipNil()
     let creditCardDetails = self.creditCardChangedProperty.signal.skipNil()
 
     self.cardholderNameBecomeFirstResponder = self.viewDidLoadProperty.signal
@@ -53,12 +53,10 @@ AddNewCardViewModelOutputs {
       .map { cardholderName, creditCardDetails in
         (cardholderName, creditCardDetails.0, creditCardDetails.1, creditCardDetails.2, creditCardDetails.3) }
 
-    let tryAddCardAction = self.saveButtonTappedProperty.signal
-
     self.paymentDetails = paymentInput
       .takeWhen(self.saveButtonTappedProperty.signal)
 
-    self.dismissKeyboard = tryAddCardAction
+    self.dismissKeyboard = self.saveButtonTappedProperty.signal
 
     self.setStripePublishableKey = self.saveButtonIsEnabled
       .filter(isTrue)
@@ -90,14 +88,14 @@ AddNewCardViewModelOutputs {
     )
 
     self.activityIndicatorShouldShow = Signal.merge(
-      tryAddCardAction.signal.mapConst(true),
+      self.saveButtonTappedProperty.signal.mapConst(true),
       self.addNewCardSuccess.mapConst(false),
       self.addNewCardFailure.mapConst(false)
     )
   }
 
-  private let cardholderNameChangedProperty = MutableProperty("")
-  public func cardholderNameChanged(_ cardholderName: String) {
+  private let cardholderNameChangedProperty = MutableProperty<String?>(nil)
+  public func cardholderNameChanged(_ cardholderName: String?) {
     self.cardholderNameChangedProperty.value = cardholderName
   }
 
