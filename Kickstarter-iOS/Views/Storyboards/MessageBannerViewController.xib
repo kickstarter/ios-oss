@@ -69,7 +69,6 @@
             <size key="freeformSize" width="375" height="93"/>
             <connections>
                 <outlet property="backgroundView" destination="uBb-R8-koc" id="koE-AU-5xA"/>
-                <outlet property="backgroundViewBottomConstraint" destination="w6L-8d-wGJ" id="wpd-g2-y3T"/>
                 <outlet property="iconImageView" destination="nK4-zs-uiJ" id="QGa-mg-y9M"/>
                 <outlet property="messageLabel" destination="0Wv-n2-rdf" id="6yf-Ru-AAr"/>
             </connections>

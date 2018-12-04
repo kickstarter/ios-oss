@@ -81,7 +81,6 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
     self.messageBannerConfiguration.value = configuration
   }
 
-
   public let bannerBackgroundColor: Signal<UIColor, NoError>
   public let bannerMessage: Signal<String, NoError>
   public let iconImageName: Signal<String, NoError>

@@ -9,11 +9,11 @@ protocol MessageBannerViewControllerPresenting {
 
 final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate weak var backgroundView: UIView!
-  @IBOutlet fileprivate weak var backgroundViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
   @IBOutlet fileprivate weak var messageLabel: UILabel!
 
   internal var topViewConstraint: NSLayoutConstraint?
+  internal var bottomViewConstraint: NSLayoutConstraint?
   private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
 
@@ -127,9 +127,9 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       let absYPos = abs(yPos)
       let adjustedYPos =  heightLimit * (1 + log10(absYPos / heightLimit))
 
-      self.backgroundViewBottomConstraint.constant = -adjustedYPos + self.bottomMarginConstraintConstant
+      self.bottomViewConstraint?.constant = -adjustedYPos + self.bottomMarginConstraintConstant
     } else {
-      self.backgroundViewBottomConstraint.constant = yPos + self.bottomMarginConstraintConstant
+      self.bottomViewConstraint?.constant = yPos + self.bottomMarginConstraintConstant
     }
   }
 
@@ -156,13 +156,16 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
 
     let topViewBannerConstraint = messageBannerView.topAnchor
       .constraint(equalTo: parentViewController.view.bottomAnchor)
+    let bottomViewBannerConstraint = messageBannerView.bottomAnchor
+      .constraint(greaterThanOrEqualTo: parentViewController.view.bottomAnchor)
     messageBannerViewController.topViewConstraint = topViewBannerConstraint
+    messageBannerViewController.bottomViewConstraint = bottomViewBannerConstraint
 
     parentViewController.view.addConstraints([
       topViewBannerConstraint,
+      bottomViewBannerConstraint,
       messageBannerView.leftAnchor.constraint(equalTo: parentViewController.view.leftAnchor),
-      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor),
-      messageBannerView.bottomAnchor.constraint(greaterThanOrEqualTo: parentViewController.view.bottomAnchor)
+      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor)
       ])
 
     return messageBannerViewController
