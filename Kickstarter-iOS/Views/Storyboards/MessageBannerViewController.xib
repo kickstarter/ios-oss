@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <viewController id="h7y-fG-v9O" customClass="MessageBannerViewController">
+        <viewController restorationIdentifier="MessageBannerViewController" nibName="MessageBannerViewController" id="h7y-fG-v9O" customClass="MessageBannerViewController" customModule="Kickstarter_Framework">
             <view key="view" contentMode="scaleToFill" id="Zcf-a3-qgT">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -50,8 +50,8 @@
                             <constraint firstItem="gUR-Ad-xmQ" firstAttribute="leading" secondItem="uBb-R8-koc" secondAttribute="leading" constant="12" id="amX-DZ-fBN"/>
                         </constraints>
                         <connections>
-                            <outletCollection property="gestureRecognizers" destination="SrO-tc-rR8" appends="YES" id="fwK-f5-fMN"/>
-                            <outletCollection property="gestureRecognizers" destination="W3s-gZ-kOg" appends="YES" id="tCf-my-3To"/>
+                            <outletCollection property="gestureRecognizers" destination="SrO-tc-rR8" appends="YES" id="D5N-Jm-6eM"/>
+                            <outletCollection property="gestureRecognizers" destination="W3s-gZ-kOg" appends="YES" id="AMm-le-e0Q"/>
                         </connections>
                     </view>
                 </subviews>
@@ -61,7 +61,7 @@
                     <constraint firstItem="hDq-aT-wUr" firstAttribute="trailing" secondItem="uBb-R8-koc" secondAttribute="trailing" constant="12" id="bam-XA-Cze"/>
                     <constraint firstItem="uBb-R8-koc" firstAttribute="leading" secondItem="Zcf-a3-qgT" secondAttribute="leading" constant="12" id="bug-cL-gsn"/>
                     <constraint firstItem="uBb-R8-koc" firstAttribute="top" secondItem="hDq-aT-wUr" secondAttribute="bottom" constant="12" id="qR6-D0-YrW"/>
-                    <constraint firstItem="hDq-aT-wUr" firstAttribute="bottom" secondItem="uBb-R8-koc" secondAttribute="bottom" constant="12" id="w6L-8d-wGJ"/>
+                    <constraint firstItem="uBb-R8-koc" firstAttribute="bottom" secondItem="hDq-aT-wUr" secondAttribute="bottom" constant="12" id="w6L-8d-wGJ"/>
                 </constraints>
                 <viewLayoutGuide key="safeArea" id="hDq-aT-wUr"/>
                 <variation key="default">
@@ -71,7 +71,7 @@
                 </variation>
             </view>
             <connections>
-                <outlet property="backgroundView" destination="uBb-R8-koc" id="yMJ-PM-0Vc"/>
+                <outlet property="backgroundView" destination="uBb-R8-koc" id="koE-AU-5xA"/>
                 <outlet property="backgroundViewBottomConstraint" destination="w6L-8d-wGJ" id="wpd-g2-y3T"/>
                 <outlet property="backgroundViewTopConstraint" destination="qR6-D0-YrW" id="LBg-H6-Ybu"/>
                 <outlet property="iconImageView" destination="nK4-zs-uiJ" id="QGa-mg-y9M"/>

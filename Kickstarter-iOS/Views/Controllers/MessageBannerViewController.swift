@@ -3,7 +3,8 @@ import Library
 import Prelude
 
 protocol MessageBannerViewControllerPresenting {
-  func configureMessageBannerViewController() -> MessageBannerViewController?
+  func configureMessageBannerViewController(on parentViewController: UIViewController)
+    -> MessageBannerViewController?
 }
 
 final class MessageBannerViewController: UIViewController, NibLoading {
@@ -13,7 +14,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate weak var messageLabel: UILabel!
   @IBOutlet fileprivate weak var backgroundViewTopConstraint: NSLayoutConstraint!
 
-  private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
+  private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(2)
 
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
 
@@ -31,6 +32,10 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self.view
+      |> \.backgroundColor .~ .clear
+      |> \.isHidden .~ true
 
     _ = backgroundView
       |> roundedStyle(cornerRadius: 4)
@@ -97,15 +102,19 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     UIView.animate(withDuration: duration, delay: 0.0,
                    options: UIView.AnimationOptions.curveEaseInOut,
                    animations: { [weak self] in
-                    guard let `self` = self else { return }
-                    let frameHeight = self.view.frame.size.height
-                    self.backgroundViewBottomConstraint.constant = isHidden
-                      ? frameHeight : self.bottomMarginConstraintConstant
-                    self.view.layoutIfNeeded()
+                    guard let strongSelf = self else { return }
+                    let frameHeight = strongSelf.view.frame.size.height
+                    strongSelf.backgroundViewBottomConstraint.constant = isHidden
+                      ? frameHeight : strongSelf.bottomMarginConstraintConstant
+                    strongSelf.view.layoutIfNeeded()
     }, completion: { [weak self] _ in
       self?.view.isHidden = isHidden
-      self?.backgroundViewBottomConstraint.isActive = false
-      self?.backgroundViewTopConstraint.isActive = true
+
+      if isHidden {
+        self?.backgroundViewBottomConstraint.isActive = false
+        self?.backgroundViewTopConstraint.isActive = true
+      }
+
       self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
     })
   }
@@ -145,49 +154,25 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 }
 
 extension MessageBannerViewControllerPresenting where Self: UIViewController {
-  func configureMessageBannerViewController() -> MessageBannerViewController? {
-    guard let messageBannerViewController = MessageBannerViewController.fromNib(nib: Nib.MessageBannerViewController),
+  func configureMessageBannerViewController(on parentViewController: UIViewController)
+    -> MessageBannerViewController? {
+    guard let messageBannerViewController = MessageBannerViewController
+      .fromNib(nib: Nib.MessageBannerViewController),
           let messageBannerView = messageBannerViewController.view else {
       return nil
     }
 
-    self.addChild(messageBannerViewController)
+    parentViewController.addChild(messageBannerViewController)
+    parentViewController.view.addSubview(messageBannerView)
+    messageBannerViewController.didMove(toParent: parentViewController)
 
-    self.view.addSubview(messageBannerViewController.view)
+    let bannerHeight: CGFloat = 240
 
-    // Constraints
-    messageBannerView.addConstraints([
-      NSLayoutConstraint(item: messageBannerView,
-                         attribute: .leading,
-                         relatedBy: .equal,
-                         toItem: self.view,
-                         attribute: .leading,
-                         multiplier: 1.0,
-                         constant: 0),
-      NSLayoutConstraint(item: messageBannerView,
-                         attribute: .bottom,
-                         relatedBy: .equal,
-                         toItem: self.view,
-                         attribute: .bottom,
-                         multiplier: 1.0,
-                         constant: 0.0),
-      NSLayoutConstraint(item: messageBannerView,
-                         attribute: .trailing,
-                         relatedBy: .equal,
-                         toItem: self.view,
-                         attribute: .trailing,
-                         multiplier: 1.0,
-                         constant: 0.0),
-      NSLayoutConstraint(item: messageBannerView,
-                         attribute: .height,
-                         relatedBy: .equal,
-                         toItem: nil,
-                         attribute: .height,
-                         multiplier: 1.0,
-                         constant: 140.0)
-      ])
+    messageBannerView.frame = CGRect(x: 0,
+                                     y: parentViewController.view.frame.height - bannerHeight,
+                                     width: parentViewController.view.frame.width,
+                                     height: bannerHeight)
 
-    messageBannerViewController.didMove(toParent: self)
 
     return messageBannerViewController
   }

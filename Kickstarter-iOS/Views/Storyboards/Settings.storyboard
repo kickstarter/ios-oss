@@ -659,6 +659,7 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="cVt-VZ-hCL" id="v5b-bv-9fg"/>
+                        <outlet property="view" destination="gb9-7l-6YY" id="YgD-q4-vS5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9UT-pg-c2u" userLabel="First Responder" sceneMemberID="firstResponder"/>
