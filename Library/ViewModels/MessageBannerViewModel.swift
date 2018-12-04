@@ -3,11 +3,12 @@ import Prelude
 import ReactiveSwift
 import Result
 
+public typealias MessageBannerConfiguration = (type: MessageBannerType, message: String)
+
 public protocol MessageBannerViewModelInputs {
-  func setBannerType(type: MessageBannerType)
-  func setBannerMessage(message: String)
-  func showBannerView(shouldShow: Bool)
   func bannerViewAnimationFinished(isHidden: Bool)
+  func showBannerView(shouldShow: Bool)
+  func update(with configuration: MessageBannerConfiguration)
 }
 
 public protocol MessageBannerViewModelOutputs {
@@ -29,56 +30,40 @@ public protocol MessageBannerViewModelType {
 public class MessageBannerViewModel: MessageBannerViewModelType,
 MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
   public init() {
-    self.bannerBackgroundColor = self.bannerTypeProperty.signal
+    let bannerType = self.messageBannerConfiguration.signal
       .skipNil()
+      .map(first)
+
+    self.bannerBackgroundColor = bannerType
       .map { $0.backgroundColor }
 
-    self.iconTintColor = self.bannerTypeProperty.signal
-      .skipNil()
+    self.iconTintColor = bannerType
       .map { $0.iconImageTintColor }
       .skipNil()
 
-    self.iconImageName = self.bannerTypeProperty.signal
-      .skipNil()
+    self.iconImageName = bannerType
       .map { $0.iconImageName }
       .skipNil()
 
-    self.iconIsHidden = self.bannerTypeProperty.signal
-      .skipNil()
+    self.iconIsHidden = bannerType
       .map { $0.shouldShowIconImage }
       .negate()
 
-    self.messageTextColor = self.bannerTypeProperty.signal
-      .skipNil()
-      .map { $0.textColor }
+    self.messageTextColor = bannerType.map { $0.textColor }
+    self.messageTextAlignment = bannerType.map { $0.textAlignment }
 
-    self.messageTextAlignment = self.bannerTypeProperty.signal
-      .skipNil()
-      .map { $0.textAlignment }
+    self.bannerMessage = self.messageBannerConfiguration.signal.skipNil().map(second)
 
-    self.bannerMessage = self.bannerMessageProperty.signal
-      .skipNil()
-
-    let bannerViewShouldHide = self.showBannerViewProperty.signal
-      .negate()
+    let bannerViewShouldHide = self.showBannerViewProperty.signal.negate()
 
     let postAnimationBannerViewShouldHide = self.bannerViewIsHiddenProperty.signal
       .filter { isFalse($0) }
       .debounce(4, on: QueueScheduler.main)
       .negate()
 
-    self.messageBannerViewIsHidden = Signal.merge(bannerViewShouldHide, postAnimationBannerViewShouldHide)
-      .skipRepeats()
-  }
+    let bannerShouldHide = Signal.merge(bannerViewShouldHide, postAnimationBannerViewShouldHide)
 
-  private var bannerTypeProperty = MutableProperty<MessageBannerType?>(nil)
-  public func setBannerType(type: MessageBannerType) {
-    self.bannerTypeProperty.value = type
-  }
-
-  private var bannerMessageProperty = MutableProperty<String?>(nil)
-  public func setBannerMessage(message: String) {
-    self.bannerMessageProperty.value = message
+    self.messageBannerViewIsHidden = bannerShouldHide.skipRepeats()
   }
 
   private var showBannerViewProperty = MutableProperty(false)
@@ -90,6 +75,12 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
   public func bannerViewAnimationFinished(isHidden: Bool) {
     self.bannerViewIsHiddenProperty.value = isHidden
   }
+
+  private var messageBannerConfiguration = MutableProperty<MessageBannerConfiguration?>(nil)
+  public func update(with configuration: MessageBannerConfiguration) {
+    self.messageBannerConfiguration.value = configuration
+  }
+
 
   public let bannerBackgroundColor: Signal<UIColor, NoError>
   public let bannerMessage: Signal<String, NoError>

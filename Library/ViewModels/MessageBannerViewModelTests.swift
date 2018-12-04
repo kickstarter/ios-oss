@@ -30,8 +30,7 @@ internal final class MessageBannerViewModelTests: TestCase {
   }
 
   func testWithSuccessConfiguration() {
-    self.vm.inputs.setBannerType(type: .success)
-    self.vm.inputs.setBannerMessage(message: Strings.Got_it_your_changes_have_been_saved())
+    self.vm.inputs.update(with: (.success, Strings.Got_it_your_changes_have_been_saved()))
 
     self.bannerBackgroundColorObserver.assertValue(MessageBannerType.success.backgroundColor)
     self.bannerMessageObserver.assertValue(Strings.Got_it_your_changes_have_been_saved())
@@ -41,8 +40,7 @@ internal final class MessageBannerViewModelTests: TestCase {
   }
 
   func testErrorConfiguration() {
-    self.vm.inputs.setBannerType(type: .error)
-    self.vm.inputs.setBannerMessage(message: Strings.general_error_oops())
+    self.vm.inputs.update(with: (.error, Strings.general_error_oops()))
 
     self.bannerBackgroundColorObserver.assertValue(MessageBannerType.error.backgroundColor)
     self.bannerMessageObserver.assertValue(Strings.general_error_oops())
@@ -53,8 +51,7 @@ internal final class MessageBannerViewModelTests: TestCase {
   }
 
   func testInfoConfiguration() {
-    self.vm.inputs.setBannerType(type: .info)
-    self.vm.inputs.setBannerMessage(message: Strings.Verification_email_sent())
+    self.vm.inputs.update(with: (.info, Strings.Verification_email_sent()))
 
     self.bannerBackgroundColorObserver.assertValue(MessageBannerType.info.backgroundColor)
     self.bannerMessageObserver.assertValue(Strings.Verification_email_sent())
@@ -65,8 +62,7 @@ internal final class MessageBannerViewModelTests: TestCase {
 
   func testShowHideBannerManual() {
     withEnvironment {
-      self.vm.inputs.setBannerMessage(message: "Success")
-      self.vm.inputs.setBannerType(type: .success)
+      self.vm.inputs.update(with: (.success, "Success"))
       self.vm.inputs.showBannerView(shouldShow: true)
 
       self.messageBannerViewIsHiddenObserver.assertValues([false], "Message banner should show")
@@ -81,8 +77,7 @@ internal final class MessageBannerViewModelTests: TestCase {
   }
 
   func testShowHideFiltersRepeats() {
-    self.vm.inputs.setBannerMessage(message: "Success")
-    self.vm.inputs.setBannerType(type: .success)
+    self.vm.inputs.update(with: (.success, "Success"))
 
     self.vm.inputs.showBannerView(shouldShow: true)
     self.vm.inputs.showBannerView(shouldShow: true)
@@ -92,8 +87,7 @@ internal final class MessageBannerViewModelTests: TestCase {
 
   func testHideBannerAutomatically() {
     withEnvironment {
-      self.vm.inputs.setBannerMessage(message: "Success")
-      self.vm.inputs.setBannerType(type: .success)
+      self.vm.inputs.update(with: (.success, "Success"))
 
       self.vm.inputs.showBannerView(shouldShow: true)
 
