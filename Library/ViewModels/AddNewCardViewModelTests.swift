@@ -116,7 +116,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     }
   }
 
-  func testBecomeFirstResponderAndSaveEnabled() {
+  func testBecomeFirstResponder() {
     self.cardholderNameBecomeFirstResponder.assertDidNotEmitValue()
     self.paymentDetailsBecomeFirstResponder.assertDidNotEmitValue()
     self.activityIndicatorShouldShow.assertDidNotEmitValue()
