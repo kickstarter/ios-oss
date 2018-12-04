@@ -5,6 +5,7 @@ import ReactiveSwift
 import Result
 
 public protocol PaymentMethodsViewModelInputs {
+  func cardAddedSuccessfully(_ message: String)
   func didDelete(_ creditCard: GraphUserCreditCard.CreditCard)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
@@ -16,6 +17,7 @@ public protocol PaymentMethodsViewModelOutputs {
   /// Emits the user's stored cards
   var goToAddCardScreen: Signal<Void, NoError> { get }
   var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError> { get }
+  var presentBanner: Signal<String, NoError> { get }
   var showAlert: Signal<String, NoError> { get }
   var tableViewIsEditing: Signal<Bool, NoError> { get }
 }
@@ -29,7 +31,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
   public init() {
-    let paymentMethodsEvent = self.viewDidLoadProperty.signal
+    let paymentMethodsEvent = self.viewWillAppearProperty.signal
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphCreditCards(query: UserQueries.storedCards.query)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -62,6 +64,8 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     )
 
     self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
+
+    self.presentBanner = self.presentMessageBannerProperty.signal
 
     self.tableViewIsEditing = self.editButtonTappedSignal.scan(false) { current, _ in !current }
 
@@ -110,8 +114,14 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.didTapAddCardButtonProperty.value = ()
   }
 
+  fileprivate let presentMessageBannerProperty = MutableProperty("")
+  public func cardAddedSuccessfully(_ message: String) {
+    self.presentMessageBannerProperty.value = message
+  }
+
   public let goToAddCardScreen: Signal<Void, NoError>
   public let paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError>
+  public let presentBanner: Signal<String, NoError>
   public let showAlert: Signal<String, NoError>
   public let tableViewIsEditing: Signal<Bool, NoError>
 

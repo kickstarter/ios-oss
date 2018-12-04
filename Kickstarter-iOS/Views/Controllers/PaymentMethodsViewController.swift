@@ -11,12 +11,20 @@ internal final class PaymentMethodsViewController: UIViewController {
   @IBOutlet private weak var headerLabel: UILabel!
   @IBOutlet private weak var tableView: UITableView!
 
+  private var messageBannerView: MessageBannerViewController!
+
   public static func instantiate() -> PaymentMethodsViewController {
     return Storyboard.Settings.instantiate(PaymentMethodsViewController.self)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    guard let messageViewController = self.children.first as? MessageBannerViewController else {
+      fatalError("Missing message View Controller")
+
+    }
+    self.messageBannerView = messageViewController
 
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
@@ -80,6 +88,12 @@ internal final class PaymentMethodsViewController: UIViewController {
         self?.goToAddCardScreen()
     }
 
+    self.viewModel.outputs.presentBanner
+      .observeForUI()
+      .observeValues { [weak self] message in
+        self?.messageBannerView.showBanner(with: .success, message: message)
+    }
+
     self.viewModel.outputs.tableViewIsEditing
       .observeForUI()
       .observeValues { [weak self] isEditing in
@@ -102,6 +116,7 @@ internal final class PaymentMethodsViewController: UIViewController {
 
   private func goToAddCardScreen() {
     let vc = AddNewCardViewController.instantiate()
+    vc.delegate = self
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
 
@@ -129,8 +144,13 @@ extension PaymentMethodsViewController: UITableViewDelegate {
 }
 
 extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
-
   internal func paymentMethodsFooterViewDidTapAddNewCardButton(_ footerView: PaymentMethodsFooterView) {
     self.viewModel.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
+  }
+}
+
+extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
+  internal func presentAddCardSuccessfulBanner(_ message: String) {
+    self.viewModel.inputs.cardAddedSuccessfully(message)
   }
 }

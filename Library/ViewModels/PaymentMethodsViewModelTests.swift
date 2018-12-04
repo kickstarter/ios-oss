@@ -12,6 +12,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   let vm = PaymentMethodsViewModel()
   let goToAddCardScreen = TestObserver<Void, NoError>()
   let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
+  let presentBanner = TestObserver<String, NoError>()
   let showAlert = TestObserver<String, NoError>()
   let tableViewIsEditing = TestObserver<Bool, NoError>()
 
@@ -20,6 +21,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     self.vm.outputs.goToAddCardScreen.observe(self.goToAddCardScreen.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
+    self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.tableViewIsEditing.observe(self.tableViewIsEditing.observer)
   }
@@ -31,7 +33,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
     withEnvironment(apiService: apiService) {
 
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
       self.scheduler.advance()
 
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
@@ -39,12 +41,21 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testGoToAddCardScreenEmits_WhenAddNewCardIsTapped() {
-
     self.goToAddCardScreen.assertValueCount(0)
 
     self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
 
     self.goToAddCardScreen.assertValueCount(1, "Should emit after tapping button")
+  }
+
+  func testPresentMessageBanner() {
+    self.presentBanner.assertValues([])
+
+    self.vm.inputs.cardAddedSuccessfully(Strings.Got_it_your_changes_have_been_saved())
+
+    self.vm.inputs.viewWillAppear()
+
+    self.presentBanner.assertValues([Strings.Got_it_your_changes_have_been_saved()])
   }
 
   func testDeletePaymentMethod() {
@@ -56,7 +67,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(deletePaymentMethodResult: .success(GraphMutationEmptyResponseEnvelope()))
     withEnvironment(apiService: apiService) {
 
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
       self.scheduler.advance()
 
       self.tableViewIsEditing.assertValues([])
@@ -90,7 +101,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput))
     withEnvironment(apiService: apiService) {
 
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
       self.scheduler.advance()
 
       self.tableViewIsEditing.assertValues([])
