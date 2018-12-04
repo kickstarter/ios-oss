@@ -22,10 +22,10 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.messageBannerViewController = configureMessageBannerViewController(on: self)
-
     self.tableView.dataSource = dataSource
     self.tableView.delegate = self
+
+    self.messageBannerViewController = configureMessageBannerViewController(on: self)
 
     self.tableView.register(nib: .SettingsTableViewCell)
     self.tableView.register(nib: .SettingsCurrencyPickerCell)
@@ -117,7 +117,8 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   }
 
   private func showGeneralError() {
-    self.messageBannerViewController?.showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+    self.messageBannerViewController?.showBanner(with: .error,
+                                                 message: Strings.Something_went_wrong_please_try_again())
   }
 
   private func dismissCurrencyPickerCell() {

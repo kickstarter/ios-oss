@@ -14,7 +14,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate weak var messageLabel: UILabel!
   @IBOutlet fileprivate weak var backgroundViewTopConstraint: NSLayoutConstraint!
 
-  private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(2)
+  private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
 
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
 
@@ -103,7 +103,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
                    options: UIView.AnimationOptions.curveEaseInOut,
                    animations: { [weak self] in
                     guard let strongSelf = self else { return }
-                    let frameHeight = strongSelf.view.frame.size.height
+                    let frameHeight = strongSelf.backgroundView.frame.size.height
                     strongSelf.backgroundViewBottomConstraint.constant = isHidden
                       ? frameHeight : strongSelf.bottomMarginConstraintConstant
                     strongSelf.view.layoutIfNeeded()
@@ -172,7 +172,6 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
                                      y: parentViewController.view.frame.height - bannerHeight,
                                      width: parentViewController.view.frame.width,
                                      height: bannerHeight)
-
 
     return messageBannerViewController
   }
