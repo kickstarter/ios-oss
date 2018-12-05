@@ -370,6 +370,7 @@ extension BackerDashboardViewController: UIGestureRecognizerDelegate {
 
 extension BackerDashboardViewController: TabBarControllerScrollable {
   func scrollToTop() {
+    //swiftlint:disable todo
     //FIXME: crash because self.pageViewController is nil
     if let scrollView = self.pageViewController.viewControllers?.first?.view as? UIScrollView {
       scrollView.scrollToTop()
