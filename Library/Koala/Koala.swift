@@ -1320,6 +1320,10 @@ public final class Koala {
     self.track(event: "Resent Verification Email")
   }
 
+  public func trackChangedCurrency(_ currency: Currency) {
+    let prop = ["currency": currency.descriptionText]
+    self.track(event: "Selected Chosen Currency", properties: prop)
+  }
   /**
    Tracks an event for toggling a newsletter preference.
 

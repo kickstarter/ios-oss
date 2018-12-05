@@ -659,4 +659,13 @@ final class KoalaTests: TestCase {
 
     XCTAssertEqual(["Changed Password"], client.events)
   }
+
+  func testTrackChangedCurrency() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangedCurrency(.CAD)
+
+    XCTAssertEqual(["Selected Chosen Currency"], client.events)
+  }
 }

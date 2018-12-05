@@ -88,6 +88,12 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     self.viewDidAppearProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackAccountView() }
+
+    // Koala
+    updateCurrency.signal
+      .observeValues { currency in
+        AppEnvironment.current.koala.trackChangedCurrency(currency)
+    }
   }
 
   fileprivate let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
