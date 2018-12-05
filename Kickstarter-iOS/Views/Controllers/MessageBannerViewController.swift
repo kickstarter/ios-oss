@@ -86,7 +86,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 
   func showBanner(with type: MessageBannerType, message: String) {
     self.viewModel.inputs.update(with: (type, message))
-    self.viewModel.inputs.showBannerView(shouldShow: true)
+    self.viewModel.inputs.bannerViewWillShow(true)
   }
 
   private func showViewAndAnimate(_ isHidden: Bool) {
@@ -122,7 +122,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     let currentTouchPoint = sender.translation(in: self.view.superview)
 
     if sender.state == .cancelled || sender.state == .ended {
-      self.viewModel.inputs.showBannerView(shouldShow: false)
+      self.viewModel.inputs.bannerViewWillShow(false)
 
       return
     }
@@ -145,7 +145,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
   }
 
   @IBAction private func bannerViewTapped(_ sender: Any) {
-    self.viewModel.inputs.showBannerView(shouldShow: false)
+    self.viewModel.inputs.bannerViewWillShow(false)
   }
 }
 

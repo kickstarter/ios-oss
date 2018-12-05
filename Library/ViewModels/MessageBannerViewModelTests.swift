@@ -63,11 +63,11 @@ internal final class MessageBannerViewModelTests: TestCase {
   func testShowHideBannerManual() {
     withEnvironment {
       self.vm.inputs.update(with: (.success, "Success"))
-      self.vm.inputs.showBannerView(shouldShow: true)
+      self.vm.inputs.bannerViewWillShow(true)
 
       self.messageBannerViewIsHidden.assertValues([false], "Message banner should show")
 
-      self.vm.inputs.showBannerView(shouldShow: false)
+      self.vm.inputs.bannerViewWillShow(false)
 
       scheduler.advance(by: .seconds(5))
 
@@ -79,8 +79,8 @@ internal final class MessageBannerViewModelTests: TestCase {
   func testShowHideFiltersRepeats() {
     self.vm.inputs.update(with: (.success, "Success"))
 
-    self.vm.inputs.showBannerView(shouldShow: true)
-    self.vm.inputs.showBannerView(shouldShow: true)
+    self.vm.inputs.bannerViewWillShow(true)
+    self.vm.inputs.bannerViewWillShow(true)
 
     self.messageBannerViewIsHidden.assertValues([false], "Message banner should show")
   }
@@ -89,7 +89,7 @@ internal final class MessageBannerViewModelTests: TestCase {
     withEnvironment {
       self.vm.inputs.update(with: (.success, "Success"))
 
-      self.vm.inputs.showBannerView(shouldShow: true)
+      self.vm.inputs.bannerViewWillShow(true)
 
       scheduler.schedule(after: .seconds(5), action: {
         self.messageBannerViewIsHidden.assertValues([false, true],

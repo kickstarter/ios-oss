@@ -7,7 +7,7 @@ public typealias MessageBannerConfiguration = (type: MessageBannerType, message:
 
 public protocol MessageBannerViewModelInputs {
   func bannerViewAnimationFinished(isHidden: Bool)
-  func showBannerView(shouldShow: Bool)
+  func bannerViewWillShow(_ show: Bool)
   func update(with configuration: MessageBannerConfiguration)
 }
 
@@ -67,8 +67,8 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
   }
 
   private var showBannerViewProperty = MutableProperty(false)
-  public func showBannerView(shouldShow: Bool) {
-    self.showBannerViewProperty.value = shouldShow
+  public func bannerViewWillShow(_ show: Bool) {
+    self.showBannerViewProperty.value = show
   }
 
   private var bannerViewIsHiddenProperty = MutableProperty(true)

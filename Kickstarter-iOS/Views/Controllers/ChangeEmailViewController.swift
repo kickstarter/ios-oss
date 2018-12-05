@@ -31,7 +31,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.messageBannerViewController = configureMessageBannerViewController(on: self)
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())

@@ -25,7 +25,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.tableView.dataSource = dataSource
     self.tableView.delegate = self
 
-    self.messageBannerViewController = configureMessageBannerViewController(on: self)
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.tableView.register(nib: .SettingsTableViewCell)
     self.tableView.register(nib: .SettingsCurrencyPickerCell)
