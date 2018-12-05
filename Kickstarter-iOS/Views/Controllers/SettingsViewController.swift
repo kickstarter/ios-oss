@@ -142,7 +142,6 @@ final class SettingsViewController: UIViewController {
 
 extension SettingsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-
     //Account Section is hidden from user until ready to release.
     if AppEnvironment.current.mainBundle.isRelease && section == 0 {
       return 0.1

@@ -35,7 +35,7 @@ internal final class TwoFactorViewController: UIViewController {
     }
 
     _ = self.codeTextField
-      |> tfaCodeFieldStyle
+      |> tfaCodeFieldAutoFillStyle
 
     _ = self.formBackgroundView
       |> cardStyle()

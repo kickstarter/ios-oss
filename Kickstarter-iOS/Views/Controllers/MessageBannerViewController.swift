@@ -11,13 +11,15 @@ protocol MessageBannerViewControllerPresenting {
 
 final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate weak var backgroundView: UIView!
+  @IBOutlet fileprivate weak var containerView: UIView!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
   @IBOutlet fileprivate weak var messageLabel: UILabel!
 
   internal var topViewConstraint: NSLayoutConstraint?
-  internal var bottomViewConstraint: NSLayoutConstraint?
+
   private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
+  private var isAnimating: Bool = false
 
   struct AnimationConstants {
     static let hideDuration: TimeInterval = 0.25
@@ -30,6 +32,9 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     _ = self.view
       |> \.backgroundColor .~ .clear
       |> \.isHidden .~ true
+
+    _ = self.containerView
+      |> \.backgroundColor .~ .clear
       |> \.layoutMargins .~ .init(all: Styles.grid(1))
 
     _ = backgroundView
@@ -91,6 +96,8 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       self.view.isHidden = isHidden
     }
 
+    self.isAnimating = true
+
     UIView.animate(withDuration: duration, delay: 0.0,
                    options: UIView.AnimationOptions.curveEaseInOut,
                    animations: { [weak self] in
@@ -100,6 +107,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
                       ? 0 : -frameHeight
                     self.view.superview?.layoutIfNeeded()
     }, completion: { [weak self] _ in
+      self?.isAnimating = false
       self?.view.isHidden = isHidden
 
       self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
@@ -107,11 +115,11 @@ final class MessageBannerViewController: UIViewController, NibLoading {
   }
 
   @IBAction private func bannerViewPanned(_ sender: UIPanGestureRecognizer) {
-    guard let bannerView = sender.view else {
+    guard let view = sender.view, self.isAnimating == false else {
       return
     }
 
-    let currentTouchPoint = sender.translation(in: self.view)
+    let currentTouchPoint = sender.translation(in: self.view.superview)
 
     if sender.state == .cancelled || sender.state == .ended {
       self.viewModel.inputs.showBannerView(shouldShow: false)
@@ -120,7 +128,8 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     }
 
     let yPos = currentTouchPoint.y
-    let heightLimit = bannerView.frame.height / 8
+    let heightLimit = view.frame.height / 8
+    let height = view.frame.height
 
     if yPos == 0 {
       return
@@ -129,9 +138,9 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       let absYPos = abs(yPos)
       let adjustedYPos =  heightLimit * (1 + log10(absYPos / heightLimit))
 
-      self.bottomViewConstraint?.constant = -adjustedYPos + self.bottomMarginConstraintConstant
+      self.topViewConstraint?.constant = -(height + adjustedYPos)
     } else {
-      self.bottomViewConstraint?.constant = yPos + self.bottomMarginConstraintConstant
+      self.topViewConstraint?.constant = -(height - yPos)
     }
   }
 
@@ -158,14 +167,10 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
 
     let topViewBannerConstraint = messageBannerView.topAnchor
       .constraint(equalTo: parentViewController.view.bottomAnchor)
-    let bottomViewBannerConstraint = messageBannerView.bottomAnchor
-      .constraint(greaterThanOrEqualTo: parentViewController.view.bottomAnchor)
     messageBannerViewController.topViewConstraint = topViewBannerConstraint
-    messageBannerViewController.bottomViewConstraint = bottomViewBannerConstraint
 
     parentViewController.view.addConstraints([
       topViewBannerConstraint,
-      bottomViewBannerConstraint,
       messageBannerView.leftAnchor.constraint(equalTo: parentViewController.view.leftAnchor),
       messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor)
       ])
