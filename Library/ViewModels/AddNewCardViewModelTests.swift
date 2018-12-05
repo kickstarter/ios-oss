@@ -220,4 +220,33 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.cardExpYear.assertValues([99])
     self.cardCVC.assertValues(["123"])
   }
+
+  func testTrackViewedAddNewCard() {
+
+    self.vm.inputs.viewWillAppear()
+
+    XCTAssertEqual(["Viewed Add New Card"], self.trackingClient.events)
+  }
+
+  func testTrackSavedPaymentMethod() {
+
+    self.vm.inputs.paymentInfo(valid: true)
+    self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(["Saved Payment Method"], self.trackingClient.events)
+  }
+
+  func testTrackFailedPaymentMethodCreation() {
+
+    let error = GraphError.emptyResponse(nil)
+    withEnvironment(apiService: MockService(addNewCreditCardError: error)) {
+      self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Failed Payment Method Creation"], self.trackingClient.events)
+    }
+  }
 }
