@@ -9,29 +9,29 @@ import Prelude
 final class SettingsNotificationCellViewModelTests: TestCase {
   private let vm = SettingsNotificationCellViewModel()
 
-  private let enableButtonAnimationObserver = TestObserver<Bool, NoError>()
-  private let emailNotificationsEnabledObserver = TestObserver<Bool, NoError>()
-  private let hideEmailNotificationButtonObserver = TestObserver<Bool, NoError>()
-  private let hidePushNotificationButtonObserver = TestObserver<Bool, NoError>()
-  private let manageProjectNotificationsHintObserver = TestObserver<String, NoError>()
-  private let projectCountTextObserver = TestObserver<String, NoError>()
-  private let pushNotificationsEnabledObserver = TestObserver<Bool, NoError>()
-  private let unableToSaveErrorObserver = TestObserver<String, NoError>()
-  private let updateCurrentUserObserver = TestObserver<User, NoError>()
+  private let enableButtonAnimation = TestObserver<Bool, NoError>()
+  private let emailNotificationsEnabled = TestObserver<Bool, NoError>()
+  private let emailNotificationButtonIsHidden = TestObserver<Bool, NoError>()
+  private let pushNotificationButtonIsHidden = TestObserver<Bool, NoError>()
+  private let manageProjectNotificationsButtonAccessibilityHint = TestObserver<String, NoError>()
+  private let projectCountText = TestObserver<String, NoError>()
+  private let pushNotificationsEnabled = TestObserver<Bool, NoError>()
+  private let unableToSaveError = TestObserver<String, NoError>()
+  private let updateCurrentUser = TestObserver<User, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.enableButtonAnimation.observe(enableButtonAnimationObserver.observer)
-    self.vm.outputs.emailNotificationsEnabled.observe(emailNotificationsEnabledObserver.observer)
-    self.vm.outputs.emailNotificationButtonIsHidden.observe(hideEmailNotificationButtonObserver.observer)
-    self.vm.outputs.pushNotificationButtonIsHidden.observe(hidePushNotificationButtonObserver.observer)
+    self.vm.outputs.enableButtonAnimation.observe(enableButtonAnimation.observer)
+    self.vm.outputs.emailNotificationsEnabled.observe(emailNotificationsEnabled.observer)
+    self.vm.outputs.emailNotificationButtonIsHidden.observe(emailNotificationButtonIsHidden.observer)
+    self.vm.outputs.pushNotificationButtonIsHidden.observe(pushNotificationButtonIsHidden.observer)
     self.vm.outputs.manageProjectNotificationsButtonAccessibilityHint
-      .observe(manageProjectNotificationsHintObserver.observer)
-    self.vm.outputs.projectCountText.observe(projectCountTextObserver.observer)
-    self.vm.pushNotificationsEnabled.observe(pushNotificationsEnabledObserver.observer)
-    self.vm.unableToSaveError.observe(unableToSaveErrorObserver.observer)
-    self.vm.updateCurrentUser.observe(updateCurrentUserObserver.observer)
+      .observe(manageProjectNotificationsButtonAccessibilityHint.observer)
+    self.vm.outputs.projectCountText.observe(projectCountText.observer)
+    self.vm.pushNotificationsEnabled.observe(pushNotificationsEnabled.observer)
+    self.vm.unableToSaveError.observe(unableToSaveError.observer)
+    self.vm.updateCurrentUser.observe(updateCurrentUser.observer)
   }
 
   func testEnableButtonAnimation_turnedOn() {
@@ -40,7 +40,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.enableButtonAnimationObserver.assertValue(true)
+    self.enableButtonAnimation.assertValue(true)
   }
 
   func testEnableButtonAnimation_turnedOff() {
@@ -49,7 +49,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.enableButtonAnimationObserver.assertValue(false)
+    self.enableButtonAnimation.assertValue(false)
   }
 
   func testEmailNotificationsEnabled() {
@@ -68,7 +68,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.emailNotificationsEnabledObserver.assertValues([true], "Email notifications are enabled")
+    self.emailNotificationsEnabled.assertValues([true], "Email notifications are enabled")
   }
 
   func testEmailNotificationsDisabled() {
@@ -87,7 +87,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.emailNotificationsEnabledObserver.assertValues([false], "Email notifications are disabled")
+    self.emailNotificationsEnabled.assertValues([false], "Email notifications are disabled")
   }
 
   func testPushNotificationsEnabled() {
@@ -106,7 +106,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.pushNotificationsEnabledObserver.assertValues([true], "Push notifications are enabled")
+    self.pushNotificationsEnabled.assertValues([true], "Push notifications are enabled")
   }
 
   func testPushNotificationsDisabled() {
@@ -125,7 +125,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.pushNotificationsEnabledObserver.assertValues([false], "Push notifications are disabled")
+    self.pushNotificationsEnabled.assertValues([false], "Push notifications are disabled")
   }
 
   func testEmailNotificationEnabled_NoValue() {
@@ -135,7 +135,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.emailNotificationsEnabledObserver.assertValueCount(0)
+    self.emailNotificationsEnabled.assertValueCount(0)
   }
 
   func testPushNotificationsEnabled_NoValue() {
@@ -145,14 +145,14 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.pushNotificationsEnabledObserver.assertValueCount(0, "pushNotificationsEnabled should not fire")
+    self.pushNotificationsEnabled.assertValueCount(0, "pushNotificationsEnabled should not fire")
 
     // Should have no Notification
     let value1 = SettingsNotificationCellValue(cellType: .creatorTips, user: user)
 
     self.vm.inputs.configure(with: value1)
 
-    self.pushNotificationsEnabledObserver.assertValueCount(0, "pushNotificationsEnabled should not fire")
+    self.pushNotificationsEnabled.assertValueCount(0, "pushNotificationsEnabled should not fire")
   }
 
   func testHideEmailNotificationsButton() {
@@ -163,13 +163,13 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.hideEmailNotificationButtonObserver.assertValues([true], "Should hide email notifications button")
+    self.emailNotificationButtonIsHidden.assertValues([true], "Should hide email notifications button")
 
     let value1 = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 
     self.vm.inputs.configure(with: value1)
 
-    self.hideEmailNotificationButtonObserver
+    self.emailNotificationButtonIsHidden
       .assertValues([true, false], "Should show email notifications button")
   }
 
@@ -181,13 +181,13 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.hidePushNotificationButtonObserver.assertValues([true], "Should hide email notifications button")
+    self.pushNotificationButtonIsHidden.assertValues([true], "Should hide email notifications button")
 
     let value1 = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
 
     self.vm.inputs.configure(with: value1)
 
-    self.hidePushNotificationButtonObserver
+    self.pushNotificationButtonIsHidden
       .assertValues([true, false], "Should show email notifications button")
   }
 
@@ -197,7 +197,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.manageProjectNotificationsHintObserver.assertValue("5 projects backed")
+    self.manageProjectNotificationsButtonAccessibilityHint.assertValue("5 projects backed")
   }
 
   func testProjectTextCount() {
@@ -206,7 +206,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
 
-    self.projectCountTextObserver.assertValue("5")
+    self.projectCountText.assertValue("5")
   }
 
   func testUnabletoSaveError() {
@@ -223,18 +223,18 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.configure(with: value)
 
-      self.emailNotificationsEnabledObserver.assertValue(true)
+      self.emailNotificationsEnabled.assertValue(true)
 
       self.vm.inputs.didTapEmailNotificationsButton(selected: true)
 
-      self.emailNotificationsEnabledObserver
+      self.emailNotificationsEnabled
         .assertValues([true, false], "Selected value changes to reflect update")
 
       scheduler.advance()
 
-      self.unableToSaveErrorObserver.assertValue("Something bad happened")
-      self.updateCurrentUserObserver.assertDidNotEmitValue()
-      self.emailNotificationsEnabledObserver
+      self.unableToSaveError.assertValue("Something bad happened")
+      self.updateCurrentUser.assertDidNotEmitValue()
+      self.emailNotificationsEnabled
         .assertValues([true, false, true], "Selected value is reset to original value")
     }
   }
@@ -249,25 +249,25 @@ final class SettingsNotificationCellViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.configure(with: value)
-      self.emailNotificationsEnabledObserver.assertValue(true)
-      self.pushNotificationsEnabledObserver.assertValue(true)
+      self.emailNotificationsEnabled.assertValue(true)
+      self.pushNotificationsEnabled.assertValue(true)
 
       self.vm.inputs.didTapEmailNotificationsButton(selected: true)
 
       scheduler.advance()
 
-      self.updateCurrentUserObserver.assertValueCount(1, "User was updated")
+      self.updateCurrentUser.assertValueCount(1, "User was updated")
 
-      self.emailNotificationsEnabledObserver
+      self.emailNotificationsEnabled
         .assertValues([true, false], "Email notification button was toggled")
 
       self.vm.inputs.didTapPushNotificationsButton(selected: true)
 
       scheduler.advance()
 
-      self.updateCurrentUserObserver.assertValueCount(2, "User was updated")
+      self.updateCurrentUser.assertValueCount(2, "User was updated")
 
-      self.pushNotificationsEnabledObserver
+      self.pushNotificationsEnabled
         .assertValues([true, false], "Push notification button was toggled")
     }
   }

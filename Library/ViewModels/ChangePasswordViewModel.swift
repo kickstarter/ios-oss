@@ -12,7 +12,7 @@ public protocol ChangePasswordViewModelInputs {
   func newPasswordConfirmationFieldTextChanged(text: String)
   func newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: String)
   func onePasswordButtonTapped()
-  func onePasswordIsAvailable(available: Bool)
+  func onePassword(isAvailable available: Bool)
   func onePasswordFoundPassword(password: String)
   func saveButtonTapped()
   func viewDidAppear()
@@ -108,7 +108,8 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
     self.currentPasswordBecomeFirstResponder = self.viewDidAppearProperty.signal
     self.newPasswordBecomeFirstResponder = self.currentPasswordDoneEditingProperty.signal
-    self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.negate()
+    self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.map(negate)
+      .map(is1PasswordButtonHidden)
     self.confirmNewPasswordBecomeFirstResponder = self.newPasswordDoneEditingProperty.signal
     self.currentPasswordPrefillValue = self.onePasswordPrefillPasswordProperty.signal.skipNil()
     self.onePasswordFindPasswordForURLString = self.onePasswordButtonTappedProperty.signal
@@ -173,7 +174,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   }
 
   private var onePasswordIsAvailableProperty = MutableProperty(true)
-  public func onePasswordIsAvailable(available: Bool) {
+  public func onePassword(isAvailable available: Bool) {
     self.onePasswordIsAvailableProperty.value = available
   }
 
