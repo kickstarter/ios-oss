@@ -78,17 +78,4 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.updateCurrencyFailure.assertDidEmitValue()
     }
   }
-
-  func testTrackSelectedChosenCurrency() {
-
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.showChangeCurrencyAlert(for: Currency.CHF)
-    self.vm.inputs.didConfirmChangeCurrency()
-    self.scheduler.advance()
-
-    XCTAssertEqual(["Selected Chosen Currency"], self.trackingClient.events)
-    XCTAssertEqual(["Fr Swiss Franc (CHF)"], self.trackingClient.properties(forKey: "currency",
-                                                                                as: String.self))
-  }
 }
