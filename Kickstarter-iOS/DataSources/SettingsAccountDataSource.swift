@@ -28,10 +28,9 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   func insertCurrencyCell(currency: Currency?) -> IndexPath {
     let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency )
 
-    return self.insertRow(value: cellValue,
+    return self.appendRow(value: cellValue,
                           cellClass: SettingsCurrencyCell.self,
-                          atIndex: 1,
-                          inSection: SettingsAccountSectionType.payment.rawValue)
+                          toSection: SettingsAccountSectionType.payment.rawValue)
   }
 
   func insertCurrencyPickerRow() -> IndexPath {

@@ -4,7 +4,7 @@ import KsApi
 final class SettingsDataSource: ValueCellDataSource {
   func configureRows(with user: User) {
 
-    SettingsDataSource.sections.forEach { section -> Void in
+    SettingsSectionType.allCases.forEach { section -> Void in
       let values = section.cellRowsForSection.map { SettingsCellValue(user: user, cellType: $0) }
 
       switch section {
@@ -35,10 +35,5 @@ final class SettingsDataSource: ValueCellDataSource {
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }
-  }
-
-  private static var sections: [SettingsSectionType] {
-    return AppEnvironment.current.mainBundle.isRelease ?
-      SettingsSectionType.allCases.filter { $0 != .account } : SettingsSectionType.allCases
   }
 }
