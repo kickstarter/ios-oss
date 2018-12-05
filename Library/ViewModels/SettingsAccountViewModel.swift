@@ -10,6 +10,7 @@ public protocol SettingsAccountViewModelInputs {
   func showChangeCurrencyAlert(for currency: Currency)
   func viewWillAppear()
   func viewDidAppear()
+  func viewDidLoad()
 }
 
 public protocol SettingsAccountViewModelOutputs {
@@ -57,8 +58,10 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .skipNil()
       .filter { $0 == .currency }
 
+    let didConfirmChangeCurrency = self.didConfirmChangeCurrencyProperty.signal
+
     let updateCurrencyEvent = self.changeCurrencyAlertProperty.signal.skipNil()
-      .takeWhen(self.didConfirmChangeCurrencyProperty.signal)
+      .takeWhen(didConfirmChangeCurrency.signal)
       .map { ChangeCurrencyInput(chosenCurrency: $0.rawValue) }
       .switchMap {
         AppEnvironment.current.apiService.changeCurrency(input: $0)
@@ -76,7 +79,16 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     self.reloadData = Signal.combineLatest(currency, shouldHideEmailWarning)
 
-    self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true).ignoreValues()
+    let updateCurrencyInProgress = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      didConfirmChangeCurrency.signal.mapConst(true),
+      updateCurrencyEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+
+    self.presentCurrencyPicker = updateCurrencyInProgress
+      .takePairWhen(currencyCellSelected.signal.mapConst(true))
+      .filter(first >>> isFalse)
+      .ignoreValues()
 
     self.dismissCurrencyPicker = self.dismissPickerTapProperty.signal
 
@@ -118,6 +130,11 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
+  }
+
+  fileprivate let viewDidLoadProperty = MutableProperty(())
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
   }
 
   public let dismissCurrencyPicker: Signal<Void, NoError>

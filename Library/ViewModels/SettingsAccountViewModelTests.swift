@@ -42,6 +42,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testPresentCurrencyPicker() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
     self.reloadDataShouldHideWarningIcon.assertValueCount(1)
     self.reloadDataCurrency.assertValueCount(1)
@@ -50,6 +51,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testDismissCurrencyPicker() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
     self.reloadDataShouldHideWarningIcon.assertValueCount(1)
     self.reloadDataCurrency.assertValueCount(1)

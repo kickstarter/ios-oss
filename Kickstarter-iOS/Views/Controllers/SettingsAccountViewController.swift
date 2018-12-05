@@ -32,6 +32,8 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.tableView.register(nib: .SettingsCurrencyCell)
     self.tableView.register(nib: .SettingsAccountWarningCell)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -108,10 +110,13 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   }
 
   private func showCurrencyPickerCell() {
+    let tapRecognizer = UITapGestureRecognizer(
+      target: self,
+      action: #selector(tapGestureToDismissCurrencyPicker)
+    )
+
     self.tableView.beginUpdates()
     self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow()], with: .top)
-    let tapRecognizer = UITapGestureRecognizer(target: self,
-                                               action: #selector(tapGestureToDismissCurrencyPicker))
     self.view.addGestureRecognizer(tapRecognizer)
     self.tableView.endUpdates()
   }
@@ -122,10 +127,10 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   }
 
   private func dismissCurrencyPickerCell() {
-    tableView.beginUpdates()
+    self.tableView.beginUpdates()
     self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
-    tableView.endUpdates()
     self.view.gestureRecognizers?.removeAll()
+    self.tableView.endUpdates()
   }
 
   private func showChangeCurrencyAlert() {
