@@ -92,6 +92,10 @@ final class MessageBannerViewController: UIViewController, NibLoading {
   private func showViewAndAnimate(_ isHidden: Bool) {
     let duration = isHidden ? AnimationConstants.hideDuration : AnimationConstants.showDuration
 
+    guard isAnimating == false else {
+      return
+    }
+
     if !isHidden {
       self.view.isHidden = isHidden
     }
