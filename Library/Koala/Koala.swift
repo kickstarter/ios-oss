@@ -1824,11 +1824,6 @@ public final class Koala {
     }
   }
 
-  public func trackChangedCurrency(_ currency: Currency) {
-    let prop = ["currency": currency.descriptionText]
-    self.track(event: "Selected Chosen Currency", properties: prop)
-  }
-
   public func trackViewedPaymentMethods() {
      self.track(event: "Viewed Payment Methods")
   }
