@@ -3,6 +3,8 @@ import Library
 import Prelude
 
 protocol MessageBannerViewControllerPresenting {
+  var messageBannerViewController: MessageBannerViewController? { get set }
+
   func configureMessageBannerViewController(on parentViewController: UIViewController)
     -> MessageBannerViewController?
 }
@@ -92,11 +94,11 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     UIView.animate(withDuration: duration, delay: 0.0,
                    options: UIView.AnimationOptions.curveEaseInOut,
                    animations: { [weak self] in
-                    guard let strongSelf = self else { return }
-                    let frameHeight = strongSelf.view.frame.size.height
-                    strongSelf.topViewConstraint?.constant = isHidden
+                    guard let self = self else { return }
+                    let frameHeight = self.view.frame.size.height
+                    self.topViewConstraint?.constant = isHidden
                       ? 0 : -frameHeight
-                    strongSelf.view.superview?.layoutIfNeeded()
+                    self.view.superview?.layoutIfNeeded()
     }, completion: { [weak self] _ in
       self?.view.isHidden = isHidden
 
