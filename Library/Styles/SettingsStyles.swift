@@ -30,9 +30,19 @@ public let settingsDescriptionLabelStyle = UILabel.lens.font .~ .ksr_body(size: 
 public let settingsFormFieldStyle =
   UITextField.lens.textColor .~ .ksr_text_dark_grey_500
 
+public let settingsEmailFieldAutoFillStyle = emailFieldAutoFillStyle
+  <> settingsFormFieldStyle
+  <> UITextField.lens.textAlignment .~ .right
+
 public let settingsPasswordFormFieldStyle = passwordFieldStyle
   <> settingsFormFieldStyle
   <> UITextField.lens.textAlignment .~ .right
+
+public let settingsPasswordFormFieldAutoFillStyle = passwordFieldAutoFillStyle
+  <> settingsPasswordFormFieldStyle
+
+public let settingsNewPasswordFormFieldAutoFillStyle = newPasswordFieldAutoFillStyle
+  <> settingsPasswordFormFieldStyle
 
 public let settingsLogoutButtonStyle = borderButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
