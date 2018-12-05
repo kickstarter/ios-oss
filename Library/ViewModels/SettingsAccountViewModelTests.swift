@@ -81,6 +81,55 @@ internal final class SettingsAccountViewModelTests: TestCase {
     }
   }
 
+  func testUpdateCurrencySuccess() {
+    let graphResponse = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(changeCurrencyResponse: graphResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.showChangeCurrencyAlert(for: .CAD)
+      self.vm.inputs.didConfirmChangeCurrency()
+
+      self.presentCurrencyPicker.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(1)
+
+      self.scheduler.advance()
+
+      self.reloadDataCurrency.assertValueCount(2)
+    }
+  }
+
+  func testThatWeCanNotPresentCurrencyPickerWhileTheCurrencyChangeIsInProgress() {
+    let graphResponse = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(changeCurrencyResponse: graphResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.showChangeCurrencyAlert(for: .CAD)
+      self.vm.inputs.didConfirmChangeCurrency()
+
+      self.presentCurrencyPicker.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(1)
+
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.scheduler.advance()
+
+      self.presentCurrencyPicker.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(2)
+
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.presentCurrencyPicker.assertValueCount(2)
+    }
+  }
+
   func testUpdateCurrencyFailure() {
     let graphError = GraphError.emptyResponse(nil)
 
