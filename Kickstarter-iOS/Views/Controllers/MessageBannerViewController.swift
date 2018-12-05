@@ -9,6 +9,7 @@ protocol MessageBannerViewControllerPresenting {
 
 final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate weak var backgroundView: UIView!
+  @IBOutlet fileprivate weak var containerView: UIView!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
   @IBOutlet fileprivate weak var messageLabel: UILabel!
 
@@ -29,6 +30,9 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     _ = self.view
       |> \.backgroundColor .~ .clear
       |> \.isHidden .~ true
+
+    _ = self.containerView
+      |> \.backgroundColor .~ .clear
       |> \.layoutMargins .~ .init(all: Styles.grid(1))
 
     _ = backgroundView
