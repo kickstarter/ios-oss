@@ -13,8 +13,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
 
     self.clearValues()
 
-    filteredSections.enumerated().forEach { idx, section -> Void in
-
+    filteredSections.forEach { section -> Void in
       let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0) }
 
         self.set(values: values,
