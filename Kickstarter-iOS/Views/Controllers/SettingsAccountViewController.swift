@@ -127,7 +127,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     }
 
     tableView.beginUpdates()
-    self.tableView.deleteRows(at: [pickerCell], with: .top)
+    self.tableView.deleteRows(at: [pickerCellIndexPath], with: .top)
     tableView.endUpdates()
     self.view.gestureRecognizers?.removeAll()
   }
