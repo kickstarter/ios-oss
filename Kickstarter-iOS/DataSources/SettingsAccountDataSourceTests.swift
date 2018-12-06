@@ -8,8 +8,10 @@ final class SettingsAccountDataSourceTests: XCTestCase {
   private let dataSource = SettingsAccountDataSource()
   private let tableView = UITableView()
 
-  func testConfigureRows() {
-    self.dataSource.configureRows(currency: Currency.USD, shouldHideEmailWarning: true)
+  func testConfigureRows_EmailPasswordRows_Shown() {
+    self.dataSource.configureRows(currency: Currency.USD,
+                                  shouldHideEmailWarning: true,
+                                  shouldHideEmailPasswordSection: false)
 
     XCTAssertEqual(3, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
@@ -17,8 +19,21 @@ final class SettingsAccountDataSourceTests: XCTestCase {
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 2))
   }
 
+  func testConfigureRows_EmailPasswordRows_Hidden() {
+    self.dataSource.configureRows(currency: Currency.USD,
+                                  shouldHideEmailWarning: true,
+                                  shouldHideEmailPasswordSection: true)
+
+    XCTAssertEqual(3, dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(0, dataSource.tableView(tableView, numberOfRowsInSection: 0))
+    XCTAssertEqual(1, dataSource.tableView(tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 2))
+  }
+
   func testInsertRemoveCurrencyPickerRow() {
-    self.dataSource.configureRows(currency: Currency.USD, shouldHideEmailWarning: true)
+    self.dataSource.configureRows(currency: Currency.USD,
+                                  shouldHideEmailWarning: true,
+                                  shouldHideEmailPasswordSection: false)
 
     _ = self.dataSource.insertCurrencyPickerRow()
 
@@ -37,7 +52,9 @@ final class SettingsAccountDataSourceTests: XCTestCase {
     let indexPath2 = IndexPath(item: 1, section: 0)
     let indexPath3 = IndexPath(item: 1, section: 2)
 
-    self.dataSource.configureRows(currency: nil, shouldHideEmailWarning: true)
+    self.dataSource.configureRows(currency: nil,
+                                  shouldHideEmailWarning: true,
+                                  shouldHideEmailPasswordSection: false)
 
     //swiftlint:disable line_length
     XCTAssertEqual(SettingsAccountCellType.changeEmail, dataSource.cellTypeForIndexPath(indexPath: indexPath1))

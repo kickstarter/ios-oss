@@ -17,6 +17,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   let reloadDataShouldHideWarningIcon = TestObserver<Bool, NoError>()
   let reloadDataCurrency = TestObserver<Currency, NoError>()
   let showAlert = TestObserver<(), NoError>()
+  let tableViewTopConstraint = TestObserver<CGFloat, NoError>()
   let updateCurrencyFailure = TestObserver<String, NoError>()
 
   internal override func setUp() {
@@ -27,6 +28,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
     self.vm.outputs.reloadData.map(first).observe(self.reloadDataCurrency.observer)
     self.vm.outputs.reloadData.map(second).observe(self.reloadDataShouldHideWarningIcon.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
+    self.vm.outputs.tableViewTopConstraint.observe(self.tableViewTopConstraint.observer)
     self.vm.outputs.updateCurrencyFailure.observe(self.updateCurrencyFailure.observer)
   }
 
@@ -106,6 +108,38 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.vm.inputs.viewDidAppear()
 
       XCTAssertEqual(["Viewed Account", "Viewed Account"], client.events)
+    }
+  }
+
+  func testTableViewTopConstraintConstant_EmailPasswordSectionShown () {
+
+    let user = UserAccountFields.template
+      |> \.hasPassword .~ true
+
+    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewWillAppear()
+      self.scheduler.advance()
+
+      self.tableViewTopConstraint.assertValues([0])
+    }
+  }
+
+  func testTableViewTopConstraintConstant_EmailPasswordSectionHidden () {
+
+    let user = UserAccountFields.template
+      |> \.hasPassword .~ false
+
+    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewWillAppear()
+      self.scheduler.advance()
+
+      self.tableViewTopConstraint.assertValues(
+        [-SettingsAccountSectionType.sectionHeaderHeight]
+      )
     }
   }
 }
