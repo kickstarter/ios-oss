@@ -62,7 +62,6 @@ internal class TestCase: FBSnapshotTestCase {
       ubiquitousStore: self.ubiquitousStore,
       userDefaults: self.userDefaults
     )
-    self.recordMode = true
   }
 
   override func tearDown() {

@@ -7,7 +7,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                      shouldHideEmailWarning: Bool,
                      shouldHideEmailPasswordSection: Bool) {
 
-    let filteredSections = !shouldHideEmailPasswordSection
+    let filteredSections = shouldHideEmailPasswordSection
       ? SettingsAccountSectionType.allCases.filter { $0 != .emailPassword }
       : SettingsAccountSectionType.allCases
 
