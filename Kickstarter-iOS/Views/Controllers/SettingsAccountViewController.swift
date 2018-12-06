@@ -122,7 +122,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   }
 
   private func dismissCurrencyPickerCell() {
-    guard let pickerCell = self.dataSource.removeCurrencyPickerRow() else {
+    guard let pickerCellIndexPath = self.dataSource.removeCurrencyPickerRow() else {
       return
     }
 
