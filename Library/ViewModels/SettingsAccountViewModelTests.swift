@@ -13,7 +13,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
 
   let dismissCurrencyPicker = TestObserver<Void, NoError>()
   let fetchAccountFieldsError = TestObserver<Void, NoError>()
-  let presentCurrencyPicker = TestObserver<Void, NoError>()
+  let presentCurrencyPicker = TestObserver<Currency, NoError>()
   let reloadDataShouldHideWarningIcon = TestObserver<Bool, NoError>()
   let reloadDataCurrency = TestObserver<Currency, NoError>()
   let showAlert = TestObserver<(), NoError>()
@@ -42,6 +42,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testPresentCurrencyPicker() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
     self.reloadDataShouldHideWarningIcon.assertValueCount(1)
     self.reloadDataCurrency.assertValueCount(1)
@@ -50,6 +51,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testDismissCurrencyPicker() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
     self.reloadDataShouldHideWarningIcon.assertValueCount(1)
     self.reloadDataCurrency.assertValueCount(1)
@@ -79,6 +81,55 @@ internal final class SettingsAccountViewModelTests: TestCase {
     }
   }
 
+  func testUpdateCurrencySuccess() {
+    let graphResponse = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(changeCurrencyResponse: graphResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.showChangeCurrencyAlert(for: .CAD)
+      self.vm.inputs.didConfirmChangeCurrency()
+
+      self.presentCurrencyPicker.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(1)
+
+      self.scheduler.advance()
+
+      self.reloadDataCurrency.assertValueCount(2)
+    }
+  }
+
+  func testThatWeCanNotPresentCurrencyPickerWhileTheCurrencyChangeIsInProgress() {
+    let graphResponse = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(changeCurrencyResponse: graphResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.showChangeCurrencyAlert(for: .CAD)
+      self.vm.inputs.didConfirmChangeCurrency()
+
+      self.presentCurrencyPicker.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(1)
+
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.scheduler.advance()
+
+      self.presentCurrencyPicker.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(2)
+
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.presentCurrencyPicker.assertValueCount(2)
+    }
+  }
+
   func testUpdateCurrencyFailure() {
     let graphError = GraphError.emptyResponse(nil)
 
@@ -90,6 +141,33 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.vm.inputs.didConfirmChangeCurrency()
       self.scheduler.advance()
       self.updateCurrencyFailure.assertDidEmitValue()
+    }
+  }
+
+  func testPresentCurrencyPickerWithTheRightValueSelected() {
+    let graphResponse = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(changeCurrencyResponse: graphResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.presentCurrencyPicker.assertValues([.USD])
+
+      self.vm.inputs.showChangeCurrencyAlert(for: .CAD)
+      self.vm.inputs.didConfirmChangeCurrency()
+      self.scheduler.advance()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.presentCurrencyPicker.assertValues([.USD, .CAD])
+
+      self.vm.inputs.showChangeCurrencyAlert(for: .GBP)
+      self.vm.inputs.didConfirmChangeCurrency()
+      self.scheduler.advance()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.presentCurrencyPicker.assertValues([.USD, .CAD, .GBP])
     }
   }
 
