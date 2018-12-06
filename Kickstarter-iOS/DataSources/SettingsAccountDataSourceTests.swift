@@ -31,11 +31,14 @@ final class SettingsAccountDataSourceTests: XCTestCase {
   }
 
   func testInsertRemoveCurrencyPickerRow() {
+
     self.dataSource.configureRows(currency: Currency.USD,
                                   shouldHideEmailWarning: true,
                                   shouldHideEmailPasswordSection: false)
 
-    _ = self.dataSource.insertCurrencyPickerRow()
+    let currency = Currency.USD
+
+    _ = self.dataSource.insertCurrencyPickerRow(with: currency)
 
     // swiftlint:disable line_length
     XCTAssertEqual(3, dataSource.tableView(tableView,

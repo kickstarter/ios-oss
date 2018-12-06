@@ -10,12 +10,13 @@ public protocol SettingsAccountViewModelInputs {
   func showChangeCurrencyAlert(for currency: Currency)
   func viewWillAppear()
   func viewDidAppear()
+  func viewDidLoad()
 }
 
 public protocol SettingsAccountViewModelOutputs {
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
   var fetchAccountFieldsError: Signal<Void, NoError> { get }
-  var presentCurrencyPicker: Signal<Void, NoError> { get }
+  var presentCurrencyPicker: Signal<Currency, NoError> { get }
   var reloadData: Signal<(Currency, Bool, Bool), NoError> { get }
   var showAlert: Signal<(), NoError> { get }
   var tableViewTopConstraint: Signal<CGFloat, NoError> { get }
@@ -71,8 +72,10 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .skipNil()
       .filter { $0 == .currency }
 
+    let didConfirmChangeCurrency = self.didConfirmChangeCurrencyProperty.signal
+
     let updateCurrencyEvent = self.changeCurrencyAlertProperty.signal.skipNil()
-      .takeWhen(self.didConfirmChangeCurrencyProperty.signal)
+      .takeWhen(didConfirmChangeCurrency.signal)
       .map { ChangeCurrencyInput(chosenCurrency: $0.rawValue) }
       .switchMap {
         AppEnvironment.current.apiService.changeCurrency(input: $0)
@@ -92,7 +95,17 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     self.reloadData = Signal.combineLatest(currency, shouldHideEmailWarning, shouldHideEmailPasswordSection)
 
-    self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true).ignoreValues()
+    let updateCurrencyInProgress = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      didConfirmChangeCurrency.signal.mapConst(true),
+      updateCurrencyEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+
+    self.presentCurrencyPicker = Signal.combineLatest(currency, updateCurrencyInProgress)
+      .takePairWhen(currencyCellSelected.signal)
+      .map(unpack)
+      .filter(second >>> isFalse)
+      .map(first)
 
     self.dismissCurrencyPicker = self.dismissPickerTapProperty.signal
 
@@ -136,10 +149,15 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.viewDidAppearProperty.value = ()
   }
 
+  fileprivate let viewDidLoadProperty = MutableProperty(())
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
+  }
+
   public let dismissCurrencyPicker: Signal<Void, NoError>
   public let fetchAccountFieldsError: Signal<Void, NoError>
   public let reloadData: Signal<(Currency, Bool, Bool), NoError>
-  public let presentCurrencyPicker: Signal<Void, NoError>
+  public let presentCurrencyPicker: Signal<Currency, NoError>
   public let showAlert: Signal<(), NoError>
   public let tableViewTopConstraint: Signal<CGFloat, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>

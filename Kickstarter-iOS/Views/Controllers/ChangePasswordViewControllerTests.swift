@@ -36,32 +36,11 @@ final class ChangePasswordViewControllerTests: TestCase {
     let messageBannerViewController = controller.children
       .compactMap { $0 as? MessageBannerViewController }.first
 
-    guard let containerView = messageBannerViewController?.view.superview else {
+    guard let view = messageBannerViewController?.view else {
       XCTFail("View should be created")
       return
     }
 
-    XCTAssertTrue(containerView.isHidden)
-  }
-
-  func testMessageBannerContainerIsHiddenIsSetProperly() {
-    let controller = ChangePasswordViewController.instantiate()
-    _ = controller.view
-
-    let messageBannerViewController = controller.children
-      .compactMap { $0 as? MessageBannerViewController }.first
-
-    guard let containerView = messageBannerViewController?.view.superview else {
-      XCTFail("View should be created")
-      return
-    }
-
-    controller.messageBannerViewControllerIsHidden(true)
-
-    XCTAssertTrue(containerView.isHidden)
-
-    controller.messageBannerViewControllerIsHidden(false)
-
-    XCTAssertFalse(containerView.isHidden)
+    XCTAssertTrue(view.isHidden)
   }
 }
