@@ -5,12 +5,12 @@ import ReactiveSwift
 import Result
 import UIKit
 
-final class SettingsAccountViewController: UIViewController {
+final class SettingsAccountViewController: UIViewController, MessageBannerViewControllerPresenting {
   @IBOutlet private weak var tableView: UITableView!
 
-  private var messageBannerView: MessageBannerViewController!
-
   private let dataSource = SettingsAccountDataSource()
+  internal var messageBannerViewController: MessageBannerViewController?
+
   fileprivate let viewModel: SettingsAccountViewModelType = SettingsAccountViewModel(
     SettingsAccountViewController.viewController(for:)
   )
@@ -22,14 +22,10 @@ final class SettingsAccountViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let messageBannerView = self.children.first as? MessageBannerViewController else {
-      fatalError("Couldn't instantiate MessageBannerViewController")
-    }
-
-    self.messageBannerView = messageBannerView
-
     self.tableView.dataSource = dataSource
     self.tableView.delegate = self
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.tableView.register(nib: .SettingsTableViewCell)
     self.tableView.register(nib: .SettingsCurrencyPickerCell)
@@ -121,7 +117,8 @@ final class SettingsAccountViewController: UIViewController {
   }
 
   private func showGeneralError() {
-    self.messageBannerView.showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+    self.messageBannerViewController?.showBanner(with: .error,
+                                                 message: Strings.Something_went_wrong_please_try_again())
   }
 
   private func dismissCurrencyPickerCell() {
