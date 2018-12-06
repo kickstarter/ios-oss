@@ -11,7 +11,7 @@ internal final class SettingsViewModelTests: TestCase {
 
   let goToAppStoreRating = TestObserver<String, NoError>()
   let logout = TestObserver<DiscoveryParams, NoError>()
-  let reloadDataWithUserObserver = TestObserver<User, NoError>()
+  let reloadDataWithUser = TestObserver<User, NoError>()
   let showConfirmLogout = TestObserver<Void, NoError>()
   let transitionToViewController = TestObserver<UIViewController, NoError>()
 
@@ -20,7 +20,7 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
     self.vm.outputs.logoutWithParams.observe(logout.observer)
-    self.vm.outputs.reloadDataWithUser.observe(reloadDataWithUserObserver.observer)
+    self.vm.outputs.reloadDataWithUser.observe(reloadDataWithUser.observer)
     self.vm.outputs.showConfirmLogoutPrompt.signal.mapConst(()).observe(showConfirmLogout.observer)
     self.vm.outputs.transitionToViewController.observe(transitionToViewController.observer)
   }
@@ -31,7 +31,7 @@ internal final class SettingsViewModelTests: TestCase {
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.vm.viewDidLoad()
 
-      self.reloadDataWithUserObserver.assertValueCount(2)
+      self.reloadDataWithUser.assertValueCount(2)
     }
   }
 
@@ -104,7 +104,7 @@ internal final class SettingsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.reloadDataWithUserObserver.assertValueCount(2)
+      self.reloadDataWithUser.assertValueCount(2)
     }
   }
 }
