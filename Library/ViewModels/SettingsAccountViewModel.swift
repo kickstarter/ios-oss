@@ -44,20 +44,25 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     let shouldHideEmailWarning = userAccountFields.values()
       .map { response -> Bool in
         guard let isEmailVerified = response.me.isEmailVerified,
-              let isDeliverable = response.me.isDeliverable else {
-          return true
+          let isDeliverable = response.me.isDeliverable else {
+            return true
         }
 
         return isEmailVerified && isDeliverable
     }
 
-    let shouldHideEmailPasswordSection = userAccountFields.values()
-      .map { response -> Bool in
-        guard let hasPassword = response.me.hasPassword else {
+    let initialHiddenState = self.viewWillAppearProperty.signal.mapConst(true)
+
+    let shouldHideEmailPasswordSection = Signal.merge(
+      initialHiddenState,
+      userAccountFields.values()
+        .map { response -> Bool in
+          guard let hasPassword = response.me.hasPassword else {
             return true
-        }
-        return !hasPassword
-    }
+          }
+          return !hasPassword
+      }
+    )
 
     let chosenCurrency = userAccountFields.values()
       .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
