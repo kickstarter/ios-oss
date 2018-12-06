@@ -667,5 +667,6 @@ final class KoalaTests: TestCase {
     koala.trackChangedCurrency(.CAD)
 
     XCTAssertEqual(["Selected Chosen Currency"], client.events)
+    XCTAssertEqual(Currency.CAD.descriptionText, client.properties.last?["currency"] as? String)
   }
 }

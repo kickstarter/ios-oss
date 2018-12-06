@@ -91,8 +91,8 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     // Koala
     updateCurrency.signal
-      .observeValues { currency in
-        AppEnvironment.current.koala.trackChangedCurrency(currency)
+      .observeValues {
+        AppEnvironment.current.koala.trackChangedCurrency($0)
     }
   }
 

@@ -110,7 +110,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testTrackSelectedChosenCurrency() {
-
     self.vm.inputs.showChangeCurrencyAlert(for: Currency.CHF)
     self.vm.inputs.didConfirmChangeCurrency()
 
