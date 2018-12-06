@@ -30,10 +30,10 @@ public protocol SettingsCellTypeProtocol {
   var title: String { get }
 }
 
-public enum SettingsSectionType: Int {
+public enum SettingsSectionType: Int, CaseIterable {
   case account
   case notificationNewsletters
-  case helpPrivacy
+  case help
   case findFriends
   case logout
   case ratingAppVersion
@@ -48,8 +48,8 @@ public enum SettingsSectionType: Int {
       return [SettingsCellType.account]
     case .notificationNewsletters:
       return [.notifications, .newsletters]
-    case .helpPrivacy:
-      return [.help, .privacy]
+    case .help:
+      return [.help]
     case .findFriends:
       return [.findFriends]
     case .logout:
@@ -58,13 +58,6 @@ public enum SettingsSectionType: Int {
       return [.rateInAppStore, .appVersion]
     }
   }
-
-  public static var allCases: [SettingsSectionType] = [.account,
-                                                       .notificationNewsletters,
-                                                       .helpPrivacy,
-                                                       .findFriends,
-                                                       .logout,
-                                                       .ratingAppVersion]
 }
 
 public enum SettingsCellType: SettingsCellTypeProtocol {
@@ -72,7 +65,6 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   case notifications
   case newsletters
   case help
-  case privacy
   case logout
   case rateInAppStore
   case appVersion
@@ -88,8 +80,6 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
       return Strings.profile_settings_newsletter_title()
     case .help:
       return Strings.general_navigation_buttons_help()
-    case .privacy:
-      return Strings.Privacy()
     case .logout:
       return Strings.profile_settings_logout_alert_title()
     case .rateInAppStore:
@@ -112,7 +102,7 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
 
   public var showArrowImageView: Bool {
     switch self {
-    case .account, .notifications, .newsletters, .help, .privacy, .findFriends, .rateInAppStore:
+    case .account, .notifications, .newsletters, .help, .findFriends, .rateInAppStore:
       return true
     default:
       return false
@@ -142,7 +132,6 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   }
 
   private static var appVersionString: String {
-
     let versionString = AppEnvironment.current.mainBundle.shortVersionString
     let build = AppEnvironment.current.mainBundle.isRelease
       ? ""

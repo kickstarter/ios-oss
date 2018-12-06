@@ -259,6 +259,13 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
   }
 
   /**
+   - returns: The total number of items in given section, in the data source.
+   */
+  public final func numberOfItems(in section: Int) -> Int {
+    return self.values[section].reduce(0) { accum, _ in accum + 1 }
+  }
+
+  /**
    - parameter indexPath: An index path that we want to convert to a linear index.
 
    - returns: A linear index representation of the index path.

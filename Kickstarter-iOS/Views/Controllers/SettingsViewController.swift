@@ -180,8 +180,6 @@ extension SettingsViewController {
       return SettingsAccountViewController.instantiate()
     case .help:
       return HelpViewController.instantiate()
-    case .privacy:
-      return SettingsPrivacyViewController.instantiate()
     case .findFriends:
       return FindFriendsViewController.configuredWith(source: .settings)
     case .newsletters:
