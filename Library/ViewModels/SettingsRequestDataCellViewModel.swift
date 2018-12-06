@@ -87,7 +87,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     self.dataExpirationAndChevronHidden = Signal.merge(
       self.awakeFromNibProperty.signal.mapConst(true),
       exportEnvelope
-      .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil ? true : false })
+      .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil })
 
     self.goToSafari = exportEnvelope
       .filter { $0.state != .expired || $0.expiresAt != nil }
