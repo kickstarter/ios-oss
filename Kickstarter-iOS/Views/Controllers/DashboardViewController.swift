@@ -339,3 +339,5 @@ extension DashboardViewController: DashboardTitleViewDelegate {
     self.viewModel.inputs.showHideProjectsDrawer()
   }
 }
+
+extension DashboardViewController: TabBarControllerScrollable { }

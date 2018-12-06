@@ -535,6 +535,23 @@ public enum Strings {
     )
   }
   /**
+   "Are you sure you wish to remove this card from your payment method options?"
+
+   - **en**: "Are you sure you wish to remove this card from your payment method options?"
+   - **de**: "Bist du sicher, dass du diese Karte aus deinen Zahlungsmethoden entfernen möchtest?"
+   - **es**: "¿Estás seguro de que deseas eliminar esta tarjeta de tus opciones de métodos de pago?"
+   - **fr**: "Êtes-vous certain de vouloir supprimer cette carte de vos moyens de paiement ?"
+   - **ja**: "このカードをお支払い方法から削除してもよろしいですか？"
+  */
+  public static func Are_you_sure_you_wish_to_remove_this_card() -> String {
+    return localizedString(
+      key: "Are_you_sure_you_wish_to_remove_this_card",
+      defaultValue: "Are you sure you wish to remove this card from your payment method options?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Ask me anything"
 
    - **en**: "Ask me anything"
@@ -3434,6 +3451,23 @@ with friends."
     )
   }
   /**
+   "It's like the radio but nothing sucks and also it's a newsletter."
+
+   - **en**: "It's like the radio but nothing sucks and also it's a newsletter."
+   - **de**: "It's like the radio but nothing sucks and also it's a newsletter."
+   - **es**: "Es como la radio, pero sin malas noticias y, además, es un boletín informativo."
+   - **fr**: "It's like the radio but nothing sucks and also it's a newsletter."
+   - **ja**: "It's like the radio but nothing sucks and also it's a newsletter."
+  */
+  public static func Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter() -> String {
+    return localizedString(
+      key: "Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter",
+      defaultValue: "It's like the radio but nothing sucks and also it's a newsletter.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Join our secret society."
 
    - **en**: "Join our secret society."
@@ -3531,6 +3565,23 @@ with friends."
     return localizedString(
       key: "Keep_up_with_future_live_streams",
       defaultValue: "Keep up with future live streams",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Kickstarter Music"
+
+   - **en**: "Kickstarter Music"
+   - **de**: "Kickstarter Music"
+   - **es**: "Kickstarter Music"
+   - **fr**: "Kickstarter Music"
+   - **ja**: "Kickstarter Music"
+  */
+  public static func Kickstarter_Music() -> String {
+    return localizedString(
+      key: "Kickstarter_Music",
+      defaultValue: "Kickstarter Music",
       count: nil,
       substitutions: [:]
     )
@@ -4080,6 +4131,23 @@ with friends."
     )
   }
   /**
+   "New email"
+
+   - **en**: "New email"
+   - **de**: "Neue E-Mail"
+   - **es**: "Nuevo correo electrónico"
+   - **fr**: "Nouvelle adresse e-mail"
+   - **ja**: "新しいメールアドレス"
+  */
+  public static func New_email() -> String {
+    return localizedString(
+      key: "New_email",
+      defaultValue: "New email",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "New password"
 
    - **en**: "New password"
@@ -4211,6 +4279,23 @@ with friends."
     return localizedString(
       key: "No_messages",
       defaultValue: "No messages",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "No, nevermind"
+
+   - **en**: "No, nevermind"
+   - **de**: "Nein, ich habe es mir anders überlegt"
+   - **es**: "No, ignorar"
+   - **fr**: "Non, j'ai changé d'avis"
+   - **ja**: "いいえ、削除しません"
+  */
+  public static func No_nevermind() -> String {
+    return localizedString(
+      key: "No_nevermind",
+      defaultValue: "No, nevermind",
       count: nil,
       substitutions: [:]
     )
@@ -5548,6 +5633,23 @@ daring ideas."
     )
   }
   /**
+   "Remove this card"
+
+   - **en**: "Remove this card"
+   - **de**: "Karte entfernen"
+   - **es**: "Eliminar esta tarjeta"
+   - **fr**: "Supprimer cette carte"
+   - **ja**: "このカードを削除"
+  */
+  public static func Remove_this_card() -> String {
+    return localizedString(
+      key: "Remove_this_card",
+      defaultValue: "Remove this card",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Replay"
 
    - **en**: "Replay"
@@ -6276,6 +6378,23 @@ catch your eye?"
     return localizedString(
       key: "Something_catch_your_eye",
       defaultValue: "Something\ncatch your eye?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Something went wrong and we were unable to remove your payment method, please try again."
+
+   - **en**: "Something went wrong and we were unable to remove your payment method, please try again."
+   - **de**: "Hier ist etwas schiefgelaufen, deine Zahlungsweise konnte leider nicht entfernt werden. Bitte versuche es noch einmal."
+   - **es**: "Hubo un error y no pudimos eliminar tu método de pago. Inténtalo de nuevo."
+   - **fr**: "Une erreur s'est produite et la suppression de votre moyen de payement a échoué. Veuillez réessayer."
+   - **ja**: "何らかのエラーにより、お支払い方法を削除できませんでした。もう一度お試しください。"
+  */
+  public static func Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again() -> String {
+    return localizedString(
+      key: "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again",
+      defaultValue: "Something went wrong and we were unable to remove your payment method, please try again.",
       count: nil,
       substitutions: [:]
     )
@@ -7381,7 +7500,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Sobald du dein Passwort geändert hast, wirst du aufgefordert, dich erneut auf der Kickstarter App anzumelden."
    - **es**: "Te pediremos que inicies sesión de nuevo en la aplicación de Kickstarter una vez que hayas cambiado tu contraseña."
    - **fr**: "Une fois votre mot de passe changé, vous serez invité à vous reconnecter à l'application Kickstarter."
-   - **ja**: "We'll ask you to sign back into the Kickstarter app once you've changed your password."
+   - **ja**: "パスワードを変更したら、Kickstarter アプリにもう一度サインインし直すように促されます。"
   */
   public static func Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password() -> String {
     return localizedString(
@@ -7472,6 +7591,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Yes_change_currency",
       defaultValue: "Yes, Change currency",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Yes, remove"
+
+   - **en**: "Yes, remove"
+   - **de**: "Ja, entfernen"
+   - **es**: "Sí, eliminar"
+   - **fr**: "Oui, supprimer"
+   - **ja**: "はい、削除します"
+  */
+  public static func Yes_remove() -> String {
+    return localizedString(
+      key: "Yes_remove",
+      defaultValue: "Yes, remove",
       count: nil,
       substitutions: [:]
     )
@@ -7795,6 +7931,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Youre_about_to_create_a_new_Kickstarter_account",
       defaultValue: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You’re offline. Once your device reconnects, navigate around the app to refresh."
+
+   - **en**: "You’re offline. Once your device reconnects, navigate around the app to refresh."
+   - **de**: "Du bist Offline. Sobald du wieder Online bist, navigiere in der App, um sie zu aktualisieren."
+   - **es**: "Estás desconectado. Cuando tu dispositivo se vuelva a conectar, ve a la aplicación para actualizarla."
+   - **fr**: "You’re offline. Once your device reconnects, navigate around the app to refresh."
+   - **ja**: "現在オフライン中です。デバイスが再接続し次第、アプリをリフレッシュしてください。"
+  */
+  public static func Youre_offline() -> String {
+    return localizedString(
+      key: "Youre_offline",
+      defaultValue: "You’re offline. Once your device reconnects, navigate around the app to refresh.",
       count: nil,
       substitutions: [:]
     )
@@ -16924,6 +17077,40 @@ Let's change that!"
     return localizedString(
       key: "profile.settings.newsletter.invent",
       defaultValue: "Invent",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Kickstarter Music"
+
+   - **en**: "Kickstarter Music"
+   - **de**: "Kickstarter Music"
+   - **es**: "Kickstarter Music"
+   - **fr**: "Kickstarter Music"
+   - **ja**: "Kickstarter Music"
+  */
+  public static func profile_settings_newsletter_music() -> String {
+    return localizedString(
+      key: "profile.settings.newsletter.music",
+      defaultValue: "Kickstarter Music",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Sign up to receive a biweekly newsletter full of Mongolian woodwind orchestras, soundtracks to horror movies that don’t exist, operas about insects, and other things you can only find here on Kickstarter Music."
+
+   - **en**: "Sign up to receive a biweekly newsletter full of Mongolian woodwind orchestras, soundtracks to horror movies that don’t exist, operas about insects, and other things you can only find here on Kickstarter Music."
+   - **de**: "Abonniere unseren zweiwöchigen Newsletter. Holzbläserorchester aus der Mongolei, Soundtracks zu nicht-existierenden Horrorfilmen und Opern über Insekten - das und vieles mehr findest du nur auf Kickstarter Music."
+   - **es**: "Suscríbete para recibir un boletín quincenal lleno de orquestas de viento de Mongolia, bandas sonoras de películas de terror que no existen, óperas sobre insectos, y otras cosas que sólo podrás encontrar aquí en Kickstarter Music."
+   - **fr**: "Une lettre d'information bimensuelle où vous retrouverez un orchestre d'instruments à vent mongoliens, la bande-son d'un film d'horreur inexistant, un opéra sur les insectes et d'autres choses à la fois insolites et inédites."
+   - **ja**: "モンゴルの木管楽器を使ったオーケストラから、存在しないホラー映画のサウンドトラック、昆虫についてのオペラなど、その他にも Kickstarter Music でしか見つからないユニークな内容を隔週でお届けします。ぜひご登録ください！"
+  */
+  public static func profile_settings_newsletter_music_newsletter() -> String {
+    return localizedString(
+      key: "profile.settings.newsletter.music_newsletter",
+      defaultValue: "Sign up to receive a biweekly newsletter full of Mongolian woodwind orchestras, soundtracks to horror movies that don’t exist, operas about insects, and other things you can only find here on Kickstarter Music.",
       count: nil,
       substitutions: [:]
     )

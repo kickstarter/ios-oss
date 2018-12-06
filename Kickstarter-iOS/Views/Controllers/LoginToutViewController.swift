@@ -289,3 +289,11 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.viewModel.inputs.signupButtonPressed()
   }
 }
+
+extension LoginToutViewController: TabBarControllerScrollable {
+  func scrollToTop() {
+    if let scrollView = self.view.subviews.first as? UIScrollView {
+      scrollView.scrollToTop()
+    }
+  }
+}

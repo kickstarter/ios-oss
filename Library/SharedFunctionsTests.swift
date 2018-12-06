@@ -3,6 +3,7 @@ import ReactiveSwift
 import Result
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class SharedFunctionsTests: TestCase {
 
@@ -159,5 +160,15 @@ final class SharedFunctionsTests: TestCase {
     hourTest.assertValues(["00", "00", "00"])
     minuteTest.assertValues(["00", "00", "00"])
     secondTest.assertValues(["02", "01", "00"])
+  }
+
+  func testOnePasswordButtonIsHidden() {
+    if #available(iOS 12, *) {
+      XCTAssertTrue(is1PasswordButtonHidden(true))
+      XCTAssertTrue(is1PasswordButtonHidden(false))
+    } else {
+      XCTAssertTrue(is1PasswordButtonHidden(true))
+      XCTAssertFalse(is1PasswordButtonHidden(false))
+    }
   }
 }

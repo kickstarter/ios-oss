@@ -208,13 +208,13 @@ public struct Service: ServiceType {
       return fetch(query: query)
   }
 
-  public func fetchGraphCurrency(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserCurrency>, GraphError> {
+  public func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError> {
       return fetch(query: query)
   }
 
-  public func fetchGraphUserEmail(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUserEmail>, GraphError> {
+  public func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
       return fetch(query: query)
   }
 
@@ -419,6 +419,11 @@ public struct Service: ServiceType {
       return request(.sendMessage(body: body, messageSubject: subject))
   }
 
+  public func sendVerificationEmail(input: EmptyInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return applyMutation(mutation: UserSendEmailVerificationMutation(input: input))
+  }
+
   public func signup(name: String,
                      email: String,
                      password: String,
@@ -437,10 +442,6 @@ public struct Service: ServiceType {
       return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
   }
 
-  public func star(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
-    return request(.star(project))
-  }
-
   public func submitApplePay(
     checkoutUrl: String,
     stripeToken: String,
@@ -457,10 +458,6 @@ public struct Service: ServiceType {
         transactionIdentifier: transactionIdentifier
       )
     )
-  }
-
-  public func toggleStar(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope> {
-    return request(.toggleStar(project))
   }
 
   public func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
@@ -498,5 +495,15 @@ public struct Service: ServiceType {
 
   public func updateUserSelf(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
     return request(.updateUserSelf(user))
+  }
+
+  public func unwatchProject(input: WatchProjectInput) ->
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      return applyMutation(mutation: UnwatchProjectMutation(input: input))
+  }
+
+  public func watchProject(input: WatchProjectInput) ->
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      return applyMutation(mutation: WatchProjectMutation(input: input))
   }
 }

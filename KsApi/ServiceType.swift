@@ -120,13 +120,13 @@ public protocol ServiceType {
   func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError>
 
-  /// Fetch a User's preferred currency
-  func fetchGraphCurrency(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserCurrency>, GraphError>
+  /// Fetch a User's account fields
+  func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError>
 
-  /// Fetch User's email objects using graphQL.
-  func fetchGraphUserEmail(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUserEmail>, GraphError>
+  /// Fetch User's email fields object using graphQL.
+  func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError>
 
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)
@@ -257,6 +257,10 @@ public protocol ServiceType {
   func sendMessage(body: String, toSubject subject: MessageSubject)
     -> SignalProducer<Message, ErrorEnvelope>
 
+  /// Sends a verification email (after updating the email from account settings).
+  func sendVerificationEmail(input: EmptyInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+
   /// Signup with email.
   func signup(name: String, email: String, password: String, passwordConfirmation: String,
               sendNewsletters: Bool) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
@@ -265,17 +269,11 @@ public protocol ServiceType {
   func signup(facebookAccessToken: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
 
-  /// Star a project.
-  func star(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope>
-
   func submitApplePay(checkoutUrl: String,
                       stripeToken: String,
                       paymentInstrumentName: String,
                       paymentNetwork: String,
                       transactionIdentifier: String) -> SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope>
-
-  /// Toggle the starred state on a project.
-  func toggleStar(_ project: Project) -> SignalProducer<StarEnvelope, ErrorEnvelope>
 
   /// Unfollow a user with their id.
   func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope>
@@ -297,6 +295,12 @@ public protocol ServiceType {
   /// Updates the draft of a project update.
   func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
     -> SignalProducer<UpdateDraft, ErrorEnvelope>
+
+  func unwatchProject(input: WatchProjectInput) ->
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
+
+  func watchProject(input: WatchProjectInput) ->
+    SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
 }
 
 extension ServiceType {

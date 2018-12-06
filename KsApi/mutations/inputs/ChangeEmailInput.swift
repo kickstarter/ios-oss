@@ -1,8 +1,8 @@
 import Foundation
 
 public struct ChangeEmailInput: GraphMutationInput {
-  let email: String
-  let currentPassword: String
+  public let email: String
+  public let currentPassword: String
 
   public init(email: String, currentPassword: String) {
     self.currentPassword = currentPassword
@@ -10,7 +10,7 @@ public struct ChangeEmailInput: GraphMutationInput {
   }
 
   public func toInputDictionary() -> [String: Any] {
-    return ["current_password": currentPassword,
+    return ["currentPassword": currentPassword,
             "email": email
     ]
   }

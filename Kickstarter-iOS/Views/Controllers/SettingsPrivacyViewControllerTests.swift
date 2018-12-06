@@ -6,7 +6,6 @@ import XCTest
 @testable import KsApi
 
 internal final class SettingsPrivacyViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)

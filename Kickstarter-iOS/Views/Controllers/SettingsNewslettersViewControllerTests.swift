@@ -6,7 +6,6 @@ import XCTest
 @testable import KsApi
 
 internal final class SettingsNewslettersViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     UIView.setAnimationsEnabled(false)

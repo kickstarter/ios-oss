@@ -300,6 +300,10 @@ extension Lens where Whole == User, Part == User.NewsletterSubscriptions {
   public var alumni: Lens<User, Bool?> {
     return User.lens.newsletters..User.NewsletterSubscriptions.lens.alumni
   }
+
+  public var music: Lens<User, Bool?> {
+    return User.lens.newsletters..User.NewsletterSubscriptions.lens.music
+  }
 }
 
 extension Lens where Whole == User, Part == User.Notifications {

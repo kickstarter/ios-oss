@@ -166,6 +166,7 @@ public enum Query {
     case promoNewsletter
     case publishingNewsletter
     case weeklyNewsletter
+    case musicNewsletter
   }
 
   public enum Notifications: String {
@@ -207,6 +208,7 @@ public enum Query {
     case id
     case image(alias: String, width: Int)
     case imageUrl(alias: String, blur: Bool, width: Int)
+    case isEmailDeliverable
     case isEmailVerified
     case isFollowing
     case isSocializing
@@ -387,6 +389,7 @@ extension Query.User: QueryType {
     case .id:                                   return "id"
     case let .image(alias, width):              return "\(alias): imageUrl(width: \(width))"
     case let .imageUrl(alias, blur, width):     return "\(alias): imageUrl(blur: \(blur), width: \(width))"
+    case .isEmailDeliverable:                   return "isDeliverable"
     case .isEmailVerified:                      return "isEmailVerified"
     case .isFollowing:                          return "isFollowing"
     case .isSocializing:                        return "isSocializing"

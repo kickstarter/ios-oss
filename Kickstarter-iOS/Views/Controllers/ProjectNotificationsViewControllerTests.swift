@@ -6,10 +6,8 @@ import XCTest
 @testable import KsApi
 
 internal final class ProjectNotificationsViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
-
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }

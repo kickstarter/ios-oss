@@ -29,6 +29,7 @@
 "Any_payment_methods_you_saved_to_Kickstarter" = "Para tu comodidad, aquí se enumeran (de manera absolutamente segura) los métodos de pago que guardaste en Kickstarter.";
 "App_version" = "Versión de la aplicación";
 "Are_you_sure" = "¿Estás seguro?";
+"Are_you_sure_you_wish_to_remove_this_card" = "¿Estás seguro de que deseas eliminar esta tarjeta de tus opciones de métodos de pago?";
 "Ask_me_anything" = "¡Pregúntame!";
 "Available_to_watch_for_time_more_units" = "Disponible para reproducción %{time} %{units} más";
 "Back" = "Atrás";
@@ -207,12 +208,14 @@
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Puede demorar hasta 24 horas recopilar tus datos. Cuando estén listos, te enviaremos instrucciones para descargar tus datos al correo electrónico asociado con esta cuenta. Si no recibes noticias nuestras, vuelve aquí e inténtalo de nuevo.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
 "Its_better_with_friends" = "Todo en la vida es mejor con amigos ...";
+"Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "Es como la radio, pero sin malas noticias y, además, es un boletín informativo.";
 "Join_our_secret_society" = "Únete a nuestra sociedad secreta.";
 "Joining_the_live_stream" = "Abriendo conexión a Live Stream";
 "Just_for_you" = "Sólo para ti.";
 "Keep_in_touch_after_your_campaign" = "Mantente en contacto después de tu campaña y planifica tu próximo proyecto.";
 "Keep_reading" = "Leer más";
 "Keep_up_with_future_live_streams" = "Recibe info sobre live streams futuros";
+"Kickstarter_Music" = "Kickstarter Music";
 "Kickstarter_if_funded" = "Kickstarter (si la financiación es exitosa)";
 "Kickstarter_is_not_a_store" = "Kickstarter no es una tienda.";
 "Know_when_creators_and_backers_message_you" = "Entérate cuando los creadores y patrocinadores te envíen mensajes habilitando las notificaciones.";
@@ -249,6 +252,7 @@
 "Messages" = "Mensajes";
 "Name" = "Nombre";
 "Never" = "Nunca";
+"New_email" = "Nuevo correo electrónico";
 "New_password" = "Contraseña nueva";
 "New_pledge_activity" = "Nueva actividad de contribución";
 "New_work_and_big_ideas_from_established_and" = "Nuevos trabajos y grandes ideas de artistas establecidos y emergentes.";
@@ -257,6 +261,7 @@
 "No_Results" = "Sin resultados";
 "No_comments_yet" = "No hay comentarios todavia.";
 "No_messages" = "No hay mensajes";
+"No_nevermind" = "No, ignorar";
 "No_one_has_posted_an_update_yet" = "Todavía no se han publicado actualizaciones.";
 "No_pledges_from_friends_yet" = "Todavía no hay contribuciones de amigos.";
 "No_replay_is_available_for_this_live_stream" = "Este Live Stream no cuenta con repetición.";
@@ -335,6 +340,7 @@
 "Recommended_For_You" = "Recomendaciones para ti";
 "Recorded_Live" = "Grabado en vivo";
 "Recorded_live_with_creator_name" = "Grabado en vivo por <b>%{creator_name}</b>";
+"Remove_this_card" = "Eliminar esta tarjeta";
 "Replay" = "Repetición";
 "Replay_available_for_time_more_units" = "Repetición disponible por %{time} %{units} más";
 "Replay_live_stream_with_creator_name" = "Repetir live stream de<br><b>%{creator_name}</b>";
@@ -390,6 +396,7 @@
 "Sign_up_newsletter" = "Suscríbete a Nuestros favoritos para recibir una combinación semanal de proyectos destacados, seleccionados por el equipo de Kickstarter.";
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
+"Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Hubo un error y no pudimos eliminar tu método de pago. Inténtalo de nuevo.";
 "Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
 "Start_the_request" = "Comenzar la recopilación de datos";
 "Starting_soon" = "Comienza en breve";
@@ -460,6 +467,7 @@
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
 "Write_a_bio" = "Escribe una biografía breve mediante una oración o dos.";
 "Yes_change_currency" = "Sí, cambiar la moneda";
+"Yes_remove" = "Sí, eliminar";
 "Yes_turn_off" = "Sí, desactivar";
 "You_Launched" = "¡Tu proyecto fue publicado!";
 "You_backed_this_project" = "Patrocinaste este proyecto.";
@@ -479,6 +487,7 @@
 "Your_shipping_destination" = "Tu destino de envío";
 "Youre_a_backer" = "¡Eres un patrocinador!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder.";
+"Youre_offline" = "Estás desconectado. Cuando tu dispositivo se vuelva a conectar, ve a la aplicación para actualizarla.";
 "Youve_pledged_to_support_this_project" = "Hiciste una contribución a este proyecto. El plazo de financiamiento todavía no ha terminado.";
 "Zip_code" = "Código postal";
 "accessibility.dashboard.buttons.activity" = "Actividad";
@@ -1174,6 +1183,8 @@
 "profile.settings.newsletter.happening" = "Eventos";
 "profile.settings.newsletter.happening_now" = "Happening ahora";
 "profile.settings.newsletter.invent" = "Invenciones";
+"profile.settings.newsletter.music" = "Kickstarter Music";
+"profile.settings.newsletter.music_newsletter" = "Suscríbete para recibir un boletín quincenal lleno de orquestas de viento de Mongolia, bandas sonoras de películas de terror que no existen, óperas sobre insectos, y otras cosas que sólo podrás encontrar aquí en Kickstarter Music.";
 "profile.settings.newsletter.news_event" = "Novedades y eventos";
 "profile.settings.newsletter.opt_in.message" = "Hemos enviado una confirmación a la dirección de correo electrónico asociada con tu cuenta. Por favor checa tu bandeja de entrada y confirma la subscripción a %{newsletter}.";
 "profile.settings.newsletter.opt_in.title" = "¡Sólo un último paso!";

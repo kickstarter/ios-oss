@@ -3,7 +3,7 @@ import KsApi
 import Library
 import Prelude
 
-final class ChangePasswordViewController: UIViewController {
+final class ChangePasswordViewController: UIViewController, MessageBannerViewControllerPresenting {
   @IBOutlet fileprivate weak var changePasswordLabel: UILabel!
   @IBOutlet fileprivate weak var confirmNewPasswordLabel: UILabel!
   @IBOutlet fileprivate weak var confirmNewPasswordTextField: UITextField!
@@ -16,7 +16,7 @@ final class ChangePasswordViewController: UIViewController {
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
   private var saveButtonView: LoadingBarButtonItemView!
-  private var messageBannerView: MessageBannerViewController!
+  internal var messageBannerViewController: MessageBannerViewController?
 
   private let viewModel: ChangePasswordViewModelType = ChangePasswordViewModel()
 
@@ -27,11 +27,7 @@ final class ChangePasswordViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let messageViewController = self.children.first as? MessageBannerViewController else {
-      fatalError("Missing message View Controller")
-    }
-
-    self.messageBannerView = messageViewController
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
@@ -40,8 +36,9 @@ final class ChangePasswordViewController: UIViewController {
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
-    self.viewModel
-      .inputs.onePasswordIsAvailable(available: OnePasswordExtension.shared().isAppExtensionAvailable())
+    self.viewModel.inputs.onePassword(
+      isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
+    )
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -52,6 +49,9 @@ final class ChangePasswordViewController: UIViewController {
 
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self.scrollView
+      |> \.alwaysBounceVertical .~ true
 
     _ = self
       |> settingsViewControllerStyle
@@ -73,22 +73,20 @@ final class ChangePasswordViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.Confirm_password() }
 
     _ = confirmNewPasswordTextField
-      |> formFieldStyle
-      |> UITextField.lens.secureTextEntry .~ true
-      |> UITextField.lens.textAlignment .~ .right
+      |> settingsNewPasswordFormFieldAutoFillStyle
       |> UITextField.lens.returnKeyType .~ .done
-      |> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_password() }
+      |> \.attributedPlaceholder %~ { _ in
+        settingsAttributedPlaceholder(Strings.login_placeholder_password())
+    }
 
     _ = currentPasswordLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Current_password() }
 
     _ = currentPasswordTextField
-      |> formFieldStyle
-      |> UITextField.lens.secureTextEntry .~ true
-      |> UITextField.lens.textAlignment .~ .right
-      |> UITextField.lens.placeholder %~ { _ in
-        Strings.login_placeholder_password()
+      |> settingsPasswordFormFieldAutoFillStyle
+      |> \.attributedPlaceholder %~ { _ in
+        settingsAttributedPlaceholder(Strings.login_placeholder_password())
     }
 
     _ = validationErrorMessageLabel
@@ -99,11 +97,9 @@ final class ChangePasswordViewController: UIViewController {
       |> UILabel.lens.text %~ { _ in Strings.New_password() }
 
     _ = newPasswordTextField
-      |> formFieldStyle
-      |> UITextField.lens.secureTextEntry .~ true
-      |> UITextField.lens.textAlignment .~ .right
-      |> UITextField.lens.placeholder %~ { _ in
-        Strings.login_placeholder_password()
+      |> settingsNewPasswordFormFieldAutoFillStyle
+      |> \.attributedPlaceholder %~ { _ in
+        settingsAttributedPlaceholder(Strings.login_placeholder_password())
     }
   }
 
@@ -163,7 +159,7 @@ final class ChangePasswordViewController: UIViewController {
     self.viewModel.outputs.changePasswordFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-        self?.messageBannerView.showBanner(with: .error, message: errorMessage)
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
     }
 
     self.viewModel.outputs.changePasswordSuccess

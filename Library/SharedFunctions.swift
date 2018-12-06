@@ -3,6 +3,7 @@ import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
+import UserNotifications
 
 /**
  Determines if the personalization data in the project implies that the current user is backing the
@@ -153,4 +154,12 @@ public func countdownProducer(to date: Date)
       }
       .take(while: { ($0.second ?? 0) >= 0 })
       .map(formattedComponents(dateComponents:))
+}
+
+internal func is1PasswordButtonHidden(_ isHidden: Bool) -> Bool {
+  if #available(iOS 12, *) {
+    return true
+  } else {
+    return isHidden
+  }
 }

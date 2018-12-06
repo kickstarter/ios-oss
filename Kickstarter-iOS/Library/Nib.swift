@@ -8,7 +8,9 @@ public enum Nib: String {
   case FindFriendsCell
   case LiveStreamNavTitleView
   case LoadingBarButtonItemView
+  case MessageBannerViewController
   case RewardCell
+  case SettingsAccountWarningCell
   case SettingsCurrencyCell
   case SettingsCurrencyPickerCell
   case SettingsHeaderView

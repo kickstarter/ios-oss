@@ -1,7 +1,7 @@
 import KsApi
 import UIKit
 
-public enum SettingsAccountSectionType: Int {
+public enum SettingsAccountSectionType: Int, CaseIterable {
   case emailPassword
   case privacy
   case payment
@@ -10,18 +10,18 @@ public enum SettingsAccountSectionType: Int {
     return Styles.grid(5)
   }
 
-  public static var allCases: [SettingsAccountSectionType] = [.emailPassword,
-                                                              .privacy,
-                                                              .payment]
-
   public var cellRowsForSection: [SettingsAccountCellType] {
     switch self {
     case .emailPassword:
-      return [.changeEmail, .changePassword]
+      return [.changePassword]
     case .privacy:
       return [.privacy]
     case .payment:
-      return [.paymentMethods]
+      #if DEBUG
+        return [.paymentMethods]
+      #else
+        return []
+      #endif
     }
   }
 }
@@ -51,7 +51,7 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol {
   }
 
   public var textColor: UIColor {
-    return .ksr_text_dark_grey_500
+    return .ksr_text_dark_grey_900
   }
 
   public var detailTextColor: UIColor {

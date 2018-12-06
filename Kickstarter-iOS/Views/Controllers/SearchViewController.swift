@@ -264,3 +264,5 @@ extension SearchViewController: ProjectNavigatorDelegate {
     self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
   }
 }
+
+extension SearchViewController: TabBarControllerScrollable { }

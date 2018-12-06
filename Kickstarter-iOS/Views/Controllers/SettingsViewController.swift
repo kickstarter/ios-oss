@@ -102,8 +102,10 @@ final class SettingsViewController: UIViewController {
       .doIfSome { root in
         UIView.transition(with: root.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
           root.switchToDiscovery(params: params)
-        }, completion: { _ in
+        }, completion: { [weak self] _ in
           NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
+
+          self?.dismiss(animated: false, completion: nil)
         })
     }
   }
@@ -142,11 +144,6 @@ final class SettingsViewController: UIViewController {
 
 extension SettingsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-
-    //Account Section is hidden from user until ready to release.
-    if AppEnvironment.current.mainBundle.isRelease && section == 0 {
-      return 0.1
-    }
     return SettingsSectionType.sectionHeaderHeight
   }
 
@@ -185,8 +182,6 @@ extension SettingsViewController {
       return SettingsAccountViewController.instantiate()
     case .help:
       return HelpViewController.instantiate()
-    case .privacy:
-      return SettingsPrivacyViewController.instantiate()
     case .findFriends:
       return FindFriendsViewController.configuredWith(source: .settings)
     case .newsletters:

@@ -29,6 +29,7 @@
 "Any_payment_methods_you_saved_to_Kickstarter" = "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience.";
 "App_version" = "App version";
 "Are_you_sure" = "Are you sure?";
+"Are_you_sure_you_wish_to_remove_this_card" = "Are you sure you wish to remove this card from your payment method options?";
 "Ask_me_anything" = "Ask me anything";
 "Available_to_watch_for_time_more_units" = "Available to watch for %{time} more %{units}";
 "Back" = "Back";
@@ -207,12 +208,14 @@
 "It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
 "Its_a_way_to_bring_creative_projects_to_life" = "It’s a way to bring creative projects to life.";
 "Its_better_with_friends" = "It’s better\nwith friends.";
+"Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "It's like the radio but nothing sucks and also it's a newsletter.";
 "Join_our_secret_society" = "Join our secret society.";
 "Joining_the_live_stream" = "Joining the live stream";
 "Just_for_you" = "Just for you.";
 "Keep_in_touch_after_your_campaign" = "Keep in touch after your campaign and plan your next project.";
 "Keep_reading" = "Keep reading";
 "Keep_up_with_future_live_streams" = "Keep up with future live streams";
+"Kickstarter_Music" = "Kickstarter Music";
 "Kickstarter_if_funded" = "Kickstarter (if funded)";
 "Kickstarter_is_not_a_store" = "Kickstarter is not a store.";
 "Know_when_creators_and_backers_message_you" = "Know when creators and backers message you by enabling notifications.";
@@ -249,6 +252,7 @@
 "Messages" = "Messages";
 "Name" = "Name";
 "Never" = "Never";
+"New_email" = "New email";
 "New_password" = "New password";
 "New_pledge_activity" = "New pledge activity";
 "New_work_and_big_ideas_from_established_and" = "New work and big ideas from established and emerging artists.";
@@ -257,6 +261,7 @@
 "No_Results" = "No Results";
 "No_comments_yet" = "No comments yet.";
 "No_messages" = "No messages";
+"No_nevermind" = "No, nevermind";
 "No_one_has_posted_an_update_yet" = "No one has posted an update yet.";
 "No_pledges_from_friends_yet" = "No pledges\nfrom friends yet.";
 "No_replay_is_available_for_this_live_stream" = "No replay is available for this live stream.";
@@ -335,6 +340,7 @@
 "Recommended_For_You" = "Recommended For You";
 "Recorded_Live" = "Recorded Live";
 "Recorded_live_with_creator_name" = "Recorded live with <b>%{creator_name}</b>";
+"Remove_this_card" = "Remove this card";
 "Replay" = "Replay";
 "Replay_available_for_time_more_units" = "Replay available for %{time} more %{units}";
 "Replay_live_stream_with_creator_name" = "Replay live stream with<br><b>%{creator_name}</b>";
@@ -390,6 +396,7 @@
 "Sign_up_newsletter" = "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team.";
 "Signs_up_with_Email" = "Signs up with Email.";
 "Something_catch_your_eye" = "Something\ncatch your eye?";
+"Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Something went wrong and we were unable to remove your payment method, please try again.";
 "Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
 "Start_the_request" = "Start the request";
 "Starting_soon" = "Starting soon";
@@ -460,6 +467,7 @@
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
 "Write_a_bio" = "Write a short bio. Just a sentence or two is great.";
 "Yes_change_currency" = "Yes, Change currency";
+"Yes_remove" = "Yes, remove";
 "Yes_turn_off" = "Yes, turn off";
 "You_Launched" = "You Launched!";
 "You_backed_this_project" = "You backed this project.";
@@ -479,6 +487,7 @@
 "Your_shipping_destination" = "Your shipping destination";
 "Youre_a_backer" = "You’re a backer!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.";
+"Youre_offline" = "You’re offline. Once your device reconnects, navigate around the app to refresh.";
 "Youve_pledged_to_support_this_project" = "You’ve pledged to support this project and it’s currently still funding.";
 "Zip_code" = "Zip code";
 "accessibility.dashboard.buttons.activity" = "Activity";
@@ -1174,6 +1183,8 @@
 "profile.settings.newsletter.happening" = "Happening";
 "profile.settings.newsletter.happening_now" = "Happening Now";
 "profile.settings.newsletter.invent" = "Invent";
+"profile.settings.newsletter.music" = "Kickstarter Music";
+"profile.settings.newsletter.music_newsletter" = "Sign up to receive a biweekly newsletter full of Mongolian woodwind orchestras, soundtracks to horror movies that don’t exist, operas about insects, and other things you can only find here on Kickstarter Music.";
 "profile.settings.newsletter.news_event" = "News & Events";
 "profile.settings.newsletter.opt_in.message" = "We've sent a confirmation email to the address associated with your account! Please check your email in order to confirm that you'd like to subscribe to %{newsletter}.";
 "profile.settings.newsletter.opt_in.title" = "One final step!";

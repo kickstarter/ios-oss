@@ -123,37 +123,21 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { UIApplication.shared.openURL($0) }
 
-    self.viewModel.outputs.registerForRemoteNotifications
+    self.viewModel.outputs.applicationIconBadgeNumber
+      .observeForUI()
+      .observeValues { UIApplication.shared.applicationIconBadgeNumber = $0 }
+
+    self.viewModel.outputs.pushTokenRegistrationStarted
       .observeForUI()
       .observeValues {
-        if #available(iOS 10.0, *) {
-          UIApplication.shared.registerForRemoteNotifications()
-        } else {
-          UIApplication.shared.registerUserNotificationSettings(
-            UIUserNotificationSettings(types: .alert, categories: [])
-          )
+        print("📲 [Push Registration] Push token registration started 🚀")
+    }
 
-          UIApplication.shared.registerForRemoteNotifications()
-        }
-      }
-
-      if #available(iOS 10.0, *) {
-        self.viewModel.outputs.getNotificationAuthorizationStatus
-          .observeForUI()
-          .observeValues { [weak self] in
-            UNUserNotificationCenter.current().getNotificationSettings { settings in
-              self?.viewModel.inputs.notificationAuthorizationStatusReceived(settings.authorizationStatus)
-            }
-          }
-
-        self.viewModel.outputs.authorizeForRemoteNotifications
-          .observeForUI()
-          .observeValues { [weak self] in
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { (isGranted, _) in
-              self?.viewModel.inputs.notificationAuthorizationCompleted(isGranted: isGranted)
-            }
-          }
-      }
+      self.viewModel.outputs.pushTokenSuccessfullyRegistered
+      .observeForUI()
+      .observeValues { token in
+        print("📲 [Push Registration] Push token successfully registered (\(token)) ✨")
+    }
 
     self.viewModel.outputs.showAlert
       .observeForUI()
@@ -191,6 +175,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues {
         Fabric.with([Crashlytics.self])
+        AppEnvironment.current.koala.logEventCallback = { event, _ in
+          CLSLogv("%@", getVaList([event]))
+        }
     }
     #endif
 
@@ -228,7 +215,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     //swiftlint:enable discarded_notification_center_observer
 
-    self.window?.tintColor = .ksr_dark_grey_500
+    self.window?.tintColor = .ksr_green_700
 
     self.viewModel.inputs.applicationDidFinishLaunching(application: application,
                                                         launchOptions: launchOptions)
@@ -272,9 +259,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
                                                     annotation: annotation)
   }
 
+  // MARK: - Remote notifications
+
   internal func application(_ application: UIApplication,
                             didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     self.viewModel.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: deviceToken)
+  }
+
+  internal func application(_ application: UIApplication,
+                            didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    print("🔴 Failed to register for remote notifications: \(error.localizedDescription)")
   }
 
   internal func application(_ application: UIApplication,

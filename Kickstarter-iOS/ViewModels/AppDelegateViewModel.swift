@@ -73,13 +73,6 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
-  /// Call when notification authorization is completed with user permission or denial.
-  func notificationAuthorizationCompleted(isGranted: Bool)
-
-  /// Call when notification authorization status received.
-  @available(iOS 10.0, *)
-  func notificationAuthorizationStatusReceived(_ authorizationStatus: UNAuthorizationStatus)
-
   /// Call when the user taps "OK" from the notification alert.
   func openRemoteNotificationTappedOk()
 
@@ -97,8 +90,8 @@ public protocol AppDelegateViewModelOutputs {
   /// The value to return from the delegate's `application:didFinishLaunchingWithOptions:` method.
   var applicationDidFinishLaunchingReturnValue: Bool { get }
 
-  /// Emits when application should request authorizatoin for notifications.
-  var authorizeForRemoteNotifications: Signal<(), NoError> { get }
+  /// Emits the application icon badge number
+  var applicationIconBadgeNumber: Signal<Int, NoError> { get }
 
   /// Emits when the application should configure Fabric
   var configureFabric: Signal<(), NoError> { get}
@@ -117,9 +110,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when opening the app with an invalid access token.
   var forceLogout: Signal<(), NoError> { get }
-
-  /// Emits when application should call getNotificationSettings() to obtain authorization status.
-  var getNotificationAuthorizationStatus: Signal<(), NoError> { get }
 
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), NoError> { get }
@@ -163,11 +153,11 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when a view controller should be presented.
   var presentViewController: Signal<UIViewController, NoError> { get }
 
-  /// Emits when the push token has been successfully registered on the server.
-  var pushTokenSuccessfullyRegistered: Signal<(), NoError> { get }
+  /// Emits when the push token registration begins.
+  var pushTokenRegistrationStarted: Signal<(), NoError> { get }
 
-  /// Emits when we should attempt registering the user for notifications.
-  var registerForRemoteNotifications: Signal<(), NoError> { get }
+  /// Emits the push token that has been successfully registered on the server.
+  var pushTokenSuccessfullyRegistered: Signal<String, NoError> { get }
 
   /// Emits an array of short cut items to put into the shared application.
   var setApplicationShortcutItems: Signal<[ShortcutItem], NoError> { get }
@@ -253,36 +243,24 @@ AppDelegateViewModelOutputs {
 
     // Push notifications
 
-    let applicationIsReadyForRegisteringNotifications = Signal.merge(
-      self.applicationWillEnterForegroundProperty.signal,
-      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.showNotificationDialogProperty.signal.ignoreValues()
-      )
-      .filter { AppEnvironment.current.currentUser != nil }
+    let pushNotificationsPreviouslyAuthorized = self.applicationLaunchOptionsProperty.signal
+      .flatMap { _ in AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
 
-    if #available(iOS 10.0, *) {
-      self.getNotificationAuthorizationStatus = applicationIsReadyForRegisteringNotifications
-
-      self.registerForRemoteNotifications = self.notificationAuthorizationCompletedProperty.signal
-        .filter(isTrue)
-        .ignoreValues()
-    } else {
-      //Never firing signal in ios 9
-      self.getNotificationAuthorizationStatus = .empty
-
-      self.registerForRemoteNotifications = applicationIsReadyForRegisteringNotifications
+    let pushTokenRegistrationStartedEvents = Signal.merge(
+      self.didAcceptReceivingRemoteNotificationsProperty.signal,
+      pushNotificationsPreviouslyAuthorized.filter(isTrue).ignoreValues()
+    )
+    .flatMap {
+      AppEnvironment.current.pushRegistrationType.register(for: [.alert, .badge])
+        .materialize()
     }
 
-    let authorize = applicationIsReadyForRegisteringNotifications
-        .takeWhen(
-          self.notificationAuthorizationStatusProperty.signal
-          .skipNil()
-          .filter { $0 == .notDetermined }
-          .ignoreValues()
-      )
+    let pushTokenRegistrationStartedValues = pushTokenRegistrationStartedEvents.values()
+
+    self.pushTokenRegistrationStarted = pushTokenRegistrationStartedValues
+      .ignoreValues()
 
     self.showAlert = self.showNotificationDialogProperty.signal.skipNil()
-      .takeWhen(authorize)
       .filter {
         if let context = $0.userInfo?.values.first as? PushNotificationDialog.Context {
           return PushNotificationDialog.canShowDialog(for: context)
@@ -290,18 +268,17 @@ AppDelegateViewModelOutputs {
         return false
     }
 
-    self.authorizeForRemoteNotifications = self.didAcceptReceivingRemoteNotificationsProperty.signal
-
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
     self.pushTokenSuccessfullyRegistered = self.deviceTokenDataProperty.signal
       .map(deviceToken(fromData:))
+      .on(value: { print("📲 [Push Registration] Push token generated: (\($0))") })
       .ksr_debounce(.seconds(5), on: AppEnvironment.current.scheduler)
-      .switchMap {
-        AppEnvironment.current.apiService.register(pushToken: $0)
+      .switchMap { token in
+        AppEnvironment.current.apiService.register(pushToken: token)
           .demoteErrors()
+          .map { _ in token }
       }
-      .ignoreValues()
 
     let remoteNotificationFromLaunch = self.applicationLaunchOptionsProperty.signal.skipNil()
       .map { _, options in
@@ -610,19 +587,21 @@ AppDelegateViewModelOutputs {
 
     // Koala
 
-    self.notificationAuthorizationStatusProperty.signal
-      .skipNil()
-      .skip(until: self.notificationAuthorizationCompletedProperty.signal.ignoreValues())
-      .take(first: 1)
-      .observeValues { status in
-        switch status {
-        case .authorized:
-          AppEnvironment.current.koala.trackPushPermissionOptIn()
-        case .denied:
-          AppEnvironment.current.koala.trackPushPermissionOptOut()
-        case .notDetermined, .provisional: ()
-        }
+    Signal.combineLatest(
+      pushTokenRegistrationStartedValues,
+      pushNotificationsPreviouslyAuthorized
+    )
+    .filter { _, previouslyAuthorized in !previouslyAuthorized }
+    .map { isGranted, _ in isGranted }
+    .skipNil()
+    .take(first: 1)
+    .observeValues { isGranted in
+      if isGranted {
+        AppEnvironment.current.koala.trackPushPermissionOptIn()
+      } else {
+        AppEnvironment.current.koala.trackPushPermissionOptOut()
       }
+    }
 
     Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
@@ -670,6 +649,14 @@ AppDelegateViewModelOutputs {
 
     deepLinkFromNotification
       .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
+
+    self.applicationIconBadgeNumber = Signal.merge(
+        self.applicationWillEnterForegroundProperty.signal,
+        self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      )
+      .flatMap { AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
+      .filter(isTrue)
+      .mapConst(0)
   }
   // swiftlint:enable cyclomatic_complexity
 
@@ -784,26 +771,13 @@ AppDelegateViewModelOutputs {
     return applicationDidFinishLaunchingReturnValueProperty.value
   }
 
-  fileprivate let notificationAuthorizationCompletedProperty = MutableProperty(false)
-  public func notificationAuthorizationCompleted(isGranted: Bool) {
-    self.notificationAuthorizationCompletedProperty.value = isGranted
-  }
-
-  fileprivate let notificationAuthorizationStatusProperty =
-    MutableProperty<NotificationAuthorizationStatus?>(nil)
-  @available(iOS 10.0, *)
-  public func notificationAuthorizationStatusReceived(_ authorizationStatus: UNAuthorizationStatus) {
-    return self.notificationAuthorizationStatusProperty.value = authStatusType(for: authorizationStatus)
-  }
-
-  public let authorizeForRemoteNotifications: Signal<(), NoError>
+  public let applicationIconBadgeNumber: Signal<Int, NoError>
   public let configureFabric: Signal<(), NoError>
   public let configureHockey: Signal<HockeyConfigData, NoError>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let facebookOpenURLReturnValue = MutableProperty(false)
   public let findRedirectUrl: Signal<URL, NoError>
   public let forceLogout: Signal<(), NoError>
-  public let getNotificationAuthorizationStatus: Signal<(), NoError>
   public let goToActivity: Signal<(), NoError>
   public let goToCreatorMessageThread: Signal<(Param, MessageThread), NoError>
   public let goToDashboard: Signal<Param?, NoError>
@@ -818,8 +792,8 @@ AppDelegateViewModelOutputs {
   public let postNotification: Signal<Notification, NoError>
   public let presentRemoteNotificationAlert: Signal<String, NoError>
   public let presentViewController: Signal<UIViewController, NoError>
-  public let pushTokenSuccessfullyRegistered: Signal<(), NoError>
-  public let registerForRemoteNotifications: Signal<(), NoError>
+  public let pushTokenRegistrationStarted: Signal<(), NoError>
+  public let pushTokenSuccessfullyRegistered: Signal<String, NoError>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], NoError>
   public let showAlert: Signal<Notification, NoError>
   public let synchronizeUbiquitousStore: Signal<(), NoError>
@@ -829,7 +803,6 @@ AppDelegateViewModelOutputs {
 }
 
 private func deviceToken(fromData data: Data) -> String {
-
   return data
     .map { String(format: "%02.2hhx", $0 as CVarArg) }
     .joined()
@@ -1076,19 +1049,4 @@ private func visitorCookies() -> [HTTPCookie] {
     )
   )
   .compact()
-}
-
-@available(iOS 10.0, *)
-private func authStatusType(for status: UNAuthorizationStatus) -> NotificationAuthorizationStatus {
-  switch status {
-  case .authorized: return .authorized
-  case .denied: return .denied
-  case .notDetermined: return .notDetermined
-  case .provisional:
-    if #available(iOS 12, *) {
-      return .provisional
-    } else {
-      return .notDetermined
-    }
-  }
 }
