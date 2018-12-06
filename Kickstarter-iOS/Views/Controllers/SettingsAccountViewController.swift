@@ -7,7 +7,7 @@ import UIKit
 
 final class SettingsAccountViewController: UIViewController {
   @IBOutlet private weak var tableView: UITableView!
-  @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var tableViewTopConstraint: NSLayoutConstraint!
   
   private var messageBannerView: MessageBannerViewController!
 
