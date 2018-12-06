@@ -145,5 +145,5 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 }
 
 private func updateConstraintConstant(_ shouldHideEmailPasswordSection: Bool) -> CGFloat {
-  return  shouldHideEmailPasswordSection ? -SettingsAccountSectionType.sectionHeaderHeight : 0.0
+  return shouldHideEmailPasswordSection ? -SettingsAccountSectionType.sectionHeaderHeight : 0.0
 }
