@@ -7,7 +7,6 @@ import UIKit
 
 final class SettingsAccountViewController: UIViewController, MessageBannerViewControllerPresenting {
   @IBOutlet private weak var tableView: UITableView!
-  @IBOutlet private weak var tableViewTopConstraint: NSLayoutConstraint!
 
   private let dataSource = SettingsAccountDataSource()
   internal var messageBannerViewController: MessageBannerViewController?
@@ -64,7 +63,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
       .observeValues { [weak self] in
         self?.dataSource.configureRows(currency: nil,
                                        shouldHideEmailWarning: true,
-                                       shouldHideEmailPasswordSection: true)
+                                       shouldHideEmailPasswordSection: false)
         self?.tableView.reloadData()
 
         self?.showGeneralError()
@@ -99,12 +98,6 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.showChangeCurrencyAlert()
-    }
-
-    self.viewModel.outputs.tableViewTopConstraint
-      .observeForUI()
-      .observeValues { [weak self] constant in
-        self?.tableViewTopConstraint.constant = constant
     }
   }
 

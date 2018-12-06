@@ -19,7 +19,6 @@ public protocol SettingsAccountViewModelOutputs {
   var presentCurrencyPicker: Signal<Currency, NoError> { get }
   var reloadData: Signal<(Currency, Bool, Bool), NoError> { get }
   var showAlert: Signal<(), NoError> { get }
-  var tableViewTopConstraint: Signal<CGFloat, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
 }
@@ -80,8 +79,6 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .map { $0.localizedDescription }
 
     let currency = Signal.merge(chosenCurrency, updateCurrency)
-
-    self.tableViewTopConstraint = shouldHideEmailPasswordSection.map(updateConstraintConstant)
 
     self.reloadData = Signal.combineLatest(currency, shouldHideEmailWarning, shouldHideEmailPasswordSection)
 
@@ -149,14 +146,9 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public let reloadData: Signal<(Currency, Bool, Bool), NoError>
   public let presentCurrencyPicker: Signal<Currency, NoError>
   public let showAlert: Signal<(), NoError>
-  public let tableViewTopConstraint: Signal<CGFloat, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
   public let updateCurrencyFailure: Signal<String, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }
-}
-
-private func updateConstraintConstant(_ shouldHideEmailPasswordSection: Bool) -> CGFloat {
-  return shouldHideEmailPasswordSection ? -SettingsAccountSectionType.sectionHeaderHeight : 0.0
 }
