@@ -42,10 +42,10 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   }
 
   func removeCurrencyPickerRow() -> IndexPath? {
-    let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currencyPicker)
     let endIndex = self.numberOfItems(in: SettingsAccountSectionType.payment.rawValue)
 
     guard endIndex > 0 else { return nil }
+    
     let cellValue = SettingsCellValue(cellType: SettingsAccountCellType.currencyPicker)
 
     return self.deleteRow(value: cellValue,
