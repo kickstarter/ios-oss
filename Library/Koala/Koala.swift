@@ -1324,6 +1324,7 @@ public final class Koala {
     let prop = ["currency": currency.descriptionText]
     self.track(event: "Selected Chosen Currency", properties: prop)
   }
+
   /**
    Tracks an event for toggling a newsletter preference.
 
