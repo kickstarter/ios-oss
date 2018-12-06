@@ -16,8 +16,9 @@ public protocol SettingsAccountViewModelOutputs {
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
   var fetchAccountFieldsError: Signal<Void, NoError> { get }
   var presentCurrencyPicker: Signal<Void, NoError> { get }
-  var reloadData: Signal<(Currency, Bool), NoError> { get }
+  var reloadData: Signal<(Currency, Bool, Bool), NoError> { get }
   var showAlert: Signal<(), NoError> { get }
+  var tableViewTopConstraint: Signal<CGFloat, NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
 }
@@ -50,6 +51,14 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
         return isEmailVerified && isDeliverable
     }
 
+    let shouldHideEmailPasswordSection = userAccountFields.values()
+      .map { response -> Bool in
+        guard let hasPassword = response.me.hasPassword else {
+            return true
+        }
+        return !hasPassword
+    }
+
     let chosenCurrency = userAccountFields.values()
       .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
 
@@ -74,7 +83,9 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     let currency = Signal.merge(chosenCurrency, updateCurrency)
 
-    self.reloadData = Signal.combineLatest(currency, shouldHideEmailWarning)
+    self.tableViewTopConstraint = shouldHideEmailPasswordSection.map(updateConstraintConstant)
+
+    self.reloadData = Signal.combineLatest(currency, shouldHideEmailWarning, shouldHideEmailPasswordSection)
 
     self.presentCurrencyPicker = currencyCellSelected.signal.mapConst(true).ignoreValues()
 
@@ -122,12 +133,17 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
   public let dismissCurrencyPicker: Signal<Void, NoError>
   public let fetchAccountFieldsError: Signal<Void, NoError>
-  public let reloadData: Signal<(Currency, Bool), NoError>
+  public let reloadData: Signal<(Currency, Bool, Bool), NoError>
   public let presentCurrencyPicker: Signal<Void, NoError>
   public let showAlert: Signal<(), NoError>
+  public let tableViewTopConstraint: Signal<CGFloat, NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
   public let updateCurrencyFailure: Signal<String, NoError>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }
+}
+
+private func updateConstraintConstant(_ shouldHideEmailPasswordSection: Bool) -> CGFloat {
+  return  shouldHideEmailPasswordSection ? -SettingsAccountSectionType.sectionHeaderHeight : 0.0
 }

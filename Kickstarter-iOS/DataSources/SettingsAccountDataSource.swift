@@ -2,18 +2,28 @@ import KsApi
 import Library
 
 final class SettingsAccountDataSource: ValueCellDataSource {
-  func configureRows(currency: Currency?, shouldHideEmailWarning: Bool) {
+
+  func configureRows(currency: Currency?,
+                     shouldHideEmailWarning: Bool,
+                     shouldHideEmailPasswordSection: Bool) {
     clearValues()
-    SettingsAccountSectionType.allCases
+
+    let filteredSections = shouldHideEmailPasswordSection
+      ? SettingsAccountSectionType.allCases.filter { $0 != .emailPassword }
+      : SettingsAccountSectionType.allCases
+
+    filteredSections
       .forEach { section -> Void in
-      let values = section.cellRowsForSection.map { SettingsCellValue(user: nil, cellType: $0) }
+        let values = section.cellRowsForSection.map { SettingsCellValue(user: nil, cellType: $0) }
 
-      self.set(values: values,
-               cellClass: SettingsTableViewCell.self,
-               inSection: section.rawValue)
+        self.set(values: values,
+                 cellClass: SettingsTableViewCell.self,
+                 inSection: section.rawValue)
+
+        if section == .emailPassword {
+          self.insertChangeEmailCell(shouldHideEmailWarning)
+        }
     }
-
-    self.insertChangeEmailCell(shouldHideEmailWarning)
 
     _ = self.insertCurrencyCell(currency: currency)
   }

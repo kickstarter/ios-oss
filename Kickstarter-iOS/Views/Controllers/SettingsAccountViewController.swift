@@ -7,7 +7,8 @@ import UIKit
 
 final class SettingsAccountViewController: UIViewController {
   @IBOutlet private weak var tableView: UITableView!
-
+  @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
+  
   private var messageBannerView: MessageBannerViewController!
 
   private let dataSource = SettingsAccountDataSource()
@@ -53,16 +54,19 @@ final class SettingsAccountViewController: UIViewController {
   override func bindViewModel() {
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] currency, shouldHideEmailWarning in
+      .observeValues { [weak self] currency, shouldHideEmailWarning, shouldHideEmailPasswordSection in
         self?.dataSource.configureRows(currency: currency,
-                                       shouldHideEmailWarning: shouldHideEmailWarning)
+                                       shouldHideEmailWarning: shouldHideEmailWarning,
+                                       shouldHideEmailPasswordSection: shouldHideEmailPasswordSection)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.fetchAccountFieldsError
       .observeForUI()
       .observeValues { [weak self] in
-        self?.dataSource.configureRows(currency: nil, shouldHideEmailWarning: true)
+        self?.dataSource.configureRows(currency: nil,
+                                       shouldHideEmailWarning: true,
+                                       shouldHideEmailPasswordSection: true)
         self?.tableView.reloadData()
 
         self?.showGeneralError()
@@ -97,6 +101,12 @@ final class SettingsAccountViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.showChangeCurrencyAlert()
+    }
+
+    self.viewModel.outputs.tableViewTopConstraint
+      .observeForUI()
+      .observeValues { [weak self] constant in
+        self?.tableViewTopConstraint.constant = constant
     }
   }
 
@@ -178,6 +188,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+
     return SettingsSectionType.sectionHeaderHeight
   }
 
@@ -208,6 +219,8 @@ extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
       return ChangeEmailViewController.instantiate()
     case .changePassword:
       return ChangePasswordViewController.instantiate()
+    case .privacy:
+      return SettingsPrivacyViewController.instantiate()
     default:
       return nil
     }
