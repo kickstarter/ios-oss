@@ -30,8 +30,7 @@ internal final class MessageBannerViewModelTests: TestCase {
   }
 
   func testWithSuccessConfiguration() {
-    self.vm.inputs.setBannerType(type: .success)
-    self.vm.inputs.setBannerMessage(message: Strings.Got_it_your_changes_have_been_saved())
+    self.vm.inputs.update(with: (.success, Strings.Got_it_your_changes_have_been_saved()))
 
     self.bannerBackgroundColor.assertValue(MessageBannerType.success.backgroundColor)
     self.bannerMessage.assertValue(Strings.Got_it_your_changes_have_been_saved())
@@ -41,8 +40,7 @@ internal final class MessageBannerViewModelTests: TestCase {
   }
 
   func testErrorConfiguration() {
-    self.vm.inputs.setBannerType(type: .error)
-    self.vm.inputs.setBannerMessage(message: Strings.general_error_oops())
+    self.vm.inputs.update(with: (.error, Strings.general_error_oops()))
 
     self.bannerBackgroundColor.assertValue(MessageBannerType.error.backgroundColor)
     self.bannerMessage.assertValue(Strings.general_error_oops())
@@ -53,8 +51,7 @@ internal final class MessageBannerViewModelTests: TestCase {
   }
 
   func testInfoConfiguration() {
-    self.vm.inputs.setBannerType(type: .info)
-    self.vm.inputs.setBannerMessage(message: Strings.Verification_email_sent())
+    self.vm.inputs.update(with: (.info, Strings.Verification_email_sent()))
 
     self.bannerBackgroundColor.assertValue(MessageBannerType.info.backgroundColor)
     self.bannerMessage.assertValue(Strings.Verification_email_sent())
@@ -65,13 +62,12 @@ internal final class MessageBannerViewModelTests: TestCase {
 
   func testShowHideBannerManual() {
     withEnvironment {
-      self.vm.inputs.setBannerMessage(message: "Success")
-      self.vm.inputs.setBannerType(type: .success)
-      self.vm.inputs.showBannerView(shouldShow: true)
+      self.vm.inputs.update(with: (.success, "Success"))
+      self.vm.inputs.bannerViewWillShow(true)
 
       self.messageBannerViewIsHidden.assertValues([false], "Message banner should show")
 
-      self.vm.inputs.showBannerView(shouldShow: false)
+      self.vm.inputs.bannerViewWillShow(false)
 
       scheduler.advance(by: .seconds(5))
 
@@ -81,21 +77,19 @@ internal final class MessageBannerViewModelTests: TestCase {
   }
 
   func testShowHideFiltersRepeats() {
-    self.vm.inputs.setBannerMessage(message: "Success")
-    self.vm.inputs.setBannerType(type: .success)
+    self.vm.inputs.update(with: (.success, "Success"))
 
-    self.vm.inputs.showBannerView(shouldShow: true)
-    self.vm.inputs.showBannerView(shouldShow: true)
+    self.vm.inputs.bannerViewWillShow(true)
+    self.vm.inputs.bannerViewWillShow(true)
 
     self.messageBannerViewIsHidden.assertValues([false], "Message banner should show")
   }
 
   func testHideBannerAutomatically() {
     withEnvironment {
-      self.vm.inputs.setBannerMessage(message: "Success")
-      self.vm.inputs.setBannerType(type: .success)
+      self.vm.inputs.update(with: (.success, "Success"))
 
-      self.vm.inputs.showBannerView(shouldShow: true)
+      self.vm.inputs.bannerViewWillShow(true)
 
       scheduler.schedule(after: .seconds(5), action: {
         self.messageBannerViewIsHidden.assertValues([false, true],
