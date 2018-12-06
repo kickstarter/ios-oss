@@ -11,15 +11,14 @@ final class SettingsAccountDataSource: ValueCellDataSource {
       ? SettingsAccountSectionType.allCases.filter { $0 != .emailPassword }
       : SettingsAccountSectionType.allCases
 
-    clearValues()
+    self.clearValues()
 
-    filteredSections.enumerated().forEach { idx, section -> Void in
-
+    filteredSections.forEach { section -> Void in
       let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0) }
 
         self.set(values: values,
                  cellClass: SettingsTableViewCell.self,
-                 inSection: idx)
+                 inSection: section.rawValue)
 
         if section == .emailPassword {
           self.insertChangeEmailCell(shouldHideEmailWarning)

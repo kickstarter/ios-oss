@@ -187,6 +187,11 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    if
+      section == SettingsAccountSectionType.emailPassword.rawValue,
+      self.viewModel.outputs.shouldHideEmailPasswordHeaderView {
+      return 0.1
+    }
 
     return SettingsSectionType.sectionHeaderHeight
   }
@@ -196,6 +201,12 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    if
+      section == SettingsAccountSectionType.emailPassword.rawValue,
+      self.viewModel.outputs.shouldHideEmailPasswordHeaderView {
+      return nil
+    }
+
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
 
