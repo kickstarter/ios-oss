@@ -104,9 +104,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     // Koala
     updateCurrency.signal
-      .observeValues {
-        AppEnvironment.current.koala.trackChangedCurrency($0)
-    }
+      .observeValues { AppEnvironment.current.koala.trackChangedCurrency($0) }
   }
 
   fileprivate let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
