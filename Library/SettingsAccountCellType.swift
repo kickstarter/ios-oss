@@ -17,7 +17,11 @@ public enum SettingsAccountSectionType: Int, CaseIterable {
     case .privacy:
       return [.privacy]
     case .payment:
-      return [.paymentMethods]
+      #if DEBUG
+        return [.paymentMethods]
+      #else
+        return []
+      #endif
     }
   }
 }

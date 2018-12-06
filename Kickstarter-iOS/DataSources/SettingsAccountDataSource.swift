@@ -40,10 +40,9 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   func insertCurrencyCell(with currency: Currency?) -> IndexPath {
     let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency )
 
-    return self.insertRow(value: cellValue,
+    return self.appendRow(value: cellValue,
                           cellClass: SettingsCurrencyCell.self,
-                          atIndex: 1,
-                          inSection: SettingsAccountSectionType.payment.rawValue)
+                          toSection: SettingsAccountSectionType.payment.rawValue)
   }
 
   func insertCurrencyPickerRow(with currency: Currency) -> IndexPath {
@@ -54,12 +53,16 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                           toSection: SettingsAccountSectionType.payment.rawValue)
   }
 
-  func removeCurrencyPickerRow() -> IndexPath {
+  func removeCurrencyPickerRow() -> IndexPath? {
+    let endIndex = self.numberOfItems(in: SettingsAccountSectionType.payment.rawValue)
+
+    guard endIndex > 0 else { return nil }
+
     let cellValue = SettingsCellValue(cellType: SettingsAccountCellType.currencyPicker)
 
     return self.deleteRow(value: cellValue,
                           cellClass: SettingsCurrencyPickerCell.self,
-                          atIndex: 2,
+                          atIndex: endIndex - 1,
                           inSection: SettingsAccountSectionType.payment.rawValue)
   }
 
