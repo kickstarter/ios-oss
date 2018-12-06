@@ -6,18 +6,20 @@ public struct SettingsCurrencyCellValue {
   public let currency: Currency?
 
   public init(cellType: SettingsCellTypeProtocol, currency: Currency?) {
-    self.currency = currency
     self.cellType = cellType
+    self.currency = currency
   }
 }
 
 public struct SettingsCellValue {
-  public let user: User?
   public let cellType: SettingsCellTypeProtocol
+  public let currency: Currency?
+  public let user: User?
 
-  public init(user: User?, cellType: SettingsCellTypeProtocol) {
-    self.user = user
+  public init(cellType: SettingsCellTypeProtocol, currency: Currency? = nil, user: User? = nil) {
     self.cellType = cellType
+    self.currency = currency
+    self.user = user
   }
 }
 

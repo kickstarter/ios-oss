@@ -32,6 +32,8 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.tableView.register(nib: .SettingsCurrencyCell)
     self.tableView.register(nib: .SettingsAccountWarningCell)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -66,8 +68,8 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
 
     self.viewModel.outputs.presentCurrencyPicker
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.showCurrencyPickerCell()
+      .observeValues { [weak self] currency in
+        self?.showCurrencyPickerCell(with: currency)
     }
 
     self.viewModel.outputs.updateCurrencyFailure
@@ -107,11 +109,14 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
       |> settingsTableViewStyle
   }
 
-  private func showCurrencyPickerCell() {
+  private func showCurrencyPickerCell(with currency: Currency) {
+    let tapRecognizer = UITapGestureRecognizer(
+      target: self,
+      action: #selector(tapGestureToDismissCurrencyPicker)
+    )
+
     self.tableView.beginUpdates()
-    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow()], with: .top)
-    let tapRecognizer = UITapGestureRecognizer(target: self,
-                                               action: #selector(tapGestureToDismissCurrencyPicker))
+    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow(with: currency)], with: .top)
     self.view.addGestureRecognizer(tapRecognizer)
     self.tableView.endUpdates()
   }
@@ -128,8 +133,8 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
 
     tableView.beginUpdates()
     self.tableView.deleteRows(at: [pickerCell], with: .top)
-    tableView.endUpdates()
     self.view.gestureRecognizers?.removeAll()
+    self.tableView.endUpdates()
   }
 
   private func showChangeCurrencyAlert() {

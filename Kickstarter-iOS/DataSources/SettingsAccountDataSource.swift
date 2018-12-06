@@ -6,7 +6,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     clearValues()
     SettingsAccountSectionType.allCases
       .forEach { section -> Void in
-      let values = section.cellRowsForSection.map { SettingsCellValue(user: nil, cellType: $0) }
+      let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0) }
 
       self.set(values: values,
                cellClass: SettingsTableViewCell.self,
@@ -15,7 +15,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
 
     self.insertChangeEmailCell(shouldHideEmailWarning)
 
-    _ = self.insertCurrencyCell(currency: currency)
+    _ = self.insertCurrencyCell(with: currency)
   }
 
   func insertChangeEmailCell(_ shouldHideEmailWarning: Bool) {
@@ -25,7 +25,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                    inSection: SettingsAccountSectionType.emailPassword.rawValue)
   }
 
-  func insertCurrencyCell(currency: Currency?) -> IndexPath {
+  func insertCurrencyCell(with currency: Currency?) -> IndexPath {
     let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency )
 
     return self.appendRow(value: cellValue,
@@ -33,8 +33,8 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                           toSection: SettingsAccountSectionType.payment.rawValue)
   }
 
-  func insertCurrencyPickerRow() -> IndexPath {
-    let cellValue = SettingsCellValue(user: nil, cellType: SettingsAccountCellType.currencyPicker)
+  func insertCurrencyPickerRow(with currency: Currency) -> IndexPath {
+    let cellValue = SettingsCellValue(cellType: SettingsAccountCellType.currencyPicker, currency: currency)
 
     return self.appendRow(value: cellValue,
                           cellClass: SettingsCurrencyPickerCell.self,
@@ -46,6 +46,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     let endIndex = self.numberOfItems(in: SettingsAccountSectionType.payment.rawValue)
 
     guard endIndex > 0 else { return nil }
+    let cellValue = SettingsCellValue(cellType: SettingsAccountCellType.currencyPicker)
 
     return self.deleteRow(value: cellValue,
                           cellClass: SettingsCurrencyPickerCell.self,

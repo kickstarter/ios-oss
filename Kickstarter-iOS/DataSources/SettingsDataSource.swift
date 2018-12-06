@@ -5,7 +5,7 @@ final class SettingsDataSource: ValueCellDataSource {
   func configureRows(with user: User) {
 
     SettingsSectionType.allCases.forEach { section -> Void in
-      let values = section.cellRowsForSection.map { SettingsCellValue(user: user, cellType: $0) }
+      let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0, user: user) }
 
       switch section {
       case .findFriends:
