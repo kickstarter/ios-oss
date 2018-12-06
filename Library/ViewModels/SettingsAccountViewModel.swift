@@ -16,7 +16,7 @@ public protocol SettingsAccountViewModelInputs {
 public protocol SettingsAccountViewModelOutputs {
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
   var fetchAccountFieldsError: Signal<Void, NoError> { get }
-  var presentCurrencyPicker: Signal<Void, NoError> { get }
+  var presentCurrencyPicker: Signal<Currency, NoError> { get }
   var reloadData: Signal<(Currency, Bool), NoError> { get }
   var showAlert: Signal<(), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
@@ -85,10 +85,11 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       updateCurrencyEvent.filter { $0.isTerminating }.mapConst(false)
     )
 
-    self.presentCurrencyPicker = updateCurrencyInProgress
-      .takePairWhen(currencyCellSelected.signal.mapConst(true))
-      .filter(first >>> isFalse)
-      .ignoreValues()
+    self.presentCurrencyPicker = Signal.combineLatest(currency, updateCurrencyInProgress)
+      .takePairWhen(currencyCellSelected.signal)
+      .map { ($0.0, $0.1, $1) }
+      .filter(second >>> isFalse)
+      .map { $0.0 }
 
     self.dismissCurrencyPicker = self.dismissPickerTapProperty.signal
 
@@ -140,7 +141,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public let dismissCurrencyPicker: Signal<Void, NoError>
   public let fetchAccountFieldsError: Signal<Void, NoError>
   public let reloadData: Signal<(Currency, Bool), NoError>
-  public let presentCurrencyPicker: Signal<Void, NoError>
+  public let presentCurrencyPicker: Signal<Currency, NoError>
   public let showAlert: Signal<(), NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
   public let updateCurrencyFailure: Signal<String, NoError>
