@@ -69,7 +69,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.viewModel.outputs.presentCurrencyPicker
       .observeForUI()
       .observeValues { [weak self] currency in
-        self?.showCurrencyPickerCell(currency: currency)
+        self?.showCurrencyPickerCell(with: currency)
     }
 
     self.viewModel.outputs.updateCurrencyFailure
@@ -109,14 +109,14 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
       |> settingsTableViewStyle
   }
 
-  private func showCurrencyPickerCell(currency: Currency) {
+  private func showCurrencyPickerCell(with currency: Currency) {
     let tapRecognizer = UITapGestureRecognizer(
       target: self,
       action: #selector(tapGestureToDismissCurrencyPicker)
     )
 
     self.tableView.beginUpdates()
-    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow(currency: currency)], with: .top)
+    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow(with: currency)], with: .top)
     self.view.addGestureRecognizer(tapRecognizer)
     self.tableView.endUpdates()
   }

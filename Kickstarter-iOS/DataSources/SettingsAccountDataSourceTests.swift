@@ -22,7 +22,7 @@ final class SettingsAccountDataSourceTests: XCTestCase {
 
     self.dataSource.configureRows(currency: currency, shouldHideEmailWarning: true)
 
-    _ = self.dataSource.insertCurrencyPickerRow(currency: currency)
+    _ = self.dataSource.insertCurrencyPickerRow(with: currency)
 
     // swiftlint:disable line_length
     XCTAssertEqual(3, dataSource.tableView(tableView,

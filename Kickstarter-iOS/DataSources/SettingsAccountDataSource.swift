@@ -15,7 +15,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
 
     self.insertChangeEmailCell(shouldHideEmailWarning)
 
-    _ = self.insertCurrencyCell(currency: currency)
+    _ = self.insertCurrencyCell(with: currency)
   }
 
   func insertChangeEmailCell(_ shouldHideEmailWarning: Bool) {
@@ -25,7 +25,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                    inSection: SettingsAccountSectionType.emailPassword.rawValue)
   }
 
-  func insertCurrencyCell(currency: Currency?) -> IndexPath {
+  func insertCurrencyCell(with currency: Currency?) -> IndexPath {
     let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency )
 
     return self.insertRow(value: cellValue,
@@ -34,7 +34,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                           inSection: SettingsAccountSectionType.payment.rawValue)
   }
 
-  func insertCurrencyPickerRow(currency: Currency) -> IndexPath {
+  func insertCurrencyPickerRow(with currency: Currency) -> IndexPath {
     let cellValue = SettingsCellValue(cellType: SettingsAccountCellType.currencyPicker, currency: currency)
 
     return self.appendRow(value: cellValue,
