@@ -87,9 +87,9 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     self.presentCurrencyPicker = Signal.combineLatest(currency, updateCurrencyInProgress)
       .takePairWhen(currencyCellSelected.signal)
-      .map { ($0.0, $0.1, $1) }
+      .map(unpack)
       .filter(second >>> isFalse)
-      .map { $0.0 }
+      .map(first)
 
     self.dismissCurrencyPicker = self.dismissPickerTapProperty.signal
 
