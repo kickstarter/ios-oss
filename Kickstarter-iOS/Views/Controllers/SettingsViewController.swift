@@ -102,8 +102,10 @@ final class SettingsViewController: UIViewController {
       .doIfSome { root in
         UIView.transition(with: root.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
           root.switchToDiscovery(params: params)
-        }, completion: { _ in
+        }, completion: { [weak self] _ in
           NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
+
+          self?.dismiss(animated: false, completion: nil)
         })
     }
   }
