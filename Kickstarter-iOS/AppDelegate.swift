@@ -215,7 +215,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     //swiftlint:enable discarded_notification_center_observer
 
-    self.window?.tintColor = .ksr_dark_grey_500
+    self.window?.tintColor = .ksr_green_700
 
     self.viewModel.inputs.applicationDidFinishLaunching(application: application,
                                                         launchOptions: launchOptions)
