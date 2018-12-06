@@ -122,8 +122,12 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   }
 
   private func dismissCurrencyPickerCell() {
+    guard let pickerCell = self.dataSource.removeCurrencyPickerRow() else {
+      return
+    }
+
     tableView.beginUpdates()
-    self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
+    self.tableView.deleteRows(at: [pickerCell], with: .top)
     tableView.endUpdates()
     self.view.gestureRecognizers?.removeAll()
   }
