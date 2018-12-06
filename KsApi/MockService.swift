@@ -12,6 +12,7 @@ internal struct MockService: ServiceType {
   internal let currency: String
   internal let buildVersion: String
 
+  fileprivate let changeCurrencyResponse: GraphMutationEmptyResponseEnvelope?
   fileprivate let changeCurrencyError: GraphError?
 
   fileprivate let changeEmailError: GraphError?
@@ -178,6 +179,7 @@ internal struct MockService: ServiceType {
                                                                        me: .template
                                                                      ),
                 changePasswordError: GraphError? = nil,
+                changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
                 changeCurrencyError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
@@ -269,6 +271,7 @@ internal struct MockService: ServiceType {
     self.currency = currency
     self.buildVersion = buildVersion
 
+    self.changeCurrencyResponse = changeCurrencyResponse
     self.changeCurrencyError = changeCurrencyError
 
     self.changeEmailResponse = changeEmailResponse
@@ -498,11 +501,12 @@ internal struct MockService: ServiceType {
 
   internal func changeCurrency(input: ChangeCurrencyInput) ->
    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      if let error = self.changeCurrencyError {
-        return SignalProducer(error: error)
-      } else {
-        return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
-      }
+    if let response = self.changeCurrencyResponse {
+      return SignalProducer(value: response)
+    } else if let error = self.changeCurrencyError {
+      return SignalProducer(error: error)
+    }
+    return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
   }
 
   internal func fetchCheckout(checkoutUrl url: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope> {

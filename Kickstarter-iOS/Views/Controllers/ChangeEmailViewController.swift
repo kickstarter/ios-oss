@@ -4,10 +4,9 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-internal final class ChangeEmailViewController: UIViewController {
+internal final class ChangeEmailViewController: UIViewController, MessageBannerViewControllerPresenting {
   @IBOutlet fileprivate weak var currentEmailLabel: UILabel!
   @IBOutlet fileprivate weak var currentEmail: UILabel!
-  @IBOutlet fileprivate weak var messageBannerContainer: UIView!
   @IBOutlet fileprivate weak var messageLabelView: UIView!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailTextField: UITextField!
@@ -21,7 +20,7 @@ internal final class ChangeEmailViewController: UIViewController {
   @IBOutlet fileprivate weak var warningMessageLabel: UILabel!
 
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
-  private var messageBannerViewController: MessageBannerViewController!
+  internal var messageBannerViewController: MessageBannerViewController?
 
   private weak var saveButtonView: LoadingBarButtonItemView!
 
@@ -32,11 +31,7 @@ internal final class ChangeEmailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let messageBannerViewController = self.children.first as? MessageBannerViewController else {
-      fatalError("Couldn't instantiate MessageBannerViewController")
-    }
-    self.messageBannerViewController = messageBannerViewController
-    self.messageBannerViewController.delegate = self
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
@@ -78,9 +73,6 @@ internal final class ChangeEmailViewController: UIViewController {
 
     _ = self.onePasswordButton
       |> onePasswordButtonStyle
-
-    _ = self.messageBannerContainer
-      |> \.isHidden .~ true
 
     _ = self.messageLabelView
       |> \.backgroundColor .~ .ksr_grey_200
@@ -168,27 +160,27 @@ internal final class ChangeEmailViewController: UIViewController {
     self.viewModel.outputs.didFailToChangeEmail
       .observeForUI()
       .observeValues { [weak self] error in
-        self?.messageBannerViewController.showBanner(with: .error, message: error)
+        self?.messageBannerViewController?.showBanner(with: .error, message: error)
     }
 
     self.viewModel.outputs.didChangeEmail
       .observeForUI()
       .observeValues { [weak self] in
-        self?.messageBannerViewController.showBanner(with: .success,
+        self?.messageBannerViewController?.showBanner(with: .success,
                                            message: Strings.Got_it_your_changes_have_been_saved())
     }
 
     self.viewModel.outputs.didSendVerificationEmail
       .observeForUI()
       .observeValues { [weak self] in
-        self?.messageBannerViewController.showBanner(with: .success,
+        self?.messageBannerViewController?.showBanner(with: .success,
                                            message: Strings.Verification_email_sent())
     }
 
     self.viewModel.outputs.didFailToSendVerificationEmail
       .observeForUI()
       .observeValues { [weak self] error in
-        self?.messageBannerViewController.showBanner(with: .error, message: error)
+        self?.messageBannerViewController?.showBanner(with: .error, message: error)
     }
 
     self.viewModel.outputs.passwordFieldBecomeFirstResponder
@@ -278,11 +270,5 @@ extension ChangeEmailViewController: UITextFieldDelegate {
 
     self.viewModel.inputs.textFieldShouldReturn(with: textField.returnKeyType)
     return textField.resignFirstResponder()
-  }
-}
-
-extension ChangeEmailViewController: MessageBannerViewControllerDelegate {
-  var messageBannerViewControllerContainer: UIView {
-    return self.messageBannerContainer
   }
 }
