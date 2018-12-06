@@ -52,18 +52,8 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
         return isEmailVerified && isDeliverable
     }
 
-    let initialHiddenState = self.viewWillAppearProperty.signal.mapConst(true)
-
-    let shouldHideEmailPasswordSection = Signal.merge(
-      initialHiddenState,
-      userAccountFields.values()
-        .map { response -> Bool in
-          guard let hasPassword = response.me.hasPassword else {
-            return true
-          }
-          return !hasPassword
-      }
-    )
+    let shouldHideEmailPasswordSection = userAccountFields.values()
+      .map { $0.me.hasPassword == .some(false) }
 
     let chosenCurrency = userAccountFields.values()
       .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }

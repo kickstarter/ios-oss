@@ -6,11 +6,12 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   func configureRows(currency: Currency?,
                      shouldHideEmailWarning: Bool,
                      shouldHideEmailPasswordSection: Bool) {
-    clearValues()
 
-    let filteredSections = shouldHideEmailPasswordSection
+    let filteredSections = !shouldHideEmailPasswordSection
       ? SettingsAccountSectionType.allCases.filter { $0 != .emailPassword }
       : SettingsAccountSectionType.allCases
+
+    clearValues()
 
     filteredSections
       .forEach { section -> Void in
