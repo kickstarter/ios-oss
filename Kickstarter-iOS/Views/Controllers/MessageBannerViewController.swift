@@ -156,11 +156,11 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 extension MessageBannerViewControllerPresenting where Self: UIViewController {
   func configureMessageBannerViewController(on parentViewController: UIViewController)
     -> MessageBannerViewController? {
-    guard let messageBannerViewController = MessageBannerViewController
-      .fromNib(nib: Nib.MessageBannerViewController),
-          let messageBannerView = messageBannerViewController.view else {
-      return nil
-    }
+    let messageBannerViewController = MessageBannerViewController(
+      nibName: Nib.MessageBannerViewController.rawValue, bundle: .framework
+    )
+
+    guard let messageBannerView = messageBannerViewController.view else { return nil }
 
     parentViewController.addChild(messageBannerViewController)
     parentViewController.view.addSubview(messageBannerView)
