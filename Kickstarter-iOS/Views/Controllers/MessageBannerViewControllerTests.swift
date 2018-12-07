@@ -23,10 +23,9 @@ internal final class MessageBannerViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language) {
-        guard let banner = MessageBannerViewController.fromNib(nib: Nib.MessageBannerViewController) else {
-          XCTFail("Failed to create banner view")
-          return
-        }
+        let banner = MessageBannerViewController(
+          nibName: Nib.MessageBannerViewController.rawValue, bundle: .framework
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: banner)
         parent.view.frame.size.height = 200
@@ -45,10 +44,9 @@ internal final class MessageBannerViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language) {
-        guard let banner = MessageBannerViewController.fromNib(nib: Nib.MessageBannerViewController) else {
-          XCTFail("Failed to create banner view")
-          return
-        }
+        let banner = MessageBannerViewController(
+          nibName: Nib.MessageBannerViewController.rawValue, bundle: .framework
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: banner)
         parent.view.frame.size.height = 200
@@ -67,10 +65,9 @@ internal final class MessageBannerViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language) {
-        guard let banner = MessageBannerViewController.fromNib(nib: Nib.MessageBannerViewController) else {
-          XCTFail("Failed to create banner view")
-          return
-        }
+        let banner = MessageBannerViewController(
+          nibName: Nib.MessageBannerViewController.rawValue, bundle: .framework
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: banner)
         parent.view.frame.size.height = 200
