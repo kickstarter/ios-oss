@@ -38,10 +38,10 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       |> \.backgroundColor .~ .clear
       |> \.isHidden .~ true
 
-    _ = backgroundView
+    _ = self.backgroundView
       |> roundedStyle(cornerRadius: 4)
 
-    _ = messageLabel
+    _ = self.messageLabel
       |> UILabel.lens.font .~ .ksr_subhead()
   }
 
