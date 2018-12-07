@@ -91,15 +91,17 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       return
     }
 
+    self.isAnimating = true
+
+    self.bottomConstraint?.constant = 0
+
     if !isHidden {
       self.view.isHidden = isHidden
 
+      // Force an early render to set the height
       self.view.superview?.setNeedsLayout()
       self.view.superview?.layoutIfNeeded()
     }
-
-    self.isAnimating = true
-    self.bottomConstraint?.constant = 0
 
     self.topViewConstraint?.isActive = isHidden
     self.bottomConstraint?.isActive = !isHidden
@@ -176,7 +178,6 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
 
     messageBannerViewController.topViewConstraint = topViewBannerConstraint
     messageBannerViewController.bottomConstraint = bottomViewBannerConstraint
-    messageBannerViewController.bottomConstraint?.isActive = false
 
     parentViewController.view.addConstraints([
       topViewBannerConstraint,
@@ -184,6 +185,8 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
       messageBannerView.leftAnchor.constraint(equalTo: parentViewController.view.leftAnchor),
       messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor),
       ])
+
+    messageBannerViewController.bottomConstraint?.isActive = false
 
     return messageBannerViewController
   }

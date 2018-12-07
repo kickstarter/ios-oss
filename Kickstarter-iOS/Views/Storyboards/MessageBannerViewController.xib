@@ -47,6 +47,7 @@
                             <constraint firstAttribute="trailing" secondItem="gUR-Ad-xmQ" secondAttribute="trailing" constant="12" id="QQx-ZE-F5s"/>
                             <constraint firstItem="gUR-Ad-xmQ" firstAttribute="top" secondItem="uBb-R8-koc" secondAttribute="top" constant="12" id="ZdC-Pd-0kQ"/>
                             <constraint firstItem="gUR-Ad-xmQ" firstAttribute="leading" secondItem="uBb-R8-koc" secondAttribute="leading" constant="12" id="amX-DZ-fBN"/>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="140" id="vAW-P4-ZcR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Q7b-eV-mTR"/>
                     </view>
