@@ -103,13 +103,20 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       self.view.superview?.layoutIfNeeded()
     }
 
-    self.topViewConstraint?.isActive = isHidden
+    // First deactivate both constraints so there are no conflicts
+    self.bottomConstraint?.isActive = false
+    self.topViewConstraint?.isActive = false
+
+    // Then, enable them as needed
     self.bottomConstraint?.isActive = !isHidden
+    self.topViewConstraint?.isActive = isHidden
 
     UIView.animate(withDuration: duration, delay: 0.0,
                    options: UIView.AnimationOptions.curveEaseInOut,
                    animations: { [weak self] in
                     guard let self = self else { return }
+
+                    self.bottomConstraint?.constant = isHidden ? self.view.frame.height : 0
 
                     self.view.superview?.layoutIfNeeded()
     }, completion: { [weak self] _ in
@@ -158,9 +165,11 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 extension MessageBannerViewControllerPresenting where Self: UIViewController {
   func configureMessageBannerViewController(on parentViewController: UIViewController)
     -> MessageBannerViewController? {
-    guard let messageBannerViewController = MessageBannerViewController
-      .fromNib(nib: Nib.MessageBannerViewController),
-          let messageBannerView = messageBannerViewController.view else {
+    let nibName = Nib.MessageBannerViewController.rawValue
+    let messageBannerViewController = MessageBannerViewController(nibName: nibName,
+                                                                  bundle: .framework)
+
+      guard let messageBannerView = messageBannerViewController.view else {
       return nil
     }
 
