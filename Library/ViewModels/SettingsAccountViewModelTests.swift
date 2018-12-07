@@ -186,4 +186,15 @@ internal final class SettingsAccountViewModelTests: TestCase {
       XCTAssertEqual(["Viewed Account", "Viewed Account"], client.events)
     }
   }
+
+  func testTrackSelectedChosenCurrency() {
+    self.vm.inputs.showChangeCurrencyAlert(for: Currency.CHF)
+    self.vm.inputs.didConfirmChangeCurrency()
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(["Selected Chosen Currency"], self.trackingClient.events)
+    XCTAssertEqual(["Fr Swiss Franc (CHF)"], self.trackingClient.properties(forKey: "currency",
+                                                                            as: String.self))
+  }
 }
