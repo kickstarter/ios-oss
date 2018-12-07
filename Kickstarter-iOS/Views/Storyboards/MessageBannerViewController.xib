@@ -85,5 +85,15 @@
             <viewLayoutGuide key="safeArea" id="9yc-G5-kBM"/>
             <point key="canvasLocation" x="84" y="-91.304347826086968"/>
         </view>
+        <panGestureRecognizer minimumNumberOfTouches="1" id="pqh-uS-Y5w">
+            <connections>
+                <action selector="bannerViewPanned:" destination="-1" id="EGr-n9-X0h"/>
+            </connections>
+        </panGestureRecognizer>
+        <tapGestureRecognizer id="vRr-3U-klt">
+            <connections>
+                <action selector="bannerViewTapped:" destination="-1" id="lP9-Xp-mzx"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>
