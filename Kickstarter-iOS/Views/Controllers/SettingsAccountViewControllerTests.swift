@@ -32,6 +32,26 @@ internal final class SettingsAccountViewControllerTests: TestCase {
     }
   }
 
+  func testAccountView_EmailPasswordSectionHidden() {
+
+    let user = UserAccountFields.template
+      |> \.hasPassword .~ false
+
+    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+
+    Device.allCases.forEach { device in
+
+      withEnvironment(apiService: mockService) {
+        let vc = SettingsAccountViewController.instantiate()
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+      }
+    }
+  }
+
   func testAccountView_WhenUserEmailIsUnverified() {
     Device.allCases.forEach { device in
       let fields = UserAccountFields.template

@@ -204,6 +204,7 @@ public enum Query {
     case email
     indirect case followers(Set<QueryArg<Never>>, NonEmptySet<Connection<User>>)
     indirect case following(Set<QueryArg<Never>>, NonEmptySet<Connection<User>>)
+    case hasPassword
     case hasUnreadMessages
     case id
     case image(alias: String, width: Int)
@@ -385,6 +386,7 @@ extension Query.User: QueryType {
     case .email:                                return "email"
     case let .followers(args, fields):          return "followers\(connection(args, fields))"
     case let .following(args, fields):          return "following\(connection(args, fields))"
+    case .hasPassword:                          return "hasPassword"
     case .hasUnreadMessages:                    return "hasUnreadMessages"
     case .id:                                   return "id"
     case let .image(alias, width):              return "\(alias): imageUrl(width: \(width))"

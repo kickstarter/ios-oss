@@ -17,7 +17,7 @@ public protocol SettingsAccountViewModelOutputs {
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
   var fetchAccountFieldsError: Signal<Void, NoError> { get }
   var presentCurrencyPicker: Signal<Currency, NoError> { get }
-  var reloadData: Signal<(Currency, Bool), NoError> { get }
+  var reloadData: Signal<(Currency, Bool, Bool), NoError> { get }
   var showAlert: Signal<(), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
@@ -44,12 +44,15 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     let shouldHideEmailWarning = userAccountFields.values()
       .map { response -> Bool in
         guard let isEmailVerified = response.me.isEmailVerified,
-              let isDeliverable = response.me.isDeliverable else {
-          return true
+          let isDeliverable = response.me.isDeliverable else {
+            return true
         }
 
         return isEmailVerified && isDeliverable
     }
+
+    let shouldHideEmailPasswordSection = userAccountFields.values()
+      .map { $0.me.hasPassword == .some(false) }
 
     let chosenCurrency = userAccountFields.values()
       .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
@@ -77,7 +80,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     let currency = Signal.merge(chosenCurrency, updateCurrency)
 
-    self.reloadData = Signal.combineLatest(currency, shouldHideEmailWarning)
+    self.reloadData = Signal.combineLatest(currency, shouldHideEmailWarning, shouldHideEmailPasswordSection)
 
     let updateCurrencyInProgress = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
@@ -144,7 +147,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
   public let dismissCurrencyPicker: Signal<Void, NoError>
   public let fetchAccountFieldsError: Signal<Void, NoError>
-  public let reloadData: Signal<(Currency, Bool), NoError>
+  public let reloadData: Signal<(Currency, Bool, Bool), NoError>
   public let presentCurrencyPicker: Signal<Currency, NoError>
   public let showAlert: Signal<(), NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
