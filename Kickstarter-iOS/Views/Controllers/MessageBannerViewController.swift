@@ -93,6 +93,9 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 
     if !isHidden {
       self.view.isHidden = isHidden
+
+      self.view.superview?.setNeedsLayout()
+      self.view.superview?.layoutIfNeeded()
     }
 
     self.isAnimating = true
@@ -181,8 +184,6 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
       messageBannerView.leftAnchor.constraint(equalTo: parentViewController.view.leftAnchor),
       messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor),
       ])
-
-    parentViewController.view.layoutIfNeeded()
 
     return messageBannerViewController
   }

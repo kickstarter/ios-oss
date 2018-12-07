@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <viewController restorationIdentifier="MessageBannerViewController" nibName="MessageBannerViewController" id="h7y-fG-v9O" customClass="MessageBannerViewController" customModule="Kickstarter_Framework">
+        <viewController restorationIdentifier="MessageBannerViewController" nibName="" id="h7y-fG-v9O" customClass="MessageBannerViewController" customModule="Kickstarter_Framework">
             <view key="view" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="Zcf-a3-qgT">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="108"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -71,7 +71,7 @@
                 <outlet property="iconImageView" destination="nK4-zs-uiJ" id="QGa-mg-y9M"/>
                 <outlet property="messageLabel" destination="0Wv-n2-rdf" id="6yf-Ru-AAr"/>
             </connections>
-            <point key="canvasLocation" x="53.600000000000001" y="47.226386806596707"/>
+            <point key="canvasLocation" x="-462" y="63"/>
         </viewController>
         <panGestureRecognizer minimumNumberOfTouches="1" id="SrO-tc-rR8">
             <connections>
