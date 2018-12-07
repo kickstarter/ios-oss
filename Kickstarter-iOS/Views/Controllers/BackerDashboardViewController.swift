@@ -213,7 +213,7 @@ internal final class BackerDashboardViewController: UIViewController {
       NSAttributedString.Key.font: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
       ])
 
     _ = button

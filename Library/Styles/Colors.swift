@@ -20,8 +20,7 @@ extension UIColor {
 
       "Dark Grey": [
         400: .ksr_dark_grey_400,
-        500: .ksr_dark_grey_500,
-        900: .ksr_dark_grey_900
+        500: .ksr_dark_grey_500
       ],
 
       "Green": [
@@ -53,6 +52,10 @@ extension UIColor {
 
       "Red": [
         400: .ksr_red_400
+      ],
+
+      "Soft Black": [
+        0: .ksr_soft_black
       ],
 
       "Text Dark Grey": [
@@ -94,11 +97,6 @@ extension UIColor {
   /// 0x656868
   public static var ksr_dark_grey_500: UIColor {
     return .hex(0x656868)
-  }
-
-  /// 0x282828
-  public static var ksr_dark_grey_900: UIColor {
-    return .hex(0x282828)
   }
 
   /// 0x3B5998
@@ -189,6 +187,11 @@ extension UIColor {
   /// 0xFF5340
   public static var ksr_red_400: UIColor {
     return .hex(0xFF5340)
+  }
+
+  /// 0x282828
+  public static var ksr_soft_black: UIColor {
+    return .hex(0x282828)
   }
 
   /// 0x9B9E9E

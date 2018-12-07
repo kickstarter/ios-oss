@@ -24,7 +24,7 @@ private enum PostcardMetadataType {
       return PostcardMetadataData(iconImage: image(named: "metadata-featured"),
                                   labelText: Strings.discovery_baseball_card_metadata_featured_project(
                                     category_name: rootCategory),
-                                  iconAndTextColor: .ksr_dark_grey_900)
+                                  iconAndTextColor: .ksr_soft_black)
     }
   }
 }

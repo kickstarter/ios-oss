@@ -59,7 +59,7 @@ public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UI
   return indicator
     |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
     |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-    |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
+    |> UIActivityIndicatorView.lens.color .~ .ksr_soft_black
 }
 
 /**

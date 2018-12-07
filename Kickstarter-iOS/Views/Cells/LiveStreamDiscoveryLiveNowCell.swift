@@ -82,7 +82,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
 
     _ = self.numberWatchingContainerView
       |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_900.withAlphaComponent(0.5)
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.5)
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.gridHalf(3))
 
     _ = self.numberWatchingLabel
@@ -93,7 +93,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
       |> UIImageView.lens.tintColor .~ .white
 
     _ = self.imageOverlayView
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_900.withAlphaComponent(0.3)
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.3)
 
     _ = self.creatorStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)

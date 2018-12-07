@@ -48,6 +48,6 @@ internal final class ProjectActivityLaunchCell: UITableViewCell, ValueCell {
     _ = self.cardView
       |> cardStyle()
       |> dropShadowStyleMedium()
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_dark_grey_900.cgColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_soft_black.cgColor
   }
 }

@@ -103,7 +103,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.allGoneContainerView
       |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_900
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_soft_black
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(1), leftRight: Styles.grid(1))
 
     _ = self.allGoneLabel

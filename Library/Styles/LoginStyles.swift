@@ -75,7 +75,7 @@ public let fbWrongAccountLabelStyle = UILabel.lens.font .~ .ksr_caption1()
 public let forgotPasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_subhead()
     <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
-    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_dark_grey_900
+    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
     <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
 public let loginButtonStyle = greenButtonStyle

@@ -50,7 +50,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.creatorView
       |> authorBadgeViewStyle
-      |> UIView.lens.backgroundColor .~ .ksr_dark_grey_900
+      |> UIView.lens.backgroundColor .~ .ksr_soft_black
 
     _ = self.nameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 16.0)

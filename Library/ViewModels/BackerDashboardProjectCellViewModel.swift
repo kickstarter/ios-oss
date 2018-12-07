@@ -127,7 +127,7 @@ private func metadataBackgroundColor(for project: Project) -> UIColor {
   case .live, .successful:
     return .ksr_green_500
   default:
-    return .ksr_dark_grey_900
+    return .ksr_soft_black
   }
 }
 

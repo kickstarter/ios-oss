@@ -24,7 +24,7 @@ internal final class ProjectPamphletMinimalCell: UITableViewCell, ValueCell {
 
     _ = self.projectImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
-      |> UIImageView.lens.backgroundColor .~ .ksr_dark_grey_900
+      |> UIImageView.lens.backgroundColor .~ .ksr_soft_black
 
     _ = self.projectNameLabel
       |> UILabel.lens.font %~~ { _, label in

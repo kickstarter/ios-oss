@@ -192,7 +192,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UILabel.lens.font %~~ { _, v in
         v.traitCollection.isRegularRegular ?  UIFont.ksr_title2() : UIFont.ksr_title3(size: 18)
       }
-      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 2
 
     _ = self.liveStreamParagraphLabel
@@ -221,7 +221,7 @@ public final class LiveStreamCountdownViewController: UIViewController {
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
 
     _ = self.imageOverlayView
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_dark_grey_900.withAlphaComponent(0.8)
+      |> UIView.lens.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
 
     _ = self.separatorViews
       ||> separatorStyle
