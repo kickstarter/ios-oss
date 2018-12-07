@@ -23,15 +23,14 @@ internal final class MessageBannerViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language) {
-        guard let banner = MessageBannerViewController.fromNib(nib: Nib.MessageBannerViewController) else {
-          XCTFail("Failed to create banner view")
-          return
-        }
+        let nibName = Nib.MessageBannerViewController.rawValue
+        let messageBannerVC = MessageBannerViewController(nibName: nibName,
+                                                                      bundle: .framework)
 
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: banner)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: messageBannerVC)
         parent.view.frame.size.height = 200
 
-        banner.showBanner(with: .success, message: Strings.Got_it_your_changes_have_been_saved())
+        messageBannerVC.showBanner(with: .success, message: Strings.Got_it_your_changes_have_been_saved())
 
         scheduler.run()
         scheduler.advance()
@@ -45,15 +44,14 @@ internal final class MessageBannerViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language) {
-        guard let banner = MessageBannerViewController.fromNib(nib: Nib.MessageBannerViewController) else {
-          XCTFail("Failed to create banner view")
-          return
-        }
+        let nibName = Nib.MessageBannerViewController.rawValue
+        let messageBannerVC = MessageBannerViewController(nibName: nibName,
+                                                          bundle: .framework)
 
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: banner)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: messageBannerVC)
         parent.view.frame.size.height = 200
 
-        banner.showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+        messageBannerVC.showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
 
         scheduler.run()
         scheduler.advance()
@@ -67,15 +65,14 @@ internal final class MessageBannerViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language) {
-        guard let banner = MessageBannerViewController.fromNib(nib: Nib.MessageBannerViewController) else {
-          XCTFail("Failed to create banner view")
-          return
-        }
+        let nibName = Nib.MessageBannerViewController.rawValue
+        let messageBannerVC = MessageBannerViewController(nibName: nibName,
+                                                          bundle: .framework)
 
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: banner)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: messageBannerVC)
         parent.view.frame.size.height = 200
 
-        banner.showBanner(with: .info, message: Strings.Verification_email_sent())
+        messageBannerVC.showBanner(with: .info, message: Strings.Verification_email_sent())
 
         scheduler.run()
         scheduler.advance()
