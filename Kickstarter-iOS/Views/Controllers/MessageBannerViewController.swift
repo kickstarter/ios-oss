@@ -11,12 +11,11 @@ protocol MessageBannerViewControllerPresenting {
 
 final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate weak var backgroundView: UIView!
-  @IBOutlet fileprivate weak var containerView: UIView!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
   @IBOutlet fileprivate weak var messageLabel: UILabel!
 
   internal var topViewConstraint: NSLayoutConstraint?
-
+  internal var bottomConstraint: NSLayoutConstraint?
   private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
   private var isAnimating: Bool = false
@@ -32,10 +31,6 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     _ = self.view
       |> \.backgroundColor .~ .clear
       |> \.isHidden .~ true
-
-    _ = self.containerView
-      |> \.backgroundColor .~ .clear
-      |> \.layoutMargins .~ .init(all: Styles.grid(1))
 
     _ = backgroundView
       |> roundedStyle(cornerRadius: 4)
@@ -101,14 +96,16 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     }
 
     self.isAnimating = true
+    self.bottomConstraint?.constant = 0
+
+    self.topViewConstraint?.isActive = isHidden
+    self.bottomConstraint?.isActive = !isHidden
 
     UIView.animate(withDuration: duration, delay: 0.0,
                    options: UIView.AnimationOptions.curveEaseInOut,
                    animations: { [weak self] in
                     guard let self = self else { return }
-                    let frameHeight = self.view.frame.size.height
-                    self.topViewConstraint?.constant = isHidden
-                      ? 0 : -frameHeight
+
                     self.view.superview?.layoutIfNeeded()
     }, completion: { [weak self] _ in
       self?.isAnimating = false
@@ -133,7 +130,6 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 
     let yPos = currentTouchPoint.y
     let heightLimit = view.frame.height / 8
-    let height = view.frame.height
 
     if yPos == 0 {
       return
@@ -142,9 +138,10 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       let absYPos = abs(yPos)
       let adjustedYPos =  heightLimit * (1 + log10(absYPos / heightLimit))
 
-      self.topViewConstraint?.constant = -(height + adjustedYPos)
+      self.bottomConstraint?.constant = -adjustedYPos
     } else {
-      self.topViewConstraint?.constant = -(height - yPos)
+
+      self.bottomConstraint?.constant = yPos
     }
   }
 
@@ -171,13 +168,21 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
 
     let topViewBannerConstraint = messageBannerView.topAnchor
       .constraint(equalTo: parentViewController.view.bottomAnchor)
+    let bottomViewBannerConstraint = messageBannerView.bottomAnchor
+      .constraint(equalTo: parentViewController.view.layoutMarginsGuide.bottomAnchor)
+
     messageBannerViewController.topViewConstraint = topViewBannerConstraint
+    messageBannerViewController.bottomConstraint = bottomViewBannerConstraint
+    messageBannerViewController.bottomConstraint?.isActive = false
 
     parentViewController.view.addConstraints([
       topViewBannerConstraint,
+      bottomViewBannerConstraint,
       messageBannerView.leftAnchor.constraint(equalTo: parentViewController.view.leftAnchor),
-      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor)
+      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor),
       ])
+
+    parentViewController.view.layoutIfNeeded()
 
     return messageBannerViewController
   }
