@@ -128,7 +128,7 @@ platform :ios do
       app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
       app: ENV["ITUNES_APP_ID"],
       ipa: "./output/gym/Kickstarter.ipa",
-      team_id: ENV["ITUNES_TEAM_ID"],
+      team_name: ENV["ITUNES_TEAM_NAME"],
       skip_screenshots: true,
       skip_metadata: true
     )
