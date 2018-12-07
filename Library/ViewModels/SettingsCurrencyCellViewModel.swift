@@ -21,7 +21,7 @@ SettingsCurrencyCellViewModelInputs, SettingsCurrencyCellViewModelOutputs {
 
   public init() {
     self.chosenCurrencyText = self.currencyProperty.signal
-      .map { $0?.descriptionText ?? "🤷🏽‍♀️" }
+      .map { $0?.descriptionText ?? "" }
   }
 
   fileprivate let currencyProperty = MutableProperty<Currency?>(nil)
