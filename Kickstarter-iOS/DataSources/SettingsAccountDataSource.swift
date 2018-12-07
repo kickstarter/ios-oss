@@ -3,23 +3,22 @@ import Library
 
 final class SettingsAccountDataSource: ValueCellDataSource {
 
-  private var sectionPositions: [SettingsAccountSectionType] = []
+  private var filteredSections: [SettingsAccountSectionType] = []
 
   func configureRows(currency: Currency?,
                      shouldHideEmailWarning: Bool,
                      shouldHideEmailPasswordSection: Bool) {
 
-    let filteredSections = shouldHideEmailPasswordSection
+    self.filteredSections = shouldHideEmailPasswordSection
       ? SettingsAccountSectionType.allCases.filter { $0 != .emailPassword }
       : SettingsAccountSectionType.allCases
 
-    self.sectionPositions.removeAll()
     self.clearValues()
 
-    filteredSections.forEach { section -> Void in
+    self.filteredSections.forEach { section -> Void in
       let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0) }
 
-      self.sectionPositions.append(section)
+      self.filteredSections.append(section)
 
       guard let index = self.index(of: section) else { return }
 
@@ -108,6 +107,6 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   }
 
   private func index(of section: SettingsAccountSectionType) -> Int? {
-    return self.sectionPositions.index(of: section)
+    return self.filteredSections.index(of: section)
   }
 }
