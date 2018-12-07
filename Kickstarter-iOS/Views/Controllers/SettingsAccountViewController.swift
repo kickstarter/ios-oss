@@ -119,7 +119,9 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     )
 
     self.tableView.beginUpdates()
-    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow(with: currency)], with: .top)
+    if let indexPath = self.dataSource.insertCurrencyPickerRow(with: currency) {
+      self.tableView.insertRows(at: [indexPath], with: .top)
+    }
     self.view.addGestureRecognizer(tapRecognizer)
     self.tableView.endUpdates()
   }
@@ -187,26 +189,14 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    if
-      section == SettingsAccountSectionType.emailPassword.rawValue,
-      self.viewModel.outputs.shouldHideEmailPasswordHeaderView {
-      return 0.1
-    }
-
     return SettingsSectionType.sectionHeaderHeight
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 0.1 // Required to remove the footer in UITableViewStyleGrouped
+    return 0.1
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    if
-      section == SettingsAccountSectionType.emailPassword.rawValue,
-      self.viewModel.outputs.shouldHideEmailPasswordHeaderView {
-      return nil
-    }
-
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
 

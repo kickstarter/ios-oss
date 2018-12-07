@@ -18,7 +18,6 @@ public protocol SettingsAccountViewModelOutputs {
   var fetchAccountFieldsError: Signal<Void, NoError> { get }
   var presentCurrencyPicker: Signal<Currency, NoError> { get }
   var reloadData: Signal<(Currency, Bool, Bool), NoError> { get }
-  var shouldHideEmailPasswordHeaderView: Bool { get }
   var showAlert: Signal<(), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
@@ -54,8 +53,6 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     let shouldHideEmailPasswordSection = userAccountFields.values()
       .map { $0.me.hasPassword == .some(false) }
-
-    self.shouldHideEmailPasswordHeaderViewProperty <~ shouldHideEmailPasswordSection
 
     let chosenCurrency = userAccountFields.values()
       .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
@@ -155,11 +152,6 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public let showAlert: Signal<(), NoError>
   public let transitionToViewController: Signal<UIViewController, NoError>
   public let updateCurrencyFailure: Signal<String, NoError>
-
-  fileprivate let shouldHideEmailPasswordHeaderViewProperty = MutableProperty(false)
-  public var shouldHideEmailPasswordHeaderView: Bool {
-    return self.shouldHideEmailPasswordHeaderViewProperty.value
-  }
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }

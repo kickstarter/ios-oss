@@ -92,7 +92,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.reloadDataShouldHideWarningIcon.assertValueCount(1)
       self.reloadDataCurrency.assertValueCount(1)
       self.fetchAccountFieldsError.assertValueCount(0)
-      XCTAssertTrue(self.vm.outputs.shouldHideEmailPasswordHeaderView)
     }
   }
 
@@ -107,7 +106,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.reloadDataShouldHideWarningIcon.assertValueCount(1)
       self.reloadDataCurrency.assertValueCount(1)
       self.fetchAccountFieldsError.assertValueCount(0)
-      XCTAssertFalse(self.vm.outputs.shouldHideEmailPasswordHeaderView)
     }
   }
 

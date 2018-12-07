@@ -1,7 +1,7 @@
 import KsApi
 import UIKit
 
-public enum SettingsAccountSectionType: Int, CaseIterable {
+public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
   case emailPassword
   case privacy
   case payment
