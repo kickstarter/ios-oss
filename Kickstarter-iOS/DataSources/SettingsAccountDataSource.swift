@@ -2,47 +2,71 @@ import KsApi
 import Library
 
 final class SettingsAccountDataSource: ValueCellDataSource {
-  func configureRows(currency: Currency?, shouldHideEmailWarning: Bool) {
-    clearValues()
-    SettingsAccountSectionType.allCases
-      .forEach { section -> Void in
+
+  private var filteredSections: [SettingsAccountSectionType] = []
+
+  func configureRows(currency: Currency?,
+                     shouldHideEmailWarning: Bool,
+                     shouldHideEmailPasswordSection: Bool) {
+
+    self.filteredSections = shouldHideEmailPasswordSection
+      ? SettingsAccountSectionType.allCases.filter { $0 != .emailPassword }
+      : SettingsAccountSectionType.allCases
+
+    self.clearValues()
+
+    self.filteredSections.forEach { section -> Void in
       let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0) }
+
+      self.filteredSections.append(section)
+
+      guard let index = self.index(of: section) else { return }
 
       self.set(values: values,
                cellClass: SettingsTableViewCell.self,
-               inSection: section.rawValue)
-    }
+               inSection: index)
 
-    self.insertChangeEmailCell(shouldHideEmailWarning)
+      if section == .emailPassword {
+        self.insertChangeEmailCell(shouldHideEmailWarning)
+      }
+    }
 
     _ = self.insertCurrencyCell(with: currency)
   }
 
   func insertChangeEmailCell(_ shouldHideEmailWarning: Bool) {
+    guard let section = self.index(of: .emailPassword) else { return }
+
     self.insertRow(value: shouldHideEmailWarning,
                    cellClass: SettingsAccountWarningCell.self,
                    atIndex: 0,
-                   inSection: SettingsAccountSectionType.emailPassword.rawValue)
+                   inSection: section)
   }
 
-  func insertCurrencyCell(with currency: Currency?) -> IndexPath {
-    let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency )
+  func insertCurrencyCell(with currency: Currency?) -> IndexPath? {
+    guard let section = self.index(of: .payment) else { return nil }
+
+    let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency)
 
     return self.appendRow(value: cellValue,
                           cellClass: SettingsCurrencyCell.self,
-                          toSection: SettingsAccountSectionType.payment.rawValue)
+                          toSection: section)
   }
 
-  func insertCurrencyPickerRow(with currency: Currency) -> IndexPath {
+  func insertCurrencyPickerRow(with currency: Currency) -> IndexPath? {
+    guard let section = self.index(of: .payment) else { return nil }
+
     let cellValue = SettingsCellValue(cellType: SettingsAccountCellType.currencyPicker, currency: currency)
 
     return self.appendRow(value: cellValue,
                           cellClass: SettingsCurrencyPickerCell.self,
-                          toSection: SettingsAccountSectionType.payment.rawValue)
+                          toSection: section)
   }
 
   func removeCurrencyPickerRow() -> IndexPath? {
-    let endIndex = self.numberOfItems(in: SettingsAccountSectionType.payment.rawValue)
+    guard let section = self.index(of: .payment) else { return nil }
+
+    let endIndex = self.numberOfItems(in: section)
 
     guard endIndex > 0 else { return nil }
 
@@ -51,7 +75,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     return self.deleteRow(value: cellValue,
                           cellClass: SettingsCurrencyPickerCell.self,
                           atIndex: endIndex - 1,
-                          inSection: SettingsAccountSectionType.payment.rawValue)
+                          inSection: section)
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {
@@ -80,5 +104,9 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
     }
+  }
+
+  private func index(of section: SettingsAccountSectionType) -> Int? {
+    return self.filteredSections.index(of: section)
   }
 }
