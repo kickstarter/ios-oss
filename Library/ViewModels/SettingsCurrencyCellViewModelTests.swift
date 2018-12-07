@@ -32,6 +32,6 @@ internal final class SettingsCurrencyCellViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: value)
     self.scheduler.advance()
-    self.chosenCurrencyText.assertValues(["🤷🏽‍♀️"])
+    self.chosenCurrencyText.assertValues([""])
   }
 }
