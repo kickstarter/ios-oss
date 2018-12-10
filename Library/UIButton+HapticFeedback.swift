@@ -12,4 +12,10 @@ extension UIButton {
       UIFeedbackGenerator.ksr_success()
     }
   }
+
+  public func generateImpactFeedback() {
+    if #available(iOS 10.0, *) {
+      UIFeedbackGenerator.ksr_impact()
+    }
+  }
 }

@@ -74,6 +74,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
 
+    self.saveButton.addTarget(self, action: #selector(saveButtonPressed(_:)), for: .touchDown)
+
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.watchProjectViewModel.inputs.userSessionStarted()
@@ -331,6 +333,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       strongSelf.metadataBackgroundView.layer.shadowPath =
         UIBezierPath.init(rect: strongSelf.metadataBackgroundView.bounds).cgPath
     }
+  }
+
+  @objc fileprivate func saveButtonPressed(_ button: UIButton) {
+    self.saveButton.generateImpactFeedback()
   }
 
   @objc fileprivate func saveButtonTapped(_ button: UIButton) {
