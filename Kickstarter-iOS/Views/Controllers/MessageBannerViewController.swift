@@ -11,15 +11,20 @@ protocol MessageBannerViewControllerPresenting {
 
 final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate weak var backgroundView: UIView!
-  @IBOutlet fileprivate weak var containerView: UIView!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
   @IBOutlet fileprivate weak var messageLabel: UILabel!
 
-  internal var topViewConstraint: NSLayoutConstraint?
-
-  private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
+  internal var bottomConstraint: NSLayoutConstraint?
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
   private var isAnimating: Bool = false
+
+  private var bottomSafeAreaInset: CGFloat {
+    if #available(iOS 11.0, *) {
+      return self.view.superview?.safeAreaInsets.bottom ?? 0
+    } else {
+      return 0
+    }
+  }
 
   struct AnimationConstants {
     static let hideDuration: TimeInterval = 0.25
@@ -33,14 +38,10 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       |> \.backgroundColor .~ .clear
       |> \.isHidden .~ true
 
-    _ = self.containerView
-      |> \.backgroundColor .~ .clear
-      |> \.layoutMargins .~ .init(all: Styles.grid(1))
-
-    _ = backgroundView
+    _ = self.backgroundView
       |> roundedStyle(cornerRadius: 4)
 
-    _ = messageLabel
+    _ = self.messageLabel
       |> UILabel.lens.font .~ .ksr_subhead()
   }
 
@@ -96,19 +97,26 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       return
     }
 
+    self.isAnimating = true
+
+    let hiddenConstant = self.view.frame.height + self.bottomSafeAreaInset
+
     if !isHidden {
       self.view.isHidden = isHidden
-    }
 
-    self.isAnimating = true
+      self.bottomConstraint?.constant = hiddenConstant
+
+      // Force an early render to set the height
+      self.view.superview?.layoutIfNeeded()
+    }
 
     UIView.animate(withDuration: duration, delay: 0.0,
                    options: UIView.AnimationOptions.curveEaseInOut,
                    animations: { [weak self] in
                     guard let self = self else { return }
-                    let frameHeight = self.view.frame.size.height
-                    self.topViewConstraint?.constant = isHidden
-                      ? 0 : -frameHeight
+
+                    self.bottomConstraint?.constant = isHidden ? hiddenConstant : 0
+
                     self.view.superview?.layoutIfNeeded()
     }, completion: { [weak self] _ in
       self?.isAnimating = false
@@ -133,7 +141,6 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 
     let yPos = currentTouchPoint.y
     let heightLimit = view.frame.height / 8
-    let height = view.frame.height
 
     if yPos == 0 {
       return
@@ -142,9 +149,10 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       let absYPos = abs(yPos)
       let adjustedYPos =  heightLimit * (1 + log10(absYPos / heightLimit))
 
-      self.topViewConstraint?.constant = -(height + adjustedYPos)
+      self.bottomConstraint?.constant = -adjustedYPos
     } else {
-      self.topViewConstraint?.constant = -(height - yPos)
+
+      self.bottomConstraint?.constant = yPos
     }
   }
 
@@ -156,9 +164,11 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 extension MessageBannerViewControllerPresenting where Self: UIViewController {
   func configureMessageBannerViewController(on parentViewController: UIViewController)
     -> MessageBannerViewController? {
-    guard let messageBannerViewController = MessageBannerViewController
-      .fromNib(nib: Nib.MessageBannerViewController),
-          let messageBannerView = messageBannerViewController.view else {
+    let nibName = Nib.MessageBannerViewController.rawValue
+    let messageBannerViewController = MessageBannerViewController(nibName: nibName,
+                                                                  bundle: .framework)
+
+      guard let messageBannerView = messageBannerViewController.view else {
       return nil
     }
 
@@ -169,14 +179,15 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
 
     messageBannerView.translatesAutoresizingMaskIntoConstraints = false
 
-    let topViewBannerConstraint = messageBannerView.topAnchor
-      .constraint(equalTo: parentViewController.view.bottomAnchor)
-    messageBannerViewController.topViewConstraint = topViewBannerConstraint
+    let bottomViewBannerConstraint = messageBannerView.bottomAnchor
+      .constraint(equalTo: parentViewController.view.layoutMarginsGuide.bottomAnchor)
+
+    messageBannerViewController.bottomConstraint = bottomViewBannerConstraint
 
     parentViewController.view.addConstraints([
-      topViewBannerConstraint,
+      bottomViewBannerConstraint,
       messageBannerView.leftAnchor.constraint(equalTo: parentViewController.view.leftAnchor),
-      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor)
+      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor),
       ])
 
     return messageBannerViewController
