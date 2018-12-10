@@ -8,6 +8,8 @@ import XCTest
 internal final class WatchProjectViewModelTests: TestCase {
   internal let vm = WatchProjectViewModel()
 
+
+  internal let generateImpactFeedback = TestObserver<(), NoError>()
   internal let generateSelectionFeedback = TestObserver<(), NoError>()
   internal let generateSuccessFeedback = TestObserver<(), NoError>()
   internal let goToLoginTout = TestObserver<(), NoError>()
@@ -20,6 +22,7 @@ internal final class WatchProjectViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.generateImpactFeedback.observe(self.generateImpactFeedback.observer)
     self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
     self.vm.outputs.generateSuccessFeedback.observe(self.generateSuccessFeedback.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
@@ -36,6 +39,16 @@ internal final class WatchProjectViewModelTests: TestCase {
       self.vm.inputs.saveButtonTapped(selected: true)
       self.scheduler.advance(by: .seconds(1))
       self.showProjectSavedAlert.assertValueCount(1)
+    }
+  }
+
+  func testGenerateImpactFeedback() {
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configure(with: .template)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.saveButtonTouched()
+      self.generateImpactFeedback.assertValueCount(1)
     }
   }
 

@@ -242,6 +242,12 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       name: Strings.Projects_We_Love(), imageNameString: "icon--small-k"
     )
 
+    self.watchProjectViewModel.outputs.generateImpactFeedback
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.saveButton.generateImpactFeedback()
+    }
+
     self.watchProjectViewModel.outputs.generateSuccessFeedback
       .observeForUI()
       .observeValues { [weak self] in
@@ -336,7 +342,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   }
 
   @objc fileprivate func saveButtonPressed(_ button: UIButton) {
-    self.saveButton.generateImpactFeedback()
+    self.watchProjectViewModel.inputs.saveButtonTouched()
   }
 
   @objc fileprivate func saveButtonTapped(_ button: UIButton) {

@@ -8,16 +8,20 @@ public protocol WatchProjectViewModelInputs {
   func configure(with project: Project)
   func projectFromNotification(project: Project?)
   func saveButtonTapped(selected: Bool)
+  func saveButtonTouched()
   func userSessionEnded()
   func userSessionStarted()
   func viewDidLoad()
 }
 
 public protocol WatchProjectViewModelOutputs {
-  /// Emits a boolean to determine whether to create haptics
+  /// Emits when haptic feedback should be generated
+  var generateImpactFeedback: Signal<(), NoError> { get }
+
+  /// Emits when haptic feedback should be generated
   var generateSelectionFeedback: Signal<(), NoError> { get }
 
-  /// Emits a boolean to determine whether to create haptics
+  /// Emits when haptic feedback should be generated
   var generateSuccessFeedback: Signal<(), NoError> { get }
 
   /// Emits when the login tout should be shown to the user.
@@ -162,6 +166,7 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
       .map { $0.personalization.isStarred == true }
       .skipRepeats()
 
+    self.generateImpactFeedback = self.saveButtonTouchedProperty.signal
     self.generateSuccessFeedback = saveButtonTapped.signal.filter(isFalse).ignoreValues()
     self.generateSelectionFeedback = saveButtonTapped.signal.filter(isTrue).ignoreValues()
 
@@ -195,6 +200,11 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
     self.saveButtonTappedProperty.value = selected
   }
 
+  fileprivate let saveButtonTouchedProperty = MutableProperty(())
+  public func saveButtonTouched() {
+    self.saveButtonTouchedProperty.value = selected
+  }
+
   fileprivate let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
@@ -210,6 +220,7 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  public let generateImpactFeedback: Signal<(), NoError>
   public let generateSuccessFeedback: Signal<(), NoError>
   public let generateSelectionFeedback: Signal<(), NoError>
   public let goToLoginTout: Signal<(), NoError>
