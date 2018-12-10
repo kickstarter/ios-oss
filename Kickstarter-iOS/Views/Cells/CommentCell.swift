@@ -54,7 +54,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.nameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 16.0)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)

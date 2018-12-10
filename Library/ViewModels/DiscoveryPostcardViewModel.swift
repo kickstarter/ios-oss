@@ -192,7 +192,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     }
 
     self.projectStateTitleLabelColor = configuredProject
-      .map { $0.state == .successful ? .ksr_green_700 : .ksr_text_dark_grey_900 }
+      .map { $0.state == .successful ? .ksr_green_700 : .ksr_soft_black }
       .skipRepeats()
 
     self.projectStateTitleLabelText = configuredProject

@@ -136,7 +136,7 @@ private func titleString(for project: Project) -> NSAttributedString {
   case .live, .successful:
     return NSAttributedString(string: project.name, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1(size: 13),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ])
   default:
     return NSAttributedString(string: project.name, attributes: [

@@ -113,7 +113,7 @@ public let feedTableViewCellStyle = baseTableViewCellStyle()
 
 public let formFieldStyle =
   UITextField.lens.font .~ .ksr_body()
-    <> UITextField.lens.textColor .~ .ksr_text_dark_grey_900
+    <> UITextField.lens.textColor .~ .ksr_soft_black
     <> UITextField.lens.backgroundColor .~ .clear
     <> UITextField.lens.borderStyle .~ .none
     <> UITextField.lens.autocapitalizationType .~ .none

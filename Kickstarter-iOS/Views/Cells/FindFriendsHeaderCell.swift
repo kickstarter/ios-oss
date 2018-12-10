@@ -51,7 +51,7 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.text %~ { _ in Strings.Discover_more_projects() }
 
     _ = self.subtitleLabel

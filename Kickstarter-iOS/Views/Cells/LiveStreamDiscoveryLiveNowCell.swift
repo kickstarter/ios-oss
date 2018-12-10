@@ -74,7 +74,7 @@ internal final class LiveStreamDiscoveryLiveNowCell: UITableViewCell, ValueCell 
 
     _ = self.streamTitleLabel
       |> UILabel.lens.font .~ .ksr_title3(size: 16)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.streamImageView

@@ -89,7 +89,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 12)

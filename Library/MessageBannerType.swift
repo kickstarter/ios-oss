@@ -41,7 +41,7 @@ public enum MessageBannerType {
     case .success, .info:
       return .white
     case .error:
-      return .ksr_text_dark_grey_900
+      return .ksr_soft_black
     }
   }
 

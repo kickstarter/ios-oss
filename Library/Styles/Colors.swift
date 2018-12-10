@@ -60,8 +60,7 @@ extension UIColor {
 
       "Text Dark Grey": [
         400: .ksr_text_dark_grey_400,
-        500: .ksr_text_dark_grey_500,
-        900: .ksr_text_dark_grey_900
+        500: .ksr_text_dark_grey_500
       ],
 
       "Text Green": [
@@ -202,11 +201,6 @@ extension UIColor {
   /// 0x656969
   public static var ksr_text_dark_grey_500: UIColor {
     return .hex(0x656969)
-  }
-
-  /// 0x282828
-  public static var ksr_text_dark_grey_900: UIColor {
-    return .hex(0x282828)
   }
 
   /// 0x037362

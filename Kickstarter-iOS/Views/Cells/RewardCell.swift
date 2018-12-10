@@ -137,7 +137,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.estimatedDeliveryDateLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.includesTitleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
@@ -151,7 +151,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.shippingLocationsSummaryLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.youreABackerCheckmarkImageView
       |> UIImageView.lens.tintColor .~ .ksr_text_dark_grey_500
@@ -177,7 +177,7 @@ internal final class RewardCell: UITableViewCell, ValueCell {
 
     _ = self.footerLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.separatorViews
       ||> separatorStyle

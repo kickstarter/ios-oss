@@ -29,7 +29,7 @@ internal final class ProjectActivityLaunchCell: UITableViewCell, ValueCell {
 
         _ = titleLabel
           |> projectActivityStateChangeLabelStyle
-          |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+          |> UILabel.lens.textColor .~ .ksr_soft_black
     }
   }
 

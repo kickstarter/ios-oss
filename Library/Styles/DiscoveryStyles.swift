@@ -29,7 +29,7 @@ public let discoverySaveButtonStyle = saveButtonStyle
   <> UIButton.lens.tintColor .~ .white
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
   <> UIButton.lens.backgroundColor(for: .normal) .~ .white
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_400
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_navy_200
