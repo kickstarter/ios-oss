@@ -202,7 +202,7 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
 
   fileprivate let saveButtonTouchedProperty = MutableProperty(())
   public func saveButtonTouched() {
-    self.saveButtonTouchedProperty.value = selected
+    self.saveButtonTouchedProperty.value = ()
   }
 
   fileprivate let userSessionEndedProperty = MutableProperty(())
