@@ -131,7 +131,7 @@ internal final class BackingViewController: UIViewController {
 
     _ = self.backerNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 18)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.backerSequenceLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 14)
@@ -160,12 +160,12 @@ internal final class BackingViewController: UIViewController {
 
     _ = self.totalPledgedLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 15)
-      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.text %~ { _ in Strings.Total_pledged() }
 
     _ = self.totalPledgedAmountLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 15)
-      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.pledgeLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
@@ -195,7 +195,7 @@ internal final class BackingViewController: UIViewController {
 
     _ = self.useThisToKeepTrackLabel
       |> UILabel.lens.font .~ .ksr_body(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.rewardDeliveredLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
@@ -217,7 +217,7 @@ internal final class BackingViewController: UIViewController {
 
     _ = self.rewardTitleWithAmountLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.backerRewardDescriptionLabel
       |> UILabel.lens.font .~ .ksr_caption1(size: 14)

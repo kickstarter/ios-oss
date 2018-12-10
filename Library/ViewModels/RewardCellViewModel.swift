@@ -118,7 +118,7 @@ RewardCellViewModelOutputs {
     self.titleLabelTextColor = projectAndReward
       .map { project, reward in
         reward.remaining != 0 || userIsBacking(reward: reward, inProject: project) || project.state != .live
-          ? .ksr_text_dark_grey_900
+          ? .ksr_soft_black
           : .ksr_text_dark_grey_500
     }
 
@@ -308,9 +308,9 @@ private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> U
   } else if project.state == .live {
     return .ksr_green_700
   } else if project.state != .live {
-    return .ksr_text_dark_grey_900
+    return .ksr_soft_black
   } else {
-    return .ksr_text_dark_grey_900
+    return .ksr_soft_black
   }
 }
 

@@ -38,7 +38,7 @@ public enum HelpType: SettingsCellTypeProtocol {
   }
 
   public var textColor: UIColor {
-    return .ksr_text_dark_grey_900
+    return .ksr_soft_black
   }
 
   public var hideDescriptionLabel: Bool {
