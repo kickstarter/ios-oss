@@ -384,11 +384,11 @@ private func pledgeTitle(for project: Project, backing: Backing, backerIsCurrent
   return titleString.simpleHtmlAttributedString(
     base: [
       NSAttributedString.Key.font: UIFont.ksr_subhead(size: 13),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ],
     bold: [
       NSAttributedString.Key.font: UIFont.ksr_headline(size: 15),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ])
     ?? .init()
 }
@@ -409,11 +409,11 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
   return titleString.simpleHtmlAttributedString(
     base: [
       NSAttributedString.Key.font: UIFont.ksr_subhead(size: 13),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ],
     bold: [
       NSAttributedString.Key.font: UIFont.ksr_headline(size: 15),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ])
     ?? .init()
 }
