@@ -8,7 +8,6 @@ import XCTest
 internal final class WatchProjectViewModelTests: TestCase {
   internal let vm = WatchProjectViewModel()
 
-
   internal let generateImpactFeedback = TestObserver<(), NoError>()
   internal let generateSelectionFeedback = TestObserver<(), NoError>()
   internal let generateSuccessFeedback = TestObserver<(), NoError>()
