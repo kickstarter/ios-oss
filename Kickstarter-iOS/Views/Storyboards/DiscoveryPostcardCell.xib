@@ -175,8 +175,8 @@
                             <constraint firstAttribute="height" constant="51" id="KJJ-Mm-bu4"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rwx-so-2g9">
-                        <rect key="frame" x="28" y="202" width="15.5" height="20.5"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rwx-so-2g9">
+                        <rect key="frame" x="28" y="200.5" width="15.5" height="20.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Ha-xu-JTi">
                                 <rect key="frame" x="0.0" y="0.0" width="15.5" height="20.5"/>
@@ -230,7 +230,6 @@
                 <constraints>
                     <constraint firstItem="jeI-Am-gHH" firstAttribute="top" secondItem="nhT-Ll-gUJ" secondAttribute="top" id="ACn-Rh-sFC"/>
                     <constraint firstItem="jeI-Am-gHH" firstAttribute="leading" secondItem="nhT-Ll-gUJ" secondAttribute="leading" id="BIn-mb-rp6"/>
-                    <constraint firstItem="rwx-so-2g9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="28" id="DTz-e0-nDk"/>
                     <constraint firstItem="F2z-2v-QEy" firstAttribute="top" secondItem="MCx-XZ-do1" secondAttribute="top" id="Deg-C6-Yeh"/>
                     <constraint firstItem="g3C-Yu-Ais" firstAttribute="trailing" secondItem="jeI-Am-gHH" secondAttribute="trailing" id="IWQ-Ln-MLU"/>
                     <constraint firstItem="F2z-2v-QEy" firstAttribute="bottom" secondItem="MCx-XZ-do1" secondAttribute="bottom" id="Je5-k2-HkO"/>
@@ -239,10 +238,12 @@
                     <constraint firstItem="g3C-Yu-Ais" firstAttribute="leading" secondItem="jeI-Am-gHH" secondAttribute="leading" id="V4h-Dt-k8U"/>
                     <constraint firstItem="g3C-Yu-Ais" firstAttribute="top" secondItem="jeI-Am-gHH" secondAttribute="top" id="aJk-RX-1Kw"/>
                     <constraint firstItem="eIL-Rt-9Tk" firstAttribute="trailing" secondItem="nhT-Ll-gUJ" secondAttribute="trailing" id="cVW-qm-avl"/>
+                    <constraint firstItem="rwx-so-2g9" firstAttribute="bottom" secondItem="jeI-Am-gHH" secondAttribute="bottom" constant="-8" id="d64-XZ-hJN"/>
                     <constraint firstItem="MCx-XZ-do1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="dbR-df-MQ4"/>
                     <constraint firstItem="jeI-Am-gHH" firstAttribute="trailing" secondItem="nhT-Ll-gUJ" secondAttribute="trailing" id="e7L-X5-eJe"/>
                     <constraint firstItem="MCx-XZ-do1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="eg0-SZ-EOW"/>
                     <constraint firstAttribute="trailingMargin" secondItem="MCx-XZ-do1" secondAttribute="trailing" id="fDK-r5-ClH"/>
+                    <constraint firstItem="rwx-so-2g9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="12" id="ptI-xz-tYp"/>
                     <constraint firstItem="F2z-2v-QEy" firstAttribute="leading" secondItem="MCx-XZ-do1" secondAttribute="leading" id="rJw-Ta-f0s"/>
                     <constraint firstItem="F2z-2v-QEy" firstAttribute="trailing" secondItem="MCx-XZ-do1" secondAttribute="trailing" id="uS0-4h-3dF"/>
                     <constraint firstAttribute="bottomMargin" secondItem="MCx-XZ-do1" secondAttribute="bottom" id="ukb-JY-9Do"/>
