@@ -45,7 +45,7 @@ public final class LiveVideoViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.view.backgroundColor = .ksr_dark_grey_900
+    self.view.backgroundColor = .ksr_soft_black
     self.view.addSubview(self.videoGridView)
 
     self.applicationDidEnterBackgroundObserver = NotificationCenter.default

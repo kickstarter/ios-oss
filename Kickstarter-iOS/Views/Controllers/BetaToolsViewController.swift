@@ -34,7 +34,7 @@ internal final class BetaToolsViewController: UIViewController {
       ?|> UINavigationController.lens.isNavigationBarHidden .~ false
 
     _ = self.betaDebugPushNotificationsButton
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
       |> UIButton.lens.title(for: .normal) .~ "Debug push notifications"

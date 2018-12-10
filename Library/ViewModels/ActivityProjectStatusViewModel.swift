@@ -87,7 +87,7 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
 private func progressBarColor(forActivityCategory category: Activity.Category) -> UIColor {
   switch category {
   case .cancellation, .failure, .suspension:
-    return .ksr_dark_grey_900
+    return .ksr_soft_black
   case .launch, .success:
     return .ksr_green_700
   default:
@@ -98,7 +98,7 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
 private func metadataColor(forActivityCategory category: Activity.Category) -> UIColor {
   switch category {
   case .cancellation, .failure, .suspension:
-    return .ksr_dark_grey_900
+    return .ksr_soft_black
   case .launch:
     return .ksr_green_500
   case .success:

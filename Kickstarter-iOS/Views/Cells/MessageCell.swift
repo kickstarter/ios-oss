@@ -44,7 +44,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
       |> separatorStyle
 
     _ = self.nameLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
 
     _ = self.timestampLabel
