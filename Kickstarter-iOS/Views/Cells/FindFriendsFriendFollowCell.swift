@@ -61,7 +61,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self.friendNameLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14.0)
 
     _ = self.self.friendLocationLabel

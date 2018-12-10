@@ -116,7 +116,7 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
     case .logout:
       return .ksr_red_400
     default:
-      return .ksr_text_dark_grey_900
+      return .ksr_soft_black
     }
   }
 

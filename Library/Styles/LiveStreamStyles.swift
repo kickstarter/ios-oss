@@ -3,8 +3,8 @@ import Prelude_UIKit
 import UIKit
 
 public let darkSubscribeButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
-  <> UIButton.lens.tintColor .~ .ksr_text_dark_grey_900
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+  <> UIButton.lens.tintColor .~ .ksr_soft_black
   <> UIButton.lens.backgroundColor(for: .normal) .~ .clear
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white
   <> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_navy_600.withAlphaComponent(0.1)

@@ -62,7 +62,7 @@ internal final class BackingCell: UITableViewCell, ValueCell {
       |> separatorStyle
 
     _ = self.pledgedLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ UIFont.ksr_headline()
 
     _ = self.rewardLabel
