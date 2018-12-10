@@ -192,13 +192,13 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testResendVerificationViewIsHidden_IfEmailIsVerified() {
+  func testResendVerificationViewIsHidden_onViewDidLoad_andIfEmailIsVerified() {
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance()
 
     self.resendVerificationEmailViewIsHidden
-      .assertValues([true], "Email is deliverable and verified")
+      .assertValues([true, true], "Email is deliverable and verified")
   }
 
   func testResendVerificationViewIsNotHidden_IfEmailIsNotVerified() {
@@ -212,7 +212,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.resendVerificationEmailViewIsHidden.assertValues([false], "Email is unverified")
+      self.resendVerificationEmailViewIsHidden.assertValues([true, false], "Email is unverified")
     }
   }
 
@@ -228,7 +228,7 @@ final class ChangeEmailViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.resendVerificationEmailViewIsHidden
-        .assertValues([false], "Email is undeliverable")
+        .assertValues([true, false], "Email is undeliverable")
     }
   }
 
