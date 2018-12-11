@@ -10,92 +10,78 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
-        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <viewController restorationIdentifier="MessageBannerViewController" nibName="MessageBannerViewController" id="h7y-fG-v9O" customClass="MessageBannerViewController" customModule="Kickstarter_Framework">
-            <view key="view" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="Zcf-a3-qgT">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
-                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yW0-Ud-aSE" userLabel="Container View">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uBb-R8-koc" userLabel="Background View" customClass="MessageBanner">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="gUR-Ad-xmQ">
-                                        <rect key="frame" x="12" y="12" width="351" height="69"/>
-                                        <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nK4-zs-uiJ">
-                                                <rect key="frame" x="0.0" y="22" width="25" height="25"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="25" id="2R8-5T-wya"/>
-                                                    <constraint firstAttribute="width" constant="25" id="E9B-4d-r0T"/>
-                                                </constraints>
-                                            </imageView>
-                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Wv-n2-rdf">
-                                                <rect key="frame" x="37" y="24.5" width="314" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="78" id="8FV-IZ-Hd5"/>
-                                    <constraint firstAttribute="bottom" secondItem="gUR-Ad-xmQ" secondAttribute="bottom" constant="12" id="L3J-RQ-XRO"/>
-                                    <constraint firstAttribute="trailing" secondItem="gUR-Ad-xmQ" secondAttribute="trailing" constant="12" id="QQx-ZE-F5s"/>
-                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="140" id="XN0-Jw-pJL"/>
-                                    <constraint firstItem="gUR-Ad-xmQ" firstAttribute="top" secondItem="uBb-R8-koc" secondAttribute="top" constant="12" id="ZdC-Pd-0kQ"/>
-                                    <constraint firstItem="gUR-Ad-xmQ" firstAttribute="leading" secondItem="uBb-R8-koc" secondAttribute="leading" constant="12" id="amX-DZ-fBN"/>
-                                </constraints>
-                                <viewLayoutGuide key="safeArea" id="Q7b-eV-mTR"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="uBb-R8-koc" firstAttribute="top" secondItem="yW0-Ud-aSE" secondAttribute="topMargin" id="3Tp-KV-zsL"/>
-                            <constraint firstItem="uBb-R8-koc" firstAttribute="leading" secondItem="yW0-Ud-aSE" secondAttribute="leadingMargin" id="P1Y-Xa-jbZ"/>
-                            <constraint firstItem="uBb-R8-koc" firstAttribute="trailing" secondItem="yW0-Ud-aSE" secondAttribute="trailingMargin" id="UIf-dw-zRI"/>
-                            <constraint firstItem="uBb-R8-koc" firstAttribute="bottom" secondItem="yW0-Ud-aSE" secondAttribute="bottomMargin" id="puR-yd-TsB"/>
-                        </constraints>
-                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
-                    </view>
-                </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                <gestureRecognizers/>
-                <constraints>
-                    <constraint firstItem="yW0-Ud-aSE" firstAttribute="top" secondItem="Zcf-a3-qgT" secondAttribute="top" id="5BX-Vy-XLP"/>
-                    <constraint firstItem="yW0-Ud-aSE" firstAttribute="trailing" secondItem="Zcf-a3-qgT" secondAttribute="trailing" id="EMp-ZB-mHA"/>
-                    <constraint firstItem="yW0-Ud-aSE" firstAttribute="leading" secondItem="Zcf-a3-qgT" secondAttribute="leading" id="Ur9-rj-0oA"/>
-                    <constraint firstItem="yW0-Ud-aSE" firstAttribute="bottom" secondItem="Zcf-a3-qgT" secondAttribute="bottom" id="kAv-yc-xjE"/>
-                </constraints>
-                <viewLayoutGuide key="safeArea" id="pJh-sj-ENH"/>
-                <connections>
-                    <outletCollection property="gestureRecognizers" destination="SrO-tc-rR8" appends="YES" id="APU-tn-hy3"/>
-                    <outletCollection property="gestureRecognizers" destination="W3s-gZ-kOg" appends="YES" id="Rgm-Nb-pfk"/>
-                </connections>
-            </view>
-            <size key="freeformSize" width="375" height="93"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MessageBannerViewController" customModule="Kickstarter_Framework">
             <connections>
-                <outlet property="backgroundView" destination="uBb-R8-koc" id="koE-AU-5xA"/>
-                <outlet property="containerView" destination="yW0-Ud-aSE" id="4B5-tU-OpD"/>
-                <outlet property="iconImageView" destination="nK4-zs-uiJ" id="QGa-mg-y9M"/>
-                <outlet property="messageLabel" destination="0Wv-n2-rdf" id="6yf-Ru-AAr"/>
+                <outlet property="backgroundView" destination="Ejg-36-pne" id="uiJ-Rd-8lu"/>
+                <outlet property="iconImageView" destination="dch-0d-sf4" id="KxL-gP-HK3"/>
+                <outlet property="messageLabel" destination="KXc-1G-HXy" id="X7L-JX-gl2"/>
+                <outlet property="view" destination="mXd-1v-NEw" id="05Y-T5-Jz9"/>
             </connections>
-            <point key="canvasLocation" x="53.600000000000001" y="47.226386806596707"/>
-        </viewController>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="mXd-1v-NEw">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="104"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ejg-36-pne" userLabel="Background View" customClass="MessageBanner">
+                    <rect key="frame" x="6" y="6" width="363" height="92"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="0Hc-2l-Ifi">
+                            <rect key="frame" x="12" y="12" width="339" height="68"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dch-0d-sf4">
+                                    <rect key="frame" x="0.0" y="21.5" width="25" height="25"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="25" id="EKG-TD-O6k"/>
+                                        <constraint firstAttribute="height" constant="25" id="jq6-KR-VE9"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXc-1G-HXy">
+                                    <rect key="frame" x="37" y="24" width="302" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="0Hc-2l-Ifi" secondAttribute="trailing" constant="12" id="2Hx-53-Ukf"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="140" id="Ash-Kh-gDP"/>
+                        <constraint firstItem="0Hc-2l-Ifi" firstAttribute="leading" secondItem="Ejg-36-pne" secondAttribute="leading" constant="12" id="HdE-EP-BSk"/>
+                        <constraint firstAttribute="bottom" secondItem="0Hc-2l-Ifi" secondAttribute="bottom" constant="12" id="pWM-9y-GIs"/>
+                        <constraint firstItem="0Hc-2l-Ifi" firstAttribute="top" secondItem="Ejg-36-pne" secondAttribute="top" constant="12" id="r6W-Mr-tGo"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="78" id="rGG-zi-1uL"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="nEU-Ww-Bk0"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="Ejg-36-pne" firstAttribute="bottom" secondItem="mXd-1v-NEw" secondAttribute="bottom" constant="-6" id="6C5-bf-ii8"/>
+                <constraint firstItem="Ejg-36-pne" firstAttribute="trailing" secondItem="mXd-1v-NEw" secondAttribute="trailing" constant="-6" id="Mn7-to-gAE"/>
+                <constraint firstItem="Ejg-36-pne" firstAttribute="top" secondItem="mXd-1v-NEw" secondAttribute="top" constant="6" id="oqK-2T-zK9"/>
+                <constraint firstItem="Ejg-36-pne" firstAttribute="leading" secondItem="mXd-1v-NEw" secondAttribute="leading" constant="6" id="qvc-G2-g1V"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="LHc-EY-xQU"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="SrO-tc-rR8" appends="YES" id="RMg-yr-dNZ"/>
+                <outletCollection property="gestureRecognizers" destination="W3s-gZ-kOg" appends="YES" id="kjP-JG-2sh"/>
+            </connections>
+            <point key="canvasLocation" x="-458.39999999999998" y="-227.58620689655174"/>
+        </view>
         <panGestureRecognizer minimumNumberOfTouches="1" id="SrO-tc-rR8">
             <connections>
-                <action selector="bannerViewPanned:" destination="h7y-fG-v9O" id="vAu-mx-0FK"/>
+                <action selector="bannerViewPanned:" destination="-1" id="1l2-XG-pVG"/>
             </connections>
         </panGestureRecognizer>
         <tapGestureRecognizer id="W3s-gZ-kOg">
             <connections>
-                <action selector="bannerViewTapped:" destination="h7y-fG-v9O" id="prc-8y-Z3X"/>
+                <action selector="bannerViewTapped:" destination="-1" id="0kI-g0-krB"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

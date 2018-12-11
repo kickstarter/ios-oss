@@ -51,16 +51,19 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   override func bindViewModel() {
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] currency, shouldHideEmailWarning in
+      .observeValues { [weak self] currency, shouldHideEmailWarning, shouldHideEmailPasswordSection in
         self?.dataSource.configureRows(currency: currency,
-                                       shouldHideEmailWarning: shouldHideEmailWarning)
+                                       shouldHideEmailWarning: shouldHideEmailWarning,
+                                       shouldHideEmailPasswordSection: shouldHideEmailPasswordSection)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.fetchAccountFieldsError
       .observeForUI()
       .observeValues { [weak self] in
-        self?.dataSource.configureRows(currency: nil, shouldHideEmailWarning: true)
+        self?.dataSource.configureRows(currency: nil,
+                                       shouldHideEmailWarning: true,
+                                       shouldHideEmailPasswordSection: false)
         self?.tableView.reloadData()
 
         self?.showGeneralError()
@@ -116,7 +119,9 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     )
 
     self.tableView.beginUpdates()
-    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow(with: currency)], with: .top)
+    if let indexPath = self.dataSource.insertCurrencyPickerRow(with: currency) {
+      self.tableView.insertRows(at: [indexPath], with: .top)
+    }
     self.view.addGestureRecognizer(tapRecognizer)
     self.tableView.endUpdates()
   }
@@ -188,7 +193,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 0.1 // Required to remove the footer in UITableViewStyleGrouped
+    return 0.1
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

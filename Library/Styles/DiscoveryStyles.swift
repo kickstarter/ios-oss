@@ -4,7 +4,7 @@ import Prelude_UIKit
 import UIKit
 
 public func discoveryPrimaryColor() -> UIColor {
-  return .ksr_dark_grey_900
+  return .ksr_soft_black
 }
 
 public func discoverySecondaryColor() -> UIColor {
@@ -29,11 +29,11 @@ public let discoverySaveButtonStyle = saveButtonStyle
   <> UIButton.lens.tintColor .~ .white
 
 public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
   <> UIButton.lens.backgroundColor(for: .normal) .~ .white
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_400
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_navy_200
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_dark_grey_900.cgColor
+  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_soft_black.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.discovery_onboarding_buttons_signup_or_login()

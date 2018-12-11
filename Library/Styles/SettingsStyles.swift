@@ -9,12 +9,12 @@ public let settingsSectionButtonStyle =
 public let settingsArrowViewStyle = UIImageView.lens.tintColor .~ .ksr_dark_grey_400
 
 public let settingsSectionLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+  UILabel.lens.textColor .~ .ksr_soft_black
     <> UILabel.lens.font .~ .ksr_subhead()
     <> UILabel.lens.numberOfLines .~ 2
 
 public let settingsTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+  UILabel.lens.textColor .~ .ksr_soft_black
     <> UILabel.lens.font .~ .ksr_body()
 
 public let settingsDetailLabelStyle = UILabel.lens.font .~ .ksr_body()

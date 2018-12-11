@@ -20,8 +20,7 @@ extension UIColor {
 
       "Dark Grey": [
         400: .ksr_dark_grey_400,
-        500: .ksr_dark_grey_500,
-        900: .ksr_dark_grey_900
+        500: .ksr_dark_grey_500
       ],
 
       "Green": [
@@ -55,10 +54,13 @@ extension UIColor {
         400: .ksr_red_400
       ],
 
+      "Soft Black": [
+        0: .ksr_soft_black
+      ],
+
       "Text Dark Grey": [
         400: .ksr_text_dark_grey_400,
-        500: .ksr_text_dark_grey_500,
-        900: .ksr_text_dark_grey_900
+        500: .ksr_text_dark_grey_500
       ],
 
       "Text Green": [
@@ -94,11 +96,6 @@ extension UIColor {
   /// 0x656868
   public static var ksr_dark_grey_500: UIColor {
     return .hex(0x656868)
-  }
-
-  /// 0x282828
-  public static var ksr_dark_grey_900: UIColor {
-    return .hex(0x282828)
   }
 
   /// 0x3B5998
@@ -191,6 +188,11 @@ extension UIColor {
     return .hex(0xFF5340)
   }
 
+  /// 0x282828
+  public static var ksr_soft_black: UIColor {
+    return .hex(0x282828)
+  }
+
   /// 0x9B9E9E
   public static var ksr_text_dark_grey_400: UIColor {
     return .hex(0x9B9E9E)
@@ -199,11 +201,6 @@ extension UIColor {
   /// 0x656969
   public static var ksr_text_dark_grey_500: UIColor {
     return .hex(0x656969)
-  }
-
-  /// 0x282828
-  public static var ksr_text_dark_grey_900: UIColor {
-    return .hex(0x282828)
   }
 
   /// 0x037362
