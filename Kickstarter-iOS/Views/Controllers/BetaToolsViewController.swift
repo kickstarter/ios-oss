@@ -131,6 +131,11 @@ internal final class BetaToolsViewController: UIViewController {
       UIAlertAction.init(title: "Cancel", style: .cancel)
     )
 
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      alert.modalPresentationStyle = .popover
+      alert.popoverPresentationController?.sourceView = self.languageSwitcher
+    }
+
     self.present(alert, animated: true, completion: nil)
   }
 
@@ -148,6 +153,11 @@ internal final class BetaToolsViewController: UIViewController {
     alert.addAction(
       UIAlertAction.init(title: "Cancel", style: .cancel)
     )
+
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      alert.modalPresentationStyle = .popover
+      alert.popoverPresentationController?.sourceView = self.environmentSwitcher
+    }
 
     self.present(alert, animated: true, completion: nil)
   }
