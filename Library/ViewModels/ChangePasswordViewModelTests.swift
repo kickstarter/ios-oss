@@ -74,42 +74,50 @@ final class ChangePasswordViewModelTests: TestCase {
     }
   }
 
-  func testOnePasswordButtonHidesWhenNotAvailable() {
-    self.vm.inputs.onePassword(isAvailable: false)
+  func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
+    let iOS12: (Double) -> Bool = { _ in false }
+    withEnvironment(isOSVersionAvailable: iOS12) {
+      self.vm.inputs.onePassword(isAvailable: true)
 
-    self.onePasswordButtonIsHidden.assertValues([true])
+      self.onePasswordButtonIsHidden.assertValues([false])
+
+      self.vm.inputs.onePassword(isAvailable: false)
+
+      self.onePasswordButtonIsHidden.assertValues([false, true])
+    }
   }
 
-  func testOnePasswordButtonHidesBasedOnPasswordAutofillAvailabilityInIOS12AndPlus() {
-    self.vm.inputs.onePassword(isAvailable: true)
+  func testOnePasswordButtonHidesProperly_OnIOS12AndLater() {
+    let iOS12: (Double) -> Bool = { _ in true }
+    withEnvironment(isOSVersionAvailable: iOS12) {
+      self.vm.inputs.onePassword(isAvailable: true)
 
-    if #available(iOS 12, *) {
       self.onePasswordButtonIsHidden.assertValues([true])
-    } else {
-      self.onePasswordButtonIsHidden.assertValues([false])
+
+      self.vm.inputs.onePassword(isAvailable: false)
+
+      self.onePasswordButtonIsHidden.assertValues([true, true])
     }
   }
 
   func testOnePasswordAutofill() {
-    guard #available(iOS 12, *) else {
-      let mockService = MockService(serverConfig: ServerConfig.local)
+    let mockService = MockService(serverConfig: ServerConfig.local)
+    let iOS12: (Double) -> Bool = { _ in false }
 
-      withEnvironment(apiService: mockService) {
-        self.vm.inputs.onePassword(isAvailable: true)
-        self.vm.inputs.viewDidAppear()
+    withEnvironment(apiService: mockService, isOSVersionAvailable: iOS12) {
+      self.vm.inputs.onePassword(isAvailable: true)
+      self.vm.inputs.viewDidAppear()
 
-        self.currentPasswordBecomeFirstResponder.assertValueCount(1)
-        self.onePasswordButtonIsHidden.assertValue(false)
+      self.currentPasswordBecomeFirstResponder.assertValueCount(1)
+      self.onePasswordButtonIsHidden.assertValue(false)
 
-        self.vm.inputs.onePasswordButtonTapped()
+      self.vm.inputs.onePasswordButtonTapped()
 
-        self.onePasswordFindPasswordForURLString.assertValues(["http://ksr.test"])
+      self.onePasswordFindPasswordForURLString.assertValues(["http://ksr.test"])
 
-        self.vm.inputs.onePasswordFoundPassword(password: "password")
+      self.vm.inputs.onePasswordFoundPassword(password: "password")
 
-        self.currentPasswordPrefillValue.assertValue("password")
-      }
-      return
+      self.currentPasswordPrefillValue.assertValue("password")
     }
   }
 
