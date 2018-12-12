@@ -54,7 +54,7 @@ internal final class LiveStreamContainerPageViewController: UIViewController {
 
     _ = self
       |> baseLiveStreamControllerStyle()
-      |> UIViewController.lens.view.backgroundColor .~ .ksr_dark_grey_900
+      |> UIViewController.lens.view.backgroundColor .~ .ksr_soft_black
 
     _ = self.separatorView
       |> UIView.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.2)

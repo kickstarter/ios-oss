@@ -89,7 +89,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
           ],
           bold: [
             NSAttributedString.Key.font: UIFont.ksr_title3(size: 14),
-            NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900
+            NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
           ],
           italic: nil
           )

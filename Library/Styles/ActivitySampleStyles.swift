@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let activitySampleBackingTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+  UILabel.lens.textColor .~ .ksr_soft_black
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
@@ -28,7 +28,7 @@ public let activitySampleProjectSubtitleLabelStyle =
     <> UILabel.lens.font .~ .ksr_subhead()
 
 public let activitySampleProjectTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+  UILabel.lens.textColor .~ .ksr_soft_black
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
     <> UILabel.lens.font .~ UIFont.ksr_subhead().bolded

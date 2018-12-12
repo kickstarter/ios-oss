@@ -57,7 +57,7 @@ internal final class LiveStreamDiscoveryUpcomingAndReplayCell: UITableViewCell, 
       |> liveStreamDateContainerStyle
 
     _ = self.dateLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ .ksr_title3(size: 16)
 
     _ = self.streamTitleContainerView
@@ -65,18 +65,18 @@ internal final class LiveStreamDiscoveryUpcomingAndReplayCell: UITableViewCell, 
 
     _ = self.streamTitleLabel
       |> UILabel.lens.font .~ .ksr_title3(size: 16)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.replayButton
       |> UIButton.lens.isEnabled .~ false
       |> UIButton.lens.backgroundColor .~ UIColor.white.withAlphaComponent(0.8)
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Replay() }
       |> UIButton.lens.titleLabel.font .~ .ksr_title3(size: 16)
       |> UIButton.lens.adjustsImageWhenDisabled .~ false
       |> UIButton.lens.image(for: .normal) .~
-        Library.image(named: "replay-icon", tintColor: .ksr_text_dark_grey_900)
+        Library.image(named: "replay-icon", tintColor: .ksr_soft_black)
       |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.gridHalf(3),
                                                   left: Styles.grid(4),
                                                   bottom: Styles.gridHalf(3),

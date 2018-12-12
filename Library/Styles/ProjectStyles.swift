@@ -15,7 +15,7 @@ public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedStr
     string: "\(projectName) ",
     attributes: [
       NSAttributedString.Key.font: UIFont.ksr_title3(size: 18.0),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ]
   )
 

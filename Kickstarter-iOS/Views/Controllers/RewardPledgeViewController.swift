@@ -210,7 +210,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.countryLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
 
     _ = self.descriptionLabel
       |> UILabel.lens.contentMode .~ .topLeft
@@ -271,7 +271,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.estimatedDeliveryDateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.estimatedFulfillmentStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -407,7 +407,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.isUserInteractionEnabled .~ true
 
@@ -597,7 +597,7 @@ internal final class RewardPledgeViewController: UIViewController {
     for (idx, item) in allItems.enumerated() {
       let label = UILabel()
         |> UILabel.lens.font .~ (idx == 0 ? .ksr_headline(size: 13) : .ksr_body(size: 14))
-        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_text_dark_grey_900 : .ksr_text_dark_grey_500)
+        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_soft_black : .ksr_text_dark_grey_500)
         |> UILabel.lens.text .~ item
         |> UILabel.lens.numberOfLines .~ 0
 

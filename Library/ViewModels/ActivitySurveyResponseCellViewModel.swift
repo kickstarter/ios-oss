@@ -57,11 +57,11 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
       return text.simpleHtmlAttributedString(
         base: [
           NSAttributedString.Key.font: UIFont.ksr_subhead(size: 14),
-          NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900
+          NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
         ],
         bold: [
           NSAttributedString.Key.font: UIFont.ksr_headline(size: 14),
-          NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900
+          NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
         ])
         ?? NSAttributedString(string: "")
     }
