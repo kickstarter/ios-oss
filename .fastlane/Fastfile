@@ -254,6 +254,17 @@ platform :ios do
     )
   end
 
+  desc "Commit history from a given tag"
+  lane :commit_history do |options|
+    changelog_from_git_commits(
+      between: [options[:tag], "master"],
+      pretty: "- %s (%ae)",
+      date_format: "short",
+      match_lightweight_tag: false,
+      merge_commit_filtering: "exclude_merges"
+    )
+  end
+
   def slack_message(type, version_number, build_number, platform)
     "[#{type.upcase}] uploaded v#{version_number} (#{build_number}) of the Kickstarter iOS app to #{platform}"
   end
