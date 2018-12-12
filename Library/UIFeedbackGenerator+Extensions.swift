@@ -10,7 +10,7 @@ extension UIFeedbackGenerator {
     UISelectionFeedbackGenerator().selectionChanged()
   }
 
-  public static func ksr_impact() {
-    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+  public static func ksr_impact(style: UIImpactFeedbackGenerator.FeedbackStyle) {
+    UIImpactFeedbackGenerator(style: style).impactOccurred()
   }
 }

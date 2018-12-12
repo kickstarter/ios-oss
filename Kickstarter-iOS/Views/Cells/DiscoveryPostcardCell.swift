@@ -245,7 +245,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.watchProjectViewModel.outputs.generateImpactFeedback
       .observeForUI()
       .observeValues { [weak self] in
-        self?.saveButton.generateImpactFeedback()
+        if #available(iOS 10.0, *) {
+          self?.saveButton.generateImpactFeedback(style: .light)
+      }
     }
 
     self.watchProjectViewModel.outputs.generateSuccessFeedback
