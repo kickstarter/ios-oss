@@ -19,11 +19,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
   private var isAnimating: Bool = false
 
   private var bottomSafeAreaInset: CGFloat {
-    if #available(iOS 11.0, *) {
-      return self.view.superview?.safeAreaInsets.bottom ?? 0
-    } else {
-      return 0
-    }
+    return self.view.superview?.safeAreaInsets.bottom ?? 0
   }
 
   struct AnimationConstants {
