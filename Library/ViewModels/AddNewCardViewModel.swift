@@ -14,6 +14,7 @@ public protocol AddNewCardViewModelInputs {
   func stripeCreated(_ token: String?, stripeID: String?)
   func stripeError(_ error: Error?)
   func viewDidLoad()
+  func viewWillAppear()
 }
 
 public protocol AddNewCardViewModelOutputs {
@@ -92,6 +93,22 @@ AddNewCardViewModelOutputs {
       self.addNewCardSuccess.mapConst(false),
       self.addNewCardFailure.mapConst(false)
     )
+
+    // Koala
+    self.viewWillAppearProperty.signal
+      .observeValues {
+        AppEnvironment.current.koala.trackViewedAddNewCard()
+    }
+
+    self.addNewCardSuccess
+      .observeValues { _ in
+        AppEnvironment.current.koala.trackSavedPaymentMethod()
+    }
+
+    self.addNewCardFailure
+      .observeValues { _ in
+        AppEnvironment.current.koala.trackFailedPaymentMethodCreation()
+    }
   }
 
   private let cardholderNameChangedProperty = MutableProperty<String?>(nil)
@@ -134,6 +151,11 @@ AddNewCardViewModelOutputs {
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
   }
 
   public let activityIndicatorShouldShow: Signal<Bool, NoError>

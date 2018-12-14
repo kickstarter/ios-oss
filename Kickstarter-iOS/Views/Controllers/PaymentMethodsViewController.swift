@@ -44,10 +44,10 @@ internal final class PaymentMethodsViewController: UIViewController {
     }
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
 
-    self.viewModel.inputs.viewDidAppear()
+    self.viewModel.inputs.viewWillAppear()
   }
 
   override func bindStyles() {
@@ -97,8 +97,7 @@ internal final class PaymentMethodsViewController: UIViewController {
     self.viewModel.outputs.tableViewIsEditing
       .observeForUI()
       .observeValues { [weak self] isEditing in
-        _ = self?.tableView
-          ?|> \.isEditing .~ isEditing
+        self?.tableView.setEditing(isEditing, animated: true)
     }
 
     self.viewModel.outputs.showAlert

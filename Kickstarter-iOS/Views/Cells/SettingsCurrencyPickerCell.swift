@@ -54,7 +54,7 @@ extension SettingsCurrencyPickerCell: UIPickerViewDataSource {
 
 extension SettingsCurrencyPickerCell: UIPickerViewDelegate {
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return Currency.allCases[row].descriptionText //Currency(rawValue: row)?.descriptionText
+    return Currency.allCases[row].descriptionText
   }
 
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

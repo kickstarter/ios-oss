@@ -9,8 +9,8 @@ public protocol PaymentMethodsViewModelInputs {
   func didDelete(_ creditCard: GraphUserCreditCard.CreditCard)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
-  func viewDidAppear()
   func viewDidLoad()
+  func viewWillAppear()
 }
 
 public protocol PaymentMethodsViewModelOutputs {
@@ -31,7 +31,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
   public init() {
-    let paymentMethodsEvent = self.viewDidAppearProperty.signal
+    let paymentMethodsEvent = self.viewWillAppearProperty.signal
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphCreditCards(query: UserQueries.storedCards.query)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -68,6 +68,18 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.presentBanner = self.presentMessageBannerProperty.signal
 
     self.tableViewIsEditing = self.editButtonTappedSignal.scan(false) { current, _ in !current }
+
+    // Koala:
+    self.viewWillAppearProperty.signal
+      .observeValues { _ in AppEnvironment.current.koala.trackViewedPaymentMethods() }
+
+    deletePaymentMethodEvents.values()
+      .ignoreValues()
+      .observeValues { _ in AppEnvironment.current.koala.trackDeletedPaymentMethod() }
+
+    deletePaymentMethodEventsErrors
+      .ignoreValues()
+      .observeValues { _ in AppEnvironment.current.koala.trackDeletePaymentMethodError() }
   }
 
   let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) = Signal<GraphUserCreditCard.CreditCard,
@@ -86,9 +98,9 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let viewDidAppearProperty = MutableProperty(())
-  public func viewDidAppear() {
-    self.viewDidAppearProperty.value = ()
+  fileprivate let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
   }
 
   fileprivate let didTapAddCardButtonProperty = MutableProperty(())
