@@ -163,12 +163,23 @@ final class SharedFunctionsTests: TestCase {
   }
 
   func testOnePasswordButtonIsHidden() {
-    if #available(iOS 12, *) {
+    var iOS12: (Double) -> Bool = { _ in true }
+    withEnvironment(isOSVersionAvailable: iOS12) {
       XCTAssertTrue(is1PasswordButtonHidden(true))
       XCTAssertTrue(is1PasswordButtonHidden(false))
-    } else {
+    }
+
+    iOS12 = { _ in false }
+    withEnvironment(isOSVersionAvailable: iOS12) {
       XCTAssertTrue(is1PasswordButtonHidden(true))
       XCTAssertFalse(is1PasswordButtonHidden(false))
     }
+  }
+
+  func testIsOSVersionAvailable_Supports_iOS12() {
+    XCTAssertTrue(ksr_isOSVersionAvailable(12.0))
+    XCTAssertTrue(ksr_isOSVersionAvailable(12.1))
+    XCTAssertTrue(ksr_isOSVersionAvailable(12.123))
+    XCTAssertTrue(ksr_isOSVersionAvailable(12.9))
   }
 }

@@ -74,6 +74,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
 
+    self.saveButton.addTarget(self, action: #selector(saveButtonPressed(_:)), for: .touchDown)
+
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.watchProjectViewModel.inputs.userSessionStarted()
@@ -240,6 +242,14 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       name: Strings.Projects_We_Love(), imageNameString: "icon--small-k"
     )
 
+    self.watchProjectViewModel.outputs.generateImpactFeedback
+      .observeForUI()
+      .observeValues { [weak self] in
+        if #available(iOS 10.0, *) {
+          self?.saveButton.generateImpactFeedback(style: .light)
+      }
+    }
+
     self.watchProjectViewModel.outputs.generateSuccessFeedback
       .observeForUI()
       .observeValues { [weak self] in
@@ -331,6 +341,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       strongSelf.metadataBackgroundView.layer.shadowPath =
         UIBezierPath.init(rect: strongSelf.metadataBackgroundView.bounds).cgPath
     }
+  }
+
+  @objc fileprivate func saveButtonPressed(_ button: UIButton) {
+    self.watchProjectViewModel.inputs.saveButtonTouched()
   }
 
   @objc fileprivate func saveButtonTapped(_ button: UIButton) {
