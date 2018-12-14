@@ -121,7 +121,7 @@ let stringsByLocale = stringsByLocale1
 }
 
 stringsByLocale?.forEach { locale, strings in
-  guard locale != "it" else { return }
+  guard locale != "it", locale != "zh" else { return }
   let contents = stringsFileContents(strings)
   let path = "Kickstarter-iOS/Locales/\(locale).lproj/Localizable.strings"
   try! contents.write(toFile: path, atomically: true, encoding: .utf8)
