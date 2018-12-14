@@ -222,14 +222,12 @@ internal final class AddNewCardViewModelTests: TestCase {
   }
 
   func testTrackViewedAddNewCard() {
-
     self.vm.inputs.viewWillAppear()
 
     XCTAssertEqual(["Viewed Add New Card"], self.trackingClient.events)
   }
 
   func testTrackSavedPaymentMethod() {
-
     self.vm.inputs.paymentInfo(valid: true)
     self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
@@ -239,7 +237,6 @@ internal final class AddNewCardViewModelTests: TestCase {
   }
 
   func testTrackFailedPaymentMethodCreation() {
-
     let error = GraphError.emptyResponse(nil)
     withEnvironment(apiService: MockService(addNewCreditCardError: error)) {
       self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")

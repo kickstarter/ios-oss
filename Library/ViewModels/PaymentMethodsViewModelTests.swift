@@ -128,14 +128,12 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testTrackPaymentMethodsView() {
-
     XCTAssertEqual([], self.trackingClient.events)
     self.vm.inputs.viewWillAppear()
     XCTAssertEqual(["Viewed Payment Methods"], self.trackingClient.events)
   }
 
   func testTrackDeletePaymentMethods() {
-
     guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
       XCTFail("Card should exist")
       return
@@ -152,8 +150,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testTrackErroredDeletePaymentMethod() {
-
+  func testTrackDeletePaymentMethodError() {
     guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
       XCTFail("Card should exist")
       return

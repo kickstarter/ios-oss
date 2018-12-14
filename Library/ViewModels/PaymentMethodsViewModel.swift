@@ -71,21 +71,15 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
     // Koala:
     self.viewWillAppearProperty.signal
-      .observeValues { _ in
-        AppEnvironment.current.koala.trackViewedPaymentMethods()
-    }
+      .observeValues { _ in AppEnvironment.current.koala.trackViewedPaymentMethods() }
 
     deletePaymentMethodEvents.values()
       .ignoreValues()
-      .observeValues { _ in
-        AppEnvironment.current.koala.trackDeletedPaymentMethod()
-    }
+      .observeValues { _ in AppEnvironment.current.koala.trackDeletedPaymentMethod() }
 
     deletePaymentMethodEventsErrors
       .ignoreValues()
-      .observeValues { _ in
-        AppEnvironment.current.koala.trackErroredDeletePaymentMethod()
-    }
+      .observeValues { _ in AppEnvironment.current.koala.trackDeletePaymentMethodError() }
   }
 
   let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) = Signal<GraphUserCreditCard.CreditCard,
