@@ -46,7 +46,6 @@ public protocol ChangeEmailViewModelType {
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
 ChangeEmailViewModelOutputs {
   public init() {
-
     let changeEmailEvent = Signal.combineLatest(
       self.newEmailProperty.signal.skipNil(),
       self.passwordProperty.signal.skipNil()
@@ -98,9 +97,11 @@ ChangeEmailViewModelOutputs {
 
     let isEmailVerified = userEmailEvent.values().map { $0.me.isEmailVerified }.skipNil()
     let isEmailDeliverable = userEmailEvent.values().map { $0.me.isDeliverable }.skipNil()
-
-    self.resendVerificationEmailViewIsHidden = Signal.combineLatest(isEmailVerified, isEmailDeliverable)
+    let emailVerifiedAndDeliverable = Signal.combineLatest(isEmailVerified, isEmailDeliverable)
       .map { $0 && $1 }
+
+    self.resendVerificationEmailViewIsHidden = Signal.merge(viewDidLoadProperty.signal.mapConst(true),
+                                                            emailVerifiedAndDeliverable)
 
     self.unverifiedEmailLabelHidden = Signal
       .combineLatest(isEmailVerified, isEmailDeliverable)

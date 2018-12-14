@@ -16,7 +16,6 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 
   internal var bottomConstraint: NSLayoutConstraint?
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
-  private var isAnimating: Bool = false
 
   private var bottomSafeAreaInset: CGFloat {
     if #available(iOS 11.0, *) {
@@ -93,12 +92,6 @@ final class MessageBannerViewController: UIViewController, NibLoading {
   private func showViewAndAnimate(_ isHidden: Bool) {
     let duration = isHidden ? AnimationConstants.hideDuration : AnimationConstants.showDuration
 
-    guard isAnimating == false else {
-      return
-    }
-
-    self.isAnimating = true
-
     let hiddenConstant = self.view.frame.height + self.bottomSafeAreaInset
 
     if !isHidden {
@@ -119,7 +112,6 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 
                     self.view.superview?.layoutIfNeeded()
     }, completion: { [weak self] _ in
-      self?.isAnimating = false
       self?.view.isHidden = isHidden
 
       self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
@@ -127,7 +119,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
   }
 
   @IBAction private func bannerViewPanned(_ sender: UIPanGestureRecognizer) {
-    guard let view = sender.view, self.isAnimating == false else {
+    guard let view = sender.view else {
       return
     }
 
