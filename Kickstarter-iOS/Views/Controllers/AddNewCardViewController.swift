@@ -61,6 +61,11 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.viewModel.inputs.viewWillAppear()
+  }
+
   override func bindStyles() {
     super.bindStyles()
 
