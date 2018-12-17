@@ -116,9 +116,9 @@ internal final class BetaToolsViewController: UIViewController {
 
   private func showLanguageActionSheet() {
 
-    let alert = UIAlertController.init(title: "Change Language",
-                                       preferredStyle: .actionSheet,
-                                       sourceView: self.languageSwitcher)
+    let alert = UIAlertController.alert(title: "Change Language",
+                                        preferredStyle: .actionSheet,
+                                        sourceView: self.languageSwitcher)
 
     Language.allLanguages.forEach { language in
       alert.addAction(
@@ -136,9 +136,9 @@ internal final class BetaToolsViewController: UIViewController {
   }
 
   private func showEnvironmentActionSheet() {
-    let alert = UIAlertController.init(title: "Change Environment",
-                                       preferredStyle: .actionSheet,
-                                       sourceView: self.environmentSwitcher)
+    let alert = UIAlertController.alert(title: "Change Environment",
+                                        preferredStyle: .actionSheet,
+                                        sourceView: self.environmentSwitcher)
 
     EnvironmentType.allCases.forEach { environment in
       alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in

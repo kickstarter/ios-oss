@@ -5,44 +5,19 @@ import UIKit
 
 final class UIAlertControllerTests: TestCase {
 
-  override func setUp() {
-    super.setUp()
-    AppEnvironment.pushEnvironment()
-  }
-
-  override func tearDown() {
-    super.tearDown()
-    AppEnvironment.popEnvironment()
-  }
-
-  func testInit_iPad() {
+  func testRequiresPopOverConfiguration_iPad_isTrue() {
     let device = MockDevice.init(userInterfaceIdiom: .pad)
     withEnvironment(device: device) {
-      let sourceView = UIView()
-      let controller = UIAlertController.init(title: "Title",
-                                              message: "Message",
-                                              preferredStyle: .actionSheet,
-                                              sourceView: sourceView)
 
-      XCTAssertEqual(controller.title, "Title")
-      XCTAssertEqual(controller.message, "Message")
-      XCTAssertEqual(controller.preferredStyle, .actionSheet)
-      XCTAssertEqual(controller.modalPresentationStyle, .popover,
-                     "iPad should always present actionSheet as popover")
-      XCTAssertEqual(controller.popoverPresentationController?.sourceView, sourceView)
+      XCTAssertTrue(UIAlertController.requiresPopOverConfiguration(.actionSheet))
     }
   }
 
-  func testInit_iPhone() {
+  func testRequiresPopOverConfiguration_iPhone_isFalse() {
     let device = MockDevice.init(userInterfaceIdiom: .phone)
     withEnvironment(device: device) {
-      let controller = UIAlertController.init(title: "Title",
-                                              message: "Message",
-                                              preferredStyle: .actionSheet)
 
-      XCTAssertEqual(controller.title, "Title")
-      XCTAssertEqual(controller.message, "Message")
-      XCTAssertEqual(controller.preferredStyle, .actionSheet)
+      XCTAssertFalse(UIAlertController.requiresPopOverConfiguration(.actionSheet))
     }
   }
 }
