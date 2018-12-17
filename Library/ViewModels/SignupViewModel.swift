@@ -23,7 +23,9 @@ public final class SignupViewModel {
   public init() {}
 
   public func outputs(from inputs: Inputs) -> (
+    // Call when the emailTextField should become the first responder
     emailTextFieldBecomeFirstResponder: Signal<(), NoError>,
+    // Call when the sign up button should be enabled
     isSignupButtonEnabled: Signal<Bool, NoError>,
     logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>,
     passwordTextFieldBecomeFirstResponder: Signal<(), NoError>,
