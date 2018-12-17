@@ -24,7 +24,7 @@ internal final class BackerDashboardViewController: UIViewController {
   @IBOutlet private weak var sortBar: ProfileSortBarView!
   @IBOutlet private weak var topBackgroundView: UIView!
 
-  fileprivate weak var pageViewController: UIPageViewController!
+  fileprivate weak var pageViewController: UIPageViewController?
 
   fileprivate let viewModel: BackerDashboardViewModelType = BackerDashboardViewModel()
   fileprivate var pagesDataSource: BackerDashboardPagesDataSource!
@@ -40,13 +40,13 @@ internal final class BackerDashboardViewController: UIViewController {
 
     self.pageViewController = self.children
       .compactMap { $0 as? UIPageViewController }.first
-    self.pageViewController.setViewControllers(
+    self.pageViewController?.setViewControllers(
       [.init()],
       direction: .forward,
       animated: false,
       completion: nil
     )
-    self.pageViewController.delegate = self
+    self.pageViewController?.delegate = self
 
     _ = self.backedMenuButton
       |> UIButton.lens.targets .~ [(self, action: #selector(backedButtonTapped), .touchUpInside)]
@@ -66,7 +66,7 @@ internal final class BackerDashboardViewController: UIViewController {
 
     let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureNotifier))
     tapRecognizer.cancelsTouchesInView = false
-    self.pageViewController.view.addGestureRecognizer(tapRecognizer)
+    self.pageViewController?.view.addGestureRecognizer(tapRecognizer)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -126,7 +126,7 @@ internal final class BackerDashboardViewController: UIViewController {
         guard let _self = self, let controller = self?.pagesDataSource.controllerFor(tab: tab) else {
           fatalError("Controller not found for tab \(tab)")
         }
-        _self.pageViewController.setViewControllers(
+        _self.pageViewController?.setViewControllers(
           [controller],
           direction: .forward,
           animated: false,
@@ -185,15 +185,15 @@ internal final class BackerDashboardViewController: UIViewController {
     }
 
     _ = self.backerNameLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ .ksr_headline(size: 18)
   }
 
   private func configurePagesDataSource(tab: BackerDashboardTab, sort: DiscoveryParams.Sort) {
     self.pagesDataSource = BackerDashboardPagesDataSource(delegate: self, sort: sort)
 
-    self.pageViewController.dataSource = self.pagesDataSource
-    self.pageViewController.setViewControllers(
+    self.pageViewController?.dataSource = self.pagesDataSource
+    self.pageViewController?.setViewControllers(
       [self.pagesDataSource.controllerFor(tab: tab)].compact(),
       direction: .forward,
       animated: false,
@@ -213,7 +213,7 @@ internal final class BackerDashboardViewController: UIViewController {
       NSAttributedString.Key.font: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
       ])
 
     _ = button
@@ -370,7 +370,7 @@ extension BackerDashboardViewController: UIGestureRecognizerDelegate {
 
 extension BackerDashboardViewController: TabBarControllerScrollable {
   func scrollToTop() {
-    if let scrollView = self.pageViewController.viewControllers?.first?.view as? UIScrollView {
+    if let scrollView = self.pageViewController?.viewControllers?.first?.view as? UIScrollView {
       scrollView.scrollToTop()
     }
   }

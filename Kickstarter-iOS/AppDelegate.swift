@@ -121,7 +121,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.goToMobileSafari
       .observeForUI()
-      .observeValues { UIApplication.shared.openURL($0) }
+      .observeValues { UIApplication.shared.open($0) }
 
     self.viewModel.outputs.applicationIconBadgeNumber
       .observeForUI()
@@ -133,7 +133,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         print("📲 [Push Registration] Push token registration started 🚀")
     }
 
-      self.viewModel.outputs.pushTokenSuccessfullyRegistered
+    self.viewModel.outputs.pushTokenSuccessfullyRegistered
       .observeForUI()
       .observeValues { token in
         print("📲 [Push Registration] Push token successfully registered (\(token)) ✨")
@@ -148,12 +148,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
-
-    self.viewModel.outputs.presentRemoteNotificationAlert
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.presentRemoteNotificationAlert($0)
-      }
 
     self.viewModel.outputs.configureHockey
       .observeForUI()
@@ -215,10 +209,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     //swiftlint:enable discarded_notification_center_observer
 
-    self.window?.tintColor = .ksr_dark_grey_500
+    self.window?.tintColor = .ksr_green_700
 
     self.viewModel.inputs.applicationDidFinishLaunching(application: application,
                                                         launchOptions: launchOptions)
+
+    UNUserNotificationCenter.current().delegate = self
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
@@ -271,21 +267,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     print("🔴 Failed to register for remote notifications: \(error.localizedDescription)")
   }
 
-  internal func application(_ application: UIApplication,
-                            didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-
-    self.viewModel.inputs.didReceive(remoteNotification: userInfo,
-                                     applicationIsActive: application.applicationState == .active)
-  }
-  internal func application(_ application: UIApplication,
-                            didReceive notification: UILocalNotification) {
-
-    if let userInfo = notification.userInfo, userInfo["aps"] != nil {
-      self.viewModel.inputs.didReceive(remoteNotification: userInfo,
-                                       applicationIsActive: application.applicationState == .active)
-    }
-  }
-
   internal func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
     self.viewModel.inputs.applicationDidReceiveMemoryWarning()
   }
@@ -325,22 +306,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self.rootTabBarController?.present(alert, animated: true, completion: nil)
       }
     }
-  }
-
-  fileprivate func presentRemoteNotificationAlert(_ message: String) {
-    let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-
-    alert.addAction(
-      UIAlertAction(title: Strings.View(), style: .default) { [weak self] _ in
-        self?.viewModel.inputs.openRemoteNotificationTappedOk()
-      }
-    )
-
-    alert.addAction(
-      UIAlertAction(title: Strings.Dismiss(), style: .cancel, handler: nil)
-    )
-
-    self.rootTabBarController?.present(alert, animated: true, completion: nil)
   }
 
   private func goToLiveStream(project: Project,
@@ -405,5 +370,26 @@ extension AppDelegate: URLSessionTaskDelegate {
                          completionHandler: @escaping (URLRequest?) -> Void) {
     request.url.doIfSome(self.viewModel.inputs.foundRedirectUrl)
     completionHandler(nil)
+  }
+}
+
+// MARK: - UNUserNotificationCenterDelegate
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+  public func userNotificationCenter(
+    _: UNUserNotificationCenter,
+    willPresent _: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+    completionHandler(.alert)
+  }
+
+  public func userNotificationCenter(
+    _: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completion: @escaping () -> Void
+    ) {
+    self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
+    completion()
   }
 }

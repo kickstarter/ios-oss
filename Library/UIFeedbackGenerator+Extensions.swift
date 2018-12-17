@@ -1,6 +1,5 @@
 import UIKit
 
-@available(iOS 10.0, *)
 extension UIFeedbackGenerator {
   public static func ksr_success() {
     UINotificationFeedbackGenerator().notificationOccurred(.success)
@@ -8,5 +7,9 @@ extension UIFeedbackGenerator {
 
   public static func ksr_selection() {
     UISelectionFeedbackGenerator().selectionChanged()
+  }
+
+  public static func ksr_impact(style: UIImpactFeedbackGenerator.FeedbackStyle) {
+    UIImpactFeedbackGenerator(style: style).impactOccurred()
   }
 }

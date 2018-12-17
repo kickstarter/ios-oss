@@ -17,17 +17,17 @@ final class ChangeEmailViewModelTests: TestCase {
   private let didSendVerificationEmail = TestObserver<Void, NoError>()
   private let dismissKeyboard = TestObserver<(), NoError>()
   private let emailText = TestObserver<String, NoError>()
-  private let onePasswordButtonHidden = TestObserver<Bool, NoError>()
+  private let onePasswordButtonIsHidden = TestObserver<Bool, NoError>()
   private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-  private let messageLabelViewHiddenObserver = TestObserver<Bool, NoError>()
+  private let messageLabelViewHidden = TestObserver<Bool, NoError>()
   private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let passwordText = TestObserver<String, NoError>()
-  private let resendVerificationEmailViewIsHiddenObserver = TestObserver<Bool, NoError>()
+  private let resendVerificationEmailViewIsHidden = TestObserver<Bool, NoError>()
   private let resetFields = TestObserver<String, NoError>()
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
   private let textFieldsAreEnabled = TestObserver<Bool, NoError>()
-  private let unverifiedEmailLabelHiddenObserver = TestObserver<Bool, NoError>()
-  private let warningMessageLabelHiddenObserver = TestObserver<Bool, NoError>()
+  private let unverifiedEmailLabelHidden = TestObserver<Bool, NoError>()
+  private let warningMessageLabelHidden = TestObserver<Bool, NoError>()
   private let verificationEmailButtonTitle = TestObserver<String, NoError>()
 
   override func setUp() {
@@ -39,13 +39,13 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.emailText.observe(self.emailText.observer)
 
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
-    self.vm.outputs.messageLabelViewHidden.observe(self.messageLabelViewHiddenObserver.observer)
-    self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonHidden.observer)
+    self.vm.outputs.messageLabelViewHidden.observe(self.messageLabelViewHidden.observer)
+    self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonIsHidden.observer)
     self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
     self.vm.outputs.passwordFieldBecomeFirstResponder.observe(self.passwordFieldBecomeFirstResponder.observer)
     self.vm.outputs.passwordText.observe(self.passwordText.observer)
     self.vm.outputs.resendVerificationEmailViewIsHidden.observe(
-      self.resendVerificationEmailViewIsHiddenObserver.observer
+      self.resendVerificationEmailViewIsHidden.observer
     )
     self.vm.outputs.didSendVerificationEmail.observe(
       self.didSendVerificationEmail.observer
@@ -56,8 +56,8 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.resetFields.observe(self.resetFields.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.vm.outputs.textFieldsAreEnabled.observe(self.textFieldsAreEnabled.observer)
-    self.vm.outputs.unverifiedEmailLabelHidden.observe(self.unverifiedEmailLabelHiddenObserver.observer)
-    self.vm.outputs.warningMessageLabelHidden.observe(self.warningMessageLabelHiddenObserver.observer)
+    self.vm.outputs.unverifiedEmailLabelHidden.observe(self.unverifiedEmailLabelHidden.observer)
+    self.vm.outputs.warningMessageLabelHidden.observe(self.warningMessageLabelHidden.observer)
     self.vm.outputs.verificationEmailButtonTitle.observe(self.verificationEmailButtonTitle.observer)
   }
 
@@ -94,19 +94,34 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testOnePasswordButtonHidesIfNotAvailable() {
+  func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.onePassword(isAvailable: false)
 
-    self.onePasswordButtonHidden.assertValues([true])
+    let iOS12: (Double) -> Bool = { _ in false }
+    withEnvironment(isOSVersionAvailable: iOS12) {
+      self.vm.inputs.onePassword(isAvailable: true)
+
+      self.onePasswordButtonIsHidden.assertValues([false])
+
+      self.vm.inputs.onePassword(isAvailable: false)
+
+      self.onePasswordButtonIsHidden.assertValues([false, true])
+    }
   }
 
-  func testOnePasswordButtonVisibleIfAvailable() {
-
+  func testOnePasswordButtonHidesProperly_OnIOS12AndLater() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.onePassword(isAvailable: true)
 
-    self.onePasswordButtonHidden.assertValues([false])
+    let iOS12: (Double) -> Bool = { _ in true }
+    withEnvironment(isOSVersionAvailable: iOS12) {
+      self.vm.inputs.onePassword(isAvailable: true)
+
+      self.onePasswordButtonIsHidden.assertValues([true])
+
+      self.vm.inputs.onePassword(isAvailable: false)
+
+      self.onePasswordButtonIsHidden.assertValues([true, true])
+    }
   }
 
   func testTrackingEventsIfOnePassword_IsAvailable() {
@@ -189,13 +204,13 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testResendVerificationViewIsHidden_IfEmailIsVerified() {
+  func testResendVerificationViewIsHidden_onViewDidLoad_andIfEmailIsVerified() {
     self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance()
 
-    self.resendVerificationEmailViewIsHiddenObserver
-      .assertValues([true], "Email is deliverable and verified")
+    self.resendVerificationEmailViewIsHidden
+      .assertValues([true, true], "Email is deliverable and verified")
   }
 
   func testResendVerificationViewIsNotHidden_IfEmailIsNotVerified() {
@@ -209,7 +224,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.resendVerificationEmailViewIsHiddenObserver.assertValues([false], "Email is unverified")
+      self.resendVerificationEmailViewIsHidden.assertValues([true, false], "Email is unverified")
     }
   }
 
@@ -224,8 +239,8 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.resendVerificationEmailViewIsHiddenObserver
-        .assertValues([false], "Email is undeliverable")
+      self.resendVerificationEmailViewIsHidden
+        .assertValues([true, false], "Email is undeliverable")
     }
   }
 
@@ -234,7 +249,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    self.warningMessageLabelHiddenObserver.assertValues([true], "Email is deliverable")
+    self.warningMessageLabelHidden.assertValues([true], "Email is deliverable")
   }
 
   func testWarningMessageLabel_isNotHidden_whenEmailIsNotDeliverable() {
@@ -246,7 +261,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.warningMessageLabelHiddenObserver
+      self.warningMessageLabelHidden
         .assertValues([false], "Email is not deliverable")
     }
   }
@@ -256,7 +271,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    self.unverifiedEmailLabelHiddenObserver.assertValues([true], "Email is verified & deliverable")
+    self.unverifiedEmailLabelHidden.assertValues([true], "Email is verified & deliverable")
   }
 
   func testUnverifiedEmailLabel_isNotHidden_whenEmailIsUnverified() {
@@ -268,7 +283,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.unverifiedEmailLabelHiddenObserver
+      self.unverifiedEmailLabelHidden
         .assertValues([false], "Email is not verified, but deliverable")
     }
   }
@@ -283,7 +298,7 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.unverifiedEmailLabelHiddenObserver
+      self.unverifiedEmailLabelHidden
         .assertValues([true], "Email is not verified, but deliverable message takes precendent")
     }
   }

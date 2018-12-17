@@ -48,7 +48,7 @@ internal final class DebugPushNotificationsViewController: UIViewController {
       ||> UILabel.lens.font .~ .ksr_title1(size: 22)
 
     _ = rowStackViews.compactMap { $0.arrangedSubviews.first as? UILabel }
-      ||> UILabel.lens.textColor .~ .ksr_dark_grey_900
+      ||> UILabel.lens.textColor .~ .ksr_soft_black
       ||> UILabel.lens.font .~ .ksr_body()
 
     _ = buttons
@@ -87,14 +87,9 @@ internal final class DebugPushNotificationsViewController: UIViewController {
     guard index >= 0 && index < allPushData.count else { return }
 
     let pushData = allPushData[index]
-    if #available(iOS 10, *) {
-      self.addNotificationRequest(delay: delay, pushData: pushData)
-    } else {
-      self.scheduleLocalNotification(delay: delay, pushData: pushData)
-    }
+    self.addNotificationRequest(delay: delay, pushData: pushData)
   }
 
-  @available(iOS 10, *)
   private func addNotificationRequest(delay: Bool, pushData: [String: Any]) {
 
     let identifier = "notify-test"
@@ -113,15 +108,6 @@ internal final class DebugPushNotificationsViewController: UIViewController {
                                         trigger: trigger)
 
     UNUserNotificationCenter.current().add(request)
-  }
-
-  private func scheduleLocalNotification(delay: Bool, pushData: [String: Any]) {
-
-    let notification = UILocalNotification()
-    notification.fireDate = Date(timeIntervalSinceNow: delay ? 5 : 0)
-    notification.alertBody = body(from: pushData)
-    notification.userInfo = pushData
-    UIApplication.shared.scheduleLocalNotification(notification)
   }
 
   private func body(from pushData: [String: Any]) -> String {

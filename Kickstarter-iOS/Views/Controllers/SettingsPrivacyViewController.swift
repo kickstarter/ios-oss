@@ -131,7 +131,7 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
   internal func settingsRequestDataCell(_ cell: SettingsPrivacyRequestDataCell,
                                         requestedDataWith url: String) {
     guard let fileUrl = URL(string: url) else { return }
-    UIApplication.shared.openURL(fileUrl)
+    UIApplication.shared.open(fileUrl)
   }
 }
 

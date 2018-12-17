@@ -34,7 +34,7 @@ internal final class MessageThreadsViewController: UITableViewController {
 
     _ = self.mailboxLabel
       |> UILabel.lens.font .~ UIFont.ksr_callout().bolded
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
   }
 
   internal override func bindViewModel() {

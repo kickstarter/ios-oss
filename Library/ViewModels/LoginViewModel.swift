@@ -63,7 +63,7 @@ public protocol LoginViewModelOutputs {
   var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
 
   /// Emits a boolean that determines if the onepassword button should be hidden or not.
-  var onePasswordButtonHidden: Signal<Bool, NoError> { get }
+  var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
 
   /// Emits when we should request from the onepassword extension a login.
   var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
@@ -152,7 +152,8 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
     self.showResetPassword = self.resetPasswordPressedProperty.signal
 
-    self.onePasswordButtonHidden = self.onePasswordIsAvailable.signal.map(negate)
+    self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.map(negate)
+      .map(is1PasswordButtonHidden)
 
     self.onePasswordFindLoginForURLString = self.onePasswordButtonTappedProperty.signal
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
@@ -163,7 +164,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     Signal.combineLatest(self.emailText, self.passwordText)
       .observeValues { _ in AppEnvironment.current.koala.trackAttemptingOnePasswordLogin() }
 
-    self.onePasswordIsAvailable.signal
+    self.onePasswordIsAvailableProperty.signal
       .observeValues { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
 
     self.logIntoEnvironment
@@ -204,9 +205,9 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     self.prefillEmailProperty.value = email
     self.prefillPasswordProperty.value = password
   }
-  fileprivate let onePasswordIsAvailable = MutableProperty(false)
+  fileprivate let onePasswordIsAvailableProperty = MutableProperty(false)
   public func onePassword(isAvailable available: Bool) {
-    self.onePasswordIsAvailable.value = available
+    self.onePasswordIsAvailableProperty.value = available
   }
   fileprivate let emailTextFieldDoneEditingProperty = MutableProperty(())
   public func emailTextFieldDoneEditing() {
@@ -240,7 +241,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
   public let isFormValid: Signal<Bool, NoError>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public var onePasswordButtonHidden: Signal<Bool, NoError>
+  public var onePasswordButtonIsHidden: Signal<Bool, NoError>
   public let onePasswordFindLoginForURLString: Signal<String, NoError>
   public let passwordText: Signal<String, NoError>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>

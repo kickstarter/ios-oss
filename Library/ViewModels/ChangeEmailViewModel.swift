@@ -46,7 +46,6 @@ public protocol ChangeEmailViewModelType {
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
 ChangeEmailViewModelOutputs {
   public init() {
-
     let changeEmailEvent = Signal.combineLatest(
       self.newEmailProperty.signal.skipNil(),
       self.passwordProperty.signal.skipNil()
@@ -98,9 +97,11 @@ ChangeEmailViewModelOutputs {
 
     let isEmailVerified = userEmailEvent.values().map { $0.me.isEmailVerified }.skipNil()
     let isEmailDeliverable = userEmailEvent.values().map { $0.me.isDeliverable }.skipNil()
-
-    self.resendVerificationEmailViewIsHidden = Signal.combineLatest(isEmailVerified, isEmailDeliverable)
+    let emailVerifiedAndDeliverable = Signal.combineLatest(isEmailVerified, isEmailDeliverable)
       .map { $0 && $1 }
+
+    self.resendVerificationEmailViewIsHidden = Signal.merge(viewDidLoadProperty.signal.mapConst(true),
+                                                            emailVerifiedAndDeliverable)
 
     self.unverifiedEmailLabelHidden = Signal
       .combineLatest(isEmailVerified, isEmailDeliverable)
@@ -135,9 +136,10 @@ ChangeEmailViewModelOutputs {
                                               .filter { $0 == .next }
                                               .ignoreValues()
 
-    self.onePasswordButtonIsHidden = self.onePasswordIsAvailable.signal.map { $0 }.negate()
+    self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.map(negate)
+      .map(is1PasswordButtonHidden)
 
-    self.onePasswordIsAvailable.signal
+    self.onePasswordIsAvailableProperty.signal
       .observeValues { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
 
     self.passwordText = self.prefillPasswordProperty.signal.skipNil().map { $0 }
@@ -178,9 +180,9 @@ ChangeEmailViewModelOutputs {
     self.newEmailProperty.value = text
   }
 
-  private let onePasswordIsAvailable = MutableProperty(false)
+  private let onePasswordIsAvailableProperty = MutableProperty(false)
   public func onePassword(isAvailable available: Bool) {
-    self.onePasswordIsAvailable.value = available
+    self.onePasswordIsAvailableProperty.value = available
   }
 
   private let prefillPasswordProperty = MutableProperty<String?>(nil)

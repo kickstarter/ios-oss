@@ -15,28 +15,14 @@ public struct PushRegistration: PushRegistrationType {
 
    - returns: A signal producer.
    */
-  public static func register(for types: [PushNotificationType]) -> SignalProducer<Bool?, NoError> {
-    func performRegistration() {
-      DispatchQueue.main.async {
-        UIApplication.shared.registerForRemoteNotifications()
-      }
-    }
-
-    guard #available(iOS 10.0, *) else {
-      UIApplication.shared.registerUserNotificationSettings(
-        UIUserNotificationSettings(types: types.userNotificationTypes(), categories: [])
-      )
-
-      performRegistration()
-
-      return .init(value: nil)
-    }
-
+  public static func register(for options: UNAuthorizationOptions) -> SignalProducer<Bool, NoError> {
     return SignalProducer { observer, _ in
       UNUserNotificationCenter.current()
-        .requestAuthorization(options: types.authorizationOptions(), completionHandler: { isGranted, _ in
+        .requestAuthorization(options: options, completionHandler: { isGranted, _ in
           if isGranted {
-            performRegistration()
+            DispatchQueue.main.async {
+              UIApplication.shared.registerForRemoteNotifications()
+            }
           }
 
           observer.send(value: isGranted)
@@ -53,10 +39,6 @@ public struct PushRegistration: PushRegistrationType {
    - returns: A signal producer.
    */
   public static func hasAuthorizedNotifications() -> SignalProducer<Bool, NoError> {
-      guard #available(iOS 10.0, *) else {
-        return .init(value: UIApplication.shared.isRegisteredForRemoteNotifications)
-      }
-
       return SignalProducer { observer, _ in
         UNUserNotificationCenter.current().getNotificationSettings { settings in
           observer.send(value: settings.authorizationStatus == .authorized)

@@ -37,11 +37,11 @@ ActivityFriendFollowCellViewModelOutputs {
       let string = Strings.activity_user_name_is_now_following_you(user_name: "<b>\($0.name)</b>")
       return string.simpleHtmlAttributedString(base: [
         NSAttributedString.Key.font: UIFont.ksr_subhead(size: 14.0),
-        NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900
+        NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
         ],
         bold: [
           NSAttributedString.Key.font: UIFont.ksr_headline(size: 14.0),
-          NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_900
+          NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
         ]) ?? NSAttributedString(string: "")
     }
 

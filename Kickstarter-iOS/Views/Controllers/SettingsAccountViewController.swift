@@ -5,12 +5,12 @@ import ReactiveSwift
 import Result
 import UIKit
 
-final class SettingsAccountViewController: UIViewController {
+final class SettingsAccountViewController: UIViewController, MessageBannerViewControllerPresenting {
   @IBOutlet private weak var tableView: UITableView!
 
-  private var messageBannerView: MessageBannerViewController!
-
   private let dataSource = SettingsAccountDataSource()
+  internal var messageBannerViewController: MessageBannerViewController?
+
   fileprivate let viewModel: SettingsAccountViewModelType = SettingsAccountViewModel(
     SettingsAccountViewController.viewController(for:)
   )
@@ -22,20 +22,18 @@ final class SettingsAccountViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let messageBannerView = self.children.first as? MessageBannerViewController else {
-      fatalError("Couldn't instantiate MessageBannerViewController")
-    }
-
-    self.messageBannerView = messageBannerView
-
     self.tableView.dataSource = dataSource
     self.tableView.delegate = self
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.tableView.register(nib: .SettingsTableViewCell)
     self.tableView.register(nib: .SettingsCurrencyPickerCell)
     self.tableView.register(nib: .SettingsCurrencyCell)
     self.tableView.register(nib: .SettingsAccountWarningCell)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -53,16 +51,19 @@ final class SettingsAccountViewController: UIViewController {
   override func bindViewModel() {
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] currency, shouldHideEmailWarning in
+      .observeValues { [weak self] currency, shouldHideEmailWarning, shouldHideEmailPasswordSection in
         self?.dataSource.configureRows(currency: currency,
-                                       shouldHideEmailWarning: shouldHideEmailWarning)
+                                       shouldHideEmailWarning: shouldHideEmailWarning,
+                                       shouldHideEmailPasswordSection: shouldHideEmailPasswordSection)
         self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.fetchAccountFieldsError
       .observeForUI()
       .observeValues { [weak self] in
-        self?.dataSource.configureRows(currency: nil, shouldHideEmailWarning: true)
+        self?.dataSource.configureRows(currency: nil,
+                                       shouldHideEmailWarning: true,
+                                       shouldHideEmailPasswordSection: false)
         self?.tableView.reloadData()
 
         self?.showGeneralError()
@@ -70,8 +71,8 @@ final class SettingsAccountViewController: UIViewController {
 
     self.viewModel.outputs.presentCurrencyPicker
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.showCurrencyPickerCell()
+      .observeValues { [weak self] currency in
+        self?.showCurrencyPickerCell(with: currency)
     }
 
     self.viewModel.outputs.updateCurrencyFailure
@@ -111,24 +112,34 @@ final class SettingsAccountViewController: UIViewController {
       |> settingsTableViewStyle
   }
 
-  private func showCurrencyPickerCell() {
+  private func showCurrencyPickerCell(with currency: Currency) {
+    let tapRecognizer = UITapGestureRecognizer(
+      target: self,
+      action: #selector(tapGestureToDismissCurrencyPicker)
+    )
+
     self.tableView.beginUpdates()
-    self.tableView.insertRows(at: [self.dataSource.insertCurrencyPickerRow()], with: .top)
-    let tapRecognizer = UITapGestureRecognizer(target: self,
-                                               action: #selector(tapGestureToDismissCurrencyPicker))
+    if let indexPath = self.dataSource.insertCurrencyPickerRow(with: currency) {
+      self.tableView.insertRows(at: [indexPath], with: .top)
+    }
     self.view.addGestureRecognizer(tapRecognizer)
     self.tableView.endUpdates()
   }
 
   private func showGeneralError() {
-    self.messageBannerView.showBanner(with: .error, message: Strings.Something_went_wrong_please_try_again())
+    self.messageBannerViewController?.showBanner(with: .error,
+                                                 message: Strings.Something_went_wrong_please_try_again())
   }
 
   private func dismissCurrencyPickerCell() {
+    guard let pickerCellIndexPath = self.dataSource.removeCurrencyPickerRow() else {
+      return
+    }
+
     tableView.beginUpdates()
-    self.tableView.deleteRows(at: [self.dataSource.removeCurrencyPickerRow()], with: .top)
-    tableView.endUpdates()
+    self.tableView.deleteRows(at: [pickerCellIndexPath], with: .top)
     self.view.gestureRecognizers?.removeAll()
+    self.tableView.endUpdates()
   }
 
   private func showChangeCurrencyAlert() {
@@ -182,7 +193,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 0.1 // Required to remove the footer in UITableViewStyleGrouped
+    return 0.1
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -208,6 +219,8 @@ extension SettingsAccountViewController: SettingsCurrencyPickerCellDelegate {
       return ChangeEmailViewController.instantiate()
     case .changePassword:
       return ChangePasswordViewController.instantiate()
+    case .privacy:
+      return SettingsPrivacyViewController.instantiate()
     default:
       return nil
     }

@@ -2,28 +2,28 @@ import Foundation
 import Library
 import Prelude
 
-internal protocol MessageBannerViewControllerDelegate: class {
-  var messageBannerViewControllerContainer: UIView { get }
-  func messageBannerViewControllerIsHidden(_ isHidden: Bool)
+protocol MessageBannerViewControllerPresenting {
+  var messageBannerViewController: MessageBannerViewController? { get set }
+
+  func configureMessageBannerViewController(on parentViewController: UIViewController)
+    -> MessageBannerViewController?
 }
 
-extension MessageBannerViewControllerDelegate {
-  func messageBannerViewControllerIsHidden(_ isHidden: Bool) {
-    _ = self.messageBannerViewControllerContainer |> \.isHidden .~ isHidden
-  }
-}
-
-final class MessageBannerViewController: UIViewController {
+final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate weak var backgroundView: UIView!
-  @IBOutlet fileprivate weak var backgroundViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate weak var iconImageView: UIImageView!
   @IBOutlet fileprivate weak var messageLabel: UILabel!
 
-  internal weak var delegate: MessageBannerViewControllerDelegate?
-
-  private var bottomMarginConstraintConstant: CGFloat = -Styles.grid(1)
-
+  internal var bottomConstraint: NSLayoutConstraint?
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
+
+  private var bottomSafeAreaInset: CGFloat {
+    if #available(iOS 11.0, *) {
+      return self.view.superview?.safeAreaInsets.bottom ?? 0
+    } else {
+      return 0
+    }
+  }
 
   struct AnimationConstants {
     static let hideDuration: TimeInterval = 0.25
@@ -33,10 +33,14 @@ final class MessageBannerViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = backgroundView
+    _ = self.view
+      |> \.backgroundColor .~ .clear
+      |> \.isHidden .~ true
+
+    _ = self.backgroundView
       |> roundedStyle(cornerRadius: 4)
 
-    _ = messageLabel
+    _ = self.messageLabel
       |> UILabel.lens.font .~ .ksr_subhead()
   }
 
@@ -52,6 +56,13 @@ final class MessageBannerViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.showViewAndAnimate(isHidden)
+    }
+
+    self.viewModel.outputs.iconTintColor
+      .observeForUI()
+      .observeValues { [weak self] color in
+        _ = self?.iconImageView
+          ?|> \.tintColor .~ color
     }
 
     self.viewModel.outputs.iconImageName
@@ -74,53 +85,54 @@ final class MessageBannerViewController: UIViewController {
   }
 
   func showBanner(with type: MessageBannerType, message: String) {
-    self.viewModel.inputs.setBannerType(type: type)
-    self.viewModel.inputs.setBannerMessage(message: message)
-    self.viewModel.inputs.showBannerView(shouldShow: true)
+    self.viewModel.inputs.update(with: (type, message))
+    self.viewModel.inputs.bannerViewWillShow(true)
   }
 
   private func showViewAndAnimate(_ isHidden: Bool) {
     let duration = isHidden ? AnimationConstants.hideDuration : AnimationConstants.showDuration
 
+    let hiddenConstant = self.view.frame.height + self.bottomSafeAreaInset
+
     if !isHidden {
       self.view.isHidden = isHidden
-      self.delegate?.messageBannerViewControllerIsHidden(isHidden)
+
+      self.bottomConstraint?.constant = hiddenConstant
+
+      // Force an early render to set the height
+      self.view.superview?.layoutIfNeeded()
     }
 
     UIView.animate(withDuration: duration, delay: 0.0,
                    options: UIView.AnimationOptions.curveEaseInOut,
                    animations: { [weak self] in
-                    guard let `self` = self else { return }
-                    let frameHeight = self.view.frame.size.height
-                    self.backgroundViewBottomConstraint.constant = isHidden
-                      ? frameHeight : self.bottomMarginConstraintConstant
-                    self.view.layoutIfNeeded()
+                    guard let self = self else { return }
+
+                    self.bottomConstraint?.constant = isHidden ? hiddenConstant : 0
+
+                    self.view.superview?.layoutIfNeeded()
     }, completion: { [weak self] _ in
       self?.view.isHidden = isHidden
-
-      if isHidden {
-        self?.delegate?.messageBannerViewControllerIsHidden(isHidden)
-      }
 
       self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
     })
   }
 
   @IBAction private func bannerViewPanned(_ sender: UIPanGestureRecognizer) {
-    guard let bannerView = sender.view else {
+    guard let view = sender.view else {
       return
     }
 
-    let currentTouchPoint = sender.translation(in: self.view)
+    let currentTouchPoint = sender.translation(in: self.view.superview)
 
     if sender.state == .cancelled || sender.state == .ended {
-      self.viewModel.inputs.showBannerView(shouldShow: false)
+      self.viewModel.inputs.bannerViewWillShow(false)
 
       return
     }
 
     let yPos = currentTouchPoint.y
-    let heightLimit = bannerView.frame.height / 8
+    let heightLimit = view.frame.height / 8
 
     if yPos == 0 {
       return
@@ -129,13 +141,47 @@ final class MessageBannerViewController: UIViewController {
       let absYPos = abs(yPos)
       let adjustedYPos =  heightLimit * (1 + log10(absYPos / heightLimit))
 
-      self.backgroundViewBottomConstraint.constant = -adjustedYPos + self.bottomMarginConstraintConstant
+      self.bottomConstraint?.constant = -adjustedYPos
     } else {
-      self.backgroundViewBottomConstraint.constant = yPos + self.bottomMarginConstraintConstant
+
+      self.bottomConstraint?.constant = yPos
     }
   }
 
   @IBAction private func bannerViewTapped(_ sender: Any) {
-    self.viewModel.inputs.showBannerView(shouldShow: false)
+    self.viewModel.inputs.bannerViewWillShow(false)
+  }
+}
+
+extension MessageBannerViewControllerPresenting where Self: UIViewController {
+  func configureMessageBannerViewController(on parentViewController: UIViewController)
+    -> MessageBannerViewController? {
+    let nibName = Nib.MessageBannerViewController.rawValue
+    let messageBannerViewController = MessageBannerViewController(nibName: nibName,
+                                                                  bundle: .framework)
+
+      guard let messageBannerView = messageBannerViewController.view else {
+      return nil
+    }
+
+    parentViewController.addChild(messageBannerViewController)
+    parentViewController.view.addSubview(messageBannerView)
+
+    messageBannerViewController.didMove(toParent: parentViewController)
+
+    messageBannerView.translatesAutoresizingMaskIntoConstraints = false
+
+    let bottomViewBannerConstraint = messageBannerView.bottomAnchor
+      .constraint(equalTo: parentViewController.view.layoutMarginsGuide.bottomAnchor)
+
+    messageBannerViewController.bottomConstraint = bottomViewBannerConstraint
+
+    parentViewController.view.addConstraints([
+      bottomViewBannerConstraint,
+      messageBannerView.leftAnchor.constraint(equalTo: parentViewController.view.leftAnchor),
+      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor),
+      ])
+
+    return messageBannerViewController
   }
 }

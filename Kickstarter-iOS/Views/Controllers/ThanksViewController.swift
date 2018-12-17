@@ -72,19 +72,19 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UITableView.lens.estimatedRowHeight .~ 550
 
     _ = self.thankYouLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ UIFont.ksr_title1(size: 36)
       |> UILabel.lens.text %~ { _ in Strings.Thank_you_exclamation() }
       |> UILabel.lens.isAccessibilityElement .~ false
 
     _ = self.backedLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.separatorView
-      |> UIView.lens.backgroundColor .~ .ksr_text_dark_grey_900
+      |> UIView.lens.backgroundColor .~ .ksr_soft_black
 
     _ = self.recommendationsLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.Other_projects_you_might_like() }
 
@@ -118,12 +118,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       .observeForControllerAction()
       .observeValues { [weak self] params in
         self?.goToDiscovery(params: params)
-    }
-
-    self.viewModel.outputs.goToAppStoreRating
-      .observeForControllerAction()
-      .observeValues { [weak self] link in
-        self?.goToAppStore(link: link)
     }
 
     self.viewModel.outputs.goToProject
@@ -202,7 +196,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
   fileprivate func goToAppStore(link: String) {
     guard let url = URL(string: link) else { return }
-    UIApplication.shared.openURL(url)
+    UIApplication.shared.open(url)
   }
 
   fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
@@ -214,22 +208,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   }
 
   fileprivate func showRatingAlert() {
-    if #available(iOS 10.3, *) {
-      SKStoreReviewController.requestReview()
-    } else {
-      self.present(
-        UIAlertController.rating(
-          yesHandler: { [weak self] _ in
-            self?.viewModel.inputs.rateNowButtonTapped()
-          }, remindHandler: { [weak self] _ in
-            self?.viewModel.inputs.rateRemindLaterButtonTapped()
-          }, noHandler: { [weak self] _ in
-            self?.viewModel.inputs.rateNoThanksButtonTapped()
-        }),
-        animated: true,
-        completion: nil
-      )
-    }
+    SKStoreReviewController.requestReview()
   }
 
   fileprivate func showGamesNewsletterAlert() {

@@ -12,8 +12,8 @@ internal final class SettingsAccountViewModelTests: TestCase {
   let vm = SettingsAccountViewModel(SettingsAccountViewController.viewController(for:))
 
   let dismissCurrencyPicker = TestObserver<Void, NoError>()
-  let fetchAccountFieldsErrorObserver = TestObserver<Void, NoError>()
-  let presentCurrencyPicker = TestObserver<Void, NoError>()
+  let fetchAccountFieldsError = TestObserver<Void, NoError>()
+  let presentCurrencyPicker = TestObserver<Currency, NoError>()
   let reloadDataShouldHideWarningIcon = TestObserver<Bool, NoError>()
   let reloadDataCurrency = TestObserver<Currency, NoError>()
   let showAlert = TestObserver<(), NoError>()
@@ -22,7 +22,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.dismissCurrencyPicker.observe(self.dismissCurrencyPicker.observer)
-    self.vm.outputs.fetchAccountFieldsError.observe(self.fetchAccountFieldsErrorObserver.observer)
+    self.vm.outputs.fetchAccountFieldsError.observe(self.fetchAccountFieldsError.observer)
     self.vm.outputs.presentCurrencyPicker.observe(self.presentCurrencyPicker.observer)
     self.vm.outputs.reloadData.map(first).observe(self.reloadDataCurrency.observer)
     self.vm.outputs.reloadData.map(second).observe(self.reloadDataShouldHideWarningIcon.observer)
@@ -42,6 +42,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testPresentCurrencyPicker() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
     self.reloadDataShouldHideWarningIcon.assertValueCount(1)
     self.reloadDataCurrency.assertValueCount(1)
@@ -50,6 +51,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testDismissCurrencyPicker() {
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
     self.reloadDataShouldHideWarningIcon.assertValueCount(1)
     self.reloadDataCurrency.assertValueCount(1)
@@ -75,7 +77,84 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.reloadDataShouldHideWarningIcon.assertValueCount(0)
       self.reloadDataCurrency.assertValueCount(0)
-      self.fetchAccountFieldsErrorObserver.assertValueCount(1)
+      self.fetchAccountFieldsError.assertValueCount(1)
+    }
+  }
+
+  func testHideEmailPasswordHeaderView_HasNoPassword() {
+    let user = UserAccountFields.template
+      |> \.hasPassword .~ false
+
+    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewWillAppear()
+      self.reloadDataShouldHideWarningIcon.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(1)
+      self.fetchAccountFieldsError.assertValueCount(0)
+    }
+  }
+
+  func testHideEmailPasswordHeaderView_HasPassword() {
+    let user = UserAccountFields.template
+      |> \.hasPassword .~ true
+
+    let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewWillAppear()
+      self.reloadDataShouldHideWarningIcon.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(1)
+      self.fetchAccountFieldsError.assertValueCount(0)
+    }
+  }
+
+  func testUpdateCurrencySuccess() {
+    let graphResponse = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(changeCurrencyResponse: graphResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.showChangeCurrencyAlert(for: .CAD)
+      self.vm.inputs.didConfirmChangeCurrency()
+
+      self.presentCurrencyPicker.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(1)
+
+      self.scheduler.advance()
+
+      self.reloadDataCurrency.assertValueCount(2)
+    }
+  }
+
+  func testThatWeCanNotPresentCurrencyPickerWhileTheCurrencyChangeIsInProgress() {
+    let graphResponse = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(changeCurrencyResponse: graphResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.showChangeCurrencyAlert(for: .CAD)
+      self.vm.inputs.didConfirmChangeCurrency()
+
+      self.presentCurrencyPicker.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(1)
+
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.didSelectRow(cellType: .currency)
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.scheduler.advance()
+
+      self.presentCurrencyPicker.assertValueCount(1)
+      self.reloadDataCurrency.assertValueCount(2)
+
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.presentCurrencyPicker.assertValueCount(2)
     }
   }
 
@@ -93,6 +172,33 @@ internal final class SettingsAccountViewModelTests: TestCase {
     }
   }
 
+  func testPresentCurrencyPickerWithTheRightValueSelected() {
+    let graphResponse = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(changeCurrencyResponse: graphResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.presentCurrencyPicker.assertValues([.USD])
+
+      self.vm.inputs.showChangeCurrencyAlert(for: .CAD)
+      self.vm.inputs.didConfirmChangeCurrency()
+      self.scheduler.advance()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.presentCurrencyPicker.assertValues([.USD, .CAD])
+
+      self.vm.inputs.showChangeCurrencyAlert(for: .GBP)
+      self.vm.inputs.didConfirmChangeCurrency()
+      self.scheduler.advance()
+      self.vm.inputs.didSelectRow(cellType: .currency)
+
+      self.presentCurrencyPicker.assertValues([.USD, .CAD, .GBP])
+    }
+  }
+
   func testTrackViewedAccount() {
     let client = MockTrackingClient()
 
@@ -107,5 +213,16 @@ internal final class SettingsAccountViewModelTests: TestCase {
 
       XCTAssertEqual(["Viewed Account", "Viewed Account"], client.events)
     }
+  }
+
+  func testTrackSelectedChosenCurrency() {
+    self.vm.inputs.showChangeCurrencyAlert(for: Currency.CHF)
+    self.vm.inputs.didConfirmChangeCurrency()
+
+    self.scheduler.advance()
+
+    XCTAssertEqual(["Selected Chosen Currency"], self.trackingClient.events)
+    XCTAssertEqual(["Fr Swiss Franc (CHF)"], self.trackingClient.properties(forKey: "currency",
+                                                                            as: String.self))
   }
 }
