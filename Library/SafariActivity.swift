@@ -36,7 +36,7 @@ public final class SafariActivity: UIActivity {
   public override func perform() {
     guard let url = self.url else { return }
 
-    UIApplication.shared.openURL(url)
+    UIApplication.shared.open(url)
     self.activityDidFinish(true)
   }
 }

@@ -163,18 +163,7 @@ public final class VideoViewController: UIViewController {
   }
 
   internal func configurePlayer(withURL url: URL) {
-    do {
-      if #available(iOS 10.0, *) {
-        try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback,
-                                                        mode: AVAudioSession.Mode.default,
-                                                        options: [])
-      } else {
-        // Apple removed the deprecated method!. Since iOS 12 was release, an idea is to end supporting iOS 9
-      }
-
-    } catch let error as NSError {
-      print("Audio playback error: \(error.localizedDescription)")
-    }
+    try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
 
     self.playerController.player = AVPlayer(url: url)
 
