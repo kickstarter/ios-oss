@@ -3675,12 +3675,12 @@
 				A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */,
 				A75C811B1D210C4700B5AD03 /* UpdateActivityItemProvider.swift */,
 				D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */,
-				A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */,
 				A7C725851C85D36D005A016B /* DataSource */,
 				A721DF3D1C8CF4F6000CB97C /* Koala */,
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+				A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";

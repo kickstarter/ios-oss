@@ -6,6 +6,23 @@ import KsApi
 
 public extension UIAlertController {
 
+  public static func `init`(title: String,
+                            message: String? = nil,
+                            preferredStyle: UIAlertController.Style,
+                            sourceView: UIView? = nil) -> UIAlertController {
+
+    let alert = UIAlertController(title: title,
+                                  message: message,
+                                  preferredStyle: preferredStyle)
+
+    if preferredStyle == .actionSheet, AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      alert.modalPresentationStyle = .popover
+      alert.popoverPresentationController?.sourceView = sourceView
+    }
+
+    return alert
+  }
+
   public static func alertController(forError error: AlertError) -> UIAlertController {
     switch error {
     case let .genericError(message):
