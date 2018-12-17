@@ -112,7 +112,7 @@ final class SettingsViewController: UIViewController {
 
   private func goToAppStore(link: String) {
     guard let url = URL(string: link) else { return }
-    UIApplication.shared.openURL(url)
+    UIApplication.shared.open(url)
   }
 
   private func showLogoutPrompt(message: String, cancel: String, confirm: String) {

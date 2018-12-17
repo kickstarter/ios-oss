@@ -148,15 +148,7 @@ public final class LiveVideoViewController: UIViewController {
     guard let url = URL(string: streamUrl) else { return }
 
     // Required for audio to play even if phone is set to silent
-    do {
-      if #available(iOS 10.0, *) {
-        try AVAudioSession.sharedInstance().setCategory(.playback,
-                                                        mode: .default,
-                                                        options: [])
-      } else {
-        // Apple removed the deprecated method!. Since iOS 12 was release, an idea is to end supporting iOS 9
-      }
-    } catch {}
+    try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
 
     let player = AVPlayer(url: url)
     let controller = AVPlayerViewController()

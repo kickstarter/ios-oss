@@ -70,9 +70,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
       .observeValues { [weak self] project in
-        if #available(iOS 10.0, *) {
-          UIFeedbackGenerator.ksr_success()
-        }
+        UIFeedbackGenerator.ksr_success()
         self?.goToThanks(project: project)
     }
 
