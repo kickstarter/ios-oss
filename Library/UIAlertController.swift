@@ -101,39 +101,6 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func rating(yesHandler: @escaping ((UIAlertAction) -> Void),
-                            remindHandler: @escaping ((UIAlertAction) -> Void),
-                            noHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
-    let alertController = UIAlertController(
-      title: Strings.profile_settings_rating_title() ,
-      message: Strings.profile_settings_rating_message() ,
-      preferredStyle: .alert
-    )
-    alertController.addAction(
-      UIAlertAction(
-        title: Strings.profile_settings_rating_option_rate_now() ,
-        style: .default,
-        handler: yesHandler
-      )
-    )
-    alertController.addAction(
-      UIAlertAction(
-        title: Strings.profile_settings_rating_option_remind_later() ,
-        style: .default,
-        handler: remindHandler
-      )
-    )
-    alertController.addAction(
-      UIAlertAction(
-        title: Strings.profile_settings_rating_option_no_thanks() ,
-        style: .default,
-        handler: noHandler
-      )
-    )
-
-    return alertController
-  }
-
   public static func newsletterOptIn(_ newsletter: String) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.profile_settings_newsletter_opt_in_title(),

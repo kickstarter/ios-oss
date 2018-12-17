@@ -51,6 +51,7 @@ public final class ProjectNavBarViewController: UIViewController {
     self.closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
     self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
     self.saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchDown)
     self.projectNameLabel.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(projectNameTapped))
     )
@@ -119,6 +120,12 @@ public final class ProjectNavBarViewController: UIViewController {
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
     self.saveButton.rac.accessibilityValue = self.watchProjectViewModel.outputs.saveButtonAccessibilityValue
     self.saveButton.rac.selected = self.watchProjectViewModel.outputs.saveButtonSelected
+
+    self.watchProjectViewModel.outputs.generateImpactFeedback
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.saveButton.generateImpactFeedback(style: .light)
+    }
 
     self.watchProjectViewModel.outputs.generateSuccessFeedback
       .observeForUI()
@@ -242,6 +249,10 @@ public final class ProjectNavBarViewController: UIViewController {
 
   @objc fileprivate func saveButtonTapped(_ button: UIButton) {
     self.watchProjectViewModel.inputs.saveButtonTapped(selected: button.isSelected)
+  }
+
+  @objc fileprivate func saveButtonPressed() {
+    self.watchProjectViewModel.inputs.saveButtonTouched()
   }
 
   @objc fileprivate func projectNameTapped() {
