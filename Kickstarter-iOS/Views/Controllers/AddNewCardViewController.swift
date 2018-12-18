@@ -70,8 +70,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       |> settingsViewControllerStyle
 
     _ = self.cardholderNameLabel
-      //|> \.textColor .~ .ksr_text_dark_grey_900
-      |> \.font .~ .ksr_body()
+      |> settingsTitleLabelStyle
       |> \.text %~ { _ in Strings.Cardholder_name() }
 
     _ = self.cardholderNameTextField
