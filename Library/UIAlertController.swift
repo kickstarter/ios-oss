@@ -6,21 +6,23 @@ import KsApi
 
 public extension UIAlertController {
 
-  public static func alertController(forError error: AlertError) -> UIAlertController {
-    switch error {
-    case let .genericError(message):
-      return self.genericError(message)
-    case .facebookTokenFail:
-      return self.facebookTokenFail()
-    case let .facebookLoginAttemptFail(error):
-      return self.facebookLoginAttemptFail(error)
-    case let .genericFacebookError(envelope):
-      return self.genericFacebookError(envelope)
-    case let .facebookConnectAccountTaken(envelope):
-      return self.facebookConnectAccountTaken(envelope)
-    case let .facebookConnectEmailTaken(envelope):
-      return self.facebookConnectEmailTaken(envelope)
+  public static func alert(title: String,
+                           message: String? = nil,
+                           preferredStyle: UIAlertController.Style,
+                           sourceView: UIView? = nil) -> UIAlertController {
+
+    let alert = UIAlertController(
+      title: title,
+      message: message,
+      preferredStyle: preferredStyle
+    )
+
+    if UIAlertController.requiresPopOverConfiguration(preferredStyle) {
+      alert.modalPresentationStyle = .popover
+      alert.popoverPresentationController?.sourceView = sourceView
     }
+
+    return alert
   }
 
   public static func alert(_ title: String? = nil,
@@ -40,6 +42,27 @@ public extension UIAlertController {
     )
 
     return alertController
+  }
+
+  public static func requiresPopOverConfiguration(_ preferredStyle: UIAlertController.Style) -> Bool {
+    return preferredStyle == .actionSheet && AppEnvironment.current.device.userInterfaceIdiom == .pad
+  }
+
+  public static func alertController(forError error: AlertError) -> UIAlertController {
+    switch error {
+    case let .genericError(message):
+      return self.genericError(message)
+    case .facebookTokenFail:
+      return self.facebookTokenFail()
+    case let .facebookLoginAttemptFail(error):
+      return self.facebookLoginAttemptFail(error)
+    case let .genericFacebookError(envelope):
+      return self.genericFacebookError(envelope)
+    case let .facebookConnectAccountTaken(envelope):
+      return self.facebookConnectAccountTaken(envelope)
+    case let .facebookConnectEmailTaken(envelope):
+      return self.facebookConnectEmailTaken(envelope)
+    }
   }
 
   public static func genericError(_ message: String) -> UIAlertController {

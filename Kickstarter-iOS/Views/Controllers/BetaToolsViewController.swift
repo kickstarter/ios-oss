@@ -115,9 +115,10 @@ internal final class BetaToolsViewController: UIViewController {
   // MARK: Private Helper Functions
 
   private func showLanguageActionSheet() {
-    let alert = UIAlertController(title: "Change Language",
-                                  message: nil,
-                                  preferredStyle: .actionSheet)
+
+    let alert = UIAlertController.alert(title: "Change Language",
+                                        preferredStyle: .actionSheet,
+                                        sourceView: self.languageSwitcher)
 
     Language.allLanguages.forEach { language in
       alert.addAction(
@@ -135,9 +136,9 @@ internal final class BetaToolsViewController: UIViewController {
   }
 
   private func showEnvironmentActionSheet() {
-    let alert = UIAlertController(title: "Change Environment",
-                                  message: nil,
-                                  preferredStyle: .actionSheet)
+    let alert = UIAlertController.alert(title: "Change Environment",
+                                        preferredStyle: .actionSheet,
+                                        sourceView: self.environmentSwitcher)
 
     EnvironmentType.allCases.forEach { environment in
       alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
@@ -153,11 +154,10 @@ internal final class BetaToolsViewController: UIViewController {
   }
 
   private func languageDidChange(language: Language) {
-    self.navigationController?.dismiss(animated: true, completion: {
-      AppEnvironment.updateLanguage(language)
-
-      NotificationCenter.default.post(name: Notification.Name.ksr_languageChanged, object: nil, userInfo: nil)
-    })
+    AppEnvironment.updateLanguage(language)
+    NotificationCenter.default.post(name: Notification.Name.ksr_languageChanged,
+                                    object: nil,
+                                    userInfo: nil)
   }
 
   private func goToBetaFeedback() {
