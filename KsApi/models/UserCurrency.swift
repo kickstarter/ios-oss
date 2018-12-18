@@ -1,8 +1,10 @@
 import Prelude
 
-public struct UserCurrency: Swift.Decodable {
+public struct UserAccountFields: Swift.Decodable {
   public private(set) var chosenCurrency: String?
+  public private(set) var hasPassword: Bool?
+  public private(set) var isEmailVerified: Bool?
+  public private(set) var isDeliverable: Bool?
 }
 
-extension UserCurrency: Equatable {
-}
+extension UserAccountFields: Equatable {}

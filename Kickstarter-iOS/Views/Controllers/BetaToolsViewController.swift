@@ -14,7 +14,9 @@ internal final class BetaToolsViewController: UIViewController {
   @IBOutlet fileprivate weak var betaFeedbackButton: UIButton!
   @IBOutlet fileprivate weak var betaTitleLabel: UILabel!
   @IBOutlet fileprivate weak var languageSwitcher: UIButton!
+  @IBOutlet fileprivate weak var languageTitleLabel: UILabel!
   @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
+  @IBOutlet fileprivate weak var environmentTitleLabel: UILabel!
 
   internal static func instantiate() -> BetaToolsViewController {
     return Storyboard.BetaTools.instantiate(BetaToolsViewController.self)
@@ -32,7 +34,7 @@ internal final class BetaToolsViewController: UIViewController {
       ?|> UINavigationController.lens.isNavigationBarHidden .~ false
 
     _ = self.betaDebugPushNotificationsButton
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
       |> UIButton.lens.titleLabel.font .~ .ksr_body()
       |> UIButton.lens.contentHorizontalAlignment .~ .left
       |> UIButton.lens.title(for: .normal) .~ "Debug push notifications"
@@ -50,12 +52,18 @@ internal final class BetaToolsViewController: UIViewController {
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.title(for: .normal) .~ AppEnvironment.current.language.displayString
 
-        _ = self.environmentSwitcher
+    _ = self.languageTitleLabel
+      |> settingsTitleLabelStyle
+
+    _ = self.environmentSwitcher
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.contentHorizontalAlignment .~ .left
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.title(for: .normal) .~
       AppEnvironment.current.apiService.serverConfig.environment.rawValue
+
+    _ = self.environmentTitleLabel
+      |> settingsTitleLabelStyle
   }
 
   override func bindViewModel() {
@@ -107,9 +115,10 @@ internal final class BetaToolsViewController: UIViewController {
   // MARK: Private Helper Functions
 
   private func showLanguageActionSheet() {
-    let alert = UIAlertController(title: "Change Language",
-                                  message: nil,
-                                  preferredStyle: .actionSheet)
+
+    let alert = UIAlertController.alert(title: "Change Language",
+                                        preferredStyle: .actionSheet,
+                                        sourceView: self.languageSwitcher)
 
     Language.allLanguages.forEach { language in
       alert.addAction(
@@ -127,9 +136,9 @@ internal final class BetaToolsViewController: UIViewController {
   }
 
   private func showEnvironmentActionSheet() {
-    let alert = UIAlertController(title: "Change Environment",
-                                  message: nil,
-                                  preferredStyle: .actionSheet)
+    let alert = UIAlertController.alert(title: "Change Environment",
+                                        preferredStyle: .actionSheet,
+                                        sourceView: self.environmentSwitcher)
 
     EnvironmentType.allCases.forEach { environment in
       alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
@@ -145,11 +154,10 @@ internal final class BetaToolsViewController: UIViewController {
   }
 
   private func languageDidChange(language: Language) {
-    self.navigationController?.dismiss(animated: true, completion: {
-      AppEnvironment.updateLanguage(language)
-
-      NotificationCenter.default.post(name: Notification.Name.ksr_languageChanged, object: nil, userInfo: nil)
-    })
+    AppEnvironment.updateLanguage(language)
+    NotificationCenter.default.post(name: Notification.Name.ksr_languageChanged,
+                                    object: nil,
+                                    userInfo: nil)
   }
 
   private func goToBetaFeedback() {

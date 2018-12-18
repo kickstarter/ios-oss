@@ -638,4 +638,83 @@ final class KoalaTests: TestCase {
     koala.trackFailedPaymentMethodCreation()
     XCTAssertEqual(["Failed Payment Method Creation"], client.events)
   }
+  
+  func testLogEventsCallback() {
+    let bundle = MockBundle()
+    let client = MockTrackingClient()
+    let config = Config.template
+    let device = MockDevice(userInterfaceIdiom: .phone)
+    let screen = MockScreen()
+    let koala = Koala(bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
+                      screen: screen)
+
+    var callBackEvents = [String]()
+    var callBackProperties: [String: Any]?
+    koala.logEventCallback = { event, properties in
+      callBackEvents.append(event)
+      callBackProperties = properties
+    }
+
+    koala.trackAppOpen()
+
+    XCTAssertEqual(["App Open", "Opened App"], client.events)
+    XCTAssertEqual(["App Open", "Opened App"], callBackEvents)
+    XCTAssertEqual("Apple", client.properties.last?["manufacturer"] as? String)
+    XCTAssertEqual("Apple", callBackProperties?["manufacturer"] as? String)
+  }
+
+  func testTrackViewedAccount() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackAccountView()
+
+    XCTAssertEqual(["Viewed Account"], client.events)
+  }
+
+  func testTrackViewedChangeEmail() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangeEmailView()
+
+    XCTAssertEqual(["Viewed Change Email"], client.events)
+  }
+
+  func testTrackChangeEmail() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangeEmail()
+
+    XCTAssertEqual(["Changed Email"], client.events)
+  }
+
+  func testTrackViewedChangePassword() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangePasswordView()
+
+    XCTAssertEqual(["Viewed Change Password"], client.events)
+  }
+
+  func testTrackChangePassword() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangePassword()
+
+    XCTAssertEqual(["Changed Password"], client.events)
+  }
+
+  func testTrackChangedCurrency() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackChangedCurrency(.CAD)
+
+    XCTAssertEqual(["Selected Chosen Currency"], client.events)
+    XCTAssertEqual(Currency.CAD.descriptionText, client.properties.last?["currency"] as? String)
+  }
 }

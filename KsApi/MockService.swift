@@ -14,6 +14,8 @@ internal struct MockService: ServiceType {
 
   fileprivate let addNewCreditCardError: GraphError?
 
+  fileprivate let changeCurrencyResponse: GraphMutationEmptyResponseEnvelope?
+
   fileprivate let changeCurrencyError: GraphError?
 
   fileprivate let changeEmailError: GraphError?
@@ -63,11 +65,13 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
-  fileprivate let fetchGraphCurrencyResponse: UserCurrency?
   fileprivate let fetchGraphUserEmailResponse: UserEmailFields?
 
   fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
   fileprivate let fetchGraphCreditCardsError: GraphError?
+
+  fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>?
+  fileprivate let fetchGraphUserAccountFieldsError: GraphError?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
   fileprivate let addAttachmentError: ErrorEnvelope?
@@ -184,6 +188,7 @@ internal struct MockService: ServiceType {
                                                                        me: .template
                                                                      ),
                 changePasswordError: GraphError? = nil,
+                changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
                 changeCurrencyError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
                 deletePaymentMethodResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>? = nil,
@@ -214,7 +219,8 @@ internal struct MockService: ServiceType {
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
                 fetchGraphUserEmailResponse: UserEmailFields? = nil,
-                fetchGraphCurrencyResponse: UserCurrency? = nil,
+                fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>? = nil,
+                fetchGraphUserAccountFieldsError: GraphError? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
                 addAttachmentError: ErrorEnvelope? = nil,
                 removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -279,6 +285,7 @@ internal struct MockService: ServiceType {
 
     self.addNewCreditCardError = addNewCreditCardError
 
+    self.changeCurrencyResponse = changeCurrencyResponse
     self.changeCurrencyError = changeCurrencyError
 
     self.changeEmailResponse = changeEmailResponse
@@ -314,7 +321,9 @@ internal struct MockService: ServiceType {
       ]
     )
 
-    self.fetchGraphCurrencyResponse = fetchGraphCurrencyResponse
+    self.fetchGraphUserAccountFieldsResponse = fetchGraphUserAccountFieldsResponse
+      ?? UserEnvelope(me: UserAccountFields.template)
+    self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
 
     self.fetchGraphUserEmailResponse = fetchGraphUserEmailResponse
 
@@ -519,11 +528,12 @@ internal struct MockService: ServiceType {
 
   internal func changeCurrency(input: ChangeCurrencyInput) ->
    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      if let error = self.changeCurrencyError {
-        return SignalProducer(error: error)
-      } else {
-        return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
-      }
+    if let response = self.changeCurrencyResponse {
+      return SignalProducer(value: response)
+    } else if let error = self.changeCurrencyError {
+      return SignalProducer(error: error)
+    }
+    return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
   }
 
   internal func fetchCheckout(checkoutUrl url: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope> {
@@ -665,9 +675,15 @@ internal struct MockService: ServiceType {
       return SignalProducer(value: changeEmailResponse ?? UserEnvelope<UserEmailFields>(me: .template))
   }
 
-  internal func fetchGraphCurrency(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserCurrency>, GraphError> {
-      return SignalProducer(value: UserEnvelope<UserCurrency>(me: UserCurrency.template))
+  internal func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError> {
+      if let error = self.fetchGraphUserAccountFieldsError {
+        return SignalProducer(error: error)
+      } else if let response = self.fetchGraphUserAccountFieldsResponse {
+        return SignalProducer(value: response)
+      } else {
+        return .empty
+      }
   }
 
   internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {

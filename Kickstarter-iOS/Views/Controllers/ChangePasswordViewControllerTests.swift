@@ -2,13 +2,12 @@ import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import XCTest
 
 final class ChangePasswordViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
-
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-
     UIView.setAnimationsEnabled(false)
   }
 
@@ -27,5 +26,21 @@ final class ChangePasswordViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
+  }
+
+  func testMessageBannerContainerIsHiddenByDefault() {
+    let controller = ChangePasswordViewController.instantiate()
+    controller.beginAppearanceTransition(true, animated: false)
+    controller.endAppearanceTransition()
+
+    let messageBannerViewController = controller.children
+      .compactMap { $0 as? MessageBannerViewController }.first
+
+    guard let view = messageBannerViewController?.view else {
+      XCTFail("View should be created")
+      return
+    }
+
+    XCTAssertTrue(view.isHidden)
   }
 }

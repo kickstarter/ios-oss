@@ -11,7 +11,7 @@ internal final class SettingsNewslettersViewController: UIViewController {
   @IBOutlet fileprivate weak var tableView: UITableView!
 
   internal static func instantiate() -> SettingsNewslettersViewController {
-    return Storyboard.SettingsNewsletters.instantiate(SettingsNewslettersViewController.self)
+    return Storyboard.Settings.instantiate(SettingsNewslettersViewController.self)
   }
 
   override func viewDidLoad() {

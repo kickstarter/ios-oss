@@ -49,6 +49,9 @@ public struct Environment {
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
 
+  /// A function that returns whether a specific OS version is available
+  public let isOSVersionAvailable: (Double) -> Bool
+
   /// A function that returns whether voice over mode is running.
   public let isVoiceOverRunning: () -> Bool
 
@@ -70,6 +73,9 @@ public struct Environment {
 
   /// A type that exposes how to interface with an NSBundle. Default value is `Bundle.main`.
   public let mainBundle: NSBundleType
+
+  /// A type that manages registration for push notifications.
+  public let pushRegistrationType: PushRegistrationType.Type
 
   /// A reachability signal producer.
   public let reachability: SignalProducer<Reachability, NoError>
@@ -98,6 +104,7 @@ public struct Environment {
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     device: UIDeviceType = UIDevice.current,
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
+    isOSVersionAvailable: @escaping (Double) -> Bool = ksr_isOSVersionAvailable,
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
@@ -105,6 +112,7 @@ public struct Environment {
     liveStreamService: LiveStreamServiceProtocol = LiveStreamService(),
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
+    pushRegistrationType: PushRegistrationType.Type = PushRegistration.self,
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
@@ -123,6 +131,7 @@ public struct Environment {
     self.debounceInterval = debounceInterval
     self.device = device
     self.facebookAppDelegate = facebookAppDelegate
+    self.isOSVersionAvailable = isOSVersionAvailable
     self.isVoiceOverRunning = isVoiceOverRunning
     self.koala = koala
     self.language = language
@@ -130,6 +139,7 @@ public struct Environment {
     self.liveStreamService = liveStreamService
     self.locale = locale
     self.mainBundle = mainBundle
+    self.pushRegistrationType = pushRegistrationType
     self.reachability = reachability
     self.scheduler = scheduler
     self.ubiquitousStore = ubiquitousStore

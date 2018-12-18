@@ -29,7 +29,7 @@
 "Any_payment_methods_you_saved_to_Kickstarter" = "Kickstarter に保存されたお支払い方法は、こちらに (安全に) リストアップされます。";
 "App_version" = "アプリ版";
 "Are_you_sure" = "オフにしてもよろしいですか？";
-"Are_you_sure_you_wish_to_remove_this_card" = "Are you sure you wish to remove this card from your payment method options?";
+"Are_you_sure_you_wish_to_remove_this_card" = "このカードをお支払い方法から削除してもよろしいですか？";
 "Ask_me_anything" = "お問い合わせ";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
 "Back" = "バック";
@@ -208,12 +208,14 @@
 "It_may_take_up_to_24_hours_to_collect_your_data" = "データの収集には最大で24時間かかる場合があります。ダウンロードの準備が整いましたら、このアカウントに登録されているメールアドレス宛てにデータのダウンロード手順が記載されたメールをお送りします。メールが届かなかった場合には、お手数ですがこちらに戻って再試行してください。";
 "Its_a_way_to_bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
 "Its_better_with_friends" = "友達にとってより良い。";
+"Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "It's like the radio but nothing sucks and also it's a newsletter.";
 "Join_our_secret_society" = "この秘密の世界にあなたも浸ってみませんか。";
 "Joining_the_live_stream" = "ライブ配信に参加";
 "Just_for_you" = "あなたのために。";
 "Keep_in_touch_after_your_campaign" = "キャンペーン終了後もニュースレターで最新情報をチェックし、次のプロジェクトに備えましょう。";
 "Keep_reading" = "続きを読む";
 "Keep_up_with_future_live_streams" = "ライブ配信を通知";
+"Kickstarter_Music" = "Kickstarter Music";
 "Kickstarter_if_funded" = "Kickstarter (達成した時)";
 "Kickstarter_is_not_a_store" = "Kickstarterはオンラインストアではありません。";
 "Know_when_creators_and_backers_message_you" = "クリエイターやバッカ―からメッセージが届いた場合にすぐ分かるように、通知機能を有効にしましょう。";
@@ -250,7 +252,7 @@
 "Messages" = "メッセージ";
 "Name" = "名前";
 "Never" = "通知を受けない";
-"New_email" = "New email";
+"New_email" = "新しいメールアドレス";
 "New_password" = "新しいパスワード";
 "New_pledge_activity" = "新しいプレッジ";
 "New_work_and_big_ideas_from_established_and" = "新進アーティストや著名アーティストの最新プロジェクトやアイデアをご紹介。";
@@ -259,7 +261,7 @@
 "No_Results" = "該当結果なし";
 "No_comments_yet" = "まだコメントはありません。";
 "No_messages" = "メッセージがありません。";
-"No_nevermind" = "No, nevermind";
+"No_nevermind" = "いいえ、削除しません";
 "No_one_has_posted_an_update_yet" = "まだアップデートの投稿はありません。";
 "No_pledges_from_friends_yet" = "友達からのプレッジはありません。";
 "No_replay_is_available_for_this_live_stream" = "このライブ配信を再生することはできません";
@@ -338,7 +340,7 @@
 "Recommended_For_You" = "あなたへのおすすめ";
 "Recorded_Live" = "配信済ライブ";
 "Recorded_live_with_creator_name" = "配信された<b>%{creator_name}</b>のライブ";
-"Remove_this_card" = "Remove this card";
+"Remove_this_card" = "このカードを削除";
 "Replay" = "リプレイ";
 "Replay_available_for_time_more_units" = "あと%{time}%{units} リプレイ可能";
 "Replay_live_stream_with_creator_name" = "<b>%{creator_name}</b>のライブ配信を再生";
@@ -394,6 +396,7 @@
 "Sign_up_newsletter" = "Projects We Love に登録して、私たち Kickstarter チームが選別した注目プロジェクトに関する情報を週に1度受け取りましょう。";
 "Signs_up_with_Email" = "Eメールでサインアップする。";
 "Something_catch_your_eye" = "何か目にとまるものはありましたか？";
+"Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "何らかのエラーにより、お支払い方法を削除できませんでした。もう一度お試しください。";
 "Something_went_wrong_please_try_again" = "なにかが間違っています。もう一度お試しください。";
 "Start_the_request" = "データの収集を開始する";
 "Starting_soon" = "もう少しで始まります。";
@@ -458,13 +461,13 @@
 "We_were_unable_to_load_the_shipping_destinations" = "配送先の読込に失敗。\n再度お試しください。";
 "Websites" = "ウェブサイト";
 "Welcome_to_our_library_Peruse_the_stacks_with_us" = "Kickstarter ライブラリーへようこそ。色んなストーリーを一緒に読み漁ろう！";
-"Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password" = "We'll ask you to sign back into the Kickstarter app once you've changed your password.";
+"Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password" = "パスワードを変更したら、Kickstarter アプリにもう一度サインインし直すように促されます。";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "終了48時間前に通知が届きます。保存アイテムをみるにはプロフィールをご覧ください。";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "フォローがオンになっていると、他の人のアクティビティをフォローすることができ、また、他の人もあなたのアクティビティをフォローすることができます。このようなデータを永久に削除するためにはフォローをオフにしてください。";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "プロジェクトを保存し、終了の48時間前にリマインドする。";
 "Write_a_bio" = "簡単な自己紹介を書いてください。ほんの１～２文で構いません。";
 "Yes_change_currency" = "はい、通貨を変更します";
-"Yes_remove" = "Yes, remove";
+"Yes_remove" = "はい、削除します";
 "Yes_turn_off" = "はい、オフにします";
 "You_Launched" = "発表されました！";
 "You_backed_this_project" = "バック済";
@@ -484,6 +487,7 @@
 "Your_shipping_destination" = "配送地域";
 "Youre_a_backer" = "バッカーになりました！";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
+"Youre_offline" = "現在オフライン中です。デバイスが再接続し次第、アプリをリフレッシュしてください。";
 "Youve_pledged_to_support_this_project" = "このプレッジ済のプロジェクトは、現在もファンド中";
 "Zip_code" = "郵便番号";
 "accessibility.dashboard.buttons.activity" = "アクティビティ";
@@ -1179,6 +1183,8 @@
 "profile.settings.newsletter.happening" = "出来事";
 "profile.settings.newsletter.happening_now" = "Happening Now";
 "profile.settings.newsletter.invent" = "インベント";
+"profile.settings.newsletter.music" = "Kickstarter Music";
+"profile.settings.newsletter.music_newsletter" = "モンゴルの木管楽器を使ったオーケストラから、存在しないホラー映画のサウンドトラック、昆虫についてのオペラなど、その他にも Kickstarter Music でしか見つからないユニークな内容を隔週でお届けします。ぜひご登録ください！";
 "profile.settings.newsletter.news_event" = "ニュース＆イベント";
 "profile.settings.newsletter.opt_in.message" = "登録されているアドレス宛に認証メールを送信しました！%{newsletter} を購読するには、メールを確認してください。";
 "profile.settings.newsletter.opt_in.title" = "あと少し！";

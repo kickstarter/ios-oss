@@ -16,7 +16,7 @@ import Prelude
   let vm: FindFriendsFacebookConnectCellViewModelType = FindFriendsFacebookConnectCellViewModel()
 
   let attemptFacebookLogin = TestObserver<(), NoError>()
-  let hideCloseButtonObserver = TestObserver<Bool, NoError>()
+  let hideCloseButton = TestObserver<Bool, NoError>()
   let isLoading = TestObserver<Bool, NoError>()
   let notifyPresenterToDismissHeader = TestObserver<(), NoError>()
   let notifyPresenterUserFacebookConnected = TestObserver<(), NoError>()
@@ -32,7 +32,7 @@ import Prelude
     vm.outputs.attemptFacebookLogin.observe(attemptFacebookLogin.observer)
     vm.outputs.facebookConnectCellTitle.observe(title.observer)
     vm.outputs.facebookConnectCellSubtitle.observe(subtitle.observer)
-    vm.outputs.hideCloseButton.observe(hideCloseButtonObserver.observer)
+    vm.outputs.hideCloseButton.observe(hideCloseButton.observer)
     vm.outputs.isLoading.observe(isLoading.observer)
     vm.outputs.notifyDelegateToDismissHeader.observe(notifyPresenterToDismissHeader.observer)
     vm.outputs.notifyDelegateUserFacebookConnected.observe(notifyPresenterUserFacebookConnected.observer)
@@ -45,13 +45,13 @@ import Prelude
   func testHideCloseButton() {
     vm.inputs.configureWith(source: .findFriends)
 
-    self.hideCloseButtonObserver.assertValue(true)
+    self.hideCloseButton.assertValue(true)
   }
 
   func testShowCloseButton() {
     vm.inputs.configureWith(source: .activity)
 
-    self.hideCloseButtonObserver.assertValue(false)
+    self.hideCloseButton.assertValue(false)
   }
 
   func testDismissal() {

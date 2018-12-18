@@ -128,7 +128,7 @@ platform :ios do
       app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
       app: ENV["ITUNES_APP_ID"],
       ipa: "./output/gym/Kickstarter.ipa",
-      team_id: ENV["ITUNES_TEAM_ID"],
+      team_name: ENV["ITUNES_TEAM_NAME"],
       skip_screenshots: true,
       skip_metadata: true
     )
@@ -251,6 +251,17 @@ platform :ios do
     changelog_from_git_commits(
       commits_count: 1,
       date_format: "short"
+    )
+  end
+
+  desc "Commit history from a given tag"
+  lane :commit_history do |options|
+    changelog_from_git_commits(
+      between: [options[:tag], "master"],
+      pretty: "- %s",
+      date_format: "short",
+      match_lightweight_tag: false,
+      merge_commit_filtering: "exclude_merges"
     )
   end
 

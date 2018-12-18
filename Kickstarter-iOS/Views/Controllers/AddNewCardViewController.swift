@@ -9,7 +9,8 @@ internal protocol AddNewCardViewControllerDelegate: class {
   func presentAddCardSuccessfulBanner(_ message: String)
 }
 
-internal final class AddNewCardViewController: UIViewController, STPPaymentCardTextFieldDelegate {
+internal final class AddNewCardViewController: UIViewController,
+STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   internal weak var delegate: AddNewCardViewControllerDelegate?
 
   @IBOutlet private weak var cardholderNameLabel: UILabel!
@@ -17,7 +18,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
   @IBOutlet private weak var creditCardTextField: STPPaymentCardTextField!
 
   private var saveButtonView: LoadingBarButtonItemView!
-  private var messageBannerView: MessageBannerViewController!
+  internal var messageBannerViewController: MessageBannerViewController?
 
   fileprivate let viewModel: AddNewCardViewModelType = AddNewCardViewModel()
 
@@ -28,11 +29,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let messageViewController = self.children.first as? MessageBannerViewController else {
-      fatalError("Missing message View Controller")
-
-    }
-    self.messageBannerView = messageViewController
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.cardholderNameTextField.addTarget(self,
                                            action: #selector(cardholderNameTextFieldReturn),
@@ -73,7 +70,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
       |> settingsViewControllerStyle
 
     _ = self.cardholderNameLabel
-      |> \.textColor .~ .ksr_text_dark_grey_900
+      //|> \.textColor .~ .ksr_text_dark_grey_900
       |> \.font .~ .ksr_body()
       |> \.text %~ { _ in Strings.Cardholder_name() }
 
@@ -155,7 +152,7 @@ internal final class AddNewCardViewController: UIViewController, STPPaymentCardT
     self.viewModel.outputs.addNewCardFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-        self?.messageBannerView.showBanner(with: .error, message: errorMessage)
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
     }
   }
 

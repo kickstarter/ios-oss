@@ -10,38 +10,38 @@ import XCTest
 final class ChangePasswordViewModelTests: TestCase {
   private let vm: ChangePasswordViewModelType = ChangePasswordViewModel()
 
-  private let activityIndicatorShouldShowObserver = TestObserver<Bool, NoError>()
-  private let changePasswordFailureObserver = TestObserver<String, NoError>()
-  private let changePasswordSuccessObserver = TestObserver<Void, NoError>()
-  private let confirmNewPasswordBecomeFirstResponderObserver = TestObserver<Void, NoError>()
+  private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
+  private let changePasswordFailure = TestObserver<String, NoError>()
+  private let changePasswordSuccess = TestObserver<Void, NoError>()
+  private let confirmNewPasswordBecomeFirstResponder = TestObserver<Void, NoError>()
   private let currentPasswordBecomeFirstResponder = TestObserver<Void, NoError>()
-  private let currentPasswordPrefillValueObserver = TestObserver<String, NoError>()
-  private let dismissKeyboardObserver = TestObserver<Void, NoError>()
-  private let newPasswordBecomeFirstResponderObserver = TestObserver<Void, NoError>()
-  private let onePasswordButtonIsHiddenObserver = TestObserver<Bool, NoError>()
-  private let onePasswordFindPasswordForURLStringObserver = TestObserver<String, NoError>()
-  private let saveButtonIsEnabledObserver = TestObserver<Bool, NoError>()
-  private let validationErrorLabelIsHiddenObserver = TestObserver<Bool, NoError>()
-  private let validationErrorLabelMessageObserver = TestObserver<String, NoError>()
+  private let currentPasswordPrefillValue = TestObserver<String, NoError>()
+  private let dismissKeyboard = TestObserver<Void, NoError>()
+  private let newPasswordBecomeFirstResponder = TestObserver<Void, NoError>()
+  private let onePasswordButtonIsHidden = TestObserver<Bool, NoError>()
+  private let onePasswordFindPasswordForURLString = TestObserver<String, NoError>()
+  private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
+  private let validationErrorLabelIsHidden = TestObserver<Bool, NoError>()
+  private let validationErrorLabelMessage = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.activityIndicatorShouldShow.observe(activityIndicatorShouldShowObserver.observer)
-    self.vm.outputs.changePasswordFailure.observe(changePasswordFailureObserver.observer)
-    self.vm.outputs.changePasswordSuccess.observe(changePasswordSuccessObserver.observer)
+    self.vm.outputs.activityIndicatorShouldShow.observe(activityIndicatorShouldShow.observer)
+    self.vm.outputs.changePasswordFailure.observe(changePasswordFailure.observer)
+    self.vm.outputs.changePasswordSuccess.observe(changePasswordSuccess.observer)
     self.vm.outputs.confirmNewPasswordBecomeFirstResponder
-      .observe(confirmNewPasswordBecomeFirstResponderObserver.observer)
+      .observe(confirmNewPasswordBecomeFirstResponder.observer)
     self.vm.outputs.currentPasswordBecomeFirstResponder.observe(currentPasswordBecomeFirstResponder.observer)
-    self.vm.outputs.currentPasswordPrefillValue.observe(currentPasswordPrefillValueObserver.observer)
-    self.vm.outputs.dismissKeyboard.observe(dismissKeyboardObserver.observer)
-    self.vm.outputs.newPasswordBecomeFirstResponder.observe(newPasswordBecomeFirstResponderObserver.observer)
+    self.vm.outputs.currentPasswordPrefillValue.observe(currentPasswordPrefillValue.observer)
+    self.vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
+    self.vm.outputs.newPasswordBecomeFirstResponder.observe(newPasswordBecomeFirstResponder.observer)
     self.vm.outputs.onePasswordFindPasswordForURLString
-      .observe(onePasswordFindPasswordForURLStringObserver.observer)
-    self.vm.outputs.onePasswordButtonIsHidden.observe(onePasswordButtonIsHiddenObserver.observer)
-    self.vm.outputs.saveButtonIsEnabled.observe(saveButtonIsEnabledObserver.observer)
-    self.vm.outputs.validationErrorLabelIsHidden.observe(validationErrorLabelIsHiddenObserver.observer)
-    self.vm.outputs.validationErrorLabelMessage.observe(validationErrorLabelMessageObserver.observer)
+      .observe(onePasswordFindPasswordForURLString.observer)
+    self.vm.outputs.onePasswordButtonIsHidden.observe(onePasswordButtonIsHidden.observer)
+    self.vm.outputs.saveButtonIsEnabled.observe(saveButtonIsEnabled.observer)
+    self.vm.outputs.validationErrorLabelIsHidden.observe(validationErrorLabelIsHidden.observer)
+    self.vm.outputs.validationErrorLabelMessage.observe(validationErrorLabelMessage.observer)
   }
 
   func testChangePassword() {
@@ -54,43 +54,70 @@ final class ChangePasswordViewModelTests: TestCase {
 
       self.vm.inputs.currentPasswordFieldDidReturn(currentPassword: "password")
 
-      self.newPasswordBecomeFirstResponderObserver.assertValueCount(1)
+      self.newPasswordBecomeFirstResponder.assertValueCount(1)
 
       self.vm.inputs.newPasswordFieldDidReturn(newPassword: "123456")
 
-      self.confirmNewPasswordBecomeFirstResponderObserver.assertValueCount(1)
+      self.confirmNewPasswordBecomeFirstResponder.assertValueCount(1)
 
       self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "123456")
 
-      self.saveButtonIsEnabledObserver.assertValues([true])
-      self.dismissKeyboardObserver.assertValueCount(1)
-      self.activityIndicatorShouldShowObserver.assertValues([true])
+      self.saveButtonIsEnabled.assertValues([true])
+      self.dismissKeyboard.assertValueCount(1)
+      self.activityIndicatorShouldShow.assertValues([true])
 
       self.scheduler.advance()
 
-      self.changePasswordSuccessObserver.assertValueCount(1)
+      self.changePasswordSuccess.assertValueCount(1)
 
-      self.activityIndicatorShouldShowObserver.assertValues([true, false])
+      self.activityIndicatorShouldShow.assertValues([true, false])
+    }
+  }
+
+  func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
+    let iOS12: (Double) -> Bool = { _ in false }
+    withEnvironment(isOSVersionAvailable: iOS12) {
+      self.vm.inputs.onePassword(isAvailable: true)
+
+      self.onePasswordButtonIsHidden.assertValues([false])
+
+      self.vm.inputs.onePassword(isAvailable: false)
+
+      self.onePasswordButtonIsHidden.assertValues([false, true])
+    }
+  }
+
+  func testOnePasswordButtonHidesProperly_OnIOS12AndLater() {
+    let iOS12: (Double) -> Bool = { _ in true }
+    withEnvironment(isOSVersionAvailable: iOS12) {
+      self.vm.inputs.onePassword(isAvailable: true)
+
+      self.onePasswordButtonIsHidden.assertValues([true])
+
+      self.vm.inputs.onePassword(isAvailable: false)
+
+      self.onePasswordButtonIsHidden.assertValues([true, true])
     }
   }
 
   func testOnePasswordAutofill() {
     let mockService = MockService(serverConfig: ServerConfig.local)
+    let iOS12: (Double) -> Bool = { _ in false }
 
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.onePasswordIsAvailable(available: true)
+    withEnvironment(apiService: mockService, isOSVersionAvailable: iOS12) {
+      self.vm.inputs.onePassword(isAvailable: true)
       self.vm.inputs.viewDidAppear()
 
       self.currentPasswordBecomeFirstResponder.assertValueCount(1)
-      self.onePasswordButtonIsHiddenObserver.assertValue(false)
+      self.onePasswordButtonIsHidden.assertValue(false)
 
       self.vm.inputs.onePasswordButtonTapped()
 
-      self.onePasswordFindPasswordForURLStringObserver.assertValues(["http://ksr.test"])
+      self.onePasswordFindPasswordForURLString.assertValues(["http://ksr.test"])
 
       self.vm.inputs.onePasswordFoundPassword(password: "password")
 
-      self.currentPasswordPrefillValueObserver.assertValue("password")
+      self.currentPasswordPrefillValue.assertValue("password")
     }
   }
 
@@ -101,22 +128,22 @@ final class ChangePasswordViewModelTests: TestCase {
     self.vm.inputs.newPasswordFieldDidReturn(newPassword: "12345")
     self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "1234567")
 
-    self.validationErrorLabelIsHiddenObserver.assertValues([false])
-    self.validationErrorLabelMessageObserver
+    self.validationErrorLabelIsHidden.assertValues([false])
+    self.validationErrorLabelMessage
       .assertValues(["Your password must be at least 6 characters long."])
-    self.saveButtonIsEnabledObserver.assertValues([false])
+    self.saveButtonIsEnabled.assertValues([false])
 
     self.vm.inputs.newPasswordFieldTextChanged(text: "123456")
 
-    self.validationErrorLabelIsHiddenObserver.assertValues([false])
-    self.validationErrorLabelMessageObserver
+    self.validationErrorLabelIsHidden.assertValues([false])
+    self.validationErrorLabelMessage
       .assertValues(["Your password must be at least 6 characters long.", "New passwords must match."])
-    self.saveButtonIsEnabledObserver.assertValues([false])
+    self.saveButtonIsEnabled.assertValues([false])
 
     self.vm.inputs.newPasswordFieldTextChanged(text: "1234567")
 
-    self.validationErrorLabelIsHiddenObserver.assertValues([false, true])
-    self.saveButtonIsEnabledObserver.assertValues([false, true])
+    self.validationErrorLabelIsHidden.assertValues([false, true])
+    self.saveButtonIsEnabled.assertValues([false, true])
   }
 
   func testChangePasswordFailure() {
@@ -130,26 +157,57 @@ final class ChangePasswordViewModelTests: TestCase {
 
       self.vm.inputs.currentPasswordFieldDidReturn(currentPassword: "password")
 
-      self.newPasswordBecomeFirstResponderObserver.assertValueCount(1)
+      self.newPasswordBecomeFirstResponder.assertValueCount(1)
 
       self.vm.inputs.newPasswordFieldDidReturn(newPassword: "123456")
 
-      self.confirmNewPasswordBecomeFirstResponderObserver.assertValueCount(1)
+      self.confirmNewPasswordBecomeFirstResponder.assertValueCount(1)
 
       self.vm.inputs.newPasswordConfirmationFieldTextChanged(text: "123456")
 
-      self.saveButtonIsEnabledObserver.assertValues([true])
+      self.saveButtonIsEnabled.assertValues([true])
 
       self.vm.inputs.saveButtonTapped()
 
-      self.dismissKeyboardObserver.assertValueCount(1)
-      self.activityIndicatorShouldShowObserver.assertValues([true])
+      self.dismissKeyboard.assertValueCount(1)
+      self.activityIndicatorShouldShow.assertValues([true])
 
       self.scheduler.advance()
 
-      self.changePasswordFailureObserver.assertValues(["Error changing password"])
+      self.changePasswordFailure.assertValues(["Error changing password"])
 
-      self.activityIndicatorShouldShowObserver.assertValues([true, false])
+      self.activityIndicatorShouldShow.assertValues([true, false])
+    }
+  }
+
+  func testTrackViewedChangePassword() {
+    let client = MockTrackingClient()
+
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Change Password"], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed Change Password", "Viewed Change Password"], client.events)
+    }
+  }
+
+  func testTrackChangePassword() {
+    let service = MockService()
+    let client = MockTrackingClient()
+
+    withEnvironment(apiService: service, koala: Koala(client: client)) {
+      self.vm.inputs.currentPasswordFieldDidReturn(currentPassword: "password")
+      self.vm.inputs.newPasswordFieldDidReturn(newPassword: "123456")
+      self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "123456")
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(["Changed Password"], client.events)
     }
   }
 }

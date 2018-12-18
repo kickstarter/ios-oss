@@ -144,7 +144,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
     _ = self.creatorLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
 
     _ = self.creatorStackView
@@ -184,14 +184,14 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
           ? .ksr_title3(size: 28)
           : .ksr_title3(size: 20)
       }
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.progressBarAndStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.readMoreButton
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_900
+      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
       |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_500
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }

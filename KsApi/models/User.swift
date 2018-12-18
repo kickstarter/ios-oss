@@ -34,6 +34,7 @@ public struct User {
     public private(set) var films: Bool?
     public private(set) var publishing: Bool?
     public private(set) var alumni: Bool?
+    public private(set) var music: Bool?
 
     public static func all(on: Bool) -> NewsletterSubscriptions {
       return NewsletterSubscriptions(
@@ -45,7 +46,8 @@ public struct User {
         weekly: on,
         films: on,
         publishing: on,
-        alumni: on
+        alumni: on,
+        music: on
       )
     }
   }
@@ -173,6 +175,7 @@ extension User.NewsletterSubscriptions: Argo.Decodable {
       <*> json <|? "film_newsletter"
       <*> json <|? "publishing_newsletter"
       <*> json <|? "alumni_newsletter"
+      <*> json <|? "music_newsletter"
   }
 }
 
@@ -188,6 +191,7 @@ extension User.NewsletterSubscriptions: EncodableType {
     result["film_newsletter"] = self.films
     result["publishing_newsletter"] = self.publishing
     result["alumni_newsletter"] = self.alumni
+    result["music_newsletter"] = self.music
     return result
   }
 }

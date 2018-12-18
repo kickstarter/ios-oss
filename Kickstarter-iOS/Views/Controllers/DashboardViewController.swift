@@ -54,7 +54,7 @@ internal final class DashboardViewController: UITableViewController {
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_dark_grey_900
+      |> UIActivityIndicatorView.lens.color .~ .ksr_soft_black
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -339,3 +339,5 @@ extension DashboardViewController: DashboardTitleViewDelegate {
     self.viewModel.inputs.showHideProjectsDrawer()
   }
 }
+
+extension DashboardViewController: TabBarControllerScrollable { }

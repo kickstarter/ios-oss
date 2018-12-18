@@ -131,9 +131,9 @@ public protocol ServiceType {
   func fetchGraphCreditCards(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError>
 
-  /// Fetch a User's preferred currency
-  func fetchGraphCurrency(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserCurrency>, GraphError>
+  /// Fetch a User's account fields
+  func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError>
 
   /// Fetch User's email fields object using graphQL.
   func fetchGraphUserEmailFields(query: NonEmptySet<Query>)

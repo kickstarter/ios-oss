@@ -43,14 +43,14 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 14.0)
 
     _ = self.dateLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ .ksr_caption1()
 
     _ = self.dividerView
       |> separatorStyle
 
     _ = self.nameLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+      |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
 
     _ = self.projectNameLabel

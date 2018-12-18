@@ -1,7 +1,10 @@
 import Foundation
 
-extension UserCurrency {
-  internal static let template = UserCurrency(
-    chosenCurrency: "USD"
+extension UserAccountFields {
+  internal static let template = UserAccountFields(
+    chosenCurrency: "USD",
+    hasPassword: true,
+    isEmailVerified: true,
+    isDeliverable: true
   )
 }

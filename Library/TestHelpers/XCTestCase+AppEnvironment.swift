@@ -4,6 +4,7 @@ import AVFoundation
 import Foundation
 import KsApi
 import ReactiveSwift
+import Result
 import KsApi
 import LiveStream
 
@@ -31,6 +32,7 @@ extension XCTestCase {
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     device: UIDeviceType = AppEnvironment.current.device,
     facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
+    isOSVersionAvailable: @escaping (Double) -> Bool = AppEnvironment.current.isOSVersionAvailable,
     isVoiceOverRunning: @escaping () -> Bool = AppEnvironment.current.isVoiceOverRunning,
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
@@ -38,6 +40,7 @@ extension XCTestCase {
     liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
@@ -58,6 +61,7 @@ extension XCTestCase {
         debounceInterval: debounceInterval,
         device: device,
         facebookAppDelegate: facebookAppDelegate,
+        isOSVersionAvailable: isOSVersionAvailable,
         isVoiceOverRunning: isVoiceOverRunning,
         koala: koala,
         language: language,
@@ -65,6 +69,7 @@ extension XCTestCase {
         liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
+        pushRegistrationType: pushRegistrationType,
         scheduler: scheduler,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults

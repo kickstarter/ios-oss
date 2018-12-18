@@ -13,7 +13,7 @@ public let dashboardActivityButtonStyle =
     <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_buttons_activity() }
 
 public let dashboardCellTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+  UILabel.lens.textColor .~ .ksr_soft_black
   <> UILabel.lens.font .~ .ksr_title2()
 
 public let dashboardCardStyle = roundedStyle()
@@ -87,7 +87,7 @@ public let dashboardGreenTextBorderButtonStyle = borderButtonStyle
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.cgColor
 
 public let dashboardStatTitleLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+  UILabel.lens.textColor .~ .ksr_soft_black
     <> UILabel.lens.font .~ UIFont.ksr_body().bolded
 
 public let dashboardStatSubtitleLabelStyle =
@@ -190,7 +190,7 @@ public let dashboardVideoPlaysTitleLabelStyle = dashboardCellTitleLabelStyle
   <> UILabel.lens.text %~ { _ in Strings.dashboard_graphs_video_title_video_plays() }
 
 public let dashboardVideoTotalPlaysCountLabelStyle =
-  UILabel.lens.textColor .~ .ksr_text_dark_grey_900
+  UILabel.lens.textColor .~ .ksr_soft_black
     <> UILabel.lens.font .~ UIFont.ksr_title1().bolded
 
 public let dashboardViewProjectButtonStyle = dashboardGrayTextBorderButtonStyle

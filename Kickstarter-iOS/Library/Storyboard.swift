@@ -28,8 +28,6 @@ public enum Storyboard: String {
   case RewardPledge
   case Search
   case Settings
-  case SettingsAccount
-  case SettingsNewsletters
   case SettingsNotifications
   case SettingsPrivacy
   case Thanks

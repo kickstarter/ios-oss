@@ -15,13 +15,12 @@ import UserNotifications
 final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
-  fileprivate let authorizeForRemoteNotifications = TestObserver<(), NoError>()
+  fileprivate let applicationIconBadgeNumber = TestObserver<Int, NoError>()
   fileprivate let configureFabric = TestObserver<(), NoError>()
   fileprivate let configureHockey = TestObserver<HockeyConfigData, NoError>()
   fileprivate let didAcceptReceivingRemoteNotifications = TestObserver<(), NoError>()
   private let findRedirectUrl = TestObserver<URL, NoError>()
   fileprivate let forceLogout = TestObserver<(), NoError>()
-  fileprivate let getNotificationAuthorizationStatus = TestObserver<(), NoError>()
   fileprivate let goToActivity = TestObserver<(), NoError>()
   fileprivate let goToDashboard = TestObserver<Param?, NoError>()
   fileprivate let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
@@ -34,10 +33,9 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToMobileSafari = TestObserver<URL, NoError>()
   fileprivate let goToSearch = TestObserver<(), NoError>()
   fileprivate let postNotificationName = TestObserver<Notification.Name, NoError>()
-  fileprivate let presentRemoteNotificationAlert = TestObserver<String, NoError>()
   fileprivate let presentViewController = TestObserver<Int, NoError>()
-  fileprivate let pushTokenSuccessfullyRegistered = TestObserver<(), NoError>()
-  fileprivate let registerForRemoteNotifications = TestObserver<(), NoError>()
+  fileprivate let pushRegistrationStarted = TestObserver<(), NoError>()
+  fileprivate let pushTokenSuccessfullyRegistered = TestObserver<String, NoError>()
   fileprivate let setApplicationShortcutItems = TestObserver<[ShortcutItem], NoError>()
   fileprivate let showAlert = TestObserver<Notification, NoError>()
   fileprivate let unregisterForRemoteNotifications = TestObserver<(), NoError>()
@@ -47,13 +45,11 @@ final class AppDelegateViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.authorizeForRemoteNotifications.observe(self.authorizeForRemoteNotifications.observer)
+    self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
     self.vm.outputs.configureFabric.observe(self.configureFabric.observer)
     self.vm.outputs.configureHockey.observe(self.configureHockey.observer)
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
-    self.vm.outputs.getNotificationAuthorizationStatus
-      .observe(self.getNotificationAuthorizationStatus.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
@@ -66,16 +62,63 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToProjectActivities.observe(self.goToProjectActivities.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
-    self.vm.outputs.presentRemoteNotificationAlert.observe(presentRemoteNotificationAlert.observer)
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
       .observe(self.presentViewController.observer)
+    self.vm.outputs.pushTokenRegistrationStarted.observe(self.pushRegistrationStarted.observer)
     self.vm.outputs.pushTokenSuccessfullyRegistered.observe(self.pushTokenSuccessfullyRegistered.observer)
-    self.vm.outputs.registerForRemoteNotifications.observe(self.registerForRemoteNotifications.observer)
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
+  }
+
+  func testResetApplicationIconBadgeNumber_registeredForPushNotifications_WillEnterForeground() {
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
+
+    withEnvironment(pushRegistrationType: MockPushRegistration.self) {
+      self.applicationIconBadgeNumber.assertValues([])
+
+      self.vm.inputs.applicationWillEnterForeground()
+
+      self.applicationIconBadgeNumber.assertValues([0])
+    }
+  }
+
+  func testResetApplicationIconBadgeNumber_notRegisteredForPushNotifications_WillEnterForeground() {
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+
+    withEnvironment(pushRegistrationType: MockPushRegistration.self) {
+      self.applicationIconBadgeNumber.assertValues([])
+
+      self.vm.inputs.applicationWillEnterForeground()
+
+      self.applicationIconBadgeNumber.assertValues([])
+    }
+  }
+
+  func testResetApplicationIconBadgeNumber_registeredForPushNotifications_AppLaunch() {
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
+
+    withEnvironment(pushRegistrationType: MockPushRegistration.self) {
+      self.applicationIconBadgeNumber.assertValues([])
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.applicationIconBadgeNumber.assertValues([0])
+    }
+  }
+
+  func testResetApplicationIconBadgeNumber_notRegisteredForPushNotifications_AppLaunch() {
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+
+    withEnvironment(pushRegistrationType: MockPushRegistration.self) {
+      self.applicationIconBadgeNumber.assertValues([])
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.applicationIconBadgeNumber.assertValues([])
+    }
   }
 
   func testConfigureFabric() {
@@ -626,128 +669,109 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToSearch.assertValueCount(1)
   }
 
-  @available(iOS 10.0, *)
-  func testRegisterUnregisterNotifications() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
-                                                 launchOptions: [:])
+  func testRegisterPushNotifications_Prompted() {
+    let client = MockTrackingClient()
 
-    self.getNotificationAuthorizationStatus.assertValueCount(0)
-    self.authorizeForRemoteNotifications.assertValueCount(0)
-    self.registerForRemoteNotifications.assertValueCount(0)
-    self.unregisterForRemoteNotifications.assertValueCount(0)
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+    MockPushRegistration.registerProducer = .init(value: true)
 
-    withEnvironment(currentUser: .template) {
-      self.vm.inputs.userSessionStarted()
+    withEnvironment(
+      apiService: MockService(),
+      currentUser: .template,
+      koala: Koala(client: client),
+      pushRegistrationType: MockPushRegistration.self) {
 
-      let notification = Notification.init(name: Notification.Name(rawValue: "deadbeef"))
+        XCTAssertEqual([], client.events)
+        self.pushRegistrationStarted.assertValueCount(0)
+        self.pushTokenSuccessfullyRegistered.assertValueCount(0)
 
-      self.vm.inputs.showNotificationDialog(notification: notification)
-      self.getNotificationAuthorizationStatus.assertValueCount(1)
-      self.authorizeForRemoteNotifications.assertValueCount(0)
-      self.registerForRemoteNotifications.assertValueCount(0)
-      self.unregisterForRemoteNotifications.assertValueCount(0)
+        self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: [:])
+        self.vm.inputs.userSessionStarted()
+        self.vm.inputs.didAcceptReceivingRemoteNotifications()
 
-      self.vm.inputs.applicationDidEnterBackground()
-      self.vm.inputs.applicationWillEnterForeground()
+        self.pushRegistrationStarted.assertValueCount(1)
 
-      self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(0)
-      self.registerForRemoteNotifications.assertValueCount(0)
-      self.unregisterForRemoteNotifications.assertValueCount(0)
+        self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: "token".data(using: .utf8)!)
 
-      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.denied)
+        self.scheduler.advance(by: .seconds(5))
 
-      self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(0)
-      self.registerForRemoteNotifications.assertValueCount(0)
-      self.unregisterForRemoteNotifications.assertValueCount(0)
+        self.pushTokenSuccessfullyRegistered.assertValueCount(1)
 
-      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
-
-      self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(0)
-      self.registerForRemoteNotifications.assertValueCount(0)
-      self.unregisterForRemoteNotifications.assertValueCount(0)
-
-      //Simulate initial notification authorization
-      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.notDetermined)
-      self.vm.inputs.didAcceptReceivingRemoteNotifications()
-
-      self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(1)
-      self.registerForRemoteNotifications.assertValueCount(0)
-      self.unregisterForRemoteNotifications.assertValueCount(0)
-
-      self.vm.inputs.notificationAuthorizationCompleted(isGranted: true)
-
-      self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(1)
-      self.registerForRemoteNotifications.assertValueCount(1)
-      self.unregisterForRemoteNotifications.assertValueCount(0)
-
-      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
-
-      self.getNotificationAuthorizationStatus.assertValueCount(2)
-      self.authorizeForRemoteNotifications.assertValueCount(1)
-      self.registerForRemoteNotifications.assertValueCount(1)
-      self.unregisterForRemoteNotifications.assertValueCount(0)
+        XCTAssertEqual(
+          ["App Open", "Opened App", "Confirmed Push Opt-In"], client.events
+        )
     }
-
-    self.vm.inputs.userSessionEnded()
-
-    self.registerForRemoteNotifications.assertValueCount(1)
-    self.unregisterForRemoteNotifications.assertValueCount(1)
   }
 
-  @available(iOS 10.0, *)
+  func testRegisterPushNotifications_PreviouslyAccepted() {
+    let client = MockTrackingClient()
+
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
+    MockPushRegistration.registerProducer = .init(value: true)
+
+    withEnvironment(
+      apiService: MockService(),
+      currentUser: .template,
+      koala: Koala(client: client),
+      pushRegistrationType: MockPushRegistration.self) {
+
+        XCTAssertEqual([], client.events)
+        self.pushRegistrationStarted.assertValueCount(0)
+        self.pushTokenSuccessfullyRegistered.assertValueCount(0)
+
+        self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: [:])
+        self.vm.inputs.userSessionStarted()
+
+        self.pushRegistrationStarted.assertValueCount(1)
+
+        self.vm.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: "token".data(using: .utf8)!)
+
+        self.scheduler.advance(by: .seconds(5))
+
+        self.pushTokenSuccessfullyRegistered.assertValueCount(1)
+
+        XCTAssertEqual(
+          ["App Open", "Opened App"], client.events,
+          "Re-registers for pushes but does not track as an opt-in"
+        )
+    }
+  }
+
   func testTrackingPushAuthorizationOptIn() {
     let client = MockTrackingClient()
 
-    withEnvironment(currentUser: .template, koala: Koala(client: client)) {
-      self.vm.inputs.userSessionStarted()
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+    MockPushRegistration.registerProducer = .init(value: true)
 
+    withEnvironment(
+    currentUser: .template, koala: Koala(client: client), pushRegistrationType: MockPushRegistration.self) {
       XCTAssertEqual([], client.events)
 
-      self.vm.inputs.applicationDidEnterBackground()
-      self.vm.inputs.applicationWillEnterForeground()
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: [:])
+      self.vm.inputs.userSessionStarted()
 
-      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
+      self.vm.inputs.didAcceptReceivingRemoteNotifications()
 
-      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.notDetermined)
-
-      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
-
-      self.vm.inputs.notificationAuthorizationCompleted(isGranted: true)
-      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.authorized)
-
-      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App", "Confirmed Push Opt-In"],
-        client.events)
+      XCTAssertEqual(["App Open", "Opened App", "Confirmed Push Opt-In"], client.events)
     }
   }
 
-  @available(iOS 10.0, *)
   func testTrackingPushAuthorizationOptOut() {
     let client = MockTrackingClient()
 
-    withEnvironment(currentUser: .template, koala: Koala(client: client)) {
-      self.vm.inputs.userSessionStarted()
+    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
+    MockPushRegistration.registerProducer = .init(value: false)
 
-      XCTAssertEqual([], client.events)
+    withEnvironment(
+      currentUser: .template, koala: Koala(client: client), pushRegistrationType: MockPushRegistration.self) {
+        XCTAssertEqual([], client.events)
 
-      self.vm.inputs.applicationDidEnterBackground()
-      self.vm.inputs.applicationWillEnterForeground()
+        self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: [:])
+        self.vm.inputs.userSessionStarted()
 
-      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
+        self.vm.inputs.didAcceptReceivingRemoteNotifications()
 
-      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.notDetermined)
-
-      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App"], client.events)
-
-      self.vm.inputs.notificationAuthorizationCompleted(isGranted: true)
-      self.vm.inputs.notificationAuthorizationStatusReceived(UNAuthorizationStatus.denied)
-
-      XCTAssertEqual(["App Close", "Closed App", "App Open", "Opened App", "Dismissed Push Opt-In"],
-        client.events)
+        XCTAssertEqual(["App Open", "Opened App", "Dismissed Push Opt-In"], client.events)
     }
   }
 
@@ -768,7 +792,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.presentViewController.assertValueCount(0)
 
-    self.vm.inputs.didReceive(remoteNotification: friendBackingPushData, applicationIsActive: false)
+    self.vm.inputs.didReceive(remoteNotification: friendBackingPushData)
 
     self.presentViewController.assertValueCount(1)
     XCTAssertEqual(["App Open", "Opened App", "Notification Opened", "Opened Notification"],
@@ -776,57 +800,6 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertEqual([true, nil, true, nil],
                    self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
 
-  }
-
-  func testOpenPushNotification_WhileInForeground() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
-                                                 launchOptions: [:])
-
-    self.presentViewController.assertValueCount(0)
-
-    self.vm.inputs.didReceive(remoteNotification: friendBackingPushData, applicationIsActive: true)
-
-    self.presentViewController.assertValueCount(0)
-    XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
-
-    self.vm.inputs.openRemoteNotificationTappedOk()
-
-    self.presentViewController.assertValueCount(1)
-    XCTAssertEqual(["App Open", "Opened App", "Notification Opened", "Opened Notification"],
-                   self.trackingClient.events)
-  }
-
-  func testOpenPushNotification_LaunchApp() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: friendBackingPushData]
-    )
-
-    self.presentViewController.assertValueCount(1)
-    XCTAssertEqual(["Notification Opened", "Opened Notification", "App Open", "Opened App"],
-                   self.trackingClient.events)
-    XCTAssertEqual([true, nil, true, nil],
-                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
-  }
-
-  func testOpenPushNotification_WhileAppIsActive() {
-    let pushData = friendBackingPushData
-
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
-                                                 launchOptions: [:])
-
-    self.presentViewController.assertValueCount(0)
-    self.presentRemoteNotificationAlert.assertValueCount(0)
-
-    self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: true)
-
-    self.presentViewController.assertValueCount(0)
-    self.presentRemoteNotificationAlert.assertValueCount(1)
-
-    self.vm.inputs.openRemoteNotificationTappedOk()
-
-    self.presentViewController.assertValueCount(1)
-    self.presentRemoteNotificationAlert.assertValueCount(1)
   }
 
   func testOpenNotification_NewBacking_ForCreator() {
@@ -834,10 +807,7 @@ final class AppDelegateViewModelTests: TestCase {
       .flatMap { $0["project_id"] as? Int }
     let param = Param.id(projectId ?? -1)
 
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: backingForCreatorPushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: backingForCreatorPushData)
 
     self.goToProjectActivities.assertValues([param])
   }
@@ -848,19 +818,13 @@ final class AppDelegateViewModelTests: TestCase {
     badActivityData?["project_id"] = nil
     badPushData["activity"] = badActivityData
 
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: badPushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: badPushData)
 
     self.goToDashboard.assertValueCount(0)
   }
 
   func testOpenNotification_ProjectUpdate() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: updatePushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: updatePushData)
 
     self.presentViewController.assertValueCount(1)
   }
@@ -869,19 +833,13 @@ final class AppDelegateViewModelTests: TestCase {
     var badPushData = updatePushData
     badPushData["activity"]?["update_id"] = nil
 
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: badPushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: badPushData)
 
     self.presentViewController.assertValueCount(0)
   }
 
   func testOpenNotification_SurveyResponse() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: surveyResponsePushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: surveyResponsePushData)
 
     self.presentViewController.assertValueCount(1)
   }
@@ -890,19 +848,13 @@ final class AppDelegateViewModelTests: TestCase {
     var badPushData = surveyResponsePushData
     badPushData["survey"]?["id"] = nil
 
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: badPushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: badPushData)
 
     self.presentViewController.assertValueCount(0)
   }
 
   func testOpenNotification_UpdateComment() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: updateCommentPushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: updateCommentPushData)
 
     self.presentViewController.assertValueCount(1)
   }
@@ -911,19 +863,13 @@ final class AppDelegateViewModelTests: TestCase {
     var badPushData = updatePushData
     badPushData["activity"]?["update_id"] = nil
 
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: badPushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: badPushData)
 
     self.presentViewController.assertValueCount(0)
   }
 
   func testOpenNotification_ProjectComment() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: projectCommentPushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: projectCommentPushData)
 
     self.presentViewController.assertValueCount(1)
   }
@@ -932,19 +878,13 @@ final class AppDelegateViewModelTests: TestCase {
     var badPushData = updatePushData
     badPushData["activity"]?["project_id"] = nil
 
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: badPushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: badPushData)
 
     self.presentViewController.assertValueCount(0)
   }
 
   func testOpenNotification_GenericProject() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: genericProjectPushData]
-    )
+    self.vm.inputs.didReceive(remoteNotification: genericProjectPushData)
 
     self.presentViewController.assertValueCount(1)
   }
@@ -959,7 +899,7 @@ final class AppDelegateViewModelTests: TestCase {
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 
-      self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
+      self.vm.inputs.didReceive(remoteNotification: pushData)
 
       self.presentViewController.assertValueCount(
         idx + 1, "Presents controller for \(state.rawValue) state change."
@@ -981,7 +921,7 @@ final class AppDelegateViewModelTests: TestCase {
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 
-      self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
+      self.vm.inputs.didReceive(remoteNotification: pushData)
 
       self.goToDashboard.assertValueCount(idx + 1)
       self.goToDashboard.assertLastValue(param)
@@ -1000,7 +940,7 @@ final class AppDelegateViewModelTests: TestCase {
       ]
     ]
 
-    self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
+    self.vm.inputs.didReceive(remoteNotification: pushData)
 
     self.presentViewController.assertValues([2])
   }
@@ -1027,7 +967,7 @@ final class AppDelegateViewModelTests: TestCase {
     let liveService = MockLiveStreamService(fetchEventResult: .success(liveStreamEvent))
     withEnvironment(apiService: apiService, liveStreamService: liveService) {
 
-      self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
+      self.vm.inputs.didReceive(remoteNotification: pushData)
 
       self.goToLiveStreamProject.assertValues([project])
       self.goToLiveStreamLiveStreamEvent.assertValues([liveStreamEvent])
@@ -1045,24 +985,12 @@ final class AppDelegateViewModelTests: TestCase {
       var pushData = genericActivityPushData
       pushData["activity"]?["category"] = state.rawValue
 
-      self.vm.inputs.didReceive(remoteNotification: pushData, applicationIsActive: false)
+      self.vm.inputs.didReceive(remoteNotification: pushData)
 
       self.goToDashboard.assertValueCount(0)
       self.goToDiscovery.assertValueCount(0)
       self.presentViewController.assertValueCount(0)
     }
-  }
-
-  func testOpenNotification_LocalNotification_FromLaunch() {
-    let localNotification = UILocalNotification()
-    localNotification.userInfo = updatePushData
-
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [UIApplication.LaunchOptionsKey.localNotification: localNotification]
-    )
-
-    self.presentViewController.assertValueCount(1)
   }
 
   func testContinueUserActivity_ValidActivity() {
@@ -1502,7 +1430,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.presentViewController.assertValues([1])
   }
 
-  @available(iOS 10.0, *)
   func testShowAlertEmitsIf_CanShowDialog() {
 
     let notification = Notification(name: Notification.Name(rawValue: "deadbeef"),
@@ -1513,18 +1440,13 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: .template, userDefaults: userDefaults) {
 
       self.vm.inputs.applicationWillEnterForeground()
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: updatePushData]
-      )
+      self.vm.inputs.didReceive(remoteNotification: updatePushData)
       self.vm.inputs.showNotificationDialog(notification: notification)
-      self.vm.inputs.notificationAuthorizationStatusReceived(.notDetermined)
 
       self.showAlert.assertValue(notification)
     }
   }
 
-  @available(iOS 10.0, *)
   func testShowAlertDoesNotEmitIf_CanNotShowDialog() {
 
     let notification = Notification(name: Notification.Name(rawValue: "deadbeef"),
@@ -1535,12 +1457,8 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: .template, userDefaults: userDefaults) {
 
       self.vm.inputs.applicationWillEnterForeground()
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [UIApplication.LaunchOptionsKey.remoteNotification: updatePushData]
-      )
+      self.vm.inputs.didReceive(remoteNotification: updatePushData)
       self.vm.inputs.showNotificationDialog(notification: notification)
-      self.vm.inputs.notificationAuthorizationStatusReceived(.notDetermined)
 
       self.showAlert.assertDidNotEmitValue()
     }

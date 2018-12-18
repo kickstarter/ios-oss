@@ -12,7 +12,7 @@ public protocol ChangePasswordViewModelInputs {
   func newPasswordConfirmationFieldTextChanged(text: String)
   func newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: String)
   func onePasswordButtonTapped()
-  func onePasswordIsAvailable(available: Bool)
+  func onePassword(isAvailable available: Bool)
   func onePasswordFoundPassword(password: String)
   func saveButtonTapped()
   func viewDidAppear()
@@ -92,6 +92,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
           .materialize()
     }
 
+    passwordUpdateEvent.values()
+      .observeValues { _ in AppEnvironment.current.koala.trackChangePassword() }
+
     self.changePasswordSuccess = passwordUpdateEvent.values().ignoreValues()
     self.changePasswordFailure = passwordUpdateEvent.errors().map { $0.localizedDescription }
 
@@ -105,7 +108,8 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
     self.currentPasswordBecomeFirstResponder = self.viewDidAppearProperty.signal
     self.newPasswordBecomeFirstResponder = self.currentPasswordDoneEditingProperty.signal
-    self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.negate()
+    self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.map(negate)
+      .map(is1PasswordButtonHidden)
     self.confirmNewPasswordBecomeFirstResponder = self.newPasswordDoneEditingProperty.signal
     self.currentPasswordPrefillValue = self.onePasswordPrefillPasswordProperty.signal.skipNil()
     self.onePasswordFindPasswordForURLString = self.onePasswordButtonTappedProperty.signal
@@ -126,6 +130,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
         }
     }.skipNil()
     .skipRepeats()
+
+    self.viewDidAppearProperty.signal
+      .observeValues { _ in AppEnvironment.current.koala.trackChangePasswordView() }
   }
 
   private var currentPasswordDoneEditingProperty = MutableProperty(())
@@ -167,7 +174,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   }
 
   private var onePasswordIsAvailableProperty = MutableProperty(true)
-  public func onePasswordIsAvailable(available: Bool) {
+  public func onePassword(isAvailable available: Bool) {
     self.onePasswordIsAvailableProperty.value = available
   }
 

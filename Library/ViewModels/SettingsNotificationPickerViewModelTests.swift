@@ -9,12 +9,12 @@ import XCTest
 final class SettingsNotificationPickerViewModelTests: TestCase {
   private let vm = SettingsNotificationPickerViewModel()
 
-  let frequencyValueTextObserver = TestObserver<String, NoError>()
+  let frequencyValueText = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.frequencyValueText.observe(frequencyValueTextObserver.observer)
+    self.vm.outputs.frequencyValueText.observe(frequencyValueText.observer)
   }
 
   func testConfigure_userCreatorDigest_enabled() {
@@ -26,7 +26,7 @@ final class SettingsNotificationPickerViewModelTests: TestCase {
 
     self.vm.configure(with: cellValue)
 
-    self.frequencyValueTextObserver.assertValue(EmailFrequency.daily.descriptionText)
+    self.frequencyValueText.assertValue(EmailFrequency.daily.descriptionText)
   }
 
   func testConfigure_userCreatorDigest_disabled() {
@@ -38,6 +38,6 @@ final class SettingsNotificationPickerViewModelTests: TestCase {
 
     self.vm.configure(with: cellValue)
 
-    self.frequencyValueTextObserver.assertValue(EmailFrequency.individualEmails.descriptionText)
+    self.frequencyValueText.assertValue(EmailFrequency.individualEmails.descriptionText)
   }
 }

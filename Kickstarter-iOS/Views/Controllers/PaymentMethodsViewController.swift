@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-internal final class PaymentMethodsViewController: UIViewController {
+internal final class PaymentMethodsViewController: UIViewController, MessageBannerViewControllerPresenting {
 
   private let dataSource = PaymentMethodsDataSource()
   private let viewModel: PaymentMethodsViewModelType = PaymentMethodsViewModel()
@@ -11,7 +11,7 @@ internal final class PaymentMethodsViewController: UIViewController {
   @IBOutlet private weak var headerLabel: UILabel!
   @IBOutlet private weak var tableView: UITableView!
 
-  private var messageBannerView: MessageBannerViewController!
+  internal var messageBannerViewController: MessageBannerViewController?
 
   public static func instantiate() -> PaymentMethodsViewController {
     return Storyboard.Settings.instantiate(PaymentMethodsViewController.self)
@@ -20,11 +20,7 @@ internal final class PaymentMethodsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let messageViewController = self.children.first as? MessageBannerViewController else {
-      fatalError("Missing message View Controller")
-
-    }
-    self.messageBannerView = messageViewController
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
@@ -91,7 +87,7 @@ internal final class PaymentMethodsViewController: UIViewController {
     self.viewModel.outputs.presentBanner
       .observeForUI()
       .observeValues { [weak self] message in
-        self?.messageBannerView.showBanner(with: .success, message: message)
+        self?.messageBannerViewController?.showBanner(with: .success, message: message)
     }
 
     self.viewModel.outputs.tableViewIsEditing

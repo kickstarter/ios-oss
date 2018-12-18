@@ -576,7 +576,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.titleLabelHidden.assertValues([true])
     self.titleLabelText.assertValues([""])
-    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_900])
+    self.titleLabelTextColor.assertValues([.ksr_soft_black])
   }
 
   func testTitleLabel_WithTitle_NotAllGone() {
@@ -591,7 +591,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.titleLabelHidden.assertValues([false])
     self.titleLabelText.assertValues(["The thing"])
-    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_900])
+    self.titleLabelTextColor.assertValues([.ksr_soft_black])
   }
 
   func testTitleLabel_WithTitle_AllGone() {
@@ -619,7 +619,7 @@ final class RewardCellViewModelTests: TestCase {
       rewardOrBacking: .left(reward)
     )
 
-    self.titleLabelTextColor.assertValues([.ksr_text_dark_grey_900])
+    self.titleLabelTextColor.assertValues([.ksr_soft_black])
   }
 
   func testShippingLocationsSummaryLabelText_WhenRewardDoesNotHaveShippingSummary() {
@@ -785,6 +785,6 @@ final class RewardCellViewModelTests: TestCase {
 
     self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
 
-    self.minimumAndConversionLabelsColor.assertValues([.ksr_text_dark_grey_900])
+    self.minimumAndConversionLabelsColor.assertValues([.ksr_soft_black])
   }
 }

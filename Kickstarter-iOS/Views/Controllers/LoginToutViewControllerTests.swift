@@ -1,5 +1,6 @@
 import Library
 @testable import Kickstarter_Framework
+import XCTest
 
 internal final class LoginToutViewControllerTests: TestCase {
 
@@ -28,5 +29,12 @@ internal final class LoginToutViewControllerTests: TestCase {
         FBSnapshotVerifyView(parent.view, identifier: "intent_\(intent)_lang_\(language)_device_\(device)")
       }
     }
+  }
+
+  func testScrollToTop() {
+    let intent = LoginIntent.generic
+    let controller = LoginToutViewController.configuredWith(loginIntent: intent)
+
+    XCTAssertNotNil(controller.view.subviews.first as? UIScrollView)
   }
 }

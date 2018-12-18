@@ -89,18 +89,20 @@ public enum Format {
                                        omitCurrencyCode: Bool = true,
                                        env: Environment = AppEnvironment.current) -> String {
 
+    let symbol = currencySymbol(forCountry: country,
+                                        omitCurrencyCode: omitCurrencyCode,
+                                        env: env)
+
     let formatter = NumberFormatterConfig.cachedFormatter(
       forConfig: .defaultCurrencyConfig
         |> NumberFormatterConfig.lens.locale .~ env.locale
-        |> NumberFormatterConfig.lens.currencySymbol .~ currencySymbol(forCountry: country,
-                                                                       omitCurrencyCode: omitCurrencyCode,
-                                                                       env: env)
+        |> NumberFormatterConfig.lens.currencySymbol .~ symbol
     )
 
     return formatter.string(for: amount)?
       .trimmed()
       .replacingOccurrences(of: String.nbsp + String.nbsp, with: String.nbsp)
-      ?? (country.currencySymbol + "\(amount)")
+      ?? (symbol + "\(amount)")
   }
 
   /**

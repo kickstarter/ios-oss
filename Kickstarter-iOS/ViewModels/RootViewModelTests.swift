@@ -30,8 +30,7 @@ final class RootViewModelTests: TestCase {
     self.vm.outputs.switchDashboardProject.map(second).observe(self.switchDashboardProject.observer)
 
     self.vm.outputs.scrollToTop
-      .map(extractRootName)
-      .skipNil()
+      .map(extractName)
       .observe(self.scrollToTopControllerName.observer)
 
     self.vm.outputs.tabBarItemsData.observe(self.tabBarItemsData.observer)
@@ -154,19 +153,19 @@ final class RootViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.selectedIndex.assertValues([], "No index selected immediately.")
+    self.selectedIndex.assertValues([0], "Default index selected immediately.")
 
-    self.vm.inputs.didSelectIndex(1)
+    self.vm.inputs.didSelect(index: 1)
 
-    self.selectedIndex.assertValues([1], "Selects index immediately.")
+    self.selectedIndex.assertValues([0, 1], "Selects index immediately.")
 
-    self.vm.inputs.didSelectIndex(0)
+    self.vm.inputs.didSelect(index: 0)
 
-    self.selectedIndex.assertValues([1, 0], "Selects index immediately.")
+    self.selectedIndex.assertValues([0, 1, 0], "Selects index immediately.")
 
-    self.vm.inputs.didSelectIndex(10)
+    self.vm.inputs.didSelect(index: 10)
 
-    self.selectedIndex.assertValues([1, 0, 3], "Selecting index out of range safely clamps to bounds.")
+    self.selectedIndex.assertValues([0, 1, 0, 3], "Selecting index out of range safely clamps to bounds.")
   }
 
   func testScrollToTop() {
@@ -176,44 +175,49 @@ final class RootViewModelTests: TestCase {
 
     self.scrollToTopControllerName.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectIndex(1)
+    self.vm.inputs.shouldSelect(index: 1)
+    self.vm.inputs.didSelect(index: 1)
 
     self.scrollToTopControllerName.assertDidNotEmitValue("Selecting index doesn't cause scroll to top.")
 
-    self.vm.inputs.didSelectIndex(0)
+    self.vm.inputs.shouldSelect(index: 0)
+    self.vm.inputs.didSelect(index: 0)
 
     self.scrollToTopControllerName.assertDidNotEmitValue(
       "Selecting different index doesn't cause scroll to top."
     )
 
-    self.vm.inputs.didSelectIndex(0)
+    self.vm.inputs.shouldSelect(index: 0)
+    self.vm.inputs.didSelect(index: 0)
 
-    self.scrollToTopControllerName.assertValues(["Discovery"],
-                                                "Selecting index again causes scroll to top.")
+    self.scrollToTopControllerName.assertValues(
+      ["Discovery"],
+      "Selecting same index again causes scroll to top."
+    )
   }
 
   func testSwitchingTabs() {
     self.vm.inputs.viewDidLoad()
-    self.selectedIndex.assertValues([])
+    self.selectedIndex.assertValues([0, ])
     self.vm.inputs.switchToDiscovery(params: nil)
-    self.selectedIndex.assertValues([0])
+    self.selectedIndex.assertValues([0, 0])
     self.vm.inputs.switchToActivities()
-    self.selectedIndex.assertValues([0, 1])
+    self.selectedIndex.assertValues([0, 0, 1])
     self.vm.inputs.switchToSearch()
-    self.selectedIndex.assertValues([0, 1, 2])
+    self.selectedIndex.assertValues([0, 0, 1, 2])
     self.vm.inputs.switchToProfile()
-    self.selectedIndex.assertValues([0, 1, 2])
+    self.selectedIndex.assertValues([0, 0, 1, 2])
     self.vm.inputs.switchToLogin()
-    self.selectedIndex.assertValues([0, 1, 2, 3])
+    self.selectedIndex.assertValues([0, 0, 1, 2, 3])
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
     self.vm.inputs.userSessionStarted()
 
-    self.selectedIndex.assertValues([0, 1, 2, 3, 3])
+    self.selectedIndex.assertValues([0, 0, 1, 2, 3, 3])
     self.vm.inputs.switchToProfile()
-    self.selectedIndex.assertValues([0, 1, 2, 3, 3, 3])
+    self.selectedIndex.assertValues([0, 0, 1, 2, 3, 3, 3])
     self.vm.inputs.switchToLogin()
-    self.selectedIndex.assertValues([0, 1, 2, 3, 3, 3])
+    self.selectedIndex.assertValues([0, 0, 1, 2, 3, 3, 3])
   }
 
   func testSwitchToDiscoveryParam() {
@@ -332,8 +336,9 @@ private func extractRootName(_ vc: UIViewController) -> String? {
   return (vc as? UINavigationController)?
     .viewControllers
     .first
-    .map { root in
-      "\(type(of: root))"
-        .replacingOccurrences(of: "ViewController", with: "")
-  }
+    .map(extractName)
+}
+
+private func extractName(_ vc: UIViewController) -> String {
+  return "\(type(of: vc))".replacingOccurrences(of: "ViewController", with: "")
 }

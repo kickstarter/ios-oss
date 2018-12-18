@@ -29,7 +29,7 @@ internal final class DashboardTitleView: UIView {
 
     _ = self.arrowImageView
       |> UIImageView.lens.isHidden .~ true
-      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_900
+      |> UIImageView.lens.tintColor .~ .ksr_soft_black
 
     _ = self.titleLabel |> dashboardTitleViewTextDisabledStyle
 

@@ -35,6 +35,7 @@ internal class TestCase: FBSnapshotTestCase {
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
     let isVoiceOverRunning = { false }
+    let isOSVersionAvailable: (Double) -> Bool = { _ in true }
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
@@ -49,6 +50,7 @@ internal class TestCase: FBSnapshotTestCase {
       debounceInterval: .seconds(0),
       device: MockDevice(),
       facebookAppDelegate: self.facebookAppDelegate,
+      isOSVersionAvailable: isOSVersionAvailable,
       isVoiceOverRunning: isVoiceOverRunning,
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
@@ -56,6 +58,7 @@ internal class TestCase: FBSnapshotTestCase {
       liveStreamService: self.liveStreamService,
       locale: .init(identifier: "en_US"),
       mainBundle: mainBundle,
+      pushRegistrationType: MockPushRegistration.self,
       reachability: self.reachability.producer,
       scheduler: self.scheduler,
       ubiquitousStore: self.ubiquitousStore,

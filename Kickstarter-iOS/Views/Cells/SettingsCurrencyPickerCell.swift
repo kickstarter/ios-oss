@@ -20,7 +20,12 @@ final class SettingsCurrencyPickerCell: UITableViewCell, NibLoading, ValueCell {
     self.pickerView.dataSource = self
   }
 
-  func configureWith(value cellValue: SettingsCellValue) { }
+  func configureWith(value cellValue: SettingsCellValue) {
+    guard let currency = cellValue.currency else { return }
+    guard let row = Currency.allCases.firstIndex(of: currency) else { return }
+
+    self.pickerView.selectRow(row, inComponent: 0, animated: false)
+  }
 
   override func bindStyles() {
     super.bindStyles()

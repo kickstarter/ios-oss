@@ -175,7 +175,9 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
         let basicPledge = backing.amount - Double((backing.shippingAmount ?? 0))
-        return Format.currency(basicPledge, country: project.country)
+        return Format.currency(basicPledge,
+                               country: project.country,
+                               omitCurrencyCode: project.stats.omitUSCurrencyCode)
       }
     )
 
@@ -190,7 +192,9 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.totalPledgeAmount = Signal.merge(
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-        Format.currency(backing.amount, country: project.country)
+        Format.currency(backing.amount,
+                        country: project.country,
+                        omitCurrencyCode: project.stats.omitUSCurrencyCode)
       }
     )
 
@@ -380,11 +384,11 @@ private func pledgeTitle(for project: Project, backing: Backing, backerIsCurrent
   return titleString.simpleHtmlAttributedString(
     base: [
       NSAttributedString.Key.font: UIFont.ksr_subhead(size: 13),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ],
     bold: [
       NSAttributedString.Key.font: UIFont.ksr_headline(size: 15),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ])
     ?? .init()
 }
@@ -405,11 +409,11 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
   return titleString.simpleHtmlAttributedString(
     base: [
       NSAttributedString.Key.font: UIFont.ksr_subhead(size: 13),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ],
     bold: [
       NSAttributedString.Key.font: UIFont.ksr_headline(size: 15),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_dark_grey_900
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ])
     ?? .init()
 }
