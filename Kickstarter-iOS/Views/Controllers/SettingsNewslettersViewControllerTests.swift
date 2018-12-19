@@ -24,7 +24,7 @@ internal final class SettingsNewslettersViewControllerTests: TestCase {
       language, device in
 
       withEnvironment(currentUser: currentUser, language: language) {
-        let controller = Storyboard.Settings.instantiate(
+        let controller = Storyboard.SettingsNewsletters.instantiate(
           SettingsNewslettersViewController.self
         )
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
