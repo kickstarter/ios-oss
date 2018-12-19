@@ -489,7 +489,7 @@
 "Youre_about_to_create_a_new_Kickstarter_account" = "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer.";
 "Youre_offline" = "You’re offline. Once your device reconnects, navigate around the app to refresh.";
 "Youve_pledged_to_support_this_project" = "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée.";
-"Zip_code" = "Code postal";
+"Zip_postal_code" = "Zip/Postal code";
 "accessibility.dashboard.buttons.activity" = "Activité";
 "accessibility.dashboard.buttons.activity_hint" = "Ouvre l'activité.";
 "accessibility.dashboard.buttons.messages" = "Messages";

@@ -699,8 +699,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -898,9 +897,9 @@ contributeurs"
     )
   }
   /**
-   "Change currency"
+   "Change currency?"
 
-   - **en**: "Change currency"
+   - **en**: "Change currency?"
    - **de**: "Währung ändern"
    - **es**: "Cambiar la moneda"
    - **fr**: "Changer de devise"
@@ -909,7 +908,7 @@ contributeurs"
   public static func Change_currency() -> String {
     return localizedString(
       key: "Change_currency",
-      defaultValue: "Change currency",
+      defaultValue: "Change currency?",
       count: nil,
       substitutions: [:]
     )
@@ -2700,9 +2699,9 @@ contributeurs"
     )
   }
   /**
-   "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
+   "Following must be on to find Facebook friends. Change your account privacy settings to enable this feature."
 
-   - **en**: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy."
+   - **en**: "Following must be on to find Facebook friends. Change your account privacy settings to enable this feature."
    - **de**: "Die Funktion "Abonnieren" muss aktiviert sein, um Freunde auf Facebook zu finden. Gehe dazu zu Einstellungen > Datenschutz."
    - **es**: "El seguimiento debe estar activado para encontrar amigos de Facebook. El seguimiento se puede cambiar en Configuración > Privacidad."
    - **fr**: "Pour retrouver vos amis Facebook, activez la fonction Abonnements sous Paramètres > Vie privée."
@@ -2711,7 +2710,7 @@ contributeurs"
   public static func Following_Disabled_Info() -> String {
     return localizedString(
       key: "Following_Disabled_Info",
-      defaultValue: "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy.",
+      defaultValue: "Following must be on to find Facebook friends. Change your account privacy settings to enable this feature.",
       count: nil,
       substitutions: [:]
     )
@@ -5211,7 +5210,7 @@ n'ont rien soutenu."
    - **de**: "Projekt ausgesetzt."
    - **es**: "Proyecto suspendido."
    - **fr**: "Projet suspendu."
-   - **ja**: "中止プロジェクト"
+   - **ja**: "プロジェクトは停止されました。"
   */
   public static func Project_Suspended() -> String {
     return localizedString(
@@ -6865,7 +6864,7 @@ catch your eye?"
    - **de**: "Dieses Projekt wird nur finanziert, wenn bis am %{date} Unterstützungsbeiträge von mindestens %{amount} geleistet werden."
    - **es**: "Este proyecto sólo será financiado si se contribuye al menos un monto de %{amount} antes del %{date}."
    - **fr**: "Ce projet ne sera financé que si au moins %{amount} sont engagés d'ici le %{date}."
-   - **ja**: "このプロジェクトは%{date} までに、少なくとも%{amount}プレッジされるでしょう。"
+   - **ja**: "%{date} までに %{amount} 以上のプレッジが集まれば、このプロジェクトは資金を得ることができます。"
   */
   public static func This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date(amount: String, date: String) -> String {
     return localizedString(
@@ -7970,18 +7969,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "Zip code"
+   "Zip/Postal code"
 
-   - **en**: "Zip code"
-   - **de**: "Postleitzahl"
+   - **en**: "Zip/Postal code"
+   - **de**: "Zip/Postal code"
    - **es**: "Código postal"
-   - **fr**: "Code postal"
-   - **ja**: "郵便番号"
+   - **fr**: "Zip/Postal code"
+   - **ja**: "Zip/Postal code"
   */
-  public static func Zip_code() -> String {
+  public static func Zip_postal_code() -> String {
     return localizedString(
-      key: "Zip_code",
-      defaultValue: "Zip code",
+      key: "Zip_postal_code",
+      defaultValue: "Zip/Postal code",
       count: nil,
       substitutions: [:]
     )
@@ -9404,7 +9403,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "%{project_name} wurde ausgesetzt."
    - **es**: "%{project_name} ha sido suspendido."
    - **fr**: "%{project_name} a été suspendu."
-   - **ja**: "%{project_name} は中断されました"
+   - **ja**: "%{project_name} は停止されました。"
   */
   public static func activity_project_state_change_project_was_suspended(project_name: String) -> String {
     return localizedString(
@@ -9965,7 +9964,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Projekt ausgesetzt"
    - **es**: "Proyecto suspendido"
    - **fr**: "Projet suspendu"
-   - **ja**: "停止中プロジェクト"
+   - **ja**: "プロジェクト停止済み"
   */
   public static func creator_project_preview_subtitle_project_suspended() -> String {
     return localizedString(
@@ -10084,7 +10083,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "<b>%{project_name}</b> wurde am %{suspension_date} ausgesetzt"
    - **es**: "<b>%{project_name}</b> fue suspendido el %{suspension_date}"
    - **fr**: "<b>%{project_name}</b> a été suspendu le %{suspension_date}"
-   - **ja**: "%{suspension_date} に<b>%{project_name}</b> は中断されました"
+   - **ja**: "%{suspension_date} に<b>%{project_name}</b> は停止されました"
   */
   public static func dashboard_activity_project_name_was_suspended(project_name: String, suspension_date: String) -> String {
     return localizedString(
@@ -10543,7 +10542,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Finanzierung ausgesetzt"
    - **es**: "Financiamiento suspendido"
    - **fr**: "Financement suspendu"
-   - **ja**: "中断"
+   - **ja**: "ファンディング停止済み"
   */
   public static func dashboard_creator_project_funding_suspended() -> String {
     return localizedString(
@@ -13008,7 +13007,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -13195,7 +13194,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Finanzierung ausgesetzt %{date}"
    - **es**: "Financiamiento suspendido %{date}"
    - **fr**: "Financement suspendu %{date}"
-   - **ja**: "%{date} に募集一時停止中"
+   - **ja**: "%{date} にプロジェクト停止済み"
   */
   public static func discovery_baseball_card_status_banner_suspended(date: String) -> String {
     return localizedString(
@@ -13212,7 +13211,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Finanzierung ausgesetzt am %{date}"
    - **es**: "Financiamiento suspendido el %{date}"
    - **fr**: "Campagne suspendue le %{date}"
-   - **ja**: "%{date} に募集一時停止中"
+   - **ja**: "%{date} にプロジェクト停止済み"
   */
   public static func discovery_baseball_card_status_banner_suspended_date(date: String) -> String {
     return localizedString(
@@ -16232,7 +16231,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -16391,7 +16390,7 @@ Let's change that!"
    - **de**: "Ausgesetzt"
    - **es**: "Suspendido"
    - **fr**: "Suspendu"
-   - **ja**: "停止中"
+   - **ja**: "停止済み"
   */
   public static func profile_projects_status_suspended() -> String {
     return localizedString(
@@ -18505,7 +18504,7 @@ Merci pour votre soutien !"
    - **de**: "Dieses Projekt wird nur finanziert, wenn bis %{deadline} mindestens %{goal_currency} zusammenkommen."
    - **es**: "Este proyecto será financiado únicamente si se contribuye por lo menos %{goal_currency} hasta %{deadline}."
    - **fr**: "Ce projet ne sera financé que si au moins %{goal_currency} sont engagés avant le %{deadline}."
-   - **ja**: "このプロジェクトは少なくとも%{goal_currency} を%{deadline} までにプレッジできるでしょう。"
+   - **ja**: "%{deadline} までに %{goal_currency} 以上のプレッジが集まれば、このプロジェクトは資金を得ることができます。"
   */
   public static func project_disclaimer_goal_not_reached(goal_currency: String, deadline: String) -> String {
     return localizedString(
@@ -18845,7 +18844,7 @@ Merci pour votre soutien !"
    - **de**: "Die Finanzierung für dieses Projekt wurde ausgesetzt."
    - **es**: "El financiamiento para este proyecto ha sido suspendido."
    - **fr**: "Le financement de ce projet a été suspendu."
-   - **ja**: "このプロジェクトへのファンドは停止中です"
+   - **ja**: "このプロジェクトは停止されました。"
   */
   public static func project_status_funding_project_suspended() -> String {
     return localizedString(
@@ -18862,7 +18861,7 @@ Merci pour votre soutien !"
    - **de**: "Finanzierung ausgesetzt"
    - **es**: "Financiamiento suspendido"
    - **fr**: "Financement suspendu"
-   - **ja**: "ファンディング中断"
+   - **ja**: "ファンディング停止済み"
   */
   public static func project_status_funding_suspended() -> String {
     return localizedString(
@@ -19275,7 +19274,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -20097,7 +20096,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
