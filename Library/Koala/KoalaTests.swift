@@ -638,7 +638,7 @@ final class KoalaTests: TestCase {
     koala.trackFailedPaymentMethodCreation()
     XCTAssertEqual(["Failed Payment Method Creation"], client.events)
   }
-  
+
   func testLogEventsCallback() {
     let bundle = MockBundle()
     let client = MockTrackingClient()
