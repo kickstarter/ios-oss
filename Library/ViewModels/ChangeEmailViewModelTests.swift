@@ -375,7 +375,10 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
-    self.vm.inputs.submitForm(newEmail: "ksr@kickstarter.com", password: "123456")
+
+    self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
     self.scheduler.advance()
 
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
