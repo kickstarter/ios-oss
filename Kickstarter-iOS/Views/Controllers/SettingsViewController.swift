@@ -91,8 +91,10 @@ final class SettingsViewController: UIViewController {
       target: self,
       action: #selector(closeButtonPressed)
     )
-    leftBarButtonItem.accessibilityLabel = Strings.Dismiss()
-    leftBarButtonItem.width = 44
+
+    _ = leftBarButtonItem
+      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+      |> \.width .~ 44
 
     return leftBarButtonItem
   }
