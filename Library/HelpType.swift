@@ -35,9 +35,9 @@ public enum HelpType: SettingsCellTypeProtocol {
   public var showArrowImageView: Bool {
     switch self {
     case .contact:
-      return true
-    default:
       return false
+    default:
+      return true
     }
   }
 
