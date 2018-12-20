@@ -95,10 +95,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.clipsToBounds .~ true
       |> UITableViewCell.lens.accessibilityElements .~ self.subviews
 
-    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.pledgeSubtitleLabel]
+      let subtitleStyling = UILabel.lens.font .~ .ksr_caption1(size: 13) <> UILabel.lens.numberOfLines .~ 1
+
+    _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
-      ||> UILabel.lens.font .~ .ksr_caption1(size: 13)
-      ||> UILabel.lens.numberOfLines .~ 1
+      ||> subtitleStyling
+
+    _ = self.pledgeSubtitleLabel |> subtitleStyling
 
     _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.pledgedTitleLabel]
       ||> UILabel.lens.font .~ .ksr_headline(size: 13)
