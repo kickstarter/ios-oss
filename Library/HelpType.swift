@@ -9,6 +9,10 @@ public enum HelpType: SettingsCellTypeProtocol {
   case cookie
   case trust
 
+  public var accessibilityTraits: UIAccessibilityTraits {
+    return .button
+  }
+
   public var title: String {
     switch self {
     case .helpCenter:
