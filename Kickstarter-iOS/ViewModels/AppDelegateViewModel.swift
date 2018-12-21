@@ -287,16 +287,13 @@ AppDelegateViewModelOutputs {
     let continueUserActivityWithNavigation = continueUserActivity
       .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
       .map { activity in (activity, activity.webpageURL.flatMap(Navigation.match)) }
-      .filter(second >>> isNotNil)
 
-    self.continueUserActivityReturnValue <~ continueUserActivityWithNavigation.mapConst(true)
+    self.continueUserActivityReturnValue <~ continueUserActivityWithNavigation.map(second >>> isNotNil)
 
     let deepLinkUrl = Signal
       .merge(
         openUrl.map { $0.url },
-
         self.foundRedirectUrlProperty.signal.skipNil(),
-
         continueUserActivity
           .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
           .map { $0.webpageURL }
@@ -407,8 +404,11 @@ AppDelegateViewModelOutputs {
       .filter { $0 == .tab(.me) }
       .ignoreValues()
 
-    self.goToMobileSafari = self.foundRedirectUrlProperty.signal.skipNil()
-      .filter { Navigation.deepLinkMatch($0) == nil }
+    self.goToMobileSafari = Signal.merge(
+      self.foundRedirectUrlProperty.signal.skipNil(),
+      deepLinkUrl
+    )
+    .filter { Navigation.deepLinkMatch($0) == nil }
 
     let projectLink = deepLink
       .filter { link in
@@ -603,6 +603,7 @@ AppDelegateViewModelOutputs {
       .observeValues { AppEnvironment.current.koala.trackOpenedAppBanner($0) }
 
     continueUserActivityWithNavigation
+      .filter(second >>> isNotNil)
       .map(first)
       .observeValues { AppEnvironment.current.koala.trackUserActivity($0) }
 
