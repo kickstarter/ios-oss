@@ -20,7 +20,7 @@ public final class RootTabBarViewController: UITabBarController {
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
   private var userUpdatedObserver: Any?
-  private var languageChangedObserver: Any?
+  private var userLocalePreferencesChanged: Any?
 
   fileprivate let viewModel: RootViewModelType = RootViewModel()
 
@@ -46,13 +46,13 @@ public final class RootTabBarViewController: UITabBarController {
         self?.viewModel.inputs.currentUserUpdated()
     }
 
-    self.languageChangedObserver = NotificationCenter
+    self.userLocalePreferencesChanged = NotificationCenter
       .default
-      .addObserver(forName: Notification.Name.ksr_languageChanged,
+      .addObserver(forName: Notification.Name.ksr_userLocalePreferencesChanged,
                    object: nil,
                    queue: nil,
                    using: { [weak self] _ in
-        self?.viewModel.inputs.currentLanguageChanged()
+        self?.viewModel.inputs.userLocalePreferencesChanged()
       })
 
     self.viewModel.inputs.viewDidLoad()

@@ -155,7 +155,7 @@ internal final class BetaToolsViewController: UIViewController {
 
   private func languageDidChange(language: Language) {
     AppEnvironment.updateLanguage(language)
-    NotificationCenter.default.post(name: Notification.Name.ksr_languageChanged,
+    NotificationCenter.default.post(name: Notification.Name.ksr_userLocalePreferencesChanged,
                                     object: nil,
                                     userInfo: nil)
   }
