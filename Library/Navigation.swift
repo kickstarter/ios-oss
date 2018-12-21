@@ -411,6 +411,7 @@ private func project(_ params: RouteParams) -> Decoded<Navigation> {
     <*> params <|? "ref"
     <*> params <| "token"
 
+  // If we're certain this is not a project preview link, try to decode it as a normal project link.
   if case .failure = projectPreview {
     return curry(Navigation.project)
       <^> params <| "project_param"
@@ -418,7 +419,8 @@ private func project(_ params: RouteParams) -> Decoded<Navigation> {
       <*> params <|? "ref"
   }
 
-  return projectPreview
+  // Fail here as we don't currently support project preview links.
+  return .failure(.custom("Project preview links are unsupported"))
 }
 
 private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
