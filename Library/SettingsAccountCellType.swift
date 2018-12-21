@@ -34,6 +34,10 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable {
   case currency
   case currencyPicker
 
+  public var accessibilityTraits: UIAccessibilityTraits {
+    return .button
+  }
+
   public var showArrowImageView: Bool {
     switch self {
     case .currency:
