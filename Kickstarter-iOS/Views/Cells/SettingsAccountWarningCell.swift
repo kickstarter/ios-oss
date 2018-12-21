@@ -9,8 +9,11 @@ final class SettingsAccountWarningCell: UITableViewCell, ValueCell, NibLoading {
   @IBOutlet fileprivate weak var warningIconImage: UIImageView!
 
   func configureWith(value shouldHideAlertIcon: Bool) {
+    _ = self
+      |> \.accessibilityTraits .~ .button
+
     _ = self.warningIconImage
-    |> \.isHidden .~ shouldHideAlertIcon
+      |> \.isHidden .~ shouldHideAlertIcon
   }
 
   override func bindStyles() {
