@@ -5,8 +5,9 @@ import ReactiveSwift
 import UIKit
 
 internal final class ChangeEmailViewController: UIViewController, MessageBannerViewControllerPresenting {
-  @IBOutlet fileprivate weak var currentEmailLabel: UILabel!
-  @IBOutlet fileprivate weak var currentEmail: UILabel!
+  @IBOutlet fileprivate weak var currentEmailContainer: UIView!
+  @IBOutlet fileprivate weak var currentEmailTitle: UILabel!
+  @IBOutlet fileprivate weak var currentEmailValue: UILabel!
   @IBOutlet fileprivate weak var messageLabelView: UIView!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailTextField: UITextField!
@@ -86,13 +87,22 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
       |> \.textColor .~ .ksr_red_400
       |> \.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
 
-    _ = self.currentEmailLabel
+    _ = self.currentEmailContainer
+      |> \.isAccessibilityElement .~ true
+      |> \.accessibilityLabel %~ { _ in
+        guard let emailTitle = self.currentEmailTitle.text else { return nil }
+        return emailTitle
+    }
+
+    _ = self.currentEmailTitle
       |> settingsTitleLabelStyle
+      |> \.isAccessibilityElement .~ false
       |> \.text %~ { _ in Strings.Current_email() }
       |> \.textColor .~ .ksr_text_dark_grey_400
 
-    _ = self.currentEmail
+    _ = self.currentEmailValue
       |> settingsDetailLabelStyle
+      |> \.isAccessibilityElement .~ false
       |> \.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.newEmailLabel
@@ -125,7 +135,8 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.currentEmail.rac.text = self.viewModel.outputs.emailText
+    self.currentEmailContainer.rac.accessibilityValue = self.viewModel.outputs.emailText
+    self.currentEmailValue.rac.text = self.viewModel.outputs.emailText
     self.resendVerificationEmailView.rac.hidden = self.viewModel.outputs.resendVerificationEmailViewIsHidden
     self.resendVerificationEmailButton.rac.title = self.viewModel.outputs.verificationEmailButtonTitle
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
