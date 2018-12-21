@@ -14,6 +14,7 @@ public enum Navigation {
   case signup
   case tab(Tab)
   case project(Param, Navigation.Project, refTag: RefTag?)
+  case projectPreview(Param, Navigation.Project, refTag: RefTag?, token: String)
   case user(Param, Navigation.User)
 
   public enum Checkout {
@@ -91,6 +92,9 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
     return lhs == rhs
   case let (.project(lhsParam, lhsProject, lhsRefTag), .project(rhsParam, rhsProject, rhsRefTag)):
     return lhsParam == rhsParam && lhsProject == rhsProject && lhsRefTag == rhsRefTag
+  case let (.projectPreview(lhsParam, lhsProject, lhsRefTag, lhsToken),
+            .projectPreview(rhsParam, rhsProject, rhsRefTag, rhsToken)):
+    return lhsParam == rhsParam && lhsProject == rhsProject && lhsRefTag == rhsRefTag && lhsToken == rhsToken
   case let (.user(lhsParam, lhsUser), .user(rhsParam, rhsUser)):
     return lhsParam == rhsParam && lhsUser == rhsUser
   default:
@@ -401,10 +405,20 @@ private func signup(_: RouteParams) -> Decoded<Navigation> {
 }
 
 private func project(_ params: RouteParams) -> Decoded<Navigation> {
-  return curry(Navigation.project)
+  let projectPreview = curry(Navigation.projectPreview)
     <^> params <| "project_param"
     <*> .success(.root)
     <*> params <|? "ref"
+    <*> params <| "token"
+
+  if case .failure = projectPreview {
+    return curry(Navigation.project)
+      <^> params <| "project_param"
+      <*> .success(.root)
+      <*> params <|? "ref"
+  }
+
+  return projectPreview
 }
 
 private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
