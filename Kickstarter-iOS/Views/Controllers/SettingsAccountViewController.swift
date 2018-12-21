@@ -52,7 +52,6 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.viewModel.outputs.currencyUpdated
       .observeForControllerAction()
       .observeValues { _ in
-        // Refresh the discovery screens
         NotificationCenter.default.post(.init(name: .ksr_userLocalePreferencesChanged))
     }
 
