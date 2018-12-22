@@ -404,11 +404,8 @@ AppDelegateViewModelOutputs {
       .filter { $0 == .tab(.me) }
       .ignoreValues()
 
-    self.goToMobileSafari = Signal.merge(
-      self.foundRedirectUrlProperty.signal.skipNil(),
-      deepLinkUrl
-    )
-    .filter { Navigation.deepLinkMatch($0) == nil }
+    self.goToMobileSafari = deepLinkUrl
+      .filter { Navigation.deepLinkMatch($0) == nil }
 
     let projectLink = deepLink
       .filter { link in
