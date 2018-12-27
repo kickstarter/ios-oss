@@ -38,9 +38,11 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       |> \.isHidden .~ true
 
     _ = self.backgroundView
+      |> \.isAccessibilityElement .~ true
       |> roundedStyle(cornerRadius: 4)
 
     _ = self.messageLabel
+      |> \.isAccessibilityElement .~ false
       |> UILabel.lens.font .~ .ksr_subhead()
   }
 
@@ -49,6 +51,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 
     self.iconImageView.rac.hidden = self.viewModel.outputs.iconIsHidden
     self.backgroundView.rac.backgroundColor = self.viewModel.outputs.bannerBackgroundColor
+    self.backgroundView.rac.accessibilityLabel = self.viewModel.outputs.bannerMessage
     self.messageLabel.rac.text = self.viewModel.outputs.bannerMessage
     self.messageLabel.rac.textColor = self.viewModel.outputs.messageTextColor
 
@@ -103,18 +106,35 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       self.view.superview?.layoutIfNeeded()
     }
 
-    UIView.animate(withDuration: duration, delay: 0.0,
-                   options: UIView.AnimationOptions.curveEaseInOut,
-                   animations: { [weak self] in
-                    guard let self = self else { return }
+    UIView.animate(
+      withDuration: duration,
+      delay: 0.0,
+      options: UIView.AnimationOptions.curveEaseInOut,
+      animations: { [weak self] in
+        guard let self = self else { return }
 
-                    self.bottomConstraint?.constant = isHidden ? hiddenConstant : 0
+        if isHidden {
+          // Tells Voice Over to resign focus of the message banner.
+          // This causes the reader to focus on the previously selected element.
+          UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged, argument: nil)
+        }
 
-                    self.view.superview?.layoutIfNeeded()
-    }, completion: { [weak self] _ in
-      self?.view.isHidden = isHidden
+        self.bottomConstraint?.constant = isHidden ? hiddenConstant : 0
+        self.view.superview?.layoutIfNeeded()
+      },
+      completion: { [weak self] _ in
+        self?.view.isHidden = isHidden
 
-      self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
+        self?.viewModel.inputs.bannerViewAnimationFinished(isHidden: isHidden)
+
+        if !isHidden {
+          // Tells Voice Over to focus on the message banner.
+          // This causes the reader to read the message and allows the user to dismiss the banner.
+          UIAccessibility.post(
+            notification: UIAccessibility.Notification.layoutChanged,
+            argument: self?.backgroundView
+          )
+        }
     })
   }
 
