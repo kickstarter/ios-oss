@@ -324,20 +324,10 @@ private struct DateFormatterConfig {
 
 extension DateFormatterConfig: Hashable {
   fileprivate func hash(into hasher: inout Hasher) {
-    if let template = self.template {
-      hasher.combine(template)
-    }
-
-    if let dateStyle = self.dateStyle {
-      hasher.combine(dateStyle)
-    }
-
+    hasher.combine(self.template)
+    hasher.combine(self.dateStyle)
     hasher.combine(self.locale)
-
-    if let timeStyle = self.timeStyle {
-      hasher.combine(timeStyle)
-    }
-
+    hasher.combine(self.timeStyle)
     hasher.combine(self.timeZone)
   }
 }
