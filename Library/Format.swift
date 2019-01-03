@@ -323,13 +323,22 @@ private struct DateFormatterConfig {
 }
 
 extension DateFormatterConfig: Hashable {
-  fileprivate var hashValue: Int {
-    return
-      (self.template?.hashValue ?? 0)
-        ^ (self.dateStyle?.hashValue ?? 0)
-        ^ self.locale.hashValue
-        ^ (self.timeStyle?.hashValue ?? 0)
-        ^ self.timeZone.hashValue
+  fileprivate func hash(into hasher: inout Hasher) {
+    if let template = self.template {
+      hasher.combine(template)
+    }
+
+    if let dateStyle = self.dateStyle {
+      hasher.combine(dateStyle)
+    }
+
+    hasher.combine(self.locale)
+
+    if let timeStyle = self.timeStyle {
+      hasher.combine(timeStyle)
+    }
+
+    hasher.combine(self.timeZone)
   }
 }
 
@@ -392,14 +401,13 @@ private struct NumberFormatterConfig {
 }
 
 extension NumberFormatterConfig: Hashable {
-  fileprivate var hashValue: Int {
-    return
-      self.numberStyle.hashValue
-        ^ self.roundingMode.hashValue
-        ^ self.maximumFractionDigits.hashValue
-        ^ self.generatesDecimalNumbers.hashValue
-        ^ self.locale.hashValue
-        ^ self.currencySymbol.hashValue
+  fileprivate func hash(into hasher: inout Hasher) {
+    hasher.combine(self.numberStyle)
+    hasher.combine(self.roundingMode)
+    hasher.combine(self.maximumFractionDigits)
+    hasher.combine(self.generatesDecimalNumbers)
+    hasher.combine(self.locale)
+    hasher.combine(self.currencySymbol)
   }
 }
 
