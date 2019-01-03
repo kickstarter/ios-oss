@@ -89,10 +89,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
 
     _ = self.currentEmailContainer
       |> \.isAccessibilityElement .~ true
-      |> \.accessibilityLabel %~ { _ in
-        guard let emailTitle = self.currentEmailTitle.text else { return nil }
-        return emailTitle
-    }
+      |> \.accessibilityLabel %~ { _ in self.currentEmailTitle.text }
 
     _ = self.currentEmailTitle
       |> settingsTitleLabelStyle
