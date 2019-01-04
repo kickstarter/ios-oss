@@ -14,6 +14,13 @@ final class SettingsAccountWarningCell: UITableViewCell, ValueCell, NibLoading {
 
     _ = self.warningIconImage
       |> \.isHidden .~ shouldHideAlertIcon
+
+    if !shouldHideAlertIcon {x
+      _ = self
+        |> \.accessibilityHint %~ { _ in
+          Strings.Email_unverified()
+      }
+    }
   }
 
   override func bindStyles() {
