@@ -18,17 +18,30 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
 
   weak var delegate: SettingsPrivacySwitchCellDelegate?
 
-  func configureWith(value: SettingsPrivacyCellValue) {
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    _ = self
+      |> \.accessibilityElements .~ [self.switchButton]
+  }
+
+  func configureWith(value: SettingsPrivacySwitchCellValue) {
     self.viewModel.configure(with: value.user)
 
     _ = self.titleLabel
-    |> UILabel.lens.text .~ value.cellType.titleString
+      |> \.text .~ value.cellType.title
 
     _ = self.primaryDescriptionLabel
-    |> UILabel.lens.text .~ value.cellType.primaryDescriptionString
+      |> \.text .~ value.cellType.primaryDescription
 
     _ = self.secondaryDescriptionLabel
-    |> UILabel.lens.text .~ value.cellType.secondaryDescriptionString
+      |> \.text .~ value.cellType.secondaryDescription
+
+    _ = self.switchButton
+      |> \.accessibilityLabel %~ { _ in value.cellType.title }
+      |> \.accessibilityHint %~ { _ in
+        "\(value.cellType.primaryDescription), \(value.cellType.secondaryDescription)"
+    }
   }
 
   override func bindStyles() {

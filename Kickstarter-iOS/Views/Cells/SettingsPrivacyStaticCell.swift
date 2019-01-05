@@ -5,6 +5,13 @@ import UIKit
 internal final class SettingsPrivacyStaticCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var privacyInfoLabel: UILabel!
 
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    _ = self
+      |> \.accessibilityElementsHidden .~ true
+  }
+
   func configureWith(value: String) {
     _ = self.privacyInfoLabel
       |> UILabel.lens.text %~ { _ in value }

@@ -20,8 +20,21 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var followingSwitch: UISwitch!
   @IBOutlet fileprivate var separatorView: [UIView]!
 
-  internal func configureWith(value user: User) {
-    self.viewModel.inputs.configureWith(user: user)
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    _ = self
+      |> \.accessibilityElements .~ [self.followingSwitch]
+
+    _ = self.followingSwitch
+      |> \.accessibilityLabel %~ { _ in Strings.Following() }
+  }
+
+  internal func configureWith(value: SettingsPrivacyStaticCellValue) {
+    self.viewModel.inputs.configureWith(user: value.user)
+
+    _ = self.followingSwitch
+      |> \.accessibilityHint %~ { _ in value.cellType.description }
   }
 
   internal override func bindStyles() {

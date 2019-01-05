@@ -12,8 +12,21 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
   @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
   @IBOutlet fileprivate var separatorView: [UIView]!
 
-  internal func configureWith(value user: User) {
-    self.viewModel.inputs.configureWith(user: user)
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    _ = self
+      |> \.accessibilityElements .~ [self.recommendationsSwitch]
+
+    _ = self.recommendationsSwitch
+      |> \.accessibilityLabel %~ { _ in Strings.Recommendations() }
+  }
+
+  internal func configureWith(value: SettingsPrivacyStaticCellValue) {
+    self.viewModel.inputs.configureWith(user: value.user)
+
+    _ = self.recommendationsSwitch
+      |> \.accessibilityHint %~ { _ in value.cellType.description }
   }
 
   internal override func bindStyles() {
