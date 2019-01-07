@@ -56,10 +56,27 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
 
     let bannerViewShouldHide = self.showBannerViewProperty.signal.negate()
 
-    let postAnimationBannerViewShouldHide = self.bannerViewIsHiddenProperty.signal
-      .filter { isFalse($0) }
+    let dismissBanner = self.bannerViewIsHiddenProperty.signal
+      .filter(isFalse)
+
+    // Dismisses the banner after 4 seconds when VoiceOver is OFF
+    // This should give the user enough time to read the banner
+    let dismissBannerVoiceOverOff = dismissBanner
+      .filter { _ in !AppEnvironment.current.isVoiceOverRunning() }
       .debounce(4, on: QueueScheduler.main)
       .negate()
+
+    // Dismisses the banner after 10 seconds when VoiceOver is ON
+    // This should give the VoiceOver reader enough time to read the banner
+    let dismissBannerVoiceOverOn = dismissBanner
+      .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
+      .debounce(10, on: QueueScheduler.main)
+      .negate()
+
+    let postAnimationBannerViewShouldHide = Signal.merge(
+      dismissBannerVoiceOverOff,
+      dismissBannerVoiceOverOn
+    )
 
     let bannerShouldHide = Signal.merge(bannerViewShouldHide, postAnimationBannerViewShouldHide)
 
