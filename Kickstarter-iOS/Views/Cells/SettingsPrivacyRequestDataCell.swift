@@ -29,6 +29,9 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
+    _ = self
+      |> \.accessibilityElements .~ [self.requestDataButton]
+
     self.requestDataButton.addTarget(self, action: #selector(exportButtonTapped), for: .touchUpInside)
 
     self.requestDataObserver = NotificationCenter.default.addObserver(
@@ -105,6 +108,7 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
         self?.delegate?.settingsRequestDataCell(_self, requestedDataWith: url)
     }
 
+    self.requestDataButton.rac.accessibilityLabel = self.viewModel.outputs.requestDataText
     self.requestDataButton.rac.enabled = self.viewModel.outputs.requestDataButtonEnabled
     self.requestDataActivityIndicator.rac.animating = self.viewModel.outputs.requestDataLoadingIndicator
     self.requestDataLabel.rac.text = self.viewModel.outputs.requestDataText
