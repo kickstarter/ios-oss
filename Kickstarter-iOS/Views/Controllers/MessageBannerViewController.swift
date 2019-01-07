@@ -30,6 +30,16 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     static let showDuration: TimeInterval = 0.3
   }
 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    _ = self.backgroundView
+      |> \.isAccessibilityElement .~ true
+
+    _ = self.messageLabel
+      |> \.isAccessibilityElement .~ false
+  }
+
   override func bindStyles() {
     super.bindStyles()
 
@@ -38,11 +48,9 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       |> \.isHidden .~ true
 
     _ = self.backgroundView
-      |> \.isAccessibilityElement .~ true
       |> roundedStyle(cornerRadius: 4)
 
     _ = self.messageLabel
-      |> \.isAccessibilityElement .~ false
       |> UILabel.lens.font .~ .ksr_subhead()
   }
 
@@ -51,7 +59,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 
     self.iconImageView.rac.hidden = self.viewModel.outputs.iconIsHidden
     self.backgroundView.rac.backgroundColor = self.viewModel.outputs.bannerBackgroundColor
-    self.backgroundView.rac.accessibilityLabel = self.viewModel.outputs.bannerMessage
+    self.backgroundView.rac.accessibilityLabel = self.viewModel.outputs.bannerMessageAccessibilityLabel
     self.messageLabel.rac.text = self.viewModel.outputs.bannerMessage
     self.messageLabel.rac.textColor = self.viewModel.outputs.messageTextColor
 

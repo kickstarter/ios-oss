@@ -14,6 +14,7 @@ public protocol MessageBannerViewModelInputs {
 public protocol MessageBannerViewModelOutputs {
   var bannerBackgroundColor: Signal<UIColor, NoError> { get }
   var bannerMessage: Signal<String, NoError> { get }
+  var bannerMessageAccessibilityLabel: Signal<String, NoError> { get }
   var iconImageName: Signal<String, NoError> { get }
   var iconIsHidden: Signal<Bool, NoError> { get }
   var iconTintColor: Signal<UIColor, NoError> { get }
@@ -53,6 +54,9 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
     self.messageTextAlignment = bannerType.map { $0.textAlignment }
 
     self.bannerMessage = self.messageBannerConfiguration.signal.skipNil().map(second)
+    self.bannerMessageAccessibilityLabel = self.bannerMessage
+      // todo: Needs to be localized - Strings.banner_tap_to_dismiss
+      .map { "\($0), double tap to dismiss" }
 
     let bannerViewShouldHide = self.showBannerViewProperty.signal.negate()
 
@@ -100,6 +104,7 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
 
   public let bannerBackgroundColor: Signal<UIColor, NoError>
   public let bannerMessage: Signal<String, NoError>
+  public let bannerMessageAccessibilityLabel: Signal<String, NoError>
   public let iconImageName: Signal<String, NoError>
   public let iconIsHidden: Signal<Bool, NoError>
   public let iconTintColor: Signal<UIColor, NoError>
