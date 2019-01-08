@@ -11,16 +11,18 @@ import Prelude
 internal final class SettingsAccountViewModelTests: TestCase {
   let vm = SettingsAccountViewModel(SettingsAccountViewController.viewController(for:))
 
-  let dismissCurrencyPicker = TestObserver<Void, NoError>()
-  let fetchAccountFieldsError = TestObserver<Void, NoError>()
-  let presentCurrencyPicker = TestObserver<Currency, NoError>()
-  let reloadDataShouldHideWarningIcon = TestObserver<Bool, NoError>()
-  let reloadDataCurrency = TestObserver<Currency, NoError>()
-  let showAlert = TestObserver<(), NoError>()
-  let updateCurrencyFailure = TestObserver<String, NoError>()
+  private let currencyUpdatedObserver = TestObserver<Void, NoError>()
+  private let dismissCurrencyPicker = TestObserver<Void, NoError>()
+  private let fetchAccountFieldsError = TestObserver<Void, NoError>()
+  private let presentCurrencyPicker = TestObserver<Currency, NoError>()
+  private let reloadDataShouldHideWarningIcon = TestObserver<Bool, NoError>()
+  private let reloadDataCurrency = TestObserver<Currency, NoError>()
+  private let showAlert = TestObserver<(), NoError>()
+  private let updateCurrencyFailure = TestObserver<String, NoError>()
 
   internal override func setUp() {
     super.setUp()
+    self.vm.outputs.currencyUpdated.observe(self.currencyUpdatedObserver.observer)
     self.vm.outputs.dismissCurrencyPicker.observe(self.dismissCurrencyPicker.observer)
     self.vm.outputs.fetchAccountFieldsError.observe(self.fetchAccountFieldsError.observer)
     self.vm.outputs.presentCurrencyPicker.observe(self.presentCurrencyPicker.observer)
@@ -116,16 +118,21 @@ internal final class SettingsAccountViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
+
+      self.currencyUpdatedObserver.assertValueCount(0)
+
       self.vm.inputs.didSelectRow(cellType: .currency)
       self.vm.inputs.showChangeCurrencyAlert(for: .CAD)
       self.vm.inputs.didConfirmChangeCurrency()
 
       self.presentCurrencyPicker.assertValueCount(1)
       self.reloadDataCurrency.assertValueCount(1)
+      self.currencyUpdatedObserver.assertValueCount(0)
 
       self.scheduler.advance()
 
       self.reloadDataCurrency.assertValueCount(2)
+      self.currencyUpdatedObserver.assertValueCount(1)
     }
   }
 
