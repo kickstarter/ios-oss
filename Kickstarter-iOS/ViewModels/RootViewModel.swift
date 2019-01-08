@@ -23,9 +23,6 @@ internal protocol RootViewModelInputs {
   /// Call when the controller has received a user updated notification.
   func currentUserUpdated()
 
-  /// Call when the language selection has changed
-  func currentLanguageChanged()
-
   /// Call before selected tab bar index changes.
   func shouldSelect(index: Int?)
 
@@ -49,6 +46,9 @@ internal protocol RootViewModelInputs {
 
   /// Call when we should switch to the search tab.
   func switchToSearch()
+
+  /// Call when the a user locale preference has changed
+  func userLocalePreferencesChanged()
 
   /// Call when the controller has received a user session ended notification.
   func userSessionEnded()
@@ -107,7 +107,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
 
-    let refreshedViewControllers = userState.takeWhen(self.currentLanguageProperty.signal)
+    let refreshedViewControllers = userState.takeWhen(self.userLocalePreferencesChangedProperty.signal)
       .map { userState -> [UIViewController?] in
         let standard = generateStandardViewControllers()
         let personalized = generatePersonalizedViewControllers(userState: userState)
@@ -192,7 +192,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     self.tabBarItemsData = Signal.combineLatest(currentUser, .merge(
       self.viewDidLoadProperty.signal,
-      self.currentLanguageProperty.signal.ignoreValues())
+      self.userLocalePreferencesChangedProperty.signal.ignoreValues())
       )
       .map(first)
       .map(tabData(forUser:))
@@ -201,11 +201,6 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   fileprivate let currentUserUpdatedProperty = MutableProperty(())
   internal func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
-  }
-
-  fileprivate let currentLanguageProperty = MutableProperty(())
-  internal func currentLanguageChanged() {
-    self.currentLanguageProperty.value = ()
   }
 
   fileprivate let shouldSelectIndexProperty = MutableProperty<Int?>(nil)
@@ -241,6 +236,12 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal func switchToSearch() {
     self.switchToSearchProperty.value = ()
   }
+
+  fileprivate let userLocalePreferencesChangedProperty = MutableProperty(())
+  internal func userLocalePreferencesChanged() {
+    self.userLocalePreferencesChangedProperty.value = ()
+  }
+
   fileprivate let userSessionStartedProperty = MutableProperty(())
   internal func userSessionStarted() {
     self.userSessionStartedProperty.value = ()

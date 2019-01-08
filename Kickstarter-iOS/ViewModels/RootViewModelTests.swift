@@ -132,7 +132,7 @@ final class RootViewModelTests: TestCase {
     self.viewControllerNames.assertValueCount(1)
   }
 
-  func testUpdateCurrentLanguage() {
+  func testUpdateUserLocalePreferences() {
     let viewControllerNames = TestObserver<[String], NoError>()
     vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
@@ -142,7 +142,7 @@ final class RootViewModelTests: TestCase {
     self.viewControllerNames.assertValueCount(1)
     self.tabBarItemsData.assertValueCount(1)
 
-    self.vm.inputs.currentLanguageChanged()
+    self.vm.inputs.userLocalePreferencesChanged()
 
     self.viewControllerNames.assertValueCount(2)
     self.tabBarItemsData.assertValueCount(2)
