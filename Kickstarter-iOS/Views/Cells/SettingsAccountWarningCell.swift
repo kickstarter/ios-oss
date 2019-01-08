@@ -16,9 +16,9 @@ final class SettingsAccountWarningCell: UITableViewCell, ValueCell, NibLoading {
       |> \.isHidden .~ shouldHideAlertIcon
 
     if !shouldHideAlertIcon {
-    _ = self
-      |> \.accessibilityHint %~ { _ in
-        Strings.Email_unverified()
+      _ = self
+        |> \.accessibilityHint %~ { _ in
+          Strings.Email_unverified()
       }
     }
   }
