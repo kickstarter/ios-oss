@@ -40,6 +40,8 @@ public final class NavigationTests: XCTestCase {
 
     KSRAssertMatch(nil, "/projects/creator/project?token=4")
 
+    KSRAssertMatch(nil, "/projects/creator/project?ref=discovery&token=4")
+
     KSRAssertMatch(.project(.slug("project"), .checkout(1, .thanks(racing: nil)), refTag: nil),
                    "/projects/creator/project/checkouts/1/thanks")
 
