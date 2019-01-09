@@ -4,7 +4,7 @@ import Prelude
 import XCTest
 @testable import Library
 
-private func KSRAssertMatch(_ expected: Navigation,
+private func KSRAssertMatch(_ expected: Navigation?,
                             _ path: String,
                             file: StaticString = #file,
                             line: UInt = #line) {
@@ -37,6 +37,10 @@ public final class NavigationTests: XCTestCase {
 
     KSRAssertMatch(.project(.slug("project"), .root, refTag: nil),
                    "/projects/creator/project")
+
+    KSRAssertMatch(nil, "/projects/creator/project?token=4")
+
+    KSRAssertMatch(nil, "/projects/creator/project?ref=discovery&token=4")
 
     KSRAssertMatch(.project(.slug("project"), .checkout(1, .thanks(racing: nil)), refTag: nil),
                    "/projects/creator/project/checkouts/1/thanks")
