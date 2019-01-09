@@ -83,6 +83,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       .filter { $0 == .emailFrequency }
 
     self.pickerViewIsHidden = Signal.merge(
+        viewDidLoadProperty.signal.mapConst(true),
         emailFrequencyCellSelected.signal.mapConst(false),
         emailFrequencyProperty.signal.mapConst(true)
       ).skipRepeats()
