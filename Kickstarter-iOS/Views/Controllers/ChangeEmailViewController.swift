@@ -105,9 +105,11 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
     _ = self.newEmailLabel
       |> settingsTitleLabelStyle
       |> \.text %~ { _ in Strings.New_email() }
+      |> \.isAccessibilityElement .~ false
 
     _ = self.newEmailTextField
       |> settingsEmailFieldAutoFillStyle
+      |> \.accessibilityLabel %~ { _ in self.newEmailLabel.text }
       |> \.returnKeyType .~ .next
       |> \.attributedPlaceholder %~ { _ in
         settingsAttributedPlaceholder(Strings.login_placeholder_email())
@@ -116,9 +118,11 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
     _ = self.passwordLabel
       |> settingsTitleLabelStyle
       |> \.text %~ { _ in Strings.Current_password() }
+      |> \.isAccessibilityElement .~ false
 
     _ = self.passwordTextField
       |> settingsPasswordFormFieldAutoFillStyle
+      |> \.accessibilityLabel %~ { _ in self.passwordLabel.text }
       |> \.returnKeyType .~ .done
       |> \.attributedPlaceholder %~ { _ in
         settingsAttributedPlaceholder(Strings.login_placeholder_password())
