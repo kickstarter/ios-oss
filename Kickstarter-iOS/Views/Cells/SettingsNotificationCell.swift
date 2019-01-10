@@ -34,6 +34,10 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     viewModel.inputs.configure(with: cellValue)
 
+    _ = self
+      |> \.accessibilityTraits .~ cellValue.cellType.accessibilityTraits
+      |> \.accessibilityLabel %~ { _ in cellValue.cellType.title }
+
     _ = titleLabel
       |> UILabel.lens.text .~ cellValue.cellType.title
 
@@ -90,6 +94,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.rac.accessibilityValue = viewModel.outputs.projectCountText
     self.emailNotificationsButton.rac.selected = viewModel.outputs.emailNotificationsEnabled
     self.emailNotificationsButton.rac.hidden = viewModel.outputs.emailNotificationButtonIsHidden
     self.projectCountLabel.rac.text = viewModel.outputs.projectCountText
