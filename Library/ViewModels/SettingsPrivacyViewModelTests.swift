@@ -22,7 +22,24 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
   }
 
-  func testRefreshFollowingSection() {
+  func testRefreshFollowingSection_WhenConfirmingSocialOptOut() {
+    let user = User.template
+      |> \.social .~ true
+
+    let mockService = MockService(fetchUserSelfResponse: user)
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.didConfirmSocialOptOut()
+
+      self.scheduler.advance()
+
+      self.refreshFollowingSection.assertValueCount(1)
+    }
+  }
+
+  func testRefreshFollowingSection_WhenCancelingSocialOptOut() {
     let user = User.template
     |> \.social .~ true
 

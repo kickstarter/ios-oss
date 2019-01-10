@@ -62,8 +62,14 @@ internal final class SettingsPrivacyViewController: UITableViewController {
     self.viewModel.outputs.refreshFollowingSection
       .observeForUI()
       .observeValues { [weak self] _ in
-        let followingSection = IndexSet(integer: Section.following.rawValue)
-        self?.tableView.reloadSections(followingSection, with: .none)
+        let section = Section.following.rawValue
+
+        self?.tableView.reloadSections(IndexSet(integer: section), with: .none)
+
+        if AppEnvironment.current.isVoiceOverRunning() {
+          let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: section))
+          UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged, argument: cell)
+        }
     }
   }
 

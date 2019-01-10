@@ -81,7 +81,10 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
    self.updateCurrentUser = Signal.merge(updatedFetchedUser,
                                          previousUserOnError)
 
-   self.refreshFollowingSection = self.didCancelSocialOptOutProperty.signal
+    self.refreshFollowingSection = Signal.merge(
+      self.didCancelSocialOptOutProperty.signal,
+      self.didConfirmSocialOptOutProperty.signal
+    )
   }
 
   fileprivate let didCancelSocialOptOutProperty = MutableProperty(())
