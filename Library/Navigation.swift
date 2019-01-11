@@ -8,7 +8,7 @@ public enum Navigation {
   case checkout(Int, Navigation.Checkout)
   case creatorMessages(Param, messageThreadId: Int)
   case projectActivity(Param)
-  case emailClick(qs: String)
+  case emailClick
   case messages(messageThreadId: Int)
   case signup
   case tab(Tab)
@@ -79,8 +79,8 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   switch (lhs, rhs) {
   case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
     return lhsId == rhsId && lhsCheckout == rhsCheckout
-  case let (.emailClick(lhs), .emailClick(rhs)):
-    return lhs == rhs
+  case (.emailClick, .emailClick):
+    return true
   case let (.messages(lhs), .messages(rhs)):
     return lhs == rhs
   case (.signup, .signup):
@@ -321,8 +321,7 @@ extension Navigation.Project {
 public typealias RouteParams = JSON
 
 private func emailClick(_ params: RouteParams) -> Decoded<Navigation> {
-  return curry(Navigation.emailClick)
-   <^> params <| "qs"
+  return .success(Navigation.emailClick)
 }
 
 private func activity(_: RouteParams) -> Decoded<Navigation> {
@@ -595,7 +594,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
   // if we're parsing against the '/' emailClick template and this is a recognized email host
   // return the expected params for that route to be resolved
   if templateComponents.isEmpty && isRecognizedEmailHost {
-    return .object(["qs": .string("deadbeef")])
+    return .object([:])
   }
 
   guard templateComponents.count == urlComponents.count else { return nil }
