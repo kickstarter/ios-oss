@@ -136,9 +136,14 @@ public final class NavigationTests: XCTestCase {
                    Navigation.match(URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!))
   }
 
+  func testOtherEmailClickUrls() {
+    XCTAssertEqual(.emailClick(qs: "deadbeef"),
+                   Navigation.match(URL(string: "https://click.em.kickstarter.com/wf/click?upn=deadbeef")!))
+  }
+
   func testOtherEmailLinks() {
     let url = URL(string: "https://email.kickstarter.com/mpss/c/2gA/Oiw/t.25j/deadbeef/h1/dead-beef")!
-    XCTAssertEqual(.emailLink, Navigation.match(url))
+    XCTAssertEqual(.emailClick(qs: "deadbeef"), Navigation.match(url))
   }
 
   func testRecognizesKsrUrlScheme() {
