@@ -594,9 +594,9 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
 
   // if we're parsing against the '/' emailClick template and this is a recognized email host
   // return the expected params for that route to be resolved
-//  if templateComponents.isEmpty && isRecognizedEmailHost {
-//    return .object(["qs": .string("deadbeef")])
-//  }
+  if templateComponents.isEmpty && isRecognizedEmailHost {
+    return .object(["qs": .string("deadbeef")])
+  }
 
   guard templateComponents.count == urlComponents.count else { return nil }
 
