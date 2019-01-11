@@ -100,8 +100,6 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     self.projectCountLabel.rac.text = viewModel.outputs.projectCountText
     self.pushNotificationsButton.rac.selected = viewModel.outputs.pushNotificationsEnabled
     self.pushNotificationsButton.rac.hidden = viewModel.outputs.pushNotificationButtonIsHidden
-    self.projectCountLabel.rac.accessibilityHint = viewModel.outputs
-      .manageProjectNotificationsButtonAccessibilityHint
 
     viewModel.outputs.enableButtonAnimation
     .observeForUI()
