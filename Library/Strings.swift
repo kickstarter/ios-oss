@@ -3454,10 +3454,10 @@ with friends."
    "It's like the radio but nothing sucks and also it's a newsletter."
 
    - **en**: "It's like the radio but nothing sucks and also it's a newsletter."
-   - **de**: "It's like the radio but nothing sucks and also it's a newsletter."
+   - **de**: "Fast wie Radio, nur ohne die schlechten Nachrichten - unser Newsletter!"
    - **es**: "Es como la radio, pero sin malas noticias y, además, es un boletín informativo."
-   - **fr**: "It's like the radio but nothing sucks and also it's a newsletter."
-   - **ja**: "It's like the radio but nothing sucks and also it's a newsletter."
+   - **fr**: "Un peu comme la radio, mais en mieux. Une lettre d'information, quoi."
+   - **ja**: "ラジオみたいな (でもつまらない内容をダラダラと語ったりしない) ニュースレター。"
   */
   public static func Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter() -> String {
     return localizedString(
@@ -7941,7 +7941,7 @@ Veuillez réessayer ultérieurement."
    - **en**: "You’re offline. Once your device reconnects, navigate around the app to refresh."
    - **de**: "Du bist Offline. Sobald du wieder Online bist, navigiere in der App, um sie zu aktualisieren."
    - **es**: "Estás desconectado. Cuando tu dispositivo se vuelva a conectar, ve a la aplicación para actualizarla."
-   - **fr**: "You’re offline. Once your device reconnects, navigate around the app to refresh."
+   - **fr**: "Vous êtes hors ligne. Dès que votre appareil se sera reconnecté, naviguez dans l'application pour la rafraîchir."
    - **ja**: "現在オフライン中です。デバイスが再接続し次第、アプリをリフレッシュしてください。"
   */
   public static func Youre_offline() -> String {
@@ -7973,10 +7973,10 @@ Veuillez réessayer ultérieurement."
    "Zip/Postal code"
 
    - **en**: "Zip/Postal code"
-   - **de**: "Zip/Postal code"
+   - **de**: "Postleitzahl"
    - **es**: "Código postal"
-   - **fr**: "Zip/Postal code"
-   - **ja**: "Zip/Postal code"
+   - **fr**: "Code postal"
+   - **ja**: "郵便番号"
   */
   public static func Zip_postal_code() -> String {
     return localizedString(
@@ -9336,7 +9336,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "von %{goal}"
    - **es**: "de %{goal}"
    - **fr**: "sur %{goal}"
-   - **ja**: "達成額 (%{goal} 中)"
+   - **ja**: "の達成額 (%{goal} 中)"
   */
   public static func activity_project_state_change_pledged_of_goal(goal: String) -> String {
     return localizedString(

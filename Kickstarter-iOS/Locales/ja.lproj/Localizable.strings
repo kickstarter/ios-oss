@@ -208,7 +208,7 @@
 "It_may_take_up_to_24_hours_to_collect_your_data" = "データの収集には最大で24時間かかる場合があります。ダウンロードの準備が整いましたら、このアカウントに登録されているメールアドレス宛てにデータのダウンロード手順が記載されたメールをお送りします。メールが届かなかった場合には、お手数ですがこちらに戻って再試行してください。";
 "Its_a_way_to_bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
 "Its_better_with_friends" = "友達にとってより良い。";
-"Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "It's like the radio but nothing sucks and also it's a newsletter.";
+"Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "ラジオみたいな (でもつまらない内容をダラダラと語ったりしない) ニュースレター。";
 "Join_our_secret_society" = "この秘密の世界にあなたも浸ってみませんか。";
 "Joining_the_live_stream" = "ライブ配信に参加";
 "Just_for_you" = "あなたのために。";
@@ -489,7 +489,7 @@
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
 "Youre_offline" = "現在オフライン中です。デバイスが再接続し次第、アプリをリフレッシュしてください。";
 "Youve_pledged_to_support_this_project" = "このプレッジ済のプロジェクトは、現在もファンド中";
-"Zip_postal_code" = "Zip/Postal code";
+"Zip_postal_code" = "郵便番号";
 "accessibility.dashboard.buttons.activity" = "アクティビティ";
 "accessibility.dashboard.buttons.activity_hint" = "アクティビティをみる";
 "accessibility.dashboard.buttons.messages" = "メッセージ";
@@ -569,7 +569,7 @@
 "activity.project_state_change.funded" = "達成";
 "activity.project_state_change.goal" = "目標金額";
 "activity.project_state_change.launched" = "発表済み";
-"activity.project_state_change.pledged_of_goal" = "達成額 (%{goal} 中)";
+"activity.project_state_change.pledged_of_goal" = "の達成額 (%{goal} 中)";
 "activity.project_state_change.project_was_cancelled_by_creator" = "%{project_name} はクリエーターによりキャンセルされました。";
 "activity.project_state_change.project_was_not_successfully_funded" = "%{project_name} はファンドを達成できませんでした。";
 "activity.project_state_change.project_was_successfully_funded" = "%{project_name} はファンドを達成しました";

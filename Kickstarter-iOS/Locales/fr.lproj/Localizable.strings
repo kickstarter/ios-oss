@@ -208,7 +208,7 @@
 "It_may_take_up_to_24_hours_to_collect_your_data" = "La préparation de vos données personnelles peut prendre jusqu'à 24 heures. Nous vous enverrons des instructions de téléchargement à l'adresse e-mail associée à ce compte une fois que tout sera prêt. Si vous ne recevez rien, revenez ici pour réessayer.";
 "Its_a_way_to_bring_creative_projects_to_life" = "C'est un outil qui permet de donner vie à des projets créatifs.";
 "Its_better_with_friends" = "On est mieux ensemble.";
-"Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "It's like the radio but nothing sucks and also it's a newsletter.";
+"Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "Un peu comme la radio, mais en mieux. Une lettre d'information, quoi.";
 "Join_our_secret_society" = "Notre société secrète n'attend que vous.";
 "Joining_the_live_stream" = "Connexion à la diffusion en direct en cours";
 "Just_for_you" = "Rien que pour vous.";
@@ -487,9 +487,9 @@
 "Your_shipping_destination" = "Destination d'expédition";
 "Youre_a_backer" = "Vous êtes contributeur !";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer.";
-"Youre_offline" = "You’re offline. Once your device reconnects, navigate around the app to refresh.";
+"Youre_offline" = "Vous êtes hors ligne. Dès que votre appareil se sera reconnecté, naviguez dans l'application pour la rafraîchir.";
 "Youve_pledged_to_support_this_project" = "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée.";
-"Zip_postal_code" = "Zip/Postal code";
+"Zip_postal_code" = "Code postal";
 "accessibility.dashboard.buttons.activity" = "Activité";
 "accessibility.dashboard.buttons.activity_hint" = "Ouvre l'activité.";
 "accessibility.dashboard.buttons.messages" = "Messages";
