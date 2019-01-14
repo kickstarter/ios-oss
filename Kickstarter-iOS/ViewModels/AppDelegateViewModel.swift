@@ -323,8 +323,7 @@ AppDelegateViewModelOutputs {
       .skipNil()
 
     self.findRedirectUrl = deepLinkUrl
-      .map(Navigation.match)
-      .filter { $0 == .emailClick }
+      .filter { Navigation.match($0) == .emailClick }
 
     self.goToDiscovery = deepLink
       .map { link -> [String: String]?? in
