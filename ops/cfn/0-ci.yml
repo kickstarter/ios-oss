@@ -1,0 +1,43 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Creates IAM policies + IAM user with permissions for CI
+
+Parameters:
+  Environment:
+    Description: Environment
+    Type: String
+    Default: base
+  Service:
+    Description: Service
+    Type: String
+    Default: ksr-ios
+
+Resources:
+  CircleCIUser:
+    Type: 'AWS::IAM::User'
+    Properties:
+      Path: /
+      Policies: []
+
+  S3Policy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      Users:
+        - !Ref CircleCIUser
+      PolicyName: "S3Permissions"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action:
+              - "s3:PutObject"
+              - "s3:PutObjectAcl"
+            Resource: 
+              - "arn:aws:s3:::ios-ksr-builds"
+              - "arn:aws:s3:::ios-ksr-builds/*"
+
+Outputs:
+  CircleCIUser:
+    Description: IAM User whose keys we drop into CircleCI
+    Value: !Ref CircleCIUser
