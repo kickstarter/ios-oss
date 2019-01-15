@@ -6,7 +6,7 @@ A description of the change.
 
 # 🤔 Why
 
-Why is it needed, background context.
+Some background context on why the change is needed.
 
 # 🛠 How
 
