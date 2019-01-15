@@ -8,7 +8,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var emailFrequencyPickerView: UIPickerView!
   @IBOutlet fileprivate weak var emailPickerViewTopConstraint: NSLayoutConstraint!
 
-  private static let emailPickerViewHeight: CGFloat = 200.0
+  //private static let emailPickerViewHeight: CGFloat = 200.0
 
   private let viewModel: SettingsNotificationsViewModelType = SettingsNotificationsViewModel()
   private let dataSource: SettingsNotificationsDataSource = SettingsNotificationsDataSource()
@@ -44,6 +44,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
     _ = self.tableView
       |> UITableView.lens.backgroundColor .~ .ksr_grey_200
+
+    _ = self.emailFrequencyPickerView
+      |> \.isAccessibilityElement .~ true
   }
 
   internal override func bindViewModel() {
@@ -92,9 +95,18 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
   private func animatePickerView(isHidden: Bool) {
     UIView.animate(withDuration: 0.25) {
-      self.emailPickerViewTopConstraint.constant = isHidden
-        ? 0 : -SettingsNotificationsViewController.emailPickerViewHeight
 
+      if !isHidden {
+        // Tells Voice Over to focus on the picker.
+        self.emailFrequencyPickerView.accessibilityViewIsModal = true
+        UIAccessibility.post(
+          notification: UIAccessibility.Notification.screenChanged,
+          argument: self.emailFrequencyPickerView
+        )
+      }
+
+      self.emailPickerViewTopConstraint.constant = isHidden
+        ? 0 : self.emailFrequencyPickerView.frame.size.height
       self.view.setNeedsLayout()
       self.view.layoutIfNeeded()
     }
