@@ -12,7 +12,8 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
   let vm = SettingsNotificationsViewModel()
 
   let goToManageProjectNotifications = TestObserver<Void, NoError>()
-  let pickerViewIsHidden = TestObserver<Bool, NoError>()
+  let hidePickerView = TestObserver<Bool, NoError>()
+  let pickerViewIsHiddenAnimation = TestObserver<Bool, NoError>()
   let pickerViewSelectedRow = TestObserver<EmailFrequency, NoError>()
   let unableToSaveError = TestObserver<String, NoError>()
   let updateCurrentUser = TestObserver<User, NoError>()
@@ -22,7 +23,8 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
     self.vm.outputs.goToManageProjectNotifications
       .observe(self.goToManageProjectNotifications.observer)
-    self.vm.outputs.pickerViewIsHidden.observe(self.pickerViewIsHidden.observer)
+    self.vm.outputs.hidePickerView.observe(self.hidePickerView.observer)
+    self.vm.outputs.pickerViewIsHiddenAnimation.observe(self.pickerViewIsHiddenAnimation.observer)
     self.vm.outputs.pickerViewSelectedRow.observe(self.pickerViewSelectedRow.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
@@ -87,7 +89,7 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.updateCurrentUser.assertValueCount(3)
-      self.pickerViewIsHidden.assertLastValue(true)
+      self.pickerViewIsHiddenAnimation.assertLastValue(true)
       self.pickerViewSelectedRow.assertLastValue(EmailFrequency.individualEmails)
     }
   }
@@ -116,21 +118,24 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.updateCurrentUser.assertValueCount(2)
-      self.pickerViewIsHidden.assertLastValue(true)
+      self.pickerViewIsHiddenAnimation.assertLastValue(true)
       self.pickerViewSelectedRow.assertLastValue(EmailFrequency.daily)
       self.unableToSaveError.assertValueCount(1)
     }
   }
 
   func testShowHidePickerView() {
-    self.pickerViewIsHidden.assertDidNotEmitValue()
+    self.pickerViewIsHiddenAnimation.assertDidNotEmitValue()
+    self.hidePickerView.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.pickerViewIsHidden.assertValues([true], "Picker view should be hidden")
+    self.pickerViewIsHiddenAnimation.assertDidNotEmitValue()
+    self.hidePickerView.assertValues([true], "Picker view is hidden")
 
     self.vm.inputs.didSelectRow(cellType: .emailFrequency)
 
-    self.pickerViewIsHidden.assertValues([true, false], "Picker view should not be hidden")
+    self.pickerViewIsHiddenAnimation.assertValues([false], "Picker view should not be hidden")
+    self.hidePickerView.assertValues([true, false], "Picker is now shown")
   }
 }

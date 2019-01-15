@@ -15,7 +15,8 @@ public protocol SettingsNotificationsViewModelInputs {
 
 public protocol SettingsNotificationsViewModelOutputs {
   var goToManageProjectNotifications: Signal<Void, NoError> { get }
-  var pickerViewIsHidden: Signal<Bool, NoError> { get }
+  var hidePickerView: Signal<Bool, NoError> { get }
+  var pickerViewIsHiddenAnimation: Signal<Bool, NoError> { get }
   var pickerViewSelectedRow: Signal<EmailFrequency, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
@@ -82,11 +83,15 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       .skipNil()
       .filter { $0 == .emailFrequency }
 
-    self.pickerViewIsHidden = Signal.merge(
-        viewDidLoadProperty.signal.mapConst(true),
+    self.pickerViewIsHiddenAnimation = Signal.merge(
         emailFrequencyCellSelected.signal.mapConst(false),
         emailFrequencyProperty.signal.mapConst(true)
-      ).skipRepeats()
+    ).skipRepeats()
+
+    self.hidePickerView = Signal.merge(
+      viewDidLoadProperty.signal.mapConst(true),
+      self.pickerViewIsHiddenAnimation.signal
+    ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal
       .map { $0 |> UserAttribute.notification(.creatorDigest).keyPath.view }
@@ -140,7 +145,8 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   }
 
   public let goToManageProjectNotifications: Signal<Void, NoError>
-  public let pickerViewIsHidden: Signal<Bool, NoError>
+  public let hidePickerView: Signal<Bool, NoError>
+  public let pickerViewIsHiddenAnimation: Signal<Bool, NoError>
   public let pickerViewSelectedRow: Signal<EmailFrequency, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
