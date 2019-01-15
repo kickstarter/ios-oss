@@ -54,7 +54,7 @@
 "Card_ending_in_last_four" = "Card ending in %{last_four}";
 "Card_number" = "Card number";
 "Cardholder_name" = "Cardholder name";
-"Change_currency" = "Change currency";
+"Change_currency" = "Change currency?";
 "Change_email" = "Change email";
 "Change_password" = "Change password";
 "Change_payment_method" = "Change payment method";
@@ -164,7 +164,7 @@
 "Follow_your_Facebook_friends_and_keep_up_with_the_projects" = "Follow your Facebook friends and keep up with the projects they back and launch.";
 "Followed" = "Followed";
 "Following" = "Following";
-"Following_Disabled_Info" = "Following must be on to find Facebook friends. Following can be changed in Settings > Privacy.";
+"Following_Disabled_Info" = "Following must be on to find Facebook friends. Change your account privacy settings to enable this feature.";
 "Following_More_Info" = "Following More Info";
 "Follows_friend_name" = "Follows %{friend_name}.";
 "Friend_backed_art_project" = "<b>%{friend_name}</b> backed an <i>Art</i> project.";
@@ -489,7 +489,7 @@
 "Youre_about_to_create_a_new_Kickstarter_account" = "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.";
 "Youre_offline" = "You’re offline. Once your device reconnects, navigate around the app to refresh.";
 "Youve_pledged_to_support_this_project" = "You’ve pledged to support this project and it’s currently still funding.";
-"Zip_code" = "Zip code";
+"Zip_postal_code" = "Zip/Postal code";
 "accessibility.dashboard.buttons.activity" = "Activity";
 "accessibility.dashboard.buttons.activity_hint" = "Opens activity.";
 "accessibility.dashboard.buttons.messages" = "Messages";

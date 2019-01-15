@@ -49,6 +49,12 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   }
 
   override func bindViewModel() {
+    self.viewModel.outputs.currencyUpdated
+      .observeForControllerAction()
+      .observeValues { _ in
+        NotificationCenter.default.post(.init(name: .ksr_userLocalePreferencesChanged))
+    }
+
     self.viewModel.outputs.reloadData
       .observeForUI()
       .observeValues { [weak self] currency, shouldHideEmailWarning, shouldHideEmailPasswordSection in

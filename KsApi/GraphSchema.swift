@@ -18,8 +18,8 @@ extension Never: CustomStringConvertible {
 public protocol QueryType: CustomStringConvertible, Hashable {}
 
 extension QueryType {
-  public var hashValue: Int {
-    return description.hashValue
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
   }
 }
 

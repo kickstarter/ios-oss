@@ -216,8 +216,8 @@ extension RefTag: CustomStringConvertible {
 }
 
 extension RefTag: Hashable {
-  public var hashValue: Int {
-    return self.stringTag.hashValue
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.stringTag)
   }
 }
 
