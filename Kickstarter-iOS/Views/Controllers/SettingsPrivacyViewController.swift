@@ -59,17 +59,18 @@ internal final class SettingsPrivacyViewController: UITableViewController {
         self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
     }
 
-    self.viewModel.outputs.refreshFollowingSection
+    self.viewModel.outputs.resetFollowingSection
       .observeForUI()
       .observeValues { [weak self] _ in
-        let section = Section.following.rawValue
+        let indexPath = IndexPath(row: 0, section: Section.following.rawValue)
+        let cell = self?.tableView.cellForRow(at: indexPath) as? SettingsFollowCell
+        cell?.toggleOn()
+    }
 
-        self?.tableView.reloadSections(IndexSet(integer: section), with: .none)
-
-        if AppEnvironment.current.isVoiceOverRunning() {
-          let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: section))
-          UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged, argument: cell)
-        }
+    self.viewModel.outputs.focusScreenReaderOnFollowingCell
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.accessibilityFocusOnFollowingCell()
     }
   }
 
@@ -84,6 +85,13 @@ internal final class SettingsPrivacyViewController: UITableViewController {
       deleteAccountCell.delegate = self
     } else if let privacySwitchCell = cell as? SettingsPrivacySwitchCell {
       privacySwitchCell.delegate = self
+    }
+  }
+
+  private func accessibilityFocusOnFollowingCell() {
+    let cell = self.tableView.visibleCells.filter { $0 is SettingsFollowCell }.first
+    if let cell = cell {
+      UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: cell)
     }
   }
 }

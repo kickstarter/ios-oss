@@ -76,6 +76,10 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
     self.followingSwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
   }
 
+  func toggleOn(animated: Bool = true) {
+    self.followingSwitch.setOn(true, animated: animated)
+  }
+
   @IBAction func followingPrivacySwitchTapped(_ followingPrivacySwitch: UISwitch) {
     self.viewModel.inputs.followTapped(on: followingPrivacySwitch.isOn)
   }

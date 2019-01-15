@@ -9,37 +9,40 @@ import Prelude
 
 internal final class SettingsPrivacyViewModelTests: TestCase {
   let vm = SettingsPrivacyViewModel()
-  internal let refreshFollowingSection = TestObserver<Void, NoError>()
+  internal let focusScreenReaderOnFollowingCell = TestObserver<Void, NoError>()
+  internal let resetFollowingSection = TestObserver<Void, NoError>()
   internal let reloadData = TestObserver<User, NoError>()
   internal let unableToSaveError = TestObserver<String, NoError>()
   internal let updateCurrentUser = TestObserver<User, NoError>()
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.refreshFollowingSection.observe(self.refreshFollowingSection.observer)
+
+    self.vm.outputs.focusScreenReaderOnFollowingCell.observe(self.focusScreenReaderOnFollowingCell.observer)
+    self.vm.outputs.resetFollowingSection.observe(self.resetFollowingSection.observer)
     self.vm.outputs.reloadData.observe(self.reloadData.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
   }
 
-  func testRefreshFollowingSection_WhenConfirmingSocialOptOut() {
-    let user = User.template
-      |> \.social .~ true
+  func testFocusScreenReaderOnFollowingCel() {
+    let isVoiceOverRunning = { true }
+    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+      self.vm.inputs.didCancelSocialOptOut()
 
-    let mockService = MockService(fetchUserSelfResponse: user)
+      self.scheduler.advance()
 
-    withEnvironment(apiService: mockService, currentUser: user) {
-      self.vm.inputs.viewDidLoad()
+      self.focusScreenReaderOnFollowingCell.assertValueCount(1)
 
       self.vm.inputs.didConfirmSocialOptOut()
 
       self.scheduler.advance()
 
-      self.refreshFollowingSection.assertValueCount(1)
+      self.focusScreenReaderOnFollowingCell.assertValueCount(2)
     }
   }
 
-  func testRefreshFollowingSection_WhenCancelingSocialOptOut() {
+  func testResetFollowingSection_WhenCancelingSocialOptOut() {
     let user = User.template
     |> \.social .~ true
 
@@ -52,7 +55,7 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.refreshFollowingSection.assertValueCount(1)
+      self.resetFollowingSection.assertValueCount(1)
     }
   }
 
