@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "ColorScriptCore",
+        "repositoryURL": "/Users/saturninotexeira/Documents/ios-oss/bin/ColorScript/ColorScriptCore",
+        "state": {
+          "branch": null,
+          "revision": "5e7ec9fcaa996521862d5fd5fa275a80d1924c56",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
