@@ -120,7 +120,7 @@ let stringsByLocale = stringsByLocale1
     }
 }
 
-let supportedLocales = ["de", "en", "es", "fr", "ja"]
+let supportedLocales = ["Base", "de", "en", "es", "fr", "ja"]
 stringsByLocale?.forEach { locale, strings in
   guard supportedLocales.contains(locale) else { return }
   let contents = stringsFileContents(strings)
@@ -155,6 +155,7 @@ stringsByLocale?["Base"]?.keys
       for locale in sortedKeys {
         guard let strings = stringsByLocale[locale] else { continue }
         let trueLocale = locale == "Base" ? "en" : locale
+        guard supportedLocales.contains(trueLocale) else { continue }
         staticStringsLines.append("   - **\(trueLocale)**: \"\(strings[key]!)\"")
       }
     }
