@@ -77,7 +77,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
 
     _ = confirmNewPasswordTextField
       |> settingsNewPasswordFormFieldAutoFillStyle
-      |> \.accessibilityLabel %~ { _ in self.confirmNewPasswordLabel.text }
+      |> \.accessibilityLabel .~ self.confirmNewPasswordLabel.text
       |> UITextField.lens.returnKeyType .~ .done
       |> \.attributedPlaceholder %~ { _ in
         settingsAttributedPlaceholder(Strings.login_placeholder_password())
@@ -89,7 +89,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
 
     _ = currentPasswordTextField
       |> settingsPasswordFormFieldAutoFillStyle
-      |> \.accessibilityLabel %~ { _ in self.currentPasswordLabel.text }
+      |> \.accessibilityLabel .~ self.currentPasswordLabel.text
       |> \.attributedPlaceholder %~ { _ in
         settingsAttributedPlaceholder(Strings.login_placeholder_password())
     }
@@ -103,7 +103,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
 
     _ = newPasswordTextField
       |> settingsNewPasswordFormFieldAutoFillStyle
-      |> \.accessibilityLabel %~ { _ in self.newPasswordLabel.text }
+      |> \.accessibilityLabel .~ self.newPasswordLabel.text
       |> \.attributedPlaceholder %~ { _ in
         settingsAttributedPlaceholder(Strings.login_placeholder_password())
     }
