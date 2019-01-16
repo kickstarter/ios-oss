@@ -500,17 +500,17 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8It-K2-aET">
                                                 <rect key="frame" x="0.0" y="171.5" width="375" height="52"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="1kc-F1-TQ5">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="1kc-F1-TQ5">
                                                         <rect key="frame" x="12" y="6" width="351" height="40"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K1u-LI-jmm">
-                                                                <rect key="frame" x="0.0" y="10" width="112.5" height="20.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="112.5" height="40"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tPP-5U-zGh">
-                                                                <rect key="frame" x="118.5" y="5" width="232.5" height="30"/>
+                                                                <rect key="frame" x="118.5" y="0.0" width="232.5" height="40"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -522,7 +522,7 @@
                                                             </textField>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="40" id="5RW-qf-ueW"/>
+                                                            <constraint firstAttribute="height" constant="40" id="tMX-h5-06i"/>
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>
