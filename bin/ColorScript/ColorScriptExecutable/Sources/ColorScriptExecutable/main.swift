@@ -1,6 +1,6 @@
 #!/usr/bin/swift
 import Foundation
-import ColorScript
+import ColorScriptCore
 
 // swiftlint:disable force_try force_cast force_unwrapping
 
