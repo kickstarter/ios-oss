@@ -33,6 +33,34 @@ public struct Config {
   }
 }
 
+extension Config: Swift.Decodable {
+
+  enum CodingKeys: String, CodingKey {
+    case abExperiments = "ab_experiments"
+    case appId = "app_id"
+    case applePayCountries = "apple_pay_countries"
+    case countryCode = "country_code"
+    case features
+    case iTunesLink = "itunes_link"
+    case launchedCountries = "launched_countries"
+    case locale
+    case stripePublishableKey = "publishable_key"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.abExperiments = try values.decode([String: String].self, forKey: .abExperiments)
+    self.appId = try values.decode(Int.self, forKey: .appId)
+    self.applePayCountries = try values.decode([String].self, forKey: .applePayCountries)
+    self.countryCode = try values.decode(String.self, forKey: .countryCode)
+    self.features = try values.decode([String: Bool].self, forKey: .features)
+    self.iTunesLink = try values.decode(String.self, forKey: .iTunesLink)
+    self.launchedCountries = []//try values.decode([Project.Country].self, forKey: .launchedCountries)
+    self.locale = try values.decode(String.self, forKey: .locale)
+    self.stripePublishableKey = try values.decode(String.self, forKey: .stripePublishableKey)
+  }
+}
+
 extension Config: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Config> {
     let tmp = curry(Config.init)
