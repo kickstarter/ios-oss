@@ -10,8 +10,8 @@ import Prelude
 internal final class SettingsPrivacyViewModelTests: TestCase {
   let vm = SettingsPrivacyViewModel()
   internal let focusScreenReaderOnFollowingCell = TestObserver<Void, NoError>()
-  internal let resetFollowingSection = TestObserver<Void, NoError>()
   internal let reloadData = TestObserver<User, NoError>()
+  internal let resetFollowingSection = TestObserver<Void, NoError>()
   internal let unableToSaveError = TestObserver<String, NoError>()
   internal let updateCurrentUser = TestObserver<User, NoError>()
 
@@ -19,8 +19,8 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.focusScreenReaderOnFollowingCell.observe(self.focusScreenReaderOnFollowingCell.observer)
-    self.vm.outputs.resetFollowingSection.observe(self.resetFollowingSection.observer)
     self.vm.outputs.reloadData.observe(self.reloadData.observer)
+    self.vm.outputs.resetFollowingSection.observe(self.resetFollowingSection.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
   }
