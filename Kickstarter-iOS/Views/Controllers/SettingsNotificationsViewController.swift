@@ -52,9 +52,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.emailFrequencyPickerView.rac.hidden = self.viewModel.outputs.hidePickerView
-
-    self.viewModel.outputs.pickerViewIsHiddenAnimation
+    self.viewModel.outputs.pickerViewIsHidden
       .observeForUI()
       .observeValues { [weak self] (isHidden) in
         self?.animatePickerView(isHidden: isHidden)
