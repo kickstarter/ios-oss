@@ -38,7 +38,7 @@
                             <constraint firstAttribute="trailing" secondItem="9gJ-Cv-1eW" secondAttribute="trailing" id="b7A-Y1-jPA"/>
                             <constraint firstItem="ctA-pE-Cb4" firstAttribute="leading" secondItem="1Ie-Mi-JD9" secondAttribute="leading" id="bY5-dB-D8C"/>
                             <constraint firstItem="ctA-pE-Cb4" firstAttribute="top" secondItem="1Ie-Mi-JD9" secondAttribute="top" id="ijo-kG-7Xk"/>
-                            <constraint firstItem="skT-PF-d9f" firstAttribute="top" secondItem="ctA-pE-Cb4" secondAttribute="bottom" id="kpo-yB-45s"/>
+                            <constraint firstAttribute="bottom" secondItem="ctA-pE-Cb4" secondAttribute="bottom" id="kpo-yB-45s"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
