@@ -8,7 +8,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var emailFrequencyPickerView: UIPickerView!
   @IBOutlet fileprivate weak var emailPickerViewTopConstraint: NSLayoutConstraint!
 
-  //private static let emailPickerViewHeight: CGFloat = 200.0
+  private static let emailPickerViewHeight: CGFloat = 200.0
 
   private let viewModel: SettingsNotificationsViewModelType = SettingsNotificationsViewModel()
   private let dataSource: SettingsNotificationsDataSource = SettingsNotificationsDataSource()
@@ -104,7 +104,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
       }
 
       self.emailPickerViewTopConstraint.constant = isHidden
-        ? 0 : self.emailFrequencyPickerView.frame.size.height
+        ? 0 : SettingsNotificationsViewController.emailPickerViewHeight
       self.view.setNeedsLayout()
       self.view.layoutIfNeeded()
     }
