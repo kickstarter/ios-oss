@@ -44,7 +44,8 @@ dependencies: submodules configs secrets opentok fabric stripe
 bootstrap: hooks dependencies
 	brew update || brew update
 	brew unlink swiftlint || true
-	brew install swiftlint
+	brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/686375d8bc672a439ca9fcf27794a394239b3ee6/Formula/swiftlint.rb
+	brew switch swiftlint 0.29.2
 	brew link --overwrite swiftlint
 
 submodules:
