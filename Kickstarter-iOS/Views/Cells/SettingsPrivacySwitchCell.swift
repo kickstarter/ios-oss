@@ -38,10 +38,8 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
       |> \.text .~ value.cellType.secondaryDescription
 
     _ = self.switchButton
-      |> \.accessibilityLabel %~ { _ in value.cellType.title }
-      |> \.accessibilityHint %~ { _ in
-        "\(value.cellType.primaryDescription), \(value.cellType.secondaryDescription)"
-    }
+      |> \.accessibilityLabel .~ value.cellType.title
+      |> \.accessibilityHint .~ "\(value.cellType.primaryDescription), \(value.cellType.secondaryDescription)"
   }
 
   override func bindStyles() {

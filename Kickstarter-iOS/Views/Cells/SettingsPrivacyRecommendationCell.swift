@@ -26,7 +26,7 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
     self.viewModel.inputs.configureWith(user: value.user)
 
     _ = self.recommendationsSwitch
-      |> \.accessibilityHint %~ { _ in value.cellType.description }
+      |> \.accessibilityHint .~ value.cellType.description
   }
 
   internal override func bindStyles() {

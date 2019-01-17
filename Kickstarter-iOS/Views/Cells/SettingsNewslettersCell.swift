@@ -31,14 +31,14 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(value: value)
 
     _ = self.newslettersSwitch
-      |> \.accessibilityLabel %~ { _ in value.newsletter.displayableName }
-      |> \.accessibilityHint %~ { _ in value.newsletter.displayableDescription }
+      |> \.accessibilityLabel .~ value.newsletter.displayableName
+      |> \.accessibilityHint .~ value.newsletter.displayableDescription
 
     _ = self.newslettersLabel
-      |> \.text %~ { _ in value.newsletter.displayableName }
+      |> \.text .~ value.newsletter.displayableName
 
     _ = self.newslettersDescriptionLabel
-      |> \.text %~ { _ in value.newsletter.displayableDescription }
+      |> \.text .~ value.newsletter.displayableDescription
   }
 
   override func bindStyles() {

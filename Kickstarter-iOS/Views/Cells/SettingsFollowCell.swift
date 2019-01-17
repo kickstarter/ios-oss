@@ -34,7 +34,7 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(user: value.user)
 
     _ = self.followingSwitch
-      |> \.accessibilityHint %~ { _ in value.cellType.description }
+      |> \.accessibilityHint .~ value.cellType.description
   }
 
   internal override func bindStyles() {
