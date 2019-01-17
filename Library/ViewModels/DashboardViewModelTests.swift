@@ -195,16 +195,18 @@ internal final class DashboardViewModelTests: TestCase {
   func testScreenReaderFocus() {
     let projects = [Project.template]
 
-    withEnvironment(apiService: MockService(fetchProjectsResponse: projects)) {
-      self.focusScreenReaderOnTitleView.assertValueCount(0)
+    let mockApiService = MockService(fetchProjectsResponse: projects)
+    let isVoiceOverRunning = { true }
+    withEnvironment(apiService: mockApiService, isVoiceOverRunning: isVoiceOverRunning) {
+        self.focusScreenReaderOnTitleView.assertValueCount(0)
 
-      self.vm.inputs.viewWillAppear(animated: false)
+        self.vm.inputs.viewWillAppear(animated: false)
 
-      self.focusScreenReaderOnTitleView.assertValueCount(1)
+        self.focusScreenReaderOnTitleView.assertValueCount(1)
 
-      self.vm.inputs.viewWillAppear(animated: false)
+        self.vm.inputs.viewWillAppear(animated: false)
 
-      self.focusScreenReaderOnTitleView.assertValueCount(2)
+        self.focusScreenReaderOnTitleView.assertValueCount(2)
     }
   }
 

@@ -124,7 +124,9 @@ final class MessageBannerViewController: UIViewController, NibLoading {
         if isHidden {
           // Tells Voice Over to resign focus of the message banner.
           // This causes the reader to focus on the previously selected element.
-          UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged, argument: nil)
+          if AppEnvironment.current.isVoiceOverRunning() {
+            UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged, argument: nil)
+          }
         }
 
         self.bottomConstraint?.constant = isHidden ? hiddenConstant : 0
@@ -138,10 +140,12 @@ final class MessageBannerViewController: UIViewController, NibLoading {
         if !isHidden {
           // Tells Voice Over to focus on the message banner.
           // This causes the reader to read the message and allows the user to dismiss the banner.
-          UIAccessibility.post(
-            notification: UIAccessibility.Notification.layoutChanged,
-            argument: self?.backgroundView
-          )
+          if AppEnvironment.current.isVoiceOverRunning() {
+            UIAccessibility.post(
+              notification: UIAccessibility.Notification.layoutChanged,
+              argument: self?.backgroundView
+            )
+          }
         }
     })
   }

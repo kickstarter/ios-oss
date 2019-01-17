@@ -20,19 +20,28 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
 
   public weak var delegate: SettingsNewslettersCellDelegate?
 
-  func configureWith(value: (newsletter: Newsletter, user: User)) {
+  override func awakeFromNib() {
+    super.awakeFromNib()
 
+    _ = self
+      |> \.accessibilityElements .~ [self.newslettersSwitch]
+  }
+
+  func configureWith(value: (newsletter: Newsletter, user: User)) {
     self.viewModel.inputs.configureWith(value: value)
 
+    _ = self.newslettersSwitch
+      |> \.accessibilityLabel .~ value.newsletter.displayableName
+      |> \.accessibilityHint .~ value.newsletter.displayableDescription
+
     _ = self.newslettersLabel
-      |> UILabel.lens.text %~ { _ in value.newsletter.displayableName }
+      |> \.text .~ value.newsletter.displayableName
 
     _ = self.newslettersDescriptionLabel
-      |> UILabel.lens.text %~ { _ in value.newsletter.displayableDescription }
+      |> \.text .~ value.newsletter.displayableDescription
   }
 
   override func bindStyles() {
-
     _ = self.separatorViews
       ||> separatorStyle
 

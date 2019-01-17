@@ -14,8 +14,9 @@ public protocol SettingsPrivacyViewModelInputs {
 }
 
 public protocol SettingsPrivacyViewModelOutputs {
-  var refreshFollowingSection: Signal<Void, NoError> { get }
+  var focusScreenReaderOnFollowingCell: Signal<Void, NoError> { get }
   var reloadData: Signal<User, NoError> { get }
+  var resetFollowingSection: Signal<Void, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
 }
@@ -78,10 +79,15 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
       .takeWhen(self.unableToSaveError)
       .map { previous, _ in previous }
 
-   self.updateCurrentUser = Signal.merge(updatedFetchedUser,
-                                         previousUserOnError)
+    self.updateCurrentUser = Signal.merge(updatedFetchedUser, previousUserOnError)
 
-   self.refreshFollowingSection = self.didCancelSocialOptOutProperty.signal
+    self.resetFollowingSection = self.didCancelSocialOptOutProperty.signal
+
+    self.focusScreenReaderOnFollowingCell = Signal.merge(
+      self.didCancelSocialOptOutProperty.signal,
+      self.didConfirmSocialOptOutProperty.signal
+    )
+      .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
   }
 
   fileprivate let didCancelSocialOptOutProperty = MutableProperty(())
@@ -109,8 +115,9 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let refreshFollowingSection: Signal<Void, NoError>
+  public let focusScreenReaderOnFollowingCell: Signal<Void, NoError>
   public let reloadData: Signal<User, NoError>
+  public let resetFollowingSection: Signal<Void, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
 
