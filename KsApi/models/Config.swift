@@ -44,7 +44,11 @@ extension Config: Swift.Decodable {
     case iTunesLink = "itunes_link"
     case launchedCountries = "launched_countries"
     case locale
-    case stripePublishableKey = "publishable_key"
+    case stripe
+
+    enum StripeCodingKeys: String, CodingKey {
+      case stripePublishableKey = "publishable_key"
+    }
   }
 
   public init(from decoder: Decoder) throws {
@@ -55,9 +59,11 @@ extension Config: Swift.Decodable {
     self.countryCode = try values.decode(String.self, forKey: .countryCode)
     self.features = try values.decode([String: Bool].self, forKey: .features)
     self.iTunesLink = try values.decode(String.self, forKey: .iTunesLink)
-    self.launchedCountries = []//try values.decode([Project.Country].self, forKey: .launchedCountries)
+    self.launchedCountries = try values.decode([Project.Country].self, forKey: .launchedCountries)
     self.locale = try values.decode(String.self, forKey: .locale)
-    self.stripePublishableKey = try values.decode(String.self, forKey: .stripePublishableKey)
+
+    let stripe = try decoder.container(keyedBy: CodingKeys.StripeCodingKeys.self)
+    self.stripePublishableKey = try stripe.decode(String.self, forKey: .stripePublishableKey)
   }
 }
 

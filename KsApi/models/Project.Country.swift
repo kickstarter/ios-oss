@@ -51,6 +51,47 @@ extension Project {
   }
 }
 
+extension Project.Country: Swift.Decodable {
+
+  enum CodingKeys: String, CodingKey {
+    case countryCode = "country",
+    currency,
+    currencyCode = "currency_code",
+    currencySymbol = "currency_symbol",
+    currencyTrailingCode = "currency_trailing_code",
+    maxPledge = "max_pledge",
+    minPledge = "min_pledge",
+    name,
+    trailingCode = "trailing_code"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+
+    do {
+      self.countryCode = try container.decode(String.self, forKey: .countryCode)
+    } catch {
+      self.countryCode = try container.decode(String.self, forKey: .name)
+    }
+
+    do {
+      self.currencyCode = try container.decode(String.self, forKey: .currency)
+    } catch {
+      self.currencyCode = try container.decode(String.self, forKey: .currencyCode)
+    }
+
+    self.currencySymbol = try container.decode(String.self, forKey: .currencySymbol)
+    self.maxPledge = try? container.decode(Int.self, forKey: .maxPledge)
+    self.minPledge = try? container.decode(Int.self, forKey: .minPledge)
+
+    do {
+      self.trailingCode = try container.decode(Bool.self, forKey: .currencyTrailingCode)
+    } catch {
+      self.trailingCode = try container.decode(Bool.self, forKey: .trailingCode)
+    }
+  }
+}
+
 extension Project.Country {
   public init?(currencyCode: String) {
     guard

@@ -12,6 +12,23 @@ public struct Location {
   public static let none = Location(country: "", displayableName: "", id: -42, localizedName: "", name: "")
 }
 
+extension Location: Swift.Decodable {
+
+  enum CodingKeys: String, CodingKey {
+    case country, displayableName = "displayable_name", id, localizedName = "localized_name", name
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    
+    self.country = try values.decode(String.self, forKey: .country)
+    self.displayableName = try values.decode(String.self, forKey: .displayableName)
+    self.id = try values.decode(Int.self, forKey: .id)
+    self.localizedName = try values.decode(String.self, forKey: .localizedName)
+    self.name = try values.decode(String.self, forKey: .name)
+  }
+}
+
 extension Location: Equatable {}
 public func == (lhs: Location, rhs: Location) -> Bool {
   return lhs.id == rhs.id

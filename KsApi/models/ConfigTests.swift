@@ -6,6 +6,45 @@ import Runes
 
 final class ConfigTests: XCTestCase {
 
+  func testSwiftDecoding() {
+
+    let abExperiments = [
+      "2001_space_odyssey": "control",
+      "dr_strangelove": "experiment"
+    ]
+
+    let features = [
+      "feature1": true,
+      "feature2": false,
+      ]
+    let json: [String: Any] = [
+      "ab_experiments": abExperiments,
+      "app_id": 123456789,
+      "apple_pay_countries": ["US", "GB", "CA"],
+      "country_code": "US",
+      "features": features,
+      "itunes_link": "http://www.itunes.com",
+      "launched_countries": [
+        [ "trailing_code": false,
+          "currency_symbol": "€",
+          "currency_code": "EUR",
+          "name": "ES" ],
+        [
+          "trailing_code": false,
+          "currency_symbol": "€",
+          "currency_code": "EUR",
+          "name": "FR" ]
+      ],
+      "locale": "en",
+      "stripe": [
+        "publishable_key": "pk"
+      ]
+    ]
+    let data = try? JSONSerialization.data(withJSONObject: json, options: [])
+    let decodedConfig = try? JSONDecoder().decode(Config.self, from: data!)
+    XCTAssertNotNil(decodedConfig)
+  }
+
   func testDecoding() {
 
     let abExperiments = [
