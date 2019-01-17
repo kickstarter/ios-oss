@@ -113,7 +113,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
     completion: { [weak self] _ in
         if isHidden {
           if AppEnvironment.current.isVoiceOverRunning() {
-            //Re-enables VoiceOver focus on the table view
+            // Tells VoiceOver to re-enable focus on other elements in the same parent view
             self?.emailFrequencyPickerView.accessibilityViewIsModal = false
 
             UIAccessibility.post(
