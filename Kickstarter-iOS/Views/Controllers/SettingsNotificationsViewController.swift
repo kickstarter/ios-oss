@@ -96,7 +96,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
         guard let self = self else { return }
 
         if !isHidden {
-          // Tells Voice Over to focus on the picker.
           if AppEnvironment.current.isVoiceOverRunning() {
             self.emailFrequencyPickerView.accessibilityViewIsModal = true
 
