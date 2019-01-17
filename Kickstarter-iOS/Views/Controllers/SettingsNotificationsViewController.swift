@@ -90,36 +90,40 @@ internal final class SettingsNotificationsViewController: UIViewController {
   }
 
   private func animatePickerView(isHidden: Bool) {
-    UIView.animate(withDuration: 0.25, animations: {
+    UIView.animate(
+      withDuration: 0.25,
+      animations: { [weak self] in
+        guard let self = self else { return }
 
-      if !isHidden {
-        // Tells Voice Over to focus on the picker.
-        if AppEnvironment.current.isVoiceOverRunning() {
-          self.emailFrequencyPickerView.accessibilityViewIsModal = true
+        if !isHidden {
+          // Tells Voice Over to focus on the picker.
+          if AppEnvironment.current.isVoiceOverRunning() {
+            self.emailFrequencyPickerView.accessibilityViewIsModal = true
 
-          UIAccessibility.post(
-            notification: UIAccessibility.Notification.screenChanged,
-            argument: self.emailFrequencyPickerView
-          )
+            UIAccessibility.post(
+              notification: UIAccessibility.Notification.screenChanged,
+              argument: self.emailFrequencyPickerView
+            )
+          }
+        }
+
+        self.emailPickerViewTopConstraint.constant = isHidden ? 0 : self.emailFrequencyPickerView.frame.height
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
+    },
+    completion: { [weak self] _ in
+        if isHidden {
+          if AppEnvironment.current.isVoiceOverRunning() {
+            //Re-enable VoiceOver focus on the table view
+            self?.emailFrequencyPickerView.accessibilityViewIsModal = false
+
+            UIAccessibility.post(
+              notification: UIAccessibility.Notification.screenChanged,
+              argument: self?.emailFrequencyPickerView
+            )
         }
       }
-
-      self.emailPickerViewTopConstraint.constant = isHidden ? 0 : self.emailFrequencyPickerView.frame.height
-      self.view.setNeedsLayout()
-      self.view.layoutIfNeeded()
-    }) { [weak self] _ in
-      if isHidden {
-        if AppEnvironment.current.isVoiceOverRunning() {
-          //Re- enable VoiceOver focus on the table view
-          self?.emailFrequencyPickerView.accessibilityViewIsModal = false
-
-          UIAccessibility.post(
-            notification: UIAccessibility.Notification.screenChanged,
-            argument: self?.emailFrequencyPickerView
-          )
-        }
-      }
-    }
+    })
   }
 }
 
