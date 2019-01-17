@@ -97,6 +97,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
         if !isHidden {
           if AppEnvironment.current.isVoiceOverRunning() {
+            // Tells VoiceOver to ignore other elements in the same parent view
             self.emailFrequencyPickerView.accessibilityViewIsModal = true
 
             UIAccessibility.post(
