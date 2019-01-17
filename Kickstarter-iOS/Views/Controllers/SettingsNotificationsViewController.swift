@@ -8,8 +8,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var emailFrequencyPickerView: UIPickerView!
   @IBOutlet fileprivate weak var emailPickerViewTopConstraint: NSLayoutConstraint!
 
-  private static let emailPickerViewHeight: CGFloat = 200.0
-
   private let viewModel: SettingsNotificationsViewModelType = SettingsNotificationsViewModel()
   private let dataSource: SettingsNotificationsDataSource = SettingsNotificationsDataSource()
 
@@ -92,21 +90,35 @@ internal final class SettingsNotificationsViewController: UIViewController {
   }
 
   private func animatePickerView(isHidden: Bool) {
-    UIView.animate(withDuration: 0.25) {
+    UIView.animate(withDuration: 0.25, animations: {
 
       if !isHidden {
         // Tells Voice Over to focus on the picker.
-        self.emailFrequencyPickerView.accessibilityViewIsModal = true
-        UIAccessibility.post(
-          notification: UIAccessibility.Notification.screenChanged,
-          argument: self.emailFrequencyPickerView
-        )
+        if AppEnvironment.current.isVoiceOverRunning() {
+          self.emailFrequencyPickerView.accessibilityViewIsModal = true
+
+          UIAccessibility.post(
+            notification: UIAccessibility.Notification.screenChanged,
+            argument: self.emailFrequencyPickerView
+          )
+        }
       }
 
-      self.emailPickerViewTopConstraint.constant = isHidden
-        ? 0 : SettingsNotificationsViewController.emailPickerViewHeight
+      self.emailPickerViewTopConstraint.constant = isHidden ? 0 : self.emailFrequencyPickerView.frame.height
       self.view.setNeedsLayout()
       self.view.layoutIfNeeded()
+    }) { [weak self] _ in
+      if isHidden {
+        if AppEnvironment.current.isVoiceOverRunning() {
+          //Re- enable VoiceOver focus on the table view
+          self?.emailFrequencyPickerView.accessibilityViewIsModal = false
+
+          UIAccessibility.post(
+            notification: UIAccessibility.Notification.screenChanged,
+            argument: self?.emailFrequencyPickerView
+          )
+        }
+      }
     }
   }
 }
