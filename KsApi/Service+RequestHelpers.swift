@@ -95,51 +95,6 @@ extension Service {
     return performRequest(request: request)
   }
 
-  func fetch<A: Swift.Decodable>(_ route: Route) -> SignalProducer<A, ErrorEnvelope> {
-
-    let properties = route.requestProperties
-
-    guard let URL = URL(string: properties.path, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
-      fatalError(
-        "URL(string: \(properties.path), relativeToURL: \(self.serverConfig.apiBaseUrl)) == nil"
-      )
-    }
-
-    let request = self.preparedRequest(forURL: URL)
-
-    print("⚪️ [KsApi] Starting query:\n \(request)")
-
-    return SignalProducer<A, ErrorEnvelope> { observer, disposable in
-      let task = URLSession.shared.dataTask(with: request) {  data, response, error in
-        if let error = error {
-          observer.send(error: .couldNotParseJSON)
-          print("🔴 [KsApi] Failure - Request error: \(error.localizedDescription)")
-        }
-
-        guard let data = data else {
-          print("🔴 [KsApi] Failure - Empty response")
-          observer.send(error: .couldNotParseJSON)
-          return
-        }
-
-        do {
-          let decodedObject = try JSONDecoder().decode(A.self, from: data)
-          observer.send(value: decodedObject)
-        } catch let error {
-          print("🔴 [KsApi] Failure - JSON decoding error: \(error.localizedDescription)")
-          observer.send(error: ErrorEnvelope.couldNotDecodeJSON(.custom(error.localizedDescription)))
-        }
-        observer.sendCompleted()
-      }
-
-      disposable.observeEnded {
-        task.cancel()
-      }
-
-      task.resume()
-    }
-  }
-
   func applyMutation<A: Swift.Decodable, B: GraphMutation>(mutation: B) -> SignalProducer<A, GraphError> {
     do {
       let request = try self.preparedGraphRequest(forURL: self.serverConfig.graphQLEndpointUrl,
