@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -671,7 +671,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9UT-pg-c2u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2166" y="51"/>
+            <point key="canvasLocation" x="-3161" y="124"/>
         </scene>
         <!--Payment Methods View Controller-->
         <scene sceneID="zHg-cw-mrH">
@@ -701,12 +701,6 @@
                                     <outlet property="delegate" destination="x6I-vC-YEC" id="wDz-Vt-liF"/>
                                 </connections>
                             </tableView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AcZ-lA-bFy">
-                                <rect key="frame" x="6" y="533" width="363" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="ZY8-Om-t6M"/>
-                                </constraints>
-                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -718,11 +712,8 @@
                             <constraint firstItem="JiT-6r-zd1" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" id="LAA-IF-JdQ"/>
                             <constraint firstItem="xml-QE-znh" firstAttribute="trailing" secondItem="1CW-RA-xOi" secondAttribute="trailing" id="jTT-55-ex7"/>
                             <constraint firstItem="xml-QE-znh" firstAttribute="top" secondItem="1CW-RA-xOi" secondAttribute="top" id="npt-gn-SPf"/>
-                            <constraint firstItem="1CW-RA-xOi" firstAttribute="trailing" secondItem="AcZ-lA-bFy" secondAttribute="trailing" constant="6" id="ofW-oI-TfB"/>
-                            <constraint firstItem="AcZ-lA-bFy" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" constant="6" id="pCF-g7-S35"/>
                             <constraint firstItem="xml-QE-znh" firstAttribute="leading" secondItem="1CW-RA-xOi" secondAttribute="leading" id="pKO-tq-7Te"/>
                             <constraint firstItem="jMz-Pn-EqP" firstAttribute="top" secondItem="xml-QE-znh" secondAttribute="bottom" constant="-2" id="sMh-hh-sd0"/>
-                            <constraint firstItem="1CW-RA-xOi" firstAttribute="bottom" secondItem="AcZ-lA-bFy" secondAttribute="bottom" constant="6" id="sbO-ft-wk8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1CW-RA-xOi"/>
                     </view>
@@ -747,7 +738,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lnb-P0-tav">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="140"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="192"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oRB-S8-IL5">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="36"/>
@@ -843,6 +834,24 @@
                                                     <constraint firstItem="ygp-ig-bdL" firstAttribute="leading" secondItem="BMB-LZ-IRH" secondAttribute="leading" id="yXd-us-5i8"/>
                                                 </constraints>
                                             </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3xL-dG-rNy" userLabel="Error Message Section">
+                                                <rect key="frame" x="0.0" y="140" width="375" height="52"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AWc-a8-i6h">
+                                                        <rect key="frame" x="12" y="6" width="351" height="40"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="AWc-a8-i6h" firstAttribute="top" secondItem="3xL-dG-rNy" secondAttribute="top" constant="6" id="4Ox-r9-AHc"/>
+                                                    <constraint firstAttribute="bottom" secondItem="AWc-a8-i6h" secondAttribute="bottom" constant="6" id="HAW-Nh-9TN"/>
+                                                    <constraint firstItem="AWc-a8-i6h" firstAttribute="leading" secondItem="3xL-dG-rNy" secondAttribute="leading" constant="12" id="Oon-Zk-igq"/>
+                                                    <constraint firstAttribute="trailing" secondItem="AWc-a8-i6h" secondAttribute="trailing" constant="12" id="WVD-nb-g59"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -854,21 +863,12 @@
                                     <constraint firstAttribute="bottom" secondItem="lnb-P0-tav" secondAttribute="bottom" id="y9W-Ob-6iH"/>
                                 </constraints>
                             </scrollView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hfQ-HH-l45">
-                                <rect key="frame" x="6" y="533" width="363" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="mXD-2Y-SI9"/>
-                                </constraints>
-                            </containerView>
                         </subviews>
                         <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="hfQ-HH-l45" firstAttribute="leading" secondItem="uO6-wU-ph7" secondAttribute="leading" constant="6" id="DDG-F8-12m"/>
                             <constraint firstItem="uO6-wU-ph7" firstAttribute="trailing" secondItem="WND-4C-aQn" secondAttribute="trailing" id="EuV-qO-bni"/>
-                            <constraint firstItem="uO6-wU-ph7" firstAttribute="bottom" secondItem="hfQ-HH-l45" secondAttribute="bottom" constant="6" id="QwP-gB-dfk"/>
                             <constraint firstItem="WND-4C-aQn" firstAttribute="leading" secondItem="uO6-wU-ph7" secondAttribute="leading" id="bKt-mR-G6r"/>
                             <constraint firstItem="uO6-wU-ph7" firstAttribute="bottom" secondItem="WND-4C-aQn" secondAttribute="bottom" id="s0b-d5-aBB"/>
-                            <constraint firstItem="uO6-wU-ph7" firstAttribute="trailing" secondItem="hfQ-HH-l45" secondAttribute="trailing" constant="6" id="yPn-fH-OSw"/>
                             <constraint firstItem="WND-4C-aQn" firstAttribute="top" secondItem="uO6-wU-ph7" secondAttribute="top" id="zEv-LV-hOo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uO6-wU-ph7"/>
@@ -877,6 +877,8 @@
                         <outlet property="cardholderNameLabel" destination="6Sc-O3-kKv" id="exe-ri-3u7"/>
                         <outlet property="cardholderNameTextField" destination="gOJ-8S-md7" id="KMQ-hl-wbF"/>
                         <outlet property="creditCardTextField" destination="0rS-r2-TWS" id="Ya1-gS-6aM"/>
+                        <outlet property="creditCardValidationErrorContainer" destination="3xL-dG-rNy" id="Is8-NI-ZHi"/>
+                        <outlet property="creditCardValidationErrorLabel" destination="AWc-a8-i6h" id="O8r-yb-f86"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BRu-8c-SVG" userLabel="First Responder" sceneMemberID="firstResponder"/>

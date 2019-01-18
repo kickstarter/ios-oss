@@ -6,9 +6,10 @@ import Result
 import Stripe
 
 public protocol AddNewCardViewModelInputs {
+  func cardBrandIsValid(_ valid: Bool)
   func cardholderNameChanged(_ cardholderName: String?)
   func cardholderNameTextFieldReturn()
-  func creditCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String)
+  func creditCardChanged(cardNumber: String, expMonth: UInt?, expYear: UInt?, cvc: String?)
   func paymentInfo(valid: Bool)
   func saveButtonTapped()
   func stripeCreated(_ token: String?, stripeID: String?)
@@ -21,9 +22,10 @@ public protocol AddNewCardViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var addNewCardFailure: Signal<String, NoError> { get }
   var addNewCardSuccess: Signal<String, NoError> { get }
+  var cardBrandUnsupportedErrorMessageHidden: Signal<Bool, NoError> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
-  var paymentDetails: Signal<(String, String, Int, Int, String), NoError> { get }
+  var paymentDetails: Signal<(String, String, UInt, UInt, String), NoError> { get }
   var paymentDetailsBecomeFirstResponder: Signal<Void, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
   var setStripePublishableKey: Signal<String, NoError> { get }
@@ -39,16 +41,53 @@ AddNewCardViewModelOutputs {
 
   public init() {
     let cardholderName = self.cardholderNameChangedProperty.signal.skipNil()
-    let creditCardDetails = self.creditCardChangedProperty.signal.skipNil()
+    let creditCardDetails = self.creditCardChangedProperty
+      .signal
+      .skipNil()
+      .filterMap { args -> (String, UInt, UInt, String)? in
+        let (cardNumberArg, expMonthArg, expYearArg, cvcArg) = args
+
+        guard let expMonth = expMonthArg,
+              let expYear = expYearArg,
+              let cvc = cvcArg else {
+          return nil
+        }
+
+        return (cardNumberArg, expMonth, expYear, cvc)
+      }
+
+    let cardNumber = self.creditCardChangedProperty
+      .signal
+      .skipNil()
+      .map { $0.0 }
 
     self.cardholderNameBecomeFirstResponder = self.viewDidLoadProperty.signal
     self.paymentDetailsBecomeFirstResponder = self.cardholderNameTextFieldReturnProperty.signal
 
+    let cardBrandValidAndCardNumberValid = Signal
+      .combineLatest(self.cardBrandIsValidProperty.signal,
+                     cardNumber)
+      .map { (brandValid, cardNumber) -> Bool in
+        // Hide the message if the brand is "unknown" due to the cardNumber being empty,
+        // or only one digit being entered
+        if cardNumber.count < 2 {
+          return true
+        }
+
+        return brandValid
+    }
+
+    self.cardBrandUnsupportedErrorMessageHidden = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      cardBrandValidAndCardNumberValid
+      )
+
     self.saveButtonIsEnabled = Signal.combineLatest(
       cardholderName.map { !$0.isEmpty },
-      self.paymentInfoIsValidProperty.signal
-      ).map { cardholderNameFieldNotEmpty, creditCardIsValid in
-        cardholderNameFieldNotEmpty && creditCardIsValid }
+      self.paymentInfoIsValidProperty.signal,
+      self.cardBrandIsValidProperty.signal
+      ).map { cardholderNameFieldNotEmpty, creditCardIsValid, cardBrandIsValid in
+        cardholderNameFieldNotEmpty && creditCardIsValid && cardBrandIsValid }
 
     let paymentInput = Signal.combineLatest(cardholderName, creditCardDetails)
       .map { cardholderName, creditCardDetails in
@@ -59,8 +98,7 @@ AddNewCardViewModelOutputs {
 
     self.dismissKeyboard = self.saveButtonTappedProperty.signal
 
-    self.setStripePublishableKey = self.saveButtonIsEnabled
-      .filter(isTrue)
+    self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.config?.stripePublishableKey }
       .skipNil()
 
@@ -111,6 +149,11 @@ AddNewCardViewModelOutputs {
     }
   }
 
+  private let cardBrandIsValidProperty = MutableProperty<Bool>(true)
+  public func cardBrandIsValid(_ valid: Bool) {
+    self.cardBrandIsValidProperty.value = valid
+  }
+
   private let cardholderNameChangedProperty = MutableProperty<String?>(nil)
   public func cardholderNameChanged(_ cardholderName: String?) {
     self.cardholderNameChangedProperty.value = cardholderName
@@ -121,8 +164,8 @@ AddNewCardViewModelOutputs {
     self.cardholderNameTextFieldReturnProperty.value = ()
   }
 
-  private let creditCardChangedProperty = MutableProperty<(String, Int, Int, String)?>(nil)
-  public func creditCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String) {
+  private let creditCardChangedProperty = MutableProperty<(String, UInt?, UInt?, String?)?>(nil)
+  public func creditCardChanged(cardNumber: String, expMonth: UInt?, expYear: UInt?, cvc: String?) {
     self.creditCardChangedProperty.value = (cardNumber, expMonth, expYear, cvc)
   }
 
@@ -161,9 +204,10 @@ AddNewCardViewModelOutputs {
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let addNewCardFailure: Signal<String, NoError>
   public let addNewCardSuccess: Signal<String, NoError>
+  public let cardBrandUnsupportedErrorMessageHidden: Signal<Bool, NoError>
   public let cardholderNameBecomeFirstResponder: Signal<Void, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
-  public let paymentDetails: Signal<(String, String, Int, Int, String), NoError>
+  public let paymentDetails: Signal<(String, String, UInt, UInt, String), NoError>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let setStripePublishableKey: Signal<String, NoError>
