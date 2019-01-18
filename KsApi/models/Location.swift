@@ -20,7 +20,6 @@ extension Location: Swift.Decodable {
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-    
     self.country = try values.decode(String.self, forKey: .country)
     self.displayableName = try values.decode(String.self, forKey: .displayableName)
     self.id = try values.decode(Int.self, forKey: .id)

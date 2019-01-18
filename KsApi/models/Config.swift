@@ -62,8 +62,12 @@ extension Config: Swift.Decodable {
     self.launchedCountries = try values.decode([Project.Country].self, forKey: .launchedCountries)
     self.locale = try values.decode(String.self, forKey: .locale)
 
-    let stripe = try decoder.container(keyedBy: CodingKeys.StripeCodingKeys.self)
-    self.stripePublishableKey = try stripe.decode(String.self, forKey: .stripePublishableKey)
+    let stripe = try values.decode([String: String].self, forKey: .stripe)
+    if let publicshableKey = stripe["publishable_key"] {
+      self.stripePublishableKey = publicshableKey
+    } else {
+      throw ErrorEnvelope.couldNotDecodeJSON(.missingKey("publishable_key"))
+    }
   }
 }
 

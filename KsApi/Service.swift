@@ -169,7 +169,7 @@ public struct Service: ServiceType {
   }
 
   public func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
-    return request(.config)
+    return fetch(.config)
   }
 
   public func fetchDiscovery(paginationUrl: String)
