@@ -7,18 +7,18 @@ public enum ColorScriptError: Error {
 public final class ColorScript {
   private let arguments: [String]
 
+  public let inPath = "Resources/Colors.json"
+  public let outPath = "Resources/Colors.swift"
+
   public init(arguments: [String] = CommandLine.arguments) {
     self.arguments = arguments
   }
 
   public func run() throws {
     // swiftlint:disable force_try force_cast force_unwrapping
-    guard arguments.count > 2 else {
-      throw ColorScriptError.missingArguments
-    }
-
-    let inPath = self.arguments[1]
-    let outPath = self.arguments[2]
+//    guard arguments.count > 2 else {
+//      throw ColorScriptError.missingArguments
+//    }
 
     print(inPath)
     print(outPath)
