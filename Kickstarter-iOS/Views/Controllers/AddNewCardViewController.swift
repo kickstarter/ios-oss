@@ -75,6 +75,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
     _ = self.cardholderNameLabel
       |> settingsTitleLabelStyle
+      |> \.isAccessibilityElement .~ false
       |> \.text %~ { _ in Strings.Cardholder_name() }
 
     _ = self.cardholderNameTextField
@@ -83,6 +84,9 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       |> \.returnKeyType .~ .next
       |> \.textAlignment .~ .right
       |> \.textColor .~ .ksr_text_dark_grey_500
+
+    _ = self.cardholderNameTextField
+      |> \.accessibilityLabel .~ self.cardholderNameLabel.text
       |> \.attributedPlaceholder .~ NSAttributedString(
           string: Strings.Name(),
           attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400])
@@ -109,6 +113,14 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       self.viewModel.outputs.cardBrandUnsupportedErrorMessageHidden
     self.cardholderNameTextField.rac.becomeFirstResponder =
       self.viewModel.outputs.cardholderNameBecomeFirstResponder
+
+    self.viewModel.outputs.cardBrandUnsupportedErrorMessageHidden
+      .filter { isTrue($0) }
+      .observeForUI()
+      .observeValues { _ in
+        UIAccessibility.post(notification: .layoutChanged,
+                             argument: self.creditCardValidationErrorLabel)
+    }
 
     self.viewModel.outputs.paymentDetailsBecomeFirstResponder
       .observeForUI()
