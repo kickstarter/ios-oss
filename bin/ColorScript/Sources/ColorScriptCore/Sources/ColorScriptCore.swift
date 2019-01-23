@@ -20,20 +20,28 @@ public struct Color {
     self.data = data
   }
 
-  public func colors() -> [(key: String, value: String)] {
-    return (try! JSONSerialization.jsonObject(with: data, options: []) as! [String: String])
-      .map { (key: $0, value: $1) }
-      .sorted { $0.key < $1.key }
+  public func colors() -> [(key: String, value: String)]? {
+    do {
+      if let json = try (JSONSerialization.jsonObject(with: data, options: []) as? [String: String]) {
+        let colors = json
+          .map { (key: $0, value: $1) }
+          .sorted { $0.key < $1.key }
+        return colors
+      }
+      return nil
+    } catch {
+      return nil
+    }
   }
 
   public var prettyColors: String {
-    return colors().map { (color, value) in
+    return colors()!.map { (color, value) in
       return "  \(color): #\(value)"
       }.joined(separator: "\n")
   }
 
   public var allColors: [(key: String, value: [(key: Int, value: String)])] {
-    return colors()
+    return colors()!
       .reduce([String: [Int: String]]()) { accum, pair in
         let (name, _) = pair
 
@@ -95,7 +103,7 @@ public struct Color {
     lines.append("  }")
     lines.append("")
 
-    let staticVars: [String] = colors().map { name, hex in
+    let staticVars: [String] = colors()!.map { name, hex in
       var staticVar: [String] = []
       staticVar.append("  /// 0x\(hex)")
       staticVar.append("  public static var ksr_\(name): UIColor {")

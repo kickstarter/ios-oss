@@ -15,10 +15,6 @@ public final class ColorScript {
   }
 
   public func run() throws {
-    // swiftlint:disable force_try force_cast force_unwrapping
-//    guard arguments.count > 2 else {
-//      throw ColorScriptError.missingArguments
-//    }
 
     print(inPath)
     print(outPath)
