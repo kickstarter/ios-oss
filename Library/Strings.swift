@@ -689,23 +689,23 @@ public enum Strings {
   }
   /**
    "%{backers_count}
-backer"
+backers"
 
    - **en**: "%{backers_count}
-backer"
+backers"
    - **de**: "%{backers_count}
 Unterstützer"
    - **es**: "%{backers_count}
-patrocinador"
+patrocinadores"
    - **fr**: "%{backers_count}
-contributeur"
+contributeurs"
    - **ja**: "%{backers_count}
 バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
       key: "Backers_count_separator_backers",
-      defaultValue: "%{backers_count}\nbacker",
+      defaultValue: "%{backers_count}\nbackers",
       count: backers_count,
       substitutions: ["backers_count": Format.wholeNumber(backers_count)]
     )
@@ -1765,6 +1765,23 @@ contributeur"
     )
   }
   /**
+   "Daily"
+
+   - **en**: "Daily"
+   - **de**: "Daily"
+   - **es**: "Daily"
+   - **fr**: "Daily"
+   - **ja**: "Daily"
+  */
+  public static func Daily() -> String {
+    return localizedString(
+      key: "Daily",
+      defaultValue: "Daily",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Daily digest"
 
    - **en**: "Daily digest"
@@ -2462,18 +2479,18 @@ contributeur"
     )
   }
   /**
-   "%{filter_name}: %{project_count} live project"
+   "%{filter_name}: %{project_count} live projects"
 
-   - **en**: "%{filter_name}: %{project_count} live project"
-   - **de**: "%{filter_name}: %{project_count} Live-Projekt"
-   - **es**: "%{filter_name}: %{project_count} proyecto activo"
-   - **fr**: "%{filter_name} : %{project_count} projet en cours"
+   - **en**: "%{filter_name}: %{project_count} live projects"
+   - **de**: "%{filter_name}: %{project_count} Live-Projekte"
+   - **es**: "%{filter_name}: %{project_count} proyectos activos"
+   - **fr**: "%{filter_name} : %{project_count} projets en cours"
    - **ja**: "%{filter_name}：%{project_count} の進行中プロジェクト"
   */
   public static func Filter_name_project_count_live_projects(filter_name: String, project_count: Int) -> String {
     return localizedString(
       key: "Filter_name_project_count_live_projects",
-      defaultValue: "%{filter_name}: %{project_count} live project",
+      defaultValue: "%{filter_name}: %{project_count} live projects",
       count: project_count,
       substitutions: ["filter_name": filter_name, "project_count": Format.wholeNumber(project_count)]
     )
@@ -3659,8 +3676,8 @@ with friends."
 
    - **en**: "%{left_count} left"
    - **de**: "%{left_count} übrig"
-   - **es**: "%{left_count} restante"
-   - **fr**: "%{left_count} restante"
+   - **es**: "%{left_count} restantes"
+   - **fr**: "%{left_count} restantes"
    - **ja**: "残り%{left_count}"
   */
   public static func Left_count_left(left_count: Int) -> String {
@@ -5239,6 +5256,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Project activity summary"
+
+   - **en**: "Project activity summary"
+   - **de**: "Übersicht Projektaktivität"
+   - **es**: "Resumen de la actividad del proyecto"
+   - **fr**: "Résumé d'activité de projet"
+   - **ja**: "プロジェクトアクティビティ概要"
+  */
+  public static func Project_activity_summary() -> String {
+    return localizedString(
+      key: "Project_activity_summary",
+      defaultValue: "Project activity summary",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Project cancelled"
 
    - **en**: "Project cancelled"
@@ -5871,35 +5905,35 @@ daring ideas."
     )
   }
   /**
-   "%{rewards_count} reward"
+   "%{rewards_count} rewards"
 
-   - **en**: "%{rewards_count} reward"
-   - **de**: "%{rewards_count} Belohnung"
-   - **es**: "%{rewards_count} recompensa"
-   - **fr**: "%{rewards_count} récompense"
+   - **en**: "%{rewards_count} rewards"
+   - **de**: "%{rewards_count} Belohnungen"
+   - **es**: "%{rewards_count} recompensas"
+   - **fr**: "%{rewards_count} récompenses"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards",
-      defaultValue: "%{rewards_count} reward",
+      defaultValue: "%{rewards_count} rewards",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
   }
   /**
-   "%{rewards_count} reward:"
+   "%{rewards_count} rewards:"
 
-   - **en**: "%{rewards_count} reward:"
-   - **de**: "%{rewards_count} Belohnung:"
-   - **es**: "%{rewards_count} recompensa:"
-   - **fr**: "%{rewards_count} récompense :"
+   - **en**: "%{rewards_count} rewards:"
+   - **de**: "%{rewards_count} Belohnungen:"
+   - **es**: "%{rewards_count} recompensas:"
+   - **fr**: "%{rewards_count} récompenses :"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards_colon(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards_colon",
-      defaultValue: "%{rewards_count} reward:",
+      defaultValue: "%{rewards_count} rewards:",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
@@ -7029,6 +7063,23 @@ catch your eye?"
     )
   }
   /**
+   "Twice a day"
+
+   - **en**: "Twice a day"
+   - **de**: "Zweimal täglich"
+   - **es**: "Dos veces al día"
+   - **fr**: "Deux fois par jour"
+   - **ja**: "1日2回"
+  */
+  public static func Twice_a_day() -> String {
+    return localizedString(
+      key: "Twice_a_day",
+      defaultValue: "Twice a day",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Unable to request data."
 
    - **en**: "Unable to request data."
@@ -7160,6 +7211,23 @@ catch your eye?"
     return localizedString(
       key: "Unsuccessfully_Funded",
       defaultValue: "Unsuccessfully Funded.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "We don't accept this card type. Please try again with another one."
+
+   - **en**: "We don't accept this card type. Please try again with another one."
+   - **de**: "We don't accept this card type. Please try again with another one."
+   - **es**: "We don't accept this card type. Please try again with another one."
+   - **fr**: "We don't accept this card type. Please try again with another one."
+   - **ja**: "We don't accept this card type. Please try again with another one."
+  */
+  public static func Unsupported_card_type() -> String {
+    return localizedString(
+      key: "Unsupported_card_type",
+      defaultValue: "We don't accept this card type. Please try again with another one.",
       count: nil,
       substitutions: [:]
     )
@@ -9874,18 +9942,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "%{comments_count} comment"
+   "%{comments_count} comments"
 
-   - **en**: "%{comments_count} comment"
-   - **de**: "%{comments_count} Kommentar"
-   - **es**: "%{comments_count} commentario"
-   - **fr**: "%{comments_count} commentaire"
+   - **en**: "%{comments_count} comments"
+   - **de**: "%{comments_count} Kommentare"
+   - **es**: "%{comments_count} commentarios"
+   - **fr**: "%{comments_count} commentaires"
    - **ja**: "%{comments_count} のコメント"
   */
   public static func comments_count_comments(comments_count: Int) -> String {
     return localizedString(
       key: "comments_count_comments",
-      defaultValue: "%{comments_count} comment",
+      defaultValue: "%{comments_count} comments",
       count: comments_count,
       substitutions: ["comments_count": Format.wholeNumber(comments_count)]
     )
@@ -13008,7 +13076,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -16232,7 +16300,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -19247,18 +19315,18 @@ Merci pour votre soutien !"
     )
   }
   /**
-   "%{project_count} project"
+   "%{project_count} projects"
 
-   - **en**: "%{project_count} project"
-   - **de**: "%{project_count} Projekt"
-   - **es**: "%{project_count} proyecto"
-   - **fr**: "%{project_count} projet"
+   - **en**: "%{project_count} projects"
+   - **de**: "%{project_count} Projekte"
+   - **es**: "%{project_count} proyectos"
+   - **fr**: "%{project_count} projets"
    - **ja**: "%{project_count} 件のプロジェクト"
   */
   public static func project_count_projects(project_count: Int) -> String {
     return localizedString(
       key: "project_count_projects",
-      defaultValue: "%{project_count} project",
+      defaultValue: "%{project_count} projects",
       count: project_count,
       substitutions: ["project_count": Format.wholeNumber(project_count)]
     )
@@ -19275,7 +19343,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -20097,7 +20165,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
@@ -20916,18 +20984,18 @@ projets enregistrés"
     )
   }
   /**
-   "%{updates_count} update"
+   "%{updates_count} updates"
 
-   - **en**: "%{updates_count} update"
-   - **de**: "%{updates_count} Update"
-   - **es**: "%{updates_count} actualización"
-   - **fr**: "%{updates_count} actu"
+   - **en**: "%{updates_count} updates"
+   - **de**: "%{updates_count} Updates"
+   - **es**: "%{updates_count} actualizaciones"
+   - **fr**: "%{updates_count} actus"
    - **ja**: "%{updates_count} 件のアップデート"
   */
   public static func updates_count_updates(updates_count: Int) -> String {
     return localizedString(
       key: "updates_count_updates",
-      defaultValue: "%{updates_count} update",
+      defaultValue: "%{updates_count} updates",
       count: updates_count,
       substitutions: ["updates_count": Format.wholeNumber(updates_count)]
     )

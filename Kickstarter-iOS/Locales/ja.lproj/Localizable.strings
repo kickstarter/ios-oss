@@ -105,6 +105,7 @@
 "Currency_USD" = "$ 米ドル (USD)";
 "Current_email" = "現在のメールアドレス";
 "Current_password" = "現在のパスワード";
+"Daily" = "Daily";
 "Daily_digest" = "デイリーダイジェスト";
 "Data_will_appear_here_once" = "誰かがプロジェクトをバック（支援）すると、ここにデータが表示されます。";
 "Delete_my_Kickstarter_Account" = "Kickstarter アカウントを削除";
@@ -317,6 +318,7 @@
 "Project_Cancelled" = "プロジェクトが取り消されました。";
 "Project_Suspended" = "プロジェクトは停止されました。";
 "Project_activity" = "プロジェクトのアクティビティ";
+"Project_activity_summary" = "プロジェクトアクティビティ概要";
 "Project_cancelled" = "プロジェクトが取り消されました。";
 "Project_reminders" = "プロジェクトのリマインダー";
 "Project_saved" = "プロジェクトを保存しました。";
@@ -434,6 +436,7 @@
 "Top_ten_pledge_sources" = "プレッジソースのトップ10";
 "Top_ten_rewards" = "リワードのトップ10";
 "Total_pledged" = "プレッジ総計";
+"Twice_a_day" = "1日2回";
 "Unable_to_request" = "データをリクエストできません。";
 "Unfollow_friend_name" = "%{friend_name} のフォロー解除";
 "Unfollows_friend_name" = "%{friend_name} のフォロー解除";
@@ -442,6 +445,7 @@
 "Unsubscribe" = "購読キャンセル済み";
 "Unsubscribes_from_upcoming_lives_streams" = "ライブ配信の購読を停止";
 "Unsuccessfully_Funded" = "資金調達失敗";
+"Unsupported_card_type" = "We don't accept this card type. Please try again with another one.";
 "Upcoming_live_stream" = "ライブ配信が開始します";
 "Upcoming_live_streams" = "ライブ配信が開始します";
 "Upcoming_with_creator_name" = "<br/><b>%{creator_name}</b>が近日配信";

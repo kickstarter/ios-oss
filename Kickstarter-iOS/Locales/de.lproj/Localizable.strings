@@ -105,6 +105,7 @@
 "Currency_USD" = "$ US-Dollar (USD)";
 "Current_email" = "Derzeitige E-Mail";
 "Current_password" = "Derzeitiges Passwort";
+"Daily" = "Daily";
 "Daily_digest" = "Tägliche Zusammenfassung";
 "Data_will_appear_here_once" = "Info wird hier angezeigt, sobald jemand dein Projekt unterstützt.";
 "Delete_my_Kickstarter_Account" = "Mein Kickstarter-Konto löschen";
@@ -317,6 +318,7 @@
 "Project_Cancelled" = "Projekt abgebrochen.";
 "Project_Suspended" = "Projekt ausgesetzt.";
 "Project_activity" = "Projektaktivität";
+"Project_activity_summary" = "Übersicht Projektaktivität";
 "Project_cancelled" = "Projekt abgebrochen";
 "Project_reminders" = "Projekt-Erinnerungen";
 "Project_saved" = "Projekt gespeichert.";
@@ -434,6 +436,7 @@
 "Top_ten_pledge_sources" = "Top 10 Quellen deiner Beiträge";
 "Top_ten_rewards" = "Top 10-Belohnungen";
 "Total_pledged" = "Anzahl der Beiträge insgesamt";
+"Twice_a_day" = "Zweimal täglich";
 "Unable_to_request" = "Daten konnten nicht angefordert werden.";
 "Unfollow_friend_name" = "%{friend_name} nicht mehr folgen";
 "Unfollows_friend_name" = "%{friend_name} nicht mehr folgen.";
@@ -442,6 +445,7 @@
 "Unsubscribe" = "Abo abbestellen";
 "Unsubscribes_from_upcoming_lives_streams" = "Abo für zukünftige Live-Streams abbestellen.";
 "Unsuccessfully_Funded" = "Finanzierung fehlgeschlagen.";
+"Unsupported_card_type" = "We don't accept this card type. Please try again with another one.";
 "Upcoming_live_stream" = "Nächster Live-Stream";
 "Upcoming_live_streams" = "Zukünftige Live-Streams";
 "Upcoming_with_creator_name" = "Demnächst: Video von <br/><b>%{creator_name}</b>";

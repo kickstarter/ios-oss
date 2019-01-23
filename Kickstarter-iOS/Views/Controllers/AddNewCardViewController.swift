@@ -103,7 +103,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     _ = self.creditCardValidationErrorLabel
       |> settingsDescriptionLabelStyle
       |> \.textColor .~ .ksr_red_400
-      |> \.text %~ { _ in "This card is not supported" }
+      |> \.text %~ { _ in Strings.Unsupported_card_type() }
   }
 
   override func bindViewModel() {

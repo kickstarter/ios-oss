@@ -105,6 +105,7 @@
 "Currency_USD" = "$ US Dollar (USD)";
 "Current_email" = "Current email";
 "Current_password" = "Current password";
+"Daily" = "Daily";
 "Daily_digest" = "Daily digest";
 "Data_will_appear_here_once" = "Data will appear here once somebody backs your project.";
 "Delete_my_Kickstarter_Account" = "Delete my Kickstarter account";
@@ -317,6 +318,7 @@
 "Project_Cancelled" = "Project Cancelled.";
 "Project_Suspended" = "Project Suspended.";
 "Project_activity" = "Project activity";
+"Project_activity_summary" = "Project activity summary";
 "Project_cancelled" = "Project cancelled";
 "Project_reminders" = "Project reminders";
 "Project_saved" = "Project saved.";
@@ -434,6 +436,7 @@
 "Top_ten_pledge_sources" = "Top 10 pledge sources";
 "Top_ten_rewards" = "Top 10 rewards";
 "Total_pledged" = "Total pledged";
+"Twice_a_day" = "Twice a day";
 "Unable_to_request" = "Unable to request data.";
 "Unfollow_friend_name" = "Unfollow %{friend_name}";
 "Unfollows_friend_name" = "Unfollows %{friend_name}.";
@@ -442,6 +445,7 @@
 "Unsubscribe" = "Unsubscribe";
 "Unsubscribes_from_upcoming_lives_streams" = "Unsubscribes from upcoming live streams.";
 "Unsuccessfully_Funded" = "Unsuccessfully Funded.";
+"Unsupported_card_type" = "We don't accept this card type. Please try again with another one.";
 "Upcoming_live_stream" = "Upcoming live stream";
 "Upcoming_live_streams" = "Upcoming live streams";
 "Upcoming_with_creator_name" = "Upcoming with<br/><b>%{creator_name}</b>";
