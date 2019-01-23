@@ -68,8 +68,7 @@ AddNewCardViewModelOutputs {
       .combineLatest(self.cardBrandIsValidProperty.signal,
                      cardNumber)
       .map { (brandValid, cardNumber) -> Bool in
-        // Hide the message if the brand is "unknown" due to the cardNumber being empty,
-        // or only one digit being entered
+        // If card number is insufficiently long, always return "valid card brand" behaviour
         if cardNumber.count < 2 {
           return true
         }

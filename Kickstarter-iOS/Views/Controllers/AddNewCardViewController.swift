@@ -115,7 +115,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       self.viewModel.outputs.cardholderNameBecomeFirstResponder
 
     self.viewModel.outputs.cardBrandUnsupportedErrorMessageHidden
-      .filter { isTrue($0) }
+      .filter { isFalse($0) }
       .observeForUI()
       .observeValues { _ in
         UIAccessibility.post(notification: .layoutChanged,
