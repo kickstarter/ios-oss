@@ -83,9 +83,9 @@ AddNewCardViewModelOutputs {
       )
 
     self.saveButtonIsEnabled = Signal.combineLatest(
-      cardholderName.map { !$0.isEmpty }.logEvents(identifier: "CARDHOLDER NAME CHANGED"),
-      self.paymentInfoIsValidProperty.signal.logEvents(identifier: "PAYMENT INFO VALID"),
-      self.cardBrandIsValidProperty.signal.logEvents(identifier: "CREDIT CARD VALID")
+      cardholderName.map { !$0.isEmpty },
+      self.paymentInfoIsValidProperty.signal,
+      self.cardBrandIsValidProperty.signal
       ).map { cardholderNameFieldNotEmpty, creditCardIsValid, cardBrandIsValid in
         cardholderNameFieldNotEmpty && creditCardIsValid && cardBrandIsValid }
       .skipRepeats()
