@@ -58,10 +58,11 @@ platform :ios do
 
   ### BETA
 
-  lane :beta_match_gym_hockey do
+  lane :beta_match_gym_hockey_s3 do
     match_all
     beta_gym
     beta_hockey
+    beta_s3
   end
 
   desc "Build Beta"
@@ -91,6 +92,20 @@ platform :ios do
         "HockeyApp"
       )
     )
+  end
+
+  desc "Upload Beta to S3"
+  lane :beta_s3 do
+    File.write('.FASTLANE_RELEASE_NOTES.tmp', changelog)
+
+    sh "./beta-changelog.rb"
+
+    upload_s3(
+      ipa: "KickBeta.ipa",
+      dsym: "KickBeta.app.dSYM.zip"
+    )
+
+    sh "./beta-post-s3.rb"
   end
 
   ### PRODUCTION
@@ -239,7 +254,7 @@ platform :ios do
 
   private_lane :upload_dsyms do |options|
     upload_symbols_to_crashlytics(
-      dsym_path: options[:dsym], 
+      dsym_path: options[:dsym],
       api_token: ENV["FABRIC_API_KEY"],
       binary_path: "./bin/upload-symbols"
     )
@@ -262,6 +277,19 @@ platform :ios do
       date_format: "short",
       match_lightweight_tag: false,
       merge_commit_filtering: "exclude_merges"
+    )
+  end
+
+  private_lane :upload_s3 do |options|
+    aws_s3(
+      access_key: ENV['AWS_ACCESS_KEY_ID'],
+      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
+      bucket: ENV['AWS_BUCKET'],
+      region: ENV['AWS_REGION'],
+      ipa: options[:ipa],
+      dsym: options[:dsym],
+      path: "{CFBundleVersion}/",
+      upload_metadata: true
     )
   end
 
