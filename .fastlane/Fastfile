@@ -101,8 +101,8 @@ platform :ios do
     sh "./beta-changelog.rb"
 
     upload_s3(
-      ipa: "KickBeta.ipa",
-      dsym: "KickBeta.app.dSYM.zip"
+      ipa: "./output/gym/KickBeta.ipa",
+      dsym: "./output/gym/KickBeta.app.dSYM.zip"
     )
 
     sh "./beta-post-s3.rb"
