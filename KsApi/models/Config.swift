@@ -61,13 +61,9 @@ extension Config: Swift.Decodable {
     self.iTunesLink = try values.decode(String.self, forKey: .iTunesLink)
     self.launchedCountries = try values.decode([Project.Country].self, forKey: .launchedCountries)
     self.locale = try values.decode(String.self, forKey: .locale)
-
-    let stripe = try values.decode([String: String].self, forKey: .stripe)
-    if let publicshableKey = stripe["publishable_key"] {
-      self.stripePublishableKey = publicshableKey
-    } else {
-      throw ErrorEnvelope.couldNotDecodeJSON(.missingKey("publishable_key"))
-    }
+    self.stripePublishableKey = try values
+      .nestedContainer(keyedBy: CodingKeys.StripeCodingKeys.self, forKey: .stripe)
+      .decode(String.self, forKey: .stripePublishableKey)
   }
 }
 

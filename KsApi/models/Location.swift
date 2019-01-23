@@ -15,7 +15,11 @@ public struct Location {
 extension Location: Swift.Decodable {
 
   enum CodingKeys: String, CodingKey {
-    case country, displayableName = "displayable_name", id, localizedName = "localized_name", name
+    case country
+    case displayableName = "displayable_name"
+    case id
+    case localizedName = "localized_name"
+    case name
   }
 
   public init(from decoder: Decoder) throws {
