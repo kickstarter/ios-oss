@@ -1,6 +1,4 @@
 // swiftlint:disable force_unwrapping
-// swiftlint:disable force_cast
-// swiftlint:disable force_try
 import Foundation
 
 extension Dictionary {
