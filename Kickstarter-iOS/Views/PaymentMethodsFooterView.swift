@@ -17,12 +17,10 @@ public final class PaymentMethodsFooterView: UITableViewHeaderFooterView {
     super.bindViewModel()
 
     _ = self.addCardButton
+      |> \.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(4))
+      |> \.imageEdgeInsets .~ UIEdgeInsets(left: Styles.grid(2))
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_700
-      |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(4))
-      |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(left: Styles.grid(2))
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.Add_new_card()
-      }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Add_new_card() }
 
     _ = self.addCardButton.imageView
       ?|> \.tintColor .~ .ksr_green_700

@@ -110,12 +110,12 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     super.bindViewModel()
 
     self.creditCardValidationErrorContainer.rac.hidden =
-      self.viewModel.outputs.cardBrandUnsupportedErrorMessageHidden
+      self.viewModel.outputs.creditCardValidationErrorContainerHidden
     self.cardholderNameTextField.rac.becomeFirstResponder =
       self.viewModel.outputs.cardholderNameBecomeFirstResponder
 
-    self.viewModel.outputs.cardBrandUnsupportedErrorMessageHidden
-      .filter { isFalse($0) }
+    self.viewModel.outputs.creditCardValidationErrorContainerHidden
+      .filter(isFalse)
       .observeForUI()
       .observeValues { _ in
         UIAccessibility.post(notification: .layoutChanged,
@@ -197,7 +197,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
 
-  // MARK: STPPaymentCardTextFieldDelegate
+  // MARK: - STPPaymentCardTextFieldDelegate
   internal func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
     self.viewModel.inputs.paymentInfo(valid: textField.isValid)
 
@@ -209,16 +209,14 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     let isValid = self.cardBrandIsSupported(brand: cardBrand,
                                             unsupportedCardBrands: self.unsupportedCardBrands)
 
-    self.viewModel.inputs.cardBrandIsValid(isValid)
+    self.viewModel.inputs.cardBrand(isValid: isValid)
 
-    self.viewModel.inputs.creditCardChanged(cardNumber: cardnumber,
-                                            expMonth: textField.expirationMonth,
-                                            expYear: textField.expirationYear,
-                                            cvc: textField.cvc)
+    self.viewModel.inputs.creditCardChanged(cardDetails: (cardnumber, textField.expirationMonth,
+                                                          textField.expirationYear, textField.cvc))
 
   }
 
-  // MARK: Private Functions
+  // MARK: - Private Functions
   private func createStripeToken(cardholderName: String,
                                  cardNumber: String,
                                  expirationMonth: UInt,
@@ -240,8 +238,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     }
   }
 
-  private func cardBrandIsSupported(brand: STPCardBrand,
-                                    unsupportedCardBrands: [STPCardBrand]) -> Bool {
-    return !unsupportedCardBrands.contains(brand)
+  private func cardBrandIsSupported(brand: STPCardBrand, unsupportedCardBrands: [STPCardBrand]) -> Bool {
+    return !self.unsupportedCardBrands.contains(brand)
   }
 }

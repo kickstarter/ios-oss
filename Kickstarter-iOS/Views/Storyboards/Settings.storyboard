@@ -798,7 +798,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0rS-r2-TWS" customClass="STPPaymentCardTextField">
-                                                        <rect key="frame" x="0.0" y="0.5" width="381" height="43"/>
+                                                        <rect key="frame" x="0.0" y="0.5" width="375" height="43"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOu-68-PJO" userLabel="Separator">
@@ -813,7 +813,7 @@
                                                 <constraints>
                                                     <constraint firstItem="0rS-r2-TWS" firstAttribute="leading" secondItem="BMB-LZ-IRH" secondAttribute="leading" id="0UU-lj-GUy"/>
                                                     <constraint firstAttribute="height" constant="44" id="Fes-R7-l5F"/>
-                                                    <constraint firstAttribute="trailing" secondItem="0rS-r2-TWS" secondAttribute="trailing" constant="-6" id="LKV-u2-d3x"/>
+                                                    <constraint firstAttribute="trailing" secondItem="0rS-r2-TWS" secondAttribute="trailing" id="LKV-u2-d3x"/>
                                                     <constraint firstItem="0rS-r2-TWS" firstAttribute="top" secondItem="ygp-ig-bdL" secondAttribute="bottom" id="ZOi-wY-lfD"/>
                                                     <constraint firstAttribute="trailing" secondItem="ygp-ig-bdL" secondAttribute="trailing" id="aCV-Sr-nws"/>
                                                     <constraint firstAttribute="bottom" secondItem="gOu-68-PJO" secondAttribute="bottom" id="alE-iC-kBe"/>
@@ -847,7 +847,6 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="lnb-P0-tav" firstAttribute="top" secondItem="WND-4C-aQn" secondAttribute="top" id="APw-GW-rXx"/>
-                                    <constraint firstItem="lnb-P0-tav" firstAttribute="centerX" secondItem="WND-4C-aQn" secondAttribute="centerX" id="Hja-AQ-nIQ"/>
                                     <constraint firstItem="lnb-P0-tav" firstAttribute="leading" secondItem="WND-4C-aQn" secondAttribute="leading" id="OIK-1Z-bRx"/>
                                     <constraint firstAttribute="trailing" secondItem="lnb-P0-tav" secondAttribute="trailing" id="jDZ-V7-z0T"/>
                                     <constraint firstAttribute="bottom" secondItem="lnb-P0-tav" secondAttribute="bottom" id="y9W-Ob-6iH"/>
@@ -857,6 +856,7 @@
                         <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="uO6-wU-ph7" firstAttribute="trailing" secondItem="WND-4C-aQn" secondAttribute="trailing" id="EuV-qO-bni"/>
+                            <constraint firstItem="lnb-P0-tav" firstAttribute="width" secondItem="8Z2-wp-VS9" secondAttribute="width" id="MSk-yM-HS6"/>
                             <constraint firstItem="WND-4C-aQn" firstAttribute="leading" secondItem="uO6-wU-ph7" secondAttribute="leading" id="bKt-mR-G6r"/>
                             <constraint firstItem="uO6-wU-ph7" firstAttribute="bottom" secondItem="WND-4C-aQn" secondAttribute="bottom" id="s0b-d5-aBB"/>
                             <constraint firstItem="WND-4C-aQn" firstAttribute="top" secondItem="uO6-wU-ph7" secondAttribute="top" id="zEv-LV-hOo"/>

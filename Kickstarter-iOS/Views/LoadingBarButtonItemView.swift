@@ -30,6 +30,14 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
 
     _ = self.activityIndicator
       |> baseActivityIndicatorStyle
+
+    guard #available(iOS 11.0, *) else {
+      let (width, height) = (70, 44)
+
+      self.frame = CGRect(x: 0, y: 0, width: width, height: height)
+
+      return
+    }
   }
 
   override func bindViewModel() {
@@ -46,7 +54,7 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
     }
   }
 
-  // MARK: Public Functions
+  // MARK: - Public Functions
 
   func setIsEnabled(isEnabled: Bool) {
     self.viewModel.inputs.setIsEnabled(isEnabled: isEnabled)
@@ -68,7 +76,7 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
     self.titleButton.addTarget(target, action: action, for: .touchUpInside)
   }
 
-  // MARK: Private Functions
+  // MARK: - Private Functions
 
   private func animateActivityIndicator(_ isAnimating: Bool) {
     if isAnimating {

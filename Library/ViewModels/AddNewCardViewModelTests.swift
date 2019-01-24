@@ -12,7 +12,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
   private let addNewCardFailure = TestObserver<String, NoError>()
   private let addNewCardSuccess = TestObserver<String, NoError>()
-  private let cardBrandUnsupportedErrorMessageHiddenObserver = TestObserver<Bool, NoError>()
+  private let creditCardValidationErrorContainerHidden = TestObserver<Bool, NoError>()
   private let cardholderNameBecomeFirstResponder = TestObserver<Void, NoError>()
   private let dismissKeyboard = TestObserver<Void, NoError>()
   private let cardholderName = TestObserver<String, NoError>()
@@ -29,8 +29,8 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.outputs.activityIndicatorShouldShow.observe(activityIndicatorShouldShow.observer)
     self.vm.outputs.addNewCardFailure.observe(addNewCardFailure.observer)
     self.vm.outputs.addNewCardSuccess.observe(addNewCardSuccess.observer)
-    self.vm.outputs.cardBrandUnsupportedErrorMessageHidden
-      .observe(cardBrandUnsupportedErrorMessageHiddenObserver.observer)
+    self.vm.outputs.creditCardValidationErrorContainerHidden
+      .observe(creditCardValidationErrorContainerHidden.observer)
     self.vm.outputs.cardholderNameBecomeFirstResponder.observe(cardholderNameBecomeFirstResponder.observer)
     self.vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
     self.vm.outputs.paymentDetails.map { $0.0 }.observe(cardholderName.observer)
@@ -48,12 +48,9 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.cardholderNameChanged("Native Squad")
     self.vm.inputs.cardholderNameTextFieldReturn()
     self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
-    self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
-                                      expMonth: 11,
-                                      expYear: 99,
-                                      cvc: "123")
+    self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
     self.vm.inputs.paymentInfo(valid: true)
-    self.vm.inputs.cardBrandIsValid(true)
+    self.vm.inputs.cardBrand(isValid: true)
     self.saveButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.saveButtonTapped()
@@ -73,12 +70,9 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.cardholderNameTextFieldReturn()
     self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
 
-    self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
-                                      expMonth: 11,
-                                      expYear: 99,
-                                      cvc: "123")
+    self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
     self.vm.inputs.paymentInfo(valid: true)
-    self.vm.inputs.cardBrandIsValid(true)
+    self.vm.inputs.cardBrand(isValid: true)
     self.saveButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.saveButtonTapped()
@@ -103,12 +97,9 @@ internal final class AddNewCardViewModelTests: TestCase {
       self.paymentDetailsBecomeFirstResponder
         .assertValueCount(1, "First responder after editing cardholder name.")
 
-      self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
-                                        expMonth: 11,
-                                        expYear: 99,
-                                        cvc: "123")
+      self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
       self.vm.inputs.paymentInfo(valid: true)
-      self.vm.inputs.cardBrandIsValid(true)
+      self.vm.inputs.cardBrand(isValid: true)
       self.saveButtonIsEnabled.assertValues([true])
       self.vm.inputs.saveButtonTapped()
       self.activityIndicatorShouldShow.assertValues([true])
@@ -135,7 +126,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.paymentDetailsBecomeFirstResponder.assertDidNotEmitValue("Not first responder when view loads")
     self.vm.inputs.cardholderNameChanged("")
     self.vm.inputs.paymentInfo(valid: false)
-    self.vm.inputs.cardBrandIsValid(false)
+    self.vm.inputs.cardBrand(isValid: false)
     self.saveButtonIsEnabled.assertValues([false], "Disabled form is incomplete")
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
@@ -146,14 +137,11 @@ internal final class AddNewCardViewModelTests: TestCase {
       .assertValueCount(1, "First responder after editing cardholder name.")
     self.saveButtonIsEnabled.assertValues([false], "Remains disabled while form is incomplete.")
 
-    self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
-                                     expMonth: 11,
-                                     expYear: 99,
-                                     cvc: "123")
+    self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
     self.cardholderNameBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.paymentDetailsBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.vm.inputs.paymentInfo(valid: true)
-    self.vm.inputs.cardBrandIsValid(true)
+    self.vm.inputs.cardBrand(isValid: true)
     self.saveButtonIsEnabled.assertValues([false, true], "Enabled when form is valid.")
   }
 
@@ -163,17 +151,17 @@ internal final class AddNewCardViewModelTests: TestCase {
 
     self.vm.inputs.cardholderNameChanged("")
     self.vm.inputs.paymentInfo(valid: false)
-    self.vm.inputs.cardBrandIsValid(false)
+    self.vm.inputs.cardBrand(isValid: false)
     self.saveButtonIsEnabled.assertValues([false], "Disabled form is incomplete")
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
     self.vm.inputs.paymentInfo(valid: true)
-    self.vm.inputs.cardBrandIsValid(true)
+    self.vm.inputs.cardBrand(isValid: true)
 
     self.saveButtonIsEnabled.assertValues([false, true], "Enabled when form is valid.")
 
     self.vm.inputs.paymentInfo(valid: true)
-    self.vm.inputs.cardBrandIsValid(false)
+    self.vm.inputs.cardBrand(isValid: false)
 
     self.saveButtonIsEnabled.assertValues([false, true, false], "Disabled if card brand is invalid")
   }
@@ -202,11 +190,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
-    self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
-                                      expMonth: 11,
-                                      expYear: 99,
-                                      cvc: "123")
-
+    self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
     self.cardholderName.assertDidNotEmitValue()
     self.cardNumber.assertDidNotEmitValue()
     self.cardExpMonth.assertDidNotEmitValue()
@@ -251,55 +235,46 @@ internal final class AddNewCardViewModelTests: TestCase {
   func testUnsupportedCardMessage_HiddenOnViewDidLoad() {
     self.vm.inputs.viewDidLoad()
 
-    self.cardBrandUnsupportedErrorMessageHiddenObserver
+    self.creditCardValidationErrorContainerHidden
       .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
   }
 
   func testUnsupportedCardMessage_showsWithInvalidCardBrand_AndExistingCardNumber() {
     self.vm.inputs.viewDidLoad()
 
-    self.cardBrandUnsupportedErrorMessageHiddenObserver
+    self.creditCardValidationErrorContainerHidden
       .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
 
-    self.vm.inputs.cardBrandIsValid(false)
-    self.vm.inputs.creditCardChanged(cardNumber: "123",
-                                     expMonth: nil,
-                                     expYear: nil,
-                                     cvc: nil)
+    self.vm.inputs.cardBrand(isValid: false)
+    self.vm.inputs.creditCardChanged(cardDetails: ("123", nil, nil, nil))
 
-    self.cardBrandUnsupportedErrorMessageHiddenObserver
+    self.creditCardValidationErrorContainerHidden
       .assertValues([true, false], "Unsupported card message shows")
   }
 
   func testUnsupportedCardMessage_hidesWithValidCardBrand_AndExistingCardNumber() {
     self.vm.inputs.viewDidLoad()
 
-    self.cardBrandUnsupportedErrorMessageHiddenObserver
+    self.creditCardValidationErrorContainerHidden
       .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
 
-    self.vm.inputs.cardBrandIsValid(true)
-    self.vm.inputs.creditCardChanged(cardNumber: "123",
-                                     expMonth: nil,
-                                     expYear: nil,
-                                     cvc: nil)
+    self.vm.inputs.cardBrand(isValid: true)
+    self.vm.inputs.creditCardChanged(cardDetails: ("123", nil, nil, nil))
 
-    self.cardBrandUnsupportedErrorMessageHiddenObserver
+    self.creditCardValidationErrorContainerHidden
       .assertValues([true, true], "Unsupported card message hides with a valid card brand")
   }
 
   func testUnsupportedCardMessage_hidesWithEmptyOrInvalidCardNumber() {
     self.vm.inputs.viewDidLoad()
 
-    self.cardBrandUnsupportedErrorMessageHiddenObserver
+    self.creditCardValidationErrorContainerHidden
       .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
 
-    self.vm.inputs.cardBrandIsValid(false)
-    self.vm.inputs.creditCardChanged(cardNumber: "",
-                                     expMonth: nil,
-                                     expYear: nil,
-                                     cvc: nil)
+    self.vm.inputs.cardBrand(isValid: false)
+    self.vm.inputs.creditCardChanged(cardDetails: ("", nil, nil, nil))
 
-    self.cardBrandUnsupportedErrorMessageHiddenObserver
+    self.creditCardValidationErrorContainerHidden
       .assertValues([true, true], "Unsupported card message stays hidden when the card number is < 2 digits")
   }
 }
