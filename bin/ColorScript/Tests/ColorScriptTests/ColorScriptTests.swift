@@ -1,3 +1,4 @@
+// swiftlint:disable force_unwrapping
 import Foundation
 import XCTest
 import ColorScriptCore

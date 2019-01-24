@@ -1,3 +1,4 @@
+// swiftlint:disable force_try
 import Foundation
 
 public enum ColorScriptError: Error {
