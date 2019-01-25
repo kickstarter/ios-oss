@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -208,8 +208,6 @@
                                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                                                                         <connections>
-                                                                                            <action selector="nameTextFieldChanged:" destination="NFm-bM-Ukr" eventType="editingChanged" id="KAM-Dm-nUG"/>
-                                                                                            <action selector="nameTextFieldReturn:" destination="NFm-bM-Ukr" eventType="editingDidEnd" id="b3I-aY-FEQ"/>
                                                                                             <outlet property="delegate" destination="NFm-bM-Ukr" id="Qng-i0-zxz"/>
                                                                                         </connections>
                                                                                     </textField>
@@ -239,8 +237,6 @@
                                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next"/>
                                                                                         <connections>
-                                                                                            <action selector="emailTextFieldChanged:" destination="NFm-bM-Ukr" eventType="editingChanged" id="5HD-KL-0nD"/>
-                                                                                            <action selector="emailTextFieldReturn:" destination="NFm-bM-Ukr" eventType="editingDidEnd" id="Nci-hC-PmQ"/>
                                                                                             <outlet property="delegate" destination="NFm-bM-Ukr" id="FT2-IS-SlG"/>
                                                                                         </connections>
                                                                                     </textField>
@@ -270,8 +266,6 @@
                                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
                                                                                         <connections>
-                                                                                            <action selector="passwordTextFieldChanged:" destination="NFm-bM-Ukr" eventType="editingChanged" id="EL8-IU-Oo3"/>
-                                                                                            <action selector="passwordTextFieldReturn:" destination="NFm-bM-Ukr" eventType="editingDidEnd" id="o3L-RS-r31"/>
                                                                                             <outlet property="delegate" destination="NFm-bM-Ukr" id="B9d-Lg-5kf"/>
                                                                                         </connections>
                                                                                     </textField>
@@ -305,7 +299,7 @@
                                                                                         <rect key="frame" x="299" y="12" width="51" height="31"/>
                                                                                         <color key="onTintColor" red="0.01176470588" green="0.45098039220000002" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                         <connections>
-                                                                                            <action selector="weeklyNewsletterChanged:" destination="NFm-bM-Ukr" eventType="valueChanged" id="hw5-4K-Y5r"/>
+                                                                                            <action selector="weeklyNewsletterChanged:" destination="NFm-bM-Ukr" eventType="valueChanged" id="fbw-oz-WLe"/>
                                                                                         </connections>
                                                                                     </switch>
                                                                                 </subviews>
@@ -329,7 +323,7 @@
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <action selector="signupButtonPressed:" destination="NFm-bM-Ukr" eventType="touchUpInside" id="IVA-hB-Gvn"/>
+                                                                    <action selector="signupButtonPressed" destination="NFm-bM-Ukr" eventType="touchUpInside" id="uSN-Yj-HLh"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
