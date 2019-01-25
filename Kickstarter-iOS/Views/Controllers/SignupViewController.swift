@@ -30,6 +30,30 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.nameTextField.addTarget(self,
+                                 action: #selector(nameTextFieldReturn),
+                                 for: .editingDidEndOnExit)
+
+    self.nameTextField.addTarget(self,
+                                 action: #selector(nameTextFieldChanged(_:)),
+                                 for: [.editingDidEndOnExit, .editingChanged])
+
+    self.emailTextField.addTarget(self,
+                                  action: #selector(emailTextFieldReturn),
+                                  for: .editingDidEndOnExit)
+
+    self.emailTextField.addTarget(self,
+                                  action: #selector(emailTextFieldChanged(_:)),
+                                  for: [.editingDidEndOnExit, .editingChanged])
+
+    self.passwordTextField.addTarget(self,
+                                     action: #selector(passwordTextFieldReturn),
+                                     for: .editingDidEndOnExit)
+
+    self.passwordTextField.addTarget(self,
+                                     action: #selector(passwordTextFieldChanged(_:)),
+                                     for: [.editingChanged])
+
     self.disclaimerButton.addTarget(self, action: #selector(disclaimerButtonPressed), for: .touchUpInside)
     let newsletterLabelTapGesture = UITapGestureRecognizer(target: self,
                                                            action: #selector(newsletterLabelTapped))
@@ -140,27 +164,29 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
   }
 
-  @IBAction internal func emailTextFieldChanged(_ textField: UITextField) {
-    self.viewModel.inputs.emailTextChanged.value = textField.text ?? ""
+  // MARK: - UITextFieldDelegate Functions
+
+  @objc internal func emailTextFieldChanged(_ textField: UITextField) {
+    self.viewModel.inputs.emailTextChanged.value = textField.text
   }
 
-  @IBAction internal func emailTextFieldReturn(_ textField: UITextField) {
+  @objc internal func emailTextFieldReturn(_ textField: UITextField) {
     self.viewModel.inputs.emailTextFieldDidReturn.value = ()
   }
 
-  @IBAction func nameTextFieldChanged(_ textField: UITextField) {
-    self.viewModel.inputs.nameTextChanged.value = textField.text ?? ""
+  @objc internal func nameTextFieldChanged(_ textField: UITextField) {
+    self.viewModel.inputs.nameTextChanged.value = textField.text
   }
 
-  @IBAction internal func nameTextFieldReturn(_ textField: UITextField) {
+  @objc internal func nameTextFieldReturn(_ textField: UITextField) {
     self.viewModel.inputs.nameTextFieldDidReturn.value = ()
   }
 
-  @IBAction internal func passwordTextFieldChanged(_ textField: UITextField) {
-    self.viewModel.inputs.passwordTextChanged.value = textField.text ?? ""
+  @objc internal func passwordTextFieldChanged(_ textField: UITextField) {
+     self.viewModel.inputs.passwordTextChanged.value = textField.text
   }
 
-  @IBAction internal func passwordTextFieldReturn(_ textField: UITextField) {
+  @objc internal func passwordTextFieldReturn(_ textField: UITextField) {
     self.viewModel.inputs.passwordTextFieldDidReturn.value = ()
   }
 
@@ -219,29 +245,5 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
     self.present(helpSheet, animated: true, completion: nil)
-  }
-
-  func updateTextFromField(textField: UITextField, text: String?) {
-    if textField == self.emailTextField {
-      self.viewModel.inputs.emailTextChanged.value = text ?? ""
-    } else if textField == self.nameTextField {
-      self.viewModel.inputs.nameTextChanged.value = text ?? ""
-    } else if textField == self.passwordTextField {
-      self.viewModel.inputs.passwordTextChanged.value = text ?? ""
-    }
-  }
-}
-
-extension SignupViewController: UITextFieldDelegate {
-  func textField(_ textField: UITextField,
-                 shouldChangeCharactersIn range: NSRange,
-                 replacementString string: String) -> Bool {
-    self.updateTextFromField(textField: textField, text: textField.text)
-
-    return true
-  }
-
-  func textFieldDidEndEditing(_ textField: UITextField) {
-    self.updateTextFromField(textField: textField, text: textField.text)
   }
 }
