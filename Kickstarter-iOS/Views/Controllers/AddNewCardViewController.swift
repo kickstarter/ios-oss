@@ -57,6 +57,8 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
+    self.saveButtonView.translatesAutoresizingMaskIntoConstraints = false
+
     self.creditCardTextField.delegate = self
 
     self.viewModel.inputs.viewDidLoad()

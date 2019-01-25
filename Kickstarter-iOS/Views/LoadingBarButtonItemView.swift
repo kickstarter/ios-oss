@@ -30,14 +30,6 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
 
     _ = self.activityIndicator
       |> baseActivityIndicatorStyle
-
-    guard #available(iOS 11.0, *) else {
-      let (width, height) = (70, 44)
-
-      self.frame = CGRect(x: 0, y: 0, width: width, height: height)
-
-      return
-    }
   }
 
   override func bindViewModel() {
