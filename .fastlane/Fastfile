@@ -3,8 +3,6 @@ fastlane_version "2.28.3"
 default_platform :ios
 
 platform :ios do
-  gym_dir = ENV["GYM_OUTPUT_DIRECTORY"] || "."
-
   ### MATCH
   desc "Fastlane Match"
   lane :match_all do
@@ -293,6 +291,10 @@ platform :ios do
       path: "{CFBundleVersion}/",
       upload_metadata: true
     )
+  end
+
+  def gym_dir
+    ENV["GYM_OUTPUT_DIRECTORY"] || "."
   end
 
   def slack_message(type, version_number, build_number, platform)
