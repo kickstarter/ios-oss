@@ -8,12 +8,12 @@ public enum Navigation {
   case checkout(Int, Navigation.Checkout)
   case creatorMessages(Param, messageThreadId: Int)
   case projectActivity(Param)
-  case emailClick(qs: String)
-  case emailLink
+  case emailClick
   case messages(messageThreadId: Int)
   case signup
   case tab(Tab)
   case project(Param, Navigation.Project, refTag: RefTag?)
+  case projectPreview(Param, Navigation.Project, refTag: RefTag?, token: String)
   case user(Param, Navigation.User)
 
   public enum Checkout {
@@ -79,9 +79,7 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
   switch (lhs, rhs) {
   case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
     return lhsId == rhsId && lhsCheckout == rhsCheckout
-  case let (.emailClick(lhs), .emailClick(rhs)):
-    return lhs == rhs
-  case (.emailLink, .emailLink):
+  case (.emailClick, .emailClick):
     return true
   case let (.messages(lhs), .messages(rhs)):
     return lhs == rhs
@@ -91,6 +89,9 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
     return lhs == rhs
   case let (.project(lhsParam, lhsProject, lhsRefTag), .project(rhsParam, rhsProject, rhsRefTag)):
     return lhsParam == rhsParam && lhsProject == rhsProject && lhsRefTag == rhsRefTag
+  case let (.projectPreview(lhsParam, lhsProject, lhsRefTag, lhsToken),
+            .projectPreview(rhsParam, rhsProject, rhsRefTag, rhsToken)):
+    return lhsParam == rhsParam && lhsProject == rhsProject && lhsRefTag == rhsRefTag && lhsToken == rhsToken
   case let (.user(lhsParam, lhsUser), .user(rhsParam, rhsUser)):
     return lhsParam == rhsParam && lhsUser == rhsUser
   default:
@@ -235,7 +236,6 @@ extension Navigation {
 
 private let allRoutes: [String: (RouteParams) -> Decoded<Navigation>] = [
   "/": emailClick,
-  "/mpss/:a/:b/:c/:d/:e/:f/:g": emailLink,
   "/activity": activity,
   "/authorize": authorize,
   "/checkouts/:checkout_param/payments": paymentsRoot,
@@ -276,7 +276,6 @@ private let allRoutes: [String: (RouteParams) -> Decoded<Navigation>] = [
 private let deepLinkRoutes: [String: (RouteParams) -> Decoded<Navigation>] = allRoutes.restrict(
   keys: [
     "/",
-    "/mpss/:a/:b/:c/:d/:e/:f/:g",
     "/activity",
     "/discover",
     "/discover/advanced",
@@ -322,12 +321,7 @@ extension Navigation.Project {
 public typealias RouteParams = JSON
 
 private func emailClick(_ params: RouteParams) -> Decoded<Navigation> {
-  return curry(Navigation.emailClick)
-   <^> params <| "qs"
-}
-
-private func emailLink(_ params: RouteParams) -> Decoded<Navigation> {
-  return .success(.emailLink)
+  return .success(Navigation.emailClick)
 }
 
 private func activity(_: RouteParams) -> Decoded<Navigation> {
@@ -401,10 +395,22 @@ private func signup(_: RouteParams) -> Decoded<Navigation> {
 }
 
 private func project(_ params: RouteParams) -> Decoded<Navigation> {
-  return curry(Navigation.project)
+  let projectPreview = curry(Navigation.projectPreview)
     <^> params <| "project_param"
     <*> .success(.root)
     <*> params <|? "ref"
+    <*> params <| "token"
+
+  // If we're certain this is not a project preview link, try to decode it as a normal project link.
+  if case .failure = projectPreview {
+    return curry(Navigation.project)
+      <^> params <| "project_param"
+      <*> .success(.root)
+      <*> params <|? "ref"
+  }
+
+  // Fail here as we don't currently support project preview links.
+  return .failure(.custom("Project preview links are unsupported"))
 }
 
 private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
@@ -553,24 +559,29 @@ private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
 // MARK: Helpers
 
 private func parsedParams(url: URL, fromTemplate template: String) -> RouteParams? {
-
-  // early out on URL's that are not recognized as kickstarter URL's
-
-  let recognizedHosts = [
-    AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
-    AppEnvironment.current.apiService.serverConfig.webBaseUrl.host,
+  let recognizedEmailHosts = [
     "click.e.kickstarter.com",
+    "click.em.kickstarter.com",
     "emails.kickstarter.com",
     "email.kickstarter.com",
     "e2.kickstarter.com",
-    "e3.kickstarter.com",
-  ].compact()
+    "e3.kickstarter.com"
+  ]
 
-  let isRecognizedHost = recognizedHosts.reduce(false) { accum, host in
+  let hostRecognizer = { accum, host in
     accum || url.host.map { $0.hasPrefix(host) } == .some(true)
   }
 
-  guard isRecognizedHost else { return nil }
+  let isRecognizedEmailHost = recognizedEmailHosts.reduce(false, hostRecognizer)
+
+  let recognizedHosts = [
+    AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+    AppEnvironment.current.apiService.serverConfig.webBaseUrl.host
+  ].compact()
+
+  let isRecognizedHost = recognizedHosts.reduce(false, hostRecognizer)
+
+  guard isRecognizedHost || isRecognizedEmailHost else { return nil }
 
   let templateComponents = template
     .components(separatedBy: "/")
@@ -579,6 +590,12 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
     .path
     .components(separatedBy: "/")
     .filter { $0 != "" && !$0.hasPrefix("?") }
+
+  // if we're parsing against the '/' emailClick template and this is a recognized email host
+  // return the expected params for that route to be resolved
+  if templateComponents.isEmpty && isRecognizedEmailHost {
+    return .object([:])
+  }
 
   guard templateComponents.count == urlComponents.count else { return nil }
 

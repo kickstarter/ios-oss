@@ -1365,6 +1365,39 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToMobileSafari.assertValues([unrecognizedUrl], "Go to mobile safari for the unrecognized url.")
   }
 
+  func testEmailDeepLinking_UnrecognizedUrl_ProjectPreview() {
+    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+
+    // The application launches.
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared,
+                                                 launchOptions: [:])
+
+    self.findRedirectUrl.assertValues([])
+    self.presentViewController.assertValueCount(0)
+    self.goToMobileSafari.assertValues([])
+
+    // We deep-link to an email url.
+    self.vm.inputs.applicationDidEnterBackground()
+    self.vm.inputs.applicationWillEnterForeground()
+    let result = self.vm.inputs.applicationOpenUrl(application: UIApplication.shared,
+                                                   url: emailUrl,
+                                                   sourceApplication: nil,
+                                                   annotation: 1)
+    XCTAssertFalse(result)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+    self.presentViewController.assertValues([], "No view controller is presented.")
+    self.goToMobileSafari.assertValues([], "Do not go to mobile safari")
+
+    // We find the redirect to be an unrecognized url (project preview).
+    let unrecognizedUrl = URL(string: "https://www.kickstarter.com/projects/creator/project?token=4")!
+    self.vm.inputs.foundRedirectUrl(unrecognizedUrl)
+
+    self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+    self.presentViewController.assertValues([], "Do not present controller since the url was unrecognizable.")
+    self.goToMobileSafari.assertValues([unrecognizedUrl], "Go to mobile safari for the unrecognized url.")
+  }
+
   func testOtherEmailDeepLink() {
     let emailUrl = URL(string: "https://email.kickstarter.com/mpss/a/b/c/d/e/f/g")!
 

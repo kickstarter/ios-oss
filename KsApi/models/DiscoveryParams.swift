@@ -74,8 +74,8 @@ public func == (a: DiscoveryParams, b: DiscoveryParams) -> Bool {
 }
 
 extension DiscoveryParams: Hashable {
-  public var hashValue: Int {
-    return self.description.hash
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
   }
 }
 

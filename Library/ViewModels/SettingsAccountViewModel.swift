@@ -14,6 +14,7 @@ public protocol SettingsAccountViewModelInputs {
 }
 
 public protocol SettingsAccountViewModelOutputs {
+  var currencyUpdated: Signal<Void, NoError> { get }
   var dismissCurrencyPicker: Signal<Void, NoError> { get }
   var fetchAccountFieldsError: Signal<Void, NoError> { get }
   var presentCurrencyPicker: Signal<Currency, NoError> { get }
@@ -77,6 +78,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     self.updateCurrencyFailure = updateCurrencyEvent.errors()
       .map { $0.localizedDescription }
+    self.currencyUpdated = updateCurrencyEvent.values().ignoreValues()
 
     let currency = Signal.merge(chosenCurrency, updateCurrency)
 
@@ -145,6 +147,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.viewDidLoadProperty.value = ()
   }
 
+  public let currencyUpdated: Signal<Void, NoError>
   public let dismissCurrencyPicker: Signal<Void, NoError>
   public let fetchAccountFieldsError: Signal<Void, NoError>
   public let reloadData: Signal<(Currency, Bool, Bool), NoError>

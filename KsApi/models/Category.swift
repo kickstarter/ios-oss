@@ -98,8 +98,8 @@ extension Category {
 }
 
 extension ParentCategory: Hashable {
-  public var hashValue: Int {
-    return self.categoryType.intID ?? unrecognizedCategoryId
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.categoryType.intID ?? unrecognizedCategoryId)
   }
 }
 
@@ -137,8 +137,8 @@ extension Category: Equatable {
 }
 
 extension Category: Hashable {
-  public var hashValue: Int {
-    return self.intID ?? unrecognizedCategoryId
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.intID ?? unrecognizedCategoryId)
   }
 }
 

@@ -5,7 +5,7 @@ SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
 RELEASE ?= beta
-IOS_VERSION ?= 12.0
+IOS_VERSION ?= 12.1
 IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
@@ -44,7 +44,8 @@ dependencies: submodules configs secrets opentok fabric stripe
 bootstrap: hooks dependencies
 	brew update || brew update
 	brew unlink swiftlint || true
-	brew install swiftlint
+	brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/686375d8bc672a439ca9fcf27794a394239b3ee6/Formula/swiftlint.rb
+	brew switch swiftlint 0.29.2
 	brew link --overwrite swiftlint
 
 submodules:
@@ -92,16 +93,16 @@ deploy:
 
 	@echo "Deploy has been kicked off to CircleCI!"
 
-alpha:
+beta:
 	@echo "Adding remotes..."
 	@git remote add oss https://github.com/kickstarter/ios-oss
 	@git remote add private https://github.com/kickstarter/ios-private
 
-	@echo "Deploying private/alpha-dist-$(COMMIT)..."
+	@echo "Deploying private/beta-dist-$(COMMIT)..."
 
-	@git branch -f alpha-dist-$(COMMIT)
-	@git push -f private alpha-dist-$(COMMIT)
-	@git branch -d alpha-dist-$(COMMIT)
+	@git branch -f beta-dist-$(COMMIT)
+	@git push -f private beta-dist-$(COMMIT)
+	@git branch -d beta-dist-$(COMMIT)
 
 	@echo "Deploy has been kicked off to CircleCI!"
 
