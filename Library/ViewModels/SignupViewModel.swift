@@ -28,11 +28,7 @@ public final class SignupViewModel {
     public let weeklyNewsletterChanged = MutableProperty(false)
   }
 
-  public let inputs = Inputs()
-
-  public init() {}
-
-  public func outputs(from inputs: Inputs) -> (
+  public typealias Outputs = (
     // Call when the emailTextField should become the first responder
     emailTextFieldBecomeFirstResponder: Signal<(), NoError>,
     // Call when the sign up button should be enabled
@@ -49,7 +45,13 @@ public final class SignupViewModel {
     setWeeklyNewsletterState: Signal<Bool, NoError>,
     /// Emits when a signup error has occurred and a message should be displayed.
     showError: Signal<String, NoError>
-    ) {
+  )
+
+  public let inputs = Inputs()
+
+  public init() {}
+
+  public func outputs(from inputs: Inputs) -> Outputs {
       let initialText = inputs.viewDidLoad.signal.mapConst("")
 
       let name = Signal.merge(
