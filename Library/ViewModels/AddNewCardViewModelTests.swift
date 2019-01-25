@@ -17,8 +17,8 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let dismissKeyboard = TestObserver<Void, NoError>()
   private let cardholderName = TestObserver<String, NoError>()
   private let cardNumber = TestObserver<String, NoError>()
-  private let cardExpMonth = TestObserver<UInt, NoError>()
-  private let cardExpYear = TestObserver<UInt, NoError>()
+  private let cardExpMonth = TestObserver<Month, NoError>()
+  private let cardExpYear = TestObserver<Year, NoError>()
   private let cardCVC = TestObserver<String, NoError>()
   private let paymentDetailsBecomeFirstResponder = TestObserver<Void, NoError>()
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
@@ -49,7 +49,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.cardholderNameTextFieldReturn()
     self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
     self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
-    self.vm.inputs.paymentInfo(valid: true)
+    self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.cardBrand(isValid: true)
     self.saveButtonIsEnabled.assertValues([true])
 
@@ -71,7 +71,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
 
     self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
-    self.vm.inputs.paymentInfo(valid: true)
+    self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.cardBrand(isValid: true)
     self.saveButtonIsEnabled.assertValues([true])
 
@@ -98,7 +98,7 @@ internal final class AddNewCardViewModelTests: TestCase {
         .assertValueCount(1, "First responder after editing cardholder name.")
 
       self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
-      self.vm.inputs.paymentInfo(valid: true)
+      self.vm.inputs.paymentInfo(isValid: true)
       self.vm.inputs.cardBrand(isValid: true)
       self.saveButtonIsEnabled.assertValues([true])
       self.vm.inputs.saveButtonTapped()
@@ -125,7 +125,7 @@ internal final class AddNewCardViewModelTests: TestCase {
       .assertValueCount(1, "Cardholder name field is first responder when view loads.")
     self.paymentDetailsBecomeFirstResponder.assertDidNotEmitValue("Not first responder when view loads")
     self.vm.inputs.cardholderNameChanged("")
-    self.vm.inputs.paymentInfo(valid: false)
+    self.vm.inputs.paymentInfo(isValid: false)
     self.vm.inputs.cardBrand(isValid: false)
     self.saveButtonIsEnabled.assertValues([false], "Disabled form is incomplete")
 
@@ -140,7 +140,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
     self.cardholderNameBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.paymentDetailsBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
-    self.vm.inputs.paymentInfo(valid: true)
+    self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.cardBrand(isValid: true)
     self.saveButtonIsEnabled.assertValues([false, true], "Enabled when form is valid.")
   }
@@ -150,17 +150,17 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.cardholderNameChanged("")
-    self.vm.inputs.paymentInfo(valid: false)
+    self.vm.inputs.paymentInfo(isValid: false)
     self.vm.inputs.cardBrand(isValid: false)
     self.saveButtonIsEnabled.assertValues([false], "Disabled form is incomplete")
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
-    self.vm.inputs.paymentInfo(valid: true)
+    self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.cardBrand(isValid: true)
 
     self.saveButtonIsEnabled.assertValues([false, true], "Enabled when form is valid.")
 
-    self.vm.inputs.paymentInfo(valid: true)
+    self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.cardBrand(isValid: false)
 
     self.saveButtonIsEnabled.assertValues([false, true, false], "Disabled if card brand is invalid")
@@ -180,7 +180,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
-    self.vm.inputs.paymentInfo(valid: true)
+    self.vm.inputs.paymentInfo(isValid: true)
 
     self.vm.inputs.saveButtonTapped()
     self.dismissKeyboard.assertDidEmitValue()
@@ -213,7 +213,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   }
 
   func testTrackSavedPaymentMethod() {
-    self.vm.inputs.paymentInfo(valid: true)
+    self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
     self.scheduler.advance()

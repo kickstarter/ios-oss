@@ -199,7 +199,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
   // MARK: - STPPaymentCardTextFieldDelegate
   internal func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
-    self.viewModel.inputs.paymentInfo(valid: textField.isValid)
+    self.viewModel.inputs.paymentInfo(isValid: textField.isValid)
 
     guard let cardnumber = textField.cardNumber else {
       return
@@ -217,11 +217,8 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   }
 
   // MARK: - Private Functions
-  private func createStripeToken(cardholderName: String,
-                                 cardNumber: String,
-                                 expirationMonth: UInt,
-                                 expirationYear: UInt,
-                                 cvc: String) {
+  private func createStripeToken(cardholderName: String, cardNumber: String, expirationMonth: UInt,
+                                 expirationYear: UInt, cvc: String) {
     let cardParams = STPCardParams()
     cardParams.name = cardholderName
     cardParams.number = cardNumber
