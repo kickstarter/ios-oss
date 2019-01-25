@@ -39,6 +39,18 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
     self.titleButton.rac.enabled = self.viewModel.outputs.titleButtonIsEnabled
     self.titleButton.rac.title = self.viewModel.outputs.titleButtonText
 
+    self.viewModel.outputs.titleButtonText
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        // Workaround for iOS 10 bug where
+        // the view's frame must be set in order to be used in UIBarButtonItem(customView:)
+        guard #available(iOS 11.0, *) else {
+          self?.setFrame()
+
+          return
+        }
+    }
+
     self.viewModel.outputs.activityIndicatorIsLoading
       .observeForUI()
       .observeValues { [weak self] (isLoading) in
@@ -80,5 +92,13 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
 
       bringSubviewToFront(titleButton)
     }
+  }
+
+  private func setFrame() {
+    let (width, height) = (70, 44)
+
+    self.frame = CGRect(x: 0, y: 0, width: width, height: height)
+
+    return
   }
 }
