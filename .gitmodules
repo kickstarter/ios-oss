@@ -22,6 +22,3 @@
 [submodule "Frameworks/Runes"]
 	path = Frameworks/Runes
 	url = https://github.com/thoughtbot/Runes.git
-[submodule "Frameworks/ReactiveCocoa"]
-	path = Frameworks/ReactiveCocoa
-	url = https://github.com/ReactiveCocoa/ReactiveCocoa.git
