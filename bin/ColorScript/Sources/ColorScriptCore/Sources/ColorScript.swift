@@ -21,11 +21,11 @@ public final class ColorScript {
     print(outPath)
 
     let data = try! Data(contentsOf: URL(fileURLWithPath: inPath))
-    let c = Color(data: data)
+    let color = Color(data: data)
 
-    print("All colors: \n\(c.prettyColors)")
+    print("All colors: \n\(color.prettyColors)")
 
-    try! c.staticStringsLines()
+    try! color.staticStringsLines()
       .joined(separator: "\n")
       .write(toFile: outPath, atomically: true, encoding: .utf8)
 

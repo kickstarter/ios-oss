@@ -54,12 +54,12 @@ public struct Color {
           [label: (accum[label] ?? [:]).withAllValuesFrom([weight: "ksr_\(name)"])]
         )
       }
-      .map { (k, v) -> (key: String, value: [(key: Int, value: String)]) in
-        let sorted = v
+      .map { (key, value) -> (key: String, value: [(key: Int, value: String)]) in
+        let sorted = value
           .map { (key: $0, value: $1) }
           .sorted { $0.key < $1.key }
 
-        return (key: k, value: sorted)
+        return (key: key, value: sorted)
       }
       .sorted { $0.key < $1.key }
   }

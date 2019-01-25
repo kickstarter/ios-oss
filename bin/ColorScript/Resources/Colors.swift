@@ -7,6 +7,7 @@
 import UIKit
 
 // swiftlint:disable valid_docs
+// swiftlint:disable identifier_name
 extension UIColor {
   public static var ksr_allColors: [String: [Int: UIColor]] {
     return [
