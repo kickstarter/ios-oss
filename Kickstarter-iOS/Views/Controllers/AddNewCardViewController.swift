@@ -217,8 +217,8 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   }
 
   // MARK: - Private Functions
-  private func createStripeToken(cardholderName: String, cardNumber: String, expirationMonth: UInt,
-                                 expirationYear: UInt, cvc: String) {
+  private func createStripeToken(cardholderName: String, cardNumber: String, expirationMonth: Month,
+                                 expirationYear: Year, cvc: String) {
     let cardParams = STPCardParams()
     cardParams.name = cardholderName
     cardParams.number = cardNumber
