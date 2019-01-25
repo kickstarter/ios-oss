@@ -2,7 +2,6 @@ import Library
 import MessageUI
 import Prelude
 import Prelude_UIKit
-import ReactiveSwift
 import UIKit
 
 internal final class SignupViewController: UIViewController, MFMailComposeViewControllerDelegate {

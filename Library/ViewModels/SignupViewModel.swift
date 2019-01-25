@@ -6,15 +6,25 @@ import Result
 
 public final class SignupViewModel {
   public struct Inputs {
-    public let environmentLoggedIn = MutableProperty(())
+    /// Call when the user enters a new email address.
     public let emailTextChanged = MutableProperty<String?>(nil)
+    /// Call when the user returns from email text field.
     public let emailTextFieldDidReturn = MutableProperty(())
+    /// Call when the environment has been logged into
+    public let environmentLoggedIn = MutableProperty(())
+    /// Call when the user enters a new name.
     public let nameTextChanged = MutableProperty<String?>(nil)
+    /// Call when the user returns from the name text field.
     public let nameTextFieldDidReturn = MutableProperty(())
+    /// Call when the user enters a new password.
     public let passwordTextChanged = MutableProperty<String?>(nil)
+    /// Call when the user returns from the password text field.
     public let passwordTextFieldDidReturn = MutableProperty(())
+    /// Call when the user taps signup.
     public let signupButtonPressed = MutableProperty(())
+    /// Call when the view did load.
     public let viewDidLoad = MutableProperty(())
+    /// Call when the user toggles weekly newsletter.
     public let weeklyNewsletterChanged = MutableProperty(false)
   }
 
@@ -27,11 +37,17 @@ public final class SignupViewModel {
     emailTextFieldBecomeFirstResponder: Signal<(), NoError>,
     // Call when the sign up button should be enabled
     isSignupButtonEnabled: Signal<Bool, NoError>,
+    /// Emits an access token envelope that can be used to update the environment.
     logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>,
+    /// Sets whether the password text field is the first responder.
     passwordTextFieldBecomeFirstResponder: Signal<(), NoError>,
+    /// Emits when a notification should be posted.
     postNotification: Signal<Notification, NoError>,
+    /// Sets whether the name text field is the first responder.
     nameTextFieldBecomeFirstResponder: Signal<(), NoError>,
+    /// Emits the value for the weekly newsletter.
     setWeeklyNewsletterState: Signal<Bool, NoError>,
+    /// Emits when a signup error has occurred and a message should be displayed.
     showError: Signal<String, NoError>
     ) {
       let initialText = inputs.viewDidLoad.signal.mapConst("")
