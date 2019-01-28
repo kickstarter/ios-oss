@@ -18,12 +18,12 @@ public final class ColorScript {
 
   public func run() throws {
 
-    print(inPath)
-    print(outPath)
+    print(self.inPath)
+    print(self.outPath)
 
     var color: Color?
     do {
-      let data = try Data(contentsOf: URL(fileURLWithPath: inPath))
+      let data = try Data(contentsOf: URL(fileURLWithPath: self.inPath))
       color = Color(data: data)
       print("All colors: \n\(color!.prettyColors!)")
     } catch {
@@ -33,7 +33,7 @@ public final class ColorScript {
     do {
       try color?.staticStringsLines()
         .joined(separator: "\n")
-        .write(toFile: outPath, atomically: true, encoding: .utf8)
+        .write(toFile: self.outPath, atomically: true, encoding: .utf8)
       print("✨ Done regenerating Colors.swift ✨")
     } catch {
       throw ColorScriptError.cannotWriteToFile(error.localizedDescription)

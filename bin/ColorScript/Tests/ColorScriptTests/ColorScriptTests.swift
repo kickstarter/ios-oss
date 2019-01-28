@@ -29,14 +29,14 @@ final class ColorScriptTests: XCTestCase {
   }
 
   func testDataIsNotNil_ValidJSON() {
-    let data = json.data(using: .utf8)!
+    let data = self.json.data(using: .utf8)!
     let colors = Color(data: data)
     let decodedColors = try? colors.colors()
     XCTAssertNotNil(decodedColors as? [(key: String, value: String)])
   }
 
   func testColorNameFormat() {
-    let data = json.data(using: .utf8)!
+    let data = self.json.data(using: .utf8)!
     let colors = Color(data: data)
     colors.allColors.forEach { (arg: (key: String, value: [(key: Int, value: String)])) in
 

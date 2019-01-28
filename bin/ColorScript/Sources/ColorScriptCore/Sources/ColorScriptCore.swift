@@ -22,7 +22,7 @@ public struct Color {
 
   public func colors() throws -> [(key: String, value: String)]? {
     do {
-      let json = try (JSONSerialization.jsonObject(with: data, options: []) as? [String: String])
+      let json = try (JSONSerialization.jsonObject(with: self.data, options: []) as? [String: String])
       let colors = json?
         .map { (key: $0, value: $1) }
         .sorted { $0.key < $1.key }
@@ -34,7 +34,7 @@ public struct Color {
 
   public var prettyColors: String? {
     do {
-      return try colors()?.map { (color, value) in
+      return try self.colors()?.map { (color, value) in
         return "  \(color): #\(value)"
         }.joined(separator: "\n")
     } catch {
@@ -45,7 +45,7 @@ public struct Color {
 
   public var allColors: [(key: String, value: [(key: Int, value: String)])] {
     do {
-      return try colors()?
+      return try self.colors()?
         .reduce([String: [Int: String]]()) { accum, pair in
           let (name, _) = pair
 
@@ -96,7 +96,7 @@ public struct Color {
     lines.append("  public static var ksr_allColors: [String: [Int: UIColor]] {")
     lines.append("    return [")
 
-    let staticAllColors: [String] = allColors.map { label, colors in
+    let staticAllColors: [String] = self.allColors.map { label, colors in
       var staticVar: [String] = []
       staticVar.append("      \"\(label)\": [")
 
@@ -115,7 +115,7 @@ public struct Color {
     lines.append("")
 
     do {
-      let staticVars: [String]? = try colors()?.map { name, hex in
+      let staticVars: [String]? = try self.colors()?.map { name, hex in
         var staticVar: [String] = []
         staticVar.append("  /// 0x\(hex)")
         staticVar.append("  public static var ksr_\(name): UIColor {")
