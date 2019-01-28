@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import Foundation
 
 public enum ColorScriptCoreError: Error {
@@ -7,10 +6,9 @@ public enum ColorScriptCoreError: Error {
 }
 
 extension Dictionary {
+
   public func withAllValuesFrom(_ other: Dictionary) -> Dictionary {
-    var result = self
-    other.forEach { result[$0] = $1 }
-    return result
+    return self.merging(other) { $1 }
   }
 }
 
@@ -52,8 +50,11 @@ public struct Color {
           let (name, _) = pair
 
           let components = name.components(separatedBy: "_")
-          guard components.count > 1 else { return accum }
-          let colorWeight: Int? = Int(components.last!)
+          guard components.count > 1,
+            let component = components.last else {
+            return accum
+          }
+          let colorWeight = Int(component)
           let colorName = colorWeight == nil
             ? components.joined(separator: " ") : components[0..<components.count-1].joined(separator: " ")
           let (color, weight) = (colorName, colorWeight ?? 0)
@@ -114,7 +115,7 @@ public struct Color {
     lines.append("")
 
     do {
-      let staticVars: [String] = try colors()!.map { name, hex in
+      let staticVars: [String]? = try colors()?.map { name, hex in
         var staticVar: [String] = []
         staticVar.append("  /// 0x\(hex)")
         staticVar.append("  public static var ksr_\(name): UIColor {")
@@ -122,7 +123,9 @@ public struct Color {
         staticVar.append("  }")
         return staticVar.joined(separator: "\n")
       }
-      lines.append(staticVars.joined(separator: "\n\n"))
+      if let staticVars = staticVars {
+        lines.append(staticVars.joined(separator: "\n\n"))
+      }
       lines.append("}")
       lines.append("") // trailing newline
       return lines
