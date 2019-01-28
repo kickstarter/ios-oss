@@ -208,7 +208,7 @@
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Die Zusammenstellung deiner Daten kann bis zu 24 Stunden dauern. Sobald sie zum Download bereitstehen, werden wir dir eine Anleitung dazu per E-Mail schicken. Solltest du nichts von uns hören, versuche es von hier aus noch einmal.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_better_with_friends" = "Gemeinsam mehr erreichen";
-"Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "It's like the radio but nothing sucks and also it's a newsletter.";
+"Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "Fast wie Radio, nur ohne die schlechten Nachrichten - unser Newsletter!";
 "Join_our_secret_society" = "Sei dabei bei unserem Geheimbund.";
 "Joining_the_live_stream" = "Verbindung zum Live-Stream wird aufgebaut";
 "Just_for_you" = "Nur für dich.";
@@ -489,7 +489,7 @@
 "Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
 "Youre_offline" = "Du bist Offline. Sobald du wieder Online bist, navigiere in der App, um sie zu aktualisieren.";
 "Youve_pledged_to_support_this_project" = "Du hast einen Finazierungsbeitrag zu diesem Projekt geleistet. Die Frist für die Finanzierung ist noch nicht abgelaufen.";
-"Zip_code" = "Postleitzahl";
+"Zip_postal_code" = "Postleitzahl";
 "accessibility.dashboard.buttons.activity" = "Aktivität";
 "accessibility.dashboard.buttons.activity_hint" = "Öffnet Sparte Aktivität.";
 "accessibility.dashboard.buttons.messages" = "Nachrichten";

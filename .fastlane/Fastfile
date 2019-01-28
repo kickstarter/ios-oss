@@ -58,10 +58,11 @@ platform :ios do
 
   ### BETA
 
-  lane :beta_match_gym_hockey do
+  lane :beta_match_gym_hockey_s3 do
     match_all
     beta_gym
     beta_hockey
+    beta_s3
   end
 
   desc "Build Beta"
@@ -76,11 +77,11 @@ platform :ios do
   desc "Upload Beta to HockeyApp"
   lane :beta_hockey do
     upload_hockey(
-      ipa: "./output/gym/KickBeta.ipa",
+      ipa: "#{gym_dir}/KickBeta.ipa",
       public_identifier: ENV["HOCKEY_BETA_APP_ID"]
     )
 
-    upload_dsyms(dsym: "./output/gym/KickBeta.app.dSYM.zip")
+    upload_dsyms(dsym: "#{gym_dir}/KickBeta.app.dSYM.zip")
 
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
@@ -91,6 +92,20 @@ platform :ios do
         "HockeyApp"
       )
     )
+  end
+
+  desc "Upload Beta to S3"
+  lane :beta_s3 do
+    File.write('.FASTLANE_RELEASE_NOTES.tmp', changelog)
+
+    sh "./beta-changelog.rb"
+
+    upload_s3(
+      ipa: "#{gym_dir}/KickBeta.ipa",
+      dsym: "#{gym_dir}/KickBeta.app.dSYM.zip"
+    )
+
+    sh "./beta-post-s3.rb"
   end
 
   ### PRODUCTION
@@ -114,7 +129,7 @@ platform :ios do
   desc "Upload Production to HockeyApp"
   lane :itunes_hockey do
     upload_hockey(
-      ipa: "./output/gym/Kickstarter.ipa",
+      ipa: "#{gym_dir}/Kickstarter.ipa",
       public_identifier: ENV["HOCKEY_RELEASE_APP_ID"]
     )
   end
@@ -127,7 +142,7 @@ platform :ios do
       username: ENV["ITUNES_CONNECT_ACCOUNT"],
       app_identifier: ENV["ITUNES_APP_IDENTIFIER"],
       app: ENV["ITUNES_APP_ID"],
-      ipa: "./output/gym/Kickstarter.ipa",
+      ipa: "#{gym_dir}/Kickstarter.ipa",
       team_name: ENV["ITUNES_TEAM_NAME"],
       skip_screenshots: true,
       skip_metadata: true
@@ -143,7 +158,7 @@ platform :ios do
       )
     )
 
-    upload_dsyms(dsym: "./output/gym/Kickstarter.app.dSYM.zip")
+    upload_dsyms(dsym: "#{gym_dir}/Kickstarter.app.dSYM.zip")
   end
 
   ### ALPHA
@@ -165,11 +180,11 @@ platform :ios do
   desc "Upload Alpha to HockeyApp"
   lane :alpha_hockey do
     upload_hockey(
-      ipa: "./output/gym/KickAlpha.ipa",
+      ipa: "#{gym_dir}/KickAlpha.ipa",
       public_identifier: ENV["HOCKEY_ALPHA_APP_ID"]
     )
 
-    upload_dsyms(dsym: "./output/gym/KickAlpha.app.dSYM.zip")
+    upload_dsyms(dsym: "#{gym_dir}/KickAlpha.app.dSYM.zip")
 
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
@@ -239,7 +254,7 @@ platform :ios do
 
   private_lane :upload_dsyms do |options|
     upload_symbols_to_crashlytics(
-      dsym_path: options[:dsym], 
+      dsym_path: options[:dsym],
       api_token: ENV["FABRIC_API_KEY"],
       binary_path: "./bin/upload-symbols"
     )
@@ -263,6 +278,23 @@ platform :ios do
       match_lightweight_tag: false,
       merge_commit_filtering: "exclude_merges"
     )
+  end
+
+  private_lane :upload_s3 do |options|
+    aws_s3(
+      access_key: ENV['AWS_ACCESS_KEY_ID'],
+      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
+      bucket: ENV['AWS_BUCKET'],
+      region: ENV['AWS_REGION'],
+      ipa: options[:ipa],
+      dsym: options[:dsym],
+      path: "{CFBundleVersion}/",
+      upload_metadata: true
+    )
+  end
+
+  def gym_dir
+    ENV["GYM_OUTPUT_DIRECTORY"] || "."
   end
 
   def slack_message(type, version_number, build_number, platform)
