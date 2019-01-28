@@ -1,6 +1,11 @@
 // swiftlint:disable force_unwrapping
 import Foundation
 
+public enum ColorScriptCoreError: Error {
+  case decodeError(String)
+  case codeGenerationError(String)
+}
+
 extension Dictionary {
   public func withAllValuesFrom(_ other: Dictionary) -> Dictionary {
     var result = self
@@ -17,54 +22,62 @@ public struct Color {
     self.data = data
   }
 
-  public func colors() -> [(key: String, value: String)]? {
+  public func colors() throws -> [(key: String, value: String)]? {
     do {
-      if let json = try (JSONSerialization.jsonObject(with: data, options: []) as? [String: String]) {
-        let colors = json
-          .map { (key: $0, value: $1) }
-          .sorted { $0.key < $1.key }
-        return colors
-      }
-      return nil
-    } catch {
-      return nil
+      let json = try (JSONSerialization.jsonObject(with: data, options: []) as? [String: String])
+      let colors = json?
+        .map { (key: $0, value: $1) }
+        .sorted { $0.key < $1.key }
+      return colors
+    } catch (let error) {
+      throw ColorScriptCoreError.decodeError(error.localizedDescription)
     }
   }
 
-  public var prettyColors: String {
-    return colors()!.map { (color, value) in
-      return "  \(color): #\(value)"
-      }.joined(separator: "\n")
+  public var prettyColors: String? {
+    do {
+      return try colors()?.map { (color, value) in
+        return "  \(color): #\(value)"
+        }.joined(separator: "\n")
+    } catch (let error) {
+      print("[prettyColors] \(error.localizedDescription)")
+    }
+    return nil
   }
 
   public var allColors: [(key: String, value: [(key: Int, value: String)])] {
-    return colors()!
-      .reduce([String: [Int: String]]()) { accum, pair in
-        let (name, _) = pair
+    do {
+      return try colors()?
+        .reduce([String: [Int: String]]()) { accum, pair in
+          let (name, _) = pair
 
-        let components = name.components(separatedBy: "_")
-        guard components.count > 1 else { return accum }
-        let colorWeight: Int? = Int(components.last!)
-        let colorName = colorWeight == nil
-          ? components.joined(separator: " ") : components[0..<components.count-1].joined(separator: " ")
-        let (color, weight) = (colorName, colorWeight ?? 0)
-        let label = color.capitalized
+          let components = name.components(separatedBy: "_")
+          guard components.count > 1 else { return accum }
+          let colorWeight: Int? = Int(components.last!)
+          let colorName = colorWeight == nil
+            ? components.joined(separator: " ") : components[0..<components.count-1].joined(separator: " ")
+          let (color, weight) = (colorName, colorWeight ?? 0)
+          let label = color.capitalized
 
-        return accum.withAllValuesFrom(
-          [label: (accum[label] ?? [:]).withAllValuesFrom([weight: "ksr_\(name)"])]
-        )
-      }
-      .map { (key, value) -> (key: String, value: [(key: Int, value: String)]) in
-        let sorted = value
-          .map { (key: $0, value: $1) }
-          .sorted { $0.key < $1.key }
+          return accum.withAllValuesFrom(
+            [label: (accum[label] ?? [:]).withAllValuesFrom([weight: "ksr_\(name)"])]
+          )
+        }
+        .map { (key, value) -> (key: String, value: [(key: Int, value: String)]) in
+          let sorted = value
+            .map { (key: $0, value: $1) }
+            .sorted { $0.key < $1.key }
 
-        return (key: key, value: sorted)
-      }
-      .sorted { $0.key < $1.key }
+          return (key: key, value: sorted)
+        }
+        .sorted { $0.key < $1.key } ?? []
+    } catch {
+      print("[allColors] \(error.localizedDescription)")
+    }
+    return []
   }
 
-  public func staticStringsLines() -> [String] {
+  public func staticStringsLines() throws -> [String] {
 
     var lines: [String] = []
 
@@ -100,19 +113,21 @@ public struct Color {
     lines.append("  }")
     lines.append("")
 
-    let staticVars: [String] = colors()!.map { name, hex in
-      var staticVar: [String] = []
-      staticVar.append("  /// 0x\(hex)")
-      staticVar.append("  public static var ksr_\(name): UIColor {")
-      staticVar.append("    return .hex(0x\(hex))")
-      staticVar.append("  }")
-      return staticVar.joined(separator: "\n")
+    do {
+      let staticVars: [String] = try colors()!.map { name, hex in
+        var staticVar: [String] = []
+        staticVar.append("  /// 0x\(hex)")
+        staticVar.append("  public static var ksr_\(name): UIColor {")
+        staticVar.append("    return .hex(0x\(hex))")
+        staticVar.append("  }")
+        return staticVar.joined(separator: "\n")
+      }
+      lines.append(staticVars.joined(separator: "\n\n"))
+      lines.append("}")
+      lines.append("") // trailing newline
+      return lines
+    } catch {
+      throw ColorScriptCoreError.codeGenerationError(error.localizedDescription)
     }
-
-    lines.append(staticVars.joined(separator: "\n\n"))
-    lines.append("}")
-    lines.append("") // trailing newline
-
-    return lines
   }
 }

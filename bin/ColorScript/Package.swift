@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "ColorScript",
-    targets: [
-        .target(
-            name: "ColorScript",
-            dependencies: ["ColorScriptCore"]
-      ),
-        .target(name: "ColorScriptCore"),
-        .testTarget(name: "ColorScriptTests", dependencies: ["ColorScriptCore"])
-    ]
+  name: "ColorScript",
+  targets: [
+    .target(
+      name: "ColorScript",
+      dependencies: ["ColorScriptCore"]
+    ),
+    .target(name: "ColorScriptCore"),
+    .testTarget(name: "ColorScriptTests", dependencies: ["ColorScriptCore"])
+  ]
 )

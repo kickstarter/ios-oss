@@ -24,13 +24,15 @@ final class ColorScriptTests: XCTestCase {
           """
     let data = invalidJson.data(using: .utf8)!
     let colors = Color(data: data)
-    XCTAssertNil(colors.colors())
+    let decodedColors = try? colors.colors()
+    XCTAssertNil(decodedColors as? [(key: String, value: String)])
   }
 
   func testDataIsNotNil_ValidJSON() {
     let data = json.data(using: .utf8)!
     let colors = Color(data: data)
-    XCTAssertNotNil(colors.colors())
+    let decodedColors = try? colors.colors()
+    XCTAssertNotNil(decodedColors as? [(key: String, value: String)])
   }
 
   func testColorNameFormat() {
@@ -87,7 +89,8 @@ final class ColorScriptTests: XCTestCase {
                  }
 
                  """
-    XCTAssertEqual(output, colors.staticStringsLines().joined(separator: "\n"))
+    let generatedCode = try? colors.staticStringsLines().joined(separator: "\n")
+    XCTAssertEqual(output, generatedCode!)
   }
 
   static var allTests = [

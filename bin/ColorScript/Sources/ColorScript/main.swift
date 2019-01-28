@@ -6,5 +6,5 @@ let colorScript = ColorScript()
 do {
   try colorScript.run()
 } catch {
-  print("Error")
+  print("Error: \(error)")
 }
