@@ -29,7 +29,7 @@ public struct Color {
         .map { (key: $0, value: $1) }
         .sorted { $0.key < $1.key }
       return colors
-    } catch (let error) {
+    } catch {
       throw ColorScriptCoreError.decodeError(error.localizedDescription)
     }
   }
@@ -39,7 +39,7 @@ public struct Color {
       return try colors()?.map { (color, value) in
         return "  \(color): #\(value)"
         }.joined(separator: "\n")
-    } catch (let error) {
+    } catch {
       print("[prettyColors] \(error.localizedDescription)")
     }
     return nil

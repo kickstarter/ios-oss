@@ -1,4 +1,4 @@
-// swiftlint:disable force_try
+// swiftlint:disable force_unwrapping
 import Foundation
 
 public enum ColorScriptError: Error {
