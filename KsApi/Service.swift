@@ -157,11 +157,11 @@ public struct Service: ServiceType {
   }
 
   public func fetchComments(paginationUrl url: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return requestPagination(url)
+    return requestPaginatio(url)
   }
 
   public func fetchComments(project: Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return request(.projectComments(project))
+    return reques(.projectComments(project))
   }
 
   public func fetchComments(update: Update) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {

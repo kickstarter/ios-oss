@@ -85,6 +85,37 @@ extension Service {
     }
   }
 
+  private func performRequest<A: Swift.Decodable>(request: URLRequest) -> SignalProducer<A, ErrorEnvelope> {
+    return SignalProducer<A, ErrorEnvelope> { observer, disposable in
+      let task = URLSession.shared.dataTask(with: request) {  data, response, error in
+        if let error = error {
+          observer.send(error: .couldNotParseJSON)
+          print("🔴 [KsApi] Failure - Request error: \(error.localizedDescription)")
+        }
+
+        guard let data = data else {
+          print("🔴 [KsApi] Failure - Empty response")
+          observer.send(error: .couldNotParseJSON)
+          return
+        }
+
+        do {
+          let decodedObject = try JSONDecoder().decode(A.self, from: data)
+          observer.send(value: decodedObject)
+          print("🔵 [KsApi] Success")
+        } catch let error {
+          print("🔴 [KsApi] Failure - JSON decoding error: \(error.localizedDescription)")
+          observer.send(error: .couldNotParseJSON)
+        }
+        observer.sendCompleted()
+      }
+      disposable.observeEnded {
+        task.cancel()
+      }
+      task.resume()
+    }
+  }
+
   // MARK: Public Request Functions
   func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
     let queryString: String = Query.build(query)
@@ -107,6 +138,18 @@ extension Service {
     }
   }
 
+  func requestPaginatio<M: Swift.Decodable>(_ paginationUrl: String)
+    -> SignalProducer<M, ErrorEnvelope> {
+
+      guard let paginationUrl = URL(string: paginationUrl) else {
+        return .init(error: .invalidPaginationUrl)
+      }
+
+      let request = self.preparedRequest(forURL: paginationUrl)
+
+      return self.performRequest(request: request)
+  }
+
   func requestPagination<M: Argo.Decodable>(_ paginationUrl: String)
     -> SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
 
@@ -116,6 +159,21 @@ extension Service {
 
       return Service.session.rac_JSONResponse(preparedRequest(forURL: paginationUrl))
         .flatMap(decodeModel)
+  }
+
+  func reques<M: Swift.Decodable>(_ route: Route)
+    -> SignalProducer<M, ErrorEnvelope> {
+
+      let properties = route.requestProperties
+
+      guard let URL = URL(string: properties.path, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
+        fatalError(
+          "URL(string: \(properties.path), relativeToURL: \(self.serverConfig.apiBaseUrl)) == nil"
+        )
+      }
+      let request = self.preparedRequest(forURL: URL, method: properties.method, query: properties.query)
+
+      return self.performRequest(request: request)
   }
 
   func request<M: Argo.Decodable>(_ route: Route)
