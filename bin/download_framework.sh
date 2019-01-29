@@ -16,12 +16,12 @@ fi
 URL=${URL//INSERT_SDK_VERSION/"$SDK_VERSION"}
 
 if [ "$SDK_VERSION" != "$CURRENT_SDK_VERSION" ]; then \
-	echo "Downloading $SDK_NAME v$SDK_VERSION"; \
-	mkdir -p Frameworks/$SDK_NAME; \
+  echo "Downloading $SDK_NAME v$SDK_VERSION"; \
+  mkdir -p Frameworks/$SDK_NAME; \
   curl -N -L -o framework.zip $URL; \
   unzip -o framework.zip -d Frameworks/$SDK_NAME; \
   rm framework.zip; \
 fi
 if [ -e Frameworks/$SDK_NAME/$SDK_NAME.framework ]; then \
-	echo "$SDK_VERSION" > $VERSION_FILE; \
+  echo "$SDK_VERSION" > $VERSION_FILE; \
 fi
