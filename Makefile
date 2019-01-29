@@ -161,34 +161,9 @@ opentok:
 	fi
 
 fabric:
-	@if [ ! -d Frameworks/Fabric ]; then \
-		echo "Downloading Fabric v$(FABRIC_SDK_VERSION)"; \
-		mkdir -p Frameworks/Fabric; \
-		curl -N -L -o fabric.zip https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/$(FABRIC_SDK_VERSION)/com.crashlytics.ios-manual.zip; \
-		unzip fabric.zip -d Frameworks/Fabric || true; \
-		rm fabric.zip; \
-	fi
-	@if [ -e Frameworks/Fabric/Fabric.framework ]; then \
-		echo "Fabric v$(FABRIC_SDK_VERSION) downloaded"; \
-	else \
-		echo "Failed to download Fabric SDK"; \
-		rm -rf Frameworks/Fabric; \
-	fi
+	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip; \
 
 stripe:
-	@if [ ! -d Frameworks/Stripe ]; then \
-		echo "Downloading Stripe SDK v$(STRIPE_SDK_VERSION)"; \
-		mkdir -p Frameworks/Stripe; \
-		curl -N -L -o stripe.zip https://github.com/stripe/stripe-ios/releases/download/v$(STRIPE_SDK_VERSION)/Stripe.framework.zip; \
-		unzip stripe.zip -d Frameworks/Stripe || true; \
-		rm stripe.zip; \
-	fi
-	@if [ -e Frameworks/Stripe/Stripe.framework ]; then \
-		echo "Stripe SDK v$(STRIPE_SDK_VERSION) downloaded"; \
-	else \
-		echo "Failed to download Stripe SDK"; \
-		rm -rf Frameworks/Stripe; \
-	fi
-
+	bin/download_framework.sh Stripe $(STRIPE_SDK_VERSION) https://github.com/stripe/stripe-ios/releases/download/vINSERT_SDK_VERSION/Stripe.framework.zip; \
 
 .PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok fabric
