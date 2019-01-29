@@ -18,10 +18,11 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   @IBOutlet private weak var creditCardTextField: STPPaymentCardTextField!
   @IBOutlet private weak var creditCardValidationErrorLabel: UILabel!
   @IBOutlet private weak var creditCardValidationErrorContainer: UIView!
-
+  @IBOutlet weak var zipcodeView: UIView!
   private let unsupportedCardBrands: [STPCardBrand] = [.unionPay, .unknown]
 
   private var saveButtonView: LoadingBarButtonItemView!
+  private var zipcodeFormView: SettingsFormFieldView!
   internal var messageBannerViewController: MessageBannerViewController?
 
   fileprivate let viewModel: AddNewCardViewModelType = AddNewCardViewModel()
@@ -56,6 +57,11 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
+
+    self.zipcodeFormView = SettingsFormFieldView.instantiate()
+    self.zipcodeFormView.frame = self.zipcodeView.bounds
+
+    self.zipcodeView.addSubview(zipcodeFormView)
 
     self.creditCardTextField.delegate = self
 
@@ -94,16 +100,22 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     _ = self.creditCardTextField
       |> \.borderColor .~ nil
       |> \.font .~ .ksr_body()
+      |> \.textColor .~ .ksr_text_dark_grey_500
+      |> \.textErrorColor .~ .ksr_red_400
 
     _ = self.creditCardTextField
       |> \.cursorColor .~ .ksr_green_700
-      |> \.textColor .~ .ksr_text_dark_grey_500
       |> \.placeholderColor .~ .ksr_text_dark_grey_400
 
     _ = self.creditCardValidationErrorLabel
       |> settingsDescriptionLabelStyle
       |> \.textColor .~ .ksr_red_400
       |> \.text %~ { _ in Strings.Unsupported_card_type() }
+
+    _ = self.zipcodeFormView.titleLabel
+      |> \.text %~ { _ in
+        Strings.Zip_postal_code()
+      }
   }
 
   override func bindViewModel() {
