@@ -23,7 +23,7 @@ extension CommentsEnvelope: Swift.Decodable {
   }
 
   public init(from decoder: Decoder) throws {
-    let  values = try decoder.container(keyedBy: CodingKeys.self)
+    let values = try decoder.container(keyedBy: CodingKeys.self)
     self.comments = try values.decode([Comment].self, forKey: .comments)
     self.urls = try values.decode(UrlsEnvelope.self, forKey: .urls)
   }

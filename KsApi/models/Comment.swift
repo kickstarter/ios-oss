@@ -15,7 +15,7 @@ public struct Author {
   public private(set) var id: Int
   public private(set) var name: String
 
-  public struct Avatar: Swift.Decodable {
+  public struct Avatar {
     public private(set) var medium: String?
     public private(set) var small: String
     public private(set) var thumb: String
@@ -42,6 +42,22 @@ extension Comment: Swift.Decodable {
   }
 }
 
+extension Author.Avatar: Swift.Decodable {
+
+  enum CodingKeys: String, CodingKey {
+    case medium
+    case small
+    case thumb
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.medium = try values.decode(String?.self, forKey: .medium)
+    self.small = try values.decode(String.self, forKey: .small)
+    self.thumb = try values.decode(String.self, forKey: .thumb)
+  }
+}
+
 extension Author: Swift.Decodable {
 
   enum CodingKeys: String, CodingKey {
@@ -53,12 +69,11 @@ extension Author: Swift.Decodable {
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-    self.avatar = Avatar.init(medium: "", small: "", thumb: "")
-    self.id = 0
-    self.name = ""
+    self.avatar = try values.decode(Avatar.self, forKey: .avatar)
+    self.id = try values.decode(Int.self, forKey: .avatar)
+    self.name = try values.decode(String.self, forKey: .name)
   }
 }
-
 
 extension Author.Avatar: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Author.Avatar> {
