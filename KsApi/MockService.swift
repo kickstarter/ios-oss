@@ -5,6 +5,11 @@ import ReactiveSwift
 import Result
 
 internal struct MockService: ServiceType {
+  public func addNewCreditCard(input: CreatePaymentSourceInput) -> SignalProducer<CreatePaymentMethodEnvelope, GraphError> {
+    let error = GraphError.invalidInput
+    return SignalProducer(error: error)
+  }
+
   internal let appId: String
   internal let serverConfig: ServerConfigType
   internal let oauthToken: OauthTokenAuthType?

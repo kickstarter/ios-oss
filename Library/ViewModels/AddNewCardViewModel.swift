@@ -73,12 +73,20 @@ AddNewCardViewModelOutputs {
           .materialize()
        }
 
+    addNewCardEvent.values()
+      .observeValues { val in print("THIS: \(val)") }
+
+    addNewCardEvent.errors()
+      .observeValues { error in print("THIS: \(error)") }
+
+
     self.addNewCardSuccess = addNewCardEvent.values().ignoreValues()
       .map { _ in Strings.Got_it_your_changes_have_been_saved() }
 
     let stripeInvalidToken = self.stripeErrorProperty.signal.map {
       $0?.localizedDescription
     }.skipNil()
+
     let graphError = addNewCardEvent.errors().map {
       $0.localizedDescription
     }
