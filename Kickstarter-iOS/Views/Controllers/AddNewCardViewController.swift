@@ -61,6 +61,14 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.zipcodeFormView = SettingsFormFieldView.instantiate()
     self.zipcodeFormView.frame = self.zipcodeView.bounds
 
+    self.zipcodeFormView.textField.addTarget(self,
+                                             action: #selector(zipcodeTextFieldDoneEditing),
+                                             for: .editingDidEndOnExit)
+
+    self.zipcodeFormView.textField.addTarget(self,
+                                             action: #selector(zipcodeTextFieldChanged(textField:)),
+                                             for: .editingChanged)
+
     self.zipcodeView.addSubview(zipcodeFormView)
 
     self.creditCardTextField.delegate = self
@@ -155,17 +163,13 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.creditCardTextField.resignFirstResponder()
+        self?.dismissKeyboard()
     }
 
     self.viewModel.outputs.paymentDetails
       .observeForUI()
-      .observeValues { [weak self] cardholderName, cardNumber, expMonth, expYear, cvc in
-        self?.createStripeToken(cardholderName: cardholderName,
-                                cardNumber: cardNumber,
-                                expirationMonth: expMonth,
-                                expirationYear: expYear,
-                                cvc: cvc)
+      .observeValues { [weak self] paymentDetails in
+        self?.createStripeToken(paymentDetails: paymentDetails)
     }
 
     self.viewModel.outputs.activityIndicatorShouldShow
@@ -190,6 +194,12 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
     }
+
+    self.viewModel.outputs.zipcodeTextFieldBecomeFirstResponder
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        self?.zipcodeFormView.textField.becomeFirstResponder()
+    }
   }
 
   @objc fileprivate func cancelButtonTapped() {
@@ -207,6 +217,15 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   @objc func cardholderNameTextFieldReturn(_ textField: UITextField
     ) {
     self.viewModel.inputs.cardholderNameTextFieldReturn()
+  }
+
+  // MARK: - Zipcode UITextField Delegate
+  @objc internal func zipcodeTextFieldDoneEditing() {
+    self.viewModel.inputs.zipcodeTextFieldDidEndEditing()
+  }
+
+  @objc internal func zipcodeTextFieldChanged(textField: UITextField) {
+    self.viewModel.inputs.zipcodeChanged(zipcode: textField.text)
   }
 
   // MARK: - STPPaymentCardTextFieldDelegate
@@ -228,15 +247,19 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
   }
 
+  internal func paymentCardTextFieldDidEndEditing(_ textField: STPPaymentCardTextField) {
+    self.viewModel.inputs.paymentCardTextFieldDidEndEditing()
+  }
+
   // MARK: - Private Functions
-  private func createStripeToken(cardholderName: String, cardNumber: String, expirationMonth: Month,
-                                 expirationYear: Year, cvc: String) {
+  private func createStripeToken(paymentDetails: PaymentDetails) {
     let cardParams = STPCardParams()
-    cardParams.name = cardholderName
-    cardParams.number = cardNumber
-    cardParams.expMonth = expirationMonth
-    cardParams.expYear = expirationYear
-    cardParams.cvc = cvc
+    cardParams.name = paymentDetails.cardholderName
+    cardParams.number = paymentDetails.cardNumber
+    cardParams.expMonth = paymentDetails.expMonth
+    cardParams.expYear = paymentDetails.expYear
+    cardParams.cvc = paymentDetails.cvc
+    cardParams.address.postalCode = paymentDetails.postalCode
 
     STPAPIClient.shared().createToken(withCard: cardParams) { token, error in
       if let token = token {
@@ -249,5 +272,11 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
   private func cardBrandIsSupported(brand: STPCardBrand, unsupportedCardBrands: [STPCardBrand]) -> Bool {
     return !self.unsupportedCardBrands.contains(brand)
+  }
+
+  private func dismissKeyboard() {
+    self.cardholderNameTextField.resignFirstResponder()
+    self.creditCardTextField.resignFirstResponder()
+    self.zipcodeFormView.textField.resignFirstResponder()
   }
 }

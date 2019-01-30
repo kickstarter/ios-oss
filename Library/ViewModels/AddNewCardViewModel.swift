@@ -8,18 +8,23 @@ import Stripe
 public typealias Month = UInt
 public typealias Year = UInt
 public typealias CardDetails = (cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?)
+public typealias PaymentDetails = (cardholderName: String, cardNumber: String, expMonth: Month, expYear: Year,
+  cvc: String, postalCode: String)
 
 public protocol AddNewCardViewModelInputs {
   func cardBrand(isValid: Bool)
   func cardholderNameChanged(_ cardholderName: String?)
   func cardholderNameTextFieldReturn()
   func creditCardChanged(cardDetails: CardDetails)
+  func paymentCardTextFieldDidEndEditing()
   func paymentInfo(isValid: Bool)
   func saveButtonTapped()
   func stripeCreated(_ token: String?, stripeID: String?)
   func stripeError(_ error: Error?)
   func viewDidLoad()
   func viewWillAppear()
+  func zipcodeChanged(zipcode: String?)
+  func zipcodeTextFieldDidEndEditing()
 }
 
 public protocol AddNewCardViewModelOutputs {
@@ -29,10 +34,11 @@ public protocol AddNewCardViewModelOutputs {
   var creditCardValidationErrorContainerHidden: Signal<Bool, NoError> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
-  var paymentDetails: Signal<(String, String, Month, Year, String), NoError> { get }
+  var paymentDetails: Signal<PaymentDetails, NoError> { get }
   var paymentDetailsBecomeFirstResponder: Signal<Void, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
   var setStripePublishableKey: Signal<String, NoError> { get }
+  var zipcodeTextFieldBecomeFirstResponder: Signal<Void, NoError> { get }
 }
 
 public protocol AddNewCardViewModelType {
@@ -62,6 +68,10 @@ AddNewCardViewModelOutputs {
 
     self.cardholderNameBecomeFirstResponder = self.viewDidLoadProperty.signal
     self.paymentDetailsBecomeFirstResponder = self.cardholderNameTextFieldReturnProperty.signal
+    self.zipcodeTextFieldBecomeFirstResponder = self.paymentCardTextFieldDidEndEditingProperty.signal
+
+    let zipcode = self.zipcodeProperty.signal.skipNil()
+    let zipcodeIsValid: Signal<Bool, NoError> = zipcode.map { !$0.isEmpty }
 
     let cardBrandValidAndCardNumberValid = Signal
       .combineLatest(self.cardBrandIsValidProperty.signal,
@@ -79,18 +89,23 @@ AddNewCardViewModelOutputs {
     self.saveButtonIsEnabled = Signal.combineLatest(
       cardholderName.map { !$0.isEmpty },
       self.paymentInfoIsValidProperty.signal,
-      self.cardBrandIsValidProperty.signal
-      ).map { cardholderNameFieldNotEmpty, creditCardIsValid, cardBrandIsValid in
-        cardholderNameFieldNotEmpty && creditCardIsValid && cardBrandIsValid }
+      self.cardBrandIsValidProperty.signal,
+      zipcodeIsValid
+      ).map { cardholderNameFieldNotEmpty, creditCardIsValid, cardBrandIsValid, zipcodeIsValid in
+        cardholderNameFieldNotEmpty && creditCardIsValid && cardBrandIsValid && zipcodeIsValid }
       .skipRepeats()
 
-    let paymentInput = Signal.combineLatest(cardholderName, creditCardDetails)
-      .map { cardholderName, creditCardDetails in
-        (cardholderName, creditCardDetails.0, creditCardDetails.1, creditCardDetails.2, creditCardDetails.3) }
+    let paymentInput = Signal.combineLatest(cardholderName, creditCardDetails, zipcode)
+      .map { cardholderName, creditCardDetails, zipcode -> PaymentDetails in
+        (cardholderName, creditCardDetails.0, creditCardDetails.1, creditCardDetails.2, creditCardDetails.3,
+         zipcode) }
 
     self.paymentDetails = paymentInput.takeWhen(self.saveButtonTappedProperty.signal)
 
-    self.dismissKeyboard = self.saveButtonTappedProperty.signal
+    self.dismissKeyboard = self.saveButtonIsEnabled
+      .takeWhen(self.saveButtonTappedProperty.signal)
+      .filter(isTrue)
+      .ignoreValues()
 
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.config?.stripePublishableKey }
@@ -163,6 +178,11 @@ AddNewCardViewModelOutputs {
     self.creditCardChangedProperty.value = cardDetails
   }
 
+  private let paymentCardTextFieldDidEndEditingProperty = MutableProperty(())
+  public func paymentCardTextFieldDidEndEditing() {
+    self.paymentCardTextFieldDidEndEditingProperty.value = ()
+  }
+
   private let paymentInfoIsValidProperty = MutableProperty(false)
   public func paymentInfo(isValid: Bool) {
     self.paymentInfoIsValidProperty.value = isValid
@@ -195,16 +215,27 @@ AddNewCardViewModelOutputs {
     self.viewWillAppearProperty.value = ()
   }
 
+  private let zipcodeProperty = MutableProperty<String?>(nil)
+  public func zipcodeChanged(zipcode: String?) {
+    self.zipcodeProperty.value = zipcode
+  }
+
+  private let zipcodeTextFieldDidEndEditingProperty = MutableProperty(())
+  public func zipcodeTextFieldDidEndEditing() {
+    self.zipcodeTextFieldDidEndEditingProperty.value = ()
+  }
+
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let addNewCardFailure: Signal<String, NoError>
   public let addNewCardSuccess: Signal<String, NoError>
   public let creditCardValidationErrorContainerHidden: Signal<Bool, NoError>
   public let cardholderNameBecomeFirstResponder: Signal<Void, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
-  public let paymentDetails: Signal<(String, String, Month, Year, String), NoError>
+  public let paymentDetails: Signal<PaymentDetails, NoError>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let setStripePublishableKey: Signal<String, NoError>
+  public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, NoError>
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }

@@ -40,24 +40,25 @@
                     <rect key="frame" x="0.0" y="75.5" width="375" height="0.5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="0.5" id="cgU-rU-JNd"/>
+                        <constraint firstAttribute="height" constant="1" id="cgU-rU-JNd"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="tRh-X2-qvm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7Th-Iq-gpn"/>
-                <constraint firstItem="tRh-X2-qvm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="IaZ-UZ-J28"/>
+                <constraint firstItem="tRh-X2-qvm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="IaZ-UZ-J28"/>
                 <constraint firstItem="tRh-X2-qvm" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="QtD-uX-448"/>
-                <constraint firstItem="TPj-dZ-MnY" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Smb-hq-kuK"/>
+                <constraint firstItem="TPj-dZ-MnY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Smb-hq-kuK"/>
                 <constraint firstAttribute="bottom" secondItem="TPj-dZ-MnY" secondAttribute="bottom" id="mMG-e9-zkV"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="TPj-dZ-MnY" secondAttribute="trailing" id="pJw-Db-FQ7"/>
-                <constraint firstItem="tRh-X2-qvm" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" constant="-12" id="w4n-gG-ucK"/>
+                <constraint firstItem="TPj-dZ-MnY" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="pJw-Db-FQ7"/>
+                <constraint firstItem="tRh-X2-qvm" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="w4n-gG-ucK"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="separatorView" destination="TPj-dZ-MnY" id="eWP-6L-BAF"/>
+                <outlet property="stackView" destination="tRh-X2-qvm" id="ARG-Yd-8qS"/>
                 <outlet property="textField" destination="KCl-HN-TKI" id="y3q-Kp-sQd"/>
                 <outlet property="titleLabel" destination="Aqa-Fq-aYZ" id="mwJ-Po-7cm"/>
             </connections>
