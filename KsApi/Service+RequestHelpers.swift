@@ -103,8 +103,8 @@ extension Service {
           let decodedObject = try JSONDecoder().decode(A.self, from: data)
           observer.send(value: decodedObject)
           print("🔵 [KsApi] Success")
-        } catch let error {
-          print("🔴 [KsApi] Failure - JSON decoding error: \(error.localizedDescription)")
+        } catch {
+          print("🔴 [KsApi] Failure - JSON decoding error: \(error)")
           observer.send(error: .couldNotParseJSON)
         }
         observer.sendCompleted()

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Author {
-internal static let template = Author.init(avatar: .template, id: 1, name: "")
+  internal static let template = Author(avatar: .template, id: 1, name: "", urls: .template)
 }
 
 extension Author.Avatar {
@@ -12,6 +12,12 @@ extension Author.Avatar {
   )
 }
 
+extension Author.Url {
+  internal static let template = Author.Url(
+    api: "http://api.kickstarter.com",
+    web: "http://www.kickstarter.com/"
+  )
+}
 
 extension Comment {
   internal static let template = Comment(
