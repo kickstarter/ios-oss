@@ -94,19 +94,6 @@ final class SettingsViewController: UIViewController {
     |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
     |> \.width .~ 44
   }
-    let leftBarButtonItem = UIBarButtonItem(
-      image: UIImage(named: "icon--cross"),
-      style: .plain,
-      target: self,
-      action: #selector(closeButtonPressed)
-    )
-
-    _ = leftBarButtonItem
-      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
-      |> \.width .~ 44
-
-    return leftBarButtonItem
-  }
 
   @objc fileprivate func closeButtonPressed() {
     self.dismiss(animated: true, completion: nil)
