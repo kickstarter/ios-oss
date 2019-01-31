@@ -116,6 +116,45 @@ extension Service {
     }
   }
 
+  private func jsonResponse(request: URLRequest) -> SignalProducer<Data, ErrorType> {
+    return SignalProducer<A, ErrorType> { observer, disposable in
+      let task = URLSession.shared.dataTask(with: request) {  data, response, error in
+        if let error = error {
+          observer.send(error: .requestError(error, response))
+          print("🔴 [KsApi] Failure - Request error: \(error.localizedDescription)")
+        }
+
+        guard let data = data else {
+          print("🔴 [KsApi] Failure - Empty response")
+          observer.send(error: .emptyResponse(response))
+          return
+        }
+
+        do {
+          let decodedObject = try JSONDecoder().decode(GraphResponse<A>.self, from: data)
+          if let errors = decodedObject.errors, let error = errors.first {
+            observer.send(error: .decodeError(error))
+            print("🔴 [KsApi] Failure - Decoding error: \(error.message)")
+          } else if let value = decodedObject.data {
+            print("🔵 [KsApi] Success")
+            observer.send(value: value)
+          }
+        } catch let error {
+          print("🔴 [KsApi] Failure - JSON decoding error: \(error.localizedDescription)")
+          observer.send(error: .jsonDecodingError(responseString: String(data: data, encoding: .utf8),
+                                                  error: error))
+        }
+        observer.sendCompleted()
+      }
+
+      disposable.observeEnded {
+        task.cancel()
+      }
+
+      task.resume()
+    }
+  }
+
   // MARK: Public Request Functions
   func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
     let queryString: String = Query.build(query)

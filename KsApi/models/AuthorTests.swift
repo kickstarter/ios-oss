@@ -1,3 +1,4 @@
+// swiftlint:disable force_unwrapping
 import XCTest
 @testable import KsApi
 
@@ -6,48 +7,67 @@ final class CommentTests: XCTestCase {
   func testJSONParsing_WithCompleteData() {
 
     let author = Author.decodeJSONDictionary([
-      "author": [
-        "id": 382491714,
-        "name": "Nino Teixeira",
-        "avatar": [
-          "thumb": "https://ksr-qa-ugc.imgix.net/thumb.jpg",
-          "small": "https://ksr-qa-ugc.imgix.net/small.jpg",
-          "medium": "https://ksr-qa-ugc.imgix.net/medium.jpg"
+      "id": 382491714,
+      "name": "Nino Teixeira",
+      "avatar": [
+        "thumb": "https://ksr-qa-ugc.imgix.net/thumb.jpg",
+        "small": "https://ksr-qa-ugc.imgix.net/small.jpg",
+        "medium": "https://ksr-qa-ugc.imgix.net/medium.jpg"
+      ],
+      "urls": [
+        "web": [
+          "user": "https://staging.kickstarter.com/profile/382491714"
         ],
-        "urls": [
-          "web": [
-            "user": "https://staging.kickstarter.com/profile/382491714"
-          ],
-          "api": [
-            "user": "https://api-staging.kickstarter.com/v1/users/382491714"
-          ]
+        "api": [
+          "user": "https://api-staging.kickstarter.com/v1/users/382491714"
         ]
       ]
-    ])
+      ])
 
     XCTAssertNil(author.error)
-    XCTAssertEqual(1, author.value?.id)
+    XCTAssertEqual(382491714, author.value?.id)
   }
 
-  func testJSONParsing_ZeroDeletedAt() {
+  func testJSONParsing_WithIncompleteData() {
 
-    let comment = Comment.decodeJSONDictionary([
-      "author": [
+    let author = Comment.decodeJSONDictionary([
         "id": 1,
         "name": "Blob",
         "avatar": [
           "medium": "http://www.kickstarter.com/medium.jpg",
           "small": "http://www.kickstarter.com/small.jpg"
-        ]
-      ],
-      "body": "hello!",
-      "created_at": 123456789.0,
-      "deleted_at": 0,
-      "id": 1
+          ]
       ])
+    XCTAssertNil(author.value)
+    XCTAssertNotNil(author.error)
+  }
 
-    XCTAssertNil(comment.error)
-    XCTAssertNotNil(comment.value)
-    XCTAssertNil(comment.value?.deletedAt)
+  func testJSONParsing_SwiftDecoder() {
+
+    let jsonString = """
+    {
+      "id": 382491714,
+      "name": "Nino Teixeira",
+      "avatar": {
+        "thumb": "https://ksr-qa-ugc.imgix.net/thumb_avatar.png",
+        "small": "https://ksr-qa-ugc.imgix.net/small_avatar.png",
+        "medium": "https://ksr-qa-ugc.imgix.net/medium_avatar.png"
+        },
+      "urls": {
+        "web": {
+          "user": "https://staging.kickstarter.com/profile/382491714"
+        },
+        "api": {
+          "user": "https://api-staging.kickstarter.com/v1/users/382491714"
+        }
+      }
+    }
+    """
+
+    let data = jsonString.data(using: .utf8)!
+    let  author = try? JSONDecoder().decode(Author.self, from: data)
+
+    XCTAssertEqual(author?.id, 382491714)
+    XCTAssertEqual(author?.name, "Nino Teixeira")
   }
 }
