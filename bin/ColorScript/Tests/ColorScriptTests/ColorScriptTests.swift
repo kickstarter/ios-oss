@@ -14,7 +14,6 @@ final class ColorScriptTests: XCTestCase {
             "dark_grey_500": "656868"
           }
           """
-
   func testDataNil_InvalidJSON() {
     let invalidJson = """
           {
