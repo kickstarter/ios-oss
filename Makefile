@@ -11,7 +11,9 @@ BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
 OPENTOK_VERSION ?= 2.10.2
 FABRIC_SDK_VERSION ?= 3.10.5
+FABRIC_SDK_URL ?= https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip
 STRIPE_SDK_VERSION ?= 13.2.0
+STRIPE_SDK_URL ?= https://github.com/stripe/stripe-ios/releases/download/vINSERT_SDK_VERSION/Stripe.framework.zip
 COMMIT ?= $(CIRCLE_SHA1)
 
 ifeq ($(PLATFORM),iOS)
@@ -161,9 +163,9 @@ opentok:
 	fi
 
 fabric:
-	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip; \
+	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) $(FABRIC_SDK_URL); \
 
 stripe:
-	bin/download_framework.sh Stripe $(STRIPE_SDK_VERSION) https://github.com/stripe/stripe-ios/releases/download/vINSERT_SDK_VERSION/Stripe.framework.zip; \
+	bin/download_framework.sh Stripe $(STRIPE_SDK_VERSION) $(STRIPE_SDK_URL); \
 
 .PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok fabric
