@@ -699,8 +699,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -1289,6 +1288,23 @@ contributeurs"
     )
   }
   /**
+   "Create password"
+
+   - **en**: "Create password"
+   - **de**: "Passwort erstellen"
+   - **es**: "Crea contraseña"
+   - **fr**: "Create password"
+   - **ja**: "Create password"
+  */
+  public static func Create_password() -> String {
+    return localizedString(
+      key: "Create_password",
+      defaultValue: "Create password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Created projects %{projects_count}"
 
    - **en**: "Created projects %{projects_count}"
@@ -1765,23 +1781,6 @@ contributeurs"
     )
   }
   /**
-   "Daily"
-
-   - **en**: "Daily"
-   - **de**: "Daily"
-   - **es**: "Daily"
-   - **fr**: "Daily"
-   - **ja**: "Daily"
-  */
-  public static func Daily() -> String {
-    return localizedString(
-      key: "Daily",
-      defaultValue: "Daily",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Daily digest"
 
    - **en**: "Daily digest"
@@ -1794,6 +1793,23 @@ contributeurs"
     return localizedString(
       key: "Daily_digest",
       defaultValue: "Daily digest",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Daily summary"
+
+   - **en**: "Daily summary"
+   - **de**: "Übersicht (einmal täglich)"
+   - **es**: "Resumen diario"
+   - **fr**: "Une fois par jour"
+   - **ja**: "1日1回の概要"
+  */
+  public static func Daily_summary() -> String {
+    return localizedString(
+      key: "Daily_summary",
+      defaultValue: "Daily summary",
       count: nil,
       substitutions: [:]
     )
@@ -5256,23 +5272,6 @@ n'ont rien soutenu."
     )
   }
   /**
-   "Project activity summary"
-
-   - **en**: "Project activity summary"
-   - **de**: "Übersicht Projektaktivität"
-   - **es**: "Resumen de la actividad del proyecto"
-   - **fr**: "Résumé d'activité de projet"
-   - **ja**: "プロジェクトアクティビティ概要"
-  */
-  public static func Project_activity_summary() -> String {
-    return localizedString(
-      key: "Project_activity_summary",
-      defaultValue: "Project activity summary",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Project cancelled"
 
    - **en**: "Project cancelled"
@@ -7063,18 +7062,18 @@ catch your eye?"
     )
   }
   /**
-   "Twice a day"
+   "Twice a day summary"
 
-   - **en**: "Twice a day"
-   - **de**: "Zweimal täglich"
-   - **es**: "Dos veces al día"
+   - **en**: "Twice a day summary"
+   - **de**: "Übersicht (zweimal täglich)"
+   - **es**: "Resumen dos veces al día"
    - **fr**: "Deux fois par jour"
-   - **ja**: "1日2回"
+   - **ja**: "1日2回の概要"
   */
-  public static func Twice_a_day() -> String {
+  public static func Twice_a_day_summary() -> String {
     return localizedString(
-      key: "Twice_a_day",
-      defaultValue: "Twice a day",
+      key: "Twice_a_day_summary",
+      defaultValue: "Twice a day summary",
       count: nil,
       substitutions: [:]
     )
@@ -7219,10 +7218,10 @@ catch your eye?"
    "We don't accept this card type. Please try again with another one."
 
    - **en**: "We don't accept this card type. Please try again with another one."
-   - **de**: "We don't accept this card type. Please try again with another one."
-   - **es**: "We don't accept this card type. Please try again with another one."
-   - **fr**: "We don't accept this card type. Please try again with another one."
-   - **ja**: "We don't accept this card type. Please try again with another one."
+   - **de**: "Dieser Kartentyp wird nicht von uns anerkannt. Bitte versuche es mit einer anderen Karte erneut."
+   - **es**: "No aceptamos este tipo de tarjeta. Intenta de nuevo con otra."
+   - **fr**: "Ce type n'est pas accepté. Veuillez réessayer avec une autre carte."
+   - **ja**: "残念ながらこのタイプのカードには対応しておりません。別のカードにてもう一度お試しください。"
   */
   public static func Unsupported_card_type() -> String {
     return localizedString(
@@ -8001,6 +8000,23 @@ Veuillez réessayer ultérieurement."
       defaultValue: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials."
+
+   - **en**: "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials."
+   - **de**: "Du bist via Facebook (%{email}) verbunden. Erstelle ein Passwort für dieses Konto, um deine Anmeldedaten für Kickstarter zu ändern."
+   - **es**: "Estás conectado a través de Facebook (%{email}). Crea una contraseña para esta cuenta para editar tus credenciales de Kickstarter."
+   - **fr**: "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials."
+   - **ja**: "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials."
+  */
+  public static func Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: String) -> String {
+    return localizedString(
+      key: "Youre_connected_via_Facebook_email_Create_a_password_for_this_account",
+      defaultValue: "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials.",
+      count: nil,
+      substitutions: ["email": email]
     )
   }
   /**
