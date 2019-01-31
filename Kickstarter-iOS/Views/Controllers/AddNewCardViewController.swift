@@ -19,7 +19,8 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   @IBOutlet private weak var creditCardValidationErrorLabel: UILabel!
   @IBOutlet private weak var creditCardValidationErrorContainer: UIView!
 
-  private let unsupportedCardBrands: [STPCardBrand] = [.unionPay, .unknown]
+  private let supportedCardBrands: [STPCardBrand] = [.visa, .masterCard, .amex, .dinersClub,
+                                                     .discover, .JCB]
 
   private var saveButtonView: LoadingBarButtonItemView!
   internal var messageBannerViewController: MessageBannerViewController?
@@ -204,8 +205,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     }
 
     let cardBrand = STPCardValidator.brand(forNumber: cardnumber)
-    let isValid = self.cardBrandIsSupported(brand: cardBrand,
-                                            unsupportedCardBrands: self.unsupportedCardBrands)
+    let isValid = self.cardBrandIsSupported(brand: cardBrand, supportedCardBrands: self.supportedCardBrands)
 
     self.viewModel.inputs.cardBrand(isValid: isValid)
 
@@ -233,7 +233,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     }
   }
 
-  private func cardBrandIsSupported(brand: STPCardBrand, unsupportedCardBrands: [STPCardBrand]) -> Bool {
-    return !self.unsupportedCardBrands.contains(brand)
+  private func cardBrandIsSupported(brand: STPCardBrand, supportedCardBrands: [STPCardBrand]) -> Bool {
+    return self.supportedCardBrands.contains(brand)
   }
 }
