@@ -1075,6 +1075,7 @@
 		D77744C1217A47D5008D679F /* SettingsCurrencyCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7774483217A465D008D679F /* SettingsCurrencyCellViewModelTests.swift */; };
 		D78E4E482188CB4300E99295 /* UIButton+HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78E4E472188CB4300E99295 /* UIButton+HapticFeedback.swift */; };
 		D78E4EE3218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78E4EE2218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift */; };
+		D79440572203A63300D0A747 /* CreatePaymentSourceEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79440562203A63300D0A747 /* CreatePaymentSourceEnvelope.swift */; };
 		D796867C20FE655300E54C61 /* SettingsFollowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */; };
 		D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */; };
 		D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */; };
@@ -2811,6 +2812,7 @@
 		D78E4E472188CB4300E99295 /* UIButton+HapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+HapticFeedback.swift"; sourceTree = "<group>"; };
 		D78E4EE2218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFeedbackGenerator+Extensions.swift"; sourceTree = "<group>"; };
 		D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossDissolveTransitionAnimator.swift; sourceTree = "<group>"; };
+		D79440562203A63300D0A747 /* CreatePaymentSourceEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceEnvelope.swift; sourceTree = "<group>"; };
 		D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFollowCellViewModel.swift; sourceTree = "<group>"; };
 		D796867D20FF910300E54C61 /* SettingsPrivacyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDataSource.swift; sourceTree = "<group>"; };
 		D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyStaticCell.swift; sourceTree = "<group>"; };
@@ -4281,8 +4283,8 @@
 				D01587921EEB2ED6006E7684 /* FindFriendsEnvelopeTests.swift */,
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
 				D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */,
-				D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */,
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
+				D79440562203A63300D0A747 /* CreatePaymentSourceEnvelope.swift */,
 				D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
 				D01587961EEB2ED6006E7684 /* ItemTests.swift */,
@@ -6508,6 +6510,7 @@
 				D0158A1A1EEB30A2006E7684 /* Project.PhotoTemplates.swift in Sources */,
 				D01588B51EEB2ED7006E7684 /* ProjectNotificationLenses.swift in Sources */,
 				D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */,
+				D79440572203A63300D0A747 /* CreatePaymentSourceEnvelope.swift in Sources */,
 				D08CD1F921910DF5009F89F0 /* UnwatchProjectMutation.swift in Sources */,
 				D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */,
 				D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */,

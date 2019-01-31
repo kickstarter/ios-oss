@@ -70,15 +70,9 @@ AddNewCardViewModelOutputs {
       .switchMap {
         AppEnvironment.current.apiService.addNewCreditCard(input: $0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { (envelope: CreatePaymentMethodEnvelope) in envelope.createPaymentSource }
+          .map { (envelope: CreatePaymentSourceEnvelope) in envelope.createPaymentSource }
           .materialize()
        }
-
-    addNewCardEvent.values()
-      .observeValues { val in print("THIS!: \(val)") }
-
-    addNewCardEvent.errors()
-      .observeValues { error in print("THIS: \(error)") }
 
     let stripeInvalidToken = self.stripeErrorProperty.signal.map {
       $0?.localizedDescription

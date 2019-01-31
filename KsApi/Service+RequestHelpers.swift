@@ -68,7 +68,7 @@ extension Service {
             observer.send(error: .decodeError(error))
             print("🔴 [KsApi] Failure - Decoding error: \(error.message)")
           } else if let value = decodedObject.data {
-            print("🔵 [KsApi] Success - \(value)")
+            print("🔵 [KsApi] Success")
 
             observer.send(value: value)
           }

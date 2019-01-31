@@ -62,7 +62,7 @@ public struct Service: ServiceType {
   }
 
   public func addNewCreditCard(input: CreatePaymentSourceInput)
-    -> SignalProducer<CreatePaymentMethodEnvelope, GraphError> {
+    -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
     return applyMutation(mutation: CreatePaymentSourceMutation(input: input))
   }
 
