@@ -76,7 +76,7 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_NotCreator_Author() {
-    let comment = Comment(author: User.template |> \.id .~ 12345,
+    let comment = Comment(author: Author.template |> \.id .~ 12345,
                           body: "HELLO",
                           createdAt: 123456789.0,
                           deletedAt: nil,
@@ -92,7 +92,10 @@ final class CommentCellViewModelTest: TestCase {
 
   func testPersonalizedLabels_ViewerIs_Creator_Author() {
     let project = Project.template
-    let comment = Comment(author: project.creator,
+    let author = Author.template
+      |> \.id .~ project.creator.id
+
+    let comment = Comment(author: author,
                           body: "HELLO",
                           createdAt: 123456789.0,
                           deletedAt: nil,
