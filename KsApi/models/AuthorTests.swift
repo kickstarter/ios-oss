@@ -10,16 +10,16 @@ final class CommentTests: XCTestCase {
         "id": 382491714,
         "name": "Nino Teixeira",
         "avatar": [
-          "thumb": "https://ksr-qa-ugc.imgix.net/missing_user_avatar.png?ixlib=rb-1.1.0&w=40&h=40&fit=crop&v=&auto=format&frame=1&q=92&s=3982d46fcfc2fc8d69e5509b21c3e806",
-          "small": "https://ksr-qa-ugc.imgix.net/missing_user_avatar.png?ixlib=rb-1.1.0&w=160&h=160&fit=crop&v=&auto=format&frame=1&q=92&s=d84185902370c61b511043199eac445f",
-          "medium": "https://ksr-qa-ugc.imgix.net/missing_user_avatar.png?ixlib=rb-1.1.0&w=160&h=160&fit=crop&v=&auto=format&frame=1&q=92&s=d84185902370c61b511043199eac445f"
+          "thumb": "https://ksr-qa-ugc.imgix.net/thumb.jpg",
+          "small": "https://ksr-qa-ugc.imgix.net/small.jpg",
+          "medium": "https://ksr-qa-ugc.imgix.net/medium.jpg"
         ],
         "urls": [
           "web": [
             "user": "https://staging.kickstarter.com/profile/382491714"
           ],
           "api": [
-            "user": "https://api-staging.kickstarter.com/v1/users/382491714?signature=1545344614.b21b0a552cb7ced5bd93730812705796fe88f78d"
+            "user": "https://api-staging.kickstarter.com/v1/users/382491714"
           ]
         ]
       ]
