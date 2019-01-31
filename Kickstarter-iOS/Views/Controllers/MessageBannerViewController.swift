@@ -117,7 +117,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     UIView.animate(
       withDuration: duration,
       delay: 0.0,
-      options: UIView.AnimationOptions.curveEaseInOut,
+      options: .curveEaseInOut,
       animations: { [weak self] in
         guard let self = self else { return }
 
