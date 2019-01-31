@@ -1,6 +1,5 @@
 import Foundation
 
-
 public struct CreatePaymentSourceEnvelope: Decodable {
   public private(set) var createPaymentSource: CreatePaymentSource
 
