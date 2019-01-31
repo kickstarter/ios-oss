@@ -18,13 +18,15 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   @IBOutlet private weak var creditCardTextField: STPPaymentCardTextField!
   @IBOutlet private weak var creditCardValidationErrorLabel: UILabel!
   @IBOutlet private weak var creditCardValidationErrorContainer: UIView!
-  @IBOutlet weak var zipcodeView: UIView!
+  @IBOutlet private weak var scrollView: UIScrollView!
+  @IBOutlet private weak var stackView: UIStackView!
+  @IBOutlet private weak var zipcodeView: SettingsFormFieldView!
 
   private let supportedCardBrands: [STPCardBrand] = [.visa, .masterCard, .amex, .dinersClub,
                                                      .discover, .JCB]
 
   private var saveButtonView: LoadingBarButtonItemView!
-  private var zipcodeFormView: SettingsFormFieldView!
+
   internal var messageBannerViewController: MessageBannerViewController?
 
   fileprivate let viewModel: AddNewCardViewModelType = AddNewCardViewModel()
@@ -60,18 +62,11 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
-    self.zipcodeFormView = SettingsFormFieldView.instantiate()
-    self.zipcodeFormView.frame = self.zipcodeView.bounds
+    self.zipcodeView.textField.addTarget(self, action: #selector(zipcodeTextFieldDoneEditing),
+                                         for: .editingDidEndOnExit)
 
-    self.zipcodeFormView.textField.addTarget(self,
-                                             action: #selector(zipcodeTextFieldDoneEditing),
-                                             for: .editingDidEndOnExit)
-
-    self.zipcodeFormView.textField.addTarget(self,
-                                             action: #selector(zipcodeTextFieldChanged(textField:)),
-                                             for: .editingChanged)
-
-    self.zipcodeView.addSubview(zipcodeFormView)
+    self.zipcodeView.textField.addTarget(self, action: #selector(zipcodeTextFieldChanged(textField:)),
+                                         for: .editingChanged)
 
     self.creditCardTextField.delegate = self
 
@@ -122,7 +117,13 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       |> \.textColor .~ .ksr_red_400
       |> \.text %~ { _ in Strings.Unsupported_card_type() }
 
-    _ = self.zipcodeFormView.titleLabel
+    _ = self.scrollView
+      |> \.alwaysBounceVertical .~ true
+
+    _ = self.stackView
+      |> \.layoutMargins .~ .init(leftRight: Styles.grid(2))
+
+    _ = self.zipcodeView.titleLabel
       |> \.text %~ { _ in
         Strings.Zip_postal_code()
       }
@@ -164,7 +165,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] _ in
         self?.dismissKeyboard()
     }
 
@@ -200,7 +201,13 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.viewModel.outputs.zipcodeTextFieldBecomeFirstResponder
       .observeForControllerAction()
       .observeValues { [weak self] _ in
-        self?.zipcodeFormView.textField.becomeFirstResponder()
+        self?.zipcodeView.textField.becomeFirstResponder()
+    }
+
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        self?.scrollView.handleKeyboardVisibilityDidChange(change)
     }
   }
 
@@ -273,5 +280,10 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
   private func cardBrandIsSupported(brand: STPCardBrand, supportedCardBrands: [STPCardBrand]) -> Bool {
     return self.supportedCardBrands.contains(brand)
+  }
+
+  private func dismissKeyboard() {
+    [self.cardholderNameTextField, self.creditCardTextField, self.zipcodeView.textField]
+      .forEach { $0?.resignFirstResponder() }
   }
 }

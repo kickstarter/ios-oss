@@ -2,14 +2,6 @@ import Foundation
 import Library
 import Prelude
 
-public let largeContentSizeCategories: [UIContentSizeCategory] = [.extraLarge,
-                                                                .extraExtraLarge,
-                                                                .extraExtraLarge,
-                                                                .accessibilityLarge,
-                                                                .accessibilityExtraLarge,
-                                                                .accessibilityExtraExtraLarge,
-                                                                .accessibilityExtraExtraExtraLarge]
-
 final class SettingsFormFieldView: UIView, NibLoading {
   //swiftlint:disable private_outlet
   @IBOutlet weak var textField: UITextField!
@@ -17,24 +9,25 @@ final class SettingsFormFieldView: UIView, NibLoading {
   @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var stackView: UIStackView!
 
-  public static func instantiate() -> SettingsFormFieldView {
-    guard let view = SettingsFormFieldView.fromNib(nib: Nib.SettingsFormFieldView) else {
-      fatalError("failed to load SettingsFormFieldView from Nib")
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+
+    guard let view = self.view(fromNib: .SettingsFormFieldView) else {
+        fatalError("Failed to load view")
     }
 
-    return view
+    view.frame = self.bounds
+
+    self.addSubview(view)
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    // TODO: layout margins should be set at the stackview level
-    _ = self
-      |> \.layoutMargins .~ .init(leftRight: Styles.grid(2))
-
     _ = self.titleLabel
       |> settingsTitleLabelStyle
       |> \.isAccessibilityElement .~ false
+      |> \.adjustsFontForContentSizeCategory .~ true
 
     _ = self.textField
       |> formFieldStyle
@@ -43,48 +36,7 @@ final class SettingsFormFieldView: UIView, NibLoading {
       |> \.textColor .~ .ksr_text_dark_grey_500
       |> \.accessibilityLabel .~ self.titleLabel.text
 
-
     _ = self.separatorView
       |> separatorStyle
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    if #available(iOS 11.0, *) {
-      if self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-        self.configureForContentSizeLarge()
-      } else {
-        self.configureForContentSizeRegular()
-      }
-    } else {
-      if largeContentSizeCategories.contains(self.traitCollection.preferredContentSizeCategory) {
-        self.configureForContentSizeLarge()
-
-      } else {
-        self.configureForContentSizeRegular()
-      }
-    }
-  }
-
-  private func configureForContentSizeLarge() {
-    _ = self.stackView
-      |> \.axis .~ .vertical
-
-    _ = self.titleLabel
-      |> \.numberOfLines .~ 0
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.textAlignment .~ .left
-
-  }
-
-  private func configureForContentSizeRegular() {
-    _ = self.stackView
-      |> \.axis .~ .horizontal
-
-    _ = self.titleLabel
-      |> \.numberOfLines .~ 1
-      |> \.lineBreakMode .~ .byTruncatingTail
-      |> \.textAlignment .~ .right
   }
 }

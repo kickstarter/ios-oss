@@ -54,4 +54,9 @@ extension NibLoading {
 
     return view
   }
+
+  func view(fromNib nib: Nib) -> UIView? {
+    return UINib(nibName: nib.rawValue, bundle: .framework).instantiate(withOwner: self, options: nil).first
+      as? UIView
+  }
 }

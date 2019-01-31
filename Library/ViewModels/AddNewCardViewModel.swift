@@ -103,6 +103,7 @@ AddNewCardViewModelOutputs {
     self.paymentDetails = paymentInput.takeWhen(self.saveButtonTappedProperty.signal)
 
     self.dismissKeyboard = self.saveButtonIsEnabled
+      .takeWhen(self.saveButtonTappedProperty.signal)
       .filter(isTrue)
       .ignoreValues()
 
