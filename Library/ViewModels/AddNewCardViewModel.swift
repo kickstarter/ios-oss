@@ -67,34 +67,42 @@ AddNewCardViewModelOutputs {
     let addNewCardEvent = self.stripeTokenProperty.signal.skipNil()
       .map { CreatePaymentSourceInput(paymentType: PaymentType.creditCard,
                                       stripeToken: $0.0, stripeCardId: $0.1) }
-      .flatMap {
+      .switchMap {
         AppEnvironment.current.apiService.addNewCreditCard(input: $0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { (envelope: CreatePaymentMethodEnvelope) in envelope.createPaymentSource }
           .materialize()
        }
 
     addNewCardEvent.values()
-      .observeValues { val in print("THIS: \(val)") }
+      .observeValues { val in print("THIS!: \(val)") }
 
     addNewCardEvent.errors()
       .observeValues { error in print("THIS: \(error)") }
 
-
-    self.addNewCardSuccess = addNewCardEvent.values().ignoreValues()
-      .map { _ in Strings.Got_it_your_changes_have_been_saved() }
-
     let stripeInvalidToken = self.stripeErrorProperty.signal.map {
       $0?.localizedDescription
     }.skipNil()
-
     let graphError = addNewCardEvent.errors().map {
       $0.localizedDescription
     }
+    let addNewError = addNewCardEvent.map { $0.value?.errorMessage }.skipNil()
 
-    self.addNewCardFailure = Signal.merge (
+    let errorMessage = Signal.merge (
       stripeInvalidToken,
-      graphError
+      graphError,
+      addNewError
     )
+
+    self.addNewCardFailure = errorMessage.map { $0 }
+
+    let cardAddedSuccessfully = addNewCardEvent
+      .filter { $0.value?.isSuccessful == true }
+      .mapConst(true)
+
+    self.addNewCardSuccess = cardAddedSuccessfully
+      .map { _ in Strings.Got_it_your_changes_have_been_saved() }
+
 
     self.activityIndicatorShouldShow = Signal.merge(
       self.saveButtonTappedProperty.signal.mapConst(true),

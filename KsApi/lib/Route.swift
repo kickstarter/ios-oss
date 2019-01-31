@@ -327,7 +327,8 @@ internal enum Route {
       return (.PUT, "/v1/users/self/notifications/\(notification.id)", params, nil)
 
     case let .updateUserSelf(user):
-      let params = user.encode()
+      var params = user.encode()
+      params["frequency"] = "once_a_day"
 
       return (.PUT, "/v1/users/self", params, nil)
 

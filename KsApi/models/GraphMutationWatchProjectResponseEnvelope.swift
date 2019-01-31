@@ -14,6 +14,24 @@ public struct GraphMutationWatchProjectResponseEnvelope: Decodable {
 }
 
 public struct CreatePaymentMethodEnvelope: Decodable {
-  public private(set) var errorMessage: String?
-  public private(set) var isSuccessful: Bool
+  public private(set) var createPaymentSource: CreatePaymentSource
+
+  public struct CreatePaymentSource: Decodable {
+    public private(set) var errorMessage: String
+    public private(set) var isSuccessful: Bool
+  }
+}
+
+extension CreatePaymentMethodEnvelope {
+  private enum CodingKeys: String, CodingKey {
+    case
+    createPaymentSource,
+    errorMessage,
+    isSuccessful
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.createPaymentSource = try values.decode(CreatePaymentSource.self, forKey: .createPaymentSource)
+  }
 }

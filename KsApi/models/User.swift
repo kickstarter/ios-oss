@@ -243,6 +243,7 @@ extension User.Notifications: EncodableType {
     result["notify_of_messages"] = self.messages
     result["notify_of_post_likes"] = self.postLikes
     result["notify_of_creator_edu"] = self.creatorTips
+    result["frequency"] = "once_a_day"
     result["notify_of_updates"] = self.updates
     result["notify_of_creator_digest"] = self.creatorDigest
     result["notify_mobile_of_backings"] = self.mobileBackings
