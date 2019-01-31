@@ -77,6 +77,7 @@
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
 "Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
+"Create_password" = "Create password";
 "Created_projects_projects_count" = "Projets créés : %{projects_count}";
 "Creator" = "Créateur";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> est en direct en ce moment";
@@ -105,8 +106,8 @@
 "Currency_USD" = "Dollar américain – $ (USD)";
 "Current_email" = "Adresse e-mail actuelle";
 "Current_password" = "Mot de passe actuel";
-"Daily" = "Daily";
 "Daily_digest" = "Résumé quotidien";
+"Daily_summary" = "Une fois par jour";
 "Data_will_appear_here_once" = "Ces données seront visibles dès que vous aurez reçu votre première contribution.";
 "Delete_my_Kickstarter_Account" = "Supprimer mon compte Kickstarter";
 "Delivered" = "Distribué";
@@ -318,7 +319,6 @@
 "Project_Cancelled" = "Projet annulé.";
 "Project_Suspended" = "Projet suspendu.";
 "Project_activity" = "Activité de mon projet";
-"Project_activity_summary" = "Résumé d'activité de projet";
 "Project_cancelled" = "Projet annulé";
 "Project_reminders" = "Rappels";
 "Project_saved" = "Projet enregistré.";
@@ -436,7 +436,7 @@
 "Top_ten_pledge_sources" = "Vos 10 principales sources de contributions";
 "Top_ten_rewards" = "Les 10 récompenses qui ont le plus de succès";
 "Total_pledged" = "Total engagé";
-"Twice_a_day" = "Deux fois par jour";
+"Twice_a_day_summary" = "Deux fois par jour";
 "Unable_to_request" = "Demande de données impossible.";
 "Unfollow_friend_name" = "Ne plus suivre %{friend_name}";
 "Unfollows_friend_name" = "Désabonnement des actus de %{friend_name}.";
@@ -445,7 +445,7 @@
 "Unsubscribe" = "Se désabonner";
 "Unsubscribes_from_upcoming_lives_streams" = "Désabonnement des diffusions en direct à venir.";
 "Unsuccessfully_Funded" = "Non financé.";
-"Unsupported_card_type" = "We don't accept this card type. Please try again with another one.";
+"Unsupported_card_type" = "Ce type n'est pas accepté. Veuillez réessayer avec une autre carte.";
 "Upcoming_live_stream" = "Diffusion en direct à venir";
 "Upcoming_live_streams" = "Diffusions en direct à venir";
 "Upcoming_with_creator_name" = "<br/><b>%{creator_name}</b> bientôt en direct";
@@ -491,6 +491,7 @@
 "Your_shipping_destination" = "Destination d'expédition";
 "Youre_a_backer" = "Vous êtes contributeur !";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer.";
+"Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials.";
 "Youre_offline" = "Vous êtes hors ligne. Dès que votre appareil se sera reconnecté, naviguez dans l'application pour la rafraîchir.";
 "Youve_pledged_to_support_this_project" = "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée.";
 "Zip_postal_code" = "Code postal";
