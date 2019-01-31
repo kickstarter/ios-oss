@@ -60,8 +60,6 @@ extension Service {
           return
         }
 
-        let dataString = String(data: data, encoding: .utf8)
-        print(dataString)
         do {
           let decodedObject = try JSONDecoder().decode(GraphResponse<A>.self, from: data)
           if let errors = decodedObject.errors, let error = errors.first {
@@ -69,7 +67,6 @@ extension Service {
             print("🔴 [KsApi] Failure - Decoding error: \(error.message)")
           } else if let value = decodedObject.data {
             print("🔵 [KsApi] Success")
-
             observer.send(value: value)
           }
         } catch let error {
