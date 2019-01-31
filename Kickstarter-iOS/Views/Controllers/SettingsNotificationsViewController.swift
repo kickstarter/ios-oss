@@ -95,16 +95,14 @@ internal final class SettingsNotificationsViewController: UIViewController {
       animations: { [weak self] in
         guard let self = self else { return }
 
-        if !isHidden {
-          if AppEnvironment.current.isVoiceOverRunning() {
-            // Tells VoiceOver to ignore other elements in the same parent view
-            self.emailFrequencyPickerView.accessibilityViewIsModal = true
+        if !isHidden && AppEnvironment.current.isVoiceOverRunning() {
+          // Tells VoiceOver to ignore other elements in the same parent view
+          self.emailFrequencyPickerView.accessibilityViewIsModal = true
 
-            UIAccessibility.post(
-              notification: UIAccessibility.Notification.screenChanged,
-              argument: self.emailFrequencyPickerView
-            )
-          }
+          UIAccessibility.post(
+            notification: UIAccessibility.Notification.screenChanged,
+            argument: self.emailFrequencyPickerView
+          )
         }
 
         self.emailPickerViewTopConstraint.constant = isHidden ? 0 : self.emailFrequencyPickerView.frame.height
@@ -112,16 +110,15 @@ internal final class SettingsNotificationsViewController: UIViewController {
         self.view.layoutIfNeeded()
     },
     completion: { [weak self] _ in
-        if isHidden {
-          if AppEnvironment.current.isVoiceOverRunning() {
-            // Tells VoiceOver to re-enable focus on other elements in the same parent view
-            self?.emailFrequencyPickerView.accessibilityViewIsModal = false
+      if isHidden && AppEnvironment.current.isVoiceOverRunning() {
 
-            UIAccessibility.post(
-              notification: UIAccessibility.Notification.screenChanged,
-              argument: self?.emailFrequencyPickerView
-            )
-        }
+        // Tells VoiceOver to re-enable focus on other elements in the same parent view
+        self?.emailFrequencyPickerView.accessibilityViewIsModal = false
+
+        UIAccessibility.post(
+          notification: UIAccessibility.Notification.screenChanged,
+          argument: self?.emailFrequencyPickerView
+        )
       }
     })
   }
