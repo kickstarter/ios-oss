@@ -25,6 +25,7 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
 
     _ = self.cardNumberLabel
       |> settingsTitleLabelStyle
+      |> \.lineBreakMode .~ .byTruncatingMiddle
 
     _ = self.expirationDateLabel
       |> settingsDescriptionLabelStyle

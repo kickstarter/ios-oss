@@ -77,6 +77,7 @@
 "Couldnt_add_attachment" = "No se pudo añadir el anexo";
 "Couldnt_open_live_stream_Try_again_later" = "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde.";
 "Couldnt_remove_attachment" = "No se pudo remover el anexo";
+"Create_password" = "Crea contraseña";
 "Created_projects_projects_count" = "Proyectos creados: %{projects_count}";
 "Creator" = "Creador";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> está transmitiendo en vivo";
@@ -106,6 +107,7 @@
 "Current_email" = "Correo electrónico actual";
 "Current_password" = "Contraseña actual";
 "Daily_digest" = "Resumen diario";
+"Daily_summary" = "Resumen diario";
 "Data_will_appear_here_once" = "Los datos aparecerán aquí una vez que alguien patrocine tu proyecto.";
 "Delete_my_Kickstarter_Account" = "Eliminar mi cuenta de Kickstarter";
 "Delivered" = "Entregado";
@@ -434,6 +436,7 @@
 "Top_ten_pledge_sources" = "Las 10 principales fuentes de contribución";
 "Top_ten_rewards" = "Las 10 mejores recompensas";
 "Total_pledged" = "Contribuciones en total";
+"Twice_a_day_summary" = "Resumen dos veces al día";
 "Unable_to_request" = "No se pueden solicitar datos.";
 "Unfollow_friend_name" = "Dejar de seguir a %{friend_name}";
 "Unfollows_friend_name" = "Dejar de seguir a %{friend_name}.";
@@ -442,6 +445,7 @@
 "Unsubscribe" = "Anular suscripción";
 "Unsubscribes_from_upcoming_lives_streams" = "Desactiva subscripción a futuros Live-Streams.";
 "Unsuccessfully_Funded" = "Financiación falló.";
+"Unsupported_card_type" = "No aceptamos este tipo de tarjeta. Intenta de nuevo con otra.";
 "Upcoming_live_stream" = "Futuro Live-Stream";
 "Upcoming_live_streams" = "Live streams futuros";
 "Upcoming_with_creator_name" = "Próximamente: Video de <br/><b>%{creator_name}</b>";
@@ -487,6 +491,7 @@
 "Your_shipping_destination" = "Tu destino de envío";
 "Youre_a_backer" = "¡Eres un patrocinador!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder.";
+"Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Estás conectado a través de Facebook (%{email}). Crea una contraseña para esta cuenta para editar tus credenciales de Kickstarter.";
 "Youre_offline" = "Estás desconectado. Cuando tu dispositivo se vuelva a conectar, ve a la aplicación para actualizarla.";
 "Youve_pledged_to_support_this_project" = "Hiciste una contribución a este proyecto. El plazo de financiamiento todavía no ha terminado.";
 "Zip_postal_code" = "Código postal";

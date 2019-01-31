@@ -16,6 +16,11 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   @IBOutlet private weak var cardholderNameLabel: UILabel!
   @IBOutlet private weak var cardholderNameTextField: UITextField!
   @IBOutlet private weak var creditCardTextField: STPPaymentCardTextField!
+  @IBOutlet private weak var creditCardValidationErrorLabel: UILabel!
+  @IBOutlet private weak var creditCardValidationErrorContainer: UIView!
+
+  private let supportedCardBrands: [STPCardBrand] = [.visa, .masterCard, .amex, .dinersClub,
+                                                     .discover, .JCB]
 
   private var saveButtonView: LoadingBarButtonItemView!
   internal var messageBannerViewController: MessageBannerViewController?
@@ -71,6 +76,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
     _ = self.cardholderNameLabel
       |> settingsTitleLabelStyle
+      |> \.isAccessibilityElement .~ false
       |> \.text %~ { _ in Strings.Cardholder_name() }
 
     _ = self.cardholderNameTextField
@@ -79,6 +85,9 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       |> \.returnKeyType .~ .next
       |> \.textAlignment .~ .right
       |> \.textColor .~ .ksr_text_dark_grey_500
+
+    _ = self.cardholderNameTextField
+      |> \.accessibilityLabel .~ self.cardholderNameLabel.text
       |> \.attributedPlaceholder .~ NSAttributedString(
           string: Strings.Name(),
           attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400])
@@ -89,13 +98,28 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       |> \.cursorColor .~ .ksr_green_700
       |> \.textColor .~ .ksr_text_dark_grey_500
       |> \.placeholderColor .~ .ksr_text_dark_grey_400
+
+    _ = self.creditCardValidationErrorLabel
+      |> settingsDescriptionLabelStyle
+      |> \.textColor .~ .ksr_red_400
+      |> \.text %~ { _ in Strings.Unsupported_card_type() }
   }
 
   override func bindViewModel() {
     super.bindViewModel()
 
-     self.cardholderNameTextField.rac.becomeFirstResponder =
+    self.creditCardValidationErrorContainer.rac.hidden =
+      self.viewModel.outputs.creditCardValidationErrorContainerHidden
+    self.cardholderNameTextField.rac.becomeFirstResponder =
       self.viewModel.outputs.cardholderNameBecomeFirstResponder
+
+    self.viewModel.outputs.creditCardValidationErrorContainerHidden
+      .filter(isFalse)
+      .observeForUI()
+      .observeValues { _ in
+        UIAccessibility.post(notification: .layoutChanged,
+                             argument: self.creditCardValidationErrorLabel)
+    }
 
     self.viewModel.outputs.paymentDetailsBecomeFirstResponder
       .observeForUI()
@@ -172,27 +196,32 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
 
- internal func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
+  // MARK: - STPPaymentCardTextFieldDelegate
+  internal func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
+    self.viewModel.inputs.paymentInfo(isValid: textField.isValid)
 
-    guard let cardnumber = textField.cardNumber, let cvc = textField.cvc else {
+    guard let cardnumber = textField.cardNumber else {
       return
     }
 
-    self.viewModel.inputs.creditCardChanged(cardNumber: cardnumber,
-                                             expMonth: Int(textField.expirationMonth),
-                                             expYear: Int(textField.expirationYear),
-                                             cvc: cvc)
+    let cardBrand = STPCardValidator.brand(forNumber: cardnumber)
+    let isValid = self.cardBrandIsSupported(brand: cardBrand, supportedCardBrands: self.supportedCardBrands)
 
-    self.viewModel.inputs.paymentInfo(valid: textField.isValid)
+    self.viewModel.inputs.cardBrand(isValid: isValid)
+
+    self.viewModel.inputs.creditCardChanged(cardDetails: (cardnumber, textField.expirationMonth,
+                                                          textField.expirationYear, textField.cvc))
+
   }
 
-  private func createStripeToken(cardholderName: String, cardNumber: String, expirationMonth: Int,
-                                 expirationYear: Int, cvc: String) {
+  // MARK: - Private Functions
+  private func createStripeToken(cardholderName: String, cardNumber: String, expirationMonth: Month,
+                                 expirationYear: Year, cvc: String) {
     let cardParams = STPCardParams()
     cardParams.name = cardholderName
     cardParams.number = cardNumber
-    cardParams.expMonth = UInt(expirationMonth)
-    cardParams.expYear = UInt(expirationYear)
+    cardParams.expMonth = expirationMonth
+    cardParams.expYear = expirationYear
     cardParams.cvc = cvc
 
     STPAPIClient.shared().createToken(withCard: cardParams) { token, error in
@@ -202,5 +231,9 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
         self.viewModel.inputs.stripeError(error)
       }
     }
+  }
+
+  private func cardBrandIsSupported(brand: STPCardBrand, supportedCardBrands: [STPCardBrand]) -> Bool {
+    return self.supportedCardBrands.contains(brand)
   }
 }

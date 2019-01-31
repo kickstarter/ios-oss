@@ -5,11 +5,16 @@ import ReactiveExtensions
 import Result
 import Stripe
 
+public typealias Month = UInt
+public typealias Year = UInt
+public typealias CardDetails = (cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?)
+
 public protocol AddNewCardViewModelInputs {
+  func cardBrand(isValid: Bool)
   func cardholderNameChanged(_ cardholderName: String?)
   func cardholderNameTextFieldReturn()
-  func creditCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String)
-  func paymentInfo(valid: Bool)
+  func creditCardChanged(cardDetails: CardDetails)
+  func paymentInfo(isValid: Bool)
   func saveButtonTapped()
   func stripeCreated(_ token: String?, stripeID: String?)
   func stripeError(_ error: Error?)
@@ -21,9 +26,10 @@ public protocol AddNewCardViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var addNewCardFailure: Signal<String, NoError> { get }
   var addNewCardSuccess: Signal<String, NoError> { get }
+  var creditCardValidationErrorContainerHidden: Signal<Bool, NoError> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
-  var paymentDetails: Signal<(String, String, Int, Int, String), NoError> { get }
+  var paymentDetails: Signal<(String, String, Month, Year, String), NoError> { get }
   var paymentDetailsBecomeFirstResponder: Signal<Void, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
   var setStripePublishableKey: Signal<String, NoError> { get }
@@ -39,28 +45,54 @@ AddNewCardViewModelOutputs {
 
   public init() {
     let cardholderName = self.cardholderNameChangedProperty.signal.skipNil()
-    let creditCardDetails = self.creditCardChangedProperty.signal.skipNil()
+    let creditCardDetails = self.creditCardChangedProperty.signal
+      .skipNil()
+      .filterMap { cardDetails -> (String, UInt, UInt, String)? in
+        guard let expMonth = cardDetails.expMonth, let expYear = cardDetails.expYear,
+          let cvc = cardDetails.cvc else {
+          return nil
+        }
+
+        return (cardDetails.cardNumber, expMonth, expYear, cvc)
+      }
+
+    let cardNumber = self.creditCardChangedProperty.signal
+      .skipNil()
+      .map { $0.cardNumber }
 
     self.cardholderNameBecomeFirstResponder = self.viewDidLoadProperty.signal
     self.paymentDetailsBecomeFirstResponder = self.cardholderNameTextFieldReturnProperty.signal
 
+    let cardBrandValidAndCardNumberValid = Signal
+      .combineLatest(self.cardBrandIsValidProperty.signal,
+                     cardNumber)
+      .map { (brandValid, cardNumber) -> Bool in
+        // If card number is insufficiently long, always return "valid card brand" behaviour
+        return brandValid || cardNumber.count < 2
+    }
+
+    self.creditCardValidationErrorContainerHidden = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      cardBrandValidAndCardNumberValid
+      )
+
     self.saveButtonIsEnabled = Signal.combineLatest(
       cardholderName.map { !$0.isEmpty },
-      self.paymentInfoIsValidProperty.signal
-      ).map { cardholderNameFieldNotEmpty, creditCardIsValid in
-        cardholderNameFieldNotEmpty && creditCardIsValid }
+      self.paymentInfoIsValidProperty.signal,
+      self.cardBrandIsValidProperty.signal
+      ).map { cardholderNameFieldNotEmpty, creditCardIsValid, cardBrandIsValid in
+        cardholderNameFieldNotEmpty && creditCardIsValid && cardBrandIsValid }
+      .skipRepeats()
 
     let paymentInput = Signal.combineLatest(cardholderName, creditCardDetails)
       .map { cardholderName, creditCardDetails in
         (cardholderName, creditCardDetails.0, creditCardDetails.1, creditCardDetails.2, creditCardDetails.3) }
 
-    self.paymentDetails = paymentInput
-      .takeWhen(self.saveButtonTappedProperty.signal)
+    self.paymentDetails = paymentInput.takeWhen(self.saveButtonTappedProperty.signal)
 
     self.dismissKeyboard = self.saveButtonTappedProperty.signal
 
-    self.setStripePublishableKey = self.saveButtonIsEnabled
-      .filter(isTrue)
+    self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.config?.stripePublishableKey }
       .skipNil()
 
@@ -111,6 +143,11 @@ AddNewCardViewModelOutputs {
     }
   }
 
+  private let cardBrandIsValidProperty = MutableProperty<Bool>(true)
+  public func cardBrand(isValid: Bool) {
+    self.cardBrandIsValidProperty.value = isValid
+  }
+
   private let cardholderNameChangedProperty = MutableProperty<String?>(nil)
   public func cardholderNameChanged(_ cardholderName: String?) {
     self.cardholderNameChangedProperty.value = cardholderName
@@ -121,14 +158,14 @@ AddNewCardViewModelOutputs {
     self.cardholderNameTextFieldReturnProperty.value = ()
   }
 
-  private let creditCardChangedProperty = MutableProperty<(String, Int, Int, String)?>(nil)
-  public func creditCardChanged(cardNumber: String, expMonth: Int, expYear: Int, cvc: String) {
-    self.creditCardChangedProperty.value = (cardNumber, expMonth, expYear, cvc)
+  private let creditCardChangedProperty = MutableProperty<CardDetails?>(nil)
+  public func creditCardChanged(cardDetails: CardDetails) {
+    self.creditCardChangedProperty.value = cardDetails
   }
 
   private let paymentInfoIsValidProperty = MutableProperty(false)
-  public func paymentInfo(valid: Bool) {
-    self.paymentInfoIsValidProperty.value = valid
+  public func paymentInfo(isValid: Bool) {
+    self.paymentInfoIsValidProperty.value = isValid
   }
 
   private let saveButtonTappedProperty = MutableProperty(())
@@ -161,9 +198,10 @@ AddNewCardViewModelOutputs {
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let addNewCardFailure: Signal<String, NoError>
   public let addNewCardSuccess: Signal<String, NoError>
+  public let creditCardValidationErrorContainerHidden: Signal<Bool, NoError>
   public let cardholderNameBecomeFirstResponder: Signal<Void, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
-  public let paymentDetails: Signal<(String, String, Int, Int, String), NoError>
+  public let paymentDetails: Signal<(String, String, Month, Year, String), NoError>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let setStripePublishableKey: Signal<String, NoError>

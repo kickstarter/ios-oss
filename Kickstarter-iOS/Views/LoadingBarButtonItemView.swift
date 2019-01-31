@@ -13,6 +13,8 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
       fatalError("failed to load LoadingBarButtonItemView from Nib")
     }
 
+    saveButtonView.translatesAutoresizingMaskIntoConstraints = false
+
     return saveButtonView
   }
 
@@ -46,7 +48,7 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
     }
   }
 
-  // MARK: Public Functions
+  // MARK: - Public Functions
 
   func setIsEnabled(isEnabled: Bool) {
     self.viewModel.inputs.setIsEnabled(isEnabled: isEnabled)
@@ -68,7 +70,7 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
     self.titleButton.addTarget(target, action: action, for: .touchUpInside)
   }
 
-  // MARK: Private Functions
+  // MARK: - Private Functions
 
   private func animateActivityIndicator(_ isAnimating: Bool) {
     if isAnimating {
