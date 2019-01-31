@@ -44,11 +44,11 @@ jobs:
 
       - restore_cache:
           keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -60,12 +60,12 @@ jobs:
             - ".git"
 
       - save_cache:
-          key: opentok-cache-{{ checksum "opentok_version.txt" }}
+          key: opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
           paths:
             - "Frameworks/OpenTok"
 
       - save_cache:
-          key: fabric-cache-{{ checksum "fabric_version.txt" }}
+          key: fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
           paths:
             - "Frameworks/Fabric"
 
@@ -98,11 +98,11 @@ jobs:
 
       - restore_cache:
           keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -139,11 +139,11 @@ jobs:
 
       - restore_cache:
           keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -178,11 +178,11 @@ jobs:
 
       - restore_cache:
           keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -217,11 +217,11 @@ jobs:
 
       - restore_cache:
           keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -273,11 +273,11 @@ jobs:
 
       - restore_cache:
           keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -338,11 +338,11 @@ jobs:
 
       - restore_cache:
           keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -398,11 +398,11 @@ jobs:
 
       - restore_cache:
           keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -447,11 +447,11 @@ jobs:
 
       - restore_cache:
           keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Make bootstrap
