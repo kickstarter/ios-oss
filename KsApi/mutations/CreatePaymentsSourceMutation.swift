@@ -12,6 +12,8 @@ public struct CreatePaymentSourceMutation<T: GraphMutationInput>: GraphMutation 
     mutation createPaymentSource($input: CreatePaymentSourceInput!) {
     createPaymentSource(input: $input) {
       clientMutationId\
+      errorMessage
+      isSuccessful
       }
     }
     """

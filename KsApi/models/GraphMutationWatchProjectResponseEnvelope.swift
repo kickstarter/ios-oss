@@ -14,7 +14,6 @@ public struct GraphMutationWatchProjectResponseEnvelope: Decodable {
 }
 
 public struct CreatePaymentMethodEnvelope: Decodable {
-  public private(set) var data:
   public private(set) var errorMessage: String?
   public private(set) var isSuccessful: Bool
 }
