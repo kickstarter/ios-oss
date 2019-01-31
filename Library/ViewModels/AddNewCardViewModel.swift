@@ -103,7 +103,6 @@ AddNewCardViewModelOutputs {
     self.addNewCardSuccess = cardAddedSuccessfully
       .map { _ in Strings.Got_it_your_changes_have_been_saved() }
 
-
     self.activityIndicatorShouldShow = Signal.merge(
       self.saveButtonTappedProperty.signal.mapConst(true),
       self.addNewCardSuccess.mapConst(false),

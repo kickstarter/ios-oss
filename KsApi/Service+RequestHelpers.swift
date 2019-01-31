@@ -62,7 +62,6 @@ extension Service {
 
         let dataString = String(data: data, encoding: .utf8)
         print(dataString)
-        
         do {
           let decodedObject = try JSONDecoder().decode(GraphResponse<A>.self, from: data)
           if let errors = decodedObject.errors, let error = errors.first {
