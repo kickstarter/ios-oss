@@ -85,6 +85,15 @@ final class SettingsViewController: UIViewController {
   }
 
   private func leftBarButtonItem() -> UIBarButtonItem {
+    return UIBarButtonItem(
+      image: UIImage(named: "icon--cross"),
+      style: .plain,
+      target: self,
+      action: #selector(closeButtonPressed)
+    )
+    |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+    |> \.width .~ 44
+  }
     let leftBarButtonItem = UIBarButtonItem(
       image: UIImage(named: "icon--cross"),
       style: .plain,
