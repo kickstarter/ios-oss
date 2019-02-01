@@ -2,9 +2,7 @@ import Argo
 import Curry
 import Runes
 
-protocol ErrorType: Error {}
-
-public struct ErrorEnvelope: ErrorType {
+public struct ErrorEnvelope {
   public let errorMessages: [String]
   public let ksrCode: KsrCode?
   public let httpCode: Int

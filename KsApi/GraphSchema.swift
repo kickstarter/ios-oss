@@ -106,7 +106,7 @@ public struct GraphResponseError: Decodable {
   public let message: String
 }
 
-public enum GraphError: ErrorType {
+public enum GraphError: Error {
   case invalidInput
   case invalidJson(responseString: String?)
   case requestError(Error, URLResponse?)
