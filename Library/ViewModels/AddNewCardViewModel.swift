@@ -100,12 +100,15 @@ AddNewCardViewModelOutputs {
         (cardholderName, creditCardDetails.0, creditCardDetails.1, creditCardDetails.2, creditCardDetails.3,
          zipcode) }
 
-    self.paymentDetails = paymentInput.takeWhen(self.saveButtonTappedProperty.signal)
-
-    self.dismissKeyboard = self.saveButtonIsEnabled
-      .takeWhen(self.saveButtonTappedProperty.signal)
+    let submitPaymentDetails = self.saveButtonIsEnabled
+      .takeWhen(Signal.merge(self.saveButtonTappedProperty.signal,
+                             self.zipcodeTextFieldDidEndEditingProperty.signal)
+        )
       .filter(isTrue)
-      .ignoreValues()
+
+    self.paymentDetails = paymentInput.takeWhen(submitPaymentDetails)
+
+    self.dismissKeyboard = submitPaymentDetails.ignoreValues()
 
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.config?.stripePublishableKey }
@@ -136,7 +139,7 @@ AddNewCardViewModelOutputs {
     )
 
     self.activityIndicatorShouldShow = Signal.merge(
-      self.saveButtonTappedProperty.signal.mapConst(true),
+      submitPaymentDetails.mapConst(true),
       self.addNewCardSuccess.mapConst(false),
       self.addNewCardFailure.mapConst(false)
     )

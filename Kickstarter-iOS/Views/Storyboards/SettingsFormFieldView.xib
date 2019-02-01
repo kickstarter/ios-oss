@@ -44,10 +44,10 @@
                     </constraints>
                 </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TPj-dZ-MnY">
-                    <rect key="frame" x="0.0" y="75" width="375" height="1"/>
+                    <rect key="frame" x="0.0" y="75.5" width="375" height="0.5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="1" id="cgU-rU-JNd"/>
+                        <constraint firstAttribute="height" constant="0.5" id="cgU-rU-JNd"/>
                     </constraints>
                 </view>
             </subviews>

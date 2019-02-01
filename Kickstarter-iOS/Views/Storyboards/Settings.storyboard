@@ -791,21 +791,21 @@
                                                 <rect key="frame" x="0.0" y="86" width="375" height="50"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygp-ig-bdL" userLabel="Separator">
-                                                        <rect key="frame" x="8" y="0.0" width="367" height="1"/>
+                                                        <rect key="frame" x="8" y="0.0" width="367" height="0.5"/>
                                                         <color key="backgroundColor" red="0.86274509799999999" green="0.87058823529999996" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="1" id="7wL-Ak-ADg"/>
+                                                            <constraint firstAttribute="height" constant="0.5" id="7wL-Ak-ADg"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0rS-r2-TWS" customClass="STPPaymentCardTextField">
-                                                        <rect key="frame" x="0.0" y="1" width="375" height="48"/>
+                                                        <rect key="frame" x="0.0" y="0.5" width="375" height="49"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOu-68-PJO" userLabel="Separator">
-                                                        <rect key="frame" x="8" y="49" width="367" height="1"/>
+                                                        <rect key="frame" x="8" y="49.5" width="367" height="0.5"/>
                                                         <color key="backgroundColor" red="0.86274509799999999" green="0.87058823529999996" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="1" id="C9K-8j-qEY"/>
+                                                            <constraint firstAttribute="height" constant="0.5" id="C9K-8j-qEY"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
