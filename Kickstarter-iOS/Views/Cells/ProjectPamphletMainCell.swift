@@ -121,10 +121,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
       |> UIImageView.lens.image .~ UIImage(named: "category-icon")
+      |> UIImageView.lens.backgroundColor .~ .white
 
     _ = self.categoryNameLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.font .~ .ksr_body(size: 12)
+      |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.contentStackView
       |> UIStackView.lens.layoutMargins %~~ { _, stackView in
@@ -150,6 +152,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.creatorLabel
       |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
+      |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.creatorStackView
       |> UIStackView.lens.alignment .~ .center
@@ -162,10 +165,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
       |> UIImageView.lens.image .~ UIImage(named: "location-icon")
+      |> UIImageView.lens.backgroundColor .~ .white
 
     _ = self.locationNameLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.font .~ .ksr_body(size: 12)
+      |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.locationStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -178,6 +183,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       }
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.numberOfLines .~ 0
+      |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.projectNameAndCreatorStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -190,6 +196,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       }
       |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 0
+      |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.progressBarAndStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -203,6 +210,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
                                                   left: 0,
                                                   bottom: Styles.grid(4) - 1,
                                                   right: 0)
+      |> UIButton.lens.backgroundColor .~ .white
 
     _ = self.stateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
@@ -210,6 +218,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = self.statsStackView
       |> UIStackView.lens.isAccessibilityElement .~ true
+      |> UIStackView.lens.backgroundColor .~ .white
 
     _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
