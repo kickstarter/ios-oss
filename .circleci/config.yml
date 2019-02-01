@@ -4,8 +4,10 @@ xcode_version: &xcode_version 10.0
 iphone_name: &iphone_name iPhone 8
 opentok_version: &opentok_version 2.10.2
 fabric_sdk_version: &fabric_sdk_version 3.10.5
+stripe_sdk_version: &stripe_sdk_version 13.2.0
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
 store_opentok_version: &store_opentok_version echo "$OPENTOK_VERSION" > opentok_version.txt
+store_stripe_version: &store_stripe_version echo "$STRIPE_SDK_VERSION" > stripe_version.txt
 
 base_job: &base_job
   macos:
@@ -18,6 +20,7 @@ base_job: &base_job
     LC_ALL: en_US.UTF-8
     LANG: en_US.UTF-8
     FABRIC_SDK_VERSION: *fabric_sdk_version
+    STRIPE_SDK_VERSION: *stripe_sdk_version
     OPENTOK_VERSION: *opentok_version
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
@@ -42,6 +45,10 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
+
       - restore_cache:
           keys:
             - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
@@ -49,6 +56,10 @@ jobs:
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -68,6 +79,11 @@ jobs:
           key: fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
           paths:
             - "Frameworks/Fabric"
+
+      - save_cache:
+          key: stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+          paths:
+            - "Frameworks/Stripe"
 
       - run:
           name: SwiftLint
@@ -145,6 +161,10 @@ jobs:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -184,6 +204,10 @@ jobs:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -222,6 +246,10 @@ jobs:
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -278,6 +306,10 @@ jobs:
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -344,6 +376,10 @@ jobs:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -404,6 +440,10 @@ jobs:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+
       - run:
           name: Make bootstrap
           command: make bootstrap
@@ -452,6 +492,10 @@ jobs:
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
