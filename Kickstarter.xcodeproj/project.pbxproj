@@ -909,6 +909,8 @@
 		D0A787BB2204D66B006AE4F4 /* SelectCurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */; };
 		D0A787BD2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */; };
 		D0A787BF2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BE2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift */; };
+		D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */; };
+		D0A788482204EFE2006AE4F4 /* SelectCurrencyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A788472204EFE2006AE4F4 /* SelectCurrencyViewControllerTests.swift */; };
 		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B45B6F1EF858DE0020A8DA /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D042780C1EEB08EA00600E9C /* Prelude_UIKit.framework */; };
@@ -2658,6 +2660,7 @@
 		D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewModel.swift; sourceTree = "<group>"; };
 		D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyTableViewHeader.swift; sourceTree = "<group>"; };
 		D0A787BE2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+AutoLayoutHeaderView.swift"; sourceTree = "<group>"; };
+		D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewModelTests.swift; sourceTree = "<group>"; };
 		D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSource.swift; sourceTree = "<group>"; };
 		D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelope.swift; sourceTree = "<group>"; };
 		D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -4077,6 +4080,7 @@
 				A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */,
 				A7ED1FA41E831C5C00BFFA01 /* SearchViewModelTests.swift */,
 				D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */,
+				D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */,
 				D04AAC1D218BB70C00CF713E /* SettingsAccountPickerCellViewModel.swift */,
 				D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */,
 				D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */,
@@ -5794,6 +5798,7 @@
 				A7ED1F2D1E830FDC00BFFA01 /* LanguageTests.swift in Sources */,
 				D04AABF7218BB2F700CF713E /* SettingsNotificationsViewModelTests.swift in Sources */,
 				A7ED1FF41E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift in Sources */,
+				D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */,
 				D093B4F021A8B14100910962 /* MockPushRegistration.swift in Sources */,
 				A7ED1FEA1E831C5C00BFFA01 /* HelpViewModelTests.swift in Sources */,
 				A7ED1F301E830FDC00BFFA01 /* NavigationTests.swift in Sources */,
