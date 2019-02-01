@@ -112,6 +112,10 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
+
       - restore_cache:
           keys:
             - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
@@ -119,6 +123,11 @@ jobs:
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - save_cache:
+          key: stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+          paths:
+            - "Frameworks/Stripe"
 
       - run:
           name: Make bootstrap
@@ -152,6 +161,10 @@ jobs:
       - run:
           name: Store OpenTok Version
           command: *store_opentok_version
+
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
@@ -196,6 +209,10 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
+
       - restore_cache:
           keys:
             - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
@@ -238,6 +255,10 @@ jobs:
       - run:
           name: Store OpenTok Version
           command: *store_opentok_version
+
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
@@ -298,6 +319,10 @@ jobs:
       - run:
           name: Store OpenTok Version
           command: *store_opentok_version
+
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
@@ -368,6 +393,10 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
+
       - restore_cache:
           keys:
             - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
@@ -432,6 +461,10 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
+
       - restore_cache:
           keys:
             - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
@@ -484,6 +517,10 @@ jobs:
       - run:
           name: Store OpenTok Version
           command: *store_opentok_version
+
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
