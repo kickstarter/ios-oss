@@ -51,6 +51,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
       |> authorBadgeLabelStyle
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.text %~ { _ in Strings.update_comments_creator() }
+      |> UILabel.lens.backgroundColor .~ .ksr_soft_black
 
     _ = self.creatorView
       |> authorBadgeViewStyle
