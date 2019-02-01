@@ -907,6 +907,9 @@
 		D093B46321A86F7F00910962 /* PushRegistrationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B46221A86F7E00910962 /* PushRegistrationType.swift */; };
 		D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B49B21A86FD800910962 /* PushRegistration.swift */; };
 		D093B4F021A8B14100910962 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
+		D0A787B52204D40E006AE4F4 /* SelectCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787B42204D40E006AE4F4 /* SelectCurrencyViewController.swift */; };
+		D0A787B92204D525006AE4F4 /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787B82204D525006AE4F4 /* UIView+AutoLayout.swift */; };
+		D0A787BB2204D66B006AE4F4 /* SelectCurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */; };
 		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B45B6F1EF858DE0020A8DA /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D042780C1EEB08EA00600E9C /* Prelude_UIKit.framework */; };
@@ -2650,6 +2653,9 @@
 		D093B46221A86F7E00910962 /* PushRegistrationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRegistrationType.swift; sourceTree = "<group>"; };
 		D093B49B21A86FD800910962 /* PushRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRegistration.swift; sourceTree = "<group>"; };
 		D093B4B721A8B0E000910962 /* MockPushRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPushRegistration.swift; sourceTree = "<group>"; };
+		D0A787B42204D40E006AE4F4 /* SelectCurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewController.swift; sourceTree = "<group>"; };
+		D0A787B82204D525006AE4F4 /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
+		D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewModel.swift; sourceTree = "<group>"; };
 		D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSource.swift; sourceTree = "<group>"; };
 		D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelope.swift; sourceTree = "<group>"; };
 		D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -2943,6 +2949,7 @@
 				A74BEF181DE3474C008D5E63 /* UIImageView+URL.swift */,
 				D0200A5021935E7800F5CC27 /* UIView+LivePulsatingAnimation.swift */,
 				A731BF581D1ED60800A734AC /* WebViewController.swift */,
+				D0A787B82204D525006AE4F4 /* UIView+AutoLayout.swift */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -3376,6 +3383,7 @@
 				A74FFE671CE3FFE200C7BCB9 /* SearchMessagesViewController.swift */,
 				A745D0201CA897FF00C12802 /* SearchViewController.swift */,
 				A7ED20381E8323E900BFFA01 /* SearchViewControllerTests.swift */,
+				D0A787B42204D40E006AE4F4 /* SelectCurrencyViewController.swift */,
 				D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */,
 				D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */,
 				D6B6766620FF8D3C0082717D /* SettingsNewslettersViewController.swift */,
@@ -4061,6 +4069,7 @@
 				A7ED1F7B1E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift */,
 				A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */,
 				A7ED1FA41E831C5C00BFFA01 /* SearchViewModelTests.swift */,
+				D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */,
 				D04AAC1D218BB70C00CF713E /* SettingsAccountPickerCellViewModel.swift */,
 				D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */,
 				D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */,
@@ -5531,6 +5540,7 @@
 				A7808BF01D625C6A001CF96A /* ProjectCreatorViewModel.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
 				A7F441D11D005A9400FE6FC5 /* MessageThreadsViewModel.swift in Sources */,
+				D0A787B92204D525006AE4F4 /* UIView+AutoLayout.swift in Sources */,
 				D6DC653321768B6E008CF69C /* ChangeEmailViewModel.swift in Sources */,
 				A71F59E81D2424CA00909BE3 /* KSCache.swift in Sources */,
 				A757EB2B1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
@@ -5617,6 +5627,7 @@
 				A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
 				9D89B7E51D6B8DB90021F6FF /* WebModalViewModel.swift in Sources */,
 				D0200A5721935F2D00F5CC27 /* GraphError+LocalizedDescription.swift in Sources */,
+				D0A787BB2204D66B006AE4F4 /* SelectCurrencyViewModel.swift in Sources */,
 				D78E4EE3218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift in Sources */,
 				A75C81261D210F1F00B5AD03 /* ShareContext.swift in Sources */,
 				A75511671C8642C3005355CF /* UIButton+LocalizedKey.swift in Sources */,
@@ -5998,6 +6009,7 @@
 				A74382051D3458C900040A95 /* PaddingCell.swift in Sources */,
 				0169F9841D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift in Sources */,
 				A71003E01CDD06E600B4F4D7 /* MessageThreadCell.swift in Sources */,
+				D0A787B52204D40E006AE4F4 /* SelectCurrencyViewController.swift in Sources */,
 				D0D2AB201E964485008D298A /* VideoGridView.swift in Sources */,
 				9D7536CD1D78D78600A7623B /* SurveyResponseViewController.swift in Sources */,
 				59392BEC1D7094B0001C99A4 /* ProjectUpdatesViewController.swift in Sources */,
