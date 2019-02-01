@@ -31,7 +31,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.activityIndicatorShouldShow.assertValues([])
-    self.saveButtonIsEnabled.assertValues([])
+    self.saveButtonIsEnabled.assertValues([false])
     self.updateCurrencyDidFailWithError.assertValues([])
     self.updateCurrencyDidSucceed.assertValueCount(0)
 
@@ -40,14 +40,14 @@ internal final class SelectCurrencyViewModelTests: TestCase {
       self.vm.inputs.saveButtonTapped()
 
       self.activityIndicatorShouldShow.assertValues([true])
-      self.saveButtonIsEnabled.assertValues([true])
+      self.saveButtonIsEnabled.assertValues([false, true])
       self.updateCurrencyDidFailWithError.assertValues([])
       self.updateCurrencyDidSucceed.assertValueCount(0)
 
       self.scheduler.advance()
 
       self.activityIndicatorShouldShow.assertValues([true, false])
-      self.saveButtonIsEnabled.assertValues([true, false])
+      self.saveButtonIsEnabled.assertValues([false, true, false])
       self.updateCurrencyDidFailWithError.assertValues([])
       self.updateCurrencyDidSucceed.assertValueCount(1)
     }
@@ -58,7 +58,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.activityIndicatorShouldShow.assertValues([])
-    self.saveButtonIsEnabled.assertValues([])
+    self.saveButtonIsEnabled.assertValues([false])
     self.updateCurrencyDidFailWithError.assertValues([])
     self.updateCurrencyDidSucceed.assertValueCount(0)
 
@@ -67,14 +67,14 @@ internal final class SelectCurrencyViewModelTests: TestCase {
       self.vm.inputs.saveButtonTapped()
 
       self.activityIndicatorShouldShow.assertValues([true])
-      self.saveButtonIsEnabled.assertValues([true])
+      self.saveButtonIsEnabled.assertValues([false, true])
       self.updateCurrencyDidFailWithError.assertValues([])
       self.updateCurrencyDidSucceed.assertValueCount(0)
 
       self.scheduler.advance()
 
       self.activityIndicatorShouldShow.assertValues([true, false])
-      self.saveButtonIsEnabled.assertValues([true])
+      self.saveButtonIsEnabled.assertValues([false, true])
       self.updateCurrencyDidFailWithError.assertValues(["Something went wrong."])
       self.updateCurrencyDidSucceed.assertValueCount(0)
     }
