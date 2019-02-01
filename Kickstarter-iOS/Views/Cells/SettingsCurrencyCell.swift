@@ -3,9 +3,11 @@ import Library
 import Prelude
 
 final class SettingsCurrencyCell: UITableViewCell, NibLoading, ValueCell {
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate weak var chevronImageView: UIImageView!
   @IBOutlet fileprivate weak var currentCurrencyLabel: UILabel!
   @IBOutlet fileprivate weak var separatorView: UIView!
+  @IBOutlet fileprivate weak var stackView: UIStackView!
+  @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   private let viewModel: SettingsCurrencyCellViewModelType = SettingsCurrencyCellViewModel()
 
@@ -13,7 +15,7 @@ final class SettingsCurrencyCell: UITableViewCell, NibLoading, ValueCell {
     self.viewModel.inputs.configure(with: value)
 
     _ = titleLabel
-      |> UILabel.lens.text .~ value.cellType.title
+      |> \.text .~ value.cellType.title
   }
 
   override func bindStyles() {
@@ -22,11 +24,17 @@ final class SettingsCurrencyCell: UITableViewCell, NibLoading, ValueCell {
     _ = self.titleLabel
       |> settingsTitleLabelStyle
 
+    _ = self.chevronImageView
+      |> settingsArrowViewStyle
+
     _ = self.currentCurrencyLabel
-      |> UILabel.lens.textColor .~ .ksr_text_green_700
+      |> \.textColor .~ .ksr_text_green_700
 
     _ = self.separatorView
       |> separatorStyle
+
+    _ = self.stackView
+      |> \.spacing .~ Styles.grid(1)
   }
 
   override func bindViewModel() {

@@ -12,7 +12,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   internal var messageBannerViewController: MessageBannerViewController?
 
   fileprivate let viewModel: SettingsAccountViewModelType = SettingsAccountViewModel(
-    SettingsAccountViewController.viewController(for:)
+    SettingsAccountViewController.viewController(for:currency:)
   )
 
   internal static func instantiate() -> SettingsAccountViewController {
@@ -116,7 +116,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
 }
 
 extension SettingsAccountViewController {
-  static func viewController(for cellType: SettingsAccountCellType) -> UIViewController? {
+  static func viewController(for cellType: SettingsAccountCellType, currency: Currency) -> UIViewController? {
     switch cellType {
     case .changeEmail:
       return ChangeEmailViewController.instantiate()
@@ -124,6 +124,10 @@ extension SettingsAccountViewController {
       return ChangePasswordViewController.instantiate()
     case .privacy:
       return SettingsPrivacyViewController.instantiate()
+    case .currency:
+      let vc = SelectCurrencyViewController.instantiate()
+      vc.configure(with: currency)
+      return vc
     default:
       return nil
     }

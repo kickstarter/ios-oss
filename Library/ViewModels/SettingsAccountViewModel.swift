@@ -24,7 +24,7 @@ public protocol SettingsAccountViewModelType {
 public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
 SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
-  public init(_ viewControllerFactory: @escaping (SettingsAccountCellType) -> UIViewController?) {
+  public init(_ viewControllerFactory: @escaping (SettingsAccountCellType, Currency) -> UIViewController?) {
     let userAccountFields = self.viewWillAppearProperty.signal
       .switchMap { _ in
         return AppEnvironment.current.apiService
@@ -56,7 +56,9 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       shouldHideEmailPasswordSection
     )
 
-    self.transitionToViewController = self.selectedCellTypeProperty.signal.skipNil()
+    self.transitionToViewController = chosenCurrency
+      .takePairWhen(self.selectedCellTypeProperty.signal.skipNil())
+      .map { ($1, $0) }
       .map(viewControllerFactory)
       .skipNil()
 

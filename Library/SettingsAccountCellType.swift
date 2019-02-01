@@ -38,12 +38,7 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable {
   }
 
   public var showArrowImageView: Bool {
-    switch self {
-    case .currency:
-      return false
-    default:
-      return true
-    }
+    return true
   }
 
   public var textColor: UIColor {
