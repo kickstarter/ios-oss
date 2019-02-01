@@ -3,13 +3,13 @@ import Argo
 import Curry
 import Runes
 
-public struct Author {
+public struct Author: Swift.Decodable {
   public private(set) var avatar: Avatar
   public private(set) var id: Int
   public private(set) var name: String
   public private(set) var urls: Url
 
-  public struct Avatar {
+  public struct Avatar: Swift.Decodable {
     public private(set) var medium: String?
     public private(set) var small: String
     public private(set) var thumb: String
@@ -18,40 +18,6 @@ public struct Author {
   public struct Url {
     public private(set) var api: String
     public private(set) var web: String
-  }
-}
-
-extension Author: Swift.Decodable {
-
-  enum CodingKeys: String, CodingKey {
-    case avatar
-    case id
-    case name
-    case urls
-  }
-
-  public init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    self.avatar = try values.decode(Avatar.self, forKey: .avatar)
-    self.id = try values.decode(Int.self, forKey: .id)
-    self.name = try values.decode(String.self, forKey: .name)
-    self.urls = try values.decode(Url.self, forKey: .urls)
-  }
-}
-
-extension Author.Avatar: Swift.Decodable {
-
-  enum CodingKeys: String, CodingKey {
-    case medium
-    case small
-    case thumb
-  }
-
-  public init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    self.medium = try values.decode(String?.self, forKey: .medium)
-    self.small = try values.decode(String.self, forKey: .small)
-    self.thumb = try values.decode(String.self, forKey: .thumb)
   }
 }
 
