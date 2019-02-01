@@ -116,7 +116,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 }
 
-extension SettingsAccountViewController{
+extension SettingsAccountViewController {
   static func viewController(for cellType: SettingsAccountCellType) -> UIViewController? {
     switch cellType {
     case .changeEmail:
