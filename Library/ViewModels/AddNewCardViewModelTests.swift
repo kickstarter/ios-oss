@@ -33,7 +33,8 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.outputs.addNewCardSuccess.observe(self.addNewCardSuccess.observer)
     self.vm.outputs.creditCardValidationErrorContainerHidden
       .observe(self.creditCardValidationErrorContainerHidden.observer)
-    self.vm.outputs.cardholderNameBecomeFirstResponder.observe(self.cardholderNameBecomeFirstResponder.observer)
+    self.vm.outputs.cardholderNameBecomeFirstResponder
+      .observe(self.cardholderNameBecomeFirstResponder.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.paymentDetails.map { $0.0 }.observe(self.cardholderName.observer)
     self.vm.outputs.paymentDetails.map { $0.1 }.observe(self.cardNumber.observer)
