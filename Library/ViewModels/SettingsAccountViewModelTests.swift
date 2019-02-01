@@ -9,7 +9,7 @@ import Prelude
 @testable import Kickstarter_Framework
 
 internal final class SettingsAccountViewModelTests: TestCase {
-  let vm = SettingsAccountViewModel(SettingsAccountViewController.viewController(for:))
+  let vm = SettingsAccountViewModel(SettingsAccountViewController.viewController(for:currency:))
 
   private let fetchAccountFieldsError = TestObserver<Void, NoError>()
   private let reloadDataShouldHideWarningIcon = TestObserver<Bool, NoError>()
