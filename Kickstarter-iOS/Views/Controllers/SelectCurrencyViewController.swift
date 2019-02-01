@@ -22,6 +22,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
 
     self.view.addSubview(self.tableView)
     self.tableView.constrainEdges(to: self.view)
+    self.tableView.setConstrained(headerView: self.headerView)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -32,6 +33,16 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     _ = self.tableView
       |> settingsTableViewStyle
       |> \.separatorStyle .~ .singleLine
+
+    _ = self.headerView
+      |> \.text %~ { _ in
+        """
+        \(Strings.Making_this_change())\n
+        \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())
+        """
+    }
+
+    self.tableView.setConstrained(headerView: self.headerView)
   }
 
   // MARK: Subviews
@@ -46,6 +57,11 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     tableView.delegate = self
 
     return tableView
+  }()
+
+  private lazy var headerView: SelectCurrencyTableViewHeader = {
+    let view = SelectCurrencyTableViewHeader(frame: .zero)
+    return view
   }()
 }
 
