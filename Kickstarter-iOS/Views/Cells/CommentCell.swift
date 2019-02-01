@@ -23,9 +23,11 @@ internal final class CommentCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
+    let cellBackgroundColor = UIColor.white
+
     _ = self
       |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.backgroundColor .~ .white
+      |> UITableViewCell.lens.backgroundColor .~ cellBackgroundColor
       |> UITableViewCell.lens.contentView.layoutMargins .~
       .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
@@ -33,6 +35,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
       |> UITextView.lens.isScrollEnabled .~ false
       |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
       |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
+      |> UITextView.lens.backgroundColor .~ cellBackgroundColor
 
     _ = self.authorAndTimestampStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -42,6 +45,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.commentStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
+      |> UIStackView.lens.backgroundColor .~ cellBackgroundColor
 
     _ = self.creatorLabel
       |> authorBadgeLabelStyle
@@ -55,6 +59,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
     _ = self.nameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 16.0)
       |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.backgroundColor .~ cellBackgroundColor
 
     _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -65,6 +70,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
     _ = self.timestampLabel
       |> UILabel.lens.font .~ .ksr_body(size: 12.0)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.backgroundColor .~ cellBackgroundColor
 
     _ = self.youLabel
       |> authorBadgeLabelStyle
