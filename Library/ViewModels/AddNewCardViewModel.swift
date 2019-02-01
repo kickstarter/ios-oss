@@ -102,8 +102,7 @@ AddNewCardViewModelOutputs {
 
     let submitPaymentDetails = self.saveButtonIsEnabled
       .takeWhen(Signal.merge(self.saveButtonTappedProperty.signal,
-                             self.zipcodeTextFieldDidEndEditingProperty.signal)
-        )
+                             self.zipcodeTextFieldDidEndEditingProperty.signal))
       .filter(isTrue)
 
     self.paymentDetails = paymentInput.takeWhen(submitPaymentDetails)

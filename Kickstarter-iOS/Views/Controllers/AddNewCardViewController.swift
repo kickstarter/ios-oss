@@ -107,8 +107,6 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       |> \.font .~ .ksr_body()
       |> \.textColor .~ .ksr_text_dark_grey_500
       |> \.textErrorColor .~ .ksr_red_400
-
-    _ = self.creditCardTextField
       |> \.cursorColor .~ .ksr_green_700
       |> \.placeholderColor .~ .ksr_text_dark_grey_400
 
