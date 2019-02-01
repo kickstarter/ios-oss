@@ -32,7 +32,6 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable {
   case privacy
   case paymentMethods
   case currency
-  case currencyPicker
 
   public var showArrowImageView: Bool {
     switch self {
@@ -77,8 +76,6 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable {
       return Strings.Payment_methods()
     case .currency:
       return Strings.Currency()
-    case .currencyPicker:
-     return ""
     }
   }
 
