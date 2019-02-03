@@ -86,9 +86,11 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
           ? .ksr_headline(size: 20)
           : .ksr_headline(size: 14)
       }
+      |> UILabel.lens.backgroundColor .~ .white
       |> UILabel.lens.text %~ { _ in Strings.Bring_creative_projects_to_life() }
 
     _ = self.contextLabel
+      |> UILabel.lens.backgroundColor .~ .white
       |> UILabel.lens.font %~~ { _, l in
         l.traitCollection.isRegularRegular
           ? .ksr_subhead(size: 20)
