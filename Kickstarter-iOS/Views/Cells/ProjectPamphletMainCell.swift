@@ -97,6 +97,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
       let subtitleLabelStyling = UILabel.lens.font .~ .ksr_caption1(size: 13)
         <> UILabel.lens.numberOfLines .~ 1
+        <> UILabel.lens.backgroundColor .~ .white
 
     _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
@@ -107,6 +108,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.pledgedTitleLabel]
       ||> UILabel.lens.font .~ .ksr_headline(size: 13)
       ||> UILabel.lens.numberOfLines .~ 1
+      ||> UILabel.lens.backgroundColor .~ .white
 
     _ = self.blurbAndReadMoreStackView
       |> UIStackView.lens.spacing .~ 0
