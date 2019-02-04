@@ -41,7 +41,9 @@ internal final class AddNewCardViewModelTests: TestCase {
   }
 
   func testAddCard_Success() {
-    withEnvironment(apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))) {
+    withEnvironment(
+      apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
+    ) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.cardholderNameChanged("Native Squad")
       self.vm.inputs.cardholderNameTextFieldReturn()
@@ -230,7 +232,9 @@ internal final class AddNewCardViewModelTests: TestCase {
   }
 
   func testTrackSavedPaymentMethod() {
-    withEnvironment(apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))) {
+    withEnvironment(
+      apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
+    ) {
       self.vm.inputs.paymentInfo(valid: true)
       self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
