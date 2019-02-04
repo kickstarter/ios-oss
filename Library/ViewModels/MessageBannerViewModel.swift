@@ -55,8 +55,7 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
 
     self.bannerMessage = self.messageBannerConfiguration.signal.skipNil().map(second)
     self.bannerMessageAccessibilityLabel = self.bannerMessage
-      // todo: Needs to be localized - Strings.banner_tap_to_dismiss
-      .map { "\($0) Double tap to dismiss" }
+      .map { "\($0) \(Strings.Message_banner_accessibility_Double_tap_to_dismiss())" }
 
     let bannerViewShouldHide = self.showBannerViewProperty.signal.negate()
 
