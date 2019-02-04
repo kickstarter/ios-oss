@@ -20,7 +20,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.tableHeaderView = self.headerView
+    self.tableView.setConstrained(headerView: self.headerView)
     self.view.addSubview(self.tableView)
     self.tableView.constrainEdges(to: self.view)
 
@@ -41,8 +41,6 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
         \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())
         """
     }
-
-    self.tableView.setConstrained(headerView: self.headerView)
   }
 
   // MARK: Subviews
