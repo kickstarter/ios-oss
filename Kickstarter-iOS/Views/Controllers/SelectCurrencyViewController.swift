@@ -126,7 +126,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   }
 
   // MARK: Actions
-  
+
   @objc private func saveButtonTapped(_ sender: Any) {
     self.viewModel.inputs.saveButtonTapped()
   }
