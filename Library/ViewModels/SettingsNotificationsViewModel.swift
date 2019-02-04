@@ -41,7 +41,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     let userAttributeChanged = emailFrequencyProperty.signal
       .map { frequency -> (UserAttribute, Bool) in
-        let digestValue = frequency == .daily ? true : false
+        let digestValue = frequency == .dailySummary ? true : false
 
         return (UserAttribute.notification(.creatorDigest), digestValue)
     }
@@ -91,7 +91,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       .map { $0 |> UserAttribute.notification(.creatorDigest).keyPath.view }
       .skipNil()
       .map { creatorDigest -> EmailFrequency in
-        return creatorDigest ? EmailFrequency.daily : EmailFrequency.individualEmails
+        return creatorDigest ? EmailFrequency.dailySummary : EmailFrequency.twiceADaySummary
     }
 
     let manageProjectNotificationsSelected = self.selectedCellType.signal

@@ -65,7 +65,7 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.viewDidLoad()
 
-      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.daily)
+      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.dailySummary)
     }
   }
 
@@ -80,15 +80,15 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
       self.updateCurrentUser.assertValueCount(2)
 
-      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.daily)
+      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.dailySummary)
 
-      self.vm.inputs.didSelectEmailFrequency(frequency: EmailFrequency.individualEmails)
+      self.vm.inputs.didSelectEmailFrequency(frequency: EmailFrequency.twiceADaySummary)
 
       self.scheduler.advance()
 
       self.updateCurrentUser.assertValueCount(3)
       self.pickerViewIsHidden.assertLastValue(true)
-      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.individualEmails)
+      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.twiceADaySummary)
     }
   }
 
@@ -109,15 +109,15 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
       self.updateCurrentUser.assertValueCount(2)
 
-      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.daily)
+      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.dailySummary)
 
-      self.vm.inputs.didSelectEmailFrequency(frequency: EmailFrequency.individualEmails)
+      self.vm.inputs.didSelectEmailFrequency(frequency: EmailFrequency.twiceADaySummary)
 
       self.scheduler.advance()
 
       self.updateCurrentUser.assertValueCount(2)
       self.pickerViewIsHidden.assertLastValue(true)
-      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.daily)
+      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.dailySummary)
       self.unableToSaveError.assertValueCount(1)
     }
   }

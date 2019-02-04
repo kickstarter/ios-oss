@@ -111,7 +111,7 @@ public enum SettingsNotificationCellType {
     case .projectNotifications:
       return Strings.profile_settings_backer_notifications()
     case .pledgeActivity:
-      return Strings.Pledge_activity()
+      return Strings.Project_activity()
     case .emailFrequency:
       return Strings.Email_frequency()
     case .newComments:

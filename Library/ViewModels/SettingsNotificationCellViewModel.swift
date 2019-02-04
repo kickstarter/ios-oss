@@ -130,8 +130,7 @@ SettingsNotificationCellViewModelType {
     self.enableButtonAnimation = self.emailNotificationButtonIsHidden
       .negate() // Only add animation if email notification button is shown
 
-    self.manageProjectNotificationsButtonAccessibilityHint = initialUser
-      .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
+    self.manageProjectNotificationsButtonAccessibilityHint = .empty
 
     self.projectCountText = initialUser
       .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
