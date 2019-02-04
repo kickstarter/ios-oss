@@ -53,31 +53,6 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                           toSection: section)
   }
 
-  func insertCurrencyPickerRow(with currency: Currency) -> IndexPath? {
-    guard let section = self.index(of: .payment) else { return nil }
-
-    let cellValue = SettingsCellValue(cellType: SettingsAccountCellType.currencyPicker, currency: currency)
-
-    return self.appendRow(value: cellValue,
-                          cellClass: SettingsCurrencyPickerCell.self,
-                          toSection: section)
-  }
-
-  func removeCurrencyPickerRow() -> IndexPath? {
-    guard let section = self.index(of: .payment) else { return nil }
-
-    let endIndex = self.numberOfItems(in: section)
-
-    guard endIndex > 0 else { return nil }
-
-    let cellValue = SettingsCellValue(cellType: SettingsAccountCellType.currencyPicker)
-
-    return self.deleteRow(value: cellValue,
-                          cellClass: SettingsCurrencyPickerCell.self,
-                          atIndex: endIndex - 1,
-                          inSection: section)
-  }
-
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {
     if let value = self[indexPath] as? SettingsCellValue {
       return value.cellType as? SettingsAccountCellType
@@ -96,8 +71,6 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     case let (cell as SettingsAccountWarningCell, value as Bool):
       cell.configureWith(value: value)
     case let (cell as SettingsTableViewCell, value as SettingsCellValue):
-      cell.configureWith(value: value)
-    case let (cell as SettingsCurrencyPickerCell, value as SettingsCellValue):
       cell.configureWith(value: value)
     case let (cell as SettingsCurrencyCell, value as SettingsCurrencyCellValue):
       cell.configureWith(value: value)

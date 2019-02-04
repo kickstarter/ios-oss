@@ -30,24 +30,6 @@ final class SettingsAccountDataSourceTests: XCTestCase {
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
   }
 
-  func testInsertRemoveCurrencyPickerRow() {
-
-    self.dataSource.configureRows(currency: Currency.USD,
-                                  shouldHideEmailWarning: true,
-                                  shouldHideEmailPasswordSection: false)
-
-    let currency = Currency.USD
-
-    _ = self.dataSource.insertCurrencyPickerRow(with: currency)
-
-    XCTAssertEqual(3, self.dataSource.tableView(self.tableView,
-                                           numberOfRowsInSection: SettingsAccountSectionType.payment.rawValue))
-
-    _ = self.dataSource.removeCurrencyPickerRow()
-
-    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: SettingsAccountSectionType.payment.rawValue))
-  }
-
   func testCellTypeForIndexPath() {
     let indexPath1 = IndexPath(item: 0, section: 0)
     let indexPath2 = IndexPath(item: 1, section: 0)
