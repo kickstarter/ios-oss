@@ -247,6 +247,7 @@
 "Manage_your_pledge_below" = "Gérer mon engagement";
 "Manage_your_reward" = "Gérer votre récompense";
 "Message_backer" = "Envoyer un message au contributeur";
+"Message_banner.accessibility.Double_tap_to_dismiss" = "Double tap to dismiss.";
 "Message_creator" = "Envoyer un message au créateur";
 "Message_user_name" = "Envoyer un message à %{user_name}";
 "Messages" = "Messages";
