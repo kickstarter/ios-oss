@@ -13,6 +13,8 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
       fatalError("failed to load LoadingBarButtonItemView from Nib")
     }
 
+    saveButtonView.translatesAutoresizingMaskIntoConstraints = false
+
     return saveButtonView
   }
 
