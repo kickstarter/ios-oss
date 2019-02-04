@@ -20,9 +20,9 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.tableView.tableHeaderView = self.headerView
     self.view.addSubview(self.tableView)
     self.tableView.constrainEdges(to: self.view)
-    self.tableView.setConstrained(headerView: self.headerView)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -66,6 +66,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
 }
 
 extension SelectCurrencyViewController: UITableViewDataSource {
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return Currency.allCases.count
   }
