@@ -124,10 +124,8 @@ jobs:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
-      - save_cache:
+      - restore_cache:
           key: stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
-          paths:
-            - "Frameworks/Stripe"
 
       - run:
           name: Make bootstrap
