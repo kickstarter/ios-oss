@@ -9,7 +9,6 @@ internal final class SelectCurrencyViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
     UIView.setAnimationsEnabled(false)
-    self.recordMode = true
   }
 
   override func tearDown() {
