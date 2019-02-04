@@ -63,7 +63,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
     _ = self.tableView
       |> \.backgroundColor .~ .clear
-      |> \.estimatedRowHeight .~ Styles.grid(13)
+      |> \.rowHeight .~ Styles.grid(11)
       |> \.allowsSelection .~ false
       |> \.separatorStyle .~ .none
   }

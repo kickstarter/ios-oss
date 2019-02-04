@@ -3015,7 +3015,6 @@
 				D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */,
 				D77743E2217A2D67008D679F /* UpdateUserProfileMutation .swift */,
 				D6B686EA2191FEEE005F5DA7 /* UserSendEmailVerificationMutation.swift */,
-				D6ED1B3C216D617E007F7547 /* inputs */,
 				D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */,
 				D6ED1B3C216D617E007F7547 /* inputs */,
 			);
@@ -4565,9 +4564,6 @@
 			isa = PBXGroup;
 			children = (
 				D777442E217A3382008D679F /* ChangeCurrencyInput.swift */,
-				D6B686E82191FE5E005F5DA7 /* EmptyInput.swift */,
-				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
-				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
 				D79CF32D219CE51A00ECB73A /* CreatePaymentSourceInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
