@@ -28,7 +28,6 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.tableView.register(nib: .SettingsTableViewCell)
-    self.tableView.register(nib: .SettingsCurrencyPickerCell)
     self.tableView.register(nib: .SettingsCurrencyCell)
     self.tableView.register(nib: .SettingsAccountWarningCell)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
