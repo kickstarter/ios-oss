@@ -3,9 +3,10 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-final class SelectCurrencyTableViewHeader: UIView {
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+final class SelectCurrencyTableViewHeader: UITableViewHeaderFooterView {
+
+  override init(reuseIdentifier: String?) {
+    super.init(reuseIdentifier: reuseIdentifier)
 
     self.addSubview(self.headerStackView)
     self.headerStackView.constrainEdges(to: self)
@@ -55,7 +56,7 @@ final class SelectCurrencyTableViewHeader: UIView {
   }()
 
   private lazy var headerImageView: UIImageView = {
-    let imageView = UIImageView(image: image(named: "icon--currency-header"))
+    let imageView = UIImageView(image: image(named: "icon--currency-header", inBundle: Bundle.framework))
     return imageView
   }()
 
