@@ -2,12 +2,14 @@ import UIKit
 
 extension UITableView {
   public func setConstrained(headerView: UIView) {
-    headerView.translatesAutoresizingMaskIntoConstraints = false
+    if self.tableHeaderView != headerView {
+      headerView.translatesAutoresizingMaskIntoConstraints = false
 
-    headerView.layoutIfNeeded()
+      self.tableHeaderView = headerView
 
-    NSLayoutConstraint.activate([
-      headerView.widthAnchor.constraint(equalTo: self.widthAnchor)
-    ])
+      NSLayoutConstraint.activate([
+        headerView.widthAnchor.constraint(equalTo: self.widthAnchor)
+      ])
+    }
   }
 }
