@@ -51,11 +51,11 @@ internal final class AddNewCardViewModelTests: TestCase {
       self.vm.inputs.cardholderNameChanged("Native Squad")
       self.vm.inputs.cardholderNameTextFieldReturn()
       self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
-      self.vm.inputs.creditCardChanged(cardNumber: "4242 4242 4242 4242",
-                                        expMonth: 11,
-                                        expYear: 99,
-                                        cvc: "123")
-      self.vm.inputs.paymentInfo(valid: true)
+      self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
+
+      self.vm.inputs.paymentInfo(isValid: true)
+      self.vm.inputs.cardBrand(isValid: true)
+
       self.saveButtonIsEnabled.assertValues([true])
 
       self.vm.inputs.saveButtonTapped()
@@ -222,7 +222,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
     ) {
-      self.vm.inputs.paymentInfo(valid: true)
+      self.vm.inputs.paymentInfo(isValid: true)
       self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
       self.scheduler.advance()
