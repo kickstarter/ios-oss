@@ -1,3 +1,4 @@
+import Library
 import Prelude
 import UIKit
 
@@ -14,13 +15,13 @@ private enum CreatePasswordRow: CaseIterable {
 extension CreatePasswordRow {
   var title: String {
     switch self {
-    case .newPassword: return "New password"
-    case .confirmNewPassword: return "Confirm new password"
+    case .newPassword: return Strings.New_password()
+    case .confirmNewPassword: return Strings.Confirm_password()
     }
   }
 
   var placeholder: String {
-    return "Password"
+    return Strings.signup_input_fields_password()
   }
 }
 
@@ -38,7 +39,7 @@ class CreatePasswordViewController: UITableViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.title .~ "Create Password"
+      |> \.title %~ { _ in Strings.Create_password() }
 
     _ = self.navigationItem
       |> \.rightBarButtonItem .~ self.rightBarButtonItem
@@ -83,8 +84,11 @@ class CreatePasswordViewController: UITableViewController {
     guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifier.header)
       as? SettingsGroupedHeaderView else { return nil }
 
-    let text = "We'll ask you to sign back into the Kickstarter app once you've changed your password."
-    headerView.label.text = text
+    _ = headerView.label
+      |> \.text %~ { _ in
+        Strings.Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password()
+    }
+
     return headerView
   }
 }
