@@ -112,12 +112,12 @@ AddNewCardViewModelOutputs {
     let graphError = addNewCardEvent.errors().map {
       $0.localizedDescription
     }
-    let addNewError = addNewCardEvent.map { $0.value?.errorMessage }.skipNil()
+    let addNewCardError = addNewCardEvent.map { $0.value?.errorMessage }.skipNil()
 
     let errorMessage = Signal.merge (
       stripeInvalidToken,
       graphError,
-      addNewError
+      addNewCardError
     )
 
     self.addNewCardFailure = errorMessage.map { $0 }
