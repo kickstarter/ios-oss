@@ -74,7 +74,7 @@ public enum SettingsNotificationCellType {
 
   public var shouldShowEmailNotificationButton: Bool {
     switch self {
-    case .projectNotifications, .emailFrequency:
+    case .projectNotifications, .emailFrequency, .newLikes:
       return false
     default:
       return true
