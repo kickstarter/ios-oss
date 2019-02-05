@@ -26,12 +26,17 @@ public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
   }
 }
 
-public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable {
+public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable, Equatable {
   case changeEmail
   case changePassword
   case privacy
   case paymentMethods
-  case currency
+  case currency(Currency?)
+
+  public static var allCases: [SettingsAccountCellType] {
+    return [.changeEmail, changePassword, privacy, paymentMethods]
+      + Currency.allCases.map(SettingsAccountCellType.currency)
+  }
 
   public var showArrowImageView: Bool {
     return true
@@ -43,8 +48,6 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable {
 
   public var detailTextColor: UIColor {
     switch self {
-    case .currency:
-      return .ksr_text_green_700
     default:
       return .ksr_text_dark_grey_400
     }
@@ -76,6 +79,7 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable {
 
   public var description: String? {
     switch self {
+    case let .currency(currency): return currency?.descriptionText
     default: return nil
     }
   }
