@@ -22,8 +22,8 @@ final class PaymentMethodsDataSource: ValueCellDataSource {
     }
   }
 
-  func tableView(_ tableView: UITableView,
-                 commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
+                 forRowAt indexPath: IndexPath) {
     guard let creditCard = self[indexPath] as? GraphUserCreditCard.CreditCard else { return }
 
     _ = self.deleteRow(value: creditCard, cellClass: CreditCardCell.self,

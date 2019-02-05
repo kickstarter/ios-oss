@@ -18,6 +18,7 @@ public protocol PaymentMethodsViewModelOutputs {
   var goToAddCardScreen: Signal<Void, NoError> { get }
   var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError> { get }
   var presentBanner: Signal<String, NoError> { get }
+  var reloadData: Signal<Void, NoError> { get }
   var showAlert: Signal<String, NoError> { get }
   var tableViewIsEditing: Signal<Bool, NoError> { get }
 }
@@ -31,6 +32,8 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
   public init() {
+    self.reloadData = self.viewDidLoadProperty.signal
+
     let paymentMethodsEvent = self.viewWillAppearProperty.signal
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphCreditCards(query: UserQueries.storedCards.query)
@@ -116,6 +119,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   public let goToAddCardScreen: Signal<Void, NoError>
   public let paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError>
   public let presentBanner: Signal<String, NoError>
+  public let reloadData: Signal<Void, NoError>
   public let showAlert: Signal<String, NoError>
   public let tableViewIsEditing: Signal<Bool, NoError>
 
