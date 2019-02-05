@@ -125,6 +125,9 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       |> \.text %~ { _ in
         Strings.Zip_postal_code()
       }
+
+    _ = self.zipcodeView
+      |> \.autocapitalizationType .~ .allCharacters
   }
 
   override func bindViewModel() {
@@ -225,37 +228,6 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
 
-  // MARK: - Zipcode UITextField Delegate
-  @objc internal func zipcodeTextFieldDoneEditing() {
-    self.viewModel.inputs.zipcodeTextFieldDidEndEditing()
-  }
-
-  @objc internal func zipcodeTextFieldChanged(textField: UITextField) {
-    self.viewModel.inputs.zipcodeChanged(zipcode: textField.text)
-  }
-
-  // MARK: - STPPaymentCardTextFieldDelegate
-  internal func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
-    self.viewModel.inputs.paymentInfo(isValid: textField.isValid)
-
-    guard let cardnumber = textField.cardNumber else {
-      return
-    }
-
-    let cardBrand = STPCardValidator.brand(forNumber: cardnumber)
-    let isValid = self.cardBrandIsSupported(brand: cardBrand, supportedCardBrands: self.supportedCardBrands)
-
-    self.viewModel.inputs.cardBrand(isValid: isValid)
-
-    self.viewModel.inputs.creditCardChanged(cardDetails: (cardnumber, textField.expirationMonth,
-                                                          textField.expirationYear, textField.cvc))
-
-  }
-
-  internal func paymentCardTextFieldDidEndEditing(_ textField: STPPaymentCardTextField) {
-    self.viewModel.inputs.paymentCardTextFieldDidEndEditing()
-  }
-
   // MARK: - Private Functions
   private func createStripeToken(with paymentDetails: PaymentDetails) {
     let cardParams = STPCardParams()
@@ -282,5 +254,40 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   private func dismissKeyboard() {
     [self.cardholderNameTextField, self.creditCardTextField, self.zipcodeView.textField]
       .forEach { $0?.resignFirstResponder() }
+  }
+}
+
+// MARK: - Zipcode UITextField Delegate
+extension AddNewCardViewController {
+  @objc internal func zipcodeTextFieldDoneEditing() {
+    self.viewModel.inputs.zipcodeTextFieldDidEndEditing()
+  }
+
+  @objc internal func zipcodeTextFieldChanged(textField: UITextField) {
+    self.viewModel.inputs.zipcodeChanged(zipcode: textField.text)
+  }
+}
+
+// MARK: - STPPaymentCardTextFieldDelegate
+extension AddNewCardViewController {
+  internal func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
+    self.viewModel.inputs.paymentInfo(isValid: textField.isValid)
+
+    guard let cardnumber = textField.cardNumber else {
+      return
+    }
+
+    let cardBrand = STPCardValidator.brand(forNumber: cardnumber)
+    let isValid = self.cardBrandIsSupported(brand: cardBrand, supportedCardBrands: self.supportedCardBrands)
+
+    self.viewModel.inputs.cardBrand(isValid: isValid)
+
+    self.viewModel.inputs.creditCardChanged(cardDetails: (cardnumber, textField.expirationMonth,
+                                                          textField.expirationYear, textField.cvc))
+
+  }
+
+  internal func paymentCardTextFieldDidEndEditing(_ textField: STPPaymentCardTextField) {
+    self.viewModel.inputs.paymentCardTextFieldDidEndEditing()
   }
 }
