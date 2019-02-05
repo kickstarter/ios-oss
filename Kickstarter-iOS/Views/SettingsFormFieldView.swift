@@ -13,7 +13,7 @@ final class SettingsFormFieldView: UIView, NibLoading {
     super.init(coder: aDecoder)
 
     guard let view = self.view(fromNib: .SettingsFormFieldView) else {
-        fatalError("Failed to load view")
+      fatalError("Failed to load view")
     }
 
     view.frame = self.bounds

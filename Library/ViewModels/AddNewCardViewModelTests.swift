@@ -234,6 +234,22 @@ internal final class AddNewCardViewModelTests: TestCase {
 
     self.vm.inputs.saveButtonTapped()
     self.dismissKeyboard.assertDidEmitValue()
+
+    self.vm.inputs.zipcodeChanged(zipcode: "")
+
+    self.vm.inputs.saveButtonTapped()
+    self.dismissKeyboard.assertValueCount(1, "Keyboard does not dismiss if save button is disabled")
+
+    self.vm.inputs.zipcodeChanged(zipcode: "123")
+    self.vm.inputs.cardBrand(isValid: false)
+
+    self.vm.inputs.saveButtonTapped()
+    self.dismissKeyboard.assertValueCount(1, "Keyboard does not dismiss if save button is disabled")
+
+    self.vm.inputs.cardBrand(isValid: true)
+
+    self.vm.inputs.saveButtonTapped()
+    self.dismissKeyboard.assertValueCount(2, "Keyboard dismisses when save button is enabled and tapped")
   }
 
   func testPaymentDetails() {

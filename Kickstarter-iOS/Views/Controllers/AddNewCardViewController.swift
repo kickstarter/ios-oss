@@ -170,7 +170,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.viewModel.outputs.paymentDetails
       .observeForUI()
       .observeValues { [weak self] paymentDetails in
-        self?.createStripeToken(paymentDetails: paymentDetails)
+        self?.createStripeToken(with: paymentDetails)
     }
 
     self.viewModel.outputs.activityIndicatorShouldShow
@@ -221,8 +221,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.viewModel.inputs.cardholderNameChanged(textField.text)
   }
 
-  @objc func cardholderNameTextFieldReturn(_ textField: UITextField
-    ) {
+  @objc func cardholderNameTextFieldReturn(_ textField: UITextField) {
     self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
 
@@ -258,7 +257,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   }
 
   // MARK: - Private Functions
-  private func createStripeToken(paymentDetails: PaymentDetails) {
+  private func createStripeToken(with paymentDetails: PaymentDetails) {
     let cardParams = STPCardParams()
     cardParams.name = paymentDetails.cardholderName
     cardParams.number = paymentDetails.cardNumber
