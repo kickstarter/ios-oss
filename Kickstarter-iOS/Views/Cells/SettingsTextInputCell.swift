@@ -41,7 +41,7 @@ final class SettingsTextInputCell: UITableViewCell {
 
   private lazy var stackView: UIStackView = {
     let layoutMargins = UIEdgeInsets.init(topBottom: Margin.topBottom, leftRight: Margin.leftRight)
-    return UIStackView()
+    return UIStackView(frame: .zero)
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.layoutMargins .~ layoutMargins
       |> \.spacing .~ 8
@@ -49,7 +49,7 @@ final class SettingsTextInputCell: UITableViewCell {
   }()
 
   private lazy var label: UILabel = {
-    return UILabel()
+    return UILabel(frame: .zero)
       |> \.adjustsFontForContentSizeCategory .~ true
       |> \.font .~ UIFont.preferredFont(forTextStyle: .body)
       |> \.isAccessibilityElement .~ false
@@ -57,7 +57,7 @@ final class SettingsTextInputCell: UITableViewCell {
   }()
 
   private lazy var textField: UITextField = {
-    return UITextField()
+    return UITextField(frame: .zero)
       |> \.adjustsFontForContentSizeCategory .~ true
       |> \.font .~ UIFont.preferredFont(forTextStyle: .body)
       |> \.textAlignment .~ .right
