@@ -17,14 +17,13 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var notificationSwitch: UISwitch!
   @IBOutlet fileprivate weak var separatorView: UIView!
 
- internal override func awakeFromNib() {
+  internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.notificationSwitch.addTarget(
-      self,
-      action: #selector(notificationTapped),
-      for: UIControl.Event.valueChanged
-    )
+    _ = self
+      |> \.accessibilityElements .~ [self.notificationSwitch]
+
+    self.notificationSwitch.addTarget(self, action: #selector(notificationTapped), for: .valueChanged)
   }
 
   internal override func bindStyles() {
@@ -46,6 +45,7 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.nameLabel.rac.text = self.viewModel.outputs.name
+    self.notificationSwitch.rac.accessibilityLabel = self.viewModel.outputs.name
     self.notificationSwitch.rac.on = self.viewModel.outputs.notificationOn
 
     self.viewModel.outputs.notifyDelegateOfSaveError

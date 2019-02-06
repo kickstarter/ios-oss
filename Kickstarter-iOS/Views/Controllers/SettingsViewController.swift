@@ -28,12 +28,7 @@ final class SettingsViewController: UIViewController {
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
     if self.presentingViewController != nil {
-      let image = UIImage(named: "icon--cross")
-      self.navigationItem.leftBarButtonItem =
-        UIBarButtonItem(image: image,
-                        style: .plain,
-                        target: self,
-                        action: #selector(closeButtonPressed))
+      self.navigationItem.leftBarButtonItem = self.leftBarButtonItem()
     }
 
     self.userUpdatedObserver = NotificationCenter.default
@@ -87,6 +82,17 @@ final class SettingsViewController: UIViewController {
     self.viewModel.outputs.goToAppStoreRating
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
+  }
+
+  private func leftBarButtonItem() -> UIBarButtonItem {
+    return UIBarButtonItem(
+      image: UIImage(named: "icon--cross"),
+      style: .plain,
+      target: self,
+      action: #selector(closeButtonPressed)
+    )
+    |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+    |> \.width .~ 44
   }
 
   @objc fileprivate func closeButtonPressed() {

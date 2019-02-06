@@ -247,6 +247,7 @@
 "Manage_your_pledge_below" = "以下のプレッジを変更";
 "Manage_your_reward" = "リワードの管理";
 "Message_backer" = "バッカーにメッセージする";
+"Message_banner.accessibility.Double_tap_to_dismiss" = "Double tap to dismiss.";
 "Message_creator" = "クリエーターにメッセージする";
 "Message_user_name" = "%{user_name} にメッセージ";
 "Messages" = "メッセージ";
