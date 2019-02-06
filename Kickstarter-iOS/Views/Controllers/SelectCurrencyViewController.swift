@@ -3,6 +3,8 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+private let reuseIdentifier = "CurrencySelectionCell"
+
 final class SelectCurrencyViewController: UIViewController, MessageBannerViewControllerPresenting {
   private let viewModel: SelectCurrencyViewModelType = SelectCurrencyViewModel()
 
@@ -49,7 +51,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     let tableView = UITableView(frame: .zero, style: .plain)
 
     tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+    tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
     tableView.tableFooterView = UIView(frame: .zero)
     tableView.dataSource = self
     tableView.delegate = self
@@ -70,7 +72,7 @@ extension SelectCurrencyViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+    let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 
     let currency = Currency.allCases[indexPath.row]
 
