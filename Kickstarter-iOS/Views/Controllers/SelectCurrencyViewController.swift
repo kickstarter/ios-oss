@@ -22,6 +22,8 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+
     self.view.addSubview(self.tableView)
     self.tableView.constrainEdges(to: self.view)
 
@@ -39,15 +41,11 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   // MARK: - Subviews
 
   private lazy var tableView: UITableView = {
-    let tableView = UITableView(frame: .zero, style: .plain)
-
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-    tableView.tableFooterView = UIView(frame: .zero)
-    tableView.dataSource = self
-    tableView.delegate = self
-
-    return tableView
+    return UITableView(frame: .zero, style: .plain)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.tableFooterView .~ UIView(frame: .zero)
+      |> \.dataSource .~ self
+      |> \.delegate .~ self
   }()
 }
 
