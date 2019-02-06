@@ -106,7 +106,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
         }
 
         self.emailPickerViewTopConstraint.constant = isHidden ? 0 : self.emailFrequencyPickerView.frame.height
-        self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
     },
     completion: { [weak self] _ in
