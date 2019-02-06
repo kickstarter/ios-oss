@@ -13,8 +13,10 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
   private let viewModel: FindFriendsCellViewModelType = FindFriendsCellViewModel()
 
   func configureWith(value: SettingsCellValue) {
-    let user = value.user
-    self.viewModel.inputs.configure(with: user)
+    _ = self
+      |> \.accessibilityTraits .~ value.cellType.accessibilityTraits
+
+    self.viewModel.inputs.configure(with: value.user)
   }
 
   override func bindViewModel() {

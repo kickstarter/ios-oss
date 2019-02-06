@@ -9,6 +9,10 @@ public enum HelpType: SettingsCellTypeProtocol {
   case cookie
   case trust
 
+  public var accessibilityTraits: UIAccessibilityTraits {
+    return .button
+  }
+
   public var title: String {
     switch self {
     case .helpCenter:
@@ -31,9 +35,9 @@ public enum HelpType: SettingsCellTypeProtocol {
   public var showArrowImageView: Bool {
     switch self {
     case .contact:
-      return true
-    default:
       return false
+    default:
+      return true
     }
   }
 
