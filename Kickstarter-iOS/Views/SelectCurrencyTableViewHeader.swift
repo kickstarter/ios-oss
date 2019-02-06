@@ -50,18 +50,14 @@ final class SelectCurrencyTableViewHeader: UITableViewHeaderFooterView {
     let stackView = UIStackView(arrangedSubviews: [
       self.headerImageView,
       self.headerLabel
-      ])
+    ])
 
     return stackView
   }()
 
   private lazy var headerImageView: UIImageView = {
-    let imageView = UIImageView(image: image(named: "icon--currency-header", inBundle: Bundle.framework))
-    return imageView
+    UIImageView(image: image(named: "icon--currency-header", inBundle: Bundle.framework))
   }()
 
-  private lazy var headerLabel: UILabel = {
-    let label = UILabel(frame: .zero)
-    return label
-  }()
+  private lazy var headerLabel: UILabel = { UILabel(frame: .zero) }()
 }
