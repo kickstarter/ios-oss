@@ -3,6 +3,8 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+private let reuseIdentifier = "CurrencySelectionCell"
+
 final class SelectCurrencyViewController: UIViewController, MessageBannerViewControllerPresenting {
   private let viewModel: SelectCurrencyViewModelType = SelectCurrencyViewModel()
 
@@ -19,6 +21,8 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
 
     self.tableView.setConstrained(headerView: self.headerView)
     self.view.addSubview(self.tableView)
@@ -87,23 +91,18 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     self.viewModel.inputs.saveButtonTapped()
   }
 
-  // MARK: Subviews
+  // MARK: - Subviews
 
   private lazy var tableView: UITableView = {
-    let tableView = UITableView(frame: .zero, style: .plain)
-
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-    tableView.tableFooterView = UIView(frame: .zero)
-    tableView.dataSource = self
-    tableView.delegate = self
-
-    return tableView
+    UITableView(frame: .zero, style: .plain)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.tableFooterView .~ UIView(frame: .zero)
+      |> \.dataSource .~ self
+      |> \.delegate .~ self
   }()
 
   private lazy var headerView: SelectCurrencyTableViewHeader = {
-    let view = SelectCurrencyTableViewHeader(frame: .zero)
-    return view
+    SelectCurrencyTableViewHeader(frame: .zero)
   }()
 }
 
@@ -114,7 +113,7 @@ extension SelectCurrencyViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+    let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 
     let currency = Currency.allCases[indexPath.row]
 

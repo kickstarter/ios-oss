@@ -20,12 +20,11 @@ internal final class SelectCurrencyViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(language: language) {
+          let vc = SelectCurrencyViewController.instantiate()
+          vc.configure(with: .USD)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-            let vc = SelectCurrencyViewController.instantiate()
-            vc.configure(with: .USD)
-            let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-
-            FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
         }
     }
   }
