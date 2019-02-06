@@ -36,6 +36,10 @@ final class CreatePasswordViewController: UITableViewController {
 
   // MARK: - Lifecycle
 
+  static func instantiate() -> CreatePasswordViewController {
+    return CreatePasswordViewController(style: .grouped)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 

@@ -21,7 +21,7 @@ final class CreatePasswordViewControllerTests: TestCase {
   func testCreatePassword() {
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(language: language) {
-        let controller = CreatePasswordViewController()
+        let controller = CreatePasswordViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
