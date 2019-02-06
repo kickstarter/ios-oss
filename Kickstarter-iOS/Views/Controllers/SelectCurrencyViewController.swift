@@ -50,7 +50,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   // MARK: - Subviews
 
   private lazy var tableView: UITableView = {
-    return UITableView(frame: .zero, style: .plain)
+    UITableView(frame: .zero, style: .plain)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.tableFooterView .~ UIView(frame: .zero)
       |> \.dataSource .~ self
@@ -58,8 +58,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   }()
 
   private lazy var headerView: SelectCurrencyTableViewHeader = {
-    let view = SelectCurrencyTableViewHeader(frame: .zero)
-    return view
+    SelectCurrencyTableViewHeader(frame: .zero)
   }()
 }
 
