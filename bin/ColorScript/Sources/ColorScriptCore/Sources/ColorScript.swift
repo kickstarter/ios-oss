@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import Foundation
 
 public enum ColorScriptError: Error {
@@ -25,7 +24,9 @@ public final class ColorScript {
     do {
       let data = try Data(contentsOf: URL(fileURLWithPath: self.inPath))
       color = Color(data: data)
-      print("All colors: \n\(color!.prettyColors!)")
+      if let prettyColors = color?.prettyColors {
+        print("All colors: \n\(prettyColors)")
+      }
     } catch {
       throw ColorScriptError.fileNotFound(error.localizedDescription)
     }
