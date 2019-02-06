@@ -30,7 +30,7 @@ final class CreatePasswordViewController: UITableViewController {
   // MARK: - Accessors
 
   private lazy var rightBarButtonItem: UIBarButtonItem = {
-    return UIBarButtonItem(barButtonSystemItem: .save, target: nil, action: nil)
+    UIBarButtonItem(barButtonSystemItem: .save, target: nil, action: nil)
       |> \.isEnabled .~ false
   }()
 

@@ -49,7 +49,7 @@ final class SettingsTextInputCell: UITableViewCell {
   }()
 
   private lazy var label: UILabel = {
-    return UILabel(frame: .zero)
+    UILabel(frame: .zero)
       |> \.adjustsFontForContentSizeCategory .~ true
       |> \.backgroundColor .~ .white
       |> \.font .~ UIFont.preferredFont(forTextStyle: .body)
@@ -58,7 +58,7 @@ final class SettingsTextInputCell: UITableViewCell {
   }()
 
   private lazy var textField: UITextField = {
-    return UITextField(frame: .zero)
+    UITextField(frame: .zero)
       |> \.adjustsFontForContentSizeCategory .~ true
       |> \.backgroundColor .~ .white
       |> \.font .~ UIFont.preferredFont(forTextStyle: .body)
