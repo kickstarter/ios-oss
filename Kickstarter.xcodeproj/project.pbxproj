@@ -6785,7 +6785,6 @@
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 arm64e";
 			};
 			name = "Hockey Beta";
 		};
@@ -7389,7 +7388,6 @@
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
-				VALID_ARCHS = "arm64 arm64e";
 			};
 			name = Debug;
 		};
@@ -7460,7 +7458,6 @@
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 arm64e";
 			};
 			name = Release;
 		};
@@ -7692,7 +7689,6 @@
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 arm64e";
 			};
 			name = "Hockey Alpha";
 		};
