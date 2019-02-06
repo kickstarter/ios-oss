@@ -53,8 +53,8 @@ class SettingsTextInputCell: UITableViewCell {
     self.stackView.constrainEdges(to: self.contentView)
     self.stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
 
-    self.label.setContentHuggingPriority(.required, for: .horizontal)
     self.label.setContentCompressionResistancePriority(.required, for: .horizontal)
+    self.label.setContentHuggingPriority(.required, for: .horizontal)
 
     self.textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
   }
