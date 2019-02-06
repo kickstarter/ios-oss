@@ -51,6 +51,7 @@ final class SettingsTextInputCell: UITableViewCell {
   private lazy var label: UILabel = {
     return UILabel(frame: .zero)
       |> \.adjustsFontForContentSizeCategory .~ true
+      |> \.backgroundColor .~ .white
       |> \.font .~ UIFont.preferredFont(forTextStyle: .body)
       |> \.isAccessibilityElement .~ false
       |> \.numberOfLines .~ 0
@@ -59,6 +60,7 @@ final class SettingsTextInputCell: UITableViewCell {
   private lazy var textField: UITextField = {
     return UITextField(frame: .zero)
       |> \.adjustsFontForContentSizeCategory .~ true
+      |> \.backgroundColor .~ .white
       |> \.font .~ UIFont.preferredFont(forTextStyle: .body)
       |> \.textAlignment .~ .right
       |> \.isSecureTextEntry .~ true
