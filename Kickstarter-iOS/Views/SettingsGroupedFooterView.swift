@@ -3,10 +3,10 @@ import UIKit
 
 private struct Padding {
   static let horizontal: CGFloat = 8
-  static let vertical: CGFloat = 30
+  static let vertical: CGFloat = 12
 }
 
-class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
+class SettingsGroupedFooterView: UITableViewHeaderFooterView {
   private(set) lazy var label: UILabel = {
     return UILabel()
       |> \.font .~ UIFont.preferredFont(forTextStyle: .footnote)
@@ -27,7 +27,7 @@ class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
       self.label.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -Padding.horizontal),
       self.label.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -Padding.vertical),
       self.label.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: Padding.horizontal)
-    ])
+      ])
   }
 
   required init?(coder aDecoder: NSCoder) {

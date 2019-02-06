@@ -5,6 +5,7 @@ import UIKit
 private struct ReuseIdentifier {
   static let cell = "SettingsInputCell"
   static let header = "SettingsHeaderView"
+  static let footer = "SettingsFooterView"
 }
 
 private enum CreatePasswordRow: CaseIterable {
@@ -50,14 +51,20 @@ class CreatePasswordViewController: UITableViewController {
 
     if #available(iOS 11, *) { } else {
       let headerHeight: CGFloat = 100
+      let footerHeight: CGFloat = 44
 
       _ = self.tableView
-        |> \.sectionHeaderHeight .~ headerHeight
+        |> \.estimatedSectionFooterHeight .~ footerHeight
         |> \.estimatedSectionHeaderHeight .~ headerHeight
+        |> \.sectionFooterHeight .~ footerHeight
+        |> \.sectionHeaderHeight .~ headerHeight
     }
 
     self.tableView.register(
       SettingsGroupedHeaderView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifier.header
+    )
+    self.tableView.register(
+      SettingsGroupedFooterView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifier.footer
     )
     self.tableView.register(SettingsTextInputCell.self, forCellReuseIdentifier: ReuseIdentifier.cell)
   }
@@ -90,5 +97,15 @@ class CreatePasswordViewController: UITableViewController {
     }
 
     return headerView
+  }
+
+  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    guard let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifier.footer)
+      as? SettingsGroupedFooterView else { return nil }
+
+    _ = footerView.label
+      |> \.text %~ { _ in Strings.Password_min_length_message() }
+
+    return footerView
   }
 }
