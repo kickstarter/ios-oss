@@ -84,7 +84,8 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       .observeValues { _ in AppEnvironment.current.koala.trackDeletePaymentMethodError() }
   }
 
-  fileprivate let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) = Signal<GraphUserCreditCard.CreditCard,
+  fileprivate let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) =
+    Signal<GraphUserCreditCard.CreditCard,
     NoError>.pipe()
   public func didDelete(_ creditCard: GraphUserCreditCard.CreditCard) {
     self.didDeleteCreditCardObserver.send(value: creditCard)
