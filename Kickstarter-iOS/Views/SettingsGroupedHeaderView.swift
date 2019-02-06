@@ -2,8 +2,9 @@ import Prelude
 import UIKit
 
 private struct Padding {
-  static let horizontal: CGFloat = 8
-  static let vertical: CGFloat = 30
+  static let bottom: CGFloat = 12
+  static let leftRight: CGFloat = 12
+  static let top: CGFloat = 30
 }
 
 /*
@@ -33,10 +34,10 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
     self.contentView.addSubview(self.label)
 
     NSLayoutConstraint.activate([
-      self.label.topAnchor.constraint( equalTo: self.contentView.topAnchor, constant: Padding.vertical),
-      self.label.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -Padding.horizontal),
-      self.label.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -Padding.vertical),
-      self.label.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: Padding.horizontal)
+      self.label.topAnchor.constraint( equalTo: self.contentView.topAnchor, constant: Padding.top),
+      self.label.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -Padding.leftRight),
+      self.label.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -Padding.bottom),
+      self.label.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: Padding.leftRight)
     ])
   }
 
