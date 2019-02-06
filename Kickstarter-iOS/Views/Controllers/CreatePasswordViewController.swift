@@ -50,14 +50,18 @@ class CreatePasswordViewController: UITableViewController {
       |> \.separatorInset .~ .zero
 
     if #available(iOS 11, *) { } else {
-      let headerHeight: CGFloat = 100
-      let footerHeight: CGFloat = 44
+      let estimatedSectionFooterHeight: CGFloat = 44
+      let estimatedSectionHeaderHeight: CGFloat = 100
+      let estimatedRowHeight: CGFloat = 44
+      let height = UITableView.automaticDimension
 
       _ = self.tableView
-        |> \.estimatedSectionFooterHeight .~ footerHeight
-        |> \.estimatedSectionHeaderHeight .~ headerHeight
-        |> \.sectionFooterHeight .~ footerHeight
-        |> \.sectionHeaderHeight .~ headerHeight
+        |> \.estimatedSectionFooterHeight .~ estimatedSectionFooterHeight
+        |> \.estimatedSectionHeaderHeight .~ estimatedSectionHeaderHeight
+        |> \.estimatedRowHeight .~ estimatedRowHeight
+        |> \.sectionFooterHeight .~ height
+        |> \.sectionHeaderHeight .~ height
+        |> \.rowHeight .~ height
     }
 
     self.tableView.register(
