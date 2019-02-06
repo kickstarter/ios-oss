@@ -45,7 +45,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     }
   }
 
-  // MARK: Subviews
+  // MARK: - Subviews
 
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .plain)
