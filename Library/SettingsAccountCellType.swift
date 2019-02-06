@@ -26,17 +26,12 @@ public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
   }
 }
 
-public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable, Equatable {
+public enum SettingsAccountCellType: SettingsCellTypeProtocol, Equatable {
   case changeEmail
   case changePassword
   case privacy
   case paymentMethods
   case currency(Currency?)
-
-  public static var allCases: [SettingsAccountCellType] {
-    return [.changeEmail, changePassword, privacy, paymentMethods]
-      + Currency.allCases.map(SettingsAccountCellType.currency)
-  }
 
   public var showArrowImageView: Bool {
     return true
