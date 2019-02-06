@@ -22,6 +22,7 @@ class SettingsTextInputCell: UITableViewCell {
     return UILabel()
       |> \.adjustsFontForContentSizeCategory .~ true
       |> \.font .~ UIFont.preferredFont(forTextStyle: .body)
+      |> \.isAccessibilityElement .~ false
       |> \.numberOfLines .~ 0
   }()
 
@@ -39,6 +40,7 @@ class SettingsTextInputCell: UITableViewCell {
 
     _ = self.textField
       |> \.placeholder .~ placeholder
+      |> \.accessibilityLabel .~ self.label.accessibilityLabel
   }
 
   // MARK: - Lifecycle
