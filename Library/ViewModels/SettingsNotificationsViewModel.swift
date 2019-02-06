@@ -39,21 +39,23 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
         .demoteErrors()
     }.skipNil()
 
-    let pledgeActivityAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
-      updatedUserProperty.signal
-          .map { pledgeActivityOptIn in
-            (UserAttribute.notification(.pledgeActivity), pledgeActivityOptIn)
+    let pledgeActivityNotificationChanged: Signal<(UserAttribute, Bool), NoError> =
+      updatedUserProperty.signal.skipNil()
+          .map { user in
+            return  (UserAttribute.notification(.pledgeActivity), user.notifications.backings ?? false)
     }
 
-
-      // creatorDigestOptInChange
-    let userAttributeChanged = emailFrequencyProperty.signal
+    let creatorDigestNotificationChanged = emailFrequencyProperty.signal
       .map { frequency -> (UserAttribute, Bool) in
         let digestValue = frequency == .dailySummary ? true : false
 
         return (UserAttribute.notification(.creatorDigest), digestValue)
     }
 
+    let userAttributeChanged = Signal.merge(
+      pledgeActivityNotificationChanged.signal,
+      creatorDigestNotificationChanged.signal
+    )
 
     let updatedUser = initialUser.signal
       .switchMap { user in
@@ -83,7 +85,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     self.updateCurrentUser = Signal.merge(
       initialUser,
-    //  updatedUserProperty.signal.skipNil(),
+      updatedUserProperty.signal.skipNil(),
       emailFrequencyUpdated
     )
 
