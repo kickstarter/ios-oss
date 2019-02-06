@@ -18,11 +18,15 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   @IBOutlet private weak var creditCardTextField: STPPaymentCardTextField!
   @IBOutlet private weak var creditCardValidationErrorLabel: UILabel!
   @IBOutlet private weak var creditCardValidationErrorContainer: UIView!
+  @IBOutlet private weak var scrollView: UIScrollView!
+  @IBOutlet private weak var stackView: UIStackView!
+  @IBOutlet private weak var zipcodeView: SettingsFormFieldView!
 
   private let supportedCardBrands: [STPCardBrand] = [.visa, .masterCard, .amex, .dinersClub,
                                                      .discover, .JCB]
 
   private var saveButtonView: LoadingBarButtonItemView!
+
   internal var messageBannerViewController: MessageBannerViewController?
 
   fileprivate let viewModel: AddNewCardViewModelType = AddNewCardViewModel()
@@ -57,6 +61,12 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
+
+    self.zipcodeView.textField.addTarget(self, action: #selector(zipcodeTextFieldDoneEditing),
+                                         for: .editingDidEndOnExit)
+
+    self.zipcodeView.textField.addTarget(self, action: #selector(zipcodeTextFieldChanged(textField:)),
+                                         for: .editingChanged)
 
     self.creditCardTextField.delegate = self
 
@@ -95,14 +105,29 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     _ = self.creditCardTextField
       |> \.borderColor .~ nil
       |> \.font .~ .ksr_body()
-      |> \.cursorColor .~ .ksr_green_700
       |> \.textColor .~ .ksr_text_dark_grey_500
+      |> \.textErrorColor .~ .ksr_red_400
+      |> \.cursorColor .~ .ksr_green_700
       |> \.placeholderColor .~ .ksr_text_dark_grey_400
 
     _ = self.creditCardValidationErrorLabel
       |> settingsDescriptionLabelStyle
       |> \.textColor .~ .ksr_red_400
       |> \.text %~ { _ in Strings.Unsupported_card_type() }
+
+    _ = self.scrollView
+      |> \.alwaysBounceVertical .~ true
+
+    _ = self.stackView
+      |> \.layoutMargins .~ .init(leftRight: Styles.grid(2))
+
+    _ = self.zipcodeView.titleLabel
+      |> \.text %~ { _ in
+        Strings.Zip_postal_code()
+      }
+
+    _ = self.zipcodeView
+      |> \.autocapitalizationType .~ .allCharacters
   }
 
   override func bindViewModel() {
@@ -141,18 +166,14 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.creditCardTextField.resignFirstResponder()
+      .observeValues { [weak self] _ in
+        self?.dismissKeyboard()
     }
 
     self.viewModel.outputs.paymentDetails
       .observeForUI()
-      .observeValues { [weak self] cardholderName, cardNumber, expMonth, expYear, cvc in
-        self?.createStripeToken(cardholderName: cardholderName,
-                                cardNumber: cardNumber,
-                                expirationMonth: expMonth,
-                                expirationYear: expYear,
-                                cvc: cvc)
+      .observeValues { [weak self] paymentDetails in
+        self?.createStripeToken(with: paymentDetails)
     }
 
     self.viewModel.outputs.activityIndicatorShouldShow
@@ -177,6 +198,18 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
     }
+
+    self.viewModel.outputs.zipcodeTextFieldBecomeFirstResponder
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        self?.zipcodeView.textField.becomeFirstResponder()
+    }
+
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        self?.scrollView.handleKeyboardVisibilityDidChange(change)
+    }
   }
 
   @objc fileprivate func cancelButtonTapped() {
@@ -191,12 +224,52 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.viewModel.inputs.cardholderNameChanged(textField.text)
   }
 
-  @objc func cardholderNameTextFieldReturn(_ textField: UITextField
-    ) {
+  @objc func cardholderNameTextFieldReturn(_ textField: UITextField) {
     self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
 
-  // MARK: - STPPaymentCardTextFieldDelegate
+  // MARK: - Private Functions
+  private func createStripeToken(with paymentDetails: PaymentDetails) {
+    let cardParams = STPCardParams()
+    cardParams.name = paymentDetails.cardholderName
+    cardParams.number = paymentDetails.cardNumber
+    cardParams.expMonth = paymentDetails.expMonth
+    cardParams.expYear = paymentDetails.expYear
+    cardParams.cvc = paymentDetails.cvc
+    cardParams.address.postalCode = paymentDetails.postalCode
+
+    STPAPIClient.shared().createToken(withCard: cardParams) { token, error in
+      if let token = token {
+        self.viewModel.inputs.stripeCreated(token.tokenId, stripeID: token.stripeID)
+      } else {
+        self.viewModel.inputs.stripeError(error)
+      }
+    }
+  }
+
+  private func cardBrandIsSupported(brand: STPCardBrand, supportedCardBrands: [STPCardBrand]) -> Bool {
+    return self.supportedCardBrands.contains(brand)
+  }
+
+  private func dismissKeyboard() {
+    [self.cardholderNameTextField, self.creditCardTextField, self.zipcodeView.textField]
+      .forEach { $0?.resignFirstResponder() }
+  }
+}
+
+// MARK: - Zipcode UITextField Delegate
+extension AddNewCardViewController {
+  @objc internal func zipcodeTextFieldDoneEditing() {
+    self.viewModel.inputs.zipcodeTextFieldDidEndEditing()
+  }
+
+  @objc internal func zipcodeTextFieldChanged(textField: UITextField) {
+    self.viewModel.inputs.zipcodeChanged(zipcode: textField.text)
+  }
+}
+
+// MARK: - STPPaymentCardTextFieldDelegate
+extension AddNewCardViewController {
   internal func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
     self.viewModel.inputs.paymentInfo(isValid: textField.isValid)
 
@@ -214,26 +287,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
   }
 
-  // MARK: - Private Functions
-  private func createStripeToken(cardholderName: String, cardNumber: String, expirationMonth: Month,
-                                 expirationYear: Year, cvc: String) {
-    let cardParams = STPCardParams()
-    cardParams.name = cardholderName
-    cardParams.number = cardNumber
-    cardParams.expMonth = expirationMonth
-    cardParams.expYear = expirationYear
-    cardParams.cvc = cvc
-
-    STPAPIClient.shared().createToken(withCard: cardParams) { token, error in
-      if let token = token {
-        self.viewModel.inputs.stripeCreated(token.tokenId, stripeID: token.stripeID)
-      } else {
-        self.viewModel.inputs.stripeError(error)
-      }
-    }
-  }
-
-  private func cardBrandIsSupported(brand: STPCardBrand, supportedCardBrands: [STPCardBrand]) -> Bool {
-    return self.supportedCardBrands.contains(brand)
+  internal func paymentCardTextFieldDidEndEditing(_ textField: STPPaymentCardTextField) {
+    self.viewModel.inputs.paymentCardTextFieldDidEndEditing()
   }
 }

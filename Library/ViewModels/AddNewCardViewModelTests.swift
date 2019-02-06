@@ -23,24 +23,54 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let paymentDetailsBecomeFirstResponder = TestObserver<Void, NoError>()
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
   private let setStripePublishableKey = TestObserver<String, NoError>()
+  private let zipcode = TestObserver<String, NoError>()
+  private let zipcodeTextFieldBecomeFirstResponder = TestObserver<Void, NoError>()
 
   override func setUp() {
     super.setUp()
-    self.vm.outputs.activityIndicatorShouldShow.observe(activityIndicatorShouldShow.observer)
-    self.vm.outputs.addNewCardFailure.observe(addNewCardFailure.observer)
-    self.vm.outputs.addNewCardSuccess.observe(addNewCardSuccess.observer)
+    self.vm.outputs.activityIndicatorShouldShow.observe(self.activityIndicatorShouldShow.observer)
+    self.vm.outputs.addNewCardFailure.observe(self.addNewCardFailure.observer)
+    self.vm.outputs.addNewCardSuccess.observe(self.addNewCardSuccess.observer)
     self.vm.outputs.creditCardValidationErrorContainerHidden
-      .observe(creditCardValidationErrorContainerHidden.observer)
-    self.vm.outputs.cardholderNameBecomeFirstResponder.observe(cardholderNameBecomeFirstResponder.observer)
-    self.vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
-    self.vm.outputs.paymentDetails.map { $0.0 }.observe(cardholderName.observer)
-    self.vm.outputs.paymentDetails.map { $0.1 }.observe(cardNumber.observer)
-    self.vm.outputs.paymentDetails.map { $0.2 }.observe(cardExpMonth.observer)
-    self.vm.outputs.paymentDetails.map { $0.3 }.observe(cardExpYear.observer)
-    self.vm.outputs.paymentDetails.map { $0.4 }.observe(cardCVC.observer)
-    self.vm.outputs.paymentDetailsBecomeFirstResponder.observe(paymentDetailsBecomeFirstResponder.observer)
-    self.vm.outputs.saveButtonIsEnabled.observe(saveButtonIsEnabled.observer)
-    self.vm.outputs.setStripePublishableKey.observe(setStripePublishableKey.observer)
+      .observe(self.creditCardValidationErrorContainerHidden.observer)
+    self.vm.outputs.cardholderNameBecomeFirstResponder
+      .observe(self.cardholderNameBecomeFirstResponder.observer)
+    self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
+    self.vm.outputs.paymentDetails.map { $0.0 }.observe(self.cardholderName.observer)
+    self.vm.outputs.paymentDetails.map { $0.1 }.observe(self.cardNumber.observer)
+    self.vm.outputs.paymentDetails.map { $0.2 }.observe(self.cardExpMonth.observer)
+    self.vm.outputs.paymentDetails.map { $0.3 }.observe(self.cardExpYear.observer)
+    self.vm.outputs.paymentDetails.map { $0.4 }.observe(self.cardCVC.observer)
+    self.vm.outputs.paymentDetails.map { $0.5 }.observe(self.zipcode.observer)
+  self.vm.outputs.paymentDetailsBecomeFirstResponder.observe(self.paymentDetailsBecomeFirstResponder.observer)
+    self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
+    self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
+    self.vm.outputs.zipcodeTextFieldBecomeFirstResponder
+      .observe(self.zipcodeTextFieldBecomeFirstResponder.observer)
+  }
+
+  func testZipcodeTextFieldReturn_submitsPaymentDetails() {
+    self.vm.inputs.viewDidLoad()
+    self.saveButtonIsEnabled.assertDidNotEmitValue()
+
+    self.vm.inputs.cardholderNameChanged("Native Squad")
+    self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
+    self.vm.inputs.paymentInfo(isValid: true)
+    self.vm.inputs.cardBrand(isValid: true)
+    self.vm.inputs.zipcodeChanged(zipcode: "123")
+
+    self.saveButtonIsEnabled.assertValues([true])
+
+    self.vm.inputs.zipcodeTextFieldDidEndEditing()
+
+    self.activityIndicatorShouldShow.assertValues([true])
+
+    self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
+
+    self.scheduler.advance()
+
+    self.addNewCardSuccess.assertValues([Strings.Got_it_your_changes_have_been_saved()])
+    self.activityIndicatorShouldShow.assertValues([true, false])
   }
 
   func testAddCard_Success() {
@@ -51,6 +81,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
     self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.cardBrand(isValid: true)
+    self.vm.inputs.zipcodeChanged(zipcode: "123")
     self.saveButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.saveButtonTapped()
@@ -73,6 +104,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
     self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.cardBrand(isValid: true)
+    self.vm.inputs.zipcodeChanged(zipcode: "123")
     self.saveButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.saveButtonTapped()
@@ -100,6 +132,7 @@ internal final class AddNewCardViewModelTests: TestCase {
       self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
       self.vm.inputs.paymentInfo(isValid: true)
       self.vm.inputs.cardBrand(isValid: true)
+      self.vm.inputs.zipcodeChanged(zipcode: "123")
       self.saveButtonIsEnabled.assertValues([true])
       self.vm.inputs.saveButtonTapped()
       self.activityIndicatorShouldShow.assertValues([true])
@@ -116,6 +149,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   func testBecomeFirstResponder() {
     self.cardholderNameBecomeFirstResponder.assertDidNotEmitValue()
     self.paymentDetailsBecomeFirstResponder.assertDidNotEmitValue()
+    self.zipcodeTextFieldBecomeFirstResponder.assertDidNotEmitValue()
     self.activityIndicatorShouldShow.assertDidNotEmitValue()
     self.saveButtonIsEnabled.assertDidNotEmitValue()
 
@@ -124,9 +158,11 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.cardholderNameBecomeFirstResponder
       .assertValueCount(1, "Cardholder name field is first responder when view loads.")
     self.paymentDetailsBecomeFirstResponder.assertDidNotEmitValue("Not first responder when view loads")
+    self.zipcodeTextFieldBecomeFirstResponder.assertDidNotEmitValue()
     self.vm.inputs.cardholderNameChanged("")
     self.vm.inputs.paymentInfo(isValid: false)
     self.vm.inputs.cardBrand(isValid: false)
+    self.vm.inputs.zipcodeChanged(zipcode: "")
     self.saveButtonIsEnabled.assertValues([false], "Disabled form is incomplete")
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
@@ -142,6 +178,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.paymentDetailsBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.cardBrand(isValid: true)
+    self.vm.inputs.zipcodeChanged(zipcode: "123")
     self.saveButtonIsEnabled.assertValues([false, true], "Enabled when form is valid.")
   }
 
@@ -150,13 +187,19 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.cardholderNameChanged("")
+    self.saveButtonIsEnabled.assertDidNotEmitValue()
+
     self.vm.inputs.paymentInfo(isValid: false)
     self.vm.inputs.cardBrand(isValid: false)
+    self.saveButtonIsEnabled.assertDidNotEmitValue()
+
+    self.vm.inputs.zipcodeChanged(zipcode: "")
     self.saveButtonIsEnabled.assertValues([false], "Disabled form is incomplete")
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
     self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.cardBrand(isValid: true)
+    self.vm.inputs.zipcodeChanged(zipcode: "123")
 
     self.saveButtonIsEnabled.assertValues([false, true], "Enabled when form is valid.")
 
@@ -164,6 +207,11 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.cardBrand(isValid: false)
 
     self.saveButtonIsEnabled.assertValues([false, true, false], "Disabled if card brand is invalid")
+
+    self.vm.inputs.cardBrand(isValid: true)
+    self.vm.inputs.zipcodeChanged(zipcode: "")
+
+    self.saveButtonIsEnabled.assertValues([false, true, false, true, false], "Disabled if zipcode is empty")
   }
 
   func testSetPublishableKey() {
@@ -181,9 +229,27 @@ internal final class AddNewCardViewModelTests: TestCase {
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
     self.vm.inputs.paymentInfo(isValid: true)
+    self.vm.inputs.cardBrand(isValid: true)
+    self.vm.inputs.zipcodeChanged(zipcode: "123")
 
     self.vm.inputs.saveButtonTapped()
     self.dismissKeyboard.assertDidEmitValue()
+
+    self.vm.inputs.zipcodeChanged(zipcode: "")
+
+    self.vm.inputs.saveButtonTapped()
+    self.dismissKeyboard.assertValueCount(1, "Keyboard does not dismiss if save button is disabled")
+
+    self.vm.inputs.zipcodeChanged(zipcode: "123")
+    self.vm.inputs.cardBrand(isValid: false)
+
+    self.vm.inputs.saveButtonTapped()
+    self.dismissKeyboard.assertValueCount(1, "Keyboard does not dismiss if save button is disabled")
+
+    self.vm.inputs.cardBrand(isValid: true)
+
+    self.vm.inputs.saveButtonTapped()
+    self.dismissKeyboard.assertValueCount(2, "Keyboard dismisses when save button is enabled and tapped")
   }
 
   func testPaymentDetails() {
@@ -197,6 +263,10 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.cardExpYear.assertDidNotEmitValue()
     self.cardCVC.assertDidNotEmitValue()
 
+    self.vm.inputs.paymentInfo(isValid: true)
+    self.vm.inputs.cardBrand(isValid: true)
+    self.vm.inputs.zipcodeChanged(zipcode: "12345")
+
     self.vm.inputs.saveButtonTapped()
 
     self.cardholderName.assertValues(["Native Squad"])
@@ -204,6 +274,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.cardExpMonth.assertValues([11])
     self.cardExpYear.assertValues([99])
     self.cardCVC.assertValues(["123"])
+    self.zipcode.assertValues(["12345"])
   }
 
   func testTrackViewedAddNewCard() {
