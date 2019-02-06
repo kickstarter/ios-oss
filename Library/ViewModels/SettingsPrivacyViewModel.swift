@@ -87,7 +87,7 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
       self.didCancelSocialOptOutProperty.signal,
       self.didConfirmSocialOptOutProperty.signal
     )
-      .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
+    .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
   }
 
   fileprivate let didCancelSocialOptOutProperty = MutableProperty(())
