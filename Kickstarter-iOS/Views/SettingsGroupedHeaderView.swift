@@ -15,7 +15,7 @@ private struct Padding {
  +---------------------------------------+
  
  */
-class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
+final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
   private(set) lazy var label: UILabel = {
     return UILabel()
       |> \.font .~ UIFont.preferredFont(forTextStyle: .footnote)

@@ -36,7 +36,7 @@ private struct Margin {
  +---------------------------------------+
 
  */
-class SettingsTextInputCell: UITableViewCell {
+final class SettingsTextInputCell: UITableViewCell {
   // MARK: - Accessors
 
   private lazy var stackView: UIStackView = {

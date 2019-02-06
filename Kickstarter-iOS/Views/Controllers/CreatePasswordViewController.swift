@@ -26,7 +26,7 @@ extension CreatePasswordRow {
   }
 }
 
-class CreatePasswordViewController: UITableViewController {
+final class CreatePasswordViewController: UITableViewController {
   // MARK: - Accessors
 
   private lazy var rightBarButtonItem: UIBarButtonItem = {
