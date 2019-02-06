@@ -56,21 +56,11 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       return
     }
 
-    footerView.setNeedsLayout()
-    footerView.layoutIfNeeded()
-
-    headerView.setNeedsLayout()
-    headerView.layoutIfNeeded()
-
     let footerViewHeight = footerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-    var frame = footerView.frame
-    frame.size.height = footerViewHeight
-    footerView.frame = frame
+    footerView.frame.size.height = footerViewHeight
 
     let headerViewHeight = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-    var headerFrame = headerView.frame
-    headerFrame.size.height = headerViewHeight
-    headerView.frame = headerFrame
+    headerView.frame.size.height = headerViewHeight
 
     tableView.tableFooterView = footerView
     tableView.tableHeaderView = headerView

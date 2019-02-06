@@ -20,9 +20,9 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="81"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVF-Hv-L8e">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="81"/>
                             <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="RY1-Id-ADx"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="44" id="RY1-Id-ADx"/>
                             </constraints>
                             <state key="normal" image="icon--plus"/>
                             <connections>
@@ -40,7 +40,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="ZVF-Hv-L8e" firstAttribute="leading" secondItem="QRi-RW-gGm" secondAttribute="leading" id="3VK-Uv-qKl"/>
-                        <constraint firstItem="SB4-Lk-Ajb" firstAttribute="top" secondItem="ZVF-Hv-L8e" secondAttribute="bottom" id="F0m-a7-bHq"/>
+                        <constraint firstAttribute="bottom" secondItem="ZVF-Hv-L8e" secondAttribute="bottom" id="5gZ-gP-dFR"/>
                         <constraint firstAttribute="trailing" secondItem="SB4-Lk-Ajb" secondAttribute="trailing" id="MZa-AK-unl"/>
                         <constraint firstAttribute="trailing" secondItem="ZVF-Hv-L8e" secondAttribute="trailing" id="RIp-W9-3v3"/>
                         <constraint firstAttribute="bottom" secondItem="SB4-Lk-Ajb" secondAttribute="bottom" id="e4W-io-u9A"/>
@@ -53,7 +53,6 @@
             <constraints>
                 <constraint firstItem="QRi-RW-gGm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1aq-OY-tYc"/>
                 <constraint firstItem="QRi-RW-gGm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="WNX-KH-Rvf"/>
-                <constraint firstItem="ZVF-Hv-L8e" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="YJz-xd-kqe"/>
                 <constraint firstAttribute="trailing" secondItem="QRi-RW-gGm" secondAttribute="trailing" id="aOn-3g-Jbo"/>
                 <constraint firstAttribute="bottom" secondItem="QRi-RW-gGm" secondAttribute="bottom" id="ga9-Av-Png"/>
             </constraints>
