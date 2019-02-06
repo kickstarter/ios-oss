@@ -8,6 +8,7 @@ stripe_sdk_version: &stripe_sdk_version 13.2.0
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
 store_opentok_version: &store_opentok_version echo "$OPENTOK_VERSION" > opentok_version.txt
 store_stripe_version: &store_stripe_version echo "$STRIPE_SDK_VERSION" > stripe_version.txt
+preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (12.1) [" || true
 
 base_job: &base_job
   macos:
@@ -133,6 +134,10 @@ jobs:
           command: make bootstrap
 
       - run:
+          name: Pre-load simulator
+          command: *preload_simulator
+
+      - run:
           name: Kickstarter tests
           command: PLATFORM=iOS make test
 
@@ -182,6 +187,10 @@ jobs:
           command: make bootstrap
 
       - run:
+          name: Pre-load simulator
+          command: *preload_simulator
+
+      - run:
           name: Library tests
           command: PLATFORM=iOS TARGET=Library make test
 
@@ -229,6 +238,10 @@ jobs:
           command: make bootstrap
 
       - run:
+          name: Pre-load simulator
+          command: *preload_simulator
+
+      - run:
           name: LiveStream tests
           command: SCHEME=LiveStream make test
 
@@ -274,6 +287,10 @@ jobs:
       - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - run:
+          name: Pre-load simulator
+          command: *preload_simulator
 
       - run:
           name: KsApi tests
