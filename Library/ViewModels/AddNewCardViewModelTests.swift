@@ -215,13 +215,11 @@ internal final class AddNewCardViewModelTests: TestCase {
   }
 
   func testSetPublishableKey() {
-    withEnvironment(config: .template |> Config.lens.stripePublishableKey .~ "stripePublishableKey") {
-      self.setStripePublishableKey.assertDidNotEmitValue()
+    self.setStripePublishableKey.assertDidNotEmitValue()
 
-      self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
-      self.setStripePublishableKey.assertValue("stripePublishableKey")
-    }
+    self.setStripePublishableKey.assertDidEmitValue()
   }
 
   func testDismissKeyboard() {
