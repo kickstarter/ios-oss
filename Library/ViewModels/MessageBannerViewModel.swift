@@ -14,6 +14,7 @@ public protocol MessageBannerViewModelInputs {
 public protocol MessageBannerViewModelOutputs {
   var bannerBackgroundColor: Signal<UIColor, NoError> { get }
   var bannerMessage: Signal<String, NoError> { get }
+  var bannerMessageAccessibilityLabel: Signal<String, NoError> { get }
   var iconImageName: Signal<String, NoError> { get }
   var iconIsHidden: Signal<Bool, NoError> { get }
   var iconTintColor: Signal<UIColor, NoError> { get }
@@ -53,13 +54,32 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
     self.messageTextAlignment = bannerType.map { $0.textAlignment }
 
     self.bannerMessage = self.messageBannerConfiguration.signal.skipNil().map(second)
+    self.bannerMessageAccessibilityLabel = self.bannerMessage
+      .map { "\($0) \(Strings.Message_banner_accessibility_Double_tap_to_dismiss())" }
 
     let bannerViewShouldHide = self.showBannerViewProperty.signal.negate()
 
-    let postAnimationBannerViewShouldHide = self.bannerViewIsHiddenProperty.signal
-      .filter { isFalse($0) }
+    let dismissBanner = self.bannerViewIsHiddenProperty.signal
+      .filter(isFalse)
+
+    // Dismisses the banner after 4 seconds when VoiceOver is OFF
+    // This should give the user enough time to read the banner
+    let dismissBannerVoiceOverOff = dismissBanner
+      .filter { _ in !AppEnvironment.current.isVoiceOverRunning() }
       .debounce(4, on: QueueScheduler.main)
       .negate()
+
+    // Dismisses the banner after 10 seconds when VoiceOver is ON
+    // This should give the VoiceOver reader enough time to read the banner
+    let dismissBannerVoiceOverOn = dismissBanner
+      .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
+      .debounce(10, on: QueueScheduler.main)
+      .negate()
+
+    let postAnimationBannerViewShouldHide = Signal.merge(
+      dismissBannerVoiceOverOff,
+      dismissBannerVoiceOverOn
+    )
 
     let bannerShouldHide = Signal.merge(bannerViewShouldHide, postAnimationBannerViewShouldHide)
 
@@ -83,6 +103,7 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
 
   public let bannerBackgroundColor: Signal<UIColor, NoError>
   public let bannerMessage: Signal<String, NoError>
+  public let bannerMessageAccessibilityLabel: Signal<String, NoError>
   public let iconImageName: Signal<String, NoError>
   public let iconIsHidden: Signal<Bool, NoError>
   public let iconTintColor: Signal<UIColor, NoError>

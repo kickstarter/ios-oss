@@ -14,7 +14,6 @@ public protocol SettingsNotificationCellViewModelOutputs {
   var emailNotificationsEnabled: Signal<Bool, NoError> { get }
   var emailNotificationButtonIsHidden: Signal<Bool, NoError> { get }
   var pushNotificationButtonIsHidden: Signal<Bool, NoError> { get }
-  var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
   var projectCountText: Signal<String, NoError> { get }
   var pushNotificationsEnabled: Signal<Bool, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
@@ -132,8 +131,6 @@ SettingsNotificationCellViewModelType {
       self.pushNotificationButtonIsHidden
       ).map { !$0.0 || !$0.1 }
 
-    self.manageProjectNotificationsButtonAccessibilityHint = .empty
-
     self.projectCountText = initialUser
       .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
 
@@ -165,7 +162,6 @@ SettingsNotificationCellViewModelType {
   public let emailNotificationsEnabled: Signal<Bool, NoError>
   public let emailNotificationButtonIsHidden: Signal<Bool, NoError>
   public let pushNotificationButtonIsHidden: Signal<Bool, NoError>
-  public let manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
   public let projectCountText: Signal<String, NoError>
   public let pushNotificationsEnabled: Signal<Bool, NoError>
   public let unableToSaveError: Signal<String, NoError>

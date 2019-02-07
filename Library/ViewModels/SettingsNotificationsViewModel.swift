@@ -96,7 +96,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.pickerViewIsHidden = Signal.merge(
         emailFrequencyCellSelected.signal.mapConst(false),
         emailFrequencyProperty.signal.mapConst(true)
-      ).skipRepeats()
+    ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal
       .map { $0 |> UserAttribute.notification(.creatorDigest).keyPath.view }
