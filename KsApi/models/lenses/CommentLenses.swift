@@ -2,7 +2,7 @@ import Prelude
 
 extension Comment {
   public enum lens {
-    public static let author = Lens<Comment, User>(
+    public static let author = Lens<Comment, Author>(
       view: { $0.author },
       set: { Comment(author: $0, body: $1.body, createdAt: $1.createdAt, deletedAt: $1.deletedAt, id: $1.id) }
     )

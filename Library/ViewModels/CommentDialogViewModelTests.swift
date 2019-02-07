@@ -39,11 +39,14 @@ internal final class CommentDialogViewModelTests: TestCase {
   }
 
   func testBodyTextViewText_WithRecipient() {
-    let user = User.template
-    self.vm.inputs.configureWith(project: .template, update: nil, recipient: user, context: .projectComments)
+    let author = Author.template
+    self.vm.inputs.configureWith(project: .template,
+                                 update: nil,
+                                 recipient: author,
+                                 context: .projectComments)
     self.vm.inputs.viewWillAppear()
 
-    self.bodyTextViewText.assertValues(["@\(user.name): "])
+    self.bodyTextViewText.assertValues(["@\(author.name): "])
   }
 
   internal func testPostingFlow_Project() {

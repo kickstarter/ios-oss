@@ -3,11 +3,31 @@ import Curry
 import Runes
 
 public struct Comment {
-  public let author: User
+  public let author: Author
   public let body: String
   public let createdAt: TimeInterval
   public let deletedAt: TimeInterval?
   public let id: Int
+}
+
+extension Comment: Swift.Decodable {
+
+  enum CodingKeys: String, CodingKey {
+    case author
+    case body
+    case createdAt = "created_at"
+    case deletedAt = "deleted_at"
+    case id
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.author = try values.decode(Author.self, forKey: .author)
+    self.body = try values.decode(String.self, forKey: .body)
+    self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
+    self.deletedAt = try values.decode(TimeInterval?.self, forKey: .deletedAt)
+    self.id = try values.decode(Int.self, forKey: .id)
+  }
 }
 
 extension Comment: Argo.Decodable {
