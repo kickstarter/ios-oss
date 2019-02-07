@@ -149,6 +149,8 @@
 		778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */; };
 		778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */; };
 		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
+		7790DF502200D395005DBB11 /* SettingsFormFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */; };
+		7790DF892200D3BD005DBB11 /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
 		7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */; };
 		77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */; };
 		7798B5612174F3CD008BC50D /* UserQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5602174F3CD008BC50D /* UserQueries.swift */; };
@@ -1911,6 +1913,8 @@
 		778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSourceTests.swift; sourceTree = "<group>"; };
 		778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewControllerTests.swift; sourceTree = "<group>"; };
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
+		7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFormFieldView.swift; sourceTree = "<group>"; };
+		7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsFormFieldView.xib; sourceTree = "<group>"; };
 		7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
 		77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		7798B5602174F3CD008BC50D /* UserQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQueries.swift; sourceTree = "<group>"; };
@@ -3175,6 +3179,7 @@
 				59673C8A1D50EC920035AFD9 /* Video.storyboard */,
 				9D89B7E71D6BA71F0021F6FF /* WebModal.storyboard */,
 				777C67F3220A22FD009F8D42 /* SettingsTableViewHeader.xib */,
+				7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -3271,6 +3276,7 @@
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
 				777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */,
+				7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5450,6 +5456,7 @@
 				774A76EE20D863EF0012A71F /* BetaTools.storyboard in Resources */,
 				D0CDA8A11E7434E400AA3450 /* LiveStreamNavTitleView.xib in Resources */,
 				9D89B7E81D6BA71F0021F6FF /* WebModal.storyboard in Resources */,
+				7790DF892200D3BD005DBB11 /* SettingsFormFieldView.xib in Resources */,
 				7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */,
 				777C67F4220A22FD009F8D42 /* SettingsTableViewHeader.xib in Resources */,
 				D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */,
@@ -6053,6 +6060,7 @@
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift in Sources */,
 				D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */,
+				7790DF502200D395005DBB11 /* SettingsFormFieldView.swift in Sources */,
 				A71199F91DD8E42A0072D478 /* ProjectPamphletMinimalCell.swift in Sources */,
 				776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */,
 				D07227001E66FA3200C2E537 /* LiveStreamContainerPagesDataSource.swift in Sources */,
@@ -6785,7 +6793,6 @@
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 arm64e";
 			};
 			name = "Hockey Beta";
 		};
@@ -7389,7 +7396,6 @@
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
-				VALID_ARCHS = "arm64 arm64e";
 			};
 			name = Debug;
 		};
@@ -7460,7 +7466,6 @@
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 arm64e";
 			};
 			name = Release;
 		};
@@ -7692,7 +7697,6 @@
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 arm64e";
 			};
 			name = "Hockey Alpha";
 		};

@@ -15,6 +15,7 @@ public enum Nib: String {
   case SettingsAccountWarningCell
   case SettingsCurrencyCell
   case SettingsCurrencyPickerCell
+  case SettingsFormFieldView
   case SettingsHeaderView
   case SettingsNewslettersCell
   case SettingsNewslettersTopCell
@@ -53,5 +54,10 @@ extension NibLoading {
     }
 
     return view
+  }
+
+  func view(fromNib nib: Nib) -> UIView? {
+    return UINib(nibName: nib.rawValue, bundle: .framework).instantiate(withOwner: self, options: nil).first
+      as? UIView
   }
 }

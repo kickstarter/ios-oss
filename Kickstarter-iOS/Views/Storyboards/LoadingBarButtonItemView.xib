@@ -20,7 +20,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="WeI-gS-cT0">
-                            <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
+                            <rect key="frame" x="355" y="323.5" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="Gww-rc-lzH"/>
                                 <constraint firstAttribute="width" constant="20" id="jpA-AB-7sp"/>
@@ -29,7 +29,7 @@
                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" enabled="NO" contentHorizontalAlignment="right" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8e-UA-Yn2">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="9Xd-hc-4vX"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="dqm-s1-l0D"/>
                             </constraints>
                             <state key="normal" title="Button"/>
                         </button>
@@ -42,7 +42,7 @@
                         <constraint firstItem="z8e-UA-Yn2" firstAttribute="width" secondItem="tcZ-2l-zCg" secondAttribute="width" id="C3S-7F-cfx"/>
                         <constraint firstAttribute="bottom" secondItem="z8e-UA-Yn2" secondAttribute="bottom" id="KEN-5B-WpZ"/>
                         <constraint firstAttribute="trailing" secondItem="z8e-UA-Yn2" secondAttribute="trailing" id="NC3-JW-lB9"/>
-                        <constraint firstItem="WeI-gS-cT0" firstAttribute="centerX" secondItem="z8e-UA-Yn2" secondAttribute="centerX" id="OXr-We-hnq"/>
+                        <constraint firstAttribute="trailing" secondItem="WeI-gS-cT0" secondAttribute="trailing" id="qHt-ko-57f"/>
                     </constraints>
                 </view>
             </subviews>
