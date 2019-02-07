@@ -34,6 +34,7 @@ final class SelectCurrencyTableViewHeader: UITableViewHeaderFooterView {
     _ = self.headerLabel
       |> settingsDescriptionLabelStyle
       |> \.textColor .~ .ksr_text_dark_grey_500
+      |> \.backgroundColor .~ .ksr_grey_200
   }
 
   // MARK: Accessors
