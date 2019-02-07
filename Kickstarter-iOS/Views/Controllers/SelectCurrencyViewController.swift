@@ -24,7 +24,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
 
     self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
 
-    self.tableView.setConstrained(headerView: self.headerView)
+    self.tableView.setHeaderViewConstrainedToWidth(self.headerView)
     self.view.addSubview(self.tableView)
     self.tableView.constrainEdges(to: self.view)
 

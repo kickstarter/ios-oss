@@ -47,12 +47,10 @@ final class SelectCurrencyTableViewHeader: UITableViewHeaderFooterView {
   // MARK: Subviews
 
   private lazy var headerStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
+    return UIStackView(arrangedSubviews: [
       self.headerImageView,
       self.headerLabel
     ])
-
-    return stackView
   }()
 
   private lazy var headerImageView: UIImageView = {
