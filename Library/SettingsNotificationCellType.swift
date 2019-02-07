@@ -81,7 +81,7 @@ public enum SettingsNotificationCellType {
     }
   }
 
-  public var showShowPushNotificationButton: Bool {
+  public var shouldShowPushNotificationButton: Bool {
     switch self {
     case .projectNotifications, .emailFrequency, .creatorTips:
       return false

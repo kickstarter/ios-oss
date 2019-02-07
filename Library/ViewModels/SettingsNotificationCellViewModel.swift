@@ -124,11 +124,13 @@ SettingsNotificationCellViewModelType {
       .negate()
 
     self.pushNotificationButtonIsHidden = cellType
-      .map { $0.showShowPushNotificationButton }
+      .map { $0.shouldShowPushNotificationButton }
       .negate()
 
-    self.enableButtonAnimation = self.emailNotificationButtonIsHidden
-      .negate() // Only add animation if email notification button is shown
+    self.enableButtonAnimation = Signal.combineLatest(
+      self.emailNotificationButtonIsHidden,
+      self.pushNotificationButtonIsHidden
+      ).map { !$0.0 || !$0.1 }
 
     self.manageProjectNotificationsButtonAccessibilityHint = .empty
 
