@@ -85,15 +85,39 @@ internal final class MessageBannerViewModelTests: TestCase {
     self.messageBannerViewIsHidden.assertValues([false], "Message banner should show")
   }
 
-  func testHideBannerAutomatically() {
-    withEnvironment {
-      self.vm.inputs.update(with: (.success, "Success"))
+  func testHideBannerAutomatically_VoiceOverOff() {
+    let isVoiceOverRunning = { false }
 
+    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+      self.vm.inputs.update(with: (.success, "Success"))
       self.vm.inputs.bannerViewWillShow(true)
 
+      scheduler.schedule(after: .seconds(3), action: {
+        self.messageBannerViewIsHidden.assertValues([false], "Message banner should still be showing")
+      })
+
       scheduler.schedule(after: .seconds(5), action: {
-        self.messageBannerViewIsHidden.assertValues([false, true],
-                                                            "Message banner should show then hide")
+        self.messageBannerViewIsHidden.assertValues([false, true], "Message banner should show then hide")
+      })
+    }
+  }
+
+  func testHideBannerAutomatically_VoiceOverOn() {
+    let isVoiceOverRunning = { true }
+
+    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+      self.vm.inputs.update(with: (.success, "Success"))
+      self.vm.inputs.bannerViewWillShow(true)
+
+      scheduler.schedule(after: .seconds(9), action: {
+        self.messageBannerViewIsHidden.assertValues([false, true], "Message banner should still be showing")
+      })
+
+      scheduler.schedule(after: .seconds(11), action: {
+        self.messageBannerViewIsHidden.assertValues(
+          [false, true, true],
+          "Message banner should show then hide"
+        )
       })
     }
   }

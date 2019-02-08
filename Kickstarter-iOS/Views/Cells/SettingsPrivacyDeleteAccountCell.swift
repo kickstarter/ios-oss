@@ -20,6 +20,12 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
+    _ = self
+      |> \.accessibilityElements .~ [self.deleteAccountButton]
+
+    _ = self.deleteAccountButton
+      |> \.accessibilityLabel %~ { _ in Strings.Delete_my_Kickstarter_Account() }
+
     self.deleteAccountButton.addTarget(self, action: #selector(deleteAccountTapped), for: .touchUpInside)
   }
 
