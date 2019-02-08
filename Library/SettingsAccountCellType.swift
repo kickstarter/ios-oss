@@ -31,7 +31,7 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, Equatable {
   case changePassword
   case privacy
   case paymentMethods
-  case currency
+  case currency(Currency?)
 
   public var accessibilityTraits: UIAccessibilityTraits {
     return .button
