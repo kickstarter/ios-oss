@@ -122,7 +122,7 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     }
   }
 
-  func testShowHidePickerView() {
+  func testShowHidePickerView_SelectingRow() {
     self.pickerViewIsHidden.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
@@ -132,5 +132,21 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     self.vm.inputs.didSelectRow(cellType: .emailFrequency)
 
     self.pickerViewIsHidden.assertValues([false], "Picker view should not be hidden")
+  }
+
+  func testShowHidePickerView_TapGesture() {
+    self.pickerViewIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.pickerViewIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.didSelectRow(cellType: .emailFrequency)
+
+    self.pickerViewIsHidden.assertValues([false], "Picker view is shown")
+
+    self.vm.inputs.dismissPickerTap()
+
+    self.pickerViewIsHidden.assertValues([false, true], "Picker view should be hidden")
   }
 }

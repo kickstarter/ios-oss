@@ -56,12 +56,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
         self?.animatePickerView(isHidden: isHidden)
     }
 
-    self.viewModel.outputs.dismissPicker
-      .observeForUI()
-      .observeValues { [weak self] (isHidden) in
-        self?.animatePickerView(isHidden: isHidden)
-    }
-
     self.viewModel.outputs.pickerViewSelectedRow
       .observeForUI()
       .observeValues { [weak self] (emailFrequency) in
