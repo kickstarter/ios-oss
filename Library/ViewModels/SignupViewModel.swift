@@ -7,25 +7,27 @@ import Result
 public final class SignupViewModel {
   public struct Inputs {
     /// Call when the user enters a new email address.
-    public let emailTextChanged = MutableProperty<String?>(nil)
+    public let (emailTextChangedSignal, emailTextChangedObserver) = Signal<String?, NoError>.pipe()
     /// Call when the user returns from email text field.
-    public let emailTextFieldDidReturn = MutableProperty(())
+    public let (emailTextFieldDidReturnSignal, emailTextFieldDidReturnObserver) = Signal<(), NoError>.pipe()
     /// Call when the environment has been logged into
-    public let environmentLoggedIn = MutableProperty(())
+    public let (environmentLoggedInSignal, environmentLoggedInObserver) = Signal<(), NoError>.pipe()
     /// Call when the user enters a new name.
-    public let nameTextChanged = MutableProperty<String?>(nil)
+    public let (nameTextChangedSignal, nameTextChangedObserver) = Signal<String?, NoError>.pipe()
     /// Call when the user returns from the name text field.
-    public let nameTextFieldDidReturn = MutableProperty(())
+    public let (nameTextFieldDidReturnSignal, nameTextFieldDidReturnObserver) = Signal<(), NoError>.pipe()
     /// Call when the user enters a new password.
-    public let passwordTextChanged = MutableProperty<String?>(nil)
+    public let (passwordTextChangedSignal, passwordTextChangedObserver) = Signal<String?, NoError>.pipe()
     /// Call when the user returns from the password text field.
-    public let passwordTextFieldDidReturn = MutableProperty(())
+    public let (passwordTextFieldDidReturnSignal, passwordTextFieldDidReturnObserver) = Signal<(), NoError>.pipe()
     /// Call when the user taps signup.
-    public let signupButtonPressed = MutableProperty(())
+    public let (signupButtonPressedSignal, signupButtonPressedObserver) = Signal<(), NoError>.pipe()
     /// Call when the view did load.
-    public let viewDidLoad = MutableProperty(())
+    public let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), NoError>.pipe()
     /// Call when the user toggles weekly newsletter.
-    public let weeklyNewsletterChanged = MutableProperty(false)
+    public let (weeklyNewsletterChangedSignal, weeklyNewsletterChangedObserver) = Signal<Bool, NoError>.pipe()
+
+    init() {}
   }
 
   public typealias Outputs = (
@@ -52,101 +54,90 @@ public final class SignupViewModel {
   public init() {}
 
   public func outputs(from inputs: Inputs) -> Outputs {
-      let initialText = inputs.viewDidLoad.signal.mapConst("")
+    let name = inputs.nameTextChangedSignal.skipNil()
+    let email = inputs.emailTextChangedSignal.skipNil()
+    let password = inputs.passwordTextChangedSignal.skipNil()
 
-      let name = Signal.merge(
-        inputs.nameTextChanged.signal.skipNil(),
-        initialText
-      )
+    let newsletter = Signal.merge(
+      inputs.viewDidLoadSignal.mapConst(false),
+      inputs.weeklyNewsletterChangedSignal
+    )
 
-      let email = Signal.merge(
-        inputs.emailTextChanged.signal.skipNil(),
-        initialText
-      )
-      let password = Signal.merge(
-        inputs.passwordTextChanged.signal.skipNil(),
-        initialText
-      )
+    let nameIsPresent = name.map { !$0.isEmpty }
+    let emailIsPresent = email.map { !$0.isEmpty }
+    let passwordIsPresent = password.map { !$0.isEmpty }
 
-      let newsletter = Signal.merge(
-        inputs.viewDidLoad.signal.mapConst(false),
-        inputs.weeklyNewsletterChanged.signal
-      )
+    let nameTextFieldBecomeFirstResponder = inputs.viewDidLoadSignal
+    let emailTextFieldBecomeFirstResponder = inputs.nameTextFieldDidReturnSignal
+    let passwordTextFieldBecomeFirstResponder = inputs.emailTextFieldDidReturnSignal
 
-      let nameIsPresent = name.map { !$0.isEmpty }
-      let emailIsPresent = email.map { !$0.isEmpty }
-      let passwordIsPresent = password.map { !$0.isEmpty }
+    let formIsValid = Signal.combineLatest(nameIsPresent, emailIsPresent, passwordIsPresent)
+      .map { $0 && $1 && $2 }
+      .skipRepeats()
 
-      let nameTextFieldBecomeFirstResponder = inputs.viewDidLoad.signal
-      let emailTextFieldBecomeFirstResponder = inputs.nameTextFieldDidReturn.signal
-      let passwordTextFieldBecomeFirstResponder = inputs.emailTextFieldDidReturn.signal
+    let isSignupButtonEnabled = Signal.merge(formIsValid, inputs.viewDidLoadSignal.mapConst(false))
 
-      let isSignupButtonEnabled = Signal.combineLatest(nameIsPresent, emailIsPresent, passwordIsPresent)
-        .map { $0 && $1 && $2 }
-        .skipRepeats()
+    let setWeeklyNewsletterState = newsletter.take(first: 1)
 
-      let setWeeklyNewsletterState = newsletter.take(first: 1)
+    let attemptSignup = Signal.merge(
+      inputs.passwordTextFieldDidReturnSignal,
+      inputs.signupButtonPressedSignal
+    )
 
-      let attemptSignup = Signal.merge(
-        inputs.passwordTextFieldDidReturn.signal,
-        inputs.signupButtonPressed.signal
-      )
+    let signupEvent = Signal.combineLatest(name, email, password, newsletter)
+      .takeWhen(attemptSignup)
+      .switchMap { name, email, password, newsletter in
+        AppEnvironment.current.apiService.signup(
+          name: name,
+          email: email,
+          password: password,
+          passwordConfirmation: password,
+          sendNewsletters: newsletter)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
 
-      let signupEvent = Signal.combineLatest(name, email, password, newsletter)
-        .takeWhen(attemptSignup)
-        .switchMap { name, email, password, newsletter in
-          AppEnvironment.current.apiService.signup(
-            name: name,
-            email: email,
-            password: password,
-            passwordConfirmation: password,
-            sendNewsletters: newsletter)
-            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-            .materialize()
-      }
+    let signupError = signupEvent.errors()
+      .map {
+        $0.errorMessages.first ?? Strings.signup_error_something_wrong()
+    }
 
-      let signupError = signupEvent.errors()
-        .map {
-          $0.errorMessages.first ?? Strings.signup_error_something_wrong()
-      }
+    let showError = signupError
+    let logIntoEnvironment = signupEvent.values()
 
-      let showError = signupError
+    let postNotification = inputs.environmentLoggedInSignal
+      .mapConst(Notification(name: .ksr_sessionStarted))
 
-      let logIntoEnvironment = signupEvent.values()
+    inputs.environmentLoggedInSignal
+      .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
-      let postNotification = inputs.environmentLoggedIn.signal
-        .mapConst(Notification(name: .ksr_sessionStarted))
+    showError
+      .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.email) }
 
-      inputs.environmentLoggedIn.signal
-        .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
+    inputs.weeklyNewsletterChangedSignal
+      .observeValues {
+        AppEnvironment.current.koala.trackChangeNewsletter(
+          newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .signup
+        )
+    }
 
-      showError
-        .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.email) }
+    signupEvent.values()
+      .observeValues {
+        _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email)
+    }
 
-      inputs.weeklyNewsletterChanged.signal
-        .observeValues {
-          AppEnvironment.current.koala.trackChangeNewsletter(
-            newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .signup
-          )
-      }
+    inputs.viewDidLoadSignal
+      .observeValues { AppEnvironment.current.koala.trackSignupView() }
 
-      signupEvent.values()
-        .observeValues {
-          _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email)
-      }
-
-      inputs.viewDidLoad.signal
-        .observeValues { AppEnvironment.current.koala.trackSignupView() }
-
-      return (
-        emailTextFieldBecomeFirstResponder: emailTextFieldBecomeFirstResponder,
-        isSignupButtonEnabled: isSignupButtonEnabled,
-        logIntoEnvironment: logIntoEnvironment,
-        passwordTextFieldBecomeFirstResponder: passwordTextFieldBecomeFirstResponder,
-        postNotification: postNotification,
-        nameTextFieldBecomeFirstResponder: nameTextFieldBecomeFirstResponder,
-        setWeeklyNewsletterState: setWeeklyNewsletterState,
-        showError: showError
-      )
+    return (
+      emailTextFieldBecomeFirstResponder: emailTextFieldBecomeFirstResponder,
+      isSignupButtonEnabled: isSignupButtonEnabled,
+      logIntoEnvironment: logIntoEnvironment,
+      passwordTextFieldBecomeFirstResponder: passwordTextFieldBecomeFirstResponder,
+      postNotification: postNotification,
+      nameTextFieldBecomeFirstResponder: nameTextFieldBecomeFirstResponder,
+      setWeeklyNewsletterState: setWeeklyNewsletterState,
+      showError: showError
+    )
   }
 }

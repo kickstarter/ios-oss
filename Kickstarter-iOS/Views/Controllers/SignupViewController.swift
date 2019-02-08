@@ -53,12 +53,11 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
                                      action: #selector(passwordTextFieldChanged(_:)),
                                      for: [.editingChanged])
 
-    self.disclaimerButton.addTarget(self, action: #selector(disclaimerButtonPressed), for: .touchUpInside)
     let newsletterLabelTapGesture = UITapGestureRecognizer(target: self,
                                                            action: #selector(newsletterLabelTapped))
     self.newsletterLabel.addGestureRecognizer(newsletterLabelTapGesture)
 
-    self.viewModel.inputs.viewDidLoad.value = ()
+    self.viewModel.inputs.viewDidLoadObserver.send(value: ())
   }
 
   internal override func bindStyles() {
@@ -116,7 +115,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     logIntoEnvironment
       .observeValues { [weak self] in
         AppEnvironment.login($0)
-        self?.viewModel.inputs.environmentLoggedIn.value = ()
+        self?.viewModel.inputs.environmentLoggedInObserver.send(value: ())
       }
 
     postNotification
@@ -166,38 +165,38 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   // MARK: - UITextFieldDelegate Functions
 
   @objc internal func emailTextFieldChanged(_ textField: UITextField) {
-    self.viewModel.inputs.emailTextChanged.value = textField.text
+    self.viewModel.inputs.emailTextChangedObserver.send(value: textField.text)
   }
 
   @objc internal func emailTextFieldReturn(_ textField: UITextField) {
-    self.viewModel.inputs.emailTextFieldDidReturn.value = ()
+    self.viewModel.inputs.emailTextFieldDidReturnObserver.send(value: ())
   }
 
   @objc internal func nameTextFieldChanged(_ textField: UITextField) {
-    self.viewModel.inputs.nameTextChanged.value = textField.text
+    self.viewModel.inputs.nameTextChangedObserver.send(value: textField.text)
   }
 
   @objc internal func nameTextFieldReturn(_ textField: UITextField) {
-    self.viewModel.inputs.nameTextFieldDidReturn.value = ()
+    self.viewModel.inputs.nameTextFieldDidReturnObserver.send(value: ())
   }
 
   @objc internal func passwordTextFieldChanged(_ textField: UITextField) {
-     self.viewModel.inputs.passwordTextChanged.value = textField.text
+    self.viewModel.inputs.passwordTextChangedObserver.send(value: textField.text)
   }
 
   @objc internal func passwordTextFieldReturn(_ textField: UITextField) {
-    self.viewModel.inputs.passwordTextFieldDidReturn.value = ()
+    self.viewModel.inputs.passwordTextFieldDidReturnObserver.send(value: ())
   }
 
   @IBAction internal func weeklyNewsletterChanged(_ newsletterSwitch: UISwitch) {
-    self.viewModel.inputs.weeklyNewsletterChanged.value = newsletterSwitch.isOn
+    self.viewModel.inputs.weeklyNewsletterChangedObserver.send(value: newsletterSwitch.isOn)
   }
 
   @IBAction func signupButtonPressed(_ sender: Any) {
-    self.viewModel.inputs.signupButtonPressed.value = ()
+    self.viewModel.inputs.signupButtonPressedObserver.send(value: ())
   }
 
-  @objc fileprivate func disclaimerButtonPressed() {
+  @IBAction fileprivate func disclaimerButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 

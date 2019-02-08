@@ -48,7 +48,7 @@ internal final class SignupViewModelTests: TestCase {
     self.emailTextFieldBecomeFirstResponder.assertDidNotEmitValue()
     self.passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue()
 
-    self.vm.inputs.viewDidLoad.value = ()
+    self.vm.inputs.viewDidLoadObserver.send(value: ())
 
     XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
     self.setWeeklyNewsletterState.assertValues([false], "Unselected when view loads.")
@@ -58,26 +58,26 @@ internal final class SignupViewModelTests: TestCase {
     self.emailTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder when view loads.")
     self.passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder when view loads.")
 
-    self.vm.inputs.nameTextChanged.value = "Native Squad"
-    self.vm.inputs.nameTextFieldDidReturn.value = ()
+    self.vm.inputs.nameTextChangedObserver.send(value: "Native Squad")
+    self.vm.inputs.nameTextFieldDidReturnObserver.send(value: ())
     self.isSignupButtonEnabled.assertValues([false], "Disable while form is incomplete.")
     self.nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.emailTextFieldBecomeFirstResponder.assertValueCount(1, "First responder after editing name.")
     self.passwordTextFieldBecomeFirstResponder
       .assertDidNotEmitValue("Not first responder after editing name.")
 
-    self.vm.inputs.emailTextChanged.value = "therealnativesquad@gmail.com"
-    self.vm.inputs.emailTextFieldDidReturn.value = ()
+    self.vm.inputs.emailTextChangedObserver.send(value: "therealnativesquad@gmail.com")
+    self.vm.inputs.emailTextFieldDidReturnObserver.send(value: ())
     self.isSignupButtonEnabled.assertValues([false], "Disabled while form is incomplete.")
     self.nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit again.")
     self.passwordTextFieldBecomeFirstResponder.assertValueCount(1, "First responder after editing email.")
 
-    self.vm.inputs.passwordTextChanged.value = "0773rw473rm3l0n"
+    self.vm.inputs.passwordTextChangedObserver.send(value: "0773rw473rm3l0n")
     self.isSignupButtonEnabled.assertValues([false, true], "Enabled when form is valid.")
 
-    self.vm.inputs.passwordTextFieldDidReturn.value = ()
-    self.vm.inputs.signupButtonPressed.value = ()
+    self.vm.inputs.passwordTextFieldDidReturnObserver.send(value: ())
+    self.vm.inputs.signupButtonPressedObserver.send(value: ())
     XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
     self.logIntoEnvironment.assertDidNotEmitValue("Does not immediately emit after signup button is pressed.")
 
@@ -87,7 +87,7 @@ internal final class SignupViewModelTests: TestCase {
     self.logIntoEnvironment.assertValueCount(1, "Login after scheduler advances.")
     self.postNotification.assertDidNotEmitValue("Does not emit until environment logged in.")
 
-    self.vm.inputs.environmentLoggedIn.value = ()
+    self.vm.inputs.environmentLoggedInObserver.send(value: ())
 
     self.scheduler.advance()
     XCTAssertEqual(["User Signup", "Viewed Signup", "New User", "Signed Up", "Login", "Logged In"],
@@ -97,22 +97,22 @@ internal final class SignupViewModelTests: TestCase {
   }
 
   func testBecomeFirstResponder() {
-    self.vm.inputs.viewDidLoad.value = ()
+    self.vm.inputs.viewDidLoadObserver.send(value: ())
     self.nameTextFieldBecomeFirstResponder.assertValueCount(1, "Name starts as first responder.")
     self.emailTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder yet.")
     self.passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder yet.")
 
-    self.vm.inputs.nameTextFieldDidReturn.value = ()
+    self.vm.inputs.nameTextFieldDidReturnObserver.send(value: ())
     self.nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
     self.emailTextFieldBecomeFirstResponder.assertValueCount(1, "Email becomes first responder.")
     self.passwordTextFieldBecomeFirstResponder.assertDidNotEmitValue("Not first responder yet.")
 
-    self.vm.inputs.emailTextFieldDidReturn.value = ()
+    self.vm.inputs.emailTextFieldDidReturnObserver.send(value: ())
     self.nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
     self.emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
     self.passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Password becomes first responder.")
 
-    self.vm.inputs.passwordTextFieldDidReturn.value = ()
+    self.vm.inputs.passwordTextFieldDidReturnObserver.send(value: ())
     self.nameTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
     self.emailTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
     self.passwordTextFieldBecomeFirstResponder.assertValueCount(1, "Does not emit another value.")
@@ -122,7 +122,7 @@ internal final class SignupViewModelTests: TestCase {
     self.setWeeklyNewsletterState.assertDidNotEmitValue("Should not emit until view loads")
 
     self.withEnvironment(config: Config.deConfig) {
-      self.vm.inputs.viewDidLoad.value = ()
+      self.vm.inputs.viewDidLoadObserver.send(value: ())
       self.setWeeklyNewsletterState.assertValues([false], "False by default for non-US users.")
     }
   }
@@ -137,13 +137,13 @@ internal final class SignupViewModelTests: TestCase {
     )
 
     self.withEnvironment(apiService: MockService(signupError: errorEnvelope)) {
-      self.vm.inputs.viewDidLoad.value = ()
+      self.vm.inputs.viewDidLoadObserver.send(value: ())
 
       XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
-      self.vm.inputs.emailTextChanged.value = "nativesquad@kickstarter.com"
-      self.vm.inputs.nameTextChanged.value = "Native Squad"
-      self.vm.inputs.passwordTextChanged.value = "!"
-      self.vm.inputs.signupButtonPressed.value = ()
+      self.vm.inputs.emailTextChangedObserver.send(value: "nativesquad@kickstarter.com")
+      self.vm.inputs.nameTextChangedObserver.send(value: "Native Squad")
+      self.vm.inputs.passwordTextChangedObserver.send(value: "!")
+      self.vm.inputs.signupButtonPressedObserver.send(value: ())
 
       self.showError.assertDidNotEmitValue("Should not emit until scheduler advances.")
 
@@ -153,7 +153,7 @@ internal final class SignupViewModelTests: TestCase {
       XCTAssertEqual(["User Signup", "Viewed Signup", "Errored User Signup", "Errored Signup"],
                      self.trackingClient.events)
 
-      self.vm.inputs.passwordTextFieldDidReturn.value = ()
+      self.vm.inputs.passwordTextFieldDidReturnObserver.send(value: ())
       self.showError.assertValueCount(1)
 
       scheduler.advance()
@@ -165,16 +165,16 @@ internal final class SignupViewModelTests: TestCase {
   }
 
   func testWeeklyNewsletterChanged() {
-    self.vm.inputs.viewDidLoad.value = ()
+    self.vm.inputs.viewDidLoadObserver.send(value: ())
     XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
 
-    self.vm.inputs.weeklyNewsletterChanged.value = true
+    self.vm.inputs.weeklyNewsletterChangedObserver.send(value: true)
     XCTAssertEqual(["User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle"],
                    self.trackingClient.events)
     XCTAssertEqual([true],
                    self.trackingClient.properties.compactMap { $0["send_newsletters"] as? Bool })
 
-    self.vm.inputs.weeklyNewsletterChanged.value = false
+    self.vm.inputs.weeklyNewsletterChangedObserver.send(value: false)
     XCTAssertEqual(
       ["User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle",
        "Unsubscribed From Newsletter", "Signup Newsletter Toggle"],

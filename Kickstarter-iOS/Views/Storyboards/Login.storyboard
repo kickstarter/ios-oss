@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -323,7 +323,7 @@
                                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <action selector="signupButtonPressed" destination="NFm-bM-Ukr" eventType="touchUpInside" id="uSN-Yj-HLh"/>
+                                                                    <action selector="signupButtonPressed:" destination="NFm-bM-Ukr" eventType="touchUpInside" id="Dm3-nW-5oq"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -334,6 +334,9 @@
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="a7j-yx-6DV"/>
                                                         </constraints>
                                                         <state key="normal" title="Button"/>
+                                                        <connections>
+                                                            <action selector="disclaimerButtonPressed" destination="NFm-bM-Ukr" eventType="touchUpInside" id="RZr-Hw-tw7"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
