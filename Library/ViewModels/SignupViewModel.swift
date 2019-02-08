@@ -19,7 +19,8 @@ public final class SignupViewModel {
     /// Call when the user enters a new password.
     public let (passwordTextChangedSignal, passwordTextChangedObserver) = Signal<String?, NoError>.pipe()
     /// Call when the user returns from the password text field.
-    public let (passwordTextFieldDidReturnSignal, passwordTextFieldDidReturnObserver) = Signal<(), NoError>.pipe()
+    public let (passwordTextFieldDidReturnSignal, passwordTextFieldDidReturnObserver) =
+      Signal<(), NoError>.pipe()
     /// Call when the user taps signup.
     public let (signupButtonPressedSignal, signupButtonPressedObserver) = Signal<(), NoError>.pipe()
     /// Call when the view did load.
