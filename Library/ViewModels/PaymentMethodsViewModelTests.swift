@@ -101,7 +101,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.editButtonIsEnabled.assertValues([false])
 
       self.vm.inputs.didDelete(card)
-
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false, true])
