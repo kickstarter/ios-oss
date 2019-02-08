@@ -22,6 +22,9 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    _ = self.navigationItem
+      |> \.title %~ { _ in Strings.Currency() }
+
     self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
 
     self.tableView.setHeaderViewConstrainedToWidth(self.headerView)
