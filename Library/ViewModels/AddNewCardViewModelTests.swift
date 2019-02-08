@@ -50,49 +50,58 @@ internal final class AddNewCardViewModelTests: TestCase {
   }
 
   func testZipcodeTextFieldReturn_submitsPaymentDetails() {
-    self.vm.inputs.viewDidLoad()
-    self.saveButtonIsEnabled.assertDidNotEmitValue()
+    withEnvironment(
+      apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.saveButtonIsEnabled.assertDidNotEmitValue()
 
-    self.vm.inputs.cardholderNameChanged("Native Squad")
-    self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
-    self.vm.inputs.paymentInfo(isValid: true)
-    self.vm.inputs.cardBrand(isValid: true)
-    self.vm.inputs.zipcodeChanged(zipcode: "123")
+      self.vm.inputs.cardholderNameChanged("Native Squad")
+      self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
+      self.vm.inputs.paymentInfo(isValid: true)
+      self.vm.inputs.cardBrand(isValid: true)
+      self.vm.inputs.zipcodeChanged(zipcode: "123")
 
-    self.saveButtonIsEnabled.assertValues([true])
+      self.saveButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.zipcodeTextFieldDidEndEditing()
+      self.vm.inputs.zipcodeTextFieldDidEndEditing()
 
-    self.activityIndicatorShouldShow.assertValues([true])
+      self.activityIndicatorShouldShow.assertValues([true])
 
-    self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
+      self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    self.addNewCardSuccess.assertValues([Strings.Got_it_your_changes_have_been_saved()])
-    self.activityIndicatorShouldShow.assertValues([true, false])
+      self.addNewCardSuccess.assertValues([Strings.Got_it_your_changes_have_been_saved()])
+      self.activityIndicatorShouldShow.assertValues([true, false])
+    }
   }
 
   func testAddCard_Success() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.cardholderNameChanged("Native Squad")
-    self.vm.inputs.cardholderNameTextFieldReturn()
-    self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
-    self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
-    self.vm.inputs.paymentInfo(isValid: true)
-    self.vm.inputs.cardBrand(isValid: true)
-    self.vm.inputs.zipcodeChanged(zipcode: "123")
-    self.saveButtonIsEnabled.assertValues([true])
+    withEnvironment(
+      apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.cardholderNameChanged("Native Squad")
+      self.vm.inputs.cardholderNameTextFieldReturn()
+      self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
+      self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
 
-    self.vm.inputs.saveButtonTapped()
-    self.activityIndicatorShouldShow.assertValues([true])
+      self.vm.inputs.paymentInfo(isValid: true)
+      self.vm.inputs.cardBrand(isValid: true)
+      self.vm.inputs.zipcodeChanged(zipcode: "123")
+      self.saveButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
+      self.vm.inputs.saveButtonTapped()
+      self.activityIndicatorShouldShow.assertValues([true])
 
-    self.scheduler.advance()
+      self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
-    self.addNewCardSuccess.assertValues([Strings.Got_it_your_changes_have_been_saved()])
-    self.activityIndicatorShouldShow.assertValues([true, false])
+      self.scheduler.advance()
+
+      self.addNewCardSuccess.assertValues([Strings.Got_it_your_changes_have_been_saved()])
+      self.activityIndicatorShouldShow.assertValues([true, false])
+    }
   }
 
   func testAddCardFailure_InvalidToken() {
@@ -122,7 +131,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   func testAddCardFailure_GraphError() {
     let error = GraphError.emptyResponse(nil)
 
-    withEnvironment(apiService: MockService(addNewCreditCardError: error)) {
+    withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.emptyResponse(nil)))) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.cardholderNameChanged("Native Squad")
       self.vm.inputs.cardholderNameTextFieldReturn()
@@ -284,17 +293,20 @@ internal final class AddNewCardViewModelTests: TestCase {
   }
 
   func testTrackSavedPaymentMethod() {
-    self.vm.inputs.paymentInfo(isValid: true)
-    self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
+    withEnvironment(
+      apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
+    ) {
+      self.vm.inputs.paymentInfo(isValid: true)
+      self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
-    self.scheduler.advance()
+      self.scheduler.advance()
 
-    XCTAssertEqual(["Saved Payment Method"], self.trackingClient.events)
+      XCTAssertEqual(["Saved Payment Method"], self.trackingClient.events)
+    }
   }
 
   func testTrackFailedPaymentMethodCreation() {
-    let error = GraphError.emptyResponse(nil)
-    withEnvironment(apiService: MockService(addNewCreditCardError: error)) {
+    withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.emptyResponse(nil)))) {
       self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
       self.scheduler.advance()

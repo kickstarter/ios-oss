@@ -52,7 +52,7 @@ public protocol ServiceType {
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
   func addNewCreditCard(input: CreatePaymentSourceInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<CreatePaymentSourceEnvelope, GraphError>
 
   func changePaymentMethod(project: Project)
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope>
