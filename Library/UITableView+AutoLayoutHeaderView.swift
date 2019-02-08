@@ -1,7 +1,7 @@
 import UIKit
 
 extension UITableView {
-  public func setConstrained(headerView: UIView) {
+  public func setHeaderViewConstrainedToWidth(_ headerView: UIView) {
     if self.tableHeaderView != headerView {
       headerView.translatesAutoresizingMaskIntoConstraints = false
 

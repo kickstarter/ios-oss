@@ -14,6 +14,7 @@ public struct SettingsCellValue {
 }
 
 public protocol SettingsCellTypeProtocol {
+  var accessibilityTraits: UIAccessibilityTraits { get }
   var description: String? { get }
   var hideDescriptionLabel: Bool { get }
   var showArrowImageView: Bool { get }
@@ -61,6 +62,16 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   case rateInAppStore
   case appVersion
   case findFriends
+
+  public var accessibilityTraits: UIAccessibilityTraits {
+    switch self {
+
+    case .appVersion:
+      return .none
+    default:
+      return .button
+    }
+  }
 
   public var title: String {
     switch self {

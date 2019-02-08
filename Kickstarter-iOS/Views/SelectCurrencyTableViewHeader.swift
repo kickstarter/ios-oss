@@ -34,6 +34,7 @@ final class SelectCurrencyTableViewHeader: UITableViewHeaderFooterView {
     _ = self.headerLabel
       |> settingsDescriptionLabelStyle
       |> \.textColor .~ .ksr_text_dark_grey_500
+      |> \.backgroundColor .~ .ksr_grey_200
   }
 
   // MARK: Accessors
@@ -47,12 +48,10 @@ final class SelectCurrencyTableViewHeader: UITableViewHeaderFooterView {
   // MARK: Subviews
 
   private lazy var headerStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
+    return UIStackView(arrangedSubviews: [
       self.headerImageView,
       self.headerLabel
     ])
-
-    return stackView
   }()
 
   private lazy var headerImageView: UIImageView = {

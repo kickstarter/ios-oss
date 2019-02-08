@@ -33,6 +33,10 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, Equatable {
   case paymentMethods
   case currency(Currency?)
 
+  public var accessibilityTraits: UIAccessibilityTraits {
+    return .button
+  }
+
   public var showArrowImageView: Bool {
     return true
   }
