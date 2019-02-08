@@ -46,17 +46,19 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   func insertCurrencyCell(with currency: Currency?) -> IndexPath? {
     guard let section = self.index(of: .payment) else { return nil }
 
-    let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency)
+    let cellType = SettingsAccountCellType.currency(currency)
+
+    let cellValue = SettingsCellValue(cellType: cellType)
 
     return self.appendRow(value: cellValue,
-                          cellClass: SettingsCurrencyCell.self,
+                          cellClass: SettingsTableViewCell.self,
                           toSection: section)
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {
     if let value = self[indexPath] as? SettingsCellValue {
       return value.cellType as? SettingsAccountCellType
-    } else if let currencyValue = self[indexPath] as? SettingsCurrencyCellValue {
+    } else if let currencyValue = self[indexPath] as? SettingsCellValue {
       return currencyValue.cellType as? SettingsAccountCellType
       //swiftlint:disable unused_optional_binding
     } else if let _ = self[indexPath] as? Bool {
@@ -71,8 +73,6 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     case let (cell as SettingsAccountWarningCell, value as Bool):
       cell.configureWith(value: value)
     case let (cell as SettingsTableViewCell, value as SettingsCellValue):
-      cell.configureWith(value: value)
-    case let (cell as SettingsCurrencyCell, value as SettingsCurrencyCellValue):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
