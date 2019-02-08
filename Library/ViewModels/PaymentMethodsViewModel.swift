@@ -15,6 +15,7 @@ public protocol PaymentMethodsViewModelInputs {
 
 public protocol PaymentMethodsViewModelOutputs {
   /// Emits the user's stored cards
+  var editButtonIsEnabled: Signal<Bool, NoError> { get }
   var goToAddCardScreen: Signal<Void, NoError> { get }
   var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError> { get }
   var presentBanner: Signal<String, NoError> { get }
@@ -61,6 +62,11 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.paymentMethods = Signal.merge(
       paymentMethodsValues,
       paymentMethodsValues.takeWhen(deletePaymentMethodEventsErrors)
+    )
+
+    self.editButtonIsEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      paymentMethodsValues.map { $0.isEmpty }.mapConst(true)
     )
 
     self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
@@ -116,6 +122,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.presentMessageBannerProperty.value = message
   }
 
+  public let editButtonIsEnabled: Signal<Bool, NoError>
   public let goToAddCardScreen: Signal<Void, NoError>
   public let paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError>
   public let presentBanner: Signal<String, NoError>

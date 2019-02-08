@@ -10,6 +10,7 @@ import Prelude
 internal final class PaymentMethodsViewModelTests: TestCase {
 
   let vm = PaymentMethodsViewModel()
+  let editButtonIsEnabled = TestObserver<Bool, NoError>()
   let goToAddCardScreen = TestObserver<Void, NoError>()
   let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
   let presentBanner = TestObserver<String, NoError>()
@@ -19,6 +20,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.editButtonIsEnabled.observe(self.editButtonIsEnabled.observer)
     self.vm.outputs.goToAddCardScreen.observe(self.goToAddCardScreen.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
@@ -37,6 +39,29 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
+    }
+  }
+
+  func testEditButtonIsNotEnabled_OnViewDidLoad() {
+    self.editButtonIsEnabled.assertDidNotEmitValue()
+    self.vm.viewDidLoad()
+    self.editButtonIsEnabled.assertValue(false)
+  }
+
+  func testEditButtonIsNotEnabled_NoPaymentMethods() {
+    let response = UserEnvelope<GraphUserCreditCard>(
+      me: GraphUserCreditCard.emptyTemplate
+    )
+    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+    withEnvironment(apiService: apiService) {
+
+      self.editButtonIsEnabled.assertDidNotEmitValue()
+      self.vm.inputs.viewDidLoad()
+      self.editButtonIsEnabled.assertValues([false])
+
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues([false, true])
     }
   }
 
