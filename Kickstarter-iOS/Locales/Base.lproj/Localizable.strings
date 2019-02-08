@@ -249,6 +249,7 @@
 "Manage_your_pledge_below" = "Manage your pledge below";
 "Manage_your_reward" = "Manage your reward";
 "Message_backer" = "Message backer";
+"Message_banner.accessibility.Double_tap_to_dismiss" = "Double tap to dismiss.";
 "Message_creator" = "Message creator";
 "Message_user_name" = "Message %{user_name}…";
 "Messages" = "Messages";

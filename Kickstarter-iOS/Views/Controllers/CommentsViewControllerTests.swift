@@ -18,10 +18,15 @@ internal final class CommentsViewControllerTests: TestCase {
   }
 
   func testView() {
+
     let backer = User.brando
       |> \.avatar.large .~ ""
       |> \.avatar.medium .~ ""
       |> \.avatar.small .~ ""
+
+    let author = Author.template
+      |> \.id .~ backer.id
+      |> \.name .~ backer.name
 
     let creator = User.template
       |> \.id .~ 808
@@ -34,12 +39,12 @@ internal final class CommentsViewControllerTests: TestCase {
       |> Comment.lens.createdAt .~ 1473461640
 
     let backerComment = .template
-      |> Comment.lens.author .~ backer
+      |> Comment.lens.author .~ author
       |> Comment.lens.body .~ "I have never seen such a beautiful project."
       |> Comment.lens.createdAt .~ 1473461640
 
     let creatorComment = .template
-      |> Comment.lens.author .~ creator
+      |> Comment.lens.author .~ (author |> \.id .~ creator.id)
       |> Comment.lens.body .~ "Thank you kindly for your feedback!"
       |> Comment.lens.createdAt .~ 1473461640
 

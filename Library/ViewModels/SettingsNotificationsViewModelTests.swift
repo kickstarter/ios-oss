@@ -123,6 +123,8 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
   }
 
   func testShowHidePickerView() {
+    self.pickerViewIsHidden.assertDidNotEmitValue()
+
     self.vm.inputs.viewDidLoad()
 
     self.pickerViewIsHidden.assertDidNotEmitValue()
