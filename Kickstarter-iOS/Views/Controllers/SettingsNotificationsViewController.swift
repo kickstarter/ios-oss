@@ -56,6 +56,12 @@ internal final class SettingsNotificationsViewController: UIViewController {
         self?.animatePickerView(isHidden: isHidden)
     }
 
+    self.viewModel.outputs.dismissPicker
+      .observeForUI()
+      .observeValues { [weak self] (isHidden) in
+        self?.animatePickerView(isHidden: isHidden)
+    }
+
     self.viewModel.outputs.pickerViewSelectedRow
       .observeForUI()
       .observeValues { [weak self] (emailFrequency) in
@@ -89,11 +95,27 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
+  @objc private func tapGestureToDismissEmailFrequencyPicker() {
+    self.viewModel.inputs.dismissPickerTap()
+  }
+
   private func animatePickerView(isHidden: Bool) {
+    let tapRecognizer = UITapGestureRecognizer(
+      target:self,
+      action: #selector(tapGestureToDismissEmailFrequencyPicker))
+
     UIView.animate(
       withDuration: 0.25,
       animations: { [weak self] in
         guard let self = self else { return }
+
+        if !isHidden {
+          self.view.addGestureRecognizer(tapRecognizer)
+        }
+
+        if isHidden {
+          self.view.gestureRecognizers?.removeAll()
+        }
 
         if !isHidden && AppEnvironment.current.isVoiceOverRunning() {
           // Tells VoiceOver to ignore other elements in the same parent view
@@ -110,7 +132,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
     },
     completion: { [weak self] _ in
       if isHidden && AppEnvironment.current.isVoiceOverRunning() {
-
         // Tells VoiceOver to re-enable focus on other elements in the same parent view
         self?.emailFrequencyPickerView.accessibilityViewIsModal = false
 

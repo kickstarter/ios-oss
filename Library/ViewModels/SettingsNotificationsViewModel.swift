@@ -8,6 +8,7 @@ import Result
 public protocol SettingsNotificationsViewModelInputs {
   func didSelectRow(cellType: SettingsNotificationCellType)
   func didSelectEmailFrequency(frequency: EmailFrequency)
+  func dismissPickerTap()
   func failedToUpdateUser(error: String)
   func updateUser(user: User)
   func viewDidLoad()
@@ -95,7 +96,8 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     self.pickerViewIsHidden = Signal.merge(
         emailFrequencyCellSelected.signal.mapConst(false),
-        emailFrequencyProperty.signal.mapConst(true)
+        emailFrequencyProperty.signal.mapConst(true),
+				dismissPickerTapProperty.signal.mapConst(true)
     ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal
@@ -120,6 +122,11 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  fileprivate let dismissPickerTapProperty = MutableProperty(())
+  public func dismissPickerTap() {
+    self.dismissPickerTapProperty.value = ()
   }
 
   public func shouldSelectRow(for cellType: SettingsNotificationCellType) -> Bool {
