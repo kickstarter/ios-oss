@@ -87,13 +87,16 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
   }
 
   func testAnimateIn_FocusOnFirstProject() {
-    self.vm.inputs.configureWith(data: data1)
-    self.vm.inputs.viewDidLoad()
+    let isVoiceOverRunning = { true }
+    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+      self.vm.inputs.configureWith(data: data1)
+      self.vm.inputs.viewDidLoad()
 
-    self.focusScreenReaderOnFirstProject.assertValueCount(0)
+      self.focusScreenReaderOnFirstProject.assertValueCount(0)
 
-    self.vm.inputs.animateInCompleted()
+      self.vm.inputs.animateInCompleted()
 
-    self.focusScreenReaderOnFirstProject.assertValueCount(1)
+      self.focusScreenReaderOnFirstProject.assertValueCount(1)
+    }
   }
 }

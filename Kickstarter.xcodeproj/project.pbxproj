@@ -1017,6 +1017,9 @@
 		D6B6F91820EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */; };
 		D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */; };
 		D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* Category.swift */; };
+		D6B9F90A22035840003282A5 /* Author.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F90922035840003282A5 /* Author.swift */; };
+		D6B9F943220358D1003282A5 /* AuthorTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F942220358D1003282A5 /* AuthorTemplates.swift */; };
+		D6B9F94522035E34003282A5 /* AuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F94422035E34003282A5 /* AuthorTests.swift */; };
 		D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */; };
 		D6C3845C210B9AC400ADB671 /* SettingsNewslettersTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */; };
 		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
@@ -2724,6 +2727,9 @@
 		D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsViewControllerTests.swift; sourceTree = "<group>"; };
 		D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAttribute.swift; sourceTree = "<group>"; };
 		D6B9DF3E1F72E25A0064A4D8 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		D6B9F90922035840003282A5 /* Author.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Author.swift; sourceTree = "<group>"; };
+		D6B9F942220358D1003282A5 /* AuthorTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorTemplates.swift; sourceTree = "<group>"; };
+		D6B9F94422035E34003282A5 /* AuthorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorTests.swift; sourceTree = "<group>"; };
 		D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersTopCell.swift; sourceTree = "<group>"; };
 		D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNewslettersTopCell.xib; sourceTree = "<group>"; };
 		D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphSchemaTests.swift; sourceTree = "<group>"; };
@@ -3099,6 +3105,7 @@
 				77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */,
 				770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */,
 				77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */,
+				D7C9F10721711954006F412F /* SettingsCurrencyCell.xib */,
 				D6AE3F5920EA973500DB212F /* SettingsNotifications.storyboard */,
 				D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */,
 				77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */,
@@ -3273,6 +3280,7 @@
 				A7FA38D81D9068AD0041FC9C /* RewardsTitleCell.swift */,
 				D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */,
 				77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */,
+				D7C9F10A2171481C006F412F /* SettingsCurrencyCell.swift */,
 				D7237097211A3925001EA4CA /* SettingsFollowCell.swift */,
 				D6B6766A20FF8F890082717D /* SettingsNewslettersCell.swift */,
 				D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */,
@@ -4063,6 +4071,8 @@
 				D04AAC1D218BB70C00CF713E /* SettingsAccountPickerCellViewModel.swift */,
 				D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */,
 				D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */,
+				D76E9BEE2174EF580049F64E /* SettingsCurrencyCellViewModel.swift */,
+				D7774483217A465D008D679F /* SettingsCurrencyCellViewModelTests.swift */,
 				D79F0F7421068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift */,
 				D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */,
 				D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */,
@@ -4174,6 +4184,8 @@
 				D01587791EEB2ED6006E7684 /* Activity.swift */,
 				D015877A1EEB2ED6006E7684 /* ActivityEnvelope.swift */,
 				D015877B1EEB2ED6006E7684 /* ActivityTests.swift */,
+				D6B9F90922035840003282A5 /* Author.swift */,
+				D6B9F94422035E34003282A5 /* AuthorTests.swift */,
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
 				D015877D1EEB2ED6006E7684 /* BackingTests.swift */,
 				D6B9DF3E1F72E25A0064A4D8 /* Category.swift */,
@@ -4323,6 +4335,7 @@
 			isa = PBXGroup;
 			children = (
 				D01587EF1EEB2ED7006E7684 /* ActivityTemplates.swift */,
+				D6B9F942220358D1003282A5 /* AuthorTemplates.swift */,
 				D01587F01EEB2ED7006E7684 /* BackingTemplates.swift */,
 				D6C9A2551F75921500981E64 /* CategoryTemplates.swift */,
 				D01587F31EEB2ED7006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift */,
@@ -5800,6 +5813,7 @@
 				A7ED1FD61E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift in Sources */,
 				A70E9EE51E859C96009E67F2 /* LiveStreamChatViewModelTests.swift in Sources */,
 				A7ED1FCE1E831C5C00BFFA01 /* DashboardReferrerRowStackViewViewModelTests.swift in Sources */,
+				D6B9F94522035E34003282A5 /* AuthorTests.swift in Sources */,
 				A7ED1FF11E831C5C00BFFA01 /* MessageThreadCellViewModelTests.swift in Sources */,
 				D72370922118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift in Sources */,
 				A7ED1F411E831B8900BFFA01 /* KoalaTests.swift in Sources */,
@@ -6225,6 +6239,7 @@
 				D0198F3521793FCF0090A9EC /* GraphMutation.swift in Sources */,
 				D01588451EEB2ED7006E7684 /* ActivityEnvelope.swift in Sources */,
 				D01588991EEB2ED7006E7684 /* FriendStatsEnvelopeLenses.swift in Sources */,
+				D6B9F943220358D1003282A5 /* AuthorTemplates.swift in Sources */,
 				D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */,
 				7798B56521750041008BC50D /* UserCurrency.swift in Sources */,
 				D08CD20321922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift in Sources */,
@@ -6374,6 +6389,7 @@
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				D0158A271EEB30A2006E7684 /* ShippingRuleTemplates.swift in Sources */,
+				D6B9F90A22035840003282A5 /* Author.swift in Sources */,
 				77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */,
 				D01588891EEB2ED7006E7684 /* CheckoutEnvelopeLenses.swift in Sources */,
 				D0158A2E1EEB30A2006E7684 /* User.AvatarTemplates.swift in Sources */,

@@ -31,7 +31,11 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, Equatable {
   case changePassword
   case privacy
   case paymentMethods
-  case currency(Currency?)
+  case currency
+
+  public var accessibilityTraits: UIAccessibilityTraits {
+    return .button
+  }
 
   public var showArrowImageView: Bool {
     return true
