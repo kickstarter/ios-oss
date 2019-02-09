@@ -6,15 +6,6 @@ private struct Padding {
   static let vertical: CGFloat = 12
 }
 
-/*
-
- Preview
-
- +---------------------------------------+
- | label                                 |
- +---------------------------------------+
-
- */
 final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
   private(set) lazy var label: UILabel = {
     UILabel(frame: .zero)
