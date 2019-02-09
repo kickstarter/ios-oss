@@ -1,4 +1,4 @@
-@testable import Library
+import Library
 import UIKit
 
 // This needs to be called manually in playgrounds.
