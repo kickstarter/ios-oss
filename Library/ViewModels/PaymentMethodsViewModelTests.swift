@@ -43,6 +43,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonIsNotEnabled_OnViewDidLoad() {
+
     self.editButtonIsEnabled.assertDidNotEmitValue()
     self.vm.viewDidLoad()
     self.editButtonIsEnabled.assertValue(false)
@@ -58,9 +59,11 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.editButtonIsEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
+
       self.editButtonIsEnabled.assertValues([false])
 
       self.vm.inputs.viewWillAppear()
+
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false, true])
@@ -75,6 +78,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: apiService) {
 
       self.editButtonIsEnabled.assertDidNotEmitValue()
+
       self.vm.inputs.viewDidLoad()
 
       self.editButtonIsEnabled.assertValues([false])
@@ -103,9 +107,11 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.editButtonIsEnabled.assertValues([false])
 
+      self.vm.inputs.viewWillAppear()
+
       self.scheduler.advance()
 
-      self.editButtonIsEnabled.assertValues([false, true])
+      self.editButtonIsEnabled.assertValues([false, false])
     }
   }
 

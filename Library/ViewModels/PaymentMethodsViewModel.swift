@@ -9,6 +9,7 @@ public protocol PaymentMethodsViewModelInputs {
   func didDelete(_ creditCard: GraphUserCreditCard.CreditCard)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
+  func reloadedData(with cards: [GraphUserCreditCard.CreditCard])
   func viewDidLoad()
   func viewWillAppear()
 }
@@ -127,6 +128,12 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   fileprivate let presentMessageBannerProperty = MutableProperty("")
   public func cardAddedSuccessfully(_ message: String) {
     self.presentMessageBannerProperty.value = message
+  }
+
+  fileprivate let (reloadedDataSignal, reloadedDataObserver) =
+    Signal<[GraphUserCreditCard.CreditCard], NoError>.pipe()
+  public func reloadedData(with cards: [GraphUserCreditCard.CreditCard]) {
+    self.reloadedDataObserver.send(value: cards)
   }
 
   public let editButtonIsEnabled: Signal<Bool, NoError>
