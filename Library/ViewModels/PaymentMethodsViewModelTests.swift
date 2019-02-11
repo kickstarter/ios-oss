@@ -59,11 +59,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.editButtonIsEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-
       self.editButtonIsEnabled.assertValues([false])
 
       self.vm.inputs.viewWillAppear()
-
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false, true])
@@ -78,13 +76,11 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: apiService) {
 
       self.editButtonIsEnabled.assertDidNotEmitValue()
-
       self.vm.inputs.viewDidLoad()
 
       self.editButtonIsEnabled.assertValues([false])
 
       self.vm.inputs.viewWillAppear()
-
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false, false])
