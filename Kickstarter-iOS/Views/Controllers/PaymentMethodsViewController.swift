@@ -56,9 +56,6 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     let footerViewHeight = footerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
     footerView.frame.size.height = footerViewHeight
 
-    let headerViewHeight = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-    headerView.frame.size.height = headerViewHeight
-
     tableView.tableFooterView = footerView
     tableView.tableHeaderView = headerView
   }
@@ -138,12 +135,11 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
   // MARK: - Private Helpers
   private func configureHeaderFooterViews() {
     let footerView = PaymentMethodsFooterView.fromNib(nib: .PaymentMethodsFooterView)
-//    footerView?.translatesAutoresizingMaskIntoConstraints = false
     footerView?.delegate = self
 
     let headerView = SettingsTableViewHeader.fromNib(nib: .SettingsTableViewHeader)
     headerView?.configure(with: Strings.Any_payment_methods_you_saved_to_Kickstarter())
-//    headerView?.translatesAutoresizingMaskIntoConstraints = false
+    headerView?.translatesAutoresizingMaskIntoConstraints = false
 
     guard let header = headerView, let footer = footerView else {
       return
@@ -152,8 +148,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     self.tableView.tableHeaderView = header
     self.tableView.tableFooterView = footer
 
-//    NSLayoutConstraint.activate([header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)])
-//    NSLayoutConstraint.activate([footer.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)])
+    NSLayoutConstraint.activate([header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)])
   }
 }
 
