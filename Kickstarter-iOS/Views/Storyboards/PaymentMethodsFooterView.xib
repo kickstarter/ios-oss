@@ -13,48 +13,36 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PaymentMethodsFooterView" customModule="Kickstarter_Framework" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="81"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QRi-RW-gGm" userLabel="Content View">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="81"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVF-Hv-L8e">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="81"/>
-                            <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="44" id="RY1-Id-ADx"/>
-                            </constraints>
-                            <state key="normal" image="icon--plus"/>
-                            <connections>
-                                <action selector="addNewCardButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="gaO-4r-vlv"/>
-                            </connections>
-                        </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SB4-Lk-Ajb">
-                            <rect key="frame" x="0.0" y="80" width="375" height="1"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="YKt-EX-gZm"/>
-                            </constraints>
-                        </view>
-                    </subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVF-Hv-L8e">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" priority="750" constant="44" id="UK4-hM-zKF"/>
+                    </constraints>
+                    <state key="normal" image="icon--plus"/>
+                    <connections>
+                        <action selector="addNewCardButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="gaO-4r-vlv"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SB4-Lk-Ajb">
+                    <rect key="frame" x="0.0" y="43" width="375" height="1"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="ZVF-Hv-L8e" firstAttribute="leading" secondItem="QRi-RW-gGm" secondAttribute="leading" id="3VK-Uv-qKl"/>
-                        <constraint firstAttribute="bottom" secondItem="ZVF-Hv-L8e" secondAttribute="bottom" id="5gZ-gP-dFR"/>
-                        <constraint firstAttribute="trailing" secondItem="SB4-Lk-Ajb" secondAttribute="trailing" id="MZa-AK-unl"/>
-                        <constraint firstAttribute="trailing" secondItem="ZVF-Hv-L8e" secondAttribute="trailing" id="RIp-W9-3v3"/>
-                        <constraint firstAttribute="bottom" secondItem="SB4-Lk-Ajb" secondAttribute="bottom" id="e4W-io-u9A"/>
-                        <constraint firstItem="SB4-Lk-Ajb" firstAttribute="leading" secondItem="QRi-RW-gGm" secondAttribute="leading" id="is0-hM-jmd"/>
-                        <constraint firstItem="ZVF-Hv-L8e" firstAttribute="top" secondItem="QRi-RW-gGm" secondAttribute="top" id="s7J-j4-us8"/>
+                        <constraint firstAttribute="height" constant="1" id="YKt-EX-gZm"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="QRi-RW-gGm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1aq-OY-tYc"/>
-                <constraint firstItem="QRi-RW-gGm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="WNX-KH-Rvf"/>
-                <constraint firstAttribute="trailing" secondItem="QRi-RW-gGm" secondAttribute="trailing" id="aOn-3g-Jbo"/>
-                <constraint firstAttribute="bottom" secondItem="QRi-RW-gGm" secondAttribute="bottom" id="ga9-Av-Png"/>
+                <constraint firstItem="SB4-Lk-Ajb" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="AFm-OP-jdz"/>
+                <constraint firstItem="ZVF-Hv-L8e" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="Jgf-jz-MGs"/>
+                <constraint firstItem="SB4-Lk-Ajb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Tcv-X7-qhe"/>
+                <constraint firstItem="ZVF-Hv-L8e" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ZmG-1O-aKF"/>
+                <constraint firstItem="SB4-Lk-Ajb" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="r8U-Cm-ivH"/>
+                <constraint firstItem="ZVF-Hv-L8e" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xwQ-EY-95A"/>
+                <constraint firstItem="ZVF-Hv-L8e" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="yCu-B8-SVL"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
@@ -62,7 +50,7 @@
                 <outlet property="addCardButton" destination="ZVF-Hv-L8e" id="DTW-cN-pEC"/>
                 <outlet property="separatorView" destination="SB4-Lk-Ajb" id="khu-HH-QZj"/>
             </connections>
-            <point key="canvasLocation" x="138.40000000000001" y="-129.08545727136433"/>
+            <point key="canvasLocation" x="138.40000000000001" y="-129.53523238380811"/>
         </view>
     </objects>
     <resources>

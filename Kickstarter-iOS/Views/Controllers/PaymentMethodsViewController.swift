@@ -23,12 +23,9 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.register(nib: .CreditCardCell)
-    self.tableView.registerHeaderFooter(nib: .PaymentMethodsFooterView)
-    self.tableView.registerHeaderFooter(nib: .SettingsTableViewHeader)
 
     self.configureHeaderFooterViews()
 
-    self.viewModel.inputs.viewDidLoad()
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(
       title: Strings.discovery_favorite_categories_buttons_edit(),
       style: .plain,
@@ -36,11 +33,11 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       action: #selector(edit)
     )
 
-    self.viewModel.inputs.viewDidLoad()
-
     self.dataSource.deletionHandler = { [weak self] creditCard in
       self?.viewModel.inputs.didDelete(creditCard)
     }
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -140,27 +137,32 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
   // MARK: - Private Helpers
   private func configureHeaderFooterViews() {
-    let footerView = tableView.dequeueReusableHeaderFooterView(
-  withIdentifier: Nib.PaymentMethodsFooterView.rawValue
-      ) as? PaymentMethodsFooterView
+    let footerView = PaymentMethodsFooterView.fromNib(nib: .PaymentMethodsFooterView)
+//    footerView?.translatesAutoresizingMaskIntoConstraints = false
     footerView?.delegate = self
 
-    let headerView = tableView.dequeueReusableHeaderFooterView(
-      withIdentifier: Nib.SettingsTableViewHeader.rawValue) as? SettingsTableViewHeader
+    let headerView = SettingsTableViewHeader.fromNib(nib: .SettingsTableViewHeader)
     headerView?.configure(with: Strings.Any_payment_methods_you_saved_to_Kickstarter())
+//    headerView?.translatesAutoresizingMaskIntoConstraints = false
 
-    self.tableView.tableFooterView = footerView
-    self.tableView.tableHeaderView = headerView
+    guard let header = headerView, let footer = footerView else {
+      return
+    }
+
+    self.tableView.tableHeaderView = header
+    self.tableView.tableFooterView = footer
+
+//    NSLayoutConstraint.activate([header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)])
+//    NSLayoutConstraint.activate([footer.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)])
   }
 }
 
 extension PaymentMethodsViewController: UITableViewDelegate {
-
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return 0.1
   }
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 0.1
   }
 }

@@ -1,7 +1,7 @@
 import Library
 import Prelude
 
-final class SettingsTableViewHeader: UITableViewHeaderFooterView {
+final class SettingsTableViewHeader: UIView, NibLoading {
   @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   func configure(with title: String) {
@@ -12,7 +12,9 @@ final class SettingsTableViewHeader: UITableViewHeaderFooterView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
+    _ = self
+      |> \.backgroundColor .~ .ksr_grey_200
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
     _ = self.titleLabel
       |> settingsDescriptionLabelStyle
