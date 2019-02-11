@@ -59,11 +59,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.editButtonIsEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-
       self.editButtonIsEnabled.assertValues([false])
 
       self.vm.inputs.viewWillAppear()
-
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false, true])
@@ -78,7 +76,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: apiService) {
 
       self.editButtonIsEnabled.assertDidNotEmitValue()
-
       self.vm.inputs.viewDidLoad()
 
       self.editButtonIsEnabled.assertValues([false])
@@ -91,27 +88,21 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonEnabled_AfterDeletePaymentMethod() {
-
     guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
       XCTFail("Card should exist")
       return
     }
-
     let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 3)))
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
       self.vm.inputs.viewDidLoad()
+
       self.editButtonIsEnabled.assertValues([false])
 
       self.vm.inputs.didDelete(card)
-
-      self.editButtonIsEnabled.assertValues([false])
-
-      self.vm.inputs.viewWillAppear()
-
       self.scheduler.advance()
 
-      self.editButtonIsEnabled.assertValues([false, false])
+      self.editButtonIsEnabled.assertValues([false, true])
     }
   }
 
@@ -126,6 +117,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
       self.vm.inputs.viewDidLoad()
+
       self.editButtonIsEnabled.assertValues([false])
 
       self.vm.inputs.didDelete(card)
