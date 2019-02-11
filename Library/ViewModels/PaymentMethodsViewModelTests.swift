@@ -59,11 +59,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.editButtonIsEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
-
       self.editButtonIsEnabled.assertValues([false])
 
       self.vm.inputs.viewWillAppear()
-
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false, true])
@@ -78,16 +76,54 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: apiService) {
 
       self.editButtonIsEnabled.assertDidNotEmitValue()
-
       self.vm.inputs.viewDidLoad()
 
       self.editButtonIsEnabled.assertValues([false])
 
       self.vm.inputs.viewWillAppear()
-
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false, false])
+    }
+  }
+
+  func testEditButtonNotEnabled_AfterDeleteLastPaymentMethod() {
+
+    guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
+      XCTFail("Card should exist")
+      return
+    }
+
+    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 0)))
+    withEnvironment(apiService: apiService) {
+      self.editButtonIsEnabled.assertDidNotEmitValue()
+      self.vm.inputs.viewDidLoad()
+      self.editButtonIsEnabled.assertValues([false])
+
+      self.vm.inputs.didDelete(card)
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues([false, false])
+    }
+  }
+
+  func testEditButtonEnabled_AfterDeletePaymentMethod() {
+
+    guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
+      XCTFail("Card should exist")
+      return
+    }
+
+    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 3)))
+    withEnvironment(apiService: apiService) {
+      self.editButtonIsEnabled.assertDidNotEmitValue()
+      self.vm.inputs.viewDidLoad()
+      self.editButtonIsEnabled.assertValues([false])
+
+      self.vm.inputs.didDelete(card)
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues([false, true])
     }
   }
 
