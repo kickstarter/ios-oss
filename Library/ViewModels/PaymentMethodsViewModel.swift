@@ -9,6 +9,7 @@ public protocol PaymentMethodsViewModelInputs {
   func didDelete(_ creditCard: GraphUserCreditCard.CreditCard)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
+  func reloadedData(with cards: [GraphUserCreditCard.CreditCard])
   func viewDidLoad()
   func viewWillAppear()
 }
@@ -64,9 +65,16 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       paymentMethodsValues.takeWhen(deletePaymentMethodEventsErrors)
     )
 
+    let hasAtLeastOneCard = Signal.merge(
+      paymentMethodsValues
+        .map { !$0.isEmpty },
+      deletePaymentMethodEvents.values()
+        .map { $0.totalCount > 0 }
+    )
+
     self.editButtonIsEnabled = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
-      paymentMethodsValues.map { $0.isEmpty }.mapConst(true)
+      hasAtLeastOneCard
     )
 
     self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
@@ -120,6 +128,12 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   fileprivate let presentMessageBannerProperty = MutableProperty("")
   public func cardAddedSuccessfully(_ message: String) {
     self.presentMessageBannerProperty.value = message
+  }
+
+  fileprivate let (reloadedDataSignal, reloadedDataObserver) =
+    Signal<[GraphUserCreditCard.CreditCard], NoError>.pipe()
+  public func reloadedData(with cards: [GraphUserCreditCard.CreditCard]) {
+    self.reloadedDataObserver.send(value: cards)
   }
 
   public let editButtonIsEnabled: Signal<Bool, NoError>

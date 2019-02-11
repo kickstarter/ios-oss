@@ -43,9 +43,31 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonIsNotEnabled_OnViewDidLoad() {
+
     self.editButtonIsEnabled.assertDidNotEmitValue()
     self.vm.viewDidLoad()
     self.editButtonIsEnabled.assertValue(false)
+  }
+
+  func testEditButtonIsEnabled_HasPaymentMethods() {
+    let response = UserEnvelope<GraphUserCreditCard>(
+      me: GraphUserCreditCard.template
+    )
+    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+    withEnvironment(apiService: apiService) {
+
+      self.editButtonIsEnabled.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.editButtonIsEnabled.assertValues([false])
+
+      self.vm.inputs.viewWillAppear()
+
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues([false, true])
+    }
   }
 
   func testEditButtonIsNotEnabled_NoPaymentMethods() {
@@ -56,12 +78,16 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: apiService) {
 
       self.editButtonIsEnabled.assertDidNotEmitValue()
+
       self.vm.inputs.viewDidLoad()
+
       self.editButtonIsEnabled.assertValues([false])
+
+      self.vm.inputs.viewWillAppear()
 
       self.scheduler.advance()
 
-      self.editButtonIsEnabled.assertValues([false, true])
+      self.editButtonIsEnabled.assertValues([false, false])
     }
   }
 
@@ -101,7 +127,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       return
     }
 
-    let apiService = MockService(deletePaymentMethodResult: .success(GraphMutationEmptyResponseEnvelope()))
+    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 2)))
     withEnvironment(apiService: apiService) {
 
       self.vm.inputs.viewWillAppear()
@@ -175,7 +201,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       XCTFail("Card should exist")
       return
     }
-    let apiService = MockService(deletePaymentMethodResult: .success(GraphMutationEmptyResponseEnvelope()))
+    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 2)))
     withEnvironment(apiService: apiService) {
 
       self.vm.inputs.viewDidLoad()

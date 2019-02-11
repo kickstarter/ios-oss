@@ -12,6 +12,11 @@ public struct PaymentSourceDeleteMutation<T: GraphMutationInput>: GraphMutation 
     mutation paymentSourceDelete($input: PaymentSourceDeleteInput!) {
       paymentSourceDelete(input: $input) {
         clientMutationId
+        user {
+          storedCards {
+            totalCount
+          }
+        }
       }
     }
     """
