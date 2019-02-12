@@ -49,18 +49,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    guard let footerView = tableView.tableFooterView, let headerView = tableView.tableHeaderView else {
-      return
-    }
-
-    let headerViewHeight = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-    headerView.frame.size.height = headerViewHeight
-
-    let footerViewHeight = footerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-    footerView.frame.size.height = footerViewHeight
-
-    tableView.tableFooterView = footerView
-    tableView.tableHeaderView = headerView
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
   override func bindStyles() {
@@ -136,19 +125,31 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
   }
 
   // MARK: - Private Helpers
+
   private func configureHeaderFooterViews() {
-    let footerView = PaymentMethodsFooterView.fromNib(nib: .PaymentMethodsFooterView)
-    footerView?.delegate = self
+    if let header = SettingsTableViewHeader.fromNib(nib: Nib.SettingsTableViewHeader) {
+      header.configure(with: Strings.Any_payment_methods_you_saved_to_Kickstarter())
 
-    let headerView = SettingsTableViewHeader.fromNib(nib: .SettingsTableViewHeader)
-    headerView?.configure(with: Strings.Any_payment_methods_you_saved_to_Kickstarter())
+      let headerContainer = UIView(frame: .zero)
+      headerContainer.addSubview(header)
 
-    guard let header = headerView, let footer = footerView else {
-      return
+      self.tableView.tableHeaderView = headerContainer
+
+      header.constrainEdges(to: headerContainer)
+      header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
     }
 
-    self.tableView.tableHeaderView = header
-    self.tableView.tableFooterView = footer
+    if let footer = PaymentMethodsFooterView.fromNib(nib: Nib.PaymentMethodsFooterView) {
+      footer.delegate = self
+
+      let footerContainer = UIView(frame: .zero)
+      footerContainer.addSubview(footer)
+
+      self.tableView.tableFooterView = footerContainer
+
+      footer.constrainEdges(to: footerContainer)
+      footer.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
+    }
   }
 }
 
@@ -171,5 +172,39 @@ extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
 extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
   internal func presentAddCardSuccessfulBanner(_ message: String) {
     self.viewModel.inputs.cardAddedSuccessfully(message)
+  }
+}
+
+private extension UIView {
+  func constrainEdges(to view: UIView) {
+    self.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint.activate([
+      self.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      self.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      self.topAnchor.constraint(equalTo: view.topAnchor),
+      self.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+      ])
+  }
+}
+
+private extension UITableView {
+  func ksr_sizeHeaderFooterViewsToFit() {
+    let keyPaths: [ReferenceWritableKeyPath<UITableView, UIView?>] = [
+      (\.tableHeaderView),
+      (\.tableFooterView)
+    ]
+
+    keyPaths.forEach { keyPath in
+      if let view = self[keyPath: keyPath] {
+        let size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        if view.frame.height != size.height {
+          view.frame.size.height = size.height
+
+          self[keyPath: keyPath] = view
+        }
+      }
+    }
   }
 }
