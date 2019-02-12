@@ -18,6 +18,5 @@ final class SettingsTableViewHeader: UIView, NibLoading {
 
     _ = self.titleLabel
       |> settingsDescriptionLabelStyle
-      |> \.preferredMaxLayoutWidth .~ self.titleLabel.bounds.width
   }
 }
