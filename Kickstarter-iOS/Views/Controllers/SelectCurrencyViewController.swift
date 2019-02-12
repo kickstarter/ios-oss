@@ -27,9 +27,16 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
 
     self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
 
-    self.tableView.setHeaderViewConstrainedToWidth(self.headerView)
     self.view.addSubview(self.tableView)
     self.tableView.constrainEdges(to: self.view)
+
+    let headerContainerView = UIView(frame: .zero)
+    headerContainerView.addSubview(self.headerView)
+    self.headerView.constrainEdges(to: headerContainerView)
+
+    self.tableView.tableHeaderView = headerContainerView
+    self.headerView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -48,6 +55,8 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
         \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())
         """
     }
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
   // MARK: - Subviews
