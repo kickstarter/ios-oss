@@ -89,7 +89,7 @@ public struct Service: ServiceType {
   }
 
   public func deletePaymentMethod(input: PaymentSourceDeleteInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    -> SignalProducer<DeletePaymentMethodEnvelope, GraphError> {
       return applyMutation(mutation: PaymentSourceDeleteMutation(input: input))
   }
 

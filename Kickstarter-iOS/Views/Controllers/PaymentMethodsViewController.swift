@@ -11,6 +11,15 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
   @IBOutlet private weak var headerLabel: UILabel!
   @IBOutlet private weak var tableView: UITableView!
 
+  fileprivate lazy var editButton: UIBarButtonItem = {
+    return UIBarButtonItem(
+      title: Strings.discovery_favorite_categories_buttons_edit(),
+      style: .plain,
+      target: self,
+      action: #selector(edit)
+    )
+  }()
+
   internal var messageBannerViewController: MessageBannerViewController?
 
   public static func instantiate() -> PaymentMethodsViewController {
@@ -28,12 +37,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     self.tableView.registerHeaderFooter(nib: .PaymentMethodsFooterView)
 
     self.viewModel.inputs.viewDidLoad()
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-      title: Strings.discovery_favorite_categories_buttons_edit(),
-      style: .plain,
-      target: self,
-      action: #selector(edit)
-    )
+    self.navigationItem.rightBarButtonItem = self.editButton
 
     self.dataSource.deletionHandler = { [weak self] creditCard in
       self?.viewModel.inputs.didDelete(creditCard)
@@ -70,6 +74,8 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.editButton.rac.enabled = self.viewModel.outputs.editButtonIsEnabled
 
     self.viewModel.outputs.paymentMethods
       .observeForUI()

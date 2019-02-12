@@ -994,6 +994,8 @@
 		D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */; };
 		D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */; };
 		D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */; };
+		D62B1477221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */; };
+		D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */; };
 		D63BBCD0217E5460007E01F0 /* PaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBCCF217E5460007E01F0 /* PaymentMethodsViewController.swift */; };
 		D63BBCDA217E7802007E01F0 /* CreditCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */; };
 		D63BBCDB217E7802007E01F0 /* CreditCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D63BBCD9217E7802007E01F0 /* CreditCardCell.xib */; };
@@ -2731,6 +2733,8 @@
 		D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewModel.swift; sourceTree = "<group>"; };
 		D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewControllerTests.swift; sourceTree = "<group>"; };
 		D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDataSourceTests.swift; sourceTree = "<group>"; };
+		D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentMethodEnvelope.swift; sourceTree = "<group>"; };
+		D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentMethodEnvelopeTests.swift; sourceTree = "<group>"; };
 		D63BBCCF217E5460007E01F0 /* PaymentMethodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewController.swift; sourceTree = "<group>"; };
 		D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardCell.swift; sourceTree = "<group>"; };
 		D63BBCD9217E7802007E01F0 /* CreditCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreditCardCell.xib; sourceTree = "<group>"; };
@@ -4277,6 +4281,7 @@
 				D6B9DF3E1F72E25A0064A4D8 /* Category.swift */,
 				D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */,
 				D01587801EEB2ED6006E7684 /* CategoryTests.swift */,
+				D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */,
 				D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */,
 				D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */,
 				D01587831EEB2ED6006E7684 /* CheckoutEnvelope.swift */,
@@ -4358,6 +4363,7 @@
 				D01587EE1EEB2ED7006E7684 /* templates */,
 				D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */,
 				D63BBD30217F7212007E01F0 /* UserCreditCard.swift */,
+				D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -5939,6 +5945,7 @@
 				A7ED1F381E830FDC00BFFA01 /* UIColorTests.swift in Sources */,
 				A7ED1FBA1E831C5C00BFFA01 /* ProjectActivityCommentCellViewModelTests.swift in Sources */,
 				A7ED1FE91E831C5C00BFFA01 /* DeprecatedWebViewModelTests.swift in Sources */,
+				D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */,
 				D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */,
 				A7ED1FD01E831C5C00BFFA01 /* DashboardActionCellViewModelTests.swift in Sources */,
 				A7ED1FE21E831C5C00BFFA01 /* DiscoveryViewModelTests.swift in Sources */,
@@ -6504,6 +6511,7 @@
 				D0158A1C1EEB30A2006E7684 /* ProjectNotificationTemplates.swift in Sources */,
 				D01588F91EEB2ED7006E7684 /* Project.Country.swift in Sources */,
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
+				D62B1477221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift in Sources */,
 				D0158A261EEB30A2006E7684 /* ShippingRulesEnvelopeTemplates.swift in Sources */,
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
 				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
