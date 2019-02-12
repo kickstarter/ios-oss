@@ -12,31 +12,40 @@ internal enum Section: Int {
   case deleteAccount
 }
 
-public struct SettingsPrivacyCellValue {
+public struct SettingsPrivacyStaticCellValue {
+  let cellType: SettingsStaticCellType
   let user: User
+}
+
+public struct SettingsPrivacySwitchCellValue {
   let cellType: SettingsSwitchCellType
+  let user: User
 }
 
 internal final class SettingsPrivacyDataSource: ValueCellDataSource {
   internal func load(user: User) {
-    self.set(values: [user],
+    let followingCellValue = SettingsPrivacyStaticCellValue(cellType: .following, user: user)
+
+    self.set(values: [followingCellValue],
              cellClass: SettingsFollowCell.self,
              inSection: Section.following.rawValue)
 
-    self.set(values: [Strings.When_following_is_on_you_can_follow_the_acticity_of_others()],
+    self.set(values: [followingCellValue.cellType.description],
              cellClass: SettingsPrivacyStaticCell.self,
              inSection: Section.followingFooter.rawValue)
 
-    self.set(values: [user],
+    let recommendationsCellValue = SettingsPrivacyStaticCellValue(cellType: .recommendations, user: user)
+
+    self.set(values: [recommendationsCellValue],
              cellClass: SettingsPrivacyRecommendationCell.self,
              inSection: Section.recommendations.rawValue)
 
-    self.set(values: [Strings.We_use_your_activity_internally_to_make_recommendations_for_you()],
+    self.set(values: [recommendationsCellValue.cellType.description],
              cellClass: SettingsPrivacyStaticCell.self,
              inSection: Section.recommendationsFooter.rawValue)
 
     if !user.isCreator {
-      let cellValue = SettingsPrivacyCellValue(user: user, cellType: .privacy)
+      let cellValue = SettingsPrivacySwitchCellValue(cellType: .privacy, user: user)
 
       self.set(values: [cellValue],
                cellClass: SettingsPrivacySwitchCell.self,
@@ -54,9 +63,9 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as SettingsFollowCell, value as User):
+    case let (cell as SettingsFollowCell, value as SettingsPrivacyStaticCellValue):
       cell.configureWith(value: value)
-    case let (cell as SettingsPrivacyRecommendationCell, value as User):
+    case let (cell as SettingsPrivacyRecommendationCell, value as SettingsPrivacyStaticCellValue):
       cell.configureWith(value: value)
     case let (cell as SettingsPrivacyRequestDataCell, value as User):
       cell.configureWith(value: value)
@@ -64,7 +73,7 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as SettingsPrivacyStaticCell, value as String):
       cell.configureWith(value: value)
-    case let (cell as SettingsPrivacySwitchCell, value as SettingsPrivacyCellValue):
+    case let (cell as SettingsPrivacySwitchCell, value as SettingsPrivacySwitchCellValue):
       cell.configureWith(value: value)
     default:
       fatalError("Unrecognized combo (\(cell), \(value)).")

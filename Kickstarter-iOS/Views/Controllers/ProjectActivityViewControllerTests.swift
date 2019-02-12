@@ -86,7 +86,7 @@ private let baseActivity =
     |> Activity.lens.createdAt .~ 123456789.0
     |> Activity.lens.comment .~ (
       .template
-        |> Comment.lens.author .~ .brando
+        |> Comment.lens.author .~ .template
         |> Comment.lens.body .~ ("Hi, I'm wondering if you're planning on holding a gallery showing with "
           + "these portraits? I'd love to attend if you'll be in New York!")
     )

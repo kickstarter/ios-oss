@@ -12,10 +12,9 @@ internal struct MockService: ServiceType {
   internal let currency: String
   internal let buildVersion: String
 
-  fileprivate let addNewCreditCardError: GraphError?
+  fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>?
 
   fileprivate let changeCurrencyResponse: GraphMutationEmptyResponseEnvelope?
-
   fileprivate let changeCurrencyError: GraphError?
 
   fileprivate let changeEmailError: GraphError?
@@ -182,7 +181,7 @@ internal struct MockService: ServiceType {
                 language: String = "en",
                 currency: String = "USD",
                 buildVersion: String = "1",
-                addNewCreditCardError: GraphError? = nil,
+                addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
                 changeEmailError: GraphError? = nil,
                 changeEmailResponse: UserEnvelope<UserEmailFields>? = UserEnvelope<UserEmailFields>(
                                                                        me: .template
@@ -283,7 +282,7 @@ internal struct MockService: ServiceType {
     self.currency = currency
     self.buildVersion = buildVersion
 
-    self.addNewCreditCardError = addNewCreditCardError
+    self.addNewCreditCardResult = addNewCreditCardResult
 
     self.changeCurrencyResponse = changeCurrencyResponse
     self.changeCurrencyError = changeCurrencyError
@@ -469,13 +468,10 @@ internal struct MockService: ServiceType {
     self.watchProjectMutationResult = watchProjectMutationResult
   }
 
-  internal func addNewCreditCard(input: CreatePaymentSourceInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    if let error = self.addNewCreditCardError {
-      return SignalProducer(error: error)
-    } else {
-      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
-    }
+  public func addNewCreditCard(input: CreatePaymentSourceInput)
+    -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
+
+     return producer(for: addNewCreditCardResult)
   }
 
   internal func changeEmail(input: ChangeEmailInput) ->
@@ -1382,6 +1378,7 @@ private extension MockService {
           oauthToken: $0,
           language: $1.language,
           buildVersion: $1.buildVersion,
+          addNewCreditCardResult: $1.addNewCreditCardResult,
           changePaymentMethodResult: $1.changePaymentMethodResult,
           deletePaymentMethodResult: $1.deletePaymentMethodResult,
           createPledgeResult: $1.createPledgeResult,

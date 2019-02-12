@@ -13,6 +13,7 @@ public extension Bundle {
  A `ServerType` that requests data from an API webservice.
  */
 public struct Service: ServiceType {
+
   public let appId: String
   public let serverConfig: ServerConfigType
   public let oauthToken: OauthTokenAuthType?
@@ -61,7 +62,7 @@ public struct Service: ServiceType {
   }
 
   public func addNewCreditCard(input: CreatePaymentSourceInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
     return applyMutation(mutation: CreatePaymentSourceMutation(input: input))
   }
 

@@ -110,20 +110,17 @@ AddNewCardViewModelOutputs {
     self.dismissKeyboard = submitPaymentDetails.ignoreValues()
 
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
-      .map { _ in AppEnvironment.current.config?.stripePublishableKey }
-      .skipNil()
+      .map(value: publishableKey(for: AppEnvironment.current.environmentType))
 
     let addNewCardEvent = self.stripeTokenProperty.signal.skipNil()
       .map { CreatePaymentSourceInput(paymentType: PaymentType.creditCard,
                                       stripeToken: $0.0, stripeCardId: $0.1) }
-      .flatMap {
+      .switchMap {
         AppEnvironment.current.apiService.addNewCreditCard(input: $0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { (envelope: CreatePaymentSourceEnvelope) in envelope.createPaymentSource }
           .materialize()
        }
-
-    self.addNewCardSuccess = addNewCardEvent.values().ignoreValues()
-      .map { _ in Strings.Got_it_your_changes_have_been_saved() }
 
     let stripeInvalidToken = self.stripeErrorProperty.signal.map {
       $0?.localizedDescription
@@ -131,11 +128,22 @@ AddNewCardViewModelOutputs {
     let graphError = addNewCardEvent.errors().map {
       $0.localizedDescription
     }
+    let addNewCardError = addNewCardEvent.map { $0.value?.errorMessage }.skipNil()
 
-    self.addNewCardFailure = Signal.merge (
+    let errorMessage = Signal.merge (
       stripeInvalidToken,
-      graphError
+      graphError,
+      addNewCardError
     )
+
+    self.addNewCardFailure = errorMessage.map { $0 }
+
+    let cardAddedSuccessfully = addNewCardEvent
+      .filter { $0.value?.isSuccessful == true }
+      .mapConst(true)
+
+    self.addNewCardSuccess = cardAddedSuccessfully
+      .map { _ in Strings.Got_it_your_changes_have_been_saved() }
 
     self.activityIndicatorShouldShow = Signal.merge(
       submitPaymentDetails.mapConst(true),
@@ -241,4 +249,10 @@ AddNewCardViewModelOutputs {
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }
+}
+
+// MARK: - View Model Helpers
+private func publishableKey(for environment: EnvironmentType) -> String {
+  return environment == .production ? Secrets.StripePublishableKey.production :
+    Secrets.StripePublishableKey.staging
 }

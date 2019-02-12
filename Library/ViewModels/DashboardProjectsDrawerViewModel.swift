@@ -60,6 +60,7 @@ DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs 
     self.notifyDelegateDidAnimateOut = self.animateOutCompletedProperty.signal
 
     self.focusScreenReaderOnFirstProject = self.animateInCompletedProperty.signal
+      .filter { AppEnvironment.current.isVoiceOverRunning() }
   }
 
   public var inputs: DashboardProjectsDrawerViewModelInputs { return self }

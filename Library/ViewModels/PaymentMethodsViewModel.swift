@@ -70,7 +70,9 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
     self.presentBanner = self.presentMessageBannerProperty.signal
 
-    self.tableViewIsEditing = self.editButtonTappedSignal.scan(false) { current, _ in !current }
+    self.tableViewIsEditing = Signal.merge(
+      self.editButtonTappedSignal.scan(false) { current, _ in !current },
+      self.didTapAddCardButtonProperty.signal.mapConst(false))
 
     // Koala:
     self.viewWillAppearProperty.signal
@@ -85,13 +87,14 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       .observeValues { _ in AppEnvironment.current.koala.trackDeletePaymentMethodError() }
   }
 
-  let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) = Signal<GraphUserCreditCard.CreditCard,
+  fileprivate let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) =
+    Signal<GraphUserCreditCard.CreditCard,
     NoError>.pipe()
   public func didDelete(_ creditCard: GraphUserCreditCard.CreditCard) {
     self.didDeleteCreditCardObserver.send(value: creditCard)
   }
 
-  let (editButtonTappedSignal, editButtonTappedObserver) = Signal<(), NoError>.pipe()
+  fileprivate let (editButtonTappedSignal, editButtonTappedObserver) = Signal<(), NoError>.pipe()
   public func editButtonTapped() {
     self.editButtonTappedObserver.send(value: ())
   }

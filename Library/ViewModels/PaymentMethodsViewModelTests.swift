@@ -53,6 +53,18 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     self.goToAddCardScreen.assertValueCount(1, "Should emit after tapping button")
   }
 
+  func testTableViewIsEditing_isFalse_WhenAddNewCardIsTapped() {
+    self.tableViewIsEditing.assertValueCount(0)
+
+    self.vm.inputs.editButtonTapped()
+
+    self.tableViewIsEditing.assertValues([true])
+
+    self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
+
+    self.tableViewIsEditing.assertValues([true, false])
+  }
+
   func testPresentMessageBanner() {
     self.presentBanner.assertValues([])
 

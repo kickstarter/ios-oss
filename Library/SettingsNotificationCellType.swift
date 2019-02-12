@@ -36,7 +36,7 @@ public enum SettingsNotificationSectionType: Int {
     case .backedProjects:
       return Strings.Projects_youve_backed()
     case .creator:
-      return Strings.profile_settings_creator_title()
+      return Strings.Projects_youve_launched()
     case .social:
       return Strings.profile_settings_social_title()
     }
@@ -71,6 +71,15 @@ public enum SettingsNotificationCellType {
                                                                 .newFollowers,
                                                                 .friendBacksProject,
                                                                 ]
+
+  public var accessibilityTraits: UIAccessibilityTraits {
+    switch self {
+    case .projectNotifications, .emailFrequency:
+      return .button
+    default:
+      return .none
+    }
+  }
 
   public var shouldShowEmailNotificationButton: Bool {
     switch self {
