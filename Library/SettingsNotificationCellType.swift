@@ -36,7 +36,7 @@ public enum SettingsNotificationSectionType: Int {
     case .backedProjects:
       return Strings.Projects_youve_backed()
     case .creator:
-      return Strings.profile_settings_creator_title()
+      return Strings.Projects_youve_launched()
     case .social:
       return Strings.profile_settings_social_title()
     }
