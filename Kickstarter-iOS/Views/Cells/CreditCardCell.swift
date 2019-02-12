@@ -8,6 +8,7 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
 
   private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
 
+  @IBOutlet fileprivate weak var stackView: UIStackView!
   @IBOutlet fileprivate weak var cardImageView: UIImageView!
   @IBOutlet fileprivate weak var cardNumberLabel: UILabel!
   @IBOutlet fileprivate weak var expirationDateLabel: UILabel!
@@ -19,6 +20,10 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
 
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self.stackView
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
 
     _ = self.cardImageView
       |> \.contentMode .~ .scaleAspectFit
