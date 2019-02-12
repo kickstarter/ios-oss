@@ -92,6 +92,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       XCTFail("Card should exist")
       return
     }
+    
     let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 3)))
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
