@@ -8,6 +8,7 @@ import Result
 public protocol SettingsNotificationsViewModelInputs {
   func didSelectRow(cellType: SettingsNotificationCellType)
   func didSelectEmailFrequency(frequency: EmailFrequency)
+  func dismissPickerTap()
   func failedToUpdateUser(error: String)
   func updateUser(user: User)
   func viewDidLoad()
@@ -39,12 +40,23 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
         .demoteErrors()
     }.skipNil()
 
-    let userAttributeChanged = emailFrequencyProperty.signal
+    let pledgeActivityNotificationChanged: Signal<(UserAttribute, Bool), NoError> =
+      updatedUserProperty.signal.skipNil()
+          .map { user in
+            return  (UserAttribute.notification(.pledgeActivity), user.notifications.backings ?? false)
+    }
+
+    let creatorDigestNotificationChanged = emailFrequencyProperty.signal
       .map { frequency -> (UserAttribute, Bool) in
-        let digestValue = frequency == .daily ? true : false
+        let digestValue = frequency == .dailySummary ? true : false
 
         return (UserAttribute.notification(.creatorDigest), digestValue)
     }
+
+    let userAttributeChanged = Signal.merge(
+      pledgeActivityNotificationChanged.signal,
+      creatorDigestNotificationChanged.signal
+    )
 
     let updatedUser = initialUser.signal
       .switchMap { user in
@@ -84,14 +96,15 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     self.pickerViewIsHidden = Signal.merge(
         emailFrequencyCellSelected.signal.mapConst(false),
-        emailFrequencyProperty.signal.mapConst(true)
+        emailFrequencyProperty.signal.mapConst(true),
+				dismissPickerTapProperty.signal.mapConst(true)
     ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal
       .map { $0 |> UserAttribute.notification(.creatorDigest).keyPath.view }
       .skipNil()
       .map { creatorDigest -> EmailFrequency in
-        return creatorDigest ? EmailFrequency.daily : EmailFrequency.individualEmails
+        return creatorDigest ? EmailFrequency.dailySummary : EmailFrequency.twiceADaySummary
     }
 
     let manageProjectNotificationsSelected = self.selectedCellType.signal
@@ -109,6 +122,11 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  fileprivate let dismissPickerTapProperty = MutableProperty(())
+  public func dismissPickerTap() {
+    self.dismissPickerTapProperty.value = ()
   }
 
   public func shouldSelectRow(for cellType: SettingsNotificationCellType) -> Bool {
