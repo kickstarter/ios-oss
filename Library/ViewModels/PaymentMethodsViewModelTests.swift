@@ -14,6 +14,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   let goToAddCardScreen = TestObserver<Void, NoError>()
   let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
   let presentBanner = TestObserver<String, NoError>()
+  let reloadData = TestObserver<Void, NoError>()
   let showAlert = TestObserver<String, NoError>()
   let tableViewIsEditing = TestObserver<Bool, NoError>()
 
@@ -24,6 +25,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.goToAddCardScreen.observe(self.goToAddCardScreen.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
+    self.vm.outputs.reloadData.observe(self.reloadData.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.tableViewIsEditing.observe(self.tableViewIsEditing.observer)
   }
@@ -34,6 +36,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     )
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
     withEnvironment(apiService: apiService) {
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadData.assertDidEmitValue()
 
       self.vm.inputs.viewWillAppear()
       self.scheduler.advance()

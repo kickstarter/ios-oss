@@ -4,11 +4,9 @@ import Prelude
 import UIKit
 
 internal final class PaymentMethodsViewController: UIViewController, MessageBannerViewControllerPresenting {
-
   private let dataSource = PaymentMethodsDataSource()
   private let viewModel: PaymentMethodsViewModelType = PaymentMethodsViewModel()
 
-  @IBOutlet private weak var headerLabel: UILabel!
   @IBOutlet private weak var tableView: UITableView!
 
   fileprivate lazy var editButton: UIBarButtonItem = {
@@ -34,20 +32,28 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.register(nib: .CreditCardCell)
-    self.tableView.registerHeaderFooter(nib: .PaymentMethodsFooterView)
 
-    self.viewModel.inputs.viewDidLoad()
+    self.configureHeaderFooterViews()
+
     self.navigationItem.rightBarButtonItem = self.editButton
 
     self.dataSource.deletionHandler = { [weak self] creditCard in
       self?.viewModel.inputs.didDelete(creditCard)
     }
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     self.viewModel.inputs.viewWillAppear()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
   override func bindStyles() {
@@ -57,12 +63,6 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in
         Strings.Payment_methods()
-    }
-
-    _ = self.headerLabel
-      |> settingsDescriptionLabelStyle
-      |> \.text %~ { _ in
-        Strings.Any_payment_methods_you_saved_to_Kickstarter()
     }
 
     _ = self.tableView
@@ -81,6 +81,12 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       .observeForUI()
       .observeValues { [weak self] result in
         self?.dataSource.load(creditCards: result)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.reloadData
+      .observeForUI()
+      .observeValues { [weak self] in
         self?.tableView.reloadData()
     }
 
@@ -123,24 +129,49 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
     self.present(nav, animated: true, completion: nil)
   }
+
+  // MARK: - Private Helpers
+
+  private func configureHeaderFooterViews() {
+    if let header = SettingsTableViewHeader.fromNib(nib: Nib.SettingsTableViewHeader) {
+      header.configure(with: Strings.Any_payment_methods_you_saved_to_Kickstarter())
+
+      let headerContainer = UIView(frame: .zero)
+      headerContainer.addSubview(header)
+
+      self.tableView.tableHeaderView = headerContainer
+
+      header.constrainEdges(to: headerContainer)
+
+      _ = header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
+        |> \.priority .~ .defaultHigh
+        |> \.isActive .~ true
+    }
+
+    if let footer = PaymentMethodsFooterView.fromNib(nib: Nib.PaymentMethodsFooterView) {
+      footer.delegate = self
+
+      let footerContainer = UIView(frame: .zero)
+      footerContainer.addSubview(footer)
+
+      self.tableView.tableFooterView = footerContainer
+
+      footer.constrainEdges(to: footerContainer)
+
+      _ = footer.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
+        |> \.priority .~ .defaultHigh
+        |> \.isActive .~ true
+    }
+  }
 }
 
 extension PaymentMethodsViewController: UITableViewDelegate {
-
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return 0.1
   }
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return Styles.grid(13)
-  }
-
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let footer = tableView.dequeueReusableHeaderFooterView(
-      withIdentifier: Nib.PaymentMethodsFooterView.rawValue
-    ) as? PaymentMethodsFooterView
-    footer?.delegate = self
-    return footer
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return 0.1
   }
 }
 
@@ -153,5 +184,39 @@ extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
 extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
   internal func presentAddCardSuccessfulBanner(_ message: String) {
     self.viewModel.inputs.cardAddedSuccessfully(message)
+  }
+}
+
+private extension UIView {
+  func constrainEdges(to view: UIView) {
+    self.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint.activate([
+      self.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      self.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      self.topAnchor.constraint(equalTo: view.topAnchor),
+      self.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+      ])
+  }
+}
+
+private extension UITableView {
+  func ksr_sizeHeaderFooterViewsToFit() {
+    let keyPaths: [ReferenceWritableKeyPath<UITableView, UIView?>] = [
+      (\.tableHeaderView),
+      (\.tableFooterView)
+    ]
+
+    keyPaths.forEach { keyPath in
+      if let view = self[keyPath: keyPath] {
+        let size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        if view.frame.height != size.height {
+          view.frame.size.height = size.height
+
+          self[keyPath: keyPath] = view
+        }
+      }
+    }
   }
 }

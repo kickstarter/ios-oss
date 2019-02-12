@@ -20,6 +20,7 @@ public enum Nib: String {
   case SettingsNewslettersCell
   case SettingsNewslettersTopCell
   case SettingsTableViewCell
+  case SettingsTableViewHeader
   case ThanksCategoryCell
   case SettingsNotificationCell
   case SettingsNotificationPickerCell
