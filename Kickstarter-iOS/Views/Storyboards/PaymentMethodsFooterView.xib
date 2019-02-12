@@ -19,7 +19,7 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVF-Hv-L8e">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="UK4-hM-zKF"/>
+                        <constraint firstAttribute="height" priority="750" constant="44" id="UK4-hM-zKF"/>
                     </constraints>
                     <state key="normal" image="icon--plus"/>
                     <connections>

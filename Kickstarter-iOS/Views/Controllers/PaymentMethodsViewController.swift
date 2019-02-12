@@ -136,7 +136,10 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       self.tableView.tableHeaderView = headerContainer
 
       header.constrainEdges(to: headerContainer)
-      header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
+
+      _ = header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
+        |> \.priority .~ .defaultHigh
+        |> \.isActive .~ true
     }
 
     if let footer = PaymentMethodsFooterView.fromNib(nib: Nib.PaymentMethodsFooterView) {
@@ -148,7 +151,10 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       self.tableView.tableFooterView = footerContainer
 
       footer.constrainEdges(to: footerContainer)
-      footer.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
+
+      _ = footer.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
+        |> \.priority .~ .defaultHigh
+        |> \.isActive .~ true
     }
   }
 }

@@ -26,8 +26,8 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="i9M-3m-OYH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="5Te-4K-HdL"/>
-                <constraint firstItem="i9M-3m-OYH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="Foz-G3-vgu"/>
-                <constraint firstItem="i9M-3m-OYH" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="Nki-YW-JO0"/>
+                <constraint firstItem="i9M-3m-OYH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" priority="750" id="Foz-G3-vgu"/>
+                <constraint firstItem="i9M-3m-OYH" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" priority="750" id="Nki-YW-JO0"/>
                 <constraint firstItem="i9M-3m-OYH" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="VAj-Xx-4Nm"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
