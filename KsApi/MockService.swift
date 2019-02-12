@@ -24,7 +24,7 @@ internal struct MockService: ServiceType {
 
   fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
-  fileprivate let deletePaymentMethodResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>?
+  fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>?
 
   fileprivate let createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>?
 
@@ -190,7 +190,7 @@ internal struct MockService: ServiceType {
                 changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
                 changeCurrencyError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
-                deletePaymentMethodResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>? = nil,
+                deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
                 facebookConnectResponse: User? = nil,
                 facebookConnectError: ErrorEnvelope? = nil,
@@ -1341,7 +1341,7 @@ internal struct MockService: ServiceType {
   }
 
   internal func deletePaymentMethod(input: PaymentSourceDeleteInput) -> SignalProducer<
-    GraphMutationEmptyResponseEnvelope, GraphError> {
+    DeletePaymentMethodEnvelope, GraphError> {
     return producer(for: self.deletePaymentMethodResult)
   }
 

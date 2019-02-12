@@ -10,6 +10,7 @@ import Prelude
 internal final class PaymentMethodsViewModelTests: TestCase {
 
   let vm = PaymentMethodsViewModel()
+  let editButtonIsEnabled = TestObserver<Bool, NoError>()
   let goToAddCardScreen = TestObserver<Void, NoError>()
   let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
   let presentBanner = TestObserver<String, NoError>()
@@ -20,6 +21,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.editButtonIsEnabled.observe(self.editButtonIsEnabled.observer)
     self.vm.outputs.goToAddCardScreen.observe(self.goToAddCardScreen.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
@@ -42,6 +44,92 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
+    }
+  }
+
+  func testEditButtonIsNotEnabled_OnViewDidLoad() {
+
+    self.editButtonIsEnabled.assertDidNotEmitValue()
+    self.vm.viewDidLoad()
+    self.editButtonIsEnabled.assertValue(false)
+  }
+
+  func testEditButtonIsEnabled_HasPaymentMethods() {
+    let response = UserEnvelope<GraphUserCreditCard>(
+      me: GraphUserCreditCard.template
+    )
+    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+    withEnvironment(apiService: apiService) {
+
+      self.editButtonIsEnabled.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+      self.editButtonIsEnabled.assertValues([false])
+
+      self.vm.inputs.viewWillAppear()
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues([false, true])
+    }
+  }
+
+  func testEditButtonIsNotEnabled_NoPaymentMethods() {
+    let response = UserEnvelope<GraphUserCreditCard>(
+      me: GraphUserCreditCard.emptyTemplate
+    )
+    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+    withEnvironment(apiService: apiService) {
+
+      self.editButtonIsEnabled.assertDidNotEmitValue()
+      self.vm.inputs.viewDidLoad()
+
+      self.editButtonIsEnabled.assertValues([false])
+
+      self.vm.inputs.viewWillAppear()
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues([false, false])
+    }
+  }
+
+  func testEditButtonEnabled_AfterDeletePaymentMethod() {
+    guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
+      XCTFail("Card should exist")
+      return
+    }
+    
+    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 3)))
+    withEnvironment(apiService: apiService) {
+      self.editButtonIsEnabled.assertDidNotEmitValue()
+      self.vm.inputs.viewDidLoad()
+
+      self.editButtonIsEnabled.assertValues([false])
+
+      self.vm.inputs.didDelete(card)
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues([false, true])
+    }
+  }
+
+  func testEditButtonNotEnabled_AfterDeleteLastPaymentMethod() {
+
+    guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
+      XCTFail("Card should exist")
+      return
+    }
+
+    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 0)))
+    withEnvironment(apiService: apiService) {
+      self.editButtonIsEnabled.assertDidNotEmitValue()
+      self.vm.inputs.viewDidLoad()
+
+      self.editButtonIsEnabled.assertValues([false])
+
+      self.vm.inputs.didDelete(card)
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues([false, false])
     }
   }
 
@@ -81,7 +169,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       return
     }
 
-    let apiService = MockService(deletePaymentMethodResult: .success(GraphMutationEmptyResponseEnvelope()))
+    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 2)))
     withEnvironment(apiService: apiService) {
 
       self.vm.inputs.viewWillAppear()
@@ -155,7 +243,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       XCTFail("Card should exist")
       return
     }
-    let apiService = MockService(deletePaymentMethodResult: .success(GraphMutationEmptyResponseEnvelope()))
+    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 2)))
     withEnvironment(apiService: apiService) {
 
       self.vm.inputs.viewDidLoad()
