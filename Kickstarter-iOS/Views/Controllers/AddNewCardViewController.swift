@@ -189,8 +189,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.viewModel.outputs.addNewCardSuccess
       .observeForControllerAction()
       .observeValues { [weak self] message in
-        self?.delegate?.presentAddCardSuccessfulBanner(message)
-        self?.navigationController?.dismiss(animated: true, completion: nil)
+        self?.dismissAndPresentMessageBanner(with: message)
     }
 
     self.viewModel.outputs.addNewCardFailure
@@ -249,6 +248,12 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
   private func cardBrandIsSupported(brand: STPCardBrand, supportedCardBrands: [STPCardBrand]) -> Bool {
     return self.supportedCardBrands.contains(brand)
+  }
+
+  private func dismissAndPresentMessageBanner(with message: String) {
+    self.navigationController?.dismiss(animated: true, completion: { [weak self] in
+      self?.delegate?.presentAddCardSuccessfulBanner(message)
+    })
   }
 
   private func dismissKeyboard() {
