@@ -9,10 +9,6 @@ public protocol PaymentMethodsFooterViewDelegate: class {
 public final class PaymentMethodsFooterView: UIView, NibLoading {
   public weak var delegate: PaymentMethodsFooterViewDelegate?
 
-  override public var intrinsicContentSize: CGSize {
-    return CGSize(width: self.bounds.size.width, height: 44)
-  }
-
   @IBOutlet private weak var addCardButton: UIButton!
   @IBOutlet private weak var separatorView: UIView!
 
