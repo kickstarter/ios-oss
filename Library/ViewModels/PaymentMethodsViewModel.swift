@@ -9,6 +9,7 @@ public protocol PaymentMethodsViewModelInputs {
   func didDelete(_ creditCard: GraphUserCreditCard.CreditCard)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
+  func refresh()
   func viewDidLoad()
   func viewWillAppear()
 }
@@ -35,7 +36,11 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   public init() {
     self.reloadData = self.viewDidLoadProperty.signal
 
-    let paymentMethodsEvent = self.viewWillAppearProperty.signal
+    let paymentMethodsEvent = Signal.merge(
+      self.viewWillAppearProperty.signal,
+      self.cardAddedSuccessfullyProperty.signal.ignoreValues(),
+      self.refreshProperty.signal
+      )
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphCreditCards(query: UserQueries.storedCards.query)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -81,7 +86,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
     self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
 
-    self.presentBanner = self.presentMessageBannerProperty.signal
+    self.presentBanner = self.cardAddedSuccessfullyProperty.signal
 
     self.tableViewIsEditing = Signal.merge(
       self.editButtonTappedSignal.scan(false) { current, _ in !current },
@@ -127,9 +132,14 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.didTapAddCardButtonProperty.value = ()
   }
 
-  fileprivate let presentMessageBannerProperty = MutableProperty("")
+  fileprivate let cardAddedSuccessfullyProperty = MutableProperty("")
   public func cardAddedSuccessfully(_ message: String) {
-    self.presentMessageBannerProperty.value = message
+    self.cardAddedSuccessfullyProperty.value = message
+  }
+
+  fileprivate let refreshProperty = MutableProperty(())
+  public func refresh() {
+    self.refreshProperty.value = ()
   }
 
   public let editButtonIsEnabled: Signal<Bool, NoError>

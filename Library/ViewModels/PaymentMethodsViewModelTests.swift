@@ -31,10 +31,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testPaymentMethodsFetch_OnViewDidLoad() {
-    let response = UserEnvelope<GraphUserCreditCard>(
-      me: GraphUserCreditCard.template
-    )
+    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
+
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
 
@@ -44,6 +43,44 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
+    }
+  }
+
+  func testPaymentMethodsFetch_OnRefresh() {
+    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+
+    withEnvironment(apiService: apiService) {
+      self.paymentMethods.assertValues([])
+
+      self.vm.inputs.refresh()
+
+      self.scheduler.advance()
+
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
+    }
+  }
+
+  func testPaymentMethodsFetch_OnCardAddedSuccessfully() {
+    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+
+    withEnvironment(apiService: apiService) {
+      self.paymentMethods.assertValues([])
+
+      self.vm.inputs.cardAddedSuccessfully("First card added successfully")
+
+      self.scheduler.advance()
+
+      self.paymentMethods.assertValueCount(1)
+
+      withEnvironment(apiService: apiService) {
+        self.vm.inputs.cardAddedSuccessfully("Second card added successfully")
+
+        self.scheduler.advance()
+
+        self.paymentMethods.assertValueCount(2)
+      }
     }
   }
 
