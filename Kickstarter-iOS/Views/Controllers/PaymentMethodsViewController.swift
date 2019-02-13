@@ -182,8 +182,17 @@ extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
 }
 
 extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
-  internal func presentAddCardSuccessfulBanner(_ message: String) {
-    self.viewModel.inputs.cardAddedSuccessfully(message)
+  func addNewCardViewController(_ viewController: AddNewCardViewController,
+                                didSucceedWithMessage message: String) {
+    self.dismiss(animated: true) {
+      self.viewModel.inputs.cardAddedSuccessfully(message)
+    }
+  }
+
+  func addNewCardViewControllerDismissed(_ viewController: AddNewCardViewController) {
+    self.dismiss(animated: true) {
+      self.viewModel.inputs.refresh()
+    }
   }
 }
 
