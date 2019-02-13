@@ -40,7 +40,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
         .demoteErrors()
     }.skipNil()
 
-    let pledgeActivityNotificationChanged: Signal<(UserAttribute, Bool), NoError> =
+    let projectActivityNotificationChanged: Signal<(UserAttribute, Bool), NoError> =
       updatedUserProperty.signal.skipNil()
           .map { user in
             return  (UserAttribute.notification(.pledgeActivity), user.notifications.backings ?? false)
@@ -54,7 +54,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     }
 
     let userAttributeChanged = Signal.merge(
-      pledgeActivityNotificationChanged.signal,
+      projectActivityNotificationChanged.signal,
       creatorDigestNotificationChanged.signal
     )
 
@@ -94,10 +94,15 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       .skipNil()
       .filter { $0 == .emailFrequency }
 
+    let projectActivityEmailFrequencyDisabled = projectActivityNotificationChanged.signal
+      .map { $0.1 }
+      .filter { $0 == false }
+
     self.pickerViewIsHidden = Signal.merge(
-        emailFrequencyCellSelected.signal.mapConst(false),
-        emailFrequencyProperty.signal.mapConst(true),
-				dismissPickerTapProperty.signal.mapConst(true)
+      emailFrequencyCellSelected.signal.mapConst(false),
+      emailFrequencyProperty.signal.mapConst(true),
+      dismissPickerTapProperty.signal.mapConst(true),
+      projectActivityEmailFrequencyDisabled.signal.mapConst(true)
     ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal
