@@ -183,15 +183,13 @@ extension PaymentMethodsViewController: PaymentMethodsFooterViewDelegate {
 
 extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
   func addNewCardViewControllerSucceeded(with message: String) {
-    self.dismiss(animated: true) { [weak self] in
-      guard let self = self else { return }
+    self.dismiss(animated: true) {
       self.viewModel.inputs.cardAddedSuccessfully(message)
     }
   }
 
   func addNewCardViewControllerDismissed() {
-    self.dismiss(animated: true) { [weak self] in
-      guard let self = self else { return }
+    self.dismiss(animated: true) {
       self.viewModel.inputs.refresh()
     }
   }
