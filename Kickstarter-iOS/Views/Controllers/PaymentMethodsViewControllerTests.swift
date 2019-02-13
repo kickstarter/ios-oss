@@ -33,7 +33,7 @@ class PaymentMethodsViewControllerTests: TestCase {
   }
 
   private func generateSnapshots(with response: UserEnvelope<GraphUserCreditCard>) {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, Device.allCases).forEach {
       (arg) in
 
       let (language, device) = arg
