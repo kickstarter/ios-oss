@@ -6,8 +6,9 @@ import Stripe
 import UIKit
 
 internal protocol AddNewCardViewControllerDelegate: class {
-  func addNewCardViewControllerSucceeded(with message: String)
-  func addNewCardViewControllerDismissed()
+  func addNewCardViewController(_ viewController: AddNewCardViewController,
+                                didSucceedWithMessage message: String)
+  func addNewCardViewControllerDismissed(_ viewController: AddNewCardViewController)
 }
 
 internal final class AddNewCardViewController: UIViewController,
@@ -213,7 +214,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   }
 
   @objc fileprivate func cancelButtonTapped() {
-    self.delegate?.addNewCardViewControllerDismissed()
+    self.delegate?.addNewCardViewControllerDismissed(self)
   }
 
   @objc fileprivate func saveButtonTapped() {
@@ -252,7 +253,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   }
 
   private func dismissAndPresentMessageBanner(with message: String) {
-    self.delegate?.addNewCardViewControllerSucceeded(with: message)
+    self.delegate?.addNewCardViewController(self, didSucceedWithMessage: message)
   }
 
   private func dismissKeyboard() {
