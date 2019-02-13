@@ -12,7 +12,6 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var cardImageView: UIImageView!
   @IBOutlet fileprivate weak var cardNumberLabel: UILabel!
   @IBOutlet fileprivate weak var expirationDateLabel: UILabel!
-  @IBOutlet fileprivate weak var separatorView: UIView!
 
   public func configureWith(value card: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: card)
@@ -34,9 +33,6 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
 
     _ = self.expirationDateLabel
       |> settingsDescriptionLabelStyle
-
-    _ = self.separatorView
-      |> separatorStyle
   }
 
   override func bindViewModel() {

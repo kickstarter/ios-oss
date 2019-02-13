@@ -14,7 +14,10 @@ final class SettingsTableViewHeader: UIView, NibLoading {
 
     _ = self
       |> \.backgroundColor .~ .ksr_grey_200
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
+      |> \.layoutMargins .~ .init(top: Styles.grid(5),
+                                  left: Styles.grid(2),
+                                  bottom: Styles.grid(3),
+                                  right: Styles.grid(2))
 
     _ = self.titleLabel
       |> settingsDescriptionLabelStyle
