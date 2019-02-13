@@ -47,6 +47,8 @@ class PaymentMethodsViewControllerTests: TestCase {
                                                            orientation: .portrait,
                                                            child: controller)
 
+                        parent.view.layoutIfNeeded()
+
                         self.scheduler.run()
 
                         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
