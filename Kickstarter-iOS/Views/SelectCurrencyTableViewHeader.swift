@@ -3,10 +3,10 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-final class SelectCurrencyTableViewHeader: UITableViewHeaderFooterView {
+final class SelectCurrencyTableViewHeader: UIView {
 
-  override init(reuseIdentifier: String?) {
-    super.init(reuseIdentifier: reuseIdentifier)
+  override init(frame: CGRect) {
+    super.init(frame: frame)
 
     self.addSubview(self.headerStackView)
     self.headerStackView.constrainEdges(to: self)

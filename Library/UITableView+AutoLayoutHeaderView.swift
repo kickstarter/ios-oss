@@ -1,15 +1,22 @@
 import UIKit
 
 extension UITableView {
-  public func setHeaderViewConstrainedToWidth(_ headerView: UIView) {
-    if self.tableHeaderView != headerView {
-      headerView.translatesAutoresizingMaskIntoConstraints = false
+  public func ksr_sizeHeaderFooterViewsToFit() {
+    let keyPaths: [ReferenceWritableKeyPath<UITableView, UIView?>] = [
+      (\.tableHeaderView),
+      (\.tableFooterView)
+    ]
 
-      self.tableHeaderView = headerView
+    keyPaths.forEach { keyPath in
+      if let view = self[keyPath: keyPath] {
+        let size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
 
-      NSLayoutConstraint.activate([
-        headerView.widthAnchor.constraint(equalTo: self.widthAnchor)
-      ])
+        if view.frame.height != size.height {
+          view.frame.size.height = size.height
+
+          self[keyPath: keyPath] = view
+        }
+      }
     }
   }
 }
