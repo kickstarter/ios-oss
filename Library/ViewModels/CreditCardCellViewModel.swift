@@ -37,8 +37,13 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
       .map(cardImage(with:))
 
     self.cardNumberAccessibilityLabel = self.cardProperty.signal.skipNil()
-      .map { [$0.type.description, Strings.Card_ending_in_last_four(last_four: $0.lastFour)]
-        .compactMap{ $0 }.joined(separator: ", ")
+      .map { card -> String in
+        guard let cardType = card.type else {
+          return Strings.Card_ending_in_last_four(last_four: card.lastFour)
+        }
+
+        return [cardType.description, Strings.Card_ending_in_last_four(last_four: card.lastFour)]
+          .compactMap{ $0 }.joined(separator: ", ")
     }
 
     self.cardNumberText = self.cardProperty.signal.skipNil()
@@ -71,7 +76,7 @@ private func cardImage(with card: GraphUserCreditCard.CreditCard) -> UIImage? {
 
 private func formatted(dateString: String) -> String {
   let date = toDate(dateString: dateString)
-  return Format.date(secondsInUTC: date.timeIntervalSince1970, template: "MM-yyyy", timeZone: UTCTimeZone)
+  return Format.date(secondsInUTC: date.timeIntervalSince1970, template: "MM-yyyy")
 }
 
 private func toDate(dateString: String) -> Date {

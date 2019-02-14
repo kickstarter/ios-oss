@@ -76,4 +76,15 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberText.assertValue("Card ending in 1882")
     self.expirationDateText.assertValue("Expires 01/2024")
   }
+
+  func testCardInfoForUnknownCardType() {
+    let unknownCard = GraphUserCreditCard.generic |> \.type .~ nil
+
+    self.vm.inputs.configureWith(creditCard: unknownCard)
+
+    self.cardImage.assertValue(UIImage(named: "icon--generic"))
+    self.cardNumberAccessibilityLabel.assertLastValue("Card ending in 1882")
+    self.cardNumberText.assertValue("Card ending in 1882")
+    self.expirationDateText.assertValue("Expires 01/2024")
+  }
 }
