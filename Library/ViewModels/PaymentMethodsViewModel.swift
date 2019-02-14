@@ -86,7 +86,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
     self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
 
-    self.presentBanner = self.addNewCardSucceededProperty.signal
+    self.presentBanner = self.addNewCardSucceededProperty.signal.skipNil()
 
     self.tableViewIsEditing = Signal.merge(
       self.editButtonTappedSignal.scan(false) { current, _ in !current },
@@ -132,7 +132,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.didTapAddCardButtonProperty.value = ()
   }
 
-  fileprivate let addNewCardSucceededProperty = MutableProperty("")
+  fileprivate let addNewCardSucceededProperty = MutableProperty<String?>(nil)
   public func addNewCardSucceeded(with message: String) {
     self.addNewCardSucceededProperty.value = message
   }
