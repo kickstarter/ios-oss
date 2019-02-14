@@ -14,7 +14,7 @@ public protocol CreditCardCellViewModelOutputs {
   /// Emits the card's image.
   var cardImage: Signal<UIImage?, NoError> { get }
 
-  /// Emits
+  /// Emits a formatted accessibility string containing the card type, number and last four digits
   var cardNumberAccessibilityLabel: Signal<String, NoError> { get }
 
   /// Emits a formatted string containing the card's last four digits.
