@@ -235,20 +235,20 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.tableViewIsEditing.assertValues([])
+      self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
       self.vm.inputs.editButtonTapped()
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode enabled")
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.scheduler.advance()
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode remains enabled")
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode remains enabled")
       self.showAlert.assertValues([], "No errors emitted")
       self.paymentMethods.assertValues(
         [GraphUserCreditCard.template.storedCards.nodes],
@@ -271,20 +271,20 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.tableViewIsEditing.assertValues([])
+      self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
       self.vm.inputs.editButtonTapped()
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode enabled")
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.scheduler.advance()
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode remains enabled")
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode remains enabled")
       self.showAlert.assertValues([
         "Something went wrong and we were unable to remove your payment method, please try again."])
       self.paymentMethods.assertValues(
@@ -310,29 +310,36 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.tableViewIsEditing.assertValues([])
+      self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
+      self.editButtonIsEnabled.assertValues([false, true], "Edit button enabled, we have cards")
 
       self.vm.inputs.editButtonTapped()
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode enabled")
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
+      self.editButtonIsEnabled.assertValues([false, true, true], "Editing button remains enabled")
+
       self.scheduler.advance()
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode remains enabled")
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode remains enabled")
       self.showAlert.assertValues([])
     }
 
     let apiService2 = MockService(deletePaymentMethodResult: .failure(.invalidInput))
     withEnvironment(apiService: apiService2) {
-      self.vm.inputs.didDelete(card, visibleCellCount: 1)
-      self.scheduler.advance()
+      self.vm.inputs.didDelete(card, visibleCellCount: 0)
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode remains enabled")
+      self.editButtonIsEnabled.assertValues(
+        [false, true, true, true, false], "Editing button disabled as last card removed"
+      )
+      self.tableViewIsEditing.assertValues([false, true, false], "Editing mode disabled as last card removed")
+
+      self.scheduler.advance()
       self.showAlert.assertValues([
         "Something went wrong and we were unable to remove your payment method, please try again."])
       self.paymentMethods.assertValues(
@@ -343,7 +350,13 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.vm.addNewCardDismissed()
       self.scheduler.advance()
-      
+
+      self.editButtonIsEnabled.assertValues(
+        [false, true, true, true, false, true, true], "Editing mode disabled as last card removal failed"
+      )
+      self.tableViewIsEditing.assertValues(
+        [false, true, false], "Editing mode reenabled as last card removal failed"
+      )
       self.paymentMethods.assertValues(
         [GraphUserCreditCard.template.storedCards.nodes,
          result1.storedCards,

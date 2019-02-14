@@ -15,7 +15,6 @@ public protocol PaymentMethodsViewModelInputs {
 }
 
 public protocol PaymentMethodsViewModelOutputs {
-  /// Emits the user's stored cards
   var editButtonIsEnabled: Signal<Bool, NoError> { get }
   var goToAddCardScreen: Signal<Void, NoError> { get }
   var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError> { get }
@@ -84,10 +83,9 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
         .withLatest(from: latestPaymentMethods)
         .map(second)
     )
-    .logEvents(identifier: "***")
 
     let hasAtLeastOneCard = Signal.merge(
-      initialPaymentMethodsValues
+      self.paymentMethods
         .map { !$0.isEmpty },
       deletePaymentMethodValues
         .map { !$0.isEmpty },
@@ -105,8 +103,10 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.presentBanner = self.addNewCardSucceededProperty.signal.skipNil()
 
     self.tableViewIsEditing = Signal.merge(
+      self.editButtonIsEnabled.filter(isFalse),
       self.editButtonTappedSignal.scan(false) { current, _ in !current },
-      self.didTapAddCardButtonProperty.signal.mapConst(false))
+      self.didTapAddCardButtonProperty.signal.mapConst(false)
+    )
 
     // Koala:
     self.viewWillAppearProperty.signal
