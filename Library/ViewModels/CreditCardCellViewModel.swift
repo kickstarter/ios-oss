@@ -37,8 +37,10 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
       .map(cardImage(with:))
 
     self.cardNumberAccessibilityLabel = self.cardProperty.signal.skipNil()
-      .map { [$0.type.description, Strings.Card_ending_in_last_four(last_four: $0.lastFour)]
-        .compactMap{ $0 }.joined(separator: ", ")
+      .map {
+        return [$0.type?.description, Strings.Card_ending_in_last_four(last_four: $0.lastFour)]
+          .compactMap { $0 }
+          .joined(separator: ", ")
     }
 
     self.cardNumberText = self.cardProperty.signal.skipNil()

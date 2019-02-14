@@ -9,20 +9,22 @@ import Prelude
 
 internal final class PaymentMethodsViewModelTests: TestCase {
 
-  let vm = PaymentMethodsViewModel()
-  let editButtonIsEnabled = TestObserver<Bool, NoError>()
-  let goToAddCardScreen = TestObserver<Void, NoError>()
-  let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
-  let presentBanner = TestObserver<String, NoError>()
-  let reloadData = TestObserver<Void, NoError>()
-  let showAlert = TestObserver<String, NoError>()
-  let tableViewIsEditing = TestObserver<Bool, NoError>()
+  private let vm = PaymentMethodsViewModel()
+  private let editButtonIsEnabled = TestObserver<Bool, NoError>()
+  private let errorLoadingPaymentMethods = TestObserver<String, NoError>()
+  private let goToAddCardScreen = TestObserver<Void, NoError>()
+  private let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
+  private let presentBanner = TestObserver<String, NoError>()
+  private let reloadData = TestObserver<Void, NoError>()
+  private let showAlert = TestObserver<String, NoError>()
+  private let tableViewIsEditing = TestObserver<Bool, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
     self.vm.outputs.editButtonIsEnabled.observe(self.editButtonIsEnabled.observer)
     self.vm.outputs.goToAddCardScreen.observe(self.goToAddCardScreen.observer)
+    self.vm.outputs.errorLoadingPaymentMethods.observe(self.errorLoadingPaymentMethods.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
     self.vm.outputs.reloadData.observe(self.reloadData.observer)
@@ -45,7 +47,26 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  func testPaymentMethodsFetch_errorFetchingPaymentMethods() {
+    let error = GraphResponseError(message: "Something went wrong")
+    let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))
+
+    withEnvironment(apiService: apiService) {
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadData.assertDidEmitValue()
+
+      self.vm.inputs.viewWillAppear()
+
+      self.scheduler.advance()
+
+      self.errorLoadingPaymentMethods.assertValue(error.message)
+      self.paymentMethods.assertDidNotEmitValue()
+    }
+  }
+
   func testPaymentMethodsFetch_OnAddNewCardSucceeded() {
+
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
 
@@ -133,7 +154,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       XCTFail("Card should exist")
       return
     }
-    
+
     let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 3)))
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
