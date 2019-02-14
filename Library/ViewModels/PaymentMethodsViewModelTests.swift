@@ -65,7 +65,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
   }
 
-	func testPaymentMethodsFetch_OnAddNewCardSucceeded() {
+  func testPaymentMethodsFetch_OnAddNewCardSucceeded() {
 
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
