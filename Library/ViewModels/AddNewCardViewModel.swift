@@ -105,11 +105,6 @@ AddNewCardViewModelOutputs {
                              self.zipcodeTextFieldDidEndEditingProperty.signal))
       .filter(isTrue)
 
-    let formIncomplete = self.saveButtonIsEnabled
-      .takeWhen( self.zipcodeTextFieldDidEndEditingProperty.signal)
-      .filter(isFalse)
-      .map { _ in Strings.Something_went_wrong_please_try_again() }
-
     self.paymentDetails = paymentInput.takeWhen(submitPaymentDetails)
 
     self.dismissKeyboard = submitPaymentDetails.ignoreValues()
@@ -138,8 +133,7 @@ AddNewCardViewModelOutputs {
     let errorMessage = Signal.merge (
       stripeInvalidToken,
       graphError,
-      addNewCardError,
-      formIncomplete
+      addNewCardError
     )
 
     self.addNewCardFailure = errorMessage.map { $0 }
@@ -217,7 +211,7 @@ AddNewCardViewModelOutputs {
   private let stripeTokenProperty = MutableProperty<(String, String)?>(nil)
   public func stripeCreated(_ token: String?, stripeID: String?) {
     if let token = token, let stripeID = stripeID {
-      self.stripeTokenProperty.value = (token, stripeID )
+      self.stripeTokenProperty.value = (token, stripeID)
     }
   }
 
