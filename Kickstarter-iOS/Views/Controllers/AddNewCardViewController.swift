@@ -130,6 +130,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
     _ = self.zipcodeView
       |> \.autocapitalizationType .~ .allCharacters
+      |> \.returnKeyType .~ .done
   }
 
   override func bindViewModel() {

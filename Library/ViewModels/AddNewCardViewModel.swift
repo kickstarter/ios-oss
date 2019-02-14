@@ -105,6 +105,11 @@ AddNewCardViewModelOutputs {
                              self.zipcodeTextFieldDidEndEditingProperty.signal))
       .filter(isTrue)
 
+    let formIncomplete = self.saveButtonIsEnabled
+      .takeWhen( self.zipcodeTextFieldDidEndEditingProperty.signal)
+      .filter(isFalse)
+      .map { _ in Strings.Something_went_wrong_please_try_again() }
+
     self.paymentDetails = paymentInput.takeWhen(submitPaymentDetails)
 
     self.dismissKeyboard = submitPaymentDetails.ignoreValues()
@@ -133,7 +138,8 @@ AddNewCardViewModelOutputs {
     let errorMessage = Signal.merge (
       stripeInvalidToken,
       graphError,
-      addNewCardError
+      addNewCardError,
+      formIncomplete
     )
 
     self.addNewCardFailure = errorMessage.map { $0 }

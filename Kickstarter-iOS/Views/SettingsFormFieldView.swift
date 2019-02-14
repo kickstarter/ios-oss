@@ -10,6 +10,7 @@ final class SettingsFormFieldView: UIView, NibLoading {
   @IBOutlet fileprivate weak var stackView: UIStackView!
 
   var autocapitalizationType: UITextAutocapitalizationType = .none
+  var returnKeyType: UIReturnKeyType = .default
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -34,6 +35,7 @@ final class SettingsFormFieldView: UIView, NibLoading {
     _ = self.textField
       |> formFieldStyle
       |> \.autocapitalizationType .~ self.autocapitalizationType
+      |> \.returnKeyType .~ self.returnKeyType
       |> \.textAlignment .~ .right
       |> \.textColor .~ .ksr_text_dark_grey_500
       |> \.accessibilityLabel .~ self.titleLabel.text

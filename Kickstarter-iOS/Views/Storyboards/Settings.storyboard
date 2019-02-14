@@ -143,14 +143,14 @@
         <scene sceneID="sW7-08-TIc">
             <objects>
                 <viewController storyboardIdentifier="ChangeEmailViewController" title="Change Email" id="JTR-kW-WZp" customClass="ChangeEmailViewController" customModule="Kickstarter_Framework" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="Sro-rn-6F2">
+                    <view key="view" contentMode="scaleToFill" id="Sro-rn-6F2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XfD-wg-Nx4" customClass="UIScrollView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XfD-wg-Nx4" customClass="UIScrollView">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VyE-lE-aLQ">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VyE-lE-aLQ">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="274"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eOl-CY-t3g">
@@ -306,7 +306,7 @@
                                                     <constraint firstItem="9eu-AW-ocS" firstAttribute="leading" secondItem="9Ny-Zh-npT" secondAttribute="leading" constant="12" id="mMW-w3-7Dw"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9uR-ng-0BU" userLabel="Password">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uR-ng-0BU" userLabel="Password">
                                                 <rect key="frame" x="0.0" y="222" width="375" height="52"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="lrH-yX-xHX">
@@ -336,7 +336,7 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PLh-cR-QEi" userLabel="Separator">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PLh-cR-QEi" userLabel="Separator">
                                                         <rect key="frame" x="0.0" y="51.5" width="375" height="0.5"/>
                                                         <color key="backgroundColor" red="0.86274509799999999" green="0.87058823529999996" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
@@ -773,7 +773,7 @@
                                                 <rect key="frame" x="0.0" y="86" width="375" height="50"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygp-ig-bdL" userLabel="Separator">
-                                                        <rect key="frame" x="8" y="0.0" width="367" height="0.5"/>
+                                                        <rect key="frame" x="12" y="0.0" width="363" height="0.5"/>
                                                         <color key="backgroundColor" red="0.86274509799999999" green="0.87058823529999996" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="0.5" id="7wL-Ak-ADg"/>
@@ -784,7 +784,7 @@
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOu-68-PJO" userLabel="Separator">
-                                                        <rect key="frame" x="8" y="49.5" width="367" height="0.5"/>
+                                                        <rect key="frame" x="12" y="49.5" width="363" height="0.5"/>
                                                         <color key="backgroundColor" red="0.86274509799999999" green="0.87058823529999996" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="0.5" id="C9K-8j-qEY"/>
@@ -799,11 +799,11 @@
                                                     <constraint firstItem="0rS-r2-TWS" firstAttribute="top" secondItem="ygp-ig-bdL" secondAttribute="bottom" id="ZOi-wY-lfD"/>
                                                     <constraint firstAttribute="trailing" secondItem="ygp-ig-bdL" secondAttribute="trailing" id="aCV-Sr-nws"/>
                                                     <constraint firstAttribute="bottom" secondItem="gOu-68-PJO" secondAttribute="bottom" id="alE-iC-kBe"/>
-                                                    <constraint firstItem="gOu-68-PJO" firstAttribute="leading" secondItem="BMB-LZ-IRH" secondAttribute="leadingMargin" id="cV8-35-PbT"/>
                                                     <constraint firstItem="gOu-68-PJO" firstAttribute="top" secondItem="0rS-r2-TWS" secondAttribute="bottom" id="jjv-ZY-867"/>
                                                     <constraint firstAttribute="trailing" secondItem="gOu-68-PJO" secondAttribute="trailing" id="lRG-Pt-sFA"/>
+                                                    <constraint firstItem="gOu-68-PJO" firstAttribute="leading" secondItem="BMB-LZ-IRH" secondAttribute="leading" constant="12" id="tNK-ou-V5B"/>
                                                     <constraint firstItem="ygp-ig-bdL" firstAttribute="top" secondItem="BMB-LZ-IRH" secondAttribute="top" id="ufK-tN-Ge0"/>
-                                                    <constraint firstItem="ygp-ig-bdL" firstAttribute="leading" secondItem="BMB-LZ-IRH" secondAttribute="leadingMargin" id="yXd-us-5i8"/>
+                                                    <constraint firstItem="ygp-ig-bdL" firstAttribute="leading" secondItem="BMB-LZ-IRH" secondAttribute="leading" constant="12" id="wE1-ah-iRT"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gef-dZ-cuA" customClass="SettingsFormFieldView" customModule="Kickstarter_Framework">
