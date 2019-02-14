@@ -13,11 +13,15 @@ public struct GraphUserCreditCard: Swift.Decodable {
     }
 
     public var imageName: String {
-      switch self.type {
+      guard let cardType = self.type else {
+        return "icon--generic"
+      }
+
+      switch cardType {
       case .generic:
         return "icon--generic"
       default:
-        return "icon--\(self.type.rawValue.lowercased())"
+        return "icon--\(cardType.rawValue.lowercased())"
       }
     }
   }
