@@ -155,7 +155,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       return
     }
 
-    let result = DeletePaymentMethodEnvelope.init(storedCards: [card])
+    let result = DeletePaymentMethodEnvelope(storedCards: [card])
     
     let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
@@ -186,7 +186,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       return
     }
 
-    let result = DeletePaymentMethodEnvelope.init(storedCards: [])
+    let result = DeletePaymentMethodEnvelope(storedCards: [])
 
     let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
@@ -246,7 +246,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       return
     }
 
-    let result = DeletePaymentMethodEnvelope.init(storedCards: GraphUserCreditCard.template.storedCards.nodes)
+    let result = DeletePaymentMethodEnvelope(storedCards: GraphUserCreditCard.template.storedCards.nodes)
 
     let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
@@ -321,7 +321,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       return
     }
 
-    let result1 = DeletePaymentMethodEnvelope.init(storedCards: [card, card])
+    let result1 = DeletePaymentMethodEnvelope(storedCards: [card, card])
 
     let apiService1 = MockService(deletePaymentMethodResult: .success(result1))
     withEnvironment(apiService: apiService1) {
@@ -399,7 +399,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       return
     }
 
-    let result = DeletePaymentMethodEnvelope.init(storedCards: GraphUserCreditCard.template.storedCards.nodes)
+    let result = DeletePaymentMethodEnvelope(storedCards: GraphUserCreditCard.template.storedCards.nodes)
 
     let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
