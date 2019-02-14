@@ -50,7 +50,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   func testPaymentMethodsFetch_errorFetchingPaymentMethods() {
     let error = GraphResponseError(message: "Something went wrong")
     let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))
-  
+
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
 
@@ -154,7 +154,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       XCTFail("Card should exist")
       return
     }
-    
+
     let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 3)))
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()

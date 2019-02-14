@@ -19,6 +19,7 @@ class DeletePaymentMethodEnvelopeTests: XCTestCase {
     let data = jsonString.data(using: .utf8)
 
     do {
+      //swiftlint:disable force_unwrapping
       let envelope = try JSONDecoder().decode(DeletePaymentMethodEnvelope.self, from: data!)
         XCTAssertEqual(envelope.totalCount, 0)
     } catch {

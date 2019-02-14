@@ -43,7 +43,8 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
         }
 
         return [cardType.description, Strings.Card_ending_in_last_four(last_four: card.lastFour)]
-          .compactMap{ $0 }.joined(separator: ", ")
+          .compactMap { $0 }
+          .joined(separator: ", ")
     }
 
     self.cardNumberText = self.cardProperty.signal.skipNil()
