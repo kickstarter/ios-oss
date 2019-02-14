@@ -699,7 +699,8 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count} バッカー"
+   - **ja**: "%{backers_count}
+バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -1293,8 +1294,8 @@ contributeurs"
    - **en**: "Create password"
    - **de**: "Passwort erstellen"
    - **es**: "Crea contraseña"
-   - **fr**: "Create password"
-   - **ja**: "Create password"
+   - **fr**: "Créer votre mot de passe"
+   - **ja**: "パスワードを作成"
   */
   public static func Create_password() -> String {
     return localizedString(
@@ -4082,10 +4083,10 @@ with friends."
    "Double tap to dismiss."
 
    - **en**: "Double tap to dismiss."
-   - **de**: "Double tap to dismiss."
-   - **es**: "Double tap to dismiss."
-   - **fr**: "Double tap to dismiss."
-   - **ja**: "Double tap to dismiss."
+   - **de**: "Zweimal antippen, um Banner auszublenden."
+   - **es**: "Toca dos veces para descartar."
+   - **fr**: "Cliquez deux fois pour faire disparaître ce message."
+   - **ja**: "却下するにはダブルタップ。"
   */
   public static func Message_banner_accessibility_Double_tap_to_dismiss() -> String {
     return localizedString(
@@ -8025,8 +8026,8 @@ Veuillez réessayer ultérieurement."
    - **en**: "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials."
    - **de**: "Du bist via Facebook (%{email}) verbunden. Erstelle ein Passwort für dieses Konto, um deine Anmeldedaten für Kickstarter zu ändern."
    - **es**: "Estás conectado a través de Facebook (%{email}). Crea una contraseña para esta cuenta para editar tus credenciales de Kickstarter."
-   - **fr**: "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials."
-   - **ja**: "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials."
+   - **fr**: "Vous êtes connecté par Facebook (%{email}). Si vous souhaitez modifier vos identifiants Kickstarter, veuillez définir le mot de passe de ce compte."
+   - **ja**: "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。"
   */
   public static func Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: String) -> String {
     return localizedString(
@@ -16309,23 +16310,6 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
       defaultValue: "%{category_name} (%{backed_projects_count})",
       count: nil,
       substitutions: ["category_name": category_name, "backed_projects_count": backed_projects_count]
-    )
-  }
-  /**
-   "%{project_count} projects backed"
-
-   - **en**: "%{project_count} projects backed"
-   - **de**: "%{project_count} unterstützte Projekte"
-   - **es**: "%{project_count} patrocinados"
-   - **fr**: "%{project_count} projets soutenus"
-   - **ja**: "%{project_count} 件のバック済プロジェクト"
-  */
-  public static func profile_project_count_projects_backed(project_count: Int) -> String {
-    return localizedString(
-      key: "profile.project_count_projects_backed",
-      defaultValue: "%{project_count} projects backed",
-      count: project_count,
-      substitutions: ["project_count": Format.wholeNumber(project_count)]
     )
   }
   /**

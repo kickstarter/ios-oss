@@ -77,7 +77,7 @@
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
 "Couldnt_open_live_stream_Try_again_later" = "ライブ配信を開けませんでした。後ほどお試しください。";
 "Couldnt_remove_attachment" = "添付ファイルを削除できませんでした";
-"Create_password" = "Create password";
+"Create_password" = "パスワードを作成";
 "Created_projects_projects_count" = "%{projects_count} のプロジェクト作成済";
 "Creator" = "クリエイター";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b>が進行中";
@@ -249,7 +249,7 @@
 "Manage_your_pledge_below" = "以下のプレッジを変更";
 "Manage_your_reward" = "リワードの管理";
 "Message_backer" = "バッカーにメッセージする";
-"Message_banner.accessibility.Double_tap_to_dismiss" = "Double tap to dismiss.";
+"Message_banner.accessibility.Double_tap_to_dismiss" = "却下するにはダブルタップ。";
 "Message_creator" = "クリエーターにメッセージする";
 "Message_user_name" = "%{user_name} にメッセージ";
 "Messages" = "メッセージ";
@@ -492,7 +492,7 @@
 "Your_shipping_destination" = "配送地域";
 "Youre_a_backer" = "バッカーになりました！";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
-"Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials.";
+"Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。";
 "Youre_offline" = "現在オフライン中です。デバイスが再接続し次第、アプリをリフレッシュしてください。";
 "Youve_pledged_to_support_this_project" = "このプレッジ済のプロジェクトは、現在もファンド中";
 "Zip_postal_code" = "郵便番号";
@@ -1130,11 +1130,6 @@
 "profile.category_count_categories_backed.two" = "2カテゴリーへバック";
 "profile.category_count_categories_backed.zero" = "0 カテゴリーへバック";
 "profile.pie.slice.category_name_backed_projects_count" = "%{category_name}（%{backed_projects_count}）";
-"profile.project_count_projects_backed.few" = "%{project_count} 件のバック済プロジェクト";
-"profile.project_count_projects_backed.many" = "%{project_count} 件のバック済プロジェクト";
-"profile.project_count_projects_backed.one" = "1件のバック済みプロジェクト";
-"profile.project_count_projects_backed.two" = "2件のバック済みプロジェクト";
-"profile.project_count_projects_backed.zero" = "0件のバック済みプロジェクト";
 "profile.projects.backed_project_count_projects.few" = "%{project_count} プロジェクトへバック済";
 "profile.projects.backed_project_count_projects.many" = "%{project_count} プロジェクトへバック済";
 "profile.projects.backed_project_count_projects.one" = "1プロジェクトへバック";

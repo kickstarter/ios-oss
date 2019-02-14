@@ -77,7 +77,7 @@
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
 "Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
-"Create_password" = "Create password";
+"Create_password" = "Créer votre mot de passe";
 "Created_projects_projects_count" = "Projets créés : %{projects_count}";
 "Creator" = "Créateur";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b> est en direct en ce moment";
@@ -249,7 +249,7 @@
 "Manage_your_pledge_below" = "Gérer mon engagement";
 "Manage_your_reward" = "Gérer votre récompense";
 "Message_backer" = "Envoyer un message au contributeur";
-"Message_banner.accessibility.Double_tap_to_dismiss" = "Double tap to dismiss.";
+"Message_banner.accessibility.Double_tap_to_dismiss" = "Cliquez deux fois pour faire disparaître ce message.";
 "Message_creator" = "Envoyer un message au créateur";
 "Message_user_name" = "Envoyer un message à %{user_name}";
 "Messages" = "Messages";
@@ -492,7 +492,7 @@
 "Your_shipping_destination" = "Destination d'expédition";
 "Youre_a_backer" = "Vous êtes contributeur !";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer.";
-"Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials.";
+"Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Vous êtes connecté par Facebook (%{email}). Si vous souhaitez modifier vos identifiants Kickstarter, veuillez définir le mot de passe de ce compte.";
 "Youre_offline" = "Vous êtes hors ligne. Dès que votre appareil se sera reconnecté, naviguez dans l'application pour la rafraîchir.";
 "Youve_pledged_to_support_this_project" = "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée.";
 "Zip_postal_code" = "Code postal";
@@ -1130,11 +1130,6 @@
 "profile.category_count_categories_backed.two" = "2 catégories soutenues";
 "profile.category_count_categories_backed.zero" = "0 catégories soutenues";
 "profile.pie.slice.category_name_backed_projects_count" = "%{category_name} (%{backed_projects_count})";
-"profile.project_count_projects_backed.few" = "%{project_count} projets soutenus";
-"profile.project_count_projects_backed.many" = "%{project_count} projets soutenus";
-"profile.project_count_projects_backed.one" = "1 projet soutenu";
-"profile.project_count_projects_backed.two" = "2 projets soutenus";
-"profile.project_count_projects_backed.zero" = "0 projets soutenus";
 "profile.projects.backed_project_count_projects.few" = "%{project_count} PROJETS SOUTENUS";
 "profile.projects.backed_project_count_projects.many" = "%{project_count} PROJETS SOUTENUS";
 "profile.projects.backed_project_count_projects.one" = "1 PROJET SOUTENU";

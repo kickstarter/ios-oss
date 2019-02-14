@@ -249,7 +249,7 @@
 "Manage_your_pledge_below" = "Folgenden Beitrag verwalten";
 "Manage_your_reward" = "Belohnung verwalten";
 "Message_backer" = "Nachricht an Unterstützer senden";
-"Message_banner.accessibility.Double_tap_to_dismiss" = "Double tap to dismiss.";
+"Message_banner.accessibility.Double_tap_to_dismiss" = "Zweimal antippen, um Banner auszublenden.";
 "Message_creator" = "Nachricht an Projektgründer senden";
 "Message_user_name" = "Nachricht senden an %{user_name}…";
 "Messages" = "Nachrichten";
@@ -1130,11 +1130,6 @@
 "profile.category_count_categories_backed.two" = "In 2 Kategorien";
 "profile.category_count_categories_backed.zero" = "In 0 Kategorien";
 "profile.pie.slice.category_name_backed_projects_count" = "%{category_name} (%{backed_projects_count})";
-"profile.project_count_projects_backed.few" = "%{project_count} unterstützte Projekte";
-"profile.project_count_projects_backed.many" = "%{project_count} unterstützte Projekte";
-"profile.project_count_projects_backed.one" = "1 unterstütztes Projekt";
-"profile.project_count_projects_backed.two" = "2 unterstützte Projekte";
-"profile.project_count_projects_backed.zero" = "0 unterstützte Projekte";
 "profile.projects.backed_project_count_projects.few" = "HAT %{project_count} PROJEKTE UNTERSTÜTZT";
 "profile.projects.backed_project_count_projects.many" = "HAT %{project_count} PROJEKTE UNTERSTÜTZT";
 "profile.projects.backed_project_count_projects.one" = "HAT 1 PROJEKT UNTERSTÜTZT ";
