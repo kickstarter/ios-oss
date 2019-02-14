@@ -149,4 +149,23 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
     self.pickerViewIsHidden.assertValues([false, true], "Picker view should be hidden")
   }
+
+  func testShowHidePickerView_EmailFrequencyDisabled() {
+    let user = .template
+      |> UserAttribute.notification(.pledgeActivity).keyPath .~ false
+
+    self.pickerViewIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.pickerViewIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.didSelectRow(cellType: .emailFrequency)
+
+    self.pickerViewIsHidden.assertValues([false], "Picker view is shown")
+
+    self.vm.inputs.updateUser(user: user)
+
+    self.pickerViewIsHidden.assertValues([false, true], "Picker view should be hidden")
+  }
 }
