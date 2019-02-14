@@ -42,6 +42,7 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.cardNumberLabel.rac.accessibilityLabel = self.viewModel.outputs.cardNumberAccessibilityLabel
     self.cardNumberLabel.rac.text = self.viewModel.outputs.cardNumberText
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
 
