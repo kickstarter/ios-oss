@@ -221,6 +221,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: apiService) {
 
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
 
       self.scheduler.advance()
 
@@ -256,6 +257,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: apiService) {
 
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
 
       self.scheduler.advance()
 
