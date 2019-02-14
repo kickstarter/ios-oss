@@ -15,6 +15,8 @@ internal final class ProjectNotificationsViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
+    self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(5)))
+    self.tableView.tableHeaderView?.backgroundColor = .ksr_grey_100
 
     self.viewModel.inputs.viewDidLoad()
   }
