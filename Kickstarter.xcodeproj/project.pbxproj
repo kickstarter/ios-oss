@@ -167,6 +167,7 @@
 		77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD894821791B05003066DA /* ProjectStatsTemplate.swift */; };
 		77CD8981217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */; };
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
+		77DB532A2215D0AA0078991C /* GraphUserCreditCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */; };
 		77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E44B7321823A56006446B8 /* ChangePasswordInput.swift */; };
 		77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440020F64F0B005F6B38 /* HelpDataSource.swift */; };
 		77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440220F65074005F6B38 /* HelpViewController.swift */; };
@@ -1002,7 +1003,7 @@
 		D63BBCDA217E7802007E01F0 /* CreditCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */; };
 		D63BBCDB217E7802007E01F0 /* CreditCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D63BBCD9217E7802007E01F0 /* CreditCardCell.xib */; };
 		D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */; };
-		D63BBD31217F7212007E01F0 /* UserCreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD30217F7212007E01F0 /* UserCreditCard.swift */; };
+		D63BBD31217F7212007E01F0 /* GraphUserCreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD30217F7212007E01F0 /* GraphUserCreditCard.swift */; };
 		D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */; };
 		D63BBD35217FAB85007E01F0 /* PaymentMethodsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD34217FAB85007E01F0 /* PaymentMethodsViewModel.swift */; };
 		D63BBD37217FC224007E01F0 /* CreditCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */; };
@@ -1936,6 +1937,7 @@
 		77CD894821791B05003066DA /* ProjectStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsTemplate.swift; sourceTree = "<group>"; };
 		77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletContentViewControllerConversionTests.swift; sourceTree = "<group>"; };
 		77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCellType.swift; sourceTree = "<group>"; };
+		77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserCreditCardTests.swift; sourceTree = "<group>"; };
 		77E44B7321823A56006446B8 /* ChangePasswordInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordInput.swift; sourceTree = "<group>"; };
 		77E6440020F64F0B005F6B38 /* HelpDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSource.swift; sourceTree = "<group>"; };
 		77E6440220F65074005F6B38 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
@@ -2743,7 +2745,7 @@
 		D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardCell.swift; sourceTree = "<group>"; };
 		D63BBCD9217E7802007E01F0 /* CreditCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreditCardCell.xib; sourceTree = "<group>"; };
 		D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsDataSource.swift; sourceTree = "<group>"; };
-		D63BBD30217F7212007E01F0 /* UserCreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCreditCard.swift; sourceTree = "<group>"; };
+		D63BBD30217F7212007E01F0 /* GraphUserCreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserCreditCard.swift; sourceTree = "<group>"; };
 		D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCreditCardTemplate.swift; sourceTree = "<group>"; };
 		D63BBD34217FAB85007E01F0 /* PaymentMethodsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewModel.swift; sourceTree = "<group>"; };
 		D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardCellViewModel.swift; sourceTree = "<group>"; };
@@ -4368,7 +4370,8 @@
 				D01587971EEB2ED6006E7684 /* lenses */,
 				D01587EE1EEB2ED7006E7684 /* templates */,
 				D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */,
-				D63BBD30217F7212007E01F0 /* UserCreditCard.swift */,
+				D63BBD30217F7212007E01F0 /* GraphUserCreditCard.swift */,
+				77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */,
 				D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */,
 			);
 			path = models;
@@ -6475,7 +6478,7 @@
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
 				D6ED1B39216D50BE007F7547 /* UserEmailFields.swift in Sources */,
 				D01588731EEB2ED7006E7684 /* FindFriendsEnvelope.swift in Sources */,
-				D63BBD31217F7212007E01F0 /* UserCreditCard.swift in Sources */,
+				D63BBD31217F7212007E01F0 /* GraphUserCreditCard.swift in Sources */,
 				D79CF32E219CE51A00ECB73A /* CreatePaymentSourceInput.swift in Sources */,
 				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,
@@ -6576,6 +6579,7 @@
 				D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */,
 				D0D10C1C1EEB4550005EBAD0 /* UpdateDraftTests.swift in Sources */,
 				D0D10C0D1EEB4550005EBAD0 /* FriendStatsEnvelopeTests.swift in Sources */,
+				77DB532A2215D0AA0078991C /* GraphUserCreditCardTests.swift in Sources */,
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,

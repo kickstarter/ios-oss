@@ -58,12 +58,16 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
 }
 
 private func cardImage(with card: GraphUserCreditCard.CreditCard) -> UIImage? {
-  return image(named: "icon--" + card.type.rawValue.lowercased()) ?? image(named: "icon--generic")
+  guard let cardType = card.type else {
+    return image(named: "icon--generic")
+  }
+
+  return image(named: "icon--" + cardType.rawValue.lowercased()) ?? image(named: "icon--generic")
 }
 
 private func formatted(dateString: String) -> String {
   let date = toDate(dateString: dateString)
-  return Format.date(secondsInUTC: date.timeIntervalSince1970, template: "MM-yyyy")
+  return Format.date(secondsInUTC: date.timeIntervalSince1970, template: "MM-yyyy", timeZone: UTCTimeZone)
 }
 
 private func toDate(dateString: String) -> Date {

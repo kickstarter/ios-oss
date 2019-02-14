@@ -6,7 +6,7 @@ public struct GraphUserCreditCard: Swift.Decodable {
     public private(set) var expirationDate: String
     public private(set) var id: String
     public private(set) var lastFour: String
-    public private(set) var type: CreditCardType
+    public private(set) var type: CreditCardType?
 
     public var formattedExpirationDate: String {
       return String(expirationDate.dropLast(3))
