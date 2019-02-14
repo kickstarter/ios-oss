@@ -26,7 +26,7 @@ final class SettingsNotificationPickerViewModelTests: TestCase {
 
     self.vm.configure(with: cellValue)
 
-    self.frequencyValueText.assertValue(EmailFrequency.daily.descriptionText)
+    self.frequencyValueText.assertValue(EmailFrequency.dailySummary.descriptionText)
   }
 
   func testConfigure_userCreatorDigest_disabled() {
@@ -38,6 +38,6 @@ final class SettingsNotificationPickerViewModelTests: TestCase {
 
     self.vm.configure(with: cellValue)
 
-    self.frequencyValueText.assertValue(EmailFrequency.individualEmails.descriptionText)
+    self.frequencyValueText.assertValue(EmailFrequency.twiceADaySummary.descriptionText)
   }
 }

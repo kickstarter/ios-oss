@@ -1130,11 +1130,6 @@
 "profile.category_count_categories_backed.two" = "2 categories backed";
 "profile.category_count_categories_backed.zero" = "0 categories backed";
 "profile.pie.slice.category_name_backed_projects_count" = "%{category_name} (%{backed_projects_count})";
-"profile.project_count_projects_backed.few" = "%{project_count} projects backed";
-"profile.project_count_projects_backed.many" = "%{project_count} projects backed";
-"profile.project_count_projects_backed.one" = "1 project backed";
-"profile.project_count_projects_backed.two" = "2 projects backed";
-"profile.project_count_projects_backed.zero" = "0 projects backed";
 "profile.projects.backed_project_count_projects.few" = "BACKED %{project_count} PROJECTS";
 "profile.projects.backed_project_count_projects.many" = "BACKED %{project_count} PROJECTS";
 "profile.projects.backed_project_count_projects.one" = "BACKED 1 PROJECT";

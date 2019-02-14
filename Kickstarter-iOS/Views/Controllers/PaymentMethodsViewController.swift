@@ -29,9 +29,10 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
+    self.tableView.register(nib: .CreditCardCell)
+
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
-    self.tableView.register(nib: .CreditCardCell)
 
     self.configureHeaderFooterViews()
 
@@ -69,7 +70,9 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       |> \.backgroundColor .~ .clear
       |> \.rowHeight .~ Styles.grid(11)
       |> \.allowsSelection .~ false
-      |> \.separatorStyle .~ .none
+      |> \.separatorStyle .~ .singleLine
+      |> \.separatorColor .~ .ksr_grey_500
+      |> \.separatorInset .~ .init(left: Styles.grid(2))
   }
 
   override func bindViewModel() {
@@ -94,6 +97,12 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       .observeForUI()
       .observeValues { [weak self] in
         self?.goToAddCardScreen()
+    }
+
+    self.viewModel.outputs.errorLoadingPaymentMethods
+      .observeForUI()
+      .observeValues { [weak self] message in
+        self?.messageBannerViewController?.showBanner(with: .error, message: message)
     }
 
     self.viewModel.outputs.presentBanner

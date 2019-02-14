@@ -249,7 +249,7 @@
 "Manage_your_pledge_below" = "Administra tu contribución:";
 "Manage_your_reward" = "Administra tu recompensa";
 "Message_backer" = "Enviar mensaje a patrocinador";
-"Message_banner.accessibility.Double_tap_to_dismiss" = "Double tap to dismiss.";
+"Message_banner.accessibility.Double_tap_to_dismiss" = "Toca dos veces para descartar.";
 "Message_creator" = "Enviar mensaje al creador";
 "Message_user_name" = "Mensaje a %{user_name}…";
 "Messages" = "Mensajes";
@@ -1130,11 +1130,6 @@
 "profile.category_count_categories_backed.two" = "en 2 categorías";
 "profile.category_count_categories_backed.zero" = "en 0 categorías";
 "profile.pie.slice.category_name_backed_projects_count" = "%{category_name} (%{backed_projects_count})";
-"profile.project_count_projects_backed.few" = "%{project_count} patrocinados";
-"profile.project_count_projects_backed.many" = "%{project_count} patrocinados";
-"profile.project_count_projects_backed.one" = "1 proyecto patrocinado";
-"profile.project_count_projects_backed.two" = "2 patrocinados";
-"profile.project_count_projects_backed.zero" = "0 patrocinados";
 "profile.projects.backed_project_count_projects.few" = "%{project_count} PROYECTOS PATROCINADOS";
 "profile.projects.backed_project_count_projects.many" = "%{project_count} PROYECTOS APOYADOS";
 "profile.projects.backed_project_count_projects.one" = "1 PROYECTO PATROCINADO";

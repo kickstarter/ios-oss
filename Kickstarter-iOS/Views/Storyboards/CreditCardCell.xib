@@ -19,17 +19,17 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="DRF-8a-Nrl">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="65.5"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="750" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b6V-DZ-ihX">
-                                <rect key="frame" x="0.0" y="14.5" width="58" height="36"/>
+                                <rect key="frame" x="0.0" y="15" width="58" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="58" id="Z3b-vp-wos"/>
                                     <constraint firstAttribute="height" constant="36" id="hvh-HG-epv"/>
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="pTw-4g-BM7" userLabel="Number &amp; Expiration Date">
-                                <rect key="frame" x="76" y="13.5" width="244" height="38"/>
+                                <rect key="frame" x="76" y="14" width="244" height="38"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWr-rV-dIM">
                                         <rect key="frame" x="0.0" y="0.0" width="244" height="20.5"/>
@@ -47,29 +47,18 @@
                             </stackView>
                         </subviews>
                     </stackView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qhp-KL-uM9">
-                        <rect key="frame" x="0.0" y="65" width="320" height="1"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="1" id="VcH-GS-hhO"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="DRF-8a-Nrl" secondAttribute="trailing" id="7xh-nj-DfR"/>
-                    <constraint firstAttribute="trailing" secondItem="qhp-KL-uM9" secondAttribute="trailing" id="IT1-1x-kYH"/>
-                    <constraint firstItem="qhp-KL-uM9" firstAttribute="top" secondItem="DRF-8a-Nrl" secondAttribute="bottom" id="LlQ-rl-2uz"/>
-                    <constraint firstAttribute="bottom" secondItem="qhp-KL-uM9" secondAttribute="bottom" constant="-0.5" id="MKp-2I-ihI"/>
-                    <constraint firstItem="DRF-8a-Nrl" firstAttribute="top" secondItem="eaL-oG-LUu" secondAttribute="top" id="TkB-SH-Xh3"/>
-                    <constraint firstItem="qhp-KL-uM9" firstAttribute="leading" secondItem="eaL-oG-LUu" secondAttribute="leading" id="UzA-dc-x3a"/>
-                    <constraint firstItem="DRF-8a-Nrl" firstAttribute="leading" secondItem="eaL-oG-LUu" secondAttribute="leading" id="aUd-nJ-OF6"/>
+                    <constraint firstItem="DRF-8a-Nrl" firstAttribute="trailing" secondItem="eaL-oG-LUu" secondAttribute="trailing" priority="750" id="7xh-nj-DfR"/>
+                    <constraint firstItem="DRF-8a-Nrl" firstAttribute="bottom" secondItem="eaL-oG-LUu" secondAttribute="bottom" priority="750" id="LlQ-rl-2uz"/>
+                    <constraint firstItem="DRF-8a-Nrl" firstAttribute="top" secondItem="eaL-oG-LUu" secondAttribute="top" priority="750" id="TkB-SH-Xh3"/>
+                    <constraint firstItem="DRF-8a-Nrl" firstAttribute="leading" secondItem="eaL-oG-LUu" secondAttribute="leading" priority="750" id="aUd-nJ-OF6"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="cardImageView" destination="b6V-DZ-ihX" id="p8L-14-Vcp"/>
                 <outlet property="cardNumberLabel" destination="uWr-rV-dIM" id="2Bg-6W-6Pa"/>
                 <outlet property="expirationDateLabel" destination="MzS-MO-XR7" id="oc7-Y2-5tD"/>
-                <outlet property="separatorView" destination="qhp-KL-uM9" id="LZP-x0-biK"/>
                 <outlet property="stackView" destination="DRF-8a-Nrl" id="1W8-Ic-Uvk"/>
             </connections>
             <point key="canvasLocation" x="-227.19999999999999" y="-144.3778110944528"/>

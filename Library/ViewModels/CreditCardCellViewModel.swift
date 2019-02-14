@@ -14,6 +14,9 @@ public protocol CreditCardCellViewModelOutputs {
   /// Emits the card's image.
   var cardImage: Signal<UIImage?, NoError> { get }
 
+  /// Emits a formatted accessibility string containing the card type, number and last four digits
+  var cardNumberAccessibilityLabel: Signal<String, NoError> { get }
+
   /// Emits a formatted string containing the card's last four digits.
   var cardNumberText: Signal<String, NoError> { get }
 
@@ -30,9 +33,15 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
 CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
 
   public init() {
-
     self.cardImage = self.cardProperty.signal.skipNil()
       .map(cardImage(with:))
+
+    self.cardNumberAccessibilityLabel = self.cardProperty.signal.skipNil()
+      .map {
+        return [$0.type?.description, Strings.Card_ending_in_last_four(last_four: $0.lastFour)]
+          .compactMap { $0 }
+          .joined(separator: ", ")
+    }
 
     self.cardNumberText = self.cardProperty.signal.skipNil()
       .map { Strings.Card_ending_in_last_four(last_four: $0.lastFour) }
@@ -49,6 +58,7 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
     self.cardProperty.value = creditCard
   }
 
+  public let cardNumberAccessibilityLabel: Signal<String, NoError>
   public let cardImage: Signal<UIImage?, NoError>
   public let expirationDateText: Signal<String, NoError>
   public let cardNumberText: Signal<String, NoError>
@@ -58,7 +68,7 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
 }
 
 private func cardImage(with card: GraphUserCreditCard.CreditCard) -> UIImage? {
-  return image(named: "icon--" + card.type.rawValue.lowercased()) ?? image(named: "icon--generic")
+  return image(named: card.imageName)
 }
 
 private func formatted(dateString: String) -> String {
