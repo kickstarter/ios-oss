@@ -95,7 +95,7 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       .filter { $0 == .emailFrequency }
 
     let projectActivityEmailFrequencyDisabled = projectActivityNotificationChanged.signal
-      .map { $0.1 }
+      .map(second)
       .filter(isFalse)
 
     self.pickerViewIsHidden = Signal.merge(
