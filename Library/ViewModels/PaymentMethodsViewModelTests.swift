@@ -41,7 +41,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.reloadData.assertDidEmitValue()
 
-      self.vm.inputs.viewWillAppear()
       self.scheduler.advance()
 
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
@@ -51,7 +50,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   func testPaymentMethodsFetch_errorFetchingPaymentMethods() {
     let error = GraphResponseError(message: "Something went wrong")
     let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))
-
+  
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
 
@@ -66,41 +65,42 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testPaymentMethodsFetch_OnRefresh() {
+	func testPaymentMethodsFetch_OnAddNewCardSucceeded() {
+
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
 
     withEnvironment(apiService: apiService) {
       self.paymentMethods.assertValues([])
 
-      self.vm.inputs.refresh()
-
-      self.scheduler.advance()
-
-      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
-    }
-  }
-
-  func testPaymentMethodsFetch_OnCardAddedSuccessfully() {
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
-    let apiService = MockService(fetchGraphCreditCardsResponse: response)
-
-    withEnvironment(apiService: apiService) {
-      self.paymentMethods.assertValues([])
-
-      self.vm.inputs.cardAddedSuccessfully("First card added successfully")
+      self.vm.inputs.addNewCardSucceeded(with: "First card added successfully")
 
       self.scheduler.advance()
 
       self.paymentMethods.assertValueCount(1)
 
       withEnvironment(apiService: apiService) {
-        self.vm.inputs.cardAddedSuccessfully("Second card added successfully")
+        self.vm.inputs.addNewCardSucceeded(with: "Second card added successfully")
 
         self.scheduler.advance()
 
         self.paymentMethods.assertValueCount(2)
       }
+    }
+  }
+
+  func testPaymentMethodsFetch_OnAddNewCardDismissed() {
+    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+
+    withEnvironment(apiService: apiService) {
+      self.paymentMethods.assertValues([])
+
+      self.vm.inputs.addNewCardDismissed()
+
+      self.scheduler.advance()
+
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
     }
   }
 
@@ -158,14 +158,20 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 3)))
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
+
       self.vm.inputs.viewDidLoad()
 
       self.editButtonIsEnabled.assertValues([false])
 
-      self.vm.inputs.didDelete(card)
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false, true])
+
+      self.vm.inputs.didDelete(card)
+
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues([false, true, true])
     }
   }
 
@@ -179,14 +185,20 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 0)))
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
+
       self.vm.inputs.viewDidLoad()
 
       self.editButtonIsEnabled.assertValues([false])
 
-      self.vm.inputs.didDelete(card)
       self.scheduler.advance()
 
-      self.editButtonIsEnabled.assertValues([false, false])
+      self.editButtonIsEnabled.assertValues([false, true])
+
+      self.vm.inputs.didDelete(card)
+
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues([false, true, false])
     }
   }
 
@@ -213,7 +225,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   func testPresentMessageBanner() {
     self.presentBanner.assertValues([])
 
-    self.vm.inputs.cardAddedSuccessfully(Strings.Got_it_your_changes_have_been_saved())
+    self.vm.inputs.addNewCardSucceeded(with: Strings.Got_it_your_changes_have_been_saved())
 
     self.vm.inputs.viewWillAppear()
 
@@ -229,7 +241,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 2)))
     withEnvironment(apiService: apiService) {
 
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
+
       self.scheduler.advance()
 
       self.tableViewIsEditing.assertValues([])
@@ -263,7 +277,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput))
     withEnvironment(apiService: apiService) {
 
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
+
       self.scheduler.advance()
 
       self.tableViewIsEditing.assertValues([])

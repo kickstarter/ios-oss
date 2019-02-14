@@ -5,11 +5,11 @@ import ReactiveSwift
 import Result
 
 public protocol PaymentMethodsViewModelInputs {
-  func cardAddedSuccessfully(_ message: String)
+  func addNewCardSucceeded(with message: String)
+  func addNewCardDismissed()
   func didDelete(_ creditCard: GraphUserCreditCard.CreditCard)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
-  func refresh()
   func viewDidLoad()
   func viewWillAppear()
 }
@@ -38,9 +38,9 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.reloadData = self.viewDidLoadProperty.signal
 
     let paymentMethodsEvent = Signal.merge(
-      self.viewWillAppearProperty.signal,
-      self.cardAddedSuccessfullyProperty.signal.ignoreValues(),
-      self.refreshProperty.signal
+      self.viewDidLoadProperty.signal,
+      self.addNewCardSucceededProperty.signal.ignoreValues(),
+      self.addNewCardDismissedProperty.signal
       )
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphCreditCards(query: UserQueries.storedCards.query)
@@ -89,7 +89,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
     self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
 
-    self.presentBanner = self.cardAddedSuccessfullyProperty.signal
+    self.presentBanner = self.addNewCardSucceededProperty.signal.skipNil()
 
     self.tableViewIsEditing = Signal.merge(
       self.editButtonTappedSignal.scan(false) { current, _ in !current },
@@ -135,14 +135,14 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.didTapAddCardButtonProperty.value = ()
   }
 
-  fileprivate let cardAddedSuccessfullyProperty = MutableProperty("")
-  public func cardAddedSuccessfully(_ message: String) {
-    self.cardAddedSuccessfullyProperty.value = message
+  fileprivate let addNewCardSucceededProperty = MutableProperty<String?>(nil)
+  public func addNewCardSucceeded(with message: String) {
+    self.addNewCardSucceededProperty.value = message
   }
 
-  fileprivate let refreshProperty = MutableProperty(())
-  public func refresh() {
-    self.refreshProperty.value = ()
+  fileprivate let addNewCardDismissedProperty = MutableProperty(())
+  public func addNewCardDismissed() {
+    self.addNewCardDismissedProperty.value = ()
   }
 
   public let editButtonIsEnabled: Signal<Bool, NoError>

@@ -191,13 +191,13 @@ extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
   func addNewCardViewController(_ viewController: AddNewCardViewController,
                                 didSucceedWithMessage message: String) {
     self.dismiss(animated: true) {
-      self.viewModel.inputs.cardAddedSuccessfully(message)
+      self.viewModel.inputs.addNewCardSucceeded(with: message)
     }
   }
 
   func addNewCardViewControllerDismissed(_ viewController: AddNewCardViewController) {
     self.dismiss(animated: true) {
-      self.viewModel.inputs.refresh()
+      self.viewModel.inputs.addNewCardDismissed()
     }
   }
 }
