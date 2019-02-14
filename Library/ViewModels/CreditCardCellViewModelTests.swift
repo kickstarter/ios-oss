@@ -20,11 +20,9 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.vm.outputs.cardImage.observe(cardImage.observer)
     self.vm.outputs.cardNumberText.observe(cardNumberText.observer)
     self.vm.outputs.expirationDateText.observe(expirationDateText.observer)
-
   }
 
   func testCardInfo() {
-
     self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.amex)
     self.cardImage.assertValue(UIImage(named: "icon--amex"))
 
