@@ -100,6 +100,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       self.viewDidLoadProperty.signal.mapConst(false),
       hasAtLeastOneCard
     )
+    .skipRepeats()
 
     self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
 

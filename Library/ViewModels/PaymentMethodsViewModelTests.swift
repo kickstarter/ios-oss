@@ -145,7 +145,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.scheduler.advance()
 
-      self.editButtonIsEnabled.assertValues([false, false])
+      self.editButtonIsEnabled.assertValues([false])
     }
   }
 
@@ -171,11 +171,11 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
 
-      self.editButtonIsEnabled.assertValues([false, true, true])
+      self.editButtonIsEnabled.assertValues([false, true])
 
       self.scheduler.advance()
 
-      self.editButtonIsEnabled.assertValues([false, true, true, true])
+      self.editButtonIsEnabled.assertValues([false, true])
     }
   }
 
@@ -206,7 +206,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.editButtonIsEnabled.assertValues([false, true, false, false])
+      self.editButtonIsEnabled.assertValues([false, true, false])
     }
   }
 
@@ -343,7 +343,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
-      self.editButtonIsEnabled.assertValues([false, true, true], "Editing button remains enabled")
+      self.editButtonIsEnabled.assertValues([false, true], "Editing button remains enabled")
 
       self.scheduler.advance()
 
@@ -356,7 +356,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.didDelete(card, visibleCellCount: 0)
 
       self.editButtonIsEnabled.assertValues(
-        [false, true, true, true, false], "Editing button disabled as last card removed"
+        [false, true, false], "Editing button disabled as last card removed"
       )
       self.tableViewIsEditing.assertValues([false, true, false], "Editing mode disabled as last card removed")
 
@@ -373,7 +373,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues(
-        [false, true, true, true, false, true, true], "Editing mode disabled as last card removal failed"
+        [false, true, false, true], "Editing mode disabled as last card removal failed"
       )
       self.tableViewIsEditing.assertValues(
         [false, true, false], "Editing mode reenabled as last card removal failed"
