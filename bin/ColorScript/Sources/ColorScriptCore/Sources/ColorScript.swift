@@ -8,7 +8,7 @@ public enum ColorScriptError: Error {
 public final class ColorScript {
   private let arguments: [String]
 
-  public let inPath = "Resources/Colors.jsonResources/Colors.jsonResources/Colors.jsonResources/Colors.jsonResources/Colors.json"
+  public let inPath = "Resources/Colors.json"
   public let outPath = "../../Library/Styles/Colors.swift"
 
   public init(arguments: [String] = CommandLine.arguments) {
