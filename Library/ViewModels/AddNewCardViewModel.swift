@@ -211,7 +211,7 @@ AddNewCardViewModelOutputs {
   private let stripeTokenProperty = MutableProperty<(String, String)?>(nil)
   public func stripeCreated(_ token: String?, stripeID: String?) {
     if let token = token, let stripeID = stripeID {
-      self.stripeTokenProperty.value = (token, stripeID )
+      self.stripeTokenProperty.value = (token, stripeID)
     }
   }
 
