@@ -15,8 +15,9 @@ internal final class ProjectNotificationsViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.dataSource = self.dataSource
-    self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(5)))
-    self.tableView.tableHeaderView?.backgroundColor = .ksr_grey_100
+    self.tableView.delegate = self
+
+    self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(6)))
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -25,7 +26,7 @@ internal final class ProjectNotificationsViewController: UITableViewController {
     super.bindStyles()
 
     _ = self
-      |> baseControllerStyle()
+      |> settingsViewControllerStyle
 
     _ = self.tableView
       |> \.separatorStyle .~ .singleLine
@@ -51,6 +52,12 @@ internal final class ProjectNotificationsViewController: UITableViewController {
     if let cell = cell as? ProjectNotificationCell {
       cell.delegate = self
     }
+  }
+}
+
+extension ProjectNotificationsViewController: UITabBarDelegate {
+  override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 0.1 // Required to remove the footer in UITableViewStyleGrouped
   }
 }
 
