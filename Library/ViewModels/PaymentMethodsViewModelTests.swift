@@ -145,7 +145,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.scheduler.advance()
 
-      self.editButtonIsEnabled.assertValues([false, false])
+      self.editButtonIsEnabled.assertValues([false])
     }
   }
 
@@ -155,7 +155,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       return
     }
 
-    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 3)))
+    let result = DeletePaymentMethodEnvelope(storedCards: [card])
+    
+    let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
 
@@ -167,11 +169,13 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.editButtonIsEnabled.assertValues([false, true])
 
-      self.vm.inputs.didDelete(card)
+      self.vm.inputs.didDelete(card, visibleCellCount: 1)
+
+      self.editButtonIsEnabled.assertValues([false, true])
 
       self.scheduler.advance()
 
-      self.editButtonIsEnabled.assertValues([false, true, true])
+      self.editButtonIsEnabled.assertValues([false, true])
     }
   }
 
@@ -182,7 +186,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       return
     }
 
-    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 0)))
+    let result = DeletePaymentMethodEnvelope(storedCards: [])
+
+    let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
       self.editButtonIsEnabled.assertDidNotEmitValue()
 
@@ -194,7 +200,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.editButtonIsEnabled.assertValues([false, true])
 
-      self.vm.inputs.didDelete(card)
+      self.vm.inputs.didDelete(card, visibleCellCount: 0)
+
+      self.editButtonIsEnabled.assertValues([false, true, false])
 
       self.scheduler.advance()
 
@@ -238,7 +246,9 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       return
     }
 
-    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 2)))
+    let result = DeletePaymentMethodEnvelope(storedCards: GraphUserCreditCard.template.storedCards.nodes)
+
+    let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
 
       self.vm.inputs.viewDidLoad()
@@ -246,20 +256,20 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.tableViewIsEditing.assertValues([])
+      self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
       self.vm.inputs.editButtonTapped()
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode enabled")
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
-      self.vm.inputs.didDelete(card)
+      self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.scheduler.advance()
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode remains enabled")
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode remains enabled")
       self.showAlert.assertValues([], "No errors emitted")
       self.paymentMethods.assertValues(
         [GraphUserCreditCard.template.storedCards.nodes],
@@ -282,25 +292,97 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.tableViewIsEditing.assertValues([])
+      self.tableViewIsEditing.assertValues([false])
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
       self.vm.inputs.editButtonTapped()
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode enabled")
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
       self.showAlert.assertValues([])
       self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
 
-      self.vm.inputs.didDelete(card)
+      self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.scheduler.advance()
 
-      self.tableViewIsEditing.assertValues([true], "Editing mode remains enabled")
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode remains enabled")
       self.showAlert.assertValues([
         "Something went wrong and we were unable to remove your payment method, please try again."])
       self.paymentMethods.assertValues(
         [GraphUserCreditCard.template.storedCards.nodes, GraphUserCreditCard.template.storedCards.nodes],
         "Emits again to reload the tableview after an error occurred"
+      )
+    }
+  }
+
+  func testDeletePaymentMethod_SuccessThenError() {
+    guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
+      XCTFail("Card should exist")
+      return
+    }
+
+    let result1 = DeletePaymentMethodEnvelope(storedCards: [card, card])
+
+    let apiService1 = MockService(deletePaymentMethodResult: .success(result1))
+    withEnvironment(apiService: apiService1) {
+
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+
+      self.scheduler.advance()
+
+      self.tableViewIsEditing.assertValues([false])
+      self.showAlert.assertValues([])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
+      self.editButtonIsEnabled.assertValues([false, true], "Edit button enabled, we have cards")
+
+      self.vm.inputs.editButtonTapped()
+
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode enabled")
+      self.showAlert.assertValues([])
+      self.paymentMethods.assertValues([GraphUserCreditCard.template.storedCards.nodes])
+
+      self.vm.inputs.didDelete(card, visibleCellCount: 1)
+      self.editButtonIsEnabled.assertValues([false, true], "Editing button remains enabled")
+
+      self.scheduler.advance()
+
+      self.tableViewIsEditing.assertValues([false, true], "Editing mode remains enabled")
+      self.showAlert.assertValues([])
+    }
+
+    let apiService2 = MockService(deletePaymentMethodResult: .failure(.invalidInput))
+    withEnvironment(apiService: apiService2) {
+      self.vm.inputs.didDelete(card, visibleCellCount: 0)
+
+      self.editButtonIsEnabled.assertValues(
+        [false, true, false], "Editing button disabled as last card removed"
+      )
+      self.tableViewIsEditing.assertValues([false, true, false], "Editing mode disabled as last card removed")
+
+      self.scheduler.advance()
+      self.showAlert.assertValues([
+        "Something went wrong and we were unable to remove your payment method, please try again."])
+      self.paymentMethods.assertValues(
+        [GraphUserCreditCard.template.storedCards.nodes, result1.storedCards],
+        // swiftlint:disable:next line_length
+        "Emits again with the results from the last successful deletion to reload the tableview after an error occurred"
+      )
+
+      self.vm.addNewCardDismissed()
+      self.scheduler.advance()
+
+      self.editButtonIsEnabled.assertValues(
+        [false, true, false, true], "Editing mode disabled as last card removal failed"
+      )
+      self.tableViewIsEditing.assertValues(
+        [false, true, false], "Editing mode reenabled as last card removal failed"
+      )
+      self.paymentMethods.assertValues(
+        [GraphUserCreditCard.template.storedCards.nodes,
+         result1.storedCards,
+         GraphUserCreditCard.template.storedCards.nodes],
+        "Cards are refreshed normally"
       )
     }
   }
@@ -316,12 +398,15 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       XCTFail("Card should exist")
       return
     }
-    let apiService = MockService(deletePaymentMethodResult: .success(.init(totalCount: 2)))
+
+    let result = DeletePaymentMethodEnvelope(storedCards: GraphUserCreditCard.template.storedCards.nodes)
+
+    let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
 
       self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.didDelete(card)
+      self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.scheduler.advance()
 
       XCTAssertEqual(["Deleted Payment Method"], self.trackingClient.events)
@@ -333,12 +418,13 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       XCTFail("Card should exist")
       return
     }
+    
     let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput))
     withEnvironment(apiService: apiService) {
 
       self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.didDelete(card)
+      self.vm.inputs.didDelete(card, visibleCellCount: 1)
       self.scheduler.advance()
 
       XCTAssertEqual(["Errored Delete Payment Method"], self.trackingClient.events)

@@ -7,7 +7,7 @@ import Result
 public protocol PaymentMethodsViewModelInputs {
   func addNewCardSucceeded(with message: String)
   func addNewCardDismissed()
-  func didDelete(_ creditCard: GraphUserCreditCard.CreditCard)
+  func didDelete(_ creditCard: GraphUserCreditCard.CreditCard, visibleCellCount: Int)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
   func viewDidLoad()
@@ -15,7 +15,6 @@ public protocol PaymentMethodsViewModelInputs {
 }
 
 public protocol PaymentMethodsViewModelOutputs {
-  /// Emits the user's stored cards
   var editButtonIsEnabled: Signal<Bool, NoError> { get }
   var errorLoadingPaymentMethods: Signal<String, NoError> { get }
   var goToAddCardScreen: Signal<Void, NoError> { get }
@@ -41,17 +40,19 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       self.viewDidLoadProperty.signal,
       self.addNewCardSucceededProperty.signal.ignoreValues(),
       self.addNewCardDismissedProperty.signal
-      )
-      .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraphCreditCards(query: UserQueries.storedCards.query)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-    }
-
-    let deletePaymentMethodEvents = self.didDeleteCreditCardSignal.switchMap { creditCard in
-      AppEnvironment.current.apiService.deletePaymentMethod(input: .init(paymentSourceId: creditCard.id))
+    )
+    .switchMap { _ in
+      AppEnvironment.current.apiService.fetchGraphCreditCards(query: UserQueries.storedCards.query)
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
+    }
+
+    let deletePaymentMethodEvents = self.didDeleteCreditCardSignal
+      .map(first)
+      .switchMap { creditCard in
+        AppEnvironment.current.apiService.deletePaymentMethod(input: .init(paymentSourceId: creditCard.id))
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
     }
 
     let deletePaymentMethodEventsErrors = deletePaymentMethodEvents.errors()
@@ -66,34 +67,50 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
         )
     }
 
-    let paymentMethodsValues = paymentMethodsEvent.values().map { $0.me.storedCards.nodes }
+    let initialPaymentMethodsValues = paymentMethodsEvent
+      .values().map { $0.me.storedCards.nodes }
+
+    let deletePaymentMethodValues = deletePaymentMethodEvents.values()
+      .map { $0.storedCards }
+
+    let latestPaymentMethods = Signal.merge(
+      initialPaymentMethodsValues,
+      deletePaymentMethodValues
+    )
 
     self.errorLoadingPaymentMethods = paymentMethodsEvent.errors().map { $0.localizedDescription }
 
     self.paymentMethods = Signal.merge(
-      paymentMethodsValues,
-      paymentMethodsValues.takeWhen(deletePaymentMethodEventsErrors)
+      initialPaymentMethodsValues,
+      deletePaymentMethodEventsErrors
+        .withLatest(from: latestPaymentMethods)
+        .map(second)
     )
 
     let hasAtLeastOneCard = Signal.merge(
-      paymentMethodsValues
+      self.paymentMethods
         .map { !$0.isEmpty },
-      deletePaymentMethodEvents.values()
-        .map { $0.totalCount > 0 }
+      deletePaymentMethodValues
+        .map { !$0.isEmpty },
+      self.didDeleteCreditCardSignal.map(second)
+        .map { $0 > 0 }
     )
 
     self.editButtonIsEnabled = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
       hasAtLeastOneCard
     )
+    .skipRepeats()
 
     self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
 
     self.presentBanner = self.addNewCardSucceededProperty.signal.skipNil()
 
     self.tableViewIsEditing = Signal.merge(
+      self.editButtonIsEnabled.filter(isFalse),
       self.editButtonTappedSignal.scan(false) { current, _ in !current },
-      self.didTapAddCardButtonProperty.signal.mapConst(false))
+      self.didTapAddCardButtonProperty.signal.mapConst(false)
+    )
 
     // Koala:
     self.viewWillAppearProperty.signal
@@ -109,10 +126,10 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   }
 
   fileprivate let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) =
-    Signal<GraphUserCreditCard.CreditCard,
+    Signal<(GraphUserCreditCard.CreditCard, Int),
     NoError>.pipe()
-  public func didDelete(_ creditCard: GraphUserCreditCard.CreditCard) {
-    self.didDeleteCreditCardObserver.send(value: creditCard)
+  public func didDelete(_ creditCard: GraphUserCreditCard.CreditCard, visibleCellCount: Int) {
+    self.didDeleteCreditCardObserver.send(value: (creditCard, visibleCellCount))
   }
 
   fileprivate let (editButtonTappedSignal, editButtonTappedObserver) = Signal<(), NoError>.pipe()

@@ -39,7 +39,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     self.navigationItem.rightBarButtonItem = self.editButton
 
     self.dataSource.deletionHandler = { [weak self] creditCard in
-      self?.viewModel.inputs.didDelete(creditCard)
+      self?.viewModel.inputs.didDelete(creditCard, visibleCellCount: self?.tableView.visibleCells.count ?? 0)
     }
 
     self.viewModel.inputs.viewDidLoad()

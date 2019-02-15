@@ -14,7 +14,12 @@ public struct PaymentSourceDeleteMutation<T: GraphMutationInput>: GraphMutation 
         clientMutationId
         user {
           storedCards {
-            totalCount
+            nodes {
+              expirationDate
+              id
+              lastFour
+              type
+            }
           }
         }
       }
