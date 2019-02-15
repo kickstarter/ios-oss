@@ -1294,8 +1294,8 @@ contributeurs"
    - **en**: "Create password"
    - **de**: "Passwort erstellen"
    - **es**: "Crea contraseña"
-   - **fr**: "Create password"
-   - **ja**: "Create password"
+   - **fr**: "Créer votre mot de passe"
+   - **ja**: "パスワードを作成"
   */
   public static func Create_password() -> String {
     return localizedString(
@@ -4083,10 +4083,10 @@ with friends."
    "Double tap to dismiss."
 
    - **en**: "Double tap to dismiss."
-   - **de**: "Double tap to dismiss."
-   - **es**: "Double tap to dismiss."
-   - **fr**: "Double tap to dismiss."
-   - **ja**: "Double tap to dismiss."
+   - **de**: "Zweimal antippen, um Banner auszublenden."
+   - **es**: "Toca dos veces para descartar."
+   - **fr**: "Cliquez deux fois pour faire disparaître ce message."
+   - **ja**: "却下するにはダブルタップ。"
   */
   public static func Message_banner_accessibility_Double_tap_to_dismiss() -> String {
     return localizedString(
@@ -8026,8 +8026,8 @@ Veuillez réessayer ultérieurement."
    - **en**: "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials."
    - **de**: "Du bist via Facebook (%{email}) verbunden. Erstelle ein Passwort für dieses Konto, um deine Anmeldedaten für Kickstarter zu ändern."
    - **es**: "Estás conectado a través de Facebook (%{email}). Crea una contraseña para esta cuenta para editar tus credenciales de Kickstarter."
-   - **fr**: "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials."
-   - **ja**: "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials."
+   - **fr**: "Vous êtes connecté par Facebook (%{email}). Si vous souhaitez modifier vos identifiants Kickstarter, veuillez définir le mot de passe de ce compte."
+   - **ja**: "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。"
   */
   public static func Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: String) -> String {
     return localizedString(
@@ -13110,7 +13110,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -16317,7 +16317,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -19360,7 +19360,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -20182,7 +20182,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

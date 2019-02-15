@@ -27,11 +27,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.tableView.register(nib: Nib.DiscoveryPostcardCell)
+
     self.tableView.addSubview(self.loadingIndicatorView)
 
     self.tableView.dataSource = self.dataSource
-
-    self.tableView.register(nib: Nib.DiscoveryPostcardCell)
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
