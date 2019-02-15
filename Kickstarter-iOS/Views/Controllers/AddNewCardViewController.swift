@@ -181,11 +181,11 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
     self.viewModel.outputs.activityIndicatorShouldShow
       .observeForUI()
-      .observeValues { shouldShow in
+      .observeValues { [weak self] shouldShow in
         if shouldShow {
-          self.saveButtonView.startAnimating()
+          self?.saveButtonView.startAnimating()
         } else {
-          self.saveButtonView.stopAnimating()
+          self?.saveButtonView.stopAnimating()
         }
     }
 

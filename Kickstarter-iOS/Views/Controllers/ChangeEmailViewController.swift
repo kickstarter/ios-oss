@@ -148,18 +148,18 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
 
     self.viewModel.outputs.activityIndicatorShouldShow
       .observeForUI()
-      .observeValues { shouldShow in
+      .observeValues { [weak self] shouldShow in
         if shouldShow {
-          self.saveButtonView.startAnimating()
+          self?.saveButtonView.startAnimating()
         } else {
-          self.saveButtonView.stopAnimating()
+          self?.saveButtonView.stopAnimating()
         }
     }
 
     self.viewModel.outputs.saveButtonIsEnabled
       .observeForUI()
-      .observeValues { isEnabled in
-        self.saveButtonView.setIsEnabled(isEnabled: isEnabled)
+      .observeValues { [weak self] isEnabled in
+        self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
     }
 
     self.viewModel.outputs.onePasswordFindLoginForURLString
