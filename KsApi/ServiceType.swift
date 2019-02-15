@@ -51,8 +51,15 @@ public protocol ServiceType {
   func changeCurrency(input: ChangeCurrencyInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
+  func addNewCreditCard(input: CreatePaymentSourceInput) ->
+    SignalProducer<CreatePaymentSourceEnvelope, GraphError>
+
   func changePaymentMethod(project: Project)
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope>
+
+  /// Deletes a payment method
+  func deletePaymentMethod(input: PaymentSourceDeleteInput) ->
+    SignalProducer<DeletePaymentMethodEnvelope, GraphError>
 
   /// Performs the first step of checkout by creating a pledge on the server.
   func createPledge(project: Project,
@@ -119,6 +126,10 @@ public protocol ServiceType {
   /// Fetch Category objects using graphQL.
   func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError>
+
+  /// Fetch User's stored cards.
+  func fetchGraphCreditCards(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError>
 
   /// Fetch a User's account fields
   func fetchGraphUserAccountFields(query: NonEmptySet<Query>)

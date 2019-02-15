@@ -21,15 +21,16 @@ public enum Storyboard: String {
   case Login
   case Main
   case Messages
+  case PaymentMethods
   case Profile
   case ProjectActivity
   case ProjectPamphlet
   case RewardPledge
   case Search
   case Settings
+  case SettingsNewsletters
   case SettingsNotifications
   case SettingsPrivacy
-  case SettingsNewsletters
   case Thanks
   case Update
   case UpdateDraft

@@ -249,7 +249,7 @@
 "Manage_your_pledge_below" = "Folgenden Beitrag verwalten";
 "Manage_your_reward" = "Belohnung verwalten";
 "Message_backer" = "Nachricht an Unterstützer senden";
-"Message_banner.accessibility.Double_tap_to_dismiss" = "Double tap to dismiss.";
+"Message_banner.accessibility.Double_tap_to_dismiss" = "Zweimal antippen, um Banner auszublenden.";
 "Message_creator" = "Nachricht an Projektgründer senden";
 "Message_user_name" = "Nachricht senden an %{user_name}…";
 "Messages" = "Nachrichten";
