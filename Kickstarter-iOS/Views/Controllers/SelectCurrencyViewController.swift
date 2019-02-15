@@ -30,6 +30,13 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     self.view.addSubview(self.tableView)
     self.tableView.constrainEdges(to: self.view)
 
+    let headerContainerView = UIView(frame: .zero)
+    headerContainerView.addSubview(self.headerView)
+    self.headerView.constrainEdges(to: headerContainerView)
+
+    self.tableView.tableHeaderView = headerContainerView
+    self.headerView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
+
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
@@ -39,15 +46,13 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
-    let headerContainerView = UIView(frame: .zero)
-    headerContainerView.addSubview(self.headerView)
-    self.headerView.constrainEdges(to: headerContainerView)
-
-    self.tableView.tableHeaderView = headerContainerView
-    self.headerView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
-    self.tableView.ksr_sizeHeaderFooterViewsToFit()
-
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
   override func bindStyles() {
@@ -64,8 +69,6 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
         \(Strings.A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency())
         """
     }
-
-    self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
   override func bindViewModel() {
