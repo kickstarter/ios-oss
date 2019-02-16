@@ -16,6 +16,7 @@ public protocol PaymentMethodsViewModelInputs {
 
 public protocol PaymentMethodsViewModelOutputs {
   var editButtonIsEnabled: Signal<Bool, NoError> { get }
+  var editButtonTitle: Signal<String, NoError> { get }
   var errorLoadingPaymentMethods: Signal<String, NoError> { get }
   var goToAddCardScreen: Signal<Void, NoError> { get }
   var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError> { get }
@@ -106,11 +107,23 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
     self.presentBanner = self.addNewCardSucceededProperty.signal.skipNil()
 
-    self.tableViewIsEditing = Signal.merge(
+    let stopEditing = Signal.merge(
       self.editButtonIsEnabled.filter(isFalse),
-      self.editButtonTappedSignal.scan(false) { current, _ in !current },
       self.didTapAddCardButtonProperty.signal.mapConst(false)
     )
+
+    self.tableViewIsEditingProperty <~ Signal.merge(
+      stopEditing,
+      self.editButtonTappedSignal
+        .withLatest(from: self.tableViewIsEditingProperty.signal)
+        .map(second)
+        .negate()
+    )
+
+    self.tableViewIsEditing = self.tableViewIsEditingProperty.signal
+
+    self.editButtonTitle = self.tableViewIsEditing
+      .map { $0 ? Strings.Done() : Strings.discovery_favorite_categories_buttons_edit() }
 
     // Koala:
     self.viewWillAppearProperty.signal
@@ -124,6 +137,9 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       .ignoreValues()
       .observeValues { _ in AppEnvironment.current.koala.trackDeletePaymentMethodError() }
   }
+
+  // Stores the table view's editing state as it is affected by multiple signals
+  private let tableViewIsEditingProperty = MutableProperty<Bool>(false)
 
   fileprivate let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) =
     Signal<(GraphUserCreditCard.CreditCard, Int),
@@ -163,6 +179,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   }
 
   public let editButtonIsEnabled: Signal<Bool, NoError>
+  public let editButtonTitle: Signal<String, NoError>
   public let errorLoadingPaymentMethods: Signal<String, NoError>
   public let goToAddCardScreen: Signal<Void, NoError>
   public let paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError>

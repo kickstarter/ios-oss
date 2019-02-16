@@ -122,6 +122,12 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true)
     }
+
+    self.viewModel.outputs.editButtonTitle
+      .observeForUI()
+      .observeValues { [weak self] title in
+        self?.editButton.title = title
+    }
   }
 
   // MARK: - Actions
