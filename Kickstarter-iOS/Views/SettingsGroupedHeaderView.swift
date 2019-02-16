@@ -1,11 +1,6 @@
+import Library
 import Prelude
 import UIKit
-
-private struct Padding {
-  static let bottom: CGFloat = 12
-  static let leftRight: CGFloat = 12
-  static let top: CGFloat = 30
-}
 
 final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
   private(set) lazy var label: UILabel = {
@@ -14,7 +9,6 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
       |> \.font .~ UIFont.preferredFont(forTextStyle: .footnote)
       |> \.numberOfLines .~ 0
       |> \.textColor .~ .ksr_text_dark_grey_500
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   // MARK: - Lifecycle
@@ -22,14 +16,11 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
 
-    self.contentView.addSubview(self.label)
+    _ = self.contentView
+      |> \.layoutMargins .~ .init(top: Styles.grid(5), left: Styles.grid(1), bottom: Styles.grid(2), right: Styles.grid(1))
+      |> \.preservesSuperviewLayoutMargins .~ false
 
-    NSLayoutConstraint.activate([
-      self.label.topAnchor.constraint( equalTo: self.contentView.topAnchor, constant: Padding.top),
-      self.label.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -Padding.leftRight),
-      self.label.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -Padding.bottom),
-      self.label.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: Padding.leftRight)
-    ])
+    self.contentView.addSubviewConstrainedToMargins(self.label)
   }
 
   required init?(coder aDecoder: NSCoder) {

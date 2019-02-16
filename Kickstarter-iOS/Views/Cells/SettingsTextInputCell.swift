@@ -1,21 +1,14 @@
+import Library
 import Prelude
 import UIKit
-
-private struct Margin {
-  static let leftRight: CGFloat = 8
-  static let topBottom: CGFloat = 15
-}
 
 final class SettingsTextInputCell: UITableViewCell {
   // MARK: - Accessors
 
   private lazy var stackView: UIStackView = {
-    let layoutMargins = UIEdgeInsets.init(topBottom: Margin.topBottom, leftRight: Margin.leftRight)
-    return UIStackView(frame: .zero)
+    UIStackView(frame: .zero)
       |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ layoutMargins
       |> \.spacing .~ 8
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var label: UILabel = {
@@ -50,17 +43,19 @@ final class SettingsTextInputCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+    _ = self.contentView
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
+      |> \.preservesSuperviewLayoutMargins .~ false
+
     self.stackView.addArrangedSubview(self.label)
     self.stackView.addArrangedSubview(self.textField)
-
-    self.contentView.addSubview(self.stackView)
-    self.stackView.constrainEdges(to: self.contentView)
-    self.stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
 
     self.label.setContentCompressionResistancePriority(.required, for: .horizontal)
     self.label.setContentHuggingPriority(.required, for: .horizontal)
 
     self.textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+    self.contentView.addSubviewConstrainedToMargins(self.stackView)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -95,17 +90,6 @@ final class SettingsTextInputCell: UITableViewCell {
 }
 
 // MARK: - Extensions
-
-private extension UIView {
-  func constrainEdges(to view: UIView) {
-    NSLayoutConstraint.activate([
-      self.topAnchor.constraint(equalTo: view.topAnchor),
-      self.rightAnchor.constraint(equalTo: view.rightAnchor),
-      self.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      self.leftAnchor.constraint(equalTo: view.leftAnchor)
-      ])
-  }
-}
 
 private extension UIContentSizeCategory {
   func ksr_isAccessibilityCategory() -> Bool {
