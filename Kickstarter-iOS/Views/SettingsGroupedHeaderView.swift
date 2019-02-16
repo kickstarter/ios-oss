@@ -5,7 +5,7 @@ import UIKit
 final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
   private(set) lazy var label: UILabel = {
     UILabel(frame: .zero)
-      |> \.backgroundColor .~ .groupTableViewBackground
+      |> \.backgroundColor .~ .ksr_grey_200
       |> \.font .~ UIFont.preferredFont(forTextStyle: .footnote)
       |> \.numberOfLines .~ 0
       |> \.textColor .~ .ksr_text_dark_grey_500

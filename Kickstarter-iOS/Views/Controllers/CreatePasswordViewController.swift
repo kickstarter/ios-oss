@@ -51,6 +51,7 @@ final class CreatePasswordViewController: UITableViewController {
 
     _ = self.tableView
       |> \.allowsSelection .~ false
+      |> \.backgroundColor .~ .ksr_grey_200
       |> \.separatorInset .~ .zero
 
     if #available(iOS 11, *) { } else {

@@ -15,7 +15,7 @@ final class SettingsTextInputCell: UITableViewCell {
     UILabel(frame: .zero)
       |> \.adjustsFontForContentSizeCategory .~ true
       |> \.backgroundColor .~ .white
-      |> \.font .~ UIFont.preferredFont(forTextStyle: .body)
+      |> \.font .~ .ksr_body()
       |> \.isAccessibilityElement .~ false
       |> \.numberOfLines .~ 0
   }()
@@ -24,7 +24,7 @@ final class SettingsTextInputCell: UITableViewCell {
     UITextField(frame: .zero)
       |> \.adjustsFontForContentSizeCategory .~ true
       |> \.backgroundColor .~ .white
-      |> \.font .~ UIFont.preferredFont(forTextStyle: .body)
+      |> \.font .~ .ksr_body()
       |> \.textAlignment .~ .right
       |> \.isSecureTextEntry .~ true
   }()
