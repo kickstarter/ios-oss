@@ -2,12 +2,6 @@ import Library
 import Prelude
 import UIKit
 
-private struct ReuseIdentifier {
-  static let cell = "SettingsInputCell"
-  static let header = "SettingsHeaderView"
-  static let footer = "SettingsFooterView"
-}
-
 private enum CreatePasswordRow: CaseIterable {
   case newPassword
   case confirmNewPassword
@@ -69,13 +63,9 @@ final class CreatePasswordViewController: UITableViewController {
         |> \.rowHeight .~ height
     }
 
-    self.tableView.register(
-      SettingsGroupedHeaderView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifier.header
-    )
-    self.tableView.register(
-      SettingsGroupedFooterView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifier.footer
-    )
-    self.tableView.register(SettingsTextInputCell.self, forCellReuseIdentifier: ReuseIdentifier.cell)
+    self.tableView.registerHeaderFooterClass(SettingsGroupedHeaderView.self)
+    self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
+    self.tableView.registerCellClass(SettingsTextInputCell.self)
   }
 
   // MARK: - UITableViewDataSource
@@ -86,7 +76,7 @@ final class CreatePasswordViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let row = CreatePasswordRow.allCases[indexPath.row]
-    let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.cell, for: indexPath)
+    let cell = tableView.dequeueReusableCell(withClass: SettingsTextInputCell.self, for: indexPath)
 
     guard let textInputCell = cell as? SettingsTextInputCell else { return cell }
 
@@ -97,7 +87,9 @@ final class CreatePasswordViewController: UITableViewController {
   // MARK: - UITableViewDelegate
 
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifier.header)
+    let className = SettingsGroupedHeaderView.self
+
+    guard let headerView = tableView.dequeueReusableHeaderFooterView(withClass: className)
       as? SettingsGroupedHeaderView else { return nil }
 
     _ = headerView.label
@@ -109,7 +101,8 @@ final class CreatePasswordViewController: UITableViewController {
   }
 
   override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifier.footer)
+    let className = SettingsGroupedFooterView.self
+    guard let footerView = tableView.dequeueReusableHeaderFooterView(withClass: className)
       as? SettingsGroupedFooterView else { return nil }
 
     _ = footerView.label
