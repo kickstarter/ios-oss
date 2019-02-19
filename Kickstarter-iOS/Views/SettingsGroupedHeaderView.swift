@@ -16,8 +16,15 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
 
+    let layoutMargins = UIEdgeInsets(
+      top: Styles.grid(5),
+      left: Styles.grid(1),
+      bottom: Styles.grid(2),
+      right: Styles.grid(1)
+    )
+
     _ = self.contentView
-      |> \.layoutMargins .~ .init(top: Styles.grid(5), left: Styles.grid(1), bottom: Styles.grid(2), right: Styles.grid(1))
+      |> \.layoutMargins .~ layoutMargins
       |> \.preservesSuperviewLayoutMargins .~ false
 
     self.contentView.addSubviewConstrainedToMargins(self.label)
