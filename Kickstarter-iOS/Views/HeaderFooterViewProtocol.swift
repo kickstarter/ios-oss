@@ -1,5 +1,5 @@
 import Foundation
 
 protocol HeaderFooterViewProtocol {
-  func configure(withText text: String)
+  func configure(with text: String)
 }
