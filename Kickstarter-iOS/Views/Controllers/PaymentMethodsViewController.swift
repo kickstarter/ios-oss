@@ -204,37 +204,3 @@ extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
     }
   }
 }
-
-private extension UIView {
-  func constrainEdges(to view: UIView) {
-    self.translatesAutoresizingMaskIntoConstraints = false
-
-    NSLayoutConstraint.activate([
-      self.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      self.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      self.topAnchor.constraint(equalTo: view.topAnchor),
-      self.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-      ])
-  }
-}
-
-private extension UITableView {
-  func ksr_sizeHeaderFooterViewsToFit() {
-    let keyPaths: [ReferenceWritableKeyPath<UITableView, UIView?>] = [
-      (\.tableHeaderView),
-      (\.tableFooterView)
-    ]
-
-    keyPaths.forEach { keyPath in
-      if let view = self[keyPath: keyPath] {
-        let size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-
-        if view.frame.height != size.height {
-          view.frame.size.height = size.height
-
-          self[keyPath: keyPath] = view
-        }
-      }
-    }
-  }
-}
