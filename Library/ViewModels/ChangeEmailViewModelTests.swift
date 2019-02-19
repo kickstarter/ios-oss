@@ -37,7 +37,6 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.didChangeEmail.observe(self.didChangeEmail.observer)
     self.vm.outputs.didFailToChangeEmail.observe(self.didFailToChangeEmail.observer)
     self.vm.outputs.emailText.observe(self.emailText.observer)
-
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.messageLabelViewHidden.observe(self.messageLabelViewHidden.observer)
     self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonIsHidden.observer)
@@ -376,6 +375,11 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
+
+    self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+    self.scheduler.advance()
 
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
     self.vm.inputs.passwordFieldTextDidChange(text: "123456")

@@ -18,4 +18,13 @@ final class UserQueriesTests: XCTestCase {
     XCTAssertEqual("me { email isDeliverable isEmailVerified }", query.description)
     XCTAssertEqual("{ me { email isDeliverable isEmailVerified } }", Query.build(NonEmptySet(query)))
   }
+
+  func testStoredCardsQuery() {
+    let query = Query.user(storedCardsQueryFields())
+
+    XCTAssertEqual("me { id storedCards { nodes { expirationDate id lastFour type } totalCount } }",
+                   query.description)
+    XCTAssertEqual("{ me { id storedCards { nodes { expirationDate id lastFour type } totalCount } } }",
+                   Query.build(NonEmptySet(query)))
+  }
 }
