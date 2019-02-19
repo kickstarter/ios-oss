@@ -16,7 +16,7 @@ More in-depth discussion of the change or implementation.
 
 Trello, screenshots, external resources?
 
-| Before | After |
+| Before 🐛 | After 🦋 |
 | --- | --- |
 |  |  |
 
