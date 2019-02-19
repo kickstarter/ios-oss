@@ -17,7 +17,7 @@ internal final class SelectCurrencyViewControllerTests: TestCase {
   }
 
   func testView() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
+    combos(Language.allLanguages, Device.allCases)
       .forEach { language, device in
         withEnvironment(language: language) {
           let vc = SelectCurrencyViewController.instantiate()
