@@ -27,3 +27,12 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
 }
+
+// MARK: - HeaderFooterViewProtocol
+
+extension SettingsGroupedHeaderView: HeaderFooterViewProtocol {
+  func configure(withText text: String) {
+    _ = self.label
+      |> \.text %~ { _ in text }
+  }
+}

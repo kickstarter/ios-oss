@@ -92,10 +92,9 @@ final class CreatePasswordViewController: UITableViewController {
     guard let headerView = tableView.dequeueReusableHeaderFooterView(withClass: className)
       as? SettingsGroupedHeaderView else { return nil }
 
-    _ = headerView.label
-      |> \.text %~ { _ in
-        Strings.Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password()
-    }
+    headerView.configure(
+      withText: Strings.Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password()
+    )
 
     return headerView
   }
@@ -105,8 +104,7 @@ final class CreatePasswordViewController: UITableViewController {
     guard let footerView = tableView.dequeueReusableHeaderFooterView(withClass: className)
       as? SettingsGroupedFooterView else { return nil }
 
-    _ = footerView.label
-      |> \.text %~ { _ in Strings.Password_min_length_message() }
+    footerView.configure(withText: Strings.Password_min_length_message())
 
     return footerView
   }

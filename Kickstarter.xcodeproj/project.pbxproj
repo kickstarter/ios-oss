@@ -80,6 +80,7 @@
 		37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */; };
 		3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */; };
 		37877D0C22177D9D009CE4EE /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37877D0B22177D9D009CE4EE /* UIView+AutoLayout.swift */; };
+		37AF5E85221C87F700044363 /* HeaderFooterViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AF5E84221C87F700044363 /* HeaderFooterViewProtocol.swift */; };
 		37BFD8802208F24300815C9C /* CreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordViewController.swift */; };
 		59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */; };
 		59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */; };
@@ -1859,6 +1860,7 @@
 		37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedHeaderView.swift; sourceTree = "<group>"; };
 		3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextInputCell.swift; sourceTree = "<group>"; };
 		37877D0B22177D9D009CE4EE /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
+		37AF5E84221C87F700044363 /* HeaderFooterViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderFooterViewProtocol.swift; sourceTree = "<group>"; };
 		37BFD8472208F22C00815C9C /* CreatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewController.swift; sourceTree = "<group>"; };
 		3D1363951F0191FB00B53420 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackViewViewModel.swift; sourceTree = "<group>"; };
@@ -3290,6 +3292,7 @@
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
 				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
 				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
+				37AF5E84221C87F700044363 /* HeaderFooterViewProtocol.swift */,
 				D0CDA89E1E7434AF00AA3450 /* LiveStreamNavTitleView.swift */,
 				D0D2AA301E9623F4008D298A /* LiveStreamNavTitleViewTests.swift */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
@@ -3297,16 +3300,16 @@
 				5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
+				7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */,
 				3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */,
 				37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */,
 				7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */,
+				777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */,
 				D0D2AB1A1E96444B008D298A /* VideoGridView.swift */,
 				A751A51C1C85EAD8009C5DEA /* Cells */,
 				A751A51D1C85EAD8009C5DEA /* Controllers */,
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
-				777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */,
-				7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -6102,6 +6105,7 @@
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
 				D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */,
 				77F9A9B02135FB760082A11E /* FindFriendsCell.swift in Sources */,
+				37AF5E85221C87F700044363 /* HeaderFooterViewProtocol.swift in Sources */,
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift in Sources */,
 				D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */,
