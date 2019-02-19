@@ -41,7 +41,7 @@ final class SelectCurrencyTableViewHeader: UIView {
 
   public var text: String? {
     didSet {
-      self.headerLabel.text = text
+      _ = self.headerLabel |> \.text .~ text
     }
   }
 
