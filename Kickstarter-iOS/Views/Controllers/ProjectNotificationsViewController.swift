@@ -18,6 +18,7 @@ internal final class ProjectNotificationsViewController: UITableViewController {
     self.tableView.delegate = self
 
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.grid(6)))
+    self.tableView.rowHeight = 44.0
 
     self.viewModel.inputs.viewDidLoad()
   }
