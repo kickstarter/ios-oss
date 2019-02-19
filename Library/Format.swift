@@ -106,6 +106,34 @@ public enum Format {
   }
 
   /**
+  Create a date from a string with the given format
+
+   - parameter dateString: The date string to convert to a Date
+   - parameter dateFormat: The format the date string is in ex. "yyyy-MM-DD".
+   - parameter timeZone: (optional) The timeZone the Date should be in.
+   - parameter env: (optional) An environment to use for locality and time zones.
+
+   - returns: A Date object with the specified time zone and locality.
+  */
+  public static func date(from dateString: String,
+                          dateFormat: String,
+                          timeZone: TimeZone? = nil,
+                          env: Environment = AppEnvironment.current) -> Date? {
+    let formatter = DateFormatterConfig.cachedFormatter(
+      forConfig: .init(
+        dateFormat: dateFormat,
+        dateStyle: nil,
+        locale: env.locale,
+        template: nil,
+        timeStyle: nil,
+        timeZone: timeZone ?? env.calendar.timeZone
+      )
+    )
+
+    return formatter.date(from: dateString)
+  }
+
+  /**
    Format a date into a string.
 
    - parameter secondsInUTC: Seconds represention of the date as measured from UTC.
@@ -123,9 +151,10 @@ public enum Format {
 
     let formatter = DateFormatterConfig.cachedFormatter(
       forConfig: .init(
-        template: nil,
+        dateFormat: nil,
         dateStyle: dateStyle,
         locale: env.locale,
+        template: nil,
         timeStyle: timeStyle,
         timeZone: timeZone ?? env.calendar.timeZone
       )
@@ -148,9 +177,10 @@ public enum Format {
 
     let formatter = DateFormatterConfig.cachedFormatter(
       forConfig: .init(
-        template: template,
+        dateFormat: nil,
         dateStyle: nil,
         locale: AppEnvironment.current.locale,
+        template: template,
         timeStyle: nil,
         timeZone: timeZone ?? AppEnvironment.current.calendar.timeZone
       )
@@ -291,9 +321,10 @@ public enum Format {
 public let defaultThresholdInDays = 30 // days
 
 private struct DateFormatterConfig {
-  fileprivate let template: String?
+  fileprivate let dateFormat: String?
   fileprivate let dateStyle: DateFormatter.Style?
   fileprivate let locale: Locale
+  fileprivate let template: String?
   fileprivate let timeStyle: DateFormatter.Style?
   fileprivate let timeZone: TimeZone
 
@@ -303,6 +334,9 @@ private struct DateFormatterConfig {
     formatter.timeZone = self.timeZone
     if let template = self.template {
       formatter.setLocalizedDateFormatFromTemplate(template)
+    }
+    if let dateFormat = self.dateFormat {
+      formatter.dateFormat = dateFormat
     }
     if let dateStyle = self.dateStyle {
       formatter.dateStyle = dateStyle

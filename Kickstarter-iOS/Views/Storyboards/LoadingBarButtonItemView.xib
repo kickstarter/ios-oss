@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,26 +16,42 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="WeI-gS-cT0">
-                    <rect key="frame" x="177.5" y="333.5" width="20" height="20"/>
+                <view contentMode="scaleToFill" horizontalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="tcZ-2l-zCg">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="WeI-gS-cT0">
+                            <rect key="frame" x="355" y="323.5" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="Gww-rc-lzH"/>
+                                <constraint firstAttribute="width" constant="20" id="jpA-AB-7sp"/>
+                            </constraints>
+                        </activityIndicatorView>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" enabled="NO" contentHorizontalAlignment="right" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8e-UA-Yn2">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="dqm-s1-l0D"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="20" id="Gww-rc-lzH"/>
-                        <constraint firstAttribute="width" constant="20" id="jpA-AB-7sp"/>
+                        <constraint firstItem="z8e-UA-Yn2" firstAttribute="top" secondItem="tcZ-2l-zCg" secondAttribute="top" id="3v5-1w-fdh"/>
+                        <constraint firstItem="WeI-gS-cT0" firstAttribute="centerY" secondItem="z8e-UA-Yn2" secondAttribute="centerY" id="5Bh-HB-rLF"/>
+                        <constraint firstItem="z8e-UA-Yn2" firstAttribute="leading" secondItem="tcZ-2l-zCg" secondAttribute="leading" id="7vh-Yd-EnT"/>
+                        <constraint firstItem="z8e-UA-Yn2" firstAttribute="width" secondItem="tcZ-2l-zCg" secondAttribute="width" id="C3S-7F-cfx"/>
+                        <constraint firstAttribute="bottom" secondItem="z8e-UA-Yn2" secondAttribute="bottom" id="KEN-5B-WpZ"/>
+                        <constraint firstAttribute="trailing" secondItem="z8e-UA-Yn2" secondAttribute="trailing" id="NC3-JW-lB9"/>
+                        <constraint firstAttribute="trailing" secondItem="WeI-gS-cT0" secondAttribute="trailing" id="qHt-ko-57f"/>
                     </constraints>
-                </activityIndicatorView>
-                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8e-UA-Yn2">
-                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                    <state key="normal" title="Button"/>
-                </button>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="WeI-gS-cT0" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="2sx-bb-5P4"/>
-                <constraint firstItem="WeI-gS-cT0" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="3zE-Fz-DRq"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="z8e-UA-Yn2" secondAttribute="trailing" id="4Fk-4N-wDR"/>
-                <constraint firstItem="z8e-UA-Yn2" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Son-a0-TnP"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="z8e-UA-Yn2" secondAttribute="bottom" id="erl-N0-o7c"/>
-                <constraint firstItem="z8e-UA-Yn2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="oJm-Wp-zMv"/>
+                <constraint firstItem="tcZ-2l-zCg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="249-wk-kD8"/>
+                <constraint firstItem="tcZ-2l-zCg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="PJf-DN-uRd"/>
+                <constraint firstAttribute="bottom" secondItem="tcZ-2l-zCg" secondAttribute="bottom" id="bOo-Q7-BtT"/>
+                <constraint firstAttribute="trailing" secondItem="tcZ-2l-zCg" secondAttribute="trailing" id="nLz-lR-0Ag"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>

@@ -3,18 +3,22 @@ import UIKit
 public enum Nib: String {
   case BackerDashboardEmptyStateCell
   case BackerDashboardProjectCell
+  case CreditCardCell
   case DiscoveryPostcardCell
   case DiscoveryProjectCategoryView
   case FindFriendsCell
   case LiveStreamNavTitleView
   case LoadingBarButtonItemView
   case MessageBannerViewController
+  case PaymentMethodsFooterView
   case RewardCell
   case SettingsAccountWarningCell
+  case SettingsFormFieldView
   case SettingsHeaderView
   case SettingsNewslettersCell
   case SettingsNewslettersTopCell
   case SettingsTableViewCell
+  case SettingsTableViewHeader
   case ThanksCategoryCell
   case SettingsNotificationCell
   case SettingsNotificationPickerCell
@@ -48,5 +52,10 @@ extension NibLoading {
     }
 
     return view
+  }
+
+  func view(fromNib nib: Nib) -> UIView? {
+    return UINib(nibName: nib.rawValue, bundle: .framework).instantiate(withOwner: self, options: nil).first
+      as? UIView
   }
 }

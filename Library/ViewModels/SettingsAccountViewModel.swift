@@ -66,7 +66,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .observeValues { _ in AppEnvironment.current.koala.trackAccountView() }
   }
 
-  fileprivate let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
+  private let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
   public func didSelectRow(cellType: SettingsAccountCellType) {
     self.selectedCellTypeProperty.value = cellType
   }

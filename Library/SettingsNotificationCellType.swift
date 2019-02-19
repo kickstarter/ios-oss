@@ -36,7 +36,7 @@ public enum SettingsNotificationSectionType: Int {
     case .backedProjects:
       return Strings.Projects_youve_backed()
     case .creator:
-      return Strings.profile_settings_creator_title()
+      return Strings.Projects_youve_launched()
     case .social:
       return Strings.profile_settings_social_title()
     }
@@ -83,14 +83,14 @@ public enum SettingsNotificationCellType {
 
   public var shouldShowEmailNotificationButton: Bool {
     switch self {
-    case .projectNotifications, .emailFrequency:
+    case .projectNotifications, .emailFrequency, .newLikes:
       return false
     default:
       return true
     }
   }
 
-  public var showShowPushNotificationButton: Bool {
+  public var shouldShowPushNotificationButton: Bool {
     switch self {
     case .projectNotifications, .emailFrequency, .creatorTips:
       return false
@@ -120,7 +120,7 @@ public enum SettingsNotificationCellType {
     case .projectNotifications:
       return Strings.profile_settings_backer_notifications()
     case .pledgeActivity:
-      return Strings.Pledge_activity()
+      return Strings.Project_activity()
     case .emailFrequency:
       return Strings.Email_frequency()
     case .newComments:

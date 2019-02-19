@@ -65,7 +65,7 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.viewDidLoad()
 
-      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.daily)
+      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.dailySummary)
     }
   }
 
@@ -80,15 +80,15 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
       self.updateCurrentUser.assertValueCount(2)
 
-      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.daily)
+      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.dailySummary)
 
-      self.vm.inputs.didSelectEmailFrequency(frequency: EmailFrequency.individualEmails)
+      self.vm.inputs.didSelectEmailFrequency(frequency: EmailFrequency.twiceADaySummary)
 
       self.scheduler.advance()
 
       self.updateCurrentUser.assertValueCount(3)
       self.pickerViewIsHidden.assertLastValue(true)
-      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.individualEmails)
+      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.twiceADaySummary)
     }
   }
 
@@ -109,20 +109,20 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
       self.updateCurrentUser.assertValueCount(2)
 
-      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.daily)
+      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.dailySummary)
 
-      self.vm.inputs.didSelectEmailFrequency(frequency: EmailFrequency.individualEmails)
+      self.vm.inputs.didSelectEmailFrequency(frequency: EmailFrequency.twiceADaySummary)
 
       self.scheduler.advance()
 
       self.updateCurrentUser.assertValueCount(2)
       self.pickerViewIsHidden.assertLastValue(true)
-      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.daily)
+      self.pickerViewSelectedRow.assertLastValue(EmailFrequency.dailySummary)
       self.unableToSaveError.assertValueCount(1)
     }
   }
 
-  func testShowHidePickerView() {
+  func testShowHidePickerView_SelectingRow() {
     self.pickerViewIsHidden.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
@@ -132,5 +132,40 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     self.vm.inputs.didSelectRow(cellType: .emailFrequency)
 
     self.pickerViewIsHidden.assertValues([false], "Picker view should not be hidden")
+  }
+
+  func testShowHidePickerView_TapGesture() {
+    self.pickerViewIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.pickerViewIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.didSelectRow(cellType: .emailFrequency)
+
+    self.pickerViewIsHidden.assertValues([false], "Picker view is shown")
+
+    self.vm.inputs.dismissPickerTap()
+
+    self.pickerViewIsHidden.assertValues([false, true], "Picker view should be hidden")
+  }
+
+  func testShowHidePickerView_EmailFrequencyDisabled() {
+    let user = .template
+      |> UserAttribute.notification(.pledgeActivity).keyPath .~ false
+
+    self.pickerViewIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.pickerViewIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.didSelectRow(cellType: .emailFrequency)
+
+    self.pickerViewIsHidden.assertValues([false], "Picker view is shown")
+
+    self.vm.inputs.updateUser(user: user)
+
+    self.pickerViewIsHidden.assertValues([false, true], "Picker view should be hidden")
   }
 }
