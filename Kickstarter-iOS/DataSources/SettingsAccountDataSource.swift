@@ -11,7 +11,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
 
     self.filteredSections = shouldHideEmailPasswordSection
       ? SettingsAccountSectionType.allCases.filter { $0 != .emailPassword }
-      : SettingsAccountSectionType.allCases
+      : SettingsAccountSectionType.allCases.filter { $0 != .createPassword }
 
     self.clearValues()
 
