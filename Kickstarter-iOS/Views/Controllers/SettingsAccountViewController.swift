@@ -32,6 +32,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.tableView.register(nib: .SettingsCurrencyCell)
     self.tableView.register(nib: .SettingsAccountWarningCell)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+    self.tableView.registerHeaderFooter(nib: .CreatePasswordFooterView)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -84,8 +85,8 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.viewModel.outputs.updateCurrencyFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-          self?.present(UIAlertController.genericError(errorMessage),
-                        animated: true, completion: nil)
+        self?.present(UIAlertController.genericError(errorMessage),
+                      animated: true, completion: nil)
     }
 
     self.viewModel.outputs.dismissCurrencyPicker
@@ -199,11 +200,29 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 0.1
+
+    let (userHasPassword, _) = self.viewModel.outputs.userHasPasswordAndEmail
+    guard section == SettingsAccountSectionType.createPassword.rawValue && !userHasPassword else {
+      return 0.1
+    }
+    return Styles.grid(9)
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+
+    let (userHasPassword, email) = self.viewModel.outputs.userHasPasswordAndEmail
+    guard section == SettingsAccountSectionType.createPassword.rawValue && !userHasPassword else {
+      return nil
+    }
+
+    let footerView = tableView.dequeueReusableHeaderFooterView(
+      withIdentifier: Nib.CreatePasswordFooterView.rawValue) as? CreatePasswordFooterView
+    footerView?.configure(with: email)
+    return footerView
   }
 
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
