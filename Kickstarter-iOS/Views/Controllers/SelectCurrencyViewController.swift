@@ -32,7 +32,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
 
     let headerContainerView = UIView(frame: .zero)
     headerContainerView.addSubview(self.headerView)
-    self.headerView.constrainEdges(to: headerContainerView)
+    self.headerView.constrainEdges(to: headerContainerView, priority: .defaultHigh)
 
     self.tableView.tableHeaderView = headerContainerView
     self.headerView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
