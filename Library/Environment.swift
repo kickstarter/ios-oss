@@ -46,6 +46,11 @@ public struct Environment {
   /// The current device running the app.
   public let device: UIDeviceType
 
+  /// Returns the current environment type
+  public var environmentType: EnvironmentType {
+    return self.apiService.serverConfig.environment
+  }
+
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
 

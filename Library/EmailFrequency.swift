@@ -1,10 +1,10 @@
 import UIKit
 
 public enum EmailFrequency: Int {
-  case daily
-  case individualEmails
+  case dailySummary
+  case twiceADaySummary
 
-  public static let allCases: [EmailFrequency] = [.daily, .individualEmails]
+  public static let allCases: [EmailFrequency] = [.dailySummary, .twiceADaySummary]
 
   public static var rowHeight: CGFloat {
     return Styles.grid(7)
@@ -12,10 +12,10 @@ public enum EmailFrequency: Int {
 
   public var descriptionText: String {
     switch self {
-    case .daily:
-      return Strings.Daily_digest()
-    case .individualEmails:
-      return Strings.Individual_Emails()
+    case .dailySummary:
+      return Strings.Daily_summary()
+    case .twiceADaySummary:
+      return Strings.Twice_a_day_summary()
     }
   }
 }

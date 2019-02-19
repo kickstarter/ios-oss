@@ -13,6 +13,7 @@ public extension Bundle {
  A `ServerType` that requests data from an API webservice.
  */
 public struct Service: ServiceType {
+
   public let appId: String
   public let serverConfig: ServerConfigType
   public let oauthToken: OauthTokenAuthType?
@@ -60,6 +61,11 @@ public struct Service: ServiceType {
       return request(Route.addImage(fileUrl: fileURL, toDraft: draft))
   }
 
+  public func addNewCreditCard(input: CreatePaymentSourceInput)
+    -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
+    return applyMutation(mutation: CreatePaymentSourceMutation(input: input))
+  }
+
   public func addVideo(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
 
@@ -80,6 +86,11 @@ public struct Service: ServiceType {
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
 
       return request(.changePaymentMethod(project: project))
+  }
+
+  public func deletePaymentMethod(input: PaymentSourceDeleteInput)
+    -> SignalProducer<DeletePaymentMethodEnvelope, GraphError> {
+      return applyMutation(mutation: PaymentSourceDeleteMutation(input: input))
   }
 
   public func changeCurrency(input: ChangeCurrencyInput) ->
@@ -205,6 +216,11 @@ public struct Service: ServiceType {
 
   public func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError> {
+      return fetch(query: query)
+  }
+
+  public func fetchGraphCreditCards(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError> {
       return fetch(query: query)
   }
 
