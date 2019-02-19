@@ -4,7 +4,7 @@ BUILD_FLAGS = -scheme $(SCHEME) -destination $(DESTINATION)
 SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
-RELEASE ?= beta
+RELEASE ?= itunes
 IOS_VERSION ?= 12.1
 IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
@@ -111,7 +111,7 @@ beta:
 sync:
 	@echo "Syncing oss and private remotes..."
 
-	@git checkout oss $(BRANCH)
+	@git checkout $(BRANCH)
 	@git pull oss $(BRANCH)
 	@git push private $(BRANCH)
 
