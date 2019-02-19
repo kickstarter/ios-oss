@@ -22,7 +22,7 @@ public protocol SettingsAccountViewModelOutputs {
   var showAlert: Signal<(), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
   var updateCurrencyFailure: Signal<String, NoError> { get }
-  var userHasPasswordAndEmail: (Bool, String) { get }
+  var userHasPasswordAndEmail: (Bool, String?) { get }
 }
 
 public protocol SettingsAccountViewModelType {
@@ -57,7 +57,7 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .map { $0.me.hasPassword == .some(false) }
 
     self.userHasPasswordAndEmailProperty <~ userAccountFields.values()
-      .map { ($0.me.hasPassword == .some(true), $0.me.email ?? "") }
+      .map { ($0.me.hasPassword == .some(true), $0.me.email) }
 
     let chosenCurrency = userAccountFields.values()
       .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
@@ -151,8 +151,8 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let userHasPasswordAndEmailProperty = MutableProperty<(Bool, String)>((true, ""))
-  public var userHasPasswordAndEmail: (Bool, String) {
+  fileprivate let userHasPasswordAndEmailProperty = MutableProperty<(Bool, String?)>((true, nil))
+  public var userHasPasswordAndEmail: (Bool, String?) {
     return self.userHasPasswordAndEmailProperty.value
   }
 

@@ -25,27 +25,27 @@ final class SettingsAccountDataSourceTests: XCTestCase {
                                   shouldHideEmailWarning: true,
                                   shouldHideEmailPasswordSection: true)
 
-    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
   }
 
   func testInsertRemoveCurrencyPickerRow() {
 
-    self.dataSource.configureRows(currency: Currency.USD,
+    let currency = Currency.USD
+    self.dataSource.configureRows(currency: currency,
                                   shouldHideEmailWarning: true,
                                   shouldHideEmailPasswordSection: false)
-
-    let currency = Currency.USD
 
     _ = self.dataSource.insertCurrencyPickerRow(with: currency)
 
     XCTAssertEqual(3, self.dataSource.tableView(self.tableView,
-                                           numberOfRowsInSection: SettingsAccountSectionType.payment.rawValue))
+                                           numberOfRowsInSection: 2))
 
     _ = self.dataSource.removeCurrencyPickerRow()
 
-    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: SettingsAccountSectionType.payment.rawValue))
+    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
   }
 
   func testCellTypeForIndexPath() {
@@ -69,14 +69,16 @@ final class SettingsAccountDataSourceTests: XCTestCase {
   func testCellTypeForIndexPath_HideEmailPassword() {
     let indexPath1 = IndexPath(item: 0, section: 0)
     let indexPath2 = IndexPath(item: 0, section: 1)
-    let indexPath3 = IndexPath(item: 1, section: 1)
+    let indexPath3 = IndexPath(item: 0, section: 2)
+    let indexPath4 = IndexPath(item: 1, section: 2)
 
     self.dataSource.configureRows(currency: nil,
                                   shouldHideEmailWarning: true,
                                   shouldHideEmailPasswordSection: true)
 
-    XCTAssertEqual(SettingsAccountCellType.privacy, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1))
-    XCTAssertEqual(SettingsAccountCellType.paymentMethods, self.dataSource.cellTypeForIndexPath(indexPath: indexPath2))
-    XCTAssertEqual(SettingsAccountCellType.currency, self.dataSource.cellTypeForIndexPath(indexPath: indexPath3))
+    XCTAssertEqual(SettingsAccountCellType.createPassword, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1))
+    XCTAssertEqual(SettingsAccountCellType.privacy, self.dataSource.cellTypeForIndexPath(indexPath: indexPath2))
+    XCTAssertEqual(SettingsAccountCellType.paymentMethods, self.dataSource.cellTypeForIndexPath(indexPath: indexPath3))
+    XCTAssertEqual(SettingsAccountCellType.currency, self.dataSource.cellTypeForIndexPath(indexPath: indexPath4))
   }
 }
