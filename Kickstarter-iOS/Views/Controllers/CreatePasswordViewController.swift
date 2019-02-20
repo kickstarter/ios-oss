@@ -43,29 +43,18 @@ final class CreatePasswordViewController: UITableViewController {
     _ = self.navigationItem
       |> \.rightBarButtonItem .~ self.rightBarButtonItem
 
-    _ = self.tableView
-      |> \.allowsSelection .~ false
-      |> \.backgroundColor .~ .ksr_grey_200
-      |> \.separatorInset .~ .zero
-
-    if #available(iOS 11, *) { } else {
-      let estimatedSectionFooterHeight: CGFloat = 44
-      let estimatedSectionHeaderHeight: CGFloat = 100
-      let estimatedRowHeight: CGFloat = 44
-      let height = UITableView.automaticDimension
-
-      _ = self.tableView
-        |> \.estimatedSectionFooterHeight .~ estimatedSectionFooterHeight
-        |> \.estimatedSectionHeaderHeight .~ estimatedSectionHeaderHeight
-        |> \.estimatedRowHeight .~ estimatedRowHeight
-        |> \.sectionFooterHeight .~ height
-        |> \.sectionHeaderHeight .~ height
-        |> \.rowHeight .~ height
-    }
-
     self.tableView.registerHeaderFooterClass(SettingsGroupedHeaderView.self)
     self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
     self.tableView.registerCellClass(SettingsTextInputCell.self)
+  }
+
+  // MARK: - Styles
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    _ = self.tableView
+      |> settingsGroupedTableViewStyle
   }
 
   // MARK: - UITableViewDataSource
