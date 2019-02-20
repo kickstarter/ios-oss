@@ -5,11 +5,7 @@ internal final class CreatePasswordFooterView: UITableViewHeaderFooterView, NibL
 
   @IBOutlet private weak var descriptionLabel: UILabel!
 
-  func configure(with email: String?) {
-    guard let email = email else {
-      fatalError("Could not fetch user's email.")
-    }
-
+  func configure(with email: String) {
     _ = self.descriptionLabel
       |> \.text .~ Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: email)
   }

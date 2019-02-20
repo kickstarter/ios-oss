@@ -200,9 +200,8 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-
     let (userHasPassword, _) = self.viewModel.outputs.userHasPasswordAndEmail
-    guard section == SettingsAccountSectionType.createPassword.rawValue && !userHasPassword else {
+    guard section == SettingsAccountSectionType.createPassword.rawValue, !userHasPassword else {
       return 0.1
     }
     return Styles.grid(9)
@@ -213,15 +212,16 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-
     let (userHasPassword, email) = self.viewModel.outputs.userHasPasswordAndEmail
-    guard section == SettingsAccountSectionType.createPassword.rawValue && !userHasPassword else {
-      return nil
+    guard let userEmail = email,
+      !userHasPassword,
+      section == SettingsAccountSectionType.createPassword.rawValue else {
+        return nil
     }
 
     let footerView = tableView.dequeueReusableHeaderFooterView(
       withIdentifier: Nib.CreatePasswordFooterView.rawValue) as? CreatePasswordFooterView
-    footerView?.configure(with: email)
+    footerView?.configure(with: userEmail)
     return footerView
   }
 

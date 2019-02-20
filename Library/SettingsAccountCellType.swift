@@ -3,7 +3,7 @@ import UIKit
 
 public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
   case createPassword
-  case emailPassword
+  case changeEmailPassword
   case privacy
   case payment
 
@@ -15,7 +15,7 @@ public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
     switch self {
     case .createPassword:
       return [.createPassword]
-    case .emailPassword:
+    case .changeEmailPassword:
       return [.changePassword]
     case .privacy:
       return [.privacy]
