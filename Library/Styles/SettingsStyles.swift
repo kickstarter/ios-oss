@@ -82,7 +82,7 @@ public func settingsAttributedPlaceholder(_ string: String) -> NSAttributedStrin
 
 public func settingsContentViewStyle(_ view: UIView) -> UIView {
   return view
-    |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
+    |> \.layoutMargins .~ .init(all: Styles.grid(2))
     |> \.preservesSuperviewLayoutMargins .~ false
 }
 
@@ -94,9 +94,9 @@ public func settingsHeaderContentViewStyle(_ view: UIView) -> UIView {
     |> settingsContentViewStyle
     |> \.layoutMargins .~ .init(
       top: Styles.grid(5),
-      left: Styles.grid(1),
+      left: Styles.grid(2),
       bottom: Styles.grid(2),
-      right: Styles.grid(1))
+      right: Styles.grid(2))
 }
 
 public func settingsHeaderFooterLabelBaseStyle(_ label: UILabel) -> UILabel {
