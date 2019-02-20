@@ -71,6 +71,41 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     }
   }
 
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.activityIndicatorShouldShow
+      .observeForUI()
+      .observeValues { shouldShow in
+        if shouldShow {
+          self.saveButtonView.startAnimating()
+        } else {
+          self.saveButtonView.stopAnimating()
+        }
+    }
+
+    self.viewModel.outputs.saveButtonIsEnabled
+      .observeForUI()
+      .observeValues { [weak self] (isEnabled) in
+        self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
+    }
+
+    self.viewModel.outputs.updateCurrencyDidFailWithError
+      .observeForUI()
+      .observeValues { error in
+        self.messageBannerViewController?.showBanner(
+          with: .error,
+          message: error
+        )
+    }
+  }
+
+  // MARK: Actions
+
+  @objc private func saveButtonTapped(_ sender: Any) {
+    self.viewModel.inputs.saveButtonTapped()
+  }
+
   // MARK: - Subviews
 
   private lazy var tableView: UITableView = {
