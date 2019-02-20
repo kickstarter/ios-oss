@@ -80,52 +80,60 @@ public func settingsAttributedPlaceholder(_ string: String) -> NSAttributedStrin
   )
 }
 
-private let settingsLayoutMarginsStyle =
-  UIView.lens.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
-    <> UIView.lens.preservesSuperviewLayoutMargins .~ false
-
-public let settingsContentViewStyle = settingsLayoutMarginsStyle
-
-private let settingsHeaderLayoutMargins = UIEdgeInsets(
-  top: Styles.grid(5),
-  left: Styles.grid(1),
-  bottom: Styles.grid(2),
-  right: Styles.grid(1)
-)
-
-public let settingsHeaderContentViewStyle =
-  settingsLayoutMarginsStyle
-    <> UIView.lens.layoutMargins .~ settingsHeaderLayoutMargins
+public func settingsContentViewStyle(_ view: UIView) -> UIView {
+  return view
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
+    |> \.preservesSuperviewLayoutMargins .~ false
+}
 
 public let settingsFooterContentViewStyle =
-  settingsLayoutMarginsStyle
+settingsContentViewStyle
 
-public let settingsHeaderFooterLabelBaseStyle =
-  UILabel.lens.font %~ { _ in .ksr_footnote() }
-    <> UILabel.lens.numberOfLines .~ 0
+public func settingsHeaderContentViewStyle(_ view: UIView) -> UIView {
+  return view
+    |> settingsContentViewStyle
+    |> \.layoutMargins .~ .init(
+      top: Styles.grid(5),
+      left: Styles.grid(1),
+      bottom: Styles.grid(2),
+      right: Styles.grid(1))
+}
 
-public let settingsHeaderFooterLabelStyle =
-  UILabel.lens.backgroundColor .~ .ksr_grey_200
-    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+public func settingsHeaderFooterLabelBaseStyle(_ label: UILabel) -> UILabel {
+  return label
+    |> \.font %~ { _ in .ksr_footnote() }
+    |> \.numberOfLines .~ 0
+}
 
-private let settingsStackViewStyle =
-  UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-    <> UIStackView.lens.spacing .~ 8
+public func settingsHeaderFooterLabelStyle(_ label: UILabel) -> UILabel {
+  return label
+    |> \.backgroundColor .~ .ksr_grey_200
+    |> \.textColor .~ .ksr_text_dark_grey_500
+}
 
-public let settingsStackViewVerticalStyle =
-  settingsStackViewStyle
-  <> UIStackView.lens.axis .~ .vertical
-  <> UIStackView.lens.alignment .~ .leading
+public func settingsLabelStyle(_ label: UILabel) -> UILabel {
+  return label
+    |> \.backgroundColor .~ .white
+    |> \.font %~ { _ in .ksr_body() }
+}
 
-public let settingsStackViewHorizontalStyle =
-  settingsStackViewStyle
-  <> UIStackView.lens.axis .~ .horizontal
-  <> UIStackView.lens.alignment .~ .fill
+public func settingsTextFieldStyle(_ textField: UITextField) -> UITextField {
+  return textField
+    |> \.backgroundColor .~ .white
+    |> \.font %~ { _ in .ksr_body() }
+    |> \.textAlignment %~~ { _, stackView in
+      stackView.traitCollection.ksr_isAccessibilityCategory() ? .left : .right
+  }
+}
 
-public let settingsLabelStyle =
-  UILabel.lens.font %~ { _ in .ksr_body() }
-    <> UILabel.lens.backgroundColor .~ .white
-
-public let settingsTextFieldStyle =
-  UITextField.lens.font %~ { _ in .ksr_body() }
-    <> UITextField.lens.backgroundColor .~ .white
+public func settingsStackViewStyle(_ stackView: UIStackView) -> UIStackView {
+  return stackView
+    |> \.axis %~~ { _, stackView in
+      stackView.traitCollection.ksr_isAccessibilityCategory() ? .vertical : .horizontal
+    }
+    |> \.alignment %~~ { _, stackView in
+      stackView.traitCollection.ksr_isAccessibilityCategory() ? .leading : .fill
+    }
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ 8
+}

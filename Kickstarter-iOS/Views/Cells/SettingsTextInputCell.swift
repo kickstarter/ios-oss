@@ -43,14 +43,11 @@ final class SettingsTextInputCell: UITableViewCell {
   override func bindStyles() {
     super.bindStyles()
 
-    let preferredContentSizeCategory = self.traitCollection.preferredContentSizeCategory
-    let isAccessibilityCategory = preferredContentSizeCategory.ksr_isAccessibilityCategory()
-
     _ = self.contentView
       |> settingsContentViewStyle
 
     _ = self.stackView
-      |> (isAccessibilityCategory ? settingsStackViewVerticalStyle : settingsStackViewHorizontalStyle)
+      |> settingsStackViewStyle
 
     _ = self.label
       |> settingsLabelStyle
@@ -59,24 +56,6 @@ final class SettingsTextInputCell: UITableViewCell {
 
     _ = self.textField
       |> settingsTextFieldStyle
-      |> \.textAlignment .~ (isAccessibilityCategory ? .left : .right)
       |> \.isSecureTextEntry .~ true
-  }
-}
-
-// MARK: - Extensions
-
-private extension UIContentSizeCategory {
-  func ksr_isAccessibilityCategory() -> Bool {
-    if #available(iOS 11, *) {
-      return self.isAccessibilityCategory
-    } else {
-      return
-        self == .accessibilityMedium ||
-        self == .accessibilityLarge ||
-        self == .accessibilityExtraLarge ||
-        self == .accessibilityExtraExtraLarge ||
-        self == .accessibilityExtraExtraExtraLarge
-    }
   }
 }
