@@ -3,31 +3,11 @@ import Prelude
 import UIKit
 
 final class SettingsTextInputCell: UITableViewCell {
-  // MARK: - Accessors
+  // MARK: - Properties
 
-  private lazy var stackView: UIStackView = {
-    UIStackView(frame: .zero)
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.spacing .~ 8
-  }()
-
-  private lazy var label: UILabel = {
-    UILabel(frame: .zero)
-      |> \.adjustsFontForContentSizeCategory .~ true
-      |> \.backgroundColor .~ .white
-      |> \.font .~ .ksr_body()
-      |> \.isAccessibilityElement .~ false
-      |> \.numberOfLines .~ 0
-  }()
-
-  private lazy var textField: UITextField = {
-    UITextField(frame: .zero)
-      |> \.adjustsFontForContentSizeCategory .~ true
-      |> \.backgroundColor .~ .white
-      |> \.font .~ .ksr_body()
-      |> \.textAlignment .~ .right
-      |> \.isSecureTextEntry .~ true
-  }()
+  private lazy var stackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var label: UILabel = { UILabel(frame: .zero) }()
+  private lazy var textField: UITextField = { UITextField(frame: .zero) }()
 
   public func configure(with title: String, placeholder: String) {
     _ = self.label
@@ -42,10 +22,6 @@ final class SettingsTextInputCell: UITableViewCell {
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-    _ = self.contentView
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
-      |> \.preservesSuperviewLayoutMargins .~ false
 
     self.stackView.addArrangedSubview(self.label)
     self.stackView.addArrangedSubview(self.textField)
@@ -62,30 +38,35 @@ final class SettingsTextInputCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: - Layout
+  // MARK: - Styles
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
+  override func bindStyles() {
+    super.bindStyles()
 
-    let traitCollection = self.traitCollection
+    let preferredContentSizeCategory = self.traitCollection.preferredContentSizeCategory
+    let isAccessibilityCategory = preferredContentSizeCategory.ksr_isAccessibilityCategory()
 
-    if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-      self.configure(with: traitCollection)
-    }
-  }
+    _ = self.contentView
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
+      |> \.preservesSuperviewLayoutMargins .~ false
 
-  private func configure(with traitCollection: UITraitCollection) {
-    let contentSize = traitCollection.preferredContentSizeCategory
+    _ = self.stackView
+      |> \.axis .~ (isAccessibilityCategory ? .vertical : .horizontal)
+      |> \.alignment .~ (isAccessibilityCategory ? .leading : .fill)
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.spacing .~ 8
 
-    if contentSize.ksr_isAccessibilityCategory() {
-      self.stackView.axis = .vertical
-      self.stackView.alignment = .leading
-      self.textField.textAlignment = .left
-    } else {
-      self.stackView.axis = .horizontal
-      self.stackView.alignment = .fill
-      self.textField.textAlignment = .right
-    }
+    _ = self.label
+      |> \.backgroundColor .~ .white
+      |> \.font %~ { _ in .ksr_body() }
+      |> \.isAccessibilityElement .~ false
+      |> \.numberOfLines .~ 0
+
+    _ = self.textField
+      |> \.backgroundColor .~ .white
+      |> \.font %~ { _ in .ksr_body() }
+      |> \.textAlignment .~ (isAccessibilityCategory ? .left : .right)
+      |> \.isSecureTextEntry .~ true
   }
 }
 
