@@ -74,7 +74,7 @@ SelectCurrencyViewModelOutputs {
       self.didSelectCurrencySignal
     )
 
-    let currenciesMatch = Signal.merge(
+    let currenciesDoNotMatch = Signal.merge(
       initialAndSelected,
       updatedAndSelected
       )
@@ -82,7 +82,7 @@ SelectCurrencyViewModelOutputs {
 
     self.saveButtonIsEnabled = Signal.merge(
       self.viewDidLoadSignal.mapConst(false),
-      currenciesMatch
+      currenciesDoNotMatch
     )
   }
 
