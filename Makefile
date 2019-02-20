@@ -78,9 +78,9 @@ deploy:
 		echo "There are commits in oss/$(BRANCH) that are not in private/$(BRANCH). Please sync the remotes before deploying."; \
 		exit 1; \
 	fi
-	@if test "$(RELEASE)" != "beta" && test "$(RELEASE)" != "itunes"; \
+	@if test "$(RELEASE)" != "itunes"; \
 	then \
-		echo "RELEASE must be 'beta' or 'itunes'."; \
+		echo "RELEASE must be 'itunes'."; \
 		exit 1; \
 	fi
 	@if test "$(RELEASE)" = "itunes" && test "$(BRANCH)" != "master"; \
