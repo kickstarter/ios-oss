@@ -76,11 +76,11 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
 
     self.viewModel.outputs.activityIndicatorShouldShow
       .observeForUI()
-      .observeValues { shouldShow in
+      .observeValues { [weak self] shouldShow in
         if shouldShow {
-          self.saveButtonView.startAnimating()
+          self?.saveButtonView.startAnimating()
         } else {
-          self.saveButtonView.stopAnimating()
+          self?.saveButtonView.stopAnimating()
         }
     }
 
@@ -92,8 +92,8 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
 
     self.viewModel.outputs.updateCurrencyDidFailWithError
       .observeForUI()
-      .observeValues { error in
-        self.messageBannerViewController?.showBanner(
+      .observeValues { [weak self] error in
+        self?.messageBannerViewController?.showBanner(
           with: .error,
           message: error
         )
