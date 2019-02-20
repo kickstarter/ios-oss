@@ -79,3 +79,53 @@ public func settingsAttributedPlaceholder(_ string: String) -> NSAttributedStrin
     attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400]
   )
 }
+
+private let settingsLayoutMarginsStyle =
+  UIView.lens.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
+    <> UIView.lens.preservesSuperviewLayoutMargins .~ false
+
+public let settingsContentViewStyle = settingsLayoutMarginsStyle
+
+private let settingsHeaderLayoutMargins = UIEdgeInsets(
+  top: Styles.grid(5),
+  left: Styles.grid(1),
+  bottom: Styles.grid(2),
+  right: Styles.grid(1)
+)
+
+public let settingsHeaderContentViewStyle =
+  settingsLayoutMarginsStyle
+    <> UIView.lens.layoutMargins .~ settingsHeaderLayoutMargins
+
+public let settingsFooterContentViewStyle =
+  settingsLayoutMarginsStyle
+
+public let settingsHeaderFooterLabelBaseStyle =
+  UILabel.lens.font %~ { _ in .ksr_footnote() }
+    <> UILabel.lens.numberOfLines .~ 0
+
+public let settingsHeaderFooterLabelStyle =
+  UILabel.lens.backgroundColor .~ .ksr_grey_200
+    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+
+private let settingsStackViewStyle =
+  UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.spacing .~ 8
+
+public let settingsStackViewVerticalStyle =
+  settingsStackViewStyle
+  <> UIStackView.lens.axis .~ .vertical
+  <> UIStackView.lens.alignment .~ .leading
+
+public let settingsStackViewHorizontalStyle =
+  settingsStackViewStyle
+  <> UIStackView.lens.axis .~ .horizontal
+  <> UIStackView.lens.alignment .~ .fill
+
+public let settingsLabelStyle =
+  UILabel.lens.font %~ { _ in .ksr_body() }
+    <> UILabel.lens.backgroundColor .~ .white
+
+public let settingsTextFieldStyle =
+  UITextField.lens.font %~ { _ in .ksr_body() }
+    <> UITextField.lens.backgroundColor .~ .white

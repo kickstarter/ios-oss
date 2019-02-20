@@ -7,8 +7,7 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
 
   private(set) lazy var label: UILabel = {
     UILabel(frame: .zero)
-      |> \.font .~ .ksr_footnote()
-      |> \.numberOfLines .~ 0
+      |> settingsHeaderFooterLabelBaseStyle
   }()
 
   // MARK: - Lifecycle
@@ -16,16 +15,8 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
 
-    let layoutMargins = UIEdgeInsets(
-      top: Styles.grid(5),
-      left: Styles.grid(1),
-      bottom: Styles.grid(2),
-      right: Styles.grid(1)
-    )
-
     _ = self.contentView
-      |> \.layoutMargins .~ layoutMargins
-      |> \.preservesSuperviewLayoutMargins .~ false
+      |> settingsHeaderContentViewStyle
 
     self.contentView.addSubviewConstrainedToMargins(self.label)
   }
@@ -40,8 +31,7 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
     super.bindStyles()
 
     _ = self.label
-      |> \.backgroundColor .~ .ksr_grey_200
-      |> \.textColor .~ .ksr_text_dark_grey_500
+      |> settingsHeaderFooterLabelStyle
   }
 }
 

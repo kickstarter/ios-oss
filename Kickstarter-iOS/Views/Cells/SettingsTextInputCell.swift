@@ -47,24 +47,18 @@ final class SettingsTextInputCell: UITableViewCell {
     let isAccessibilityCategory = preferredContentSizeCategory.ksr_isAccessibilityCategory()
 
     _ = self.contentView
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
-      |> \.preservesSuperviewLayoutMargins .~ false
+      |> settingsContentViewStyle
 
     _ = self.stackView
-      |> \.axis .~ (isAccessibilityCategory ? .vertical : .horizontal)
-      |> \.alignment .~ (isAccessibilityCategory ? .leading : .fill)
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.spacing .~ 8
+      |> (isAccessibilityCategory ? settingsStackViewVerticalStyle : settingsStackViewHorizontalStyle)
 
     _ = self.label
-      |> \.backgroundColor .~ .white
-      |> \.font %~ { _ in .ksr_body() }
+      |> settingsLabelStyle
       |> \.isAccessibilityElement .~ false
       |> \.numberOfLines .~ 0
 
     _ = self.textField
-      |> \.backgroundColor .~ .white
-      |> \.font %~ { _ in .ksr_body() }
+      |> settingsTextFieldStyle
       |> \.textAlignment .~ (isAccessibilityCategory ? .left : .right)
       |> \.isSecureTextEntry .~ true
   }

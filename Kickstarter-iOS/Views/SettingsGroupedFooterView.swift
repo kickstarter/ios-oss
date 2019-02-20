@@ -4,11 +4,10 @@ import UIKit
 
 final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
   // MARK: - Properties
-
+  
   private(set) lazy var label: UILabel = {
     UILabel(frame: .zero)
-      |> \.font %~ { _ in .ksr_footnote() }
-      |> \.numberOfLines .~ 0
+      |> settingsHeaderFooterLabelBaseStyle
   }()
 
   // MARK: - Lifecycle
@@ -17,8 +16,7 @@ final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
     super.init(reuseIdentifier: reuseIdentifier)
 
     _ = self.contentView
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
-      |> \.preservesSuperviewLayoutMargins .~ false
+      |> settingsFooterContentViewStyle
 
     self.contentView.addSubviewConstrainedToMargins(self.label)
   }
@@ -33,8 +31,7 @@ final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
     super.bindStyles()
 
     _ = self.label
-      |> \.backgroundColor .~ .ksr_grey_200
-      |> \.textColor .~ .ksr_text_dark_grey_500
+      |> settingsHeaderFooterLabelStyle
   }
 }
 
