@@ -154,7 +154,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.confirmNewPasswordTextField.resignFirstResponder()
+        self?.dismissKeyboard()
     }
 
     self.viewModel.outputs.onePasswordFindPasswordForURLString
@@ -209,6 +209,13 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
 
         self.viewModel.inputs.onePasswordFoundPassword(password: password)
     }
+  }
+
+  private func dismissKeyboard() {
+    _ = [self.newPasswordTextField, self.confirmNewPasswordTextField, self.currentPasswordTextField]
+    .filter { $0.isFirstResponder }
+    .first?
+    .resignFirstResponder()
   }
 
   // MARK: Actions
