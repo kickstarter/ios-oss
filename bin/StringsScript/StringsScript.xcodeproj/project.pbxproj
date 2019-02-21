@@ -9,11 +9,11 @@
 /* Begin PBXAggregateTarget section */
 		"StringsScript::StringsScriptPackageTests::ProductTarget" /* StringsScriptPackageTests */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = OBJ_31 /* Build configuration list for PBXAggregateTarget "StringsScriptPackageTests" */;
+			buildConfigurationList = OBJ_43 /* Build configuration list for PBXAggregateTarget "StringsScriptPackageTests" */;
 			buildPhases = (
 			);
 			dependencies = (
-				OBJ_34 /* PBXTargetDependency */,
+				OBJ_46 /* PBXTargetDependency */,
 			);
 			name = StringsScriptPackageTests;
 			productName = StringsScriptPackageTests;
@@ -21,15 +21,32 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		D67B6C89221F2EA200B63A6B /* StringsScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6C88221F2EA200B63A6B /* StringsScript.swift */; };
-		OBJ_22 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* main.swift */; };
-		OBJ_29 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_40 /* StringsScriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* StringsScriptTests.swift */; };
-		OBJ_41 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* XCTestManifests.swift */; };
+		D67B6C8E221F352000B63A6B /* StringsScriptCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6C8D221F352000B63A6B /* StringsScriptCore.swift */; };
+		OBJ_25 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* main.swift */; };
+		OBJ_27 /* StringsScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "StringsScript::StringsScriptCore::Product" /* StringsScriptCore.framework */; };
+		OBJ_34 /* StringsScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* StringsScript.swift */; };
+		OBJ_41 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_52 /* StringsScriptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* StringsScriptTests.swift */; };
+		OBJ_53 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* XCTestManifests.swift */; };
+		OBJ_55 /* StringsScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "StringsScript::StringsScriptCore::Product" /* StringsScriptCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D67B6C87221F2E8C00B63A6B /* PBXContainerItemProxy */ = {
+		D67B6C8A221F350B00B63A6B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "StringsScript::StringsScriptCore";
+			remoteInfo = StringsScriptCore;
+		};
+		D67B6C8B221F350B00B63A6B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "StringsScript::StringsScriptCore";
+			remoteInfo = StringsScriptCore;
+		};
+		D67B6C8C221F350C00B63A6B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
@@ -39,56 +56,77 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D67B6C88221F2EA200B63A6B /* StringsScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsScript.swift; sourceTree = "<group>"; };
-		OBJ_12 /* StringsScriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsScriptTests.swift; sourceTree = "<group>"; };
-		OBJ_13 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		D67B6C8D221F352000B63A6B /* StringsScriptCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StringsScriptCore.swift; path = Sources/StringsScriptCore/StringsScriptCore.swift; sourceTree = "<group>"; };
+		OBJ_11 /* StringsScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsScript.swift; sourceTree = "<group>"; };
+		OBJ_14 /* StringsScriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsScriptTests.swift; sourceTree = "<group>"; };
+		OBJ_15 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		"StringsScript::StringsScript::Product" /* StringsScript */ = {isa = PBXFileReference; lastKnownFileType = text; path = StringsScript; sourceTree = BUILT_PRODUCTS_DIR; };
+		"StringsScript::StringsScriptCore::Product" /* StringsScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = StringsScriptCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"StringsScript::StringsScriptTests::Product" /* StringsScriptTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = StringsScriptTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_23 /* Frameworks */ = {
+		OBJ_26 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_27 /* StringsScriptCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_35 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_42 /* Frameworks */ = {
+		OBJ_54 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				OBJ_55 /* StringsScriptCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		OBJ_10 /* Tests */ = {
+		OBJ_10 /* StringsScriptCore */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_11 /* StringsScriptTests */,
+				OBJ_11 /* StringsScript.swift */,
+			);
+			name = StringsScriptCore;
+			path = Sources/StringsScriptCore;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_12 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_13 /* StringsScriptTests */,
 			);
 			name = Tests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_11 /* StringsScriptTests */ = {
+		OBJ_13 /* StringsScriptTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_12 /* StringsScriptTests.swift */,
-				OBJ_13 /* XCTestManifests.swift */,
+				OBJ_14 /* StringsScriptTests.swift */,
+				OBJ_15 /* XCTestManifests.swift */,
 			);
 			name = StringsScriptTests;
 			path = Tests/StringsScriptTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_14 /* Products */ = {
+		OBJ_16 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				"StringsScript::StringsScript::Product" /* StringsScript */,
 				"StringsScript::StringsScriptTests::Product" /* StringsScriptTests.xctest */,
+				"StringsScript::StringsScript::Product" /* StringsScript */,
+				"StringsScript::StringsScriptCore::Product" /* StringsScriptCore.framework */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -96,11 +134,11 @@
 		OBJ_5 /*  */ = {
 			isa = PBXGroup;
 			children = (
-				D67B6C88221F2EA200B63A6B /* StringsScript.swift */,
+				D67B6C8D221F352000B63A6B /* StringsScriptCore.swift */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
-				OBJ_10 /* Tests */,
-				OBJ_14 /* Products */,
+				OBJ_12 /* Tests */,
+				OBJ_16 /* Products */,
 			);
 			name = "";
 			sourceTree = "<group>";
@@ -109,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_8 /* StringsScript */,
+				OBJ_10 /* StringsScriptCore */,
 			);
 			name = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -127,30 +166,48 @@
 /* Begin PBXNativeTarget section */
 		"StringsScript::StringsScript" /* StringsScript */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_18 /* Build configuration list for PBXNativeTarget "StringsScript" */;
+			buildConfigurationList = OBJ_21 /* Build configuration list for PBXNativeTarget "StringsScript" */;
 			buildPhases = (
-				OBJ_21 /* Sources */,
-				OBJ_23 /* Frameworks */,
+				OBJ_24 /* Sources */,
+				OBJ_26 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				OBJ_28 /* PBXTargetDependency */,
 			);
 			name = StringsScript;
 			productName = StringsScript;
 			productReference = "StringsScript::StringsScript::Product" /* StringsScript */;
 			productType = "com.apple.product-type.tool";
 		};
-		"StringsScript::StringsScriptTests" /* StringsScriptTests */ = {
+		"StringsScript::StringsScriptCore" /* StringsScriptCore */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_36 /* Build configuration list for PBXNativeTarget "StringsScriptTests" */;
+			buildConfigurationList = OBJ_30 /* Build configuration list for PBXNativeTarget "StringsScriptCore" */;
 			buildPhases = (
-				OBJ_39 /* Sources */,
-				OBJ_42 /* Frameworks */,
+				OBJ_33 /* Sources */,
+				OBJ_35 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+			);
+			name = StringsScriptCore;
+			productName = StringsScriptCore;
+			productReference = "StringsScript::StringsScriptCore::Product" /* StringsScriptCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"StringsScript::StringsScriptTests" /* StringsScriptTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_48 /* Build configuration list for PBXNativeTarget "StringsScriptTests" */;
+			buildPhases = (
+				OBJ_51 /* Sources */,
+				OBJ_54 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_56 /* PBXTargetDependency */,
 			);
 			name = StringsScriptTests;
 			productName = StringsScriptTests;
@@ -159,9 +216,9 @@
 		};
 		"StringsScript::SwiftPMPackageDescription" /* StringsScriptPackageDescription */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_25 /* Build configuration list for PBXNativeTarget "StringsScriptPackageDescription" */;
+			buildConfigurationList = OBJ_37 /* Build configuration list for PBXNativeTarget "StringsScriptPackageDescription" */;
 			buildPhases = (
-				OBJ_28 /* Sources */,
+				OBJ_40 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -187,11 +244,12 @@
 				en,
 			);
 			mainGroup = OBJ_5 /*  */;
-			productRefGroup = OBJ_14 /* Products */;
+			productRefGroup = OBJ_16 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				"StringsScript::StringsScript" /* StringsScript */,
+				"StringsScript::StringsScriptCore" /* StringsScriptCore */,
 				"StringsScript::SwiftPMPackageDescription" /* StringsScriptPackageDescription */,
 				"StringsScript::StringsScriptPackageTests::ProductTarget" /* StringsScriptPackageTests */,
 				"StringsScript::StringsScriptTests" /* StringsScriptTests */,
@@ -200,44 +258,62 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_21 /* Sources */ = {
+		OBJ_24 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_22 /* main.swift in Sources */,
-				D67B6C89221F2EA200B63A6B /* StringsScript.swift in Sources */,
+				OBJ_25 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_28 /* Sources */ = {
+		OBJ_33 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_29 /* Package.swift in Sources */,
+				D67B6C8E221F352000B63A6B /* StringsScriptCore.swift in Sources */,
+				OBJ_34 /* StringsScript.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_39 /* Sources */ = {
+		OBJ_40 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_40 /* StringsScriptTests.swift in Sources */,
-				OBJ_41 /* XCTestManifests.swift in Sources */,
+				OBJ_41 /* Package.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_51 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_52 /* StringsScriptTests.swift in Sources */,
+				OBJ_53 /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_34 /* PBXTargetDependency */ = {
+		OBJ_28 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "StringsScript::StringsScriptCore" /* StringsScriptCore */;
+			targetProxy = D67B6C8A221F350B00B63A6B /* PBXContainerItemProxy */;
+		};
+		OBJ_46 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "StringsScript::StringsScriptTests" /* StringsScriptTests */;
-			targetProxy = D67B6C87221F2E8C00B63A6B /* PBXContainerItemProxy */;
+			targetProxy = D67B6C8C221F350C00B63A6B /* PBXContainerItemProxy */;
+		};
+		OBJ_56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "StringsScript::StringsScriptCore" /* StringsScriptCore */;
+			targetProxy = D67B6C8B221F350B00B63A6B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		OBJ_19 /* Debug */ = {
+		OBJ_22 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
@@ -258,7 +334,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_20 /* Release */ = {
+		OBJ_23 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
@@ -276,24 +352,6 @@
 				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = StringsScript;
-			};
-			name = Release;
-		};
-		OBJ_26 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
-				SWIFT_VERSION = 4.2;
-			};
-			name = Debug;
-		};
-		OBJ_27 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
-				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -323,57 +381,69 @@
 			};
 			name = Debug;
 		};
-		OBJ_32 /* Debug */ = {
+		OBJ_31 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = StringsScript.xcodeproj/StringsScriptCore_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = StringsScriptCore;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = StringsScriptCore;
 			};
 			name = Debug;
 		};
-		OBJ_33 /* Release */ = {
+		OBJ_32 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = StringsScript.xcodeproj/StringsScriptCore_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = StringsScriptCore;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = StringsScriptCore;
 			};
 			name = Release;
 		};
-		OBJ_37 /* Debug */ = {
+		OBJ_38 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = StringsScript.xcodeproj/StringsScriptTests_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
 				SWIFT_VERSION = 4.2;
-				TARGET_NAME = StringsScriptTests;
 			};
 			name = Debug;
 		};
-		OBJ_38 /* Release */ = {
+		OBJ_39 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = StringsScript.xcodeproj/StringsScriptTests_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
 				SWIFT_VERSION = 4.2;
-				TARGET_NAME = StringsScriptTests;
 			};
 			name = Release;
 		};
@@ -397,18 +467,63 @@
 			};
 			name = Release;
 		};
+		OBJ_44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		OBJ_45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		OBJ_49 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = StringsScript.xcodeproj/StringsScriptTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = StringsScriptTests;
+			};
+			name = Debug;
+		};
+		OBJ_50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = StringsScript.xcodeproj/StringsScriptTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = StringsScriptTests;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		OBJ_18 /* Build configuration list for PBXNativeTarget "StringsScript" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJ_19 /* Debug */,
-				OBJ_20 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		OBJ_2 /* Build configuration list for PBXProject "StringsScript" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -418,29 +533,47 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_25 /* Build configuration list for PBXNativeTarget "StringsScriptPackageDescription" */ = {
+		OBJ_21 /* Build configuration list for PBXNativeTarget "StringsScript" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_26 /* Debug */,
-				OBJ_27 /* Release */,
+				OBJ_22 /* Debug */,
+				OBJ_23 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_31 /* Build configuration list for PBXAggregateTarget "StringsScriptPackageTests" */ = {
+		OBJ_30 /* Build configuration list for PBXNativeTarget "StringsScriptCore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_32 /* Debug */,
-				OBJ_33 /* Release */,
+				OBJ_31 /* Debug */,
+				OBJ_32 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_36 /* Build configuration list for PBXNativeTarget "StringsScriptTests" */ = {
+		OBJ_37 /* Build configuration list for PBXNativeTarget "StringsScriptPackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_37 /* Debug */,
-				OBJ_38 /* Release */,
+				OBJ_38 /* Debug */,
+				OBJ_39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_43 /* Build configuration list for PBXAggregateTarget "StringsScriptPackageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_44 /* Debug */,
+				OBJ_45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_48 /* Build configuration list for PBXNativeTarget "StringsScriptTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_49 /* Debug */,
+				OBJ_50 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
