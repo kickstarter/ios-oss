@@ -14,6 +14,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
 
   private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
   private let deselectCellAtIndex = TestObserver<Int, NoError>()
+  private let didUpdateCurrency = TestObserver<(), NoError>()
   private let reloadDataWithCurrenciesData = TestObserver<[SelectedCurrencyData], NoError>()
   private let reloadDataWithCurrenciesReload = TestObserver<Bool, NoError>()
   private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
@@ -26,6 +27,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
 
     self.vm.outputs.activityIndicatorShouldShow.observe(self.activityIndicatorShouldShow.observer)
     self.vm.outputs.deselectCellAtIndex.observe(self.deselectCellAtIndex.observer)
+    self.vm.outputs.didUpdateCurrency.observe(self.didUpdateCurrency.observer)
     self.vm.outputs.reloadDataWithCurrencies.map(first).observe(self.reloadDataWithCurrenciesData.observer)
     self.vm.outputs.reloadDataWithCurrencies.map(second).observe(self.reloadDataWithCurrenciesReload.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
@@ -37,6 +39,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
   func testUpdateCurrency_Success() {
     self.activityIndicatorShouldShow.assertValues([])
     self.deselectCellAtIndex.assertValues([])
+    self.didUpdateCurrency.assertValueCount(0)
     self.saveButtonIsEnabled.assertValues([])
     self.reloadDataWithCurrenciesReload.assertValues([])
     self.reloadDataWithCurrenciesData.assertValues([])
@@ -52,7 +55,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
 
     self.activityIndicatorShouldShow.assertValues([])
     self.deselectCellAtIndex.assertValues([])
-    self.deselectCellAtIndex.assertValues([])
+    self.didUpdateCurrency.assertValueCount(0)
     self.saveButtonIsEnabled.assertValues([false])
     self.reloadDataWithCurrenciesReload.assertValues([true])
     self.reloadDataWithCurrenciesData.assertValues([usdSelectededCurrencyData])
@@ -68,6 +71,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
 
       self.activityIndicatorShouldShow.assertValues([true])
       self.deselectCellAtIndex.assertValues([0])
+      self.didUpdateCurrency.assertValueCount(0)
       self.saveButtonIsEnabled.assertValues([false, true])
       self.reloadDataWithCurrenciesReload.assertValues([true, false])
       self.reloadDataWithCurrenciesData.assertValues([
@@ -82,6 +86,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
 
       self.activityIndicatorShouldShow.assertValues([true, false])
       self.deselectCellAtIndex.assertValues([0])
+      self.didUpdateCurrency.assertValueCount(1)
       self.saveButtonIsEnabled.assertValues([false, true, false])
       self.reloadDataWithCurrenciesReload.assertValues([true, false])
       self.reloadDataWithCurrenciesData.assertValues([
@@ -97,6 +102,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
   func testUpdateCurrency_Failure() {
     self.activityIndicatorShouldShow.assertValues([])
     self.deselectCellAtIndex.assertValues([])
+    self.didUpdateCurrency.assertValueCount(0)
     self.saveButtonIsEnabled.assertValues([])
     self.reloadDataWithCurrenciesReload.assertValues([])
     self.reloadDataWithCurrenciesData.assertValues([])
@@ -112,7 +118,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
 
     self.activityIndicatorShouldShow.assertValues([])
     self.deselectCellAtIndex.assertValues([])
-    self.deselectCellAtIndex.assertValues([])
+    self.didUpdateCurrency.assertValueCount(0)
     self.saveButtonIsEnabled.assertValues([false])
     self.reloadDataWithCurrenciesReload.assertValues([true])
     self.reloadDataWithCurrenciesData.assertValues([usdSelectededCurrencyData])
@@ -128,6 +134,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
 
       self.activityIndicatorShouldShow.assertValues([true])
       self.deselectCellAtIndex.assertValues([0])
+      self.didUpdateCurrency.assertValueCount(0)
       self.saveButtonIsEnabled.assertValues([false, true])
       self.reloadDataWithCurrenciesReload.assertValues([true, false])
       self.reloadDataWithCurrenciesData.assertValues([
@@ -142,6 +149,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
 
       self.activityIndicatorShouldShow.assertValues([true, false])
       self.deselectCellAtIndex.assertValues([0])
+      self.didUpdateCurrency.assertValueCount(0)
       self.saveButtonIsEnabled.assertValues([false, true])
       self.reloadDataWithCurrenciesReload.assertValues([true, false])
       self.reloadDataWithCurrenciesData.assertValues([

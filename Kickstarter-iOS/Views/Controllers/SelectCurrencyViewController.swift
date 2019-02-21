@@ -122,6 +122,15 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
       .observeValues { [weak self] indexPath in
         self?.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
     }
+
+    self.viewModel.outputs.didUpdateCurrency
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.messageBannerViewController?.showBanner(
+          with: .success,
+          message: Strings.Got_it_your_changes_have_been_saved()
+        )
+    }
   }
 
   // MARK: Actions

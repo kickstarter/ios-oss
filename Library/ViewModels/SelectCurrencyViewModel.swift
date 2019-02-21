@@ -5,8 +5,8 @@ import ReactiveSwift
 import Result
 
 public struct SelectedCurrencyData: Equatable {
-   public let currency: Currency
-   public let selected: Bool
+  public let currency: Currency
+  public let selected: Bool
 }
 
 public protocol SelectCurrencyViewModelInputs {
@@ -19,6 +19,7 @@ public protocol SelectCurrencyViewModelInputs {
 public protocol SelectCurrencyViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var deselectCellAtIndex: Signal<Int, NoError> { get }
+  var didUpdateCurrency: Signal<(), NoError> { get }
   var reloadDataWithCurrencies: Signal<([SelectedCurrencyData], Bool), NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
   var selectCellAtIndex: Signal<Int, NoError> { get }
@@ -120,6 +121,8 @@ SelectCurrencyViewModelOutputs {
       self.viewDidLoadSignal.mapConst(false),
       currenciesDoNotMatch
     )
+
+    self.didUpdateCurrency = updateCurrencyEvent.values().ignoreValues()
   }
 
   private let (selectedCurrencySignal, selectedCurrencyObserver) = Signal<Currency, NoError>.pipe()
@@ -145,6 +148,7 @@ SelectCurrencyViewModelOutputs {
 
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let deselectCellAtIndex: Signal<Int, NoError>
+  public let didUpdateCurrency: Signal<(), NoError>
   public let reloadDataWithCurrencies: Signal<([SelectedCurrencyData], Bool), NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let selectCellAtIndex: Signal<Int, NoError>
