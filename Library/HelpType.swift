@@ -10,7 +10,12 @@ public enum HelpType: SettingsCellTypeProtocol {
   case trust
 
   public var accessibilityTraits: UIAccessibilityTraits {
-    return .button
+    switch self {
+    case .contact:
+      return .button
+    default:
+      return .link
+    }
   }
 
   public var title: String {
