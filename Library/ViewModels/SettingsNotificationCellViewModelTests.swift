@@ -26,8 +26,6 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.outputs.emailNotificationsEnabled.observe(emailNotificationsEnabled.observer)
     self.vm.outputs.emailNotificationButtonIsHidden.observe(emailNotificationButtonIsHidden.observer)
     self.vm.outputs.pushNotificationButtonIsHidden.observe(pushNotificationButtonIsHidden.observer)
-    self.vm.outputs.manageProjectNotificationsButtonAccessibilityHint
-      .observe(manageProjectNotificationsButtonAccessibilityHint.observer)
     self.vm.outputs.projectCountText.observe(projectCountText.observer)
     self.vm.pushNotificationsEnabled.observe(pushNotificationsEnabled.observer)
     self.vm.unableToSaveError.observe(unableToSaveError.observer)
@@ -196,8 +194,6 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     let value = SettingsNotificationCellValue(cellType: .projectNotifications, user: user)
 
     self.vm.inputs.configure(with: value)
-
-    self.manageProjectNotificationsButtonAccessibilityHint.assertValue("5 projects backed")
   }
 
   func testProjectTextCount() {

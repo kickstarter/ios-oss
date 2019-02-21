@@ -77,6 +77,7 @@
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
 "Couldnt_open_live_stream_Try_again_later" = "ライブ配信を開けませんでした。後ほどお試しください。";
 "Couldnt_remove_attachment" = "添付ファイルを削除できませんでした";
+"Create_password" = "パスワードを作成";
 "Created_projects_projects_count" = "%{projects_count} のプロジェクト作成済";
 "Creator" = "クリエイター";
 "Creator_name_is_live_now" = "<b>%{creator_name}</b>が進行中";
@@ -106,6 +107,7 @@
 "Current_email" = "現在のメールアドレス";
 "Current_password" = "現在のパスワード";
 "Daily_digest" = "デイリーダイジェスト";
+"Daily_summary" = "1日1回の概要";
 "Data_will_appear_here_once" = "誰かがプロジェクトをバック（支援）すると、ここにデータが表示されます。";
 "Delete_my_Kickstarter_Account" = "Kickstarter アカウントを削除";
 "Delivered" = "発送済";
@@ -247,6 +249,7 @@
 "Manage_your_pledge_below" = "以下のプレッジを変更";
 "Manage_your_reward" = "リワードの管理";
 "Message_backer" = "バッカーにメッセージする";
+"Message_banner.accessibility.Double_tap_to_dismiss" = "却下するにはダブルタップ。";
 "Message_creator" = "クリエーターにメッセージする";
 "Message_user_name" = "%{user_name} にメッセージ";
 "Messages" = "メッセージ";
@@ -434,6 +437,7 @@
 "Top_ten_pledge_sources" = "プレッジソースのトップ10";
 "Top_ten_rewards" = "リワードのトップ10";
 "Total_pledged" = "プレッジ総計";
+"Twice_a_day_summary" = "1日2回の概要";
 "Unable_to_request" = "データをリクエストできません。";
 "Unfollow_friend_name" = "%{friend_name} のフォロー解除";
 "Unfollows_friend_name" = "%{friend_name} のフォロー解除";
@@ -442,6 +446,7 @@
 "Unsubscribe" = "購読キャンセル済み";
 "Unsubscribes_from_upcoming_lives_streams" = "ライブ配信の購読を停止";
 "Unsuccessfully_Funded" = "資金調達失敗";
+"Unsupported_card_type" = "残念ながらこのタイプのカードには対応しておりません。別のカードにてもう一度お試しください。";
 "Upcoming_live_stream" = "ライブ配信が開始します";
 "Upcoming_live_streams" = "ライブ配信が開始します";
 "Upcoming_with_creator_name" = "<br/><b>%{creator_name}</b>が近日配信";
@@ -487,6 +492,7 @@
 "Your_shipping_destination" = "配送地域";
 "Youre_a_backer" = "バッカーになりました！";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
+"Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。";
 "Youre_offline" = "現在オフライン中です。デバイスが再接続し次第、アプリをリフレッシュしてください。";
 "Youve_pledged_to_support_this_project" = "このプレッジ済のプロジェクトは、現在もファンド中";
 "Zip_postal_code" = "郵便番号";
@@ -1124,11 +1130,6 @@
 "profile.category_count_categories_backed.two" = "2カテゴリーへバック";
 "profile.category_count_categories_backed.zero" = "0 カテゴリーへバック";
 "profile.pie.slice.category_name_backed_projects_count" = "%{category_name}（%{backed_projects_count}）";
-"profile.project_count_projects_backed.few" = "%{project_count} 件のバック済プロジェクト";
-"profile.project_count_projects_backed.many" = "%{project_count} 件のバック済プロジェクト";
-"profile.project_count_projects_backed.one" = "1件のバック済みプロジェクト";
-"profile.project_count_projects_backed.two" = "2件のバック済みプロジェクト";
-"profile.project_count_projects_backed.zero" = "0件のバック済みプロジェクト";
 "profile.projects.backed_project_count_projects.few" = "%{project_count} プロジェクトへバック済";
 "profile.projects.backed_project_count_projects.many" = "%{project_count} プロジェクトへバック済";
 "profile.projects.backed_project_count_projects.one" = "1プロジェクトへバック";

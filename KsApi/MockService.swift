@@ -12,6 +12,8 @@ internal struct MockService: ServiceType {
   internal let currency: String
   internal let buildVersion: String
 
+  fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>?
+
   fileprivate let changeCurrencyResponse: GraphMutationEmptyResponseEnvelope?
   fileprivate let changeCurrencyError: GraphError?
 
@@ -21,6 +23,8 @@ internal struct MockService: ServiceType {
   fileprivate let changePasswordError: GraphError?
 
   fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
+
+  fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>?
 
   fileprivate let createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>?
 
@@ -60,10 +64,13 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
+  fileprivate let fetchGraphUserEmailResponse: UserEmailFields?
+
+  fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
+  fileprivate let fetchGraphCreditCardsError: GraphError?
+
   fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>?
   fileprivate let fetchGraphUserAccountFieldsError: GraphError?
-
-  fileprivate let fetchGraphUserEmailResponse: UserEmailFields?
 
   fileprivate let addAttachmentResponse: UpdateDraft.Image?
   fileprivate let addAttachmentError: ErrorEnvelope?
@@ -174,6 +181,7 @@ internal struct MockService: ServiceType {
                 language: String = "en",
                 currency: String = "USD",
                 buildVersion: String = "1",
+                addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
                 changeEmailError: GraphError? = nil,
                 changeEmailResponse: UserEnvelope<UserEmailFields>? = UserEnvelope<UserEmailFields>(
                                                                        me: .template
@@ -182,6 +190,7 @@ internal struct MockService: ServiceType {
                 changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
                 changeCurrencyError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
+                deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>? = nil,
                 createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
                 facebookConnectResponse: User? = nil,
                 facebookConnectError: ErrorEnvelope? = nil,
@@ -203,6 +212,8 @@ internal struct MockService: ServiceType {
                 fetchFriendStatsError: ErrorEnvelope? = nil,
                 fetchExportStateResponse: ExportDataEnvelope? = nil,
                 fetchExportStateError: ErrorEnvelope? = nil,
+                fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>? = nil,
+                fetchGraphCreditCardsError: GraphError? = nil,
                 exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
@@ -271,6 +282,8 @@ internal struct MockService: ServiceType {
     self.currency = currency
     self.buildVersion = buildVersion
 
+    self.addNewCreditCardResult = addNewCreditCardResult
+
     self.changeCurrencyResponse = changeCurrencyResponse
     self.changeCurrencyError = changeCurrencyError
 
@@ -280,6 +293,7 @@ internal struct MockService: ServiceType {
     self.changePasswordError = changePasswordError
 
     self.changePaymentMethodResult = changePaymentMethodResult
+    self.deletePaymentMethodResult = deletePaymentMethodResult
     self.createPledgeResult = createPledgeResult
 
     self.facebookConnectResponse = facebookConnectResponse
@@ -398,6 +412,9 @@ internal struct MockService: ServiceType {
 
     self.fetchUserResponse = fetchUserResponse
     self.fetchUserError = fetchUserError
+    self.fetchGraphCreditCardsError = fetchGraphCreditCardsError
+
+    self.fetchGraphCreditCardsResponse = fetchGraphCreditCardsResponse
 
     self.fetchUserSelfResponse = fetchUserSelfResponse ?? .template
     self.fetchUserSelfError = fetchUserSelfError
@@ -449,6 +466,12 @@ internal struct MockService: ServiceType {
     self.unwatchProjectMutationResult = unwatchProjectMutationResult
 
     self.watchProjectMutationResult = watchProjectMutationResult
+  }
+
+  public func addNewCreditCard(input: CreatePaymentSourceInput)
+    -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
+
+     return producer(for: addNewCreditCardResult)
   }
 
   internal func changeEmail(input: ChangeEmailInput) ->
@@ -629,6 +652,18 @@ internal struct MockService: ServiceType {
   internal func fetchGraphCategory(query: NonEmptySet<Query>)
     -> SignalProducer<CategoryEnvelope, GraphError> {
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
+  }
+
+  internal func fetchGraphCreditCards(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError> {
+      if let error = fetchGraphCreditCardsError {
+        return SignalProducer(error: error)
+      }
+
+      return SignalProducer(
+        value: fetchGraphCreditCardsResponse ??
+          UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+      )
   }
 
   internal func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
@@ -1305,6 +1340,11 @@ internal struct MockService: ServiceType {
       return SignalProducer(value: self.changePaymentMethodResult?.value ?? .template)
   }
 
+  internal func deletePaymentMethod(input: PaymentSourceDeleteInput) -> SignalProducer<
+    DeletePaymentMethodEnvelope, GraphError> {
+    return producer(for: self.deletePaymentMethodResult)
+  }
+
   internal func delete(video: UpdateDraft.Video, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
 
@@ -1338,7 +1378,9 @@ private extension MockService {
           oauthToken: $0,
           language: $1.language,
           buildVersion: $1.buildVersion,
+          addNewCreditCardResult: $1.addNewCreditCardResult,
           changePaymentMethodResult: $1.changePaymentMethodResult,
+          deletePaymentMethodResult: $1.deletePaymentMethodResult,
           createPledgeResult: $1.createPledgeResult,
           facebookConnectResponse: $1.facebookConnectResponse,
           facebookConnectError: $1.facebookConnectError,

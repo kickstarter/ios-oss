@@ -17,11 +17,7 @@ public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
     case .privacy:
       return [.privacy]
     case .payment:
-      #if DEBUG
-        return [.paymentMethods]
-      #else
-        return []
-      #endif
+      return [.paymentMethods]
     }
   }
 }
@@ -33,6 +29,10 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable {
   case paymentMethods
   case currency
   case currencyPicker
+
+  public var accessibilityTraits: UIAccessibilityTraits {
+    return .button
+  }
 
   public var showArrowImageView: Bool {
     switch self {

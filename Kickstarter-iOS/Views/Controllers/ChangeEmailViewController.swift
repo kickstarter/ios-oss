@@ -5,8 +5,9 @@ import ReactiveSwift
 import UIKit
 
 internal final class ChangeEmailViewController: UIViewController, MessageBannerViewControllerPresenting {
-  @IBOutlet fileprivate weak var currentEmailLabel: UILabel!
-  @IBOutlet fileprivate weak var currentEmail: UILabel!
+  @IBOutlet fileprivate weak var currentEmailContainer: UIView!
+  @IBOutlet fileprivate weak var currentEmailTitle: UILabel!
+  @IBOutlet fileprivate weak var currentEmailValue: UILabel!
   @IBOutlet fileprivate weak var messageLabelView: UIView!
   @IBOutlet fileprivate weak var newEmailLabel: UILabel!
   @IBOutlet fileprivate weak var newEmailTextField: UITextField!
@@ -86,21 +87,29 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
       |> \.textColor .~ .ksr_red_400
       |> \.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
 
-    _ = self.currentEmailLabel
+    _ = self.currentEmailContainer
+      |> \.isAccessibilityElement .~ true
+      |> \.accessibilityLabel .~ self.currentEmailTitle.text
+
+    _ = self.currentEmailTitle
       |> settingsTitleLabelStyle
+      |> \.isAccessibilityElement .~ false
       |> \.text %~ { _ in Strings.Current_email() }
       |> \.textColor .~ .ksr_text_dark_grey_400
 
-    _ = self.currentEmail
+    _ = self.currentEmailValue
       |> settingsDetailLabelStyle
+      |> \.isAccessibilityElement .~ false
       |> \.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.newEmailLabel
       |> settingsTitleLabelStyle
       |> \.text %~ { _ in Strings.New_email() }
+      |> \.isAccessibilityElement .~ false
 
     _ = self.newEmailTextField
       |> settingsEmailFieldAutoFillStyle
+      |> \.accessibilityLabel .~ self.newEmailLabel.text
       |> \.returnKeyType .~ .next
       |> \.attributedPlaceholder %~ { _ in
         settingsAttributedPlaceholder(Strings.login_placeholder_email())
@@ -109,9 +118,11 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
     _ = self.passwordLabel
       |> settingsTitleLabelStyle
       |> \.text %~ { _ in Strings.Current_password() }
+      |> \.isAccessibilityElement .~ false
 
     _ = self.passwordTextField
       |> settingsPasswordFormFieldAutoFillStyle
+      |> \.accessibilityLabel .~ self.passwordLabel.text
       |> \.returnKeyType .~ .done
       |> \.attributedPlaceholder %~ { _ in
         settingsAttributedPlaceholder(Strings.login_placeholder_password())
@@ -125,7 +136,8 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.currentEmail.rac.text = self.viewModel.outputs.emailText
+    self.currentEmailContainer.rac.accessibilityValue = self.viewModel.outputs.emailText
+    self.currentEmailValue.rac.text = self.viewModel.outputs.emailText
     self.resendVerificationEmailView.rac.hidden = self.viewModel.outputs.resendVerificationEmailViewIsHidden
     self.resendVerificationEmailButton.rac.title = self.viewModel.outputs.verificationEmailButtonTitle
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
@@ -136,18 +148,18 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
 
     self.viewModel.outputs.activityIndicatorShouldShow
       .observeForUI()
-      .observeValues { shouldShow in
+      .observeValues { [weak self] shouldShow in
         if shouldShow {
-          self.saveButtonView.startAnimating()
+          self?.saveButtonView.startAnimating()
         } else {
-          self.saveButtonView.stopAnimating()
+          self?.saveButtonView.stopAnimating()
         }
     }
 
     self.viewModel.outputs.saveButtonIsEnabled
       .observeForUI()
-      .observeValues { isEnabled in
-        self.saveButtonView.setIsEnabled(isEnabled: isEnabled)
+      .observeValues { [weak self] isEnabled in
+        self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
     }
 
     self.viewModel.outputs.onePasswordFindLoginForURLString
