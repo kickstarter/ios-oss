@@ -40,6 +40,6 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
 extension SettingsGroupedHeaderView: HeaderFooterViewProtocol {
   func configure(with text: String) {
     _ = self.label
-      |> \.text %~ { _ in text }
+      |> \.text .~ text
   }
 }
