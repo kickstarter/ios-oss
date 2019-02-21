@@ -178,81 +178,51 @@ internal final class SelectCurrencyViewModelTests: TestCase {
   func testCurrenciesOrderedBySelected() {
     XCTAssertEqual(
       currencies(orderedBySelected: .USD),
-      [
-        Currency.USD,
-        Currency.EUR,
-        Currency.AUD,
-        Currency.CAD,
-        Currency.CHF,
-        Currency.DKK,
-        Currency.GBP,
-        Currency.HKD,
-        Currency.JPY,
-        Currency.MXN,
-        Currency.NOK,
-        Currency.NZD,
-        Currency.SEK,
-        Currency.SGD
-      ]
+      [.USD, .EUR, .AUD, .CAD, .CHF, .DKK, .GBP, .HKD, .JPY, .MXN, .NOK, .NZD, .SEK, .SGD]
     )
 
     XCTAssertEqual(
       currencies(orderedBySelected: .SEK),
-      [
-        Currency.SEK,
-        Currency.EUR,
-        Currency.AUD,
-        Currency.CAD,
-        Currency.CHF,
-        Currency.DKK,
-        Currency.GBP,
-        Currency.HKD,
-        Currency.JPY,
-        Currency.MXN,
-        Currency.NOK,
-        Currency.NZD,
-        Currency.SGD,
-        Currency.USD,
-      ]
+      [.SEK, .EUR, .AUD, .CAD, .CHF, .DKK, .GBP, .HKD, .JPY, .MXN, .NOK, .NZD, .SGD, .USD]
     )
   }
 
   func testSelectedCurrencyDataWithCurrencies() {
     XCTAssertEqual(
       selectedCurrencyData(with: Currency.allCases, selected: .SEK),
-      [SelectedCurrencyData(currency: Currency.EUR, selected: false),
-       SelectedCurrencyData(currency: Currency.AUD, selected: false),
-       SelectedCurrencyData(currency: Currency.CAD, selected: false),
-       SelectedCurrencyData(currency: Currency.CHF, selected: false),
-       SelectedCurrencyData(currency: Currency.DKK, selected: false),
-       SelectedCurrencyData(currency: Currency.GBP, selected: false),
-       SelectedCurrencyData(currency: Currency.HKD, selected: false),
-       SelectedCurrencyData(currency: Currency.JPY, selected: false),
-       SelectedCurrencyData(currency: Currency.MXN, selected: false),
-       SelectedCurrencyData(currency: Currency.NOK, selected: false),
-       SelectedCurrencyData(currency: Currency.NZD, selected: false),
-       SelectedCurrencyData(currency: Currency.SEK, selected: true),
-       SelectedCurrencyData(currency: Currency.SGD, selected: false),
-       SelectedCurrencyData(currency: Currency.USD, selected: false)
+      [SelectedCurrencyData(currency: .EUR, selected: false),
+       SelectedCurrencyData(currency: .AUD, selected: false),
+       SelectedCurrencyData(currency: .CAD, selected: false),
+       SelectedCurrencyData(currency: .CHF, selected: false),
+       SelectedCurrencyData(currency: .DKK, selected: false),
+       SelectedCurrencyData(currency: .GBP, selected: false),
+       SelectedCurrencyData(currency: .HKD, selected: false),
+       SelectedCurrencyData(currency: .JPY, selected: false),
+       SelectedCurrencyData(currency: .MXN, selected: false),
+       SelectedCurrencyData(currency: .NOK, selected: false),
+       SelectedCurrencyData(currency: .NZD, selected: false),
+       SelectedCurrencyData(currency: .SEK, selected: true),
+       SelectedCurrencyData(currency: .SGD, selected: false),
+       SelectedCurrencyData(currency: .USD, selected: false)
       ]
     )
 
     XCTAssertEqual(
       selectedCurrencyData(with: Currency.allCases, selected: .HKD),
-      [SelectedCurrencyData(currency: Currency.EUR, selected: false),
-       SelectedCurrencyData(currency: Currency.AUD, selected: false),
-       SelectedCurrencyData(currency: Currency.CAD, selected: false),
-       SelectedCurrencyData(currency: Currency.CHF, selected: false),
-       SelectedCurrencyData(currency: Currency.DKK, selected: false),
-       SelectedCurrencyData(currency: Currency.GBP, selected: false),
-       SelectedCurrencyData(currency: Currency.HKD, selected: true),
-       SelectedCurrencyData(currency: Currency.JPY, selected: false),
-       SelectedCurrencyData(currency: Currency.MXN, selected: false),
-       SelectedCurrencyData(currency: Currency.NOK, selected: false),
-       SelectedCurrencyData(currency: Currency.NZD, selected: false),
-       SelectedCurrencyData(currency: Currency.SEK, selected: false),
-       SelectedCurrencyData(currency: Currency.SGD, selected: false),
-       SelectedCurrencyData(currency: Currency.USD, selected: false)
+      [SelectedCurrencyData(currency: .EUR, selected: false),
+       SelectedCurrencyData(currency: .AUD, selected: false),
+       SelectedCurrencyData(currency: .CAD, selected: false),
+       SelectedCurrencyData(currency: .CHF, selected: false),
+       SelectedCurrencyData(currency: .DKK, selected: false),
+       SelectedCurrencyData(currency: .GBP, selected: false),
+       SelectedCurrencyData(currency: .HKD, selected: true),
+       SelectedCurrencyData(currency: .JPY, selected: false),
+       SelectedCurrencyData(currency: .MXN, selected: false),
+       SelectedCurrencyData(currency: .NOK, selected: false),
+       SelectedCurrencyData(currency: .NZD, selected: false),
+       SelectedCurrencyData(currency: .SEK, selected: false),
+       SelectedCurrencyData(currency: .SGD, selected: false),
+       SelectedCurrencyData(currency: .USD, selected: false)
       ]
     )
   }
