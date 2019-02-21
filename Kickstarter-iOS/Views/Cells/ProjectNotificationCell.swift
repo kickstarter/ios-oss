@@ -15,7 +15,6 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
 
   @IBOutlet fileprivate weak var nameLabel: UILabel!
   @IBOutlet fileprivate weak var notificationSwitch: UISwitch!
-  @IBOutlet fileprivate weak var separatorView: UIView!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -38,7 +37,6 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
     _ = self.notificationSwitch |> settingsSwitchStyle
-    _ = self.separatorView |> separatorStyle
   }
 
   internal override func bindViewModel() {

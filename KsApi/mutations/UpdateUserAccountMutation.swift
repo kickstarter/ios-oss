@@ -11,7 +11,7 @@ public struct UpdateUserAccountMutation<T: GraphMutationInput>: GraphMutation {
     return """
     mutation updateUserAccount($input: UpdateUserAccountInput!) {
       updateUserAccount(input: $input) {
-        clientMutationId\
+        clientMutationId
       }
     }
     """
