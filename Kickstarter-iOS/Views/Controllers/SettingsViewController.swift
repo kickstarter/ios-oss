@@ -25,6 +25,7 @@ final class SettingsViewController: UIViewController {
 
     self.tableView.register(nib: .SettingsTableViewCell)
     self.tableView.register(nib: .FindFriendsCell)
+    self.tableView.registerHeaderFooter(nib: .SettingsFooterView)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
     if self.presentingViewController != nil {
@@ -153,13 +154,30 @@ extension SettingsViewController: UITableViewDelegate {
     return SettingsSectionType.sectionHeaderHeight
   }
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 0.1 // Required to remove the footer in UITableViewStyleGrouped
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
 
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    guard section == SettingsSectionType.ratingAppVersion.rawValue else { return 0.1 }
 
-    return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
+    return UITableView.automaticDimension
+  }
+
+  func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+    return 44
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    guard section == SettingsSectionType.ratingAppVersion.rawValue else { return nil }
+
+    let footerView = tableView.dequeueReusableHeaderFooterView(
+      withIdentifier: Nib.SettingsFooterView.rawValue
+    ) as? SettingsFooterView
+
+    footerView?.configure(with: "\(Strings.App_version()) \(AppEnvironment.appVersionString)")
+
+    return footerView
   }
 
   func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {

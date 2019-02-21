@@ -355,6 +355,14 @@ public struct AppEnvironment {
 
     userDefaults.set(data, forKey: environmentStorageKey)
   }
+
+  public static var appVersionString: String {
+    let versionString = AppEnvironment.current.mainBundle.shortVersionString
+    let build = AppEnvironment.current.mainBundle.isRelease
+      ? ""
+      : " #\(AppEnvironment.current.mainBundle.version)"
+    return "\(versionString)\(build)"
+  }
 }
 
 private func legacyOauthToken(forUserDefaults userDefaults: KeyValueStoreType) -> String? {
