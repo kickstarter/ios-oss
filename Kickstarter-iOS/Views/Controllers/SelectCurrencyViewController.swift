@@ -3,9 +3,8 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-private let reuseIdentifier = "CurrencySelectionCell"
-
 final class SelectCurrencyViewController: UIViewController, MessageBannerViewControllerPresenting {
+  private let dataSource = SelectCurrencyDataSource()
   private let viewModel: SelectCurrencyViewModelType = SelectCurrencyViewModel()
 
   internal var messageBannerViewController: MessageBannerViewController?
@@ -25,7 +24,9 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     _ = self.navigationItem
       |> \.title %~ { _ in Strings.Currency() }
 
-    self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+    self.tableView.register(
+      SelectCurrencyCell.self, forCellReuseIdentifier: SelectCurrencyCell.defaultReusableId
+    )
 
     self.view.addSubview(self.tableView)
     self.tableView.constrainEdges(to: self.view)
@@ -36,6 +37,15 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
 
     self.tableView.tableHeaderView = headerContainerView
     self.headerView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+
+    self.saveButtonView = LoadingBarButtonItemView.instantiate()
+    self.saveButtonView.setTitle(title: Strings.Save())
+    self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped(_:)))
+
+    let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
+    self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -62,13 +72,71 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     }
   }
 
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.reloadDataWithCurrencies
+      .observeForUI()
+      .observeValues { [weak self] currencies, reload in
+        self?.dataSource.load(currencies: currencies)
+        if reload {
+          self?.tableView.reloadData()
+        }
+    }
+
+    self.viewModel.outputs.activityIndicatorShouldShow
+      .observeForUI()
+      .observeValues { [weak self] shouldShow in
+        if shouldShow {
+          self?.saveButtonView.startAnimating()
+        } else {
+          self?.saveButtonView.stopAnimating()
+        }
+    }
+
+    self.viewModel.outputs.saveButtonIsEnabled
+      .observeForUI()
+      .observeValues { [weak self] (isEnabled) in
+        self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
+    }
+
+    self.viewModel.outputs.updateCurrencyDidFailWithError
+      .observeForUI()
+      .observeValues { [weak self] error in
+        self?.messageBannerViewController?.showBanner(
+          with: .error,
+          message: error
+        )
+    }
+
+    self.viewModel.outputs.deselectCellAtIndex
+      .map { IndexPath(row: $0, section: 0) }
+      .observeForUI()
+      .observeValues { [weak self] indexPath in
+        self?.tableView.cellForRow(at: indexPath)?.accessoryType = .none
+    }
+
+    self.viewModel.outputs.selectCellAtIndex
+      .map { IndexPath(row: $0, section: 0) }
+      .observeForUI()
+      .observeValues { [weak self] indexPath in
+        self?.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+    }
+  }
+
+  // MARK: Actions
+
+  @objc private func saveButtonTapped(_ sender: Any) {
+    self.viewModel.inputs.saveButtonTapped()
+  }
+
   // MARK: - Subviews
 
   private lazy var tableView: UITableView = {
     UITableView(frame: .zero, style: .plain)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.tableFooterView .~ UIView(frame: .zero)
-      |> \.dataSource .~ self
+      |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
   }()
 
@@ -77,32 +145,10 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   }()
 }
 
-extension SelectCurrencyViewController: UITableViewDataSource {
-
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return Currency.allCases.count
-  }
-
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-
-    let currency = Currency.allCases[indexPath.row]
-
-    cell.textLabel?.text = currency.descriptionText
-    cell.accessoryType = self.viewModel.outputs.isSelectedCurrency(currency) ? .checkmark : .none
-
-    return cell
-  }
-}
-
 extension SelectCurrencyViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let currency = Currency.allCases[indexPath.row]
-
-    self.viewModel.inputs.didSelect(currency)
+    self.viewModel.inputs.didSelectCurrency(atIndex: indexPath.row)
 
     tableView.deselectRow(at: indexPath, animated: true)
-    tableView.visibleCells.forEach { $0.accessoryType = .none }
-    tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
   }
 }
