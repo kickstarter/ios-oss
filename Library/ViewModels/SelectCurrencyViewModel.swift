@@ -4,20 +4,26 @@ import Prelude
 import ReactiveSwift
 import Result
 
+public struct SelectedCurrencyData: Equatable {
+   public let currency: Currency
+   public let selected: Bool
+}
+
 public protocol SelectCurrencyViewModelInputs {
   func configure(with selectedCurrency: Currency)
-  func didSelect(_ currency: Currency)
+  func didSelectCurrency(atIndex index: Int)
   func saveButtonTapped()
   func viewDidLoad()
 }
 
 public protocol SelectCurrencyViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
+  var deselectCellAtIndex: Signal<Int, NoError> { get }
+  var reloadDataWithCurrencies: Signal<([SelectedCurrencyData], Bool), NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
+  var selectCellAtIndex: Signal<Int, NoError> { get }
   var updateCurrencyDidFailWithError: Signal<String, NoError> { get }
   var updateCurrencyDidSucceed: Signal<Void, NoError> { get }
-
-  func isSelectedCurrency(_ currency: Currency) -> Bool
 }
 
 public protocol SelectCurrencyViewModelType {
@@ -32,15 +38,45 @@ SelectCurrencyViewModelOutputs {
     let initialChosenCurrency = Signal.combineLatest(
       self.selectedCurrencySignal,
       self.viewDidLoadSignal
-      )
-      .map(first)
+    )
+    .map(first)
 
-    self.selectedCurrencyProperty <~ Signal.merge(
-      initialChosenCurrency,
-      self.didSelectCurrencySignal
+    let orderedCurrencies = initialChosenCurrency
+      .map { currencies(orderedBySelected: $0)}
+
+    let didSelectCurrency = orderedCurrencies
+      .takePairWhen(self.didSelectCurrencyAtIndexSignal)
+      .map { $0[$1] }
+
+    let orderedAndInitial = Signal.combineLatest(orderedCurrencies, initialChosenCurrency)
+      .map { ($0, $1) }
+      .map(selectedCurrencyData(with:selected:))
+      .map { ($0, true) }
+
+    let orderedAndSelected = Signal.combineLatest(orderedCurrencies, didSelectCurrency)
+      .map { ($0, $1) }
+      .map(selectedCurrencyData(with:selected:))
+      .map { ($0, false) }
+
+    self.reloadDataWithCurrencies = Signal.merge(
+      orderedAndInitial,
+      orderedAndSelected
     )
 
-    let updateCurrencyEvent = self.selectedCurrencyProperty.signal.skipNil()
+    let selectedCurrency = Signal.merge(initialChosenCurrency, didSelectCurrency)
+
+    self.selectCellAtIndex = Signal.combineLatest(
+      selectedCurrency,
+      initialChosenCurrency
+    )
+    .map { currencies(orderedBySelected: $1).index(of: $0) }
+    .skipNil()
+
+    self.deselectCellAtIndex = self.selectCellAtIndex
+      .combinePrevious()
+      .map(first)
+
+    let updateCurrencyEvent = didSelectCurrency
       .takeWhen(self.saveButtonTappedSignal.ignoreValues())
       .switchMap { input in
         AppEnvironment.current.apiService
@@ -66,19 +102,19 @@ SelectCurrencyViewModelOutputs {
 
     let initialAndSelected = Signal.combineLatest(
       initialChosenCurrency,
-      self.didSelectCurrencySignal
+      didSelectCurrency
     )
 
     let updatedAndSelected = Signal.combineLatest(
       updatedCurrency,
-      self.didSelectCurrencySignal
+      didSelectCurrency
     )
 
     let currenciesDoNotMatch = Signal.merge(
       initialAndSelected,
       updatedAndSelected
-      )
-      .map(!=)
+    )
+    .map(!=)
 
     self.saveButtonIsEnabled = Signal.merge(
       self.viewDidLoadSignal.mapConst(false),
@@ -91,9 +127,10 @@ SelectCurrencyViewModelOutputs {
     self.selectedCurrencyObserver.send(value: selectedCurrency)
   }
 
-  private let (didSelectCurrencySignal, didSelectCurrencyObserver) = Signal<Currency, NoError>.pipe()
-  public func didSelect(_ currency: Currency) {
-    self.didSelectCurrencyObserver.send(value: currency)
+  private let (didSelectCurrencyAtIndexSignal, didSelectCurrencyAtIndexObserver)
+    = Signal<Int, NoError>.pipe()
+  public func didSelectCurrency(atIndex index: Int) {
+    self.didSelectCurrencyAtIndexObserver.send(value: index)
   }
 
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), NoError>.pipe()
@@ -106,16 +143,22 @@ SelectCurrencyViewModelOutputs {
     self.saveButtonTappedObserver.send(value: ())
   }
 
-  private let selectedCurrencyProperty = MutableProperty<Currency?>(nil)
-  public func isSelectedCurrency(_ currency: Currency) -> Bool {
-    return currency == self.selectedCurrencyProperty.value
-  }
-
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
+  public let deselectCellAtIndex: Signal<Int, NoError>
+  public let reloadDataWithCurrencies: Signal<([SelectedCurrencyData], Bool), NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
+  public let selectCellAtIndex: Signal<Int, NoError>
   public let updateCurrencyDidFailWithError: Signal<String, NoError>
   public let updateCurrencyDidSucceed: Signal<Void, NoError>
 
   public var inputs: SelectCurrencyViewModelInputs { return self }
   public var outputs: SelectCurrencyViewModelOutputs { return self }
+}
+
+internal func currencies(orderedBySelected selected: Currency) -> [Currency] {
+  return Currency.allCases.sorted(by: { cur1, _ in cur1 == selected })
+}
+
+internal func selectedCurrencyData(with currencies: [Currency], selected: Currency) -> [SelectedCurrencyData] {
+  return currencies.map { currency in .init(currency: currency, selected: currency == selected) }
 }
