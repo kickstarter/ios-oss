@@ -159,6 +159,7 @@ internal func currencies(orderedBySelected selected: Currency) -> [Currency] {
   return Currency.allCases.sorted(by: { cur1, _ in cur1 == selected })
 }
 
-internal func selectedCurrencyData(with currencies: [Currency], selected: Currency) -> [SelectedCurrencyData] {
-  return currencies.map { currency in .init(currency: currency, selected: currency == selected) }
+internal func selectedCurrencyData(with currencies: [Currency], selected: Currency)
+  -> [SelectedCurrencyData] {
+    return currencies.map { currency in .init(currency: currency, selected: currency == selected) }
 }
