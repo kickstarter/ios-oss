@@ -1,6 +1,6 @@
 import StringsScriptCore
 
-let tool = CommandLineTool()
+let tool = StringsScript()
 
 do {
   try tool.run()

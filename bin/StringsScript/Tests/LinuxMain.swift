@@ -1,5 +1,4 @@
 import XCTest
-
 import StringsScriptTests
 
 var tests = [XCTestCaseEntry]()
