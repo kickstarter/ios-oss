@@ -19,6 +19,7 @@ public protocol ChangePasswordViewModelInputs {
 }
 
 public protocol ChangePasswordViewModelOutputs {
+  var accessibilityFocusValidationErrorLabel: Signal<Void, NoError> { get }
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var changePasswordFailure: Signal<String, NoError> { get }
   var changePasswordSuccess: Signal<Void, NoError> { get }
@@ -119,7 +120,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       .map { $0.0 && $0.1 }
       .skipRepeats()
 
-    self.validationErrorLabelMessage = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
+    let errorLabelMessage = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
       .map { requirements -> String? in
         if !requirements.1 {
           return Strings.Password_min_length_message()
@@ -128,8 +129,13 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
         } else {
           return nil
         }
-    }.skipNil()
-    .skipRepeats()
+    }
+
+    self.validationErrorLabelMessage = errorLabelMessage
+      .skipNil()
+      .skipRepeats()
+
+    self.accessibilityFocusValidationErrorLabel = self.validationErrorLabelMessage.ignoreValues()
 
     self.viewDidAppearProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackChangePasswordView() }
@@ -193,6 +199,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.viewDidAppearProperty.value = ()
   }
 
+  public let accessibilityFocusValidationErrorLabel: Signal<Void, NoError>
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let changePasswordFailure: Signal<String, NoError>
   public let changePasswordSuccess: Signal<Void, NoError>

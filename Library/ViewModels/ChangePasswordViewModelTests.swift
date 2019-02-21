@@ -10,6 +10,7 @@ import XCTest
 final class ChangePasswordViewModelTests: TestCase {
   private let vm: ChangePasswordViewModelType = ChangePasswordViewModel()
 
+  private let accessibilityFocusValidationErrorLabel = TestObserver<Void, NoError>()
   private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
   private let changePasswordFailure = TestObserver<String, NoError>()
   private let changePasswordSuccess = TestObserver<Void, NoError>()
@@ -27,6 +28,8 @@ final class ChangePasswordViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.accessibilityFocusValidationErrorLabel
+      .observe(accessibilityFocusValidationErrorLabel.observer)
     self.vm.outputs.activityIndicatorShouldShow.observe(activityIndicatorShouldShow.observer)
     self.vm.outputs.changePasswordFailure.observe(changePasswordFailure.observer)
     self.vm.outputs.changePasswordSuccess.observe(changePasswordSuccess.observer)
@@ -131,6 +134,7 @@ final class ChangePasswordViewModelTests: TestCase {
     self.validationErrorLabelIsHidden.assertValues([false])
     self.validationErrorLabelMessage
       .assertValues(["Your password must be at least 6 characters long."])
+    self.accessibilityFocusValidationErrorLabel.assertValueCount(1)
     self.saveButtonIsEnabled.assertValues([false])
 
     self.vm.inputs.newPasswordFieldTextChanged(text: "123456")
@@ -138,11 +142,13 @@ final class ChangePasswordViewModelTests: TestCase {
     self.validationErrorLabelIsHidden.assertValues([false])
     self.validationErrorLabelMessage
       .assertValues(["Your password must be at least 6 characters long.", "New passwords must match."])
+    self.accessibilityFocusValidationErrorLabel.assertValueCount(2)
     self.saveButtonIsEnabled.assertValues([false])
 
     self.vm.inputs.newPasswordFieldTextChanged(text: "1234567")
 
     self.validationErrorLabelIsHidden.assertValues([false, true])
+    self.accessibilityFocusValidationErrorLabel.assertValueCount(2)
     self.saveButtonIsEnabled.assertValues([false, true])
   }
 
