@@ -86,8 +86,7 @@ public func settingsContentViewStyle(_ view: UIView) -> UIView {
     |> \.preservesSuperviewLayoutMargins .~ false
 }
 
-public let settingsFooterContentViewStyle =
-  settingsContentViewStyle
+public let settingsFooterContentViewStyle = settingsContentViewStyle
 
 public func settingsHeaderContentViewStyle(_ view: UIView) -> UIView {
   return view
