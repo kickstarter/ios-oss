@@ -280,6 +280,7 @@ DashboardViewModelType {
       .takeWhen(self.messagesCellTappedProperty.signal)
 
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
+      .filter { AppEnvironment.current.isVoiceOverRunning() }
 
     let projectForTrackingViews = Signal.merge(
       projects.map { $0.first }.skipNil().take(first: 1),

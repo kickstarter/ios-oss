@@ -4,8 +4,11 @@ xcode_version: &xcode_version 10.0
 iphone_name: &iphone_name iPhone 8
 opentok_version: &opentok_version 2.10.2
 fabric_sdk_version: &fabric_sdk_version 3.10.5
+stripe_sdk_version: &stripe_sdk_version 13.2.0
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
 store_opentok_version: &store_opentok_version echo "$OPENTOK_VERSION" > opentok_version.txt
+store_stripe_version: &store_stripe_version echo "$STRIPE_SDK_VERSION" > stripe_version.txt
+preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (12.1) [" || true
 
 base_job: &base_job
   macos:
@@ -18,6 +21,7 @@ base_job: &base_job
     LC_ALL: en_US.UTF-8
     LANG: en_US.UTF-8
     FABRIC_SDK_VERSION: *fabric_sdk_version
+    STRIPE_SDK_VERSION: *stripe_sdk_version
     OPENTOK_VERSION: *opentok_version
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
@@ -42,13 +46,21 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -60,14 +72,19 @@ jobs:
             - ".git"
 
       - save_cache:
-          key: opentok-cache-{{ checksum "opentok_version.txt" }}
+          key: opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
           paths:
             - "Frameworks/OpenTok"
 
       - save_cache:
-          key: fabric-cache-{{ checksum "fabric_version.txt" }}
+          key: fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
           paths:
             - "Frameworks/Fabric"
+
+      - save_cache:
+          key: stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+          paths:
+            - "Frameworks/Stripe"
 
       - run:
           name: SwiftLint
@@ -96,17 +113,29 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - run:
+          name: Pre-load simulator
+          command: *preload_simulator
 
       - run:
           name: Kickstarter tests
@@ -137,17 +166,29 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - run:
+          name: Pre-load simulator
+          command: *preload_simulator
 
       - run:
           name: Library tests
@@ -176,17 +217,29 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - run:
+          name: Pre-load simulator
+          command: *preload_simulator
 
       - run:
           name: LiveStream tests
@@ -215,17 +268,29 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - run:
+          name: Pre-load simulator
+          command: *preload_simulator
 
       - run:
           name: KsApi tests
@@ -234,7 +299,7 @@ jobs:
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
-  deploy_alpha:
+  deploy_beta:
     <<: *base_job
     steps:
       - restore_cache:
@@ -248,10 +313,83 @@ jobs:
           paths:
             - ".git"
       - run:
-          name: Deploy Alpha
-          command: make alpha
+          name: Deploy Beta
+          command: make beta
 
-   # Hockey Alpha
+  # Hockey and S3 bucket beta
+  beta:
+    <<: *base_job
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+
+      - checkout
+
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
+
+      - run:
+          name: Store OpenTok Version
+          command: *store_opentok_version
+
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
+
+      - restore_cache:
+          keys:
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
+      - restore_cache:
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Bundle install
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+      - save_cache:
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Increment build number
+          command: agvtool new-version -all $(($(date +%s)/100))
+
+      - run:
+          name: Fastlane
+          command: bundle exec fastlane beta_match_gym_hockey_s3 --verbose
+          no_output_timeout: "30m" # 30 minutes
+
+      - run:
+          name: Cleanup Temp Branch
+          command: make cleanup
+
+      - store_artifacts:
+          path: /tmp/xcode_raw.log
+
+      - store_artifacts:
+          path: output
+
+  # Hockey Alpha
   alpha:
     <<: *base_job
     steps:
@@ -271,13 +409,21 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -306,71 +452,6 @@ jobs:
           command: bundle exec fastlane alpha_match_gym_hockey --verbose
           no_output_timeout: "30m" # 30 minutes
 
-      - run:
-          name: Cleanup Temp Branch
-          command: make cleanup
-
-      - store_artifacts:
-          path: /tmp/xcode_raw.log
-
-      - store_artifacts:
-          path: output
-
-  # Hockey Beta
-  beta:
-    <<: *base_job
-    steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - restore_cache:
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Bundle install
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-      - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
-      - run:
-          name: Increment build number
-          command: agvtool new-version -all $(($(date +%s)/100))
-
-      - run:
-          name: Fastlane
-          command: bundle exec fastlane beta_match_gym_hockey --verbose
-          no_output_timeout: "30m" # 30 minutes
-
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
@@ -396,13 +477,21 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -445,13 +534,21 @@ jobs:
           name: Store OpenTok Version
           command: *store_opentok_version
 
-      - restore_cache:
-          keys:
-            - opentok-cache-{{ checksum "opentok_version.txt" }}
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
 
       - restore_cache:
           keys:
-            - fabric-cache-{{ checksum "fabric_version.txt" }}
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -499,8 +596,8 @@ workflows:
       - refresh_app_store_dsyms:
           filters:
             branches:
-              only: /alpha-dist-.*/
-      - deploy_alpha:
+              only: /beta-dist-.*/
+      - deploy_beta:
           filters:
             branches:
               only: master
@@ -510,14 +607,14 @@ workflows:
             - library-tests
             - livestream-tests
             - ksapi-tests
-      - alpha:
-          filters:
-            branches:
-              only: /alpha-dist-.*/
       - beta:
           filters:
             branches:
-              only: beta-dist
+              only: /beta-dist-.*/
+      - alpha:
+          filters:
+            branches:
+              only: /alpha-dist.*/
           requires:
             - swiftlint-and-cache
             - kickstarter-tests
@@ -540,6 +637,6 @@ experimental:
     branches:
       only:
         - master
-        - /alpha-dist-.*/
-        - beta-dist
+        - /alpha-dist.*/
+        - /beta-dist-.*/
         - itunes-dist

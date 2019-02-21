@@ -72,6 +72,15 @@ public enum SettingsNotificationCellType {
                                                                 .friendBacksProject,
                                                                 ]
 
+  public var accessibilityTraits: UIAccessibilityTraits {
+    switch self {
+    case .projectNotifications, .emailFrequency:
+      return .button
+    default:
+      return .none
+    }
+  }
+
   public var shouldShowEmailNotificationButton: Bool {
     switch self {
     case .projectNotifications, .emailFrequency:

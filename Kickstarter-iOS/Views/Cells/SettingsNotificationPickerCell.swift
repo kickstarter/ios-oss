@@ -13,6 +13,9 @@ final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCe
   func configureWith(value: SettingsNotificationCellValue) {
     self.viewModel.inputs.configure(with: value)
 
+    _ = self
+      |> \.accessibilityTraits .~ value.cellType.accessibilityTraits
+
     _ = titleLabel
       |> UILabel.lens.text .~ value.cellType.title
   }

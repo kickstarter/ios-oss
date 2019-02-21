@@ -11,7 +11,9 @@ BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
 OPENTOK_VERSION ?= 2.10.2
 FABRIC_SDK_VERSION ?= 3.10.5
+FABRIC_SDK_URL ?= https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip
 STRIPE_SDK_VERSION ?= 13.2.0
+STRIPE_SDK_URL ?= https://github.com/stripe/stripe-ios/releases/download/vINSERT_SDK_VERSION/Stripe.framework.zip
 COMMIT ?= $(CIRCLE_SHA1)
 
 ifeq ($(PLATFORM),iOS)
@@ -93,16 +95,16 @@ deploy:
 
 	@echo "Deploy has been kicked off to CircleCI!"
 
-alpha:
+beta:
 	@echo "Adding remotes..."
 	@git remote add oss https://github.com/kickstarter/ios-oss
 	@git remote add private https://github.com/kickstarter/ios-private
 
-	@echo "Deploying private/alpha-dist-$(COMMIT)..."
+	@echo "Deploying private/beta-dist-$(COMMIT)..."
 
-	@git branch -f alpha-dist-$(COMMIT)
-	@git push -f private alpha-dist-$(COMMIT)
-	@git branch -d alpha-dist-$(COMMIT)
+	@git branch -f beta-dist-$(COMMIT)
+	@git push -f private beta-dist-$(COMMIT)
+	@git branch -d beta-dist-$(COMMIT)
 
 	@echo "Deploy has been kicked off to CircleCI!"
 
@@ -161,34 +163,9 @@ opentok:
 	fi
 
 fabric:
-	@if [ ! -d Frameworks/Fabric ]; then \
-		echo "Downloading Fabric v$(FABRIC_SDK_VERSION)"; \
-		mkdir -p Frameworks/Fabric; \
-		curl -N -L -o fabric.zip https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/$(FABRIC_SDK_VERSION)/com.crashlytics.ios-manual.zip; \
-		unzip fabric.zip -d Frameworks/Fabric || true; \
-		rm fabric.zip; \
-	fi
-	@if [ -e Frameworks/Fabric/Fabric.framework ]; then \
-		echo "Fabric v$(FABRIC_SDK_VERSION) downloaded"; \
-	else \
-		echo "Failed to download Fabric SDK"; \
-		rm -rf Frameworks/Fabric; \
-	fi
+	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) $(FABRIC_SDK_URL); \
 
 stripe:
-	@if [ ! -d Frameworks/Stripe ]; then \
-		echo "Downloading Stripe SDK v$(STRIPE_SDK_VERSION)"; \
-		mkdir -p Frameworks/Stripe; \
-		curl -N -L -o stripe.zip https://github.com/stripe/stripe-ios/releases/download/v$(STRIPE_SDK_VERSION)/Stripe.framework.zip; \
-		unzip stripe.zip -d Frameworks/Stripe || true; \
-		rm stripe.zip; \
-	fi
-	@if [ -e Frameworks/Stripe/Stripe.framework ]; then \
-		echo "Stripe SDK v$(STRIPE_SDK_VERSION) downloaded"; \
-	else \
-		echo "Failed to download Stripe SDK"; \
-		rm -rf Frameworks/Stripe; \
-	fi
-
+	bin/download_framework.sh Stripe $(STRIPE_SDK_VERSION) $(STRIPE_SDK_URL); \
 
 .PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok fabric

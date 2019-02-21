@@ -4046,6 +4046,23 @@ with friends."
     )
   }
   /**
+   "Double tap to dismiss."
+
+   - **en**: "Double tap to dismiss."
+   - **de**: "Double tap to dismiss."
+   - **es**: "Double tap to dismiss."
+   - **fr**: "Double tap to dismiss."
+   - **ja**: "Double tap to dismiss."
+  */
+  public static func Message_banner_accessibility_Double_tap_to_dismiss() -> String {
+    return localizedString(
+      key: "Message_banner.accessibility.Double_tap_to_dismiss",
+      defaultValue: "Double tap to dismiss.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Message creator"
 
    - **en**: "Message creator"

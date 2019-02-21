@@ -34,6 +34,9 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     viewModel.inputs.configure(with: cellValue)
 
+    _ = self
+      |> \.accessibilityTraits .~ cellValue.cellType.accessibilityTraits
+
     _ = titleLabel
       |> UILabel.lens.text .~ cellValue.cellType.title
 
@@ -95,8 +98,6 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     self.projectCountLabel.rac.text = viewModel.outputs.projectCountText
     self.pushNotificationsButton.rac.selected = viewModel.outputs.pushNotificationsEnabled
     self.pushNotificationsButton.rac.hidden = viewModel.outputs.pushNotificationButtonIsHidden
-    self.projectCountLabel.rac.accessibilityHint = viewModel.outputs
-      .manageProjectNotificationsButtonAccessibilityHint
 
     viewModel.outputs.enableButtonAnimation
     .observeForUI()
