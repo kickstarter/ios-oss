@@ -7,6 +7,7 @@ import Result
 public protocol PaymentMethodsViewModelInputs {
   func addNewCardSucceeded(with message: String)
   func addNewCardDismissed()
+  func addNewCardPresented()
   func didDelete(_ creditCard: GraphUserCreditCard.CreditCard, visibleCellCount: Int)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
@@ -109,7 +110,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
     let stopEditing = Signal.merge(
       self.editButtonIsEnabled.filter(isFalse),
-      self.didTapAddCardButtonProperty.signal.mapConst(false)
+      self.addNewCardPresentedSignal.mapConst(false)
     )
 
     self.tableViewIsEditingProperty <~ Signal.merge(
@@ -176,6 +177,11 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   fileprivate let addNewCardDismissedProperty = MutableProperty(())
   public func addNewCardDismissed() {
     self.addNewCardDismissedProperty.value = ()
+  }
+
+  fileprivate let (addNewCardPresentedSignal, addNewCardPresentedObserver) = Signal<(), NoError>.pipe()
+  public func addNewCardPresented() {
+    self.addNewCardPresentedObserver.send(value: ())
   }
 
   public let editButtonIsEnabled: Signal<Bool, NoError>

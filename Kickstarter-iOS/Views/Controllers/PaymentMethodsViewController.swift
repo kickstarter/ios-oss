@@ -147,7 +147,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
 
-    self.present(nav, animated: true, completion: nil)
+    self.present(nav, animated: true) { self.viewModel.inputs.addNewCardPresented() }
   }
 
   // MARK: - Private Helpers
