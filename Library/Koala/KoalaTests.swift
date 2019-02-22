@@ -46,6 +46,31 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("GB", properties?["user_country"] as? String)
   }
 
+  func testDefaultPropertiesVoiceOver() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    var isVoiceOverRunning = { true }
+
+    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+      koala.trackAppOpen()
+
+      let properties = client.properties.last
+
+      XCTAssertTrue(properties?["is_voiceover_running"] as! Bool)
+    }
+
+    isVoiceOverRunning = { false }
+
+    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+      koala.trackAppOpen()
+
+      let properties = client.properties.last
+
+      XCTAssertFalse(properties?["is_voiceover_running"] as! Bool)
+    }
+  }
+
   func testDefaultPropertiesWithLoggedInUser() {
     let client = MockTrackingClient()
     let user = User.template
