@@ -212,10 +212,8 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
   }
 
   private func dismissKeyboard() {
-    _ = [self.newPasswordTextField, self.confirmNewPasswordTextField, self.currentPasswordTextField]
-    .filter { $0.isFirstResponder }
-    .first?
-    .resignFirstResponder()
+    [self.newPasswordTextField, self.confirmNewPasswordTextField, self.currentPasswordTextField]
+      .forEach { $0?.resignFirstResponder() }
   }
 
   // MARK: Actions
