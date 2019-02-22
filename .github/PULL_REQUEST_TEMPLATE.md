@@ -16,6 +16,10 @@ More in-depth discussion of the change or implementation.
 
 Trello, screenshots, external resources?
 
+| Before 🐛 | After 🦋 |
+| --- | --- |
+|  |  |
+
 # ♿️ Accessibility 
 
 - [ ] Tap targets use minimum of 44x44 pts dimensions

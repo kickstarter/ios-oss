@@ -4,7 +4,7 @@ BUILD_FLAGS = -scheme $(SCHEME) -destination $(DESTINATION)
 SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
-RELEASE ?= beta
+RELEASE ?= itunes
 IOS_VERSION ?= 12.1
 IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
@@ -78,9 +78,9 @@ deploy:
 		echo "There are commits in oss/$(BRANCH) that are not in private/$(BRANCH). Please sync the remotes before deploying."; \
 		exit 1; \
 	fi
-	@if test "$(RELEASE)" != "beta" && test "$(RELEASE)" != "itunes"; \
+	@if test "$(RELEASE)" != "itunes"; \
 	then \
-		echo "RELEASE must be 'beta' or 'itunes'."; \
+		echo "RELEASE must be 'itunes'."; \
 		exit 1; \
 	fi
 	@if test "$(RELEASE)" = "itunes" && test "$(BRANCH)" != "master"; \
@@ -111,7 +111,7 @@ beta:
 sync:
 	@echo "Syncing oss and private remotes..."
 
-	@git checkout oss $(BRANCH)
+	@git checkout $(BRANCH)
 	@git pull oss $(BRANCH)
 	@git push private $(BRANCH)
 
