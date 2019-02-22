@@ -53,11 +53,13 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   public func track(event: String, properties: [String: Any]) {
+    #if !DEBUG
     print("🐨 [Koala Track]: \(event), properties: \(properties)")
 
     self.queue.async {
       self.buffer.append(["event": event, "properties": properties])
     }
+    #endif
   }
 
   fileprivate func startTimer() {
