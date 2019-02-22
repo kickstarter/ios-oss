@@ -79,3 +79,84 @@ public func settingsAttributedPlaceholder(_ string: String) -> NSAttributedStrin
     attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400]
   )
 }
+
+public func settingsContentViewStyle(_ view: UIView) -> UIView {
+  return view
+    |> \.layoutMargins .~ .init(all: Styles.grid(2))
+    |> \.preservesSuperviewLayoutMargins .~ false
+}
+
+public let settingsFooterContentViewStyle = settingsContentViewStyle
+
+public func settingsHeaderContentViewStyle(_ view: UIView) -> UIView {
+  return view
+    |> settingsContentViewStyle
+    |> \.layoutMargins .~ .init(
+      top: Styles.grid(5),
+      left: Styles.grid(2),
+      bottom: Styles.grid(2),
+      right: Styles.grid(2))
+}
+
+public func settingsHeaderFooterLabelBaseStyle(_ label: UILabel) -> UILabel {
+  return label
+    |> \.font %~ { _ in .ksr_footnote() }
+    |> \.numberOfLines .~ 0
+}
+
+public func settingsHeaderFooterLabelStyle(_ label: UILabel) -> UILabel {
+  return label
+    |> \.backgroundColor .~ .ksr_grey_200
+    |> \.textColor .~ .ksr_text_dark_grey_500
+}
+
+public func settingsLabelStyle(_ label: UILabel) -> UILabel {
+  return label
+    |> \.backgroundColor .~ .white
+    |> \.font %~ { _ in .ksr_body() }
+}
+
+public func settingsStackViewStyle(_ stackView: UIStackView) -> UIStackView {
+  return stackView
+    |> \.axis %~~ { _, stackView in
+      stackView.traitCollection.ksr_isAccessibilityCategory() ? .vertical : .horizontal
+    }
+    |> \.alignment %~~ { _, stackView in
+      stackView.traitCollection.ksr_isAccessibilityCategory() ? .leading : .fill
+    }
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ 8
+}
+
+public func settingsGroupedTableViewStyle(_ tableView: UITableView) -> UITableView {
+  let style = tableView
+    |> \.allowsSelection .~ false
+    |> \.backgroundColor .~ .ksr_grey_200
+    |> \.separatorInset .~ .zero
+
+  if #available(iOS 11, *) { } else {
+    let estimatedSectionFooterHeight: CGFloat = 44
+    let estimatedSectionHeaderHeight: CGFloat = 100
+    let estimatedRowHeight: CGFloat = 44
+    let height = UITableView.automaticDimension
+
+    return style
+      |> \.estimatedSectionFooterHeight .~ estimatedSectionFooterHeight
+      |> \.estimatedSectionHeaderHeight .~ estimatedSectionHeaderHeight
+      |> \.estimatedRowHeight .~ estimatedRowHeight
+      |> \.sectionFooterHeight .~ height
+      |> \.sectionHeaderHeight .~ height
+      |> \.rowHeight .~ height
+  }
+
+  return style
+}
+
+public func settingsTextFieldStyle(_ textField: UITextField) -> UITextField {
+  return textField
+    |> \.backgroundColor .~ .white
+    |> \.font %~ { _ in .ksr_body() }
+    |> \.textAlignment %~~ { _, stackView in
+      stackView.traitCollection.ksr_isAccessibilityCategory() ? .left : .right
+  }
+}

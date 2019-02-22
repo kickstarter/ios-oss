@@ -22,6 +22,8 @@ internal struct MockService: ServiceType {
 
   fileprivate let changePasswordError: GraphError?
 
+  fileprivate let createPasswordError: GraphError?
+
   fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
   fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>?
@@ -187,6 +189,7 @@ internal struct MockService: ServiceType {
                                                                        me: .template
                                                                      ),
                 changePasswordError: GraphError? = nil,
+                createPasswordError: GraphError? = nil,
                 changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
                 changeCurrencyError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
@@ -291,6 +294,8 @@ internal struct MockService: ServiceType {
     self.changeEmailError = changeEmailError
 
     self.changePasswordError = changePasswordError
+
+    self.createPasswordError = createPasswordError
 
     self.changePaymentMethodResult = changePaymentMethodResult
     self.deletePaymentMethodResult = deletePaymentMethodResult
@@ -516,6 +521,15 @@ internal struct MockService: ServiceType {
   internal func changePassword(input: ChangePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
       if let error = self.changePasswordError {
+        return SignalProducer(error: error)
+      } else {
+        return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+      }
+  }
+
+  internal func createPassword(input: CreatePasswordInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      if let error = self.createPasswordError {
         return SignalProducer(error: error)
       } else {
         return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
