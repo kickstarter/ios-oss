@@ -6,13 +6,15 @@ public extension UITraitCollection {
 
     if #available(iOS 11, *) {
       return sizeCategory.isAccessibilityCategory
-    } else {
-      return
-        sizeCategory == .accessibilityMedium ||
-          sizeCategory == .accessibilityLarge ||
-          sizeCategory == .accessibilityExtraLarge ||
-          sizeCategory == .accessibilityExtraExtraLarge ||
-          sizeCategory == .accessibilityExtraExtraExtraLarge
     }
+
+    return [
+      .accessibilityMedium,
+      .accessibilityLarge,
+      .accessibilityExtraLarge,
+      .accessibilityExtraExtraLarge,
+      .accessibilityExtraExtraExtraLarge
+      ]
+      .contains(sizeCategory)
   }
 }
