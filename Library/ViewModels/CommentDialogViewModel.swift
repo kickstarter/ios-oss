@@ -6,7 +6,7 @@ import Prelude
 public struct CommentDialogData {
   public let project: Project
   public let update: Update?
-  public let recipient: User?
+  public let recipient: Author?
   public let context: Koala.CommentDialogContext
 }
 
@@ -20,7 +20,7 @@ public protocol CommentDialogViewModelInputs {
   /// Call with the project, update (optional), recipient (optional) and context given to the view.
   func configureWith(project: Project,
                      update: Update?,
-                     recipient: User?,
+                     recipient: Author?,
                      context: Koala.CommentDialogContext)
 
   /// Call when the comment body text changes.
@@ -82,7 +82,7 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
   }
 
   fileprivate let configurationDataProperty = MutableProperty<CommentDialogData?>(nil)
-  public func configureWith(project: Project, update: Update?, recipient: User?,
+  public func configureWith(project: Project, update: Update?, recipient: Author?,
                             context: Koala.CommentDialogContext) {
 
     self.configurationDataProperty.value = CommentDialogData(project: project, update: update,

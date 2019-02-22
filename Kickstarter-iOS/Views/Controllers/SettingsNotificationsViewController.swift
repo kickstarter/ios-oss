@@ -8,8 +8,6 @@ internal final class SettingsNotificationsViewController: UIViewController {
   @IBOutlet fileprivate weak var emailFrequencyPickerView: UIPickerView!
   @IBOutlet fileprivate weak var emailPickerViewTopConstraint: NSLayoutConstraint!
 
-  private static let emailPickerViewHeight: CGFloat = 200.0
-
   private let viewModel: SettingsNotificationsViewModelType = SettingsNotificationsViewModel()
   private let dataSource: SettingsNotificationsDataSource = SettingsNotificationsDataSource()
 
@@ -44,6 +42,9 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
     _ = self.tableView
       |> UITableView.lens.backgroundColor .~ .ksr_grey_200
+
+    _ = self.emailFrequencyPickerView
+      |> \.isAccessibilityElement .~ true
   }
 
   internal override func bindViewModel() {
@@ -88,14 +89,52 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func animatePickerView(isHidden: Bool) {
-    UIView.animate(withDuration: 0.25) {
-      self.emailPickerViewTopConstraint.constant = isHidden
-        ? 0 : -SettingsNotificationsViewController.emailPickerViewHeight
+  @objc private func tapGestureToDismissEmailFrequencyPicker() {
+    self.viewModel.inputs.dismissPickerTap()
+  }
 
-      self.view.setNeedsLayout()
-      self.view.layoutIfNeeded()
-    }
+  private func animatePickerView(isHidden: Bool) {
+    let tapRecognizer = UITapGestureRecognizer(
+      target: self,
+      action: #selector(tapGestureToDismissEmailFrequencyPicker))
+
+    UIView.animate(
+      withDuration: 0.25,
+      animations: { [weak self] in
+        guard let self = self else { return }
+
+        if !isHidden {
+          self.view.addGestureRecognizer(tapRecognizer)
+        }
+
+        if isHidden {
+          self.view.gestureRecognizers?.removeAll()
+        }
+
+        if !isHidden && AppEnvironment.current.isVoiceOverRunning() {
+          // Tells VoiceOver to ignore other elements in the same parent view
+          self.emailFrequencyPickerView.accessibilityViewIsModal = true
+
+          UIAccessibility.post(
+            notification: UIAccessibility.Notification.screenChanged,
+            argument: self.emailFrequencyPickerView
+          )
+        }
+
+        self.emailPickerViewTopConstraint.constant = isHidden ? 0 : self.emailFrequencyPickerView.frame.height
+        self.view.layoutIfNeeded()
+    },
+    completion: { [weak self] _ in
+      if isHidden && AppEnvironment.current.isVoiceOverRunning() {
+        // Tells VoiceOver to re-enable focus on other elements in the same parent view
+        self?.emailFrequencyPickerView.accessibilityViewIsModal = false
+
+        UIAccessibility.post(
+          notification: UIAccessibility.Notification.screenChanged,
+          argument: self?.emailFrequencyPickerView
+        )
+      }
+    })
   }
 }
 

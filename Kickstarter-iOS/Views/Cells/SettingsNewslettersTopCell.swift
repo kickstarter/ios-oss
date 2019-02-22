@@ -20,6 +20,23 @@ final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
 
   public weak var delegate: SettingsNewslettersTopCellDelegate?
 
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    _ = self
+      |> \.accessibilityElements .~ [self.newsletterSwitch]
+
+    _ = self.descriptionLabel
+      |> \.text %~ { _ in Strings.Stay_up_to_date_newsletter() }
+
+    _ = self.newsletterSwitch
+      |> \.accessibilityLabel %~ { _ in Strings.profile_settings_newsletter_subscribe_all() }
+      |> \.accessibilityHint %~ { _ in Strings.Stay_up_to_date_newsletter() }
+
+    _ = self.titleLabel
+      |> \.text %~ { _ in Strings.profile_settings_newsletter_subscribe_all() }
+  }
+
   func configureWith(value: User) {
     self.viewModel.inputs.configureWith(value: value)
   }
@@ -29,9 +46,6 @@ final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
 
     _ = self.descriptionLabel
       |> settingsDescriptionLabelStyle
-      |> UILabel.lens.text %~ { _ in
-        Strings.Stay_up_to_date_newsletter()
-    }
 
     _ = self.newsletterSwitch
       |> settingsSwitchStyle
@@ -41,7 +55,6 @@ final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
 
     _ = self.titleLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text %~ { _ in Strings.profile_settings_newsletter_subscribe_all() }
   }
 
   override func bindViewModel() {

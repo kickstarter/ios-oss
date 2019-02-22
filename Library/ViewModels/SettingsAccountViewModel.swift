@@ -104,30 +104,30 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     self.showAlert = self.changeCurrencyAlertProperty.signal.skipNil().ignoreValues()
 
-    self.viewDidAppearProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackAccountView() }
-
     // Koala
     updateCurrency.signal
       .observeValues { AppEnvironment.current.koala.trackChangedCurrency($0) }
+
+    self.viewDidAppearProperty.signal
+      .observeValues { _ in AppEnvironment.current.koala.trackAccountView() }
   }
 
-  fileprivate let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
+  private let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
   public func didSelectRow(cellType: SettingsAccountCellType) {
     self.selectedCellTypeProperty.value = cellType
   }
 
-  fileprivate let changeCurrencyAlertProperty = MutableProperty<Currency?>(nil)
+  private let changeCurrencyAlertProperty = MutableProperty<Currency?>(nil)
   public func showChangeCurrencyAlert(for currency: Currency) {
     self.changeCurrencyAlertProperty.value = currency
   }
 
-  fileprivate let dismissPickerTapProperty = MutableProperty(())
+  private let dismissPickerTapProperty = MutableProperty(())
   public func dismissPickerTap() {
     self.dismissPickerTapProperty.value = ()
   }
 
-  fileprivate let didConfirmChangeCurrencyProperty = MutableProperty(())
+  private let didConfirmChangeCurrencyProperty = MutableProperty(())
   public func didConfirmChangeCurrency() {
     self.didConfirmChangeCurrencyProperty.value = ()
   }

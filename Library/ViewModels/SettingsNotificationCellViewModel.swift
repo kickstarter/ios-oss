@@ -14,7 +14,6 @@ public protocol SettingsNotificationCellViewModelOutputs {
   var emailNotificationsEnabled: Signal<Bool, NoError> { get }
   var emailNotificationButtonIsHidden: Signal<Bool, NoError> { get }
   var pushNotificationButtonIsHidden: Signal<Bool, NoError> { get }
-  var manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError> { get }
   var projectCountText: Signal<String, NoError> { get }
   var pushNotificationsEnabled: Signal<Bool, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
@@ -124,14 +123,13 @@ SettingsNotificationCellViewModelType {
       .negate()
 
     self.pushNotificationButtonIsHidden = cellType
-      .map { $0.showShowPushNotificationButton }
+      .map { $0.shouldShowPushNotificationButton }
       .negate()
 
-    self.enableButtonAnimation = self.emailNotificationButtonIsHidden
-      .negate() // Only add animation if email notification button is shown
-
-    self.manageProjectNotificationsButtonAccessibilityHint = initialUser
-      .map { Strings.profile_project_count_projects_backed(project_count: $0.stats.backedProjectsCount ?? 0) }
+    self.enableButtonAnimation = Signal.combineLatest(
+      self.emailNotificationButtonIsHidden,
+      self.pushNotificationButtonIsHidden
+      ).map { !$0.0 || !$0.1 }
 
     self.projectCountText = initialUser
       .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
@@ -164,7 +162,6 @@ SettingsNotificationCellViewModelType {
   public let emailNotificationsEnabled: Signal<Bool, NoError>
   public let emailNotificationButtonIsHidden: Signal<Bool, NoError>
   public let pushNotificationButtonIsHidden: Signal<Bool, NoError>
-  public let manageProjectNotificationsButtonAccessibilityHint: Signal<String, NoError>
   public let projectCountText: Signal<String, NoError>
   public let pushNotificationsEnabled: Signal<Bool, NoError>
   public let unableToSaveError: Signal<String, NoError>
