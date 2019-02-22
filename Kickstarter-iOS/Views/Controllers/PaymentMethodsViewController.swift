@@ -37,6 +37,10 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     self.configureHeaderFooterViews()
 
     self.navigationItem.rightBarButtonItem = self.editButton
+    self.editButton.possibleTitles = [
+      Strings.discovery_favorite_categories_buttons_edit(),
+      Strings.Done()
+    ]
 
     self.dataSource.deletionHandler = { [weak self] creditCard in
       self?.viewModel.inputs.didDelete(creditCard, visibleCellCount: self?.tableView.visibleCells.count ?? 0)
@@ -122,6 +126,13 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true)
     }
+
+    self.viewModel.outputs.editButtonTitle
+      .observeForUI()
+      .observeValues { [weak self] title in
+        _ = self?.editButton
+          ?|> \.title %~ { _ in title }
+    }
   }
 
   // MARK: - Actions
@@ -136,7 +147,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
 
-    self.present(nav, animated: true, completion: nil)
+    self.present(nav, animated: true) { self.viewModel.inputs.addNewCardPresented() }
   }
 
   // MARK: - Private Helpers
