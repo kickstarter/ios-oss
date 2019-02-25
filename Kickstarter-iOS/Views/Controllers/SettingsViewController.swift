@@ -175,7 +175,9 @@ extension SettingsViewController: UITableViewDelegate {
       withIdentifier: Nib.SettingsFooterView.rawValue
     ) as? SettingsFooterView
 
-    footerView?.configure(with: "\(Strings.App_version()) \(AppEnvironment.appVersionString)")
+    let appVersionString = AppEnvironment.current.mainBundle.appVersionString
+
+    footerView?.configure(with: "\(Strings.App_version()) \(appVersionString)")
 
     return footerView
   }
