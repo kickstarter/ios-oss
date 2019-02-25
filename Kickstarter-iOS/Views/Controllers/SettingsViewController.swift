@@ -157,7 +157,26 @@ extension SettingsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    if SettingsSectionType(rawValue: section) == .some(.findFriends) {
+      if self.viewModel.outputs.findFriendsDisabledProperty.value {
+        return 100
+      } else {
+        return 0.1
+      }
+    }
+
     return 0.1 // Required to remove the footer in UITableViewStyleGrouped
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    guard section == SettingsSectionType.findFriends.rawValue else {
+      return nil
+    }
+
+    let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue) as? SettingsHeaderView
+    cell?.configure(title: "Following is disabled blah blah blah")
+
+    return cell
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

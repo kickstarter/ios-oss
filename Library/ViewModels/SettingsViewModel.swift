@@ -13,6 +13,7 @@ public protocol SettingsViewModelInputs {
 }
 
 public protocol SettingsViewModelOutputs {
+  var findFriendsDisabledProperty: MutableProperty<Bool> { get }
   var goToAppStoreRating: Signal<String, NoError> { get }
   var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
   var reloadDataWithUser: Signal<User, NoError> { get }
@@ -43,6 +44,12 @@ SettingsViewModelOutputs, SettingsViewModelType {
       .skipNil()
 
     self.reloadDataWithUser = user
+
+    let isFollowingEnabled = user
+      .map { $0 |> User.lens.social.view }
+      .skipNil()
+
+    self.findFriendsDisabledProperty <~ isFollowingEnabled.negate()
 
     self.showConfirmLogoutPrompt = selectedCellTypeProperty.signal
       .skipNil()
@@ -115,6 +122,7 @@ SettingsViewModelOutputs, SettingsViewModelType {
     self.viewWillAppearProperty.value = ()
   }
 
+  public let findFriendsDisabledProperty = MutableProperty<Bool>(false)
   public let goToAppStoreRating: Signal<String, NoError>
   public let logoutWithParams: Signal<DiscoveryParams, NoError>
   public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
