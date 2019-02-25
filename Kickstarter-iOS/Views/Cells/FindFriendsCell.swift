@@ -56,19 +56,12 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
   }
 
   private func updateStyles(isDisabled: Bool) {
-    let disabledArrowStyle = UIImageView.lens.tintColor
-      .~ .ksr_text_dark_grey_400
-    let arrowStyle = isDisabled ? disabledArrowStyle : settingsArrowViewStyle
-    let backgroundColor: UIColor = isDisabled ? .ksr_grey_200 : .white
     let titleLabelColor: UIColor = isDisabled ? .ksr_text_dark_grey_400 : .ksr_soft_black
-    let lineLayerColor: UIColor = isDisabled ? .ksr_grey_400 : .ksr_grey_500
 
-    _ = self.arrowImageView |> arrowStyle
-    _ = self
-      |> UIView.lens.backgroundColor .~ backgroundColor
+    _ = self.arrowImageView
+      |> \.isHidden .~ isDisabled
+
     _ = self.titleLabel
       |> UILabel.lens.textColor .~ titleLabelColor
-    _ = self.separatorView
-      |> UIView.lens.backgroundColor .~ lineLayerColor
   }
 }

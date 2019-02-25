@@ -42,28 +42,17 @@
                         <constraint firstAttribute="height" constant="45" id="ncc-Nt-UZO"/>
                     </constraints>
                 </stackView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nBB-tu-8Zn" userLabel="Line Layer">
-                    <rect key="frame" x="0.0" y="666" width="375" height="1"/>
-                    <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="2Vh-dD-Dmz"/>
-                    </constraints>
-                </view>
             </subviews>
             <constraints>
-                <constraint firstItem="nBB-tu-8Zn" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="CDb-91-nkQ"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="LGq-5Q-Deu" secondAttribute="bottom" constant="6" id="PgC-jp-NOX"/>
-                <constraint firstItem="nBB-tu-8Zn" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="SEW-z4-xvb"/>
                 <constraint firstItem="LGq-5Q-Deu" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="aWN-nq-oa6"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="LGq-5Q-Deu" secondAttribute="trailing" constant="10" id="bC9-F3-DgL"/>
-                <constraint firstItem="nBB-tu-8Zn" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="kra-8g-xAk"/>
                 <constraint firstItem="LGq-5Q-Deu" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="6" id="y79-gH-VVD"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="arrowImageView" destination="rD1-XM-7lR" id="9zq-S4-pcd"/>
                 <outlet property="detailLabel" destination="QBo-D1-v2F" id="ZXw-xy-LEd"/>
-                <outlet property="lineLayer" destination="nBB-tu-8Zn" id="HBp-pj-hYu"/>
                 <outlet property="titleLabel" destination="thh-A9-lgV" id="2mZ-pA-KY5"/>
             </connections>
             <point key="canvasLocation" x="-159" y="30"/>

@@ -53,6 +53,9 @@ final class SettingsViewController: UIViewController {
 
     _ = tableView
       |> settingsTableViewStyle
+      |> \.separatorStyle .~ .singleLine
+      |> \.separatorColor .~ .ksr_grey_400
+      |> \.separatorInset .~ UIEdgeInsets.zero
   }
 
   override func bindViewModel() {

@@ -48,17 +48,17 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1aH-Fb-caJ">
-                            <rect key="frame" x="0.0" y="633.5" width="375" height="1"/>
+                            <rect key="frame" x="0.0" y="633.5" width="375" height="0.5"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="1" id="ddk-mS-SB2"/>
+                                <constraint firstAttribute="height" constant="0.5" id="ddk-mS-SB2"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="eNt-eF-PgH" userLabel="Disabled Desc Label Container">
-                            <rect key="frame" x="0.0" y="634.5" width="375" height="32.5"/>
+                            <rect key="frame" x="0.0" y="634" width="375" height="33"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cn1-HP-hJo">
-                                    <rect key="frame" x="12" y="6" width="351" height="20.5"/>
+                                    <rect key="frame" x="12" y="6" width="351" height="21"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
