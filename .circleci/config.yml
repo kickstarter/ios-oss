@@ -611,6 +611,12 @@ workflows:
           filters:
             branches:
               only: /beta-dist-.*/
+          requires:
+            - swiftlint-and-cache
+            - kickstarter-tests
+            - library-tests
+            - livestream-tests
+            - ksapi-tests
       - alpha:
           filters:
             branches:

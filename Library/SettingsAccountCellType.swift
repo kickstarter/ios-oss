@@ -22,47 +22,23 @@ public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
   }
 }
 
-public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable {
+public enum SettingsAccountCellType: SettingsCellTypeProtocol, Equatable {
   case changeEmail
   case changePassword
   case privacy
   case paymentMethods
-  case currency
-  case currencyPicker
+  case currency(Currency?)
 
   public var accessibilityTraits: UIAccessibilityTraits {
     return .button
   }
 
   public var showArrowImageView: Bool {
-    switch self {
-    case .currency:
-      return false
-    default:
-      return true
-    }
+    return true
   }
 
   public var textColor: UIColor {
     return .ksr_soft_black
-  }
-
-  public var detailTextColor: UIColor {
-    switch self {
-    case .currency:
-      return .ksr_text_green_700
-    default:
-      return .ksr_text_dark_grey_400
-    }
-  }
-
-  public var hideDescriptionLabel: Bool {
-    switch self {
-    case .currency:
-      return false
-    default:
-      return true
-    }
   }
 
   public var title: String {
@@ -77,13 +53,12 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, CaseIterable {
       return Strings.Payment_methods()
     case .currency:
       return Strings.Currency()
-    case .currencyPicker:
-     return ""
     }
   }
 
   public var description: String? {
     switch self {
+    case let .currency(currency): return currency?.descriptionText
     default: return nil
     }
   }

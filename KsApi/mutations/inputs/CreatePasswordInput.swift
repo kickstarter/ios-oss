@@ -9,7 +9,7 @@ public struct CreatePasswordInput: GraphMutationInput {
     self.passwordConfirmation = passwordConfirmation
   }
 
-  public func toInputDictionary() -> [String : Any] {
+  public func toInputDictionary() -> [String: Any] {
     return ["password": password,
             "passwordConfirmation": passwordConfirmation
     ]

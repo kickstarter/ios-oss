@@ -20,12 +20,14 @@ public extension UITableView {
 
   // Reuse
 
-  public func dequeueReusableHeaderFooterView(withClass headerFooterClass: UITableViewHeaderFooterView.Type) -> UITableViewHeaderFooterView? {
+  public func dequeueReusableHeaderFooterView(withClass headerFooterClass: UITableViewHeaderFooterView.Type)
+    -> UITableViewHeaderFooterView? {
     let className = self.classNameWithoutModule(headerFooterClass)
     return self.dequeueReusableHeaderFooterView(withIdentifier: className)
   }
 
-  public func dequeueReusableCell(withClass cellClass: UITableViewCell.Type, for indexPath: IndexPath) -> UITableViewCell {
+  public func dequeueReusableCell(withClass cellClass: UITableViewCell.Type, for indexPath: IndexPath)
+    -> UITableViewCell {
     let className = self.classNameWithoutModule(cellClass)
     return self.dequeueReusableCell(withIdentifier: className, for: indexPath)
   }

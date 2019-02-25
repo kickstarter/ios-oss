@@ -4,7 +4,7 @@ import UIKit
 
 final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
   // MARK: - Properties
-  
+
   private(set) lazy var label: UILabel = {
     UILabel(frame: .zero)
       |> settingsHeaderFooterLabelBaseStyle

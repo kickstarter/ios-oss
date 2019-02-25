@@ -69,7 +69,6 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testCellSelection() {
-    XCTAssertFalse(self.vm.shouldSelectRow(for: .appVersion))
     XCTAssertTrue(self.vm.shouldSelectRow(for: .newsletters))
   }
 
