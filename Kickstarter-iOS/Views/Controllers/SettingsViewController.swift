@@ -165,7 +165,7 @@ extension SettingsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-    return 44
+    return SettingsFooterView.defaultHeight
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

@@ -2,6 +2,8 @@ import Library
 import Prelude
 
 final class SettingsFooterView: UITableViewHeaderFooterView {
+  static var defaultHeight: CGFloat = 44
+
   // MARK: - Properties
 
   @IBOutlet private weak var titleLabel: UILabel!
