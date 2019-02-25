@@ -79,3 +79,15 @@ public func settingsAttributedPlaceholder(_ string: String) -> NSAttributedStrin
     attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400]
   )
 }
+
+public func settingsHeaderFooterLabelBaseStyle(_ label: UILabel) -> UILabel {
+  return label
+    |> \.font %~ { _ in .ksr_footnote() }
+    |> \.numberOfLines .~ 0
+}
+
+public func settingsHeaderFooterLabelStyle(_ label: UILabel) -> UILabel {
+  return label
+    |> \.backgroundColor .~ .ksr_grey_200
+    |> \.textColor .~ .ksr_text_dark_grey_500
+}

@@ -41,22 +41,6 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, Equatable {
     return .ksr_soft_black
   }
 
-  public var detailTextColor: UIColor {
-    switch self {
-    default:
-      return .ksr_text_dark_grey_400
-    }
-  }
-
-  public var hideDescriptionLabel: Bool {
-    switch self {
-    case .currency:
-      return false
-    default:
-      return true
-    }
-  }
-
   public var title: String {
     switch self {
     case .changeEmail:

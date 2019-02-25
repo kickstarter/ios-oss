@@ -129,8 +129,6 @@ SettingsViewModelOutputs, SettingsViewModelType {
 extension SettingsViewModel {
   public func shouldSelectRow(for cellType: SettingsCellType) -> Bool {
     switch cellType {
-    case .appVersion:
-      return false
     case .findFriends:
       guard let user = AppEnvironment.current.currentUser else {
         return true
