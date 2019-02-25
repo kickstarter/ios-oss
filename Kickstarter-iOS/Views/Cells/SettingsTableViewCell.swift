@@ -5,7 +5,6 @@ import UIKit
 final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet fileprivate weak var detailLabel: UILabel!
   @IBOutlet fileprivate weak var lineLayer: UIView!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
 
@@ -28,15 +27,6 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
       |> settingsArrowViewStyle
       |> UIImageView.lens.isHidden
       .~ !cellType.showArrowImageView
-
-    _ = detailLabel
-      |> UILabel.lens.textColor .~ cellType.detailTextColor
-      |> UILabel.lens.isHidden %~ { _ in
-        return cellType.hideDescriptionLabel
-      }
-      |> UILabel.lens.text %~ { _ in
-        return cellType.description ?? ""
-    }
   }
 
    override func bindStyles() {

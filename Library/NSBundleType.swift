@@ -29,6 +29,12 @@ extension NSBundleType {
     return self.infoDictionary?["CFBundleVersion"] as? String ?? "0"
   }
 
+  public var appVersionString: String {
+    let versionString = self.shortVersionString
+    let build = self.isRelease ? "" : " #\(self.version)"
+    return "\(versionString)\(build)"
+  }
+
   public var isDebug: Bool {
     return self.identifier == KickstarterBundleIdentifier.debug.rawValue
   }

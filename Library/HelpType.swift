@@ -10,7 +10,12 @@ public enum HelpType: SettingsCellTypeProtocol {
   case trust
 
   public var accessibilityTraits: UIAccessibilityTraits {
-    return .button
+    switch self {
+    case .contact:
+      return .button
+    default:
+      return .link
+    }
   }
 
   public var title: String {
@@ -43,18 +48,6 @@ public enum HelpType: SettingsCellTypeProtocol {
 
   public var textColor: UIColor {
     return .ksr_soft_black
-  }
-
-  public var hideDescriptionLabel: Bool {
-    return true
-  }
-
-  public var description: String? {
-    return nil
-  }
-
-  public var detailTextColor: UIColor {
-    return .ksr_text_dark_grey_400
   }
 
   public var trackingString: String {
