@@ -15,11 +15,8 @@ public struct SettingsCellValue {
 
 public protocol SettingsCellTypeProtocol {
   var accessibilityTraits: UIAccessibilityTraits { get }
-  var description: String? { get }
-  var hideDescriptionLabel: Bool { get }
   var showArrowImageView: Bool { get }
   var textColor: UIColor { get }
-  var detailTextColor: UIColor { get }
   var title: String { get }
 }
 
@@ -48,7 +45,7 @@ public enum SettingsSectionType: Int, CaseIterable {
     case .logout:
       return [SettingsCellType.logout]
     case .ratingAppVersion:
-      return [.rateInAppStore, .appVersion]
+      return [.rateInAppStore]
     }
   }
 }
@@ -60,17 +57,10 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   case help
   case logout
   case rateInAppStore
-  case appVersion
   case findFriends
 
   public var accessibilityTraits: UIAccessibilityTraits {
-    switch self {
-
-    case .appVersion:
-      return .none
-    default:
-      return .button
-    }
+    return .button
   }
 
   public var title: String {
@@ -87,19 +77,8 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
       return Strings.profile_settings_logout_alert_title()
     case .rateInAppStore:
       return Strings.Rate_us_in_the_App_Store()
-    case .appVersion:
-      return Strings.App_version()
     case .findFriends:
       return Strings.profile_settings_social_find_friends()
-    }
-  }
-
-  public var description: String? {
-    switch self {
-    case .appVersion:
-      return SettingsCellType.appVersionString
-    default:
-      return nil
     }
   }
 
@@ -119,27 +98,6 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
     default:
       return .ksr_soft_black
     }
-  }
-
-  public var detailTextColor: UIColor {
-    return .ksr_text_dark_grey_400
-  }
-
-  public var hideDescriptionLabel: Bool {
-    switch self {
-    case .appVersion:
-      return false
-    default:
-      return true
-    }
-  }
-
-  private static var appVersionString: String {
-    let versionString = AppEnvironment.current.mainBundle.shortVersionString
-    let build = AppEnvironment.current.mainBundle.isRelease
-      ? ""
-      : " #\(AppEnvironment.current.mainBundle.version)"
-    return "\(versionString)\(build)"
   }
 }
 
