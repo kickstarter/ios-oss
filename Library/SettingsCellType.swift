@@ -48,6 +48,27 @@ public enum SettingsSectionType: Int, CaseIterable {
       return [.rateInAppStore]
     }
   }
+
+  public var hasSectionFooter: Bool {
+    switch self {
+    case .ratingAppVersion, .findFriends:
+      return true
+    default:
+      return false
+    }
+  }
+
+  public var footerText: String? {
+    switch self {
+    case .ratingAppVersion:
+      let appVersionString = AppEnvironment.current.mainBundle.appVersionString
+      return "\(Strings.App_version()) \(appVersionString)"
+    case .findFriends:
+      return Strings.Following_Disabled_Info()
+    default:
+      return nil
+    }
+  }
 }
 
 public enum SettingsCellType: SettingsCellTypeProtocol {

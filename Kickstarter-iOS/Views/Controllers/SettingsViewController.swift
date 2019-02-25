@@ -54,9 +54,7 @@ final class SettingsViewController: UIViewController {
 
     _ = tableView
       |> settingsTableViewStyle
-      |> \.separatorStyle .~ .singleLine
-      |> \.separatorColor .~ .ksr_grey_400
-      |> \.separatorInset .~ UIEdgeInsets.zero
+      |> settingsTableViewSeparatorStyle
   }
 
   override func bindViewModel() {
@@ -162,7 +160,12 @@ extension SettingsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    guard section == SettingsSectionType.ratingAppVersion.rawValue else { return 0.1 }
+    guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return 0.1 }
+
+    if section == SettingsSectionType.findFriends
+      && !self.viewModel.outputs.findFriendsDisabledProperty.value {
+      return 0.1
+    }
 
     return UITableView.automaticDimension
   }
@@ -172,15 +175,18 @@ extension SettingsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard section == SettingsSectionType.ratingAppVersion.rawValue else { return nil }
+    guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return nil }
+
+    if section == SettingsSectionType.findFriends
+      && !self.viewModel.outputs.findFriendsDisabledProperty.value {
+      return nil
+    }
 
     let footerView = tableView.dequeueReusableHeaderFooterView(
       withIdentifier: Nib.SettingsFooterView.rawValue
     ) as? SettingsFooterView
 
-    let appVersionString = AppEnvironment.current.mainBundle.appVersionString
-
-    footerView?.configure(with: "\(Strings.App_version()) \(appVersionString)")
+    footerView?.configure(with: section.footerText ?? "")
 
     return footerView
   }

@@ -5,9 +5,6 @@ import Prelude
 
 final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet fileprivate weak var descriptionLabelContainer: UIView!
-  @IBOutlet fileprivate weak var disabledDescriptionLabel: UILabel!
-  @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   private let viewModel: FindFriendsCellViewModelType = FindFriendsCellViewModel()
@@ -21,8 +18,6 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
 
   override func bindViewModel() {
     super.bindViewModel()
-
-    self.descriptionLabelContainer.rac.hidden = self.viewModel.outputs.disabledDescriptionLabelIsHidden
 
     self.viewModel.outputs.isDisabled
       .observeForUI()
@@ -40,19 +35,6 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
 
     _ = arrowImageView
       |> settingsArrowViewStyle
-
-    _ = disabledDescriptionLabel
-      |> settingsDescriptionLabelStyle
-      |> UILabel.lens.text
-      %~ { _ in
-        return Strings.Following_Disabled_Info()
-    }
-
-    _ = descriptionLabelContainer
-      |> UIView.lens.backgroundColor .~ .ksr_grey_200
-
-    _ = separatorView
-      |> settingsSeparatorStyle
   }
 
   private func updateStyles(isDisabled: Bool) {
