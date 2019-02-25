@@ -18,6 +18,25 @@ final class LocationTests: XCTestCase {
     XCTAssertNotNil(location.error)
   }
 
+  func testJSONParsing_WithFullData_SwiftDecodable() {
+    let json = """
+                { "country": "US",
+                  "id": 1,
+                  "displayable_name": "Brooklyn, NY",
+                  "localized_name": "Brooklyn, NY",
+                  "name": "Brooklyn"
+                }
+               """
+    let data = json.data(using: .utf8)
+    // swiftlint:disable:next force_unwrapping
+    let location = try? JSONDecoder().decode(Location.self, from: data!)
+    XCTAssertNotNil(location)
+    XCTAssertEqual(location?.id, 1)
+    XCTAssertEqual(location?.displayableName, "Brooklyn, NY")
+    XCTAssertEqual(location?.localizedName, "Brooklyn, NY")
+    XCTAssertEqual(location?.name, "Brooklyn")
+  }
+
   func testJSONParsing_WithFullData() {
 
     let location = Location.decodeJSONDictionary([
