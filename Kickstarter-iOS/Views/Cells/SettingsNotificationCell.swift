@@ -39,7 +39,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     _ = titleLabel
       |> UILabel.lens.text .~ cellValue.cellType.title
-      |> \.isAccessibilityElement .~ cellValue.cellType.isAccessibilityElement
+      |> \.accessibilityElementsHidden .~ cellValue.cellType.accessibilityElementsHidden
 
     _ = arrowImageView
       |> UIImageView.lens.isHidden .~ cellValue.cellType.shouldHideArrowView
