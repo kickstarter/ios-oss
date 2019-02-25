@@ -25,6 +25,7 @@ final class SettingsViewController: UIViewController {
 
     self.tableView.register(nib: .SettingsTableViewCell)
     self.tableView.register(nib: .FindFriendsCell)
+    self.tableView.registerHeaderFooter(nib: .SettingsFooterView)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
     if self.presentingViewController != nil {
@@ -156,32 +157,32 @@ extension SettingsViewController: UITableViewDelegate {
     return SettingsSectionType.sectionHeaderHeight
   }
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    if SettingsSectionType(rawValue: section) == .some(.findFriends) {
-      if self.viewModel.outputs.findFriendsDisabledProperty.value {
-        return 100
-      } else {
-        return 0.1
-      }
-    }
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
+  }
 
-    return 0.1 // Required to remove the footer in UITableViewStyleGrouped
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    guard section == SettingsSectionType.ratingAppVersion.rawValue else { return 0.1 }
+
+    return UITableView.automaticDimension
+  }
+
+  func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+    return SettingsFooterView.defaultHeight
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard section == SettingsSectionType.findFriends.rawValue else {
-      return nil
-    }
+    guard section == SettingsSectionType.ratingAppVersion.rawValue else { return nil }
 
-    let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue) as? SettingsHeaderView
-    cell?.configure(title: "Following is disabled blah blah blah")
+    let footerView = tableView.dequeueReusableHeaderFooterView(
+      withIdentifier: Nib.SettingsFooterView.rawValue
+    ) as? SettingsFooterView
 
-    return cell
-  }
+    let appVersionString = AppEnvironment.current.mainBundle.appVersionString
 
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    footerView?.configure(with: "\(Strings.App_version()) \(appVersionString)")
 
-    return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
+    return footerView
   }
 
   func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {

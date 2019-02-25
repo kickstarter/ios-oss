@@ -50,18 +50,6 @@ public enum HelpType: SettingsCellTypeProtocol {
     return .ksr_soft_black
   }
 
-  public var hideDescriptionLabel: Bool {
-    return true
-  }
-
-  public var description: String? {
-    return nil
-  }
-
-  public var detailTextColor: UIColor {
-    return .ksr_text_dark_grey_400
-  }
-
   public var trackingString: String {
     switch self {
     case .contact:
