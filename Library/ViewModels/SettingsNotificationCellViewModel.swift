@@ -18,6 +18,9 @@ public protocol SettingsNotificationCellViewModelOutputs {
   var pushNotificationsEnabled: Signal<Bool, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
+
+  var emailNotificationAccessibilityLabel: Signal<String, NoError> { get }
+  var pushNotificationAccessibilityLabel: Signal<String, NoError> { get }
 }
 
 public protocol SettingsNotificationCellViewModelType {
@@ -118,6 +121,18 @@ SettingsNotificationCellViewModelType {
       previousEmailNotificationValue
     )
 
+    self.pushNotificationAccessibilityLabel = Signal.combineLatest(
+      self.pushNotificationsEnabled,
+      cellType
+      )
+      .map { pushNotificationEnabled, cellType in pushNotificationEnabled ? "\(cellType.title), push notification on" : "\(cellType.title), push notification off" }
+
+    self.emailNotificationAccessibilityLabel = Signal.combineLatest(
+      self.emailNotificationsEnabled,
+      cellType
+      )
+      .map { emailNotificationEnabled, cellType in emailNotificationEnabled ? "\(cellType.title) email notification on" : "\(cellType.title) email notification off" }
+
     self.emailNotificationButtonIsHidden = cellType
       .map { $0.shouldShowEmailNotificationButton }
       .negate()
@@ -166,6 +181,9 @@ SettingsNotificationCellViewModelType {
   public let pushNotificationsEnabled: Signal<Bool, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
+
+  public let emailNotificationAccessibilityLabel: Signal<String, NoError>
+  public var pushNotificationAccessibilityLabel: Signal<String, NoError>
 
   public var inputs: SettingsNotificationCellViewModelInputs { return self }
   public var outputs: SettingsNotificationCellViewModelOutputs { return self }

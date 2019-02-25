@@ -81,6 +81,15 @@ public enum SettingsNotificationCellType {
     }
   }
 
+  public var isAccessibilityElement: Bool {
+    switch self {
+    case .projectNotifications, .emailFrequency:
+      return true
+    default:
+      return false
+    }
+  }
+
   public var shouldShowEmailNotificationButton: Bool {
     switch self {
     case .projectNotifications, .emailFrequency, .newLikes:

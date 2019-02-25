@@ -39,6 +39,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     _ = titleLabel
       |> UILabel.lens.text .~ cellValue.cellType.title
+      |> \.isAccessibilityElement .~ cellValue.cellType.isAccessibilityElement
 
     _ = arrowImageView
       |> UIImageView.lens.isHidden .~ cellValue.cellType.shouldHideArrowView
@@ -62,6 +63,8 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       |> UILabel.lens.font .~ .ksr_body()
 
     _ = self.emailNotificationsButton |> notificationButtonStyle
+      |> \.accessibilityTraits .~ .none
+      |> UIButton.lens.accessibilityHint %~ { _ in "double tap to toggle settings" }
       |> UIButton.lens.image(for: .normal) .~ Library.image(named: "email-icon",
                                                               tintColor: .ksr_dark_grey_400,
                                                               inBundle: Bundle.framework)
@@ -71,10 +74,11 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       |> UIButton.lens.image(for: .selected) .~ Library.image(named: "email-icon",
                                                       tintColor: .ksr_green_700,
                                                       inBundle: Bundle.framework)
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Email_notifications() }
 
     _ = self.pushNotificationsButton
       |> notificationButtonStyle
+      |> \.accessibilityTraits .~ .none
+      |> UIButton.lens.accessibilityHint %~ { _ in "double tap to toggle settings" }
       |> UIButton.lens.image(for: .normal) .~ Library.image(named: "mobile-icon",
                                                               tintColor: .ksr_dark_grey_400,
                                                               inBundle: Bundle.framework)
@@ -84,7 +88,6 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       |> UIButton.lens.image(for: .selected) .~ Library.image(named: "mobile-icon",
                                                       tintColor: .ksr_green_700,
                                                       inBundle: Bundle.framework)
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Push_notifications() }
 
     _ = self.separatorView
       |> separatorStyle
@@ -95,9 +98,12 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     self.emailNotificationsButton.rac.selected = viewModel.outputs.emailNotificationsEnabled
     self.emailNotificationsButton.rac.hidden = viewModel.outputs.emailNotificationButtonIsHidden
+    self.emailNotificationsButton.rac.accessibilityLabel =
+      viewModel.outputs.emailNotificationAccessibilityLabel
     self.projectCountLabel.rac.text = viewModel.outputs.projectCountText
     self.pushNotificationsButton.rac.selected = viewModel.outputs.pushNotificationsEnabled
     self.pushNotificationsButton.rac.hidden = viewModel.outputs.pushNotificationButtonIsHidden
+    self.pushNotificationsButton.rac.accessibilityLabel = viewModel.outputs.pushNotificationAccessibilityLabel
 
     viewModel.outputs.enableButtonAnimation
     .observeForUI()
