@@ -64,7 +64,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     _ = self.emailNotificationsButton |> notificationButtonStyle
       |> \.accessibilityTraits .~ .none
-      |> UIButton.lens.accessibilityHint %~ { _ in "double tap to toggle settings" }
+      |> UIButton.lens.accessibilityHint %~ { _ in "Toggles setting" }
       |> UIButton.lens.image(for: .normal) .~ Library.image(named: "email-icon",
                                                               tintColor: .ksr_dark_grey_400,
                                                               inBundle: Bundle.framework)
@@ -78,7 +78,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     _ = self.pushNotificationsButton
       |> notificationButtonStyle
       |> \.accessibilityTraits .~ .none
-      |> UIButton.lens.accessibilityHint %~ { _ in "double tap to toggle settings" }
+      |> UIButton.lens.accessibilityHint %~ { _ in "Toggle setting" }
       |> UIButton.lens.image(for: .normal) .~ Library.image(named: "mobile-icon",
                                                               tintColor: .ksr_dark_grey_400,
                                                               inBundle: Bundle.framework)
