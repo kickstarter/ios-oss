@@ -115,7 +115,7 @@ internal final class SettingsViewModelTests: TestCase {
     let updatedUser = User.template |> \.social .~ true
     let mockService = MockService(fetchUserSelfResponse: updatedUser)
 
-    withEnvironment(apiService: mockService, currentUser: User.template) {
+    withEnvironment(apiService: mockService, currentUser: storedUser) {
       self.vm.currentUserUpdated()
 
       self.scheduler.advance()
