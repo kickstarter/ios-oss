@@ -75,7 +75,7 @@ public let settingsTableViewStyle = UITableView.lens.backgroundColor .~ .ksr_gre
 
 public let settingsTableViewSeparatorStyle = UITableView.lens.separatorStyle .~ .singleLine
   <> \.separatorColor .~ .ksr_grey_400
-  <> \.separatorInset .~ UIEdgeInsets.zero
+  <> \.separatorInset .~ .zero
 
 public func settingsAttributedPlaceholder(_ string: String) -> NSAttributedString {
   return NSAttributedString(
