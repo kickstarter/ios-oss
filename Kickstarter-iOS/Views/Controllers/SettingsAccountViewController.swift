@@ -30,8 +30,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.tableView.register(nib: .SettingsTableViewCell)
     self.tableView.register(nib: .SettingsAccountWarningCell)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
-    self.tableView.registerHeaderFooter(nib: .SettingsFooterView)
-
+    self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -111,11 +110,11 @@ extension SettingsAccountViewController: UITableViewDelegate {
     guard section == SettingsAccountSectionType.createPassword.rawValue, !userHasPassword else {
       return 0.1
     }
-    return Styles.grid(9)
+    return Styles.grid(13)
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsFooterView.rawValue)
+    return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -127,8 +126,10 @@ extension SettingsAccountViewController: UITableViewDelegate {
     }
 
     let footerView = tableView.dequeueReusableHeaderFooterView(
-      withIdentifier: Nib.SettingsFooterView.rawValue) as? SettingsFooterView
-    footerView?.configure(with: userEmail)
+      withClass: SettingsGroupedFooterView.self) as? SettingsGroupedFooterView
+    footerView?.configure(with:
+      Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: userEmail)
+    )
     return footerView
   }
 }

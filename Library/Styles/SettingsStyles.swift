@@ -106,6 +106,7 @@ public func settingsHeaderFooterLabelBaseStyle(_ label: UILabel) -> UILabel {
 
 public func settingsHeaderFooterLabelStyle(_ label: UILabel) -> UILabel {
   return label
+    |> settingsHeaderFooterLabelBaseStyle
     |> \.backgroundColor .~ .ksr_grey_200
     |> \.textColor .~ .ksr_text_dark_grey_500
 }

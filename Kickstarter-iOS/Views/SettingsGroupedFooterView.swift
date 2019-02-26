@@ -7,7 +7,6 @@ final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
 
   private(set) lazy var label: UILabel = {
     UILabel(frame: .zero)
-      |> settingsHeaderFooterLabelBaseStyle
   }()
 
   // MARK: - Lifecycle
