@@ -11,16 +11,15 @@ public protocol SettingsNotificationCellViewModelInputs {
 
 public protocol SettingsNotificationCellViewModelOutputs {
   var enableButtonAnimation: Signal<Bool, NoError> { get }
+  var emailNotificationAccessibilityLabel: Signal<String, NoError> { get }
   var emailNotificationsEnabled: Signal<Bool, NoError> { get }
   var emailNotificationButtonIsHidden: Signal<Bool, NoError> { get }
-  var pushNotificationButtonIsHidden: Signal<Bool, NoError> { get }
   var projectCountText: Signal<String, NoError> { get }
+  var pushNotificationAccessibilityLabel: Signal<String, NoError> { get }
+  var pushNotificationButtonIsHidden: Signal<Bool, NoError> { get }
   var pushNotificationsEnabled: Signal<Bool, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
-
-  var emailNotificationAccessibilityLabel: Signal<String, NoError> { get }
-  var pushNotificationAccessibilityLabel: Signal<String, NoError> { get }
 }
 
 public protocol SettingsNotificationCellViewModelType {
@@ -172,16 +171,15 @@ SettingsNotificationCellViewModelType {
   }
 
   public let enableButtonAnimation: Signal<Bool, NoError>
+  public let emailNotificationAccessibilityLabel: Signal<String, NoError>
   public let emailNotificationsEnabled: Signal<Bool, NoError>
   public let emailNotificationButtonIsHidden: Signal<Bool, NoError>
+  public var pushNotificationAccessibilityLabel: Signal<String, NoError>
   public let pushNotificationButtonIsHidden: Signal<Bool, NoError>
-  public let projectCountText: Signal<String, NoError>
   public let pushNotificationsEnabled: Signal<Bool, NoError>
+  public let projectCountText: Signal<String, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
-
-  public let emailNotificationAccessibilityLabel: Signal<String, NoError>
-  public var pushNotificationAccessibilityLabel: Signal<String, NoError>
 
   public var inputs: SettingsNotificationCellViewModelInputs { return self }
   public var outputs: SettingsNotificationCellViewModelOutputs { return self }
