@@ -7,7 +7,9 @@ internal final class CreatePasswordFooterView: UITableViewHeaderFooterView, NibL
 
   func configure(with email: String) {
     _ = self.descriptionLabel
-      |> \.text .~ Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: email)
+      |> \.text %~ { _ in
+        Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: email)
+    }
   }
 
   override func bindStyles() {

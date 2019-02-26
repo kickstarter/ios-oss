@@ -19,8 +19,6 @@ line_length: 110
 type_body_length:
   warning: 300
   error: 400
-included:
-  - bin/ColorScript/
 excluded:
   - Carthage/
   - Frameworks/

@@ -95,7 +95,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
   private func animatePickerView(isHidden: Bool) {
     let tapRecognizer = UITapGestureRecognizer(
-      target:self,
+      target: self,
       action: #selector(tapGestureToDismissEmailFrequencyPicker))
 
     UIView.animate(
