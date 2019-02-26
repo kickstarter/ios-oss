@@ -25,7 +25,7 @@ public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
   }
 }
 
-public enum SettingsAccountCellType: SettingsCellTypeProtocol {
+public enum SettingsAccountCellType: SettingsCellTypeProtocol, Equatable {
   case createPassword
   case changeEmail
   case changePassword
