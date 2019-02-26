@@ -51,7 +51,6 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     self.userHasPasswordAndEmailProperty <~ userAccountFields.values()
       .map { ($0.me.hasPassword == .some(true), $0.me.email) }
 
-
     let chosenCurrency = userAccountFields.values()
       .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
 
