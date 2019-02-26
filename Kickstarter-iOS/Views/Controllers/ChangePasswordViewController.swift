@@ -180,9 +180,8 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
 
     self.viewModel.outputs.accessibilityFocusValidationErrorLabel
       .observeForUI()
-      .observeValues { _ in
-        UIAccessibility.post(notification: .layoutChanged,
-                             argument: self.validationErrorMessageLabel)
+      .observeValues { [weak self] _ in
+        UIAccessibility.post(notification: .layoutChanged, argument: self?.validationErrorMessageLabel)
     }
 
     Keyboard.change
