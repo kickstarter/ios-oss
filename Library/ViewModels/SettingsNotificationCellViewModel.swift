@@ -123,13 +123,13 @@ SettingsNotificationCellViewModelType {
 
     self.pushNotificationAccessibilityLabel = Signal.combineLatest(self.pushNotificationsEnabled, cellType)
       .map { pushNotificationEnabled, cellType in
-        pushNotificationEnabled ? "\(cellType.title), push notification on"
-                                : "\(cellType.title), push notification off" }
+        pushNotificationEnabled ? "\(cellType.title), push notification, on"
+                                : "\(cellType.title), push notification, off" }
 
     self.emailNotificationAccessibilityLabel = Signal.combineLatest(self.emailNotificationsEnabled, cellType)
       .map { emailNotificationEnabled, cellType in
-        emailNotificationEnabled ? "\(cellType.title) email notification on"
-                                 : "\(cellType.title) email notification off" }
+        emailNotificationEnabled ? "\(cellType.title), email notification, on"
+                                 : "\(cellType.title), email notification, off" }
 
     self.emailNotificationButtonIsHidden = cellType
       .map { $0.shouldShowEmailNotificationButton }
