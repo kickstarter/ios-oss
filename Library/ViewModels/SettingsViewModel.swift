@@ -43,13 +43,13 @@ SettingsViewModelOutputs, SettingsViewModelType {
       }
       .skipNil()
 
-    self.reloadDataWithUser = user
-
     let isFollowingEnabled = user
       .map { $0 |> User.lens.social.view }
-      .skipNil()
+      .map { $0 ?? true }
 
     self.findFriendsDisabledProperty <~ isFollowingEnabled.negate()
+
+    self.reloadDataWithUser = Signal.zip(user, self.findFriendsDisabledProperty.signal).map(first)
 
     self.showConfirmLogoutPrompt = selectedCellTypeProperty.signal
       .skipNil()

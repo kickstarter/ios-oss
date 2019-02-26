@@ -9,15 +9,17 @@ import Result
 internal final class SettingsViewModelTests: TestCase {
   let vm = SettingsViewModel(SettingsViewController.viewController(for:))
 
-  let goToAppStoreRating = TestObserver<String, NoError>()
-  let logout = TestObserver<DiscoveryParams, NoError>()
-  let reloadDataWithUser = TestObserver<User, NoError>()
-  let showConfirmLogout = TestObserver<Void, NoError>()
-  let transitionToViewController = TestObserver<UIViewController, NoError>()
+  private let findFriendsDisabled = TestObserver<Bool, NoError>()
+  private let goToAppStoreRating = TestObserver<String, NoError>()
+  private let logout = TestObserver<DiscoveryParams, NoError>()
+  private let reloadDataWithUser = TestObserver<User, NoError>()
+  private let showConfirmLogout = TestObserver<Void, NoError>()
+  private let transitionToViewController = TestObserver<UIViewController, NoError>()
 
   internal override func setUp() {
     super.setUp()
 
+    self.vm.outputs.findFriendsDisabledProperty.signal.observe(findFriendsDisabled.observer)
     self.vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
     self.vm.outputs.logoutWithParams.observe(logout.observer)
     self.vm.outputs.reloadDataWithUser.observe(reloadDataWithUser.observer)
@@ -25,13 +27,27 @@ internal final class SettingsViewModelTests: TestCase {
     self.vm.outputs.transitionToViewController.observe(transitionToViewController.observer)
   }
 
-  func testViewDidLoad() {
-    let mockService = MockService(fetchUserSelfResponse: User.template)
+  func testViewDidLoad_withSocialEnabledUser() {
+    let user = User.template |> \.social .~ true
+    let mockService = MockService(fetchUserSelfResponse: user)
 
-    withEnvironment(apiService: mockService, currentUser: User.template) {
+    withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.viewDidLoad()
 
       self.reloadDataWithUser.assertValueCount(2)
+      self.findFriendsDisabled.assertValues([false, false])
+    }
+  }
+
+  func testViewDidLoad_withSocialDisabledUser() {
+    let user = User.template |> \.social .~ false
+    let mockService = MockService(fetchUserSelfResponse: user)
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.viewDidLoad()
+
+      self.reloadDataWithUser.assertValueCount(2)
+      self.findFriendsDisabled.assertValues([true, true])
     }
   }
 

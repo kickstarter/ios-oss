@@ -21,9 +21,6 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thh-A9-lgV">
                             <rect key="frame" x="0.0" y="0.0" width="328" height="635"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="bf2-LN-n0O"/>
-                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
