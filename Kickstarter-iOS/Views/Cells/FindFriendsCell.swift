@@ -31,7 +31,7 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
 
     _ = titleLabel
       |> settingsTitleLabelStyle
-      |> UILabel.lens.text .~ SettingsCellType.findFriends.title
+      |> \.text .~ SettingsCellType.findFriends.title
 
     _ = arrowImageView
       |> settingsArrowViewStyle
@@ -39,9 +39,15 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
 
   private func updateStyles(isDisabled: Bool) {
     let titleLabelColor: UIColor = isDisabled ? .ksr_text_dark_grey_400 : .ksr_soft_black
+    let accessibilityTraits = isDisabled ? UIAccessibilityTraits.notEnabled : UIAccessibilityTraits.button
+    let accessibilityHint = isDisabled ? Strings.Following_Disabled_Info() : nil
 
     _ = self.arrowImageView
       |> \.isHidden .~ isDisabled
+
+    _ = self
+      |> \.accessibilityTraits .~ accessibilityTraits
+      |> \.accessibilityHint .~ accessibilityHint
 
     _ = self.titleLabel
       |> UILabel.lens.textColor .~ titleLabelColor

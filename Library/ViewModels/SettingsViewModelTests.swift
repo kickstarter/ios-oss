@@ -111,6 +111,7 @@ internal final class SettingsViewModelTests: TestCase {
   }
 
   func testUserUpdatedNotification() {
+    let storedUser = User.template |> \.social .~ false
     let updatedUser = User.template |> \.social .~ true
     let mockService = MockService(fetchUserSelfResponse: updatedUser)
 
@@ -120,6 +121,7 @@ internal final class SettingsViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.reloadDataWithUser.assertValueCount(2)
+      self.findFriendsDisabled.assertValues([true, false])
     }
   }
 }
