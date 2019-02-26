@@ -136,6 +136,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       .skipRepeats()
 
     self.accessibilityFocusValidationErrorLabel = self.validationErrorLabelMessage.ignoreValues()
+      .filter { AppEnvironment.current.isVoiceOverRunning() }
 
     self.viewDidAppearProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackChangePasswordView() }
