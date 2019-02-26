@@ -10,11 +10,13 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   private let vm = SettingsNotificationCellViewModel()
 
   private let enableButtonAnimation = TestObserver<Bool, NoError>()
+  private let emailNotificationAccessibilityLabel =  TestObserver<String, NoError>()
   private let emailNotificationsEnabled = TestObserver<Bool, NoError>()
   private let emailNotificationButtonIsHidden = TestObserver<Bool, NoError>()
   private let pushNotificationButtonIsHidden = TestObserver<Bool, NoError>()
   private let manageProjectNotificationsButtonAccessibilityHint = TestObserver<String, NoError>()
   private let projectCountText = TestObserver<String, NoError>()
+  private let pushNotificationAccessibilityLabel = TestObserver<String, NoError>()
   private let pushNotificationsEnabled = TestObserver<Bool, NoError>()
   private let unableToSaveError = TestObserver<String, NoError>()
   private let updateCurrentUser = TestObserver<User, NoError>()
@@ -23,8 +25,10 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.enableButtonAnimation.observe(enableButtonAnimation.observer)
+    self.vm.outputs.emailNotificationAccessibilityLabel.observe(emailNotificationAccessibilityLabel.observer)
     self.vm.outputs.emailNotificationsEnabled.observe(emailNotificationsEnabled.observer)
     self.vm.outputs.emailNotificationButtonIsHidden.observe(emailNotificationButtonIsHidden.observer)
+    self.vm.outputs.pushNotificationAccessibilityLabel.observe(pushNotificationAccessibilityLabel.observer)
     self.vm.outputs.pushNotificationButtonIsHidden.observe(pushNotificationButtonIsHidden.observer)
     self.vm.outputs.projectCountText.observe(projectCountText.observer)
     self.vm.pushNotificationsEnabled.observe(pushNotificationsEnabled.observer)
@@ -48,6 +52,86 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.enableButtonAnimation.assertValue(false)
+  }
+
+  func testEmailNotificationAccessibilityLabel_disabled() {
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
+                                                                             notificationType: .email)
+
+    guard let notification = notificationType else {
+      XCTFail("Notification cannot be nil")
+      return
+    }
+
+    let user = User.template
+      |> UserAttribute.notification(notification).keyPath .~ false
+
+    let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
+
+    self.vm.inputs.configure(with: value)
+
+    self.emailNotificationsEnabled.assertValues([false], "Email notifications are disabled")
+    self.emailNotificationAccessibilityLabel.assertValues(["Project updates, email notification, off"])
+  }
+
+  func testEmailNotificationAccessibilityLabel_enabled() {
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
+                                                                             notificationType: .email)
+
+    guard let notification = notificationType else {
+      XCTFail("Notification cannot be nil")
+      return
+    }
+
+    let user = User.template
+      |> UserAttribute.notification(notification).keyPath .~ true
+
+    let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
+
+    self.vm.inputs.configure(with: value)
+
+    self.emailNotificationsEnabled.assertValues([true], "Email notifications are enabled")
+    self.emailNotificationAccessibilityLabel.assertValues(["Project updates, email notification, on"])
+  }
+
+  func testPushNotificationAccessibilityLabel_disabled() {
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
+                                                                             notificationType: .push)
+
+    guard let notification = notificationType else {
+      XCTFail("Notification cannot be nil")
+      return
+    }
+
+    let user = User.template
+      |> UserAttribute.notification(notification).keyPath .~ false
+
+    let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
+
+    self.vm.inputs.configure(with: value)
+
+    self.pushNotificationsEnabled.assertValues([false], "Push notifications are disabled")
+    self.pushNotificationAccessibilityLabel.assertValues(["Project updates, push notification, off"])
+  }
+
+  func testPushNotificationAccessibilityLabel_enabled() {
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
+                                                                             notificationType: .push)
+
+    guard let notification = notificationType else {
+      XCTFail("Notification cannot be nil")
+      return
+    }
+
+    let user = User.template
+      |> UserAttribute.notification(notification).keyPath .~ true
+
+    let value = SettingsNotificationCellValue(cellType: .projectUpdates, user: user)
+
+    self.vm.inputs.configure(with: value)
+
+    self.pushNotificationsEnabled.assertValues([true], "Push notifications are enabled")
+    self.pushNotificationAccessibilityLabel.assertValues(["Project updates, push notification, on"])
   }
 
   func testEmailNotificationsEnabled() {
