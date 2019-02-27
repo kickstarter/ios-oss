@@ -24,6 +24,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
 
     self.tableView.dataSource = dataSource
     self.tableView.delegate = self
+    self.tableView.estimatedSectionFooterHeight = SettingsGroupedFooterView.defaultHeight
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
@@ -31,6 +32,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.tableView.register(nib: .SettingsAccountWarningCell)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
     self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -110,7 +112,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
     guard section == SettingsAccountSectionType.createPassword.rawValue, !userHasPassword else {
       return 0.1
     }
-    return Styles.grid(10)
+    return UITableView.automaticDimension
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

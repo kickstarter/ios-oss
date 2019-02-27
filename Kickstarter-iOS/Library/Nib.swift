@@ -3,7 +3,6 @@ import UIKit
 public enum Nib: String {
   case BackerDashboardEmptyStateCell
   case BackerDashboardProjectCell
-  case CreatePasswordFooterView
   case CreditCardCell
   case DiscoveryPostcardCell
   case DiscoveryProjectCategoryView
