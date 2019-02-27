@@ -141,9 +141,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
     self.accessibilityFocusValidationErrorLabel = requirementsMet
       .takeWhen(entryChanged)
+      .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
       .filter(isFalse)
       .ignoreValues()
-      .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
 
     self.viewDidAppearProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackChangePasswordView() }
