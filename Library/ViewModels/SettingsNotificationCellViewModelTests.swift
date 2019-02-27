@@ -71,7 +71,8 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.emailNotificationsEnabled.assertValues([false], "Email notifications are disabled")
-    self.emailNotificationAccessibilityLabel.assertValues(["Project updates, email notification, off"])
+    self.emailNotificationAccessibilityLabel.assertValues(
+      [Strings.Notification_email_notification_off(notification: value.cellType.title)])
   }
 
   func testEmailNotificationAccessibilityLabel_enabled() {
@@ -91,7 +92,8 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.emailNotificationsEnabled.assertValues([true], "Email notifications are enabled")
-    self.emailNotificationAccessibilityLabel.assertValues(["Project updates, email notification, on"])
+    self.emailNotificationAccessibilityLabel.assertValues(
+      [Strings.Notification_email_notification_on(notification: value.cellType.title)])
   }
 
   func testPushNotificationAccessibilityLabel_disabled() {
@@ -111,7 +113,8 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.pushNotificationsEnabled.assertValues([false], "Push notifications are disabled")
-    self.pushNotificationAccessibilityLabel.assertValues(["Project updates, push notification, off"])
+    self.pushNotificationAccessibilityLabel.assertValues(
+      [Strings.Notification_push_notification_off(notification: value.cellType.title)])
   }
 
   func testPushNotificationAccessibilityLabel_enabled() {
@@ -131,7 +134,8 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.pushNotificationsEnabled.assertValues([true], "Push notifications are enabled")
-    self.pushNotificationAccessibilityLabel.assertValues(["Project updates, push notification, on"])
+    self.pushNotificationAccessibilityLabel.assertValues(
+      [Strings.Notification_push_notification_on(notification: value.cellType.title)])
   }
 
   func testEmailNotificationsEnabled() {

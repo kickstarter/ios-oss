@@ -1969,6 +1969,23 @@ contributeurs"
     )
   }
   /**
+   "Double tap to toggle setting"
+
+   - **en**: "Double tap to toggle setting"
+   - **de**: "Double tap to toggle setting"
+   - **es**: "Double tap to toggle setting"
+   - **fr**: "Double tap to toggle setting"
+   - **ja**: "Double tap to toggle setting"
+  */
+  public static func Double_tap_to_toggle_setting() -> String {
+    return localizedString(
+      key: "Double_tap_to_toggle_setting",
+      defaultValue: "Double tap to toggle setting",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Download your personal data"
 
    - **en**: "Download your personal data"
@@ -4491,6 +4508,74 @@ n'ont rien soutenu."
     )
   }
   /**
+   "%{notification}, email notification, off"
+
+   - **en**: "%{notification}, email notification, off"
+   - **de**: "%{notification}, email notification, off"
+   - **es**: "%{notification}, email notification, off"
+   - **fr**: "%{notification}, email notification, off"
+   - **ja**: "%{notification}, email notification, off"
+  */
+  public static func Notification_email_notification_off(notification: String) -> String {
+    return localizedString(
+      key: "Notification_email_notification_off",
+      defaultValue: "%{notification}, email notification, off",
+      count: nil,
+      substitutions: ["notification": notification]
+    )
+  }
+  /**
+   "%{notification}, email notification, on"
+
+   - **en**: "%{notification}, email notification, on"
+   - **de**: "%{notification}, email notification, on"
+   - **es**: "%{notification}, email notification, on"
+   - **fr**: "%{notification}, email notification, on"
+   - **ja**: "%{notification}, email notification, on"
+  */
+  public static func Notification_email_notification_on(notification: String) -> String {
+    return localizedString(
+      key: "Notification_email_notification_on",
+      defaultValue: "%{notification}, email notification, on",
+      count: nil,
+      substitutions: ["notification": notification]
+    )
+  }
+  /**
+   "%{notification}, push notification, off"
+
+   - **en**: "%{notification}, push notification, off"
+   - **de**: "%{notification}, push notification, off"
+   - **es**: "%{notification}, push notification, off"
+   - **fr**: "%{notification}, push notification, off"
+   - **ja**: "%{notification}, push notification, off"
+  */
+  public static func Notification_push_notification_off(notification: String) -> String {
+    return localizedString(
+      key: "Notification_push_notification_off",
+      defaultValue: "%{notification}, push notification, off",
+      count: nil,
+      substitutions: ["notification": notification]
+    )
+  }
+  /**
+   "%{notification}, push notification, on"
+
+   - **en**: "%{notification}, push notification, on"
+   - **de**: "%{notification}, push notification, on"
+   - **es**: "%{notification}, push notification, on"
+   - **fr**: "%{notification}, push notification, on"
+   - **ja**: "%{notification}, push notification, on"
+  */
+  public static func Notification_push_notification_on(notification: String) -> String {
+    return localizedString(
+      key: "Notification_push_notification_on",
+      defaultValue: "%{notification}, push notification, on",
+      count: nil,
+      substitutions: ["notification": notification]
+    )
+  }
+  /**
    "Notifications"
 
    - **en**: "Notifications"
@@ -5962,7 +6047,7 @@ daring ideas."
    - **de**: "Speichern"
    - **es**: "Guardar"
    - **fr**: "Enregistrer"
-   - **ja**: "救う"
+   - **ja**: "保存"
   */
   public static func Save() -> String {
     return localizedString(
@@ -13110,7 +13195,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -16317,7 +16402,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -19360,7 +19445,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -20182,7 +20267,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
