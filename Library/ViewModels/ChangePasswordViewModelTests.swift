@@ -77,6 +77,26 @@ final class ChangePasswordViewModelTests: TestCase {
     }
   }
 
+  func testDismissKeyboard_WhenSaveButtonDisabled() {
+    self.vm.inputs.viewDidAppear()
+
+    self.dismissKeyboard.assertValueCount(0)
+
+    self.vm.inputs.currentPasswordFieldDidReturn(currentPassword: "password")
+
+    self.dismissKeyboard.assertValueCount(0)
+
+    self.vm.inputs.newPasswordFieldDidReturn(newPassword: "123456")
+
+    self.dismissKeyboard.assertValueCount(0)
+
+    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "1")
+
+    self.saveButtonIsEnabled.assertValues([false])
+    self.dismissKeyboard.assertValueCount(1)
+    self.activityIndicatorShouldShow.assertValueCount(0)
+  }
+
   func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
     let iOS12: (Double) -> Bool = { _ in false }
     withEnvironment(isOSVersionAvailable: iOS12) {
@@ -153,6 +173,13 @@ final class ChangePasswordViewModelTests: TestCase {
       self.validationErrorLabelIsHidden.assertValues([false, true])
       self.accessibilityFocusValidationErrorLabel.assertValueCount(2)
       self.saveButtonIsEnabled.assertValues([false, true])
+
+      self.vm.inputs.newPasswordConfirmationFieldTextChanged(text: "12345678")
+      self.vm.inputs.newPasswordConfirmationFieldTextChanged(text: "123456789")
+
+      self.validationErrorLabelIsHidden.assertValues([false, true, false])
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(4)
+      self.saveButtonIsEnabled.assertValues([false, true, false])
     }
   }
 
