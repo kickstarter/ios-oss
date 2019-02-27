@@ -4,8 +4,9 @@ import UIKit
 
 final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
   // MARK: - Properties
+
   static var defaultHeight: CGFloat = 44
-  
+
   private(set) lazy var label: UILabel = {
     UILabel(frame: .zero)
       |> settingsHeaderFooterLabelBaseStyle
