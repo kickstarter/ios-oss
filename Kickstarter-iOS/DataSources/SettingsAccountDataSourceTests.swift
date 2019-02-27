@@ -25,9 +25,10 @@ final class SettingsAccountDataSourceTests: XCTestCase {
                                   shouldHideEmailWarning: true,
                                   shouldHideEmailPasswordSection: true)
 
-    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
   }
 
   func testCellTypeForIndexPath() {
@@ -53,16 +54,18 @@ final class SettingsAccountDataSourceTests: XCTestCase {
   func testCellTypeForIndexPath_HideEmailPassword() {
     let indexPath1 = IndexPath(item: 0, section: 0)
     let indexPath2 = IndexPath(item: 0, section: 1)
-    let indexPath3 = IndexPath(item: 1, section: 1)
+    let indexPath3 = IndexPath(item: 0, section: 2)
+    let indexPath4 = IndexPath(item: 1, section: 2)
 
     self.dataSource.configureRows(currency: .USD,
                                   shouldHideEmailWarning: true,
                                   shouldHideEmailPasswordSection: true)
 
-    XCTAssertEqual(SettingsAccountCellType.privacy, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1))
-    XCTAssertEqual(SettingsAccountCellType.paymentMethods, self.dataSource.cellTypeForIndexPath(indexPath: indexPath2))
+    XCTAssertEqual(SettingsAccountCellType.createPassword, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1))
+    XCTAssertEqual(SettingsAccountCellType.privacy, self.dataSource.cellTypeForIndexPath(indexPath: indexPath2))
+    XCTAssertEqual(SettingsAccountCellType.paymentMethods, self.dataSource.cellTypeForIndexPath(indexPath: indexPath3))
 
     let currencyCellType = SettingsAccountCellType.currency(.USD)
-    XCTAssertEqual(currencyCellType, self.dataSource.cellTypeForIndexPath(indexPath: indexPath3))
+    XCTAssertEqual(currencyCellType, self.dataSource.cellTypeForIndexPath(indexPath: indexPath4))
   }
 }
