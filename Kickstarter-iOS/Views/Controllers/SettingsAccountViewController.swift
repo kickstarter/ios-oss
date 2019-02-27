@@ -110,7 +110,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
     guard section == SettingsAccountSectionType.createPassword.rawValue, !userHasPassword else {
       return 0.1
     }
-    return Styles.grid(10)
+    return UITableView.automaticDimension
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
