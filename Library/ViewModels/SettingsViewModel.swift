@@ -44,7 +44,7 @@ SettingsViewModelOutputs, SettingsViewModelType {
       .skipNil()
 
     let isFollowingEnabled = user
-      .map { $0 |> User.lens.social.view }
+      .map { $0 |> (\User.social).view }
       .map { $0 ?? true }
 
     self.findFriendsDisabledProperty <~ isFollowingEnabled.negate()

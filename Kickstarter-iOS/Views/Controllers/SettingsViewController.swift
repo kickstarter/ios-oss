@@ -86,6 +86,18 @@ final class SettingsViewController: UIViewController {
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
   }
 
+  // MARK: - Private Functions
+  private func shouldHideFooter(for section: Int) -> Bool {
+    guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return true }
+
+    if section == SettingsSectionType.findFriends
+      && !self.viewModel.outputs.findFriendsDisabledProperty.value {
+      return true
+    }
+
+    return false
+  }
+
   private func leftBarButtonItem() -> UIBarButtonItem {
     return UIBarButtonItem(
       image: UIImage(named: "icon--cross"),
@@ -160,14 +172,7 @@ extension SettingsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return 0.1 }
-
-    if section == SettingsSectionType.findFriends
-      && !self.viewModel.outputs.findFriendsDisabledProperty.value {
-      return 0.1
-    }
-
-    return UITableView.automaticDimension
+    return self.shouldHideFooter(for: section) ? 0.1 : UITableView.automaticDimension
   }
 
   func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
@@ -175,10 +180,7 @@ extension SettingsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return nil }
-
-    if section == SettingsSectionType.findFriends
-      && !self.viewModel.outputs.findFriendsDisabledProperty.value {
+    if self.shouldHideFooter(for: section) {
       return nil
     }
 
@@ -186,7 +188,9 @@ extension SettingsViewController: UITableViewDelegate {
       withIdentifier: Nib.SettingsFooterView.rawValue
     ) as? SettingsFooterView
 
-    footerView?.configure(with: section.footerText ?? "")
+    let section = SettingsSectionType(rawValue: section)
+
+    footerView?.configure(with: section?.footerText ?? "")
 
     return footerView
   }
