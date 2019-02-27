@@ -46,11 +46,20 @@ public protocol ChangeEmailViewModelType {
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
 ChangeEmailViewModelOutputs {
   public init() {
+    self.dismissKeyboard = Signal.merge(
+      self.textFieldShouldReturnProperty.signal.skipNil()
+        .filter { $0 == .done }
+        .ignoreValues(),
+      self.saveButtonTappedProperty.signal.ignoreValues()
+    )
+
+    let triggerSaveAction = Signal.merge(self.dismissKeyboard, self.saveButtonTappedProperty.signal)
+
     let changeEmailEvent = Signal.combineLatest(
       self.newEmailProperty.signal.skipNil(),
       self.passwordProperty.signal.skipNil()
       )
-      .takeWhen(self.saveButtonTappedProperty.signal)
+      .takeWhen(triggerSaveAction)
       .map(ChangeEmailInput.init(email:currentPassword:))
       .switchMap { input in
         AppEnvironment.current.apiService.changeEmail(input: input)
@@ -116,13 +125,6 @@ ChangeEmailViewModelOutputs {
     self.messageLabelViewHidden = Signal
       .merge(self.unverifiedEmailLabelHidden, self.warningMessageLabelHidden)
       .filter(isFalse)
-
-    self.dismissKeyboard = Signal.merge(
-      self.textFieldShouldReturnProperty.signal.skipNil()
-        .filter { $0 == .done }
-        .ignoreValues(),
-      self.saveButtonTappedProperty.signal.ignoreValues()
-    )
 
     self.saveButtonIsEnabled = Signal.combineLatest(
       self.emailText,
