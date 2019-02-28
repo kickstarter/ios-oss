@@ -130,7 +130,7 @@ lint:
 	swiftlint lint --reporter json --strict
 
 strings:
-	cat Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift \
+	cat Frameworks/native-secrets/ios/Secrets.swift bin/StringsScript/Sources/StringsScriptCore/StringsScriptCore.swift \
 		| xcrun -sdk macosx swift -
 
 secrets:
