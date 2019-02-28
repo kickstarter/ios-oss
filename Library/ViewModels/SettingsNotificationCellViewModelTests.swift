@@ -10,13 +10,13 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   private let vm = SettingsNotificationCellViewModel()
 
   private let enableButtonAnimation = TestObserver<Bool, NoError>()
-  private let emailNotificationButtonAccessibilityLabel =  TestObserver<String, NoError>()
+  private let emailNotificationsButtonAccessibilityLabel =  TestObserver<String, NoError>()
   private let emailNotificationsEnabled = TestObserver<Bool, NoError>()
   private let emailNotificationButtonIsHidden = TestObserver<Bool, NoError>()
   private let pushNotificationButtonIsHidden = TestObserver<Bool, NoError>()
   private let manageProjectNotificationsButtonAccessibilityHint = TestObserver<String, NoError>()
   private let projectCountText = TestObserver<String, NoError>()
-  private let pushNotificationButtonAccessibilityLabel = TestObserver<String, NoError>()
+  private let pushNotificationsButtonAccessibilityLabel = TestObserver<String, NoError>()
   private let pushNotificationsEnabled = TestObserver<Bool, NoError>()
   private let unableToSaveError = TestObserver<String, NoError>()
   private let updateCurrentUser = TestObserver<User, NoError>()
@@ -25,12 +25,12 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.enableButtonAnimation.observe(enableButtonAnimation.observer)
-    self.vm.outputs.emailNotificationAccessibilityLabel
-      .observe(emailNotificationButtonAccessibilityLabel.observer)
+    self.vm.outputs.emailNotificationsButtonAccessibilityLabel
+      .observe(emailNotificationsButtonAccessibilityLabel.observer)
     self.vm.outputs.emailNotificationsEnabled.observe(emailNotificationsEnabled.observer)
     self.vm.outputs.emailNotificationButtonIsHidden.observe(emailNotificationButtonIsHidden.observer)
-    self.vm.outputs.pushNotificationAccessibilityLabel
-      .observe(pushNotificationButtonAccessibilityLabel.observer)
+    self.vm.outputs.pushNotificationsButtonAccessibilityLabel
+      .observe(pushNotificationsButtonAccessibilityLabel.observer)
     self.vm.outputs.pushNotificationButtonIsHidden.observe(pushNotificationButtonIsHidden.observer)
     self.vm.outputs.projectCountText.observe(projectCountText.observer)
     self.vm.pushNotificationsEnabled.observe(pushNotificationsEnabled.observer)
@@ -73,7 +73,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.emailNotificationsEnabled.assertValues([false], "Email notifications are disabled")
-    self.emailNotificationButtonAccessibilityLabel.assertValues(
+    self.emailNotificationsButtonAccessibilityLabel.assertValues(
       [Strings.Notification_email_notification_off(notification: value.cellType.title)])
   }
 
@@ -94,7 +94,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.emailNotificationsEnabled.assertValues([true], "Email notifications are enabled")
-    self.emailNotificationButtonAccessibilityLabel.assertValues(
+    self.emailNotificationsButtonAccessibilityLabel.assertValues(
       [Strings.Notification_email_notification_on(notification: value.cellType.title)])
   }
 
@@ -115,7 +115,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.pushNotificationsEnabled.assertValues([false], "Push notifications are disabled")
-    self.pushNotificationButtonAccessibilityLabel.assertValues(
+    self.pushNotificationsButtonAccessibilityLabel.assertValues(
       [Strings.Notification_push_notification_off(notification: value.cellType.title)])
   }
 
@@ -136,7 +136,7 @@ final class SettingsNotificationCellViewModelTests: TestCase {
     self.vm.inputs.configure(with: value)
 
     self.pushNotificationsEnabled.assertValues([true], "Push notifications are enabled")
-    self.pushNotificationButtonAccessibilityLabel.assertValues(
+    self.pushNotificationsButtonAccessibilityLabel.assertValues(
       [Strings.Notification_push_notification_on(notification: value.cellType.title)])
   }
 

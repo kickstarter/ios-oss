@@ -91,12 +91,12 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     self.emailNotificationsButton.rac.selected = viewModel.outputs.emailNotificationsEnabled
     self.emailNotificationsButton.rac.hidden = viewModel.outputs.emailNotificationButtonIsHidden
     self.emailNotificationsButton.rac.accessibilityLabel =
-      viewModel.outputs.emailNotificationButtonAccessibilityLabel
+      viewModel.outputs.emailNotificationsButtonAccessibilityLabel
     self.projectCountLabel.rac.text = viewModel.outputs.projectCountText
     self.pushNotificationsButton.rac.selected = viewModel.outputs.pushNotificationsEnabled
     self.pushNotificationsButton.rac.hidden = viewModel.outputs.pushNotificationButtonIsHidden
     self.pushNotificationsButton.rac.accessibilityLabel =
-      viewModel.outputs.pushNotificationButtonAccessibilityLabel
+      viewModel.outputs.pushNotificationsButtonAccessibilityLabel
 
     viewModel.outputs.enableButtonAnimation
     .observeForUI()
