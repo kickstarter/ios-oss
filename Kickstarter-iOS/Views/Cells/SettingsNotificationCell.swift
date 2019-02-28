@@ -83,7 +83,6 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       |> UIButton.lens.image(for: .selected) .~ Library.image(named: "mobile-icon",
                                                       tintColor: .ksr_green_700,
                                                       inBundle: Bundle.framework)
-
   }
 
   override func bindViewModel() {
@@ -92,11 +91,12 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     self.emailNotificationsButton.rac.selected = viewModel.outputs.emailNotificationsEnabled
     self.emailNotificationsButton.rac.hidden = viewModel.outputs.emailNotificationButtonIsHidden
     self.emailNotificationsButton.rac.accessibilityLabel =
-      viewModel.outputs.emailNotificationAccessibilityLabel
+      viewModel.outputs.emailNotificationButtonAccessibilityLabel
     self.projectCountLabel.rac.text = viewModel.outputs.projectCountText
     self.pushNotificationsButton.rac.selected = viewModel.outputs.pushNotificationsEnabled
     self.pushNotificationsButton.rac.hidden = viewModel.outputs.pushNotificationButtonIsHidden
-    self.pushNotificationsButton.rac.accessibilityLabel = viewModel.outputs.pushNotificationAccessibilityLabel
+    self.pushNotificationsButton.rac.accessibilityLabel =
+      viewModel.outputs.pushNotificationButtonAccessibilityLabel
 
     viewModel.outputs.enableButtonAnimation
     .observeForUI()
