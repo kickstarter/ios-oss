@@ -1,5 +1,5 @@
 XCODEBUILD := xcodebuild
-BUILD_FLAGS = -scheme $(SCHEME) -destination $(DESTINATION)
+BUILD_FLAGS = -scheme $(SCHEME) -destination $(DESTINATION) -xcconfig Configs/CircleCI.xcconfig
 
 SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
