@@ -83,6 +83,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
 
     _ = tableView
       |> settingsTableViewStyle
+      |> settingsTableViewSeparatorStyle
   }
 
   private func showGeneralError() {

@@ -13,7 +13,6 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
   @IBOutlet fileprivate weak var emailNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var projectCountLabel: UILabel!
   @IBOutlet fileprivate weak var pushNotificationsButton: UIButton!
-  @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   weak var delegate: SettingsNotificationCellDelegate?
@@ -85,8 +84,6 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
                                                       tintColor: .ksr_green_700,
                                                       inBundle: Bundle.framework)
 
-    _ = self.separatorView
-      |> separatorStyle
   }
 
   override func bindViewModel() {

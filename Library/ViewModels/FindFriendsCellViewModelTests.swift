@@ -12,14 +12,11 @@ import Foundation
 internal final class FindFriendsCellViewModelTests: TestCase {
   private let vm = FindFriendsCellViewModel()
 
-  private let disabledDescriptionLabelIsHidden = TestObserver<Bool, NoError>()
   private let isDisabled = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.disabledDescriptionLabelIsHidden
-      .observe(disabledDescriptionLabelIsHidden.observer)
     self.vm.outputs.isDisabled.observe(isDisabled.observer)
   }
 
@@ -28,7 +25,6 @@ internal final class FindFriendsCellViewModelTests: TestCase {
 
     self.vm.configure(with: user)
 
-    self.disabledDescriptionLabelIsHidden.assertValue(true)
     self.isDisabled.assertValue(false)
   }
 
@@ -37,7 +33,6 @@ internal final class FindFriendsCellViewModelTests: TestCase {
 
     self.vm.configure(with: user)
 
-    self.disabledDescriptionLabelIsHidden.assertValue(false)
     self.isDisabled.assertValue(true)
   }
 }

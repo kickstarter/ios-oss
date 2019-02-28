@@ -3,9 +3,7 @@ import Prelude
 import UIKit
 
 final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
-
   @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet fileprivate weak var lineLayer: UIView!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   public required init?(coder aDecoder: NSCoder) {
@@ -31,9 +29,6 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
 
    override func bindStyles() {
     super.bindStyles()
-
-    _ = lineLayer
-    |> separatorStyle
   }
 
   override func setHighlighted(_ highlighted: Bool, animated: Bool) {

@@ -11,7 +11,7 @@ final class SettingsHeaderView: UITableViewHeaderFooterView {
       |> \.isAccessibilityElement .~ true
 
     _ = titleLabel
-      |> UILabel.lens.text .~ title
+      |> \.text .~ title
   }
 
   override func bindStyles() {
