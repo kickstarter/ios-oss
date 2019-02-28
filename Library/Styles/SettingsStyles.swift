@@ -73,6 +73,10 @@ public let settingsViewControllerStyle = baseControllerStyle()
 public let settingsTableViewStyle = UITableView.lens.backgroundColor .~ .ksr_grey_200
   <> UITableView.lens.separatorStyle .~ .none
 
+public let settingsTableViewSeparatorStyle = UITableView.lens.separatorStyle .~ .singleLine
+  <> \.separatorColor .~ .ksr_grey_400
+  <> \.separatorInset .~ .zero
+
 public func settingsAttributedPlaceholder(_ string: String) -> NSAttributedString {
   return NSAttributedString(
     string: string,
