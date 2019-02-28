@@ -120,13 +120,15 @@ SettingsNotificationCellViewModelType {
       previousEmailNotificationValue
     )
 
-    self.pushNotificationButtonAccessibilityLabel = Signal.combineLatest(self.pushNotificationsEnabled, cellType)
-      .map { pushNotificationEnabled, cellType in
+    self.pushNotificationButtonAccessibilityLabel =
+      Signal.combineLatest(self.pushNotificationsEnabled, cellType)
+        .map { pushNotificationEnabled, cellType in
         pushNotificationEnabled ? Strings.Notification_push_notification_on(notification: cellType.title)
                                 : Strings.Notification_push_notification_off(notification: cellType.title) }
 
-    self.emailNotificationButtonAccessibilityLabel = Signal.combineLatest(self.emailNotificationsEnabled, cellType)
-      .map { emailNotificationEnabled, cellType in
+    self.emailNotificationButtonAccessibilityLabel =
+      Signal.combineLatest(self.emailNotificationsEnabled, cellType)
+        .map { emailNotificationEnabled, cellType in
         emailNotificationEnabled ? Strings.Notification_email_notification_on(notification: cellType.title)
                                  : Strings.Notification_email_notification_off(notification: cellType.title) }
 
