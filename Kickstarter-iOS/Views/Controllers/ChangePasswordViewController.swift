@@ -14,6 +14,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
   @IBOutlet fileprivate weak var newPasswordTextField: UITextField!
   @IBOutlet fileprivate weak var onePasswordButton: UIButton!
   @IBOutlet fileprivate weak var scrollView: UIScrollView!
+  @IBOutlet fileprivate weak var stackView: UIStackView!
 
   private var saveButtonView: LoadingBarButtonItemView!
   internal var messageBannerViewController: MessageBannerViewController?
@@ -52,6 +53,9 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
+
+    _ = self.stackView
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
 
     _ = self
       |> settingsViewControllerStyle
@@ -172,6 +176,12 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.logoutAndDismiss()
+    }
+
+    self.viewModel.outputs.accessibilityFocusValidationErrorLabel
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        UIAccessibility.post(notification: .layoutChanged, argument: self?.validationErrorMessageLabel)
     }
 
     Keyboard.change
