@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		D67B6C8E221F352000B63A6B /* StringsScriptCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6C8D221F352000B63A6B /* StringsScriptCore.swift */; };
+		D6A675BA2228AE3500D0F94E /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A675B92228AE3500D0F94E /* Secrets.swift */; };
 		OBJ_25 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* main.swift */; };
 		OBJ_27 /* StringsScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "StringsScript::StringsScriptCore::Product" /* StringsScriptCore.framework */; };
 		OBJ_34 /* StringsScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* StringsScript.swift */; };
@@ -56,7 +57,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D67B6C8D221F352000B63A6B /* StringsScriptCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StringsScriptCore.swift; path = Sources/StringsScriptCore/StringsScriptCore.swift; sourceTree = "<group>"; };
+		D67B6C8D221F352000B63A6B /* StringsScriptCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsScriptCore.swift; sourceTree = "<group>"; };
+		D6A675B92228AE3500D0F94E /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = "../../../../Frameworks/native-secrets/ios/Secrets.swift"; sourceTree = "<group>"; };
 		OBJ_11 /* StringsScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsScript.swift; sourceTree = "<group>"; };
 		OBJ_14 /* StringsScriptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsScriptTests.swift; sourceTree = "<group>"; };
 		OBJ_15 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
@@ -97,7 +99,9 @@
 		OBJ_10 /* StringsScriptCore */ = {
 			isa = PBXGroup;
 			children = (
+				D6A675B92228AE3500D0F94E /* Secrets.swift */,
 				OBJ_11 /* StringsScript.swift */,
+				D67B6C8D221F352000B63A6B /* StringsScriptCore.swift */,
 			);
 			name = StringsScriptCore;
 			path = Sources/StringsScriptCore;
@@ -131,16 +135,14 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
-				D67B6C8D221F352000B63A6B /* StringsScriptCore.swift */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_12 /* Tests */,
 				OBJ_16 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -243,7 +245,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_16 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -271,6 +273,7 @@
 			buildActionMask = 0;
 			files = (
 				D67B6C8E221F352000B63A6B /* StringsScriptCore.swift in Sources */,
+				D6A675BA2228AE3500D0F94E /* Secrets.swift in Sources */,
 				OBJ_34 /* StringsScript.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

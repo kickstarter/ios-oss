@@ -28,6 +28,11 @@ extension Array where Element: Hashable {
   }
 }
 
+enum StringsScriptCoreError: Error {
+  case stringNotFound(String)
+  case unknownError(String)
+}
+
 final class Strings {
 
   let counts = ["zero", "one", "two", "few", "many"]
@@ -54,9 +59,16 @@ final class Strings {
   }
 
   func stringsFileContents(_ strings: [String: String]) -> String {
-    return strings.keys.sorted()
+
+    return strings.keys
+      .sorted()
       .filter { key in !key.hasSuffix(".") }
-      .map { key in "\"\(key)\" = \"\(escaped(strings[key] ?? ""))\";" }
+      .map { key in
+        if let string = strings[key] {
+          return "\"\(key)\" = \"\(escaped(string))\";"
+        }
+        return ""
+      }
       .joined(separator: "\n")
   }
 
@@ -135,12 +147,11 @@ final class Strings {
       let content = stringsFileContents(strings)
       let path = "../../Kickstarter-iOS/Locales/\(locale).lproj/Localizable.strings"
       pathsAndContents.append((path, content))
-      print("Path: \(path)")
     }
     return pathsAndContents
   }
 
-  public func staticStringsFileContents() -> String {
+  public func staticStringsFileContents() throws -> String {
     var staticStringsLines: [String] = []
     staticStringsLines.append("//=======================================================================")
     staticStringsLines.append("//")
@@ -152,45 +163,51 @@ final class Strings {
     staticStringsLines.append("// swiftlint:disable line_length")
     staticStringsLines.append("public enum Strings {")
 
-    stringsByLocale?["Base"]?.keys
-      .filter { key in counts.reduce(true) { $0 && !key.hasSuffix(".\($1)") } }
-      .sorted()
-      .forEach { key in
-        guard let string = (stringsByLocale?["Base"]?[key]) else { return }
-        print(string)
-        staticStringsLines.append("  /**")
-        staticStringsLines.append("   \"\((stringsByLocale?["Base"]?[key])!)\"\n")
-
-        if let stringsByLocale = stringsByLocale {
-          let sortedKeys = Array(stringsByLocale.keys).sorted()
-
-          for locale in sortedKeys {
-            guard let strings = stringsByLocale[locale] else { continue }
-            let trueLocale = locale == "Base" ? "en" : locale
-            guard supportedLocales.contains(trueLocale) else { continue }
-            staticStringsLines.append("   - **\(trueLocale)**: \"\(strings[key]!)\"")
+    do {
+      try stringsByLocale?["Base"]?.keys
+        .filter { key in counts.reduce(true) { $0 && !key.hasSuffix(".\($1)") } }
+        .sorted()
+        .forEach { key in
+          guard let string = (stringsByLocale?["Base"]?[key]) else {
+            throw StringsScriptCoreError.stringNotFound("String not found. Line: \(#line)")
           }
-        }
+          print(string)
+          staticStringsLines.append("  /**")
+          staticStringsLines.append("   \"\(string)\"\n")
 
-        staticStringsLines.append("  */")
-        let pluralCount = key.hasSuffix(".")
-        let key = pluralCount ? String(key.dropLast()) : key
-        let funcName = key.replacingOccurrences(of: ".", with: "_")
-        let argumentNames = funcArgumentNames(string)
-        staticStringsLines.append(
-          "  public static func \(funcName)(\(funcArguments(argumentNames, count: pluralCount))) -> String {"
-        )
-        staticStringsLines.append("    return localizedString(")
-        staticStringsLines.append("      key: \"\(key)\",")
-        staticStringsLines.append("      defaultValue: \"\(escaped(string))\",")
-        staticStringsLines.append("      count: \(pluralCount ? funcCount(argumentNames) : "nil"),")
-        staticStringsLines
-          .append("      substitutions: \(funcSubstitutions(string, count: pluralCount))")
-        staticStringsLines.append("    )")
-        staticStringsLines.append("  }")
+          if let stringsByLocale = stringsByLocale {
+            let sortedKeys = Array(stringsByLocale.keys).sorted()
+
+            for locale in sortedKeys {
+              guard let strings = stringsByLocale[locale] else { continue }
+              let trueLocale = locale == "Base" ? "en" : locale
+              guard supportedLocales.contains(trueLocale), let stringValue = strings[key] else { continue }
+              staticStringsLines.append("   - **\(trueLocale)**: \"\(stringValue)\"")
+            }
+          }
+
+          staticStringsLines.append("  */")
+          let pluralCount = key.hasSuffix(".")
+          let key = pluralCount ? String(key.dropLast()) : key
+          let funcName = key.replacingOccurrences(of: ".", with: "_")
+          let argNames = funcArgumentNames(string)
+          staticStringsLines.append(
+            "  public static func \(funcName)(\(funcArguments(argNames, count: pluralCount))) -> String {"
+          )
+          staticStringsLines.append("    return localizedString(")
+          staticStringsLines.append("      key: \"\(key)\",")
+          staticStringsLines.append("      defaultValue: \"\(escaped(string))\",")
+          staticStringsLines.append("      count: \(pluralCount ? funcCount(argNames) : "nil"),")
+          staticStringsLines
+            .append("      substitutions: \(funcSubstitutions(string, count: pluralCount))")
+          staticStringsLines.append("    )")
+          staticStringsLines.append("  }")
+      }
+      staticStringsLines.append("}")
+      staticStringsLines.append("")
+      return staticStringsLines.joined(separator: "\n")
+    } catch {
+      throw StringsScriptCoreError.unknownError("Error: \(error)\nLine: \(#line)")
     }
-    staticStringsLines.append("}")
-    staticStringsLines.append("")
-    return staticStringsLines.joined(separator: "\n")
   }
 }
