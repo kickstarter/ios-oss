@@ -1,47 +1,67 @@
 import XCTest
+import StringsScriptCore
 import class Foundation.Bundle
 
 final class StringsScriptTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
 
-        // Some of the APIs that we use below are available in macOS 10.13 and above.
-        guard #available(macOS 10.13, *) else {
-            return
-        }
+  var subject: Strings?
 
-        let fooBinary = productsDirectory.appendingPathComponent("StringsScript")
+  override func setUp() {
+    super.setUp()
+    self.subject = Strings()
+  }
 
-        let process = Process()
-        process.executableURL = fooBinary
+  func testStringsFileContents()  {
+    let strings = ["Save": "Save"]
+    let content = self.subject?.stringsFileContents(strings)
+    XCTAssertEqual(content, "\"Save\" = \"Save\";")
+  }
 
-        let pipe = Pipe()
-        process.standardOutput = pipe
+  func testLocalePathsAndContents() {
 
-        try process.run()
-        process.waitUntilExit()
+    let dic = ["fr": ["Kickstarter_is_not_a_store": "Kickstarter n\'est pas un magasin."]]
 
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(data: data, encoding: .utf8)
-
-        XCTAssertEqual(output, "Hello, world!\n")
+    self.subject?.stringsByLocale = dic
+    if let (locale, content) = self.subject?.localePathsAndContents().first {
+      XCTAssertEqual(locale, "../../Kickstarter-iOS/Locales/fr.lproj/Localizable.strings")
+      XCTAssertEqual(content, "\"Kickstarter_is_not_a_store\" = \"Kickstarter n\'est pas un magasin.\";")
+    } else {
+      XCTFail("Locale and content cannot be nil")
     }
+  }
 
-    /// Returns path to the built products directory.
-    var productsDirectory: URL {
-      #if os(macOS)
-        for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
-            return bundle.bundleURL.deletingLastPathComponent()
-        }
-        fatalError("couldn't find the products directory")
-      #else
-        return Bundle.main.bundleURL
-      #endif
+  func testStaticStringsFileContents() {
+    let dic = ["Base":
+      ["Are_you_sure_you_wish_to_remove_this_card" : "Are you sure you wish to remove this card from your payment method options?"]]
+
+    self.subject?.stringsByLocale = dic
+    let generatedString =
+  """
+  //=======================================================================
+  //
+  // This file is computer generated from Localizable.strings. Do not edit.
+  //
+  //=======================================================================
+
+  // swiftlint:disable valid_docs
+  // swiftlint:disable line_length
+  public enum Strings {
+    /**
+     "Are you sure you wish to remove this card from your payment method options?"
+
+     - **en**: "Are you sure you wish to remove this card from your payment method options?"
+    */
+    public static func Are_you_sure_you_wish_to_remove_this_card() -> String {
+      return localizedString(
+        key: "Are_you_sure_you_wish_to_remove_this_card",
+        defaultValue: "Are you sure you wish to remove this card from your payment method options?",
+        count: nil,
+        substitutions: [:]
+      )
     }
+  }
 
-    static var allTests = [
-        ("testExample", testExample),
-    ]
+  """
+    XCTAssertEqual(generatedString, try? self.subject?.staticStringsFileContents())
+  }
 }

@@ -33,9 +33,11 @@ enum StringsScriptCoreError: Error {
   case unknownError(String)
 }
 
-final class Strings {
+public final class Strings {
 
   let counts = ["zero", "one", "two", "few", "many"]
+
+  public init() {}
 
   func flatten(_ data: [String: AnyObject], prefix: String = "") -> [String: String] {
     return data.reduce([String: String]()) { accum, keyAndNested in
@@ -58,7 +60,7 @@ final class Strings {
     }
   }
 
-  func stringsFileContents(_ strings: [String: String]) -> String {
+  public func stringsFileContents(_ strings: [String: String]) -> String {
 
     return strings.keys
       .sorted()
@@ -72,7 +74,7 @@ final class Strings {
       .joined(separator: "\n")
   }
 
-  func funcArgumentNames(_ string: String) -> [String] {
+  private func funcArgumentNames(_ string: String) -> [String] {
     return string
       .components(separatedBy: "%{")
       .flatMap { $0.components(separatedBy: "}") }
@@ -82,7 +84,7 @@ final class Strings {
       .distincts(==)
   }
 
-  func funcArguments(_ argumentNames: [String], count: Bool) -> String {
+  private func funcArguments(_ argumentNames: [String], count: Bool) -> String {
     return argumentNames
       .map { x in
         let type = count && x.hasSuffix("_count") ? "Int" : "String"
@@ -91,13 +93,13 @@ final class Strings {
       .joined(separator: ", ")
   }
 
-  func funcCount(_ argumentNames: [String]) -> String {
+  private func funcCount(_ argumentNames: [String]) -> String {
     return argumentNames
       .filter { $0.hasSuffix("_count") }
       .first ?? "nil"
   }
 
-  func funcSubstitutions(_ string: String, count: Bool) -> String {
+  private func funcSubstitutions(_ string: String, count: Bool) -> String {
     let insides = string
       .components(separatedBy: "%{")
       .flatMap { $0.components(separatedBy: "}") }
@@ -112,7 +114,7 @@ final class Strings {
     return "[\(insides)]"
   }
 
-  func escaped(_ string: String) -> String {
+  private func escaped(_ string: String) -> String {
     return string
       .replacingOccurrences(of: "\n", with: "\\n")
       .replacingOccurrences(of: "\"", with: "\\\"")
@@ -140,7 +142,6 @@ final class Strings {
   let supportedLocales = ["Base", "de", "en", "es", "fr", "ja"]
 
   public func localePathsAndContents() -> [(String, String)] {
-
     var pathsAndContents: [(String, String)] = []
     stringsByLocale?.forEach { locale, strings in
       guard supportedLocales.contains(locale) else { return }
