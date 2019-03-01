@@ -3,7 +3,7 @@ import Foundation
 let oauthToken: String = ProcessInfo.processInfo.environment["KICKSTARTER_API_IOS_OAUTH_TOKEN"] ?? ""
 
 //swiftlint:disable:next line_length
-let endpoint: String? = "https://\(Secrets.Api.Endpoint.production)/v1/app/ios/config?client_id=\(Secrets.Api.Client.production)&all_locales=true&oauth_token=\(oauthToken)"
+public let endpoint: String? = "https://\(Secrets.Api.Endpoint.production)/v1/app/ios/config?client_id=\(Secrets.Api.Client.production)&all_locales=true&oauth_token=\(oauthToken)"
 
 extension Dictionary {
   static func renamed(key fromKey: Key, to toKey: Key) -> ((Dictionary) -> Dictionary) {
@@ -39,27 +39,6 @@ public final class Strings {
 
   public init() {}
 
-  func flatten(_ data: [String: AnyObject], prefix: String = "") -> [String: String] {
-    return data.reduce([String: String]()) { accum, keyAndNested in
-      let (key, nested) = keyAndNested
-      let newKey = prefix + key
-
-      if let nested = nested as? [String: AnyObject] {
-        return accum.merging(flatten(nested, prefix: newKey + ".")) { $1 }
-      }
-
-      if let string = nested as? String {
-        var values = [newKey: string]
-        if counts.contains(key) && string.contains("_count}") {
-          values[prefix] = string
-        }
-        return accum.merging(values) { $1 }
-      }
-
-      return [:]
-    }
-  }
-
   public func stringsFileContents(_ strings: [String: String]) -> String {
 
     return strings.keys
@@ -73,71 +52,6 @@ public final class Strings {
       }
       .joined(separator: "\n")
   }
-
-  private func funcArgumentNames(_ string: String) -> [String] {
-    return string
-      .components(separatedBy: "%{")
-      .flatMap { $0.components(separatedBy: "}") }
-      .enumerated()
-      .filter { idx, _ in idx % 2 == 1 }
-      .map { _, x in x }
-      .distincts(==)
-  }
-
-  private func funcArguments(_ argumentNames: [String], count: Bool) -> String {
-    return argumentNames
-      .map { x in
-        let type = count && x.hasSuffix("_count") ? "Int" : "String"
-        return "\(x): \(type)"
-      }
-      .joined(separator: ", ")
-  }
-
-  private func funcCount(_ argumentNames: [String]) -> String {
-    return argumentNames
-      .filter { $0.hasSuffix("_count") }
-      .first ?? "nil"
-  }
-
-  private func funcSubstitutions(_ string: String, count: Bool) -> String {
-    let insides = string
-      .components(separatedBy: "%{")
-      .flatMap { $0.components(separatedBy: "}") }
-      .enumerated()
-      .filter { idx, _ in idx % 2 == 1 }
-      .map { _, x in "\"\(x)\": \(count && x.hasSuffix("_count") ? "Format.wholeNumber(\(x))" : x)" }
-      .distincts(==)
-      .joined(separator: ", ")
-    if insides.isEmpty {
-      return "[:]"
-    }
-    return "[\(insides)]"
-  }
-
-  private func escaped(_ string: String) -> String {
-    return string
-      .replacingOccurrences(of: "\n", with: "\\n")
-      .replacingOccurrences(of: "\"", with: "\\\"")
-  }
-
-  public lazy var stringsByLocale: [String: [String: String]]? = {
-    let stringsByLocale1 = endpoint
-      .flatMap(URL.init)
-      .flatMap { try? String(contentsOf: $0) }
-      .flatMap { $0.data(using: .utf8) }
-      .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
-
-    return stringsByLocale1
-      .flatMap { $0 as? [String: AnyObject] }
-      .flatMap { $0["locales"] as? [String: [String: AnyObject]] }
-      .map(Dictionary.renamed(key: "en", to: "Base"))
-      .map {
-        $0.reduce([String: [String: String]]()) { accum, localeAndStrings in
-          let (locale, strings) = localeAndStrings
-          return accum.merging([locale: flatten(strings)]) { $1 }
-        }
-    }
-  }()
 
   let supportedLocales = ["Base", "de", "en", "es", "fr", "ja"]
 
@@ -211,4 +125,90 @@ public final class Strings {
       throw StringsScriptCoreError.unknownError("Error: \(error)\nLine: \(#line)")
     }
   }
+
+  private func flatten(_ data: [String: AnyObject], prefix: String = "") -> [String: String] {
+    return data.reduce([String: String]()) { accum, keyAndNested in
+      let (key, nested) = keyAndNested
+      let newKey = prefix + key
+
+      if let nested = nested as? [String: AnyObject] {
+        return accum.merging(flatten(nested, prefix: newKey + ".")) { $1 }
+      }
+
+      if let string = nested as? String {
+        var values = [newKey: string]
+        if counts.contains(key) && string.contains("_count}") {
+          values[prefix] = string
+        }
+        return accum.merging(values) { $1 }
+      }
+
+      return [:]
+    }
+  }
+
+  private func funcArgumentNames(_ string: String) -> [String] {
+    return string
+      .components(separatedBy: "%{")
+      .flatMap { $0.components(separatedBy: "}") }
+      .enumerated()
+      .filter { idx, _ in idx % 2 == 1 }
+      .map { _, x in x }
+      .distincts(==)
+  }
+
+  private func funcArguments(_ argumentNames: [String], count: Bool) -> String {
+    return argumentNames
+      .map { x in
+        let type = count && x.hasSuffix("_count") ? "Int" : "String"
+        return "\(x): \(type)"
+      }
+      .joined(separator: ", ")
+  }
+
+  private func funcCount(_ argumentNames: [String]) -> String {
+    return argumentNames
+      .filter { $0.hasSuffix("_count") }
+      .first ?? "nil"
+  }
+
+  private func funcSubstitutions(_ string: String, count: Bool) -> String {
+    let insides = string
+      .components(separatedBy: "%{")
+      .flatMap { $0.components(separatedBy: "}") }
+      .enumerated()
+      .filter { idx, _ in idx % 2 == 1 }
+      .map { _, x in "\"\(x)\": \(count && x.hasSuffix("_count") ? "Format.wholeNumber(\(x))" : x)" }
+      .distincts(==)
+      .joined(separator: ", ")
+    if insides.isEmpty {
+      return "[:]"
+    }
+    return "[\(insides)]"
+  }
+
+  private func escaped(_ string: String) -> String {
+    return string
+      .replacingOccurrences(of: "\n", with: "\\n")
+      .replacingOccurrences(of: "\"", with: "\\\"")
+  }
+
+  public lazy var stringsByLocale: [String: [String: String]]? = {
+    let stringsByLocale1 = endpoint
+      .flatMap(URL.init)
+      .flatMap { try? String(contentsOf: $0) }
+      .flatMap { $0.data(using: .utf8) }
+      .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
+
+    return stringsByLocale1
+      .flatMap { $0 as? [String: AnyObject] }
+      .flatMap { $0["locales"] as? [String: [String: AnyObject]] }
+      .map(Dictionary.renamed(key: "en", to: "Base"))
+      .map {
+        $0.reduce([String: [String: String]]()) { accum, localeAndStrings in
+          let (locale, strings) = localeAndStrings
+          return accum.merging([locale: flatten(strings)]) { $1 }
+        }
+    }
+  }()
 }
