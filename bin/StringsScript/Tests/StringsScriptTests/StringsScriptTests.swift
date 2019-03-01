@@ -12,10 +12,10 @@ final class StringsScriptTests: XCTestCase {
     self.subject = Strings()
   }
 
-  func testStringsFileContents()  {
-    let strings = ["Save": "Save"]
+  func testStringsFileContents() {
+    let strings = ["Add_attachments": "Add attachments…"]
     let content = self.subject?.stringsFileContents(strings)
-    XCTAssertEqual(content, "\"Save\" = \"Save\";")
+    XCTAssertEqual(content, "\"Add_attachments\" = \"Add attachments…\";")
   }
 
   func testLocalePathsAndContents() {
