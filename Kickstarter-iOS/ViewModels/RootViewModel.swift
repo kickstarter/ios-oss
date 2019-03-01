@@ -5,6 +5,72 @@ import ReactiveSwift
 import Result
 import UIKit
 
+internal enum RootViewControllerData: Equatable {
+  case discovery
+  case activities
+  case search
+  case dashboard(isMember: Bool)
+  case profile(isLoggedIn: Bool)
+
+  var viewController: UIViewController? {
+    switch self {
+    case .discovery:
+      return DiscoveryViewController.instantiate()
+    case .activities:
+      return ActivitiesViewController.instantiate()
+    case.search:
+      return SearchViewController.instantiate()
+    case .dashboard(let isMember):
+      return isMember ? DashboardViewController.instantiate() : nil
+    case .profile(let isLoggedIn):
+      return isLoggedIn
+        ? BackerDashboardViewController.instantiate()
+        : LoginToutViewController.configuredWith(loginIntent: .generic)
+    }
+  }
+
+  static func == (lhs: RootViewControllerData, rhs: RootViewControllerData) -> Bool {
+    switch (lhs, rhs) {
+    case (.discovery, .discovery): return true
+    case (.activities, .activities): return true
+    case (.search, .search): return true
+    case (.dashboard(let lhsIsMember), .dashboard(let rhsIsMember)):
+      return lhsIsMember == rhsIsMember
+    case (.profile(let lhsIsLoggedIn), .profile(let rhsIsLoggedIn)):
+      return lhsIsLoggedIn == rhsIsLoggedIn
+    default:
+      return false
+    }
+  }
+
+  var isNil: Bool {
+    switch self {
+    case .dashboard(let isMember):
+      return !isMember
+    default:
+      return false
+    }
+  }
+
+  var isDashBoard: Bool {
+    switch self {
+    case .dashboard:
+      return true
+    default:
+      return false
+    }
+  }
+
+  var isProfile: Bool {
+    switch self {
+    case .profile:
+      return true
+    default:
+      return false
+    }
+  }
+}
+
 internal struct TabBarItemsData {
   internal let items: [TabBarItem]
   internal let isLoggedIn: Bool
@@ -62,20 +128,20 @@ internal protocol RootViewModelInputs {
 
 internal protocol RootViewModelOutputs {
   /// Emits when the discovery VC should filter with specific params.
-  var filterDiscovery: Signal<(DiscoveryViewController, DiscoveryParams), NoError> { get }
+  var filterDiscovery: Signal<(Int, DiscoveryParams), NoError> { get }
 
-  /// Emits a controller that should be scrolled to the top. This requires figuring out what kind of
+  /// Emits a controller index that should be scrolled to the top. This requires figuring out what kind of
   /// controller it is, and setting its `contentOffset`.
-  var scrollToTop: Signal<UIViewController, NoError> { get }
+  var scrollViewControllerAtIndexToTop: Signal<Int, NoError> { get }
 
   /// Emits an index that the tab bar should be switched to.
   var selectedIndex: Signal<Int, NoError> { get }
 
   /// Emits the array of view controllers that should be set on the tab bar.
-  var setViewControllers: Signal<[UIViewController], NoError> { get }
+  var setViewControllers: Signal<[RootViewControllerData], NoError> { get }
 
   /// Emits when the dashboard should switch projects.
-  var switchDashboardProject: Signal<(DashboardViewController, Param), NoError> { get }
+  var switchDashboardProject: Signal<(Int, Param), NoError> { get }
 
   /// Emits data for setting tab bar item styles.
   var tabBarItemsData: Signal<TabBarItemsData, NoError> { get }
@@ -103,25 +169,22 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     let standardViewControllers = self.viewDidLoadProperty.signal.map { generateStandardViewControllers() }
     let personalizedViewControllers = userState.map { generatePersonalizedViewControllers(userState: $0) }
-      .map { $0.compact() }
 
     let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
 
     let refreshedViewControllers = userState.takeWhen(self.userLocalePreferencesChangedProperty.signal)
-      .map { userState -> [UIViewController?] in
+      .map { userState -> [RootViewControllerData] in
         let standard = generateStandardViewControllers()
         let personalized = generatePersonalizedViewControllers(userState: userState)
 
-        return [standard, personalized].flatMap { $0 }
+        return standard + personalized
       }
-      .map { $0.compact() }
 
     self.setViewControllers = Signal.merge(
       viewControllers,
       refreshedViewControllers
-    ).map {
-        $0.map(UINavigationController.init(rootViewController:))
-    }
+    )
+    .map { $0.filter { !$0.isNil } }
 
     let loginState = userState.map { $0.isLoggedIn }
     let vcCount = self.setViewControllers.map { $0.count }
@@ -136,20 +199,19 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .filter { isTrue($1) }
       .map(first)
 
-    let discovery = viewControllers
-      .map(first(DiscoveryViewController.self))
+    let discoveryControllerIndex = self.setViewControllers
+      .map { $0.index(of: .discovery) }
       .skipNil()
 
-    self.filterDiscovery = discovery
+    self.filterDiscovery = discoveryControllerIndex
       .takePairWhen(self.switchToDiscoveryProperty.signal.skipNil())
 
-    let dashboard = viewControllers
-      .map(first(DashboardViewController.self))
+    let dashboardControllerIndex = self.setViewControllers
+      .map { $0.index(where: { $0.isDashBoard }) }
       .skipNil()
 
-    self.switchDashboardProject =
-      Signal.combineLatest(dashboard, self.switchToDashboardProperty.signal.skipNil(),
-        loginState)
+    self.switchDashboardProject = Signal
+      .combineLatest(dashboardControllerIndex, self.switchToDashboardProperty.signal.skipNil(), loginState)
         .filter { _, _, loginState in
           isTrue(loginState)
         }
@@ -157,38 +219,29 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
           (dashboard, param)
     }
 
-    self.selectedIndex =
-      Signal.combineLatest(
-        .merge(
-          self.viewDidLoadProperty.signal.mapConst(0),
-          self.didSelectIndexProperty.signal,
-          self.switchToActivitiesProperty.signal.mapConst(1),
-          self.switchToDiscoveryProperty.signal.mapConst(0),
-          self.switchToSearchProperty.signal.mapConst(2),
-          switchToLogin,
-          switchToProfile,
-          self.switchToDashboardProperty.signal.mapConst(3)
-        ),
-        self.setViewControllers,
-        self.viewDidLoadProperty.signal)
-        .map { idx, vcs, _ in clamp(0, vcs.count - 1)(idx) }
+    self.selectedIndex = Signal.combineLatest(
+      .merge(
+        self.viewDidLoadProperty.signal.mapConst(0),
+        self.didSelectIndexProperty.signal,
+        self.switchToActivitiesProperty.signal.mapConst(1),
+        self.switchToDiscoveryProperty.signal.mapConst(0),
+        self.switchToSearchProperty.signal.mapConst(2),
+        switchToLogin,
+        switchToProfile,
+        self.switchToDashboardProperty.signal.mapConst(3)
+      ),
+      self.setViewControllers,
+      self.viewDidLoadProperty.signal
+    )
+    .map { idx, vcs, _ in clamp(0, vcs.count - 1)(idx) }
 
     let shouldSelectIndex = self.shouldSelectIndexProperty.signal
       .skipNil()
 
-    let selectedTabAgain = self.selectedIndex
+    self.scrollViewControllerAtIndexToTop = self.selectedIndex
       .takePairWhen(shouldSelectIndex)
       .filter { prev, next in prev == next }
       .map { $1 }
-
-    self.scrollToTop = Signal.combineLatest(
-      self.setViewControllers,
-      selectedTabAgain
-      )
-      .filter { vcs, idx in idx < vcs.count }
-      .map { vcs, idx in vcs[idx] }
-      .map(extractViewController)
-      .skipNil()
 
     self.tabBarItemsData = Signal.combineLatest(currentUser, .merge(
       self.viewDidLoadProperty.signal,
@@ -256,33 +309,24 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     self.viewDidLoadProperty.value = ()
   }
 
-  internal let filterDiscovery: Signal<(DiscoveryViewController, DiscoveryParams), NoError>
-  internal let scrollToTop: Signal<UIViewController, NoError>
+  internal let filterDiscovery: Signal<(Int, DiscoveryParams), NoError>
+  internal let scrollViewControllerAtIndexToTop: Signal<Int, NoError>
   internal let selectedIndex: Signal<Int, NoError>
-  internal let setViewControllers: Signal<[UIViewController], NoError>
-  internal let switchDashboardProject: Signal<(DashboardViewController, Param), NoError>
+  internal let setViewControllers: Signal<[RootViewControllerData], NoError>
+  internal let switchDashboardProject: Signal<(Int, Param), NoError>
   internal let tabBarItemsData: Signal<TabBarItemsData, NoError>
 
   internal var inputs: RootViewModelInputs { return self }
   internal var outputs: RootViewModelOutputs { return self }
 }
 
-private func generateStandardViewControllers() -> [UIViewController] {
-  return [
-    DiscoveryViewController.instantiate(),
-    ActivitiesViewController.instantiate(),
-    SearchViewController.instantiate()
-  ]
+private func generateStandardViewControllers() -> [RootViewControllerData] {
+  return [.discovery, .activities, .search]
 }
 
 private func generatePersonalizedViewControllers(userState: (isMember: Bool, isLoggedIn: Bool))
-  -> [UIViewController?] {
-  let dashboardViewController: UIViewController? = userState.isMember
-    ? DashboardViewController.instantiate() : nil
-  let loginProfileViewController: UIViewController = userState.isLoggedIn
-    ? profileController() : LoginToutViewController.configuredWith(loginIntent: .generic)
-
-  return [dashboardViewController, loginProfileViewController]
+  -> [RootViewControllerData] {
+  return [.dashboard(isMember: userState.isMember), .profile(isLoggedIn: userState.isLoggedIn)]
 }
 
 private func tabData(forUser user: User?) -> TabBarItemsData {
@@ -322,27 +366,5 @@ extension TabBarItem: Equatable {
       return lhs == rhs
     default: return false
     }
-  }
-}
-
-private func first<VC: UIViewController>(_ viewController: VC.Type) -> ([UIViewController]) -> VC? {
-
-  return { viewControllers in
-    viewControllers
-      .index { $0 is VC }
-      .flatMap { viewControllers[$0] as? VC }
-  }
-}
-
-private func profileController() -> UIViewController {
-
-  return BackerDashboardViewController.instantiate()
-}
-
-private func extractViewController(_ viewController: UIViewController) -> UIViewController? {
-  if let navigationController = viewController as? UINavigationController {
-    return navigationController.viewControllers.count == 1 ? navigationController.viewControllers.first : nil
-  } else {
-    return viewController
   }
 }
