@@ -77,6 +77,7 @@
                 <outlet property="emailNotificationsButton" destination="9Nh-JE-XGT" id="cA3-CX-4bx"/>
                 <outlet property="projectCountLabel" destination="jI4-Cx-hUh" id="329-Yb-SOH"/>
                 <outlet property="pushNotificationsButton" destination="91p-HN-64I" id="FEZ-Fn-URt"/>
+                <outlet property="stackView" destination="iuS-VI-vmP" id="ns0-e1-CFO"/>
                 <outlet property="titleLabel" destination="PoD-oO-miz" id="RG9-wm-zqY"/>
             </connections>
             <point key="canvasLocation" x="-97" y="-17"/>
