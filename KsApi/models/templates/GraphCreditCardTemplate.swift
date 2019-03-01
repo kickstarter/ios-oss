@@ -35,7 +35,7 @@ extension GraphUserCreditCard {
   public static let generic = GraphUserCreditCard.CreditCard(expirationDate: "2024-01-12",
                                                              id: "7",
                                                              lastFour: "1882",
-                                                             type: nil)
+                                                             type: .generic)
 
   public static let template = GraphUserCreditCard(
     storedCards: CreditCardConnection(nodes: [GraphUserCreditCard.amex,
