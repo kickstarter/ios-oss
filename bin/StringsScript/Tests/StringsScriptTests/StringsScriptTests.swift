@@ -2,6 +2,7 @@ import XCTest
 import StringsScriptCore
 import class Foundation.Bundle
 
+//swiftlint:disable:next line_length
 final class StringsScriptTests: XCTestCase {
 
   var subject: Strings?
@@ -31,8 +32,7 @@ final class StringsScriptTests: XCTestCase {
   }
 
   func testStaticStringsFileContents() {
-    let dic = ["Base":
-      ["Are_you_sure_you_wish_to_remove_this_card" : "Are you sure you wish to remove this card from your payment method options?"]]
+    let dic = ["Base": ["Are_you_sure_you_wish_to_remove_this_card": "Are you sure you wish to remove this card from your payment method options?"]]
 
     self.subject?.stringsByLocale = dic
     let generatedString =
