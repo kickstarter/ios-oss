@@ -13,6 +13,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
   @IBOutlet fileprivate weak var emailNotificationsButton: UIButton!
   @IBOutlet fileprivate weak var projectCountLabel: UILabel!
   @IBOutlet fileprivate weak var pushNotificationsButton: UIButton!
+  @IBOutlet fileprivate weak var stackView: UIStackView!
   @IBOutlet fileprivate weak var titleLabel: UILabel!
 
   weak var delegate: SettingsNotificationCellDelegate?
@@ -31,21 +32,29 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
   func configureWith(value cellValue: SettingsNotificationCellValue) {
     self.notificationType = cellValue.cellType
 
-    viewModel.inputs.configure(with: cellValue)
+    self.viewModel.inputs.configure(with: cellValue)
+
+    let accessibilityElementsHidden = cellValue.cellType.accessibilityElementsHidden
 
     _ = self
       |> \.accessibilityTraits .~ cellValue.cellType.accessibilityTraits
 
-    _ = titleLabel
+    _ = self.stackView
+      |> \.accessibilityElements .~ (
+        accessibilityElementsHidden ? [self.emailNotificationsButton, self.pushNotificationsButton] : nil
+    )
+
+    _ = self.titleLabel
       |> UILabel.lens.text .~ cellValue.cellType.title
       |> \.accessibilityElementsHidden .~ cellValue.cellType.accessibilityElementsHidden
 
-    _ = arrowImageView
+    _ = self.arrowImageView
       |> UIImageView.lens.isHidden .~ cellValue.cellType.shouldHideArrowView
       |> UIImageView.lens.tintColor .~ .ksr_dark_grey_400
 
-    _ = projectCountLabel
+    _ = self.projectCountLabel
       |> UILabel.lens.isHidden .~ cellValue.cellType.projectCountLabelHidden
+      |> \.accessibilityElementsHidden .~ accessibilityElementsHidden
   }
 
   override func bindStyles() {
@@ -54,10 +63,10 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
 
-    _ = titleLabel
+    _ = self.titleLabel
       |> settingsTitleLabelStyle
 
-    _ = projectCountLabel
+    _ = self.projectCountLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ .ksr_body()
 
@@ -98,7 +107,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     self.pushNotificationsButton.rac.accessibilityLabel =
       viewModel.outputs.pushNotificationsButtonAccessibilityLabel
 
-    viewModel.outputs.enableButtonAnimation
+    self.viewModel.outputs.enableButtonAnimation
     .observeForUI()
     .observeValues { [weak self] enableAnimation in
       guard let _self = self else { return }
@@ -109,14 +118,14 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
         }
     }
 
-    viewModel.outputs.updateCurrentUser
+    self.viewModel.outputs.updateCurrentUser
       .observeForControllerAction()
       .observeValues { [weak self] (user) in
         guard let _self = self else { return }
         _self.delegate?.settingsNotificationCell(_self, didUpdateUser: user)
     }
 
-    viewModel.outputs.unableToSaveError
+    self.viewModel.outputs.unableToSaveError
       .observeForControllerAction()
       .observeValues { [weak self] (errorString) in
         guard let _self = self else { return }

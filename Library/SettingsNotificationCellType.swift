@@ -83,7 +83,7 @@ public enum SettingsNotificationCellType {
 
   public var accessibilityElementsHidden: Bool {
     switch self {
-    case .projectNotifications, .emailFrequency:
+    case .projectNotifications:
       return false
     default:
       return true
