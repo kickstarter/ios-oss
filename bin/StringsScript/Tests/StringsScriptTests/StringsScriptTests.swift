@@ -2,7 +2,7 @@ import XCTest
 import StringsScriptCore
 import class Foundation.Bundle
 
-//swiftlint:disable:next line_length
+// swiftlint:disable line_length
 final class StringsScriptTests: XCTestCase {
 
   var subject: Strings?
