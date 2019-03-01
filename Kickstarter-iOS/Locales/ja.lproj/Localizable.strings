@@ -117,6 +117,7 @@
 "Discover_the_future_of_Design_and_Tech" = "デザインとテクノロジーの未来を覗いてみよう。";
 "Dismiss" = "破棄";
 "Done" = "完了";
+"Double_tap_to_toggle_setting" = "Double tap to toggle setting";
 "Download_your_personal_data" = "自分の個人データをダウンロード";
 "Earth" = "全世界";
 "Edit_profile" = "プロフィールを編集";
@@ -273,6 +274,10 @@
 "Not_delivered" = "未配送";
 "Not_followed" = "フォローしてない";
 "Not_now" = "後で";
+"Notification_email_notification_off" = "%{notification}, email notification, off";
+"Notification_email_notification_on" = "%{notification}, email notification, on";
+"Notification_push_notification_off" = "%{notification}, push notification, off";
+"Notification_push_notification_on" = "%{notification}, push notification, on";
 "Notifications" = "通知";
 "Once_you_back_a_project_well_share" = "プロジェクトをバックするとこのスペースにあなたへのオススメを表示します";
 "Only_amount_of_time_left_to_watch_this" = "あと%{amount_of_time} のみ視聴可能";
@@ -371,7 +376,7 @@
 "Rewards_count_rewards_colon.one" = "%{rewards_count} 種類のリワード";
 "Rewards_count_rewards_colon.two" = "%{rewards_count} 種類のリワード";
 "Rewards_count_rewards_colon.zero" = "%{rewards_count} 種類のリワード";
-"Save" = "救う";
+"Save" = "保存";
 "Save_projects" = "プロジェクトを保存";
 "Save_this_project" = "プロジェクトを保存";
 "Saved" = "保存済";
