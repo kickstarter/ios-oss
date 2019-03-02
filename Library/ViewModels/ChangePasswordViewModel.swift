@@ -48,30 +48,22 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       .merge(self.currentPasswordProperty.signal,
              self.onePasswordPrefillPasswordProperty.signal.skipNil())
 
-    let fieldsNotEmpty = Signal
-      .combineLatest(
-        currentPasswordSignal,
-        self.newPasswordProperty.signal,
-        self.confirmNewPasswordProperty.signal)
-      .map { valuesInFields in
-        return !valuesInFields.0.isEmpty && !valuesInFields.1.isEmpty && !valuesInFields.2.isEmpty
-    }
+    let fieldsNotEmpty = Signal.combineLatest(
+      currentPasswordSignal,
+      self.newPasswordProperty.signal,
+      self.confirmNewPasswordProperty.signal
+      )
+      .map(passwordFieldsNotEmpty)
 
-    let passwordsMatch: Signal<Bool, NoError> = combinedPasswords
-      .map { (newPassword, confirmNewPassword) -> Bool in
-        return newPassword == confirmNewPassword
-    }
+    let passwordsMatching = combinedPasswords.map(passwordsMatch)
 
-    let lengthMeetsReq: Signal<Bool, NoError> = self.newPasswordProperty.signal
-      .map { newPassword -> Bool in
-        return newPassword.count > 5
-    }
+    let lengthMeetsReq = self.newPasswordProperty.signal.map(passwordLengthValid)
 
-    self.saveButtonIsEnabled = Signal
-      .combineLatest(fieldsNotEmpty, passwordsMatch, lengthMeetsReq)
-      .map { requirements in
-        return requirements.0 && requirements.1 && requirements.2
-    }.skipRepeats()
+    let validationForm = Signal.combineLatest(fieldsNotEmpty, passwordsMatching, lengthMeetsReq)
+      .map(passwordFormValid)
+      .skipRepeats()
+
+    self.saveButtonIsEnabled = validationForm
 
     let autoSaveSignal = self.saveButtonIsEnabled
       .takeWhen(self.confirmNewPasswordDoneEditingProperty.signal)
@@ -115,21 +107,12 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.onePasswordFindPasswordForURLString = self.onePasswordButtonTappedProperty.signal
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
 
-    self.validationErrorLabelIsHidden = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
-      .map { $0.0 && $0.1 }
-      .skipRepeats()
+    self.validationErrorLabelIsHidden = validationForm
 
-    self.validationErrorLabelMessage = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
-      .map { requirements -> String? in
-        if !requirements.1 {
-          return Strings.Password_min_length_message()
-        } else if !requirements.0 {
-          return Strings.Passwords_matching_message()
-        } else {
-          return nil
-        }
-    }.skipNil()
-    .skipRepeats()
+    self.validationErrorLabelMessage = Signal.combineLatest(passwordsMatching, lengthMeetsReq)
+      .map(passwordValidationText)
+      .skipNil()
+      .skipRepeats()
 
     self.viewDidAppearProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackChangePasswordView() }
@@ -214,4 +197,10 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public var outputs: ChangePasswordViewModelOutputs {
     return self
   }
+}
+
+// MARK: - Functions
+
+private func passwordFieldsNotEmpty(_ pwds: (first: String, second: String, third: String)) -> Bool {
+  return !pwds.first.isEmpty && !pwds.second.isEmpty && !pwds.third.isEmpty
 }

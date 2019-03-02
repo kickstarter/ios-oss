@@ -28,4 +28,31 @@ final class CreatePasswordViewControllerTests: TestCase {
       }
     }
   }
+
+  func testNewPasswordTextFieldTargetActions() {
+    let vc = MockCreatePasswordViewController()
+    let actions = textFieldTargetActions(for: vc, row: .newPassword)
+
+    XCTAssertEqual(vc, actions[0].target as? MockCreatePasswordViewController)
+    XCTAssertTrue(sel_isEqual(actions[0].action, #selector(vc.newPasswordTextFieldChanged(_:))))
+    XCTAssertEqual(vc, actions[1].target as? MockCreatePasswordViewController)
+    XCTAssertTrue(sel_isEqual(actions[1].action, #selector(vc.newPasswordTextFieldDidReturn(_:))))
+  }
+
+  func testNewPasswordConfirmationTextFieldTargetActions() {
+    let vc = MockCreatePasswordViewController()
+    let actions = textFieldTargetActions(for: vc, row: .confirmNewPassword)
+
+    XCTAssertEqual(vc, actions[0].target as? MockCreatePasswordViewController)
+    XCTAssertTrue(sel_isEqual(actions[0].action, #selector(vc.newPasswordConfirmationTextFieldChanged(_:))))
+    XCTAssertEqual(vc, actions[1].target as? MockCreatePasswordViewController)
+    XCTAssertTrue(sel_isEqual(actions[1].action, #selector(vc.newPasswordConfirmationTextFieldDidReturn(_:))))
+  }
+}
+
+fileprivate final class MockCreatePasswordViewController: UIViewController, CreatePasswordViewControllerType {
+  @objc func newPasswordTextFieldChanged(_ sender: UITextField) { }
+  @objc func newPasswordTextFieldDidReturn(_ sender: UITextField) { }
+  @objc func newPasswordConfirmationTextFieldChanged(_ sender: UITextField) { }
+  @objc func newPasswordConfirmationTextFieldDidReturn(_ sender: UITextField) { }
 }
