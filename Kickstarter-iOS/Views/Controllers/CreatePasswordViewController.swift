@@ -42,7 +42,7 @@ final class CreatePasswordViewController: UITableViewController {
   private let viewModel: CreatePasswordViewModelType = CreatePasswordViewModel()
   private weak var newPasswordTextField: UITextField?
   private weak var newPasswordConfirmationTextField: UITextField?
-  private weak var footerView: SettingsGroupedFooterView?
+  private weak var groupedFooterView: SettingsGroupedFooterView?
 
   private lazy var rightBarButtonItem: UIBarButtonItem = {
     UIBarButtonItem(barButtonSystemItem: .save, target: nil, action: nil)
@@ -105,7 +105,7 @@ final class CreatePasswordViewController: UITableViewController {
     self.viewModel.outputs.validationLabelIsHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
-        self?.footerView?.isHidden = isHidden
+        self?.groupedFooterView?.isHidden = isHidden
     }
 
     self.viewModel.outputs.validationLabelText
@@ -113,7 +113,7 @@ final class CreatePasswordViewController: UITableViewController {
       .observeValues { [weak self] text in
         UIView.performWithoutAnimation {
           self?.tableView.beginUpdates()
-          self?.footerView?.configure(with: text)
+          self?.groupedFooterView?.configure(with: text)
           self?.tableView.endUpdates()
         }
     }
@@ -123,23 +123,6 @@ final class CreatePasswordViewController: UITableViewController {
       .observeValues { [weak self] isEnabled in
         self?.navigationItem.rightBarButtonItem?.isEnabled = isEnabled
     }
-  }
-
-  func bind(cell: UITableViewCell, for row: CreatePasswordRow) {
-    guard let textInputCell = cell as? SettingsTextInputCell else { return }
-
-    switch row {
-    case .newPassword:
-      self.newPasswordTextField = textInputCell.textField
-    case .confirmNewPassword:
-      self.newPasswordConfirmationTextField = textInputCell.textField
-    }
-  }
-
-  func bind(footerView: UIView) {
-    guard let groupedFooterView = footerView as? SettingsGroupedFooterView else { return }
-
-    self.footerView = groupedFooterView
   }
 
   // MARK: - UITableViewDataSource
@@ -194,11 +177,21 @@ final class CreatePasswordViewController: UITableViewController {
 
   // swiftlint:disable line_length
   override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    self.bind(cell: cell, for: CreatePasswordRow.allCases[indexPath.row])
+    guard let textInputCell = cell as? SettingsTextInputCell else { return }
+
+    let row = CreatePasswordRow.allCases[indexPath.row]
+    switch row {
+    case .newPassword:
+      self.newPasswordTextField = textInputCell.textField
+    case .confirmNewPassword:
+      self.newPasswordConfirmationTextField = textInputCell.textField
+    }
   }
 
   override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-    self.bind(footerView: view)
+    guard let groupedFooterView = view as? SettingsGroupedFooterView else { return }
+
+    self.groupedFooterView = groupedFooterView
   }
   // swiftlint:enable line_length
 }
