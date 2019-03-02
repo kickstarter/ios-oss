@@ -7,7 +7,7 @@ final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
 
   static var defaultHeight: CGFloat = 44
 
-  private(set) lazy var label: UILabel = {
+  private lazy var label: UILabel = {
     UILabel(frame: .zero)
       |> settingsHeaderFooterLabelBaseStyle
   }()
