@@ -12,6 +12,7 @@ public protocol CreatePasswordViewModelInputs {
 }
 
 public protocol CreatePasswordViewModelOutputs {
+  var accessibilityFocusValidationLabel: Signal<Void, NoError> { get }
   var newPasswordTextFieldBecomeFirstResponder: Signal<Void, NoError> { get }
   var newPasswordConfirmationTextFieldBecomeFirstResponder: Signal<Void, NoError> { get }
   var newPasswordConfirmationTextFieldResignFirstResponder: Signal<Void, NoError> { get }
@@ -58,6 +59,16 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
       .map(passwordFormValid)
       .skipRepeats()
 
+    let inputsChanged = Signal.merge(
+      self.newPasswordChangedProperty.signal, self.newPasswordConfirmationChangedProperty.signal
+    )
+
+    self.accessibilityFocusValidationLabel = validationForm
+      .takeWhen(inputsChanged)
+      .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
+      .filter(isFalse)
+      .ignoreValues()
+
     self.validationLabelIsHidden = validationForm
     self.saveButtonIsEnabled = validationForm
   }
@@ -82,6 +93,7 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
     self.newPasswordConfirmationDidReturnProperty.value = ()
   }
 
+  public let accessibilityFocusValidationLabel: Signal<Void, NoError>
   public let newPasswordTextFieldBecomeFirstResponder: Signal<Void, NoError>
   public let newPasswordConfirmationTextFieldBecomeFirstResponder: Signal<Void, NoError>
   public let newPasswordConfirmationTextFieldResignFirstResponder: Signal<Void, NoError>

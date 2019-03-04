@@ -90,6 +90,12 @@ final class CreatePasswordViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.accessibilityFocusValidationLabel
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        UIAccessibility.post(notification: .layoutChanged, argument: self?.groupedFooterView?.label)
+    }
+
     self.viewModel.outputs.newPasswordConfirmationTextFieldBecomeFirstResponder
       .observeForUI()
       .observeValues { [weak self] in
