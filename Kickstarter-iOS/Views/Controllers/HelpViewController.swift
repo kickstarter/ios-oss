@@ -38,6 +38,7 @@ final class HelpViewController: UIViewController {
 
     _ = tableView
       |> settingsTableViewStyle
+      |> settingsTableViewSeparatorStyle
   }
 
   override func bindViewModel() {
