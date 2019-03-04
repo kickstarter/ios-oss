@@ -140,6 +140,8 @@ extension SettingsAccountViewController: UITableViewDelegate {
 extension SettingsAccountViewController {
   static func viewController(for cellType: SettingsAccountCellType, currency: Currency) -> UIViewController? {
     switch cellType {
+    case .createPassword:
+      return CreatePasswordViewController.instantiate()
     case .changeEmail:
       return ChangeEmailViewController.instantiate()
     case .changePassword:
@@ -152,8 +154,6 @@ extension SettingsAccountViewController {
       let vc = SelectCurrencyViewController.instantiate()
       vc.configure(with: currency)
       return vc
-    default:
-      return nil
     }
   }
 }
