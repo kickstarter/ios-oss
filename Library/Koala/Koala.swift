@@ -1880,6 +1880,7 @@ public final class Koala {
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["screen_height"] = UInt(self.screen.bounds.height)
     props["device_orientation"] = Koala.deviceOrientation
+    props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
     props["preferred_content_size_category"] = self.preferredContentSizeCategory
 
     props["mp_lib"] = "kickstarter_ios"

@@ -117,6 +117,7 @@
 "Discover_the_future_of_Design_and_Tech" = "Entdecke das Neueste in Design und Technologie.";
 "Dismiss" = "Verwerfen";
 "Done" = "Fertig!";
+"Double_tap_to_toggle_setting" = "Double tap to toggle setting";
 "Download_your_personal_data" = "Lade deine persönlichen Daten herunter";
 "Earth" = "Erde";
 "Edit_profile" = "Profil bearbeiten";
@@ -273,6 +274,10 @@
 "Not_delivered" = "Nicht verschickt";
 "Not_followed" = "Nicht abonniert";
 "Not_now" = "Nicht jetzt";
+"Notification_email_notification_off" = "%{notification}, email notification, off";
+"Notification_email_notification_on" = "%{notification}, email notification, on";
+"Notification_push_notification_off" = "%{notification}, push notification, off";
+"Notification_push_notification_on" = "%{notification}, push notification, on";
 "Notifications" = "Benachrichtigungen";
 "Once_you_back_a_project_well_share" = "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen.";
 "Only_amount_of_time_left_to_watch_this" = "Nur noch %{amount_of_time} live!";
