@@ -10,8 +10,8 @@ public func passwordLengthValid(_ pw: Password) -> Bool {
   return pw.count > 5
 }
 
-public func passwordFormValid(_ requirements: (empty: Bool, match: Bool, length: Bool)) -> Bool {
-  return requirements.empty && requirements.match && requirements.length
+public func passwordFormValid(_ requirements: (notEmpty: Bool, match: Bool, length: Bool)) -> Bool {
+  return requirements.notEmpty && requirements.match && requirements.length
 }
 
 public func passwordValidationText(_ requirements: (match: Bool, length: Bool)) -> String? {

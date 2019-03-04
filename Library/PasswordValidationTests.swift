@@ -19,14 +19,14 @@ public final class PasswordValidationTests: XCTestCase {
   }
 
   func testPasswordFormValidation() {
-    XCTAssertFalse(passwordFormValid((empty: false, match: false, length: false)))
-    XCTAssertFalse(passwordFormValid((empty: false, match: false, length: true)))
-    XCTAssertFalse(passwordFormValid((empty: false, match: true, length: false)))
-    XCTAssertFalse(passwordFormValid((empty: true, match: false, length: false)))
-    XCTAssertFalse(passwordFormValid((empty: false, match: true, length: true)))
-    XCTAssertFalse(passwordFormValid((empty: true, match: true, length: false)))
-    XCTAssertFalse(passwordFormValid((empty: true, match: false, length: true)))
-    XCTAssertTrue(passwordFormValid((empty: true, match: true, length: true)))
+    XCTAssertFalse(passwordFormValid((notEmpty: false, match: false, length: false)))
+    XCTAssertFalse(passwordFormValid((notEmpty: false, match: false, length: true)))
+    XCTAssertFalse(passwordFormValid((notEmpty: false, match: true, length: false)))
+    XCTAssertFalse(passwordFormValid((notEmpty: true, match: false, length: false)))
+    XCTAssertFalse(passwordFormValid((notEmpty: false, match: true, length: true)))
+    XCTAssertFalse(passwordFormValid((notEmpty: true, match: true, length: false)))
+    XCTAssertFalse(passwordFormValid((notEmpty: true, match: false, length: true)))
+    XCTAssertTrue(passwordFormValid((notEmpty: true, match: true, length: true)))
   }
 
   func testPasswordValidationText() {
