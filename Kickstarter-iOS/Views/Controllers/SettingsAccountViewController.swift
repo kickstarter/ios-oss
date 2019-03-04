@@ -129,9 +129,10 @@ extension SettingsAccountViewController: UITableViewDelegate {
 
     let footerView = tableView.dequeueReusableHeaderFooterView(
       withClass: SettingsGroupedFooterView.self) as? SettingsGroupedFooterView
-    footerView?.configure(with:
-      Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: userEmail)
-    )
+
+    let text = Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: userEmail)
+
+    footerView?.label.text = text
     return footerView
   }
 }

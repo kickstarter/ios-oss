@@ -84,7 +84,6 @@
 		37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */; };
 		3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */; };
 		37877D0C22177D9D009CE4EE /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37877D0B22177D9D009CE4EE /* UIView+AutoLayout.swift */; };
-		37AF5E85221C87F700044363 /* HeaderFooterViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AF5E84221C87F700044363 /* HeaderFooterViewProtocol.swift */; };
 		37BFD8802208F24300815C9C /* CreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordViewController.swift */; };
 		37CBA64D221E10E100E6CAB6 /* HelpTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */; };
 		37D6722F221E61D300B6D415 /* SettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D671F6221E61B600B6D415 /* SettingsFooterView.swift */; };
@@ -1879,7 +1878,6 @@
 		37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedHeaderView.swift; sourceTree = "<group>"; };
 		3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextInputCell.swift; sourceTree = "<group>"; };
 		37877D0B22177D9D009CE4EE /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
-		37AF5E84221C87F700044363 /* HeaderFooterViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderFooterViewProtocol.swift; sourceTree = "<group>"; };
 		37BFD8472208F22C00815C9C /* CreatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewController.swift; sourceTree = "<group>"; };
 		37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTypeTests.swift; sourceTree = "<group>"; };
 		37D671F6221E61B600B6D415 /* SettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFooterView.swift; sourceTree = "<group>"; };
@@ -3319,7 +3317,6 @@
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
 				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
 				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
-				37AF5E84221C87F700044363 /* HeaderFooterViewProtocol.swift */,
 				D0CDA89E1E7434AF00AA3450 /* LiveStreamNavTitleView.swift */,
 				D0D2AA301E9623F4008D298A /* LiveStreamNavTitleViewTests.swift */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
@@ -6152,7 +6149,6 @@
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
 				D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */,
 				77F9A9B02135FB760082A11E /* FindFriendsCell.swift in Sources */,
-				37AF5E85221C87F700044363 /* HeaderFooterViewProtocol.swift in Sources */,
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift in Sources */,
 				D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */,

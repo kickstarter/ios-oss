@@ -7,7 +7,7 @@ final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
 
   static var defaultHeight: CGFloat = 44
 
-  private lazy var label: UILabel = {
+  private(set) lazy var label: UILabel = {
     UILabel(frame: .zero)
       |> settingsHeaderFooterLabelBaseStyle
   }()
@@ -34,14 +34,5 @@ final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
 
     _ = self.label
       |> settingsHeaderFooterLabelStyle
-  }
-}
-
-// MARK: - HeaderFooterViewProtocol
-
-extension SettingsGroupedFooterView: HeaderFooterViewProtocol {
-  func configure(with text: String?) {
-    _ = self.label
-      |> \.text .~ text
   }
 }
