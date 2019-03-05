@@ -117,6 +117,7 @@
 "Discover_the_future_of_Design_and_Tech" = "Tout sur l'avenir du design et de la technologie.";
 "Dismiss" = "Ignorer";
 "Done" = "Terminé";
+"Double_tap_to_toggle_setting" = "Double tap to toggle setting";
 "Download_your_personal_data" = "Téléchargement de vos données personnelles";
 "Earth" = "Terre";
 "Edit_profile" = "Modifier mon profil";
@@ -273,6 +274,10 @@
 "Not_delivered" = "Non distribué";
 "Not_followed" = "Non abonné";
 "Not_now" = "Pas maintenant";
+"Notification_email_notification_off" = "%{notification}, email notification, off";
+"Notification_email_notification_on" = "%{notification}, email notification, on";
+"Notification_push_notification_off" = "%{notification}, push notification, off";
+"Notification_push_notification_on" = "%{notification}, push notification, on";
 "Notifications" = "Notifications";
 "Once_you_back_a_project_well_share" = "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici.";
 "Only_amount_of_time_left_to_watch_this" = "Plus que %{amount_of_time} pour regarder cette diffusion.";
