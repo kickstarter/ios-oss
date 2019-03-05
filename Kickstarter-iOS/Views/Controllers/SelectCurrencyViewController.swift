@@ -126,14 +126,19 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     self.viewModel.outputs.didUpdateCurrency
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.messageBannerViewController?.showBanner(
-          with: .success,
-          message: Strings.Got_it_your_changes_have_been_saved()
-        )
+        self?.handleDidUpdateCurrency()
     }
   }
 
-  // MARK: Actions
+  // MARK: - Private Functions
+  private func handleDidUpdateCurrency() {
+    self.messageBannerViewController?.showBanner(with: .success,
+                                                 message: Strings.Got_it_your_changes_have_been_saved())
+
+    NotificationCenter.default.post(name: .ksr_userLocalePreferencesChanged, object: nil)
+  }
+
+  // MARK: - Actions
 
   @objc private func saveButtonTapped(_ sender: Any) {
     self.viewModel.inputs.saveButtonTapped()
