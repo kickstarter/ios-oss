@@ -42,7 +42,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var projectStateStackView: UIStackView!
   @IBOutlet fileprivate weak var projectStatsStackView: UIStackView!
   @IBOutlet fileprivate weak var saveButton: UIButton!
-  @IBOutlet fileprivate weak var socialAvatarImageView: UIImageView!
+  @IBOutlet fileprivate weak var socialAvatarImageView: CircleAvatarImageView!
   @IBOutlet fileprivate weak var socialLabel: UILabel!
   @IBOutlet fileprivate weak var socialStackView: UIStackView!
 
@@ -193,9 +193,6 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.saveButton
       |> discoverySaveButtonStyle
 
-    _ = self.socialAvatarImageView
-      |> UIImageView.lens.layer.shouldRasterize .~ true
-
     _ = self.socialLabel
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
@@ -205,7 +202,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMargins
-        .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
+        .~ .init(top: Styles.gridHalf(2), left: Styles.grid(2),
+                 bottom:  Styles.grid(2), right: Styles.grid(2))
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
   }
 
