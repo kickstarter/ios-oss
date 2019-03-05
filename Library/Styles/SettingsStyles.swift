@@ -59,6 +59,8 @@ public let settingsSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
   <> UISwitch.lens.tintColor .~ .ksr_grey_300
 
 public let notificationButtonStyle = UIButton.lens.layer.cornerRadius .~ 9
+  <> UIButton.lens.accessibilityHint %~ { _ in Strings.Double_tap_to_toggle_setting() }
+  <> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraits.none.rawValue
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_300.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.backgroundColor(for: .normal) .~ .white
@@ -72,6 +74,10 @@ public let settingsViewControllerStyle = baseControllerStyle()
 
 public let settingsTableViewStyle = UITableView.lens.backgroundColor .~ .ksr_grey_200
   <> UITableView.lens.separatorStyle .~ .none
+
+public let settingsTableViewSeparatorStyle = UITableView.lens.separatorStyle .~ .singleLine
+  <> \.separatorColor .~ .ksr_grey_400
+  <> \.separatorInset .~ .zero
 
 public func settingsAttributedPlaceholder(_ string: String) -> NSAttributedString {
   return NSAttributedString(
