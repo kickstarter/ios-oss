@@ -124,6 +124,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
       |> settingsPasswordFormFieldAutoFillStyle
       |> \.accessibilityLabel .~ self.passwordLabel.text
       |> \.returnKeyType .~ .done
+      |> \.enablesReturnKeyAutomatically .~ true
       |> \.attributedPlaceholder %~ { _ in
         settingsAttributedPlaceholder(Strings.login_placeholder_password())
     }

@@ -46,12 +46,9 @@ public protocol ChangeEmailViewModelType {
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
 ChangeEmailViewModelOutputs {
   public init() {
-    self.dismissKeyboard = Signal.merge(
-      self.textFieldShouldReturnProperty.signal.skipNil()
-        .filter { $0 == .done }
-        .ignoreValues(),
-      self.saveButtonTappedProperty.signal.ignoreValues()
-    )
+    self.dismissKeyboard = self.textFieldShouldReturnProperty.signal.skipNil()
+      .filter { $0 == .done }
+      .ignoreValues()
 
     let triggerSaveAction = Signal.merge(self.dismissKeyboard, self.saveButtonTappedProperty.signal)
 
