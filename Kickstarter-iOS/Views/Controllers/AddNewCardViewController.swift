@@ -25,7 +25,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   @IBOutlet private weak var zipcodeView: SettingsFormFieldView!
 
   private let supportedCardBrands: [STPCardBrand] = [.visa, .masterCard, .amex, .dinersClub,
-                                                     .discover, .JCB]
+                                                     .discover, .JCB, .unionPay]
 
   private var saveButtonView: LoadingBarButtonItemView!
 

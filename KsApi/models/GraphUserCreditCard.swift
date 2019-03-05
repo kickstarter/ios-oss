@@ -24,16 +24,17 @@ public struct GraphUserCreditCard: Swift.Decodable {
 
   public enum CreditCardType: String, Decodable, CaseIterable {
     case amex = "AMEX"
+    case diners = "DINERS"
     case discover = "DISCOVER"
     case jcb = "JCB"
     case mastercard = "MASTERCARD"
+    case unionPay = "UNION_PAY"
     case visa = "VISA"
-    case diners = "DINERS"
     case generic = "----"
 
     public var description: String? {
       switch self {
-      case .amex, .discover, .jcb, .mastercard, .visa, .diners:
+      case .amex, .discover, .jcb, .mastercard, .visa, .diners, .unionPay:
         return self.rawValue.capitalized
       default:
         return nil
