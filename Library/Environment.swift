@@ -95,6 +95,9 @@ public struct Environment {
   /// A user defaults key-value store. Default value is `NSUserDefaults.standard`.
   public let userDefaults: KeyValueStoreType
 
+  /// The environment variables
+  public let variables: EnvironmentVariables
+
   public init(
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
@@ -121,7 +124,8 @@ public struct Environment {
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
-    userDefaults: KeyValueStoreType = UserDefaults.standard) {
+    userDefaults: KeyValueStoreType = UserDefaults.standard,
+    variables: EnvironmentVariables = EnvironmentVariables()) {
 
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
@@ -149,5 +153,6 @@ public struct Environment {
     self.scheduler = scheduler
     self.ubiquitousStore = ubiquitousStore
     self.userDefaults = userDefaults
+    self.variables = variables
   }
 }
