@@ -55,7 +55,11 @@ internal final class SearchViewController: UITableViewController {
     )
 
     self.searchTextField.delegate = self
+    self.searchTextField.accessibilityIdentifier = AccessibilityIdentifier.Search.textField.rawValue
 
+    self.cancelButton.accessibilityIdentifier = AccessibilityIdentifier.Search.cancelButton.rawValue
+
+    self.tableView.accessibilityIdentifier = AccessibilityIdentifier.Search.tableView.rawValue
     self.viewModel.inputs.viewWillAppear(animated: animated)
   }
 

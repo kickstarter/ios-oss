@@ -24,19 +24,26 @@ internal class BaseTest: TestCase {
     return self.app.descendants(matching: type)
   }
 
-  func testTst() {
-    _ = RootTabBar.init()
+  func testTabBarButtonsTap() {
+    _ = RootTabBarPage()
       .tapActivity()
-      .tapSearch()
       .tapProfile()
+      .tapExplore()
+  }
+
+  func testSearch() {
+    _ = RootTabBarPage()
+      .tapSearch()
+      .search(for: "tabletop")
+      .tapCancelButton()
       .tapExplore()
   }
 }
 
 extension XCTestCase {
-  func wait(for element: XCUIElement, timeout: TimeInterval) {
+  func wait(for element: XCUIElement, timeout: TimeInterval? = nil) {
     let predicate = NSPredicate(format: "exists == 1")
     expectation(for: predicate, evaluatedWith: element)
-    waitForExpectations(timeout: timeout)
+    waitForExpectations(timeout: timeout ?? 5)
   }
 }

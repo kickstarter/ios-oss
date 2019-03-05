@@ -27,7 +27,7 @@ public final class RootTabBarViewController: UITabBarController {
   override public func viewDidLoad() {
     super.viewDidLoad()
     self.delegate = self
-    self.tabBar.accessibilityIdentifier = "root_tabBar"
+    self.tabBar.accessibilityIdentifier = AccessibilityIdentifier.RootTabBar.tabBar.rawValue
 
     self.sessionStartedObserver = NotificationCenter
       .default
@@ -174,21 +174,21 @@ public final class RootTabBarViewController: UITabBarController {
     data.items.forEach { item in
       switch item {
       case let .home(index):
-        let home = tabBarItem(atIndex: index) ?|> homeTabBarItemStyle(isMember: data.isMember)
-        home?.accessibilityIdentifier = "tabBar_home"
+        let explore = tabBarItem(atIndex: index) ?|> homeTabBarItemStyle(isMember: data.isMember)
+        explore?.accessibilityIdentifier = AccessibilityIdentifier.RootTabBar.explore.rawValue
       case let .activity(index):
         let activity = tabBarItem(atIndex: index) ?|> activityTabBarItemStyle(isMember: data.isMember)
-        activity?.accessibilityIdentifier = "tabBar_activity"
+        activity?.accessibilityIdentifier = AccessibilityIdentifier.RootTabBar.activity.rawValue
       case let .search(index):
         let search = tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
-        search?.accessibilityIdentifier = "tabBar_search"
+        search?.accessibilityIdentifier = AccessibilityIdentifier.RootTabBar.search.rawValue
       case let .dashboard(index):
         let dashboard = tabBarItem(atIndex: index) ?|> dashboardTabBarItemStyle
-        dashboard?.accessibilityIdentifier = "tabBar_dashboard"
+        dashboard?.accessibilityIdentifier = AccessibilityIdentifier.RootTabBar.dashboard.rawValue
       case let .profile(avatarUrl, index):
         let profile = tabBarItem(atIndex: index)
           ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember)
-        profile?.accessibilityIdentifier = "tabBar_profile"
+        profile?.accessibilityIdentifier = AccessibilityIdentifier.RootTabBar.profile.rawValue
 
         guard
           data.isLoggedIn == true,

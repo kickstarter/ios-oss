@@ -1059,12 +1059,15 @@
 		D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */; };
 		D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2551F75921500981E64 /* CategoryTemplates.swift */; };
 		D6CAB97B222E318500789C75 /* BaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CAB979222E318500789C75 /* BaseTest.swift */; };
-		D6CAB97C222E318500789C75 /* RootTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CAB97A222E318500789C75 /* RootTabBar.swift */; };
+		D6CAB97C222E318500789C75 /* RootTabBarPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CAB97A222E318500789C75 /* RootTabBarPage.swift */; };
 		D6CAB97D222E31E700789C75 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F461E831BA200BFFA01 /* TestCase.swift */; };
 		D6CAB97E222E31ED00789C75 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F451E831BA200BFFA01 /* MockBundle.swift */; };
 		D6CAB97F222E320B00789C75 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		D6CAB981222E328300789C75 /* Kickstarter_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CAB980222E328300789C75 /* Kickstarter_UITests.swift */; };
 		D6CAB9D3222E351100789C75 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
+		D6CAB9FD222EDC7B00789C75 /* SearchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CAB9FC222EDC7B00789C75 /* SearchPage.swift */; };
+		D6CABA38222F005F00789C75 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CABA37222F005E00789C75 /* AccessibilityIdentifier.swift */; };
+		D6CABA39222F00F800789C75 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CABA37222F005E00789C75 /* AccessibilityIdentifier.swift */; };
 		D6DC652F21768502008CF69C /* Queryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC652E21768502008CF69C /* Queryable.swift */; };
 		D6DC653321768B6E008CF69C /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */; };
 		D6DC65522178CDDD008CF69C /* GraphUserEmailTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */; };
@@ -2830,8 +2833,10 @@
 		D6CAB935222E315C00789C75 /* Kickstarter-UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kickstarter-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6CAB939222E315C00789C75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6CAB979222E318500789C75 /* BaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTest.swift; sourceTree = "<group>"; };
-		D6CAB97A222E318500789C75 /* RootTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabBar.swift; sourceTree = "<group>"; };
+		D6CAB97A222E318500789C75 /* RootTabBarPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabBarPage.swift; sourceTree = "<group>"; };
 		D6CAB980222E328300789C75 /* Kickstarter_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kickstarter_UITests.swift; sourceTree = "<group>"; };
+		D6CAB9FC222EDC7B00789C75 /* SearchPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPage.swift; sourceTree = "<group>"; };
+		D6CABA37222F005E00789C75 /* AccessibilityIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifier.swift; sourceTree = "<group>"; };
 		D6DC652E21768502008CF69C /* Queryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queryable.swift; sourceTree = "<group>"; };
 		D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmailTemplate.swift; sourceTree = "<group>"; };
@@ -4652,10 +4657,28 @@
 		D6CAB978222E316A00789C75 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
+				D6CABA36222F003C00789C75 /* Accessibility Identifiers */,
+				D6CABA35222F002800789C75 /* Pages */,
 				D6CAB979222E318500789C75 /* BaseTest.swift */,
-				D6CAB97A222E318500789C75 /* RootTabBar.swift */,
 			);
 			path = UITests;
+			sourceTree = "<group>";
+		};
+		D6CABA35222F002800789C75 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				D6CAB97A222E318500789C75 /* RootTabBarPage.swift */,
+				D6CAB9FC222EDC7B00789C75 /* SearchPage.swift */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		D6CABA36222F003C00789C75 /* Accessibility Identifiers */ = {
+			isa = PBXGroup;
+			children = (
+				D6CABA37222F005E00789C75 /* AccessibilityIdentifier.swift */,
+			);
+			path = "Accessibility Identifiers";
 			sourceTree = "<group>";
 		};
 		D6ED1B3C216D617E007F7547 /* inputs */ = {
@@ -6175,6 +6198,7 @@
 				598D96B81D426F70003F3F66 /* ActivitySampleProjectCell.swift in Sources */,
 				0169F9861D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift in Sources */,
 				A775B5471CA871D700BBB587 /* RootViewModel.swift in Sources */,
+				D6CABA39222F00F800789C75 /* AccessibilityIdentifier.swift in Sources */,
 				A7CC14421D00E74F00035C52 /* FindFriendsStatsCell.swift in Sources */,
 				77A3C53B219CCEBF00824FC1 /* SettingsAccountDataSource.swift in Sources */,
 				015A06F71D219513007AE210 /* DashboardRewardsCell.swift in Sources */,
@@ -6727,7 +6751,9 @@
 				D6CAB97B222E318500789C75 /* BaseTest.swift in Sources */,
 				D6CAB97D222E31E700789C75 /* TestCase.swift in Sources */,
 				D6CAB97F222E320B00789C75 /* MockPushRegistration.swift in Sources */,
-				D6CAB97C222E318500789C75 /* RootTabBar.swift in Sources */,
+				D6CABA38222F005F00789C75 /* AccessibilityIdentifier.swift in Sources */,
+				D6CAB97C222E318500789C75 /* RootTabBarPage.swift in Sources */,
+				D6CAB9FD222EDC7B00789C75 /* SearchPage.swift in Sources */,
 				D6CAB97E222E31ED00789C75 /* MockBundle.swift in Sources */,
 				D6CAB981222E328300789C75 /* Kickstarter_UITests.swift in Sources */,
 			);
