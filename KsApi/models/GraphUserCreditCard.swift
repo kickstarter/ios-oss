@@ -41,7 +41,9 @@ public struct GraphUserCreditCard: Swift.Decodable {
     }
 
     public init(from decoder: Decoder) throws {
-      self = try CreditCardType(rawValue: decoder.singleValueContainer().decode(String.self)) ?? .generic
+      let decodedValue = try decoder.singleValueContainer().decode(String.self)
+      
+      self = CreditCardType(rawValue: decodedValue) ?? .generic
     }
   }
 
