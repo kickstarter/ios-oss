@@ -2,11 +2,6 @@ import XCTest
 import Library
 
 public final class PasswordValidationTests: XCTestCase {
-  func testPasswordsMatch() {
-    XCTAssertFalse(passwordsMatch((first: "ArayStark123", second: "JonSnow456")))
-    XCTAssertTrue(passwordsMatch((first: "Winter1sComing", second: "Winter1sComing")))
-  }
-
   func testPasswordLenghtValid() {
     XCTAssertFalse(passwordLengthValid("C"))
     XCTAssertFalse(passwordLengthValid("Ce"))

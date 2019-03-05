@@ -55,7 +55,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       )
       .map(passwordFieldsNotEmpty)
 
-    let passwordsMatching = combinedPasswords.map(passwordsMatch)
+    let passwordsMatching = combinedPasswords.map(==)
 
     let lengthMeetsReq = self.newPasswordProperty.signal.map(passwordLengthValid)
 

@@ -2,10 +2,6 @@ import Foundation
 
 public typealias Password = String
 
-public func passwordsMatch(_ pwds: (first: Password, second: Password)) -> Bool {
-  return pwds.first == pwds.second
-}
-
 public func passwordLengthValid(_ pw: Password) -> Bool {
   return pw.count > 5
 }

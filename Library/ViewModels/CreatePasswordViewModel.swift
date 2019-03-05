@@ -41,7 +41,7 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
       self.newPasswordConfirmationChangedProperty.signal.skipNil()
     )
 
-    let validationMatch = combinedPasswords.map(passwordsMatch)
+    let validationMatch = combinedPasswords.map(==)
     let validationLength = self.newPasswordChangedProperty.signal.skipNil().map(passwordLengthValid)
 
     self.validationLabelText = Signal.combineLatest(validationMatch, validationLength)
