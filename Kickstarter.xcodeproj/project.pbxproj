@@ -1064,6 +1064,7 @@
 		D6CAB97E222E31ED00789C75 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F451E831BA200BFFA01 /* MockBundle.swift */; };
 		D6CAB97F222E320B00789C75 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		D6CAB981222E328300789C75 /* Kickstarter_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CAB980222E328300789C75 /* Kickstarter_UITests.swift */; };
+		D6CAB9D3222E351100789C75 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D6DC652F21768502008CF69C /* Queryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC652E21768502008CF69C /* Queryable.swift */; };
 		D6DC653321768B6E008CF69C /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */; };
 		D6DC65522178CDDD008CF69C /* GraphUserEmailTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */; };
@@ -3044,6 +3045,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6CAB9D3222E351100789C75 /* KsApi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4984,7 +4986,7 @@
 					};
 					D6CAB934222E315C00789C75 = {
 						CreatedOnToolsVersion = 10.1;
-						DevelopmentTeam = 5DAN4UM3NC;
+						DevelopmentTeam = 48YBP49Y5N;
 						ProvisioningStyle = Automatic;
 						TestTargetID = A7D1F9441C850B7C000D41D5;
 					};
@@ -8100,7 +8102,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5DAN4UM3NC;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Kickstarter-UITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -8129,7 +8131,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 5DAN4UM3NC;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Kickstarter-UITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -8156,7 +8158,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 5DAN4UM3NC;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Kickstarter-UITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -8183,7 +8185,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 5DAN4UM3NC;
+				DEVELOPMENT_TEAM = 48YBP49Y5N;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Kickstarter-UITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;

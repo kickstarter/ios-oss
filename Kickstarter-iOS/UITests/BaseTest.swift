@@ -25,14 +25,18 @@ internal class BaseTest: TestCase {
   }
 
   func testTst() {
-    self.app.launch()
-    _ = RootTabBar()
+    _ = RootTabBar.init()
       .tapActivity()
       .tapSearch()
+      .tapProfile()
       .tapExplore()
   }
+}
 
-  func testOther() {
-    XCUIApplication().tabBars["root_tabBar"].buttons["Activity"].tap()     
+extension XCTestCase {
+  func wait(for element: XCUIElement, timeout: TimeInterval) {
+    let predicate = NSPredicate(format: "exists == 1")
+    expectation(for: predicate, evaluatedWith: element)
+    waitForExpectations(timeout: timeout)
   }
 }

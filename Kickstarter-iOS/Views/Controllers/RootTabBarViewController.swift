@@ -27,6 +27,7 @@ public final class RootTabBarViewController: UITabBarController {
   override public func viewDidLoad() {
     super.viewDidLoad()
     self.delegate = self
+    self.tabBar.accessibilityIdentifier = "root_tabBar"
 
     self.sessionStartedObserver = NotificationCenter
       .default
@@ -173,16 +174,21 @@ public final class RootTabBarViewController: UITabBarController {
     data.items.forEach { item in
       switch item {
       case let .home(index):
-        _ = tabBarItem(atIndex: index) ?|> homeTabBarItemStyle(isMember: data.isMember)
+        let home = tabBarItem(atIndex: index) ?|> homeTabBarItemStyle(isMember: data.isMember)
+        home?.accessibilityIdentifier = "tabBar_home"
       case let .activity(index):
-        _ = tabBarItem(atIndex: index) ?|> activityTabBarItemStyle(isMember: data.isMember)
+        let activity = tabBarItem(atIndex: index) ?|> activityTabBarItemStyle(isMember: data.isMember)
+        activity?.accessibilityIdentifier = "tabBar_activity"
       case let .search(index):
-        _ = tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
+        let search = tabBarItem(atIndex: index) ?|> searchTabBarItemStyle
+        search?.accessibilityIdentifier = "tabBar_search"
       case let .dashboard(index):
-        _ = tabBarItem(atIndex: index) ?|> dashboardTabBarItemStyle
+        let dashboard = tabBarItem(atIndex: index) ?|> dashboardTabBarItemStyle
+        dashboard?.accessibilityIdentifier = "tabBar_dashboard"
       case let .profile(avatarUrl, index):
-        _ = tabBarItem(atIndex: index)
+        let profile = tabBarItem(atIndex: index)
           ?|> profileTabBarItemStyle(isLoggedIn: data.isLoggedIn, isMember: data.isMember)
+        profile?.accessibilityIdentifier = "tabBar_profile"
 
         guard
           data.isLoggedIn == true,
