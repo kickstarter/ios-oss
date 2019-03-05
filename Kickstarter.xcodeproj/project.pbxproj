@@ -1063,7 +1063,6 @@
 		D6CAB97D222E31E700789C75 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F461E831BA200BFFA01 /* TestCase.swift */; };
 		D6CAB97E222E31ED00789C75 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F451E831BA200BFFA01 /* MockBundle.swift */; };
 		D6CAB97F222E320B00789C75 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
-		D6CAB981222E328300789C75 /* Kickstarter_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CAB980222E328300789C75 /* Kickstarter_UITests.swift */; };
 		D6CAB9D3222E351100789C75 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D6CAB9FD222EDC7B00789C75 /* SearchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CAB9FC222EDC7B00789C75 /* SearchPage.swift */; };
 		D6CABA38222F005F00789C75 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CABA37222F005E00789C75 /* AccessibilityIdentifier.swift */; };
@@ -2834,7 +2833,6 @@
 		D6CAB939222E315C00789C75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6CAB979222E318500789C75 /* BaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTest.swift; sourceTree = "<group>"; };
 		D6CAB97A222E318500789C75 /* RootTabBarPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabBarPage.swift; sourceTree = "<group>"; };
-		D6CAB980222E328300789C75 /* Kickstarter_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kickstarter_UITests.swift; sourceTree = "<group>"; };
 		D6CAB9FC222EDC7B00789C75 /* SearchPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPage.swift; sourceTree = "<group>"; };
 		D6CABA37222F005E00789C75 /* AccessibilityIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifier.swift; sourceTree = "<group>"; };
 		D6DC652E21768502008CF69C /* Queryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queryable.swift; sourceTree = "<group>"; };
@@ -4648,7 +4646,6 @@
 		D6CAB936222E315C00789C75 /* Kickstarter-UITests */ = {
 			isa = PBXGroup;
 			children = (
-				D6CAB980222E328300789C75 /* Kickstarter_UITests.swift */,
 				D6CAB939222E315C00789C75 /* Info.plist */,
 			);
 			path = "Kickstarter-UITests";
@@ -6755,7 +6752,6 @@
 				D6CAB97C222E318500789C75 /* RootTabBarPage.swift in Sources */,
 				D6CAB9FD222EDC7B00789C75 /* SearchPage.swift in Sources */,
 				D6CAB97E222E31ED00789C75 /* MockBundle.swift in Sources */,
-				D6CAB981222E328300789C75 /* Kickstarter_UITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
