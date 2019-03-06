@@ -350,7 +350,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.watchProjectViewModel.inputs.saveButtonTapped(selected: button.isSelected)
   }
 
-  func roundImage(_ url: URL) -> UIImage? {
+  private func roundedImage(_ url: URL) -> UIImage? {
     guard let imageData = try? Data(contentsOf: url) else { return nil }
 
     let avatar = UIImage(data: imageData, scale: UIScreen.main.scale)?
