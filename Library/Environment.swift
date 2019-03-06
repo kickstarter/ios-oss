@@ -51,6 +51,9 @@ public struct Environment {
     return self.apiService.serverConfig.environment
   }
 
+  /// The environment variables
+  public let environmentVariables: EnvironmentVariables
+
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
 
@@ -95,9 +98,6 @@ public struct Environment {
   /// A user defaults key-value store. Default value is `NSUserDefaults.standard`.
   public let userDefaults: KeyValueStoreType
 
-  /// The environment variables
-  public let variables: EnvironmentVariables
-
   public init(
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
@@ -111,6 +111,7 @@ public struct Environment {
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     device: UIDeviceType = UIDevice.current,
+    environmentVariables: EnvironmentVariables = EnvironmentVariables(),
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isOSVersionAvailable: @escaping (Double) -> Bool = ksr_isOSVersionAvailable,
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
@@ -124,8 +125,7 @@ public struct Environment {
     reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
-    userDefaults: KeyValueStoreType = UserDefaults.standard,
-    variables: EnvironmentVariables = EnvironmentVariables()) {
+    userDefaults: KeyValueStoreType = UserDefaults.standard) {
 
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
@@ -139,6 +139,7 @@ public struct Environment {
     self.dateType = dateType
     self.debounceInterval = debounceInterval
     self.device = device
+    self.environmentVariables = environmentVariables
     self.facebookAppDelegate = facebookAppDelegate
     self.isOSVersionAvailable = isOSVersionAvailable
     self.isVoiceOverRunning = isVoiceOverRunning
@@ -153,6 +154,5 @@ public struct Environment {
     self.scheduler = scheduler
     self.ubiquitousStore = ubiquitousStore
     self.userDefaults = userDefaults
-    self.variables = variables
   }
 }
