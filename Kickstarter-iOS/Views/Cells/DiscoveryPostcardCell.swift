@@ -307,7 +307,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.socialAvatarImageView.image = self?.roundImage(url)
+        self?.socialAvatarImageView.image = self?.roundedImage(for: url)
     }
 
     self.watchProjectViewModel.outputs.showProjectSavedAlert
