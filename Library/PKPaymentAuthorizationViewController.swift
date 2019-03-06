@@ -27,13 +27,14 @@ extension PKPaymentAuthorizationViewController {
 
     if countryCode == "US" && project.country != Project.Country.us ||
       countryCode != "US" {
-      return PKPaymentAuthorizationViewController.supportedNetworks.filter { $0 != .discover }
+      return PKPaymentAuthorizationViewController.supportedNetworks
+        .filter { $0 != .discover && $0 != .chinaUnionPay }
     }
 
     return PKPaymentAuthorizationViewController.supportedNetworks
   }
 
   public static var supportedNetworks: [PKPaymentNetwork] {
-    return [.amex, .masterCard, .visa, .discover]
+    return [.amex, .masterCard, .visa, .discover, .chinaUnionPay]
   }
 }
