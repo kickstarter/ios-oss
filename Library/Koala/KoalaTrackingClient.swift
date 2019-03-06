@@ -53,7 +53,7 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   public func track(event: String, properties: [String: Any]) {
-    if AppEnvironment.current.variables.kaoalaTrackingIsOn {
+    if AppEnvironment.current.variables.isKaoalaTrackingEnabled {
       print("🐨 [Koala Track]: \(event), properties: \(properties)")
 
       self.queue.async {
