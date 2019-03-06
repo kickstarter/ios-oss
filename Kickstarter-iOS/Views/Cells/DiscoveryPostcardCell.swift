@@ -307,7 +307,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.socialAvatarImageView.image = self?.roundedImage(for: url)
+        self?.socialAvatarImageView.ksr_roundedImageWith(url, rounded: true)
     }
 
     self.watchProjectViewModel.outputs.showProjectSavedAlert
@@ -348,13 +348,5 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   @objc fileprivate func saveButtonTapped(_ button: UIButton) {
     self.watchProjectViewModel.inputs.saveButtonTapped(selected: button.isSelected)
-  }
-
-  private func roundedImage(for url: URL) -> UIImage? {
-    guard let imageData = try? Data(contentsOf: url) else { return nil }
-
-    let avatar = UIImage(data: imageData, scale: UIScreen.main.scale)?
-      .af_imageRoundedIntoCircle()
-    return avatar
   }
 }

@@ -17,6 +17,17 @@ extension UIImageView {
                      runImageTransitionIfCached: false,
                      completion: nil)
   }
+
+  public func ksr_roundedImageWith(_ url: URL, rounded: Bool = false)  {
+    self.af_setImage(withURL: url,
+                     placeholderImage: nil,
+                     filter: CircleFilter(),
+                     progress: nil,
+                     progressQueue: DispatchQueue.main,
+                     imageTransition: .crossDissolve(0.3),
+                     runImageTransitionIfCached: false,
+                     completion: nil)
+  }
 }
 
 private enum Associations {
