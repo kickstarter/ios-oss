@@ -13,7 +13,7 @@ public struct EnvironmentVariables {
 }
 
 extension EnvironmentVariables {
-  public var isKaoalaTrackingEnabled: Bool {
+  public var isKoalaTrackingEnabled: Bool {
     #if DEBUG
     guard let value = self.processInfo.environment[VariableName.koalaTracking.rawValue] else { return false }
 
