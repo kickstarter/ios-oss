@@ -193,6 +193,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.saveButton
       |> discoverySaveButtonStyle
 
+    _ = self.socialAvatarImageView
+      |> UIImageView.lens.layer.shouldRasterize .~ true
+
     _ = self.socialLabel
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.textColor .~ .ksr_text_navy_600
@@ -304,7 +307,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.socialAvatarImageView.ksr_setImageWithURL(url)
+        self?.socialAvatarImageView.image = self?.roundImage(url)
     }
 
     self.watchProjectViewModel.outputs.showProjectSavedAlert
@@ -345,5 +348,13 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   @objc fileprivate func saveButtonTapped(_ button: UIButton) {
     self.watchProjectViewModel.inputs.saveButtonTapped(selected: button.isSelected)
+  }
+
+  func roundImage(_ url: URL) -> UIImage? {
+    guard let imageData = try? Data(contentsOf: url) else { return nil }
+
+    let avatar = UIImage(data: imageData, scale: UIScreen.main.scale)?
+      .af_imageRoundedIntoCircle()
+    return avatar
   }
 }
