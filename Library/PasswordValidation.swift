@@ -10,7 +10,11 @@ public func passwordFormValid(_ requirements: (notEmpty: Bool, match: Bool, leng
   return requirements.notEmpty && requirements.match && requirements.length
 }
 
-public func passwordValidationText(_ requirements: (match: Bool, length: Bool)) -> String? {
+public func passwordValidationText(_ length: Bool) -> String? {
+  return passwordValidationText((length, true))
+}
+
+public func passwordValidationText(_ requirements: (length: Bool, match: Bool)) -> String? {
   if !requirements.length {
     return Strings.Password_min_length_message()
   } else if !requirements.match {

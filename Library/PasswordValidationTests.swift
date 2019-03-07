@@ -25,16 +25,22 @@ public final class PasswordValidationTests: XCTestCase {
   }
 
   func testPasswordValidationText() {
-    var text = passwordValidationText((match: false, length: false))
+    var text = passwordValidationText(true)
+    XCTAssertEqual(text, nil)
+
+    text = passwordValidationText(false)
     XCTAssertEqual(text, "Your password must be at least 6 characters long.")
 
-    text = passwordValidationText((match: true, length: false))
+    text = passwordValidationText((length: false, match: false))
     XCTAssertEqual(text, "Your password must be at least 6 characters long.")
 
-    text = passwordValidationText((match: false, length: true))
+    text = passwordValidationText((length: false, match: true))
+    XCTAssertEqual(text, "Your password must be at least 6 characters long.")
+
+    text = passwordValidationText((length: true, match: false))
     XCTAssertEqual(text, "New passwords must match.")
 
-    text = passwordValidationText((match: true, length: true))
+    text = passwordValidationText((length: true, match: true))
     XCTAssertEqual(text, nil)
   }
 }

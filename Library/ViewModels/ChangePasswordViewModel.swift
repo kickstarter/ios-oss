@@ -42,21 +42,22 @@ public protocol ChangePasswordViewModelType {
 public class ChangePasswordViewModel: ChangePasswordViewModelType,
 ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public init() {
-    let combinedPasswords = Signal
-      .combineLatest(newPasswordProperty.signal, confirmNewPasswordProperty.signal)
     let currentPasswordSignal: Signal<String, NoError> = Signal
       .merge(self.currentPasswordProperty.signal,
              self.onePasswordPrefillPasswordProperty.signal.skipNil())
 
+    let combinedPasswords = Signal.combineLatest(
+      self.newPasswordProperty.signal,
+      self.confirmNewPasswordProperty.signal
+    )
+
+    let fieldsMatch = combinedPasswords.map(==)
+    let fieldLengthIsValid = self.newPasswordProperty.signal.map(passwordLengthValid)
     let fieldsNotEmpty = Signal.combineLatest(
       currentPasswordSignal,
       self.newPasswordProperty.signal,
       self.confirmNewPasswordProperty.signal
-      )
-      .map(passwordFieldsNotEmpty)
-
-    let fieldsMatch = combinedPasswords.map(==)
-    let fieldLengthIsValid = self.newPasswordProperty.signal.map(passwordLengthValid)
+    ).map(formFieldsNot)
 
     let formIsValid = Signal.combineLatest(fieldsNotEmpty, fieldsMatch, fieldLengthIsValid)
       .map(passwordFormValid)
@@ -106,12 +107,27 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.onePasswordFindPasswordForURLString = self.onePasswordButtonTappedProperty.signal
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
 
-    self.validationErrorLabelIsHidden = formIsValid
-
-    self.validationErrorLabelMessage = Signal.combineLatest(fieldsMatch, fieldLengthIsValid)
+    let newPasswordValidationText = fieldLengthIsValid
       .map(passwordValidationText)
-      .skipNil()
       .skipRepeats()
+
+    let newPasswordAndConfirmationValidationText = Signal.combineLatest(fieldLengthIsValid, fieldsMatch)
+      .map(passwordValidationText)
+      .skipRepeats()
+
+    let validationLabelText = Signal.merge(
+      self.viewDidAppearProperty.signal.mapConst(String()),
+      newPasswordValidationText,
+      newPasswordAndConfirmationValidationText
+    )
+
+    self.validationErrorLabelMessage = validationLabelText
+      .map { $0 ?? String() }
+
+    let validationLabelTextIsEmpty = self.validationErrorLabelMessage
+      .map { $0.isEmpty }
+
+    self.validationErrorLabelIsHidden = validationLabelTextIsEmpty
 
     self.viewDidAppearProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackChangePasswordView() }
@@ -200,6 +216,6 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
 // MARK: - Functions
 
-private func passwordFieldsNotEmpty(_ pwds: (first: String, second: String, third: String)) -> Bool {
+private func formFieldsNot(_ pwds: (first: String, second: String, third: String)) -> Bool {
   return !pwds.first.isEmpty && !pwds.second.isEmpty && !pwds.third.isEmpty
 }

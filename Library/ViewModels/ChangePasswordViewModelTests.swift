@@ -53,15 +53,12 @@ final class ChangePasswordViewModelTests: TestCase {
       self.currentPasswordBecomeFirstResponder.assertValueCount(1)
 
       self.vm.inputs.currentPasswordFieldDidReturn(currentPassword: "password")
-
       self.newPasswordBecomeFirstResponder.assertValueCount(1)
 
       self.vm.inputs.newPasswordFieldDidReturn(newPassword: "123456")
-
       self.confirmNewPasswordBecomeFirstResponder.assertValueCount(1)
 
       self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "123456")
-
       self.saveButtonIsEnabled.assertValues([true])
       self.dismissKeyboard.assertValueCount(1)
       self.activityIndicatorShouldShow.assertValues([true])
@@ -69,7 +66,6 @@ final class ChangePasswordViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.changePasswordSuccess.assertValueCount(1)
-
       self.activityIndicatorShouldShow.assertValues([true, false])
     }
   }
@@ -123,27 +119,48 @@ final class ChangePasswordViewModelTests: TestCase {
 
   func testValidationErrors() {
     self.vm.inputs.viewDidAppear()
+    self.validationErrorLabelIsHidden.assertLastValue(true)
+    self.validationErrorLabelMessage.assertLastValue("")
 
-    self.vm.inputs.currentPasswordFieldDidReturn(currentPassword: "password")
-    self.vm.inputs.newPasswordFieldDidReturn(newPassword: "12345")
-    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "1234567")
+    self.vm.inputs.currentPasswordFieldTextChanged(text: "password")
+    self.saveButtonIsEnabled.assertValueCount(0)
+    self.validationErrorLabelIsHidden.assertLastValue(true)
+    self.validationErrorLabelMessage.assertLastValue("")
 
-    self.validationErrorLabelIsHidden.assertValues([false])
-    self.validationErrorLabelMessage
-      .assertValues(["Your password must be at least 6 characters long."])
+    self.vm.inputs.newPasswordFieldTextChanged(text: "new")
+    self.saveButtonIsEnabled.assertValueCount(0)
+    self.validationErrorLabelIsHidden.assertLastValue(false)
+    self.validationErrorLabelMessage.assertLastValue("Your password must be at least 6 characters long.")
+
+    self.vm.inputs.newPasswordConfirmationFieldTextChanged(text: "n")
     self.saveButtonIsEnabled.assertValues([false])
+    self.validationErrorLabelIsHidden.assertLastValue(false)
+    self.validationErrorLabelMessage.assertLastValue("Your password must be at least 6 characters long.")
 
-    self.vm.inputs.newPasswordFieldTextChanged(text: "123456")
-
-    self.validationErrorLabelIsHidden.assertValues([false])
-    self.validationErrorLabelMessage
-      .assertValues(["Your password must be at least 6 characters long.", "New passwords must match."])
+    self.vm.inputs.newPasswordFieldDidReturn(newPassword: "newPassword")
     self.saveButtonIsEnabled.assertValues([false])
+    self.validationErrorLabelIsHidden.assertLastValue(false)
+    self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
 
-    self.vm.inputs.newPasswordFieldTextChanged(text: "1234567")
+    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "new")
+    self.saveButtonIsEnabled.assertValues([false])
+    self.validationErrorLabelIsHidden.assertLastValue(false)
+    self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
 
-    self.validationErrorLabelIsHidden.assertValues([false, true])
+    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "newPassword")
     self.saveButtonIsEnabled.assertValues([false, true])
+    self.validationErrorLabelIsHidden.assertLastValue(true)
+    self.validationErrorLabelMessage.assertLastValue("")
+
+    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "wrongConfirmationPassword")
+    self.saveButtonIsEnabled.assertValues([false, true, false])
+    self.validationErrorLabelIsHidden.assertLastValue(false)
+    self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
+
+    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "newPassword")
+    self.saveButtonIsEnabled.assertValues([false, true, false, true])
+    self.validationErrorLabelIsHidden.assertLastValue(true)
+    self.validationErrorLabelMessage.assertLastValue("")
   }
 
   func testChangePasswordFailure() {

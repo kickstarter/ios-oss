@@ -46,32 +46,49 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
 
     let fieldsMatch = combinedPasswords.map(==)
     let fieldLengthIsValid = self.newPasswordChangedProperty.signal.skipNil().map(passwordLengthValid)
-
-    self.validationLabelText = Signal.combineLatest(fieldsMatch, fieldLengthIsValid)
-      .map(passwordValidationText)
-      .skipRepeats()
-
-    self.currentValidationLabelTextProperty <~ self.validationLabelText
-
-    let fieldsNotEmpty = combinedPasswords.map(passwordFieldsNotEmpty)
+    let fieldsNotEmpty = combinedPasswords.map(formFieldsNotEmpty)
 
     let formIsValid = Signal.combineLatest(fieldsNotEmpty, fieldsMatch, fieldLengthIsValid)
       .map(passwordFormValid)
       .skipRepeats()
 
+    let newPasswordValidationText = fieldLengthIsValid
+      .map(passwordValidationText)
+      .skipRepeats()
+
+    let newPasswordAndConfirmationValidationText = Signal.combineLatest(fieldLengthIsValid, fieldsMatch)
+      .map(passwordValidationText)
+      .skipRepeats()
+
+    self.validationLabelText = Signal.merge(
+      self.viewDidAppearProperty.signal.mapConst(nil),
+      newPasswordValidationText,
+      newPasswordAndConfirmationValidationText
+    )
+
+    self.currentValidationLabelTextProperty <~ self.validationLabelText
+
+    let validationLabelTextIsNil = self.validationLabelText
+      .map { $0 == nil }
+
     let inputsChanged = Signal.merge(
       self.newPasswordChangedProperty.signal, self.newPasswordConfirmationChangedProperty.signal
     )
 
-    self.accessibilityFocusValidationLabel = formIsValid
+    self.accessibilityFocusValidationLabel = validationLabelTextIsNil
       .takeWhen(inputsChanged)
       .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
       .filter(isFalse)
       .ignoreValues()
 
     self.saveButtonIsEnabled = formIsValid
-    self.textFieldDidBecomeFirstResponder = self.textFieldDidBecomeFirstResponderProperty.signal.skipNil()
-    self.validationLabelIsHidden = formIsValid
+
+    self.textFieldDidBecomeFirstResponder = Signal.combineLatest(
+      self.viewDidAppearProperty.signal,
+      self.textFieldDidBecomeFirstResponderProperty.signal.skipNil()
+    ).map { $0.1 }
+
+    self.validationLabelIsHidden = validationLabelTextIsNil
   }
 
   private var newPasswordChangedProperty = MutableProperty<String?>(nil)
@@ -129,6 +146,6 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
 
 // MARK: - Functions
 
-private func passwordFieldsNotEmpty(_ pwds: (first: String, second: String)) -> Bool {
+private func formFieldsNotEmpty(_ pwds: (first: String, second: String)) -> Bool {
   return !pwds.first.isEmpty && !pwds.second.isEmpty
 }
