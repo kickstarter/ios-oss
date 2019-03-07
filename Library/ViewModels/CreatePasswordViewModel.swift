@@ -13,9 +13,9 @@ public protocol CreatePasswordViewModelInputs {
 
 public protocol CreatePasswordViewModelOutputs {
   var accessibilityFocusValidationLabel: Signal<Void, NoError> { get }
-  var newPasswordTextFieldBecomeFirstResponder: Signal<Void, NoError> { get }
-  var newPasswordConfirmationTextFieldBecomeFirstResponder: Signal<Void, NoError> { get }
-  var newPasswordConfirmationTextFieldResignFirstResponder: Signal<Void, NoError> { get }
+  var newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
+  var newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
+  var newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, NoError> { get }
   var validationLabelIsHidden: Signal<Bool, NoError> { get }
   var validationLabelText: Signal<String?, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
@@ -31,9 +31,9 @@ public protocol CreatePasswordViewModelType {
 public class CreatePasswordViewModel: CreatePasswordViewModelType,
 CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
   public init() {
-    self.newPasswordTextFieldBecomeFirstResponder = self.viewDidAppearProperty.signal
-    self.newPasswordConfirmationTextFieldBecomeFirstResponder = self.newPasswordDidReturnProperty.signal
-    self.newPasswordConfirmationTextFieldResignFirstResponder =
+    self.newPasswordTextFieldDidBecomeFirstResponder = self.viewDidAppearProperty.signal
+    self.newPasswordConfirmationTextFieldDidBecomeFirstResponder = self.newPasswordDidReturnProperty.signal
+    self.newPasswordConfirmationTextFieldDidResignFirstResponder =
       self.newPasswordConfirmationDidReturnProperty.signal
 
     let combinedPasswords = Signal.combineLatest(
@@ -94,9 +94,9 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
   }
 
   public let accessibilityFocusValidationLabel: Signal<Void, NoError>
-  public let newPasswordTextFieldBecomeFirstResponder: Signal<Void, NoError>
-  public let newPasswordConfirmationTextFieldBecomeFirstResponder: Signal<Void, NoError>
-  public let newPasswordConfirmationTextFieldResignFirstResponder: Signal<Void, NoError>
+  public let newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError>
+  public let newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, NoError>
+  public let newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
   public let validationLabelIsHidden: Signal<Bool, NoError>
   public let validationLabelText: Signal<String?, NoError>

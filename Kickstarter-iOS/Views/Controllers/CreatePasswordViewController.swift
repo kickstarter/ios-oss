@@ -96,13 +96,13 @@ final class CreatePasswordViewController: UITableViewController {
         UIAccessibility.post(notification: .layoutChanged, argument: self?.groupedFooterView?.label)
     }
 
-    self.viewModel.outputs.newPasswordConfirmationTextFieldBecomeFirstResponder
+    self.viewModel.outputs.newPasswordConfirmationTextFieldDidBecomeFirstResponder
       .observeForUI()
       .observeValues { [weak self] in
         self?.newPasswordConfirmationTextField?.becomeFirstResponder()
     }
 
-    self.viewModel.outputs.newPasswordConfirmationTextFieldResignFirstResponder
+    self.viewModel.outputs.newPasswordConfirmationTextFieldDidResignFirstResponder
       .observeForUI()
       .observeValues { [weak self] in
         self?.newPasswordConfirmationTextField?.resignFirstResponder()

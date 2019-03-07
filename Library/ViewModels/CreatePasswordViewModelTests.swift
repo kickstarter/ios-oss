@@ -18,13 +18,13 @@ final class CreatePasswordViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.accessibilityFocusValidationLabel.observe(accessibilityFocusValidationLabel.observer)
-    self.vm.outputs.newPasswordTextFieldBecomeFirstResponder.observe(
+    self.vm.outputs.newPasswordTextFieldDidBecomeFirstResponder.observe(
       self.newPasswordTextFieldBecomeFirstResponder.observer
     )
-    self.vm.outputs.newPasswordConfirmationTextFieldBecomeFirstResponder.observe(
+    self.vm.outputs.newPasswordConfirmationTextFieldDidBecomeFirstResponder.observe(
       self.newPasswordConfirmationTextFieldBecomeFirstResponder.observer
     )
-    self.vm.outputs.newPasswordConfirmationTextFieldResignFirstResponder.observe(
+    self.vm.outputs.newPasswordConfirmationTextFieldDidResignFirstResponder.observe(
       self.newPasswordConfirmationTextFieldResignFirstResponder.observer
     )
     self.vm.outputs.validationLabelIsHidden.observe(self.validationLabelIsHidden.observer)
