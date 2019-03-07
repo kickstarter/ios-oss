@@ -205,7 +205,8 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMargins
-        .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0.0, right: Styles.grid(2))
+         .~ .init(top: 0.0, left: Styles.grid(4),
+                 bottom:  Styles.grid(2), right: Styles.grid(2))
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
   }
 
@@ -306,7 +307,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.socialAvatarImageView.ksr_setImageWithURL(url)
+        self?.socialAvatarImageView.ksr_setRoundedImageWith(url)
     }
 
     self.watchProjectViewModel.outputs.showProjectSavedAlert
