@@ -11,6 +11,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the current environment has changed
   func currentEnvironmentChanged(environment: EnvironmentType)
 
+  /// Call when the user pulls tableView to refresh
+  func pulledToRefresh()
+
   /// Call when the filter is changed.
   func selectedFilter(_ params: DiscoveryParams)
 
@@ -73,6 +76,9 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits a boolean that determines if projects are currently loading or not.
   var projectsAreLoading: Signal<Bool, NoError> { get }
 
+  /// Emits when the refresh control should end refreshing.
+  var refreshControlEndRefreshing: Signal<(), NoError> { get }
+
   /// Emits when should scroll to project with row number.
   var scrollToProjectRow: Signal<Int, NoError> { get }
 
@@ -92,14 +98,14 @@ public protocol DiscoveryPageViewModelType {
 }
 
 public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, DiscoveryPageViewModelInputs,
-  DiscoveryPageViewModelOutputs {
+DiscoveryPageViewModelOutputs {
 
-    public init() {
+  public init() {
     let currentUser = Signal.merge(
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal,
       self.viewDidAppearProperty.signal
-    )
+      )
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
@@ -142,15 +148,17 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map { $0.1 }
 
     let requestFirstPageWith = Signal.merge(
-        firstPageParams,
-        (firstPageParams.takeWhen(environmentChanged)))
+      firstPageParams,
+      (firstPageParams.takeWhen(environmentChanged)),
+      firstPageParams.takeWhen(self.pulledToRefreshProperty.signal))
 
     let paginatedProjects: Signal<[Project], NoError>
     let pageCount: Signal<Int, NoError>
-    (paginatedProjects, self.projectsAreLoading, pageCount) = paginate(
+    let isLoading: Signal<Bool, NoError>
+    (paginatedProjects, isLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
-      clearOnNewRequest: true,
+      clearOnNewRequest: false,
       skipRepeats: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
@@ -158,16 +166,23 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) },
       concater: { ($0 + $1).distincts() })
 
-      let projects = Signal.merge(
-        paginatedProjects,
-        self.selectedFilterProperty.signal.skipNil().skipRepeats().mapConst([])
+    let projects = Signal.merge(
+      paginatedProjects,
+      self.selectedFilterProperty.signal.skipNil().skipRepeats().mapConst([])
       )
       .skip { $0.isEmpty }
       .skipRepeats(==)
 
-      self.projectsLoaded =  self.selectedFilterProperty.signal
-        .takePairWhen(projects)
-        .map { ($1, $0) }
+    self.projectsLoaded =  self.selectedFilterProperty.signal
+      .takePairWhen(projects)
+      .map { ($1, $0) }
+
+    self.refreshControlEndRefreshing = isLoading.filter(isFalse).ignoreValues()
+
+    self.projectsAreLoading = Signal.merge(
+      self.viewWillAppearProperty.signal.take(first: 1).mapConst(true),
+      self.projectsLoaded.mapConst(false)
+    ).skipRepeats()
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
@@ -264,9 +279,17 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     )
   }
 
+  // Stores the pull to refresh state as it is affected by multiple signals
+  private let shouldRefreshProjectsProperty = MutableProperty<Bool>(false)
+
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
   public func currentEnvironmentChanged(environment: EnvironmentType) {
     self.currentEnvironmentChangedProperty.value = environment
+  }
+
+  fileprivate let pulledToRefreshProperty = MutableProperty(())
+  public func pulledToRefresh() {
+    self.pulledToRefreshProperty.value = ()
   }
 
   fileprivate let sortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
@@ -322,6 +345,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
   public let projectsLoaded: Signal<([Project], DiscoveryParams?), NoError>
   public let projectsAreLoading: Signal<Bool, NoError>
+  public let refreshControlEndRefreshing: Signal<(), NoError>
   public let setScrollsToTop: Signal<Bool, NoError>
   public let scrollToProjectRow: Signal<Int, NoError>
   public let showEmptyState: Signal<EmptyState, NoError>

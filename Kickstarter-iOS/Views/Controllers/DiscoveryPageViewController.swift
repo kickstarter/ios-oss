@@ -14,6 +14,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
+  private let discoveryRefreshControl = UIRefreshControl()
+
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
     vc.viewModel.inputs.configureWith(sort: sort)
@@ -33,6 +35,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
 
+    self.tableView.refreshControl = self.discoveryRefreshControl
+
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -48,6 +52,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.viewModel.inputs.currentEnvironmentChanged(environment:
           AppEnvironment.current.apiService.serverConfig.environment)
       })
+
+    self.discoveryRefreshControl.addTarget(self,
+                                           action: #selector(pulledToRefresh),
+                                           for: .valueChanged)
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
     self.emptyStatesController = emptyVC
@@ -107,6 +115,13 @@ internal final class DiscoveryPageViewController: UITableViewController {
     super.bindViewModel()
 
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.projectsAreLoading
+
+    self.viewModel.outputs.refreshControlEndRefreshing
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.discoveryRefreshControl.endRefreshing()
+        self?.tableView.reloadData()
+      }
 
     self.viewModel.outputs.activitiesForSample
       .observeForUI()
@@ -276,6 +291,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
   private func updateProjectPlaylist(_ playlist: [Project]) {
     guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
     navigator.updatePlaylist(playlist)
+  }
+
+  @objc private func pulledToRefresh() {
+    self.discoveryRefreshControl.beginRefreshing()
+    self.viewModel.inputs.pulledToRefresh()
   }
 }
 
