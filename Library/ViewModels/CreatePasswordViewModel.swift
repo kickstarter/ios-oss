@@ -44,18 +44,18 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
       self.newPasswordConfirmationChangedProperty.signal.skipNil()
     )
 
-    let validationMatch = combinedPasswords.map(==)
-    let validationLength = self.newPasswordChangedProperty.signal.skipNil().map(passwordLengthValid)
+    let fieldsMatch = combinedPasswords.map(==)
+    let fieldLengthIsValid = self.newPasswordChangedProperty.signal.skipNil().map(passwordLengthValid)
 
-    self.validationLabelText = Signal.combineLatest(validationMatch, validationLength)
+    self.validationLabelText = Signal.combineLatest(fieldsMatch, fieldLengthIsValid)
       .map(passwordValidationText)
       .skipRepeats()
 
     self.currentValidationLabelTextProperty <~ self.validationLabelText
 
-    let validationFields = combinedPasswords.map(passwordFieldsNotEmpty)
+    let fieldsNotEmpty = combinedPasswords.map(passwordFieldsNotEmpty)
 
-    let validationForm = Signal.combineLatest(validationFields, validationMatch, validationLength)
+    let formIsValid = Signal.combineLatest(fieldsNotEmpty, fieldsMatch, fieldLengthIsValid)
       .map(passwordFormValid)
       .skipRepeats()
 
@@ -63,15 +63,15 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
       self.newPasswordChangedProperty.signal, self.newPasswordConfirmationChangedProperty.signal
     )
 
-    self.accessibilityFocusValidationLabel = validationForm
+    self.accessibilityFocusValidationLabel = formIsValid
       .takeWhen(inputsChanged)
       .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
       .filter(isFalse)
       .ignoreValues()
 
-    self.saveButtonIsEnabled = validationForm
+    self.saveButtonIsEnabled = formIsValid
     self.textFieldDidBecomeFirstResponder = self.textFieldDidBecomeFirstResponderProperty.signal.skipNil()
-    self.validationLabelIsHidden = validationForm
+    self.validationLabelIsHidden = formIsValid
   }
 
   private var newPasswordChangedProperty = MutableProperty<String?>(nil)

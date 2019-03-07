@@ -55,15 +55,14 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       )
       .map(passwordFieldsNotEmpty)
 
-    let passwordsMatching = combinedPasswords.map(==)
+    let fieldsMatch = combinedPasswords.map(==)
+    let fieldLengthIsValid = self.newPasswordProperty.signal.map(passwordLengthValid)
 
-    let lengthMeetsReq = self.newPasswordProperty.signal.map(passwordLengthValid)
-
-    let validationForm = Signal.combineLatest(fieldsNotEmpty, passwordsMatching, lengthMeetsReq)
+    let formIsValid = Signal.combineLatest(fieldsNotEmpty, fieldsMatch, fieldLengthIsValid)
       .map(passwordFormValid)
       .skipRepeats()
 
-    self.saveButtonIsEnabled = validationForm
+    self.saveButtonIsEnabled = formIsValid
 
     let autoSaveSignal = self.saveButtonIsEnabled
       .takeWhen(self.confirmNewPasswordDoneEditingProperty.signal)
@@ -107,9 +106,9 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.onePasswordFindPasswordForURLString = self.onePasswordButtonTappedProperty.signal
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
 
-    self.validationErrorLabelIsHidden = validationForm
+    self.validationErrorLabelIsHidden = formIsValid
 
-    self.validationErrorLabelMessage = Signal.combineLatest(passwordsMatching, lengthMeetsReq)
+    self.validationErrorLabelMessage = Signal.combineLatest(fieldsMatch, fieldLengthIsValid)
       .map(passwordValidationText)
       .skipNil()
       .skipRepeats()
