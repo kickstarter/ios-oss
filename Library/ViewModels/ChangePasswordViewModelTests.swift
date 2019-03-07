@@ -10,6 +10,7 @@ import XCTest
 final class ChangePasswordViewModelTests: TestCase {
   private let vm: ChangePasswordViewModelType = ChangePasswordViewModel()
 
+  private let accessibilityFocusValidationErrorLabel = TestObserver<Void, NoError>()
   private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
   private let changePasswordFailure = TestObserver<String, NoError>()
   private let changePasswordSuccess = TestObserver<Void, NoError>()
@@ -27,6 +28,8 @@ final class ChangePasswordViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.accessibilityFocusValidationErrorLabel
+      .observe(accessibilityFocusValidationErrorLabel.observer)
     self.vm.outputs.activityIndicatorShouldShow.observe(activityIndicatorShouldShow.observer)
     self.vm.outputs.changePasswordFailure.observe(changePasswordFailure.observer)
     self.vm.outputs.changePasswordSuccess.observe(changePasswordSuccess.observer)
@@ -68,6 +71,26 @@ final class ChangePasswordViewModelTests: TestCase {
       self.changePasswordSuccess.assertValueCount(1)
       self.activityIndicatorShouldShow.assertValues([true, false])
     }
+  }
+
+  func testDismissKeyboard_WhenSaveButtonDisabled() {
+    self.vm.inputs.viewDidAppear()
+
+    self.dismissKeyboard.assertValueCount(0)
+
+    self.vm.inputs.currentPasswordFieldDidReturn(currentPassword: "password")
+
+    self.dismissKeyboard.assertValueCount(0)
+
+    self.vm.inputs.newPasswordFieldDidReturn(newPassword: "123456")
+
+    self.dismissKeyboard.assertValueCount(0)
+
+    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "1")
+
+    self.saveButtonIsEnabled.assertValues([false])
+    self.dismissKeyboard.assertValueCount(1)
+    self.activityIndicatorShouldShow.assertValueCount(0)
   }
 
   func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
@@ -117,50 +140,120 @@ final class ChangePasswordViewModelTests: TestCase {
     }
   }
 
-  func testValidationErrors() {
-    self.vm.inputs.viewDidAppear()
-    self.validationErrorLabelIsHidden.assertLastValue(true)
-    self.validationErrorLabelMessage.assertLastValue("")
+  func testValidationErrors_VoiceOverON() {
+    let isVoiceOverRunning = { true }
 
-    self.vm.inputs.currentPasswordFieldTextChanged(text: "password")
-    self.saveButtonIsEnabled.assertValueCount(0)
-    self.validationErrorLabelIsHidden.assertLastValue(true)
-    self.validationErrorLabelMessage.assertLastValue("")
+    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+      self.vm.inputs.viewDidAppear()
+      self.validationErrorLabelIsHidden.assertLastValue(true)
+      self.validationErrorLabelMessage.assertLastValue("")
 
-    self.vm.inputs.newPasswordFieldTextChanged(text: "new")
-    self.saveButtonIsEnabled.assertValueCount(0)
-    self.validationErrorLabelIsHidden.assertLastValue(false)
-    self.validationErrorLabelMessage.assertLastValue("Your password must be at least 6 characters long.")
+      self.vm.inputs.currentPasswordFieldTextChanged(text: "password")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(0)
+      self.saveButtonIsEnabled.assertValueCount(0)
+      self.validationErrorLabelIsHidden.assertLastValue(true)
+      self.validationErrorLabelMessage.assertLastValue("")
 
-    self.vm.inputs.newPasswordConfirmationFieldTextChanged(text: "n")
-    self.saveButtonIsEnabled.assertValues([false])
-    self.validationErrorLabelIsHidden.assertLastValue(false)
-    self.validationErrorLabelMessage.assertLastValue("Your password must be at least 6 characters long.")
+      self.vm.inputs.newPasswordFieldTextChanged(text: "new")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(1)
+      self.saveButtonIsEnabled.assertValueCount(0)
+      self.validationErrorLabelIsHidden.assertLastValue(false)
+      self.validationErrorLabelMessage.assertLastValue("Your password must be at least 6 characters long.")
 
-    self.vm.inputs.newPasswordFieldDidReturn(newPassword: "newPassword")
-    self.saveButtonIsEnabled.assertValues([false])
-    self.validationErrorLabelIsHidden.assertLastValue(false)
-    self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
+      self.vm.inputs.newPasswordConfirmationFieldTextChanged(text: "n")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(2)
+      self.saveButtonIsEnabled.assertValues([false])
+      self.validationErrorLabelIsHidden.assertLastValue(false)
+      self.validationErrorLabelMessage.assertLastValue("Your password must be at least 6 characters long.")
 
-    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "new")
-    self.saveButtonIsEnabled.assertValues([false])
-    self.validationErrorLabelIsHidden.assertLastValue(false)
-    self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
+      self.vm.inputs.newPasswordFieldDidReturn(newPassword: "newPassword")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(3)
+      self.saveButtonIsEnabled.assertValues([false])
+      self.validationErrorLabelIsHidden.assertLastValue(false)
+      self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
 
-    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "newPassword")
-    self.saveButtonIsEnabled.assertValues([false, true])
-    self.validationErrorLabelIsHidden.assertLastValue(true)
-    self.validationErrorLabelMessage.assertLastValue("")
+      self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "new")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(4)
+      self.saveButtonIsEnabled.assertValues([false])
+      self.validationErrorLabelIsHidden.assertLastValue(false)
+      self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
 
-    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "wrongConfirmationPassword")
-    self.saveButtonIsEnabled.assertValues([false, true, false])
-    self.validationErrorLabelIsHidden.assertLastValue(false)
-    self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
+      self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "newPassword")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(4)
+      self.saveButtonIsEnabled.assertValues([false, true])
+      self.validationErrorLabelIsHidden.assertLastValue(true)
+      self.validationErrorLabelMessage.assertLastValue("")
 
-    self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "newPassword")
-    self.saveButtonIsEnabled.assertValues([false, true, false, true])
-    self.validationErrorLabelIsHidden.assertLastValue(true)
-    self.validationErrorLabelMessage.assertLastValue("")
+      self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "wrongConfirmationPassword")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(5)
+      self.saveButtonIsEnabled.assertValues([false, true, false])
+      self.validationErrorLabelIsHidden.assertLastValue(false)
+      self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
+
+      self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "newPassword")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(5)
+      self.saveButtonIsEnabled.assertValues([false, true, false, true])
+      self.validationErrorLabelIsHidden.assertLastValue(true)
+      self.validationErrorLabelMessage.assertLastValue("")
+    }
+  }
+
+  func testValidationErrors_VoiceOverOFF() {
+    let isVoiceOverRunning = { false }
+
+    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+      self.vm.inputs.viewDidAppear()
+      self.validationErrorLabelIsHidden.assertLastValue(true)
+      self.validationErrorLabelMessage.assertLastValue("")
+
+      self.vm.inputs.currentPasswordFieldTextChanged(text: "password")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(0)
+      self.saveButtonIsEnabled.assertValueCount(0)
+      self.validationErrorLabelIsHidden.assertLastValue(true)
+      self.validationErrorLabelMessage.assertLastValue("")
+
+      self.vm.inputs.newPasswordFieldTextChanged(text: "new")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(0)
+      self.saveButtonIsEnabled.assertValueCount(0)
+      self.validationErrorLabelIsHidden.assertLastValue(false)
+      self.validationErrorLabelMessage.assertLastValue("Your password must be at least 6 characters long.")
+
+      self.vm.inputs.newPasswordConfirmationFieldTextChanged(text: "n")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(0)
+      self.saveButtonIsEnabled.assertValues([false])
+      self.validationErrorLabelIsHidden.assertLastValue(false)
+      self.validationErrorLabelMessage.assertLastValue("Your password must be at least 6 characters long.")
+
+      self.vm.inputs.newPasswordFieldDidReturn(newPassword: "newPassword")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(0)
+      self.saveButtonIsEnabled.assertValues([false])
+      self.validationErrorLabelIsHidden.assertLastValue(false)
+      self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
+
+      self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "new")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(0)
+      self.saveButtonIsEnabled.assertValues([false])
+      self.validationErrorLabelIsHidden.assertLastValue(false)
+      self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
+
+      self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "newPassword")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(0)
+      self.saveButtonIsEnabled.assertValues([false, true])
+      self.validationErrorLabelIsHidden.assertLastValue(true)
+      self.validationErrorLabelMessage.assertLastValue("")
+
+      self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "wrongConfirmationPassword")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(0)
+      self.saveButtonIsEnabled.assertValues([false, true, false])
+      self.validationErrorLabelIsHidden.assertLastValue(false)
+      self.validationErrorLabelMessage.assertLastValue("New passwords must match.")
+
+      self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "newPassword")
+      self.accessibilityFocusValidationErrorLabel.assertValueCount(0)
+      self.saveButtonIsEnabled.assertValues([false, true, false, true])
+      self.validationErrorLabelIsHidden.assertLastValue(true)
+      self.validationErrorLabelMessage.assertLastValue("")
+    }
   }
 
   func testChangePasswordFailure() {
