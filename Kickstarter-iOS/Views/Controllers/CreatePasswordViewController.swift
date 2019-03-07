@@ -114,6 +114,18 @@ final class CreatePasswordViewController: UITableViewController {
         self?.newPasswordConfirmationTextField?.resignFirstResponder()
     }
 
+    self.viewModel.outputs.saveButtonIsEnabled
+      .observeForUI()
+      .observeValues { [weak self] isEnabled in
+        self?.navigationItem.rightBarButtonItem?.isEnabled = isEnabled
+    }
+
+    self.viewModel.outputs.textFieldDidBecomeFirstResponder
+      .observeForUI()
+      .observeValues { textField in
+        textField.becomeFirstResponder()
+    }
+
     self.viewModel.outputs.validationLabelIsHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
@@ -128,12 +140,6 @@ final class CreatePasswordViewController: UITableViewController {
           self?.groupedFooterView?.label.text = text
           self?.tableView.endUpdates()
         }
-    }
-
-    self.viewModel.outputs.saveButtonIsEnabled
-      .observeForUI()
-      .observeValues { [weak self] isEnabled in
-        self?.navigationItem.rightBarButtonItem?.isEnabled = isEnabled
     }
   }
 
@@ -161,7 +167,7 @@ final class CreatePasswordViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let textInputCell = tableView.cellForRow(at: indexPath) as? SettingsTextInputCell else { return }
 
-    textInputCell.textField.becomeFirstResponder()
+    self.viewModel.inputs.textFieldShouldBecomeFirstResponder(textInputCell.textField)
   }
 
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

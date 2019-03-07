@@ -2,12 +2,14 @@ import Foundation
 import Prelude
 import ReactiveSwift
 import Result
+import UIKit.UITextField
 
 public protocol CreatePasswordViewModelInputs {
   func newPasswordTextFieldChanged(text: String?)
   func newPasswordTextFieldDidReturn()
   func newPasswordConfirmationTextFieldChanged(text: String?)
   func newPasswordConfirmationTextFieldDidReturn()
+  func textFieldShouldBecomeFirstResponder(_ textField: UITextField?)
   func viewDidAppear()
 }
 
@@ -16,9 +18,10 @@ public protocol CreatePasswordViewModelOutputs {
   var newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
   var newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
   var newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, NoError> { get }
+  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
+  var textFieldDidBecomeFirstResponder: Signal<UITextField, NoError> { get }
   var validationLabelIsHidden: Signal<Bool, NoError> { get }
   var validationLabelText: Signal<String?, NoError> { get }
-  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
 
   func currentValidationLabelText() -> String?
 }
@@ -69,8 +72,9 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
       .filter(isFalse)
       .ignoreValues()
 
-    self.validationLabelIsHidden = validationForm
     self.saveButtonIsEnabled = validationForm
+    self.textFieldDidBecomeFirstResponder = self.textFieldDidBecomeFirstResponderProperty.signal.skipNil()
+    self.validationLabelIsHidden = validationForm
   }
 
   private var newPasswordChangedProperty = MutableProperty<String?>(nil)
@@ -93,11 +97,17 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
     self.newPasswordConfirmationDidReturnProperty.value = ()
   }
 
+  private var textFieldDidBecomeFirstResponderProperty = MutableProperty<UITextField?>(nil)
+  public func textFieldShouldBecomeFirstResponder(_ textField: UITextField?) {
+    self.textFieldDidBecomeFirstResponderProperty.value = textField
+  }
+
   public let accessibilityFocusValidationLabel: Signal<Void, NoError>
   public let newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError>
   public let newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, NoError>
   public let newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
+  public let textFieldDidBecomeFirstResponder: Signal<UITextField, NoError>
   public let validationLabelIsHidden: Signal<Bool, NoError>
   public let validationLabelText: Signal<String?, NoError>
 

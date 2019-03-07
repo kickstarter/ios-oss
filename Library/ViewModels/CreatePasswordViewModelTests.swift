@@ -1,4 +1,5 @@
 import Result
+import UIKit.UITextField
 
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
@@ -10,9 +11,10 @@ final class CreatePasswordViewModelTests: TestCase {
   private let newPasswordTextFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let newPasswordConfirmationTextFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let newPasswordConfirmationTextFieldResignFirstResponder = TestObserver<Void, NoError>()
+  private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
+  private let textFieldDidBecomeFirstResponder = TestObserver<UITextField, NoError>()
   private let validationLabelIsHidden = TestObserver<Bool, NoError>()
   private let validationLabelText = TestObserver<String?, NoError>()
-  private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -27,9 +29,11 @@ final class CreatePasswordViewModelTests: TestCase {
     self.vm.outputs.newPasswordConfirmationTextFieldDidResignFirstResponder.observe(
       self.newPasswordConfirmationTextFieldResignFirstResponder.observer
     )
+    self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
+
+    self.vm.outputs.textFieldDidBecomeFirstResponder.observe(self.textFieldDidBecomeFirstResponder.observer)
     self.vm.outputs.validationLabelIsHidden.observe(self.validationLabelIsHidden.observer)
     self.vm.outputs.validationLabelText.observe(self.validationLabelText.observer)
-    self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
   }
 
   func testCreatePassword() {
@@ -47,6 +51,16 @@ final class CreatePasswordViewModelTests: TestCase {
 
     self.vm.inputs.newPasswordConfirmationTextFieldDidReturn()
     self.newPasswordConfirmationTextFieldResignFirstResponder.assertValueCount(1)
+  }
+
+  func testTextFieldShouldBecomeFirstResponder() {
+    self.vm.inputs.textFieldShouldBecomeFirstResponder(nil)
+    self.textFieldDidBecomeFirstResponder.assertValueCount(0)
+
+    let textField = UITextField(frame: .zero)
+    self.vm.inputs.textFieldShouldBecomeFirstResponder(textField)
+    self.textFieldDidBecomeFirstResponder.assertValueCount(1)
+    self.textFieldDidBecomeFirstResponder.assertLastValue(textField)
   }
 
   func testValidationErrorsWithVoiceOverOn() {
