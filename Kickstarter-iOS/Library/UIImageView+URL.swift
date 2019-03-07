@@ -18,7 +18,7 @@ extension UIImageView {
                      completion: nil)
   }
 
-  public func ksr_roundedImageWith(_ url: URL) {
+  public func ksr_setRoundedImageWith(_ url: URL) {
     self.af_setImage(withURL: url,
                      placeholderImage: nil,
                      filter: CircleFilter(),
