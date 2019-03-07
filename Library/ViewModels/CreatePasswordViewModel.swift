@@ -53,10 +53,7 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
 
     self.currentValidationLabelTextProperty <~ self.validationLabelText
 
-    let validationFields = Signal.combineLatest(
-      self.newPasswordChangedProperty.signal.skipNil(),
-      self.newPasswordConfirmationChangedProperty.signal.skipNil()
-      ).map(passwordFieldsNotEmpty)
+    let validationFields = combinedPasswords.map(passwordFieldsNotEmpty)
 
     let validationForm = Signal.combineLatest(validationFields, validationMatch, validationLength)
       .map(passwordFormValid)
