@@ -54,6 +54,7 @@ final class SettingsViewController: UIViewController {
 
     _ = tableView
       |> settingsTableViewStyle
+      |> settingsTableViewSeparatorStyle
   }
 
   override func bindViewModel() {
@@ -83,6 +84,18 @@ final class SettingsViewController: UIViewController {
     self.viewModel.outputs.goToAppStoreRating
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
+  }
+
+  // MARK: - Private Functions
+  private func shouldHideFooter(for section: Int) -> Bool {
+    guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return true }
+
+    if section == SettingsSectionType.findFriends
+      && !self.viewModel.outputs.findFriendsDisabledProperty.value {
+      return true
+    }
+
+    return false
   }
 
   private func leftBarButtonItem() -> UIBarButtonItem {
@@ -159,9 +172,7 @@ extension SettingsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    guard section == SettingsSectionType.ratingAppVersion.rawValue else { return 0.1 }
-
-    return UITableView.automaticDimension
+    return self.shouldHideFooter(for: section) ? 0.1 : UITableView.automaticDimension
   }
 
   func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
@@ -169,15 +180,17 @@ extension SettingsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard section == SettingsSectionType.ratingAppVersion.rawValue else { return nil }
+    if self.shouldHideFooter(for: section) {
+      return nil
+    }
 
     let footerView = tableView.dequeueReusableHeaderFooterView(
       withIdentifier: Nib.SettingsFooterView.rawValue
     ) as? SettingsFooterView
 
-    let appVersionString = AppEnvironment.current.mainBundle.appVersionString
+    let section = SettingsSectionType(rawValue: section)
 
-    footerView?.configure(with: "\(Strings.App_version()) \(appVersionString)")
+    footerView?.configure(with: section?.footerText ?? "")
 
     return footerView
   }

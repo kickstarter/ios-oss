@@ -117,6 +117,7 @@
 "Discover_the_future_of_Design_and_Tech" = "Discover the future of Design and Tech.";
 "Dismiss" = "Dismiss";
 "Done" = "Done";
+"Double_tap_to_toggle_setting" = "Double tap to toggle setting";
 "Download_your_personal_data" = "Download your personal data";
 "Earth" = "Earth";
 "Edit_profile" = "Edit profile";
@@ -273,6 +274,10 @@
 "Not_delivered" = "Not delivered";
 "Not_followed" = "Not followed";
 "Not_now" = "Not Now";
+"Notification_email_notification_off" = "%{notification}, email notification, off";
+"Notification_email_notification_on" = "%{notification}, email notification, on";
+"Notification_push_notification_off" = "%{notification}, push notification, off";
+"Notification_push_notification_on" = "%{notification}, push notification, on";
 "Notifications" = "Notifications";
 "Once_you_back_a_project_well_share" = "Once you back a project, we’ll share personalized recommendations in this space.";
 "Only_amount_of_time_left_to_watch_this" = "Only %{amount_of_time} left to watch this.";
