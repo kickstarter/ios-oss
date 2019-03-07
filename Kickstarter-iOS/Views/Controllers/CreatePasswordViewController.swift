@@ -137,7 +137,9 @@ final class CreatePasswordViewController: UITableViewController {
       .observeValues { [weak self] text in
         UIView.performWithoutAnimation {
           self?.tableView.beginUpdates()
-          self?.groupedFooterView?.label.text = text
+
+          _ = self?.groupedFooterView?.label ?|> \.text .~ text
+
           self?.tableView.endUpdates()
         }
     }
@@ -178,7 +180,9 @@ final class CreatePasswordViewController: UITableViewController {
 
     let text = Strings.Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password()
 
-    headerView.label.text = text
+    _ = headerView.label
+      |> \.text .~ text
+
     return headerView
   }
 
@@ -187,7 +191,9 @@ final class CreatePasswordViewController: UITableViewController {
     guard let footerView = tableView.dequeueReusableHeaderFooterView(withClass: className)
       as? SettingsGroupedFooterView else { return nil }
 
-    footerView.label.text = self.viewModel.outputs.currentValidationLabelText()
+    _ = footerView.label
+      |> \.text .~ self.viewModel.outputs.currentValidationLabelText()
+
     return footerView
   }
 
