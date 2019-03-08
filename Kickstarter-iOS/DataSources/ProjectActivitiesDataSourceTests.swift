@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import XCTest
 @testable import Library
 @testable import Kickstarter_Framework
@@ -11,6 +10,7 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
   let tableView = UITableView()
 
   func testDataSource() {
+    // swiftlint:disable:next force_unwrapping
     let timeZone = TimeZone(abbreviation: "UTC")!
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = timeZone
@@ -53,6 +53,7 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
   }
 
   func testGroupedDatesIsFalse() {
+    // swiftlint:disable:next force_unwrapping
     let timeZone = TimeZone(abbreviation: "UTC")!
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = timeZone
