@@ -15,7 +15,7 @@ public let settingsSectionLabelStyle = { (label: UILabel) in
     |> \.numberOfLines .~ 2
 }
 
-public let settingsTitleLabelStyle = { (label: UILabel) in
+public let settingsTitleLabelStyle: (UILabel) -> UILabel = { (label: UILabel) in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ .ksr_body()

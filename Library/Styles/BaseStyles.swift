@@ -111,19 +111,28 @@ public let feedTableViewCellStyle = baseTableViewCellStyle()
       : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(2))
 }
 
-public let formFieldStyle =
-  UITextField.lens.font .~ .ksr_body()
-    <> UITextField.lens.textColor .~ .ksr_soft_black
-    <> UITextField.lens.backgroundColor .~ .clear
-    <> UITextField.lens.borderStyle .~ .none
-    <> UITextField.lens.autocapitalizationType .~ .none
-    <> UITextField.lens.autocorrectionType .~ .no
-    <> UITextField.lens.spellCheckingType .~ .no
-    <> UITextField.lens.tintColor .~ .ksr_green_700
+public let formTextInputStyle: (UITextField) -> UITextField = { (textField: UITextField) in
+  textField
+    |> \.autocapitalizationType .~ UITextAutocapitalizationType.none
+    |> \.autocorrectionType .~ UITextAutocorrectionType.no
+    |> \.spellCheckingType .~ UITextSpellCheckingType.no
+}
 
-public let separatorStyle =
-  UIView.lens.backgroundColor .~ .ksr_grey_400
-    <> UIView.lens.accessibilityElementsHidden .~ true
+public let formFieldStyle: (UITextField) -> UITextField = { (textField: UITextField) in
+  textField
+    |> formTextInputStyle
+    |> \.backgroundColor .~ UIColor.clear
+    |> \.borderStyle .~ UITextField.BorderStyle.none
+    |> \.font .~ UIFont.ksr_body()
+    |> \.textColor .~ UIColor.ksr_soft_black
+    |> \.tintColor .~ UIColor.ksr_green_700
+}
+
+public let separatorStyle: (UIView) -> UIView = { (view: UIView) in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_grey_400
+    |> \.accessibilityElementsHidden .~ true
+}
 
 /**
  - parameter r: The corner radius. This parameter is optional, and will use a default value if omitted.

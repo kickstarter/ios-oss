@@ -23,18 +23,11 @@ final class SelectCurrencyTableViewHeader: UIView {
       |> \.contentMode .~ .scaleAspectFill
 
     _ = self.headerStackView
-      |> \.axis .~ .vertical
-      |> \.alignment .~ .center
-      |> \.spacing .~ Styles.grid(2)
-      |> \.layoutMargins .~ .init(
-        top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2)
-      )
-      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> headerStackViewStyle
 
     _ = self.headerLabel
       |> settingsDescriptionLabelStyle
-      |> \.textColor .~ .ksr_text_dark_grey_500
-      |> \.backgroundColor .~ .ksr_grey_200
+      |> headerLabelStyle
   }
 
   // MARK: Accessors
@@ -59,4 +52,23 @@ final class SelectCurrencyTableViewHeader: UIView {
   }()
 
   private lazy var headerLabel: UILabel = { UILabel(frame: .zero) }()
+}
+
+// MARK: - Styles
+
+private let headerStackViewStyle: (UIStackView) -> UIStackView = { (stackView: UIStackView) in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.alignment .~ UIStackView.Alignment.center
+    |> \.spacing .~ Styles.grid(2)
+    |> \.layoutMargins .~ UIEdgeInsets(
+      top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2)
+    )
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+}
+
+private let headerLabelStyle: (UILabel) -> UILabel = { (label: UILabel) in
+  label
+    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+    |> \.backgroundColor .~ UIColor.ksr_grey_200
 }
