@@ -1,5 +1,5 @@
 import XCTest
-import StringsScriptCore
+@testable import StringsScriptCore
 import class Foundation.Bundle
 
 // swiftlint:disable line_length
@@ -10,6 +10,18 @@ final class StringsScriptTests: XCTestCase {
   override func setUp() {
     super.setUp()
     self.subject = Strings()
+  }
+
+  func testStringsScript_run_throwsErrorWithInsufficientArguments() {
+    let stringsScript = StringsScript(arguments: [String]())
+
+    do {
+      try stringsScript.run()
+
+      XCTFail("Script should fail with insufficient number of arguments")
+    } catch {
+      XCTAssertEqual(StringsScriptError.insufficientArguments.localizedDescription, error.localizedDescription)
+    }
   }
 
   func testStringsFileContents() {
@@ -23,8 +35,11 @@ final class StringsScriptTests: XCTestCase {
     let dic = ["fr": ["Kickstarter_is_not_a_store": "Kickstarter n\'est pas un magasin."]]
 
     self.subject?.stringsByLocale = dic
-    if let (locale, content) = self.subject?.localePathsAndContents().first {
-      XCTAssertEqual(locale, "../../Kickstarter-iOS/Locales/fr.lproj/Localizable.strings")
+
+    let localePath = "Kickstarter-iOS/Locales"
+
+    if let (locale, content) = self.subject?.localePathsAndContents(with: localePath).first {
+      XCTAssertEqual(locale, "Kickstarter-iOS/Locales/fr.lproj/Localizable.strings")
       XCTAssertEqual(content, "\"Kickstarter_is_not_a_store\" = \"Kickstarter n\'est pas un magasin.\";")
     } else {
       XCTFail("Locale and content cannot be nil")

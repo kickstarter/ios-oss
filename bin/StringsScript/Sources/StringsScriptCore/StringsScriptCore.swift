@@ -55,12 +55,12 @@ public final class Strings {
 
   let supportedLocales = ["Base", "de", "en", "es", "fr", "ja"]
 
-  public func localePathsAndContents() -> [(String, String)] {
+  public func localePathsAndContents(with rootPath: String) -> [(String, String)] {
     var pathsAndContents: [(String, String)] = []
     stringsByLocale?.forEach { locale, strings in
       guard supportedLocales.contains(locale) else { return }
       let content = stringsFileContents(strings)
-      let path = "../../Kickstarter-iOS/Locales/\(locale).lproj/Localizable.strings"
+      let path = "\(rootPath)/\(locale).lproj/Localizable.strings"
       pathsAndContents.append((path, content))
     }
     return pathsAndContents
