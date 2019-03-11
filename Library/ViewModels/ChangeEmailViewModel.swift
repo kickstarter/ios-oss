@@ -50,8 +50,7 @@ ChangeEmailViewModelOutputs {
       self.textFieldShouldReturnProperty.signal.skipNil()
         .filter { $0 == .done }
         .ignoreValues(),
-      self.saveButtonTappedProperty.signal.ignoreValues()
-    )
+      self.saveButtonTappedProperty.signal.ignoreValues())
 
     let changeEmailEvent = Signal.combineLatest(
       self.newEmailProperty.signal.skipNil(),
