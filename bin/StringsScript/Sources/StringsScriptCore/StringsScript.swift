@@ -37,7 +37,7 @@ public final class StringsScript {
       try strings.localePathsAndContents(with: localesRootPath).forEach { path, content in
         do {
           try content.write(toFile: path, atomically: true, encoding: .utf8)
-          print("✅ Content written to: \(path)")
+          print("✅ Localized strings written to: \(path)")
         } catch {
           throw StringsScriptError.writeToFileError("\(error.localizedDescription) \nLine: \(#line)")
         }
@@ -50,7 +50,7 @@ public final class StringsScript {
       try strings.staticStringsFileContents().write(toFile: writePath,
                                                     atomically: true,
                                                     encoding: .utf8)
-      print("✅ Contents written to: \(writePath)")
+      print("✅ Strings written to: \(writePath)")
     } catch {
       throw StringsScriptError.writeToFileError("\(error.localizedDescription) \nLine: \(#line)")
     }
