@@ -15,6 +15,20 @@ public final class Strings {
 
   // MARK: - Public Functions
 
+  public func fetchStringsByLocale() throws -> [String: AnyObject]? {
+    do {
+      let JSONDictionary = try endpoint
+        .flatMap(URL.init)
+        .flatMap { try String(contentsOf: $0) }
+        .flatMap { $0.data(using: .utf8) }
+        .flatMap { try JSONSerialization.jsonObject(with: $0, options: []) }
+
+      return JSONDictionary as? [String: AnyObject]
+    } catch {
+      throw StringsScriptCoreError.errorFetchingStringsFromServer("\(error) \(#line)")
+    }
+  }
+
   public func deserialize(_ JSONDictionary: [String: AnyObject]?) throws -> [String: [String: String]] {
     let deserializedStringsByLocale = JSONDictionary
       .flatMap { $0["locales"] as? [String: [String: AnyObject]] }
@@ -117,19 +131,6 @@ public final class Strings {
   }
 
   // MARK: - Private Helper Functions
-  private func fetchStringsByLocale() throws -> [String: AnyObject]? {
-    do {
-      let JSONDictionary = try endpoint
-        .flatMap(URL.init)
-        .flatMap { try String(contentsOf: $0) }
-        .flatMap { $0.data(using: .utf8) }
-        .flatMap { try JSONSerialization.jsonObject(with: $0, options: []) }
-
-      return JSONDictionary as? [String: AnyObject]
-    } catch {
-      throw StringsScriptCoreError.errorFetchingStringsFromServer("\(error) \(#line)")
-    }
-  }
 
   private func flatten(_ data: [String: AnyObject], prefix: String = "", counts: [String]) -> [String: String] {
     return data.reduce([String: String]()) { accum, keyAndNested in

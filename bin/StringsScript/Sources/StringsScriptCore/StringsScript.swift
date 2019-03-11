@@ -33,7 +33,7 @@ public final class StringsScript {
     let localesRootPath = self.arguments[2]
     let strings = Strings()
 
-    let stringsByLocale = try strings.fetchStringsByLocale()
+    let stringsByLocale = try strings.deserialize(strings.fetchStringsByLocale())
 
     try strings.localePathsAndContents(with: localesRootPath, stringsByLocale: stringsByLocale).forEach { path, content in
       do {
