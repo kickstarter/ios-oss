@@ -6,6 +6,8 @@ import PlaygroundSupport
 
 let (parent, child) = playgroundControllers(device: .phone4inch, orientation: .portrait)
 
+PlaygroundPage.current.liveView = parent
+
 let rootStackView = UIStackView(frame: child.view.bounds)
   |> UIStackView.lens.alignment .~ .leading
   |> UIStackView.lens.axis .~ .vertical
@@ -13,7 +15,7 @@ let rootStackView = UIStackView(frame: child.view.bounds)
   |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
   |> UIStackView.lens.layoutMargins .~ .init(all: 16)
 
-parent.view.addSubview(rootStackView)
+child.view.addSubview(rootStackView)
 
 func disabled <C: UIControlProtocol> () -> ((C) -> C) {
   return C.lens.isEnabled .~ false
@@ -49,5 +51,3 @@ buttonsStyles.forEach { styles in
     button |> style
   }
 }
-
-PlaygroundPage.current.liveView = parent
