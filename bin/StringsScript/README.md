@@ -4,7 +4,7 @@
 
 Most of the fuctionality lives in StringsScriptCore. Any new functionality should also be added to this framework and tested.
 
-### Good things to know:
+## Good things to know:
 
 * You can build this script from the command line by navigating to the root /StringsScript folder and running `swift build`
 	* you can run the debug binary from the command line using `./.build/debug/StringsScript` (from the root StringsScript folder)

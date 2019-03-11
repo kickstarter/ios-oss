@@ -33,21 +33,19 @@ public final class StringsScript {
     let localesRootPath = self.arguments[2]
     let strings = Strings()
 
-    do {
-      try strings.localePathsAndContents(with: localesRootPath).forEach { path, content in
-        do {
-          try content.write(toFile: path, atomically: true, encoding: .utf8)
-          print("✅ Localized strings written to: \(path)")
-        } catch {
-          throw StringsScriptError.writeToFileError("\(error.localizedDescription) \nLine: \(#line)")
-        }
+    let stringsByLocale = try strings.fetchStringsByLocale()
+
+    try strings.localePathsAndContents(with: localesRootPath, stringsByLocale: stringsByLocale).forEach { path, content in
+      do {
+        try content.write(toFile: path, atomically: true, encoding: .utf8)
+        print("✅ Localized strings written to: \(path)")
+      } catch {
+        throw StringsScriptError.writeToFileError("\(error.localizedDescription) \nLine: \(#line)")
       }
-    } catch {
-      throw StringsScriptError.genericError("\(error.localizedDescription) \nLine: \(#line)")
     }
 
     do {
-      try strings.staticStringsFileContents().write(toFile: writePath,
+      try strings.staticStringsFileContents(stringsByLocale: stringsByLocale).write(toFile: writePath,
                                                     atomically: true,
                                                     encoding: .utf8)
       print("✅ Strings written to: \(writePath)")

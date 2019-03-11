@@ -79,4 +79,17 @@ final class StringsScriptTests: XCTestCase {
   """
     XCTAssertEqual(generatedString, try? self.subject?.staticStringsFileContents())
   }
+
+  func testStaticStringsFileContents_throwsError_whenStringsByLocal_isNil() {
+    do {
+      let strings = Strings()
+      try strings.staticStringsFileContents(stringsByLocale: nil)
+    } catch {
+      XCTAssertEqual(StringsScriptError.genericError("stringsByLocale cannot be nil").localizedDescription, "stringsByLocale cannot be nil")
+    }
+  }
+
+  func testFlatten() {
+
+  }
 }

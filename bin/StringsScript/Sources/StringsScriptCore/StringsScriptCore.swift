@@ -5,42 +5,35 @@ let oauthToken: String = ProcessInfo.processInfo.environment["KICKSTARTER_API_IO
 //swiftlint:disable:next line_length
 public let endpoint: String? = "https://\(Secrets.Api.Endpoint.production)/v1/app/ios/config?client_id=\(Secrets.Api.Client.production)&all_locales=true&oauth_token=\(oauthToken)"
 
-extension Dictionary {
-  static func renamed(key fromKey: Key, to toKey: Key) -> ((Dictionary) -> Dictionary) {
-    return { dict in
-      var result = dict
-      result[toKey] = result[fromKey]
-      result[fromKey] = nil
-      return result
-    }
-  }
-}
-
-extension Array where Element: Hashable {
-  public func distincts(_ eq: (Element, Element) -> Bool) -> Array {
-    var result = Array()
-    forEach { x in
-      if !result.contains(where: { eq(x, $0) }) {
-        result.append(x)
-      }
-    }
-    return result
-  }
-}
-
-enum StringsScriptCoreError: Error {
-  case stringNotFound(String)
-  case unknownError(String)
-}
 
 public final class Strings {
+  static let counts = ["zero", "one", "two", "few", "many"]
 
-  let counts = ["zero", "one", "two", "few", "many"]
+  private let supportedLocales = ["Base", "de", "en", "es", "fr", "ja"]
 
   public init() {}
 
-  public func stringsFileContents(_ strings: [String: String]) -> String {
+  // MARK: - Public Functions
 
+  public func deserialize(_ JSONDictionary: [String: AnyObject]?) throws -> [String: [String: String]] {
+    let deserializedStringsByLocale = JSONDictionary
+      .flatMap { $0["locales"] as? [String: [String: AnyObject]] }
+      .map(Dictionary.renamed(key: "en", to: "Base"))
+      .map {
+        $0.reduce([String: [String: String]]()) { accum, localeAndStrings in
+          let (locale, strings) = localeAndStrings
+          return accum.merging([locale: flatten(strings, prefix: "", counts: Strings.counts)]) { $1 }
+        }
+    }
+
+    guard let stringsByLocale = deserializedStringsByLocale else {
+      throw StringsScriptCoreError.errorDecodingLocalesFromJSON
+    }
+
+    return stringsByLocale
+  }
+
+  public func stringsFileContents(_ strings: [String: String]) -> String {
     return strings.keys
       .sorted()
       .filter { key in !key.hasSuffix(".") }
@@ -53,11 +46,10 @@ public final class Strings {
       .joined(separator: "\n")
   }
 
-  let supportedLocales = ["Base", "de", "en", "es", "fr", "ja"]
-
-  public func localePathsAndContents(with rootPath: String) -> [(String, String)] {
+  public func localePathsAndContents(with rootPath: String,
+                                     stringsByLocale: [String: [String: String]]) -> [(String, String)] {
     var pathsAndContents: [(String, String)] = []
-    stringsByLocale?.forEach { locale, strings in
+    stringsByLocale.forEach { locale, strings in
       guard supportedLocales.contains(locale) else { return }
       let content = stringsFileContents(strings)
       let path = "\(rootPath)/\(locale).lproj/Localizable.strings"
@@ -66,7 +58,7 @@ public final class Strings {
     return pathsAndContents
   }
 
-  public func staticStringsFileContents() throws -> String {
+  public func staticStringsFileContents(stringsByLocale: [String: [String: String]]) throws -> String {
     var staticStringsLines: [String] = []
     staticStringsLines.append("//=======================================================================")
     staticStringsLines.append("//")
@@ -79,26 +71,24 @@ public final class Strings {
     staticStringsLines.append("public enum Strings {")
 
     do {
-      try stringsByLocale?["Base"]?.keys
-        .filter { key in counts.reduce(true) { $0 && !key.hasSuffix(".\($1)") } }
+      try stringsByLocale["Base"]?.keys
+        .filter { key in Strings.counts.reduce(true) { $0 && !key.hasSuffix(".\($1)") } }
         .sorted()
         .forEach { key in
-          guard let string = (stringsByLocale?["Base"]?[key]) else {
-            throw StringsScriptCoreError.stringNotFound("String not found. Line: \(#line)")
+          guard let string = (stringsByLocale["Base"]?[key]) else {
+            throw StringsScriptCoreError.stringNotFound("\(#line)")
           }
           print(string)
           staticStringsLines.append("  /**")
           staticStringsLines.append("   \"\(string)\"\n")
 
-          if let stringsByLocale = stringsByLocale {
-            let sortedKeys = Array(stringsByLocale.keys).sorted()
+          let sortedKeys = Array(stringsByLocale.keys).sorted()
 
-            for locale in sortedKeys {
-              guard let strings = stringsByLocale[locale] else { continue }
-              let trueLocale = locale == "Base" ? "en" : locale
-              guard supportedLocales.contains(trueLocale), let stringValue = strings[key] else { continue }
-              staticStringsLines.append("   - **\(trueLocale)**: \"\(stringValue)\"")
-            }
+          for locale in sortedKeys {
+            guard let strings = stringsByLocale[locale] else { continue }
+            let trueLocale = locale == "Base" ? "en" : locale
+            guard supportedLocales.contains(trueLocale), let stringValue = strings[key] else { continue }
+            staticStringsLines.append("   - **\(trueLocale)**: \"\(stringValue)\"")
           }
 
           staticStringsLines.append("  */")
@@ -122,17 +112,32 @@ public final class Strings {
       staticStringsLines.append("")
       return staticStringsLines.joined(separator: "\n")
     } catch {
-      throw StringsScriptCoreError.unknownError("Error: \(error)\nLine: \(#line)")
+      throw StringsScriptCoreError.unknownError("\(error)\nLine: \(#line)")
     }
   }
 
-  private func flatten(_ data: [String: AnyObject], prefix: String = "") -> [String: String] {
+  // MARK: - Private Helper Functions
+  private func fetchStringsByLocale() throws -> [String: AnyObject]? {
+    do {
+      let JSONDictionary = try endpoint
+        .flatMap(URL.init)
+        .flatMap { try String(contentsOf: $0) }
+        .flatMap { $0.data(using: .utf8) }
+        .flatMap { try JSONSerialization.jsonObject(with: $0, options: []) }
+
+      return JSONDictionary as? [String: AnyObject]
+    } catch {
+      throw StringsScriptCoreError.errorFetchingStringsFromServer("\(error) \(#line)")
+    }
+  }
+
+  private func flatten(_ data: [String: AnyObject], prefix: String = "", counts: [String]) -> [String: String] {
     return data.reduce([String: String]()) { accum, keyAndNested in
       let (key, nested) = keyAndNested
       let newKey = prefix + key
 
       if let nested = nested as? [String: AnyObject] {
-        return accum.merging(flatten(nested, prefix: newKey + ".")) { $1 }
+        return accum.merging(flatten(nested, prefix: newKey + ".", counts: counts)) { $1 }
       }
 
       if let string = nested as? String {
@@ -192,23 +197,6 @@ public final class Strings {
       .replacingOccurrences(of: "\n", with: "\\n")
       .replacingOccurrences(of: "\"", with: "\\\"")
   }
-
-  public lazy var stringsByLocale: [String: [String: String]]? = {
-    let stringsByLocale1 = endpoint
-      .flatMap(URL.init)
-      .flatMap { try? String(contentsOf: $0) }
-      .flatMap { $0.data(using: .utf8) }
-      .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
-
-    return stringsByLocale1
-      .flatMap { $0 as? [String: AnyObject] }
-      .flatMap { $0["locales"] as? [String: [String: AnyObject]] }
-      .map(Dictionary.renamed(key: "en", to: "Base"))
-      .map {
-        $0.reduce([String: [String: String]]()) { accum, localeAndStrings in
-          let (locale, strings) = localeAndStrings
-          return accum.merging([locale: flatten(strings)]) { $1 }
-        }
-    }
-  }()
 }
+
+
