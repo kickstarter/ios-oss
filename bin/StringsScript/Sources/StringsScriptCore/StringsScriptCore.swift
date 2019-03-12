@@ -5,7 +5,6 @@ let oauthToken: String = ProcessInfo.processInfo.environment["KICKSTARTER_API_IO
 //swiftlint:disable:next line_length
 public let endpoint: String? = "https://\(Secrets.Api.Endpoint.production)/v1/app/ios/config?client_id=\(Secrets.Api.Client.production)&all_locales=true&oauth_token=\(oauthToken)"
 
-
 public final class Strings {
   static let counts = ["zero", "one", "two", "few", "many"]
 
@@ -129,7 +128,8 @@ public final class Strings {
 
   // MARK: - Private Helper Functions
 
-  private func flatten(_ data: [String: AnyObject], prefix: String = "", counts: [String]) -> [String: String] {
+  private func flatten(_ data: [String: AnyObject], prefix: String = "",
+                       counts: [String]) -> [String: String] {
     return data.reduce([String: String]()) { accum, keyAndNested in
       let (key, nested) = keyAndNested
       let newKey = prefix + key
@@ -196,5 +196,3 @@ public final class Strings {
       .replacingOccurrences(of: "\"", with: "\\\"")
   }
 }
-
-
