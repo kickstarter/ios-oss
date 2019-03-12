@@ -35,13 +35,14 @@ public final class StringsScript {
 
     let stringsByLocale = try strings.deserialize(strings.fetchStringsByLocale())
 
-    try strings.localePathsAndContents(with: localesRootPath, stringsByLocale: stringsByLocale).forEach { path, content in
-      do {
-        try content.write(toFile: path, atomically: true, encoding: .utf8)
-        print("✅ Localized strings written to: \(path)")
-      } catch {
-        throw StringsScriptError.writeToFileError("\(error.localizedDescription) \nLine: \(#line)")
-      }
+    try strings.localePathsAndContents(with: localesRootPath, stringsByLocale: stringsByLocale)
+      .forEach { path, content in
+        do {
+          try content.write(toFile: path, atomically: true, encoding: .utf8)
+          print("✅ Localized strings written to: \(path)")
+        } catch {
+          throw StringsScriptError.writeToFileError("\(error.localizedDescription) \nLine: \(#line)")
+        }
     }
 
     do {
