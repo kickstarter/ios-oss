@@ -46,6 +46,7 @@ final class StringsScriptTests: XCTestCase {
   }
 
   func testDeserialize() {
+    //swiftlint:disable:next todo
     //TODO
   }
 
