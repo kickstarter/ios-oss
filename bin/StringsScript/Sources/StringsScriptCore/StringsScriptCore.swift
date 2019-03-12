@@ -84,50 +84,47 @@ public final class Strings {
     staticStringsLines.append("// swiftlint:disable line_length")
     staticStringsLines.append("public enum Strings {")
 
-    do {
-      try stringsByLocale["Base"]?.keys
-        .filter { key in Strings.counts.reduce(true) { $0 && !key.hasSuffix(".\($1)") } }
-        .sorted()
-        .forEach { key in
-          guard let string = (stringsByLocale["Base"]?[key]) else {
-            throw StringsScriptCoreError.stringNotFound("\(#line)")
-          }
-          print(string)
-          staticStringsLines.append("  /**")
-          staticStringsLines.append("   \"\(string)\"\n")
+    try stringsByLocale["Base"]?.keys
+      .filter { key in Strings.counts.reduce(true) { $0 && !key.hasSuffix(".\($1)") } }
+      .sorted()
+      .forEach { key in
+        guard let string = (stringsByLocale["Base"]?[key]) else {
+          throw StringsScriptCoreError.stringNotFound("\(#line)")
+        }
+        print(string)
+        staticStringsLines.append("  /**")
+        staticStringsLines.append("   \"\(string)\"\n")
 
-          let sortedKeys = Array(stringsByLocale.keys).sorted()
+        let sortedKeys = Array(stringsByLocale.keys).sorted()
 
-          for locale in sortedKeys {
-            guard let strings = stringsByLocale[locale] else { continue }
-            let trueLocale = locale == "Base" ? "en" : locale
-            guard supportedLocales.contains(trueLocale), let stringValue = strings[key] else { continue }
-            staticStringsLines.append("   - **\(trueLocale)**: \"\(stringValue)\"")
-          }
+        for locale in sortedKeys {
+          guard let strings = stringsByLocale[locale] else { continue }
+          let trueLocale = locale == "Base" ? "en" : locale
+          guard supportedLocales.contains(trueLocale), let stringValue = strings[key] else { continue }
+          staticStringsLines.append("   - **\(trueLocale)**: \"\(stringValue)\"")
+        }
 
-          staticStringsLines.append("  */")
-          let pluralCount = key.hasSuffix(".")
-          let key = pluralCount ? String(key.dropLast()) : key
-          let funcName = key.replacingOccurrences(of: ".", with: "_")
-          let argNames = funcArgumentNames(string)
-          staticStringsLines.append(
-            "  public static func \(funcName)(\(funcArguments(argNames, count: pluralCount))) -> String {"
-          )
-          staticStringsLines.append("    return localizedString(")
-          staticStringsLines.append("      key: \"\(key)\",")
-          staticStringsLines.append("      defaultValue: \"\(escaped(string))\",")
-          staticStringsLines.append("      count: \(pluralCount ? funcCount(argNames) : "nil"),")
-          staticStringsLines
-            .append("      substitutions: \(funcSubstitutions(string, count: pluralCount))")
-          staticStringsLines.append("    )")
-          staticStringsLines.append("  }")
-      }
-      staticStringsLines.append("}")
-      staticStringsLines.append("")
-      return staticStringsLines.joined(separator: "\n")
-    } catch {
-      throw StringsScriptCoreError.unknownError("\(error)\nLine: \(#line)")
+        staticStringsLines.append("  */")
+        let pluralCount = key.hasSuffix(".")
+        let key = pluralCount ? String(key.dropLast()) : key
+        let funcName = key.replacingOccurrences(of: ".", with: "_")
+        let argNames = funcArgumentNames(string)
+        staticStringsLines.append(
+          "  public static func \(funcName)(\(funcArguments(argNames, count: pluralCount))) -> String {"
+        )
+        staticStringsLines.append("    return localizedString(")
+        staticStringsLines.append("      key: \"\(key)\",")
+        staticStringsLines.append("      defaultValue: \"\(escaped(string))\",")
+        staticStringsLines.append("      count: \(pluralCount ? funcCount(argNames) : "nil"),")
+        staticStringsLines
+          .append("      substitutions: \(funcSubstitutions(string, count: pluralCount))")
+        staticStringsLines.append("    )")
+        staticStringsLines.append("  }")
     }
+    staticStringsLines.append("}")
+    staticStringsLines.append("")
+
+    return staticStringsLines.joined(separator: "\n")
   }
 
   // MARK: - Private Helper Functions

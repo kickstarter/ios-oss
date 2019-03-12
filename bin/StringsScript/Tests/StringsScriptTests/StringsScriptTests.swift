@@ -32,13 +32,12 @@ final class StringsScriptTests: XCTestCase {
 
   func testLocalePathsAndContents() {
 
-    let dic = ["fr": ["Kickstarter_is_not_a_store": "Kickstarter n\'est pas un magasin."]]
-
-    self.subject?.stringsByLocale = dic
-
+    let stringsByLocale = ["fr": ["Kickstarter_is_not_a_store": "Kickstarter n\'est pas un magasin."]]
+    let strings = Strings()
     let localePath = "Kickstarter-iOS/Locales"
 
-    if let (locale, content) = self.subject?.localePathsAndContents(with: localePath).first {
+    if let (locale, content) = strings.localePathsAndContents(with: localePath,
+                                                              stringsByLocale: stringsByLocale).first {
       XCTAssertEqual(locale, "Kickstarter-iOS/Locales/fr.lproj/Localizable.strings")
       XCTAssertEqual(content, "\"Kickstarter_is_not_a_store\" = \"Kickstarter n\'est pas un magasin.\";")
     } else {
@@ -46,10 +45,15 @@ final class StringsScriptTests: XCTestCase {
     }
   }
 
-  func testStaticStringsFileContents() {
-    let dic = ["Base": ["Are_you_sure_you_wish_to_remove_this_card": "Are you sure you wish to remove this card from your payment method options?"]]
+  func testDeserialize() {
+    //TODO
+  }
 
-    self.subject?.stringsByLocale = dic
+  func testStaticStringsFileContents() {
+    let stringsByLocale = ["Base": ["Are_you_sure_you_wish_to_remove_this_card": "Are you sure you wish to remove this card from your payment method options?"]]
+
+    let strings = Strings()
+
     let generatedString =
   """
   //=======================================================================
@@ -77,19 +81,6 @@ final class StringsScriptTests: XCTestCase {
   }
 
   """
-    XCTAssertEqual(generatedString, try? self.subject?.staticStringsFileContents())
-  }
-
-  func testStaticStringsFileContents_throwsError_whenStringsByLocal_isNil() {
-    do {
-      let strings = Strings()
-      try strings.staticStringsFileContents(stringsByLocale: nil)
-    } catch {
-      XCTAssertEqual(StringsScriptError.genericError("stringsByLocale cannot be nil").localizedDescription, "stringsByLocale cannot be nil")
-    }
-  }
-
-  func testFlatten() {
-
+    XCTAssertEqual(generatedString, try? strings.staticStringsFileContents(stringsByLocale: stringsByLocale))
   }
 }
