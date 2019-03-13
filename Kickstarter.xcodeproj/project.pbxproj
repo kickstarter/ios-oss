@@ -75,10 +75,13 @@
 		01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */; };
 		01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */; };
 		01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */; };
+		3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */; };
+		3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */; };
 		37CBA64D221E10E100E6CAB6 /* HelpTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */; };
 		37D6722F221E61D300B6D415 /* SettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D671F6221E61B600B6D415 /* SettingsFooterView.swift */; };
 		37D67231221E656500B6D415 /* SettingsFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37D67230221E656500B6D415 /* SettingsFooterView.xib */; };
 		37D99C5B22247F58008EF839 /* NSBundleType+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D99C2222247F4A008EF839 /* NSBundleType+Tests.swift */; };
+		37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */; };
 		59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */; };
 		59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */; };
 		59322F071CD27B1000C90CC6 /* ProfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59322F051CD27B1000C90CC6 /* ProfileDataSource.swift */; };
@@ -1856,10 +1859,13 @@
 		01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemStyles.swift; sourceTree = "<group>"; };
 		01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItemStyles.swift; sourceTree = "<group>"; };
+		3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariables.swift; sourceTree = "<group>"; };
+		3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariablesTests.swift; sourceTree = "<group>"; };
 		37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTypeTests.swift; sourceTree = "<group>"; };
 		37D671F6221E61B600B6D415 /* SettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFooterView.swift; sourceTree = "<group>"; };
 		37D67230221E656500B6D415 /* SettingsFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsFooterView.xib; sourceTree = "<group>"; };
 		37D99C2222247F4A008EF839 /* NSBundleType+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBundleType+Tests.swift"; sourceTree = "<group>"; };
+		37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoType.swift; sourceTree = "<group>"; };
 		3D1363951F0191FB00B53420 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackViewViewModel.swift; sourceTree = "<group>"; };
 		59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackView.swift; sourceTree = "<group>"; };
@@ -3680,6 +3686,8 @@
 				77F6E73421222E7C005A5C55 /* EmailFrequency.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A7ED1F141E830FDC00BFFA01 /* EnvironmentTests.swift */,
+				3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */,
+				3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */,
 				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
 				A7208C3D1CCAC86800E3DAB3 /* FacebookAppDelegateProtocol.swift */,
 				77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */,
@@ -3721,6 +3729,7 @@
 				A7EDEE561D83453F00780B34 /* PKPaymentAuthorizationViewController.swift */,
 				A7B11A761D79F03300A5036E /* PKPaymentRequest.swift */,
 				A7ED1F1D1E830FDC00BFFA01 /* PKPaymentRequestTests.swift */,
+				37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */,
 				9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */,
 				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
 				D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */,
@@ -5687,6 +5696,7 @@
 				A7D121091D15B08200F364FD /* CountBadgeView.swift in Sources */,
 				77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */,
 				D79D61151FD0979D000F958B /* String+Base64.swift in Sources */,
+				3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */,
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				D0CC9D271E5733B500C2BC4A /* LiveStreamChatMessageCellViewModel.swift in Sources */,
@@ -5841,6 +5851,7 @@
 				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
 				0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */,
 				D04AAC21218BB70D00CF713E /* ChangePasswordViewModel.swift in Sources */,
+				37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */,
 				D08A81791DFAACF5000128DB /* LiveStreamCountdownViewModel.swift in Sources */,
 				A75313CB1E49363B002C4E7D /* LiveStreamStyles.swift in Sources */,
 				A707BAD81CFFAB9400653B2F /* LoginIntent.swift in Sources */,
@@ -6018,6 +6029,7 @@
 				A7ED1F291E830FDC00BFFA01 /* EnvironmentTests.swift in Sources */,
 				A7ED1F2E1E830FDC00BFFA01 /* LaunchedCountriesTests.swift in Sources */,
 				A7ED1FAD1E831C5C00BFFA01 /* CheckoutViewModelTests.swift in Sources */,
+				3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */,
 				A7ED1FB51E831C5C00BFFA01 /* LiveStreamCountdownViewModelTests.swift in Sources */,
 				D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */,
 				D04AACAD218BB72100CF713E /* SettingsNotificationPickerViewModelTests.swift in Sources */,
