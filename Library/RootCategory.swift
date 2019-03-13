@@ -27,8 +27,8 @@ public enum RootCategory: Int {
   }
 }
 
-// swiftlint:disable cyclomatic_complexity
 public extension RootCategory {
+  // swiftlint:disable:next cyclomatic_complexity
   public func allProjectsString() -> String {
     switch self {
     case .art:          return Strings.All_Art_Projects()
@@ -50,4 +50,3 @@ public extension RootCategory {
     }
   }
 }
-// swiftlint:enable cyclomatic_complexity

@@ -1,4 +1,3 @@
-// swiftlint:disable force_cast
 import XCTest
 @testable import Library
 @testable import KsApi
@@ -39,6 +38,7 @@ final class FindFriendsHeaderCellViewModelTests: TestCase {
 
     notifyPresenterToDismissHeader.assertValueCount(1)
     XCTAssertEqual(["Close Find Friends"], self.trackingClient.events)
+    // swiftlint:disable:next force_cast
     XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
   }
 }

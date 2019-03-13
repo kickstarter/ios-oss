@@ -3,9 +3,10 @@ import Library
 import Prelude
 
 final class SettingsFormFieldView: UIView, NibLoading {
-  //swiftlint:disable private_outlet
+  // swiftlint:disable private_outlet
   @IBOutlet weak var textField: UITextField!
   @IBOutlet weak var titleLabel: UILabel!
+  // swiftlint:enable private_outlets
   @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var stackView: UIStackView!
 
