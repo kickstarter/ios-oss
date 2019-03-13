@@ -12,7 +12,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   fileprivate let activitiesForSample = TestObserver<[Activity], NoError>()
   fileprivate let asyncReloadData = TestObserver<(), NoError>()
-  fileprivate let hideEmptyState = TestObserver<(), NoError>()
   fileprivate let goToActivityProject = TestObserver<Project, NoError>()
   fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, NoError>()
   fileprivate let goToPlaylist = TestObserver<[Project], NoError>()
@@ -20,12 +19,16 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let goToPlaylistRefTag = TestObserver<RefTag, NoError>()
   fileprivate let goToProjectUpdate = TestObserver<Update, NoError>()
   fileprivate let hasAddedProjects = TestObserver<Bool, NoError>()
+  fileprivate let hasLoadedProjects = TestObserver<(), NoError>()
   fileprivate let hasRemovedProjects = TestObserver<Bool, NoError>()
+  fileprivate let hideEmptyState = TestObserver<(), NoError>()
   fileprivate let projectsAreLoading = TestObserver<Bool, NoError>()
   fileprivate let setScrollsToTop = TestObserver<Bool, NoError>()
   private let scrollToProjectRow = TestObserver<Int, NoError>()
+  fileprivate let shouldShowActivityIndicator = TestObserver<Bool, NoError>()
   fileprivate let showEmptyState = TestObserver<EmptyState, NoError>()
   fileprivate let showOnboarding = TestObserver<Bool, NoError>()
+  fileprivate let refreshControlEndRefreshing = TestObserver<(), NoError>()
 
   internal override func setUp() {
     super.setUp()
@@ -39,8 +42,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.goToProjectPlaylist.map(second).observe(self.goToPlaylist.observer)
     self.vm.outputs.goToProjectPlaylist.map(third).observe(self.goToPlaylistRefTag.observer)
     self.vm.outputs.goToProjectUpdate.map { $0.1 }.observe(self.goToProjectUpdate.observer)
+    self.vm.outputs.projectsLoaded.ignoreValues().observe(self.hasLoadedProjects.observer)
+    self.vm.outputs.refreshControlEndRefreshing.observe(self.refreshControlEndRefreshing.observer)
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
+    self.vm.outputs.shouldShowActivityIndicator.observe(self.shouldShowActivityIndicator.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
 
@@ -72,7 +78,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.asyncReloadData.assertValueCount(1, "Reload data when projects are first added.")
     self.hasAddedProjects.assertValues([true], "Projects are added.")
     self.hasRemovedProjects.assertValues([false], "Projects are not removed.")
-    self.projectsAreLoading.assertValues([true, false], "Loading indicator toggles on/off.")
+    self.shouldShowActivityIndicator.assertValues([true, false], "Loading indicator toggles on/off.")
     XCTAssertEqual(["Loaded Discovery Results", "Discover List View"],
                    self.trackingClient.events,
                    "Event is tracked once projects load.")
@@ -99,7 +105,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.hasAddedProjects.assertValues([true, true], "More projects are added from pagination.")
     self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
-    self.projectsAreLoading.assertValues([true, false, true, false], "Loading indicator toggles on/off.")
+    self.shouldShowActivityIndicator.assertValues(
+      [true, false, true, false], "Loading indicator toggles on/off."
+    )
     XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
       "Discover List View"],
                    self.trackingClient.events,
@@ -137,7 +145,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.hasAddedProjects.assertValues([true, true, false, true], "Projects are added.")
     self.hasRemovedProjects.assertValues([false, false, true, false], "Projects are not removed.")
-    self.projectsAreLoading.assertValues([true, false, true, false, true, false],
+    self.shouldShowActivityIndicator.assertValues([true, false, true, false, true, false],
                                          "Loading indicator toggles on/off.")
     XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
       "Discover List View", "Loaded Discovery Results", "Discover List View"],
@@ -158,7 +166,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
                                        "Projects are added.")
     self.hasRemovedProjects.assertValues([false, false, true, false, false],
                                          "Projects are not removed.")
-    self.projectsAreLoading.assertValues([true, false, true, false, true, false, true, false],
+    self.shouldShowActivityIndicator.assertValues([true, false, true, false, true, false, true, false],
                                          "Loading indicator toggles on/off.")
     XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
       "Discover List View", "Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
@@ -211,7 +219,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
     self.scheduler.advance()
 
-    self.hasAddedProjects.assertValues([true, false, true], "Projects load once the view appears again.")
+    self.hasAddedProjects.assertValues(
+      [true, false, true], "Projects load once the view appears again."
+    )
 
     // Navigate away and back
     self.vm.inputs.viewDidDisappear(animated: true)
@@ -431,10 +441,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef", user: User.template))
       self.vm.inputs.userSessionStarted()
-      self.hasAddedProjects.assertValues([true, false], "Previous projects not cleared.")
+      self.hasAddedProjects.assertValues([true], "Previous projects not cleared.")
 
       self.scheduler.advance()
-      self.hasAddedProjects.assertValues([true, false, true], "New projects added for logged in user.")
+      self.hasAddedProjects.assertValues([true, true], "New projects added for logged in user.")
     }
   }
 
@@ -458,11 +468,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.userSessionStarted()
-      self.hasAddedProjects.assertValues([true, false], "Previous projects not cleared.")
+      self.hasAddedProjects.assertValues([true], "Previous projects not cleared.")
 
       self.scheduler.advance()
 
-      self.hasAddedProjects.assertValues([true, false, true], "New projects added for logged in user.")
+      self.hasAddedProjects.assertValues([true, true], "New projects added for logged in user.")
     }
   }
 
@@ -669,6 +679,77 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
         self.scrollToProjectRow.assertValues([5, 6, 7, 8, 7])
       }
+    }
+  }
+
+  func testRefreshControlEndRefreshingEmits_WhenUserPullsToRefresh() {
+
+    self.refreshControlEndRefreshing.assertValueCount(0)
+
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.selectedFilter(.defaults)
+
+    self.vm.inputs.pulledToRefresh()
+
+    self.refreshControlEndRefreshing.assertValueCount(1)
+  }
+
+  func testProjectsLoad_IfPulledToRefresh() {
+
+    let playlist = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist
+
+    let playlist2 = (0...20).map { idx in .template |> Project.lens.id .~ (idx + 72) }
+    let projectEnv2 = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist2
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.scheduler.advance()
+
+      self.hasLoadedProjects.assertValueCount(1)
+
+      self.vm.inputs.pulledToRefresh()
+
+      self.scheduler.advance()
+
+      self.hasLoadedProjects.assertValueCount(1, "Only emits if projects on the playlist are different")
+
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv2)) {
+        self.vm.inputs.pulledToRefresh()
+
+        self.scheduler.advance()
+
+        self.hasLoadedProjects.assertValueCount(2)
+
+      }
+    }
+  }
+
+  func testProjectsDontLoad_IfPulledToRefreshWithError() {
+
+    withEnvironment(apiService: MockService(fetchDiscoveryError: .couldNotParseErrorEnvelopeJSON)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.scheduler.advance()
+
+      self.hasLoadedProjects.assertDidNotEmitValue()
+
+      self.vm.inputs.pulledToRefresh()
+
+      self.scheduler.advance()
+
+      self.hasLoadedProjects.assertDidNotEmitValue()
     }
   }
 }
