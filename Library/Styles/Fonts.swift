@@ -106,9 +106,8 @@ extension UIFont {
     return UIFont(descriptor: monospacedDescriptor, size: 0.0)
   }
 
-  // swiftlint:disable cyclomatic_complexity
+  // swiftlint:disable:next cyclomatic_complexity
   fileprivate static func preferredFont(style: UIFont.TextStyle, size: CGFloat? = nil) -> UIFont {
-
     let defaultSize: CGFloat
     switch style {
     case UIFont.TextStyle.body:         defaultSize = 17
@@ -129,5 +128,4 @@ extension UIFont {
     return UIFont(descriptor: descriptor,
                   size: ceil(font.pointSize / defaultSize * (size ?? defaultSize)))
   }
-  // swiftlint:enable cyclomatic_complexity
 }

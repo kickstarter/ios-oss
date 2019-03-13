@@ -13,7 +13,7 @@ internal enum Orientation {
   case landscape
 }
 
-//swiftlint:disable:next cyclomatic_complexity
+// swiftlint:disable:next cyclomatic_complexity
 internal func traitControllers(device: Device = .phone4_7inch,
                                orientation: Orientation = .portrait,
                                child: UIViewController = UIViewController(),

@@ -246,7 +246,6 @@ RewardCellViewModelOutputs {
         )
     }
   }
-  // swiftlint:enable function_body_length
 
   private let boundStylesProperty = MutableProperty(())
   public func boundStyles() {
