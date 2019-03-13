@@ -120,10 +120,11 @@ final class CreatePasswordViewController: UITableViewController {
         self?.navigationItem.rightBarButtonItem?.isEnabled = isEnabled
     }
 
-    self.viewModel.outputs.textFieldDidBecomeFirstResponder
+    self.viewModel.outputs.cellAtIndexPathDidBecomeFirstResponder
       .observeForUI()
-      .observeValues { textField in
-        textField.becomeFirstResponder()
+      .observeValues { [weak self] indexPath in
+        guard let cell = self?.tableView.cellForRow(at: indexPath) as? SettingsTextInputCell else { return }
+        cell.textField.becomeFirstResponder()
     }
 
     self.viewModel.outputs.validationLabelIsHidden
@@ -167,9 +168,7 @@ final class CreatePasswordViewController: UITableViewController {
   // MARK: - UITableViewDelegate
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let textInputCell = tableView.cellForRow(at: indexPath) as? SettingsTextInputCell else { return }
-
-    self.viewModel.inputs.textFieldShouldBecomeFirstResponder(textInputCell.textField)
+    self.viewModel.inputs.cellAtIndexPathShouldBecomeFirstResponder(indexPath)
   }
 
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

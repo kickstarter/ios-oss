@@ -2,24 +2,23 @@ import Foundation
 import Prelude
 import ReactiveSwift
 import Result
-import UIKit.UITextField
 
 public protocol CreatePasswordViewModelInputs {
+  func cellAtIndexPathShouldBecomeFirstResponder(_ indexPath: IndexPath?)
   func newPasswordTextFieldChanged(text: String?)
   func newPasswordTextFieldDidReturn()
   func newPasswordConfirmationTextFieldChanged(text: String?)
   func newPasswordConfirmationTextFieldDidReturn()
-  func textFieldShouldBecomeFirstResponder(_ textField: UITextField?)
   func viewDidAppear()
 }
 
 public protocol CreatePasswordViewModelOutputs {
   var accessibilityFocusValidationLabel: Signal<Void, NoError> { get }
+  var cellAtIndexPathDidBecomeFirstResponder: Signal<IndexPath, NoError> { get }
   var newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
   var newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
   var newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
-  var textFieldDidBecomeFirstResponder: Signal<UITextField, NoError> { get }
   var validationLabelIsHidden: Signal<Bool, NoError> { get }
   var validationLabelText: Signal<String?, NoError> { get }
 
@@ -83,9 +82,9 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
 
     self.saveButtonIsEnabled = formIsValid
 
-    self.textFieldDidBecomeFirstResponder = Signal.combineLatest(
+    self.cellAtIndexPathDidBecomeFirstResponder = Signal.combineLatest(
       self.viewDidAppearProperty.signal,
-      self.textFieldDidBecomeFirstResponderProperty.signal.skipNil()
+      self.cellAtIndexPathShouldBecomeFirstResponderProperty.signal.skipNil()
     ).map { $0.1 }
 
     self.validationLabelIsHidden = validationLabelTextIsNil
@@ -111,17 +110,17 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
     self.newPasswordConfirmationDidReturnProperty.value = ()
   }
 
-  private var textFieldDidBecomeFirstResponderProperty = MutableProperty<UITextField?>(nil)
-  public func textFieldShouldBecomeFirstResponder(_ textField: UITextField?) {
-    self.textFieldDidBecomeFirstResponderProperty.value = textField
+  private var cellAtIndexPathShouldBecomeFirstResponderProperty = MutableProperty<IndexPath?>(nil)
+  public func cellAtIndexPathShouldBecomeFirstResponder(_ indexPath: IndexPath?) {
+    self.cellAtIndexPathShouldBecomeFirstResponderProperty.value = indexPath
   }
 
   public let accessibilityFocusValidationLabel: Signal<Void, NoError>
+  public let cellAtIndexPathDidBecomeFirstResponder: Signal<IndexPath, NoError>
   public let newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError>
   public let newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, NoError>
   public let newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, NoError>
   public let saveButtonIsEnabled: Signal<Bool, NoError>
-  public let textFieldDidBecomeFirstResponder: Signal<UITextField, NoError>
   public let validationLabelIsHidden: Signal<Bool, NoError>
   public let validationLabelText: Signal<String?, NoError>
 
