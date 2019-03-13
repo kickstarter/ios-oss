@@ -45,13 +45,13 @@ final class SettingsFormFieldView: UIView, NibLoading {
 
 // MARK: - Styles
 
-private let titleLabelStyle: (UILabel) -> UILabel = { (label: UILabel) in
+private let titleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.isAccessibilityElement .~ false
     |> \.adjustsFontForContentSizeCategory .~ true
 }
 
-private let textFieldStyle: (UITextField) -> UITextField = { (textField: UITextField) in
+private let textFieldStyle: TextFieldStyle = { (textField: UITextField) in
   textField
     |> \.textAlignment .~ NSTextAlignment.right
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500

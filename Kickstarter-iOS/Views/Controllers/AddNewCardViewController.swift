@@ -286,13 +286,13 @@ extension AddNewCardViewController {
 
 // MARK: - Styles
 
-private let cardholderNameLabelStyle: (UILabel) -> UILabel = { (label: UILabel) in
+private let cardholderNameLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.isAccessibilityElement .~ false
     |> \.text %~ { _ in Strings.Cardholder_name() }
 }
 
-private let cardholderNameTextFieldStyle: (UITextField) -> UITextField = { (textField: UITextField) in
+private let cardholderNameTextFieldStyle: TextFieldStyle = { (textField: UITextField) in
   textField
     |> \.autocapitalizationType .~ .words
     |> \.returnKeyType .~ .next
@@ -303,8 +303,9 @@ private let cardholderNameTextFieldStyle: (UITextField) -> UITextField = { (text
       attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400])
 }
 
-// swiftlint:disable line_length
-private let creditCardTextFieldStyle: (STPPaymentCardTextField) -> STPPaymentCardTextField = { (textField: STPPaymentCardTextField) in
+private typealias PaymentCardTextFieldStyle = (STPPaymentCardTextField) -> STPPaymentCardTextField
+
+private let creditCardTextFieldStyle: PaymentCardTextFieldStyle = { (textField: STPPaymentCardTextField) in
   textField
     |> \.borderColor .~ nil
     |> \.font .~ .ksr_body()

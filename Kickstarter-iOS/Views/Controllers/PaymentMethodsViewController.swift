@@ -214,14 +214,14 @@ extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
 
 // MARK: - Styles
 
-private let tableViewStyle: (UITableView) -> UITableView = { (tableView: UITableView) in
+private let tableViewStyle: TableViewStyle = { (tableView: UITableView) in
   tableView
     |> \.backgroundColor .~ UIColor.clear
     |> \.rowHeight .~ Styles.grid(11)
     |> \.allowsSelection .~ false
 }
 
-private let tableViewSeparatorStyle: (UITableView) -> UITableView = { tableView in
+private let tableViewSeparatorStyle: TableViewStyle = { tableView in
   tableView
     |> \.separatorStyle .~ .singleLine
     |> \.separatorColor .~ .ksr_grey_500

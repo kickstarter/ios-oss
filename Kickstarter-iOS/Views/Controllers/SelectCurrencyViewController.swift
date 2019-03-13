@@ -168,7 +168,7 @@ extension SelectCurrencyViewController: UITableViewDelegate {
 
 // MARK: - Styles
 
-private let tableViewStyle: (UITableView) -> UITableView = { (tableView: UITableView) in
+private let tableViewStyle: TableViewStyle = { (tableView: UITableView) in
   tableView
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.tableFooterView .~ UIView(frame: .zero)

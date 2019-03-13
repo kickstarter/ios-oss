@@ -14,6 +14,13 @@ public enum Styles {
   }
 }
 
+public typealias ButtonStyle = (UIButton) -> UIButton
+public typealias LabelStyle = (UILabel) -> UILabel
+public typealias StackViewStyle = (UIStackView) -> UIStackView
+public typealias TableViewStyle = (UITableView) -> UITableView
+public typealias TextFieldStyle = (UITextField) -> UITextField
+public typealias ViewStyle = (UIView) -> UIView
+
 public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
   return VC.lens.view.backgroundColor .~ .white
     <> (VC.lens.navigationController..navBarLens) %~ { $0.map(baseNavigationBarStyle) }
@@ -111,14 +118,14 @@ public let feedTableViewCellStyle = baseTableViewCellStyle()
       : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(2))
 }
 
-public let formTextInputStyle: (UITextField) -> UITextField = { (textField: UITextField) in
+public let formTextInputStyle: TextFieldStyle = { (textField: UITextField) in
   textField
     |> \.autocapitalizationType .~ UITextAutocapitalizationType.none
     |> \.autocorrectionType .~ UITextAutocorrectionType.no
     |> \.spellCheckingType .~ UITextSpellCheckingType.no
 }
 
-public let formFieldStyle: (UITextField) -> UITextField = { (textField: UITextField) in
+public let formFieldStyle: TextFieldStyle = { (textField: UITextField) in
   textField
     |> formTextInputStyle
     |> \.backgroundColor .~ UIColor.clear
@@ -128,7 +135,7 @@ public let formFieldStyle: (UITextField) -> UITextField = { (textField: UITextFi
     |> \.tintColor .~ UIColor.ksr_green_700
 }
 
-public let separatorStyle: (UIView) -> UIView = { (view: UIView) in
+public let separatorStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.ksr_grey_400
     |> \.accessibilityElementsHidden .~ true

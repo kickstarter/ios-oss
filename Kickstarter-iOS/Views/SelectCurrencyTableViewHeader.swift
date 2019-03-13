@@ -56,7 +56,7 @@ final class SelectCurrencyTableViewHeader: UIView {
 
 // MARK: - Styles
 
-private let headerStackViewStyle: (UIStackView) -> UIStackView = { (stackView: UIStackView) in
+private let headerStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.alignment .~ UIStackView.Alignment.center
@@ -67,7 +67,7 @@ private let headerStackViewStyle: (UIStackView) -> UIStackView = { (stackView: U
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
-private let headerLabelStyle: (UILabel) -> UILabel = { (label: UILabel) in
+private let headerLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.backgroundColor .~ UIColor.ksr_grey_200

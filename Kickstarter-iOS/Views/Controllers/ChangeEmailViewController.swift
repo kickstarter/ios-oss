@@ -271,32 +271,32 @@ extension ChangeEmailViewController: UITextFieldDelegate {
 
 // MARK: - Styles
 
-private let warningMessageLabelStyle: (UILabel) -> UILabel = { (label: UILabel) in
+private let warningMessageLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textColor .~ UIColor.ksr_red_400
     |> \.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
 }
 
-private let currentEmailTitleStyle: (UILabel) -> UILabel = { (label: UILabel) in
+private let currentEmailTitleStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.isAccessibilityElement .~ false
     |> \.text %~ { _ in Strings.Current_email() }
     |> \.textColor .~ UIColor.ksr_text_dark_grey_400
 }
 
-private let currentEmailValueStyle: (UILabel) -> UILabel = { (label: UILabel) in
+private let currentEmailValueStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.isAccessibilityElement .~ false
     |> \.textColor .~ UIColor.ksr_text_dark_grey_400
 }
 
-private let newEmailLabelStyle: (UILabel) -> UILabel = { (label: UILabel) in
+private let newEmailLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.text %~ { _ in Strings.New_email() }
     |> \.isAccessibilityElement .~ false
 }
 
-private let newEmailTextFieldStyle: (UITextField) -> UITextField = { (textField: UITextField) in
+private let newEmailTextFieldStyle: TextFieldStyle = { (textField: UITextField) in
   textField
     |> \.returnKeyType .~ UIReturnKeyType.next
     |> \.attributedPlaceholder %~ { _ in
@@ -304,13 +304,13 @@ private let newEmailTextFieldStyle: (UITextField) -> UITextField = { (textField:
   }
 }
 
-private let passwordLabelStyle: (UILabel) -> UILabel = { (label: UILabel) in
+private let passwordLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.text %~ { _ in Strings.Current_password() }
     |> \.isAccessibilityElement .~ false
 }
 
-private let passwordTextFieldStyle: (UITextField) -> UITextField = { (textField: UITextField) in
+private let passwordTextFieldStyle: TextFieldStyle = { (textField: UITextField) in
   textField
     |> \.returnKeyType .~ UIReturnKeyType.done
     |> \.attributedPlaceholder %~ { _ in
@@ -318,7 +318,7 @@ private let passwordTextFieldStyle: (UITextField) -> UITextField = { (textField:
   }
 }
 
-private let resendVerificationEmailButtonStyle: (UIButton) -> UIButton = { (button: UIButton) in
+private let resendVerificationEmailButtonStyle: ButtonStyle = { (button: UIButton) in
   button
     |> UIButton.lens.titleLabel.font .~ .ksr_body()
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
