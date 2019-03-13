@@ -68,7 +68,7 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
     self.currentValidationLabelTextProperty <~ self.validationLabelText
 
     let validationLabelTextIsNil = self.validationLabelText
-      .map { $0 == nil }
+      .map(isNil)
 
     let inputsChanged = Signal.merge(
       self.newPasswordChangedProperty.signal, self.newPasswordConfirmationChangedProperty.signal
