@@ -111,7 +111,7 @@ internal final class CommentDialogViewController: UIViewController {
 
   fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
     UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
-      self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
+      self.bottomConstraint.constant = -(change.frame.height + Styles.grid(2))
       }, completion: nil)
   }
 

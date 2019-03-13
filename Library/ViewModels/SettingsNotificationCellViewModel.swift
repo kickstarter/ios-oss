@@ -11,10 +11,12 @@ public protocol SettingsNotificationCellViewModelInputs {
 
 public protocol SettingsNotificationCellViewModelOutputs {
   var enableButtonAnimation: Signal<Bool, NoError> { get }
+  var emailNotificationsButtonAccessibilityLabel: Signal<String, NoError> { get }
   var emailNotificationsEnabled: Signal<Bool, NoError> { get }
   var emailNotificationButtonIsHidden: Signal<Bool, NoError> { get }
-  var pushNotificationButtonIsHidden: Signal<Bool, NoError> { get }
   var projectCountText: Signal<String, NoError> { get }
+  var pushNotificationsButtonAccessibilityLabel: Signal<String, NoError> { get }
+  var pushNotificationButtonIsHidden: Signal<Bool, NoError> { get }
   var pushNotificationsEnabled: Signal<Bool, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
@@ -118,6 +120,18 @@ SettingsNotificationCellViewModelType {
       previousEmailNotificationValue
     )
 
+    self.pushNotificationsButtonAccessibilityLabel =
+      Signal.combineLatest(self.pushNotificationsEnabled, cellType)
+        .map { pushNotificationEnabled, cellType in
+        pushNotificationEnabled ? Strings.Notification_push_notification_on(notification: cellType.title)
+                                : Strings.Notification_push_notification_off(notification: cellType.title) }
+
+    self.emailNotificationsButtonAccessibilityLabel =
+      Signal.combineLatest(self.emailNotificationsEnabled, cellType)
+        .map { emailNotificationEnabled, cellType in
+        emailNotificationEnabled ? Strings.Notification_email_notification_on(notification: cellType.title)
+                                 : Strings.Notification_email_notification_off(notification: cellType.title) }
+
     self.emailNotificationButtonIsHidden = cellType
       .map { $0.shouldShowEmailNotificationButton }
       .negate()
@@ -159,11 +173,13 @@ SettingsNotificationCellViewModelType {
   }
 
   public let enableButtonAnimation: Signal<Bool, NoError>
+  public let emailNotificationsButtonAccessibilityLabel: Signal<String, NoError>
   public let emailNotificationsEnabled: Signal<Bool, NoError>
   public let emailNotificationButtonIsHidden: Signal<Bool, NoError>
+  public var pushNotificationsButtonAccessibilityLabel: Signal<String, NoError>
   public let pushNotificationButtonIsHidden: Signal<Bool, NoError>
-  public let projectCountText: Signal<String, NoError>
   public let pushNotificationsEnabled: Signal<Bool, NoError>
+  public let projectCountText: Signal<String, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>
 

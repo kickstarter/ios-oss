@@ -273,7 +273,7 @@
                 <outlet property="projectStateTitleLabel" destination="p3B-Nb-GBg" id="Hmn-Pf-dgZ"/>
                 <outlet property="projectStatsStackView" destination="qYw-F3-aZl" id="fjZ-Du-FyC"/>
                 <outlet property="saveButton" destination="eIL-Rt-9Tk" id="VuL-1D-4h5"/>
-                <outlet property="socialAvatarImageView" destination="3kE-Jg-fp9" id="hEo-df-C32"/>
+                <outlet property="socialAvatarImageView" destination="3kE-Jg-fp9" id="vXc-ng-fLi"/>
                 <outlet property="socialLabel" destination="1Pi-Hj-7EO" id="908-7l-lXO"/>
                 <outlet property="socialStackView" destination="PUL-Kg-8AR" id="npn-Vt-G4G"/>
             </connections>
