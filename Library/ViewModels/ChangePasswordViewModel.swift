@@ -128,13 +128,12 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
     let validationLabelTextIsEmpty = self.validationErrorLabelMessage
       .map { $0.isEmpty }
-    .logEvents(identifier: "*** validationLabelTextIsEmpty")
 
     self.validationErrorLabelIsHidden = validationLabelTextIsEmpty
 
     let inputsChanged = Signal.merge(
       self.newPasswordProperty.signal, self.confirmNewPasswordProperty.signal
-    ).logEvents(identifier: "*** inputsChanged")
+    )
 
     self.accessibilityFocusValidationErrorLabel = validationLabelTextIsEmpty
       .takeWhen(inputsChanged)
