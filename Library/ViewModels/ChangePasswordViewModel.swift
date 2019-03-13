@@ -58,7 +58,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       currentPasswordSignal,
       self.newPasswordProperty.signal,
       self.confirmNewPasswordProperty.signal
-    ).map(formFieldsNot)
+    ).map(formFieldsNotEmpty)
 
     let formIsValid = Signal.combineLatest(fieldsNotEmpty, fieldsMatch, fieldLengthIsValid)
       .map(passwordFormValid)
@@ -229,6 +229,6 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
 
 // MARK: - Functions
 
-private func formFieldsNot(_ pwds: (first: String, second: String, third: String)) -> Bool {
+private func formFieldsNotEmpty(_ pwds: (first: String, second: String, third: String)) -> Bool {
   return !pwds.first.isEmpty && !pwds.second.isEmpty && !pwds.third.isEmpty
 }
