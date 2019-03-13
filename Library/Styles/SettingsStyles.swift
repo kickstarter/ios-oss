@@ -8,20 +8,20 @@ public let settingsSectionButtonStyle =
 
 public let settingsArrowViewStyle = UIImageView.lens.tintColor .~ .ksr_dark_grey_400
 
-public let settingsSectionLabelStyle = { (label: UILabel) in
+public let settingsSectionLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ .ksr_subhead()
     |> \.numberOfLines .~ 2
 }
 
-public let settingsTitleLabelStyle = { (label: UILabel) in
+public let settingsTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ .ksr_body()
 }
 
-public let settingsDetailLabelStyle = { (label: UILabel) in
+public let settingsDetailLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.font .~ .ksr_body()
     |> \.numberOfLines .~ 1
@@ -29,7 +29,7 @@ public let settingsDetailLabelStyle = { (label: UILabel) in
     |> \.lineBreakMode .~ .byTruncatingTail
 }
 
-public let settingsDescriptionLabelStyle = { (label: UILabel) in
+public let settingsDescriptionLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.font .~ .ksr_body(size: 13)
     |> \.numberOfLines .~ 0
@@ -37,13 +37,13 @@ public let settingsDescriptionLabelStyle = { (label: UILabel) in
     |> \.lineBreakMode .~ .byWordWrapping
 }
 
-public let settingsHeaderFooterLabelBaseStyle = { (label: UILabel) in
+public let settingsHeaderFooterLabelBaseStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.font .~ .ksr_footnote()
     |> \.numberOfLines .~ 0
 }
 
-public let settingsHeaderFooterLabelStyle = { (label: UILabel) in
+public let settingsHeaderFooterLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.backgroundColor .~ .ksr_grey_200
     |> \.textColor .~ .ksr_text_dark_grey_500
