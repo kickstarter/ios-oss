@@ -1,4 +1,3 @@
-// swiftlint:disable force_cast
 import XCTest
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
@@ -39,9 +38,11 @@ internal final class MessageThreadsViewModelTests: TestCase {
     XCTAssertEqual(["Viewed Message Inbox", "Message Threads View", "Message Inbox View"],
                    self.trackingClient.events,
                    "View event and its deprecated version are tracked.")
+    // swiftlint:disable force_cast
     XCTAssertEqual([nil, true, true],
                    self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
                    "Deprecated property is tracked in deprecated event.")
+    // swiftlint:enable force_cast
 
     // Wait enough time to get API response
     self.scheduler.advance()
@@ -131,9 +132,11 @@ internal final class MessageThreadsViewModelTests: TestCase {
     XCTAssertEqual(["Viewed Message Inbox", "Message Threads View", "Message Inbox View"],
                    self.trackingClient.events,
                    "View event and its deprecated version are tracked.")
+    // swiftlint:disable force_cast
     XCTAssertEqual([nil, true, true],
                    self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
                    "Deprecated property is tracked in deprecated event.")
+    // swiftlint:enable force_cast
 
     self.loadingFooterIsHidden.assertValues([false, true],
                                             "Loading footer is shown/hidden while loading threads.")
@@ -159,9 +162,11 @@ internal final class MessageThreadsViewModelTests: TestCase {
       ],
       self.trackingClient.events,
       "View event and its deprecated version are tracked.")
+    // swiftlint:disable force_cast
     XCTAssertEqual([nil, true, true, nil, true, true],
                    self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
                    "Deprecated property is tracked in deprecated event.")
+    // swiftlint:enable force_cast
 
     self.scheduler.advance()
 

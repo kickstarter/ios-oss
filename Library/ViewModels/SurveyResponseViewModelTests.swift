@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import XCTest
 @testable import Library
 @testable import KsApi
@@ -53,6 +52,7 @@ final class SurveyResponseViewModelTests: TestCase {
 
     XCTAssertFalse(
       self.vm.inputs.shouldStartLoad(
+        // swiftlint:disable:next force_unwrapping
         withRequest: URLRequest(url: URL(string: project.urls.web.project)!),
         navigationType: .linkClicked
       )
@@ -131,6 +131,7 @@ final class SurveyResponseViewModelTests: TestCase {
 
 private func surveyRequest(project: Project, prepared: Bool, method: KsApi.Method) -> URLRequest {
   let url = "\(project.urls.web.project)/surveys/1"
+  // swiftlint:disable:next force_unwrapping
   var request = URLRequest(url: URL(string: url)!)
   request.httpMethod = method.rawValue
   if prepared {

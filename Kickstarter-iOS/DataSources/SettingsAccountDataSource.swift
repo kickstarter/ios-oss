@@ -60,7 +60,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
       return value.cellType as? SettingsAccountCellType
     } else if let currencyValue = self[indexPath] as? SettingsCellValue {
       return currencyValue.cellType as? SettingsAccountCellType
-      //swiftlint:disable unused_optional_binding
+      // swiftlint:disable:next unused_optional_binding
     } else if let _ = self[indexPath] as? Bool {
       return SettingsAccountCellType.changeEmail
     } else {

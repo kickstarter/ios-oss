@@ -1455,7 +1455,6 @@ private extension MockService {
       }
     )
   }
-  // swiftlint:enable type_name
 }
 
 private func producer<T, E>(for property: Result<T, E>?) -> SignalProducer<T, E> {

@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping 
 import XCTest
 import Foundation
 @testable import Library
@@ -131,6 +130,7 @@ final class AppEnvironmentTests: XCTestCase {
   }
 
   func testSaveEnvironment() {
+    // swiftlint:disable force_unwrapping
     let apiService = MockService(
       serverConfig: ServerConfig(
         apiBaseUrl: URL(string: "http://api.ksr.com")!,
@@ -141,6 +141,7 @@ final class AppEnvironmentTests: XCTestCase {
       ),
       oauthToken: OauthToken(token: "deadbeef")
     )
+    // swiftlint:enable force_unwrapping
     let currentUser = User.template
     let userDefaults = MockKeyValueStore()
     let ubiquitousStore = MockKeyValueStore()
@@ -149,6 +150,7 @@ final class AppEnvironmentTests: XCTestCase {
                                    ubiquitousStore: ubiquitousStore,
                                    userDefaults: userDefaults)
 
+    // swiftlint:disable:next force_unwrapping
     let result = userDefaults.dictionary(forKey: AppEnvironment.environmentStorageKey)!
 
     XCTAssertEqual("deadbeef", result["apiService.oauthToken.token"] as? String)
