@@ -181,7 +181,7 @@ DiscoveryPageViewModelOutputs {
 
     self.refreshControlEndRefreshing = self.projectsAreLoading.filter(isFalse).ignoreValues()
 
-    self.isRefreshingProjects <~ Signal.zip(
+    let isRefreshing = Signal.zip(
       self.pulledToRefreshProperty.signal.ignoreValues(),
       self.projectsAreLoading
       )
@@ -189,7 +189,7 @@ DiscoveryPageViewModelOutputs {
 
     self.shouldShowActivityIndicator = Signal.merge(
       self.projectsAreLoading,
-      self.isRefreshingProjects.signal.mapConst(false)
+      isRefreshing.signal.mapConst(false)
     )
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
@@ -286,10 +286,6 @@ DiscoveryPageViewModelOutputs {
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
   }
-
-  // Stores the pull to refresh state to determine if projects are loading because view loaded or
-  // because user pulled to refresh
-  private let isRefreshingProjects = MutableProperty<Bool>(false)
 
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
   public func currentEnvironmentChanged(environment: EnvironmentType) {
