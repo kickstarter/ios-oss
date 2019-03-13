@@ -36,12 +36,3 @@ final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
       |> settingsHeaderFooterLabelStyle
   }
 }
-
-// MARK: - HeaderFooterViewProtocol
-
-extension SettingsGroupedFooterView: HeaderFooterViewProtocol {
-  func configure(with text: String) {
-    _ = self.label
-      |> \.text .~ text
-  }
-}

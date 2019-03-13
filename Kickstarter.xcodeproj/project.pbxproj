@@ -77,10 +77,13 @@
 		01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */; };
 		3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */; };
 		3708DD45220A76FE00F8E569 /* CreatePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD44220A76FD00F8E569 /* CreatePasswordViewControllerTests.swift */; };
+		373AB222222A058600769FC2 /* CreatePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */; };
+		373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */; };
+		373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25C222A0D8900769FC2 /* PasswordValidation.swift */; };
+		373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */; };
 		37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */; };
 		3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */; };
 		37877D0C22177D9D009CE4EE /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37877D0B22177D9D009CE4EE /* UIView+AutoLayout.swift */; };
-		37AF5E85221C87F700044363 /* HeaderFooterViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AF5E84221C87F700044363 /* HeaderFooterViewProtocol.swift */; };
 		37BFD8802208F24300815C9C /* CreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordViewController.swift */; };
 		37CBA64D221E10E100E6CAB6 /* HelpTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */; };
 		37D6722F221E61D300B6D415 /* SettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D671F6221E61B600B6D415 /* SettingsFooterView.swift */; };
@@ -1868,10 +1871,13 @@
 		01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItemStyles.swift; sourceTree = "<group>"; };
 		3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedFooterView.swift; sourceTree = "<group>"; };
 		3708DD44220A76FD00F8E569 /* CreatePasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewControllerTests.swift; sourceTree = "<group>"; };
+		373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModel.swift; sourceTree = "<group>"; };
+		373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModelTests.swift; sourceTree = "<group>"; };
+		373AB25C222A0D8900769FC2 /* PasswordValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidation.swift; sourceTree = "<group>"; };
+		373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
 		37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedHeaderView.swift; sourceTree = "<group>"; };
 		3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextInputCell.swift; sourceTree = "<group>"; };
 		37877D0B22177D9D009CE4EE /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
-		37AF5E84221C87F700044363 /* HeaderFooterViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderFooterViewProtocol.swift; sourceTree = "<group>"; };
 		37BFD8472208F22C00815C9C /* CreatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewController.swift; sourceTree = "<group>"; };
 		37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTypeTests.swift; sourceTree = "<group>"; };
 		37D671F6221E61B600B6D415 /* SettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFooterView.swift; sourceTree = "<group>"; };
@@ -3311,7 +3317,6 @@
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
 				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
 				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
-				37AF5E84221C87F700044363 /* HeaderFooterViewProtocol.swift */,
 				D0CDA89E1E7434AF00AA3450 /* LiveStreamNavTitleView.swift */,
 				D0D2AA301E9623F4008D298A /* LiveStreamNavTitleViewTests.swift */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
@@ -3744,6 +3749,8 @@
 				A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
 				A7ED1F1C1E830FDC00BFFA01 /* PaginateTests.swift */,
+				373AB25C222A0D8900769FC2 /* PasswordValidation.swift */,
+				373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */,
 				A7EDEE561D83453F00780B34 /* PKPaymentAuthorizationViewController.swift */,
 				A7B11A761D79F03300A5036E /* PKPaymentRequest.swift */,
 				A7ED1F1D1E830FDC00BFFA01 /* PKPaymentRequestTests.swift */,
@@ -4055,6 +4062,8 @@
 				A7ED1F691E831C5C00BFFA01 /* CommentsEmptyStateCellViewModelTests.swift */,
 				A7F441961D005A9400FE6FC5 /* CommentsViewModel.swift */,
 				A7ED1F5F1E831C5C00BFFA01 /* CommentsViewModelTests.swift */,
+				373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */,
+				373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */,
 				D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */,
 				D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */,
 				59B0E0051D1207070081D2DC /* DashboardActionCellViewModel.swift */,
@@ -5728,6 +5737,7 @@
 				A75511601C8642C3005355CF /* GradientView.swift in Sources */,
 				A7CC13D31D00E6CF00035C52 /* FindFriendsFacebookConnectCellViewModel.swift in Sources */,
 				A75511611C8642C3005355CF /* Language.swift in Sources */,
+				373AB222222A058600769FC2 /* CreatePasswordViewModel.swift in Sources */,
 				A7F441E71D005A9400FE6FC5 /* ThanksViewModel.swift in Sources */,
 				D79CF2F3219CC91000ECB73A /* AddNewCardViewModel.swift in Sources */,
 				A747A8EB1D45896000AF199A /* RewardCellViewModel.swift in Sources */,
@@ -5857,6 +5867,7 @@
 				01940B261D42DC1A0074FCE3 /* HelpViewModel.swift in Sources */,
 				D6B6766520FE85010082717D /* SettingsNewslettersCellViewModel.swift in Sources */,
 				593AC6011D33F517002613F4 /* DashboardFundingCellViewModel.swift in Sources */,
+				373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */,
 				9D2F4BE01D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */,
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,
 				A721DF651C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
@@ -5987,6 +5998,7 @@
 				D79CF40521B0840E00ECB73A /* AddNewCardViewModelTests.swift in Sources */,
 				D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */,
 				A7ED1FD61E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift in Sources */,
+				373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */,
 				A70E9EE51E859C96009E67F2 /* LiveStreamChatViewModelTests.swift in Sources */,
 				A7ED1FCE1E831C5C00BFFA01 /* DashboardReferrerRowStackViewViewModelTests.swift in Sources */,
 				D6B9F94522035E34003282A5 /* AuthorTests.swift in Sources */,
@@ -6066,6 +6078,7 @@
 				A7ED20011E831C5C00BFFA01 /* SignupViewModelTests.swift in Sources */,
 				A7ED1FBD1E831C5C00BFFA01 /* ProfileHeaderViewModelTests.swift in Sources */,
 				A7ED1FF71E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift in Sources */,
+				373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */,
 				D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */,
 				A7ED1FF51E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift in Sources */,
 				A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */,
@@ -6136,7 +6149,6 @@
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
 				D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */,
 				77F9A9B02135FB760082A11E /* FindFriendsCell.swift in Sources */,
-				37AF5E85221C87F700044363 /* HeaderFooterViewProtocol.swift in Sources */,
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift in Sources */,
 				D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */,

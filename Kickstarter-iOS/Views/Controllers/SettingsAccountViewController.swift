@@ -130,9 +130,10 @@ extension SettingsAccountViewController: UITableViewDelegate {
 
     let footerView = tableView.dequeueReusableHeaderFooterView(
       withClass: SettingsGroupedFooterView.self) as? SettingsGroupedFooterView
-    footerView?.configure(with:
-      Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: userEmail)
-    )
+
+    let text = Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: userEmail)
+
+    footerView?.label.text = text
     return footerView
   }
 }
@@ -140,6 +141,8 @@ extension SettingsAccountViewController: UITableViewDelegate {
 extension SettingsAccountViewController {
   static func viewController(for cellType: SettingsAccountCellType, currency: Currency) -> UIViewController? {
     switch cellType {
+    case .createPassword:
+      return CreatePasswordViewController.instantiate()
     case .changeEmail:
       return ChangeEmailViewController.instantiate()
     case .changePassword:
@@ -152,8 +155,6 @@ extension SettingsAccountViewController {
       let vc = SelectCurrencyViewController.instantiate()
       vc.configure(with: currency)
       return vc
-    default:
-      return nil
     }
   }
 }

@@ -2,20 +2,29 @@ import Library
 import Prelude
 import UIKit
 
+public typealias TextFieldTargetAction = (target: Any?, action: Selector, event: UIControl.Event)
+
 final class SettingsTextInputCell: UITableViewCell {
   // MARK: - Properties
 
   private lazy var stackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var label: UILabel = { UILabel(frame: .zero) }()
-  private lazy var textField: UITextField = { UITextField(frame: .zero) }()
+  private(set) lazy var textField: UITextField = { UITextField(frame: .zero) }()
 
-  public func configure(with title: String, placeholder: String) {
+  public func configure(with placeholder: String, returnKeyType: UIReturnKeyType, title: String) {
     _ = self.label
       |> \.text .~ title
 
     _ = self.textField
       |> \.placeholder .~ placeholder
       |> \.accessibilityLabel .~ self.label.accessibilityLabel
+      |> \.returnKeyType .~ returnKeyType
+  }
+
+  public func configure(with targetActions: [TextFieldTargetAction]) {
+    targetActions.forEach { (target, action, event) in
+      self.textField.addTarget(target, action: action, for: event)
+    }
   }
 
   // MARK: - Lifecycle
@@ -42,6 +51,9 @@ final class SettingsTextInputCell: UITableViewCell {
 
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self
+      |> \.selectionStyle .~ .none
 
     _ = self.contentView
       |> settingsContentViewStyle
