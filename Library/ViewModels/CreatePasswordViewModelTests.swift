@@ -71,51 +71,106 @@ final class CreatePasswordViewModelTests: TestCase {
     withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
       self.vm.inputs.viewDidAppear()
       self.validationLabelIsHidden.assertValues([true])
-      self.validationLabelText.assertLastValue(nil)
+      self.validationLabelText.assertValues([nil])
 
       self.vm.inputs.newPasswordTextFieldChanged(text: "pass")
       self.vm.inputs.newPasswordTextFieldDidReturn()
       self.accessibilityFocusValidationLabel.assertValueCount(1)
       self.saveButtonIsEnabled.assertValueCount(0)
-      self.validationLabelIsHidden.assertLastValue(false)
-      self.validationLabelText.assertLastValue("Your password must be at least 6 characters long.")
+      self.validationLabelIsHidden.assertValues([true, false])
+      self.validationLabelText.assertValues([nil, "Your password must be at least 6 characters long."])
 
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "p")
       self.accessibilityFocusValidationLabel.assertValueCount(2)
       self.saveButtonIsEnabled.assertValues([false])
-      self.validationLabelIsHidden.assertLastValue(false)
-      self.validationLabelText.assertLastValue("Your password must be at least 6 characters long.")
+      self.validationLabelIsHidden.assertValues([true, false, false])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long."
+        ]
+      )
 
       self.vm.inputs.newPasswordTextFieldChanged(text: "password")
       self.vm.inputs.newPasswordTextFieldDidReturn()
       self.accessibilityFocusValidationLabel.assertValueCount(3)
       self.saveButtonIsEnabled.assertValues([false])
-      self.validationLabelIsHidden.assertLastValue(false)
-      self.validationLabelText.assertLastValue("New passwords must match.")
+      self.validationLabelIsHidden.assertValues([true, false, false, true, false])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long.",
+          nil,
+          "New passwords must match."
+        ]
+      )
 
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "pass")
       self.accessibilityFocusValidationLabel.assertValueCount(4)
       self.saveButtonIsEnabled.assertValues([false])
-      self.validationLabelIsHidden.assertLastValue(false)
-      self.validationLabelText.assertLastValue("New passwords must match.")
+      self.validationLabelIsHidden.assertValues([true, false, false, true, false])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long.",
+          nil,
+          "New passwords must match."
+        ]
+      )
 
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password")
       self.accessibilityFocusValidationLabel.assertValueCount(4)
       self.saveButtonIsEnabled.assertValues([false, true])
-      self.validationLabelIsHidden.assertLastValue(true)
-      self.validationLabelText.assertLastValue(nil)
+      self.validationLabelIsHidden.assertValues([true, false, false, true, false, true])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long.",
+          nil,
+          "New passwords must match.",
+          nil
+        ]
+      )
 
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password123")
       self.accessibilityFocusValidationLabel.assertValueCount(5)
       self.saveButtonIsEnabled.assertValues([false, true, false])
-      self.validationLabelIsHidden.assertLastValue(false)
-      self.validationLabelText.assertLastValue("New passwords must match.")
+      self.validationLabelIsHidden.assertValues([true, false, false, true, false, true, false])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long.",
+          nil,
+          "New passwords must match.",
+          nil,
+          "New passwords must match."
+        ]
+      )
 
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password")
       self.accessibilityFocusValidationLabel.assertValueCount(5)
       self.saveButtonIsEnabled.assertValues([false, true, false, true])
       self.validationLabelIsHidden.assertLastValue(true)
       self.validationLabelText.assertLastValue(nil)
+
+      self.validationLabelIsHidden.assertValues([true, false, false, true, false, true, false, true])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long.",
+          nil,
+          "New passwords must match.",
+          nil,
+          "New passwords must match.",
+          nil
+        ]
+      )
     }
   }
 
@@ -125,51 +180,106 @@ final class CreatePasswordViewModelTests: TestCase {
     withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
       self.vm.inputs.viewDidAppear()
       self.validationLabelIsHidden.assertValues([true])
-      self.validationLabelText.assertLastValue(nil)
+      self.validationLabelText.assertValues([nil])
 
       self.vm.inputs.newPasswordTextFieldChanged(text: "pass")
       self.vm.inputs.newPasswordTextFieldDidReturn()
       self.accessibilityFocusValidationLabel.assertValueCount(0)
       self.saveButtonIsEnabled.assertValueCount(0)
-      self.validationLabelIsHidden.assertLastValue(false)
-      self.validationLabelText.assertLastValue("Your password must be at least 6 characters long.")
+      self.validationLabelIsHidden.assertValues([true, false])
+      self.validationLabelText.assertValues([nil, "Your password must be at least 6 characters long."])
 
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "p")
       self.accessibilityFocusValidationLabel.assertValueCount(0)
       self.saveButtonIsEnabled.assertValues([false])
-      self.validationLabelIsHidden.assertLastValue(false)
-      self.validationLabelText.assertLastValue("Your password must be at least 6 characters long.")
+      self.validationLabelIsHidden.assertValues([true, false, false])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long."
+        ]
+      )
 
       self.vm.inputs.newPasswordTextFieldChanged(text: "password")
       self.vm.inputs.newPasswordTextFieldDidReturn()
       self.accessibilityFocusValidationLabel.assertValueCount(0)
       self.saveButtonIsEnabled.assertValues([false])
-      self.validationLabelIsHidden.assertLastValue(false)
-      self.validationLabelText.assertLastValue("New passwords must match.")
+      self.validationLabelIsHidden.assertValues([true, false, false, true, false])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long.",
+          nil,
+          "New passwords must match."
+        ]
+      )
 
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "pass")
       self.accessibilityFocusValidationLabel.assertValueCount(0)
       self.saveButtonIsEnabled.assertValues([false])
-      self.validationLabelIsHidden.assertLastValue(false)
-      self.validationLabelText.assertLastValue("New passwords must match.")
+      self.validationLabelIsHidden.assertValues([true, false, false, true, false])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long.",
+          nil,
+          "New passwords must match."
+        ]
+      )
 
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password")
       self.accessibilityFocusValidationLabel.assertValueCount(0)
       self.saveButtonIsEnabled.assertValues([false, true])
-      self.validationLabelIsHidden.assertLastValue(true)
-      self.validationLabelText.assertLastValue(nil)
+      self.validationLabelIsHidden.assertValues([true, false, false, true, false, true])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long.",
+          nil,
+          "New passwords must match.",
+          nil
+        ]
+      )
 
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password123")
       self.accessibilityFocusValidationLabel.assertValueCount(0)
       self.saveButtonIsEnabled.assertValues([false, true, false])
-      self.validationLabelIsHidden.assertLastValue(false)
-      self.validationLabelText.assertLastValue("New passwords must match.")
+      self.validationLabelIsHidden.assertValues([true, false, false, true, false, true, false])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long.",
+          nil,
+          "New passwords must match.",
+          nil,
+          "New passwords must match."
+        ]
+      )
 
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password")
       self.accessibilityFocusValidationLabel.assertValueCount(0)
       self.saveButtonIsEnabled.assertValues([false, true, false, true])
       self.validationLabelIsHidden.assertLastValue(true)
       self.validationLabelText.assertLastValue(nil)
+
+      self.validationLabelIsHidden.assertValues([true, false, false, true, false, true, false, true])
+      self.validationLabelText.assertValues(
+        [
+          nil,
+          "Your password must be at least 6 characters long.",
+          "Your password must be at least 6 characters long.",
+          nil,
+          "New passwords must match.",
+          nil,
+          "New passwords must match.",
+          nil
+        ]
+      )
     }
   }
 }
