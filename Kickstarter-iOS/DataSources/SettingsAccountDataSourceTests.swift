@@ -1,4 +1,3 @@
-// swiftlint:disable line_length
 import Prelude
 import XCTest
 import Library
@@ -42,10 +41,18 @@ final class SettingsAccountDataSourceTests: XCTestCase {
                                   shouldHideEmailWarning: true,
                                   shouldHideEmailPasswordSection: false)
 
-    XCTAssertEqual(SettingsAccountCellType.changeEmail, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1))
-    XCTAssertEqual(SettingsAccountCellType.changePassword, self.dataSource.cellTypeForIndexPath(indexPath: indexPath2))
-    XCTAssertEqual(SettingsAccountCellType.privacy, self.dataSource.cellTypeForIndexPath(indexPath: indexPath3))
-    XCTAssertEqual(SettingsAccountCellType.paymentMethods, self.dataSource.cellTypeForIndexPath(indexPath: indexPath4))
+    XCTAssertEqual(
+      SettingsAccountCellType.changeEmail, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1)
+    )
+    XCTAssertEqual(
+      SettingsAccountCellType.changePassword, self.dataSource.cellTypeForIndexPath(indexPath: indexPath2)
+    )
+    XCTAssertEqual(
+      SettingsAccountCellType.privacy, self.dataSource.cellTypeForIndexPath(indexPath: indexPath3)
+    )
+    XCTAssertEqual(
+      SettingsAccountCellType.paymentMethods, self.dataSource.cellTypeForIndexPath(indexPath: indexPath4)
+    )
 
     let currencyCellType = SettingsAccountCellType.currency(.USD)
     XCTAssertEqual(currencyCellType, self.dataSource.cellTypeForIndexPath(indexPath: indexPath5))
@@ -61,11 +68,17 @@ final class SettingsAccountDataSourceTests: XCTestCase {
                                   shouldHideEmailWarning: true,
                                   shouldHideEmailPasswordSection: true)
 
-    XCTAssertEqual(SettingsAccountCellType.createPassword, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1))
-    XCTAssertEqual(SettingsAccountCellType.privacy, self.dataSource.cellTypeForIndexPath(indexPath: indexPath2))
-    XCTAssertEqual(SettingsAccountCellType.paymentMethods, self.dataSource.cellTypeForIndexPath(indexPath: indexPath3))
-
-    let currencyCellType = SettingsAccountCellType.currency(.USD)
-    XCTAssertEqual(currencyCellType, self.dataSource.cellTypeForIndexPath(indexPath: indexPath4))
+    XCTAssertEqual(
+      SettingsAccountCellType.createPassword, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1)
+    )
+    XCTAssertEqual(
+      SettingsAccountCellType.privacy, self.dataSource.cellTypeForIndexPath(indexPath: indexPath2)
+    )
+    XCTAssertEqual(
+      SettingsAccountCellType.paymentMethods, self.dataSource.cellTypeForIndexPath(indexPath: indexPath3)
+    )
+    XCTAssertEqual(
+      SettingsAccountCellType.currency(.USD), self.dataSource.cellTypeForIndexPath(indexPath: indexPath4)
+    )
   }
 }

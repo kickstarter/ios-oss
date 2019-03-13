@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import Library
 import Prelude
 import Result
@@ -11,6 +10,7 @@ private let tolerance: CGFloat = 0.0001
 internal final class RewardPledgeViewControllerTests: TestCase {
   fileprivate let cosmicSurgery = Project.cosmicSurgery
     |> Project.lens.state .~ .live
+  // swiftlint:disable:next force_unwrapping
   fileprivate let cosmicReward = Project.cosmicSurgery.rewards.last!
     |> Reward.lens.shipping.enabled .~ true
     |> Reward.lens.shipping.summary .~ "Wherever"

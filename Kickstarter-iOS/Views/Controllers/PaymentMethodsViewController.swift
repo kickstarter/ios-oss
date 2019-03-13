@@ -71,12 +71,8 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     }
 
     _ = self.tableView
-      |> \.backgroundColor .~ .clear
-      |> \.rowHeight .~ Styles.grid(11)
-      |> \.allowsSelection .~ false
-      |> \.separatorStyle .~ .singleLine
-      |> \.separatorColor .~ .ksr_grey_500
-      |> \.separatorInset .~ .init(left: Styles.grid(2))
+      |> tableViewStyle
+      |> tableViewSeparatorStyle
   }
 
   override func bindViewModel() {
@@ -214,4 +210,20 @@ extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
       self.viewModel.inputs.addNewCardDismissed()
     }
   }
+}
+
+// MARK: - Styles
+
+private let tableViewStyle: TableViewStyle = { (tableView: UITableView) in
+  tableView
+    |> \.backgroundColor .~ UIColor.clear
+    |> \.rowHeight .~ Styles.grid(11)
+    |> \.allowsSelection .~ false
+}
+
+private let tableViewSeparatorStyle: TableViewStyle = { tableView in
+  tableView
+    |> \.separatorStyle .~ .singleLine
+    |> \.separatorColor .~ .ksr_grey_500
+    |> \.separatorInset .~ .init(left: Styles.grid(2))
 }

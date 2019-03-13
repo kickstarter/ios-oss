@@ -82,10 +82,8 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
 
     self.showPublishConfirmation = project
       .map {
-        // swiftlint:disable line_length
-        Strings
-          .dashboard_post_update_preview_confirmation_alert_this_will_notify_backers_that_a_new_update_is_available(backer_count: $0.stats.backersCount)
-        // swiftlint:enable line_length
+        // swiftlint:disable:next line_length
+        Strings.dashboard_post_update_preview_confirmation_alert_this_will_notify_backers_that_a_new_update_is_available(backer_count: $0.stats.backersCount)
       }
       .takeWhen(self.publishButtonTappedProperty.signal)
 
