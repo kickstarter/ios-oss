@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -307,6 +306,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.project .~ project
 
     self.vm.inputs.configureWith(activity: activity1, project: project)
+    // swiftlint:disable:next force_unwrapping
     let expected1 = Strings.dashboard_activity_reward_name(reward_name: reward1.title!)
     self.reward.assertValues([expected1], "Should emit reward title if present")
     self.rewardLabelIsHidden.assertValues([false])

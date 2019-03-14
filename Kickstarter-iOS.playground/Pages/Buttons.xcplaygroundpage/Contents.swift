@@ -4,7 +4,9 @@ import Prelude_UIKit
 import UIKit
 import PlaygroundSupport
 
-let (parent, child) = playgroundControllers(device: .phone4_7inch, orientation: .portrait)
+let (parent, child) = playgroundControllers(device: .phone4inch, orientation: .portrait)
+
+PlaygroundPage.current.liveView = parent
 
 let rootStackView = UIStackView(frame: child.view.bounds)
   |> UIStackView.lens.alignment .~ .leading
@@ -12,6 +14,7 @@ let rootStackView = UIStackView(frame: child.view.bounds)
   |> UIStackView.lens.distribution .~ .fillEqually
   |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
   |> UIStackView.lens.layoutMargins .~ .init(all: 16)
+
 child.view.addSubview(rootStackView)
 
 func disabled <C: UIControlProtocol> () -> ((C) -> C) {
@@ -48,5 +51,3 @@ buttonsStyles.forEach { styles in
     button |> style
   }
 }
-
-PlaygroundPage.current.liveView = parent
