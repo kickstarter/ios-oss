@@ -34,6 +34,11 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
 
     self.viewModel.inputs.viewDidLoad()
+
+//    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//      let vc = CreatePasswordViewController.instantiate()
+//      self.navigationController?.pushViewController(vc, animated: true)
+//    }
   }
 
   override func viewWillAppear(_ animated: Bool) {

@@ -43,11 +43,7 @@ final class CreatePasswordViewController: UITableViewController {
   private weak var newPasswordTextField: UITextField?
   private weak var newPasswordConfirmationTextField: UITextField?
   private weak var groupedFooterView: SettingsGroupedFooterView?
-
-  private lazy var rightBarButtonItem: UIBarButtonItem = {
-    UIBarButtonItem(barButtonSystemItem: .save, target: nil, action: nil)
-      |> \.isEnabled .~ false
-  }()
+  private weak var saveButtonView: LoadingBarButtonItemView! //instantiate?
 
   // MARK: - Lifecycle
 
