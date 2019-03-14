@@ -161,6 +161,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
       .observeForUI()
       .observeValues { [weak self] isEnabled in
         self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
+        self?.viewModel.inputs.saveButtonIsEnabled(isEnabled)
     }
 
     self.viewModel.outputs.onePasswordFindLoginForURLString

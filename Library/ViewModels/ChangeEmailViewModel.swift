@@ -11,6 +11,7 @@ public protocol ChangeEmailViewModelInputs {
   func passwordFieldTextDidChange(text: String?)
   func resendVerificationEmailButtonTapped()
   func saveButtonTapped()
+  func saveButtonIsEnabled(_ enabled: Bool)
   func textFieldShouldReturn(with returnKeyType: UIReturnKeyType)
   func viewDidLoad()
   func viewDidAppear()
@@ -50,13 +51,14 @@ ChangeEmailViewModelOutputs {
       self.textFieldShouldReturnProperty.signal.skipNil()
         .filter { $0 == .done }
         .ignoreValues(),
-      self.saveButtonTappedProperty.signal.ignoreValues())
+      self.saveButtonTappedProperty.signal.ignoreValues()
+    )
 
     let changeEmailEvent = Signal.combineLatest(
       self.newEmailProperty.signal.skipNil(),
       self.passwordProperty.signal.skipNil()
       )
-      .takeWhen(self.dismissKeyboard)
+      .takeWhen(self.saveButtonTappedProperty.signal)
       .map(ChangeEmailInput.init(email:currentPassword:))
       .switchMap { input in
         AppEnvironment.current.apiService.changeEmail(input: input)
@@ -208,6 +210,11 @@ ChangeEmailViewModelOutputs {
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let saveButtonEnabledProperty = MutableProperty(false)
+  public func saveButtonIsEnabled(_ enabled: Bool) {
+    self.saveButtonEnabledProperty.value = enabled
   }
 
   private let saveButtonTappedProperty = MutableProperty(())
