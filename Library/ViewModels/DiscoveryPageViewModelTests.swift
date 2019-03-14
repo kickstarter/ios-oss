@@ -752,4 +752,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.hasLoadedProjects.assertDidNotEmitValue()
     }
   }
+
+  func testPullToRefreshEvent() {
+    XCTAssertEqual([], self.trackingClient.events)
+    self.vm.inputs.pulledToRefresh()
+    XCTAssertEqual(["Triggered Refresh"], self.trackingClient.events)
+  }
 }
