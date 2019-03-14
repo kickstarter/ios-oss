@@ -58,11 +58,17 @@ final class CreatePasswordViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.saveButtonView = LoadingBarButtonItemView.instantiate()
+    self.saveButtonView?.setTitle(title: Strings.Save())
+    self.saveButtonView?.addTarget(self, action: #selector(saveButtonTapped(_:)))
+
+    let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
+
     _ = self
       |> \.title %~ { _ in Strings.Create_password() }
 
     _ = self.navigationItem
-      |> \.rightBarButtonItem .~ self.rightBarButtonItem
+      |> \.rightBarButtonItem .~ navigationBarButton
 
     self.tableView.registerHeaderFooterClass(SettingsGroupedHeaderView.self)
     self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
@@ -90,6 +96,16 @@ final class CreatePasswordViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.activityIndicatorShouldShow
+      .observeForUI()
+      .observeValues { [weak self] shouldShow in
+        if shouldShow {
+          self?.saveButtonView.startAnimating()
+        } else {
+          self?.saveButtonView.stopAnimating()
+        }
+    }
+
     self.viewModel.outputs.accessibilityFocusValidationLabel
       .observeForUI()
       .observeValues { [weak self] _ in
@@ -114,10 +130,16 @@ final class CreatePasswordViewController: UITableViewController {
         self?.newPasswordConfirmationTextField?.resignFirstResponder()
     }
 
+    self.viewModel.outputs.dismissKeyboard
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.dismissKeyboard()
+    }
+
     self.viewModel.outputs.saveButtonIsEnabled
       .observeForUI()
       .observeValues { [weak self] isEnabled in
-        self?.navigationItem.rightBarButtonItem?.isEnabled = isEnabled
+        self?.saveButtonView?.setIsEnabled(isEnabled: isEnabled)
     }
 
     self.viewModel.outputs.cellAtIndexPathDidBecomeFirstResponder
@@ -143,7 +165,31 @@ final class CreatePasswordViewController: UITableViewController {
 
           self?.tableView.endUpdates()
         }
+      }
+
+    self.viewModel.outputs.createPasswordSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.logoutAndDismiss()
     }
+  }
+
+  private func logoutAndDismiss() {
+    AppEnvironment.logout()
+    PushNotificationDialog.resetAllContexts()
+
+    NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
+
+    self.dismiss(animated: true, completion: nil)
+  }
+
+  private func dismissKeyboard() {
+    [self.newPasswordTextField, self.newPasswordConfirmationTextField]
+      .forEach { $0?.resignFirstResponder() }
+  }
+
+  @objc private func saveButtonTapped(_ sender: Any) {
+    self.viewModel.inputs.saveButtonTapped()
   }
 
   // MARK: - UITableViewDataSource
