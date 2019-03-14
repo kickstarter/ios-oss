@@ -51,14 +51,19 @@ ChangeEmailViewModelOutputs {
       self.textFieldShouldReturnProperty.signal.skipNil()
         .filter { $0 == .done }
         .ignoreValues(),
-      self.saveButtonTappedProperty.signal.ignoreValues()
+      self.saveButtonTappedProperty.signal
     )
+
+    self.test <~ self.saveButtonEnabledProperty.signal
+
+    let triggerSaveAction = self.test.signal.filter(isTrue)
+      .takeWhen(self.dismissKeyboard)
 
     let changeEmailEvent = Signal.combineLatest(
       self.newEmailProperty.signal.skipNil(),
       self.passwordProperty.signal.skipNil()
       )
-      .takeWhen(self.saveButtonTappedProperty.signal)
+      .takeWhen(triggerSaveAction)
       .map(ChangeEmailInput.init(email:currentPassword:))
       .switchMap { input in
         AppEnvironment.current.apiService.changeEmail(input: input)
@@ -175,6 +180,8 @@ ChangeEmailViewModelOutputs {
     self.viewDidAppearProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackChangeEmailView() }
   }
+
+  private let test = MutableProperty<Bool>(false)
 
   private let newEmailProperty = MutableProperty<String?>(nil)
   public func emailFieldTextDidChange(text: String?) {
