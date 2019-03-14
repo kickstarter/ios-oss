@@ -111,7 +111,7 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
     )
 
     self.dismissKeyboard = Signal.merge(self.saveButtonTappedProperty.signal,
-                                        self.newPasswordDidReturnProperty.signal)
+                                        self.newPasswordConfirmationDidReturnProperty.signal)
 
     self.cellAtIndexPathDidBecomeFirstResponder = Signal.combineLatest(
       self.viewDidAppearProperty.signal,
