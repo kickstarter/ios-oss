@@ -51,6 +51,9 @@ public struct Environment {
     return self.apiService.serverConfig.environment
   }
 
+  /// The environment variables
+  public let environmentVariables: EnvironmentVariables
+
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
 
@@ -108,6 +111,7 @@ public struct Environment {
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     device: UIDeviceType = UIDevice.current,
+    environmentVariables: EnvironmentVariables = EnvironmentVariables(),
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isOSVersionAvailable: @escaping (Double) -> Bool = ksr_isOSVersionAvailable,
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
@@ -135,6 +139,7 @@ public struct Environment {
     self.dateType = dateType
     self.debounceInterval = debounceInterval
     self.device = device
+    self.environmentVariables = environmentVariables
     self.facebookAppDelegate = facebookAppDelegate
     self.isOSVersionAvailable = isOSVersionAvailable
     self.isVoiceOverRunning = isVoiceOverRunning

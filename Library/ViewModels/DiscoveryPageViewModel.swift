@@ -58,9 +58,6 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Hopefully in the future we can remove this when we can resolve postcard display issues.
   var asyncReloadData: Signal<Void, NoError> { get }
 
-  /// Emits when we should dismiss the empty state controller.
-  var hideEmptyState: Signal<(), NoError> { get }
-
   /// Emits a project and ref tag that we should go to from the activity sample.
   var goToActivityProject: Signal<(Project, RefTag), NoError> { get }
 
@@ -69,6 +66,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a project and update when should go to update.
   var goToProjectUpdate: Signal<(Project, Update), NoError> { get }
+
+  /// Emits when we should dismiss the empty state controller.
+  var hideEmptyState: Signal<(), NoError> { get }
 
   /// Emits a list of projects that should be shown, and the corresponding filter request params
   var projectsLoaded: Signal<([Project], DiscoveryParams?), NoError> { get }
@@ -84,6 +84,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a bool to allow status bar tap to scroll the table view to the top.
   var setScrollsToTop: Signal<Bool, NoError> { get }
+
+  // Emits a bool to show or hide activity indicator when projects are loading.
+  var shouldShowActivityIndicator: Signal<Bool, NoError> { get }
 
   /// Emits to show the empty state controller.
   var showEmptyState: Signal<EmptyState, NoError> { get }
@@ -154,8 +157,7 @@ DiscoveryPageViewModelOutputs {
 
     let paginatedProjects: Signal<[Project], NoError>
     let pageCount: Signal<Int, NoError>
-    let isLoading: Signal<Bool, NoError>
-    (paginatedProjects, isLoading, pageCount) = paginate(
+    (paginatedProjects, self.projectsAreLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -177,12 +179,18 @@ DiscoveryPageViewModelOutputs {
       .takePairWhen(projects)
       .map { ($1, $0) }
 
-    self.refreshControlEndRefreshing = isLoading.filter(isFalse).ignoreValues()
+    self.refreshControlEndRefreshing = self.projectsAreLoading.filter(isFalse).ignoreValues()
 
-    self.projectsAreLoading = Signal.merge(
-      self.viewWillAppearProperty.signal.take(first: 1).mapConst(true),
-      self.projectsLoaded.mapConst(false)
-    ).skipRepeats()
+    let isRefreshing = Signal.zip(
+      self.pulledToRefreshProperty.signal.ignoreValues(),
+      self.projectsAreLoading
+      )
+      .map { $0.1 == true }
+
+    self.shouldShowActivityIndicator = Signal.merge(
+      self.projectsAreLoading,
+      isRefreshing.signal.mapConst(false)
+    )
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
@@ -284,9 +292,6 @@ DiscoveryPageViewModelOutputs {
     }
   }
 
-  // Stores the pull to refresh state as it is affected by multiple signals
-  private let shouldRefreshProjectsProperty = MutableProperty<Bool>(false)
-
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
   public func currentEnvironmentChanged(environment: EnvironmentType) {
     self.currentEnvironmentChangedProperty.value = environment
@@ -343,16 +348,17 @@ DiscoveryPageViewModelOutputs {
   }
 
   public let activitiesForSample: Signal<[Activity], NoError>
-  public var asyncReloadData: Signal<Void, NoError>
-  public let hideEmptyState: Signal<(), NoError>
-  public var goToActivityProject: Signal<(Project, RefTag), NoError>
+  public let asyncReloadData: Signal<Void, NoError>
+  public let goToActivityProject: Signal<(Project, RefTag), NoError>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), NoError>
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
+  public let hideEmptyState: Signal<Void, NoError>
   public let projectsLoaded: Signal<([Project], DiscoveryParams?), NoError>
   public let projectsAreLoading: Signal<Bool, NoError>
   public let refreshControlEndRefreshing: Signal<(), NoError>
   public let setScrollsToTop: Signal<Bool, NoError>
   public let scrollToProjectRow: Signal<Int, NoError>
+  public let shouldShowActivityIndicator: Signal<Bool, NoError>
   public let showEmptyState: Signal<EmptyState, NoError>
   public let showOnboarding: Signal<Bool, NoError>
 

@@ -114,7 +114,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.projectsAreLoading
+    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.shouldShowActivityIndicator
 
     self.viewModel.outputs.refreshControlEndRefreshing
       .observeForUI()
