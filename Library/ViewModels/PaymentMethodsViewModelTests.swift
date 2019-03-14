@@ -11,6 +11,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
   private let vm = PaymentMethodsViewModel()
   private let editButtonIsEnabled = TestObserver<Bool, NoError>()
+  private let editButtonTitle = TestObserver<String, NoError>()
   private let errorLoadingPaymentMethods = TestObserver<String, NoError>()
   private let goToAddCardScreen = TestObserver<Void, NoError>()
   private let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
@@ -23,6 +24,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.editButtonIsEnabled.observe(self.editButtonIsEnabled.observer)
+    self.vm.outputs.editButtonTitle.observe(self.editButtonTitle.observer)
     self.vm.outputs.goToAddCardScreen.observe(self.goToAddCardScreen.observer)
     self.vm.outputs.errorLoadingPaymentMethods.observe(self.errorLoadingPaymentMethods.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
@@ -111,7 +113,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     self.editButtonIsEnabled.assertValue(false)
   }
 
-  func testEditButtonIsEnabled_HasPaymentMethods() {
+  func testEditButtonIsEnabledAndTitle_HasPaymentMethods() {
     let response = UserEnvelope<GraphUserCreditCard>(
       me: GraphUserCreditCard.template
     )
@@ -119,14 +121,25 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: apiService) {
 
       self.editButtonIsEnabled.assertDidNotEmitValue()
+      self.editButtonTitle.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
       self.editButtonIsEnabled.assertValues([false])
+      self.editButtonTitle.assertValues(["Edit"])
 
       self.vm.inputs.viewWillAppear()
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false, true])
+      self.editButtonTitle.assertValues(["Edit"])
+
+      self.vm.inputs.editButtonTapped()
+      self.editButtonIsEnabled.assertValues([false, true])
+      self.editButtonTitle.assertValues(["Edit", "Done"])
+
+      self.vm.inputs.editButtonTapped()
+      self.editButtonIsEnabled.assertValues([false, true])
+      self.editButtonTitle.assertValues(["Edit", "Done", "Edit"])
     }
   }
 
@@ -218,16 +231,17 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     self.goToAddCardScreen.assertValueCount(1, "Should emit after tapping button")
   }
 
-  func testTableViewIsEditing_isFalse_WhenAddNewCardIsTapped() {
+  func testTableViewIsEditing_isFalse_WhenAddNewCardIsPresented() {
     self.tableViewIsEditing.assertValueCount(0)
 
+    self.vm.inputs.viewDidLoad()
     self.vm.inputs.editButtonTapped()
 
-    self.tableViewIsEditing.assertValues([true])
+    self.tableViewIsEditing.assertValues([false, true])
 
-    self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
+    self.vm.inputs.addNewCardPresented()
 
-    self.tableViewIsEditing.assertValues([true, false])
+    self.tableViewIsEditing.assertValues([false, true, false])
   }
 
   func testPresentMessageBanner() {

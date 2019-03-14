@@ -41,7 +41,8 @@ internal final class SettingsNotificationsViewController: UIViewController {
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_navbar_title_notifications() }
 
     _ = self.tableView
-      |> UITableView.lens.backgroundColor .~ .ksr_grey_200
+      |> settingsTableViewStyle
+      |> settingsTableViewSeparatorStyle
 
     _ = self.emailFrequencyPickerView
       |> \.isAccessibilityElement .~ true

@@ -25,6 +25,7 @@ final class SettingsViewController: UIViewController {
 
     self.tableView.register(nib: .SettingsTableViewCell)
     self.tableView.register(nib: .FindFriendsCell)
+    self.tableView.registerHeaderFooter(nib: .SettingsFooterView)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
     if self.presentingViewController != nil {
@@ -53,6 +54,7 @@ final class SettingsViewController: UIViewController {
 
     _ = tableView
       |> settingsTableViewStyle
+      |> settingsTableViewSeparatorStyle
   }
 
   override func bindViewModel() {
@@ -82,6 +84,18 @@ final class SettingsViewController: UIViewController {
     self.viewModel.outputs.goToAppStoreRating
       .observeForControllerAction()
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
+  }
+
+  // MARK: - Private Functions
+  private func shouldHideFooter(for section: Int) -> Bool {
+    guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return true }
+
+    if section == SettingsSectionType.findFriends
+      && !self.viewModel.outputs.findFriendsDisabledProperty.value {
+      return true
+    }
+
+    return false
   }
 
   private func leftBarButtonItem() -> UIBarButtonItem {
@@ -153,13 +167,32 @@ extension SettingsViewController: UITableViewDelegate {
     return SettingsSectionType.sectionHeaderHeight
   }
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 0.1 // Required to remove the footer in UITableViewStyleGrouped
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
 
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return self.shouldHideFooter(for: section) ? 0.1 : UITableView.automaticDimension
+  }
 
-    return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
+  func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+    return SettingsFooterView.defaultHeight
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    if self.shouldHideFooter(for: section) {
+      return nil
+    }
+
+    let footerView = tableView.dequeueReusableHeaderFooterView(
+      withIdentifier: Nib.SettingsFooterView.rawValue
+    ) as? SettingsFooterView
+
+    let section = SettingsSectionType(rawValue: section)
+
+    footerView?.configure(with: section?.footerText ?? "")
+
+    return footerView
   }
 
   func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {

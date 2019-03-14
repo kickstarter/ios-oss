@@ -140,6 +140,7 @@ jobs:
       - run:
           name: Kickstarter tests
           command: PLATFORM=iOS make test
+          no_output_timeout: "20m" # 20 minutes
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
@@ -193,6 +194,7 @@ jobs:
       - run:
           name: Library tests
           command: PLATFORM=iOS TARGET=Library make test
+          no_output_timeout: "20m" # 20 minutes
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
@@ -244,6 +246,7 @@ jobs:
       - run:
           name: LiveStream tests
           command: SCHEME=LiveStream make test
+          no_output_timeout: "20m" # 20 minutes
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
@@ -295,6 +298,7 @@ jobs:
       - run:
           name: KsApi tests
           command: SCHEME=KsApi make test
+          no_output_timeout: "20m" # 20 minutes
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
