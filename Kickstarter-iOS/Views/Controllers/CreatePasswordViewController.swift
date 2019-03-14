@@ -43,7 +43,7 @@ final class CreatePasswordViewController: UITableViewController {
   private weak var newPasswordTextField: UITextField?
   private weak var newPasswordConfirmationTextField: UITextField?
   private weak var groupedFooterView: SettingsGroupedFooterView?
-  private weak var saveButtonView: LoadingBarButtonItemView! //instantiate?
+  private let saveButtonView: LoadingBarButtonItemView = LoadingBarButtonItemView.instantiate()
 
   // MARK: - Lifecycle
 
@@ -54,9 +54,8 @@ final class CreatePasswordViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.saveButtonView = LoadingBarButtonItemView.instantiate()
-    self.saveButtonView?.setTitle(title: Strings.Save())
-    self.saveButtonView?.addTarget(self, action: #selector(saveButtonTapped(_:)))
+    self.saveButtonView.setTitle(title: Strings.Save())
+    self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped(_:)))
 
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
 
@@ -135,7 +134,7 @@ final class CreatePasswordViewController: UITableViewController {
     self.viewModel.outputs.saveButtonIsEnabled
       .observeForUI()
       .observeValues { [weak self] isEnabled in
-        self?.saveButtonView?.setIsEnabled(isEnabled: isEnabled)
+        self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
     }
 
     self.viewModel.outputs.cellAtIndexPathDidBecomeFirstResponder
