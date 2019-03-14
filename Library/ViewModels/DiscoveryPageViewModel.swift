@@ -277,6 +277,11 @@ DiscoveryPageViewModelOutputs {
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
+
+    self.pulledToRefreshProperty.signal
+      .observeValues {
+        AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
+    }
   }
 
   // Stores the pull to refresh state as it is affected by multiple signals
