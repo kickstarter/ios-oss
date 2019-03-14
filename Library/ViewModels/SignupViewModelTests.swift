@@ -29,7 +29,7 @@ internal final class SignupViewModelTests: TestCase {
       nameTextFieldBecomeFirstResponder,
       setWeeklyNewsletterState,
       showError
-    ) = self.vm.outputs(from: self.vm.inputs)
+    ) = self.vm.outputs()
 
     emailTextFieldBecomeFirstResponder
       .observe(self.emailTextFieldBecomeFirstResponder.observer)

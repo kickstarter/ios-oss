@@ -54,35 +54,35 @@ public final class SignupViewModel {
 
   public init() {}
 
-  public func outputs(from inputs: Inputs) -> Outputs {
-    let name = inputs.nameTextChangedSignal.skipNil()
-    let email = inputs.emailTextChangedSignal.skipNil()
-    let password = inputs.passwordTextChangedSignal.skipNil()
+  public func outputs() -> Outputs {
+    let name = self.inputs.nameTextChangedSignal.skipNil()
+    let email = self.inputs.emailTextChangedSignal.skipNil()
+    let password = self.inputs.passwordTextChangedSignal.skipNil()
 
     let newsletter = Signal.merge(
-      inputs.viewDidLoadSignal.mapConst(false),
-      inputs.weeklyNewsletterChangedSignal
+      self.inputs.viewDidLoadSignal.mapConst(false),
+      self.inputs.weeklyNewsletterChangedSignal
     )
 
     let nameIsPresent = name.map { !$0.isEmpty }
     let emailIsPresent = email.map { !$0.isEmpty }
     let passwordIsPresent = password.map { !$0.isEmpty }
 
-    let nameTextFieldBecomeFirstResponder = inputs.viewDidLoadSignal
-    let emailTextFieldBecomeFirstResponder = inputs.nameTextFieldDidReturnSignal
-    let passwordTextFieldBecomeFirstResponder = inputs.emailTextFieldDidReturnSignal
+    let nameTextFieldBecomeFirstResponder = self.inputs.viewDidLoadSignal
+    let emailTextFieldBecomeFirstResponder = self.inputs.nameTextFieldDidReturnSignal
+    let passwordTextFieldBecomeFirstResponder = self.inputs.emailTextFieldDidReturnSignal
 
     let formIsValid = Signal.combineLatest(nameIsPresent, emailIsPresent, passwordIsPresent)
       .map { $0 && $1 && $2 }
       .skipRepeats()
 
-    let isSignupButtonEnabled = Signal.merge(formIsValid, inputs.viewDidLoadSignal.mapConst(false))
+    let isSignupButtonEnabled = Signal.merge(formIsValid, self.inputs.viewDidLoadSignal.mapConst(false))
 
     let setWeeklyNewsletterState = newsletter.take(first: 1)
 
     let attemptSignup = Signal.merge(
-      inputs.passwordTextFieldDidReturnSignal,
-      inputs.signupButtonPressedSignal
+      self.inputs.passwordTextFieldDidReturnSignal,
+      self.inputs.signupButtonPressedSignal
     )
 
     let signupEvent = Signal.combineLatest(name, email, password, newsletter)
@@ -106,16 +106,16 @@ public final class SignupViewModel {
     let showError = signupError
     let logIntoEnvironment = signupEvent.values()
 
-    let postNotification = inputs.environmentLoggedInSignal
+    let postNotification = self.inputs.environmentLoggedInSignal
       .mapConst(Notification(name: .ksr_sessionStarted))
 
-    inputs.environmentLoggedInSignal
+    self.inputs.environmentLoggedInSignal
       .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
     showError
       .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.email) }
 
-    inputs.weeklyNewsletterChangedSignal
+    self.inputs.weeklyNewsletterChangedSignal
       .observeValues {
         AppEnvironment.current.koala.trackChangeNewsletter(
           newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .signup
@@ -127,7 +127,7 @@ public final class SignupViewModel {
         _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email)
     }
 
-    inputs.viewDidLoadSignal
+    self.inputs.viewDidLoadSignal
       .observeValues { AppEnvironment.current.koala.trackSignupView() }
 
     return (

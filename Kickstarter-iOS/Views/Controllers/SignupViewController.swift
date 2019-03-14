@@ -104,7 +104,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       nameTextFieldBecomeFirstResponder,
       setWeeklyNewsletterState,
       showError
-    ) = self.viewModel.outputs(from: self.viewModel.inputs)
+    ) = self.viewModel.outputs()
 
     self.nameTextField.rac.becomeFirstResponder = nameTextFieldBecomeFirstResponder
     self.emailTextField.rac.becomeFirstResponder = emailTextFieldBecomeFirstResponder
