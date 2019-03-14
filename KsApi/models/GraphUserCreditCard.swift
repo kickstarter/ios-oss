@@ -34,8 +34,12 @@ public struct GraphUserCreditCard: Swift.Decodable {
 
     public var description: String? {
       switch self {
-      case .amex, .discover, .jcb, .mastercard, .visa, .diners, .unionPay:
+      case .amex, .discover, .jcb, .mastercard, .visa, .diners:
         return self.rawValue.capitalized
+      case .unionPay:
+        return self.rawValue
+          .capitalized
+          .replacingOccurrences(of: "_", with: " ")
       default:
         return nil
       }
