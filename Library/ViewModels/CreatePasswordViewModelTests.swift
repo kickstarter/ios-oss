@@ -47,9 +47,7 @@ final class CreatePasswordViewModelTests: TestCase {
   }
 
   func testCreatePassword() {
-    let service = MockService()
-
-    withEnvironment(apiService: service) {
+    withEnvironment(apiService: MockService()) {
       self.vm.inputs.viewDidAppear()
 
       self.newPasswordTextFieldBecomeFirstResponder.assertValueCount(1)

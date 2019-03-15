@@ -128,7 +128,7 @@ final class CreatePasswordViewController: UITableViewController {
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.dismissKeyboard()
+        self?.tableView.endEditing(true)
     }
 
     self.viewModel.outputs.saveButtonIsEnabled
@@ -165,23 +165,12 @@ final class CreatePasswordViewController: UITableViewController {
     self.viewModel.outputs.createPasswordSuccess
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.logoutAndDismiss()
+        guard let self = self else { return }
+        logoutAndDismiss(self)
     }
   }
 
-  private func logoutAndDismiss() {
-    AppEnvironment.logout()
-    PushNotificationDialog.resetAllContexts()
-
-    NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
-
-    self.dismiss(animated: true, completion: nil)
-  }
-
-  private func dismissKeyboard() {
-    [self.newPasswordTextField, self.newPasswordConfirmationTextField]
-      .forEach { $0?.resignFirstResponder() }
-  }
+  // MARK: - Actions
 
   @objc private func saveButtonTapped(_ sender: Any) {
     self.viewModel.inputs.saveButtonTapped()
