@@ -76,17 +76,11 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits a boolean that determines if projects are currently loading or not.
   var projectsAreLoading: Signal<Bool, NoError> { get }
 
-  /// Emits when the refresh control should end refreshing.
-  var refreshControlEndRefreshing: Signal<(), NoError> { get }
-
   /// Emits when should scroll to project with row number.
   var scrollToProjectRow: Signal<Int, NoError> { get }
 
   /// Emits a bool to allow status bar tap to scroll the table view to the top.
   var setScrollsToTop: Signal<Bool, NoError> { get }
-
-  // Emits a bool to show or hide activity indicator when projects are loading.
-  var shouldShowActivityIndicator: Signal<Bool, NoError> { get }
 
   /// Emits to show the empty state controller.
   var showEmptyState: Signal<EmptyState, NoError> { get }
@@ -107,7 +101,7 @@ DiscoveryPageViewModelOutputs {
     let currentUser = Signal.merge(
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal,
-      self.viewDidAppearProperty.signal
+      self.viewWillAppearProperty.signal
       )
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
@@ -157,7 +151,8 @@ DiscoveryPageViewModelOutputs {
 
     let paginatedProjects: Signal<[Project], NoError>
     let pageCount: Signal<Int, NoError>
-    (paginatedProjects, self.projectsAreLoading, pageCount) = paginate(
+    let isLoading: Signal<Bool, NoError>
+    (paginatedProjects, isLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -179,20 +174,12 @@ DiscoveryPageViewModelOutputs {
       .takePairWhen(projects)
       .map { ($1, $0) }
 
-    self.refreshControlEndRefreshing = self.projectsAreLoading.filter(isFalse).ignoreValues()
-
-    let isRefreshing = Signal.zip(
-      self.pulledToRefreshProperty.signal.ignoreValues(),
-      self.projectsAreLoading
-      )
-      .map { $0.1 == true }
-
-    self.shouldShowActivityIndicator = Signal.merge(
-      self.projectsAreLoading,
-      isRefreshing.signal.mapConst(false)
-    )
-
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
+
+    self.projectsAreLoading = Signal.merge(
+      isLoading,
+      self.viewWillAppearProperty.signal.take(first: 1).mapConst(true)
+    )
 
     self.showEmptyState = Signal.combineLatest(paramsChanged, self.projectsAreLoading, paginatedProjects)
       .filter { _, projectsAreLoading, projects in projectsAreLoading == false && projects.isEmpty }
@@ -355,10 +342,8 @@ DiscoveryPageViewModelOutputs {
   public let hideEmptyState: Signal<Void, NoError>
   public let projectsLoaded: Signal<([Project], DiscoveryParams?), NoError>
   public let projectsAreLoading: Signal<Bool, NoError>
-  public let refreshControlEndRefreshing: Signal<(), NoError>
   public let setScrollsToTop: Signal<Bool, NoError>
   public let scrollToProjectRow: Signal<Int, NoError>
-  public let shouldShowActivityIndicator: Signal<Bool, NoError>
   public let showEmptyState: Signal<EmptyState, NoError>
   public let showOnboarding: Signal<Bool, NoError>
 

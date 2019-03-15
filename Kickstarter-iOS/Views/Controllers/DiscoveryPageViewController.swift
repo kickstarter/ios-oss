@@ -7,7 +7,6 @@ import UIKit
 internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate var emptyStatesController: EmptyStatesViewController?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
-  fileprivate let loadingIndicatorView = UIActivityIndicatorView()
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
   private var currentEnvironmentChangedObserver: Any?
@@ -31,11 +30,13 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
 
-    self.tableView.addSubview(self.loadingIndicatorView)
-
     self.tableView.dataSource = self.dataSource
 
-    self.tableView.refreshControl = self.discoveryRefreshControl
+    let refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self,
+                             action: #selector(pulledToRefresh),
+                             for: .valueChanged)
+    self.refreshControl = refreshControl
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -52,10 +53,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.viewModel.inputs.currentEnvironmentChanged(environment:
           AppEnvironment.current.apiService.serverConfig.environment)
       })
-
-    self.discoveryRefreshControl.addTarget(self,
-                                           action: #selector(pulledToRefresh),
-                                           for: .valueChanged)
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
     self.emptyStatesController = emptyVC
@@ -95,32 +92,20 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.inputs.viewDidDisappear(animated: animated)
   }
 
-  internal override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.loadingIndicatorView.center = self.tableView.center
-  }
-
   internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-
-    _ = self.loadingIndicatorView
-      |> baseActivityIndicatorStyle
   }
 
     internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.shouldShowActivityIndicator
-
-    self.viewModel.outputs.refreshControlEndRefreshing
+    self.viewModel.outputs.projectsAreLoading
       .observeForUI()
       .observeValues { [weak self] in
-        self?.discoveryRefreshControl.endRefreshing()
-        self?.tableView.reloadData()
+        $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
 
     self.viewModel.outputs.activitiesForSample
@@ -294,7 +279,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   @objc private func pulledToRefresh() {
-    self.discoveryRefreshControl.beginRefreshing()
     self.viewModel.inputs.pulledToRefresh()
   }
 }
