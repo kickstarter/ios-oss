@@ -74,7 +74,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var projectsLoaded: Signal<([Project], DiscoveryParams?), NoError> { get }
 
   /// Emits a boolean that determines if projects are currently loading or not.
-  var projectsAreLoading: Signal<Bool, NoError> { get }
+  var projectsAreLoadingAnimated: Signal<(Bool, Bool), NoError> { get }
 
   /// Emits when should scroll to project with row number.
   var scrollToProjectRow: Signal<Int, NoError> { get }
@@ -176,12 +176,26 @@ DiscoveryPageViewModelOutputs {
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
-    self.projectsAreLoading = Signal.merge(
+    let isRefreshing =  self.pulledToRefreshProperty.signal
+      .combineLatest(with: isLoading)
+      .map { $0.1 }
+
+    let projectsLoadingNoRefresh = Signal.merge(
+      self.viewDidAppearProperty.signal.take(first: 1).mapConst(true),
       isLoading,
-      self.viewWillAppearProperty.signal.take(first: 1).mapConst(true)
+      isLoading.takeWhen(isRefreshing).mapConst(false)
+    ).skipRepeats()
+
+    self.projectsAreLoadingAnimated = Signal.merge(
+      isRefreshing.map { ($0, true) },
+      projectsLoadingNoRefresh.map { ($0, false) },
+      self.viewWillAppearProperty.signal.take(first: 1).mapConst((true, false))
     )
 
-    self.showEmptyState = Signal.combineLatest(paramsChanged, self.projectsAreLoading, paginatedProjects)
+    self.showEmptyState = Signal.combineLatest(
+      paramsChanged,
+      self.projectsAreLoadingAnimated.map { (loading, _) in loading },
+      paginatedProjects)
       .filter { _, projectsAreLoading, projects in projectsAreLoading == false && projects.isEmpty }
       .map { params, _, _ in
         emptyState(forParams: params)
@@ -341,7 +355,7 @@ DiscoveryPageViewModelOutputs {
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
   public let hideEmptyState: Signal<Void, NoError>
   public let projectsLoaded: Signal<([Project], DiscoveryParams?), NoError>
-  public let projectsAreLoading: Signal<Bool, NoError>
+  public let projectsAreLoadingAnimated: Signal<(Bool, Bool), NoError>
   public let setScrollsToTop: Signal<Bool, NoError>
   public let scrollToProjectRow: Signal<Int, NoError>
   public let showEmptyState: Signal<EmptyState, NoError>

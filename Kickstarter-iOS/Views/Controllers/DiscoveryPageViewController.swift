@@ -97,14 +97,18 @@ internal final class DiscoveryPageViewController: UITableViewController {
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
   }
 
-    internal override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.projectsAreLoading
+    self.viewModel.outputs.projectsAreLoadingAnimated
       .observeForUI()
-      .observeValues { [weak self] isLoading in
-        isLoading ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
-      }
+      .observeValues { [weak self] (isLoading, animated) in
+        if isLoading {
+          self?.performClosureAnimated(true, closure: { self?.refreshControl?.beginRefreshing() })
+        } else {
+          self?.performClosureAnimated(animated, closure: { self?.refreshControl?.endRefreshing() })
+        }
+    }
 
     self.viewModel.outputs.activitiesForSample
       .observeForUI()
@@ -129,7 +133,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goTo(project: $0, initialPlaylist: $1, refTag: $2)
-      }
+    }
 
     self.viewModel.outputs.goToProjectUpdate
       .observeForControllerAction()
@@ -141,7 +145,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.dataSource.load(projects: projects, params: params)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
-      }
+    }
 
     self.viewModel.outputs.showOnboarding
       .observeForUI()
@@ -264,7 +268,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.view.bringSubviewToFront(emptyVC.view)
     UIView.animate(withDuration: 0.3,
                    animations: {
-      self.emptyStatesController?.view.alpha = 1.0
+                    self.emptyStatesController?.view.alpha = 1.0
     }, completion: nil)
     if let discovery = self.parent?.parent as? DiscoveryViewController {
       discovery.setSortsEnabled(false)
@@ -279,10 +283,18 @@ internal final class DiscoveryPageViewController: UITableViewController {
   @objc private func pulledToRefresh() {
     self.viewModel.inputs.pulledToRefresh()
   }
+
+  private func performClosureAnimated(_ animated: Bool, closure: () -> Void) {
+    if animated {
+      closure()
+    } else {
+      UIView.performWithoutAnimation { closure() }
+    }
+  }
 }
 
 extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, ActivitySampleFollowCellDelegate,
-  ActivitySampleProjectCellDelegate {
+ActivitySampleProjectCellDelegate {
   internal func goToActivity() {
     guard let root = self.tabBarController as? RootTabBarViewController else { return }
     root.switchToActivities()
@@ -344,7 +356,7 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
 
     self.present(nav, animated: true, completion: nil)
   }
- }
+}
 
 extension DiscoveryPageViewController: ProjectNavigatorDelegate {
   func transitionedToProject(at index: Int) {
