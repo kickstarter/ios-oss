@@ -28,8 +28,8 @@ public protocol ChangeEmailViewModelOutputs {
   var messageLabelViewHidden: Signal<Bool, NoError> { get }
   var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
   var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
-  var passwordText: Signal<String, NoError> { get }
   var passwordFieldBecomeFirstResponder: Signal<Void, NoError> { get }
+  var passwordText: Signal<String, NoError> { get }
   var resendVerificationEmailViewIsHidden: Signal<Bool, NoError> { get }
   var resetFields: Signal<String, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
@@ -77,8 +77,8 @@ ChangeEmailViewModelOutputs {
     self.passwordProperty <~ clearValues
 
     let userEmailEvent = Signal.merge(
-        self.viewDidLoadProperty.signal,
-        changeEmailEvent.values().ignoreValues()
+      self.viewDidLoadProperty.signal,
+      changeEmailEvent.values().ignoreValues()
       )
       .switchMap { _ in
         AppEnvironment.current
@@ -180,8 +180,6 @@ ChangeEmailViewModelOutputs {
     self.viewDidAppearProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackChangeEmailView() }
   }
-
-  private let test = MutableProperty<Bool>(false)
 
   private let newEmailProperty = MutableProperty<String?>(nil)
   public func emailFieldTextDidChange(text: String?) {

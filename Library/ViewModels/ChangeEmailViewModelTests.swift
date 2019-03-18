@@ -17,9 +17,9 @@ final class ChangeEmailViewModelTests: TestCase {
   private let didSendVerificationEmail = TestObserver<Void, NoError>()
   private let dismissKeyboard = TestObserver<(), NoError>()
   private let emailText = TestObserver<String, NoError>()
+  private let messageLabelViewHidden = TestObserver<Bool, NoError>()
   private let onePasswordButtonIsHidden = TestObserver<Bool, NoError>()
   private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-  private let messageLabelViewHidden = TestObserver<Bool, NoError>()
   private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let passwordText = TestObserver<String, NoError>()
   private let resendVerificationEmailViewIsHidden = TestObserver<Bool, NoError>()
@@ -65,6 +65,7 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
     self.vm.inputs.passwordFieldTextDidChange(text: "123456")
 
+    self.vm.inputs.saveButtonIsEnabled(true)
     self.vm.inputs.saveButtonTapped()
 
     self.scheduler.advance()
@@ -81,6 +82,7 @@ final class ChangeEmailViewModelTests: TestCase {
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@ksr.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
 
+      self.vm.inputs.saveButtonIsEnabled(true)
       self.vm.inputs.saveButtonTapped()
 
       self.activityIndicatorShouldShow.assertValues([true])
@@ -347,7 +349,7 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testDismissKeyboard() {
+  func testDismissKeyboard_OnSuccess() {
 
     self.dismissKeyboard.assertDidNotEmitValue()
 
@@ -360,6 +362,20 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.vm.inputs.textFieldShouldReturn(with: .done)
     self.dismissKeyboard.assertValueCount(2)
+  }
+
+  func testDismissKeyboard_InvalidEmail() {
+
+    self.dismissKeyboard.assertDidNotEmitValue()
+
+    self.vm.inputs.emailFieldTextDidChange(text: "new@email.com.")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+    self.vm.inputs.saveButtonIsEnabled(false)
+    self.vm.inputs.textFieldShouldReturn(with: .done)
+
+    self.dismissKeyboard.assertValueCount(1)
+    self.didChangeEmail.assertDidNotEmitValue()
   }
 
   func testPasswordFieldBecomeFirstResponder_WhenTappingNext() {
@@ -378,11 +394,13 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
     self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+    self.vm.inputs.saveButtonIsEnabled(true)
 
     self.scheduler.advance()
 
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
     self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+    self.vm.inputs.saveButtonIsEnabled(true)
 
     self.vm.inputs.saveButtonTapped()
 
@@ -396,6 +414,7 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
     self.vm.inputs.passwordFieldTextDidChange(text: "123456")
 
+    self.vm.inputs.saveButtonIsEnabled(true)
     self.vm.inputs.saveButtonTapped()
 
     self.textFieldsAreEnabled.assertValues([false])
@@ -429,13 +448,14 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.vm.inputs.emailFieldTextDidChange(text: "new@email.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
-
+      self.vm.inputs.saveButtonIsEnabled(true)
       self.vm.inputs.saveButtonTapped()
 
       self.scheduler.advance()
 
       XCTAssertEqual(["Changed Email"], client.events)
 
+      self.vm.inputs.saveButtonIsEnabled(true)
       self.vm.inputs.saveButtonTapped()
       self.scheduler.advance()
 
