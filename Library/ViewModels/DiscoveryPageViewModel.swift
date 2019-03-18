@@ -181,7 +181,6 @@ DiscoveryPageViewModelOutputs {
       .map { $0.1 }
 
     let projectsLoadingNoRefresh = Signal.merge(
-      self.viewDidAppearProperty.signal.take(first: 1).mapConst(true),
       isLoading,
       isLoading.takeWhen(isRefreshing).mapConst(false)
     ).skipRepeats()
