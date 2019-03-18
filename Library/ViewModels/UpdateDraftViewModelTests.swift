@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import XCTest
 import UIKit
 @testable import ReactiveExtensions_TestHelpers
@@ -288,6 +287,7 @@ final class UpdateDraftViewModelTests: TestCase {
       self.vm.inputs.addAttachmentSheetButtonTapped(.camera)
       self.showImagePicker.assertValues([.cameraRoll, .camera])
 
+      // swiftlint:disable:next force_unwrapping
       self.vm.inputs.imagePicked(url: URL(string: "/tmp/photo.jpg")!, fromSource: .camera)
 
       self.attachmentAdded.assertValues([])
@@ -314,6 +314,7 @@ final class UpdateDraftViewModelTests: TestCase {
         self.vm.inputs.addAttachmentSheetButtonTapped(.cameraRoll)
         self.showImagePicker.assertValues([.cameraRoll])
 
+        // swiftlint:disable:next force_unwrapping
         self.vm.inputs.imagePicked(url: URL(string: "/tmp/photo.jpg")!, fromSource: .cameraRoll)
 
         self.showAddAttachmentFailure.assertValueCount(0)
@@ -402,6 +403,7 @@ final class UpdateDraftViewModelTests: TestCase {
 
       self.vm.inputs.addAttachmentButtonTapped(availableSources: [.camera, .cameraRoll])
       self.vm.inputs.addAttachmentSheetButtonTapped(.camera)
+      // swiftlint:disable:next force_unwrapping
       self.vm.inputs.imagePicked(url: URL(string: "/tmp/photo.jpg")!, fromSource: .camera)
 
       self.scheduler.advance()
@@ -437,6 +439,7 @@ final class UpdateDraftViewModelTests: TestCase {
 
       self.vm.inputs.addAttachmentButtonTapped(availableSources: [.camera, .cameraRoll])
       self.vm.inputs.addAttachmentSheetButtonTapped(.camera)
+      // swiftlint:disable:next force_unwrapping
       self.vm.inputs.imagePicked(url: URL(string: "/tmp/photo.jpg")!, fromSource: .camera)
 
       self.scheduler.advance()

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -62,13 +62,6 @@
                     </subviews>
                     <gestureRecognizers/>
                 </stackView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="57i-36-zKL">
-                    <rect key="frame" x="0.0" y="666" width="375" height="1"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="gia-Zl-90V"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
@@ -76,10 +69,7 @@
                 <constraint firstItem="iuS-VI-vmP" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="6" id="2ag-Er-JPe"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="iuS-VI-vmP" secondAttribute="trailing" constant="12" id="Qaz-hI-VJ7"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="iuS-VI-vmP" secondAttribute="bottom" constant="6" id="TDX-g3-DSU"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="57i-36-zKL" secondAttribute="bottom" id="WId-1V-q0T"/>
-                <constraint firstItem="57i-36-zKL" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="XQK-eh-qR8"/>
                 <constraint firstItem="iuS-VI-vmP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="c2Q-6i-ShS"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="57i-36-zKL" secondAttribute="trailing" id="cCR-Lx-bir"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
@@ -87,7 +77,7 @@
                 <outlet property="emailNotificationsButton" destination="9Nh-JE-XGT" id="cA3-CX-4bx"/>
                 <outlet property="projectCountLabel" destination="jI4-Cx-hUh" id="329-Yb-SOH"/>
                 <outlet property="pushNotificationsButton" destination="91p-HN-64I" id="FEZ-Fn-URt"/>
-                <outlet property="separatorView" destination="57i-36-zKL" id="t3y-9S-TzN"/>
+                <outlet property="stackView" destination="iuS-VI-vmP" id="ns0-e1-CFO"/>
                 <outlet property="titleLabel" destination="PoD-oO-miz" id="RG9-wm-zqY"/>
             </connections>
             <point key="canvasLocation" x="-97" y="-17"/>

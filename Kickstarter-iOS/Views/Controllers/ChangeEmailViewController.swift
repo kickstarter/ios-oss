@@ -84,8 +84,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
 
     _ = self.warningMessageLabel
       |> settingsDescriptionLabelStyle
-      |> \.textColor .~ .ksr_red_400
-      |> \.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
+      |> warningMessageLabelStyle
 
     _ = self.currentEmailContainer
       |> \.isAccessibilityElement .~ true
@@ -93,45 +92,33 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
 
     _ = self.currentEmailTitle
       |> settingsTitleLabelStyle
-      |> \.isAccessibilityElement .~ false
-      |> \.text %~ { _ in Strings.Current_email() }
-      |> \.textColor .~ .ksr_text_dark_grey_400
+      |> currentEmailTitleStyle
 
     _ = self.currentEmailValue
       |> settingsDetailLabelStyle
-      |> \.isAccessibilityElement .~ false
-      |> \.textColor .~ .ksr_text_dark_grey_400
+      |> currentEmailValueStyle
 
     _ = self.newEmailLabel
       |> settingsTitleLabelStyle
-      |> \.text %~ { _ in Strings.New_email() }
-      |> \.isAccessibilityElement .~ false
+      |> newEmailLabelStyle
 
     _ = self.newEmailTextField
       |> settingsEmailFieldAutoFillStyle
+      |> newEmailTextFieldStyle
       |> \.accessibilityLabel .~ self.newEmailLabel.text
-      |> \.returnKeyType .~ .next
-      |> \.attributedPlaceholder %~ { _ in
-        settingsAttributedPlaceholder(Strings.login_placeholder_email())
-    }
 
     _ = self.passwordLabel
       |> settingsTitleLabelStyle
-      |> \.text %~ { _ in Strings.Current_password() }
-      |> \.isAccessibilityElement .~ false
+      |> passwordLabelStyle
 
     _ = self.passwordTextField
       |> settingsPasswordFormFieldAutoFillStyle
+      |> passwordTextFieldStyle
       |> \.accessibilityLabel .~ self.passwordLabel.text
-      |> \.returnKeyType .~ .done
       |> \.enablesReturnKeyAutomatically .~ true
-      |> \.attributedPlaceholder %~ { _ in
-        settingsAttributedPlaceholder(Strings.login_placeholder_password())
-    }
 
     _ = self.resendVerificationEmailButton
-      |> UIButton.lens.titleLabel.font .~ .ksr_body()
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
+      |> resendVerificationEmailButtonStyle
   }
 
   override func bindViewModel() {
@@ -282,4 +269,59 @@ extension ChangeEmailViewController: UITextFieldDelegate {
     self.viewModel.inputs.textFieldShouldReturn(with: textField.returnKeyType)
     return textField.resignFirstResponder()
   }
+}
+
+// MARK: - Styles
+
+private let warningMessageLabelStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.textColor .~ UIColor.ksr_red_400
+    |> \.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
+}
+
+private let currentEmailTitleStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.isAccessibilityElement .~ false
+    |> \.text %~ { _ in Strings.Current_email() }
+    |> \.textColor .~ UIColor.ksr_text_dark_grey_400
+}
+
+private let currentEmailValueStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.isAccessibilityElement .~ false
+    |> \.textColor .~ UIColor.ksr_text_dark_grey_400
+}
+
+private let newEmailLabelStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.text %~ { _ in Strings.New_email() }
+    |> \.isAccessibilityElement .~ false
+}
+
+private let newEmailTextFieldStyle: TextFieldStyle = { (textField: UITextField) in
+  textField
+    |> \.returnKeyType .~ UIReturnKeyType.next
+    |> \.attributedPlaceholder %~ { _ in
+      settingsAttributedPlaceholder(Strings.login_placeholder_email())
+  }
+}
+
+private let passwordLabelStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.text %~ { _ in Strings.Current_password() }
+    |> \.isAccessibilityElement .~ false
+}
+
+private let passwordTextFieldStyle: TextFieldStyle = { (textField: UITextField) in
+  textField
+    |> \.returnKeyType .~ UIReturnKeyType.done
+    |> \.attributedPlaceholder %~ { _ in
+      settingsAttributedPlaceholder(Strings.login_placeholder_password())
+  }
+}
+
+private let resendVerificationEmailButtonStyle: ButtonStyle = { (button: UIButton) in
+  button
+    |> UIButton.lens.titleLabel.font .~ .ksr_body()
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
 }

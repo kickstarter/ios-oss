@@ -88,29 +88,15 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
     _ = self.cardholderNameLabel
       |> settingsTitleLabelStyle
-      |> \.isAccessibilityElement .~ false
-      |> \.text %~ { _ in Strings.Cardholder_name() }
+      |> cardholderNameLabelStyle
 
     _ = self.cardholderNameTextField
       |> formFieldStyle
-      |> \.autocapitalizationType .~ .words
-      |> \.returnKeyType .~ .next
-      |> \.textAlignment .~ .right
-      |> \.textColor .~ .ksr_text_dark_grey_500
-
-    _ = self.cardholderNameTextField
+      |> cardholderNameTextFieldStyle
       |> \.accessibilityLabel .~ self.cardholderNameLabel.text
-      |> \.attributedPlaceholder .~ NSAttributedString(
-          string: Strings.Name(),
-          attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400])
 
     _ = self.creditCardTextField
-      |> \.borderColor .~ nil
-      |> \.font .~ .ksr_body()
-      |> \.textColor .~ .ksr_text_dark_grey_500
-      |> \.textErrorColor .~ .ksr_red_400
-      |> \.cursorColor .~ .ksr_green_700
-      |> \.placeholderColor .~ .ksr_text_dark_grey_400
+      |> creditCardTextFieldStyle
 
     _ = self.creditCardValidationErrorLabel
       |> settingsDescriptionLabelStyle
@@ -296,4 +282,35 @@ extension AddNewCardViewController {
   internal func paymentCardTextFieldDidEndEditing(_ textField: STPPaymentCardTextField) {
     self.viewModel.inputs.paymentCardTextFieldDidEndEditing()
   }
+}
+
+// MARK: - Styles
+
+private let cardholderNameLabelStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.isAccessibilityElement .~ false
+    |> \.text %~ { _ in Strings.Cardholder_name() }
+}
+
+private let cardholderNameTextFieldStyle: TextFieldStyle = { (textField: UITextField) in
+  textField
+    |> \.autocapitalizationType .~ .words
+    |> \.returnKeyType .~ .next
+    |> \.textAlignment .~ .right
+    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.attributedPlaceholder .~ NSAttributedString(
+      string: Strings.Name(),
+      attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400])
+}
+
+private typealias PaymentCardTextFieldStyle = (STPPaymentCardTextField) -> STPPaymentCardTextField
+
+private let creditCardTextFieldStyle: PaymentCardTextFieldStyle = { (textField: STPPaymentCardTextField) in
+  textField
+    |> \.borderColor .~ nil
+    |> \.font .~ .ksr_body()
+    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.textErrorColor .~ .ksr_red_400
+    |> \.cursorColor .~ .ksr_green_700
+    |> \.placeholderColor .~ .ksr_text_dark_grey_400
 }

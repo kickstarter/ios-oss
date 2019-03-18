@@ -126,14 +126,19 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
     self.viewModel.outputs.didUpdateCurrency
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.messageBannerViewController?.showBanner(
-          with: .success,
-          message: Strings.Got_it_your_changes_have_been_saved()
-        )
+        self?.handleDidUpdateCurrency()
     }
   }
 
-  // MARK: Actions
+  // MARK: - Private Functions
+  private func handleDidUpdateCurrency() {
+    self.messageBannerViewController?.showBanner(with: .success,
+                                                 message: Strings.Got_it_your_changes_have_been_saved())
+
+    NotificationCenter.default.post(name: .ksr_userLocalePreferencesChanged, object: nil)
+  }
+
+  // MARK: - Actions
 
   @objc private func saveButtonTapped(_ sender: Any) {
     self.viewModel.inputs.saveButtonTapped()
@@ -142,9 +147,8 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   // MARK: - Subviews
 
   private lazy var tableView: UITableView = {
-    UITableView(frame: .zero, style: .plain)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.tableFooterView .~ UIView(frame: .zero)
+    return UITableView(frame: .zero, style: .plain)
+      |> tableViewStyle
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
   }()
@@ -160,4 +164,12 @@ extension SelectCurrencyViewController: UITableViewDelegate {
 
     tableView.deselectRow(at: indexPath, animated: true)
   }
+}
+
+// MARK: - Styles
+
+private let tableViewStyle: TableViewStyle = { (tableView: UITableView) in
+  tableView
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    |> \.tableFooterView .~ UIView(frame: .zero)
 }

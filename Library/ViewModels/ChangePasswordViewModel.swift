@@ -19,6 +19,7 @@ public protocol ChangePasswordViewModelInputs {
 }
 
 public protocol ChangePasswordViewModelOutputs {
+  var accessibilityFocusValidationErrorLabel: Signal<Void, NoError> { get }
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var changePasswordFailure: Signal<String, NoError> { get }
   var changePasswordSuccess: Signal<Void, NoError> { get }
@@ -43,7 +44,7 @@ public class ChangePasswordViewModel: ChangePasswordViewModelType,
 ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public init() {
     let combinedPasswords = Signal
-      .combineLatest(newPasswordProperty.signal, confirmNewPasswordProperty.signal)
+      .combineLatest(self.newPasswordProperty.signal, self.confirmNewPasswordProperty.signal)
     let currentPasswordSignal: Signal<String, NoError> = Signal
       .merge(self.currentPasswordProperty.signal,
              self.onePasswordPrefillPasswordProperty.signal.skipNil())
@@ -104,7 +105,8 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       self.changePasswordFailure.mapConst(false)
       )
 
-    self.dismissKeyboard = triggerSaveAction
+    self.dismissKeyboard = Signal.merge(self.saveButtonTappedProperty.signal,
+                                        self.confirmNewPasswordDoneEditingProperty.signal)
 
     self.currentPasswordBecomeFirstResponder = self.viewDidAppearProperty.signal
     self.newPasswordBecomeFirstResponder = self.currentPasswordDoneEditingProperty.signal
@@ -115,11 +117,12 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.onePasswordFindPasswordForURLString = self.onePasswordButtonTappedProperty.signal
       .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
 
-    self.validationErrorLabelIsHidden = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
+    let requirementsMet = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
       .map { $0.0 && $0.1 }
-      .skipRepeats()
 
-    self.validationErrorLabelMessage = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
+    self.validationErrorLabelIsHidden = requirementsMet.skipRepeats()
+
+    let errorLabelMessage = Signal.combineLatest(passwordsMatch, lengthMeetsReq)
       .map { requirements -> String? in
         if !requirements.1 {
           return Strings.Password_min_length_message()
@@ -128,8 +131,19 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
         } else {
           return nil
         }
-    }.skipNil()
-    .skipRepeats()
+    }
+
+    self.validationErrorLabelMessage = errorLabelMessage
+      .skipNil()
+      .skipRepeats()
+
+    let entryChanged = Signal.merge(self.newPasswordProperty.signal, self.confirmNewPasswordProperty.signal)
+
+    self.accessibilityFocusValidationErrorLabel = requirementsMet
+      .takeWhen(entryChanged)
+      .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
+      .filter(isFalse)
+      .ignoreValues()
 
     self.viewDidAppearProperty.signal
       .observeValues { _ in AppEnvironment.current.koala.trackChangePasswordView() }
@@ -193,6 +207,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.viewDidAppearProperty.value = ()
   }
 
+  public let accessibilityFocusValidationErrorLabel: Signal<Void, NoError>
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let changePasswordFailure: Signal<String, NoError>
   public let changePasswordSuccess: Signal<Void, NoError>

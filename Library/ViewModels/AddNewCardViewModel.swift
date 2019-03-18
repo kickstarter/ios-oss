@@ -3,7 +3,6 @@ import Prelude
 import ReactiveSwift
 import ReactiveExtensions
 import Result
-import Stripe
 
 public typealias Month = UInt
 public typealias Year = UInt

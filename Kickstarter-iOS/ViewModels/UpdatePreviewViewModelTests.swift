@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 @testable import Library
 @testable import Kickstarter_Framework
 @testable import KsApi
@@ -43,6 +42,7 @@ final class UpdatePreviewViewModelTests: TestCase {
     )
 
     let redirectUrl = "https://www.kickstarter.com/projects/smashmouth/somebody-once-told-me/posts/1"
+    // swiftlint:disable:next force_unwrapping
     let request = URLRequest(url: URL(string: redirectUrl)!)
     let navigationAction = WKNavigationActionData(
       navigationType: .other,

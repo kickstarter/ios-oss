@@ -83,6 +83,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
 
     _ = tableView
       |> settingsTableViewStyle
+      |> settingsTableViewSeparatorStyle
   }
 
   private func showGeneralError() {
@@ -129,8 +130,6 @@ extension SettingsAccountViewController {
       let vc = SelectCurrencyViewController.instantiate()
       vc.configure(with: currency)
       return vc
-    default:
-      return nil
     }
   }
 }

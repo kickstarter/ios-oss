@@ -765,7 +765,6 @@ RewardPledgeViewModelOutputs {
         )
     }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let applePayButtonTappedProperty = MutableProperty(())
   public func applePayButtonTapped() {
