@@ -13,8 +13,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
 
-  private let discoveryRefreshControl = UIRefreshControl()
-
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
     vc.viewModel.inputs.configureWith(sort: sort)
@@ -104,8 +102,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.projectsAreLoading
       .observeForUI()
-      .observeValues { [weak self] in
-        $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
+      .observeValues { [weak self] isLoading in
+        isLoading ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
 
     self.viewModel.outputs.activitiesForSample
