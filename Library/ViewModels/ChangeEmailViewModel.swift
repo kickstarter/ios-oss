@@ -54,11 +54,10 @@ ChangeEmailViewModelOutputs {
       self.saveButtonTappedProperty.signal
     )
 
-    self.test <~ self.saveButtonEnabledProperty.signal
-
-    let triggerSaveAction = self.test.signal
-      .filter { $0 == true }
+    let triggerSaveAction = self.saveButtonEnabledProperty.signal
       .takeWhen(self.dismissKeyboard)
+      .filter { isTrue($0) }
+      .ignoreValues()
 
     let changeEmailEvent = Signal.combineLatest(
       self.newEmailProperty.signal.skipNil(),
@@ -276,14 +275,10 @@ private func shouldEnableSaveButton(email: String?, newEmail: String?, password:
     email != newEmail,
     password != nil
 
-    else { print("\(false)")
-            return false  }
+    else { return false  }
 
-  let this = ![newEmail, password]
+  return ![newEmail, password]
     .compactMap { $0 }
     .map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     .contains(false)
-
-  print("\(this)")
-  return this
 }
