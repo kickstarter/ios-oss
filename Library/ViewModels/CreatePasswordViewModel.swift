@@ -87,15 +87,18 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
 
     self.saveButtonIsEnabled = formIsValid
 
-    let autoSaveSignal = self.saveButtonIsEnabled
-      .takeWhen(self.newPasswordConfirmationDidReturnProperty.signal)
-      .filter { isTrue($0) }
+    let submitFormEvent = Signal.merge(
+      self.newPasswordConfirmationDidReturnProperty.signal,
+      self.saveButtonTappedProperty.signal
+    )
+
+    let saveAction = formIsValid
+      .takeWhen(submitFormEvent)
+      .filter(isTrue)
       .ignoreValues()
 
-    let triggerSaveAction = Signal.merge(autoSaveSignal, self.saveButtonTappedProperty.signal)
-
     let createPasswordEvent = combinedPasswords
-      .takeWhen(triggerSaveAction)
+      .takeWhen(saveAction)
       .map { CreatePasswordInput(password: $0.0, passwordConfirmation: $0.1) }
       .switchMap { input in
         AppEnvironment.current.apiService.createPassword(input: input)
@@ -106,12 +109,11 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
     self.createPasswordSuccess = createPasswordEvent.values().ignoreValues()
 
     self.activityIndicatorShouldShow = Signal.merge(
-      triggerSaveAction.signal.mapConst(true),
+      saveAction.signal.mapConst(true),
       self.createPasswordSuccess.mapConst(false)
     )
 
-    self.dismissKeyboard = Signal.merge(self.saveButtonTappedProperty.signal,
-                                        self.newPasswordConfirmationDidReturnProperty.signal)
+    self.dismissKeyboard = submitFormEvent
 
     self.cellAtIndexPathDidBecomeFirstResponder = Signal.combineLatest(
       self.viewDidAppearProperty.signal,
