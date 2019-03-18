@@ -43,7 +43,11 @@ final class CreatePasswordViewController: UITableViewController {
   private weak var newPasswordTextField: UITextField?
   private weak var newPasswordConfirmationTextField: UITextField?
   private weak var groupedFooterView: SettingsGroupedFooterView?
-  private let saveButtonView: LoadingBarButtonItemView = LoadingBarButtonItemView.instantiate()
+  private lazy var saveButtonView: LoadingBarButtonItemView = {
+   let buttonView = LoadingBarButtonItemView.instantiate()
+   buttonView.setTitle(title: Strings.Save())
+   return buttonView
+  }()
 
   // MARK: - Lifecycle
 
@@ -54,16 +58,13 @@ final class CreatePasswordViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.saveButtonView.setTitle(title: Strings.Save())
     self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped(_:)))
-
-    let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
 
     _ = self
       |> \.title %~ { _ in Strings.Create_password() }
 
     _ = self.navigationItem
-      |> \.rightBarButtonItem .~ navigationBarButton
+      |> \.rightBarButtonItem .~ UIBarButtonItem(customView: self.saveButtonView)
 
     self.tableView.registerHeaderFooterClass(SettingsGroupedHeaderView.self)
     self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
