@@ -175,12 +175,3 @@ public func ksr_isOSVersionAvailable(_ version: Double) -> Bool {
   return false
 }
 
-public func logoutAndDismiss(_ viewController: UIViewController) {
-  AppEnvironment.logout()
-
-  PushNotificationDialog.resetAllContexts()
-
-  NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
-
-  viewController.dismiss(animated: true, completion: nil)
-}

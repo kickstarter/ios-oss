@@ -167,7 +167,7 @@ final class CreatePasswordViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let self = self else { return }
-        logoutAndDismiss(self)
+        logoutAndDismiss(viewController: self)
     }
   }
 
