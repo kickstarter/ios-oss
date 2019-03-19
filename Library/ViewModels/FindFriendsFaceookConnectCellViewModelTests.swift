@@ -12,7 +12,6 @@ import Prelude
 @testable import FBSDKLoginKit
 
   final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
-  // swiftlint: enable type_name
   let vm: FindFriendsFacebookConnectCellViewModelType = FindFriendsFacebookConnectCellViewModel()
 
   let attemptFacebookLogin = TestObserver<(), NoError>()

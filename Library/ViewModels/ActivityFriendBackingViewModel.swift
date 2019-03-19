@@ -117,7 +117,7 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
   }
 }
 
-// swiftlint:disable cyclomatic_complexity
+// swiftlint:disable:next cyclomatic_complexity
 private func string(forCategoryId id: String, friendName: String) -> String {
   let root = RootCategory(categoryId: Int(id) ?? -1)
   switch root {
@@ -139,7 +139,7 @@ private func string(forCategoryId id: String, friendName: String) -> String {
   case .unrecognized: return ""
   }
 }
-// swiftlint:enable cyclomatic_complexity
+
 private func percentFundedString(forActivity activity: Activity) -> NSAttributedString {
   guard let project = activity.project else { return NSAttributedString(string: "") }
 
