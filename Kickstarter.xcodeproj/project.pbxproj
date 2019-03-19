@@ -3068,14 +3068,14 @@
 		0127FC511C98BFD000E335C6 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				9D1A29851D5A9508009E1B3F /* DeprecatedWebViewController.swift */,
-				D76436D1224040B700DAFC9E /* SharedFunctions.swift */,
-				D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */,
 				D764373F22414FA900DAFC9E /* AppEnvironmentType.swift */,
-				D76437782241500600DAFC9E /* PushNotificationDialogType.swift */,
+				9D1A29851D5A9508009E1B3F /* DeprecatedWebViewController.swift */,
 				015B78841D47FF51003216AC /* MFMailComposeViewController.swift */,
 				A77DA9621E4D1F4D00DB3A66 /* Nib.swift */,
 				A724BA651D2C03930041863C /* NSBundle-Framework.swift */,
+				D76437782241500600DAFC9E /* PushNotificationDialogType.swift */,
+				D76436D1224040B700DAFC9E /* SharedFunctions.swift */,
+				D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */,
 				A77DA9631E4D1F4D00DB3A66 /* Storyboard.swift */,
 				A74BEF181DE3474C008D5E63 /* UIImageView+URL.swift */,
 				D0200A5021935E7800F5CC27 /* UIView+LivePulsatingAnimation.swift */,
