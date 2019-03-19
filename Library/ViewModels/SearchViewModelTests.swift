@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import Foundation
 import XCTest
 @testable import KsApi
@@ -268,6 +267,7 @@ internal final class SearchViewModelTests: TestCase {
                    "A koala event is tracked for the search results.")
     XCTAssertEqual([true, nil, true, nil],
                    self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+    // swiftlint:disable:next force_unwrapping
     XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
 
     self.vm.inputs.willDisplayRow(7, outOf: 10)
@@ -282,6 +282,7 @@ internal final class SearchViewModelTests: TestCase {
       "A koala event is tracked for the search results.")
     XCTAssertEqual([true, nil, true, nil, true, nil],
                    self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+    // swiftlint:disable:next force_unwrapping
     XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
 
     self.vm.inputs.searchTextChanged("")
@@ -355,6 +356,7 @@ internal final class SearchViewModelTests: TestCase {
                      "A koala event is tracked for the search results.")
       XCTAssertEqual([true, nil, true, nil],
                      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+      // swiftlint:disable:next force_unwrapping
       XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
 
       let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ []
@@ -406,6 +408,7 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance(by: apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects emit immediately.")
+      // swiftlint:disable:next force_unwrapping
       let popularProjects = projects.values.last!
 
       self.vm.inputs.searchTextChanged("skull graphic tee")

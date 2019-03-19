@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import Argo
 import Runes
 import PassKit
@@ -148,6 +147,7 @@ public final class PKPaymentRequestTests: XCTestCase {
     ]
     let decoded = PKPaymentRequest.decodeJSONDictionary(json)
 
+    // swiftlint:disable:next force_unwrapping
     XCTAssertEqual(json as NSDictionary, (decoded.value?.encode())! as NSDictionary)
   }
 }

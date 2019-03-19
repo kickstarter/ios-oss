@@ -119,8 +119,8 @@ public func == (lhs: Navigation.Checkout.Payment, rhs: Navigation.Checkout.Payme
   }
 }
 
-// swiftlint:disable cyclomatic_complexity
 extension Navigation.Project: Equatable {}
+// swiftlint:disable:next cyclomatic_complexity
 public func == (lhs: Navigation.Project, rhs: Navigation.Project) -> Bool {
   switch (lhs, rhs) {
   case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
@@ -151,7 +151,6 @@ public func == (lhs: Navigation.Project, rhs: Navigation.Project) -> Bool {
     return false
   }
 }
-// swiftlint:enable cyclomatic_complexity
 
 extension Navigation.Project.Checkout: Equatable {}
 public func == (lhs: Navigation.Project.Checkout, rhs: Navigation.Project.Checkout) -> Bool {

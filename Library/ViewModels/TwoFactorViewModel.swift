@@ -74,7 +74,6 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
         set: { TfaData(email: $1.email, password: $1.password, facebookToken: $1.facebookToken, code: $0) }
       )
     }
-    // swiftlint:enable type_name
   }
 
     public init() {
