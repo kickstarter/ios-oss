@@ -176,9 +176,10 @@ DiscoveryPageViewModelOutputs {
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
-    let isRefreshing =  self.pulledToRefreshProperty.signal
-      .combineLatest(with: isLoading)
-      .map { $0.1 }
+    let isRefreshing = isLoading
+      .combineLatest(with: self.pulledToRefreshProperty.signal)
+      .map { $0.0 }
+      .skipRepeats()
 
     let projectsLoadingNoRefresh = Signal.merge(
       isLoading,
@@ -190,6 +191,7 @@ DiscoveryPageViewModelOutputs {
       projectsLoadingNoRefresh.map { ($0, false) },
       self.viewWillAppearProperty.signal.take(first: 1).mapConst((true, false))
     )
+    .skipRepeats(==)
 
     self.showEmptyState = Signal.combineLatest(
       paramsChanged,

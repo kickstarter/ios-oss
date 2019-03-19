@@ -23,6 +23,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let hasRemovedProjects = TestObserver<Bool, NoError>()
   fileprivate let hideEmptyState = TestObserver<(), NoError>()
   fileprivate let projectsAreLoading = TestObserver<Bool, NoError>()
+  fileprivate let projectsAreLoadingAnimated = TestObserver<(Bool, Bool), NoError>()
   fileprivate let setScrollsToTop = TestObserver<Bool, NoError>()
   private let scrollToProjectRow = TestObserver<Int, NoError>()
   fileprivate let showEmptyState = TestObserver<EmptyState, NoError>()
@@ -40,6 +41,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.goToProjectPlaylist.map(second).observe(self.goToPlaylist.observer)
     self.vm.outputs.goToProjectPlaylist.map(third).observe(self.goToPlaylistRefTag.observer)
     self.vm.outputs.goToProjectUpdate.map { $0.1 }.observe(self.goToProjectUpdate.observer)
+    self.vm.outputs.projectsAreLoadingAnimated.observe(self.projectsAreLoadingAnimated.observer)
     self.vm.outputs.projectsLoaded.ignoreValues().observe(self.hasLoadedProjects.observer)
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
@@ -56,7 +58,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       .combinePrevious(0)
       .map { prev, next in next < prev }
       .observe(self.hasRemovedProjects.observer)
-    self.vm.outputs.projectsAreLoading.observe(self.projectsAreLoading.observer)
+    self.vm.outputs.projectsAreLoadingAnimated.map { $0.0 }.observe(self.projectsAreLoading.observer)
   }
 
   func testPaginating() {
@@ -80,7 +82,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.asyncReloadData.assertValueCount(1, "Reload data when projects are first added.")
     self.hasAddedProjects.assertValues([true], "Projects are added.")
     self.hasRemovedProjects.assertValues([false], "Projects are not removed.")
-    self.projectsAreLoading.assertValues([true, true, false], "Loading indicator toggles on/off.")
+    self.projectsAreLoading.assertValues([true, false], "Loading indicator toggles on/off.")
     XCTAssertEqual(["Loaded Discovery Results", "Discover List View"],
                    self.trackingClient.events,
                    "Event is tracked once projects load.")
@@ -108,7 +110,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertValues([true, true], "More projects are added from pagination.")
     self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
     self.projectsAreLoading.assertValues(
-      [true, true, false, true, false], "Loading indicator toggles on/off."
+      [true, false, true, false], "Loading indicator toggles on/off."
     )
     XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
       "Discover List View"],
@@ -147,7 +149,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.hasAddedProjects.assertValues([true, true, false, true], "Projects are added.")
     self.hasRemovedProjects.assertValues([false, false, true, false], "Projects are not removed.")
-    self.projectsAreLoading.assertValues([true, true, false, true, false, true, false],
+    self.projectsAreLoading.assertValues([true, false, true, false, true, false],
                                          "Loading indicator toggles on/off.")
     XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
       "Discover List View", "Loaded Discovery Results", "Discover List View"],
@@ -168,7 +170,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
                                        "Projects are added.")
     self.hasRemovedProjects.assertValues([false, false, true, false, false],
                                          "Projects are not removed.")
-    self.projectsAreLoading.assertValues([true, true, false, true, false, true, false, true, false],
+    self.projectsAreLoading.assertValues([true, false, true, false, true, false, true, false],
                                          "Loading indicator toggles on/off.")
     XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
       "Discover List View", "Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
@@ -695,33 +697,23 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     let projectEnv = .template
       |> DiscoveryEnvelope.lens.projects .~ playlist
 
-    let playlist2 = (0...20).map { idx in .template |> Project.lens.id .~ (idx + 72) }
-    let projectEnv2 = .template
-      |> DiscoveryEnvelope.lens.projects .~ playlist2
-
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(.defaults)
+
+      self.projectsAreLoading.assertValueCount(1)
 
       self.scheduler.advance()
 
-      self.projectsAreLoading.assertValueCount(1)
+      self.projectsAreLoading.assertValueCount(2)
 
       self.vm.inputs.pulledToRefresh()
 
       self.scheduler.advance()
 
-      self.projectsAreLoading.assertValueCount(1, "Only emits if projects on the playlist are different")
-
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv2)) {
-        self.vm.inputs.pulledToRefresh()
-
-        self.scheduler.advance()
-
-        self.projectsAreLoading.assertValueCount(1)
-
-      }
+      self.projectsAreLoading.assertValueCount(6)
     }
   }
 
@@ -748,5 +740,54 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
     self.vm.inputs.pulledToRefresh()
     XCTAssertEqual(["Triggered Refresh"], self.trackingClient.events)
+  }
+
+  func testProjectAreLoadingAnimated() {
+    let playlist = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist
+
+    let playlist2 = (0...20).map { idx in .template |> Project.lens.id .~ (idx + 72) }
+    let projectEnv2 = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist2
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      XCTAssertEqual(true, self.projectsAreLoadingAnimated.values.last?.0,
+                     "Start loading on viewWillAppear.")
+      XCTAssertEqual(false, self.projectsAreLoadingAnimated.values.last?.1,
+                     "Shouldn't animate on first load.")
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(false, self.projectsAreLoadingAnimated.values.last?.0,
+                     "Projects should stop loading after server returns.")
+      XCTAssertEqual(false, self.projectsAreLoadingAnimated.values.last?.1,
+                     "Shouldn't animate on first load.")
+
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv2)) {
+
+        self.scheduler.advance()
+
+        self.vm.inputs.pulledToRefresh()
+
+        XCTAssertEqual(true, self.projectsAreLoadingAnimated.values.last?.0,
+                       "Should start loading on pullToRefresh event.")
+        XCTAssertEqual(true, self.projectsAreLoadingAnimated.values.last?.1,
+                       "Should animate if projects are loading after pulling to refresh.")
+
+        self.scheduler.advance()
+
+        XCTAssertEqual(false, self.projectsAreLoadingAnimated.values.last?.0,
+                        "Should stop loading after server returns.")
+        XCTAssertEqual(true, self.projectsAreLoadingAnimated.values.last?.1,
+                       "Should animate if projects are loading after pulling to refresh.")
+
+      }
+    }
   }
 }
