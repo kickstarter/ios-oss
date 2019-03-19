@@ -1,12 +1,23 @@
 import XCTest
-import Foundation
-import ReactiveSwift
-import Result
-@testable import KsApi
-@testable import Library
 @testable import Kickstarter_Framework
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
+
+internal final class SharedFunctionsTests: XCTestCase {
+  func testLogoutAndDismiss() {
+    let mockAppEnvironment = MockAppEnvironment.self
+    let mockPushNotificationDialog = MockPushNotificationDialog.self
+    let mockViewController = MockViewController()
+
+    XCTAssertFalse(mockAppEnvironment.logoutWasCalled)
+    XCTAssertFalse(mockPushNotificationDialog.resetAllContextsWasCalled)
+    XCTAssertFalse(mockViewController.dismissAnimatedWasCalled)
+    mockAppEnvironment.logout()
+    XCTAssertTrue(mockAppEnvironment.logoutWasCalled)
+    mockPushNotificationDialog.resetAllContexts()
+    XCTAssertTrue(mockPushNotificationDialog.resetAllContextsWasCalled)
+    mockViewController.dismiss(animated: true, completion: nil)
+    XCTAssertTrue(mockViewController.dismissAnimatedWasCalled)
+  }
+}
 
 struct MockAppEnvironment: AppEnvironmentType {
   static var logoutWasCalled = false
@@ -29,24 +40,5 @@ class MockViewController: UIViewController {
 
   override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
     self.dismissAnimatedWasCalled = true
-  }
-}
-
-internal final class SharedFunctionsTests: XCTestCase {
-
-  func testLogoutAndDismiss() {
-    let mockAppEnvironment = MockAppEnvironment.self
-    let mockPushNotificationDialog = MockPushNotificationDialog.self
-    let mockViewController = MockViewController()
-
-    XCTAssertFalse(mockAppEnvironment.logoutWasCalled)
-    XCTAssertFalse(mockPushNotificationDialog.resetAllContextsWasCalled)
-    XCTAssertFalse(mockViewController.dismissAnimatedWasCalled)
-    mockAppEnvironment.logout()
-    XCTAssertTrue(mockAppEnvironment.logoutWasCalled)
-    mockPushNotificationDialog.resetAllContexts()
-    XCTAssertTrue(mockPushNotificationDialog.resetAllContextsWasCalled)
-    mockViewController.dismiss(animated: true, completion: nil)
-    XCTAssertTrue(mockViewController.dismissAnimatedWasCalled)
   }
 }
