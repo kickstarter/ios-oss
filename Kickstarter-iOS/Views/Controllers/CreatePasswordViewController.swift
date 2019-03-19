@@ -44,9 +44,9 @@ final class CreatePasswordViewController: UITableViewController {
   private weak var newPasswordConfirmationTextField: UITextField?
   private weak var groupedFooterView: SettingsGroupedFooterView?
   private lazy var saveButtonView: LoadingBarButtonItemView = {
-   let buttonView = LoadingBarButtonItemView.instantiate()
-   buttonView.setTitle(title: Strings.Save())
-   return buttonView
+    let buttonView = LoadingBarButtonItemView.instantiate()
+    buttonView.setTitle(title: Strings.Save())
+    return buttonView
   }()
 
   // MARK: - Lifecycle
