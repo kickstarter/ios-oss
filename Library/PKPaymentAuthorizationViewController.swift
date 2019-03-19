@@ -8,7 +8,7 @@ extension PKPaymentAuthorizationViewController {
   }
 
   public static func applePayCapable() -> Bool {
-    return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: supportedNetworks)
+    return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: PaymentNetworks.all)
   }
 
   public static func applePayDevice() -> Bool {
@@ -25,16 +25,35 @@ extension PKPaymentAuthorizationViewController {
 
     let countryCode = AppEnvironment.current.countryCode
 
-    if countryCode == "US" && project.country != Project.Country.us ||
+    if (countryCode == "US" && project.country != Project.Country.us) ||
       countryCode != "US" {
-      return PKPaymentAuthorizationViewController.supportedNetworks
-        .filter { $0 != .discover && $0 != .chinaUnionPay }
+       return PaymentNetworks.US.supported
     }
 
-    return PKPaymentAuthorizationViewController.supportedNetworks
+    return PaymentNetworks.all
   }
 
   public static var supportedNetworks: [PKPaymentNetwork] {
-    return [.amex, .masterCard, .visa, .discover, .chinaUnionPay]
+    return PaymentNetworks.all
   }
 }
+
+// MARK: - Payment networks
+
+// swiftlint:disable private_over_fileprivate
+fileprivate struct PaymentNetworks {
+  fileprivate static var all: [PKPaymentNetwork] {
+    return [.amex, .masterCard, .visa, .discover, .chinaUnionPay]
+  }
+
+  fileprivate struct US {
+    fileprivate static var unsupported: [PKPaymentNetwork] {
+      return [.chinaUnionPay, .discover]
+    }
+
+    fileprivate static var supported: [PKPaymentNetwork] {
+      return PaymentNetworks.all.filter { !US.unsupported.contains($0) }
+    }
+  }
+}
+// swiftlint:enable private_over_fileprivate
