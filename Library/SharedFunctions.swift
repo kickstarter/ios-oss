@@ -174,4 +174,3 @@ public func ksr_isOSVersionAvailable(_ version: Double) -> Bool {
 
   return false
 }
-
