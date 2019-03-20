@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import Prelude
 import ReactiveSwift
 import Result
@@ -54,5 +53,6 @@ internal final class WebModalViewModelTests: TestCase {
     XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue, decision.rawValue)
   }
 
+  // swiftlint:disable:next force_unwrapping
   fileprivate let request = URLRequest(url: URL(string: "https://www.kickstarter.com/projects/tfw/ijc")!)
 }

@@ -187,7 +187,6 @@ MessagesViewModelOutputs {
         AppEnvironment.current.koala.trackMessageThreadView(project: project)
     }
   }
-  // swiftlint:enable function_body_length
 
   private let backingInfoPressedProperty = MutableProperty(())
   public func backingInfoPressed() {

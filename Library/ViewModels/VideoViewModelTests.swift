@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import AVFoundation
 import Library
 import Prelude
@@ -83,6 +82,7 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.playButtonTapped()
 
+    // swiftlint:disable:next force_unwrapping
     self.configurePlayerWithURL.assertValues([video.hls!], "Video url emitted.")
   }
 
