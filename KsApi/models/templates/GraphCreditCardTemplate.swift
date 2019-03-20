@@ -37,6 +37,11 @@ extension GraphUserCreditCard {
                                                              lastFour: "1882",
                                                              type: .generic)
 
+  public static let unionPay = GraphUserCreditCard.CreditCard(expirationDate: "2021-11-10",
+                                                              id: "8",
+                                                              lastFour: "0005",
+                                                              type: .unionPay)
+
   public static let template = GraphUserCreditCard(
     storedCards: CreditCardConnection(nodes: [GraphUserCreditCard.amex,
                                               GraphUserCreditCard.masterCard,
@@ -44,7 +49,8 @@ extension GraphUserCreditCard {
                                               GraphUserCreditCard.diners,
                                               GraphUserCreditCard.jcb,
                                               GraphUserCreditCard.discover,
-                                              GraphUserCreditCard.generic]))
+                                              GraphUserCreditCard.generic,
+                                              GraphUserCreditCard.unionPay]))
 
   public static let emptyTemplate = GraphUserCreditCard(
     storedCards: CreditCardConnection(nodes: []))
