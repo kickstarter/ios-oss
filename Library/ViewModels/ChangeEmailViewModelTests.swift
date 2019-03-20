@@ -77,6 +77,7 @@ final class ChangeEmailViewModelTests: TestCase {
       self.vm.inputs.emailFieldTextDidChange(text: "apple@kickstarter.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
 
+      self.vm.inputs.saveButtonIsEnabled(true)
       self.vm.inputs.saveButtonTapped()
 
       self.scheduler.advance()

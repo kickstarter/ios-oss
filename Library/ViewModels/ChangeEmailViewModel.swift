@@ -76,10 +76,7 @@ ChangeEmailViewModelOutputs {
     self.newEmailProperty <~ clearValues
     self.passwordProperty <~ clearValues
 
-    let userEmailEvent = Signal.merge(
-      self.viewDidLoadProperty.signal,
-      changeEmailEvent.values().ignoreValues()
-      )
+    let userEmailEvent = self.viewDidLoadProperty.signal
       .switchMap { _ in
         AppEnvironment.current
           .apiService
