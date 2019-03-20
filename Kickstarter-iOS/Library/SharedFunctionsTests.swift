@@ -11,7 +11,8 @@ internal final class SharedFunctionsTests: XCTestCase {
     XCTAssertFalse(mockAppEnvironment.logoutWasCalled)
     XCTAssertFalse(mockPushNotificationDialog.resetAllContextsWasCalled)
     XCTAssertFalse(mockViewController.dismissAnimatedWasCalled)
-    logoutAndDismiss(viewController: mockViewController, appEnvironment: mockAppEnvironment, pushNotificationDialog: mockPushNotificationDialog)
+    logoutAndDismiss(viewController: mockViewController, appEnvironment: mockAppEnvironment,
+                     pushNotificationDialog: mockPushNotificationDialog)
     XCTAssertTrue(mockAppEnvironment.logoutWasCalled)
     XCTAssertTrue(mockPushNotificationDialog.resetAllContextsWasCalled)
     XCTAssertTrue(mockViewController.dismissAnimatedWasCalled)
