@@ -19,7 +19,7 @@ internal final class SharedFunctionsTests: XCTestCase {
   }
 }
 
-struct MockAppEnvironment: AppEnvironmentType {
+private struct MockAppEnvironment: AppEnvironmentType {
   static var logoutWasCalled = false
 
   static func logout() {
@@ -27,7 +27,7 @@ struct MockAppEnvironment: AppEnvironmentType {
   }
 }
 
-struct MockPushNotificationDialog: PushNotificationDialogType {
+private struct MockPushNotificationDialog: PushNotificationDialogType {
   static var resetAllContextsWasCalled = false
 
   static func resetAllContexts() {
