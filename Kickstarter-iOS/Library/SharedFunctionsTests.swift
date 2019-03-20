@@ -1,5 +1,6 @@
 import XCTest
 @testable import Kickstarter_Framework
+@testable import Library
 
 internal final class SharedFunctionsTests: XCTestCase {
   func testLogoutAndDismiss() {
@@ -10,11 +11,9 @@ internal final class SharedFunctionsTests: XCTestCase {
     XCTAssertFalse(mockAppEnvironment.logoutWasCalled)
     XCTAssertFalse(mockPushNotificationDialog.resetAllContextsWasCalled)
     XCTAssertFalse(mockViewController.dismissAnimatedWasCalled)
-    mockAppEnvironment.logout()
+    logoutAndDismiss(viewController: mockViewController, appEnvironment: mockAppEnvironment, pushNotificationDialog: mockPushNotificationDialog)
     XCTAssertTrue(mockAppEnvironment.logoutWasCalled)
-    mockPushNotificationDialog.resetAllContexts()
     XCTAssertTrue(mockPushNotificationDialog.resetAllContextsWasCalled)
-    mockViewController.dismiss(animated: true, completion: nil)
     XCTAssertTrue(mockViewController.dismissAnimatedWasCalled)
   }
 }

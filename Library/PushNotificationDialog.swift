@@ -1,6 +1,6 @@
 import Foundation
 
-public struct PushNotificationDialog {
+public struct PushNotificationDialog: PushNotificationDialogType {
 
   public enum Context: String {
     case login
