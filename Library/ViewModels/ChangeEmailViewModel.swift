@@ -63,10 +63,7 @@ ChangeEmailViewModelOutputs {
     self.newEmailProperty <~ clearValues
     self.passwordProperty <~ clearValues
 
-    let userEmailEvent = Signal.merge(
-        self.viewDidLoadProperty.signal,
-        changeEmailEvent.values().ignoreValues()
-      )
+    let userEmailEvent = self.viewDidLoadProperty.signal
       .switchMap { _ in
         AppEnvironment.current
           .apiService
@@ -101,7 +98,7 @@ ChangeEmailViewModelOutputs {
       .map { $0 && $1 }
 
     self.resendVerificationEmailViewIsHidden = Signal.merge(viewDidLoadProperty.signal.mapConst(true),
-                                                            emailVerifiedAndDeliverable)
+                                                            emailVerifiedAndDeliverable).skipRepeats()
 
     self.unverifiedEmailLabelHidden = Signal
       .combineLatest(isEmailVerified, isEmailDeliverable)
