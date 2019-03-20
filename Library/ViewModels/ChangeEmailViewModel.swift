@@ -11,6 +11,7 @@ public protocol ChangeEmailViewModelInputs {
   func passwordFieldTextDidChange(text: String?)
   func resendVerificationEmailButtonTapped()
   func saveButtonTapped()
+  func saveButtonIsEnabled(_ enabled: Bool)
   func textFieldShouldReturn(with returnKeyType: UIReturnKeyType)
   func viewDidLoad()
   func viewDidAppear()
@@ -27,8 +28,8 @@ public protocol ChangeEmailViewModelOutputs {
   var messageLabelViewHidden: Signal<Bool, NoError> { get }
   var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
   var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
-  var passwordText: Signal<String, NoError> { get }
   var passwordFieldBecomeFirstResponder: Signal<Void, NoError> { get }
+  var passwordText: Signal<String, NoError> { get }
   var resendVerificationEmailViewIsHidden: Signal<Bool, NoError> { get }
   var resetFields: Signal<String, NoError> { get }
   var saveButtonIsEnabled: Signal<Bool, NoError> { get }
@@ -46,11 +47,23 @@ public protocol ChangeEmailViewModelType {
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
 ChangeEmailViewModelOutputs {
   public init() {
+    self.dismissKeyboard = Signal.merge(
+      self.textFieldShouldReturnProperty.signal.skipNil()
+        .filter { $0 == .done }
+        .ignoreValues(),
+      self.saveButtonTappedProperty.signal
+    )
+
+    let triggerSaveAction = self.saveButtonEnabledProperty.signal
+      .takeWhen(self.dismissKeyboard)
+      .filter { isTrue($0) }
+      .ignoreValues()
+
     let changeEmailEvent = Signal.combineLatest(
       self.newEmailProperty.signal.skipNil(),
       self.passwordProperty.signal.skipNil()
       )
-      .takeWhen(self.saveButtonTappedProperty.signal)
+      .takeWhen(triggerSaveAction)
       .map(ChangeEmailInput.init(email:currentPassword:))
       .switchMap { input in
         AppEnvironment.current.apiService.changeEmail(input: input)
@@ -113,13 +126,6 @@ ChangeEmailViewModelOutputs {
     self.messageLabelViewHidden = Signal
       .merge(self.unverifiedEmailLabelHidden, self.warningMessageLabelHidden)
       .filter(isFalse)
-
-    self.dismissKeyboard = Signal.merge(
-      self.textFieldShouldReturnProperty.signal.skipNil()
-        .filter { $0 == .done }
-        .ignoreValues(),
-      self.saveButtonTappedProperty.signal.ignoreValues()
-    )
 
     self.saveButtonIsEnabled = Signal.combineLatest(
       self.emailText,
@@ -208,6 +214,11 @@ ChangeEmailViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
+  private let saveButtonEnabledProperty = MutableProperty(false)
+  public func saveButtonIsEnabled(_ enabled: Bool) {
+    self.saveButtonEnabledProperty.value = enabled
+  }
+
   private let saveButtonTappedProperty = MutableProperty(())
   public func saveButtonTapped() {
     self.saveButtonTappedProperty.value = ()
@@ -259,7 +270,7 @@ private func shouldEnableSaveButton(email: String?, newEmail: String?, password:
     email != newEmail,
     password != nil
 
-  else { return false }
+    else { return false  }
 
   return ![newEmail, password]
     .compactMap { $0 }
