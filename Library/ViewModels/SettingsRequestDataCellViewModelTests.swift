@@ -136,7 +136,8 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
       self.vm.inputs.exportDataTapped()
-      self.showRequestDataPrompt.assertValues(["This is working"])
+      self.showRequestDataPrompt.assertValues([
+        Strings.Youll_receive_an_email_at_email_when_your_download_is_ready(email: "ksr@kickstarter.com")])
     }
   }
 

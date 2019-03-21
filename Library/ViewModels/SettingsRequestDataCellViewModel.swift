@@ -47,7 +47,9 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
         .materialize()
     }
 
-     let requestDataAlertText = userEmailEvent.values().map { "You'll receive an email at \($0.me.email) when your download is ready."}
+     let requestDataAlertText = userEmailEvent.values().map {
+      Strings.Youll_receive_an_email_at_email_when_your_download_is_ready(email: $0.me.email)
+    }
 
     let exportEnvelope = initialUser
       .switchMap { _ in

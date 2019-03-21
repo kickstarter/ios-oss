@@ -121,7 +121,8 @@ extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
 }
 
 extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
-  internal func settingsRequestDataCellDidPresentPrompt(_ cell: SettingsPrivacyRequestDataCell, alertMessage: String) {
+  internal func settingsRequestDataCellDidPresentPrompt(_ cell: SettingsPrivacyRequestDataCell,
+                                                        alertMessage: String) {
     let exportDataSheet = UIAlertController(
       title: nil,
       message: alertMessage,
