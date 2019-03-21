@@ -490,4 +490,3 @@ extension NumberFormatterConfig {
     )
   }
 }
-// swiftlint:enable type_name
