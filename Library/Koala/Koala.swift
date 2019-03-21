@@ -1240,6 +1240,7 @@ public final class Koala {
   }
 
   // MARK: - Settings Events
+
   public func trackAppStoreRatingOpen() {
     // deprecated
     self.track(event: "App Store Rating Open", properties: deprecatedProps)
@@ -1270,6 +1271,19 @@ public final class Koala {
     self.track(event: "Viewed Account")
   }
 
+  // MARK: - Create Password Tracking
+
+  public enum CreatePasswordTrackingEvent: String {
+    case passwordCreated = "Created password"
+    case viewed = "Viewed create password"
+  }
+
+  public func trackCreatePassword(event: CreatePasswordTrackingEvent) {
+    self.track(event: event.rawValue)
+  }
+
+  // MARK: - Change Email Tracking
+
   public func trackChangeEmailView() {
     self.track(event: "Viewed Change Email")
   }
@@ -1277,6 +1291,8 @@ public final class Koala {
   public func trackChangeEmail() {
     self.track(event: "Changed Email")
   }
+
+  // MARK: - Change Password Tracking
 
   public func trackChangePasswordView() {
     self.track(event: "Viewed Change Password")

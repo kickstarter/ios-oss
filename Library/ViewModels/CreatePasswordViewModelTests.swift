@@ -316,4 +316,29 @@ final class CreatePasswordViewModelTests: TestCase {
       )
     }
   }
+
+  func testCreatePassword_eventTracking() {
+    let client = MockTrackingClient()
+
+    withEnvironment(apiService: MockService(), koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      XCTAssertEqual(["Viewed create password"], client.events)
+
+      self.vm.inputs.newPasswordTextFieldChanged(text: "password")
+      self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password")
+
+      self.saveButtonIsEnabled.assertValues([true])
+
+      self.vm.inputs.saveButtonTapped()
+
+      self.scheduler.advance()
+
+      self.createPasswordSuccess.assertValueCount(1)
+
+      XCTAssertEqual(["Viewed create password", "Created password"], client.events)
+    }
+  }
 }
