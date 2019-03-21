@@ -694,6 +694,24 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Viewed Account"], client.events)
   }
 
+  func testTrackCreatePassword_viewed() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCreatePassword(event: .viewed)
+
+    XCTAssertEqual([Koala.CreatePasswordTrackingEvent.viewed.rawValue], client.events)
+  }
+
+  func testTrackCreatePassword_passwordCreated() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCreatePassword(event: .passwordCreated)
+
+    XCTAssertEqual([Koala.CreatePasswordTrackingEvent.passwordCreated.rawValue], client.events)
+  }
+
   func testTrackViewedChangeEmail() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
