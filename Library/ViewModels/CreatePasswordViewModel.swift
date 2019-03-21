@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Prelude
 import ReactiveSwift
 import Result
@@ -9,12 +10,16 @@ public protocol CreatePasswordViewModelInputs {
   func newPasswordTextFieldDidReturn()
   func newPasswordConfirmationTextFieldChanged(text: String?)
   func newPasswordConfirmationTextFieldDidReturn()
+  func saveButtonTapped()
   func viewDidAppear()
 }
 
 public protocol CreatePasswordViewModelOutputs {
   var accessibilityFocusValidationLabel: Signal<Void, NoError> { get }
+  var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var cellAtIndexPathDidBecomeFirstResponder: Signal<IndexPath, NoError> { get }
+  var createPasswordSuccess: Signal<Void, NoError> { get }
+  var dismissKeyboard: Signal<Void, NoError> { get }
   var newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
   var newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
   var newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, NoError> { get }
@@ -82,6 +87,34 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
 
     self.saveButtonIsEnabled = formIsValid
 
+    let submitFormEvent = Signal.merge(
+      self.newPasswordConfirmationDidReturnProperty.signal,
+      self.saveButtonTappedProperty.signal
+    )
+
+    let saveAction = formIsValid
+      .takeWhen(submitFormEvent)
+      .filter(isTrue)
+      .ignoreValues()
+
+    let createPasswordEvent = combinedPasswords
+      .takeWhen(saveAction)
+      .map { CreatePasswordInput(password: $0.0, passwordConfirmation: $0.1) }
+      .switchMap { input in
+        AppEnvironment.current.apiService.createPassword(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
+
+    self.createPasswordSuccess = createPasswordEvent.values().ignoreValues()
+
+    self.activityIndicatorShouldShow = Signal.merge(
+      saveAction.signal.mapConst(true),
+      self.createPasswordSuccess.mapConst(false)
+    )
+
+    self.dismissKeyboard = submitFormEvent
+
     self.cellAtIndexPathDidBecomeFirstResponder = Signal.combineLatest(
       self.viewDidAppearProperty.signal,
       self.cellAtIndexPathShouldBecomeFirstResponderProperty.signal.skipNil()
@@ -110,13 +143,21 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
     self.newPasswordConfirmationDidReturnProperty.value = ()
   }
 
+  private var saveButtonTappedProperty = MutableProperty(())
+  public func saveButtonTapped() {
+    self.saveButtonTappedProperty.value = ()
+  }
+
   private var cellAtIndexPathShouldBecomeFirstResponderProperty = MutableProperty<IndexPath?>(nil)
   public func cellAtIndexPathShouldBecomeFirstResponder(_ indexPath: IndexPath?) {
     self.cellAtIndexPathShouldBecomeFirstResponderProperty.value = indexPath
   }
 
   public let accessibilityFocusValidationLabel: Signal<Void, NoError>
+  public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let cellAtIndexPathDidBecomeFirstResponder: Signal<IndexPath, NoError>
+  public let createPasswordSuccess: Signal<Void, NoError>
+  public let dismissKeyboard: Signal<Void, NoError>
   public let newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError>
   public let newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, NoError>
   public let newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, NoError>

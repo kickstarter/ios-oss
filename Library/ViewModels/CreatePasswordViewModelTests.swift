@@ -1,6 +1,8 @@
 import Foundation
 import Result
+import XCTest
 
+@testable import KsApi
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
 
@@ -8,7 +10,10 @@ final class CreatePasswordViewModelTests: TestCase {
   private let vm: CreatePasswordViewModelType = CreatePasswordViewModel()
 
   private let accessibilityFocusValidationLabel = TestObserver<Void, NoError>()
+  private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
   private let cellAtIndexPathDidBecomeFirstResponder = TestObserver<IndexPath, NoError>()
+  private let createPasswordSuccess = TestObserver<Void, NoError>()
+  private let dismissKeyboard = TestObserver<Void, NoError>()
   private let newPasswordTextFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let newPasswordConfirmationTextFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let newPasswordConfirmationTextFieldResignFirstResponder = TestObserver<Void, NoError>()
@@ -20,6 +25,9 @@ final class CreatePasswordViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.accessibilityFocusValidationLabel.observe(accessibilityFocusValidationLabel.observer)
+    self.vm.outputs.activityIndicatorShouldShow.observe(activityIndicatorShouldShow.observer)
+    self.vm.outputs.createPasswordSuccess.observe(createPasswordSuccess.observer)
+    self.vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
     self.vm.outputs.newPasswordTextFieldDidBecomeFirstResponder.observe(
       self.newPasswordTextFieldBecomeFirstResponder.observer
     )
@@ -39,19 +47,45 @@ final class CreatePasswordViewModelTests: TestCase {
   }
 
   func testCreatePassword() {
+    withEnvironment(apiService: MockService()) {
+      self.vm.inputs.viewDidAppear()
+
+      self.newPasswordTextFieldBecomeFirstResponder.assertValueCount(1)
+
+      self.vm.inputs.newPasswordTextFieldChanged(text: "password")
+      self.vm.inputs.newPasswordTextFieldDidReturn()
+      self.newPasswordConfirmationTextFieldBecomeFirstResponder.assertValueCount(1)
+
+      self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password")
+      self.saveButtonIsEnabled.assertValues([true])
+      self.vm.inputs.newPasswordConfirmationTextFieldDidReturn()
+      self.newPasswordConfirmationTextFieldResignFirstResponder.assertValueCount(1)
+
+      self.dismissKeyboard.assertValueCount(1)
+      self.activityIndicatorShouldShow.assertValues([true])
+
+      self.scheduler.advance()
+      self.createPasswordSuccess.assertValueCount(1)
+      self.activityIndicatorShouldShow.assertValues([true, false])
+    }
+  }
+
+  func testDismissKeyboard_WhenSaveButtonDisabled() {
     self.vm.inputs.viewDidAppear()
 
-    self.newPasswordTextFieldBecomeFirstResponder.assertValueCount(1)
+    self.dismissKeyboard.assertValueCount(0)
 
     self.vm.inputs.newPasswordTextFieldChanged(text: "password")
     self.vm.inputs.newPasswordTextFieldDidReturn()
-    self.newPasswordConfirmationTextFieldBecomeFirstResponder.assertValueCount(1)
 
-    self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password")
-    self.saveButtonIsEnabled.assertValues([true])
+    self.dismissKeyboard.assertValueCount(0)
 
+    self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "1233456")
     self.vm.inputs.newPasswordConfirmationTextFieldDidReturn()
-    self.newPasswordConfirmationTextFieldResignFirstResponder.assertValueCount(1)
+
+    self.saveButtonIsEnabled.assertValues([false])
+    self.dismissKeyboard.assertValueCount(1)
+    self.activityIndicatorShouldShow.assertValueCount(0)
   }
 
   func testTextFieldShouldBecomeFirstResponder() {
