@@ -178,7 +178,7 @@ DiscoveryPageViewModelOutputs {
 
     let isRefreshing = isLoading
       .combineLatest(with: self.pulledToRefreshProperty.signal)
-      .map { $0.0 }
+      .map(first)
       .skipRepeats()
 
     let projectsLoadingNoRefresh = Signal.merge(
@@ -195,7 +195,7 @@ DiscoveryPageViewModelOutputs {
 
     self.showEmptyState = Signal.combineLatest(
       paramsChanged,
-      self.projectsAreLoadingAnimated.map { (loading, _) in loading },
+      self.projectsAreLoadingAnimated.map(first),
       paginatedProjects)
       .filter { _, projectsAreLoading, projects in projectsAreLoading == false && projects.isEmpty }
       .map { params, _, _ in
