@@ -83,7 +83,7 @@ public protocol LiveStreamContainerViewModelOutputs {
 public final class LiveStreamContainerViewModel: LiveStreamContainerViewModelType,
 LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
 
-  // swiftlint:disable cyclomatic_complexity
+  // swiftlint:disable:next cyclomatic_complexity
   public init() {
     let configData = Signal.combineLatest(
       self.configData.signal.skipNil(),
@@ -476,8 +476,6 @@ LiveStreamContainerViewModelInputs, LiveStreamContainerViewModelOutputs {
                                                            refTag: refTag)
     }
   }
-  // swiftlint:enable function_body_length
-  // swiftlint:enable cyclomatic_complexity
 
   private typealias ConfigData = (Project, LiveStreamEvent, RefTag, Bool)
   private let configData = MutableProperty<ConfigData?>(nil)

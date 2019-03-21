@@ -432,7 +432,6 @@ UpdateDraftViewModelOutputs {
         AppEnvironment.current.koala.trackFailedRemoveUpdateDraftAttachment(forProject: $0)
     }
   }
-  // swiftlint:enable function_body_length
 
   // INPUTS
   fileprivate let addAttachmentButtonTappedProperty = MutableProperty<[AttachmentSource]>([])

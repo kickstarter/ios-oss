@@ -217,21 +217,21 @@ DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
 private func expandableRows(selectedRow: SelectableRow,
                             categories: [KsApi.Category]) -> [ExpandableRow] {
 
-  let expandableRows = categories.filter { $0.isRoot }
-    .sorted { lhs, _ in lhs.isRoot }
-    .map { rootCategory in
+  let expandableRows = categories.filter { (category: KsApi.Category) in category.isRoot }
+    .sorted { (lhs: KsApi.Category, _) in lhs.isRoot }
+    .map { (rootCategory: KsApi.Category) in
       return ExpandableRow(isExpanded: false,
                            params: .defaults |> DiscoveryParams.lens.category .~ rootCategory,
                            selectableRows: ([rootCategory] + (rootCategory.subcategories?.nodes ?? []))
                             .sorted()
-                            .compactMap { node in
+                            .compactMap { (node: KsApi.Category) in
                               return SelectableRow(isSelected: node == selectedRow.params.category,
                                                    params: .defaults
                                                     |> DiscoveryParams.lens.category .~ node)
         }
       )
     }
-    .sorted { lhs, rhs in
+    .sorted { (lhs: ExpandableRow, rhs: ExpandableRow) in
       guard let lhsCategory = lhs.params.category, let rhsCategory = rhs.params.category else {
         return lhs.params.category == nil
       }

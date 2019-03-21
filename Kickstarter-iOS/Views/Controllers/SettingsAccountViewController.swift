@@ -130,8 +130,6 @@ extension SettingsAccountViewController {
       let vc = SelectCurrencyViewController.instantiate()
       vc.configure(with: currency)
       return vc
-    default:
-      return nil
     }
   }
 }

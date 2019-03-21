@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import Prelude
 import XCTest
 @testable import Library
@@ -86,6 +85,7 @@ final class LoginViewModelTests: TestCase {
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
     XCTAssertEqual(["User Login", "Viewed Login", "Login", "Logged In"], trackingClient.events,
                    "Koala login is tracked")
+    // swiftlint:disable:next force_unwrapping
     XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
 
     self.vm.inputs.environmentLoggedIn()
@@ -130,6 +130,7 @@ final class LoginViewModelTests: TestCase {
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       XCTAssertEqual(["User Login", "Viewed Login", "Errored User Login", "Errored Login"],
                      trackingClient.events)
+      // swiftlint:disable:next force_unwrapping
       XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
       self.showError.assertValues(["Unable to log in."], "Login errored")
       self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
@@ -154,6 +155,7 @@ final class LoginViewModelTests: TestCase {
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       XCTAssertEqual(["User Login", "Viewed Login", "Errored User Login", "Errored Login"],
                      trackingClient.events)
+      // swiftlint:disable:next force_unwrapping
       XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
       self.showError.assertValues([Strings.login_errors_unable_to_log_in()], "Login errored")
       self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
