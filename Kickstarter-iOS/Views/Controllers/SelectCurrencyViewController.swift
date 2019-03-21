@@ -147,9 +147,8 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
   // MARK: - Subviews
 
   private lazy var tableView: UITableView = {
-    UITableView(frame: .zero, style: .plain)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.tableFooterView .~ UIView(frame: .zero)
+    return UITableView(frame: .zero, style: .plain)
+      |> tableViewStyle
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
   }()
@@ -165,4 +164,12 @@ extension SelectCurrencyViewController: UITableViewDelegate {
 
     tableView.deselectRow(at: indexPath, animated: true)
   }
+}
+
+// MARK: - Styles
+
+private let tableViewStyle: TableViewStyle = { (tableView: UITableView) in
+  tableView
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    |> \.tableFooterView .~ UIView(frame: .zero)
 }

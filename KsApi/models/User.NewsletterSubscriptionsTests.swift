@@ -1,5 +1,3 @@
-// swiftlint:disable force_unwrapping
-
 import XCTest
 @testable import KsApi
 
@@ -15,6 +13,7 @@ final class NewsletterSubscriptionsTests: XCTestCase {
 
     let newsletter = User.NewsletterSubscriptions.decodeJSONDictionary(json)
 
+    // swiftlint:disable:next force_unwrapping
     let newsletterDescription = newsletter.value!.encode().description
 
     XCTAssertTrue(newsletterDescription.contains("games_newsletter\": false"))
@@ -38,6 +37,7 @@ final class NewsletterSubscriptionsTests: XCTestCase {
 
     let newsletter = User.NewsletterSubscriptions.decodeJSONDictionary(json)
 
+    // swiftlint:disable:next force_unwrapping
     let newsletterDescription = newsletter.value!.encode().description
 
     XCTAssertTrue(newsletterDescription.contains("games_newsletter\": true"))

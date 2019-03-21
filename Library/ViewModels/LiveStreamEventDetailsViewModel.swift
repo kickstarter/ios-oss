@@ -90,7 +90,6 @@ public protocol LiveStreamEventDetailsViewModelOutputs {
 public final class LiveStreamEventDetailsViewModel: LiveStreamEventDetailsViewModelType,
   LiveStreamEventDetailsViewModelInputs, LiveStreamEventDetailsViewModelOutputs {
 
-  // swiftlint:disable:next function_body_length
   public init () {
     let configData = Signal.combineLatest(
       self.configData.signal.skipNil(),
