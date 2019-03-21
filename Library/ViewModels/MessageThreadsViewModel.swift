@@ -135,7 +135,6 @@ MessageThreadsViewModelOutputs {
 
       }
   }
-  // swiftlint:enable function_body_length
 
   fileprivate let mailboxButtonPressedProperty = MutableProperty(())
   public func mailboxButtonPressed() {

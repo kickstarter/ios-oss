@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 @testable import KsApi
 @testable import Library
 @testable import ReactiveExtensions_TestHelpers
@@ -310,6 +309,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
 
   func testSetNeedsStatusBarAppearanceUpdate() {
     let playlist = (0...4).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    // swiftlint:disable:next force_unwrapping
     let project = playlist.first!
 
     self.vm.inputs.configureWith(project: project, refTag: .category)
@@ -338,6 +338,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
 
   func testNotifyDelegateAfterSwipe() {
     let playlist = (0...4).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    // swiftlint:disable:next force_unwrapping
     let project = playlist.first!
 
     self.vm.inputs.configureWith(project: project, refTag: .category)

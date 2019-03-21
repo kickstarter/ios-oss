@@ -3,7 +3,6 @@ import Prelude
 import UIKit
 import UserNotifications
 
-// swiftlint:disable line_length
 internal final class DebugPushNotificationsViewController: UIViewController {
 
   @IBOutlet fileprivate weak var rootStackView: UIStackView!
@@ -201,6 +200,7 @@ private let surveyPushData: [String: Any] = [
   ]
 ]
 
+// swiftlint:disable line_length
 private let reminderPushData: [String: Any] = [
   "aps": [
     "alert": "Reminder! This Pile of Wood is ending soon.",
@@ -210,6 +210,7 @@ private let reminderPushData: [String: Any] = [
     "id": 820501933,
   ]
 ]
+// swiftlint:enable line_length
 
 private let backingForCreatorPushData: [String: Any] = [
   "aps": [

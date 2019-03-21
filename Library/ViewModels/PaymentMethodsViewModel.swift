@@ -7,6 +7,7 @@ import Result
 public protocol PaymentMethodsViewModelInputs {
   func addNewCardSucceeded(with message: String)
   func addNewCardDismissed()
+  func addNewCardPresented()
   func didDelete(_ creditCard: GraphUserCreditCard.CreditCard, visibleCellCount: Int)
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
@@ -16,6 +17,7 @@ public protocol PaymentMethodsViewModelInputs {
 
 public protocol PaymentMethodsViewModelOutputs {
   var editButtonIsEnabled: Signal<Bool, NoError> { get }
+  var editButtonTitle: Signal<String, NoError> { get }
   var errorLoadingPaymentMethods: Signal<String, NoError> { get }
   var goToAddCardScreen: Signal<Void, NoError> { get }
   var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError> { get }
@@ -60,11 +62,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.showAlert = deletePaymentMethodEventsErrors
       .ignoreValues()
       .map {
-        localizedString(
-          key: "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again",
-          //swiftlint:disable:next line_length
-          defaultValue: "Something went wrong and we were unable to remove your payment method, please try again."
-        )
+        Strings.Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again()
     }
 
     let initialPaymentMethodsValues = paymentMethodsEvent
@@ -106,11 +104,23 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
 
     self.presentBanner = self.addNewCardSucceededProperty.signal.skipNil()
 
-    self.tableViewIsEditing = Signal.merge(
+    let stopEditing = Signal.merge(
       self.editButtonIsEnabled.filter(isFalse),
-      self.editButtonTappedSignal.scan(false) { current, _ in !current },
-      self.didTapAddCardButtonProperty.signal.mapConst(false)
+      self.addNewCardPresentedSignal.mapConst(false)
     )
+
+    self.tableViewIsEditingProperty <~ Signal.merge(
+      stopEditing,
+      self.editButtonTappedSignal
+        .withLatest(from: self.tableViewIsEditingProperty.signal)
+        .map(second)
+        .negate()
+    )
+
+    self.tableViewIsEditing = self.tableViewIsEditingProperty.signal
+
+    self.editButtonTitle = self.tableViewIsEditing
+      .map { $0 ? Strings.Done() : Strings.discovery_favorite_categories_buttons_edit() }
 
     // Koala:
     self.viewWillAppearProperty.signal
@@ -124,6 +134,9 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       .ignoreValues()
       .observeValues { _ in AppEnvironment.current.koala.trackDeletePaymentMethodError() }
   }
+
+  // Stores the table view's editing state as it is affected by multiple signals
+  private let tableViewIsEditingProperty = MutableProperty<Bool>(false)
 
   fileprivate let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) =
     Signal<(GraphUserCreditCard.CreditCard, Int),
@@ -162,7 +175,13 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.addNewCardDismissedProperty.value = ()
   }
 
+  fileprivate let (addNewCardPresentedSignal, addNewCardPresentedObserver) = Signal<(), NoError>.pipe()
+  public func addNewCardPresented() {
+    self.addNewCardPresentedObserver.send(value: ())
+  }
+
   public let editButtonIsEnabled: Signal<Bool, NoError>
+  public let editButtonTitle: Signal<String, NoError>
   public let errorLoadingPaymentMethods: Signal<String, NoError>
   public let goToAddCardScreen: Signal<Void, NoError>
   public let paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError>
