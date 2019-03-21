@@ -17,7 +17,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
   internal let requestDataText = TestObserver<String, NoError>()
   internal let requestDataTextHidden = TestObserver<Bool, NoError>()
   internal let showPreparingDataAndCheckBackLaterText = TestObserver<Bool, NoError>()
-  internal let showRequestDataPrompt = TestObserver<(), NoError>()
+  internal let showRequestDataPrompt = TestObserver<String, NoError>()
   internal let unableToRequestDataError = TestObserver<String, NoError>()
 
   internal override func setUp() {
@@ -136,7 +136,7 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
       self.vm.inputs.exportDataTapped()
-      self.showRequestDataPrompt.assertValueCount(1)
+      self.showRequestDataPrompt.assertValues(["This is working"])
     }
   }
 

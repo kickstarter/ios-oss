@@ -121,10 +121,10 @@ extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
 }
 
 extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
-  internal func settingsRequestDataCellDidPresentPrompt(_ cell: SettingsPrivacyRequestDataCell) {
+  internal func settingsRequestDataCellDidPresentPrompt(_ cell: SettingsPrivacyRequestDataCell, alertMessage: String) {
     let exportDataSheet = UIAlertController(
-      title: Strings.Request_my_personal_data(),
-      message: Strings.It_may_take_up_to_24_hours_to_collect_your_data(),
+      title: nil,
+      message: alertMessage,
       preferredStyle: .actionSheet)
 
     let startTheRequest = UIAlertAction(title: Strings.Start_the_request(),

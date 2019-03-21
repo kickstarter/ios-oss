@@ -21,7 +21,7 @@ public protocol SettingsRequestDataCellViewModelOutputs {
   var requestDataText: Signal<String, NoError> { get }
   var requestDataTextHidden: Signal<Bool, NoError> { get }
   var showPreparingDataAndCheckBackLaterText: Signal<Bool, NoError> { get }
-  var showRequestDataPrompt: Signal<(), NoError> { get }
+  var showRequestDataPrompt: Signal<String, NoError> { get }
   var unableToRequestDataError: Signal<String, NoError> { get }
 }
 
@@ -39,16 +39,26 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
       self.awakeFromNibProperty.signal
     ).map(first)
 
+    let userEmailEvent = self.configureWithUserProperty.signal.skipNil()
+      .switchMap { _ in
+        AppEnvironment.current.apiService.fetchGraphUserEmailFields(
+          query: NonEmptySet(Query.user(changeEmailQueryFields())))
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+    }
+
+     let requestDataAlertText = userEmailEvent.values().map { "You'll receive an email at \($0.me.email) when your download is ready."}
+
     let exportEnvelope = initialUser
       .switchMap { _ in
         AppEnvironment.current.apiService.exportDataState()
           .demoteErrors()
     }
 
-    self.showRequestDataPrompt = exportEnvelope
+    self.showRequestDataPrompt = Signal.combineLatest(exportEnvelope, requestDataAlertText)
+      .filter { $0.0.dataUrl == nil || $0.0.state == .expired || $0.0.expiresAt == nil }
+      .map { _, alertMessage in alertMessage }
       .takeWhen(self.exportDataTappedProperty.signal.ignoreValues())
-      .filter { $0.dataUrl == nil || $0.state == .expired || $0.expiresAt == nil }
-      .ignoreValues()
 
     let requestDataEvent = self.startRequestDataTappedProperty.signal
       .switchMap { _ in
@@ -128,7 +138,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
   public let requestDataText: Signal<String, NoError>
   public let requestDataTextHidden: Signal<Bool, NoError>
   public let showPreparingDataAndCheckBackLaterText: Signal<Bool, NoError>
-  public let showRequestDataPrompt: Signal<(), NoError>
+  public let showRequestDataPrompt: Signal<String, NoError>
   public let unableToRequestDataError: Signal<String, NoError>
 
   public var inputs: SettingsRequestDataCellViewModelInputs { return self }
