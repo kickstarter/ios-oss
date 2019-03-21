@@ -66,7 +66,7 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
-  fileprivate let fetchGraphUserEmailResponse: UserEmailFields?
+  fileprivate let fetchGraphUserEmailFieldsResponse: UserEmailFields?
 
   fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
   fileprivate let fetchGraphCreditCardsError: GraphError?
@@ -220,7 +220,7 @@ internal struct MockService: ServiceType {
                 exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
-                fetchGraphUserEmailResponse: UserEmailFields? = nil,
+                fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
                 fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>? = nil,
                 fetchGraphUserAccountFieldsError: GraphError? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
@@ -329,7 +329,7 @@ internal struct MockService: ServiceType {
       ?? UserEnvelope(me: UserAccountFields.template)
     self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
 
-    self.fetchGraphUserEmailResponse = fetchGraphUserEmailResponse
+    self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
 
     self.fetchCheckoutResponse = fetchCheckoutResponse
     self.fetchCheckoutError = fetchCheckoutError
@@ -682,7 +682,9 @@ internal struct MockService: ServiceType {
 
   internal func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
-      return SignalProducer(value: changeEmailResponse ?? UserEnvelope<UserEmailFields>(me: .template))
+      let response = self.fetchGraphUserEmailFieldsResponse ?? .template
+
+      return SignalProducer(value: UserEnvelope(me: response))
   }
 
   internal func fetchGraphUserAccountFields(query: NonEmptySet<Query>)

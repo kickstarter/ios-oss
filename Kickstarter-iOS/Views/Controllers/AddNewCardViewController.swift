@@ -24,8 +24,13 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   @IBOutlet private weak var stackView: UIStackView!
   @IBOutlet private weak var zipcodeView: SettingsFormFieldView!
 
-  private let supportedCardBrands: [STPCardBrand] = [.visa, .masterCard, .amex, .dinersClub,
-                                                     .discover, .JCB]
+  private let supportedCardBrands: [STPCardBrand] = [.amex,
+                                                     .dinersClub,
+                                                     .discover,
+                                                     .JCB,
+                                                     .masterCard,
+                                                     .unionPay,
+                                                     .visa]
 
   private var saveButtonView: LoadingBarButtonItemView!
 
