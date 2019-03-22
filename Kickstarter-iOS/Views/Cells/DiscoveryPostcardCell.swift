@@ -174,6 +174,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.projectNameAndBlurbLabel
       |> UILabel.lens.numberOfLines .~ 3
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
+      |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.projectStateSubtitleLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
