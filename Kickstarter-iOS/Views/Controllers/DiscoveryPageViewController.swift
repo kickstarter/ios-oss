@@ -104,9 +104,13 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] (isLoading, animated) in
         if isLoading {
-          self?.performClosureAnimated(true, closure: { self?.refreshControl?.beginRefreshing() })
+          self?.updateRefreshControl(true, {
+            self?.refreshControl?.beginRefreshing()
+          })
         } else {
-          self?.performClosureAnimated(animated, closure: { self?.refreshControl?.endRefreshing() })
+          self?.updateRefreshControl(animated, {
+            self?.refreshControl?.endRefreshing()
+          })
         }
     }
 
@@ -284,7 +288,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.inputs.pulledToRefresh()
   }
 
-  private func performClosureAnimated(_ animated: Bool, closure: () -> Void) {
+  private func updateRefreshControl(_ animated: Bool, _ closure: () -> Void) {
     if animated {
       closure()
     } else {
