@@ -108,8 +108,8 @@ final class CreatePasswordTableViewController: UITableViewController {
 
     self.viewModel.outputs.createPasswordFailure
       .observeForControllerAction()
-      .observeValues { errorMessage in
-        print(errorMessage)
+      .observeValues { [weak self] errorMessage in
+        self?.delegate?.showError(with: errorMessage)
     }
 
     self.viewModel.outputs.createPasswordSuccess

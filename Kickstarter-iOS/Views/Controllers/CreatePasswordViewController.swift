@@ -6,6 +6,7 @@ protocol CreatePasswordViewControllerDelegate: class {
   func saveButtonSetIsEnabled(_ isEnabled: Bool)
   func saveButtonStartAnimating()
   func saveButtonStopAnimating()
+  func showError(with message: String)
 }
 
 final class CreatePasswordViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -67,5 +68,9 @@ extension CreatePasswordViewController: CreatePasswordViewControllerDelegate {
 
   func saveButtonStopAnimating() {
     self.saveButtonView.stopAnimating()
+  }
+
+  func showError(with message: String) {
+    self.messageBannerViewController?.showBanner(with: .error, message: message)
   }
 }
