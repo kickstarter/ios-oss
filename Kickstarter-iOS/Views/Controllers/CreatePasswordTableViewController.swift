@@ -36,11 +36,20 @@ extension CreatePasswordRow {
   @objc optional func newPasswordConfirmationTextFieldDidReturn(_ sender: UITextField)
 }
 
+// swiftlint:disable line_length
+protocol CreatePasswordTableViewControllerDelegate: class {
+  func createPasswordTableViewController(_ viewController: CreatePasswordTableViewController, setSaveButtonIsEnabled isEnabled: Bool)
+  func createPasswordTableViewControllerStartAnimatingSaveButton(_ viewController: CreatePasswordTableViewController)
+  func createPasswordTableViewControllerStopAnimatingSaveButton(_ viewController: CreatePasswordTableViewController)
+  func createPasswordTableViewController(_ viewController: CreatePasswordTableViewController, showErrorMessage message: String)
+}
+// swiftlint:enable line_length
+
 final class CreatePasswordTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let viewModel: CreatePasswordViewModelType = CreatePasswordViewModel()
-  weak var delegate: CreatePasswordViewControllerDelegate?
+  weak var delegate: CreatePasswordTableViewControllerDelegate?
   private weak var newPasswordTextField: UITextField?
   private weak var newPasswordConfirmationTextField: UITextField?
   private weak var groupedFooterView: SettingsGroupedFooterView?
@@ -83,10 +92,11 @@ final class CreatePasswordTableViewController: UITableViewController {
     self.viewModel.outputs.activityIndicatorShouldShow
       .observeForUI()
       .observeValues { [weak self] shouldShow in
+        guard let self = self else { return }
         if shouldShow {
-          self?.delegate?.saveButtonStartAnimating()
+          self.delegate?.createPasswordTableViewControllerStartAnimatingSaveButton(self)
         } else {
-          self?.delegate?.saveButtonStopAnimating()
+          self.delegate?.createPasswordTableViewControllerStopAnimatingSaveButton(self)
         }
     }
 
@@ -106,7 +116,8 @@ final class CreatePasswordTableViewController: UITableViewController {
     self.viewModel.outputs.createPasswordFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
-        self?.delegate?.showError(with: errorMessage)
+        guard let self = self else { return }
+        self.delegate?.createPasswordTableViewController(self, showErrorMessage: errorMessage)
     }
 
     self.viewModel.outputs.createPasswordSuccess
@@ -143,7 +154,8 @@ final class CreatePasswordTableViewController: UITableViewController {
     self.viewModel.outputs.saveButtonIsEnabled
       .observeForUI()
       .observeValues { [weak self] isEnabled in
-        self?.delegate?.saveButtonSetIsEnabled(isEnabled)
+        guard let self = self else { return }
+        self.delegate?.createPasswordTableViewController(self, setSaveButtonIsEnabled: isEnabled)
     }
 
     self.viewModel.outputs.validationLabelIsHidden

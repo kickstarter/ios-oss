@@ -2,13 +2,6 @@ import Library
 import Prelude
 import UIKit
 
-protocol CreatePasswordViewControllerDelegate: class {
-  func saveButtonSetIsEnabled(_ isEnabled: Bool)
-  func saveButtonStartAnimating()
-  func saveButtonStopAnimating()
-  func showError(with message: String)
-}
-
 final class CreatePasswordViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
@@ -60,20 +53,22 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
   }
 }
 
-extension CreatePasswordViewController: CreatePasswordViewControllerDelegate {
-  func saveButtonSetIsEnabled(_ isEnabled: Bool) {
+// swiftlint:disable line_length
+extension CreatePasswordViewController: CreatePasswordTableViewControllerDelegate {
+  func createPasswordTableViewController(_ viewController: CreatePasswordTableViewController, setSaveButtonIsEnabled isEnabled: Bool) {
     self.saveButtonView.setIsEnabled(isEnabled: isEnabled)
   }
 
-  func saveButtonStartAnimating() {
+  func createPasswordTableViewControllerStartAnimatingSaveButton(_ viewController: CreatePasswordTableViewController) {
     self.saveButtonView.startAnimating()
   }
 
-  func saveButtonStopAnimating() {
+  func createPasswordTableViewControllerStopAnimatingSaveButton(_ viewController: CreatePasswordTableViewController) {
     self.saveButtonView.stopAnimating()
   }
 
-  func showError(with message: String) {
+  func createPasswordTableViewController(_ viewController: CreatePasswordTableViewController, showErrorMessage message: String) {
     self.messageBannerViewController?.showBanner(with: .error, message: message)
   }
 }
+// swiftlint:enable line_length
