@@ -115,6 +115,12 @@ final class CreatePasswordTableViewController: UITableViewController {
         cell.textField.becomeFirstResponder()
     }
 
+    self.viewModel.outputs.createPasswordFailure
+      .observeForControllerAction()
+      .observeValues { errorMessage in
+        print(errorMessage)
+    }
+
     self.viewModel.outputs.createPasswordSuccess
       .observeForControllerAction()
       .observeValues { [weak self] in

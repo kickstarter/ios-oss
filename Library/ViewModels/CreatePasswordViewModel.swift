@@ -18,6 +18,7 @@ public protocol CreatePasswordViewModelOutputs {
   var accessibilityFocusValidationLabel: Signal<Void, NoError> { get }
   var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
   var cellAtIndexPathDidBecomeFirstResponder: Signal<IndexPath, NoError> { get }
+  var createPasswordFailure: Signal<String, NoError> { get }
   var createPasswordSuccess: Signal<Void, NoError> { get }
   var dismissKeyboard: Signal<Void, NoError> { get }
   var newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
@@ -106,10 +107,12 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
           .materialize()
     }
 
+    self.createPasswordFailure = createPasswordEvent.errors().map { $0.localizedDescription }
     self.createPasswordSuccess = createPasswordEvent.values().ignoreValues()
 
     self.activityIndicatorShouldShow = Signal.merge(
       saveAction.signal.mapConst(true),
+      self.createPasswordFailure.mapConst(false),
       self.createPasswordSuccess.mapConst(false)
     )
 
@@ -156,6 +159,7 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
   public let accessibilityFocusValidationLabel: Signal<Void, NoError>
   public let activityIndicatorShouldShow: Signal<Bool, NoError>
   public let cellAtIndexPathDidBecomeFirstResponder: Signal<IndexPath, NoError>
+  public let createPasswordFailure: Signal<String, NoError>
   public let createPasswordSuccess: Signal<Void, NoError>
   public let dismissKeyboard: Signal<Void, NoError>
   public let newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError>

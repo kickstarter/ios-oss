@@ -12,6 +12,7 @@ final class CreatePasswordViewModelTests: TestCase {
   private let accessibilityFocusValidationLabel = TestObserver<Void, NoError>()
   private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
   private let cellAtIndexPathDidBecomeFirstResponder = TestObserver<IndexPath, NoError>()
+  private let createPasswordFailure = TestObserver<String, NoError>()
   private let createPasswordSuccess = TestObserver<Void, NoError>()
   private let dismissKeyboard = TestObserver<Void, NoError>()
   private let newPasswordTextFieldBecomeFirstResponder = TestObserver<Void, NoError>()
@@ -24,10 +25,11 @@ final class CreatePasswordViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.accessibilityFocusValidationLabel.observe(accessibilityFocusValidationLabel.observer)
-    self.vm.outputs.activityIndicatorShouldShow.observe(activityIndicatorShouldShow.observer)
-    self.vm.outputs.createPasswordSuccess.observe(createPasswordSuccess.observer)
-    self.vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
+    self.vm.outputs.accessibilityFocusValidationLabel.observe(self.accessibilityFocusValidationLabel.observer)
+    self.vm.outputs.activityIndicatorShouldShow.observe(self.activityIndicatorShouldShow.observer)
+    self.vm.outputs.createPasswordFailure.observe(self.createPasswordFailure.observer)
+    self.vm.outputs.createPasswordSuccess.observe(self.createPasswordSuccess.observer)
+    self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.newPasswordTextFieldDidBecomeFirstResponder.observe(
       self.newPasswordTextFieldBecomeFirstResponder.observer
     )
@@ -44,6 +46,33 @@ final class CreatePasswordViewModelTests: TestCase {
     )
     self.vm.outputs.validationLabelIsHidden.observe(self.validationLabelIsHidden.observer)
     self.vm.outputs.validationLabelText.observe(self.validationLabelText.observer)
+  }
+
+  func testCreatePasswordFailure() {
+    let graphError = GraphError.decodeError(GraphResponseError(message: "Error creating password"))
+    let service = MockService(createPasswordError: graphError)
+
+    withEnvironment(apiService: service) {
+      self.vm.inputs.viewDidAppear()
+
+      self.newPasswordTextFieldBecomeFirstResponder.assertValueCount(1)
+
+      self.vm.inputs.newPasswordTextFieldChanged(text: "password")
+      self.vm.inputs.newPasswordTextFieldDidReturn()
+      self.newPasswordConfirmationTextFieldBecomeFirstResponder.assertValueCount(1)
+
+      self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password")
+      self.saveButtonIsEnabled.assertValues([true])
+      self.vm.inputs.newPasswordConfirmationTextFieldDidReturn()
+      self.newPasswordConfirmationTextFieldResignFirstResponder.assertValueCount(1)
+
+      self.dismissKeyboard.assertValueCount(1)
+      self.activityIndicatorShouldShow.assertValues([true])
+
+      self.scheduler.advance()
+      self.createPasswordFailure.assertValues(["Error creating password"])
+      self.activityIndicatorShouldShow.assertValues([true, false])
+    }
   }
 
   func testCreatePassword() {
