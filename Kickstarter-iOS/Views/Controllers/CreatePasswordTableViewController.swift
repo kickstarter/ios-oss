@@ -54,9 +54,6 @@ final class CreatePasswordTableViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    _ = self
-      |> \.title %~ { _ in Strings.Create_password() }
-
     self.tableView.registerHeaderFooterClass(SettingsGroupedHeaderView.self)
     self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
     self.tableView.registerCellClass(SettingsTextInputCell.self)

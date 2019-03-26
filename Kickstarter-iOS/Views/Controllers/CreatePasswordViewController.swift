@@ -35,6 +35,9 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    _ = self
+      |> \.title %~ { _ in Strings.Create_password() }
+
     _ = self.navigationItem
       |> \.rightBarButtonItem .~ UIBarButtonItem(customView: self.saveButtonView)
 
