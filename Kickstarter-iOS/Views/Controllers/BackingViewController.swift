@@ -122,6 +122,9 @@ internal final class BackingViewController: UIViewController {
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
 
+    _ = self.backerAvatarImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.contentView
       |> UIView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(5), left: Styles.grid(2),
                                                    bottom: Styles.grid(4), right: Styles.grid(2))
