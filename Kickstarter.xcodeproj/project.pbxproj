@@ -77,11 +77,12 @@
 		3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */; };
 		3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */; };
 		3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */; };
-		3708DD45220A76FE00F8E569 /* CreatePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD44220A76FD00F8E569 /* CreatePasswordViewControllerTests.swift */; };
+		3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */; };
 		373AB222222A058600769FC2 /* CreatePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */; };
 		373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */; };
 		373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25C222A0D8900769FC2 /* PasswordValidation.swift */; };
 		373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */; };
+		37637ED8224AA03D00777AD2 /* CreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */; };
 		37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */; };
 		3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */; };
 		379C00002242DAFD00F6F0C2 /* UIView+LivePulsatingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEC2242DAC300F6F0C2 /* UIView+LivePulsatingAnimation.swift */; };
@@ -93,7 +94,7 @@
 		379CFFFE2242DAF400F6F0C2 /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEE2242DAC300F6F0C2 /* Storyboard.swift */; };
 		379CFFFF2242DAF900F6F0C2 /* UIImageView+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */; };
 		37BB45C92243031200E7392A /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BB45C82243031100E7392A /* UIView+AutoLayout.swift */; };
-		37BFD8802208F24300815C9C /* CreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordViewController.swift */; };
+		37BFD8802208F24300815C9C /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
 		37CBA64D221E10E100E6CAB6 /* HelpTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */; };
 		37D6722F221E61D300B6D415 /* SettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D671F6221E61B600B6D415 /* SettingsFooterView.swift */; };
 		37D67231221E656500B6D415 /* SettingsFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37D67230221E656500B6D415 /* SettingsFooterView.xib */; };
@@ -1877,11 +1878,12 @@
 		3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariables.swift; sourceTree = "<group>"; };
 		3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariablesTests.swift; sourceTree = "<group>"; };
 		3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedFooterView.swift; sourceTree = "<group>"; };
-		3708DD44220A76FD00F8E569 /* CreatePasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewControllerTests.swift; sourceTree = "<group>"; };
+		3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordTableControllerTests.swift; sourceTree = "<group>"; };
 		373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModel.swift; sourceTree = "<group>"; };
 		373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModelTests.swift; sourceTree = "<group>"; };
 		373AB25C222A0D8900769FC2 /* PasswordValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidation.swift; sourceTree = "<group>"; };
 		373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
+		37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewController.swift; sourceTree = "<group>"; };
 		37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedHeaderView.swift; sourceTree = "<group>"; };
 		3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextInputCell.swift; sourceTree = "<group>"; };
 		379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+URL.swift"; sourceTree = "<group>"; };
@@ -1893,7 +1895,7 @@
 		379CFFF02242DAC400F6F0C2 /* Nib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nib.swift; sourceTree = "<group>"; };
 		379CFFF12242DAC400F6F0C2 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		37BB45C82243031100E7392A /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
-		37BFD8472208F22C00815C9C /* CreatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewController.swift; sourceTree = "<group>"; };
+		37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordTableViewController.swift; sourceTree = "<group>"; };
 		37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTypeTests.swift; sourceTree = "<group>"; };
 		37D671F6221E61B600B6D415 /* SettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFooterView.swift; sourceTree = "<group>"; };
 		37D67230221E656500B6D415 /* SettingsFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsFooterView.xib; sourceTree = "<group>"; };
@@ -3463,8 +3465,9 @@
 				A7A0534C1CD19C68005AF5E2 /* CommentDialogViewController.swift */,
 				A7180BA81CCED598001711CA /* CommentsViewController.swift */,
 				A7ED20341E8323E900BFFA01 /* CommentsViewControllerTests.swift */,
-				37BFD8472208F22C00815C9C /* CreatePasswordViewController.swift */,
-				3708DD44220A76FD00F8E569 /* CreatePasswordViewControllerTests.swift */,
+				37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */,
+				3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */,
+				37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */,
 				01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */,
 				A745D0461CA8985B00C12802 /* DashboardViewController.swift */,
 				A7ED202A1E8323E900BFFA01 /* DashboardViewControllerTests.swift */,
@@ -6262,6 +6265,7 @@
 				A71003DA1CDCFA2500B4F4D7 /* MessageThreadsViewController.swift in Sources */,
 				D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */,
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
+				37637ED8224AA03D00777AD2 /* CreatePasswordViewController.swift in Sources */,
 				77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */,
 				D63BBD392180BE5D007E01F0 /* PaymentMethodsFooterView.swift in Sources */,
 				A71C7FB21E3009D50051E5E3 /* LiveStreamDiscoveryTitleCell.swift in Sources */,
@@ -6281,7 +6285,7 @@
 				A75A292B1CE0B7EA00D35E5C /* ProjectBannerCell.swift in Sources */,
 				018422BD1D2C484200CA7566 /* DashboardProjectsDrawerCell.swift in Sources */,
 				9D14FF931D133351005F4ABB /* ProjectActivityUpdateCell.swift in Sources */,
-				37BFD8802208F24300815C9C /* CreatePasswordViewController.swift in Sources */,
+				37BFD8802208F24300815C9C /* CreatePasswordTableViewController.swift in Sources */,
 				A747A8B91D45893100AF199A /* ProjectPamphletContentDataSource.swift in Sources */,
 				01A120D31D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift in Sources */,
 				770E441321137E7400396D46 /* SettingsNotificationPickerCell.swift in Sources */,
@@ -6403,7 +6407,7 @@
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
 				D6B6875221923BCF005F5DA7 /* ChangeEmailViewControllerTests.swift in Sources */,
-				3708DD45220A76FE00F8E569 /* CreatePasswordViewControllerTests.swift in Sources */,
+				3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */,
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
 				A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */,
 				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
