@@ -7,7 +7,6 @@ import UIKit
 internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate var emptyStatesController: EmptyStatesViewController?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
-  fileprivate let loadingIndicatorView = UIActivityIndicatorView()
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
   private var currentEnvironmentChangedObserver: Any?
@@ -29,9 +28,13 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
 
-    self.tableView.addSubview(self.loadingIndicatorView)
-
     self.tableView.dataSource = self.dataSource
+
+    let refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self,
+                             action: #selector(pulledToRefresh),
+                             for: .valueChanged)
+    self.refreshControl = refreshControl
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -87,26 +90,29 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.inputs.viewDidDisappear(animated: animated)
   }
 
-  internal override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.loadingIndicatorView.center = self.tableView.center
-  }
-
   internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-
-    _ = self.loadingIndicatorView
-      |> baseActivityIndicatorStyle
   }
 
-    internal override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.loadingIndicatorView.rac.animating = self.viewModel.outputs.projectsAreLoading
+    self.viewModel.outputs.projectsAreLoadingAnimated
+      .observeForUI()
+      .observeValues { [weak self] (isLoading, animated) in
+        if isLoading {
+          UIView.perform(animated: true, {
+            self?.refreshControl?.beginRefreshing()
+          })
+        } else {
+          UIView.perform(animated: animated, {
+            self?.refreshControl?.endRefreshing()
+          })
+        }
+    }
 
     self.viewModel.outputs.activitiesForSample
       .observeForUI()
@@ -131,7 +137,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goTo(project: $0, initialPlaylist: $1, refTag: $2)
-      }
+    }
 
     self.viewModel.outputs.goToProjectUpdate
       .observeForControllerAction()
@@ -143,7 +149,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.dataSource.load(projects: projects, params: params)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
-      }
+    }
 
     self.viewModel.outputs.showOnboarding
       .observeForUI()
@@ -266,7 +272,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.view.bringSubviewToFront(emptyVC.view)
     UIView.animate(withDuration: 0.3,
                    animations: {
-      self.emptyStatesController?.view.alpha = 1.0
+                    self.emptyStatesController?.view.alpha = 1.0
     }, completion: nil)
     if let discovery = self.parent?.parent as? DiscoveryViewController {
       discovery.setSortsEnabled(false)
@@ -277,10 +283,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
     guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
     navigator.updatePlaylist(playlist)
   }
+
+  @objc private func pulledToRefresh() {
+    self.viewModel.inputs.pulledToRefresh()
+  }
 }
 
 extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, ActivitySampleFollowCellDelegate,
-  ActivitySampleProjectCellDelegate {
+ActivitySampleProjectCellDelegate {
   internal func goToActivity() {
     guard let root = self.tabBarController as? RootTabBarViewController else { return }
     root.switchToActivities()
@@ -342,10 +352,20 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
 
     self.present(nav, animated: true, completion: nil)
   }
- }
+}
 
 extension DiscoveryPageViewController: ProjectNavigatorDelegate {
   func transitionedToProject(at index: Int) {
     self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
+  }
+}
+
+private extension UIView {
+  static func perform(animated: Bool, _ closure: () -> Void) {
+    if animated {
+      closure()
+    } else {
+      UIView.performWithoutAnimation { closure() }
+    }
   }
 }

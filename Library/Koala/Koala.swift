@@ -538,6 +538,13 @@ public final class Koala {
       ])
   }
 
+  /**
+   Call when the user drags the top of the project list downward to refresh projects.
+   */
+  public func trackDiscoveryPullToRefresh() {
+    self.track(event: "Triggered Refresh")
+  }
+
   // MARK: - Checkout Events
   public func trackCheckoutCancel(project: Project,
                                   reward: Reward,

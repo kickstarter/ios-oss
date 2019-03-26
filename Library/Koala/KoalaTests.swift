@@ -739,4 +739,12 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Selected Chosen Currency"], client.events)
     XCTAssertEqual(Currency.CAD.descriptionText, client.properties.last?["currency"] as? String)
   }
+
+  func testTrackDiscoveryPullToRefresh() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackDiscoveryPullToRefresh()
+    XCTAssertEqual(["Triggered Refresh"], client.events)
+  }
 }
