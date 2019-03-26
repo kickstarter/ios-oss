@@ -104,11 +104,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] (isLoading, animated) in
         if isLoading {
-          self?.updateRefreshControl(true, {
+          UIView.perform(animated: true, {
             self?.refreshControl?.beginRefreshing()
           })
         } else {
-          self?.updateRefreshControl(animated, {
+          UIView.perform(animated: animated, {
             self?.refreshControl?.endRefreshing()
           })
         }
@@ -287,14 +287,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
   @objc private func pulledToRefresh() {
     self.viewModel.inputs.pulledToRefresh()
   }
-
-  private func updateRefreshControl(_ animated: Bool, _ closure: () -> Void) {
-    if animated {
-      closure()
-    } else {
-      UIView.performWithoutAnimation { closure() }
-    }
-  }
 }
 
 extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, ActivitySampleFollowCellDelegate,
@@ -365,5 +357,15 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
 extension DiscoveryPageViewController: ProjectNavigatorDelegate {
   func transitionedToProject(at index: Int) {
     self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
+  }
+}
+
+private extension UIView {
+  static func perform(animated: Bool, _ closure: () -> Void) {
+    if animated {
+      closure()
+    } else {
+      UIView.performWithoutAnimation { closure() }
+    }
   }
 }
