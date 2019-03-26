@@ -1,13 +1,29 @@
+import Library
+import Prelude
 import UIKit
+
+protocol CreatePasswordViewControllerDelegate: class {
+  func saveButtonSetIsEnabled(_ isEnabled: Bool)
+  func saveButtonStartAnimating()
+  func saveButtonStopAnimating()
+}
 
 final class CreatePasswordViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
   private lazy var createPasswordTableViewController: CreatePasswordTableViewController = {
-    CreatePasswordTableViewController.instantiate()
+    let tableViewController = CreatePasswordTableViewController.instantiate()
+    tableViewController.delegate = self
+    return tableViewController
   }()
 
   internal var messageBannerViewController: MessageBannerViewController?
+
+  private lazy var saveButtonView: LoadingBarButtonItemView = {
+    let buttonView = LoadingBarButtonItemView.instantiate()
+    buttonView.setTitle(title: Strings.Save())
+    return buttonView
+  }()
 
   // MARK: - Lifecycle
 
@@ -17,6 +33,9 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    _ = self.navigationItem
+      |> \.rightBarButtonItem .~ UIBarButtonItem(customView: self.saveButtonView)
 
     if let childView = self.createPasswordTableViewController.tableView {
       childView.translatesAutoresizingMaskIntoConstraints = false
@@ -29,5 +48,24 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
     }
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+
+    self.saveButtonView.addTarget(
+      self.createPasswordTableViewController,
+      action: #selector(createPasswordTableViewController.saveButtonTapped(_:))
+    )
+  }
+}
+
+extension CreatePasswordViewController: CreatePasswordViewControllerDelegate {
+  func saveButtonSetIsEnabled(_ isEnabled: Bool) {
+    self.saveButtonView.setIsEnabled(isEnabled: isEnabled)
+  }
+
+  func saveButtonStartAnimating() {
+    self.saveButtonView.startAnimating()
+  }
+
+  func saveButtonStopAnimating() {
+    self.saveButtonView.stopAnimating()
   }
 }

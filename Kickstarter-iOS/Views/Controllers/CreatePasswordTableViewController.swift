@@ -40,14 +40,10 @@ final class CreatePasswordTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let viewModel: CreatePasswordViewModelType = CreatePasswordViewModel()
+  weak var delegate: CreatePasswordViewControllerDelegate?
   private weak var newPasswordTextField: UITextField?
   private weak var newPasswordConfirmationTextField: UITextField?
   private weak var groupedFooterView: SettingsGroupedFooterView?
-  private lazy var saveButtonView: LoadingBarButtonItemView = {
-    let buttonView = LoadingBarButtonItemView.instantiate()
-    buttonView.setTitle(title: Strings.Save())
-    return buttonView
-  }()
 
   // MARK: - Lifecycle
 
@@ -58,13 +54,8 @@ final class CreatePasswordTableViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped(_:)))
-
     _ = self
       |> \.title %~ { _ in Strings.Create_password() }
-
-    _ = self.navigationItem
-      |> \.rightBarButtonItem .~ UIBarButtonItem(customView: self.saveButtonView)
 
     self.tableView.registerHeaderFooterClass(SettingsGroupedHeaderView.self)
     self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
@@ -96,9 +87,9 @@ final class CreatePasswordTableViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] shouldShow in
         if shouldShow {
-          self?.saveButtonView.startAnimating()
+          self?.delegate?.saveButtonStartAnimating()
         } else {
-          self?.saveButtonView.stopAnimating()
+          self?.delegate?.saveButtonStopAnimating()
         }
     }
 
@@ -155,7 +146,7 @@ final class CreatePasswordTableViewController: UITableViewController {
     self.viewModel.outputs.saveButtonIsEnabled
       .observeForUI()
       .observeValues { [weak self] isEnabled in
-        self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
+        self?.delegate?.saveButtonSetIsEnabled(isEnabled)
     }
 
     self.viewModel.outputs.validationLabelIsHidden
@@ -179,7 +170,7 @@ final class CreatePasswordTableViewController: UITableViewController {
 
   // MARK: - Actions
 
-  @objc private func saveButtonTapped(_ sender: Any) {
+  @objc func saveButtonTapped(_ sender: Any) {
     self.viewModel.inputs.saveButtonTapped()
   }
 
