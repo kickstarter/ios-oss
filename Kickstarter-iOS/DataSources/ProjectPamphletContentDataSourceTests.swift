@@ -154,4 +154,25 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: availableSection))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: unavailableSection))
   }
+
+  func testRewardsSection_nativeCheckoutFeature_hidesWhenTurnedOn() {
+    let config = .template
+      |> Config.lens.features .~ [Features.checkout.rawValue: true]
+
+    withEnvironment(config: config) {
+      let availableSection = ProjectPamphletContentDataSource.Section.availableRewards.rawValue
+      let unavailableSection = ProjectPamphletContentDataSource.Section.unavailableRewards.rawValue
+
+      let availableReward = Reward.template
+        |> Reward.lens.remaining .~ 1
+      let unavailableReward = Reward.template |> \.remaining .~ 0
+      let project = Project.template
+        |> Project.lens.rewards .~ [reward, unavailableReward]
+
+      dataSource.load(project: project, liveStreamEvents: [])
+
+      XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: availableSection))
+      XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: unavailableSection))
+    }
+  }
 }

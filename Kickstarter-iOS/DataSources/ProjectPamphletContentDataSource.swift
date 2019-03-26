@@ -28,7 +28,9 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    self.setRewardTitleArea(project: project)
+    if AppEnvironment.current.config?.features[Features.checkout.rawValue] != .some(true) {
+      self.setRewardTitleArea(project: project)
+    }
   }
 
   internal func load(project: Project, liveStreamEvents: [LiveStreamEvent], visible: Bool = false) {
@@ -49,25 +51,9 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    self.setRewardTitleArea(project: project)
-
-    let rewardData = project.rewards
-      .filter { isMainReward(reward: $0, project: project) }
-      .sorted()
-      .map { (project, Either<Reward, Backing>.left($0)) }
-
-    if !rewardData.isEmpty {
-      if visible {
-      self.set(values: [project],
-               cellClass: RewardsTitleCell.self,
-               inSection: Section.rewardsTitle.rawValue)
-      }
-      self.set(values: availableRewards(for: project),
-               cellClass: RewardCell.self,
-               inSection: Section.availableRewards.rawValue)
-      self.set(values: unavailableRewards(for: project),
-               cellClass: RewardCell.self,
-               inSection: Section.unavailableRewards.rawValue)
+    if AppEnvironment.current.config?.features[Features.checkout.rawValue] != .some(true) {
+      self.setRewardTitleArea(project: project)
+      self.setRewards(project: project, true)
     }
   }
 
@@ -98,6 +84,28 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       self.set(values: [(project, .right(backing))],
                cellClass: RewardCell.self,
                inSection: Section.calloutReward.rawValue)
+    }
+  }
+
+  private func setRewards(project: Project, _ visible: Bool) {
+    let rewardData = project.rewards
+      .filter { isMainReward(reward: $0, project: project) }
+      .sorted()
+      .map { (project, Either<Reward, Backing>.left($0)) }
+
+    if !rewardData.isEmpty {
+      if visible {
+        self.set(values: [project],
+                 cellClass: RewardsTitleCell.self,
+                 inSection: Section.rewardsTitle.rawValue)
+      }
+
+      self.set(values: availableRewards(for: project),
+               cellClass: RewardCell.self,
+               inSection: Section.availableRewards.rawValue)
+      self.set(values: unavailableRewards(for: project),
+               cellClass: RewardCell.self,
+               inSection: Section.unavailableRewards.rawValue)
     }
   }
 
