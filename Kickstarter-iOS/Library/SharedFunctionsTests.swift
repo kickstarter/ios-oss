@@ -35,7 +35,7 @@ private struct MockPushNotificationDialog: PushNotificationDialogType {
   }
 }
 
-class MockViewController: UIViewController {
+private class MockViewController: UIViewController {
   var dismissAnimatedWasCalled = false
 
   override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
