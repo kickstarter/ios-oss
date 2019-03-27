@@ -7,16 +7,16 @@ import SafariServices
 import Stripe
 import UIKit
 
-internal final class CheckoutViewController: DeprecatedWebViewController {
+internal final class DeprecatedCheckoutViewController: DeprecatedWebViewController {
   fileprivate weak var loginToutViewController: UIViewController?
   fileprivate let viewModel: CheckoutViewModelType = CheckoutViewModel()
   private var sessionStartedObserver: Any?
 
   internal static func configuredWith(initialRequest: URLRequest,
                                       project: Project,
-                                      reward: Reward) -> CheckoutViewController {
+                                      reward: Reward) -> DeprecatedCheckoutViewController {
 
-      let vc = Storyboard.Checkout.instantiate(CheckoutViewController.self)
+      let vc = Storyboard.Checkout.instantiate(DeprecatedCheckoutViewController.self)
       vc.viewModel.inputs.configureWith(
         initialRequest: initialRequest,
         project: project,
@@ -175,7 +175,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
   }
 }
 
-extension CheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
+extension DeprecatedCheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
 
   internal func paymentAuthorizationViewControllerWillAuthorizePayment(
     _ controller: PKPaymentAuthorizationViewController) {

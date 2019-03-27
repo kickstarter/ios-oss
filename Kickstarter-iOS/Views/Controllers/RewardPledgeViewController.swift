@@ -545,9 +545,9 @@ internal final class RewardPledgeViewController: UIViewController {
                                 project: Project,
                                 reward: Reward) {
 
-    let vc = CheckoutViewController.configuredWith(initialRequest: initialRequest,
-                                                   project: project,
-                                                   reward: reward)
+    let vc = DeprecatedCheckoutViewController.configuredWith(initialRequest: initialRequest,
+                                                             project: project,
+                                                             reward: reward)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
