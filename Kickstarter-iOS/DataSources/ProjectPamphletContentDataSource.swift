@@ -53,7 +53,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     if AppEnvironment.current.config?.features[Features.checkout.rawValue] != .some(true) {
       self.setRewardTitleArea(project: project)
-      self.setRewards(project: project, true)
+      self.setRewards(project: project, visible)
     }
   }
 
