@@ -80,6 +80,12 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
     _ = self.metadataIconImageView
       |> UIImageView.lens.tintColor .~ .white
 
+    _ = self.percentFundedLabel
+      |> UILabel.lens.backgroundColor .~ .white
+
+    _ = self.projectNameLabel
+      |> UILabel.lens.backgroundColor .~ .white
+
     _ = self.progressStaticView
       |> UIView.lens.backgroundColor .~ .ksr_soft_black
       |> UIView.lens.alpha .~ 0.15

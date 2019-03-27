@@ -31,6 +31,7 @@ public let showHidePasswordButtonStyle = UIButton.lens.title(for: .normal) .~ ""
 public let fbDisclaimerTextStyle = UILabel.lens.font %~~ { _, label in
     label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote(size: 11.0)
   }
+  <> UILabel.lens.backgroundColor .~ .white
   <> UILabel.lens.lineBreakMode .~ .byWordWrapping
   <> UILabel.lens.numberOfLines .~ 0
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
