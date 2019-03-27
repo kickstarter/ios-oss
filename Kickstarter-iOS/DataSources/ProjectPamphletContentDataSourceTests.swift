@@ -160,19 +160,39 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       |> Config.lens.features .~ [Features.checkout.rawValue: true]
 
     withEnvironment(config: config) {
+      let availableReward = Reward.template
+        |> Reward.lens.remaining .~ 1
+      let unavailableReward = Reward.template
+        |> Reward.lens.remaining .~ 0
+      let project = Project.template
+        |> Project.lens.rewards .~ [availableReward, unavailableReward]
+
+      dataSource.load(project: project, liveStreamEvents: [])
+
+      XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    }
+  }
+
+  func testRewardsSection_nativeCheckoutFeature_showsWithTurnedOff() {
+    let config = .template
+      |> Config.lens.features .~ [Features.checkout.rawValue: false]
+
+    withEnvironment(config: config) {
       let availableSection = ProjectPamphletContentDataSource.Section.availableRewards.rawValue
       let unavailableSection = ProjectPamphletContentDataSource.Section.unavailableRewards.rawValue
 
       let availableReward = Reward.template
         |> Reward.lens.remaining .~ 1
-      let unavailableReward = Reward.template |> \.remaining .~ 0
+      let unavailableReward = Reward.template
+        |> Reward.lens.remaining .~ 0
       let project = Project.template
-        |> Project.lens.rewards .~ [reward, unavailableReward]
+        |> Project.lens.rewards .~ [availableReward, unavailableReward]
 
       dataSource.load(project: project, liveStreamEvents: [])
 
-      XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: availableSection))
-      XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: unavailableSection))
+      XCTAssertEqual(7, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: availableSection))
+      XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: unavailableSection))
     }
   }
 }
