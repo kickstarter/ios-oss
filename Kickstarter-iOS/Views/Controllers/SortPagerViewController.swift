@@ -140,6 +140,7 @@ internal final class SortPagerViewController: UIViewController {
     _ = self.sortsStackView
       |> UIStackView.lens.arrangedSubviews .~ sorts.enumerated().map { idx, _ in
           UIButton()
+            |> UIButton.lens.backgroundColor .~ .white
             |> UIButton.lens.tag .~ idx
             |> UIButton.lens.targets .~ [
               (self, #selector(sortButtonTapped(_:)), .touchUpInside)

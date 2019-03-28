@@ -2,7 +2,8 @@ import KsApi
 import UIKit
 
 public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
-  case emailPassword
+  case createPassword
+  case changeEmailPassword
   case privacy
   case payment
 
@@ -12,7 +13,9 @@ public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
 
   public var cellRowsForSection: [SettingsAccountCellType] {
     switch self {
-    case .emailPassword:
+    case .createPassword:
+      return [.createPassword]
+    case .changeEmailPassword:
       return [.changePassword]
     case .privacy:
       return [.privacy]
@@ -23,6 +26,7 @@ public enum SettingsAccountSectionType: Int, CaseIterable, Equatable {
 }
 
 public enum SettingsAccountCellType: SettingsCellTypeProtocol, Equatable {
+  case createPassword
   case changeEmail
   case changePassword
   case privacy
@@ -43,6 +47,8 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, Equatable {
 
   public var title: String {
     switch self {
+    case .createPassword:
+      return Strings.Create_password()
     case .changeEmail:
       return Strings.Change_email()
     case .changePassword:
