@@ -549,16 +549,13 @@ internal final class RewardPledgeViewController: UIViewController {
       .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
   }
 
-  fileprivate func goToCheckout(
-    initialRequest: URLRequest,
-    project: Project,
-    reward: Reward
-  ) {
-    let vc = CheckoutViewController.configuredWith(
-      initialRequest: initialRequest,
-      project: project,
-      reward: reward
-    )
+  fileprivate func goToCheckout(initialRequest: URLRequest,
+                                project: Project,
+                                reward: Reward) {
+
+    let vc = DeprecatedCheckoutViewController.configuredWith(initialRequest: initialRequest,
+                                                             project: project,
+                                                             reward: reward)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
