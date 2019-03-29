@@ -7,24 +7,23 @@ import SafariServices
 import Stripe
 import UIKit
 
-internal final class CheckoutViewController: DeprecatedWebViewController {
+internal final class DeprecatedCheckoutViewController: DeprecatedWebViewController {
   fileprivate weak var loginToutViewController: UIViewController?
-  fileprivate let viewModel: CheckoutViewModelType = CheckoutViewModel()
+  fileprivate let viewModel: DeprecatedCheckoutViewModelType = DeprecatedCheckoutViewModel()
   private var sessionStartedObserver: Any?
 
-  internal static func configuredWith(
-    initialRequest: URLRequest,
-    project: Project,
-    reward: Reward
-  ) -> CheckoutViewController {
-    let vc = Storyboard.Checkout.instantiate(CheckoutViewController.self)
-    vc.viewModel.inputs.configureWith(
-      initialRequest: initialRequest,
-      project: project,
-      reward: reward,
-      applePayCapable: PKPaymentAuthorizationViewController.applePayCapable(for: project)
-    )
-    return vc
+  internal static func configuredWith(initialRequest: URLRequest,
+                                      project: Project,
+                                      reward: Reward) -> DeprecatedCheckoutViewController {
+
+      let vc = Storyboard.Checkout.instantiate(DeprecatedCheckoutViewController.self)
+      vc.viewModel.inputs.configureWith(
+        initialRequest: initialRequest,
+        project: project,
+        reward: reward,
+        applePayCapable: PKPaymentAuthorizationViewController.applePayCapable(for: project)
+      )
+      return vc
   }
 
   internal override func viewDidLoad() {
@@ -174,7 +173,8 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
   }
 }
 
-extension CheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
+extension DeprecatedCheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
+
   internal func paymentAuthorizationViewControllerWillAuthorizePayment(
     _: PKPaymentAuthorizationViewController
   ) {

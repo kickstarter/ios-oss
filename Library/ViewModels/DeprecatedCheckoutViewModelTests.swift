@@ -9,8 +9,8 @@ import XCTest
 
 private let questionMark = CharacterSet(charactersIn: "?")
 
-final class CheckoutViewModelTests: TestCase {
-  fileprivate let vm: CheckoutViewModelType = CheckoutViewModel()
+final class DeprecatedCheckoutViewModelTests: TestCase {
+  fileprivate let vm: DeprecatedCheckoutViewModelType = DeprecatedCheckoutViewModel()
 
   fileprivate let closeLoginTout = TestObserver<(), Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()

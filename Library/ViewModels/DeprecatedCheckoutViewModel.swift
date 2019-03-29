@@ -6,7 +6,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import Runes
 
-public protocol CheckoutViewModelInputs {
+public protocol DeprecatedCheckoutViewModelInputs {
   /// Call when the back button is tapped.
   func cancelButtonTapped()
 
@@ -43,7 +43,7 @@ public protocol CheckoutViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol CheckoutViewModelOutputs {
+public protocol DeprecatedCheckoutViewModelOutputs {
   /// Emits when the login tout should be closed.
   var closeLoginTout: Signal<Void, Never> { get }
 
@@ -84,12 +84,14 @@ public protocol CheckoutViewModelOutputs {
   var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
 
-public protocol CheckoutViewModelType: CheckoutViewModelInputs, CheckoutViewModelOutputs {
-  var inputs: CheckoutViewModelInputs { get }
-  var outputs: CheckoutViewModelOutputs { get }
+public protocol DeprecatedCheckoutViewModelType:
+DeprecatedCheckoutViewModelInputs, DeprecatedCheckoutViewModelOutputs {
+  var inputs: DeprecatedCheckoutViewModelInputs { get }
+  var outputs: DeprecatedCheckoutViewModelOutputs { get }
 }
 
-public final class CheckoutViewModel: CheckoutViewModelType {
+public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType {
+
   fileprivate let checkoutRacingViewModel: CheckoutRacingViewModelType = CheckoutRacingViewModel()
 
   public init() {
@@ -406,8 +408,8 @@ public final class CheckoutViewModel: CheckoutViewModelType {
 
   public let webViewLoadRequest: Signal<URLRequest, Never>
 
-  public var inputs: CheckoutViewModelInputs { return self }
-  public var outputs: CheckoutViewModelOutputs { return self }
+  public var inputs: DeprecatedCheckoutViewModelInputs { return self }
+  public var outputs: DeprecatedCheckoutViewModelOutputs { return self }
 }
 
 private func isLoadableByWebView(request: URLRequest, navigation: Navigation?) -> Bool {
