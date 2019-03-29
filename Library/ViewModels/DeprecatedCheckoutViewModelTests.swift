@@ -11,8 +11,8 @@ import Prelude
 
 private let questionMark = CharacterSet(charactersIn: "?")
 
-final class CheckoutViewModelTests: TestCase {
-  fileprivate let vm: CheckoutViewModelType = CheckoutViewModel()
+final class DeprecatedCheckoutViewModelTests: TestCase {
+  fileprivate let vm: DeprecatedCheckoutViewModelType = DeprecatedCheckoutViewModel()
 
   fileprivate let closeLoginTout = TestObserver<(), NoError>()
   fileprivate let dismissViewController = TestObserver<(), NoError>()
