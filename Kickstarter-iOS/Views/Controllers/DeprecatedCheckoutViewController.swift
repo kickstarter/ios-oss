@@ -9,7 +9,7 @@ import UIKit
 
 internal final class DeprecatedCheckoutViewController: DeprecatedWebViewController {
   fileprivate weak var loginToutViewController: UIViewController?
-  fileprivate let viewModel: CheckoutViewModelType = CheckoutViewModel()
+  fileprivate let viewModel: DeprecatedCheckoutViewModelType = DeprecatedCheckoutViewModel()
   private var sessionStartedObserver: Any?
 
   internal static func configuredWith(initialRequest: URLRequest,
