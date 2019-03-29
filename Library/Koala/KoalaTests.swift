@@ -694,6 +694,24 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Viewed Account"], client.events)
   }
 
+  func testTrackCreatePassword_viewed() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCreatePassword(event: .viewed)
+
+    XCTAssertEqual([Koala.CreatePasswordTrackingEvent.viewed.rawValue], client.events)
+  }
+
+  func testTrackCreatePassword_passwordCreated() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCreatePassword(event: .passwordCreated)
+
+    XCTAssertEqual([Koala.CreatePasswordTrackingEvent.passwordCreated.rawValue], client.events)
+  }
+
   func testTrackViewedChangeEmail() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
@@ -738,5 +756,13 @@ final class KoalaTests: TestCase {
 
     XCTAssertEqual(["Selected Chosen Currency"], client.events)
     XCTAssertEqual(Currency.CAD.descriptionText, client.properties.last?["currency"] as? String)
+  }
+
+  func testTrackDiscoveryPullToRefresh() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackDiscoveryPullToRefresh()
+    XCTAssertEqual(["Triggered Refresh"], client.events)
   }
 }

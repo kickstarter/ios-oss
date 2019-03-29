@@ -538,6 +538,13 @@ public final class Koala {
       ])
   }
 
+  /**
+   Call when the user drags the top of the project list downward to refresh projects.
+   */
+  public func trackDiscoveryPullToRefresh() {
+    self.track(event: "Triggered Refresh")
+  }
+
   // MARK: - Checkout Events
   public func trackCheckoutCancel(project: Project,
                                   reward: Reward,
@@ -1240,6 +1247,7 @@ public final class Koala {
   }
 
   // MARK: - Settings Events
+
   public func trackAppStoreRatingOpen() {
     // deprecated
     self.track(event: "App Store Rating Open", properties: deprecatedProps)
@@ -1270,6 +1278,19 @@ public final class Koala {
     self.track(event: "Viewed Account")
   }
 
+  // MARK: - Create Password Tracking
+
+  public enum CreatePasswordTrackingEvent: String {
+    case passwordCreated = "Created Password"
+    case viewed = "Viewed Create Password"
+  }
+
+  public func trackCreatePassword(event: CreatePasswordTrackingEvent) {
+    self.track(event: event.rawValue)
+  }
+
+  // MARK: - Change Email Tracking
+
   public func trackChangeEmailView() {
     self.track(event: "Viewed Change Email")
   }
@@ -1277,6 +1298,8 @@ public final class Koala {
   public func trackChangeEmail() {
     self.track(event: "Changed Email")
   }
+
+  // MARK: - Change Password Tracking
 
   public func trackChangePasswordView() {
     self.track(event: "Viewed Change Password")

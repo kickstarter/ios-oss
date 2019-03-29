@@ -68,12 +68,14 @@ public let discoveryFilterRowMarginStyle = baseTableViewCellStyle()
 
 public let discoveryOnboardingTitleStyle =
   UILabel.lens.font .~ .ksr_title3()
+    <> UILabel.lens.backgroundColor .~ .white
     <> UILabel.lens.textAlignment .~ .center
     <> UILabel.lens.numberOfLines .~ 2
     <> UILabel.lens.text %~ { _ in Strings.discovery_onboarding_title_bring_creative_projects_to_life() }
 
 public let discoveryOnboardingLogoStyle =
   UIImageView.lens.contentMode .~ .scaleAspectFit
+    <> UIImageView.lens.backgroundColor .~ .white
     <> UIImageView.lens.contentHuggingPriority(for: .vertical) .~ .required
     <> UIImageView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
@@ -127,6 +129,7 @@ public let postcardCategoryLabelStyle =
     <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
     <> UILabel.lens.textAlignment .~ .left
     <> UILabel.lens.lineBreakMode .~ .byClipping
+    <> UILabel.lens.backgroundColor .~ .white
 
 public let postcardMetadataLabelStyle =
   UILabel.lens.font .~ .ksr_headline(size: 12.0)
@@ -150,6 +153,7 @@ public let postcardStatsSubtitleStyle =
         ? .ksr_body(size: 14)
         : .ksr_body(size: 13)
     }
+  <> UILabel.lens.backgroundColor .~ .white
 
 public let postcardStatsTitleStyle =
   UILabel.lens.font %~~ { _, label in
@@ -157,6 +161,7 @@ public let postcardStatsTitleStyle =
       ? .ksr_headline(size: 17)
       : .ksr_headline(size: 13)
   }
+  <> UILabel.lens.backgroundColor .~ .white
 
 private func sortButtonEdgeInsets(isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
 
