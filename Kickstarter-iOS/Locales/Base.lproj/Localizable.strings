@@ -360,6 +360,7 @@
 "Replay_past_live_stream" = "Replay past live stream";
 "Replay_past_live_streams" = "Replay past live streams";
 "Reply_to_user_name" = "Reply to %{user_name}…";
+"Request_my_data" = "Request my data";
 "Request_my_personal_data" = "Request my personal data";
 "Resend_verification_email" = "Re-send verification email";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";

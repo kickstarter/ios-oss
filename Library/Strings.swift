@@ -606,10 +606,10 @@ public enum Strings {
    "Back this project"
 
    - **en**: "Back this project"
-   - **de**: "Back this project"
-   - **es**: "Back this project"
-   - **fr**: "Back this project"
-   - **ja**: "Back this project"
+   - **de**: "Projekt unterstützen"
+   - **es**: "Patrocinar este proyecto"
+   - **fr**: "Je soutiens ce projet"
+   - **ja**: "このプロジェクトをバックする"
   */
   public static func Back_this_project() -> String {
     return localizedString(
@@ -706,23 +706,23 @@ public enum Strings {
   }
   /**
    "%{backers_count}
-backers"
+backer"
 
    - **en**: "%{backers_count}
-backers"
+backer"
    - **de**: "%{backers_count}
 Unterstützer"
    - **es**: "%{backers_count}
-patrocinadores"
+patrocinador"
    - **fr**: "%{backers_count}
-contributeurs"
+contributeur"
    - **ja**: "%{backers_count}
 バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
       key: "Backers_count_separator_backers",
-      defaultValue: "%{backers_count}\nbackers",
+      defaultValue: "%{backers_count}\nbacker",
       count: backers_count,
       substitutions: ["backers_count": Format.wholeNumber(backers_count)]
     )
@@ -816,10 +816,10 @@ contributeurs"
    "By pledging you agree to Kickstarter’s Terms of Use, Privacy Policy and Cookie Policy."
 
    - **en**: "By pledging you agree to Kickstarter’s Terms of Use, Privacy Policy and Cookie Policy."
-   - **de**: "By pledging you agree to Kickstarter’s Terms of Use, Privacy Policy and Cookie Policy."
-   - **es**: "By pledging you agree to Kickstarter’s Terms of Use, Privacy Policy and Cookie Policy."
-   - **fr**: "By pledging you agree to Kickstarter’s Terms of Use, Privacy Policy and Cookie Policy."
-   - **ja**: "By pledging you agree to Kickstarter’s Terms of Use, Privacy Policy and Cookie Policy."
+   - **de**: "Mit Leistung eines Finanzierungsbeitrags stimmst du Kickstarters Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu."
+   - **es**: "Al hacer tu contribución, aceptas los Términos de Uso, la Política de Privacidad y la Política de Cookies de Kickstarter."
+   - **fr**: "En vous engageant, vous acceptez les Conditions d’utilisation, la Politique de confidentialité et la Politique en matière de cookies de Kickstarter."
+   - **ja**: "プレッジすることにより、Kickstarter の利用規約、プライバシーポリシー、Cookie ポリシーに同意したものとみなされます。"
   */
   public static func By_pledging_you_agree() -> String {
     return localizedString(
@@ -1241,10 +1241,10 @@ contributeurs"
    "Continue"
 
    - **en**: "Continue"
-   - **de**: "Continue"
-   - **es**: "Continue"
-   - **fr**: "Continue"
-   - **ja**: "Continue"
+   - **de**: "Weiter"
+   - **es**: "Continuar"
+   - **fr**: "Continuer"
+   - **ja**: "続行する"
   */
   public static func Continue() -> String {
     return localizedString(
@@ -2227,10 +2227,10 @@ contributeurs"
    "Estimated delivery of"
 
    - **en**: "Estimated delivery of"
-   - **de**: "Estimated delivery of"
-   - **es**: "Estimated delivery of"
-   - **fr**: "Estimated delivery of"
-   - **ja**: "Estimated delivery of"
+   - **de**: "Voraussichtliches Lieferdatum"
+   - **es**: "Entrega estimada de"
+   - **fr**: "Livraison prévue le"
+   - **ja**: "配送予定日"
   */
   public static func Estimated_delivery_of() -> String {
     return localizedString(
@@ -2581,18 +2581,18 @@ contributeurs"
     )
   }
   /**
-   "%{filter_name}: %{project_count} live projects"
+   "%{filter_name}: %{project_count} live project"
 
-   - **en**: "%{filter_name}: %{project_count} live projects"
-   - **de**: "%{filter_name}: %{project_count} Live-Projekte"
-   - **es**: "%{filter_name}: %{project_count} proyectos activos"
-   - **fr**: "%{filter_name} : %{project_count} projets en cours"
+   - **en**: "%{filter_name}: %{project_count} live project"
+   - **de**: "%{filter_name}: %{project_count} Live-Projekt"
+   - **es**: "%{filter_name}: %{project_count} proyecto activo"
+   - **fr**: "%{filter_name} : %{project_count} projet en cours"
    - **ja**: "%{filter_name}：%{project_count} の進行中プロジェクト"
   */
   public static func Filter_name_project_count_live_projects(filter_name: String, project_count: Int) -> String {
     return localizedString(
       key: "Filter_name_project_count_live_projects",
-      defaultValue: "%{filter_name}: %{project_count} live projects",
+      defaultValue: "%{filter_name}: %{project_count} live project",
       count: project_count,
       substitutions: ["filter_name": filter_name, "project_count": Format.wholeNumber(project_count)]
     )
@@ -3778,8 +3778,8 @@ with friends."
 
    - **en**: "%{left_count} left"
    - **de**: "%{left_count} übrig"
-   - **es**: "%{left_count} restantes"
-   - **fr**: "%{left_count} restantes"
+   - **es**: "%{left_count} restante"
+   - **fr**: "%{left_count} restante"
    - **ja**: "残り%{left_count}"
   */
   public static func Left_count_left(left_count: Int) -> String {
@@ -5973,6 +5973,23 @@ daring ideas."
     )
   }
   /**
+   "Request my data"
+
+   - **en**: "Request my data"
+   - **de**: "Request my data"
+   - **es**: "Request my data"
+   - **fr**: "Request my data"
+   - **ja**: "Request my data"
+  */
+  public static func Request_my_data() -> String {
+    return localizedString(
+      key: "Request_my_data",
+      defaultValue: "Request my data",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Request my personal data"
 
    - **en**: "Request my personal data"
@@ -6092,35 +6109,35 @@ daring ideas."
     )
   }
   /**
-   "%{rewards_count} rewards"
+   "%{rewards_count} reward"
 
-   - **en**: "%{rewards_count} rewards"
-   - **de**: "%{rewards_count} Belohnungen"
-   - **es**: "%{rewards_count} recompensas"
-   - **fr**: "%{rewards_count} récompenses"
+   - **en**: "%{rewards_count} reward"
+   - **de**: "%{rewards_count} Belohnung"
+   - **es**: "%{rewards_count} recompensa"
+   - **fr**: "%{rewards_count} récompense"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards",
-      defaultValue: "%{rewards_count} rewards",
+      defaultValue: "%{rewards_count} reward",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
   }
   /**
-   "%{rewards_count} rewards:"
+   "%{rewards_count} reward:"
 
-   - **en**: "%{rewards_count} rewards:"
-   - **de**: "%{rewards_count} Belohnungen:"
-   - **es**: "%{rewards_count} recompensas:"
-   - **fr**: "%{rewards_count} récompenses :"
+   - **en**: "%{rewards_count} reward:"
+   - **de**: "%{rewards_count} Belohnung:"
+   - **es**: "%{rewards_count} recompensa:"
+   - **fr**: "%{rewards_count} récompense :"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards_colon(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards_colon",
-      defaultValue: "%{rewards_count} rewards:",
+      defaultValue: "%{rewards_count} reward:",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
@@ -6282,10 +6299,10 @@ daring ideas."
    "Select"
 
    - **en**: "Select"
-   - **de**: "Select"
-   - **es**: "Select"
-   - **fr**: "Select"
-   - **ja**: "Select"
+   - **de**: "Auswählen"
+   - **es**: "Seleccionar"
+   - **fr**: "Sélectionner"
+   - **ja**: "選択"
   */
   public static func Select() -> String {
     return localizedString(
@@ -7253,10 +7270,10 @@ catch your eye?"
    "Total"
 
    - **en**: "Total"
-   - **de**: "Total"
+   - **de**: "Gesamt"
    - **es**: "Total"
    - **fr**: "Total"
-   - **ja**: "Total"
+   - **ja**: "合計"
   */
   public static func Total() -> String {
     return localizedString(
@@ -8007,10 +8024,10 @@ Veuillez réessayer ultérieurement."
    "You'll receive an email at %{email} when your download is ready."
 
    - **en**: "You'll receive an email at %{email} when your download is ready."
-   - **de**: "You'll receive an email at %{email} when your download is ready."
-   - **es**: "You'll receive an email at %{email} when your download is ready."
-   - **fr**: "You'll receive an email at %{email} when your download is ready."
-   - **ja**: "You'll receive an email at %{email} when your download is ready."
+   - **de**: "Du wirst per E-Mail unter %{email} benachrichtigt, sobald dein Download bereit ist."
+   - **es**: "Recibirás un correo electrónico en %{email} cuando la descarga esté lista."
+   - **fr**: "Dès que votre téléchargement sera prêt, vous recevrez un e-mail à l'adresse %{email}."
+   - **ja**: "ダウンロードの準備が整い次第、%{email} にメールが届きます。"
   */
   public static func Youll_receive_an_email_at_email_when_your_download_is_ready(email: String) -> String {
     return localizedString(
@@ -8211,10 +8228,10 @@ Veuillez réessayer ultérieurement."
    "Your shipping location"
 
    - **en**: "Your shipping location"
-   - **de**: "Your shipping location"
-   - **es**: "Your shipping location"
-   - **fr**: "Your shipping location"
-   - **ja**: "Your shipping location"
+   - **de**: "Dein Versand-Standort"
+   - **es**: "Tu ubicación de envío"
+   - **fr**: "Votre destination de livraison"
+   - **ja**: "配送地域"
   */
   public static func Your_shipping_location() -> String {
     return localizedString(
@@ -10214,18 +10231,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "%{comments_count} comments"
+   "%{comments_count} comment"
 
-   - **en**: "%{comments_count} comments"
-   - **de**: "%{comments_count} Kommentare"
-   - **es**: "%{comments_count} commentarios"
-   - **fr**: "%{comments_count} commentaires"
+   - **en**: "%{comments_count} comment"
+   - **de**: "%{comments_count} Kommentar"
+   - **es**: "%{comments_count} commentario"
+   - **fr**: "%{comments_count} commentaire"
    - **ja**: "%{comments_count} のコメント"
   */
   public static func comments_count_comments(comments_count: Int) -> String {
     return localizedString(
       key: "comments_count_comments",
-      defaultValue: "%{comments_count} comments",
+      defaultValue: "%{comments_count} comment",
       count: comments_count,
       substitutions: ["comments_count": Format.wholeNumber(comments_count)]
     )
@@ -19570,18 +19587,18 @@ Merci pour votre soutien !"
     )
   }
   /**
-   "%{project_count} projects"
+   "%{project_count} project"
 
-   - **en**: "%{project_count} projects"
-   - **de**: "%{project_count} Projekte"
-   - **es**: "%{project_count} proyectos"
-   - **fr**: "%{project_count} projets"
+   - **en**: "%{project_count} project"
+   - **de**: "%{project_count} Projekt"
+   - **es**: "%{project_count} proyecto"
+   - **fr**: "%{project_count} projet"
    - **ja**: "%{project_count} 件のプロジェクト"
   */
   public static func project_count_projects(project_count: Int) -> String {
     return localizedString(
       key: "project_count_projects",
-      defaultValue: "%{project_count} projects",
+      defaultValue: "%{project_count} project",
       count: project_count,
       substitutions: ["project_count": Format.wholeNumber(project_count)]
     )
@@ -21222,18 +21239,18 @@ projets enregistrés"
     )
   }
   /**
-   "%{updates_count} updates"
+   "%{updates_count} update"
 
-   - **en**: "%{updates_count} updates"
-   - **de**: "%{updates_count} Updates"
-   - **es**: "%{updates_count} actualizaciones"
-   - **fr**: "%{updates_count} actus"
+   - **en**: "%{updates_count} update"
+   - **de**: "%{updates_count} Update"
+   - **es**: "%{updates_count} actualización"
+   - **fr**: "%{updates_count} actu"
    - **ja**: "%{updates_count} 件のアップデート"
   */
   public static func updates_count_updates(updates_count: Int) -> String {
     return localizedString(
       key: "updates_count_updates",
-      defaultValue: "%{updates_count} updates",
+      defaultValue: "%{updates_count} update",
       count: updates_count,
       substitutions: ["updates_count": Format.wholeNumber(updates_count)]
     )

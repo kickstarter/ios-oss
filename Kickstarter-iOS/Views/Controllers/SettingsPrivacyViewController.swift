@@ -128,7 +128,7 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
       message: alertMessage,
       preferredStyle: .actionSheet)
 
-    let startTheRequest = UIAlertAction(title: Strings.Start_the_request(),
+    let startTheRequest = UIAlertAction(title: Strings.Request_my_data(),
                                         style: .default,
                                         handler: { _ in
         NotificationCenter.default.post(name: Notification.Name.ksr_dataRequested, object: nil, userInfo: nil)

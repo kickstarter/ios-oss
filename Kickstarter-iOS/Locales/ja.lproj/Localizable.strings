@@ -33,7 +33,7 @@
 "Ask_me_anything" = "お問い合わせ";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
 "Back" = "バック";
-"Back_this_project" = "Back this project";
+"Back_this_project" = "このプロジェクトをバックする";
 "Back_this_project_below" = "このプロジェクトをバックする";
 "Backed_by_Friends" = "友達がバックしたプロジェクト";
 "Backed_by_people_you_follow" = "フォロー中の友達がバック";
@@ -49,7 +49,7 @@
 "Biography" = "自己紹介";
 "Bookmarks" = "ブックマーク";
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
-"By_pledging_you_agree" = "By pledging you agree to Kickstarter’s Terms of Use, Privacy Policy and Cookie Policy.";
+"By_pledging_you_agree" = "プレッジすることにより、Kickstarter の利用規約、プライバシーポリシー、Cookie ポリシーに同意したものとみなされます。";
 "CVC" = "CVC";
 "Cancel" = "キャンセル";
 "Cancel_your_pledge" = "プレッジを取り消す";
@@ -74,7 +74,7 @@
 "Confirm_password" = "新しいパスワードの確認";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Facebookとリンクさせ、友達がプロジェクトを作成したりバックしたりした際に通知を受け取る";
 "Contact_creator" = "クリエイターに連絡";
-"Continue" = "Continue";
+"Continue" = "続行する";
 "Continue_to_payment" = "支払いを続ける";
 "Continue_to_update_pledge" = "プレッジをアップデート";
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
@@ -132,7 +132,7 @@
 "Email_unverified" = "このメールアドレスは認証されていません。";
 "Ending_soon" = "終了直前";
 "Estimated_delivery" = "配達予定日：";
-"Estimated_delivery_of" = "Estimated delivery of";
+"Estimated_delivery_of" = "配送予定日";
 "Expands_subcategories" = "サブカテゴリーを表示";
 "Expiration" = "有効期限";
 "Expired_date_at_time" = "有効期限: %{date} %{time}";
@@ -360,6 +360,7 @@
 "Replay_past_live_stream" = "過去のライブ配信をリプレイ";
 "Replay_past_live_streams" = "過去のライブ配信をリプレイ";
 "Reply_to_user_name" = "%{user_nameに返信";
+"Request_my_data" = "Request my data";
 "Request_my_personal_data" = "自分の個人データをリクエストする";
 "Resend_verification_email" = "認証メールをもう一度送信";
 "Reward_Surveys.few" = "%{reward_survey_count} リワードのサーベイ";
@@ -390,7 +391,7 @@
 "Say_something_kind" = "言葉に注意";
 "Security_code" = "セキュリティーコード";
 "See_all_category_name_projects" = "%{category_name} プロジェクトをすべて見る";
-"Select" = "Select";
+"Select" = "選択";
 "Select_another_project" = "他のプロジェクトを選ぶ";
 "Select_this_reward" = "このリワードを選ぶ";
 "Select_this_reward_instead" = "このリワードを選択";
@@ -447,7 +448,7 @@
 "Top_pledge_sources" = "プレッジソースのトップ";
 "Top_ten_pledge_sources" = "プレッジソースのトップ10";
 "Top_ten_rewards" = "リワードのトップ10";
-"Total" = "Total";
+"Total" = "合計";
 "Total_pledged" = "プレッジ総計";
 "Twice_a_day_summary" = "1日2回の概要";
 "Unable_to_request" = "データをリクエストできません。";
@@ -491,7 +492,7 @@
 "You_have_successfully_backed_project_html" = "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。";
 "You_pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "You_saved_this_project" = "保存済みです";
-"Youll_receive_an_email_at_email_when_your_download_is_ready" = "You'll receive an email at %{email} when your download is ready.";
+"Youll_receive_an_email_at_email_when_your_download_is_ready" = "ダウンロードの準備が整い次第、%{email} にメールが届きます。";
 "Your_chat_message_wasnt_sent_successfully" = "メッセージの送信に失敗。";
 "Your_friends_havent_backed_any_projects_yet" = "バックした友達はまだいませんが、今後こちらに表示されます。";
 "Your_name_displayed" = "あなたの名前はプロフィールに常に表示されます。";
@@ -503,7 +504,7 @@
 "Your_reward" = "リワード";
 "Your_reward_estimated_for_delivery_in_date" = "<b>リワード</b>の配送予定日は%{delivery_date}";
 "Your_shipping_destination" = "配送地域";
-"Your_shipping_location" = "Your shipping location";
+"Your_shipping_location" = "配送地域";
 "Youre_a_backer" = "バッカーになりました！";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。";

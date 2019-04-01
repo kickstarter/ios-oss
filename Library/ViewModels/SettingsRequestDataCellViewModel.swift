@@ -58,7 +58,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     }
 
     self.showRequestDataPrompt = Signal.combineLatest(exportEnvelope, requestDataAlertText)
-      .filter { $0.0.dataUrl == nil || $0.0.state == .expired || $0.0.expiresAt == nil }
+      .filter { canRequestData($0.0) }
       .map { _, alertMessage in alertMessage }
       .takeWhen(self.exportDataTappedProperty.signal.ignoreValues())
 
@@ -145,6 +145,10 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
 
   public var inputs: SettingsRequestDataCellViewModelInputs { return self }
   public var outputs: SettingsRequestDataCellViewModelOutputs { return self }
+}
+
+private func canRequestData(_ envelope: ExportDataEnvelope) -> Bool {
+  return envelope.dataUrl == nil || envelope.state == .expired || envelope.expiresAt == nil
 }
 
 private func dateFormatter(for dateString: String?, state: ExportDataEnvelope.State) -> String {
