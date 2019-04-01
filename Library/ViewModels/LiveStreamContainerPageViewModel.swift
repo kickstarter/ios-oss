@@ -82,7 +82,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
                 presentedFromProject: presentedFromProject)
         ]
 
-        guard AppEnvironment.current.config?.features["ios_live_stream_chat"] != .some(false) else {
+        guard AppEnvironment.current.config?.features[Feature.liveStreamChat.rawValue] != .some(false) else {
           return pages
         }
 
@@ -158,7 +158,7 @@ LiveStreamContainerPageViewModelInputs, LiveStreamContainerPageViewModelOutputs 
 
     let chatFeatureFlagDisabled = self.viewDidLoadProperty.signal
       .map {
-        return AppEnvironment.current.config?.features["ios_live_stream_chat"] != .some(false)
+        return AppEnvironment.current.config?.features[Feature.liveStreamChat.rawValue] != .some(false)
       }
       .map(negate)
 

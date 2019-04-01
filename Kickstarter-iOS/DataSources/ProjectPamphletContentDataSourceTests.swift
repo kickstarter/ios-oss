@@ -41,7 +41,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       |> Project.lens.stats.updatesCount .~ 42
 
     let config = .template
-      |> Config.lens.features .~ ["ios_live_streams": false]
+      |> Config.lens.features .~ [Feature.liveStreams.rawValue: false]
 
     withEnvironment(config: config) {
       dataSource.load(project: project, liveStreamEvents: [.template])
@@ -95,7 +95,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     ]
 
     let config = .template
-      |> Config.lens.features .~ ["ios_live_streams": true]
+      |> Config.lens.features .~ [Feature.liveStreams.rawValue: true]
 
     withEnvironment(config: config) {
       dataSource.load(project: project, liveStreamEvents: liveStreamEvents)
@@ -157,7 +157,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
 
   func testRewardsSection_nativeCheckoutFeature_hidesWhenTurnedOn() {
     let config = .template
-      |> Config.lens.features .~ [Features.checkout.rawValue: true]
+      |> Config.lens.features .~ [Feature.checkout.rawValue: true]
 
     withEnvironment(config: config) {
       let availableReward = Reward.template
@@ -175,7 +175,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
 
   func testRewardsSection_nativeCheckoutFeature_showsWithTurnedOff() {
     let config = .template
-      |> Config.lens.features .~ [Features.checkout.rawValue: false]
+      |> Config.lens.features .~ [Feature.checkout.rawValue: false]
 
     withEnvironment(config: config) {
       let availableSection = ProjectPamphletContentDataSource.Section.availableRewards.rawValue

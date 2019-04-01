@@ -28,7 +28,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    if AppEnvironment.current.config?.features[Features.checkout.rawValue] != .some(true) {
+    if featureNativeCheckoutEnabled() {
       self.setRewardTitleArea(project: project)
     }
   }
@@ -51,10 +51,14 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    if AppEnvironment.current.config?.features[Features.checkout.rawValue] != .some(true) {
+    if featureNativeCheckoutEnabled() {
       self.setRewardTitleArea(project: project)
       self.setRewards(project: project, visible)
     }
+  }
+
+  private func featureNativeCheckoutEnabled() -> Bool {
+    return AppEnvironment.current.config?.features[Feature.checkout.rawValue] != .some(true)
   }
 
   private func availableRewards(for project: Project) -> [(Project, Either<Reward, Backing>)] {
@@ -112,7 +116,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   private func liveStreamSubpages(forLiveStreamEvents liveStreamEvents: [LiveStreamEvent]) ->
     [ProjectPamphletSubpage] {
 
-    guard AppEnvironment.current.config?.features["ios_live_streams"] != .some(false) else { return [] }
+    guard AppEnvironment.current.config?.features[Feature.liveStreams.rawValue] !=
+      .some(false) else { return [] }
 
     return liveStreamEvents
       .sorted(comparator: LiveStreamEvent.canonicalLiveStreamEventComparator(
