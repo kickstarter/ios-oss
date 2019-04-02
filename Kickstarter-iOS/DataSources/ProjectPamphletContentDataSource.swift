@@ -116,8 +116,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   private func liveStreamSubpages(forLiveStreamEvents liveStreamEvents: [LiveStreamEvent]) ->
     [ProjectPamphletSubpage] {
 
-    guard AppEnvironment.current.config?.features[Feature.liveStreams.rawValue] !=
-      .some(false) else { return [] }
+    guard AppEnvironment.current.config?.features[Feature.liveStreams.rawValue] != .some(false)
+      else { return [] }
 
     return liveStreamEvents
       .sorted(comparator: LiveStreamEvent.canonicalLiveStreamEventComparator(
