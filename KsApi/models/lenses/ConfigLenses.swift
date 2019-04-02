@@ -32,7 +32,7 @@ extension Config {
       ) }
     )
 
-    public static let features = Lens<Config, [String: Bool]>(
+    public static let features = Lens<Config, Features>(
       view: { $0.features },
       set: { Config(
         abExperiments: $1.abExperiments, appId: $1.appId, applePayCountries: $1.applePayCountries,
