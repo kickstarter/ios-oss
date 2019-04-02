@@ -5,7 +5,7 @@ import Stripe
 import UIKit
 
 internal final class DeprecatedRewardPledgeViewController: UIViewController {
-  internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
+  internal let viewModel: DeprecatedRewardPledgeViewModelType = DeprecatedRewardPledgeViewModel()
 
   fileprivate var applePayButton = PKPaymentButton()
   @IBOutlet fileprivate weak var applePayButtonContainerView: UIStackView!
