@@ -290,6 +290,10 @@ private func topFilters(forUser user: User?) -> [DiscoveryParams] {
   filters.append(.defaults |> DiscoveryParams.lens.includePOTD .~ true)
   filters.append(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
 
+  if AppEnvironment.current.config?.features[Feature.liveStreamDiscovery.rawValue] != .some(false) {
+    filters.append(.defaults |> DiscoveryParams.lens.hasLiveStreams .~ true)
+  }
+
   guard user != nil else {
     return filters
   }

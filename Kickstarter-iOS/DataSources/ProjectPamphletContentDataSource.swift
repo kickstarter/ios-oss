@@ -27,7 +27,9 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    self.setRewardTitleArea(project: project)
+    if !featureNativeCheckoutEnabled() {
+      self.setRewardTitleArea(project: project)
+    }
   }
 
   internal func load(project: Project, visible: Bool = false) {
@@ -46,32 +48,14 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    self.setRewardTitleArea(project: project)
-
-    let rewardData = project.rewards
-      .filter { isMainReward(reward: $0, project: project) }
-      .sorted()
-      .map { (project, Either<Reward, Backing>.left($0)) }
-
-    if !rewardData.isEmpty {
-      if visible {
-        self.set(
-          values: [project],
-          cellClass: RewardsTitleCell.self,
-          inSection: Section.rewardsTitle.rawValue
-        )
-      }
-      self.set(
-        values: self.availableRewards(for: project),
-        cellClass: RewardCell.self,
-        inSection: Section.availableRewards.rawValue
-      )
-      self.set(
-        values: self.unavailableRewards(for: project),
-        cellClass: RewardCell.self,
-        inSection: Section.unavailableRewards.rawValue
-      )
+    if !featureNativeCheckoutEnabled() {
+      self.setRewardTitleArea(project: project)
+      self.setRewards(project: project, visible)
     }
+  }
+
+  private func featureNativeCheckoutEnabled() -> Bool {
+    return AppEnvironment.current.config?.features[Feature.checkout.rawValue] == .some(true)
   }
 
   private func availableRewards(for project: Project) -> [(Project, Either<Reward, Backing>)] {
@@ -96,10 +80,43 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       self.set(values: [project], cellClass: NoRewardCell.self, inSection: Section.calloutReward.rawValue)
     } else if let backing = project.personalization.backing {
       self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
-      self.set(
-        values: [(project, .right(backing))],
-        cellClass: RewardCell.self,
-        inSection: Section.calloutReward.rawValue
+      self.set(values: [(project, .right(backing))],
+               cellClass: RewardCell.self,
+               inSection: Section.calloutReward.rawValue)
+    }
+  }
+
+  private func setRewards(project: Project, _ visible: Bool) {
+    let rewardData = project.rewards
+      .filter { isMainReward(reward: $0, project: project) }
+      .sorted()
+      .map { (project, Either<Reward, Backing>.left($0)) }
+
+    if !rewardData.isEmpty {
+      if visible {
+        self.set(values: [project],
+                 cellClass: RewardsTitleCell.self,
+                 inSection: Section.rewardsTitle.rawValue)
+      }
+
+      self.set(values: availableRewards(for: project),
+               cellClass: RewardCell.self,
+               inSection: Section.availableRewards.rawValue)
+      self.set(values: unavailableRewards(for: project),
+               cellClass: RewardCell.self,
+               inSection: Section.unavailableRewards.rawValue)
+    }
+  }
+
+  private func liveStreamSubpages(forLiveStreamEvents liveStreamEvents: [LiveStreamEvent]) ->
+    [ProjectPamphletSubpage] {
+
+    guard AppEnvironment.current.config?.features[Feature.liveStreams.rawValue] != .some(false)
+      else { return [] }
+
+    return liveStreamEvents
+      .sorted(comparator: LiveStreamEvent.canonicalLiveStreamEventComparator(
+        now: AppEnvironment.current.dateType.init().date)
       )
     }
   }
