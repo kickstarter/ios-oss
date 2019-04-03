@@ -27,7 +27,7 @@ AppEnvironment.replaceCurrentEnvironment(
 )
 
 initialize()
-let controller = RewardPledgeViewController
+let controller = DeprecatedRewardPledgeViewController
   .configuredWith(project: project , reward: project.rewards.last!)
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)

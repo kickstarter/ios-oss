@@ -4,8 +4,8 @@ import Prelude
 import Stripe
 import UIKit
 
-internal final class RewardPledgeViewController: UIViewController {
-  internal let viewModel: RewardPledgeViewModelType = RewardPledgeViewModel()
+internal final class DeprecatedRewardPledgeViewController: UIViewController {
+  internal let viewModel: DeprecatedRewardPledgeViewModelType = DeprecatedRewardPledgeViewModel()
 
   fileprivate var applePayButton = PKPaymentButton()
   @IBOutlet fileprivate weak var applePayButtonContainerView: UIStackView!
@@ -70,9 +70,9 @@ internal final class RewardPledgeViewController: UIViewController {
     project: Project,
     reward: Reward,
     applePayCapable: Bool = PKPaymentAuthorizationViewController.applePayCapable())
-    -> RewardPledgeViewController {
+    -> DeprecatedRewardPledgeViewController {
 
-      let vc = Storyboard.RewardPledge.instantiate(RewardPledgeViewController.self)
+      let vc = Storyboard.RewardPledge.instantiate(DeprecatedRewardPledgeViewController.self)
       vc.viewModel.inputs.configureWith(project: project, reward: reward, applePayCapable: applePayCapable)
       return vc
   }
@@ -157,7 +157,7 @@ internal final class RewardPledgeViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
-      |> RewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_300
+      |> DeprecatedRewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_300
 
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: 0)
@@ -672,7 +672,7 @@ internal final class RewardPledgeViewController: UIViewController {
   }
 }
 
-extension RewardPledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
+extension DeprecatedRewardPledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 
   internal func paymentAuthorizationViewControllerWillAuthorizePayment(
     _ controller: PKPaymentAuthorizationViewController) {
@@ -705,7 +705,7 @@ extension RewardPledgeViewController: PKPaymentAuthorizationViewControllerDelega
   }
 }
 
-extension RewardPledgeViewController: RewardShippingPickerViewControllerDelegate {
+extension DeprecatedRewardPledgeViewController: RewardShippingPickerViewControllerDelegate {
   internal func rewardShippingPickerViewControllerCancelled(
     _ controller: RewardShippingPickerViewController) {
     controller.dismiss(animated: true, completion: nil)

@@ -4,7 +4,7 @@ import Prelude
 import ReactiveSwift
 import Result
 
-public protocol RewardPledgeViewModelInputs {
+public protocol DeprecatedRewardPledgeViewModelInputs {
   /// Call when the apple pay button is tapped.
   func applePayButtonTapped()
 
@@ -72,7 +72,7 @@ public protocol RewardPledgeViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol RewardPledgeViewModelOutputs {
+public protocol DeprecatedRewardPledgeViewModelOutputs {
   /// Emits a boolean that determines if the apple pay button is hidden.
   var applePayButtonHidden: Signal<Bool, NoError> { get }
 
@@ -201,13 +201,16 @@ public protocol RewardPledgeViewModelOutputs {
   var updatePledgeButtonHidden: Signal<Bool, NoError> { get }
 }
 
-public protocol RewardPledgeViewModelType {
-  var inputs: RewardPledgeViewModelInputs { get }
-  var outputs: RewardPledgeViewModelOutputs { get }
+public protocol DeprecatedRewardPledgeViewModelType {
+  var inputs: DeprecatedRewardPledgeViewModelInputs { get }
+  var outputs: DeprecatedRewardPledgeViewModelOutputs { get }
 }
 
-public final class RewardPledgeViewModel: RewardPledgeViewModelType, RewardPledgeViewModelInputs,
-RewardPledgeViewModelOutputs {
+private typealias Type = DeprecatedRewardPledgeViewModelType
+private typealias Inputs = DeprecatedRewardPledgeViewModelInputs
+private typealias Outputs = DeprecatedRewardPledgeViewModelOutputs
+
+public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
 
   fileprivate let rewardViewModel: RewardCellViewModelType = RewardCellViewModel()
 
@@ -936,8 +939,8 @@ RewardPledgeViewModelOutputs {
   public let changePaymentMethodButtonHidden: Signal<Bool, NoError>
   public let cancelPledgeButtonHidden: Signal<Bool, NoError>
 
-  public var inputs: RewardPledgeViewModelInputs { return self }
-  public var outputs: RewardPledgeViewModelOutputs { return self }
+  public var inputs: DeprecatedRewardPledgeViewModelInputs { return self }
+  public var outputs: DeprecatedRewardPledgeViewModelOutputs { return self }
 }
 
 private func paymentRequest(forProject project: Project,
