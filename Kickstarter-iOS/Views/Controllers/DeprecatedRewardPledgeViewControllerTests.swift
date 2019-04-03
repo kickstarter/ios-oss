@@ -1,19 +1,20 @@
-@testable import Kickstarter_Framework
-@testable import KsApi
 import Library
 import Prelude
+import Result
 import XCTest
+@testable import Kickstarter_Framework
+@testable import KsApi
 
 private let tolerance: CGFloat = 0.0001
 
-internal final class RewardPledgeViewControllerTests: TestCase {
+internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
   fileprivate let cosmicSurgery = Project.cosmicSurgery
     |> Project.lens.state .~ .live
   // swiftlint:disable:next force_unwrapping
   fileprivate let cosmicReward = Project.cosmicSurgery.rewards.last!
     |> Reward.lens.shipping.enabled .~ true
     |> Reward.lens.shipping.summary .~ "Wherever"
-    |> Reward.lens.estimatedDeliveryOn .~ 1_506_031_200
+    |> Reward.lens.estimatedDeliveryOn .~ 1506031200
 
   override func setUp() {
     super.setUp()
@@ -21,11 +22,11 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
-        fetchShippingRulesResult: Result(success: [
+        fetchShippingRulesResult: Result([
           .template |> ShippingRule.lens.location .~ .usa,
           .template |> ShippingRule.lens.location .~ .canada,
           .template |> ShippingRule.lens.location .~ .greatBritain,
-          .template |> ShippingRule.lens.location .~ .australia
+          .template |> ShippingRule.lens.location .~ .australia,
         ])
       ),
       mainBundle: Bundle.framework
@@ -44,7 +45,8 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [false, true]).forEach { language, applePayCapable in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-        let vc = RewardPledgeViewController.configuredWith(
+
+        let vc = DeprecatedRewardPledgeViewController.configuredWith(
           project: project, reward: reward, applePayCapable: applePayCapable
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -64,7 +66,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     let reward = self.cosmicReward |> Reward.lens.rewardsItems .~ []
 
     withEnvironment(currentUser: .template) {
-      let vc = RewardPledgeViewController.configuredWith(
+      let vc = DeprecatedRewardPledgeViewController.configuredWith(
         project: project, reward: reward, applePayCapable: false
       )
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -79,19 +81,17 @@ internal final class RewardPledgeViewControllerTests: TestCase {
   }
 
   func testPledge_ApplePayCapable_UnsupportedCountry() {
-    let unsupportedCountry = Project.Country(
-      countryCode: "ZZ",
-      currencyCode: "ZZD",
-      currencySymbol: "µ",
-      maxPledge: 10_000,
-      minPledge: 1,
-      trailingCode: true
-    )
+    let unsupportedCountry = Project.Country(countryCode: "ZZ",
+                                             currencyCode: "ZZD",
+                                             currencySymbol: "µ",
+                                             maxPledge: 10_000,
+                                             minPledge: 1,
+                                             trailingCode: true)
     let project = self.cosmicSurgery
       |> Project.lens.country .~ unsupportedCountry
     let reward = self.cosmicReward |> Reward.lens.rewardsItems .~ []
 
-    let vc = RewardPledgeViewController.configuredWith(
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(
       project: project, reward: reward, applePayCapable: true
     )
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -105,7 +105,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
     let project = self.cosmicSurgery
     let reward = self.cosmicReward
 
-    let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(project: project, reward: reward)
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
     parent.view.frame.size.height = 870
 
@@ -121,7 +121,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
       |> Reward.lens.rewardsItems .~ []
       |> Reward.lens.shipping.enabled .~ false
 
-    let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(project: project, reward: reward)
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
     parent.view.frame.size.height -= 64
 
@@ -141,7 +141,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
       |> Reward.lens.description .~ description
       |> Reward.lens.rewardsItems .~ []
 
-    let vc = RewardPledgeViewController.configuredWith(project: project, reward: reward)
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(project: project, reward: reward)
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
     parent.view.frame.size.height = 870
 
@@ -156,7 +156,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
       |> Reward.lens.rewardsItems .~ []
 
     [false, true].forEach { applePayCapable in
-      let vc = RewardPledgeViewController.configuredWith(
+      let vc = DeprecatedRewardPledgeViewController.configuredWith(
         project: project, reward: reward, applePayCapable: applePayCapable
       )
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -176,7 +176,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [false, true]).forEach { language, applePayCapable in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-        let vc = RewardPledgeViewController.configuredWith(
+        let vc = DeprecatedRewardPledgeViewController.configuredWith(
           project: project, reward: reward, applePayCapable: applePayCapable
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -198,11 +198,11 @@ internal final class RewardPledgeViewControllerTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.amount .~ (reward.minimum + 10.00)
           |> Backing.lens.shippingAmount .~ 10
-      )
+    )
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-        let vc = RewardPledgeViewController.configuredWith(
+        let vc = DeprecatedRewardPledgeViewController.configuredWith(
           project: project, reward: reward, applePayCapable: false
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -223,11 +223,11 @@ internal final class RewardPledgeViewControllerTests: TestCase {
         .template
           |> Backing.lens.reward .~ reward
           |> Backing.lens.amount .~ 10
-      )
+    )
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-        let vc = RewardPledgeViewController.configuredWith(
+        let vc = DeprecatedRewardPledgeViewController.configuredWith(
           project: project, reward: reward, applePayCapable: false
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -247,9 +247,9 @@ internal final class RewardPledgeViewControllerTests: TestCase {
         .template
           |> Backing.lens.reward .~ reward
           |> Backing.lens.amount .~ 10
-      )
+    )
 
-    let vc = RewardPledgeViewController.configuredWith(
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(
       project: project, reward: reward, applePayCapable: true
     )
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -273,11 +273,11 @@ internal final class RewardPledgeViewControllerTests: TestCase {
           |> Backing.lens.reward .~ oldReward
           |> Backing.lens.amount .~ (oldReward.minimum + 10.00)
           |> Backing.lens.shippingAmount .~ 10
-      )
+    )
 
     combos(Language.allLanguages, [true, false]).forEach { language, applePayCapable in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-        let vc = RewardPledgeViewController.configuredWith(
+        let vc = DeprecatedRewardPledgeViewController.configuredWith(
           project: project, reward: newReward, applePayCapable: applePayCapable
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -306,9 +306,9 @@ internal final class RewardPledgeViewControllerTests: TestCase {
           |> Backing.lens.reward .~ oldReward
           |> Backing.lens.amount .~ (oldReward.minimum + 10.00)
           |> Backing.lens.shippingAmount .~ 10
-      )
+    )
 
-    let vc = RewardPledgeViewController.configuredWith(
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(
       project: project, reward: newReward, applePayCapable: true
     )
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -332,7 +332,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
         let currentProject = project
           |> Project.lens.stats.currency .~ country.currencyCode
           |> Project.lens.country .~ country
-        let vc = RewardPledgeViewController.configuredWith(
+        let vc = DeprecatedRewardPledgeViewController.configuredWith(
           project: currentProject,
           reward: reward, applePayCapable: false
         )
