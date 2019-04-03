@@ -3,7 +3,7 @@ import UIKit
 import XCTest
 @testable import Library
 
-final class UIViewControllerURLTests: XCTestCase {
+final class UIViewControllerURLTests: TestCase {
   func testSupportedSchemes() {
     XCTAssertEqual(UIViewController.supportedURLSchemes, ["http", "https"])
   }
@@ -51,11 +51,13 @@ final class UIViewControllerURLTests: XCTestCase {
     let mockApplication = MockApplication()
     mockApplication.canOpenURL = true
 
-    let vc = UIViewController()
-    vc.goTo(url: url, application: mockApplication)
+    withEnvironment(application: mockApplication) {
+      let vc = UIViewController()
+      vc.goTo(url: url)
 
-    XCTAssertTrue(mockApplication.canOpenURLWasCalled)
-    XCTAssertTrue(mockApplication.openUrlWasCalled)
+      XCTAssertTrue(mockApplication.canOpenURLWasCalled)
+      XCTAssertTrue(mockApplication.openUrlWasCalled)
+    }
   }
 
   func testGoToUnsupportedUrlScheme_WhichApplicationCanNotOpen() {
@@ -66,11 +68,13 @@ final class UIViewControllerURLTests: XCTestCase {
 
     let mockApplication = MockApplication()
 
-    let vc = UIViewController()
-    vc.goTo(url: url, application: mockApplication)
+    withEnvironment(application: mockApplication) {
+      let vc = UIViewController()
+      vc.goTo(url: url)
 
-    XCTAssertTrue(mockApplication.canOpenURLWasCalled)
-    XCTAssertFalse(mockApplication.openUrlWasCalled)
+      XCTAssertTrue(mockApplication.canOpenURLWasCalled)
+      XCTAssertFalse(mockApplication.openUrlWasCalled)
+    }
   }
 }
 

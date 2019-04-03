@@ -39,6 +39,7 @@ internal class TestCase: FBSnapshotTestCase {
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
+      application: UIApplication.shared,
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,
       calendar: calendar,
