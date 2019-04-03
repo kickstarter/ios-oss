@@ -26,8 +26,8 @@ private let shippingRules = locations
 private let sortedShippingRules = shippingRules
   .sorted { lhs, rhs in lhs.location.displayableName < rhs.location.displayableName }
 
-internal final class RewardPledgeViewModelTests: TestCase {
-  fileprivate let vm: RewardPledgeViewModelType = RewardPledgeViewModel()
+internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
+  fileprivate let vm: DeprecatedRewardPledgeViewModelType = DeprecatedRewardPledgeViewModel()
 
   fileprivate let applePayButtonHidden = TestObserver<Bool, Never>()
   fileprivate let cancelPledgeButtonHidden = TestObserver<Bool, Never>()

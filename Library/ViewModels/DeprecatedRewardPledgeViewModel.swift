@@ -3,7 +3,7 @@ import PassKit
 import Prelude
 import ReactiveSwift
 
-public protocol RewardPledgeViewModelInputs {
+public protocol DeprecatedRewardPledgeViewModelInputs {
   /// Call when the apple pay button is tapped.
   func applePayButtonTapped()
 
@@ -71,7 +71,7 @@ public protocol RewardPledgeViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol RewardPledgeViewModelOutputs {
+public protocol DeprecatedRewardPledgeViewModelOutputs {
   /// Emits a boolean that determines if the apple pay button is hidden.
   var applePayButtonHidden: Signal<Bool, Never> { get }
 
@@ -200,13 +200,17 @@ public protocol RewardPledgeViewModelOutputs {
   var updatePledgeButtonHidden: Signal<Bool, Never> { get }
 }
 
-public protocol RewardPledgeViewModelType {
-  var inputs: RewardPledgeViewModelInputs { get }
-  var outputs: RewardPledgeViewModelOutputs { get }
+public protocol DeprecatedRewardPledgeViewModelType {
+  var inputs: DeprecatedRewardPledgeViewModelInputs { get }
+  var outputs: DeprecatedRewardPledgeViewModelOutputs { get }
 }
 
-public final class RewardPledgeViewModel: RewardPledgeViewModelType, RewardPledgeViewModelInputs,
-  RewardPledgeViewModelOutputs {
+private typealias Type = DeprecatedRewardPledgeViewModelType
+private typealias Inputs = DeprecatedRewardPledgeViewModelInputs
+private typealias Outputs = DeprecatedRewardPledgeViewModelOutputs
+
+public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
+
   fileprivate let rewardViewModel: RewardCellViewModelType = RewardCellViewModel()
 
   public init() {
@@ -944,8 +948,8 @@ public final class RewardPledgeViewModel: RewardPledgeViewModelType, RewardPledg
   public let changePaymentMethodButtonHidden: Signal<Bool, Never>
   public let cancelPledgeButtonHidden: Signal<Bool, Never>
 
-  public var inputs: RewardPledgeViewModelInputs { return self }
-  public var outputs: RewardPledgeViewModelOutputs { return self }
+  public var inputs: DeprecatedRewardPledgeViewModelInputs { return self }
+  public var outputs: DeprecatedRewardPledgeViewModelOutputs { return self }
 }
 
 private func paymentRequest(
