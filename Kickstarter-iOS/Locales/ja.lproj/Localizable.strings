@@ -576,7 +576,7 @@
 "activity.friend_backed_music_project" = "%{friend_name} がミュージックプロジェクトにバック";
 "activity.friend_backed_photography_project" = "%{friend_name} がフォトグラフィープロジェクトにバック";
 "activity.friend_backed_project_name_by_creator_name" = "<b>%{friend_name}</b> は%{project_name} by %{creator_name} をバック中";
-"activity.friend_backed_publishing_project" = "%{friend_name} がパブリッシングプロジェクトにバック";
+"activity.friend_backed_publishing_project" = "%{friend_name} が出版プロジェクトをバックしました";
 "activity.friend_backed_tech_project" = "%{friend_name} がテクノロジープロジェクトにバック";
 "activity.friend_backed_theater_project" = "%{friend_name} さんがシアタープロジェクトにバック";
 "activity.friend_follow.buttons.follow" = "フォロー";
@@ -1206,7 +1206,7 @@
 "profile.settings.newsletter.opt_in.title" = "あと少し！";
 "profile.settings.newsletter.promo" = "Kickstarterのニュースとイベント";
 "profile.settings.newsletter.publishing" = "Kickstarter Reads";
-"profile.settings.newsletter.publishing_newsletter" = "Kickstarter のパブリッシングチームおすすめの新しいプロジェクトやクリエイターストーリー、文学関連イベントなどをお知らせする月刊ニュースレターにぜひサインアップしましょう。";
+"profile.settings.newsletter.publishing_newsletter" = "Kickstarter の出版チームおすすめの新しいプロジェクトやクリエイターストーリー、文学関連イベントなどをお知らせする月刊ニュースレターにぜひサインアップしましょう。";
 "profile.settings.newsletter.subscribe_all" = "すべてのニュースレターを購読する";
 "profile.settings.newsletter.title" = "ニュースレター";
 "profile.settings.newsletter.weekly" = "Projects We Love";
