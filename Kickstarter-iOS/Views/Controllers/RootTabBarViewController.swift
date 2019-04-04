@@ -87,11 +87,12 @@ public final class RootTabBarViewController: UITabBarController {
       .observeForUI()
       .observeValues { [weak self] in self?.selectedIndex = $0 }
 
-    self.viewModel.outputs.scrollViewControllerAtIndexToTop
+    self.viewModel.outputs.scrollToTop
       .observeForControllerAction()
       .map { [weak self] index -> UIViewController? in
-        guard let vc = self?.viewControllers?[index] else { return nil }
-        return vc
+        guard let vcs = self?.viewControllers, index < vcs.count - 1 else { return nil }
+
+        return vcs[index]
       }
       .skipNil()
       .map(extractViewController)
@@ -312,14 +313,6 @@ private func strokedRoundImage(fromImage image: UIImage?,
   circle.stroke()
 
   return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
-}
-
-private func first<VC: UIViewController>(_ viewController: VC.Type) -> ([UIViewController]) -> VC? {
-  return { viewControllers in
-    viewControllers
-      .index { $0 is VC }
-      .flatMap { viewControllers[$0] as? VC }
-  }
 }
 
 private func extractViewController(_ viewController: UIViewController) -> UIViewController {
