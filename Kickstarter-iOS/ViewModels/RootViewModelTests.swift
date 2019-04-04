@@ -168,7 +168,7 @@ final class RootViewModelTests: TestCase {
     self.selectedIndex.assertValues([0, 1, 0], "Selects index immediately.")
 
     self.vm.inputs.didSelect(index: 10)
-    
+
     self.selectedIndex.assertValues([0, 1, 0, 3], "Selects index immediately.")
   }
 
