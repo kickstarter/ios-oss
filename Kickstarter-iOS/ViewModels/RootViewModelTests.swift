@@ -13,7 +13,7 @@ final class RootViewModelTests: TestCase {
   let vm: RootViewModelType = RootViewModel()
   let viewControllerNames = TestObserver<[String], NoError>()
   let filterDiscovery = TestObserver<DiscoveryParams, NoError>()
-  let selectedIndex = TestObserver<Int, NoError>()
+  let selectedIndex = TestObserver<RootViewControllerIndex, NoError>()
   let scrollToTopControllerName = TestObserver<String, NoError>()
   let switchDashboardProject = TestObserver<Param, NoError>()
   let tabBarItemsData = TestObserver<TabBarItemsData, NoError>()

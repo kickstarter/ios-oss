@@ -5,6 +5,8 @@ import ReactiveSwift
 import Result
 import UIKit
 
+typealias RootViewControllerIndex = Int
+
 internal enum RootViewControllerData: Equatable {
   case discovery
   case activities
@@ -90,10 +92,10 @@ internal protocol RootViewModelInputs {
   func currentUserUpdated()
 
   /// Call before selected tab bar index changes.
-  func shouldSelect(index: Int?)
+  func shouldSelect(index: RootViewControllerIndex?)
 
   /// Call when selected tab bar index changes.
-  func didSelect(index: Int)
+  func didSelect(index: RootViewControllerIndex)
 
   /// Call when we should switch to the activities tab.
   func switchToActivities()
@@ -128,11 +130,11 @@ internal protocol RootViewModelInputs {
 
 internal protocol RootViewModelOutputs {
   /// Emits when the discovery VC should filter with specific params.
-  var filterDiscovery: Signal<(Int, DiscoveryParams), NoError> { get }
+  var filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), NoError> { get }
 
   /// Emits a controller index that should be scrolled to the top. This requires figuring out what kind of
   /// controller it is, and setting its `contentOffset`.
-  var scrollViewControllerAtIndexToTop: Signal<Int, NoError> { get }
+  var scrollToTop: Signal<RootViewControllerIndex, NoError> { get }
 
   /// Emits an index that the tab bar should be switched to.
   var selectedIndex: Signal<Int, NoError> { get }
@@ -238,7 +240,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     let shouldSelectIndex = self.shouldSelectIndexProperty.signal
       .skipNil()
 
-    self.scrollViewControllerAtIndexToTop = self.selectedIndex
+    self.scrollToTop = self.selectedIndex
       .takePairWhen(shouldSelectIndex)
       .filter { prev, next in prev == next }
       .map { $1 }
@@ -309,9 +311,9 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     self.viewDidLoadProperty.value = ()
   }
 
-  internal let filterDiscovery: Signal<(Int, DiscoveryParams), NoError>
-  internal let scrollViewControllerAtIndexToTop: Signal<Int, NoError>
-  internal let selectedIndex: Signal<Int, NoError>
+  internal let filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), NoError>
+  internal let scrollToTop: Signal<RootViewControllerIndex, NoError>
+  internal let selectedIndex: Signal<RootViewControllerIndex, NoError>
   internal let setViewControllers: Signal<[RootViewControllerData], NoError>
   internal let switchDashboardProject: Signal<(Int, Param), NoError>
   internal let tabBarItemsData: Signal<TabBarItemsData, NoError>
