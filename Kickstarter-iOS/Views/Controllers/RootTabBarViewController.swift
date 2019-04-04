@@ -105,10 +105,7 @@ public final class RootTabBarViewController: UITabBarController {
     self.viewModel.outputs.filterDiscovery
       .observeForControllerAction()
       .map { [weak self] index, param -> (DiscoveryViewController, DiscoveryParams)? in
-        guard
-          let discoveryViewController = self?.viewControllers?[index] as? DiscoveryViewController
-        else { return nil }
-        return (discoveryViewController, param)
+        self?.viewControllerAndParam(with: index, param: param)
       }
       .skipNil()
       .observeValues { $0.filter(with: $1) }
@@ -116,10 +113,7 @@ public final class RootTabBarViewController: UITabBarController {
     self.viewModel.outputs.switchDashboardProject
       .observeForControllerAction()
       .map { [weak self] index, param -> (DashboardViewController, Param)? in
-        guard
-          let dashboardViewController = self?.viewControllers?[index] as? DashboardViewController
-        else { return nil }
-        return (dashboardViewController, param)
+        self?.viewControllerAndParam(with: index, param: param)
       }
       .skipNil()
       .observeValues { $0.switch(toProject: $1) }
@@ -147,6 +141,11 @@ public final class RootTabBarViewController: UITabBarController {
 
   public func switchToSearch() {
     self.viewModel.inputs.switchToSearch()
+  }
+
+  private func viewControllerAndParam<T, P>(with index: RootViewControllerIndex, param: P) -> (T, P)? {
+    guard let vc = self.viewControllers?[index] as? T else { return nil }
+    return (vc, param)
   }
 
   public func switchToMessageThread(_ messageThread: MessageThread) {
