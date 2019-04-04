@@ -80,11 +80,11 @@ internal struct TabBarItemsData {
 }
 
 internal enum TabBarItem {
-  case activity(index: Int)
-  case dashboard(index: Int)
-  case home(index: Int)
-  case profile(avatarUrl: URL?, index: Int)
-  case search(index: Int)
+  case activity(index: RootViewControllerIndex)
+  case dashboard(index: RootViewControllerIndex)
+  case home(index: RootViewControllerIndex)
+  case profile(avatarUrl: URL?, index: RootViewControllerIndex)
+  case search(index: RootViewControllerIndex)
 }
 
 internal protocol RootViewModelInputs {
@@ -137,13 +137,13 @@ internal protocol RootViewModelOutputs {
   var scrollToTop: Signal<RootViewControllerIndex, NoError> { get }
 
   /// Emits an index that the tab bar should be switched to.
-  var selectedIndex: Signal<Int, NoError> { get }
+  var selectedIndex: Signal<RootViewControllerIndex, NoError> { get }
 
   /// Emits the array of view controllers that should be set on the tab bar.
   var setViewControllers: Signal<[RootViewControllerData], NoError> { get }
 
   /// Emits when the dashboard should switch projects.
-  var switchDashboardProject: Signal<(Int, Param), NoError> { get }
+  var switchDashboardProject: Signal<(RootViewControllerIndex, Param), NoError> { get }
 
   /// Emits data for setting tab bar item styles.
   var tabBarItemsData: Signal<TabBarItemsData, NoError> { get }
@@ -267,26 +267,32 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal func didSelect(index: Int) {
     self.didSelectIndexProperty.value = index
   }
+
   fileprivate let switchToActivitiesProperty = MutableProperty(())
   internal func switchToActivities() {
     self.switchToActivitiesProperty.value = ()
   }
+
   fileprivate let switchToDashboardProperty = MutableProperty<Param?>(nil)
   internal func switchToDashboard(project param: Param?) {
     self.switchToDashboardProperty.value = param
   }
+
   fileprivate let switchToDiscoveryProperty = MutableProperty<DiscoveryParams?>(nil)
   internal func switchToDiscovery(params: DiscoveryParams?) {
     self.switchToDiscoveryProperty.value = params
   }
+
   fileprivate let switchToLoginProperty = MutableProperty(())
   internal func switchToLogin() {
     self.switchToLoginProperty.value = ()
   }
+
   fileprivate let switchToProfileProperty = MutableProperty(())
   internal func switchToProfile() {
     self.switchToProfileProperty.value = ()
   }
+  
   fileprivate let switchToSearchProperty = MutableProperty(())
   internal func switchToSearch() {
     self.switchToSearchProperty.value = ()
