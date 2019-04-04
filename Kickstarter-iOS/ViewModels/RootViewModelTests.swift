@@ -32,8 +32,8 @@ final class RootViewModelTests: TestCase {
     let viewControllers = self.vm.outputs.setViewControllers
       .map { $0.map { $0.viewController }.compact() }
 
-    Signal.combineLatest(viewControllers, self.vm.outputs.scrollViewControllerAtIndexToTop)
-      .map { $0[$1] }
+    Signal.combineLatest(viewControllers, self.vm.outputs.scrollToTop)
+      .map { (vcs, idx) in vcs[idx] }
       .map(extractName)
       .observe(self.scrollToTopControllerName.observer)
 
@@ -166,6 +166,10 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.didSelect(index: 0)
 
     self.selectedIndex.assertValues([0, 1, 0], "Selects index immediately.")
+
+    self.vm.inputs.didSelect(index: 10)
+    
+    self.selectedIndex.assertValues([0, 1, 0, 3], "Selects index immediately.")
   }
 
   func testScrollToTop() {
