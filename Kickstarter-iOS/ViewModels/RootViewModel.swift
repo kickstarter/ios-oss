@@ -292,7 +292,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal func switchToProfile() {
     self.switchToProfileProperty.value = ()
   }
-  
+
   fileprivate let switchToSearchProperty = MutableProperty(())
   internal func switchToSearch() {
     self.switchToSearchProperty.value = ()
