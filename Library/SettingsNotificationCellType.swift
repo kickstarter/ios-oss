@@ -27,7 +27,7 @@ public enum SettingsNotificationSectionType: Int {
     case .creator:
       return [.pledgeActivity, .newComments, .newLikes, .creatorTips]
     case .social:
-      return [.messages, .newFollowers, .friendBacksProject]
+      return [.messages, .newFollowers, .friendBacksProject, .commentReplyDigest]
     }
   }
 
@@ -59,6 +59,7 @@ public enum SettingsNotificationCellType {
   case messages
   case newFollowers
   case friendBacksProject
+  case commentReplyDigest
 
   public static var allCases: [SettingsNotificationCellType] = [.projectUpdates,
                                                                 .projectNotifications,
@@ -70,6 +71,7 @@ public enum SettingsNotificationCellType {
                                                                 .messages,
                                                                 .newFollowers,
                                                                 .friendBacksProject,
+                                                                .commentReplyDigest
                                                                 ]
 
   public var accessibilityTraits: UIAccessibilityTraits {
@@ -101,7 +103,7 @@ public enum SettingsNotificationCellType {
 
   public var shouldShowPushNotificationButton: Bool {
     switch self {
-    case .projectNotifications, .emailFrequency, .creatorTips:
+    case .projectNotifications, .emailFrequency, .creatorTips, .commentReplyDigest:
       return false
     default:
       return true
@@ -144,6 +146,8 @@ public enum SettingsNotificationCellType {
       return Strings.profile_settings_social_followers()
     case .friendBacksProject:
       return Strings.profile_settings_social_friend_backs()
+    case .commentReplyDigest:
+      return "Comment reply digest"
     }
   }
 }

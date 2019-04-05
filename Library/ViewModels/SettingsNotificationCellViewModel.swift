@@ -143,7 +143,7 @@ SettingsNotificationCellViewModelType {
     self.enableButtonAnimation = Signal.combineLatest(
       self.emailNotificationButtonIsHidden,
       self.pushNotificationButtonIsHidden
-      ).map { !$0.0 || !$0.1 }
+    ).map { !$0.0 || !$0.1 }
 
     self.projectCountText = initialUser
       .map { Format.wholeNumber($0.stats.backedProjectsCount ?? 0) }
@@ -209,6 +209,7 @@ extension SettingsNotificationCellViewModel {
       AppEnvironment.current.koala.trackChangePushNotification(type: notification.trackingString,
                                                                on: enabled)
     case .comments,
+         .commentReplies,
          .follower,
          .friendActivity,
          .messages,
@@ -249,6 +250,9 @@ extension SettingsNotificationCellViewModel {
     case .friendBacksProject:
       return notificationType == .email
         ? UserAttribute.Notification.friendActivity : UserAttribute.Notification.mobileFriendActivity
+    case .commentReplyDigest:
+      return notificationType == .email
+        ? UserAttribute.Notification.commentReplies : nil
     default:
       return nil
     }

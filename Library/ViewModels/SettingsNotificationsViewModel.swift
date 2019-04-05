@@ -40,23 +40,25 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
         .demoteErrors()
     }.skipNil()
 
-    let projectActivityNotificationChanged: Signal<(UserAttribute, Bool), NoError> =
-      updatedUserProperty.signal.skipNil()
-          .map { user in
-            return  (UserAttribute.notification(.pledgeActivity), user.notifications.backings ?? false)
-    }
-
-    let creatorDigestNotificationChanged = emailFrequencyProperty.signal
+    let userAttributeChanged = emailFrequencyProperty.signal
       .map { frequency -> (UserAttribute, Bool) in
         let digestValue = frequency == .dailySummary ? true : false
 
         return (UserAttribute.notification(.creatorDigest), digestValue)
     }
 
-    let userAttributeChanged = Signal.merge(
-      projectActivityNotificationChanged.signal,
-      creatorDigestNotificationChanged.signal
-    )
+//    let projectActivityNotificationChanged: Signal<(UserAttribute, Bool), NoError> =
+//      updatedUserProperty.signal.skipNil()
+//          .map { user in
+//            return  (UserAttribute.notification(.pledgeActivity), user.notifications.backings ?? false)
+//    }
+
+   // let creatorDigestNotificationChanged =
+
+//    let userAttributeChanged = Signal.merge(
+//      projectActivityNotificationChanged.signal,
+//      creatorDigestNotificationChanged.signal
+//    )
 
     let updatedUser = initialUser.signal
       .switchMap { user in
@@ -94,15 +96,15 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       .skipNil()
       .filter { $0 == .emailFrequency }
 
-    let projectActivityEmailFrequencyDisabled = projectActivityNotificationChanged.signal
-      .map(second)
-      .filter(isFalse)
+//    let projectActivityEmailFrequencyDisabled = projectActivityNotificationChanged.signal
+//      .map(second)
+//      .filter(isFalse)
 
     self.pickerViewIsHidden = Signal.merge(
       emailFrequencyCellSelected.signal.mapConst(false),
-      emailFrequencyProperty.signal.mapConst(true),
-      dismissPickerTapProperty.signal.mapConst(true),
-      projectActivityEmailFrequencyDisabled.signal.mapConst(true)
+      emailFrequencyProperty.signal.mapConst(true)//,
+      //dismissPickerTapProperty.signal.mapConst(true),
+     // projectActivityEmailFrequencyDisabled.signal.mapConst(true)
     ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal

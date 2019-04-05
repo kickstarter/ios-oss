@@ -25,6 +25,7 @@ public enum UserAttribute {
     case let .notification(notification):
       switch notification {
       case .comments:             return \.notifications.comments
+      case .commentReplies:       return \.notifications.commentReplies
       case .creatorTips:          return \.notifications.creatorTips
       case .creatorDigest:        return \.notifications.creatorDigest
       case .follower:             return \.notifications.follower
@@ -52,6 +53,7 @@ public enum UserAttribute {
 
   public enum Notification {
     case comments
+    case commentReplies
     case creatorDigest
     case creatorTips
     case follower
@@ -71,6 +73,7 @@ public enum UserAttribute {
     public var trackingString: String {
       switch self {
       case .comments, .mobileComments:                return "New comments"
+      case .commentReplies:                           return "Comment reply digest"
       case .creatorDigest:                            return "Creator digest"
       case .creatorTips:                              return "Creator tips"
       case .follower, .mobileFollower:                return "New followers"

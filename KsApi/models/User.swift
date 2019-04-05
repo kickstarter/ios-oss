@@ -55,6 +55,7 @@ public struct User {
   public struct Notifications {
     public private(set) var backings: Bool?
     public private(set) var comments: Bool?
+    public private(set) var commentReplies: Bool?
     public private(set) var follower: Bool?
     public private(set) var friendActivity: Bool?
     public private(set) var messages: Bool?
@@ -214,6 +215,7 @@ extension User.Notifications: Argo.Decodable {
     let tmp1 = curry(User.Notifications.init)
       <^> json <|? "notify_of_backings"
       <*> json <|? "notify_of_comments"
+      <*> json <|? "notify_of_comment_replies"
       <*> json <|? "notify_of_follower"
       <*> json <|? "notify_of_friend_activity"
       <*> json <|? "notify_of_messages"
@@ -238,6 +240,7 @@ extension User.Notifications: EncodableType {
     var result: [String: Any] = [:]
     result["notify_of_backings"] = self.backings
     result["notify_of_comments"] = self.comments
+    result["notify_of_comment_replies"] = self.commentReplies
     result["notify_of_follower"] = self.follower
     result["notify_of_friend_activity"] = self.friendActivity
     result["notify_of_messages"] = self.messages
@@ -260,6 +263,7 @@ extension User.Notifications: Equatable {}
 public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
   return lhs.backings == rhs.backings &&
     lhs.comments == rhs.comments &&
+    lhs.commentReplies == rhs.commentReplies &&
     lhs.follower == rhs.follower &&
     lhs.friendActivity == rhs.friendActivity &&
     lhs.messages == rhs.messages &&

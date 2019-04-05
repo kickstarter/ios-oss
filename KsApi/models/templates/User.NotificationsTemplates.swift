@@ -2,6 +2,7 @@ extension User.Notifications {
   internal static let template = User.Notifications(
     backings: false,
     comments: false,
+    commentReplies: false,
     follower: false,
     friendActivity: false,
     messages: false,
