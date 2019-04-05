@@ -55,10 +55,6 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
    // let creatorDigestNotificationChanged =
 
-//    let userAttributeChanged = Signal.merge(
-//      projectActivityNotificationChanged.signal,
-//      creatorDigestNotificationChanged.signal
-//    )
 
     let updatedUser = initialUser.signal
       .switchMap { user in
@@ -102,9 +98,9 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     self.pickerViewIsHidden = Signal.merge(
       emailFrequencyCellSelected.signal.mapConst(false),
-      emailFrequencyProperty.signal.mapConst(true)//,
-      //dismissPickerTapProperty.signal.mapConst(true),
-     // projectActivityEmailFrequencyDisabled.signal.mapConst(true)
+      emailFrequencyProperty.signal.mapConst(true),
+      dismissPickerTapProperty.signal.mapConst(true)//,
+    //  projectActivityEmailFrequencyDisabled.signal.mapConst(true)
     ).skipRepeats()
 
     self.pickerViewSelectedRow = self.updateCurrentUser.signal

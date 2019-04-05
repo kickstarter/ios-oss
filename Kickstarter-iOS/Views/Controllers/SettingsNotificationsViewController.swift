@@ -192,7 +192,7 @@ extension SettingsNotificationsViewController: SettingsNotificationCellDelegate 
   }
 
   func settingsNotificationCell(_ cell: SettingsNotificationCell, didUpdateUser user: User) {
-   // self.viewModel.inputs.updateUser(user: user)
+    self.viewModel.inputs.updateUser(user: user)
   }
 }
 
