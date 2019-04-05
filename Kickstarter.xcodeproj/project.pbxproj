@@ -101,6 +101,10 @@
 		37D99C5B22247F58008EF839 /* NSBundleType+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D99C2222247F4A008EF839 /* NSBundleType+Tests.swift */; };
 		37DEC1E72257C9F30051EF9B /* PledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC1E62257C9F30051EF9B /* PledgeViewModel.swift */; };
 		37DEC2202257CA0A0051EF9B /* PledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC21F2257CA0A0051EF9B /* PledgeViewModelTests.swift */; };
+		37DEC2222257CB470051EF9B /* PledgeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC2212257CB470051EF9B /* PledgeTableViewController.swift */; };
+		37DEC2242257CB650051EF9B /* PledgeTableViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC2232257CB650051EF9B /* PledgeTableViewControllerTests.swift */; };
+		37DEC2262257CC110051EF9B /* PledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC2252257CC110051EF9B /* PledgeViewController.swift */; };
+		37DEC2282257CC270051EF9B /* PledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC2272257CC270051EF9B /* PledgeViewControllerTests.swift */; };
 		37F39BB5221D05FA00E0FA65 /* UITraitCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F39BB4221D05FA00E0FA65 /* UITraitCollection.swift */; };
 		37F39BEE221D062900E0FA65 /* UITraitCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F39BED221D062900E0FA65 /* UITraitCollectionTests.swift */; };
 		37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */; };
@@ -1905,6 +1909,10 @@
 		37D99C2222247F4A008EF839 /* NSBundleType+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBundleType+Tests.swift"; sourceTree = "<group>"; };
 		37DEC1E62257C9F30051EF9B /* PledgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewModel.swift; sourceTree = "<group>"; };
 		37DEC21F2257CA0A0051EF9B /* PledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewModelTests.swift; sourceTree = "<group>"; };
+		37DEC2212257CB470051EF9B /* PledgeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeTableViewController.swift; sourceTree = "<group>"; };
+		37DEC2232257CB650051EF9B /* PledgeTableViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeTableViewControllerTests.swift; sourceTree = "<group>"; };
+		37DEC2252257CC110051EF9B /* PledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewController.swift; sourceTree = "<group>"; };
+		37DEC2272257CC270051EF9B /* PledgeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerTests.swift; sourceTree = "<group>"; };
 		37F39BB4221D05FA00E0FA65 /* UITraitCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitCollection.swift; sourceTree = "<group>"; };
 		37F39BED221D062900E0FA65 /* UITraitCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitCollectionTests.swift; sourceTree = "<group>"; };
 		37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoType.swift; sourceTree = "<group>"; };
@@ -3518,6 +3526,10 @@
 				A7ED203E1E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift */,
 				D63BBCCF217E5460007E01F0 /* PaymentMethodsViewController.swift */,
 				D6F7416F21836C3D00C2DDA2 /* PaymentMethodsViewControllerTests.swift */,
+				37DEC2212257CB470051EF9B /* PledgeTableViewController.swift */,
+				37DEC2232257CB650051EF9B /* PledgeTableViewControllerTests.swift */,
+				37DEC2252257CC110051EF9B /* PledgeViewController.swift */,
+				37DEC2272257CC270051EF9B /* PledgeViewControllerTests.swift */,
 				9D9F580C1D131B1200CE81DE /* ProjectActivitiesViewController.swift */,
 				A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */,
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
@@ -6183,6 +6195,7 @@
 				7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */,
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
 				D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */,
+				37DEC2262257CC110051EF9B /* PledgeViewController.swift in Sources */,
 				77F9A9B02135FB760082A11E /* FindFriendsCell.swift in Sources */,
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift in Sources */,
@@ -6364,6 +6377,7 @@
 				A72C3AB51D00FB1F0075227E /* DiscoveryExpandableRowCell.swift in Sources */,
 				A7FA38D91D9068AD0041FC9C /* RewardsTitleCell.swift in Sources */,
 				A75AB1FA1C8A84B5002FC3E6 /* ActivitiesDataSource.swift in Sources */,
+				37DEC2222257CB470051EF9B /* PledgeTableViewController.swift in Sources */,
 				D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */,
 				014D62991E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift in Sources */,
 				D7237099211A3DA9001EA4CA /* SettingsFollowCell.swift in Sources */,
@@ -6406,6 +6420,7 @@
 				A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */,
 				A7ED204E1E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift in Sources */,
 				A7ED201B1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift in Sources */,
+				37DEC2242257CB650051EF9B /* PledgeTableViewControllerTests.swift in Sources */,
 				A7ED20161E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift in Sources */,
 				A7ED201D1E8322EC00BFFA01 /* TestCase.swift in Sources */,
 				A7ED201A1E83229E00BFFA01 /* ProfileDataSourceTests.swift in Sources */,
@@ -6456,6 +6471,7 @@
 				A7ED20181E83229E00BFFA01 /* FindFriendsDataSourceTests.swift in Sources */,
 				A7ED20531E8323E900BFFA01 /* SearchViewControllerTests.swift in Sources */,
 				A7ED20121E83229E00BFFA01 /* CommentsDataSourceTests.swift in Sources */,
+				37DEC2282257CC270051EF9B /* PledgeViewControllerTests.swift in Sources */,
 				778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */,
 				A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */,
 				A7ED204B1E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */,
