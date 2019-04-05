@@ -34,6 +34,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
                       userDefaults: MockKeyValueStore()) {
 
           let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+            controller.tableView.refreshControl = nil
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
           parent.view.frame.size.height = 250
 

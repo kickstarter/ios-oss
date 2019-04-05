@@ -43,4 +43,21 @@ final class ProjectCountryTests: XCTestCase {
     let country = decodedCountry.value!
     XCTAssertEqual(country, Project.Country.decodeJSONDictionary(country.encode()).value)
   }
+
+  func testJsonDecoding_ConfigJSON_SwiftDecodable() {
+    let json = """
+                { "name": "US",
+                  "currency_code": "USD",
+                  "currency_symbol": "$",
+                  "trailing_code": true
+                }
+               """
+
+    let data = json.data(using: .utf8)
+    if let data = data, let country = try? JSONDecoder().decode(Project.Country.self, from: data) {
+       XCTAssertEqual(country, .us)
+    } else {
+      XCTFail("Project.Country should be successfully decoded")
+    }
+  }
 }

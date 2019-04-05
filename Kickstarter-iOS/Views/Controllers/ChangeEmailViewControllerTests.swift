@@ -31,8 +31,8 @@ final class ChangeEmailViewControllerTests: TestCase {
   }
 
   func testChangeEmailScreen_unverifiedEmail() {
-    let userEnvelope = UserEnvelope(me: UserEmailFields.template |> \.isEmailVerified .~ false)
-    let service = MockService(changeEmailResponse: userEnvelope)
+    let userEmailFields = UserEmailFields.template |> \.isEmailVerified .~ false
+    let service = MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()
@@ -48,10 +48,10 @@ final class ChangeEmailViewControllerTests: TestCase {
   func testChangeEmailScreen_unverifiedEmail_isCreator() {
     let creator = User.template
       |> \.stats.createdProjectsCount .~ 3
-    let userEnvelope = UserEnvelope(me: UserEmailFields.template |> \.isEmailVerified .~ false)
+    let userEmailFields = UserEmailFields.template |> \.isEmailVerified .~ false
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: MockService(changeEmailResponse: userEnvelope),
+      withEnvironment(apiService: MockService(fetchGraphUserEmailFieldsResponse: userEmailFields),
                       currentUser: creator,
                       language: language) {
         let controller = ChangeEmailViewController.instantiate()
@@ -65,10 +65,8 @@ final class ChangeEmailViewControllerTests: TestCase {
   }
 
   func testChangeEmailScreen_undeliverableEmail() {
-    let userEnvelope = UserEnvelope(me: UserEmailFields.template
-      |> \.isEmailVerified .~ false
-      |> \.isDeliverable .~ false)
-    let service = MockService(changeEmailResponse: userEnvelope)
+    let userEmailFields = UserEmailFields.template |> \.isEmailVerified .~ false |> \.isDeliverable .~ false
+    let service = MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: service, currentUser: User.template, language: language) {
         let controller = ChangeEmailViewController.instantiate()

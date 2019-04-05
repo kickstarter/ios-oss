@@ -57,6 +57,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
     _ = self.subpageLabel
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.font .~ .ksr_body(size: 14)
+      |> UILabel.lens.backgroundColor .~ .white
       |> UIView.lens.contentHuggingPriority(for: .horizontal) .~ UILayoutPriority.defaultLow
       |> UIView.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriority.defaultLow
 
@@ -68,6 +69,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
 
     self.countLabel.rac.text = self.viewModel.outputs.countLabelText
     self.countLabel.rac.textColor = self.viewModel.outputs.countLabelTextColor
+    self.countLabel.rac.backgroundColor = self.viewModel.outputs.countLabelBackgroundColor
     self.countContainerView.rac.backgroundColor = self.viewModel.outputs.countLabelBackgroundColor
 
     self.viewModel.outputs.countLabelBorderColor

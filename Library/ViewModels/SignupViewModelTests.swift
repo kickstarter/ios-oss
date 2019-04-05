@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -83,6 +82,7 @@ internal final class SignupViewModelTests: TestCase {
 
     self.scheduler.advance()
     XCTAssertEqual(["User Signup", "Viewed Signup", "New User", "Signed Up"], self.trackingClient.events)
+    // swiftlint:disable:next force_unwrapping
     XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
     self.logIntoEnvironment.assertValueCount(1, "Login after scheduler advances.")
     self.postNotification.assertDidNotEmitValue("Does not emit until environment logged in.")
@@ -160,6 +160,7 @@ internal final class SignupViewModelTests: TestCase {
       self.showError.assertValues([error, error], "Signup error.")
       XCTAssertEqual(["User Signup", "Viewed Signup", "Errored User Signup", "Errored Signup",
         "Errored User Signup", "Errored Signup"], self.trackingClient.events)
+      // swiftlint:disable:next force_unwrapping
       XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
     }
   }

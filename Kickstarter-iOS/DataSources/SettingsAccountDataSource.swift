@@ -10,8 +10,8 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                      shouldHideEmailPasswordSection: Bool) {
 
     self.filteredSections = shouldHideEmailPasswordSection
-      ? SettingsAccountSectionType.allCases.filter { $0 != .emailPassword }
-      : SettingsAccountSectionType.allCases
+      ? SettingsAccountSectionType.allCases.filter { $0 != .changeEmailPassword }
+      : SettingsAccountSectionType.allCases.filter { $0 != .createPassword }
 
     self.clearValues()
 
@@ -26,7 +26,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                cellClass: SettingsTableViewCell.self,
                inSection: index)
 
-      if section == .emailPassword {
+      if section == .changeEmailPassword {
         self.insertChangeEmailCell(shouldHideEmailWarning)
       }
     }
@@ -35,7 +35,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   }
 
   func insertChangeEmailCell(_ shouldHideEmailWarning: Bool) {
-    guard let section = self.index(of: .emailPassword) else { return }
+    guard let section = self.index(of: .changeEmailPassword) else { return }
 
     self.insertRow(value: shouldHideEmailWarning,
                    cellClass: SettingsAccountWarningCell.self,
@@ -46,44 +46,21 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   func insertCurrencyCell(with currency: Currency?) -> IndexPath? {
     guard let section = self.index(of: .payment) else { return nil }
 
-    let cellValue = SettingsCurrencyCellValue(cellType: SettingsAccountCellType.currency, currency: currency)
+    let cellType = SettingsAccountCellType.currency(currency)
+
+    let cellValue = SettingsCellValue(cellType: cellType)
 
     return self.appendRow(value: cellValue,
-                          cellClass: SettingsCurrencyCell.self,
+                          cellClass: SettingsTableViewCell.self,
                           toSection: section)
-  }
-
-  func insertCurrencyPickerRow(with currency: Currency) -> IndexPath? {
-    guard let section = self.index(of: .payment) else { return nil }
-
-    let cellValue = SettingsCellValue(cellType: SettingsAccountCellType.currencyPicker, currency: currency)
-
-    return self.appendRow(value: cellValue,
-                          cellClass: SettingsCurrencyPickerCell.self,
-                          toSection: section)
-  }
-
-  func removeCurrencyPickerRow() -> IndexPath? {
-    guard let section = self.index(of: .payment) else { return nil }
-
-    let endIndex = self.numberOfItems(in: section)
-
-    guard endIndex > 0 else { return nil }
-
-    let cellValue = SettingsCellValue(cellType: SettingsAccountCellType.currencyPicker)
-
-    return self.deleteRow(value: cellValue,
-                          cellClass: SettingsCurrencyPickerCell.self,
-                          atIndex: endIndex - 1,
-                          inSection: section)
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {
     if let value = self[indexPath] as? SettingsCellValue {
       return value.cellType as? SettingsAccountCellType
-    } else if let currencyValue = self[indexPath] as? SettingsCurrencyCellValue {
+    } else if let currencyValue = self[indexPath] as? SettingsCellValue {
       return currencyValue.cellType as? SettingsAccountCellType
-      //swiftlint:disable unused_optional_binding
+      // swiftlint:disable:next unused_optional_binding
     } else if let _ = self[indexPath] as? Bool {
       return SettingsAccountCellType.changeEmail
     } else {
@@ -96,10 +73,6 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     case let (cell as SettingsAccountWarningCell, value as Bool):
       cell.configureWith(value: value)
     case let (cell as SettingsTableViewCell, value as SettingsCellValue):
-      cell.configureWith(value: value)
-    case let (cell as SettingsCurrencyPickerCell, value as SettingsCellValue):
-      cell.configureWith(value: value)
-    case let (cell as SettingsCurrencyCell, value as SettingsCurrencyCellValue):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

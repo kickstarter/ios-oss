@@ -37,6 +37,10 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     self.configureHeaderFooterViews()
 
     self.navigationItem.rightBarButtonItem = self.editButton
+    self.editButton.possibleTitles = [
+      Strings.discovery_favorite_categories_buttons_edit(),
+      Strings.Done()
+    ]
 
     self.dataSource.deletionHandler = { [weak self] creditCard in
       self?.viewModel.inputs.didDelete(creditCard, visibleCellCount: self?.tableView.visibleCells.count ?? 0)
@@ -67,12 +71,8 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     }
 
     _ = self.tableView
-      |> \.backgroundColor .~ .clear
-      |> \.rowHeight .~ Styles.grid(11)
-      |> \.allowsSelection .~ false
-      |> \.separatorStyle .~ .singleLine
-      |> \.separatorColor .~ .ksr_grey_500
-      |> \.separatorInset .~ .init(left: Styles.grid(2))
+      |> tableViewStyle
+      |> tableViewSeparatorStyle
   }
 
   override func bindViewModel() {
@@ -122,6 +122,13 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true)
     }
+
+    self.viewModel.outputs.editButtonTitle
+      .observeForUI()
+      .observeValues { [weak self] title in
+        _ = self?.editButton
+          ?|> \.title %~ { _ in title }
+    }
   }
 
   // MARK: - Actions
@@ -136,7 +143,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
 
-    self.present(nav, animated: true, completion: nil)
+    self.present(nav, animated: true) { self.viewModel.inputs.addNewCardPresented() }
   }
 
   // MARK: - Private Helpers
@@ -205,36 +212,18 @@ extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
   }
 }
 
-private extension UIView {
-  func constrainEdges(to view: UIView) {
-    self.translatesAutoresizingMaskIntoConstraints = false
+// MARK: - Styles
 
-    NSLayoutConstraint.activate([
-      self.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      self.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      self.topAnchor.constraint(equalTo: view.topAnchor),
-      self.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-      ])
-  }
+private let tableViewStyle: TableViewStyle = { (tableView: UITableView) in
+  tableView
+    |> \.backgroundColor .~ UIColor.clear
+    |> \.rowHeight .~ Styles.grid(11)
+    |> \.allowsSelection .~ false
 }
 
-private extension UITableView {
-  func ksr_sizeHeaderFooterViewsToFit() {
-    let keyPaths: [ReferenceWritableKeyPath<UITableView, UIView?>] = [
-      (\.tableHeaderView),
-      (\.tableFooterView)
-    ]
-
-    keyPaths.forEach { keyPath in
-      if let view = self[keyPath: keyPath] {
-        let size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-
-        if view.frame.height != size.height {
-          view.frame.size.height = size.height
-
-          self[keyPath: keyPath] = view
-        }
-      }
-    }
-  }
+private let tableViewSeparatorStyle: TableViewStyle = { tableView in
+  tableView
+    |> \.separatorStyle .~ .singleLine
+    |> \.separatorColor .~ .ksr_grey_500
+    |> \.separatorInset .~ .init(left: Styles.grid(2))
 }

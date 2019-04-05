@@ -17,9 +17,9 @@ final class ChangeEmailViewModelTests: TestCase {
   private let didSendVerificationEmail = TestObserver<Void, NoError>()
   private let dismissKeyboard = TestObserver<(), NoError>()
   private let emailText = TestObserver<String, NoError>()
+  private let messageLabelViewHidden = TestObserver<Bool, NoError>()
   private let onePasswordButtonIsHidden = TestObserver<Bool, NoError>()
   private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-  private let messageLabelViewHidden = TestObserver<Bool, NoError>()
   private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
   private let passwordText = TestObserver<String, NoError>()
   private let resendVerificationEmailViewIsHidden = TestObserver<Bool, NoError>()
@@ -60,16 +60,34 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.verificationEmailButtonTitle.observe(self.verificationEmailButtonTitle.observer)
   }
 
-  func testDidChangeEmailEmits_OnSuccess() {
+  func testChangeEmail_OnSuccess() {
+    let updatedEmail = UserEmailFields.template |> \.email .~ "apple@kickstarter.com"
+    let response = UserEnvelope<UserEmailFields>(me: updatedEmail)
+    let mockService = MockService(changeEmailResponse: response)
 
-    self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
-    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.saveButtonTapped()
+      self.scheduler.advance()
 
-    self.scheduler.advance()
+      self.resendVerificationEmailViewIsHidden.assertValues([true])
+      self.unverifiedEmailLabelHidden.assertValues([true])
+      self.emailText.assertValues(["ksr@kickstarter.com"])
 
-    self.didChangeEmail.assertDidEmitValue()
+      self.vm.inputs.emailFieldTextDidChange(text: "apple@kickstarter.com")
+      self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+      self.vm.inputs.saveButtonIsEnabled(true)
+      self.vm.inputs.saveButtonTapped()
+
+      self.scheduler.advance()
+
+      self.didChangeEmail.assertDidEmitValue()
+      self.emailText.assertValues(["ksr@kickstarter.com", "apple@kickstarter.com"])
+      self.resendVerificationEmailViewIsHidden.assertValues([true],
+                                                            "Resend verification email button does not show")
+      self.unverifiedEmailLabelHidden.assertValues([true])
+    }
   }
 
   func testDidFailToChangeEmailEmits_OnFailure() {
@@ -81,6 +99,7 @@ final class ChangeEmailViewModelTests: TestCase {
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@ksr.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
 
+      self.vm.inputs.saveButtonIsEnabled(true)
       self.vm.inputs.saveButtonTapped()
 
       self.activityIndicatorShouldShow.assertValues([true])
@@ -209,14 +228,14 @@ final class ChangeEmailViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.resendVerificationEmailViewIsHidden
-      .assertValues([true, true], "Email is deliverable and verified")
+      .assertValues([true], "Email is deliverable and verified")
   }
 
   func testResendVerificationViewIsNotHidden_IfEmailIsNotVerified() {
     let userEmailFields = UserEmailFields.template
       |> \.isEmailVerified .~ false
 
-    let mockService = MockService(changeEmailResponse: UserEnvelope(me: userEmailFields))
+    let mockService = MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -231,7 +250,7 @@ final class ChangeEmailViewModelTests: TestCase {
     let userEmailFields = UserEmailFields.template
       |> \.isDeliverable .~ false
 
-    let mockService = MockService(changeEmailResponse: UserEnvelope(me: userEmailFields))
+    let mockService = MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
@@ -255,7 +274,7 @@ final class ChangeEmailViewModelTests: TestCase {
     let userEmailFields = UserEmailFields.template
       |> \.isDeliverable .~ false
 
-    withEnvironment(apiService: MockService(changeEmailResponse: UserEnvelope(me: userEmailFields))) {
+    withEnvironment(apiService: MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -277,7 +296,7 @@ final class ChangeEmailViewModelTests: TestCase {
     let userEmailFields = UserEmailFields.template
       |> \.isEmailVerified .~ false
 
-    withEnvironment(apiService: MockService(changeEmailResponse: UserEnvelope(me: userEmailFields))) {
+    withEnvironment(apiService: MockService(fetchGraphUserEmailFieldsResponse: userEmailFields)) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -347,7 +366,7 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testDismissKeyboard() {
+  func testDismissKeyboard_OnSuccess() {
 
     self.dismissKeyboard.assertDidNotEmitValue()
 
@@ -360,6 +379,20 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.vm.inputs.textFieldShouldReturn(with: .done)
     self.dismissKeyboard.assertValueCount(2)
+  }
+
+  func testDismissKeyboard_InvalidEmail() {
+
+    self.dismissKeyboard.assertDidNotEmitValue()
+
+    self.vm.inputs.emailFieldTextDidChange(text: "new@email.com.")
+    self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+
+    self.vm.inputs.saveButtonIsEnabled(false)
+    self.vm.inputs.textFieldShouldReturn(with: .done)
+
+    self.dismissKeyboard.assertValueCount(1)
+    self.didChangeEmail.assertDidNotEmitValue()
   }
 
   func testPasswordFieldBecomeFirstResponder_WhenTappingNext() {
@@ -378,11 +411,13 @@ final class ChangeEmailViewModelTests: TestCase {
 
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
     self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+    self.vm.inputs.saveButtonIsEnabled(true)
 
     self.scheduler.advance()
 
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
     self.vm.inputs.passwordFieldTextDidChange(text: "123456")
+    self.vm.inputs.saveButtonIsEnabled(true)
 
     self.vm.inputs.saveButtonTapped()
 
@@ -396,6 +431,7 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
     self.vm.inputs.passwordFieldTextDidChange(text: "123456")
 
+    self.vm.inputs.saveButtonIsEnabled(true)
     self.vm.inputs.saveButtonTapped()
 
     self.textFieldsAreEnabled.assertValues([false])
@@ -429,13 +465,14 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.vm.inputs.emailFieldTextDidChange(text: "new@email.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
-
+      self.vm.inputs.saveButtonIsEnabled(true)
       self.vm.inputs.saveButtonTapped()
 
       self.scheduler.advance()
 
       XCTAssertEqual(["Changed Email"], client.events)
 
+      self.vm.inputs.saveButtonIsEnabled(true)
       self.vm.inputs.saveButtonTapped()
       self.scheduler.advance()
 
