@@ -90,9 +90,9 @@ public final class RootTabBarViewController: UITabBarController {
     self.viewModel.outputs.scrollToTop
       .observeForControllerAction()
       .map { [weak self] index -> UIViewController? in
-        guard let vcs = self?.viewControllers, index < vcs.count - 1 else { return nil }
+        guard let vcs = self?.viewControllers else { return nil }
 
-        return vcs[index]
+        return vcs[clamp(0, vcs.count - 1)(index)]
       }
       .skipNil()
       .map(extractViewController)
@@ -144,7 +144,11 @@ public final class RootTabBarViewController: UITabBarController {
   }
 
   private func viewControllerAndParam<T, P>(with index: RootViewControllerIndex, param: P) -> (T, P)? {
-    guard let vc = self.viewControllers?[index] as? T else { return nil }
+    guard
+      let vcs = self.viewControllers,
+      let vc = vcs[clamp(0, vcs.count - 1)(index)] as? T
+    else { return nil }
+
     return (vc, param)
   }
 

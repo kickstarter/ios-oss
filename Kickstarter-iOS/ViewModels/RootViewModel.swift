@@ -54,7 +54,7 @@ internal enum RootViewControllerData: Equatable {
     }
   }
 
-  var isDashBoard: Bool {
+  var isDashboard: Bool {
     switch self {
     case .dashboard:
       return true
@@ -209,7 +209,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .takePairWhen(self.switchToDiscoveryProperty.signal.skipNil())
 
     let dashboardControllerIndex = self.setViewControllers
-      .map { $0.index(where: { $0.isDashBoard }) }
+      .map { $0.index(where: { $0.isDashboard }) }
       .skipNil()
 
     self.switchDashboardProject = Signal

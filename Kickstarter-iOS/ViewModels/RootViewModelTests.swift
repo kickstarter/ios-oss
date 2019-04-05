@@ -33,7 +33,7 @@ final class RootViewModelTests: TestCase {
       .map { $0.map { $0.viewController }.compact() }
 
     Signal.combineLatest(viewControllers, self.vm.outputs.scrollToTop)
-      .map { (vcs, idx) in vcs[idx] }
+      .map { (vcs, idx) in vcs[clamp(0, vcs.count - 1)(idx)] }
       .map(extractName)
       .observe(self.scrollToTopControllerName.observer)
 
