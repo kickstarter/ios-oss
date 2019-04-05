@@ -15,8 +15,8 @@ final class PledgeViewController: UIViewController {
     return PledgeViewController()
   }
 
-  func configure(with project: Project) {
-    self.pledgeTableViewController.configure(with: project)
+  func configure(with reward: Reward) {
+    self.pledgeTableViewController.configure(with: reward)
   }
 
   override func viewDidLoad() {
