@@ -153,8 +153,6 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
 extension SettingsPrivacyViewController: SettingsPrivacyDeleteAccountCellDelegate {
   internal func settingsPrivacyDeleteAccountCellTapped(_ cell: SettingsPrivacyDeleteAccountCell,
                                                        with url: URL) {
-    let controller = SFSafariViewController(url: url)
-    controller.modalPresentationStyle = .overFullScreen
-    self.present(controller, animated: true, completion: nil)
+    self.goTo(url: url)
   }
 }
