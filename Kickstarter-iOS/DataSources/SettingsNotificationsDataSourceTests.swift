@@ -15,7 +15,7 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     XCTAssertEqual(2, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(4, dataSource.tableView(tableView, numberOfRowsInSection: 1))
   }
 
   func testLoadUser_isCreator_pledgeActivityDisabled() {
@@ -26,7 +26,7 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
     XCTAssertEqual(3, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(4, dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(4, dataSource.tableView(tableView, numberOfRowsInSection: 2))
   }
 
   func testLoadUser_isCreator_pledgeActivityEnabled() {
@@ -40,7 +40,7 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
     XCTAssertEqual(3, dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(2, dataSource.tableView(tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(5, dataSource.tableView(tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(3, dataSource.tableView(tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(4, dataSource.tableView(tableView, numberOfRowsInSection: 2))
   }
 
   func testCellTypeForIndexPath() {

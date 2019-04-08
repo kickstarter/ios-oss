@@ -70,6 +70,7 @@
 "Closes_project" = "Closes project.";
 "Collapses_subcategories" = "Collapses subcategories.";
 "Collections" = "Collections";
+"Comment_reply_digest" = "Comment reply digest";
 "Complete_payment" = "Complete payment";
 "Confirm_password" = "Confirm new password";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
@@ -100,7 +101,7 @@
 "Currency_EUR" = "€ Euro (EUR)";
 "Currency_GBP" = "£ Pound Sterling (GBP)";
 "Currency_HKD" = "$ Hong Kong Dollar (HKD)";
-"Currency_JPY" = "¥ Yen (JPY)";
+"Currency_JPY" = "¥ Japanese Yen (JPY)";
 "Currency_MXN" = "$ Mexican Peso (MXN)";
 "Currency_NOK" = "kr Norwegian Krone (NOK)";
 "Currency_NZD" = "$ New Zealand Dollar (NZD)";

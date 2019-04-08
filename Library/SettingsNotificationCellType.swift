@@ -147,7 +147,7 @@ public enum SettingsNotificationCellType {
     case .friendBacksProject:
       return Strings.profile_settings_social_friend_backs()
     case .commentReplyDigest:
-      return "Comment reply digest"
+      return Strings.Comment_reply_digest()
     }
   }
 }
