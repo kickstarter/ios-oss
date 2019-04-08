@@ -51,7 +51,7 @@ final class StringsScriptTests: XCTestCase {
     let finalDictionary = ["de": ["A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency": "Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der WU00e4hrung des Erstellungslandes abgebucht. Bis dahin kU00f6nnen nur ungefU00e4hre BetrU00e4ge angezeigt werden."]]
 
     let subject = Strings()
-    XCTAssertEqual(finalDictionary, try subject.deserialize(serializedDic as [String : AnyObject]))
+    XCTAssertEqual(finalDictionary, try subject.deserialize(serializedDic as [String: AnyObject]))
   }
 
   func testStaticStringsFileContents() {
