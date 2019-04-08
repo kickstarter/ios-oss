@@ -76,6 +76,10 @@
 		3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */; };
 		3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */; };
 		3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */; };
+		370BE71622541C8100B44DB2 /* UIViewController+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE71522541C8100B44DB2 /* UIViewController+URL.swift */; };
+		370BE75022541CCE00B44DB2 /* UIViewController+URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */; };
+		370F527A2254267900F159B9 /* UIApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52792254267900F159B9 /* UIApplicationType.swift */; };
+		370F52B3225426C700F159B9 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52B2225426C700F159B9 /* UIApplication.swift */; };
 		3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */; };
 		373AB222222A058600769FC2 /* CreatePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */; };
 		373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */; };
@@ -1869,6 +1873,10 @@
 		3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariablesTests.swift; sourceTree = "<group>"; };
 		3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedFooterView.swift; sourceTree = "<group>"; };
 		3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordTableControllerTests.swift; sourceTree = "<group>"; };
+		370BE71522541C8100B44DB2 /* UIViewController+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+URL.swift"; sourceTree = "<group>"; };
+		370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+URLTests.swift"; sourceTree = "<group>"; };
+		370F52792254267900F159B9 /* UIApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationType.swift; sourceTree = "<group>"; };
+		370F52B2225426C700F159B9 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModel.swift; sourceTree = "<group>"; };
 		373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -3791,6 +3799,8 @@
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
 				0156B4181D10B419000C4252 /* UIAlertController.swift */,
 				D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */,
+				370F52B2225426C700F159B9 /* UIApplication.swift */,
+				370F52792254267900F159B9 /* UIApplicationType.swift */,
 				0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */,
 				D78E4E472188CB4300E99295 /* UIButton+HapticFeedback.swift */,
 				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
@@ -3815,6 +3825,8 @@
 				37F39BED221D062900E0FA65 /* UITraitCollectionTests.swift */,
 				37BB45C82243031100E7392A /* UIView+AutoLayout.swift */,
 				A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */,
+				370BE71522541C8100B44DB2 /* UIViewController+URL.swift */,
+				370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */,
 				A75C811B1D210C4700B5AD03 /* UpdateActivityItemProvider.swift */,
 				D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */,
 				A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */,
@@ -5745,6 +5757,7 @@
 				A75511621C8642C3005355CF /* LaunchedCountries.swift in Sources */,
 				A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
 				A73379481D0E36CA00C91445 /* Fonts.swift in Sources */,
+				370F52B3225426C700F159B9 /* UIApplication.swift in Sources */,
 				015572731E79C4FF005FB8CC /* BackerDashboardProjectCellViewModel.swift in Sources */,
 				8016BFE81D0F582D00067956 /* String+Whitespace.swift in Sources */,
 				A76126AD1C90C94000EDCCB9 /* ValueCellDataSource.swift in Sources */,
@@ -5771,6 +5784,7 @@
 				D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */,
 				A7F441BB1D005A9400FE6FC5 /* CommentDialogViewModel.swift in Sources */,
 				A7F441B31D005A9400FE6FC5 /* ActivityProjectStatusViewModel.swift in Sources */,
+				370BE71622541C8100B44DB2 /* UIViewController+URL.swift in Sources */,
 				59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */,
 				A75511641C8642C3005355CF /* NSBundleType.swift in Sources */,
 				D04AAC2D218BB70D00CF713E /* SettingsNotificationPickerViewModel.swift in Sources */,
@@ -5820,6 +5834,7 @@
 				80EAEF001D243A7A008C2353 /* BackingViewModel.swift in Sources */,
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
 				A7F441E51D005A9400FE6FC5 /* SearchViewModel.swift in Sources */,
+				370F527A2254267900F159B9 /* UIApplicationType.swift in Sources */,
 				A75C81171D210BD700B5AD03 /* ShareViewModel.swift in Sources */,
 				0156B4191D10B419000C4252 /* UIAlertController.swift in Sources */,
 				A757EAF01D1ABE7400A5C978 /* ActivitySurveyResponseCellViewModel.swift in Sources */,
@@ -5957,6 +5972,7 @@
 				A7ED1FF41E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift in Sources */,
 				D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */,
 				D093B4F021A8B14100910962 /* MockPushRegistration.swift in Sources */,
+				370BE75022541CCE00B44DB2 /* UIViewController+URLTests.swift in Sources */,
 				A7ED1FEA1E831C5C00BFFA01 /* HelpViewModelTests.swift in Sources */,
 				A7ED1F301E830FDC00BFFA01 /* NavigationTests.swift in Sources */,
 				37F39BEE221D062900E0FA65 /* UITraitCollectionTests.swift in Sources */,
