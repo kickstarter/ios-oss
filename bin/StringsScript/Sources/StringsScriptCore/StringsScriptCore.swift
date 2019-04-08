@@ -29,6 +29,7 @@ public final class Strings {
   }
 
   public func deserialize(_ JSONDictionary: [String: AnyObject]?) throws -> [String: [String: String]] {
+
     let deserializedStringsByLocale = JSONDictionary
       .flatMap { $0["locales"] as? [String: [String: AnyObject]] }
       .map(Dictionary.renamed(key: "en", to: "Base"))

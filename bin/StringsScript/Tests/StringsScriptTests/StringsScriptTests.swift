@@ -5,11 +5,8 @@ import class Foundation.Bundle
 // swiftlint:disable line_length
 final class StringsScriptTests: XCTestCase {
 
-  var subject: Strings?
-
   override func setUp() {
     super.setUp()
-    self.subject = Strings()
   }
 
   func testStringsScript_run_throwsErrorWithInsufficientArguments() {
@@ -25,8 +22,10 @@ final class StringsScriptTests: XCTestCase {
   }
 
   func testStringsFileContents() {
+    let subject = Strings()
+
     let strings = ["Add_attachments": "Add attachments…"]
-    let content = self.subject?.stringsFileContents(strings)
+    let content = subject.stringsFileContents(strings)
     XCTAssertEqual(content, "\"Add_attachments\" = \"Add attachments…\";")
   }
 
@@ -46,8 +45,17 @@ final class StringsScriptTests: XCTestCase {
   }
 
   func testDeserialize() {
-    //swiftlint:disable:next todo
-    //TODO
+    let serializedDic =
+      ["locales":
+        ["de":
+          ["A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency": "Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der WU00e4hrung des Erstellungslandes abgebucht. Bis dahin kU00f6nnen nur ungefU00e4hre BetrU00e4ge angezeigt werden."]
+        ]
+    ]
+
+    let finalDictionary = ["de": ["A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency": "Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der WU00e4hrung des Erstellungslandes abgebucht. Bis dahin kU00f6nnen nur ungefU00e4hre BetrU00e4ge angezeigt werden."]]
+
+    let subject = Strings()
+    XCTAssertEqual(finalDictionary, try subject.deserialize(serializedDic as [String : AnyObject]))
   }
 
   func testStaticStringsFileContents() {
