@@ -127,11 +127,11 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.pickerViewIsHidden.assertDidNotEmitValue()
+    self.pickerViewIsHidden.assertValues([true], "Picker should be hidden")
 
     self.vm.inputs.didSelectRow(cellType: .emailFrequency)
 
-    self.pickerViewIsHidden.assertValues([false], "Picker view should not be hidden")
+    self.pickerViewIsHidden.assertValues([true, false], "Picker view should not be hidden")
   }
 
   func testShowHidePickerView_TapGesture() {
@@ -139,15 +139,15 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.pickerViewIsHidden.assertDidNotEmitValue()
+    self.pickerViewIsHidden.assertValues([true], "Picker should be hidden")
 
     self.vm.inputs.didSelectRow(cellType: .emailFrequency)
 
-    self.pickerViewIsHidden.assertValues([false], "Picker view is shown")
+    self.pickerViewIsHidden.assertValues([true, false], "Picker view is shown")
 
     self.vm.inputs.dismissPickerTap()
 
-    self.pickerViewIsHidden.assertValues([false, true], "Picker view should be hidden")
+    self.pickerViewIsHidden.assertValues([true, false, true], "Picker view should be hidden")
   }
 
   func testShowHidePickerView_EmailFrequencyDisabled() {
@@ -158,14 +158,14 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.pickerViewIsHidden.assertDidNotEmitValue()
+    self.pickerViewIsHidden.assertValues([true], "Picker should be hidden")
 
     self.vm.inputs.didSelectRow(cellType: .emailFrequency)
 
-    self.pickerViewIsHidden.assertValues([false], "Picker view is shown")
+    self.pickerViewIsHidden.assertValues([true, false], "Picker view is shown")
 
     self.vm.inputs.updateUser(user: user)
 
-    self.pickerViewIsHidden.assertValues([false, true], "Picker view should be hidden")
+    self.pickerViewIsHidden.assertValues([true, false, true], "Picker view should be hidden")
   }
 }
