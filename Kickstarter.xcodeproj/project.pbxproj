@@ -666,7 +666,6 @@
 		D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698EA225CF62B00EB58BD /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698EB225CF63C00EB58BD /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00698ED225D110300EB58BD /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
 		D00A371922580E9D00F46F47 /* FBSnapshotTestCase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; };
 		D00A3720225815FA00F46F47 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D00A371F225815FA00F46F47 /* AlamofireImage.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		D00A373F2258270600F46F47 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D00A373E2258270600F46F47 /* Alamofire.framework */; };
@@ -917,6 +916,16 @@
 		D08CD1FF21913166009F89F0 /* WatchProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */; };
 		D08CD201219216BA009F89F0 /* WatchProjectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */; };
 		D08CD20321922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD20221922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift */; };
+		D0936290225D4FA600E1411A /* Argo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0936291225D4FCB00E1411A /* Prelude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0936295225D50C200E1411A /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0936296225D50CA00E1411A /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0936297225D50D800E1411A /* Prelude_UIKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0936298225D50E100E1411A /* OnePasswordExtension.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7D2257FADF00532AC1 /* OnePasswordExtension.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0936299225D50EB00E1411A /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D093B46321A86F7F00910962 /* PushRegistrationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B46221A86F7E00910962 /* PushRegistrationType.swift */; };
 		D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B49B21A86FD800910962 /* PushRegistration.swift */; };
 		D093B4F021A8B14100910962 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
@@ -1174,13 +1183,6 @@
 			remoteGlobalIDString = A755113B1C8642B3005355CF;
 			remoteInfo = "Library-iOS";
 		};
-		A782B4931D2D36440069D10E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
-			remoteInfo = "Kickstarter-iOS";
-		};
 		A7BA54341E1E493600E54377 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -1242,6 +1244,16 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D0936299225D50EB00E1411A /* Curry.framework in CopyFiles */,
+				D0936298225D50E100E1411A /* OnePasswordExtension.framework in CopyFiles */,
+				D0936297225D50D800E1411A /* Prelude_UIKit.framework in CopyFiles */,
+				D0936296225D50CA00E1411A /* Runes.framework in CopyFiles */,
+				D0936295225D50C200E1411A /* Result.framework in CopyFiles */,
+				D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */,
+				D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
+				D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */,
+				D0936291225D4FCB00E1411A /* Prelude.framework in CopyFiles */,
+				D0936290225D4FA600E1411A /* Argo.framework in CopyFiles */,
 				D00698DD225C320500EB58BD /* FBSnapshotTestCase.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2429,7 +2441,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D00698ED225D110300EB58BD /* Kickstarter_Framework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4119,7 +4130,6 @@
 			);
 			dependencies = (
 				A724BA631D2BFCC10041863C /* PBXTargetDependency */,
-				A782B4941D2D36440069D10E /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-Framework-iOSTests";
 			productName = KickstarterTests;
@@ -4180,9 +4190,7 @@
 					};
 					A75511441C8642B3005355CF = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = 48YBP49Y5N;
 						LastSwiftMigration = 1000;
-						TestTargetID = A7D1F9441C850B7C000D41D5;
 					};
 					A7BA54281E1E493500E54377 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -4221,9 +4229,7 @@
 					};
 					A7D1F9591C850B7C000D41D5 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = 48YBP49Y5N;
 						LastSwiftMigration = 1000;
-						TestTargetID = A7D1F9441C850B7C000D41D5;
 					};
 					D015874F1EEB2DE4006E7684 = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -5518,11 +5524,6 @@
 			target = A755113B1C8642B3005355CF /* Library-iOS */;
 			targetProxy = A76E0A4B1D00C00500EC525A /* PBXContainerItemProxy */;
 		};
-		A782B4941D2D36440069D10E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
-			targetProxy = A782B4931D2D36440069D10E /* PBXContainerItemProxy */;
-		};
 		A7BA54351E1E493600E54377 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7BA54281E1E493500E54377 /* LiveStream */;
@@ -5659,6 +5660,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5708,6 +5710,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5720,7 +5723,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/KickDebug";
 			};
 			name = "Hockey Beta";
 		};
@@ -5823,6 +5825,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5835,7 +5838,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/KickDebug";
 			};
 			name = Debug;
 		};
@@ -5844,6 +5846,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5856,7 +5859,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/KickDebug";
 			};
 			name = Release;
 		};
@@ -6158,6 +6160,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -6177,6 +6180,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -6654,6 +6658,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -6666,7 +6671,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickDebug.app/KickDebug";
 			};
 			name = "Hockey Alpha";
 		};
@@ -6710,6 +6714,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

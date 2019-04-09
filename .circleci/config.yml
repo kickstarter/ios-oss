@@ -145,6 +145,15 @@ jobs:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+      - run:
           name: Make bootstrap
           command: make bootstrap
 
@@ -199,6 +208,15 @@ jobs:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+      - run:
           name: Make bootstrap
           command: make bootstrap
 
@@ -251,6 +269,15 @@ jobs:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+      - run:
           name: Make bootstrap
           command: make bootstrap
 
@@ -301,6 +328,15 @@ jobs:
       - restore_cache:
           keys:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+
+      - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -370,6 +406,15 @@ jobs:
       - restore_cache:
           keys:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+
+      - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Make bootstrap
@@ -445,6 +490,15 @@ jobs:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+      - run:
           name: Make bootstrap
           command: make bootstrap
 
@@ -513,6 +567,15 @@ jobs:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+      - run:
           name: Make bootstrap
           command: make bootstrap
 
@@ -568,6 +631,15 @@ jobs:
       - restore_cache:
           keys:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+
+      - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Make bootstrap
