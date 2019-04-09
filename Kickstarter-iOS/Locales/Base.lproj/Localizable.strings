@@ -4,7 +4,7 @@
 "Account" = "Account";
 "Add" = "Add";
 "Add_attachments" = "Add attachments…";
-"Add_new_card" = "Add a new card";
+"Add_new_card" = "Add new card";
 "All_Art_Projects" = "All Art Projects";
 "All_Comics_Projects" = "All Comics Projects";
 "All_Crafts_Projects" = "All Crafts Projects";
@@ -33,6 +33,7 @@
 "Ask_me_anything" = "Ask me anything";
 "Available_to_watch_for_time_more_units" = "Available to watch for %{time} more %{units}";
 "Back" = "Back";
+"Back_this_project" = "Back this project";
 "Back_this_project_below" = "Back this project below";
 "Backed_by_Friends" = "Backed by Friends";
 "Backed_by_people_you_follow" = "Backed by people you follow";
@@ -48,6 +49,7 @@
 "Biography" = "Biography";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
+"By_pledging_you_agree" = "By pledging you agree to Kickstarter’s Terms of Use, Privacy Policy and Cookie Policy.";
 "CVC" = "CVC";
 "Cancel" = "Cancel";
 "Cancel_your_pledge" = "Cancel your pledge";
@@ -72,6 +74,7 @@
 "Confirm_password" = "Confirm new password";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
 "Contact_creator" = "Contact creator";
+"Continue" = "Continue";
 "Continue_to_payment" = "Continue to payment";
 "Continue_to_update_pledge" = "Continue to update pledge";
 "Couldnt_add_attachment" = "Couldn't add attachment";
@@ -97,7 +100,7 @@
 "Currency_EUR" = "€ Euro (EUR)";
 "Currency_GBP" = "£ Pound Sterling (GBP)";
 "Currency_HKD" = "$ Hong Kong Dollar (HKD)";
-"Currency_JPY" = "¥ Yen (JPY)";
+"Currency_JPY" = "¥ Japanese Yen (JPY)";
 "Currency_MXN" = "$ Mexican Peso (MXN)";
 "Currency_NOK" = "kr Norwegian Krone (NOK)";
 "Currency_NZD" = "$ New Zealand Dollar (NZD)";
@@ -129,6 +132,7 @@
 "Email_unverified" = "This email address is unverified.";
 "Ending_soon" = "Ending Soon";
 "Estimated_delivery" = "Estimated delivery:";
+"Estimated_delivery_of" = "Estimated delivery of";
 "Expands_subcategories" = "Expands subcategories.";
 "Expiration" = "Expiration";
 "Expired_date_at_time" = "Expired %{date} at %{time}";
@@ -326,6 +330,7 @@
 "Project_Suspended" = "Project Suspended.";
 "Project_activity" = "Project activity";
 "Project_cancelled" = "Project cancelled";
+"Project_goal_and_pledge" = "Project goal and pledge amounts will be shown in approximate conversions. A successfully funded project will collect your pledge in its native currency.";
 "Project_reminders" = "Project reminders";
 "Project_saved" = "Project saved.";
 "Project_updates" = "Project updates";
@@ -355,6 +360,7 @@
 "Replay_past_live_stream" = "Replay past live stream";
 "Replay_past_live_streams" = "Replay past live streams";
 "Reply_to_user_name" = "Reply to %{user_name}…";
+"Request_my_data" = "Request my data";
 "Request_my_personal_data" = "Request my personal data";
 "Resend_verification_email" = "Re-send verification email";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";
@@ -385,6 +391,7 @@
 "Say_something_kind" = "Say something kind...";
 "Security_code" = "Security code";
 "See_all_category_name_projects" = "See all %{category_name} projects";
+"Select" = "Select";
 "Select_another_project" = "Select another project";
 "Select_this_reward" = "Select this reward";
 "Select_this_reward_instead" = "Select this reward instead";
@@ -441,6 +448,7 @@
 "Top_pledge_sources" = "Top pledge sources";
 "Top_ten_pledge_sources" = "Top 10 pledge sources";
 "Top_ten_rewards" = "Top 10 rewards";
+"Total" = "Total";
 "Total_pledged" = "Total pledged";
 "Twice_a_day_summary" = "Twice a day summary";
 "Unable_to_request" = "Unable to request data.";
@@ -484,17 +492,19 @@
 "You_have_successfully_backed_project_html" = "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!";
 "You_pledged_on_date" = "<b>You pledged</b> on %{pledge_date}";
 "You_saved_this_project" = "You saved this project.";
+"Youll_receive_an_email_at_email_when_your_download_is_ready" = "You'll receive an email at %{email} when your download is ready.";
 "Your_chat_message_wasnt_sent_successfully" = "Your chat message wasn't sent successfully.";
 "Your_friends_havent_backed_any_projects_yet" = "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here.";
 "Your_name_displayed" = "Your name is always displayed on your profile.";
 "Your_payment_method_was_successfully_charged" = "Your payment method was successfully charged.";
 "Your_pledge" = "Your pledge";
-"Your_pledge_amount" = "Your pledge amount:";
+"Your_pledge_amount" = "Your pledge amount";
 "Your_pledge_was_canceled_or_the_creator_canceled" = "Your pledge was canceled or the creator canceled the project before its deadline.";
 "Your_pledge_was_dropped" = "Your pledge was dropped.";
 "Your_reward" = "Your reward";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Your reward</b> estimated for delivery in %{delivery_date}";
 "Your_shipping_destination" = "Your shipping destination";
+"Your_shipping_location" = "Your shipping location";
 "Youre_a_backer" = "You’re a backer!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials.";
@@ -1356,7 +1366,6 @@
 "rewards.info.shipping_destinations" = "Shipping destinations";
 "rewards.info.ships_to" = "Ships to";
 "rewards.info.time_left" = "%{time} left";
-"rewards.select_label.select" = "Select";
 "rewards.selected_label.you_selected" = "You selected";
 "rewards.shipping_preferences.location.unrestricted" = "Shipping anywhere in the world";
 "rewards.title.about_amount_usd" = "About %{reward_amount} USD";

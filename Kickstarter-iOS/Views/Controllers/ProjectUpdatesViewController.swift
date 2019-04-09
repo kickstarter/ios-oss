@@ -47,7 +47,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.goToSafariBrowser(url: $0)
+        self?.goTo(url: $0)
     }
 
     self.viewModel.outputs.makePhoneCall
@@ -92,12 +92,6 @@ internal final class ProjectUpdatesViewController: WebViewController {
     } else {
       self.navigationController?.pushViewController(vc, animated: true)
     }
-  }
-
-  fileprivate func goToSafariBrowser(url: URL) {
-    let controller = SFSafariViewController(url: url)
-    controller.modalPresentationStyle = .overFullScreen
-    self.present(controller, animated: true, completion: nil)
   }
 
   fileprivate func goToUpdate(forProject project: Project, update: Update) {

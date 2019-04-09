@@ -14,6 +14,7 @@ public protocol SettingsAccountViewModelOutputs {
   var fetchAccountFieldsError: Signal<Void, NoError> { get }
   var reloadData: Signal<(Currency, Bool, Bool), NoError> { get }
   var transitionToViewController: Signal<UIViewController, NoError> { get }
+  var userHasPasswordAndEmail: (Bool, String?) { get }
 }
 
 public protocol SettingsAccountViewModelType {
@@ -46,6 +47,9 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
 
     let shouldHideEmailPasswordSection = userAccountFields.values()
       .map { $0.me.hasPassword == .some(false) }
+
+    self.userHasPasswordAndEmailProperty <~ userAccountFields.values()
+      .map { ($0.me.hasPassword == .some(true), $0.me.email) }
 
     let chosenCurrency = userAccountFields.values()
       .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
@@ -84,6 +88,11 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  fileprivate let userHasPasswordAndEmailProperty = MutableProperty<(Bool, String?)>((true, nil))
+  public var userHasPasswordAndEmail: (Bool, String?) {
+    return self.userHasPasswordAndEmailProperty.value
   }
 
   public let fetchAccountFieldsError: Signal<Void, NoError>

@@ -11,7 +11,7 @@ import Result
 /**
  A global stack that captures the current state of global objects that the app wants access to.
  */
-public struct AppEnvironment {
+public struct AppEnvironment: AppEnvironmentType {
   internal static let environmentStorageKey = "com.kickstarter.AppEnvironment.current"
   internal static let oauthTokenStorageKey = "com.kickstarter.AppEnvironment.oauthToken"
 
@@ -113,6 +113,7 @@ public struct AppEnvironment {
   public static func pushEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+    application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
@@ -142,6 +143,7 @@ public struct AppEnvironment {
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
+        application: application,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,
@@ -175,6 +177,7 @@ public struct AppEnvironment {
   public static func replaceCurrentEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+    application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
@@ -204,6 +207,7 @@ public struct AppEnvironment {
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
+        application: application,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,
