@@ -144,6 +144,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ UIFont.ksr_caption2().italicized
       |> UILabel.lens.numberOfLines .~ 2
 
+      _ = self.creatorImageView
+        |> ignoresInvertColorsImageViewStyle
+
     _ = self.creatorButton
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_creator_profile() }
 

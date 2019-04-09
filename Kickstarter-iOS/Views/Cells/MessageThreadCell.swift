@@ -38,6 +38,9 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
     }
 
+    _ = self.avatarImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.bodyLabel
       |> UILabel.lens.textColor .~ .ksr_dark_grey_500
       |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 14.0)

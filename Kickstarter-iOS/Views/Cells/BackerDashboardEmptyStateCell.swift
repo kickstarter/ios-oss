@@ -116,6 +116,6 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 21.0)
 
     _ = self.iconImageView
-    |> UIImageView.lens.tintColor .~ .ksr_soft_black
+      |> UIImageView.lens.tintColor .~ .ksr_soft_black
   }
 }
