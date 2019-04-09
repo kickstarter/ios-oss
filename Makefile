@@ -41,7 +41,7 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: submodules configs secrets opentok fabric stripe
+dependencies: carthage-bootstrap configs secrets opentok fabric stripe
 
 bootstrap: hooks dependencies
 	brew update || brew update
@@ -50,9 +50,8 @@ bootstrap: hooks dependencies
 	brew switch swiftlint 0.29.2
 	brew link --overwrite swiftlint
 
-submodules:
-	git submodule sync --recursive || true
-	git submodule update --init --recursive || true
+carthage-bootstrap:
+	bin/carthage.sh
 
 configs = $(basename $(wildcard Kickstarter-iOS/Configs/*.example))
 $(configs):

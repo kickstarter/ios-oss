@@ -1,6 +1,6 @@
 version: 2
 
-xcode_version: &xcode_version 10.0
+xcode_version: &xcode_version 10.1.0
 iphone_name: &iphone_name iPhone 8
 opentok_version: &opentok_version 2.10.2
 fabric_sdk_version: &fabric_sdk_version 3.10.5
@@ -63,8 +63,23 @@ jobs:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+      - run:
           name: Make bootstrap
           command: make bootstrap
+
+      - save_cache:
+          name: Save Carthage Cache
+          key: carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+          paths:
+            - Carthage
 
       - save_cache:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
