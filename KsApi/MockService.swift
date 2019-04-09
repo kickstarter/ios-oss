@@ -22,6 +22,8 @@ internal struct MockService: ServiceType {
 
   fileprivate let changePasswordError: GraphError?
 
+  fileprivate let createPasswordError: GraphError?
+
   fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
   fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>?
@@ -64,7 +66,7 @@ internal struct MockService: ServiceType {
   fileprivate let fetchDraftResponse: UpdateDraft?
   fileprivate let fetchDraftError: ErrorEnvelope?
 
-  fileprivate let fetchGraphUserEmailResponse: UserEmailFields?
+  fileprivate let fetchGraphUserEmailFieldsResponse: UserEmailFields?
 
   fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
   fileprivate let fetchGraphCreditCardsError: GraphError?
@@ -187,6 +189,7 @@ internal struct MockService: ServiceType {
                                                                        me: .template
                                                                      ),
                 changePasswordError: GraphError? = nil,
+                createPasswordError: GraphError? = nil,
                 changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
                 changeCurrencyError: GraphError? = nil,
                 changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
@@ -217,7 +220,7 @@ internal struct MockService: ServiceType {
                 exportDataError: ErrorEnvelope? = nil,
                 fetchDraftResponse: UpdateDraft? = nil,
                 fetchDraftError: ErrorEnvelope? = nil,
-                fetchGraphUserEmailResponse: UserEmailFields? = nil,
+                fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
                 fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>? = nil,
                 fetchGraphUserAccountFieldsError: GraphError? = nil,
                 addAttachmentResponse: UpdateDraft.Image? = nil,
@@ -292,6 +295,8 @@ internal struct MockService: ServiceType {
 
     self.changePasswordError = changePasswordError
 
+    self.createPasswordError = createPasswordError
+
     self.changePaymentMethodResult = changePaymentMethodResult
     self.deletePaymentMethodResult = deletePaymentMethodResult
     self.createPledgeResult = createPledgeResult
@@ -324,7 +329,7 @@ internal struct MockService: ServiceType {
       ?? UserEnvelope(me: UserAccountFields.template)
     self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
 
-    self.fetchGraphUserEmailResponse = fetchGraphUserEmailResponse
+    self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
 
     self.fetchCheckoutResponse = fetchCheckoutResponse
     self.fetchCheckoutError = fetchCheckoutError
@@ -522,6 +527,15 @@ internal struct MockService: ServiceType {
       }
   }
 
+  internal func createPassword(input: CreatePasswordInput) ->
+    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      if let error = self.createPasswordError {
+        return SignalProducer(error: error)
+      } else {
+        return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+      }
+  }
+
   internal func changeCurrency(input: ChangeCurrencyInput) ->
    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
     if let response = self.changeCurrencyResponse {
@@ -668,7 +682,9 @@ internal struct MockService: ServiceType {
 
   internal func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
-      return SignalProducer(value: changeEmailResponse ?? UserEnvelope<UserEmailFields>(me: .template))
+      let response = self.fetchGraphUserEmailFieldsResponse ?? .template
+
+      return SignalProducer(value: UserEnvelope(me: response))
   }
 
   internal func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
@@ -1455,7 +1471,6 @@ private extension MockService {
       }
     )
   }
-  // swiftlint:enable type_name
 }
 
 private func producer<T, E>(for property: Result<T, E>?) -> SignalProducer<T, E> {

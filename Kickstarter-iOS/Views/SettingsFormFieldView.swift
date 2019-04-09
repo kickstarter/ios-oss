@@ -3,9 +3,10 @@ import Library
 import Prelude
 
 final class SettingsFormFieldView: UIView, NibLoading {
-  //swiftlint:disable private_outlet
+  // swiftlint:disable private_outlet
   @IBOutlet weak var textField: UITextField!
   @IBOutlet weak var titleLabel: UILabel!
+  // swiftlint:enable private_outlets
   @IBOutlet fileprivate weak var separatorView: UIView!
   @IBOutlet fileprivate weak var stackView: UIStackView!
 
@@ -29,18 +30,30 @@ final class SettingsFormFieldView: UIView, NibLoading {
 
     _ = self.titleLabel
       |> settingsTitleLabelStyle
-      |> \.isAccessibilityElement .~ false
-      |> \.adjustsFontForContentSizeCategory .~ true
+      |> titleLabelStyle
 
     _ = self.textField
       |> formFieldStyle
+      |> textFieldStyle
       |> \.autocapitalizationType .~ self.autocapitalizationType
       |> \.returnKeyType .~ self.returnKeyType
-      |> \.textAlignment .~ .right
-      |> \.textColor .~ .ksr_text_dark_grey_500
       |> \.accessibilityLabel .~ self.titleLabel.text
 
     _ = self.separatorView
       |> separatorStyle
   }
+}
+
+// MARK: - Styles
+
+private let titleLabelStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.isAccessibilityElement .~ false
+    |> \.adjustsFontForContentSizeCategory .~ true
+}
+
+private let textFieldStyle: TextFieldStyle = { (textField: UITextField) in
+  textField
+    |> \.textAlignment .~ NSTextAlignment.right
+    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
 }

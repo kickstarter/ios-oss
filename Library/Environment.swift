@@ -16,6 +16,9 @@ public struct Environment {
   /// The amount of time to delay API requests by. Used primarily for testing. Default value is `0.0`.
   public let apiDelayInterval: DispatchTimeInterval
 
+  /// The app instance
+  public let application: UIApplicationType
+
   /// A type that exposes how to extract a still image from an AVAsset.
   public let assetImageGeneratorType: AssetImageGeneratorType.Type
 
@@ -50,6 +53,9 @@ public struct Environment {
   public var environmentType: EnvironmentType {
     return self.apiService.serverConfig.environment
   }
+
+  /// The environment variables
+  public let environmentVariables: EnvironmentVariables
 
   /// A delegate to handle Facebook initialization and incoming url requests
   public let facebookAppDelegate: FacebookAppDelegateProtocol
@@ -98,6 +104,7 @@ public struct Environment {
   public init(
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
+    application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: KSCache = KSCache(),
     calendar: Calendar = .current,
@@ -108,6 +115,7 @@ public struct Environment {
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     device: UIDeviceType = UIDevice.current,
+    environmentVariables: EnvironmentVariables = EnvironmentVariables(),
     facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
     isOSVersionAvailable: @escaping (Double) -> Bool = ksr_isOSVersionAvailable,
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
@@ -125,6 +133,7 @@ public struct Environment {
 
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
+    self.application = application
     self.assetImageGeneratorType = assetImageGeneratorType
     self.cache = cache
     self.calendar = calendar
@@ -135,6 +144,7 @@ public struct Environment {
     self.dateType = dateType
     self.debounceInterval = debounceInterval
     self.device = device
+    self.environmentVariables = environmentVariables
     self.facebookAppDelegate = facebookAppDelegate
     self.isOSVersionAvailable = isOSVersionAvailable
     self.isVoiceOverRunning = isVoiceOverRunning

@@ -65,7 +65,7 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
 
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
-      .observeValues { [weak self] url in self?.goToSafariBrowser(url: url) }
+      .observeValues { [weak self] in self?.goTo(url: $0) }
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
@@ -130,12 +130,6 @@ internal final class CheckoutViewController: DeprecatedWebViewController {
     guard let vc = PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
     vc.delegate = self
     self.present(vc, animated: true, completion: nil)
-  }
-
-  fileprivate func goToSafariBrowser(url: URL) {
-    let controller = SFSafariViewController(url: url)
-    controller.modalPresentationStyle = .overFullScreen
-    self.present(controller, animated: true, completion: nil)
   }
 
   fileprivate func goToThanks(project: Project) {

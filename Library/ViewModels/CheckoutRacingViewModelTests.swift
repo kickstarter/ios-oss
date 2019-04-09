@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import XCTest
 @testable import Library
 @testable import KsApi
@@ -114,5 +113,6 @@ final class CheckoutRacingViewModelTests: TestCase {
 }
 
 private func racingURL() -> URL {
+  // swiftlint:disable:next force_unwrapping
   return URL(string: "https://www.kickstarter.com/projects/creator/project/checkouts/1")!
 }

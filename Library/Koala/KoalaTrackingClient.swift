@@ -53,10 +53,12 @@ public final class KoalaTrackingClient: TrackingClientType {
   }
 
   public func track(event: String, properties: [String: Any]) {
-    print("🐨 [Koala Track]: \(event), properties: \(properties)")
+    if AppEnvironment.current.environmentVariables.isKoalaTrackingEnabled {
+      print("🐨 [Koala Track]: \(event), properties: \(properties)")
 
-    self.queue.async {
-      self.buffer.append(["event": event, "properties": properties])
+      self.queue.async {
+        self.buffer.append(["event": event, "properties": properties])
+      }
     }
   }
 

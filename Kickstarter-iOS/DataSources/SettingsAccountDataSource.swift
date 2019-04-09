@@ -10,8 +10,8 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                      shouldHideEmailPasswordSection: Bool) {
 
     self.filteredSections = shouldHideEmailPasswordSection
-      ? SettingsAccountSectionType.allCases.filter { $0 != .emailPassword }
-      : SettingsAccountSectionType.allCases
+      ? SettingsAccountSectionType.allCases.filter { $0 != .changeEmailPassword }
+      : SettingsAccountSectionType.allCases.filter { $0 != .createPassword }
 
     self.clearValues()
 
@@ -26,7 +26,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
                cellClass: SettingsTableViewCell.self,
                inSection: index)
 
-      if section == .emailPassword {
+      if section == .changeEmailPassword {
         self.insertChangeEmailCell(shouldHideEmailWarning)
       }
     }
@@ -35,7 +35,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   }
 
   func insertChangeEmailCell(_ shouldHideEmailWarning: Bool) {
-    guard let section = self.index(of: .emailPassword) else { return }
+    guard let section = self.index(of: .changeEmailPassword) else { return }
 
     self.insertRow(value: shouldHideEmailWarning,
                    cellClass: SettingsAccountWarningCell.self,
@@ -60,7 +60,7 @@ final class SettingsAccountDataSource: ValueCellDataSource {
       return value.cellType as? SettingsAccountCellType
     } else if let currencyValue = self[indexPath] as? SettingsCellValue {
       return currencyValue.cellType as? SettingsAccountCellType
-      //swiftlint:disable unused_optional_binding
+      // swiftlint:disable:next unused_optional_binding
     } else if let _ = self[indexPath] as? Bool {
       return SettingsAccountCellType.changeEmail
     } else {

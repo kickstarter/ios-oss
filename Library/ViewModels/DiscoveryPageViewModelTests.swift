@@ -12,7 +12,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   fileprivate let activitiesForSample = TestObserver<[Activity], NoError>()
   fileprivate let asyncReloadData = TestObserver<(), NoError>()
-  fileprivate let hideEmptyState = TestObserver<(), NoError>()
   fileprivate let goToActivityProject = TestObserver<Project, NoError>()
   fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, NoError>()
   fileprivate let goToPlaylist = TestObserver<[Project], NoError>()
@@ -20,8 +19,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let goToPlaylistRefTag = TestObserver<RefTag, NoError>()
   fileprivate let goToProjectUpdate = TestObserver<Update, NoError>()
   fileprivate let hasAddedProjects = TestObserver<Bool, NoError>()
+  fileprivate let hasLoadedProjects = TestObserver<(), NoError>()
   fileprivate let hasRemovedProjects = TestObserver<Bool, NoError>()
+  fileprivate let hideEmptyState = TestObserver<(), NoError>()
   fileprivate let projectsAreLoading = TestObserver<Bool, NoError>()
+  fileprivate let projectsAreLoadingAnimated = TestObserver<(Bool, Bool), NoError>()
   fileprivate let setScrollsToTop = TestObserver<Bool, NoError>()
   private let scrollToProjectRow = TestObserver<Int, NoError>()
   fileprivate let showEmptyState = TestObserver<EmptyState, NoError>()
@@ -39,6 +41,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.goToProjectPlaylist.map(second).observe(self.goToPlaylist.observer)
     self.vm.outputs.goToProjectPlaylist.map(third).observe(self.goToPlaylistRefTag.observer)
     self.vm.outputs.goToProjectUpdate.map { $0.1 }.observe(self.goToProjectUpdate.observer)
+    self.vm.outputs.projectsAreLoadingAnimated.observe(self.projectsAreLoadingAnimated.observer)
+    self.vm.outputs.projectsLoaded.ignoreValues().observe(self.hasLoadedProjects.observer)
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
@@ -54,7 +58,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       .combinePrevious(0)
       .map { prev, next in next < prev }
       .observe(self.hasRemovedProjects.observer)
-    self.vm.outputs.projectsAreLoading.observe(self.projectsAreLoading.observer)
+    self.vm.outputs.projectsAreLoadingAnimated.map { $0.0 }.observe(self.projectsAreLoading.observer)
   }
 
   func testPaginating() {
@@ -66,6 +70,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events, "No events tracked at first.")
 
     self.vm.inputs.selectedFilter(.defaults)
+
+    self.projectsAreLoading.assertValues([])
+    self.vm.inputs.viewWillAppear()
+
+    self.projectsAreLoading.assertValues([true], "Projects start loading on viewWillAppear")
+
     self.vm.inputs.viewDidAppear()
     self.scheduler.advance()
 
@@ -99,7 +109,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.hasAddedProjects.assertValues([true, true], "More projects are added from pagination.")
     self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
-    self.projectsAreLoading.assertValues([true, false, true, false], "Loading indicator toggles on/off.")
+    self.projectsAreLoading.assertValues(
+      [true, false, true, false], "Loading indicator toggles on/off."
+    )
     XCTAssertEqual(["Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
       "Discover List View"],
                    self.trackingClient.events,
@@ -176,6 +188,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   func testViewLifecycle() {
     // Configure and load up view model
     self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
     self.scheduler.advance()
 
@@ -211,7 +224,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
     self.scheduler.advance()
 
-    self.hasAddedProjects.assertValues([true, false, true], "Projects load once the view appears again.")
+    self.hasAddedProjects.assertValues(
+      [true, false, true], "Projects load once the view appears again."
+    )
 
     // Navigate away and back
     self.vm.inputs.viewDidDisappear(animated: true)
@@ -231,6 +246,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)) {
       self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(.defaults)
       self.scheduler.advance()
@@ -431,10 +447,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef", user: User.template))
       self.vm.inputs.userSessionStarted()
-      self.hasAddedProjects.assertValues([true, false], "Previous projects not cleared.")
+      self.hasAddedProjects.assertValues([true], "Previous projects not cleared.")
 
       self.scheduler.advance()
-      self.hasAddedProjects.assertValues([true, false, true], "New projects added for logged in user.")
+      self.hasAddedProjects.assertValues([true, true], "New projects added for logged in user.")
     }
   }
 
@@ -458,11 +474,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.userSessionStarted()
-      self.hasAddedProjects.assertValues([true, false], "Previous projects not cleared.")
+      self.hasAddedProjects.assertValues([true], "Previous projects not cleared.")
 
       self.scheduler.advance()
 
-      self.hasAddedProjects.assertValues([true, false, true], "New projects added for logged in user.")
+      self.hasAddedProjects.assertValues([true, true], "New projects added for logged in user.")
     }
   }
 
@@ -517,6 +533,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       |> DiscoveryEnvelope.lens.projects .~ (1...4).map { .template |> Project.lens.id .~ $0 }
 
     self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
     self.scheduler.advance()
 
@@ -528,12 +545,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.showEmptyState.assertValues([.starred])
-      self.hideEmptyState.assertValueCount(0)
+      self.hideEmptyState.assertValueCount(1)
 
       // switch to another empty state
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.recommended .~ true)
 
-      self.hideEmptyState.assertValueCount(1)
+      self.hideEmptyState.assertValueCount(2)
 
       self.scheduler.advance()
 
@@ -543,7 +560,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnvWithProjects)) {
         self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
 
-        self.hideEmptyState.assertValueCount(2)
+        self.hideEmptyState.assertValueCount(3)
 
         self.scheduler.advance()
 
@@ -554,7 +571,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
           self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ false)
 
-          self.hideEmptyState.assertValueCount(5)
+          self.hideEmptyState.assertValueCount(6)
 
           self.scheduler.advance()
 
@@ -562,7 +579,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
           self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
 
-          self.hideEmptyState.assertValueCount(6)
+          self.hideEmptyState.assertValueCount(7)
 
           self.scheduler.advance()
 
@@ -580,6 +597,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     let socialUser = User.template |> \.social .~ true
 
     self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
     self.scheduler.advance()
 
@@ -593,32 +611,33 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.showEmptyState.assertValues([.socialDisabled], "Emits .socialDisabled for nil social.")
-      self.hideEmptyState.assertValueCount(0)
+      self.hideEmptyState.assertValueCount(1)
 
       withEnvironment(currentUser: antisocialUser) {
         self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.recommended .~ true)
         self.scheduler.advance()
 
-        self.hideEmptyState.assertValueCount(1)
+        self.hideEmptyState.assertValueCount(2)
 
         self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
         self.scheduler.advance()
 
         self.showEmptyState.assertValues([.socialDisabled, .recommended, .socialDisabled],
                                          "Emits .socialDisabled for false social.")
-        self.hideEmptyState.assertValueCount(2)
+        self.hideEmptyState.assertValueCount(3)
 
         self.vm.inputs.viewDidDisappear(animated: true)
 
         // User enables social on the pushed Friends screen, then navigates back.
         withEnvironment(currentUser: socialUser) {
+          self.vm.inputs.viewWillAppear()
           self.vm.inputs.viewDidAppear()
           self.scheduler.advance()
 
           self.showEmptyState.assertValues(
             [.socialDisabled, .recommended, .socialDisabled, .socialNoPledges],
                                            "Emits .socialNoPledges for true social.")
-          self.hideEmptyState.assertValueCount(2)
+          self.hideEmptyState.assertValueCount(3)
         }
       }
     }
@@ -668,6 +687,106 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         self.vm.inputs.transitionedToProject(at: 7, outOf: playlist2.count)
 
         self.scrollToProjectRow.assertValues([5, 6, 7, 8, 7])
+      }
+    }
+  }
+
+  func testProjectsLoad_IfPulledToRefresh() {
+
+    let playlist = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.projectsAreLoading.assertValueCount(1)
+
+      self.scheduler.advance()
+
+      self.projectsAreLoading.assertValueCount(2)
+
+      self.vm.inputs.pulledToRefresh()
+
+      self.scheduler.advance()
+
+      self.projectsAreLoading.assertValueCount(6)
+    }
+  }
+
+  func testProjectsDontLoad_IfPulledToRefreshWithError() {
+
+    withEnvironment(apiService: MockService(fetchDiscoveryError: .couldNotParseErrorEnvelopeJSON)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.scheduler.advance()
+
+      self.projectsAreLoading.assertValueCount(1)
+
+      self.vm.inputs.pulledToRefresh()
+
+      self.scheduler.advance()
+
+      self.projectsAreLoading.assertValueCount(1)
+    }
+  }
+
+  func testPullToRefreshEvent() {
+    XCTAssertEqual([], self.trackingClient.events)
+    self.vm.inputs.pulledToRefresh()
+    XCTAssertEqual(["Triggered Refresh"], self.trackingClient.events)
+  }
+
+  func testProjectAreLoadingAnimated() {
+    let playlist = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let projectEnv = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist
+
+    let playlist2 = (0...20).map { idx in .template |> Project.lens.id .~ (idx + 72) }
+    let projectEnv2 = .template
+      |> DiscoveryEnvelope.lens.projects .~ playlist2
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      XCTAssertEqual(true, self.projectsAreLoadingAnimated.values.last?.0,
+                     "Start loading on viewWillAppear.")
+      XCTAssertEqual(false, self.projectsAreLoadingAnimated.values.last?.1,
+                     "Shouldn't animate on first load.")
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(false, self.projectsAreLoadingAnimated.values.last?.0,
+                     "Projects should stop loading after server returns.")
+      XCTAssertEqual(false, self.projectsAreLoadingAnimated.values.last?.1,
+                     "Shouldn't animate on first load.")
+
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: projectEnv2)) {
+
+        self.scheduler.advance()
+
+        self.vm.inputs.pulledToRefresh()
+
+        XCTAssertEqual(true, self.projectsAreLoadingAnimated.values.last?.0,
+                       "Should start loading on pullToRefresh event.")
+        XCTAssertEqual(true, self.projectsAreLoadingAnimated.values.last?.1,
+                       "Should animate if projects are loading after pulling to refresh.")
+
+        self.scheduler.advance()
+
+        XCTAssertEqual(false, self.projectsAreLoadingAnimated.values.last?.0,
+                        "Should stop loading after server returns.")
+        XCTAssertEqual(true, self.projectsAreLoadingAnimated.values.last?.1,
+                       "Should animate if projects are loading after pulling to refresh.")
+
       }
     }
   }

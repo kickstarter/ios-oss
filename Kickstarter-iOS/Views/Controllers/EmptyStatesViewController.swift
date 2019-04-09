@@ -92,11 +92,13 @@ internal final class EmptyStatesViewController: UIViewController {
     }
 
     _ = self.titleLabel
+      |> UILabel.lens.backgroundColor .~ .white
       |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.subtitleLabel
+      |> UILabel.lens.backgroundColor .~ .white
       |> UILabel.lens.textAlignment .~ .left
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.textColor .~ .ksr_soft_black

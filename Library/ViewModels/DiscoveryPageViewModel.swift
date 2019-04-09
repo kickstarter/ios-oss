@@ -11,6 +11,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the current environment has changed
   func currentEnvironmentChanged(environment: EnvironmentType)
 
+  /// Call when the user pulls tableView to refresh
+  func pulledToRefresh()
+
   /// Call when the filter is changed.
   func selectedFilter(_ params: DiscoveryParams)
 
@@ -55,9 +58,6 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Hopefully in the future we can remove this when we can resolve postcard display issues.
   var asyncReloadData: Signal<Void, NoError> { get }
 
-  /// Emits when we should dismiss the empty state controller.
-  var hideEmptyState: Signal<(), NoError> { get }
-
   /// Emits a project and ref tag that we should go to from the activity sample.
   var goToActivityProject: Signal<(Project, RefTag), NoError> { get }
 
@@ -67,11 +67,14 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits a project and update when should go to update.
   var goToProjectUpdate: Signal<(Project, Update), NoError> { get }
 
+  /// Emits when we should dismiss the empty state controller.
+  var hideEmptyState: Signal<(), NoError> { get }
+
   /// Emits a list of projects that should be shown, and the corresponding filter request params
   var projectsLoaded: Signal<([Project], DiscoveryParams?), NoError> { get }
 
   /// Emits a boolean that determines if projects are currently loading or not.
-  var projectsAreLoading: Signal<Bool, NoError> { get }
+  var projectsAreLoadingAnimated: Signal<(Bool, Bool), NoError> { get }
 
   /// Emits when should scroll to project with row number.
   var scrollToProjectRow: Signal<Int, NoError> { get }
@@ -92,14 +95,14 @@ public protocol DiscoveryPageViewModelType {
 }
 
 public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, DiscoveryPageViewModelInputs,
-  DiscoveryPageViewModelOutputs {
+DiscoveryPageViewModelOutputs {
 
-    public init() {
+  public init() {
     let currentUser = Signal.merge(
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal,
-      self.viewDidAppearProperty.signal
-    )
+      self.viewWillAppearProperty.signal
+      )
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
@@ -142,15 +145,17 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map { $0.1 }
 
     let requestFirstPageWith = Signal.merge(
-        firstPageParams,
-        (firstPageParams.takeWhen(environmentChanged)))
+      firstPageParams,
+      (firstPageParams.takeWhen(environmentChanged)),
+      firstPageParams.takeWhen(self.pulledToRefreshProperty.signal))
 
     let paginatedProjects: Signal<[Project], NoError>
     let pageCount: Signal<Int, NoError>
-    (paginatedProjects, self.projectsAreLoading, pageCount) = paginate(
+    let isLoading: Signal<Bool, NoError>
+    (paginatedProjects, isLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
-      clearOnNewRequest: true,
+      clearOnNewRequest: false,
       skipRepeats: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
@@ -158,20 +163,40 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) },
       concater: { ($0 + $1).distincts() })
 
-      let projects = Signal.merge(
-        paginatedProjects,
-        self.selectedFilterProperty.signal.skipNil().skipRepeats().mapConst([])
+    let projects = Signal.merge(
+      paginatedProjects,
+      self.selectedFilterProperty.signal.skipNil().skipRepeats().mapConst([])
       )
       .skip { $0.isEmpty }
       .skipRepeats(==)
 
-      self.projectsLoaded =  self.selectedFilterProperty.signal
-        .takePairWhen(projects)
-        .map { ($1, $0) }
+    self.projectsLoaded =  self.selectedFilterProperty.signal
+      .takePairWhen(projects)
+      .map { ($1, $0) }
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
-    self.showEmptyState = Signal.combineLatest(paramsChanged, self.projectsAreLoading, paginatedProjects)
+    let isRefreshing = isLoading
+      .combineLatest(with: self.pulledToRefreshProperty.signal)
+      .map(first)
+      .skipRepeats()
+
+    let projectsLoadingNoRefresh = Signal.merge(
+      isLoading,
+      isLoading.takeWhen(isRefreshing).mapConst(false)
+    ).skipRepeats()
+
+    self.projectsAreLoadingAnimated = Signal.merge(
+      isRefreshing.map { ($0, true) },
+      projectsLoadingNoRefresh.map { ($0, false) },
+      self.viewWillAppearProperty.signal.take(first: 1).mapConst((true, false))
+    )
+    .skipRepeats(==)
+
+    self.showEmptyState = Signal.combineLatest(
+      paramsChanged,
+      self.projectsAreLoadingAnimated.map(first),
+      paginatedProjects)
       .filter { _, projectsAreLoading, projects in projectsAreLoading == false && projects.isEmpty }
       .map { params, _, _ in
         emptyState(forParams: params)
@@ -262,11 +287,21 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
+
+    self.pulledToRefreshProperty.signal
+      .observeValues {
+        AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
+    }
   }
 
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
   public func currentEnvironmentChanged(environment: EnvironmentType) {
     self.currentEnvironmentChangedProperty.value = environment
+  }
+
+  fileprivate let pulledToRefreshProperty = MutableProperty(())
+  public func pulledToRefresh() {
+    self.pulledToRefreshProperty.value = ()
   }
 
   fileprivate let sortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
@@ -315,13 +350,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   }
 
   public let activitiesForSample: Signal<[Activity], NoError>
-  public var asyncReloadData: Signal<Void, NoError>
-  public let hideEmptyState: Signal<(), NoError>
-  public var goToActivityProject: Signal<(Project, RefTag), NoError>
+  public let asyncReloadData: Signal<Void, NoError>
+  public let goToActivityProject: Signal<(Project, RefTag), NoError>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), NoError>
   public let goToProjectUpdate: Signal<(Project, Update), NoError>
+  public let hideEmptyState: Signal<Void, NoError>
   public let projectsLoaded: Signal<([Project], DiscoveryParams?), NoError>
-  public let projectsAreLoading: Signal<Bool, NoError>
+  public let projectsAreLoadingAnimated: Signal<(Bool, Bool), NoError>
   public let setScrollsToTop: Signal<Bool, NoError>
   public let scrollToProjectRow: Signal<Int, NoError>
   public let showEmptyState: Signal<EmptyState, NoError>
