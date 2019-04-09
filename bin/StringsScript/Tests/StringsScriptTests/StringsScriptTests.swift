@@ -55,8 +55,14 @@ final class StringsScriptTests: XCTestCase {
   }
 
   func testStaticStringsFileContents() {
-    let stringsByLocale = ["Base": ["Are_you_sure_you_wish_to_remove_this_card": "Are you sure you wish to remove this card from your payment method options?"]]
-
+    let stringsByLocale = [
+      "Base": [
+        "Are_you_sure_you_wish_to_remove_this_card": "Are you sure you wish to remove this card from your payment method options?"
+      ],
+      "fr": [
+        "Are_you_sure_you_wish_to_remove_this_card": "Êtes-vous certain de vouloir supprimer cette carte de vos moyens de paiement ?"
+      ]
+    ]
     let strings = Strings()
 
     let generatedString =
@@ -74,6 +80,7 @@ final class StringsScriptTests: XCTestCase {
      "Are you sure you wish to remove this card from your payment method options?"
 
      - **en**: "Are you sure you wish to remove this card from your payment method options?"
+     - **fr**: "Êtes-vous certain de vouloir supprimer cette carte de vos moyens de paiement ?"
     */
     public static func Are_you_sure_you_wish_to_remove_this_card() -> String {
       return localizedString(
