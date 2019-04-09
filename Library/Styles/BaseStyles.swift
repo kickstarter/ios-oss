@@ -14,6 +14,14 @@ public enum Styles {
   }
 }
 
+public typealias ButtonStyle = (UIButton) -> UIButton
+public typealias ImageViewStyle = (UIImageView) -> UIImageView
+public typealias LabelStyle = (UILabel) -> UILabel
+public typealias StackViewStyle = (UIStackView) -> UIStackView
+public typealias TableViewStyle = (UITableView) -> UITableView
+public typealias TextFieldStyle = (UITextField) -> UITextField
+public typealias ViewStyle = (UIView) -> UIView
+
 public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
   return VC.lens.view.backgroundColor .~ .white
     <> (VC.lens.navigationController..navBarLens) %~ { $0.map(baseNavigationBarStyle) }
@@ -111,19 +119,36 @@ public let feedTableViewCellStyle = baseTableViewCellStyle()
       : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(2))
 }
 
-public let formFieldStyle =
-  UITextField.lens.font .~ .ksr_body()
-    <> UITextField.lens.textColor .~ .ksr_soft_black
-    <> UITextField.lens.backgroundColor .~ .clear
-    <> UITextField.lens.borderStyle .~ .none
-    <> UITextField.lens.autocapitalizationType .~ .none
-    <> UITextField.lens.autocorrectionType .~ .no
-    <> UITextField.lens.spellCheckingType .~ .no
-    <> UITextField.lens.tintColor .~ .ksr_green_700
+public let formTextInputStyle: TextFieldStyle = { (textField: UITextField) in
+  textField
+    |> \.autocapitalizationType .~ UITextAutocapitalizationType.none
+    |> \.autocorrectionType .~ UITextAutocorrectionType.no
+    |> \.spellCheckingType .~ UITextSpellCheckingType.no
+}
 
-public let separatorStyle =
-  UIView.lens.backgroundColor .~ .ksr_grey_400
-    <> UIView.lens.accessibilityElementsHidden .~ true
+public let formFieldStyle: TextFieldStyle = { (textField: UITextField) in
+  textField
+    |> formTextInputStyle
+    |> \.backgroundColor .~ UIColor.clear
+    |> \.borderStyle .~ UITextField.BorderStyle.none
+    |> \.font .~ UIFont.ksr_body()
+    |> \.textColor .~ UIColor.ksr_soft_black
+    |> \.tintColor .~ UIColor.ksr_green_700
+}
+
+public let ignoresInvertColorsImageViewStyle: ImageViewStyle = { (imageView: UIImageView) in
+  if #available(iOS 11, *) {
+    return imageView
+      |> \.accessibilityIgnoresInvertColors .~ true
+  }
+  return imageView
+}
+
+public let separatorStyle: ViewStyle = { (view: UIView) in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_grey_400
+    |> \.accessibilityElementsHidden .~ true
+}
 
 /**
  - parameter r: The corner radius. This parameter is optional, and will use a default value if omitted.

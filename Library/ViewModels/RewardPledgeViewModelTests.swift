@@ -964,7 +964,10 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     withEnvironment(currentUser: user) {
 
-      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project).contains(.discover))
+      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
+        .contains(.discover))
+      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
+        .contains(.chinaUnionPay))
     }
   }
 
@@ -975,7 +978,10 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
     withEnvironment(env) {
 
-      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project).contains(.discover))
+      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
+        .contains(.discover))
+      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
+        .contains(.chinaUnionPay))
     }
   }
 

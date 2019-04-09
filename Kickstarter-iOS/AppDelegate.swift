@@ -35,6 +35,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
+    if #available(iOS 11, *) {
+      // swiftlint:disable:next line_length
+      UIImageView.appearance(whenContainedInInstancesOf: [UITabBar.self]).accessibilityIgnoresInvertColors = true
+    }
+
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
         ubiquitousStore: NSUbiquitousKeyValueStore.default,
@@ -191,7 +196,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.findRedirectUrl($0) }
 
-    //swiftlint:disable discarded_notification_center_observer
+    // swiftlint:disable discarded_notification_center_observer
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -207,7 +212,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
     }
-    //swiftlint:enable discarded_notification_center_observer
+    // swiftlint:enable discarded_notification_center_observer
 
     self.window?.tintColor = .ksr_green_700
 

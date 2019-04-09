@@ -44,12 +44,14 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.text %~ { _ in Strings.Pledge_any_amount_to_help_bring_this_project_to_life() }
+      |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.pledgeTitleLabel
       |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ .ksr_title3(size: 16)
       |> UILabel.lens.text %~ { _ in Strings.Make_a_pledge_without_a_reward() }
       |> UILabel.lens.numberOfLines .~ 0
+      |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)

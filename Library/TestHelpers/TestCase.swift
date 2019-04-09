@@ -1,4 +1,3 @@
-// swiftlint:disable force_unwrapping
 import AVFoundation
 import FBSnapshotTestCase
 import Prelude
@@ -32,6 +31,7 @@ internal class TestCase: FBSnapshotTestCase {
     UIViewController.doBadSwizzleStuff()
 
     var calendar = Calendar(identifier: .gregorian)
+    // swiftlint:disable:next force_unwrapping
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
     let isVoiceOverRunning = { false }
@@ -39,6 +39,7 @@ internal class TestCase: FBSnapshotTestCase {
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
+      application: UIApplication.shared,
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,
       calendar: calendar,

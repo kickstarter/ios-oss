@@ -33,6 +33,7 @@
 "Ask_me_anything" = "Frage stellen";
 "Available_to_watch_for_time_more_units" = "Kann noch %{time} %{units} angesehen werden";
 "Back" = "Zurück";
+"Back_this_project" = "Projekt unterstützen";
 "Back_this_project_below" = "Folgendes Projekt unterstützen";
 "Backed_by_Friends" = "Von Freunden unterstützt";
 "Backed_by_people_you_follow" = "Unterstützt von deinen Freunden";
@@ -48,6 +49,7 @@
 "Biography" = "Biografie";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
+"By_pledging_you_agree" = "Mit Leistung eines Finanzierungsbeitrags stimmst du Kickstarters Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu.";
 "CVC" = "CVC";
 "Cancel" = "Abbrechen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
@@ -72,6 +74,7 @@
 "Confirm_password" = "Neues Passwort bestätigen";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Verknüpfe dein Konto mit Facebook - du kannst deinen Freunden folgen und wirst benachrichtigt, sobald sie ein Projekt veröffentlichen oder unterstützen.";
 "Contact_creator" = "Projektgründer kontaktieren";
+"Continue" = "Weiter";
 "Continue_to_payment" = "Weiter zur Zahlung";
 "Continue_to_update_pledge" = "Weiter zu Beitrag aktualisieren";
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
@@ -117,7 +120,7 @@
 "Discover_the_future_of_Design_and_Tech" = "Entdecke das Neueste in Design und Technologie.";
 "Dismiss" = "Verwerfen";
 "Done" = "Fertig!";
-"Double_tap_to_toggle_setting" = "Double tap to toggle setting";
+"Double_tap_to_toggle_setting" = "Zum Umschalten zweimal tippen";
 "Download_your_personal_data" = "Lade deine persönlichen Daten herunter";
 "Earth" = "Erde";
 "Edit_profile" = "Profil bearbeiten";
@@ -129,6 +132,7 @@
 "Email_unverified" = "Diese E-Mail-Adresse wurde noch nicht verifiziert.";
 "Ending_soon" = "Endet bald";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
+"Estimated_delivery_of" = "Voraussichtliches Lieferdatum";
 "Expands_subcategories" = "Erweitert die Anzeige der Unterkategorien.";
 "Expiration" = "Verfallsdatum";
 "Expired_date_at_time" = "Abgelaufen am %{date} um %{time}";
@@ -274,10 +278,10 @@
 "Not_delivered" = "Nicht verschickt";
 "Not_followed" = "Nicht abonniert";
 "Not_now" = "Nicht jetzt";
-"Notification_email_notification_off" = "%{notification}, email notification, off";
-"Notification_email_notification_on" = "%{notification}, email notification, on";
-"Notification_push_notification_off" = "%{notification}, push notification, off";
-"Notification_push_notification_on" = "%{notification}, push notification, on";
+"Notification_email_notification_off" = "%{notification}, Benachrichtigung per E-Mail, Aus";
+"Notification_email_notification_on" = "%{notification}, Benachrichtigung per E-Mail, An";
+"Notification_push_notification_off" = "%{notification}, Push-Benachrichtigung, Aus";
+"Notification_push_notification_on" = "%{notification}, Push-Benachrichtigung, An";
 "Notifications" = "Benachrichtigungen";
 "Once_you_back_a_project_well_share" = "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen.";
 "Only_amount_of_time_left_to_watch_this" = "Nur noch %{amount_of_time} live!";
@@ -326,6 +330,7 @@
 "Project_Suspended" = "Projekt ausgesetzt.";
 "Project_activity" = "Projektaktivität";
 "Project_cancelled" = "Projekt abgebrochen";
+"Project_goal_and_pledge" = "Es wird eine ungefähre Umrechnung des Finanzierungsziels und der Finanzierungsbeiträge angezeigt. Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht.";
 "Project_reminders" = "Projekt-Erinnerungen";
 "Project_saved" = "Projekt gespeichert.";
 "Project_updates" = "Projekt-Updates";
@@ -355,6 +360,7 @@
 "Replay_past_live_stream" = "Wiedergabe des vorigen Live-Streams";
 "Replay_past_live_streams" = "Wiedergabe vergangener Live-Streams";
 "Reply_to_user_name" = "%{user_name} antworten …";
+"Request_my_data" = "Request my data";
 "Request_my_personal_data" = "Meine persönlichen Daten anfordern";
 "Resend_verification_email" = "Verifizierungs-E-Mail erneut senden";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
@@ -385,6 +391,7 @@
 "Say_something_kind" = "Sag etwas Nettes ...";
 "Security_code" = "Sicherheitscode";
 "See_all_category_name_projects" = "Alle %{category_name}-Projekte anzeigen";
+"Select" = "Auswählen";
 "Select_another_project" = "Wähle ein anderes Projekt aus";
 "Select_this_reward" = "Diese Belohnung wählen";
 "Select_this_reward_instead" = "Diese Belohnung auswählen";
@@ -441,6 +448,7 @@
 "Top_pledge_sources" = "Woher deine Unterstützungen kommen";
 "Top_ten_pledge_sources" = "Top 10 Quellen deiner Beiträge";
 "Top_ten_rewards" = "Top 10-Belohnungen";
+"Total" = "Gesamt";
 "Total_pledged" = "Anzahl der Beiträge insgesamt";
 "Twice_a_day_summary" = "Übersicht (zweimal täglich)";
 "Unable_to_request" = "Daten konnten nicht angefordert werden.";
@@ -484,6 +492,7 @@
 "You_have_successfully_backed_project_html" = "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!";
 "You_pledged_on_date" = "<b>Finanzierungsbeitrag geleistet</b> im %{pledge_date}";
 "You_saved_this_project" = "Du hast dieses Projekt gespeichert.";
+"Youll_receive_an_email_at_email_when_your_download_is_ready" = "Du wirst per E-Mail unter %{email} benachrichtigt, sobald dein Download bereit ist.";
 "Your_chat_message_wasnt_sent_successfully" = "Deine Chat-Nachricht konnte leider nicht gesendet werden.";
 "Your_friends_havent_backed_any_projects_yet" = "Deine Freunde haben bisher noch kein Projekt unterstützt. Aber sobald sie das tun, wird es hier angezeigt.";
 "Your_name_displayed" = "Dein Name wird auf deinem Profil angezeigt.";
@@ -495,6 +504,7 @@
 "Your_reward" = "Deine Belohnung";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Deine Belohnung</b> wird voraussichtlich im %{delivery_date} geliefert";
 "Your_shipping_destination" = "Dein Versandziel";
+"Your_shipping_location" = "Dein Versand-Standort";
 "Youre_a_backer" = "Du unterstützt das Projekt!";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Du bist via Facebook (%{email}) verbunden. Erstelle ein Passwort für dieses Konto, um deine Anmeldedaten für Kickstarter zu ändern.";
@@ -1356,7 +1366,6 @@
 "rewards.info.shipping_destinations" = "Versandziele";
 "rewards.info.ships_to" = "Versandziel";
 "rewards.info.time_left" = "{{time}} verbleibend";
-"rewards.select_label.select" = "Auswählen";
 "rewards.selected_label.you_selected" = "Deine Auswahl";
 "rewards.shipping_preferences.location.unrestricted" = "Weltweiter Versand";
 "rewards.title.about_amount_usd" = "Ungefähr %{reward_amount} USD";

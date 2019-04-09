@@ -77,6 +77,8 @@ public final class RootTabBarViewController: UITabBarController {
 
     self.viewModel.outputs.setViewControllers
       .observeForUI()
+      .map { $0.map { $0.viewController }.compact() }
+      .map { $0.map(UINavigationController.init(rootViewController:)) }
       .observeValues { [weak self] in
         self?.setViewControllers($0, animated: false)
     }
@@ -86,7 +88,14 @@ public final class RootTabBarViewController: UITabBarController {
       .observeValues { [weak self] in self?.selectedIndex = $0 }
 
     self.viewModel.outputs.scrollToTop
-      .observeForUI()
+      .observeForControllerAction()
+      .map { [weak self] index -> UIViewController? in
+        guard let vcs = self?.viewControllers else { return nil }
+
+        return vcs[clamp(0, vcs.count - 1)(index)]
+      }
+      .skipNil()
+      .map(extractViewController)
       .observeValues(scrollToTop)
 
     self.viewModel.outputs.tabBarItemsData
@@ -94,12 +103,20 @@ public final class RootTabBarViewController: UITabBarController {
       .observeValues { [weak self] in self?.setTabBarItemStyles(withData: $0) }
 
     self.viewModel.outputs.filterDiscovery
-      .observeForUI()
+      .observeForControllerAction()
+      .map { [weak self] index, param -> (DiscoveryViewController, DiscoveryParams)? in
+        self?.viewControllerAndParam(with: index, param: param)
+      }
+      .skipNil()
       .observeValues { $0.filter(with: $1) }
 
     self.viewModel.outputs.switchDashboardProject
       .observeForControllerAction()
-      .observeValues { $0.`switch`(toProject: $1) }
+      .map { [weak self] index, param -> (DashboardViewController, Param)? in
+        self?.viewControllerAndParam(with: index, param: param)
+      }
+      .skipNil()
+      .observeValues { $0.switch(toProject: $1) }
   }
 
   public func switchToActivities() {
@@ -124,6 +141,15 @@ public final class RootTabBarViewController: UITabBarController {
 
   public func switchToSearch() {
     self.viewModel.inputs.switchToSearch()
+  }
+
+  private func viewControllerAndParam<T, P>(with index: RootViewControllerIndex, param: P) -> (T, P)? {
+    guard
+      let vcs = self.viewControllers,
+      let vc = vcs[clamp(0, vcs.count - 1)(index)] as? T
+    else { return nil }
+
+    return (vc, param)
   }
 
   public func switchToMessageThread(_ messageThread: MessageThread) {
@@ -290,4 +316,15 @@ private func strokedRoundImage(fromImage image: UIImage?,
   circle.stroke()
 
   return UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
+}
+
+private func extractViewController(_ viewController: UIViewController) -> UIViewController {
+  guard
+    let navigationController = viewController as? UINavigationController,
+    navigationController.viewControllers.count == 1,
+    let nestedViewController = navigationController.viewControllers.first else {
+    return viewController
+  }
+
+  return nestedViewController
 }

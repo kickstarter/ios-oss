@@ -102,12 +102,12 @@ let paletteStackView = UIStackView()
     }
 }
 
-let dropShadowView = colorBlockStackView(color: .ksr_dropShadow, colorName: "Drop Shadow")
+let dropShadowView = colorBlockStackView(color: .ksr_grey_100, colorName: "Drop Shadow")
 
 
 let gradient1 = gradientBlockStackView(colorName: "Lavender / Powder",
                                        startColor: .ksr_grey_500,
-                                       endColor: .ksr_text_dark_grey_900)
+                                       endColor: .ksr_text_dark_grey_500)
 
 let gradient2 = gradientBlockStackView(colorName: "Peach / Blush",
                                        startColor: .ksr_orange_400,
