@@ -1,8 +1,8 @@
 @testable import KsApi
 @testable import Library
 @testable import LiveStream
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
 import Prelude
 import ReactiveSwift
 import Result

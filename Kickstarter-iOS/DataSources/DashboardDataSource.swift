@@ -1,5 +1,6 @@
 import Foundation
 import Library
+import UIKit
 import KsApi
 
 internal final class DashboardDataSource: ValueCellDataSource {

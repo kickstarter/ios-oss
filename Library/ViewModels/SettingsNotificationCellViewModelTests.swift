@@ -2,8 +2,7 @@ import XCTest
 import Result
 import Library
 import Prelude
-@testable import Kickstarter_Framework
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 @testable import KsApi
 
 final class SettingsNotificationCellViewModelTests: TestCase {

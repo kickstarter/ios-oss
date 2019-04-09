@@ -4,8 +4,8 @@ import Result
 import XCTest
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
 
 internal final class DashboardViewModelTests: TestCase {
   internal let vm: DashboardViewModelType = DashboardViewModel()

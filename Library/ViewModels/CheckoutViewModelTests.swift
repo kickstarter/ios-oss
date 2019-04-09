@@ -3,7 +3,7 @@
 import XCTest
 @testable import Library
 @testable import KsApi
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 import Result
 import KsApi
 import PassKit

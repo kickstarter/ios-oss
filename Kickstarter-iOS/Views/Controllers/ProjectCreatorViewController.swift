@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import SafariServices
+import WebKit
 
 internal final class ProjectCreatorViewController: WebViewController {
   fileprivate let viewModel: ProjectCreatorViewModelType = ProjectCreatorViewModel()

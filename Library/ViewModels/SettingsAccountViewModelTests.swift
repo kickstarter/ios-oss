@@ -5,8 +5,8 @@ import Result
 import Prelude
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
 @testable import Kickstarter_Framework
+import ReactiveExtensions_TestHelpers
 
 internal final class SettingsAccountViewModelTests: TestCase {
   let vm = SettingsAccountViewModel(SettingsAccountViewController.viewController(for:currency:))

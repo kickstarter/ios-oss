@@ -1,0 +1,15 @@
+# Carthage input files
+
+$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework
+$(SRCROOT)/Carthage/Build/iOS/AlamofireImage.framework
+$(SRCROOT)/Carthage/Build/iOS/Argo.framework
+$(SRCROOT)/Carthage/Build/iOS/Curry.framework
+$(SRCROOT)/Carthage/Build/iOS/HockeySDK.framework
+$(SRCROOT)/Carthage/Build/iOS/OnePasswordExtension.framework
+$(SRCROOT)/Carthage/Build/iOS/Prelude.framework
+$(SRCROOT)/Carthage/Build/iOS/Prelude_UIKit.framework
+$(SRCROOT)/Carthage/Build/iOS/ReactiveExtensions.framework
+$(SRCROOT)/Carthage/Build/iOS/ReactiveExtensions_TestHelpers.framework
+$(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework
+$(SRCROOT)/Carthage/Build/iOS/Result.framework
+$(SRCROOT)/Carthage/Build/iOS/Runes.framework

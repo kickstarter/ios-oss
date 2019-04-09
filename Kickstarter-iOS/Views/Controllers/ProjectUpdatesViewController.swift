@@ -1,8 +1,10 @@
+import Foundation
 import KsApi
 import MessageUI
 import Library
 import Prelude
 import SafariServices
+import WebKit
 
 internal final class ProjectUpdatesViewController: WebViewController {
   fileprivate let viewModel: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()

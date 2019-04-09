@@ -1,11 +1,12 @@
 @testable import Library
 @testable import Kickstarter_Framework
 @testable import KsApi
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 import KsApi
 import Prelude
 import ReactiveSwift
 import Result
+import WebKit
 import XCTest
 
 final class UpdatePreviewViewModelTests: TestCase {
