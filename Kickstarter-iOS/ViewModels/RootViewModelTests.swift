@@ -13,7 +13,7 @@ final class RootViewModelTests: TestCase {
   let vm: RootViewModelType = RootViewModel()
   let viewControllerNames = TestObserver<[String], NoError>()
   let filterDiscovery = TestObserver<DiscoveryParams, NoError>()
-  let selectedIndex = TestObserver<Int, NoError>()
+  let selectedIndex = TestObserver<RootViewControllerIndex, NoError>()
   let scrollToTopControllerName = TestObserver<String, NoError>()
   let switchDashboardProject = TestObserver<Param, NoError>()
   let tabBarItemsData = TestObserver<TabBarItemsData, NoError>()
@@ -29,7 +29,11 @@ final class RootViewModelTests: TestCase {
     self.vm.outputs.selectedIndex.observe(self.selectedIndex.observer)
     self.vm.outputs.switchDashboardProject.map(second).observe(self.switchDashboardProject.observer)
 
-    self.vm.outputs.scrollToTop
+    let viewControllers = self.vm.outputs.setViewControllers
+      .map { $0.map { $0.viewController }.compact() }
+
+    Signal.combineLatest(viewControllers, self.vm.outputs.scrollToTop)
+      .map { (vcs, idx) in vcs[clamp(0, vcs.count - 1)(idx)] }
       .map(extractName)
       .observe(self.scrollToTopControllerName.observer)
 
@@ -165,7 +169,7 @@ final class RootViewModelTests: TestCase {
 
     self.vm.inputs.didSelect(index: 10)
 
-    self.selectedIndex.assertValues([0, 1, 0, 3], "Selecting index out of range safely clamps to bounds.")
+    self.selectedIndex.assertValues([0, 1, 0, 3], "Selects index immediately.")
   }
 
   func testScrollToTop() {
@@ -328,8 +332,12 @@ final class RootViewModelTests: TestCase {
   }
 }
 
-private func extractRootNames(_ vcs: [UIViewController]) -> [String] {
-  return vcs.compactMap(extractRootName)
+private func extractRootNames(_ vcs: [RootViewControllerData]) -> [String] {
+  return vcs
+    .map { $0.viewController }
+    .compact()
+    .map(UINavigationController.init(rootViewController:))
+    .compactMap(extractRootName)
 }
 
 private func extractRootName(_ vc: UIViewController) -> String? {

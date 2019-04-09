@@ -66,7 +66,7 @@ internal final class ProjectCreatorViewController: WebViewController {
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.goToSafariBrowser(url: $0)
+        self?.goTo(url: $0)
     }
   }
 
@@ -94,12 +94,6 @@ internal final class ProjectCreatorViewController: WebViewController {
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
     self.present(nav, animated: true, completion: nil)
-  }
-
-  fileprivate func goToSafariBrowser(url: URL) {
-    let controller = SFSafariViewController(url: url)
-    controller.modalPresentationStyle = .overFullScreen
-    self.present(controller, animated: true, completion: nil)
   }
 
   @objc fileprivate func closeButtonTapped() {

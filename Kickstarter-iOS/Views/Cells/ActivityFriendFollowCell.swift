@@ -45,6 +45,9 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
+    _ = self.friendImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.friendLabel
       |> UILabel.lens.textColor .~ .ksr_soft_black
 
