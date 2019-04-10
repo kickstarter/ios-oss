@@ -78,3 +78,6 @@ Frameworks/Fabric/*
 Frameworks/Stripe/*
 .fastlane/report.xml
 .fastlane/README.md
+
+# Secrets
+bin/StringsScript/Sources/StringsScriptCore/Secrets.swift
