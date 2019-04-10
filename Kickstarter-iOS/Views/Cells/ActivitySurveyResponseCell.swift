@@ -45,6 +45,9 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
+    _ = self.creatorImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.creatorNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
       |> UILabel.lens.textColor .~ .ksr_soft_black

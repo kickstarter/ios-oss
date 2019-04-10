@@ -35,6 +35,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
+    if #available(iOS 11, *) {
+      // swiftlint:disable:next line_length
+      UIImageView.appearance(whenContainedInInstancesOf: [UITabBar.self]).accessibilityIgnoresInvertColors = true
+    }
+
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
         ubiquitousStore: NSUbiquitousKeyValueStore.default,

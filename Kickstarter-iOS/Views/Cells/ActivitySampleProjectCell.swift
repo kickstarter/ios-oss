@@ -53,6 +53,9 @@ internal final class ActivitySampleProjectCell: UITableViewCell, ValueCell {
     _ = self.projectSubtitleAndTitleStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
+    _ = self.projectImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.projectSubtitleLabel
       |> activitySampleProjectSubtitleLabelStyle
 
