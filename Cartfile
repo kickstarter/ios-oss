@@ -1,5 +1,5 @@
 github "kickstarter/Kickstarter-Prelude" "7a56163ad02d817aeb022f6dcb3820a733d5ec4c"
-github "kickstarter/Kickstarter-ReactiveExtensions" "5c19c90be16176f25930d57aaf197c23a65074f1"
+github "kickstarter/Kickstarter-ReactiveExtensions" "68f1ea47d66d116bd4cca9b4226ecd2acb8ffadf"
 
 github "Alamofire/Alamofire" == 4.7.3
 github "Alamofire/AlamofireImage" == 3.4.1
