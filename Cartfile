@@ -1,5 +1,9 @@
+###Internal
+
 github "kickstarter/Kickstarter-Prelude" "7a56163ad02d817aeb022f6dcb3820a733d5ec4c"
 github "kickstarter/Kickstarter-ReactiveExtensions" "68f1ea47d66d116bd4cca9b4226ecd2acb8ffadf"
+
+###3rd Party
 
 github "Alamofire/Alamofire" == 4.7.3
 github "Alamofire/AlamofireImage" == 3.4.1
@@ -9,7 +13,6 @@ github "antitypical/Result" "4.1.0"
 github "ReactiveCocoa/ReactiveSwift" == 4.0.0
 github "stripe/stripe-ios" == 13.2.0
 github "uber/ios-snapshot-test-case" == 4.0.0
-
 github "thoughtbot/Argo" "39f06f089d25c111444e5a85eef64586e54756ac"
 github "thoughtbot/Curry" "b6bf27ec9d711f607a8c7da9ca69ee9eaa201a22"
 github "thoughtbot/Runes" "e1bb1f7a589fe9172dc3410203f8b62373ea92a4"

@@ -49,7 +49,7 @@ bootstrap: hooks dependencies
 	brew link --overwrite swiftlint
 
 carthage-bootstrap:
-	bin/carthage.sh
+	set -o pipefail; bin/carthage.sh;
 
 configs = $(basename $(wildcard Kickstarter-iOS/Configs/*.example))
 $(configs):
