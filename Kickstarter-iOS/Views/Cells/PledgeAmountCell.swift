@@ -5,9 +5,9 @@ import UIKit
 final class PledgeAmountCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  private lazy var amountInputView: AmountInputView = { AmountInputView(frame: .zero) }()
   private lazy var inputStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var label: UILabel = { UILabel(frame: .zero) }()
-  private lazy var textField: TextFieldWithPadding = { TextFieldWithPadding(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var stepper: UIStepper = { UIStepper(frame: .zero) }()
 
@@ -25,7 +25,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     self.rootStackView.addArrangedSubview(self.inputStackView)
     self.inputStackView.addArrangedSubview(self.stepper)
     self.inputStackView.addArrangedSubview(UIView(frame: .zero))
-    self.inputStackView.addArrangedSubview(self.textField)
+    self.inputStackView.addArrangedSubview(self.amountInputView)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -57,10 +57,6 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> rootStackViewStyle
 
-    _ = self.textField
-      |> textFieldWithPaddingStyle
-      |> textFieldStyle
-
     _ = self.stepper
       |> stepperStyle
   }
@@ -78,7 +74,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   }
 
   func configureWith(value: Double) {
-    self.textField.text = "\(value)"
+    self.amountInputView.configureWith(amount: value, placeholder: 0, currency: "$")
   }
 }
 
@@ -114,46 +110,6 @@ private func stepperStyle(_ stepper: UIStepper) -> UIStepper {
   stepper.setIncrementImage(UIImage(named: "stepper-increment-normal"), for: .normal)
   stepper.setIncrementImage(UIImage(named: "stepper-increment-disabled"), for: .disabled)
   stepper.setIncrementImage(UIImage(named: "stepper-increment-highlighted"), for: .highlighted)
-
   return stepper
     |> \.tintColor .~ UIColor.clear
-}
-
-private let textFieldStyle: TextFieldStyle = { (textField: UITextField) in
-  textField
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.backgroundColor .~ UIColor.white
-    |> \.font .~ UIFont.ksr_title1()
-    |> \.layer.cornerRadius .~ 6
-    |> \.textAlignment .~ NSTextAlignment.right
-    |> \.textColor .~ UIColor.ksr_green_500
-}
-
-private let textFieldWithPaddingStyle: TextFieldWithPaddingStyle = { (textField: TextFieldWithPadding) in
-  textField
-    |> \.padding .~ UIEdgeInsets(
-      top: Styles.gridHalf(1),
-      left: Styles.gridHalf(1),
-      bottom: Styles.gridHalf(1),
-      right: Styles.gridHalf(1)
-  )
-}
-
-////////////////////////////////////////////////////
-
-private typealias TextFieldWithPaddingStyle = (TextFieldWithPadding) -> TextFieldWithPadding
-
-private class TextFieldWithPadding: UITextField {
-  var padding: UIEdgeInsets = .zero
-
-  override func textRect(forBounds bounds: CGRect) -> CGRect {
-    return bounds.insetBy(
-      dx: self.padding.left + self.padding.right,
-      dy: self.padding.top + self.padding.bottom
-    )
-  }
-
-  override func editingRect(forBounds bounds: CGRect) -> CGRect {
-    return self.textRect(forBounds: bounds)
-  }
 }
