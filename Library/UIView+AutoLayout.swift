@@ -16,6 +16,11 @@ extension UIView {
     NSLayoutConstraint.activate(constraints)
   }
 
+  public func addSubviewConstrainedToEdges(_ view: UIView) {
+    self.addSubview(view)
+    view.constrainEdges(to: self)
+  }
+
   public func addSubviewConstrainedToMargins(_ view: UIView) {
     view.translatesAutoresizingMaskIntoConstraints = false
 
