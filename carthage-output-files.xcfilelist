@@ -13,3 +13,4 @@ $(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Carthage/Build/iOS/ReactiveExten
 $(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Carthage/Build/iOS/ReactiveSwift.framework
 $(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Carthage/Build/iOS/Result.framework
 $(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Carthage/Build/iOS/Runes.framework
+$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Carthage/Build/iOS/Stripe.framework

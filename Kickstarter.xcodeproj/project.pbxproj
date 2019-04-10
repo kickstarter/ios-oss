@@ -75,7 +75,6 @@
 		3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */; };
 		3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */; };
 		370BE71622541C8100B44DB2 /* UIViewController+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE71522541C8100B44DB2 /* UIViewController+URL.swift */; };
-		370BE75022541CCE00B44DB2 /* UIViewController+URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */; };
 		370F527A2254267900F159B9 /* UIApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52792254267900F159B9 /* UIApplicationType.swift */; };
 		370F52B3225426C700F159B9 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52B2225426C700F159B9 /* UIApplication.swift */; };
 		3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */; };
@@ -927,6 +926,9 @@
 		D0936298225D50E100E1411A /* OnePasswordExtension.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7D2257FADF00532AC1 /* OnePasswordExtension.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936299225D50EB00E1411A /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D09362A7225D62FC00E1411A /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
+		D09362A9225D693000E1411A /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09362A8225D693000E1411A /* Stripe.framework */; };
+		D09362AA225D693800E1411A /* Stripe.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D09362A8225D693000E1411A /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */; };
 		D093B46321A86F7F00910962 /* PushRegistrationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B46221A86F7E00910962 /* PushRegistrationType.swift */; };
 		D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B49B21A86FD800910962 /* PushRegistration.swift */; };
 		D093B4F021A8B14100910962 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
@@ -1019,8 +1021,6 @@
 		D0D58DC52257FD0200532AC1 /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */; };
 		D0D58DC62257FD0200532AC1 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; };
 		D0F8F915225806EA0008BAF8 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A55686225804D800F75A08 /* GLKit.framework */; };
-		D0FC17DF22580B7E001F76DA /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FC17DB22580B1B001F76DA /* Stripe.framework */; };
-		D0FC17E122580BA5001F76DA /* Stripe.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0FC17DB22580B1B001F76DA /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D6089E8F209106CD0032CC99 /* PushNotificationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */; };
 		D60C8BE92142D61A00D96152 /* SettingsAccountCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE72142D60800D96152 /* SettingsAccountCellType.swift */; };
 		D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */; };
@@ -1205,6 +1205,13 @@
 			remoteGlobalIDString = D015874F1EEB2DE4006E7684;
 			remoteInfo = KsApi;
 		};
+		D09362AD225D7E8C00E1411A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
+			remoteInfo = "Kickstarter-iOS";
+		};
 		D0B45B6D1EF858C00020A8DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -1327,9 +1334,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D09362AA225D693800E1411A /* Stripe.framework in CopyFiles */,
 				D00A37402258276200F46F47 /* Alamofire.framework in CopyFiles */,
 				D00A37412258276200F46F47 /* AlamofireImage.framework in CopyFiles */,
-				D0FC17E122580BA5001F76DA /* Stripe.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2227,6 +2234,7 @@
 		D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectViewModel.swift; sourceTree = "<group>"; };
 		D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectViewModelTests.swift; sourceTree = "<group>"; };
 		D08CD20221922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationWatchProjectResponseEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		D09362A8225D693000E1411A /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stripe.framework; path = Carthage/Build/iOS/Stripe.framework; sourceTree = "<group>"; };
 		D093B46221A86F7E00910962 /* PushRegistrationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRegistrationType.swift; sourceTree = "<group>"; };
 		D093B49B21A86FD800910962 /* PushRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRegistration.swift; sourceTree = "<group>"; };
 		D093B4B721A8B0E000910962 /* MockPushRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPushRegistration.swift; sourceTree = "<group>"; };
@@ -2289,7 +2297,6 @@
 		D0D58DAB2257FB4F00532AC1 /* GoogleSymbolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleSymbolUtilities.framework; sourceTree = "<group>"; };
 		D0D58DAC2257FB4F00532AC1 /* GoogleInterchangeUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInterchangeUtilities.framework; sourceTree = "<group>"; };
 		D0D58DAD2257FB4F00532AC1 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
-		D0FC17DB22580B1B001F76DA /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stripe.framework; path = Frameworks/Stripe/Stripe.framework; sourceTree = "<group>"; };
 		D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationDialog.swift; sourceTree = "<group>"; };
 		D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewController.swift; sourceTree = "<group>"; };
 		D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountDataSource.swift; sourceTree = "<group>"; };
@@ -2496,7 +2503,6 @@
 				017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
 				D0D58DC22257FC7E00532AC1 /* UIKit.framework in Frameworks */,
 				D0A02F1B2258071B00BAA209 /* VideoToolbox.framework in Frameworks */,
-				D0FC17DF22580B7E001F76DA /* Stripe.framework in Frameworks */,
 				D0D58DC52257FD0200532AC1 /* Prelude_UIKit.framework in Frameworks */,
 				D0A02F1A2258071B00BAA209 /* AudioToolbox.framework in Frameworks */,
 				D0D58DC62257FD0200532AC1 /* Prelude.framework in Frameworks */,
@@ -2505,6 +2511,7 @@
 				D0F8F915225806EA0008BAF8 /* GLKit.framework in Frameworks */,
 				D06EE2812257FE5F00E956D2 /* Foundation.framework in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
+				D09362A9225D693000E1411A /* Stripe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3251,6 +3258,7 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D09362A8225D693000E1411A /* Stripe.framework */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
 				D0D58D7A2257FADE00532AC1 /* Argo.framework */,
@@ -3278,7 +3286,6 @@
 				D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */,
 				D0D58D802257FADF00532AC1 /* Result.framework */,
 				D0D58D842257FAE000532AC1 /* Runes.framework */,
-				D0FC17DB22580B1B001F76DA /* Stripe.framework */,
 				D0D58D942257FAF100532AC1 /* SystemConfiguration.framework */,
 				D0D58D982257FAF200532AC1 /* UIKit.framework */,
 				D0D58D962257FAF200532AC1 /* VideoToolbox.framework */,
@@ -4101,7 +4108,6 @@
 				A7D1F9421C850B7C000D41D5 /* Frameworks */,
 				A7D1F9431C850B7C000D41D5 /* Resources */,
 				A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */,
-				77B1A2FF21467B200042AA8F /* Integrate Stripe Dynamic Framework */,
 				16344A3D20B4F6B700610E8D /* Swiftlint */,
 				7713662C20E4048B00D7D7AD /* Fabric */,
 				D0D58D772257F95E00532AC1 /* Carthage */,
@@ -4132,6 +4138,7 @@
 			);
 			dependencies = (
 				A724BA631D2BFCC10041863C /* PBXTargetDependency */,
+				D09362AE225D7E8C00E1411A /* PBXTargetDependency */,
 			);
 			name = "Kickstarter-Framework-iOSTests";
 			productName = KickstarterTests;
@@ -4432,20 +4439,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "bash \"${SRCROOT}/bin/fabric.sh\"\n";
-		};
-		77B1A2FF21467B200042AA8F /* Integrate Stripe Dynamic Framework */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Integrate Stripe Dynamic Framework";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework/integrate-dynamic-framework.sh\"\n";
 		};
 		D0D58D772257F95E00532AC1 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4766,7 +4759,6 @@
 				A7ED1FF41E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift in Sources */,
 				D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */,
 				D093B4F021A8B14100910962 /* MockPushRegistration.swift in Sources */,
-				370BE75022541CCE00B44DB2 /* UIViewController+URLTests.swift in Sources */,
 				A7ED1FEA1E831C5C00BFFA01 /* HelpViewModelTests.swift in Sources */,
 				A7ED1F301E830FDC00BFFA01 /* NavigationTests.swift in Sources */,
 				37F39BEE221D062900E0FA65 /* UITraitCollectionTests.swift in Sources */,
@@ -4792,6 +4784,7 @@
 				D6B6876E21937182005F5DA7 /* CreditCardCellViewModelTests.swift in Sources */,
 				A7ED1FFC1E831C5C00BFFA01 /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */,
 				A7ED20031E831C5C00BFFA01 /* TwoFactorViewModelTests.swift in Sources */,
+				D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */,
 				A7ED1FFF1E831C5C00BFFA01 /* RewardShippingPickerViewModelTests.swift in Sources */,
 				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
 				A7ED1FDC1E831C5C00BFFA01 /* DashboardVideoCellViewModelTests.swift in Sources */,
@@ -5540,6 +5533,11 @@
 			isa = PBXTargetDependency;
 			target = D015874F1EEB2DE4006E7684 /* KsApi */;
 			targetProxy = D015875A1EEB2DE4006E7684 /* PBXContainerItemProxy */;
+		};
+		D09362AE225D7E8C00E1411A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
+			targetProxy = D09362AD225D7E8C00E1411A /* PBXContainerItemProxy */;
 		};
 		D0B45B6E1EF858C00020A8DA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

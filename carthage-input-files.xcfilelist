@@ -13,3 +13,4 @@ $(SRCROOT)/Carthage/Build/iOS/ReactiveExtensions_TestHelpers.framework
 $(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework
 $(SRCROOT)/Carthage/Build/iOS/Result.framework
 $(SRCROOT)/Carthage/Build/iOS/Runes.framework
+$(SRCROOT)/Carthage/Build/iOS/Stripe.framework
