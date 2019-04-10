@@ -17,8 +17,8 @@ final class PledgeDataSource: ValueCellDataSource {
     )
 
     self.appendRow(
-      value: "Your pledge amount",
-      cellClass: PledgeRowCell.self,
+      value: reward.minimum,
+      cellClass: PledgeAmountCell.self,
       toSection: Section.inputs.rawValue
     )
 
@@ -38,6 +38,8 @@ final class PledgeDataSource: ValueCellDataSource {
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as PledgeRowCell, value as String):
+      cell.configureWith(value: value)
+    case let (cell as PledgeAmountCell, value as Double):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

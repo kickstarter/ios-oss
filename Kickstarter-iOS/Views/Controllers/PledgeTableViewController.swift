@@ -27,6 +27,7 @@ class PledgeTableViewController: UITableViewController {
       |> \.dataSource .~ self.dataSource
 
     self.tableView.register(PledgeRowCell.self, forCellReuseIdentifier: "PledgeRowCell")
+    self.tableView.register(PledgeAmountCell.self, forCellReuseIdentifier: "PledgeAmountCell")
     self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Footer")
 
     self.viewModel.inputs.viewDidLoad()
