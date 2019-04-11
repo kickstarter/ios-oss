@@ -108,7 +108,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> \.distribution .~ .fill
 
     _ = self.estimatedDeliveryLabel
-      |> \.text  %~ { _ in Strings.Estimated_delivery() }
+      |> \.text  %~ { _ in Strings.Estimated_delivery_of() }
       |> \.textColor .~ .ksr_text_dark_grey_500
       |> \.font .~ .ksr_headline()
       |> \.adjustsFontForContentSizeCategory .~ true
