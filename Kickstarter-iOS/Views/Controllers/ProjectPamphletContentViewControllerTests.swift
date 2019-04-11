@@ -42,7 +42,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(config: checkoutDisabledConfig, language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(config: checkoutDisabledConfig,
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
@@ -61,7 +63,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
 
     Language.allLanguages.forEach { language in
-      withEnvironment(config: checkoutDisabledConfig, language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(config: checkoutDisabledConfig,
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 1_750
@@ -99,7 +103,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(config: checkoutDisabledConfig, language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(config: checkoutDisabledConfig,
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
 
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -156,7 +162,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(config: checkoutDisabledConfig, language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(config: checkoutDisabledConfig,
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
 
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -197,7 +205,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .failed
 
     Language.allLanguages.forEach { language in
-      withEnvironment(config: checkoutDisabledConfig, language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(config: checkoutDisabledConfig,
+                      language: language,
+                      locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 1_700
