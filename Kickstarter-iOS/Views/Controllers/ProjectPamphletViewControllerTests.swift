@@ -88,7 +88,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-  func testNonBacker_LiveProject_NativeCheckout_Feature_Removed() {
+  func testNonBacker_LiveProject_NativeCheckout_Feature_Undefined() {
     let config = Config.template
       |> \.features .~ [:]
 
@@ -97,7 +97,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_200 : 800
+        parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }

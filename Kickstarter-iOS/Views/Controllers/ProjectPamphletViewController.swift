@@ -215,8 +215,8 @@ public final class ProjectPamphletViewController: UIViewController {
 
   // MARK: - Private Helpers
   private func shouldShowNativeCheckout() -> Bool {
-    // Show native checkout unless the "ios_native_checkout" flag is disabled
-    return AppEnvironment.current.config?.features[Feature.checkout.rawValue] != .some(false)
+    // Show native checkout only if the `ios_native_checkout` flag is enabled
+    return AppEnvironment.current.config?.features[Feature.checkout.rawValue] == .some(true)
   }
 
   private func updateContentInsets() {
