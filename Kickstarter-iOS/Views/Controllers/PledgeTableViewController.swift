@@ -23,7 +23,6 @@ class PledgeTableViewController: UITableViewController {
     super.viewDidLoad()
 
     _ = self.tableView
-      |> tableViewStyle
       |> \.dataSource .~ self.dataSource
 
     self.tableView.register(PledgeRowCell.self, forCellReuseIdentifier: "PledgeRowCell")
@@ -33,7 +32,16 @@ class PledgeTableViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // MARK: - Bindings
+  // MARK: - Styles
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    _ = self.tableView
+      |> tableViewStyle
+  }
+
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
@@ -58,11 +66,24 @@ class PledgeTableViewController: UITableViewController {
 
 // MARK: - Styles
 
-private let tableViewStyle: TableViewStyle = { (tableView: UITableView) in
-  tableView
+private func tableViewStyle(_ tableView: UITableView) -> UITableView {
+  let style = tableView
     |> \.allowsSelection .~ false
+    |> \.separatorStyle .~ UITableViewCell.SeparatorStyle.none
     |> \.contentInset .~ UIEdgeInsets(top: -35)
     |> \.sectionFooterHeight .~ 10
     |> \.sectionHeaderHeight .~ 0
-    |> \.separatorStyle .~ UITableViewCell.SeparatorStyle.none
+
+  if #available(iOS 11, *) { } else {
+    let estimatedHeight: CGFloat = 44
+
+    return style
+      |> \.contentInset .~ UIEdgeInsets(top: 30)
+      |> \.estimatedSectionFooterHeight .~ estimatedHeight
+      |> \.estimatedSectionHeaderHeight .~ estimatedHeight
+      |> \.estimatedRowHeight .~ estimatedHeight
+      |> \.rowHeight .~ UITableView.automaticDimension
+  }
+
+  return style
 }
