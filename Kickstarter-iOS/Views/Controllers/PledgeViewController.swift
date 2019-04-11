@@ -1,3 +1,4 @@
+import Library
 import KsApi
 import Prelude
 import UIKit
@@ -23,7 +24,7 @@ final class PledgeViewController: UIViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.title %~ { _ in "Back this project" }
+      |> \.title %~ { _ in Strings.Back_this_project() }
 
     if let childView = self.pledgeTableViewController.tableView {
       self.addChild(self.pledgeTableViewController)
