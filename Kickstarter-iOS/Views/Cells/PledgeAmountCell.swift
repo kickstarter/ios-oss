@@ -66,10 +66,14 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   private func configureView(for traitCollection: UITraitCollection) {
     let isAccessibilityCategory = self.traitCollection.ksr_isAccessibilityCategory()
 
+    let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
+    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
+    let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
+
     _ = self.inputStackView
-      |> \.alignment .~ (isAccessibilityCategory ? .leading : .center)
-      |> \.axis .~ (isAccessibilityCategory ? .vertical : .horizontal)
-      |> \.distribution .~ (isAccessibilityCategory ? .equalSpacing : .fill)
+      |> \.alignment .~ alignment
+      |> \.axis .~ axis
+      |> \.distribution .~ distribution
       |> \.spacing .~ (isAccessibilityCategory ? Styles.grid(1) : 0)
   }
 
