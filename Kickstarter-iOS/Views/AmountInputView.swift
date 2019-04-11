@@ -93,7 +93,7 @@ private let labelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.font .~ UIFont.ksr_caption1()
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.textAlignment .~ .right
+    |> \.textAlignment .~ NSTextAlignment.right
     |> \.textColor .~ UIColor.ksr_green_500
 }
 
@@ -101,13 +101,13 @@ private let textFieldStyle: TextFieldStyle = { (textField: UITextField) in
   textField
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.font .~ UIFont.ksr_title1()
-    |> \.keyboardType .~ .decimalPad
+    |> \.keyboardType .~ UIKeyboardType.decimalPad
     |> \.textColor .~ UIColor.ksr_green_500
 }
 
 private let stackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
-    |> \.alignment .~ .top
+    |> \.alignment .~ UIStackView.Alignment.top
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 

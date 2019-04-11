@@ -64,5 +64,5 @@ private let tableViewStyle: TableViewStyle = { (tableView: UITableView) in
     |> \.contentInset .~ UIEdgeInsets(top: -35)
     |> \.sectionFooterHeight .~ 10
     |> \.sectionHeaderHeight .~ 0
-    |> \.separatorStyle .~ .none
+    |> \.separatorStyle .~ UITableViewCell.SeparatorStyle.none
 }
