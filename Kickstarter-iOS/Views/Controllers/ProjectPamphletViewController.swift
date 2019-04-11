@@ -17,9 +17,30 @@ public final class ProjectPamphletViewController: UIViewController {
 
   @IBOutlet weak private var navBarTopConstraint: NSLayoutConstraint!
 
-  private let backThisProjectContainerView = UIView()
   private let backThisProjectContainerViewMargins = Styles.grid(3)
-  private let backThisProjectButton = UIButton(type: .custom)
+  private let backThisProjectContainerView: UIView = {
+    return UIView() |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let backThisProjectButton: UIButton = {
+     return UIButton(type: .custom) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private var backThisProjectContainerSublayer: CAShapeLayer {
+    let path = UIBezierPath(roundedRect: backThisProjectContainerView.bounds,
+                            byRoundingCorners: [.topLeft, .topRight],
+                            cornerRadii: CGSize(width: 16, height: 16))
+
+    let mask = CAShapeLayer()
+      |> \.fillColor .~ UIColor.white.cgColor
+      |> \.path .~ path.cgPath
+      |> \.shadowColor .~ UIColor.black.cgColor
+      |> \.shadowOpacity .~ 0.12
+      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
+      |> \.shadowRadius .~ 1.0
+
+    return mask
+  }
 
   public static func configuredWith(projectOrParam: Either<Project, Param>,
                                     refTag: RefTag?) -> ProjectPamphletViewController {
@@ -64,11 +85,8 @@ public final class ProjectPamphletViewController: UIViewController {
     self.setInitial(constraints: [navBarTopConstraint],
                     constant: initialTopConstraint)
 
-    if shouldShowNativeCheckout() {
-      if backThisProjectContainerView.layer.sublayers?.count == 1 {
-        self.setupSublayers()
-      }
-
+    if self.shouldShowNativeCheckout() {
+      self.configureSublayers()
       self.updateContentInsets()
     }
   }
@@ -162,6 +180,19 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   // MARK: - Private View Setup Functions
+  private func configureSublayers() {
+    if let shapeLayer = self.backThisProjectContainerView.layer.sublayers?.first as? CAShapeLayer {
+      // Shape layer is already added, just needs to be updated with update-to-date bounds
+      let updatedShapeLayer = self.backThisProjectContainerSublayer
+
+      self.backThisProjectContainerView.layer.replaceSublayer(shapeLayer, with: updatedShapeLayer)
+    } else {
+      // Shape layer hasn't been added
+      let maskLayer = self.backThisProjectContainerSublayer
+
+      self.backThisProjectContainerView.layer.insertSublayer(maskLayer, at: 0)
+    }
+  }
 
   private func setInitial(constraints: [NSLayoutConstraint?], constant: CGFloat) {
     constraints.forEach {
@@ -170,12 +201,6 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func setupViews() {
-    _ = self.backThisProjectContainerView
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-
-    _ = self.backThisProjectButton
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-
     self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
 
     self.view.addSubview(self.backThisProjectContainerView)
@@ -192,23 +217,6 @@ public final class ProjectPamphletViewController: UIViewController {
   private func shouldShowNativeCheckout() -> Bool {
     // Show native checkout unless the "ios_native_checkout" flag is disabled
     return AppEnvironment.current.config?.features[Feature.checkout.rawValue] != .some(false)
-  }
-
-  private func setupSublayers() {
-    let path = UIBezierPath(roundedRect: backThisProjectContainerView.bounds,
-                            byRoundingCorners: [.topLeft, .topRight],
-                            cornerRadii: CGSize(width: 16, height: 16))
-
-    let mask = CAShapeLayer()
-      |> \.fillColor .~ UIColor.white.cgColor
-      |> \.path .~ path.cgPath
-      |> \.shadowColor .~ UIColor.ksr_grey_500.cgColor
-      |> \.shadowOpacity .~ 0.6
-      |> \.shadowRadius .~ 2.0
-
-    backThisProjectContainerView.layer.addSublayer(mask)
-
-    backThisProjectContainerView.bringSubviewToFront(backThisProjectButton)
   }
 
   private func updateContentInsets() {

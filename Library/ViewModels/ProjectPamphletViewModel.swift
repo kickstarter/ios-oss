@@ -70,14 +70,14 @@ ProjectPamphletViewModelOutputs {
         }
     }
 
-    self.configureChildViewControllersWithProjectAndLiveStreams = freshProjectAndLiveStreamsAndRefTag
-      .map { project, liveStreams, refTag in (project, liveStreams ?? [], refTag) }
-
     self.goToRewards = freshProjectAndLiveStreamsAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, _, refTag in
         return (project, refTag)
-      }
+    }
+
+    self.configureChildViewControllersWithProjectAndLiveStreams = freshProjectAndLiveStreamsAndRefTag
+      .map { project, liveStreams, refTag in (project, liveStreams ?? [], refTag) }
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 

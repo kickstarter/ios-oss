@@ -7,6 +7,8 @@ import XCTest
 
 internal final class ProjectPamphletContentViewControllerConversionTests: TestCase {
   fileprivate var cosmicSurgery: Project = Project.cosmicSurgery
+  fileprivate let checkoutDisabledConfig = Config.template
+    |> \.features .~ [Feature.checkout.rawValue: false]
 
   override func setUp() {
     super.setUp()
@@ -34,7 +36,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
   }
 
   func test_UKProject_USUser_USLocation() {
-    withEnvironment(countryCode: "US") {
+    withEnvironment(config: checkoutDisabledConfig, countryCode: "US") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height =  2_200
@@ -44,7 +46,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
   }
 
   func test_UKProject_USUser_NonUSLocation() {
-    withEnvironment(countryCode: "AU") {
+    withEnvironment(config: checkoutDisabledConfig, countryCode: "AU") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height =  2_200
@@ -59,7 +61,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currency .~ "USD"
       |> Project.lens.stats.currentCurrencyRate .~ 1.0
 
-    withEnvironment(countryCode: "US") {
+    withEnvironment(config: checkoutDisabledConfig, countryCode: "US") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height =  2_200
@@ -74,7 +76,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currency .~ "USD"
       |> Project.lens.stats.currentCurrencyRate .~ 1.0
 
-    withEnvironment(countryCode: "CA") {
+    withEnvironment(config: checkoutDisabledConfig, countryCode: "CA") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height =  2_200
@@ -101,7 +103,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrencyRate .~ 1.0
       |> Project.lens.personalization.backing .~ backing
 
-    withEnvironment(countryCode: "CA") {
+    withEnvironment(config: checkoutDisabledConfig, countryCode: "CA") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height =  2_200
@@ -117,7 +119,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrency .~ "SEK"
       |> Project.lens.stats.currentCurrencyRate .~ 3.0
 
-    withEnvironment(countryCode: "SE") {
+    withEnvironment(config: checkoutDisabledConfig, countryCode: "SE") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height =  2_200
@@ -133,7 +135,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
 
-    withEnvironment(countryCode: "US") {
+    withEnvironment(config: checkoutDisabledConfig, countryCode: "US") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height =  2_200
@@ -149,7 +151,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
 
-    withEnvironment(countryCode: "CA") {
+    withEnvironment(config: checkoutDisabledConfig, countryCode: "CA") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height =  2_200
@@ -165,7 +167,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
 
-    withEnvironment(countryCode: "XX") {
+    withEnvironment(config: checkoutDisabledConfig, countryCode: "XX") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height =  2_200
