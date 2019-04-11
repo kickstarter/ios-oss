@@ -36,8 +36,10 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.setupViews()
-    self.setupConstraints()
+    if shouldShowNativeCheckout() {
+      self.setupViews()
+      self.setupConstraints()
+    }
 
     self.navBarController = self.children
       .compactMap { $0 as? ProjectNavBarViewController }.first
@@ -62,11 +64,13 @@ public final class ProjectPamphletViewController: UIViewController {
     self.setInitial(constraints: [navBarTopConstraint],
                     constant: initialTopConstraint)
 
-    if backThisProjectContainerView.layer.sublayers?.count == 1 {
-      self.setupSublayers()
-    }
+    if shouldShowNativeCheckout() {
+      if backThisProjectContainerView.layer.sublayers?.count == 1 {
+        self.setupSublayers()
+      }
 
-    self.updateContentInsets()
+      self.updateContentInsets()
+    }
   }
 
   public override func viewDidAppear(_ animated: Bool) {
@@ -185,6 +189,11 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   // MARK: - Private Helpers
+  private func shouldShowNativeCheckout() -> Bool {
+    // Show native checkout unless the "ios_native_checkout" flag is disabled
+    return AppEnvironment.current.config?.features[Feature.checkout.rawValue] != .some(false)
+  }
+
   private func setupSublayers() {
     let path = UIBezierPath(roundedRect: backThisProjectContainerView.bounds,
                             byRoundingCorners: [.topLeft, .topRight],
