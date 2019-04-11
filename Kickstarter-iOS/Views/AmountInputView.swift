@@ -79,13 +79,13 @@ class AmountInputView: UIView {
       |> \.layoutMargins .~ UIEdgeInsets(all: isAccessibilityCategory ? Styles.grid(2) : Styles.grid(1))
   }
 
-  func configureWith(amount: Double, placeholder: Double, currency: String) {
+  func configureWith(amount: String, placeholder: String, currency: String) {
     _ = self.label
       |> \.text .~ currency
 
     _ = self.textField
-      |> \.placeholder .~ "\(placeholder)"
-      |> \.text .~ "\(amount)"
+      |> \.placeholder .~ placeholder
+      |> \.text .~ amount
   }
 }
 

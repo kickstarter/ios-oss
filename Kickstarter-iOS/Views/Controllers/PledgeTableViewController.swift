@@ -15,8 +15,8 @@ class PledgeTableViewController: UITableViewController {
     return PledgeTableViewController(style: .grouped)
   }
 
-  func configure(with reward: Reward) {
-    self.viewModel.inputs.configure(with: reward)
+  func configureWith(project: Project, reward: Reward) {
+    self.viewModel.inputs.configureWith(project: project, reward: reward)
   }
 
   override func viewDidLoad() {
@@ -38,10 +38,10 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.reward
+    self.viewModel.outputs.amountAndCurrency
       .observeForUI()
-      .observeValues { [weak self] reward in
-        self?.dataSource.load(reward: reward)
+      .observeValues { [weak self] (amount, currency) in
+        self?.dataSource.load(amount: amount, currency: currency)
         self?.tableView.reloadData()
     }
   }

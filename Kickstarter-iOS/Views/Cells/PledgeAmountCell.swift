@@ -73,8 +73,12 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       |> \.spacing .~ (isAccessibilityCategory ? Styles.grid(1) : 0)
   }
 
-  func configureWith(value: Double) {
-    self.amountInputView.configureWith(amount: value, placeholder: 0, currency: "$")
+  func configureWith(value: (amount: Double, currency: String)) {
+    self.amountInputView.configureWith(
+      amount: String(format: "%i", value.amount),
+      placeholder: "\(0)",
+      currency: value.currency
+    )
   }
 }
 
