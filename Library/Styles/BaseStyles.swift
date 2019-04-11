@@ -4,6 +4,7 @@ import UIKit
 
 public enum Styles {
   public static let cornerRadius: CGFloat = 4.0
+  public static let buttonMinHeight: CGFloat = 44.0
 
   public static func grid(_ count: Int) -> CGFloat {
     return 6.0 * CGFloat(count)
@@ -139,6 +140,14 @@ public let separatorStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.ksr_grey_400
     |> \.accessibilityElementsHidden .~ true
+}
+
+public let greenCTAButtonStyle: ButtonStyle = { (button: UIButton) in
+  button
+    |> roundedStyle(cornerRadius: 12)
+    |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_green_500
+    |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_green_500
+    |> UIButton.lens.titleColor(for: .normal) .~ .white
 }
 
 /**

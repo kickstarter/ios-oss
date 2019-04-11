@@ -5,6 +5,9 @@ import ReactiveSwift
 import Result
 
 public protocol ProjectPamphletViewModelInputs {
+  /// Call when "Back this project" is tapped
+  func backThisProjectTapped()
+
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
@@ -27,6 +30,9 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
     RefTag?), NoError> { get }
+
+  /// Emits a project and refTag to be used to navigate to the reward selection screen
+  var goToRewards: Signal<(Project, RefTag?), NoError> { get }
 
   /// Return this value from the view's `prefersStatusBarHidden` method.
   var prefersStatusBarHidden: Bool { get }
@@ -66,6 +72,12 @@ ProjectPamphletViewModelOutputs {
 
     self.configureChildViewControllersWithProjectAndLiveStreams = freshProjectAndLiveStreamsAndRefTag
       .map { project, liveStreams, refTag in (project, liveStreams ?? [], refTag) }
+
+    self.goToRewards = freshProjectAndLiveStreamsAndRefTag
+      .takeWhen(self.backThisProjectTappedProperty.signal)
+      .map { project, _, refTag in
+        return (project, refTag)
+      }
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
@@ -110,6 +122,11 @@ ProjectPamphletViewModelOutputs {
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
 
+  private let backThisProjectTappedProperty = MutableProperty(())
+  public func backThisProjectTapped() {
+    self.backThisProjectTappedProperty.value = ()
+  }
+
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
   public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
     self.configDataProperty.value = (projectOrParam, refTag)
@@ -148,6 +165,7 @@ ProjectPamphletViewModelOutputs {
     return self.prefersStatusBarHiddenProperty.value
   }
 
+  public let goToRewards: Signal<(Project, RefTag?), NoError>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), NoError>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
   public let topLayoutConstraintConstant: Signal<CGFloat, NoError>

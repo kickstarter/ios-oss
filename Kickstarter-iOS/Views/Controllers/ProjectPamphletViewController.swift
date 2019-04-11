@@ -17,6 +17,10 @@ public final class ProjectPamphletViewController: UIViewController {
 
   @IBOutlet weak private var navBarTopConstraint: NSLayoutConstraint!
 
+  private let backThisProjectContainerView = UIView()
+  private let backThisProjectContainerViewMargins = Styles.grid(3)
+  private let backThisProjectButton = UIButton(type: .custom)
+
   public static func configuredWith(projectOrParam: Either<Project, Param>,
                                     refTag: RefTag?) -> ProjectPamphletViewController {
 
@@ -31,6 +35,9 @@ public final class ProjectPamphletViewController: UIViewController {
 
   public override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.setupViews()
+    self.setupConstraints()
 
     self.navBarController = self.children
       .compactMap { $0 as? ProjectNavBarViewController }.first
@@ -54,6 +61,12 @@ public final class ProjectPamphletViewController: UIViewController {
     super.viewDidLayoutSubviews()
     self.setInitial(constraints: [navBarTopConstraint],
                     constant: initialTopConstraint)
+
+    if backThisProjectContainerView.layer.sublayers?.count == 1 {
+      self.setupSublayers()
+    }
+
+    self.updateContentInsets()
   }
 
   public override func viewDidAppear(_ animated: Bool) {
@@ -69,8 +82,51 @@ public final class ProjectPamphletViewController: UIViewController {
     }
   }
 
+  private func setupConstraints() {
+    // swiftlint:disable line_length
+    let backThisProjectContainerViewConstraints = [self.backThisProjectContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+                                                   self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+                                                   self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    ]
+    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
+
+    let backThisProjectButtonConstraints = [self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+                                            self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+                                            self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
+                                            self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
+                                            self.backThisProjectButton.heightAnchor.constraint(equalToConstant: Styles.buttonMinHeight)
+    ]
+
+    NSLayoutConstraint.activate([backThisProjectContainerViewConstraints,
+                                 backThisProjectButtonConstraints].flatMap { $0 })
+  }
+
+  public override func bindStyles() {
+    super.bindStyles()
+
+    _ = self.backThisProjectContainerView
+      |> \.layoutMargins .~ .init(all: backThisProjectContainerViewMargins)
+
+    _ = self.backThisProjectButton
+      |> greenCTAButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in
+        return Strings.project_back_button()
+    }
+
+    _ = self.backThisProjectButton.titleLabel
+      ?|> \.font .~ UIFont.boldSystemFont(ofSize: 15)
+  }
+
   public override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.goToRewards
+      .observeForControllerAction()
+      .observeValues { [weak self] params in
+        let (project, refTag) = params
+
+        self?.goToRewards(project: project, refTag: refTag)
+    }
 
     self.viewModel.outputs.configureChildViewControllersWithProjectAndLiveStreams
       .observeForUI()
@@ -101,11 +157,70 @@ public final class ProjectPamphletViewController: UIViewController {
     self.viewModel.inputs.willTransition(toNewCollection: newCollection)
   }
 
-  private func setInitial(constraints: [NSLayoutConstraint?], constant: CGFloat) {
+  // MARK: - Private View Setup Functions
 
+  private func setInitial(constraints: [NSLayoutConstraint?], constant: CGFloat) {
     constraints.forEach {
       $0?.constant = constant
     }
+  }
+
+  private func setupViews() {
+    _ = self.backThisProjectContainerView
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+
+    _ = self.backThisProjectButton
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+
+    self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
+
+    self.view.addSubview(self.backThisProjectContainerView)
+    self.view.bringSubviewToFront(backThisProjectContainerView)
+
+    self.backThisProjectButton.addTarget(self, action: #selector(backThisProjectTapped), for: .touchUpInside)
+  }
+
+  private func goToRewards(project: Project, refTag: RefTag?) {
+
+  }
+
+  // MARK: - Private Helpers
+  private func setupSublayers() {
+    let path = UIBezierPath(roundedRect: backThisProjectContainerView.bounds,
+                            byRoundingCorners: [.topLeft, .topRight],
+                            cornerRadii: CGSize(width: 16, height: 16))
+
+    let mask = CAShapeLayer()
+      |> \.fillColor .~ UIColor.white.cgColor
+      |> \.path .~ path.cgPath
+      |> \.shadowColor .~ UIColor.ksr_grey_500.cgColor
+      |> \.shadowOpacity .~ 0.6
+      |> \.shadowRadius .~ 2.0
+
+    backThisProjectContainerView.layer.addSublayer(mask)
+
+    backThisProjectContainerView.bringSubviewToFront(backThisProjectButton)
+  }
+
+  private func updateContentInsets() {
+    let bottomInset = backThisProjectButton.frame.height + 2 * backThisProjectContainerViewMargins
+
+    if #available(iOS 11.0, *) {
+      self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
+    } else {
+      let insets = self.contentController.tableView.contentInset
+
+      self.contentController.tableView.contentInset = UIEdgeInsets(top: insets.top,
+                                                                   left: insets.left,
+                                                                   bottom: bottomInset,
+                                                                   right: insets.right)
+    }
+  }
+
+  // MARK: - Selectors
+
+  @objc func backThisProjectTapped() {
+    self.viewModel.inputs.backThisProjectTapped()
   }
 }
 
