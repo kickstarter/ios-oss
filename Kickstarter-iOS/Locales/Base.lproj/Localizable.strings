@@ -33,6 +33,7 @@
 "Ask_me_anything" = "Ask me anything";
 "Available_to_watch_for_time_more_units" = "Available to watch for %{time} more %{units}";
 "Back" = "Back";
+"Back_this_project" = "Back this project";
 "Back_this_project_below" = "Back this project below";
 "Backed_by_Friends" = "Backed by Friends";
 "Backed_by_people_you_follow" = "Backed by people you follow";
@@ -489,7 +490,7 @@
 "Your_name_displayed" = "Your name is always displayed on your profile.";
 "Your_payment_method_was_successfully_charged" = "Your payment method was successfully charged.";
 "Your_pledge" = "Your pledge";
-"Your_pledge_amount" = "Your pledge amount:";
+"Your_pledge_amount" = "Your pledge amount";
 "Your_pledge_was_canceled_or_the_creator_canceled" = "Your pledge was canceled or the creator canceled the project before its deadline.";
 "Your_pledge_was_dropped" = "Your pledge was dropped.";
 "Your_reward" = "Your reward";
