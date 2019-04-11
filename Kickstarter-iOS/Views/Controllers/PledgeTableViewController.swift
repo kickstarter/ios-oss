@@ -60,6 +60,7 @@ class PledgeTableViewController: UITableViewController {
 
 private let tableViewStyle: TableViewStyle = { (tableView: UITableView) in
   tableView
+    |> \.allowsSelection .~ false
     |> \.contentInset .~ UIEdgeInsets(top: -35)
     |> \.sectionFooterHeight .~ 10
     |> \.sectionHeaderHeight .~ 0
