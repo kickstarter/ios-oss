@@ -53,21 +53,7 @@ class AmountInputView: UIView {
     _ = self.stackView
       |> stackViewStyle
 
-    // Align label's ascender to text field's ascender
-    if let textFieldFont = self.textField.font, let labelFont = self.label.font {
-      let constant = (textFieldFont.capHeight - labelFont.capHeight) / 2
-
-      self.labelCenterYAnchor = NSLayoutConstraint(
-        item: self.label,
-        attribute: .centerY,
-        relatedBy: .equal,
-        toItem: self.textField,
-        attribute: .centerY,
-        multiplier: 1,
-        constant: -constant
-      )
-      self.labelCenterYAnchor?.isActive = true
-    }
+    constrainAscenders(between: self.label, textField: self.textField)
   }
 
   // MARK: - Configuration
@@ -88,6 +74,8 @@ class AmountInputView: UIView {
       |> \.text .~ amount
   }
 }
+
+// MARK: - Styles
 
 private let labelStyle: LabelStyle = { (label: UILabel) in
   label
@@ -115,4 +103,17 @@ private let viewStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.white
     |> \.layer.cornerRadius .~ 6
+}
+
+// MARK: - Functions
+
+/// Aligns label's ascender to text field's ascender or vice versa
+private func constrainAscenders(between label: UILabel, textField: UITextField) {
+  guard let labelFont = label.font, let textFieldFont = textField.font else { return }
+
+  let maxCapHeight = max(labelFont.capHeight, textFieldFont.capHeight)
+  let minCapHeight = min(labelFont.capHeight, textFieldFont.capHeight)
+  let constant = (maxCapHeight - minCapHeight) / 2
+
+  label.centerYAnchor.constraint(equalTo: textField.centerYAnchor, constant: -constant).isActive = true
 }
