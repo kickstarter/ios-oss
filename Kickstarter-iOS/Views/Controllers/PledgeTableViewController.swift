@@ -25,9 +25,9 @@ class PledgeTableViewController: UITableViewController {
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
 
-    self.tableView.register(PledgeRowCell.self, forCellReuseIdentifier: "PledgeRowCell")
-    self.tableView.register(PledgeAmountCell.self, forCellReuseIdentifier: "PledgeAmountCell")
-    self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Footer")
+    self.tableView.registerCellClass(PledgeAmountCell.self)
+    self.tableView.registerCellClass(PledgeRowCell.self)
+    self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -59,7 +59,7 @@ class PledgeTableViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     guard section < self.dataSource.numberOfSections(in: self.tableView) - 1 else { return nil }
 
-    let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Footer")
+    let footerView = tableView.dequeueReusableHeaderFooterView(withClass: PledgeFooterView.self)
     return footerView
   }
 }
@@ -71,7 +71,7 @@ private func tableViewStyle(_ tableView: UITableView) -> UITableView {
     |> \.allowsSelection .~ false
     |> \.separatorStyle .~ UITableViewCell.SeparatorStyle.none
     |> \.contentInset .~ UIEdgeInsets(top: -35)
-    |> \.sectionFooterHeight .~ 10
+    |> \.sectionFooterHeight .~ PledgeFooterView.defaultHeight
     |> \.sectionHeaderHeight .~ 0
 
   if #available(iOS 11, *) { } else {
