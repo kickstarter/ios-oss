@@ -55,9 +55,6 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.inputStackView
-      |> inputStackViewStyle
-
     _ = self.label
       |> labelStyle
 
@@ -71,17 +68,8 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   private func configureView(for traitCollection: UITraitCollection) {
-    let isAccessibilityCategory = self.traitCollection.ksr_isAccessibilityCategory()
-
-    let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
-    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
-    let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
-
     _ = self.inputStackView
-      |> \.alignment .~ alignment
-      |> \.axis .~ axis
-      |> \.distribution .~ distribution
-      |> \.spacing .~ (isAccessibilityCategory ? Styles.grid(1) : 0)
+      |> inputStackViewStyle(self.traitCollection.ksr_isAccessibilityCategory())
   }
 
   func configureWith(value: (amount: Double, currency: String)) {
@@ -95,9 +83,19 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
 // MARK: - Styles
 
-private let inputStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
-  stackView
-    |> \.spacing .~ Styles.grid(1)
+func inputStackViewStyle(_ isAccessibilityCategory: Bool) -> ((UIStackView) -> UIStackView) {
+  return { (stackView: UIStackView) in
+    let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
+    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
+    let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
+    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
+
+    return stackView
+      |> \.alignment .~ alignment
+      |> \.axis .~ axis
+      |> \.distribution .~ distribution
+      |> \.spacing .~ spacing
+  }
 }
 
 private let labelStyle: LabelStyle = { (label: UILabel) in
