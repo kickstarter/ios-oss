@@ -18,7 +18,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     _ = self
       |> \.accessibilityElements .~ [self.label, self.stepper, self.amountInputView]
-      |> \.backgroundColor .~ UIColor.hex(0xf0f0f0) // Extract to Colors.json
+      |> \.backgroundColor .~ UIColor.ksr_grey_300
 
     self.contentView.addSubviewConstrainedToEdges(self.rootStackView)
 

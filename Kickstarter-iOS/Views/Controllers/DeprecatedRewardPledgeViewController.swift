@@ -157,7 +157,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self
       |> baseControllerStyle()
-      |> DeprecatedRewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_300
+      |> DeprecatedRewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_600
 
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: 0)
