@@ -9,6 +9,10 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   private lazy var inputStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var label: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var spacer: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  } ()
   private lazy var stepper: UIStepper = { UIStepper(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -25,8 +29,10 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     self.rootStackView.addArrangedSubview(self.label)
     self.rootStackView.addArrangedSubview(self.inputStackView)
     self.inputStackView.addArrangedSubview(self.stepper)
-    self.inputStackView.addArrangedSubview(UIView(frame: .zero))
+    self.inputStackView.addArrangedSubview(spacer)
     self.inputStackView.addArrangedSubview(self.amountInputView)
+
+    self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
   }
 
   required init?(coder aDecoder: NSCoder) {
