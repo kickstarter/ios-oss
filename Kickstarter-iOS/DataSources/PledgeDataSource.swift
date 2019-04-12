@@ -11,7 +11,7 @@ final class PledgeDataSource: ValueCellDataSource {
 
   func load(reward: Reward) {
     self.appendRow(
-      value: "Description",
+      value: reward,
       cellClass: PledgeDescriptionCell.self,
       toSection: Section.project.rawValue
     )
@@ -39,7 +39,7 @@ final class PledgeDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as PledgeRowCell, value as String):
       cell.configureWith(value: value)
-    case let (cell as PledgeDescriptionCell, value as String):
+    case let (cell as PledgeDescriptionCell, value as Reward):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

@@ -1,3 +1,4 @@
+import KsApi
 import Library
 import Prelude
 import UIKit
@@ -9,16 +10,15 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var containerImageView: UIView = { UIView.init() }()
   private lazy var pledgeImage: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var dateStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var detailsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var descriptionLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var learnMoreLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var spacingView: UIView = { UIView(frame: .zero) }()
+  private lazy var spacerView: UIView = { UIView(frame: .zero) }()
 
-  func configureWith(value: String) {
-    self.estimatedDeliveryLabel.text = value
+  func configureWith(value: Reward) {
+   // self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
+//    self.viewModel.inputs.configureWith(reward: value)
   }
 
   // MARK: - Lifecycle
@@ -27,14 +27,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.contentView.addSubview(self.rootStackView)
-    NSLayoutConstraint.activate(
-      [
-        self.rootStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-        self.rootStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
-        self.rootStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
-        self.rootStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
-      ]
-    )
+    self.rootStackView.constrainEdges(to: self.contentView)
+
     self.containerImageView.widthAnchor.constraint(equalToConstant: 100.0).isActive = true
     self.rootStackView.addArrangedSubview(self.containerImageView)
 
@@ -43,21 +37,21 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     self.containerImageView.addSubview(self.pledgeImage)
     self.pledgeImage.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor).isActive = true
 
-    self.rootStackView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-    self.descriptionStackView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+    self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
+    self.descriptionStackView.addArrangedSubview(self.spacerView)
+
+    self.descriptionStackView.addArrangedSubview(self.estimatedDeliveryLabel)
+    self.descriptionStackView.addArrangedSubview(self.dateLabel)
+    self.descriptionStackView.addArrangedSubview(self.descriptionLabel)
+    self.descriptionStackView.addArrangedSubview(self.learnMoreLabel)
+
+    if #available(iOS 11.0, *) {
+      self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
+    } else {
+      print("nada") // FIX THIS
+    }
+
     self.rootStackView.addArrangedSubview(self.descriptionStackView)
-    self.detailsStackView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-    self.dateStackView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-
-    self.spacingView.heightAnchor.constraint(equalToConstant: 1.0).isActive = true
-
-    self.dateStackView.addArrangedSubview(self.estimatedDeliveryLabel)
-    self.dateStackView.addArrangedSubview(self.dateLabel)
-    self.detailsStackView.addArrangedSubview(self.descriptionLabel)
-    self.detailsStackView.addArrangedSubview(self.learnMoreLabel)
-    self.descriptionStackView.addArrangedSubview(self.spacingView)
-    self.descriptionStackView.addArrangedSubview(self.dateStackView)
-    self.descriptionStackView.addArrangedSubview(self.detailsStackView)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -70,24 +64,16 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self
-      |> \.selectionStyle .~ .none
-
-    _ = self.contentView
-      |> \.backgroundColor .~ UIColor(white: 240.0/255.0, alpha: 1.0)
+      |> \.backgroundColor .~ UIColor.hex(0xf0f0f0)
 
     _ = self.rootStackView
-      |> \.alignment .~ .top
-      |> \.axis .~ .horizontal
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(6), leftRight: Styles.grid(2))
-      |> \.spacing .~ Styles.grid(2)
+      |> rootStackViewStyle
 
     _ = self.containerImageView
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.backgroundColor .~ UIColor.blue
 
-    _ = self.spacingView
+    _ = self.spacerView
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     _ = self.pledgeImage
@@ -95,43 +81,69 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> \.backgroundColor .~ UIColor.orange
 
     _ = self.descriptionStackView
-      |> \.axis .~ .vertical
-      |> \.distribution .~ .fill
-      |> \.spacing .~ Styles.grid(2)
-
-    _ = self.dateStackView
-      |> \.axis .~ .vertical
-      |> \.distribution .~ .fill
-
-    _ = self.detailsStackView
-      |> \.axis .~ .vertical
-      |> \.distribution .~ .fill
+      |> descriptionStackViewStyle
 
     _ = self.estimatedDeliveryLabel
-      |> \.text  %~ { _ in Strings.Estimated_delivery_of() }
-      |> \.textColor .~ .ksr_text_dark_grey_500
-      |> \.font .~ .ksr_headline()
-      |> \.adjustsFontForContentSizeCategory .~ true
-      |> \.numberOfLines .~ 0
+      |> estimatedDeliveryLabelStyle
 
     _ = self.dateLabel
-      |> \.text  %~ { _ in "August 2019" }
-      |> \.textColor .~ .ksr_soft_black
-      |> \.font .~ .ksr_headline()
-      |> \.adjustsFontForContentSizeCategory .~ true
+      |> dateLabelStyle
 
     _ = self.descriptionLabel
-      |> \.text  %~ { _ in "Kickstarter is not a store. It's a way to bring creative projects to life." }
-      |> \.textColor .~ .ksr_text_dark_grey_500
-      |> \.font .~ .ksr_subhead(size: 10)
-      |> \.adjustsFontForContentSizeCategory .~ true
-      |> \.numberOfLines .~ 0
+      |> descriptionLabelStyle
 
     _ = self.learnMoreLabel
-      |> \.text  %~ { _ in Strings.Learn_more_about_accountability() }
-      |> \.textColor .~ .ksr_green_500
-      |> \.font .~ .ksr_subhead(size: 10)
-      |> \.adjustsFontForContentSizeCategory .~ true
-      |> \.numberOfLines .~ 0
+      |> learnMoreLabelStyle
   }
+}
+
+private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
+  stackView
+    |> \.alignment .~ .top
+    |> \.axis .~ .horizontal
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(2))
+    |> \.spacing .~ Styles.grid(2)
+}
+
+private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
+  stackView
+    |> \.axis .~ .vertical
+    |> \.distribution .~ .fill
+}
+
+private let estimatedDeliveryLabelStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.text %~ { _ in Strings.Estimated_delivery_of() }
+    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+    |> \.font .~ UIFont.ksr_headline()
+    |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.numberOfLines .~ 0
+}
+
+private let dateLabelStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.text  %~ { _ in "August 2019" }
+    |> \.textColor .~ UIColor.ksr_soft_black
+    |> \.font .~ UIFont.ksr_headline()
+    |> \.adjustsFontForContentSizeCategory .~ true
+}
+
+private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.text  %~ { _ in "Kickstarter is not a store. It's a way to bring creative projects to life." }
+    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+    |> \.font .~ UIFont.ksr_subhead(size: 12)
+    |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.numberOfLines .~ 0
+}
+
+private let learnMoreLabelStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.text  %~ { _ in Strings.Learn_more_about_accountability() }
+    |> \.textColor .~ UIColor.ksr_green_500
+    |> \.font .~ UIFont.ksr_subhead(size: 12)
+    |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.numberOfLines .~ 0
 }
