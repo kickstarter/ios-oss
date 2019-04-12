@@ -9,8 +9,6 @@ import XCTest
 
 internal final class ProjectPamphletContentViewControllerTests: TestCase {
   fileprivate var cosmicSurgery: Project!
-  fileprivate let checkoutDisabledConfig = Config.template
-    |> \.features .~ [Feature.checkout.rawValue: false]
 
   override func setUp() {
     super.setUp()
@@ -42,9 +40,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(config: checkoutDisabledConfig,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
@@ -63,9 +59,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
 
     Language.allLanguages.forEach { language in
-      withEnvironment(config: checkoutDisabledConfig,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 1_750
@@ -103,9 +97,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(config: checkoutDisabledConfig,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
 
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -131,7 +123,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     Language.allLanguages.forEach { language in
       withEnvironment(
       apiService: MockService(fetchProjectResponse: project),
-      config: checkoutDisabledConfig,
       language: language,
       locale: .init(identifier: language.rawValue)) {
 
@@ -162,9 +153,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(config: checkoutDisabledConfig,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
 
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -189,13 +178,11 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
           |> Backing.lens.reward .~ project.rewards.first
     }
 
-    withEnvironment(config: checkoutDisabledConfig) {
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 1_500
+    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+    let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+    parent.view.frame.size.height = 1_500
 
-      FBSnapshotVerifyView(vc.view, tolerance: 0.0001)
-    }
+    FBSnapshotVerifyView(vc.view, tolerance: 0.0001)
   }
 
   func testFailedProject() {
@@ -205,9 +192,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .failed
 
     Language.allLanguages.forEach { language in
-      withEnvironment(config: checkoutDisabledConfig,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 1_700
@@ -221,23 +206,21 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let project = self.cosmicSurgery!
 
     [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
-      withEnvironment(config: checkoutDisabledConfig) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-        let (parent, _) = traitControllers(
-          device: device, orientation: .portrait, child: vc, handleAppearanceTransition: false
-        )
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+      let (parent, _) = traitControllers(
+        device: device, orientation: .portrait, child: vc, handleAppearanceTransition: false
+      )
 
-        parent.beginAppearanceTransition(true, animated: true)
+      parent.beginAppearanceTransition(true, animated: true)
 
-        FBSnapshotVerifyView(vc.view, identifier: "device_\(device)")
-      }
+      FBSnapshotVerifyView(vc.view, identifier: "device_\(device)")
     }
   }
 
   func testMinimalAndFullProjectOverlap() {
     let project = self.cosmicSurgery!
 
-    withEnvironment(apiService: MockService(fetchProjectResponse: project), config: checkoutDisabledConfig) {
+    withEnvironment(apiService: MockService(fetchProjectResponse: project)) {
       [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
         let minimal = ProjectPamphletViewController.configuredWith(
           projectOrParam: .left(project), refTag: nil
@@ -300,7 +283,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       language, device in
       withEnvironment(
       apiService: apiService,
-      config: checkoutDisabledConfig,
       language: language,
       liveStreamService: liveService,
       locale: .init(identifier: language.rawValue)) {
