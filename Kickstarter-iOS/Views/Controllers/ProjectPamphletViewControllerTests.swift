@@ -79,10 +79,6 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
 
-        parent.view.layoutIfNeeded()
-
-        self.scheduler.advance()
-
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
