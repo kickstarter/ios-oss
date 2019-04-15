@@ -19,7 +19,7 @@ public final class ProjectPamphletViewController: UIViewController {
 
   private let backThisProjectContainerViewMargins = Styles.grid(3)
   private let backThisProjectContainerView: UIView = {
-    return UIView() |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    return UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private let backThisProjectButton: UIButton = {
@@ -58,8 +58,7 @@ public final class ProjectPamphletViewController: UIViewController {
     super.viewDidLoad()
 
     if shouldShowNativeCheckout() {
-      self.setupViews()
-      self.setupConstraints()
+      self.configureViews()
     }
 
     self.navBarController = self.children
@@ -104,7 +103,16 @@ public final class ProjectPamphletViewController: UIViewController {
     }
   }
 
-  private func setupConstraints() {
+  private func configureViews() {
+    // Configure subviews
+    self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
+
+    self.view.addSubview(self.backThisProjectContainerView)
+    self.view.bringSubviewToFront(backThisProjectContainerView)
+
+    self.backThisProjectButton.addTarget(self, action: #selector(backThisProjectTapped), for: .touchUpInside)
+
+    // Configure constraints
     // swiftlint:disable line_length
     let backThisProjectContainerViewConstraints = [self.backThisProjectContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
                                                    self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
@@ -116,7 +124,7 @@ public final class ProjectPamphletViewController: UIViewController {
                                             self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
                                             self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
                                             self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
-                                            self.backThisProjectButton.heightAnchor.constraint(equalToConstant: Styles.buttonMinHeight)
+                                            self.backThisProjectButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
     ]
 
     NSLayoutConstraint.activate([backThisProjectContainerViewConstraints,
@@ -134,9 +142,6 @@ public final class ProjectPamphletViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in
         return Strings.project_back_button()
     }
-
-    _ = self.backThisProjectButton.titleLabel
-      ?|> \.font .~ UIFont.boldSystemFont(ofSize: 15)
   }
 
   public override func bindViewModel() {
@@ -198,15 +203,6 @@ public final class ProjectPamphletViewController: UIViewController {
     constraints.forEach {
       $0?.constant = constant
     }
-  }
-
-  private func setupViews() {
-    self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
-
-    self.view.addSubview(self.backThisProjectContainerView)
-    self.view.bringSubviewToFront(backThisProjectContainerView)
-
-    self.backThisProjectButton.addTarget(self, action: #selector(backThisProjectTapped), for: .touchUpInside)
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
