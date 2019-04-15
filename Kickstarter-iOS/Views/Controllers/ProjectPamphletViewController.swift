@@ -125,8 +125,7 @@ public final class ProjectPamphletViewController: UIViewController {
       self.backThisProjectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
     ]
 
-    NSLayoutConstraint.activate([backThisProjectContainerViewConstraints,
-                                 backThisProjectButtonConstraints].flatMap { $0 })
+    NSLayoutConstraint.activate(backThisProjectContainerViewConstraints + backThisProjectButtonConstraints)
   }
 
   public override func bindStyles() {
