@@ -153,7 +153,7 @@ public let greenCTAButtonStyle: ButtonStyle = { (button: UIButton) in
   _ = button.titleLabel
     ?|> \.textAlignment .~ .center
     ?|> \.lineBreakMode .~ .byTruncatingMiddle
-    ?|> \.font .~ .ksr_headline(size: 17)
+    ?|> \.font .~ .ksr_headline()
 
   return button
 }
