@@ -23,24 +23,20 @@ public final class ProjectPamphletViewController: UIViewController {
   }()
 
   private let backThisProjectButton: UIButton = {
-     return UIButton(type: .custom) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+     return CtaButton(type: .custom)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private var backThisProjectContainerSublayer: CAShapeLayer {
-    let path = UIBezierPath(roundedRect: backThisProjectContainerView.bounds,
-                            byRoundingCorners: [.topLeft, .topRight],
-                            cornerRadii: CGSize(width: 16, height: 16))
-
+  private let backThisProjectContainerSublayer: CAShapeLayer = {
     let mask = CAShapeLayer()
       |> \.fillColor .~ UIColor.white.cgColor
-      |> \.path .~ path.cgPath
       |> \.shadowColor .~ UIColor.black.cgColor
       |> \.shadowOpacity .~ 0.12
       |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
       |> \.shadowRadius .~ 1.0
 
     return mask
-  }
+  }()
 
   public static func configuredWith(projectOrParam: Either<Project, Param>,
                                     refTag: RefTag?) -> ProjectPamphletViewController {
@@ -108,23 +104,25 @@ public final class ProjectPamphletViewController: UIViewController {
     self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
 
     self.view.addSubview(self.backThisProjectContainerView)
-    self.view.bringSubviewToFront(backThisProjectContainerView)
 
     self.backThisProjectButton.addTarget(self, action: #selector(backThisProjectTapped), for: .touchUpInside)
 
     // Configure constraints
-    // swiftlint:disable line_length
-    let backThisProjectContainerViewConstraints = [self.backThisProjectContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-                                                   self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-                                                   self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    let backThisProjectContainerViewConstraints = [
+      self.backThisProjectContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     ]
-    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
 
-    let backThisProjectButtonConstraints = [self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-                                            self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-                                            self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
-                                            self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
-                                            self.backThisProjectButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
+    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
+    let minHeight = Styles.minTouchSize.height
+
+    let backThisProjectButtonConstraints = [
+      self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+      self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+      self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
+      self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
+      self.backThisProjectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
     ]
 
     NSLayoutConstraint.activate([backThisProjectContainerViewConstraints,
@@ -138,10 +136,10 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.layoutMargins .~ .init(all: backThisProjectContainerViewMargins)
 
     _ = self.backThisProjectButton
-      |> greenCTAButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        return Strings.project_back_button()
-    }
+      |> backThisProjectButtonStyle
+
+    _ = self.backThisProjectButton.titleLabel
+      ?|> backThisProjectButtonTitleLabelStyle
   }
 
   public override func bindViewModel() {
@@ -186,16 +184,15 @@ public final class ProjectPamphletViewController: UIViewController {
 
   // MARK: - Private View Setup Functions
   private func configureSublayers() {
-    if let shapeLayer = self.backThisProjectContainerView.layer.sublayers?.first as? CAShapeLayer {
-      // Shape layer is already added, just needs to be updated with update-to-date bounds
-      let updatedShapeLayer = self.backThisProjectContainerSublayer
+    let updatedPath = UIBezierPath(roundedRect: self.backThisProjectContainerView.bounds,
+                                   byRoundingCorners: [.topLeft, .topRight],
+                                   cornerRadii: CGSize(width: 16, height: 16))
 
-      self.backThisProjectContainerView.layer.replaceSublayer(shapeLayer, with: updatedShapeLayer)
-    } else {
-      // Shape layer hasn't been added
-      let maskLayer = self.backThisProjectContainerSublayer
+    _ = self.backThisProjectContainerSublayer
+      |> \.path .~ updatedPath.cgPath
 
-      self.backThisProjectContainerView.layer.insertSublayer(maskLayer, at: 0)
+    if self.backThisProjectContainerView.layer.sublayers?.count == 1 {
+      self.backThisProjectContainerView.layer.insertSublayer(self.backThisProjectContainerSublayer, at: 0)
     }
   }
 
@@ -216,7 +213,8 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func updateContentInsets() {
-    let bottomInset = backThisProjectButton.frame.height + 2 * backThisProjectContainerViewMargins
+    let buttonSize = self.backThisProjectButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    let bottomInset = buttonSize.height + 2 * self.backThisProjectContainerViewMargins
 
     if #available(iOS 11.0, *) {
       self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
@@ -270,4 +268,30 @@ extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
   public func projectNavBarControllerDidTapTitle(_ controller: ProjectNavBarViewController) {
     self.contentController.tableView.scrollToTop()
   }
+}
+
+// MARK: - Styles
+
+private var backThisProjectButtonStyle = { (button: UIButton) -> UIButton in
+  button
+    |> greenButtonStyle
+    |> roundedStyle(cornerRadius: 12)
+    |> UIButton.lens.layer.borderWidth .~ 0
+    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+    |> UIButton.lens.title(for: .normal) %~ { _ in
+      return Strings.project_back_button()
+  }
+}
+
+private var backThisProjectButtonTitleLabelStyle = { (titleLabel: UILabel?) -> UILabel? in
+  _ = titleLabel
+    ?|> \.font .~ UIFont.ksr_headline()
+    ?|> \.numberOfLines .~ Int(0)
+
+  // Breaking this up to help the compiler
+  _ = titleLabel
+    ?|> \.textAlignment .~ NSTextAlignment.center
+    ?|> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
+
+  return titleLabel
 }
