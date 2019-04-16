@@ -142,22 +142,6 @@ public let separatorStyle: ViewStyle = { (view: UIView) in
     |> \.accessibilityElementsHidden .~ true
 }
 
-public let greenCTAButtonStyle: ButtonStyle = { (button: UIButton) in
-  _ = button
-    |> roundedStyle(cornerRadius: 12)
-    |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_green_500
-    |> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_green_500.withAlphaComponent(0.8)
-    |> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_green_500.withAlphaComponent(0.8)
-    |> UIButton.lens.titleColor(for: .normal) .~ .white
-
-  _ = button.titleLabel
-    ?|> \.textAlignment .~ .center
-    ?|> \.lineBreakMode .~ .byTruncatingMiddle
-    ?|> \.font .~ .ksr_headline()
-
-  return button
-}
-
 /**
  - parameter r: The corner radius. This parameter is optional, and will use a default value if omitted.
 

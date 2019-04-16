@@ -2,7 +2,7 @@ import UIKit
 import Foundation
 import Prelude
 
-class CtaButton: UIButton {
+final class MultiLineButton: UIButton {
   override var intrinsicContentSize: CGSize {
     let size = self.titleLabel?.intrinsicContentSize ?? .zero
     let titleInsets = self.titleEdgeInsets

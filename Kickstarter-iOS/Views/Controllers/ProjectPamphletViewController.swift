@@ -23,7 +23,7 @@ public final class ProjectPamphletViewController: UIViewController {
   }()
 
   private let backThisProjectButton: UIButton = {
-     return CtaButton(type: .custom)
+     return MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
