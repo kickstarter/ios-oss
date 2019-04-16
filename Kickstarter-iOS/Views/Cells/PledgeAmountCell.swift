@@ -70,7 +70,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
 // MARK: - Styles
 
-func inputStackViewStyle(_ isAccessibilityCategory: Bool) -> ((UIStackView) -> UIStackView) {
+private func inputStackViewStyle(_ isAccessibilityCategory: Bool) -> ((UIStackView) -> UIStackView) {
   return { (stackView: UIStackView) in
     let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
     let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
