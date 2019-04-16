@@ -25,17 +25,6 @@ class AmountInputView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    let traitCollection = self.traitCollection
-
-    if previousTraitCollection?.preferredContentSizeCategory
-      != traitCollection.preferredContentSizeCategory {
-      self.configureView(for: traitCollection)
-    }
-  }
-
   // MARK: - Styles
 
   override func bindStyles() {
@@ -50,20 +39,16 @@ class AmountInputView: UIView {
     _ = self.textField
       |> textFieldStyle
 
+    let isAccessibilityCategory = self.traitCollection.ksr_isAccessibilityCategory()
+
     _ = self.stackView
       |> stackViewStyle
+      |> \.layoutMargins .~ UIEdgeInsets(all: isAccessibilityCategory ? Styles.grid(2) : Styles.grid(1))
 
     constrainAscenders(between: self.label, textField: self.textField)
   }
 
   // MARK: - Configuration
-
-  private func configureView(for traitCollection: UITraitCollection) {
-    let isAccessibilityCategory = self.traitCollection.ksr_isAccessibilityCategory()
-
-    _ = self.stackView
-      |> \.layoutMargins .~ UIEdgeInsets(all: isAccessibilityCategory ? Styles.grid(2) : Styles.grid(1))
-  }
 
   func configureWith(amount: String, placeholder: String, currency: String) {
     _ = self.label

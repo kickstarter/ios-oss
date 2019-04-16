@@ -39,21 +39,13 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    let traitCollection = self.traitCollection
-
-    if previousTraitCollection?.preferredContentSizeCategory
-      != traitCollection.preferredContentSizeCategory {
-      self.configureView(for: traitCollection)
-    }
-  }
-
   // MARK: - Styles
 
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self.inputStackView
+      |> inputStackViewStyle(self.traitCollection.ksr_isAccessibilityCategory())
 
     _ = self.label
       |> labelStyle
@@ -66,11 +58,6 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   }
 
   // MARK: - Configuration
-
-  private func configureView(for traitCollection: UITraitCollection) {
-    _ = self.inputStackView
-      |> inputStackViewStyle(self.traitCollection.ksr_isAccessibilityCategory())
-  }
 
   func configureWith(value: (amount: Double, currency: String)) {
     self.amountInputView.configureWith(
