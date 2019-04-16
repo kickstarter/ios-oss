@@ -24,7 +24,9 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       |> \.accessibilityElements .~ [self.label, self.stepper, self.amountInputView]
       |> \.backgroundColor .~ UIColor.ksr_grey_300
 
-    self.contentView.addSubviewConstrainedToEdges(self.rootStackView)
+    _ = (self.rootStackView, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     self.rootStackView.addArrangedSubview(self.label)
     self.rootStackView.addArrangedSubview(self.inputStackView)

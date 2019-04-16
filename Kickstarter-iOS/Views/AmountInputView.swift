@@ -18,7 +18,9 @@ class AmountInputView: UIView {
     self.stackView.addArrangedSubview(self.label)
     self.stackView.addArrangedSubview(self.textField)
 
-    self.addSubviewConstrainedToEdges(self.stackView)
+    _ = (self.stackView, self)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
   }
 
   required init?(coder aDecoder: NSCoder) {

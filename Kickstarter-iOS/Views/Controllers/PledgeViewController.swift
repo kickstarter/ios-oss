@@ -28,10 +28,10 @@ final class PledgeViewController: UIViewController {
 
     if let childView = self.pledgeTableViewController.tableView {
       self.addChild(self.pledgeTableViewController)
-      self.view.addSubview(childView)
+      _ = (childView, self.view) |> ksr_addSubviewToParent()
       self.pledgeTableViewController.didMove(toParent: self)
 
-      childView.constrainEdges(to: self.view)
+      _ = (childView, self.view) |> ksr_constrainViewToEdgesInParent()
     }
   }
 }
