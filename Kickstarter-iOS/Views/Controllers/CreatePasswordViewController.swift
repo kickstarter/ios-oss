@@ -36,10 +36,10 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
 
     if let childView = self.createPasswordTableViewController.tableView {
       self.addChild(self.createPasswordTableViewController)
-      self.view.addSubview(childView)
+      _ = (childView, self.view) |> ksr_addSubviewToParent()
       self.createPasswordTableViewController.didMove(toParent: self)
 
-      childView.constrainEdges(to: self.view)
+      _ = (childView, self.view) |> ksr_constrainViewToEdgesInParent()
     }
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
