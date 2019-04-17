@@ -1,8 +1,10 @@
 extension User.Notifications {
   internal static let template = User.Notifications(
     backings: false,
-    comments: false,
     commentReplies: false,
+    comments: false,
+    creatorDigest: false,
+    creatorTips: false,
     follower: false,
     friendActivity: false,
     messages: false,
@@ -14,8 +16,6 @@ extension User.Notifications {
     mobilePostLikes: false,
     mobileUpdates: false,
     postLikes: false,
-    creatorTips: false,
-    updates: false,
-    creatorDigest: false
+    updates: false
   )
 }
