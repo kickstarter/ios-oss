@@ -603,6 +603,23 @@ public enum Strings {
     )
   }
   /**
+   "Back this project"
+
+   - **en**: "Back this project"
+   - **de**: "Projekt unterstützen"
+   - **es**: "Patrocinar este proyecto"
+   - **fr**: "Je soutiens ce projet"
+   - **ja**: "このプロジェクトをバックする"
+  */
+  public static func Back_this_project() -> String {
+    return localizedString(
+      key: "Back_this_project",
+      defaultValue: "Back this project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Back this project below"
 
    - **en**: "Back this project below"
@@ -7970,9 +7987,9 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "Your pledge amount:"
+   "Your pledge amount"
 
-   - **en**: "Your pledge amount:"
+   - **en**: "Your pledge amount"
    - **de**: "Dein Beitrag:"
    - **es**: "Monto de tu contribución:"
    - **fr**: "Montant engagé :"
@@ -7981,7 +7998,7 @@ Veuillez réessayer ultérieurement."
   public static func Your_pledge_amount() -> String {
     return localizedString(
       key: "Your_pledge_amount",
-      defaultValue: "Your pledge amount:",
+      defaultValue: "Your pledge amount",
       count: nil,
       substitutions: [:]
     )

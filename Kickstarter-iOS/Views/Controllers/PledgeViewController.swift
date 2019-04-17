@@ -1,3 +1,4 @@
+import Library
 import KsApi
 import Prelude
 import UIKit
@@ -15,22 +16,22 @@ final class PledgeViewController: UIViewController {
     return PledgeViewController()
   }
 
-  func configure(with reward: Reward) {
-    self.pledgeTableViewController.configure(with: reward)
+  func configureWith(project: Project, reward: Reward) {
+    self.pledgeTableViewController.configureWith(project: project, reward: reward)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     _ = self
-      |> \.title %~ { _ in "Back this project" }
+      |> \.title %~ { _ in Strings.Back_this_project() }
 
     if let childView = self.pledgeTableViewController.tableView {
       self.addChild(self.pledgeTableViewController)
-      self.view.addSubview(childView)
+      _ = (childView, self.view) |> ksr_addSubviewToParent()
       self.pledgeTableViewController.didMove(toParent: self)
 
-      childView.constrainEdges(to: self.view)
+      _ = (childView, self.view) |> ksr_constrainViewToEdgesInParent()
     }
   }
 }

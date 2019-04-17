@@ -3,7 +3,7 @@ import UIKit
 
 extension UIStackView {
 
-  public func pinBackground(_ color: UIColor = .ksr_grey_300) {
+  public func pinBackground(_ color: UIColor = .ksr_grey_600) {
 
     let view = UIView()
       |> UIView.lens.backgroundColor .~ color

@@ -33,6 +33,7 @@
 "Ask_me_anything" = "お問い合わせ";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
 "Back" = "バック";
+"Back_this_project" = "このプロジェクトをバックする";
 "Back_this_project_below" = "このプロジェクトをバックする";
 "Backed_by_Friends" = "友達がバックしたプロジェクト";
 "Backed_by_people_you_follow" = "フォロー中の友達がバック";

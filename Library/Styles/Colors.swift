@@ -35,7 +35,8 @@ extension UIColor {
         200: .ksr_grey_200,
         300: .ksr_grey_300,
         400: .ksr_grey_400,
-        500: .ksr_grey_500
+        500: .ksr_grey_500,
+        600: .ksr_grey_600
       ],
 
       "Navy": [
@@ -133,9 +134,9 @@ extension UIColor {
     return .hex(0xF7F7F6)
   }
 
-  /// 0xF2F2F2
+  /// 0xF0F0F0
   public static var ksr_grey_300: UIColor {
-    return .hex(0xF2F2F2)
+    return .hex(0xF0F0F0)
   }
 
   /// 0xE8E8E8
@@ -146,6 +147,11 @@ extension UIColor {
   /// 0xDCDEDD
   public static var ksr_grey_500: UIColor {
     return .hex(0xDCDEDD)
+  }
+
+  /// 0xF2F2F2
+  public static var ksr_grey_600: UIColor {
+    return .hex(0xF2F2F2)
   }
 
   /// 0xF7F7F9

@@ -5,12 +5,12 @@ import ReactiveSwift
 import Result
 
 public protocol PledgeViewModelInputs {
-  func configure(with reward: Reward)
+  func configureWith(project: Project, reward: Reward)
   func viewDidLoad()
 }
 
 public protocol PledgeViewModelOutputs {
-  var reward: Signal<Reward, NoError> { get }
+  var amountAndCurrency: Signal<(Double, String), NoError> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -20,16 +20,21 @@ public protocol PledgeViewModelType {
 
 public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, PledgeViewModelOutputs {
   public init() {
-    let reward = self.configureRewardProperty.signal
+    let projectAndReward = Signal.combineLatest(
+      self.configureProjectAndRewardProperty.signal, self.viewDidLoadProperty.signal
+    )
+      .map(first)
       .skipNil()
 
-    self.reward = Signal.combineLatest(reward.signal, self.viewDidLoadProperty.signal)
-      .map(first)
+    self.amountAndCurrency = projectAndReward.signal
+      .map { (project, reward) in
+        (reward.minimum, currencySymbol(forCountry: project.country).trimmed())
+    }
   }
 
-  private let configureRewardProperty = MutableProperty<Reward?>(nil)
-  public func configure(with reward: Reward) {
-    self.configureRewardProperty.value = reward
+  private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
+  public func configureWith(project: Project, reward: Reward) {
+    self.configureProjectAndRewardProperty.value = (project, reward)
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -37,7 +42,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let reward: Signal<Reward, NoError>
+  public let amountAndCurrency: Signal<(Double, String), NoError>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
