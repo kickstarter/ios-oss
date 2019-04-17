@@ -81,7 +81,7 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self.searchBarContainerView
       |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ .ksr_grey_300
+      |> UIView.lens.backgroundColor .~ .ksr_grey_600
 
     _ = self.searchIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_dark_grey_400

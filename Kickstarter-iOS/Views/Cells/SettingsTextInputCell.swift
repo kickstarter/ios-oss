@@ -40,7 +40,9 @@ final class SettingsTextInputCell: UITableViewCell {
 
     self.textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
-    self.contentView.addSubviewConstrainedToMargins(self.stackView)
+    _ = (self.stackView, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
   }
 
   required init?(coder _: NSCoder) {

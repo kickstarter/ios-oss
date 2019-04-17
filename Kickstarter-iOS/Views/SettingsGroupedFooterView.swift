@@ -20,7 +20,9 @@ final class SettingsGroupedFooterView: UITableViewHeaderFooterView {
     _ = self.contentView
       |> settingsFooterContentViewStyle
 
-    self.contentView.addSubviewConstrainedToMargins(self.label)
+    _ = (self.label, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
   }
 
   required init?(coder _: NSCoder) {

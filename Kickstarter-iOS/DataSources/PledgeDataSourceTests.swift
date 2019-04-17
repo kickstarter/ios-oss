@@ -7,8 +7,8 @@ final class PledgeDataSourceTests: XCTestCase {
   let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
   let dataSource = PledgeDataSource()
 
-  func testLoadReward() {
-    dataSource.load(reward: Reward.template)
+  func testLoad() {
+    dataSource.load(amount: 100, currency: "USD")
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: collectionView))
     XCTAssertEqual(1, self.dataSource.collectionView(collectionView, numberOfItemsInSection: 0))

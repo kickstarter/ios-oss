@@ -1,31 +1,45 @@
 import UIKit
 
-extension UIView {
-  public func constrainEdges(to view: UIView, priority: UILayoutPriority = .required) {
-    self.translatesAutoresizingMaskIntoConstraints = false
+public func ksr_addSubviewToParent() -> ((UIView, UIView) -> (UIView, UIView)) {
+  return { (subview, parent) in
+    parent.addSubview(subview)
+    return (subview, parent)
+  }
+}
+
+public func ksr_constrainViewToEdgesInParent(priority: UILayoutPriority = .required)
+  -> ((UIView, UIView) -> (UIView, UIView)) {
+  return { (subview, parent) in
+    subview.translatesAutoresizingMaskIntoConstraints = false
 
     let constraints = [
-      self.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      self.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      self.topAnchor.constraint(equalTo: view.topAnchor),
-      self.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+      subview.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
+      subview.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
+      subview.topAnchor.constraint(equalTo: parent.topAnchor),
+      subview.bottomAnchor.constraint(equalTo: parent.bottomAnchor)
     ]
 
     constraints.forEach { $0.priority = priority }
 
     NSLayoutConstraint.activate(constraints)
+
+    return (subview, parent)
   }
+}
 
-  public func addSubviewConstrainedToMargins(_ view: UIView) {
-    view.translatesAutoresizingMaskIntoConstraints = false
+public func ksr_constrainViewToMarginsInParent() -> ((UIView, UIView) -> (UIView, UIView)) {
+  return { (subview, parent) in
+    subview.translatesAutoresizingMaskIntoConstraints = false
 
-    self.addSubview(view)
+    let constraints = [
+      subview.leadingAnchor.constraint(equalTo: parent.layoutMarginsGuide.leadingAnchor),
+      subview.trailingAnchor.constraint(equalTo: parent.layoutMarginsGuide.trailingAnchor),
+      subview.topAnchor.constraint(equalTo: parent.layoutMarginsGuide.topAnchor),
+      subview.bottomAnchor.constraint(equalTo: parent.layoutMarginsGuide.bottomAnchor)
+    ]
 
-    NSLayoutConstraint.activate([
-      self.layoutMarginsGuide.topAnchor.constraint(equalTo: view.topAnchor),
-      self.layoutMarginsGuide.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      self.layoutMarginsGuide.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      self.layoutMarginsGuide.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-    ])
+    NSLayoutConstraint.activate(constraints)
+
+    return (subview, parent)
   }
 }
