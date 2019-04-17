@@ -16,7 +16,7 @@ final class MultiLineButton: UIButton {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    let width = self.titleLabel?.frame.width ?? CGFloat(0)
+    let width = self.titleLabel?.frame.width ?? 0
 
     _ = self.titleLabel
       ?|> \.preferredMaxLayoutWidth .~ width

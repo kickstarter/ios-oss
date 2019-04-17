@@ -285,7 +285,7 @@ private var backThisProjectButtonStyle = { (button: UIButton) -> UIButton in
 private var backThisProjectButtonTitleLabelStyle = { (titleLabel: UILabel?) -> UILabel? in
   _ = titleLabel
     ?|> \.font .~ UIFont.ksr_headline()
-    ?|> \.numberOfLines .~ Int(0)
+    ?|> \.numberOfLines .~ 0
 
   // Breaking this up to help the compiler
   _ = titleLabel
