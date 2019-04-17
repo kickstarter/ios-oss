@@ -3,6 +3,9 @@ import Prelude
 import ReactiveSwift
 
 public protocol ProjectPamphletViewModelInputs {
+  /// Call when "Back this project" is tapped
+  func backThisProjectTapped()
+
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
@@ -25,6 +28,12 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
+  /// Emits a project and refTag to be used to navigate to the reward selection screen
+  var goToRewards: Signal<(Project, RefTag?), Never> { get }
+
+  /// Return this value from the view's `prefersStatusBarHidden` method.
+  var prefersStatusBarHidden: Bool { get }
+
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
   var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
 
@@ -42,6 +51,7 @@ public protocol ProjectPamphletViewModelType {
 
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
   ProjectPamphletViewModelOutputs {
+
   public init() {
     let freshProjectAndRefTag = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
@@ -53,11 +63,19 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
           .map { project in
             (project, refTag.map(cleanUp(refTag:)))
-          }
+        }
       }
+
+    self.goToRewards = freshProjectAndRefTag
+      .takeWhen(self.backThisProjectTappedProperty.signal)
+      .map { project, refTag in
+        return (project, refTag)
+    }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
+
+    self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
     self.setNeedsStatusBarAppearanceUpdate = Signal.merge(
       self.viewWillAppearAnimated.signal.ignoreValues(),
@@ -71,7 +89,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     self.topLayoutConstraintConstant = self.initialTopConstraintProperty.signal.skipNil()
       .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
-      .map(topLayoutConstraintConstantWithInitialTopConstraint(_:traitCollection:))
+      .map(topLayoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     let cookieRefTag = freshProjectAndRefTag
       .map { project, refTag in
@@ -99,6 +117,11 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
+  }
+
+  private let backThisProjectTappedProperty = MutableProperty(())
+  public func backThisProjectTapped() {
+    self.backThisProjectTappedProperty.value = ()
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -133,7 +156,12 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
+  fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
+  public var prefersStatusBarHidden: Bool {
+    return self.prefersStatusBarHiddenProperty.value
+  }
 
+  public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
   public let topLayoutConstraintConstant: Signal<CGFloat, Never>
@@ -152,12 +180,14 @@ private func topLayoutConstraintConstantWithInitialTopConstraint(
   guard !traitCollection.isRegularRegular else {
     return 0.0
   }
+
   return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
 }
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
 private func cookieRefTagFor(project: Project) -> RefTag? {
+
   return AppEnvironment.current.cookieStorage.cookies?
     .filter { cookie in cookie.name == cookieName(project) }
     .first
@@ -173,6 +203,7 @@ private func cookieName(_ project: Project) -> String {
 // Tries to extract the name of the ref tag from a cookie. It has to do double work in case the cookie
 // is accidentally encoded with a `%3F` instead of a `?`.
 private func refTagName(fromCookie cookie: HTTPCookie) -> String {
+
   return cleanUp(refTagString: cookie.value)
 }
 
@@ -183,6 +214,7 @@ private func cleanUp(refTag: RefTag) -> RefTag {
 
 // Tries to remove cruft from a ref tag string.
 private func cleanUp(refTagString: String) -> String {
+
   let secondPass = refTagString.components(separatedBy: escapedCookieSeparator)
   if let name = secondPass.first, secondPass.count == 2 {
     return String(name)
@@ -198,13 +230,14 @@ private func cleanUp(refTagString: String) -> String {
 
 // Constructs a cookie from a ref tag and project.
 private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
+
   let timestamp = Int(AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970)
 
   var properties: [HTTPCookiePropertyKey: Any] = [:]
-  properties[.name] = cookieName(project)
-  properties[.value] = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
-  properties[.domain] = URL(string: project.urls.web.project)?.host
-  properties[.path] = URL(string: project.urls.web.project)?.path
+  properties[.name]    = cookieName(project)
+  properties[.value]   = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
+  properties[.domain]  = URL(string: project.urls.web.project)?.host
+  properties[.path]    = URL(string: project.urls.web.project)?.path
   properties[.version] = 0
   properties[.expires] = AppEnvironment.current.dateType
     .init(timeIntervalSince1970: project.dates.deadline).date
