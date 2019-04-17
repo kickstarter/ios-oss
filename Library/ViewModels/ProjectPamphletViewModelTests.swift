@@ -14,6 +14,8 @@ final class ProjectPamphletViewModelTests: TestCase {
   fileprivate let configureChildViewControllersWithLiveStreamEvents =
     TestObserver<[LiveStreamEvent], NoError>()
   fileprivate let configureChildViewControllersWithRefTag = TestObserver<RefTag?, NoError>()
+  fileprivate let goToRewardsProject = TestObserver<Project, NoError>()
+  fileprivate let goToRewardsRefTag = TestObserver<RefTag?, NoError>()
   fileprivate let setNavigationBarHidden = TestObserver<Bool, NoError>()
   fileprivate let setNavigationBarAnimated = TestObserver<Bool, NoError>()
   fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
@@ -29,6 +31,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       .observe(self.configureChildViewControllersWithLiveStreamEvents.observer)
     self.vm.outputs.configureChildViewControllersWithProjectAndLiveStreams.map(third)
       .observe(self.configureChildViewControllersWithRefTag.observer)
+    self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
+    self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(first)
       .observe(self.setNavigationBarHidden.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(second)
@@ -582,5 +586,22 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual([], self.trackingClient.events)
+  }
+
+  func testGoToRewards() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewDidAppear(animated: false)
+
+    self.goToRewardsProject.assertDidNotEmitValue()
+    self.goToRewardsRefTag.assertDidNotEmitValue()
+
+    self.vm.inputs.backThisProjectTapped()
+
+    self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
+    self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
   }
 }
