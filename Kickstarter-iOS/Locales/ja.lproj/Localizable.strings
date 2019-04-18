@@ -33,6 +33,7 @@
 "Ask_me_anything" = "お問い合わせ";
 "Available_to_watch_for_time_more_units" = "さらに%{time} の%{units} を見ることができます";
 "Back" = "バック";
+"Back_this_project" = "このプロジェクトをバックする";
 "Back_this_project_below" = "このプロジェクトをバックする";
 "Backed_by_Friends" = "友達がバックしたプロジェクト";
 "Backed_by_people_you_follow" = "フォロー中の友達がバック";
@@ -48,6 +49,7 @@
 "Biography" = "自己紹介";
 "Bookmarks" = "ブックマーク";
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
+"By_pledging_you_agree" = "プレッジすることにより、Kickstarter の利用規約、プライバシーポリシー、Cookie ポリシーに同意したものとみなされます。";
 "CVC" = "CVC";
 "Cancel" = "キャンセル";
 "Cancel_your_pledge" = "プレッジを取り消す";
@@ -72,6 +74,7 @@
 "Confirm_password" = "新しいパスワードの確認";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Facebookとリンクさせ、友達がプロジェクトを作成したりバックしたりした際に通知を受け取る";
 "Contact_creator" = "クリエイターに連絡";
+"Continue" = "続行する";
 "Continue_to_payment" = "支払いを続ける";
 "Continue_to_update_pledge" = "プレッジをアップデート";
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
@@ -117,7 +120,7 @@
 "Discover_the_future_of_Design_and_Tech" = "デザインとテクノロジーの未来を覗いてみよう。";
 "Dismiss" = "破棄";
 "Done" = "完了";
-"Double_tap_to_toggle_setting" = "Double tap to toggle setting";
+"Double_tap_to_toggle_setting" = "ダブルタップして設定を切り替える";
 "Download_your_personal_data" = "自分の個人データをダウンロード";
 "Earth" = "全世界";
 "Edit_profile" = "プロフィールを編集";
@@ -129,6 +132,7 @@
 "Email_unverified" = "このメールアドレスは認証されていません。";
 "Ending_soon" = "終了直前";
 "Estimated_delivery" = "配達予定日：";
+"Estimated_delivery_of" = "配送予定日";
 "Expands_subcategories" = "サブカテゴリーを表示";
 "Expiration" = "有効期限";
 "Expired_date_at_time" = "有効期限: %{date} %{time}";
@@ -220,7 +224,7 @@
 "Keep_up_with_future_live_streams" = "ライブ配信を通知";
 "Kickstarter_Music" = "Kickstarter Music";
 "Kickstarter_if_funded" = "Kickstarter (達成した時)";
-"Kickstarter_is_not_a_store" = "Kickstarterはオンラインストアではありません。";
+"Kickstarter_is_not_a_store" = "Kickstarter は商品を購入する場ではありません。";
 "Know_when_creators_and_backers_message_you" = "クリエイターやバッカ―からメッセージが届いた場合にすぐ分かるように、通知機能を有効にしましょう。";
 "Learn_more_about_accountability" = "報告義務に関してさらに詳しく";
 "Left_count_left.few" = "残り%{left_count}";
@@ -274,10 +278,10 @@
 "Not_delivered" = "未配送";
 "Not_followed" = "フォローしてない";
 "Not_now" = "後で";
-"Notification_email_notification_off" = "%{notification}, email notification, off";
-"Notification_email_notification_on" = "%{notification}, email notification, on";
-"Notification_push_notification_off" = "%{notification}, push notification, off";
-"Notification_push_notification_on" = "%{notification}, push notification, on";
+"Notification_email_notification_off" = "%{notification}、メール通知、オフ";
+"Notification_email_notification_on" = "%{notification}、メール通知、オン";
+"Notification_push_notification_off" = "%{notification}、プッシュ通知、オフ";
+"Notification_push_notification_on" = "%{notification}、プッシュ通知、オン";
 "Notifications" = "通知";
 "Once_you_back_a_project_well_share" = "プロジェクトをバックするとこのスペースにあなたへのオススメを表示します";
 "Only_amount_of_time_left_to_watch_this" = "あと%{amount_of_time} のみ視聴可能";
@@ -326,6 +330,7 @@
 "Project_Suspended" = "プロジェクトは停止されました。";
 "Project_activity" = "プロジェクトのアクティビティ";
 "Project_cancelled" = "プロジェクトが取り消されました。";
+"Project_goal_and_pledge" = "プロジェクトのゴール額とプレッジ額はおおよその換算金額で表示されます。プロジェクトが成功した場合、プレッジはプロジェクトをローンチした国の通貨で集められます。";
 "Project_reminders" = "プロジェクトのリマインダー";
 "Project_saved" = "プロジェクトを保存しました。";
 "Project_updates" = "プロジェクトの更新情報";
@@ -355,6 +360,7 @@
 "Replay_past_live_stream" = "過去のライブ配信をリプレイ";
 "Replay_past_live_streams" = "過去のライブ配信をリプレイ";
 "Reply_to_user_name" = "%{user_nameに返信";
+"Request_my_data" = "Request my data";
 "Request_my_personal_data" = "自分の個人データをリクエストする";
 "Resend_verification_email" = "認証メールをもう一度送信";
 "Reward_Surveys.few" = "%{reward_survey_count} リワードのサーベイ";
@@ -385,6 +391,7 @@
 "Say_something_kind" = "言葉に注意";
 "Security_code" = "セキュリティーコード";
 "See_all_category_name_projects" = "%{category_name} プロジェクトをすべて見る";
+"Select" = "選択";
 "Select_another_project" = "他のプロジェクトを選ぶ";
 "Select_this_reward" = "このリワードを選ぶ";
 "Select_this_reward_instead" = "このリワードを選択";
@@ -441,6 +448,7 @@
 "Top_pledge_sources" = "プレッジソースのトップ";
 "Top_ten_pledge_sources" = "プレッジソースのトップ10";
 "Top_ten_rewards" = "リワードのトップ10";
+"Total" = "合計";
 "Total_pledged" = "プレッジ総計";
 "Twice_a_day_summary" = "1日2回の概要";
 "Unable_to_request" = "データをリクエストできません。";
@@ -484,6 +492,7 @@
 "You_have_successfully_backed_project_html" = "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。";
 "You_pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "You_saved_this_project" = "保存済みです";
+"Youll_receive_an_email_at_email_when_your_download_is_ready" = "ダウンロードの準備が整い次第、%{email} にメールが届きます。";
 "Your_chat_message_wasnt_sent_successfully" = "メッセージの送信に失敗。";
 "Your_friends_havent_backed_any_projects_yet" = "バックした友達はまだいませんが、今後こちらに表示されます。";
 "Your_name_displayed" = "あなたの名前はプロフィールに常に表示されます。";
@@ -495,6 +504,7 @@
 "Your_reward" = "リワード";
 "Your_reward_estimated_for_delivery_in_date" = "<b>リワード</b>の配送予定日は%{delivery_date}";
 "Your_shipping_destination" = "配送地域";
+"Your_shipping_location" = "配送地域";
 "Youre_a_backer" = "バッカーになりました！";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。";
@@ -566,7 +576,7 @@
 "activity.friend_backed_music_project" = "%{friend_name} がミュージックプロジェクトにバック";
 "activity.friend_backed_photography_project" = "%{friend_name} がフォトグラフィープロジェクトにバック";
 "activity.friend_backed_project_name_by_creator_name" = "<b>%{friend_name}</b> は%{project_name} by %{creator_name} をバック中";
-"activity.friend_backed_publishing_project" = "%{friend_name} がパブリッシングプロジェクトにバック";
+"activity.friend_backed_publishing_project" = "%{friend_name} が出版プロジェクトをバックしました";
 "activity.friend_backed_tech_project" = "%{friend_name} がテクノロジープロジェクトにバック";
 "activity.friend_backed_theater_project" = "%{friend_name} さんがシアタープロジェクトにバック";
 "activity.friend_follow.buttons.follow" = "フォロー";
@@ -940,8 +950,8 @@
 "discovery.baseball_card.status_banner.funding_unsuccessful_date" = "%{date} にファンディング失敗";
 "discovery.baseball_card.status_banner.successful" = "資金調達に成功";
 "discovery.baseball_card.status_banner.successful_date" = "%{date} に目標達成";
-"discovery.baseball_card.status_banner.suspended" = "%{date} にプロジェクト停止済み";
-"discovery.baseball_card.status_banner.suspended_date" = "%{date} にプロジェクト停止済み";
+"discovery.baseball_card.status_banner.suspended" = "%{date} にファンディング停止済み";
+"discovery.baseball_card.status_banner.suspended_date" = "%{date} にファンディング停止済み";
 "discovery.baseball_card.time_left_to_go" = "%{time_left} で締切";
 "discovery.category" = "カテゴリー";
 "discovery.empty_states.saved.logged_in.button" = "さがす";
@@ -1196,7 +1206,7 @@
 "profile.settings.newsletter.opt_in.title" = "あと少し！";
 "profile.settings.newsletter.promo" = "Kickstarterのニュースとイベント";
 "profile.settings.newsletter.publishing" = "Kickstarter Reads";
-"profile.settings.newsletter.publishing_newsletter" = "Kickstarter のパブリッシングチームおすすめの新しいプロジェクトやクリエイターストーリー、文学関連イベントなどをお知らせする月刊ニュースレターにぜひサインアップしましょう。";
+"profile.settings.newsletter.publishing_newsletter" = "Kickstarter の出版チームおすすめの新しいプロジェクトやクリエイターストーリー、文学関連イベントなどをお知らせする月刊ニュースレターにぜひサインアップしましょう。";
 "profile.settings.newsletter.subscribe_all" = "すべてのニュースレターを購読する";
 "profile.settings.newsletter.title" = "ニュースレター";
 "profile.settings.newsletter.weekly" = "Projects We Love";
@@ -1315,7 +1325,7 @@
 "project.updates.empty_state.non_backer.message" = "プロジェクトの更新がバッカーに通知されます。";
 "project.updates.empty_state.non_backer.title" = "更新なし";
 "project.view_button" = "プレッジ内容を見る";
-"project.view_pledge.includes" = "その他特典";
+"project.view_pledge.includes" = "リワード内容";
 "project.view_pledge.status.canceled" = "キャンセル済";
 "project.view_pledge.status.collected" = "に目標額に達成しました";
 "project.view_pledge.status.dropped" = "取消";
@@ -1345,7 +1355,7 @@
 "rewards.info.backer_count_backers.two" = "2バッカー";
 "rewards.info.backer_count_backers.zero" = "0バッカー";
 "rewards.info.estimated_delivery" = "配達予定日";
-"rewards.info.includes" = "その他特典";
+"rewards.info.includes" = "リワード内容";
 "rewards.info.item_quantity_title.few" = "%{title} (x%{quantity})";
 "rewards.info.item_quantity_title.many" = "%{title} (x%{quantity})";
 "rewards.info.item_quantity_title.one" = "%{title}";
@@ -1356,7 +1366,6 @@
 "rewards.info.shipping_destinations" = "配送地域";
 "rewards.info.ships_to" = "配送先：";
 "rewards.info.time_left" = "あと%{time}";
-"rewards.select_label.select" = "選択";
 "rewards.selected_label.you_selected" = "選択した";
 "rewards.shipping_preferences.location.unrestricted" = "世界各国に配送";
 "rewards.title.about_amount_usd" = "約%{reward_amount} 米ドル";

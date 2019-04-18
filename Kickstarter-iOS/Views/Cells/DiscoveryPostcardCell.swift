@@ -168,6 +168,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = self.metadataBackgroundView
       |> cardStyle()
 
+    _ = self.projectImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.projectInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
@@ -196,6 +199,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self.socialAvatarImageView
       |> UIImageView.lens.layer.shouldRasterize .~ true
+
+    _ = self.socialAvatarImageView
+      |> ignoresInvertColorsImageViewStyle
 
     _ = self.socialLabel
       |> UILabel.lens.numberOfLines .~ 2
