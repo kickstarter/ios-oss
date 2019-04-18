@@ -73,6 +73,9 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
 
+    _ = self.friendImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.fundingProgressContainerView
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
@@ -82,6 +85,9 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
     _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 18)
       |> UILabel.lens.textColor .~ .ksr_soft_black
+
+    _ = self.projectImageView
+      |> ignoresInvertColorsImageViewStyle
 
     _ = self.projectTextContainerView
       |> UIView.lens.alpha .~ 0.96

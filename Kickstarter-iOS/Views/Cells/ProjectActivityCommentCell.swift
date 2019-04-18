@@ -109,6 +109,9 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_comments() }
 
+    _ = self.authorImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.backingButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }

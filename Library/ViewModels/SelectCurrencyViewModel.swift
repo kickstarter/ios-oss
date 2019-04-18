@@ -43,7 +43,7 @@ SelectCurrencyViewModelOutputs {
     .map(first)
 
     let orderedCurrencies = initialChosenCurrency
-      .map { currencies(orderedBySelected: $0)}
+      .map { currencies(orderedBySelected: $0) }
 
     let didSelectCurrency = orderedCurrencies
       .takePairWhen(self.didSelectCurrencyAtIndexSignal)
