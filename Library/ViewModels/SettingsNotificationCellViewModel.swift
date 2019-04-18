@@ -208,8 +208,8 @@ extension SettingsNotificationCellViewModel {
          .mobileUpdates:
       AppEnvironment.current.koala.trackChangePushNotification(type: notification.trackingString,
                                                                on: enabled)
-    case .comments,
-         .commentReplies,
+    case .commentReplies,
+         .comments,
          .follower,
          .friendActivity,
          .messages,
