@@ -11,6 +11,7 @@ public protocol PledgeViewModelInputs {
 
 public protocol PledgeViewModelOutputs {
   var amountAndCurrency: Signal<(Double, String), NoError> { get }
+  var estimatedDeliveryDate: Signal<String, NoError> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -30,6 +31,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { (project, reward) in
         (reward.minimum, currencySymbol(forCountry: project.country).trimmed())
     }
+
+    self.estimatedDeliveryDate =  projectAndReward.signal
+      .map { _, reward  in reward.estimatedDeliveryOn.map {
+        Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone)
+      }
+    }
+    .skipNil()
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -43,6 +51,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   }
 
   public let amountAndCurrency: Signal<(Double, String), NoError>
+  public let estimatedDeliveryDate: Signal<String, NoError>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }

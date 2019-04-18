@@ -16,9 +16,9 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var learnMoreLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var spacerView: UIView = { UIView(frame: .zero) }()
 
-  func configureWith(value: Reward) {
-   // self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
-//    self.viewModel.inputs.configureWith(reward: value)
+  func configureWith(value: String) {
+    _ = self.dateLabel
+      |> \.text .~ value
   }
 
   // MARK: - Lifecycle
@@ -26,8 +26,9 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    self.contentView.addSubview(self.rootStackView)
-    self.rootStackView.constrainEdges(to: self.contentView)
+    _ = (self.rootStackView, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     self.containerImageView.widthAnchor.constraint(equalToConstant: 100.0).isActive = true
     self.rootStackView.addArrangedSubview(self.containerImageView)
@@ -124,7 +125,6 @@ private let estimatedDeliveryLabelStyle: LabelStyle = { (label: UILabel) in
 
 private let dateLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.text  %~ { _ in "August 2019" }
     |> \.textColor .~ UIColor.ksr_soft_black
     |> \.font .~ UIFont.ksr_headline()
     |> \.adjustsFontForContentSizeCategory .~ true

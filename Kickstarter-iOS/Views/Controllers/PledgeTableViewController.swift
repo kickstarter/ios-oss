@@ -25,9 +25,7 @@ class PledgeTableViewController: UITableViewController {
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
 
-    self.tableView.register(PledgeRowCell.self, forCellReuseIdentifier: "PledgeRowCell")
-    self.tableView.register(PledgeDescriptionCell.self, forCellReuseIdentifier: "PledgeDescriptionCell")
-    self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Footer")
+    self.tableView.registerCellClass(PledgeDescriptionCell.self)
     self.tableView.registerCellClass(PledgeAmountCell.self)
     self.tableView.registerCellClass(PledgeRowCell.self)
     self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
@@ -53,6 +51,13 @@ class PledgeTableViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] (amount, currency) in
         self?.dataSource.load(amount: amount, currency: currency)
+        self?.tableView.reloadData()
+    }
+
+    self.viewModel.outputs.estimatedDeliveryDate
+      .observeForUI()
+      .observeValues { [weak self] deliveryDate in
+        self?.dataSource.loadDescription(deliveryDate: deliveryDate)
         self?.tableView.reloadData()
     }
   }
