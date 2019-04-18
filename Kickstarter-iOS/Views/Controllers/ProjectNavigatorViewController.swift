@@ -9,7 +9,6 @@ internal protocol ProjectNavigatorDelegate: class {
 }
 
 internal final class ProjectNavigatorViewController: UIPageViewController {
-
   fileprivate let transitionAnimator = ProjectNavigatorTransitionAnimator()
   fileprivate weak var navigatorDelegate: ProjectNavigatorDelegate?
   fileprivate let pageDataSource: ProjectNavigatorPagesDataSource!
@@ -165,6 +164,20 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
                                   translation: recognizer.translation(in: scrollView),
                                   velocity: recognizer.velocity(in: scrollView),
                                   isDragging: scrollView.isTracking)
+  }
+
+  func projectPamphletViewController(_ projectPamphletViewController: ProjectPamphletViewController,
+                                     shouldTransitionToRewardsWithProject project: Project,
+                                     refTag: RefTag?) {
+    let rewardsViewController = RewardsCollectionViewController.instantiate(with: project, refTag: refTag)
+
+    let navigationController = UINavigationController(rootViewController: rewardsViewController)
+    navigationController.modalPresentationStyle = .overCurrentContext
+    self.definesPresentationContext = true
+
+    self.present(navigationController, animated: true, completion: { [weak self] in
+      self?.definesPresentationContext = false
+    })
   }
 }
 

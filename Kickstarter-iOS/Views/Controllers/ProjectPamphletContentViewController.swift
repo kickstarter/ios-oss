@@ -122,7 +122,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     if let cell = cell as? ProjectPamphletMainCell {
       cell.delegate = self
-    } else if let cell = cell as? RewardCell {
+    } else if let cell = cell as? DeprecatedRewardCell {
       cell.delegate = self
     }
   }
@@ -271,7 +271,7 @@ extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
 }
 
 extension ProjectPamphletContentViewController: RewardCellDelegate {
-  internal func rewardCellWantsExpansion(_ cell: RewardCell) {
+  internal func rewardCellWantsExpansion(_ cell: DeprecatedRewardCell) {
     cell.contentView.setNeedsUpdateConstraints()
     self.tableView.beginUpdates()
     self.tableView.endUpdates()
