@@ -13,7 +13,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.scrollDirection .~ .horizontal
   }()
 
-  // Custom scrollView for paging
+  // Hidden scroll view used for paging
   private let hiddenPagingScrollView: UIScrollView = {
     UIScrollView()
       |> \.isPagingEnabled .~ true
@@ -51,23 +51,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.hiddenPagingScrollView.delegate = self
-
     _ = self.collectionView
-      |> \.alwaysBounceHorizontal .~ true
       |> \.dataSource .~ dataSource
 
     self.collectionView.register(RewardCell.self)
-
-    // Disable standard gesture recognizer for UICollectionView scrollView and add custom
-    self.collectionView?.addGestureRecognizer(self.hiddenPagingScrollView.panGestureRecognizer)
-    self.collectionView?.panGestureRecognizer.isEnabled = false
-
-    _ = self.hiddenPagingScrollView
-      |> \.delegate .~ self
-
-    _ = (self.hiddenPagingScrollView, self.view)
-      |> ksr_addSubviewToParent()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -81,16 +68,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     let collectionViewSize = self.collectionView.frame.size
     layout.itemSize = CGSize(width: collectionViewSize.width, height: self.collectionView.contentSize.height)
-
-//    let pageSize = self.itemSize.width
-
-//    self.collectionView.contentInset = UIEdgeInsets(
-//      top: 0,
-//      left: (self.view.frame.width - pageSize) / 2,
-//      bottom: 0,
-//      right: (self.view.frame.width - pageSize) / 2
-//    )
-//    self.configureHiddenScrollView()
   }
 
   override func bindStyles() {
@@ -110,12 +87,23 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeForUI()
       .observeValues { [weak self] rewards in
         self?.dataSource.load(rewards: rewards)
-        self?.configureHiddenScrollView()
     }
   }
 
   // MARK: - Private Helpers
   private func configureHiddenScrollView() {
+    self.hiddenPagingScrollView.delegate = self
+
+    // Disable standard gesture recognizer for UICollectionView scrollView and add custom
+    self.collectionView?.addGestureRecognizer(self.hiddenPagingScrollView.panGestureRecognizer)
+    self.collectionView?.panGestureRecognizer.isEnabled = false
+
+    _ = self.hiddenPagingScrollView
+      |> \.delegate .~ self
+
+    _ = (self.hiddenPagingScrollView, self.view)
+      |> ksr_addSubviewToParent()
+
     // Calculate full width (with spacing) for contentSize
     let numberOfItemsInCollectionView = self.collectionView.numberOfItems(inSection: 0)
 
@@ -139,27 +127,28 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
 // MARK: - UIScrollViewDelegate
 extension RewardsCollectionViewController {
-  override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    guard scrollView == self.hiddenPagingScrollView else {
-      return
-    }
-    // Override native UICollectionView scroll events
-
-    // Scroll view's offset ratio (will be used to convert to collection view offset)
-    let ratio = scrollView.contentOffset.x / scrollView.contentSize.width
-
-    // Include offset from left
-    var contentOffset = scrollView.contentOffset
-    contentOffset.x = ratio * self.collectionView.contentSize.width - self.collectionView.contentInset.left
-
-    // ? is necessary (don't know why though)
-    self.collectionView?.contentOffset = contentOffset
-  }
+//  override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//    guard scrollView == self.hiddenPagingScrollView else {
+//      return
+//    }
+//    // Override native UICollectionView scroll events
+//
+//    // Scroll view's offset ratio (will be used to convert to collection view offset)
+//    let ratio = scrollView.contentOffset.x / scrollView.contentSize.width
+//
+//    // Include offset from left
+//    var contentOffset = scrollView.contentOffset
+//    contentOffset.x = ratio * self.collectionView.contentSize.width - self.collectionView.contentInset.left
+//
+//    // ? is necessary (don't know why though)
+//    self.collectionView?.contentOffset = contentOffset
+//  }
 }
 
 // MARK: Styles
 private var collectionViewStyle = { collectionView -> UICollectionView in
   collectionView
+    |> \.alwaysBounceHorizontal .~ true
     |> \.backgroundColor .~ .ksr_grey_200
     |> \.isPagingEnabled .~ true
     |> \.clipsToBounds .~ false
