@@ -6,6 +6,11 @@ import Result
 
 public final class SignupViewModel {
   public struct Inputs {
+    public let (configureWithTextProperty, configureWithTextObserver) = MutableProperty<String?>.create(initialValue: nil)
+
+//    public let configureWithTextProperty = MutableProperty<String?>(nil)
+
+
     /// Call when the user enters a new email address.
     public let (emailTextChangedSignal, emailTextChangedObserver) = Signal<String?, NoError>.pipe()
     /// Call when the user returns from email text field.
@@ -32,6 +37,8 @@ public final class SignupViewModel {
   }
 
   public typealias Outputs = (
+    configureWithText: Signal<String, NoError>,
+
     // Call when the emailTextField should become the first responder
     emailTextFieldBecomeFirstResponder: Signal<(), NoError>,
     // Call when the sign up button should be enabled
@@ -63,6 +70,12 @@ public final class SignupViewModel {
       self.inputs.viewDidLoadSignal.mapConst(false),
       self.inputs.weeklyNewsletterChangedSignal
     )
+
+    let configureWithText = self.inputs.viewDidLoadSignal
+      .withLatest(from: self.inputs.configureWithTextProperty.producer)
+      .map(second)
+      .skipNil()
+      .logEvents(identifier: "CONFIGURE WITH TEXT")
 
     let nameIsPresent = name.map { !$0.isEmpty }
     let emailIsPresent = email.map { !$0.isEmpty }
@@ -131,6 +144,7 @@ public final class SignupViewModel {
       .observeValues { AppEnvironment.current.koala.trackSignupView() }
 
     return (
+      configureWithText: configureWithText,
       emailTextFieldBecomeFirstResponder: emailTextFieldBecomeFirstResponder,
       isSignupButtonEnabled: isSignupButtonEnabled,
       logIntoEnvironment: logIntoEnvironment,
@@ -140,5 +154,19 @@ public final class SignupViewModel {
       setWeeklyNewsletterState: setWeeklyNewsletterState,
       showError: showError
     )
+  }
+}
+
+extension MutableProperty {
+  static func create(initialValue: Value) -> (output: MutableProperty<Value>, input: Signal<Value, NoError>.Observer) {
+    let property = MutableProperty<Value>(initialValue)
+    let observer: Signal<Value, NoError>.Observer = Signal<Value, NoError>.Observer.init({ event -> Void in
+
+      if case .value(let value) = event {
+        property.value = value
+      }
+    })
+
+    return (property, observer)
   }
 }

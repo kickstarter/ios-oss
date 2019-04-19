@@ -7,6 +7,7 @@ import XCTest
 
 internal final class SignupViewModelTests: TestCase {
   fileprivate let vm = SignupViewModel()
+  fileprivate let configureWithText = TestObserver<String, NoError>()
   fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
   fileprivate let isSignupButtonEnabled = TestObserver<Bool, NoError>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
@@ -16,10 +17,13 @@ internal final class SignupViewModelTests: TestCase {
   fileprivate let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
   fileprivate let showError = TestObserver<String, NoError>()
 
+  fileprivate var configureWithTextSignal: Signal<String, NoError>!
+
   override func setUp() {
     super.setUp()
 
     let (
+      configureWithText,
       emailTextFieldBecomeFirstResponder,
       isSignupButtonEnabled,
       logIntoEnvironment,
@@ -30,6 +34,8 @@ internal final class SignupViewModelTests: TestCase {
       showError
     ) = self.vm.outputs()
 
+    self.configureWithTextSignal = configureWithText
+
     emailTextFieldBecomeFirstResponder
       .observe(self.emailTextFieldBecomeFirstResponder.observer)
     isSignupButtonEnabled.observe(self.isSignupButtonEnabled.observer)
@@ -39,6 +45,25 @@ internal final class SignupViewModelTests: TestCase {
     postNotification.map { $0.name }.observe(self.postNotification.observer)
     setWeeklyNewsletterState.observe(self.setWeeklyNewsletterState.observer)
     showError.observe(self.showError.observer)
+  }
+
+  func testConfigureWithText() {
+    // 1. send a value to configureWithTextObserver
+    self.vm.inputs.configureWithTextObserver.send(value: "hello")
+    // 1a. send a second value to confirm that only the last value is sent
+    self.vm.inputs.configureWithTextObserver.send(value: "bye")
+
+    // 2. bind signal observer
+    self.configureWithTextSignal.observe(self.configureWithText.observer)
+
+    // 3. assert that nothing is emitted until viewDidLoad is sent a value
+    self.configureWithText.assertValues([], "No signal emitted")
+
+    // 4. send value to viewDidLoadObserver
+    self.vm.inputs.viewDidLoadObserver.send(value: ())
+
+    // 5. emits with last value of configureWithTextProperty
+    self.configureWithText.assertValues(["bye"], "Emits with last value")
   }
 
   // Tests a standard flow for signing up.
