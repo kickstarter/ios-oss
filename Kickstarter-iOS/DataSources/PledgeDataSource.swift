@@ -9,8 +9,8 @@ final class PledgeDataSource: ValueCellDataSource {
     case summary
   }
 
-  func loadDescription(deliveryDate: String) {
-    self.appendRow(value: deliveryDate,
+  func load(deliveryDescription: String) {
+    self.appendRow(value: deliveryDescription,
                    cellClass: PledgeDescriptionCell.self,
                    toSection: Section.project.rawValue
     )

@@ -57,7 +57,7 @@ class PledgeTableViewController: UITableViewController {
     self.viewModel.outputs.estimatedDeliveryDate
       .observeForUI()
       .observeValues { [weak self] deliveryDate in
-        self?.dataSource.loadDescription(deliveryDate: deliveryDate)
+        self?.dataSource.load(deliveryDescription: deliveryDate)
         self?.tableView.reloadData()
     }
   }
