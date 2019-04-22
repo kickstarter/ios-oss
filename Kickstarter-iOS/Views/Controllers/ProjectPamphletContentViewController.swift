@@ -30,7 +30,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       self, action: #selector(scrollViewPanGestureRecognizerDidChange(_:))
     )
 
-    self.tableView.register(nib: .RewardCell)
+    self.tableView.register(nib: .DeprecatedRewardCell)
 
     self.viewModel.inputs.viewDidLoad()
   }

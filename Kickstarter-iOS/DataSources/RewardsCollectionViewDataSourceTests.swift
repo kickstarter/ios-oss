@@ -1,11 +1,12 @@
 import XCTest
 @testable import Kickstarter_Framework
 @testable import Library
-import KsApi
+@testable import KsApi
 
 final class RewardsCollectionViewDataSourceTests: XCTestCase {
   private let dataSource = RewardsCollectionViewDataSource()
-  private let collectionView = UICollectionView(frame: .zero)
+  private let collectionView = UICollectionView(frame: .zero,
+                                                collectionViewLayout: UICollectionViewFlowLayout())
 
   func testLoadRewards() {
     let rewards = [Reward.template, Reward.template]

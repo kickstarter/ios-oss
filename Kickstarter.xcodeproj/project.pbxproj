@@ -439,7 +439,7 @@
 		A77A953F1E44DD6300733D03 /* LiveStreamDiscoveryUpcomingAndReplayCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77A953E1E44DD6300733D03 /* LiveStreamDiscoveryUpcomingAndReplayCellViewModel.swift */; };
 		A77A95411E44DE2200733D03 /* LiveStreamDiscoveryLiveNowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77A95401E44DE2200733D03 /* LiveStreamDiscoveryLiveNowCellViewModel.swift */; };
 		A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B061CBAAF5D0077586B /* Paginate.swift */; };
-		A77DA9241E4D13F000DB3A66 /* RewardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77DA9231E4D13F000DB3A66 /* RewardCell.xib */; };
+		A77DA9241E4D13F000DB3A66 /* DeprecatedRewardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77DA9231E4D13F000DB3A66 /* DeprecatedRewardCell.xib */; };
 		A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78012641D2EEA620027396E /* ReferralChartView.swift */; };
 		A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */; };
 		A7808BF01D625C6A001CF96A /* ProjectCreatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7808BEF1D625C6A001CF96A /* ProjectCreatorViewModel.swift */; };
@@ -2234,7 +2234,7 @@
 		A77A953E1E44DD6300733D03 /* LiveStreamDiscoveryUpcomingAndReplayCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryUpcomingAndReplayCellViewModel.swift; sourceTree = "<group>"; };
 		A77A95401E44DE2200733D03 /* LiveStreamDiscoveryLiveNowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamDiscoveryLiveNowCellViewModel.swift; sourceTree = "<group>"; };
 		A77D7B061CBAAF5D0077586B /* Paginate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginate.swift; sourceTree = "<group>"; };
-		A77DA9231E4D13F000DB3A66 /* RewardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RewardCell.xib; sourceTree = "<group>"; };
+		A77DA9231E4D13F000DB3A66 /* DeprecatedRewardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeprecatedRewardCell.xib; sourceTree = "<group>"; };
 		A78012641D2EEA620027396E /* ReferralChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralChartView.swift; sourceTree = "<group>"; };
 		A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewController.swift; sourceTree = "<group>"; };
 		A7808BEF1D625C6A001CF96A /* ProjectCreatorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCreatorViewModel.swift; sourceTree = "<group>"; };
@@ -3271,7 +3271,7 @@
 				D63BBD3A2180BEA4007E01F0 /* PaymentMethodsFooterView.xib */,
 				A73923B71D272242004524C3 /* ProjectActivity.storyboard */,
 				A78838731D8A2EFF0081E94D /* ProjectPamphlet.storyboard */,
-				A77DA9231E4D13F000DB3A66 /* RewardCell.xib */,
+				A77DA9231E4D13F000DB3A66 /* DeprecatedRewardCell.xib */,
 				A78852381D6CC5DE00617930 /* RewardPledge.storyboard */,
 				A73923B81D272242004524C3 /* Search.storyboard */,
 				77216D5F20F3D27C0061BE82 /* Settings.storyboard */,
@@ -5636,7 +5636,7 @@
 				770E441521137F3700396D46 /* SettingsNotificationPickerCell.xib in Resources */,
 				A73923C91D272242004524C3 /* Search.storyboard in Resources */,
 				D6AE3F9120EA975300DB212F /* SettingsNotifications.storyboard in Resources */,
-				A77DA9241E4D13F000DB3A66 /* RewardCell.xib in Resources */,
+				A77DA9241E4D13F000DB3A66 /* DeprecatedRewardCell.xib in Resources */,
 				77A3C502219B5E4900824FC1 /* Assets.xcassets in Resources */,
 				D6B6766320FE849F0082717D /* SettingsNewsletters.storyboard in Resources */,
 				77FA6CAB20F3E3C200809E31 /* SettingsTableViewCell.xib in Resources */,

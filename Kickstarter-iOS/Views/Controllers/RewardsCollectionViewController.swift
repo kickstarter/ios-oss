@@ -4,15 +4,8 @@ import KsApi
 import Prelude
 
 final class RewardsCollectionViewController: UICollectionViewController {
-  private let viewModel = RewardsCollectionViewModel()
   private let dataSource = RewardsCollectionViewDataSource()
-
-  private let layout: UICollectionViewFlowLayout = {
-    UICollectionViewFlowLayout()
-      |> \.minimumLineSpacing .~ Styles.grid(3)
-      |> \.sectionInset .~ .init(all: Styles.grid(6))
-      |> \.scrollDirection .~ .horizontal
-  }()
+  private let viewModel = RewardsCollectionViewModel()
 
   // Hidden scroll view used for paging
   private let hiddenPagingScrollView: UIScrollView = {
@@ -20,6 +13,13 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.backgroundColor .~ UIColor.red
       |> \.isPagingEnabled .~ true
       |> \.isHidden .~ true
+  }()
+
+  private let layout: UICollectionViewFlowLayout = {
+    UICollectionViewFlowLayout()
+      |> \.minimumLineSpacing .~ Styles.grid(3)
+      |> \.sectionInset .~ .init(all: Styles.grid(6))
+      |> \.scrollDirection .~ .horizontal
   }()
 
   private let peekAmountInset = Styles.grid(3)

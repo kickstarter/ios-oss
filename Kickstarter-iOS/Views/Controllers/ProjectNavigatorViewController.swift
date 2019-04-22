@@ -167,7 +167,7 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
   }
 
   func projectPamphletViewController(_ projectPamphletViewController: ProjectPamphletViewController,
-                                     shouldTransitionToRewardsWithProject project: Project,
+                                     didTapBackThisProject project: Project,
                                      refTag: RefTag?) {
     let rewardsViewController = RewardsCollectionViewController.instantiate(with: project, refTag: refTag)
 
