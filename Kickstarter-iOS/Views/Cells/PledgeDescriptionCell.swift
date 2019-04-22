@@ -96,14 +96,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     } else {
       let view = UIView(frame: .zero)
       view.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
-
       self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
-      self.descriptionStackView.addArrangedSubview(self.spacerView)
-      self.descriptionStackView.addArrangedSubview(self.estimatedDeliveryLabel)
-      self.descriptionStackView.addArrangedSubview(self.dateLabel)
-      self.descriptionStackView.addArrangedSubview(view)
-      self.descriptionStackView.addArrangedSubview(self.descriptionLabel)
-      self.descriptionStackView.addArrangedSubview(self.learnMoreLabel)
+      self.descriptionStackView.insertSubview(view, belowSubview: self.dateLabel)
     }
 
     self.rootStackView.addArrangedSubview(self.descriptionStackView)

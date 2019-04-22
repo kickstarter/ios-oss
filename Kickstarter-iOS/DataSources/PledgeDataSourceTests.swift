@@ -17,7 +17,7 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoadDescription() {
-    dataSource.loadDescription(deliveryDate: "September 2020")
+    dataSource.load(deliveryDescription: "September 2020")
 
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: tableView))
     XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
