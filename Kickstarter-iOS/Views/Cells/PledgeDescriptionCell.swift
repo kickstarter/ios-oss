@@ -38,21 +38,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     self.containerImageView.addSubview(self.pledgeImage)
     self.pledgeImage.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor).isActive = true
 
-    self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
-    self.descriptionStackView.addArrangedSubview(self.spacerView)
+    self.arrangeViews()
 
-    self.descriptionStackView.addArrangedSubview(self.estimatedDeliveryLabel)
-    self.descriptionStackView.addArrangedSubview(self.dateLabel)
-    self.descriptionStackView.addArrangedSubview(self.descriptionLabel)
-    self.descriptionStackView.addArrangedSubview(self.learnMoreLabel)
-
-    if #available(iOS 11.0, *) {
-      self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
-    } else {
-      print("nada") // FIX THIS
-    }
-
-    self.rootStackView.addArrangedSubview(self.descriptionStackView)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -96,6 +83,32 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     _ = self.learnMoreLabel
       |> learnMoreLabelStyle
   }
+
+  private func arrangeViews() {
+    self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
+    self.descriptionStackView.addArrangedSubview(self.spacerView)
+    self.descriptionStackView.addArrangedSubview(self.estimatedDeliveryLabel)
+    self.descriptionStackView.addArrangedSubview(self.dateLabel)
+    self.descriptionStackView.addArrangedSubview(self.descriptionLabel)
+    self.descriptionStackView.addArrangedSubview(self.learnMoreLabel)
+
+    if #available(iOS 11.0, *) {
+      self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
+    } else {
+      let view = UIView(frame: .zero)
+      view.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
+
+      self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
+      self.descriptionStackView.addArrangedSubview(self.spacerView)
+      self.descriptionStackView.addArrangedSubview(self.estimatedDeliveryLabel)
+      self.descriptionStackView.addArrangedSubview(self.dateLabel)
+      self.descriptionStackView.addArrangedSubview(view)
+      self.descriptionStackView.addArrangedSubview(self.descriptionLabel)
+      self.descriptionStackView.addArrangedSubview(self.learnMoreLabel)
+    }
+
+    self.rootStackView.addArrangedSubview(self.descriptionStackView)
+  }
 }
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
@@ -128,6 +141,7 @@ private let dateLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.textColor .~ UIColor.ksr_soft_black
     |> \.font .~ UIFont.ksr_headline()
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.numberOfLines .~ 0
 }
 
 private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
