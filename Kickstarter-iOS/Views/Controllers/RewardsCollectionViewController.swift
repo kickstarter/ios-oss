@@ -73,15 +73,14 @@ final class RewardsCollectionViewController: UICollectionViewController {
     guard let layout = self.flowLayout else { return }
 
     let sectionInsets = layout.sectionInset
-    let leftRightInsets = sectionInsets.right + sectionInsets.left
     let topBottomInsets = sectionInsets.top + sectionInsets.bottom
     let collectionViewSize = self.collectionView.frame.size
 
     let itemHeight = self.collectionView.contentSize.height - topBottomInsets
-    var itemWidth = collectionViewSize.width - leftRightInsets - 2 * peekAmountInset
+    var itemWidth = collectionViewSize.width - sectionInsets.left - 2 * peekAmountInset
 
     if [.landscapeLeft, .landscapeRight].contains(UIDevice.current.orientation) {
-      itemWidth = collectionViewSize.width / 3 - leftRightInsets
+      itemWidth = collectionViewSize.width / 3 - sectionInsets.left - 2 * peekAmountInset
     }
 
     layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
