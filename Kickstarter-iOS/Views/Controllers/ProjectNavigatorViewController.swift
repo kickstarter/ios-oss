@@ -172,12 +172,8 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
     let rewardsViewController = RewardsCollectionViewController.instantiate(with: project, refTag: refTag)
 
     let navigationController = UINavigationController(rootViewController: rewardsViewController)
-    navigationController.modalPresentationStyle = .overCurrentContext
-    self.definesPresentationContext = true
 
-    self.present(navigationController, animated: true, completion: { [weak self] in
-      self?.definesPresentationContext = false
-    })
+    self.present(navigationController, animated: true, completion: nil)
   }
 }
 

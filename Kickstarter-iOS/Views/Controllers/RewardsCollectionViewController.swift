@@ -9,21 +9,23 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
   private let layout: UICollectionViewFlowLayout = {
     UICollectionViewFlowLayout()
-      |> \.minimumLineSpacing .~ 0
+      |> \.minimumLineSpacing .~ Styles.grid(3)
+      |> \.sectionInset .~ .init(all: Styles.grid(6))
       |> \.scrollDirection .~ .horizontal
   }()
 
   // Hidden scroll view used for paging
   private let hiddenPagingScrollView: UIScrollView = {
     UIScrollView()
+      |> \.backgroundColor .~ UIColor.red
       |> \.isPagingEnabled .~ true
       |> \.isHidden .~ true
   }()
 
-  private var itemSize: CGSize {
-    guard let layout = self.collectionViewLayout as? UICollectionViewFlowLayout else { return .zero }
+  private let peekAmountInset = Styles.grid(3)
 
-    return layout.itemSize
+  private var flowLayout: UICollectionViewFlowLayout? {
+    return self.collectionViewLayout as? UICollectionViewFlowLayout
   }
 
   static func instantiate(with project: Project, refTag: RefTag?) -> RewardsCollectionViewController {
@@ -43,6 +45,9 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     _ = closeButton
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+
+    _ = self
+      |> \.title %~ { _ in Strings.Back_this_project() }
 
     self.navigationItem.setLeftBarButton(closeButton, animated: false)
   }
@@ -65,12 +70,21 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    guard let layout = self.collectionViewLayout as? UICollectionViewFlowLayout else {
-      return
+    guard let layout = self.flowLayout else { return }
+
+    let sectionInsets = layout.sectionInset
+    let leftRightInsets = sectionInsets.right + sectionInsets.left
+    let topBottomInsets = sectionInsets.top + sectionInsets.bottom
+    let collectionViewSize = self.collectionView.frame.size
+
+    let itemHeight = self.collectionView.contentSize.height - topBottomInsets
+    var itemWidth = collectionViewSize.width - leftRightInsets - 2 * peekAmountInset
+
+    if [.landscapeLeft, .landscapeRight].contains(UIDevice.current.orientation) {
+      itemWidth = collectionViewSize.width / 3 - leftRightInsets
     }
 
-    let collectionViewSize = self.collectionView.frame.size
-    layout.itemSize = CGSize(width: collectionViewSize.width, height: self.collectionView.contentSize.height)
+    layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
   }
 
   override func bindStyles() {
