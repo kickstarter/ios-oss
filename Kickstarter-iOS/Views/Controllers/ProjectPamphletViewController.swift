@@ -205,7 +205,8 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
-    self.delegate?.projectPamphletViewController(self, shouldTransitionToRewardsWithProject: project, refTag: refTag)
+    self.delegate?.projectPamphletViewController(self, shouldTransitionToRewardsWithProject: project,
+                                                 refTag: refTag)
   }
 
   // MARK: - Private Helpers
