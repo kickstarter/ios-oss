@@ -96,8 +96,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     } else {
       let view = UIView(frame: .zero)
       view.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
-      self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
-      self.descriptionStackView.insertSubview(view, belowSubview: self.dateLabel)
+      self.descriptionStackView.insertArrangedSubview(view, at: 3)
     }
 
     self.rootStackView.addArrangedSubview(self.descriptionStackView)
