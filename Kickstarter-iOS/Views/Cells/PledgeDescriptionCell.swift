@@ -38,8 +38,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     self.containerImageView.addSubview(self.pledgeImage)
     self.pledgeImage.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor).isActive = true
 
-    self.arrangeViews()
-
+    self.arrangeStackView()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -84,7 +83,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> learnMoreLabelStyle
   }
 
-  private func arrangeViews() {
+  private func arrangeStackView() {
     self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
     self.descriptionStackView.addArrangedSubview(self.spacerView)
     self.descriptionStackView.addArrangedSubview(self.estimatedDeliveryLabel)
