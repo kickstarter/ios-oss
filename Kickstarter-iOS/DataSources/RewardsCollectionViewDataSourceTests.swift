@@ -1,1 +1,18 @@
-import Foundation
+import XCTest
+@testable import Kickstarter_Framework
+@testable import Library
+import KsApi
+
+final class RewardsCollectionViewDataSourceTests: XCTestCase {
+  private let dataSource = RewardsCollectionViewDataSource()
+  private let collectionView = UICollectionView(frame: .zero)
+
+  func testLoadRewards() {
+    let rewards = [Reward.template, Reward.template]
+
+    self.dataSource.load(rewards: rewards)
+
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.collectionView))
+    XCTAssertEqual(2, self.dataSource.collectionView(self.collectionView, numberOfItemsInSection: 0))
+  }
+}

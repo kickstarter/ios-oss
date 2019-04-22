@@ -18,11 +18,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
   private func configureViews() {
     _ = self.contentView
-      |> \.backgroundColor .~ .red
+      |> \.backgroundColor .~ .ksr_grey_200
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = containerView
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.backgroundColor .~ UIColor.white
       |> roundedStyle(cornerRadius: 12)
 
@@ -31,7 +30,5 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> ksr_constrainViewToMarginsInParent()
   }
 
-  func configureWith(value: Reward) {
-
-  }
+  func configureWith(value: Reward) {}
 }
