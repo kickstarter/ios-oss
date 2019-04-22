@@ -3,7 +3,14 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeDescriptionCell: UITableViewCell, ValueCell {
+internal protocol PledgeDescriptionCellDelegate: class {
+  func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell?)
+}
+
+internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
+  fileprivate let viewModel: PledgeDescriptionCellViewModelType = PledgeDescriptionCellViewModel()
+  internal weak var delegate: PledgeDescriptionCellDelegate?
+
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -16,14 +23,14 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var learnMoreLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var spacerView: UIView = { UIView(frame: .zero) }()
 
-  func configureWith(value: String) {
+  internal func configureWith(value: String) {
     _ = self.dateLabel
       |> \.text .~ value
   }
 
   // MARK: - Lifecycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  internal override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     _ = (self.rootStackView, self.contentView)
@@ -39,6 +46,9 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     self.pledgeImage.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor).isActive = true
 
     self.arrangeStackView()
+
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(learnMoreTapped))
+    self.learnMoreLabel.addGestureRecognizer(tapRecognizer)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -83,6 +93,17 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> learnMoreLabelStyle
   }
 
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.presentTrustAndSafety
+      .observeForUI()
+      .observeValues { [weak self] in
+        print("THATS")
+        self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(self)
+    }
+  }
+
   private func arrangeStackView() {
     self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
     self.descriptionStackView.addArrangedSubview(self.spacerView)
@@ -100,6 +121,10 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     }
 
     self.rootStackView.addArrangedSubview(self.descriptionStackView)
+  }
+
+  @objc func learnMoreTapped(sender: UITapGestureRecognizer) {
+    self.viewModel.inputs.tapped()
   }
 }
 
@@ -152,4 +177,5 @@ private let learnMoreLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.font .~ UIFont.ksr_subhead(size: 12)
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
+    |> \.isUserInteractionEnabled .~ true
 }
