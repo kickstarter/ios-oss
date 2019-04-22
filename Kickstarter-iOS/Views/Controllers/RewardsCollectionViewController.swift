@@ -44,6 +44,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
                                       action: #selector(closeButtonTapped))
 
     _ = closeButton
+      |> \.width .~ Styles.minTouchSize.width
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
 
     _ = self
