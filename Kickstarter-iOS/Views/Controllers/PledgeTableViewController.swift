@@ -25,8 +25,8 @@ class PledgeTableViewController: UITableViewController {
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
 
-    self.tableView.registerCellClass(PledgeDescriptionCell.self)
     self.tableView.registerCellClass(PledgeAmountCell.self)
+    self.tableView.registerCellClass(PledgeDescriptionCell.self)
     self.tableView.registerCellClass(PledgeRowCell.self)
     self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
 
