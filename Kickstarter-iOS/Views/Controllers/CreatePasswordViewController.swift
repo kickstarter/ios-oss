@@ -35,8 +35,6 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
       |> \.rightBarButtonItem .~ UIBarButtonItem(customView: self.saveButtonView)
 
     if let childView = self.createPasswordTableViewController.tableView {
-      childView.translatesAutoresizingMaskIntoConstraints = false
-
       self.addChild(self.createPasswordTableViewController)
       _ = (childView, self.view) |> ksr_addSubviewToParent()
       self.createPasswordTableViewController.didMove(toParent: self)

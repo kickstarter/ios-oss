@@ -26,6 +26,7 @@ excluded:
   - Kickstarter-tvOS.playground/
   - Library/Strings.swift
   - bin/strings.swift
+  - bin/StringsScript/Sources/StringsScriptCore/Secrets.swift
 reporter: "xcode"
 custom_rules:
   localized_lensing:

@@ -60,6 +60,9 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.avatarImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.friendNameLabel
       |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14.0)

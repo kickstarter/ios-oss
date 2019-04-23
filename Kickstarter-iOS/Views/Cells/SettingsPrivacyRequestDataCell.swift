@@ -6,7 +6,7 @@ import ReactiveSwift
 import UIKit
 
 internal protocol SettingsRequestDataCellDelegate: class {
-  func settingsRequestDataCellDidPresentPrompt(_ cell: SettingsPrivacyRequestDataCell)
+  func settingsRequestDataCellDidPresentPrompt(_ cell: SettingsPrivacyRequestDataCell, alertMessage: String)
   func settingsRequestDataCell(_ cell: SettingsPrivacyRequestDataCell, requestedDataWith url: String)
 }
 
@@ -93,9 +93,9 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
 
     self.viewModel.outputs.showRequestDataPrompt
       .observeForUI()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] requestDataAlertText in
         guard let _self = self else { return }
-        self?.delegate?.settingsRequestDataCellDidPresentPrompt(_self)
+        self?.delegate?.settingsRequestDataCellDidPresentPrompt(_self, alertMessage: requestDataAlertText)
     }
 
     self.viewModel.outputs.goToSafari

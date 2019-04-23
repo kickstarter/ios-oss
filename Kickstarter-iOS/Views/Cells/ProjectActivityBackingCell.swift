@@ -141,6 +141,9 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       }
       |> UITableViewCell.lens.accessibilityHint %~ { _ in Strings.Opens_pledge_info() }
 
+    _ = self.backerImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.backingButton
       |> projectActivityFooterButton
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }

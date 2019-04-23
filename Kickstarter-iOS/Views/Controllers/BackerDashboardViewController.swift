@@ -163,6 +163,9 @@ internal final class BackerDashboardViewController: UIViewController {
 
     _ = self |> baseControllerStyle()
 
+    _ = self.avatarImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.navigationItem
       |> UINavigationItem.lens.title %~ { _ in Strings.tabbar_profile() }
 
