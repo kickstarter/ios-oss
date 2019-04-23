@@ -1,10 +1,12 @@
 import KsApi
 import Library
 import Prelude
+import Prelude_UIKit
+import ReactiveSwift
 import UIKit
 
 internal protocol PledgeDescriptionCellDelegate: class {
-  func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell?)
+  func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell)
 }
 
 internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
@@ -100,7 +102,8 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] in
         print("THATS")
-        self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(self)
+        guard let _self = self else { return }
+        self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(_self)
     }
   }
 

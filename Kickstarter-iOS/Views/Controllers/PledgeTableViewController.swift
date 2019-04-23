@@ -81,7 +81,7 @@ class PledgeTableViewController: UITableViewController {
 }
 
 extension PledgeTableViewController: PledgeDescriptionCellDelegate {
- internal func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell?) {
+ internal func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell) {
     let vc = HelpWebViewController.configuredWith(helpType: .trust)
     let nav = UINavigationController(rootViewController: vc)
     self.present(nav, animated: true, completion: nil)
