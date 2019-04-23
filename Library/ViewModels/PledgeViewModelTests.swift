@@ -31,7 +31,6 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.estimatedDeliveryOn .~ estimatedDelivery
 
-
     self.vm.inputs.configureWith(project: project, reward: reward)
     self.vm.inputs.viewDidLoad()
 
