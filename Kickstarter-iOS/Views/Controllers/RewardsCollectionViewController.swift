@@ -122,6 +122,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     let (contentSize, pageSize, contentInsetLeftRight) = self.hiddenScrollViewData(from: layout,
                                                                                    using: self.collectionView)
     let needsUpdate = self.collectionView.contentInset.left != contentInsetLeftRight
+      || self.hiddenPagingScrollView.contentSize != contentSize
 
     // Check if orientation or frame has changed
     if needsUpdate {
@@ -146,7 +147,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
   private func hiddenScrollViewData(from layout: UICollectionViewFlowLayout,
                                     using collectionView: UICollectionView) -> HiddenScrollViewData {
-    let numberOfItemsInCollectionView = self.collectionView.numberOfItems(inSection: 0)
     let itemSize = layout.itemSize
     let lineSpacing = layout.minimumLineSpacing
     let totalItemWidth = itemSize.width + lineSpacing
@@ -155,9 +155,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
     let pageHeight = itemSize.height
     let pageSize = CGSize(width: pageWidth, height: pageHeight)
 
-    let contentWidth = (CGFloat(numberOfItemsInCollectionView) * totalItemWidth) - lineSpacing
-    let contentHeight = pageHeight
-    let contentSize = CGSize(width: contentWidth, height: contentHeight)
+    let contentSize = CGSize(width: collectionView.contentSize.width + lineSpacing,
+                             height: collectionView.contentSize.height)
 
     let contentInsetLeftRight = (collectionView.frame.width - itemSize.width) / 2
 
