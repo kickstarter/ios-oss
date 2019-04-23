@@ -1,4 +1,5 @@
 import Foundation
+import Prelude
 import ReactiveSwift
 import ReactiveExtensions
 import Result
@@ -13,22 +14,31 @@ final class PledgeViewModelTests: TestCase {
 
   private let amount = TestObserver<Double, NoError>()
   private let currency = TestObserver<String, NoError>()
+  private let estimatedDeliveryDate = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.amountAndCurrency.map { $0.0 }.observe(self.amount.observer)
-    self.vm.outputs.amountAndCurrency.map { $0.1 }.observe(self.currency.observer)
+    self.vm.outputs.amountAndCurrencyAndDeliveryDate.map { $0.0 }.observe(self.amount.observer)
+    self.vm.outputs.amountAndCurrencyAndDeliveryDate.map { $0.1 }.observe(self.currency.observer)
+    self.vm.outputs.amountAndCurrencyAndDeliveryDate.map { $0.2 }.observe(self.estimatedDeliveryDate.observer)
   }
 
   func testAmountAndCurrencyViewDidLoad() {
+    let estimatedDelivery = 1468527587.32843
+
     let project = Project.template
     let reward = Reward.template
+      |> Reward.lens.estimatedDeliveryOn .~ estimatedDelivery
+
 
     self.vm.inputs.configureWith(project: project, reward: reward)
     self.vm.inputs.viewDidLoad()
 
     self.amount.assertValues([10])
     self.currency.assertValues(["$"])
+    self.estimatedDeliveryDate.assertValues([Format.date(
+          secondsInUTC: estimatedDelivery, template: "MMMMyyyy", timeZone: UTCTimeZone
+        )], "Emits the estimated delivery date")
   }
 }

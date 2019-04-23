@@ -9,14 +9,12 @@ final class PledgeDataSource: ValueCellDataSource {
     case summary
   }
 
-  func load(deliveryDescription: String) {
-    self.appendRow(value: deliveryDescription,
+  func load(amount: Double, currency: String, deliveryDate: String) {
+    self.appendRow(value: deliveryDate,
                    cellClass: PledgeDescriptionCell.self,
                    toSection: Section.project.rawValue
     )
-  }
 
-  func load(amount: Double, currency: String) {
     self.appendRow(
       value: (amount, currency),
       cellClass: PledgeAmountCell.self,
