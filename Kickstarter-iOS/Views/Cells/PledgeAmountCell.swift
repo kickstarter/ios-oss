@@ -1,5 +1,6 @@
 import Library
 import Prelude
+import Prelude_UIKit
 import UIKit
 
 final class PledgeAmountCell: UITableViewCell, ValueCell {
@@ -106,12 +107,12 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
 }
 
 private func stepperStyle(_ stepper: UIStepper) -> UIStepper {
-  stepper.setDecrementImage(UIImage(named: "stepper-decrement-normal"), for: .normal)
-  stepper.setDecrementImage(UIImage(named: "stepper-decrement-disabled"), for: .disabled)
-  stepper.setDecrementImage(UIImage(named: "stepper-decrement-highlighted"), for: .highlighted)
-  stepper.setIncrementImage(UIImage(named: "stepper-increment-normal"), for: .normal)
-  stepper.setIncrementImage(UIImage(named: "stepper-increment-disabled"), for: .disabled)
-  stepper.setIncrementImage(UIImage(named: "stepper-increment-highlighted"), for: .highlighted)
   return stepper
     |> \.tintColor .~ UIColor.clear
+    <> UIStepper.lens.decrementImage(for: .normal) .~ image(named: "stepper-decrement-normal")
+    <> UIStepper.lens.decrementImage(for: .disabled) .~ image(named: "stepper-decrement-disabled")
+    <> UIStepper.lens.decrementImage(for: .highlighted) .~ image(named: "stepper-decrement-highlighted")
+    <> UIStepper.lens.incrementImage(for: .normal) .~ image(named: "stepper-increment-normal")
+    <> UIStepper.lens.incrementImage(for: .disabled) .~ image(named: "stepper-increment-disabled")
+    <> UIStepper.lens.incrementImage(for: .highlighted) .~ image(named: "stepper-increment-highlighted")
 }
