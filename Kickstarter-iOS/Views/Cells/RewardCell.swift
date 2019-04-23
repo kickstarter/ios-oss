@@ -6,6 +6,8 @@ import Prelude
 final class RewardCell: UICollectionViewCell, ValueCell {
   private let containerView = UIView(frame: .zero)
 
+  static let fixedCardWidth: CGFloat = 249
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 

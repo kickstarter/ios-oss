@@ -10,16 +10,15 @@ final class RewardsCollectionViewController: UICollectionViewController {
   // Hidden scroll view used for paging
   private let hiddenPagingScrollView: UIScrollView = {
     UIScrollView()
-      |> \.backgroundColor .~ UIColor.red
       |> \.isPagingEnabled .~ true
-      |> \.isHidden .~ false
+      |> \.isHidden .~ true
   }()
 
   private let layout: UICollectionViewFlowLayout = {
     UICollectionViewFlowLayout()
       |> \.minimumLineSpacing .~ Styles.grid(3)
       |> \.minimumInteritemSpacing .~ 0
-      |> \.sectionInset .~ .init(all: Styles.grid(6))
+      |> \.sectionInset .~ .init(topBottom: Styles.grid(6))
       |> \.scrollDirection .~ .horizontal
   }()
 
@@ -32,10 +31,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
     rewardsCollectionVC.viewModel.inputs.configure(with: project, refTag: refTag)
 
     return rewardsCollectionVC
-  }
-
-  private var isLandscapeOrientation: Bool {
-    return [.landscapeLeft, .landscapeRight].contains(UIDevice.current.orientation)
   }
 
   init() {
@@ -78,24 +73,9 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     guard let layout = self.flowLayout else { return }
 
-    layout.sectionInset = self.isLandscapeOrientation ?
-      .init(topBottom: Styles.grid(6), leftRight: Styles.grid(8)) : .init(all: Styles.grid(6))
+    layout.itemSize = self.calculateItemSize(from: layout, using: self.collectionView)
 
-    let sectionInsets = layout.sectionInset
-    let topBottomInsets = sectionInsets.top + sectionInsets.bottom
-    let leftRightInsets = sectionInsets.left + sectionInsets.right
-    let collectionViewSize = self.collectionView.frame.size
-
-    let itemHeight = self.collectionView.contentSize.height - topBottomInsets
-    var itemWidth = collectionViewSize.width - leftRightInsets
-
-    if self.isLandscapeOrientation {
-      itemWidth = collectionViewSize.width / 2 - leftRightInsets
-    }
-
-    layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
-
-    self.updateHiddenScrollViewBounds()
+    self.updateHiddenScrollViewBoundsIfNeeded()
   }
 
   override func bindStyles() {
@@ -122,6 +102,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
     }
   }
 
+  // MARK: - Private Helpers
+
   private func configureHiddenScrollView() {
     _ = self.hiddenPagingScrollView
       |> \.delegate .~ self
@@ -134,27 +116,66 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.collectionView.addGestureRecognizer(self.hiddenPagingScrollView.panGestureRecognizer)
   }
 
-  private func updateHiddenScrollViewBounds() {
+  private func updateHiddenScrollViewBoundsIfNeeded() {
     guard let layout = flowLayout else { return }
 
+    let (contentSize, pageSize, contentInsetLeftRight) = self.hiddenScrollViewData(from: layout,
+                                                                                   using: self.collectionView)
+    let needsUpdate = self.collectionView.contentInset.left != contentInsetLeftRight
+
+    // Check if orientation or frame has changed
+    if needsUpdate {
+      _ = self.hiddenPagingScrollView
+        |> \.frame .~ self.collectionView.frame
+        |> \.bounds .~ CGRect(x: 0, y: 0, width: pageSize.width, height: pageSize.height)
+        |> \.contentSize .~ CGSize(width: contentSize.width, height: contentSize.height)
+
+      let (top, bottom) = self.collectionView.contentInset.topBottom
+
+      _ = self.collectionView
+        |> \.contentInset .~ .init(top: top,
+                                   left: contentInsetLeftRight,
+                                   bottom: bottom,
+                                   right: contentInsetLeftRight)
+
+      self.collectionView.contentOffset.x = -contentInsetLeftRight
+    }
+  }
+
+  typealias HiddenScrollViewData = (contentSize: CGSize, pageSize: CGSize, contentInsetLeftRight: CGFloat)
+
+  private func hiddenScrollViewData(from layout: UICollectionViewFlowLayout,
+                                    using collectionView: UICollectionView) -> HiddenScrollViewData {
     let numberOfItemsInCollectionView = self.collectionView.numberOfItems(inSection: 0)
     let itemSize = layout.itemSize
     let lineSpacing = layout.minimumLineSpacing
     let totalItemWidth = itemSize.width + lineSpacing
 
-    let collectionViewWidth = CGFloat(numberOfItemsInCollectionView) * totalItemWidth
-
-    let pageWidth = self.isLandscapeOrientation ? 2 * totalItemWidth : totalItemWidth
+    let pageWidth = totalItemWidth
     let pageHeight = itemSize.height
+    let pageSize = CGSize(width: pageWidth, height: pageHeight)
 
-    if self.hiddenPagingScrollView.bounds.width != pageWidth {
-      _ = self.hiddenPagingScrollView
-        |> \.frame .~ self.collectionView.frame
-        |> \.bounds .~ CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
-        |> \.contentSize .~ CGSize(width: collectionViewWidth, height: pageHeight)
+    let contentWidth = (CGFloat(numberOfItemsInCollectionView) * totalItemWidth) - lineSpacing
+    let contentHeight = pageHeight
+    let contentSize = CGSize(width: contentWidth, height: contentHeight)
 
-      print("Updating hidden scroll view bounds: \(self.hiddenPagingScrollView.bounds)")
-    }
+    let contentInsetLeftRight = (collectionView.frame.width - itemSize.width) / 2
+
+    return (contentSize, pageSize, contentInsetLeftRight)
+  }
+
+  private func calculateItemSize(from layout: UICollectionViewFlowLayout,
+                                 using collectionView: UICollectionView) -> CGSize {
+    let cardWidth: CGFloat = RewardCell.fixedCardWidth
+
+    let sectionInsets = layout.sectionInset
+    let topBottomInsets = sectionInsets.top + sectionInsets.bottom
+    let leftRightInsets = sectionInsets.left + sectionInsets.right
+
+    let itemHeight = collectionView.contentSize.height - topBottomInsets
+    let itemWidth = cardWidth - leftRightInsets
+
+    return CGSize(width: itemWidth, height: itemHeight)
   }
 
   // MARK: - Public Functions
@@ -167,7 +188,9 @@ extension RewardsCollectionViewController {
   override func scrollViewDidScroll(_ scrollView: UIScrollView) {
     guard scrollView == self.hiddenPagingScrollView else { return }
 
-    self.collectionView.contentOffset.x = scrollView.contentOffset.x
+    let leftInset = self.collectionView.contentInset.left
+
+    self.collectionView.contentOffset.x = scrollView.contentOffset.x - leftInset
   }
 }
 
@@ -175,7 +198,6 @@ extension RewardsCollectionViewController {
 private var collectionViewStyle = { collectionView -> UICollectionView in
   collectionView
     |> \.backgroundColor .~ .ksr_grey_200
-    |> \.isPagingEnabled .~ false
     |> \.clipsToBounds .~ false
-    |> \.allowsSelection .~ false
+    |> \.allowsSelection .~ true
 }
