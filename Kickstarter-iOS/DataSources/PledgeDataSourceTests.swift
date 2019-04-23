@@ -9,7 +9,7 @@ final class PledgeDataSourceTests: XCTestCase {
   let dataSource = PledgeDataSource()
 
   func testLoad() {
-    dataSource.load(amount: 100, currency: "USD", deliveryDate:  "September 2020")
+    dataSource.load(amount: 100, currency: "USD", deliveryDate: "September 2020")
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: collectionView))
     XCTAssertEqual(2, self.dataSource.collectionView(collectionView, numberOfItemsInSection: 1))
