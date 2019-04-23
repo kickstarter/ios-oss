@@ -65,6 +65,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     self.collectionView.register(RewardCell.self)
 
+    self.configureHiddenScrollView()
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -85,6 +87,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
     }
 
     layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+
+    self.updateHiddenScrollViewBounds()
   }
 
   override func bindStyles() {
@@ -95,6 +99,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     _ = self.collectionView
       |> collectionViewStyle
+
+    _ = self.collectionView.panGestureRecognizer
+      |> \.isEnabled .~ false
+
   }
 
   override func bindViewModel() {
@@ -107,9 +115,48 @@ final class RewardsCollectionViewController: UICollectionViewController {
     }
   }
 
+  private func configureHiddenScrollView() {
+    // Add custom paging scrollView
+    self.view.addSubview(self.hiddenPagingScrollView)
+
+    _ = self.hiddenPagingScrollView
+      |> \.delegate .~ self
+
+    // Disable standard gesture recognizer for UICollectionView scrollView and add custom
+    self.collectionView.addGestureRecognizer(self.hiddenPagingScrollView.panGestureRecognizer)
+  }
+
+  private func updateHiddenScrollViewBounds() {
+    let numberOfItemsInCollectionView = self.collectionView.numberOfItems(inSection: 0)
+
+    guard let layout = flowLayout else { return }
+
+    let itemSize = layout.itemSize
+    let interItemSpacing = layout.minimumInteritemSpacing
+    let totalItemWidth = itemSize.width + interItemSpacing
+
+    let collectionViewWidth = CGFloat(numberOfItemsInCollectionView) * totalItemWidth
+
+    self.hiddenPagingScrollView.frame = CGRect(x: 0, y: 0, width: totalItemWidth, height: itemSize.height)
+    self.hiddenPagingScrollView.bounds = CGRect(x: 0, y: 0, width: totalItemWidth, height: itemSize.height)
+    self.hiddenPagingScrollView.contentSize = CGSize(width: collectionViewWidth, height: itemSize.height)
+  }
+
   // MARK: - Public Functions
   @objc func closeButtonTapped() {
     self.navigationController?.dismiss(animated: true, completion: nil)
+  }
+}
+
+extension RewardsCollectionViewController {
+  override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    guard scrollView == self.hiddenPagingScrollView else { return }
+
+    print("content offset x: \(scrollView.contentOffset.x)")
+
+    let adjustedContentOffsetX = scrollView.contentOffset.x - peekAmountInset
+
+    self.collectionView.contentOffset.x = adjustedContentOffsetX
   }
 }
 
