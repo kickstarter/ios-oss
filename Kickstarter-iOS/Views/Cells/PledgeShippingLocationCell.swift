@@ -77,7 +77,15 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   func configureWith(value: (location: String, currency: String, rate: Double)) {
     self.countryButton.setTitle(value.location, for: .normal)
-    self.amountLabel.text = "+\(value.currency)\(value.rate)"
+
+    self.amountLabel.attributedText = attributedCurrencyString(
+      currencySymbol: value.currency,
+      amount: value.rate,
+      fractionDigits: 2,
+      font: UIFont.ksr_title1(),
+      superscriptFont: UIFont.ksr_body(),
+      foregroundColor: UIColor.ksr_text_dark_grey_500
+    )
   }
 }
 
@@ -86,8 +94,6 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 private let amountLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.font .~ UIFont.ksr_title1()
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
 }
 
 private let countryButtonStyle: ButtonStyle = { (button: UIButton) in
