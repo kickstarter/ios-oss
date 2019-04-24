@@ -30,6 +30,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.rootStackView.addArrangedSubview(self.titleLabel)
     self.rootStackView.addArrangedSubview(self.adaptableStackView)
+
     self.adaptableStackView.addArrangedSubview(self.stepper)
     self.adaptableStackView.addArrangedSubview(self.spacer)
     self.adaptableStackView.addArrangedSubview(self.amountInputView)
