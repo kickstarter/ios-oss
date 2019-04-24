@@ -151,7 +151,7 @@ private let dateLabelStyle: LabelStyle = { (label: UILabel) in
 
 private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.text  %~ { _ in "Kickstarter is not a store. It's a way to bring creative projects to life." }
+    |> \.text  %~ { _ in Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life() }
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.font .~ UIFont.ksr_subhead(size: 12)
     |> \.adjustsFontForContentSizeCategory .~ true
