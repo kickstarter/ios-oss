@@ -38,6 +38,7 @@ public let checkoutStackViewStyle: StackViewStyle = { (stackView: UIStackView) i
 
 public let checkoutTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
+    |> \.accessibilityTraits .~ UIAccessibilityTraits.header
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.font .~ UIFont.ksr_headline()
     |> \.numberOfLines .~ 0
