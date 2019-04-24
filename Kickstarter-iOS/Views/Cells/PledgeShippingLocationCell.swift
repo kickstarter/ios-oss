@@ -20,6 +20,9 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+    _ = self
+      |> \.accessibilityElements .~ [self.titleLabel, self.countryButton, self.amountLabel]
+
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
