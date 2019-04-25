@@ -26,6 +26,7 @@ final class UserTests: XCTestCase {
       "promo_newsletter": false,
       "happening_newsletter": false,
       "games_newsletter": false,
+      "notify_of_comment_replies": false,
       "facebook_connected": false,
       "ksr_live_token": "token",
       "location": [
@@ -51,6 +52,7 @@ final class UserTests: XCTestCase {
     XCTAssertEqual(false, user?.newsletters.promo)
     XCTAssertEqual(false, user?.newsletters.happening)
     XCTAssertEqual(false, user?.newsletters.games)
+    XCTAssertEqual(false, user?.notifications.commentReplies)
     XCTAssertEqual(false, user?.facebookConnected)
     XCTAssertEqual(false, user?.isFriend)
     XCTAssertEqual("token", user?.liveAuthToken)
@@ -72,6 +74,7 @@ final class UserTests: XCTestCase {
       "happening_newsletter": false,
       "promo_newsletter": false,
       "weekly_newsletter": false,
+      "notify_of_comment_replies": false,
       "facebook_connected": false,
       "ksr_live_token": "token",
       "location": [

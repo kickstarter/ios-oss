@@ -31,6 +31,9 @@ internal final class CommentCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.contentView.layoutMargins .~
       .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 
+    _ = self.avatarImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.bodyTextView
       |> UITextView.lens.isScrollEnabled .~ false
       |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero

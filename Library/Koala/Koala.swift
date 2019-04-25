@@ -1281,8 +1281,8 @@ public final class Koala {
   // MARK: - Create Password Tracking
 
   public enum CreatePasswordTrackingEvent: String {
-    case passwordCreated = "Created password"
-    case viewed = "Viewed create password"
+    case passwordCreated = "Created Password"
+    case viewed = "Viewed Create Password"
   }
 
   public func trackCreatePassword(event: CreatePasswordTrackingEvent) {
