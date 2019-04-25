@@ -54,7 +54,10 @@ public struct User {
 
   public struct Notifications {
     public private(set) var backings: Bool?
+    public private(set) var commentReplies: Bool?
     public private(set) var comments: Bool?
+    public private(set) var creatorDigest: Bool?
+    public private(set) var creatorTips: Bool?
     public private(set) var follower: Bool?
     public private(set) var friendActivity: Bool?
     public private(set) var messages: Bool?
@@ -66,9 +69,7 @@ public struct User {
     public private(set) var mobilePostLikes: Bool?
     public private(set) var mobileUpdates: Bool?
     public private(set) var postLikes: Bool?
-    public private(set) var creatorTips: Bool?
     public private(set) var updates: Bool?
-    public private(set) var creatorDigest: Bool?
   }
 
   public struct Stats {
@@ -213,7 +214,10 @@ extension User.Notifications: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Notifications> {
     let tmp1 = curry(User.Notifications.init)
       <^> json <|? "notify_of_backings"
+      <*> json <|? "notify_of_comment_replies"
       <*> json <|? "notify_of_comments"
+      <*> json <|? "notify_of_creator_digest"
+      <*> json <|? "notify_of_creator_edu"
       <*> json <|? "notify_of_follower"
       <*> json <|? "notify_of_friend_activity"
       <*> json <|? "notify_of_messages"
@@ -227,9 +231,7 @@ extension User.Notifications: Argo.Decodable {
       <*> json <|? "notify_mobile_of_post_likes"
       <*> json <|? "notify_mobile_of_updates"
       <*> json <|? "notify_of_post_likes"
-      <*> json <|? "notify_of_creator_edu"
       <*> json <|? "notify_of_updates"
-      <*> json <|? "notify_of_creator_digest"
   }
 }
 
@@ -237,21 +239,22 @@ extension User.Notifications: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
     result["notify_of_backings"] = self.backings
+    result["notify_of_comment_replies"] = self.commentReplies
     result["notify_of_comments"] = self.comments
+    result["notify_of_creator_digest"] = self.creatorDigest
+    result["notify_of_creator_edu"] = self.creatorTips
     result["notify_of_follower"] = self.follower
     result["notify_of_friend_activity"] = self.friendActivity
     result["notify_of_messages"] = self.messages
-    result["notify_of_post_likes"] = self.postLikes
-    result["notify_of_creator_edu"] = self.creatorTips
-    result["notify_of_updates"] = self.updates
-    result["notify_of_creator_digest"] = self.creatorDigest
-    result["notify_mobile_of_backings"] = self.mobileBackings
     result["notify_mobile_of_comments"] = self.mobileComments
     result["notify_mobile_of_follower"] = self.mobileFollower
     result["notify_mobile_of_friend_activity"] = self.mobileFriendActivity
     result["notify_mobile_of_messages"] = self.mobileMessages
     result["notify_mobile_of_post_likes"] = self.mobilePostLikes
     result["notify_mobile_of_updates"] = self.mobileUpdates
+    result["notify_of_post_likes"] = self.postLikes
+    result["notify_of_updates"] = self.updates
+    result["notify_mobile_of_backings"] = self.mobileBackings
     return result
   }
 }
@@ -259,7 +262,10 @@ extension User.Notifications: EncodableType {
 extension User.Notifications: Equatable {}
 public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
   return lhs.backings == rhs.backings &&
+    lhs.commentReplies == rhs.commentReplies &&
     lhs.comments == rhs.comments &&
+    lhs.creatorDigest == rhs.creatorDigest &&
+    lhs.creatorTips == rhs.creatorTips &&
     lhs.follower == rhs.follower &&
     lhs.friendActivity == rhs.friendActivity &&
     lhs.messages == rhs.messages &&
@@ -271,9 +277,7 @@ public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
     lhs.mobilePostLikes == rhs.mobilePostLikes &&
     lhs.mobileUpdates == rhs.mobileUpdates &&
     lhs.postLikes == rhs.postLikes &&
-    lhs.creatorTips == rhs.creatorTips &&
-    lhs.updates == rhs.updates &&
-    lhs.creatorDigest == rhs.creatorDigest
+    lhs.updates == rhs.updates
 }
 
 extension User.Stats: Argo.Decodable {

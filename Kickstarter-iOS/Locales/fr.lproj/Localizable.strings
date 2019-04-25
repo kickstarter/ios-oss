@@ -70,6 +70,7 @@
 "Closes_project" = "Ferme le projet.";
 "Collapses_subcategories" = "Masque les sous-catégories.";
 "Collections" = "Collections";
+"Comment_reply_digest" = "Comment reply digest";
 "Complete_payment" = "Payer";
 "Confirm_password" = "Confirmer le nouveau mot de passe";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Si vous vous connectez avec votre compte Facebook, vous pourrez suivre vos amis et recevoir des notifications chaque fois qu'ils lancent ou soutiennent de nouveaux projets.";
