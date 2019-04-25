@@ -10,7 +10,7 @@ internal protocol PledgeDescriptionCellDelegate: class {
 }
 
 internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel: PledgeDescriptionCellViewModelType = PledgeDescriptionCellViewModel()
+  fileprivate let viewModel = PledgeDescriptionCellViewModel()
   internal weak var delegate: PledgeDescriptionCellDelegate?
 
   // MARK: - Properties
@@ -26,8 +26,7 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var spacerView: UIView = { UIView(frame: .zero) }()
 
   internal func configureWith(value: String) {
-    _ = self.dateLabel
-      |> \.text .~ value
+    self.viewModel.inputs.configureWith(estimatedDeliveryDate: value)
   }
 
   // MARK: - Lifecycle
@@ -44,10 +43,14 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     self.pledgeImage.widthAnchor.constraint(equalToConstant: 90.0).isActive = true
     self.pledgeImage.heightAnchor.constraint(equalToConstant: 130.0).isActive = true
-    self.containerImageView.addSubview(self.pledgeImage)
+
+    _ = (self.pledgeImage, self.containerImageView)
+      |> ksr_addSubviewToParent()
+
     self.pledgeImage.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor).isActive = true
 
     self.arrangeStackView()
+    self.bindViewModel()
 
     let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(learnMoreTapped))
     self.learnMoreLabel.addGestureRecognizer(tapRecognizer)
@@ -59,7 +62,7 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  override func bindStyles() {
+  internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -95,19 +98,20 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> learnMoreLabelStyle
   }
 
-  override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.dateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryText
 
     self.viewModel.outputs.presentTrustAndSafety
       .observeForUI()
       .observeValues { [weak self] in
-        print("THATS")
         guard let _self = self else { return }
         self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(_self)
     }
   }
 
-  private func arrangeStackView() {
+  internal func arrangeStackView() {
     self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
     self.descriptionStackView.addArrangedSubview(self.spacerView)
     self.descriptionStackView.addArrangedSubview(self.estimatedDeliveryLabel)

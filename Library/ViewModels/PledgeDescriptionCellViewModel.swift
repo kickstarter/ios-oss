@@ -1,13 +1,17 @@
+import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import ReactiveExtensions
 import Result
 
 public protocol PledgeDescriptionCellViewModelInputs {
+  func configureWith(estimatedDeliveryDate: String)
   func tapped()
 }
 
 public protocol PledgeDescriptionCellViewModelOutputs {
+  var estimatedDeliveryText: Signal<String, NoError> { get }
   var presentTrustAndSafety: Signal<Void, NoError> { get }
 }
 
@@ -20,17 +24,26 @@ public final class PledgeDescriptionCellViewModel: PledgeDescriptionCellViewMode
 PledgeDescriptionCellViewModelInputs, PledgeDescriptionCellViewModelOutputs {
 
   public init() {
+    self.estimatedDeliveryText = self.estimatedDeliveryDateProperty.signal.map {
+      $0
+    }
+
     self.presentTrustAndSafety = self.tappedProperty.signal.map {
       $0
       print("THIS")
     }
   }
 
+  private let estimatedDeliveryDateProperty = MutableProperty<String>("")
+  public func configureWith(estimatedDeliveryDate: String) {
+    self.estimatedDeliveryDateProperty.value = estimatedDeliveryDate
+  }
   private let tappedProperty = MutableProperty(())
   public func tapped() {
     self.tappedProperty.value = ()
   }
 
+  public let estimatedDeliveryText: Signal<String, NoError>
   public let presentTrustAndSafety: Signal<Void, NoError>
 
   public var inputs: PledgeDescriptionCellViewModelInputs { return self }
