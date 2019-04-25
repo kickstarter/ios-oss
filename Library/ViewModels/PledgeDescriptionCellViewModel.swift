@@ -24,14 +24,9 @@ public final class PledgeDescriptionCellViewModel: PledgeDescriptionCellViewMode
 PledgeDescriptionCellViewModelInputs, PledgeDescriptionCellViewModelOutputs {
 
   public init() {
-    self.estimatedDeliveryText = self.estimatedDeliveryDateProperty.signal.map {
-      $0
-    }
+    self.estimatedDeliveryText = self.estimatedDeliveryDateProperty.signal
 
-    self.presentTrustAndSafety = self.tappedProperty.signal.map {
-      $0
-      print("THIS")
-    }
+    self.presentTrustAndSafety = self.tappedProperty.signal
   }
 
   private let estimatedDeliveryDateProperty = MutableProperty<String>("")
