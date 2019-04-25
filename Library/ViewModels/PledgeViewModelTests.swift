@@ -24,7 +24,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.amountAndCurrencyAndDeliveryDate.map { $0.2 }.observe(self.estimatedDeliveryDate.observer)
   }
 
-  func testAmountAndCurrencyViewDidLoad() {
+  func testAmountCurrencyAndEstimatedDeliveryDate() {
     let estimatedDelivery = 1468527587.32843
 
     let project = Project.template
