@@ -230,8 +230,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.disclaimerButton
       |> UIButton.lens.accessibilityLabel %~ { _ in
-        Strings.Kickstarter_is_not_a_store()
-          + " " + Strings.Its_a_way_to_bring_creative_projects_to_life()
+        Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life()
           + " " + Strings.Learn_more_about_accountability()
     }
 
@@ -243,14 +242,15 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.text %~ { _ in Strings.Kickstarter_is_not_a_store() }
+      |> UILabel.lens.text %~ { _ in
+        Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life()
+      }
 
     _ = self.disclaimerSecondaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.text %~ { _ in Strings.Its_a_way_to_bring_creative_projects_to_life() }
 
     _ = self.disclaimerTertiaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)

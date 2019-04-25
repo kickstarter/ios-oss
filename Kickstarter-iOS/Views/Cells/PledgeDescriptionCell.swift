@@ -16,8 +16,8 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var containerImageView: UIView = { UIView.init() }()
-  private lazy var pledgeImage: UIImageView = { UIImageView(frame: .zero) }()
+  private lazy var containerImageView: UIView = { UIView(frame: .zero) }()
+  private lazy var pledgeImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
@@ -38,22 +38,24 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.containerImageView.widthAnchor.constraint(equalToConstant: 100.0).isActive = true
     self.rootStackView.addArrangedSubview(self.containerImageView)
 
-    self.pledgeImage.widthAnchor.constraint(equalToConstant: 90.0).isActive = true
-    self.pledgeImage.heightAnchor.constraint(equalToConstant: 130.0).isActive = true
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(learnMoreTapped))
+    self.learnMoreLabel.addGestureRecognizer(tapRecognizer)
 
-    _ = (self.pledgeImage, self.containerImageView)
+    _ = (self.pledgeImageView, self.containerImageView)
       |> ksr_addSubviewToParent()
-
-    self.pledgeImage.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor).isActive = true
+      |> ksr_constrainViewToEdgesInParent()
 
     self.arrangeStackView()
     self.bindViewModel()
 
-    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(learnMoreTapped))
-    self.learnMoreLabel.addGestureRecognizer(tapRecognizer)
+    NSLayoutConstraint.activate ([
+      self.containerImageView.widthAnchor.constraint(equalToConstant: 100.0),
+      self.pledgeImageView.widthAnchor.constraint(equalToConstant: 90.0),
+      self.pledgeImageView.heightAnchor.constraint(equalToConstant: 130.0),
+      self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
+    ])
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -78,7 +80,7 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     _ = self.spacerView
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
-    _ = self.pledgeImage
+    _ = self.pledgeImageView
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.backgroundColor .~ UIColor.orange
 
@@ -113,16 +115,20 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
   internal func arrangeStackView() {
     self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
-    self.descriptionStackView.addArrangedSubview(self.spacerView)
-    self.descriptionStackView.addArrangedSubview(self.estimatedDeliveryLabel)
-    self.descriptionStackView.addArrangedSubview(self.dateLabel)
-    self.descriptionStackView.addArrangedSubview(self.descriptionLabel)
-    self.descriptionStackView.addArrangedSubview(self.learnMoreLabel)
+
+    [
+      self.spacerView,
+      self.estimatedDeliveryLabel,
+      self.dateLabel,
+      self.descriptionLabel,
+      self.learnMoreLabel
+    ].forEach(self.descriptionStackView.addArrangedSubview)
 
     if #available(iOS 11.0, *) {
       self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
     } else {
       let view = UIView(frame: .zero)
+      view.translatesAutoresizingMaskIntoConstraints = true
       view.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
       self.descriptionStackView.insertArrangedSubview(view, at: 3)
     }
@@ -137,8 +143,8 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
-    |> \.alignment .~ .top
-    |> \.axis .~ .horizontal
+    |> \.alignment .~ UIStackView.Alignment.top
+    |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(2))
@@ -147,8 +153,8 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
 
 private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
-    |> \.axis .~ .vertical
-    |> \.distribution .~ .fill
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.distribution .~ UIStackView.Distribution.fill
 }
 
 private let estimatedDeliveryLabelStyle: LabelStyle = { (label: UILabel) in
@@ -170,7 +176,7 @@ private let dateLabelStyle: LabelStyle = { (label: UILabel) in
 
 private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.text  %~ { _ in "Kickstarter is not a store. It's a way to bring creative projects to life." }
+    |> \.text  %~ { _ in Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life() }
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.font .~ UIFont.ksr_subhead(size: 12)
     |> \.adjustsFontForContentSizeCategory .~ true
