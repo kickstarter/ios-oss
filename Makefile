@@ -127,8 +127,8 @@ lint:
 	swiftlint lint --reporter json --strict
 
 strings:
-	cat Frameworks/native-secrets/ios/Secrets.swift bin/strings.swift \
-		| xcrun -sdk macosx swift -
+	cp Frameworks/native-secrets/ios/Secrets.swift bin/StringsScript/Sources/StringsScriptCore
+	./bin/strings-script "./Library/Strings.swift" "./Kickstarter-iOS/Locales"
 
 secrets:
 	-@rm -rf Frameworks/native-secrets
