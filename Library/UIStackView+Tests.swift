@@ -13,7 +13,7 @@ final class UIStackViewTests: XCTestCase {
       |> ksr_addArrangedSubviewsToStackView()
 
     XCTAssertEqual(firstView, stackView.arrangedSubviews[0])
-    XCTAssertEqual(secondView, stackView.arrangedSubviews[0])
-    XCTAssertEqual(thirdView, stackView.arrangedSubviews[0])
+    XCTAssertEqual(secondView, stackView.arrangedSubviews[1])
+    XCTAssertEqual(thirdView, stackView.arrangedSubviews[2])
   }
 }
