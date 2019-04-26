@@ -14,7 +14,7 @@ public func attributedCurrencyString(
   let formattedString = String(format: "\(currencySymbol)%.\(fractionDigits)f", amount)
 
   let attributedString = NSMutableAttributedString(string: formattedString)
-  let franctionDigitsAndSeparator = Int(fractionDigits + 1)
+  let franctionDigitsAndSeparator = Int(fractionDigits == 0 ? fractionDigits : fractionDigits + 1)
 
   // Calculate prefix and suffix ranges
   let preffix = NSRange(location: 0, length: currencySymbol.count)
@@ -25,9 +25,10 @@ public func attributedCurrencyString(
   )
 
   // Calculate vertical offset based on the height of a capital character of the two fonts
-  let maxCapHeight = max(font.capHeight, superscriptFont.capHeight)
-  let minCapHeight = min(font.capHeight, superscriptFont.capHeight)
-  let baselineOffset = NSNumber(value: Float(maxCapHeight - minCapHeight))
+  let maxCapHeight: CGFloat = max(font.capHeight, superscriptFont.capHeight)
+  let minCapHeight: CGFloat = min(font.capHeight, superscriptFont.capHeight)
+  let multiplier: CGFloat = font.capHeight > superscriptFont.capHeight ? 1 : 0
+  let baselineOffset = NSNumber(value: Float(multiplier * (maxCapHeight - minCapHeight)))
 
   // Set font for the whole string
   attributedString.addAttribute(NSAttributedString.Key.font, value: font, range: range)
