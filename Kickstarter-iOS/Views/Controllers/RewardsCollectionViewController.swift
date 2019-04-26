@@ -10,7 +10,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
   // Hidden scroll view used for paging
   private let hiddenPagingScrollView: UIScrollView = {
     UIScrollView()
-      |> \.backgroundColor .~ UIColor.red
       |> \.isPagingEnabled .~ true
       |> \.isHidden .~ true
   }()
@@ -22,11 +21,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.scrollDirection .~ .horizontal
   }()
 
-  private let peekAmountInset = Styles.grid(3)
-
   private var flowLayout: UICollectionViewFlowLayout? {
-    return self.collectionViewLayout as? UICollectionViewFlowLayout
+    return self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout
   }
+
+  private let peekAmountInset = Styles.grid(3)
 
   static func instantiate(with project: Project, refTag: RefTag?) -> RewardsCollectionViewController {
     let rewardsCollectionVC = RewardsCollectionViewController()
