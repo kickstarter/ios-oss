@@ -225,6 +225,7 @@
 		77FA6CAB20F3E3C200809E31 /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */; };
 		77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6CD120F53E5E00809E31 /* SettingsDataSourceTests.swift */; };
 		77FB8BF720F6586500F91EEB /* SettingsHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */; };
+		77FD60A122735AED0084B84C /* PledgeContinueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FD60A022735AED0084B84C /* PledgeContinueCell.swift */; };
 		77FD8B44216D6167000A95AC /* LoadingBarButtonItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */; };
 		77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */; };
 		7DD8EE241F02DBED0070B63D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD8EE231F02DBED0070B63D /* Bolts.framework */; };
@@ -2033,6 +2034,7 @@
 		77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewCell.xib; sourceTree = "<group>"; };
 		77FA6CD120F53E5E00809E31 /* SettingsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSourceTests.swift; sourceTree = "<group>"; };
 		77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsHeaderView.xib; sourceTree = "<group>"; };
+		77FD60A022735AED0084B84C /* PledgeContinueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeContinueCell.swift; sourceTree = "<group>"; };
 		77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingBarButtonItemView.xib; sourceTree = "<group>"; };
 		77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItemView.swift; sourceTree = "<group>"; };
 		7DD8EE231F02DBED0070B63D /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/FBSDK/iOS/Bolts.framework; sourceTree = "<group>"; };
@@ -3361,7 +3363,6 @@
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				D63BBD382180BE5D007E01F0 /* PaymentMethodsFooterView.swift */,
 				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
-				5993DEBD1CE296F000925494 /* ProfileHeaderView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */,
@@ -3430,6 +3431,7 @@
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
+				77FD60A022735AED0084B84C /* PledgeContinueCell.swift */,
 				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
 				370ACAFF225D337900C8745F /* PledgeAmountCell.swift */,
 				A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */,
@@ -4022,8 +4024,6 @@
 				D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */,
 				37DEC2292257CD9F0051EF9B /* PledgeDataSource.swift */,
 				37DEC22B2257CDBA0051EF9B /* PledgeDataSourceTests.swift */,
-				59322F051CD27B1000C90CC6 /* ProfileDataSource.swift */,
-				A7ED200E1E83229E00BFFA01 /* ProfileDataSourceTests.swift */,
 				9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */,
 				A7ED200F1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift */,
 				A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */,
@@ -4229,10 +4229,6 @@
 				D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */,
 				37DEC1E62257C9F30051EF9B /* PledgeViewModel.swift */,
 				37DEC21F2257CA0A0051EF9B /* PledgeViewModelTests.swift */,
-				A7F441A11D005A9400FE6FC5 /* ProfileHeaderViewModel.swift */,
-				A7ED1F611E831C5C00BFFA01 /* ProfileHeaderViewModelTests.swift */,
-				015572701E79C426005FB8CC /* ProfileProjectCellViewModel.swift */,
-				A7ED1F771E831C5C00BFFA01 /* ProfileProjectCellViewModelTests.swift */,
 				A7F441A31D005A9400FE6FC5 /* ProfileViewModel.swift */,
 				A7ED1F671E831C5C00BFFA01 /* ProfileViewModelTests.swift */,
 				9D9F580F1D131B4000CE81DE /* ProjectActivitiesViewModel.swift */,
@@ -5851,7 +5847,6 @@
 				01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */,
 				597073B41D07294500B00444 /* ProjectNotificationCellViewModel.swift in Sources */,
 				37DEC1E72257C9F30051EF9B /* PledgeViewModel.swift in Sources */,
-				015572711E79C427005FB8CC /* ProfileProjectCellViewModel.swift in Sources */,
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
@@ -6347,6 +6342,7 @@
 				D08A817C1DFAAD08000128DB /* LiveStreamCountdownViewController.swift in Sources */,
 				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,
 				37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */,
+				77FD60A122735AED0084B84C /* PledgeContinueCell.swift in Sources */,
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */,
 				D6B6766920FF8D850082717D /* SettingsNewslettersDataSource.swift in Sources */,

@@ -4,13 +4,15 @@ import Prelude
 import ReactiveSwift
 import Result
 
+public typealias PledgeTableViewData = (amount: Double, currency: String, isLoggedIn: Bool)
+
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func viewDidLoad()
 }
 
 public protocol PledgeViewModelOutputs {
-  var amountAndCurrency: Signal<(Double, String), NoError> { get }
+  var reloadWithData: Signal<PledgeTableViewData, NoError> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -26,10 +28,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(first)
       .skipNil()
 
-    self.amountAndCurrency = projectAndReward.signal
+    let isLoggedIn = projectAndReward
+      .map { AppEnvironment.current.currentUser }
+      .map(isNil)
+      .negate()
+
+    let amountAndCurrency = projectAndReward.signal
       .map { (project, reward) in
         (reward.minimum, currencySymbol(forCountry: project.country).trimmed())
     }
+
+    self.reloadWithData = Signal.combineLatest(amountAndCurrency, isLoggedIn)
+      .map(unpack)
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -42,7 +52,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let amountAndCurrency: Signal<(Double, String), NoError>
+  public let reloadWithData: Signal<PledgeTableViewData, NoError>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
