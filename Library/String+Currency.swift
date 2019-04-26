@@ -17,7 +17,7 @@ public func attributedCurrencyString(
   let franctionDigitsAndSeparator = Int(fractionDigits == 0 ? fractionDigits : fractionDigits + 1)
 
   // Calculate prefix and suffix ranges
-  let preffix = NSRange(location: 0, length: currencySymbol.count)
+  let prefix = NSRange(location: 0, length: currencySymbol.count)
   let range = NSRange(location: 0, length: attributedString.length)
   let suffix = NSRange(
     location: attributedString.length - franctionDigitsAndSeparator,
@@ -34,10 +34,10 @@ public func attributedCurrencyString(
   attributedString.addAttribute(NSAttributedString.Key.font, value: font, range: range)
   // Set foreground color for the whole string
   attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: foregroundColor, range: range)
-  // Replace preffix font
-  attributedString.addAttribute(NSAttributedString.Key.font, value: superscriptFont, range: preffix)
-  // Offset preffix vertically from the baseline
-  attributedString.addAttribute(NSAttributedString.Key.baselineOffset, value: baselineOffset, range: preffix)
+  // Replace prefix font
+  attributedString.addAttribute(NSAttributedString.Key.font, value: superscriptFont, range: prefix)
+  // Offset prefix vertically from the baseline
+  attributedString.addAttribute(NSAttributedString.Key.baselineOffset, value: baselineOffset, range: prefix)
   // Replace suffix font
   attributedString.addAttribute(NSAttributedString.Key.font, value: superscriptFont, range: suffix)
   // Offset suffix vertically from the baseline
