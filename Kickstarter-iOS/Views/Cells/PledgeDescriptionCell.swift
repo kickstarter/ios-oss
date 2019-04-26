@@ -1,8 +1,6 @@
 import KsApi
 import Library
 import Prelude
-import Prelude_UIKit
-import ReactiveSwift
 import UIKit
 
 internal protocol PledgeDescriptionCellDelegate: class {
@@ -24,10 +22,6 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var descriptionLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var learnMoreLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var spacerView: UIView = { UIView(frame: .zero) }()
-
-  internal func configureWith(value: String) {
-    self.viewModel.inputs.configureWith(estimatedDeliveryDate: value)
-  }
 
   // MARK: - Lifecycle
 
@@ -100,19 +94,6 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> learnMoreLabelStyle
   }
 
-  internal override func bindViewModel() {
-    super.bindViewModel()
-
-    self.dateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryText
-
-    self.viewModel.outputs.presentTrustAndSafety
-      .observeForUI()
-      .observeValues { [weak self] in
-        guard let _self = self else { return }
-        self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(_self)
-    }
-  }
-
   internal func arrangeStackView() {
     self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
 
@@ -122,7 +103,7 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       self.dateLabel,
       self.descriptionLabel,
       self.learnMoreLabel
-    ].forEach(self.descriptionStackView.addArrangedSubview)
+      ].forEach(self.descriptionStackView.addArrangedSubview)
 
     if #available(iOS 11.0, *) {
       self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
@@ -136,10 +117,35 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     self.rootStackView.addArrangedSubview(self.descriptionStackView)
   }
 
+  // MARK: - Binding
+
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
+    self.dateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryText
+
+    self.viewModel.outputs.presentTrustAndSafety
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let _self = self else { return }
+        self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(_self)
+    }
+  }
+
+  // MARK: - Actions
+
   @objc func learnMoreTapped(sender: UITapGestureRecognizer) {
     self.viewModel.inputs.tapped()
   }
+
+  // MARK: - Configuration
+
+  internal func configureWith(value: String) {
+    self.viewModel.inputs.configureWith(estimatedDeliveryDate: value)
+  }
 }
+
+// MARK: - Styles
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
