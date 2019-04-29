@@ -2,18 +2,36 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum Container {
+    static let width: CGFloat = 100
+  }
+
+  enum ImageView {
+    static let width: CGFloat = 90
+    static let height: CGFloat = 130
+  }
+
+  enum SpacerView {
+    static let height: CGFloat = 10
+  }
+}
+
 final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var containerImageView: UIView = { UIView(frame: .zero) }()
-  private lazy var pledgeImageView: UIImageView = { UIImageView(frame: .zero) }()
+  private lazy var containerImageView: UIView = {
+    return UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
+  private lazy var pledgeImageView: UIImageView = {
+    return UIImageView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
   private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var descriptionLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var learnMoreLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var spacerView: UIView = { UIView(frame: .zero) }()
+  private lazy var spacerView: UIView = {
+    return UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
 
   // MARK: - Lifecycle
 
@@ -30,12 +48,12 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.arrangeStackView()
+    self.configureStackView()
 
     NSLayoutConstraint.activate([
-      self.containerImageView.widthAnchor.constraint(equalToConstant: 100.0),
-      self.pledgeImageView.widthAnchor.constraint(equalToConstant: 90.0),
-      self.pledgeImageView.heightAnchor.constraint(equalToConstant: 130.0),
+      self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.Container.width),
+      self.pledgeImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
+      self.pledgeImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
       self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
     ])
   }
@@ -56,14 +74,9 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> rootStackViewStyle
 
     _ = self.containerImageView
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.backgroundColor .~ UIColor.blue
 
-    _ = self.spacerView
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-
     _ = self.pledgeImageView
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.backgroundColor .~ UIColor.orange
 
     _ = self.descriptionStackView
@@ -89,10 +102,10 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> \.text .~ value
   }
 
-  // MARK: - Styles
-
-  private func arrangeStackView() {
-    self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
+  private func configureStackView() {
+    NSLayoutConstraint.activate([
+      self.spacerView.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height)
+    ])
 
     [
       self.spacerView,
@@ -105,9 +118,10 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     if #available(iOS 11.0, *) {
       self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
     } else {
-      let view = UIView(frame: .zero)
-      view.translatesAutoresizingMaskIntoConstraints = true
-      view.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
+      let view: UIView = {
+        return UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      }()
+      view.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height).isActive = true
       self.descriptionStackView.insertArrangedSubview(view, at: 3)
     }
 
@@ -121,7 +135,7 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(2))
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(4))
     |> \.spacing .~ Styles.grid(2)
 }
 
