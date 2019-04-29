@@ -1,4 +1,3 @@
-import KsApi
 import Library
 import Prelude
 import UIKit
@@ -33,7 +32,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     self.arrangeStackView()
 
-    NSLayoutConstraint.activate ([
+    NSLayoutConstraint.activate([
       self.containerImageView.widthAnchor.constraint(equalToConstant: 100.0),
       self.pledgeImageView.widthAnchor.constraint(equalToConstant: 90.0),
       self.pledgeImageView.heightAnchor.constraint(equalToConstant: 130.0),
@@ -160,7 +159,7 @@ private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
 
 private let learnMoreLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.text  %~ { _ in Strings.Learn_more_about_accountability() }
+    |> \.text  %~ { _ in "\(Strings.Learn_more_about_accountability())." }
     |> \.textColor .~ UIColor.ksr_green_500
     |> \.font .~ UIFont.ksr_subhead(size: 12)
     |> \.adjustsFontForContentSizeCategory .~ true

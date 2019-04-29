@@ -5,11 +5,11 @@ import XCTest
 
 final class PledgeDataSourceTests: XCTestCase {
   let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-  let tableView = UITableView()
+  let tableView = UITableView(frame: .zero, style: .plain)
   let dataSource = PledgeDataSource()
 
   func testLoad() {
-    dataSource.load(amount: 100, currency: "USD", deliveryDate: "September 2020")
+    dataSource.load(amount: 100, currency: "USD", delivery: "September 2020")
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: collectionView))
     XCTAssertEqual(2, self.dataSource.collectionView(collectionView, numberOfItemsInSection: 1))

@@ -9,10 +9,11 @@ final class PledgeDataSource: ValueCellDataSource {
     case summary
   }
 
-  func load(amount: Double, currency: String, deliveryDate: String) {
-    self.appendRow(value: deliveryDate,
-                   cellClass: PledgeDescriptionCell.self,
-                   toSection: Section.project.rawValue
+  func load(amount: Double, currency: String, delivery: String) {
+    self.appendRow(
+      value: delivery,
+      cellClass: PledgeDescriptionCell.self,
+      toSection: Section.project.rawValue
     )
 
     self.appendRow(
@@ -36,9 +37,9 @@ final class PledgeDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as PledgeRowCell, value as String):
-      cell.configureWith(value: value)
     case let (cell as PledgeDescriptionCell, value as String):
+      cell.configureWith(value: value)
+    case let (cell as PledgeRowCell, value as String):
       cell.configureWith(value: value)
     case let (cell as PledgeAmountCell, value as (Double, String)):
       cell.configureWith(value: value)
