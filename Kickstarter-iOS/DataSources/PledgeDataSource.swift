@@ -39,6 +39,8 @@ final class PledgeDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as PledgeAmountCell, value as (Double, String)):
       cell.configureWith(value: value)
+    case let (cell as PledgeDescriptionCell, value as String):
+      cell.configureWith(value: value)
     case let (cell as PledgeRowCell, value as String):
       cell.configureWith(value: value)
     case let (cell as PledgeShippingLocationCell, value as (String, String, Double)):
