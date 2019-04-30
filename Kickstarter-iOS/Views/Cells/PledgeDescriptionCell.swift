@@ -4,11 +4,11 @@ import UIKit
 
 private enum Layout {
   enum Container {
-    static let width: CGFloat = 100
+    static let width: CGFloat = 70
   }
 
   enum ImageView {
-    static let width: CGFloat = 90
+    static let width: CGFloat = 60
     static let height: CGFloat = 130
   }
 
@@ -136,7 +136,7 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(4))
-    |> \.spacing .~ Styles.grid(2)
+    |> \.spacing .~ Styles.grid(3)
 }
 
 private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
