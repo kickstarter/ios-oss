@@ -6,14 +6,14 @@ import UIKit
 final class PledgeAmountCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountInputView: AmountInputView = { AmountInputView(frame: .zero) }()
-  private lazy var inputStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var label: UILabel = { UILabel(frame: .zero) }()
+  private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var spacer: UIView = {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  } ()
+  }()
   private lazy var stepper: UIStepper = { UIStepper(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -22,18 +22,17 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     _ = self
-      |> \.accessibilityElements .~ [self.label, self.stepper, self.amountInputView]
-      |> \.backgroundColor .~ UIColor.ksr_grey_300
+      |> \.accessibilityElements .~ [self.titleLabel, self.stepper, self.amountInputView]
 
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.rootStackView.addArrangedSubview(self.label)
-    self.rootStackView.addArrangedSubview(self.inputStackView)
-    self.inputStackView.addArrangedSubview(self.stepper)
-    self.inputStackView.addArrangedSubview(spacer)
-    self.inputStackView.addArrangedSubview(self.amountInputView)
+    _ = ([self.titleLabel, self.adaptableStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.stepper, self.spacer, self.amountInputView], self.adaptableStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
   }
@@ -47,14 +46,18 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.inputStackView
-      |> inputStackViewStyle(self.traitCollection.ksr_isAccessibilityCategory())
+    _ = self
+      |> checkoutBackgroundStyle
 
-    _ = self.label
-      |> labelStyle
+    _ = self.adaptableStackView
+      |> checkoutAdaptableStackViewStyle(self.traitCollection.ksr_isAccessibilityCategory())
+
+    _ = self.titleLabel
+      |> checkoutTitleLabelStyle
+      |> \.text %~ { _ in Strings.Your_pledge_amount() }
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> checkoutStackViewStyle
 
     _ = self.stepper
       |> stepperStyle
@@ -72,39 +75,6 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 }
 
 // MARK: - Styles
-
-private func inputStackViewStyle(_ isAccessibilityCategory: Bool) -> ((UIStackView) -> UIStackView) {
-  return { (stackView: UIStackView) in
-    let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
-    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
-    let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
-    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
-
-    return stackView
-      |> \.alignment .~ alignment
-      |> \.axis .~ axis
-      |> \.distribution .~ distribution
-      |> \.spacing .~ spacing
-  }
-}
-
-private let labelStyle: LabelStyle = { (label: UILabel) in
-  label
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.font .~ UIFont.ksr_headline()
-    |> \.numberOfLines .~ 0
-    |> \.text %~ { _ in Strings.Your_pledge_amount() }
-}
-
-private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
-  stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(
-      top: Styles.grid(2), left: Styles.grid(4), bottom: Styles.grid(3), right: Styles.grid(4)
-    )
-    |> \.spacing .~ (Styles.grid(1) + Styles.gridHalf(1))
-}
 
 private func stepperStyle(_ stepper: UIStepper) -> UIStepper {
   return stepper

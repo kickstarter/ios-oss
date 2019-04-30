@@ -27,6 +27,7 @@ class PledgeTableViewController: UITableViewController {
 
     self.tableView.registerCellClass(PledgeAmountCell.self)
     self.tableView.registerCellClass(PledgeRowCell.self)
+    self.tableView.registerCellClass(PledgeShippingLocationCell.self)
     self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
 
     self.viewModel.inputs.viewDidLoad()

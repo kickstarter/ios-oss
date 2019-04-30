@@ -15,12 +15,12 @@ class AmountInputView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.stackView.addArrangedSubview(self.label)
-    self.stackView.addArrangedSubview(self.textField)
-
     _ = (self.stackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
+
+    _ = ([self.label, self.textField], self.stackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -33,7 +33,8 @@ class AmountInputView: UIView {
     super.bindStyles()
 
     _ = self
-      |> viewStyle
+      |> checkoutWhiteBackgroundStyle
+      |> checkoutRoundedCornersStyle
 
     _ = self.label
       |> labelStyle
@@ -84,12 +85,6 @@ private let stackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.alignment .~ UIStackView.Alignment.top
     |> \.isLayoutMarginsRelativeArrangement .~ true
-}
-
-private let viewStyle: ViewStyle = { (view: UIView) in
-  view
-    |> \.backgroundColor .~ UIColor.white
-    |> \.layer.cornerRadius .~ 6
 }
 
 // MARK: - Functions
