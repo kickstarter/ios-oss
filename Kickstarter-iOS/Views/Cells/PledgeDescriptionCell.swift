@@ -22,6 +22,10 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var descriptionLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var learnMoreLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var spacerView: UIView = { UIView(frame: .zero) }()
+  private lazy var learnMoreButton: UIButton = {
+    return MultiLineButton(type: .custom)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   // MARK: - Lifecycle
 
@@ -34,8 +38,10 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     self.rootStackView.addArrangedSubview(self.containerImageView)
 
-    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(learnMoreTapped))
-    self.learnMoreLabel.addGestureRecognizer(tapRecognizer)
+    self.learnMoreButton.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
+
+//    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(learnMoreTapped))
+//    self.learnMoreLabel.addGestureRecognizer(tapRecognizer)
 
     _ = (self.pledgeImageView, self.containerImageView)
       |> ksr_addSubviewToParent()
@@ -90,8 +96,12 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     _ = self.descriptionLabel
       |> descriptionLabelStyle
 
-    _ = self.learnMoreLabel
-      |> learnMoreLabelStyle
+    _ = self.learnMoreButton
+      |> learnMoreButtonStyle
+
+
+//    _ = self.learnMoreLabel
+//      |> learnMoreLabelStyle
   }
 
   internal func arrangeStackView() {
@@ -102,7 +112,7 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       self.estimatedDeliveryLabel,
       self.dateLabel,
       self.descriptionLabel,
-      self.learnMoreLabel
+      self.learnMoreButton
       ].forEach(self.descriptionStackView.addArrangedSubview)
 
     if #available(iOS 11.0, *) {
@@ -134,7 +144,11 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
   // MARK: - Actions
 
-  @objc func learnMoreTapped(sender: UITapGestureRecognizer) {
+//  @objc func learnMoreTapped(sender: UITapGestureRecognizer) {
+//    self.viewModel.inputs.tapped()
+//  }
+
+  @objc private func learnMoreButtonTapped() {
     self.viewModel.inputs.tapped()
   }
 
@@ -188,6 +202,14 @@ private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
 }
+
+private let learnMoreButtonStyle = { (button: UIButton) -> UIButton in
+  button
+    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_green_500
+    |> UIButton.lens.title(for: .normal) %~ { _ in
+      return Strings.Learn_more_about_accountability() }
+}
+
 
 private let learnMoreLabelStyle: LabelStyle = { (label: UILabel) in
   label
