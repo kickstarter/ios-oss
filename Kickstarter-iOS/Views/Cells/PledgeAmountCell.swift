@@ -28,12 +28,11 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.rootStackView.addArrangedSubview(self.titleLabel)
-    self.rootStackView.addArrangedSubview(self.adaptableStackView)
+    _ = ([self.titleLabel, self.adaptableStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
-    self.adaptableStackView.addArrangedSubview(self.stepper)
-    self.adaptableStackView.addArrangedSubview(self.spacer)
-    self.adaptableStackView.addArrangedSubview(self.amountInputView)
+    _ = ([self.stepper, self.spacer, self.amountInputView], self.adaptableStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
   }

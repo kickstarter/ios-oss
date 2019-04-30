@@ -40,7 +40,7 @@ public let checkoutTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.accessibilityTraits .~ UIAccessibilityTraits.header
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.font .~ UIFont.ksr_headline()
+    |> \.font .~ UIFont.ksr_headline(size: 15)
     |> \.numberOfLines .~ 0
 }
 

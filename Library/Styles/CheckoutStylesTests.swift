@@ -47,7 +47,7 @@ final class CheckoutStylesTests: XCTestCase {
     _ = label |> checkoutTitleLabelStyle
 
     XCTAssertEqual(true, label.adjustsFontForContentSizeCategory)
-    XCTAssertEqual(UIFont.ksr_headline(), label.font)
+    XCTAssertEqual(UIFont.ksr_headline(size: 15), label.font)
     XCTAssertEqual(0, label.numberOfLines)
   }
 }

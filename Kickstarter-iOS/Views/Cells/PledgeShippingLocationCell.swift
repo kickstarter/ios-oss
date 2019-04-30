@@ -27,12 +27,11 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.rootStackView.addArrangedSubview(self.titleLabel)
-    self.rootStackView.addArrangedSubview(self.adaptableStackView)
+    _ = ([self.titleLabel, self.adaptableStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
-    self.adaptableStackView.addArrangedSubview(self.countryButton)
-    self.adaptableStackView.addArrangedSubview(self.spacer)
-    self.adaptableStackView.addArrangedSubview(self.amountLabel)
+    _ = ([self.countryButton, self.spacer, self.amountLabel], self.adaptableStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
