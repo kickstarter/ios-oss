@@ -42,7 +42,7 @@ final class StringCurrencyTests: XCTestCase {
     XCTAssertEqual(currencySymbol, attributedSubstring.string)
     XCTAssertEqual(superscriptFont, attributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, attributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(offset, (attributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(offset, (attributes[NSAttributedString.Key.baselineOffset]) as? CGFloat)
   }
 
   func testCurrencySymbol_CustomSymbol() {
@@ -67,7 +67,7 @@ final class StringCurrencyTests: XCTestCase {
     XCTAssertEqual(currencySymbol, attributedSubstring.string)
     XCTAssertEqual(superscriptFont, attributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, attributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(offset, (attributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(offset, attributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
   }
 
   func testAmount_Zero() {
@@ -210,10 +210,10 @@ final class StringCurrencyTests: XCTestCase {
     XCTAssertEqual(".0", attributedFractionSubstring.string)
     XCTAssertEqual(superscriptFont, currencyAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, currencyAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(offset, (currencyAttributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(offset, currencyAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
     XCTAssertEqual(superscriptFont, fractionAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, fractionAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(offset, (fractionAttributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(offset, fractionAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
   }
 
   func testBaselineOffset_FontSmallerThanSuperscriptFont() {
@@ -245,10 +245,10 @@ final class StringCurrencyTests: XCTestCase {
     XCTAssertEqual(".0", attributedFractionSubstring.string)
     XCTAssertEqual(superscriptFont, currencyAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, currencyAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(0, (currencyAttributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(0, currencyAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
     XCTAssertEqual(superscriptFont, fractionAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, fractionAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(0, (fractionAttributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(0, fractionAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
   }
 
   func testBaselineOffset_FontEqualToSuperscriptFont() {
@@ -279,10 +279,10 @@ final class StringCurrencyTests: XCTestCase {
     XCTAssertEqual(".0", attributedFractionSubstring.string)
     XCTAssertEqual(font, currencyAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, currencyAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(0, (currencyAttributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(0, currencyAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
     XCTAssertEqual(font, fractionAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, fractionAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(0, (fractionAttributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(0, fractionAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
   }
 
   func testForegroundColor() {
@@ -357,12 +357,12 @@ final class StringCurrencyTests: XCTestCase {
     XCTAssertEqual(".00", attributedFractionSubstring.string)
     XCTAssertEqual(superscriptFont, currencyAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, currencyAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(offset, (currencyAttributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(offset, currencyAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
     XCTAssertEqual(font, amountAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, amountAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
     XCTAssertEqual(superscriptFont, fractionAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, fractionAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(offset, (fractionAttributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(offset, fractionAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
   }
 
   func testCombined_Currency_CustomSymbol_Amount_NonZero_FractionDigits_Five() {
@@ -399,11 +399,11 @@ final class StringCurrencyTests: XCTestCase {
     XCTAssertEqual(".00250", attributedFractionSubstring.string)
     XCTAssertEqual(superscriptFont, currencyAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, currencyAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(offset, (currencyAttributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(offset, currencyAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
     XCTAssertEqual(font, amountAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, amountAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
     XCTAssertEqual(superscriptFont, fractionAttributes[NSAttributedString.Key.font] as? UIFont)
     XCTAssertEqual(foregroundColor, fractionAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
-    XCTAssertEqual(offset, (fractionAttributes[NSAttributedString.Key.baselineOffset] as? NSNumber) as? CGFloat)
+    XCTAssertEqual(offset, fractionAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
   }
 }
