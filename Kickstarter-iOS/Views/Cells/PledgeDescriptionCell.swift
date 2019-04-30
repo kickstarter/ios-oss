@@ -20,7 +20,6 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var descriptionLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var learnMoreLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var spacerView: UIView = { UIView(frame: .zero) }()
   private lazy var learnMoreButton: UIButton = {
     return MultiLineButton(type: .custom)
@@ -38,16 +37,12 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     self.rootStackView.addArrangedSubview(self.containerImageView)
 
-    self.learnMoreButton.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
-
-//    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(learnMoreTapped))
-//    self.learnMoreLabel.addGestureRecognizer(tapRecognizer)
-
     _ = (self.pledgeImageView, self.containerImageView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
     self.arrangeStackView()
+    self.learnMoreButton.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
     self.bindViewModel()
 
     NSLayoutConstraint.activate ([
@@ -98,10 +93,6 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     _ = self.learnMoreButton
       |> learnMoreButtonStyle
-
-
-//    _ = self.learnMoreLabel
-//      |> learnMoreLabelStyle
   }
 
   internal func arrangeStackView() {
@@ -143,10 +134,6 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   }
 
   // MARK: - Actions
-
-//  @objc func learnMoreTapped(sender: UITapGestureRecognizer) {
-//    self.viewModel.inputs.tapped()
-//  }
 
   @objc private func learnMoreButtonTapped() {
     self.viewModel.inputs.tapped()
@@ -206,17 +193,11 @@ private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
 private let learnMoreButtonStyle = { (button: UIButton) -> UIButton in
   button
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_green_500
+    |> UIButton.lens.titleLabel.font %~~ {  _, label in
+      label.traitCollection.isRegularRegular ? .ksr_body(size: 17.0) : .ksr_body(size: 14.0)
+    }
+    |> UIButton.lens.contentHorizontalAlignment .~ .left
+    |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
     |> UIButton.lens.title(for: .normal) %~ { _ in
       return Strings.Learn_more_about_accountability() }
-}
-
-
-private let learnMoreLabelStyle: LabelStyle = { (label: UILabel) in
-  label
-    |> \.text  %~ { _ in Strings.Learn_more_about_accountability() }
-    |> \.textColor .~ UIColor.ksr_green_500
-    |> \.font .~ UIFont.ksr_subhead(size: 12)
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
-    |> \.isUserInteractionEnabled .~ true
 }
