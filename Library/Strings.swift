@@ -3551,18 +3551,18 @@ contributeurs"
     )
   }
   /**
-   "It’s a way to bring creative projects to life."
+   "It's a way to bring creative projects to life."
 
-   - **en**: "It’s a way to bring creative projects to life."
-   - **de**: "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen."
-   - **es**: "Es una plataforma para dar vida a proyectos creativos."
-   - **fr**: "C'est un outil qui permet de donner vie à des projets créatifs."
-   - **ja**: "クリエイティブなプロジェクトに生命を。"
+   - **en**: "It's a way to bring creative projects to life."
+   - **de**: "It's a way to bring creative projects to life."
+   - **es**: "It's a way to bring creative projects to life."
+   - **fr**: "It's a way to bring creative projects to life."
+   - **ja**: "It's a way to bring creative projects to life."
   */
   public static func Its_a_way_to_bring_creative_projects_to_life() -> String {
     return localizedString(
       key: "Its_a_way_to_bring_creative_projects_to_life",
-      defaultValue: "It’s a way to bring creative projects to life.",
+      defaultValue: "It's a way to bring creative projects to life.",
       count: nil,
       substitutions: [:]
     )
@@ -3740,13 +3740,30 @@ with friends."
     )
   }
   /**
+   "Kickstarter is not a store."
+
+   - **en**: "Kickstarter is not a store."
+   - **de**: "Kickstarter is not a store."
+   - **es**: "Kickstarter is not a store."
+   - **fr**: "Kickstarter is not a store."
+   - **ja**: "Kickstarter is not a store."
+  */
+  public static func Kickstarter_is_not_a_store() -> String {
+    return localizedString(
+      key: "Kickstarter_is_not_a_store",
+      defaultValue: "Kickstarter is not a store.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Kickstarter is not a store. It's a way to bring creative projects to life."
 
    - **en**: "Kickstarter is not a store. It's a way to bring creative projects to life."
-   - **de**: "Kickstarter is not a store. It's a way to bring creative projects to life."
-   - **es**: "Kickstarter is not a store. It's a way to bring creative projects to life."
-   - **fr**: "Kickstarter is not a store. It's a way to bring creative projects to life."
-   - **ja**: "Kickstarter is not a store. It's a way to bring creative projects to life."
+   - **de**: "Kickstarter ist kein Geschäft, sondern eine Plattform, um kreative Projekte zu verwirklichen."
+   - **es**: "Kickstarter no es una tienda. Es una forma de dar vida a proyectos creativos."
+   - **fr**: "Kickstarter n'est pas un magasin, mais un moyen de faire vivre des projets créatifs."
+   - **ja**: "Kickstarter は普通のお店とは全く違います。クリエイティブなプロジェクトに生命を吹き込む場です。"
   */
   public static func Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life() -> String {
     return localizedString(

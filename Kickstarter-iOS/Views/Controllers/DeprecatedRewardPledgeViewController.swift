@@ -242,19 +242,14 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.text %~ { _ in
-        localizedString(key: "Kickstarter_is_not_a_store", defaultValue: "Kickstarter is not a store.")
-      }
+      |> UILabel.lens.text %~ { _ in Strings.Kickstarter_is_not_a_store() }
 
     _ = self.disclaimerSecondaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.text %~ { _ in
-        localizedString(key: "Its_a_way_to_bring_creative_projects_to_life",
-                        defaultValue: "Its a way to bring creative project to life.")
-      }
+      |> UILabel.lens.text %~ { _ in Strings.Its_a_way_to_bring_creative_projects_to_life() }
 
     _ = self.disclaimerTertiaryLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
