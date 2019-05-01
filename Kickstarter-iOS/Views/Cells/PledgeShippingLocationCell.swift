@@ -54,6 +54,8 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       |> checkoutAdaptableStackViewStyle(self.traitCollection.ksr_isAccessibilityCategory())
 
     _ = self.amountLabel
+      |> checkoutBackgroundStyle
+    _ = self.amountLabel
       |> amountLabelStyle
 
     _ = self.countryButton
@@ -64,6 +66,8 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     _ = self.countryButton.titleLabel
       ?|> countryButtonTitleLabelStyle
 
+    _ = self.titleLabel
+      |> checkoutBackgroundStyle
     _ = self.titleLabel
       |> checkoutTitleLabelStyle
       |> \.text %~ { _ in Strings.Your_shipping_location() }

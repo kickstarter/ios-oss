@@ -53,6 +53,8 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       |> checkoutAdaptableStackViewStyle(self.traitCollection.ksr_isAccessibilityCategory())
 
     _ = self.titleLabel
+      |> checkoutBackgroundStyle
+    _ = self.titleLabel
       |> checkoutTitleLabelStyle
       |> \.text %~ { _ in Strings.Your_pledge_amount() }
 
