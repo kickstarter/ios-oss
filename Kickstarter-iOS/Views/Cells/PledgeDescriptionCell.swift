@@ -197,7 +197,7 @@ private let learnMoreButtonStyle = { (button: UIButton) -> UIButton in
       label.traitCollection.isRegularRegular ? .ksr_body(size: 17.0) : .ksr_body(size: 14.0)
     }
     |> UIButton.lens.contentHorizontalAlignment .~ .left
-    |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
+    |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_500
     |> UIButton.lens.title(for: .normal) %~ { _ in
       return Strings.Learn_more_about_accountability() }
 }
