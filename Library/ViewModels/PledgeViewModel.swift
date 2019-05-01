@@ -29,9 +29,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .skipNil()
 
     let isLoggedIn = projectAndReward
-      .map { AppEnvironment.current.currentUser }
-      .map(isNil)
-      .negate()
+      .map { _ in AppEnvironment.current.currentUser }
+      .map(isNotNil)
 
     let amountAndCurrency = projectAndReward.signal
       .map { (project, reward) in
