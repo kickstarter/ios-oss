@@ -128,21 +128,14 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   }
 
   fileprivate func goToRewardPledge(project: Project, reward: Reward) {
-//    let applePayCapable = PKPaymentAuthorizationViewController.applePayCapable(for: project)
-//
-//    let vc = DeprecatedRewardPledgeViewController.configuredWith(project: project,
-//                                                                 reward: reward,
-//                                                                 applePayCapable: applePayCapable)
-//    let nav = UINavigationController(rootViewController: vc)
-//    nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
-//    self.present(nav, animated: true, completion: nil)
+    let applePayCapable = PKPaymentAuthorizationViewController.applePayCapable(for: project)
 
-    let pledgeVC = PledgeViewController.instantiate()
-    pledgeVC.configureWith(project: project, reward: reward)
-
-    let navigationController = UINavigationController(rootViewController: pledgeVC)
-
-    self.present(navigationController, animated: true)
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(project: project,
+                                                                 reward: reward,
+                                                                 applePayCapable: applePayCapable)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+    self.present(nav, animated: true, completion: nil)
   }
 
   fileprivate func goToBacking(project: Project) {

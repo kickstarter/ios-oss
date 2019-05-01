@@ -175,7 +175,6 @@
 		774A76EE20D863EF0012A71F /* BetaTools.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774A76AF20D83F6B0012A71F /* BetaTools.storyboard */; };
 		774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */; };
 		774ACC19225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774ACC18225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift */; };
-		77502FC22147D92000620BBC /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
 		77539E6C2147E4EE00A564CD /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
 		77539E6D2147E50E00A564CD /* Stripe.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */; };
@@ -219,6 +218,7 @@
 		77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440020F64F0B005F6B38 /* HelpDataSource.swift */; };
 		77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440220F65074005F6B38 /* HelpViewController.swift */; };
 		77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */; };
+		77ED5200227A004700DAAD13 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
 		77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73421222E7C005A5C55 /* EmailFrequency.swift */; };
 		77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73621222E97005A5C55 /* SettingsCellType.swift */; };
 		77F6E73921222F4B005A5C55 /* SettingsNotificationCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E73821222F4B005A5C55 /* SettingsNotificationCellType.swift */; };
@@ -3009,8 +3009,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77502FC22147D92000620BBC /* Stripe.framework in Frameworks */,
 				A701B5EF1EB384E1001D4E5F /* PassKit.framework in Frameworks */,
+				77ED5200227A004700DAAD13 /* Stripe.framework in Frameworks */,
 				D0D2ABA21E964852008D298A /* libsqlite3.tbd in Frameworks */,
 				D0D2AB5B1E964849008D298A /* CoreMedia.framework in Frameworks */,
 				A709698C1D1468A200DB39D3 /* Alamofire.framework in Frameworks */,

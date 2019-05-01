@@ -27,14 +27,13 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.continueButton
-      |> continueButtonStyle
+      |> checkoutGreenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         return Strings.Continue()
     }
 
     _ = self.continueButton.titleLabel
-      ?|> continueButtonTitleLabelStyle
-
+      ?|> checkoutGreenButtonTitleLabelStyle
   }
 
   private func setupSubviews() {
@@ -44,26 +43,4 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
 
     self.continueButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(8)).isActive = true
   }
-}
-
-// MARK: - Styles
-
-private var continueButtonStyle = { (button: UIButton) -> UIButton in
-  button
-    |> greenButtonStyle
-    |> roundedStyle(cornerRadius: 12)
-    |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-}
-
-private var continueButtonTitleLabelStyle = { (titleLabel: UILabel?) -> UILabel? in
-  _ = titleLabel
-    ?|> \.font .~ UIFont.ksr_headline()
-    ?|> \.numberOfLines .~ 0
-
-  _ = titleLabel
-    ?|> \.textAlignment .~ NSTextAlignment.center
-    ?|> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-
-  return titleLabel
 }
