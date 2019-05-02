@@ -3,10 +3,6 @@ import Prelude
 import UIKit
 
 private enum Layout {
-  enum Container {
-    static let width: CGFloat = 70
-  }
-
   enum ImageView {
     static let width: CGFloat = 90
     static let height: CGFloat = 120
@@ -42,7 +38,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.rootStackView.addArrangedSubview(self.containerImageView)
+    _ = ([self.containerImageView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.pledgeImageView, self.containerImageView)
       |> ksr_addSubviewToParent()
@@ -67,7 +64,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ UIColor.hex(0xf0f0f0)
+      |> checkoutBackgroundStyle
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -79,14 +76,22 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> descriptionStackViewStyle
 
     _ = self.estimatedDeliveryLabel
+      |> checkoutBackgroundStyle
+    _ = self.estimatedDeliveryLabel
       |> estimatedDeliveryLabelStyle
 
+    _ = self.dateLabel
+      |> checkoutBackgroundStyle
     _ = self.dateLabel
       |> dateLabelStyle
 
     _ = self.descriptionLabel
+      |> checkoutBackgroundStyle
+    _ = self.descriptionLabel
       |> descriptionLabelStyle
 
+    _ = self.learnMoreLabel
+      |> checkoutBackgroundStyle
     _ = self.learnMoreLabel
       |> learnMoreLabelStyle
   }
@@ -103,13 +108,12 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       self.spacerView.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height)
     ])
 
-    [
-      self.spacerView,
+   _ = ([self.spacerView,
       self.estimatedDeliveryLabel,
       self.dateLabel,
       self.descriptionLabel,
-      self.learnMoreLabel
-    ].forEach(self.descriptionStackView.addArrangedSubview)
+      self.learnMoreLabel], self.descriptionStackView)
+    |> ksr_addArrangedSubviewsToStackView()
 
     if #available(iOS 11.0, *) {
       self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
@@ -121,7 +125,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       self.descriptionStackView.insertArrangedSubview(view, at: 3)
     }
 
-    self.rootStackView.addArrangedSubview(self.descriptionStackView)
+    _ = ([self.descriptionStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 }
 
