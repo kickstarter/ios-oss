@@ -4,10 +4,12 @@ import KsApi
 import Prelude
 
 final class RewardsCollectionViewController: UICollectionViewController {
+
+  // MARK: - Properties
+
   private let dataSource = RewardsCollectionViewDataSource()
   private let viewModel = RewardsCollectionViewModel()
 
-  // Hidden scroll view used for paging
   private let hiddenPagingScrollView: UIScrollView = {
     UIScrollView()
       |> \.isPagingEnabled .~ true
@@ -35,7 +37,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }
 
   init() {
-    super.init(collectionViewLayout: layout)
+    super.init(collectionViewLayout: self.layout)
 
     let closeButton = UIBarButtonItem(image: UIImage(named: "icon--cross"),
                                       style: .plain,
@@ -60,7 +62,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     super.viewDidLoad()
 
     _ = self.collectionView
-      |> \.dataSource .~ dataSource
+      |> \.dataSource .~ self.dataSource
 
     self.collectionView.register(RewardCell.self)
 
@@ -107,13 +109,15 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }
 
   // MARK: - Public Functions
+
   @objc func closeButtonTapped() {
-    self.navigationController?.dismiss(animated: true, completion: nil)
+    self.navigationController?.dismiss(animated: true)
   }
 }
 
-// MARK: Styles
-private var collectionViewStyle = { collectionView -> UICollectionView in
+// MARK: - Styles
+
+private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICollectionView in
   collectionView
     |> \.alwaysBounceHorizontal .~ true
     |> \.backgroundColor .~ .ksr_grey_200

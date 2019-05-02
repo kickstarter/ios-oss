@@ -9,7 +9,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    configureViews()
+    self.configureViews()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -20,8 +20,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.contentView
       |> \.backgroundColor .~ .ksr_grey_200
 
-    _ = containerView
-      |> \.backgroundColor .~ UIColor.white
+    _ = self.containerView
+      |> checkoutWhiteBackgroundStyle
       |> roundedStyle(cornerRadius: Styles.grid(3))
 
     _ = (self.containerView, self.contentView)

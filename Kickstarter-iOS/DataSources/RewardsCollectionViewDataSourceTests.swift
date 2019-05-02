@@ -1,6 +1,5 @@
 import XCTest
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
 
 final class RewardsCollectionViewDataSourceTests: XCTestCase {
