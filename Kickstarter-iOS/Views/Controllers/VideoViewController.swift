@@ -66,6 +66,9 @@ public final class VideoViewController: UIViewController {
     _ = self.projectImageView
       |> UIImageView.lens.accessibilityElementsHidden .~ true
 
+    _ = self.projectImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.videoOverlayView
       |> UIView.lens.backgroundColor .~ .black
   }

@@ -354,7 +354,7 @@ final class CreatePasswordViewModelTests: TestCase {
 
       self.vm.inputs.viewDidAppear()
 
-      XCTAssertEqual(["Viewed create password"], client.events)
+      XCTAssertEqual([Koala.CreatePasswordTrackingEvent.viewed.rawValue], client.events)
 
       self.vm.inputs.newPasswordTextFieldChanged(text: "password")
       self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password")
@@ -367,7 +367,8 @@ final class CreatePasswordViewModelTests: TestCase {
 
       self.createPasswordSuccess.assertValueCount(1)
 
-      XCTAssertEqual(["Viewed create password", "Created password"], client.events)
+      XCTAssertEqual([Koala.CreatePasswordTrackingEvent.viewed.rawValue,
+                      Koala.CreatePasswordTrackingEvent.passwordCreated.rawValue], client.events)
     }
   }
 }
