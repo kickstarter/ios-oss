@@ -8,8 +8,8 @@ private enum Layout {
   }
 
   enum ImageView {
-    static let width: CGFloat = 60
-    static let height: CGFloat = 130
+    static let width: CGFloat = 90
+    static let height: CGFloat = 120
   }
 
   enum SpacerView {
@@ -51,9 +51,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     self.configureStackView()
 
     NSLayoutConstraint.activate([
-      self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.Container.width),
-      self.pledgeImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
-      self.pledgeImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
+      self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
+      self.containerImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
       self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
     ])
   }
@@ -72,9 +71,6 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     _ = self.rootStackView
       |> rootStackViewStyle
-
-    _ = self.containerImageView
-      |> \.backgroundColor .~ UIColor.blue
 
     _ = self.pledgeImageView
       |> \.backgroundColor .~ UIColor.orange
@@ -166,7 +162,7 @@ private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.text  %~ { _ in Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life() }
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
-    |> \.font .~ UIFont.ksr_subhead(size: 12)
+    |> \.font .~ UIFont.ksr_caption1()
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
 }
@@ -175,7 +171,7 @@ private let learnMoreLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.text  %~ { _ in "\(Strings.Learn_more_about_accountability())." }
     |> \.textColor .~ UIColor.ksr_green_500
-    |> \.font .~ UIFont.ksr_subhead(size: 12)
+    |> \.font .~ UIFont.ksr_caption1()
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
 }

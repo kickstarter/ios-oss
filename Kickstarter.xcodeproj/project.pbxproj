@@ -3443,8 +3443,9 @@
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
-				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
 				370ACAFF225D337900C8745F /* PledgeAmountCell.swift */,
+				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */,
+				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
 				37059842226F79A700BDA6E3 /* PledgeShippingLocationCell.swift */,
 				A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */,
 				9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */,
@@ -3476,7 +3477,6 @@
 				D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */,
 				77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */,
 				77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */,
-				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */,
 				3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 			);
