@@ -1070,6 +1070,7 @@
 		D798A748216698CE0053D097 /* SettingsAccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */; };
 		D79A01A42242E8CD004BC6A8 /* AppEnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764373F22414FA900DAFC9E /* AppEnvironmentType.swift */; };
 		D79A01A52242E91E004BC6A8 /* PushNotificationDialogType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76437782241500600DAFC9E /* PushNotificationDialogType.swift */; };
+		D79A0583225E9B7B004BC6A8 /* PledgeDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */; };
 		D79CF2F3219CC91000ECB73A /* AddNewCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79CF2F2219CC91000ECB73A /* AddNewCardViewModel.swift */; };
 		D79CF32C219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79CF32B219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift */; };
 		D79CF32E219CE51A00ECB73A /* CreatePaymentSourceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79CF32D219CE51A00ECB73A /* CreatePaymentSourceInput.swift */; };
@@ -2245,6 +2246,7 @@
 		D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyStaticCell.swift; sourceTree = "<group>"; };
 		D798A6AD21656D970053D097 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewModelTests.swift; sourceTree = "<group>"; };
+		D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDescriptionCell.swift; sourceTree = "<group>"; };
 		D79CF2F2219CC91000ECB73A /* AddNewCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewModel.swift; sourceTree = "<group>"; };
 		D79CF32B219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentsSourceMutation.swift; sourceTree = "<group>"; };
 		D79CF32D219CE51A00ECB73A /* CreatePaymentSourceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceInput.swift; sourceTree = "<group>"; };
@@ -2618,8 +2620,9 @@
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
-				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
 				370ACAFF225D337900C8745F /* PledgeAmountCell.swift */,
+				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */,
+				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
 				37059842226F79A700BDA6E3 /* PledgeShippingLocationCell.swift */,
 				A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */,
 				9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */,
@@ -4724,6 +4727,9 @@
 				9D14FF8D1D133351005F4ABB /* ProjectActivityBackingCell.swift in Sources */,
 				379CFFFC2242DAE800F6F0C2 /* Nib.swift in Sources */,
 				A7CC14451D00E75F00035C52 /* FindFriendsDataSource.swift in Sources */,
+				D077CCC71E53459A004E8FDF /* LiveStreamChatMessageCell.swift in Sources */,
+				D79A0583225E9B7B004BC6A8 /* PledgeDescriptionCell.swift in Sources */,
+				D0BB2D901E54895700EE1D9D /* LiveStreamChatDataSource.swift in Sources */,
 				A7808BBE1D6240B9001CF96A /* ProjectCreatorViewController.swift in Sources */,
 				D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */,
 				D6B6766720FF8D3C0082717D /* SettingsNewslettersViewController.swift in Sources */,

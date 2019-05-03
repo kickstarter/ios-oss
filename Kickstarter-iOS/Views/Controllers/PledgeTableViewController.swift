@@ -26,6 +26,7 @@ class PledgeTableViewController: UITableViewController {
       |> \.dataSource .~ self.dataSource
 
     self.tableView.registerCellClass(PledgeAmountCell.self)
+    self.tableView.registerCellClass(PledgeDescriptionCell.self)
     self.tableView.registerCellClass(PledgeRowCell.self)
     self.tableView.registerCellClass(PledgeShippingLocationCell.self)
     self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
@@ -47,10 +48,10 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.amountAndCurrency
+    self.viewModel.outputs.amountCurrencyAndDelivery
       .observeForUI()
-      .observeValues { [weak self] (amount, currency) in
-        self?.dataSource.load(amount: amount, currency: currency)
+      .observeValues { [weak self] (amount, currency, delivery) in
+        self?.dataSource.load(amount: amount, currency: currency, delivery: delivery)
         self?.tableView.reloadData()
     }
   }
