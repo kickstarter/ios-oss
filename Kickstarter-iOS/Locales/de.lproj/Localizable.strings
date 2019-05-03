@@ -226,6 +226,7 @@
 "Kickstarter_Music" = "Kickstarter Music";
 "Kickstarter_if_funded" = "Kickstarter (bei Finanzierung)";
 "Kickstarter_is_not_a_store" = "Kickstarter ist kein Geschäft.";
+"Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life" = "Kickstarter ist kein Geschäft, sondern eine Plattform, um kreative Projekte zu verwirklichen.";
 "Know_when_creators_and_backers_message_you" = "Aktiviere Benachrichtigungen, damit du über eingehende Nachrichten von Projektgründern und Unterstützern Bescheid weißt.";
 "Learn_more_about_accountability" = "Weitere Informationen zur Rechenschaftspflicht";
 "Left_count_left.few" = "%{left_count} übrig";
