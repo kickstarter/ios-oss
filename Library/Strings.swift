@@ -3551,18 +3551,18 @@ contributeurs"
     )
   }
   /**
-   "It's a way to bring creative projects to life."
+   "It’s a way to bring creative projects to life."
 
-   - **en**: "It's a way to bring creative projects to life."
-   - **de**: "It's a way to bring creative projects to life."
-   - **es**: "It's a way to bring creative projects to life."
-   - **fr**: "It's a way to bring creative projects to life."
-   - **ja**: "It's a way to bring creative projects to life."
+   - **en**: "It’s a way to bring creative projects to life."
+   - **de**: "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen."
+   - **es**: "Es una plataforma para dar vida a proyectos creativos."
+   - **fr**: "C'est un outil qui permet de donner vie à des projets créatifs."
+   - **ja**: "クリエイティブなプロジェクトに生命を。"
   */
   public static func Its_a_way_to_bring_creative_projects_to_life() -> String {
     return localizedString(
       key: "Its_a_way_to_bring_creative_projects_to_life",
-      defaultValue: "It's a way to bring creative projects to life.",
+      defaultValue: "It’s a way to bring creative projects to life.",
       count: nil,
       substitutions: [:]
     )
