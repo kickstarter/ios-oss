@@ -214,7 +214,7 @@
 "Info" = "Info";
 "Introduce_yourself" = "Introduce yourself";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
-"Its_a_way_to_bring_creative_projects_to_life" = "It’s a way to bring creative projects to life.";
+"Its_a_way_to_bring_creative_projects_to_life" = "It's a way to bring creative projects to life.";
 "Its_better_with_friends" = "It’s better\nwith friends.";
 "Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "It's like the radio but nothing sucks and also it's a newsletter.";
 "Join_our_secret_society" = "Join our secret society.";
@@ -226,6 +226,7 @@
 "Kickstarter_Music" = "Kickstarter Music";
 "Kickstarter_if_funded" = "Kickstarter (if funded)";
 "Kickstarter_is_not_a_store" = "Kickstarter is not a store.";
+"Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life" = "Kickstarter is not a store. It's a way to bring creative projects to life.";
 "Know_when_creators_and_backers_message_you" = "Know when creators and backers message you by enabling notifications.";
 "Learn_more_about_accountability" = "Learn more about accountability";
 "Left_count_left.few" = "%{left_count} left";
