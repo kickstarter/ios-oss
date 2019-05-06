@@ -3740,6 +3740,23 @@ with friends."
     )
   }
   /**
+   "Kickstarter is not a store."
+
+   - **en**: "Kickstarter is not a store."
+   - **de**: "Kickstarter ist kein Geschäft."
+   - **es**: "Kickstarter no es una tienda."
+   - **fr**: "Kickstarter n'est pas un magasin."
+   - **ja**: "Kickstarterはオンラインストアではありません。"
+   */
+  public static func Kickstarter_is_not_a_store() -> String {
+    return localizedString(
+      key: "Kickstarter_is_not_a_store",
+      defaultValue: "Kickstarter is not a store.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Kickstarter is not a store. It's a way to bring creative projects to life."
 
    - **en**: "Kickstarter is not a store. It's a way to bring creative projects to life."
