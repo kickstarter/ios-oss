@@ -15,8 +15,6 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func configureWith(value: ()) {}
-
   override func bindStyles() {
     super.bindStyles()
 
@@ -35,6 +33,9 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
     _ = self.continueButton.titleLabel
       ?|> checkoutGreenButtonTitleLabelStyle
   }
+
+  func configureWith(value: ()) {}
+
 
   private func setupSubviews() {
     _ = (self.continueButton, self.contentView)

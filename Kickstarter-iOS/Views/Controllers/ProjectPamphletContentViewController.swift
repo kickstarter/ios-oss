@@ -128,6 +128,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   }
 
   fileprivate func goToRewardPledge(project: Project, reward: Reward) {
+
     let applePayCapable = PKPaymentAuthorizationViewController.applePayCapable(for: project)
 
     let vc = DeprecatedRewardPledgeViewController.configuredWith(project: project,

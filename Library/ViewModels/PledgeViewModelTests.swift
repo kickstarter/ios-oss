@@ -9,7 +9,7 @@ import XCTest
 @testable import ReactiveExtensions_TestHelpers
 
 final class PledgeViewModelTests: TestCase {
-  private var vm: PledgeViewModelType!
+  private let vm: PledgeViewModelType = PledgeViewModel()
 
   private let amount = TestObserver<Double, NoError>()
   private let currency = TestObserver<String, NoError>()
@@ -17,8 +17,6 @@ final class PledgeViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
-    self.vm = PledgeViewModel()
 
     self.vm.outputs.reloadWithData.map { $0.amount }.observe(self.amount.observer)
     self.vm.outputs.reloadWithData.map { $0.currency }.observe(self.currency.observer)

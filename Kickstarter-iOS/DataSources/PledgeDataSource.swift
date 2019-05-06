@@ -38,12 +38,10 @@ final class PledgeDataSource: ValueCellDataSource {
       toSection: Section.summary.rawValue
     )
 
-    if isLoggedIn {
+    if !isLoggedIn {
       self.appendRow(value: (),
                      cellClass: PledgeContinueCell.self,
                      toSection: Section.summary.rawValue)
-    } else {
-      // Load credit card / Apple Pay cells
     }
   }
 
