@@ -3481,7 +3481,6 @@
 				D796867F21013C1F00E54C61 /* SettingsPrivacyStaticCell.swift */,
 				77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */,
 				77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */,
-				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */,
 				3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
 			);

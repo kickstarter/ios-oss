@@ -147,7 +147,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     }
   }
 
-    // MARK: - Actions
+  // MARK: - Actions
 
   @objc private func learnMoreButtonTapped() {
     self.viewModel.inputs.tapped()
