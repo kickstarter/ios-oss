@@ -4,6 +4,12 @@ import KsApi
 import Prelude
 
 final class RewardsCollectionViewController: UICollectionViewController {
+  enum Layout {
+    enum Card {
+      static let width: CGFloat = 249
+    }
+  }
+
   private let dataSource = RewardsCollectionViewDataSource()
   private let viewModel = RewardsCollectionViewModel()
 
@@ -75,7 +81,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     layout.itemSize = self.calculateItemSize(from: layout, using: self.collectionView)
 
-    self.updateHiddenScrollViewBoundsIfNeeded()
+    self.updateHiddenScrollViewBoundsIfNeeded(for: layout)
   }
 
   override func bindStyles() {
@@ -109,41 +115,40 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.delegate .~ self
 
     _ = (self.hiddenPagingScrollView, self.view)
-      |> ksr_addSubviewToParent()
-
-    self.view.sendSubviewToBack(self.hiddenPagingScrollView)
+      |> ksr_insertSubviewInParent(at: 0)
 
     self.collectionView.addGestureRecognizer(self.hiddenPagingScrollView.panGestureRecognizer)
   }
 
-  private func updateHiddenScrollViewBoundsIfNeeded() {
-    guard let layout = flowLayout else { return }
-
+  private func updateHiddenScrollViewBoundsIfNeeded(for layout: UICollectionViewFlowLayout) {
     let (contentSize, pageSize, contentInsetLeftRight) = self.hiddenScrollViewData(from: layout,
                                                                                    using: self.collectionView)
     let needsUpdate = self.collectionView.contentInset.left != contentInsetLeftRight
       || self.hiddenPagingScrollView.contentSize != contentSize
 
     // Check if orientation or frame has changed
-    if needsUpdate {
-      _ = self.hiddenPagingScrollView
-        |> \.frame .~ self.collectionView.frame
-        |> \.bounds .~ CGRect(x: 0, y: 0, width: pageSize.width, height: pageSize.height)
-        |> \.contentSize .~ CGSize(width: contentSize.width, height: contentSize.height)
-
-      let (top, bottom) = self.collectionView.contentInset.topBottom
-
-      _ = self.collectionView
-        |> \.contentInset .~ .init(top: top,
-                                   left: contentInsetLeftRight,
-                                   bottom: bottom,
-                                   right: contentInsetLeftRight)
-
-      self.collectionView.contentOffset.x = -contentInsetLeftRight
+    guard needsUpdate else {
+      return
     }
+
+    _ = self.hiddenPagingScrollView
+      |> \.frame .~ self.collectionView.frame
+      |> \.bounds .~ CGRect(x: 0, y: 0, width: pageSize.width, height: pageSize.height)
+      |> \.contentSize .~ CGSize(width: contentSize.width, height: contentSize.height)
+
+    let (top, bottom) = self.collectionView.contentInset.topBottom
+
+    _ = self.collectionView
+      |> \.contentInset .~ .init(top: top,
+                                 left: contentInsetLeftRight,
+                                 bottom: bottom,
+                                 right: contentInsetLeftRight)
+
+    self.collectionView.contentOffset.x = -contentInsetLeftRight
   }
 
-  typealias HiddenScrollViewData = (contentSize: CGSize, pageSize: CGSize, contentInsetLeftRight: CGFloat)
+  private typealias HiddenScrollViewData = (contentSize: CGSize, pageSize: CGSize,
+    contentInsetLeftRight: CGFloat)
 
   private func hiddenScrollViewData(from layout: UICollectionViewFlowLayout,
                                     using collectionView: UICollectionView) -> HiddenScrollViewData {
