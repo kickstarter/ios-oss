@@ -6,6 +6,9 @@ import UIKit
 public protocol ProjectPamphletViewControllerDelegate: class {
   func projectPamphlet(_ controller: ProjectPamphletViewController,
                        panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer)
+  func projectPamphletViewController(_ projectPamphletViewController: ProjectPamphletViewController,
+                                     didTapBackThisProject project: Project,
+                                     refTag: RefTag?)
 }
 
 public final class ProjectPamphletViewController: UIViewController {
@@ -202,7 +205,9 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
-
+    self.delegate?.projectPamphletViewController(self,
+                                                 didTapBackThisProject: project,
+                                                 refTag: refTag)
   }
 
   // MARK: - Private Helpers
