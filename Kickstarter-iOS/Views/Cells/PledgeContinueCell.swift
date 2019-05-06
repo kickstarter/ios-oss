@@ -36,7 +36,6 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
 
   func configureWith(value: ()) {}
 
-
   private func setupSubviews() {
     _ = (self.continueButton, self.contentView)
       |> ksr_addSubviewToParent()
