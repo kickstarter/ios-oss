@@ -293,6 +293,67 @@ jobs:
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
+  # Kickstarter UI Tests
+  kickstarter-ui-tests:
+    <<: *base_job
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+
+      - checkout
+
+      - run:
+          name: Store Fabric SDK Version
+          command: *store_fabric_sdk_version
+
+      - run:
+          name: Store OpenTok Version
+          command: *store_opentok_version
+
+      - run:
+          name: Store Stripe Version
+          command: *store_stripe_version
+
+      - restore_cache:
+          keys:
+            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
+
+      - restore_cache:
+          keys:
+            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
+
+      - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+      - run:
+          name: Make bootstrap
+          command: make bootstrap
+
+      - run:
+          name: Pre-load simulator
+          command: *preload_simulator
+
+      - run:
+          name: Kickstarter UI Tests
+          command: SCHEME=KickstarterUITests make test
+          no_output_timeout: "20m" # 20 minutes
+
+      - store_artifacts:
+          path: /tmp/xcode_raw.log
+
   # KsApi tests
   ksapi-tests:
     <<: *base_job
@@ -681,6 +742,7 @@ workflows:
     jobs:
       - swiftlint-and-cache
       - kickstarter-tests
+      - kickstarter-ui-tests
       - library-tests
       - livestream-tests
       - ksapi-tests
@@ -695,6 +757,7 @@ workflows:
           requires:
             - swiftlint-and-cache
             - kickstarter-tests
+            - kickstarter-ui-tests
             - library-tests
             - livestream-tests
             - ksapi-tests
@@ -705,6 +768,7 @@ workflows:
           requires:
             - swiftlint-and-cache
             - kickstarter-tests
+            - kickstarter-ui-tests
             - library-tests
             - livestream-tests
             - ksapi-tests
@@ -715,6 +779,7 @@ workflows:
           requires:
             - swiftlint-and-cache
             - kickstarter-tests
+            - kickstarter-ui-tests
             - library-tests
             - livestream-tests
             - ksapi-tests
@@ -725,6 +790,7 @@ workflows:
           requires:
             - swiftlint-and-cache
             - kickstarter-tests
+            - kickstarter-ui-tests
             - library-tests
             - livestream-tests
             - ksapi-tests
