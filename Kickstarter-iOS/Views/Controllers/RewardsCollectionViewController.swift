@@ -29,7 +29,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }()
 
   private var flowLayout: UICollectionViewFlowLayout? {
-    return self.collectionViewLayout as? UICollectionViewFlowLayout
+    return self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout
   }
 
   static func instantiate(with project: Project, refTag: RefTag?) -> RewardsCollectionViewController {
@@ -65,7 +65,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     super.viewDidLoad()
 
     _ = self.collectionView
-      |> \.dataSource .~ dataSource
+      |> \.dataSource .~ self.dataSource
 
     self.collectionView.register(RewardCell.self)
 
@@ -79,9 +79,13 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     guard let layout = self.flowLayout else { return }
 
-    layout.itemSize = self.calculateItemSize(from: layout, using: self.collectionView)
-
     self.updateHiddenScrollViewBoundsIfNeeded(for: layout)
+  }
+
+  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    super.viewWillTransition(to: size, with: coordinator)
+
+    self.flowLayout?.invalidateLayout()
   }
 
   override func bindStyles() {
@@ -170,21 +174,29 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
   private func calculateItemSize(from layout: UICollectionViewFlowLayout,
                                  using collectionView: UICollectionView) -> CGSize {
-    let cardWidth: CGFloat = RewardCell.fixedCardWidth
+    let cardWidth: CGFloat = Layout.Card.width
 
     let sectionInsets = layout.sectionInset
-    let topBottomInsets = sectionInsets.top + sectionInsets.bottom
+    var adjustedContentInset = UIEdgeInsets.zero
+
+    if #available(iOS 11.0, *) {
+      adjustedContentInset = collectionView.adjustedContentInset
+    }
+
+    let topBottomSectionInsets = sectionInsets.top + sectionInsets.bottom
+    let topBottomContentInsets = adjustedContentInset.top + adjustedContentInset.bottom
     let leftRightInsets = sectionInsets.left + sectionInsets.right
 
-    let itemHeight = collectionView.contentSize.height - topBottomInsets
+    let itemHeight = collectionView.frame.height - topBottomSectionInsets - topBottomContentInsets
     let itemWidth = cardWidth - leftRightInsets
 
     return CGSize(width: itemWidth, height: itemHeight)
   }
 
   // MARK: - Public Functions
+
   @objc func closeButtonTapped() {
-    self.navigationController?.dismiss(animated: true, completion: nil)
+    self.navigationController?.dismiss(animated: true)
   }
 }
 
@@ -198,7 +210,22 @@ extension RewardsCollectionViewController {
   }
 }
 
+extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+                      sizeForItemAt indexPath: IndexPath) -> CGSize {
+    guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else {
+      return .zero
+    }
+
+    // Cache the itemSize so we can recalculate hidden scroll view data efficiently
+    layout.itemSize = self.calculateItemSize(from: layout, using: collectionView)
+
+    return layout.itemSize
+  }
+}
+
 // MARK: Styles
+
 private var collectionViewStyle = { collectionView -> UICollectionView in
   collectionView
     |> \.backgroundColor .~ .ksr_grey_200
