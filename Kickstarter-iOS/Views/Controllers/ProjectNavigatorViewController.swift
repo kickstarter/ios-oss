@@ -154,6 +154,8 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
   }
 }
 
+// MARK: - ProjectPamphletViewControllerDelegate
+
 extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate {
   internal func projectPamphlet(_ controller: ProjectPamphletViewController,
                                 panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer) {
@@ -173,15 +175,19 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
 
     let navigationController = UINavigationController(rootViewController: rewardsViewController)
 
-    self.present(navigationController, animated: true, completion: nil)
+    self.present(navigationController, animated: true)
   }
 }
+
+// MARK: - UIGestureRecognizerDelegate
 
 extension ProjectNavigatorViewController: UIGestureRecognizerDelegate {
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
     return true
   }
 }
+
+// MARK: - UIPageViewControllerDelegate
 
 extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
   internal func pageViewController(_ pageViewController: UIPageViewController,

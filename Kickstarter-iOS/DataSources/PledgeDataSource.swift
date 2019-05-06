@@ -9,10 +9,10 @@ final class PledgeDataSource: ValueCellDataSource {
     case summary
   }
 
-  func load(amount: Double, currency: String) {
+  func load(amount: Double, currency: String, delivery: String) {
     self.appendRow(
-      value: "Description",
-      cellClass: PledgeRowCell.self,
+      value: delivery,
+      cellClass: PledgeDescriptionCell.self,
       toSection: Section.project.rawValue
     )
 
@@ -23,8 +23,8 @@ final class PledgeDataSource: ValueCellDataSource {
     )
 
     self.appendRow(
-      value: "Your shipping location",
-      cellClass: PledgeRowCell.self,
+      value: (location: "British Indian Ocean Territory", currency: "$", rate: 7.50),
+      cellClass: PledgeShippingLocationCell.self,
       toSection: Section.inputs.rawValue
     )
 
@@ -37,9 +37,13 @@ final class PledgeDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
+    case let (cell as PledgeAmountCell, value as (Double, String)):
+      cell.configureWith(value: value)
+    case let (cell as PledgeDescriptionCell, value as String):
+      cell.configureWith(value: value)
     case let (cell as PledgeRowCell, value as String):
       cell.configureWith(value: value)
-    case let (cell as PledgeAmountCell, value as (Double, String)):
+    case let (cell as PledgeShippingLocationCell, value as (String, String, Double)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

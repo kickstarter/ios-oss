@@ -6,12 +6,10 @@ import Prelude
 final class RewardCell: UICollectionViewCell, ValueCell {
   private let containerView = UIView(frame: .zero)
 
-  static let fixedCardWidth: CGFloat = 249
-
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    configureViews()
+    self.configureViews()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -22,8 +20,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.contentView
       |> \.backgroundColor .~ .ksr_grey_200
 
-    _ = containerView
-      |> \.backgroundColor .~ UIColor.white
+    _ = self.containerView
+      |> checkoutWhiteBackgroundStyle
       |> roundedStyle(cornerRadius: Styles.grid(3))
 
     _ = (self.containerView, self.contentView)

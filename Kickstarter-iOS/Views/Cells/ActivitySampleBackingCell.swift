@@ -48,6 +48,9 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
     _ = self.backerImageAndInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
+    _ = self.backerImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.backingTitleLabel
       |> activitySampleBackingTitleLabelStyle
 

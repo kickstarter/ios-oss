@@ -20,14 +20,6 @@ protocol RewardsCollectionViewModelType {
 
 public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
-  public var inputs: RewardsCollectionViewModelInputs {
-    return self
-  }
-
-  public var outputs: RewardsCollectionViewModelOutputs {
-    return self
-  }
-
   public init() {
     self.reloadDataWithRewards = Signal.combineLatest(
       self.configureWithProjectProperty.signal.skipNil(),
@@ -50,4 +42,7 @@ RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
   }
 
   public let reloadDataWithRewards: Signal<[Reward], NoError>
+
+  public var inputs: RewardsCollectionViewModelInputs { return self }
+  public var outputs: RewardsCollectionViewModelOutputs { return self }
 }

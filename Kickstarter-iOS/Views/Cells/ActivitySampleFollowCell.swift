@@ -51,6 +51,9 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
     _ = self.friendImageAndFollowStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
+    _ = self.friendImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.seeAllActivityButton
       |> activitySampleSeeAllActivityButtonStyle
   }
