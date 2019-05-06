@@ -891,6 +891,10 @@
 		D04AACAF218BB72100CF713E /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC09218BB70800CF713E /* SettingsViewModelTests.swift */; };
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
 		D05C0CB01E02E3F100914393 /* LiveStreamActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */; };
+		D05DFC44227A578C006F3B68 /* KickstarterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05DFC43227A578C006F3B68 /* KickstarterUITests.swift */; };
+		D05DFC4D227A5842006F3B68 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F461E831BA200BFFA01 /* TestCase.swift */; };
+		D05DFC4E227A5861006F3B68 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F451E831BA200BFFA01 /* MockBundle.swift */; };
+		D05DFC4F227A5878006F3B68 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		D06EE2802257FE5700E956D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D06EE27F2257FE5700E956D2 /* Foundation.framework */; };
 		D06EE2812257FE5F00E956D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D06EE27F2257FE5700E956D2 /* Foundation.framework */; };
 		D07226E91E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */; };
@@ -944,6 +948,19 @@
 		D0A787BD2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */; };
 		D0A787BF2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BE2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift */; };
 		D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */; };
+		D0B065C72280A27500142B7A /* FBSnapshotTestCase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; };
+		D0B065C92280A2A700142B7A /* FBSnapshotTestCase.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065CA2280A2DC00142B7A /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065CB2280A2FD00142B7A /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065CC2280A31100142B7A /* Argo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065CD2280A32800142B7A /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065CE2280A66B00142B7A /* Prelude_UIKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065CF2280A66B00142B7A /* Prelude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065D02280A68900142B7A /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065D32280A81000142B7A /* KsApi.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065D42280A83100142B7A /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
+		D0B065D52280A85200142B7A /* OnePasswordExtension.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7D2257FADF00532AC1 /* OnePasswordExtension.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065D62280A96900142B7A /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0BB2D901E54895700EE1D9D /* LiveStreamChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */; };
@@ -1205,6 +1222,13 @@
 			remoteGlobalIDString = D015874F1EEB2DE4006E7684;
 			remoteInfo = KsApi;
 		};
+		D05DFC46227A578C006F3B68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7D1F9441C850B7C000D41D5;
+			remoteInfo = "Kickstarter-iOS";
+		};
 		D09362AD225D7E8C00E1411A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7E06C711C5A6EB300EBDCC2 /* Project object */;
@@ -1325,6 +1349,26 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D00A376D225BD6E600F46F47 /* Prelude.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0B065C82280A29700142B7A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D0B065D62280A96900142B7A /* Runes.framework in CopyFiles */,
+				D0B065D52280A85200142B7A /* OnePasswordExtension.framework in CopyFiles */,
+				D0B065D32280A81000142B7A /* KsApi.framework in CopyFiles */,
+				D0B065D02280A68900142B7A /* ReactiveExtensions.framework in CopyFiles */,
+				D0B065CE2280A66B00142B7A /* Prelude_UIKit.framework in CopyFiles */,
+				D0B065CF2280A66B00142B7A /* Prelude.framework in CopyFiles */,
+				D0B065CD2280A32800142B7A /* Curry.framework in CopyFiles */,
+				D0B065CC2280A31100142B7A /* Argo.framework in CopyFiles */,
+				D0B065CB2280A2FD00142B7A /* Result.framework in CopyFiles */,
+				D0B065CA2280A2DC00142B7A /* ReactiveSwift.framework in CopyFiles */,
+				D0B065C92280A2A700142B7A /* FBSnapshotTestCase.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2212,6 +2256,9 @@
 		D04AAC1C218BB70C00CF713E /* SettingsPrivacySwitchCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCellViewModel.swift; sourceTree = "<group>"; };
 		D04AAC1D218BB70C00CF713E /* SettingsAccountPickerCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAccountPickerCellViewModel.swift; sourceTree = "<group>"; };
 		D05C0CAF1E02E3F100914393 /* LiveStreamActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamActivityItemProvider.swift; sourceTree = "<group>"; };
+		D05DFC41227A578B006F3B68 /* KickstarterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KickstarterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D05DFC43227A578C006F3B68 /* KickstarterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KickstarterUITests.swift; sourceTree = "<group>"; };
+		D05DFC45227A578C006F3B68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D06EE27F2257FE5700E956D2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D07226E81E66E9C500C2E537 /* LiveStreamContainerPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamContainerPageViewController.swift; sourceTree = "<group>"; };
 		D07226EA1E66EA1600C2E537 /* LiveStreamEventDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamEventDetailsViewController.swift; sourceTree = "<group>"; };
@@ -2561,6 +2608,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				D01587591EEB2DE4006E7684 /* KsApi.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D05DFC3E227A578B006F3B68 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0B065D42280A83100142B7A /* Kickstarter_Framework.framework in Frameworks */,
+				D0B065C72280A27500142B7A /* FBSnapshotTestCase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3229,6 +3285,7 @@
 				802800561C88F62500141235 /* Configs */,
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
 				A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */,
+				D05DFC42227A578C006F3B68 /* KickstarterUITests */,
 				D01587511EEB2DE4006E7684 /* KsApi */,
 				A7C725771C85D36D005A016B /* Library */,
 				A7BA542A1E1E493600E54377 /* LiveStream */,
@@ -3251,6 +3308,7 @@
 				A7BA54321E1E493600E54377 /* LiveStreamTests.xctest */,
 				D01587501EEB2DE4006E7684 /* KsApi.framework */,
 				D01587581EEB2DE4006E7684 /* KsApiTests.xctest */,
+				D05DFC41227A578B006F3B68 /* KickstarterUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3915,6 +3973,15 @@
 			path = templates;
 			sourceTree = "<group>";
 		};
+		D05DFC42227A578C006F3B68 /* KickstarterUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D05DFC43227A578C006F3B68 /* KickstarterUITests.swift */,
+				D05DFC45227A578C006F3B68 /* Info.plist */,
+			);
+			path = KickstarterUITests;
+			sourceTree = "<group>";
+		};
 		D0D58DA12257FB4F00532AC1 /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
@@ -4182,13 +4249,32 @@
 			productReference = D01587581EEB2DE4006E7684 /* KsApiTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		D05DFC40227A578B006F3B68 /* KickstarterUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D05DFC4C227A578C006F3B68 /* Build configuration list for PBXNativeTarget "KickstarterUITests" */;
+			buildPhases = (
+				D05DFC3D227A578B006F3B68 /* Sources */,
+				D05DFC3E227A578B006F3B68 /* Frameworks */,
+				D05DFC3F227A578B006F3B68 /* Resources */,
+				D0B065C82280A29700142B7A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D05DFC47227A578C006F3B68 /* PBXTargetDependency */,
+			);
+			name = KickstarterUITests;
+			productName = KickstarterUITests;
+			productReference = D05DFC41227A578B006F3B68 /* KickstarterUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		A7E06C711C5A6EB300EBDCC2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = Kickstarter;
 				TargetAttributes = {
@@ -4251,6 +4337,10 @@
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 					};
+					D05DFC40227A578B006F3B68 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = A7D1F9441C850B7C000D41D5;
+					};
 				};
 			};
 			buildConfigurationList = A7E06C741C5A6EB300EBDCC2 /* Build configuration list for PBXProject "Kickstarter" */;
@@ -4275,6 +4365,7 @@
 				A75511441C8642B3005355CF /* Library-iOSTests */,
 				A7C7959D1C873A870081977F /* Kickstarter-Framework-iOS */,
 				A7D1F9591C850B7C000D41D5 /* Kickstarter-Framework-iOSTests */,
+				D05DFC40227A578B006F3B68 /* KickstarterUITests */,
 				D015874F1EEB2DE4006E7684 /* KsApi */,
 				D01587571EEB2DE4006E7684 /* KsApiTests */,
 				A7BA54281E1E493500E54377 /* LiveStream */,
@@ -4402,6 +4493,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D01587561EEB2DE4006E7684 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D05DFC3F227A578B006F3B68 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5491,6 +5589,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D05DFC3D227A578B006F3B68 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D05DFC44227A578C006F3B68 /* KickstarterUITests.swift in Sources */,
+				D05DFC4E227A5861006F3B68 /* MockBundle.swift in Sources */,
+				D05DFC4F227A5878006F3B68 /* MockPushRegistration.swift in Sources */,
+				D05DFC4D227A5842006F3B68 /* TestCase.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -5533,6 +5642,11 @@
 			isa = PBXTargetDependency;
 			target = D015874F1EEB2DE4006E7684 /* KsApi */;
 			targetProxy = D015875A1EEB2DE4006E7684 /* PBXContainerItemProxy */;
+		};
+		D05DFC47227A578C006F3B68 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7D1F9441C850B7C000D41D5 /* Kickstarter-iOS */;
+			targetProxy = D05DFC46227A578C006F3B68 /* PBXContainerItemProxy */;
 		};
 		D09362AE225D7E8C00E1411A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -6960,6 +7074,17 @@
 				D01587671EEB2DE4006E7684 /* Release */,
 				D01587681EEB2DE4006E7684 /* Hockey Beta */,
 				D083B10A1F27EF0400BEC742 /* Hockey Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D05DFC4C227A578C006F3B68 /* Build configuration list for PBXNativeTarget "KickstarterUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D05DFC48227A578C006F3B68 /* Debug */,
+				D05DFC49227A578C006F3B68 /* Release */,
+				D05DFC4A227A578C006F3B68 /* Hockey Beta */,
+				D05DFC4B227A578C006F3B68 /* Hockey Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
