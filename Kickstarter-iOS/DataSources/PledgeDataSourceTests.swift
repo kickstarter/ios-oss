@@ -9,7 +9,7 @@ final class PledgeDataSourceTests: XCTestCase {
 
   // swiftlint:disable line_length
   func testLoad() {
-    
+
     self.dataSource.load(amount: 100, currency: "USD", delivery: "May 2020")
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
