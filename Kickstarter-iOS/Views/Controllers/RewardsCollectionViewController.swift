@@ -10,10 +10,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
     }
   }
 
+  // MARK: - Properties
+
   private let dataSource = RewardsCollectionViewDataSource()
   private let viewModel = RewardsCollectionViewModel()
 
-  // Hidden scroll view used for paging
   private let hiddenPagingScrollView: UIScrollView = {
     UIScrollView()
       |> \.isPagingEnabled .~ true
@@ -40,7 +41,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }
 
   init() {
-    super.init(collectionViewLayout: layout)
+    super.init(collectionViewLayout: self.layout)
 
     let closeButton = UIBarButtonItem(image: UIImage(named: "icon--cross"),
                                       style: .plain,
@@ -200,6 +201,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }
 }
 
+// MARK: - UIScrollViewDelegate
+
 extension RewardsCollectionViewController {
   override func scrollViewDidScroll(_ scrollView: UIScrollView) {
     guard scrollView == self.hiddenPagingScrollView else { return }
@@ -209,6 +212,8 @@ extension RewardsCollectionViewController {
     self.collectionView.contentOffset.x = scrollView.contentOffset.x - leftInset
   }
 }
+
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
@@ -226,7 +231,7 @@ extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: Styles
 
-private var collectionViewStyle = { collectionView -> UICollectionView in
+private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICollectionView in
   collectionView
     |> \.backgroundColor .~ .ksr_grey_200
     |> \.clipsToBounds .~ false
