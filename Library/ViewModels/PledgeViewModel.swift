@@ -10,7 +10,7 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
-  var amountAndCurrencyAndDeliveryDate: Signal<(Double, String, String), NoError> { get }
+  var amountCurrencyAndDelivery: Signal<(Double, String, String), NoError> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -26,13 +26,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(first)
       .skipNil()
 
-    self.amountAndCurrencyAndDeliveryDate = projectAndReward.signal
+    self.amountCurrencyAndDelivery = projectAndReward.signal
       .map { (project, reward) in
-        (reward.minimum, currencySymbol(forCountry: project.country).trimmed(),
-         reward.estimatedDeliveryOn.map {
-         Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone)
-          } ?? "")
-    }
+        (reward.minimum,
+         currencySymbol(forCountry: project.country).trimmed(),
+         reward.estimatedDeliveryOn
+          .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? "") }
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -45,7 +44,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let amountAndCurrencyAndDeliveryDate: Signal<(Double, String, String), NoError>
+  public let amountCurrencyAndDelivery: Signal<(Double, String, String), NoError>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }

@@ -3743,10 +3743,10 @@ with friends."
    "Kickstarter is not a store. It's a way to bring creative projects to life."
 
    - **en**: "Kickstarter is not a store. It's a way to bring creative projects to life."
-   - **de**: "Kickstarter is not a store. It's a way to bring creative projects to life."
-   - **es**: "Kickstarter is not a store. It's a way to bring creative projects to life."
-   - **fr**: "Kickstarter is not a store. It's a way to bring creative projects to life."
-   - **ja**: "Kickstarter is not a store. It's a way to bring creative projects to life."
+   - **de**: "Kickstarter ist kein Geschäft, sondern eine Plattform, um kreative Projekte zu verwirklichen."
+   - **es**: "Kickstarter no es una tienda. Es una forma de dar vida a proyectos creativos."
+   - **fr**: "Kickstarter n'est pas un magasin, mais un moyen de faire vivre des projets créatifs."
+   - **ja**: "Kickstarter は普通のお店とは全く違います。クリエイティブなプロジェクトに生命を吹き込む場です。"
   */
   public static func Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life() -> String {
     return localizedString(

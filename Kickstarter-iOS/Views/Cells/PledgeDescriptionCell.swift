@@ -1,21 +1,33 @@
-import KsApi
 import Library
 import Prelude
 import UIKit
+
+private enum Layout {
+  enum ImageView {
+    static let width: CGFloat = 90
+    static let height: CGFloat = 120
+  }
+
+  enum SpacerView {
+    static let height: CGFloat = 10
+  }
+}
 
 internal protocol PledgeDescriptionCellDelegate: class {
   func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell)
 }
 
-internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
+final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   fileprivate let viewModel = PledgeDescriptionCellViewModel()
   internal weak var delegate: PledgeDescriptionCellDelegate?
 
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var containerImageView: UIView = { UIView(frame: .zero) }()
-  private lazy var pledgeImageView: UIImageView = { UIImageView(frame: .zero) }()
+  private lazy var containerImageView: UIView = {
+    return UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
+  private lazy var pledgeImageView: UIImageView = {
+    return UIImageView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
   private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
@@ -28,27 +40,27 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
   // MARK: - Lifecycle
 
-  internal override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.rootStackView.addArrangedSubview(self.containerImageView)
+    _ = ([self.containerImageView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.pledgeImageView, self.containerImageView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.arrangeStackView()
+    self.configureStackView()
     self.learnMoreButton.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
     self.bindViewModel()
 
-    NSLayoutConstraint.activate ([
-      self.containerImageView.widthAnchor.constraint(equalToConstant: 100.0),
-      self.pledgeImageView.widthAnchor.constraint(equalToConstant: 90.0),
-      self.pledgeImageView.heightAnchor.constraint(equalToConstant: 130.0),
+    NSLayoutConstraint.activate([
+      self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
+      self.containerImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
       self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
     ])
   }
@@ -59,63 +71,65 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
   // MARK: - Styles
 
-  internal override func bindStyles() {
+  override func bindStyles() {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ UIColor.hex(0xf0f0f0)
+      |> checkoutBackgroundStyle
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
-    _ = self.containerImageView
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.backgroundColor .~ UIColor.blue
-
-    _ = self.spacerView
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-
     _ = self.pledgeImageView
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.backgroundColor .~ UIColor.orange
 
     _ = self.descriptionStackView
       |> descriptionStackViewStyle
 
     _ = self.estimatedDeliveryLabel
+      |> checkoutBackgroundStyle
+    _ = self.estimatedDeliveryLabel
       |> estimatedDeliveryLabelStyle
 
+    _ = self.dateLabel
+      |> checkoutBackgroundStyle
     _ = self.dateLabel
       |> dateLabelStyle
 
     _ = self.descriptionLabel
+      |> checkoutBackgroundStyle
+    _ = self.descriptionLabel
       |> descriptionLabelStyle
 
+    _ = self.learnMoreButton
+      |> checkoutBackgroundStyle
     _ = self.learnMoreButton
       |> learnMoreButtonStyle
   }
 
-  internal func arrangeStackView() {
-    self.spacerView.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
+  private func configureStackView() {
+    NSLayoutConstraint.activate([
+      self.spacerView.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height)
+    ])
 
-    [
-      self.spacerView,
+   _ = ([self.spacerView,
       self.estimatedDeliveryLabel,
       self.dateLabel,
       self.descriptionLabel,
-      self.learnMoreButton
-      ].forEach(self.descriptionStackView.addArrangedSubview)
+      self.learnMoreButton], self.descriptionStackView)
+    |> ksr_addArrangedSubviewsToStackView()
 
     if #available(iOS 11.0, *) {
       self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
     } else {
-      let view = UIView(frame: .zero)
-      view.translatesAutoresizingMaskIntoConstraints = true
-      view.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
+      let view: UIView = {
+        return UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      }()
+      view.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height).isActive = true
       self.descriptionStackView.insertArrangedSubview(view, at: 3)
     }
-
-    self.rootStackView.addArrangedSubview(self.descriptionStackView)
+    _ = ([self.descriptionStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   // MARK: - Binding
@@ -133,7 +147,7 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     }
   }
 
-  // MARK: - Actions
+    // MARK: - Actions
 
   @objc private func learnMoreButtonTapped() {
     self.viewModel.inputs.tapped()
@@ -146,16 +160,14 @@ internal final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   }
 }
 
-// MARK: - Styles
-
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.alignment .~ UIStackView.Alignment.top
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(2))
-    |> \.spacing .~ Styles.grid(2)
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(4))
+    |> \.spacing .~ Styles.grid(3)
 }
 
 private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
@@ -185,7 +197,7 @@ private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.text  %~ { _ in Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life() }
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
-    |> \.font .~ UIFont.ksr_subhead(size: 12)
+    |> \.font .~ UIFont.ksr_caption1()
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
 }
