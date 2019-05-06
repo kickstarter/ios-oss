@@ -41,7 +41,7 @@ public protocol RewardCellViewModelType {
   var outputs: RewardCellViewModelOutputs { get }
 }
 
-public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs,
+public final class DeprecatedRewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs,
   RewardCellViewModelOutputs {
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =

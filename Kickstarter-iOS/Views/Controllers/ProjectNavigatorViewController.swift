@@ -162,6 +162,8 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
   }
 }
 
+// MARK: - ProjectPamphletViewControllerDelegate
+
 extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate {
   internal func projectPamphlet(
     _: ProjectPamphletViewController,
@@ -176,13 +178,27 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
       isDragging: scrollView.isTracking
     )
   }
+
+  func projectPamphletViewController(_ projectPamphletViewController: ProjectPamphletViewController,
+                                     didTapBackThisProject project: Project,
+                                     refTag: RefTag?) {
+    let rewardsViewController = RewardsCollectionViewController.instantiate(with: project, refTag: refTag)
+
+    let navigationController = UINavigationController(rootViewController: rewardsViewController)
+
+    self.present(navigationController, animated: true)
+  }
 }
+
+// MARK: - UIGestureRecognizerDelegate
 
 extension ProjectNavigatorViewController: UIGestureRecognizerDelegate {
   func gestureRecognizer(_: UIGestureRecognizer, shouldReceive _: UITouch) -> Bool {
     return true
   }
 }
+
+// MARK: - UIPageViewControllerDelegate
 
 extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
   internal func pageViewController(
