@@ -4,6 +4,7 @@ public enum Nib: String {
   case BackerDashboardEmptyStateCell
   case BackerDashboardProjectCell
   case CreditCardCell
+  case DeprecatedRewardCell
   case DiscoveryPostcardCell
   case DiscoveryProjectCategoryView
   case FindFriendsCell
@@ -11,7 +12,6 @@ public enum Nib: String {
   case LoadingBarButtonItemView
   case MessageBannerViewController
   case PaymentMethodsFooterView
-  case RewardCell
   case SettingsAccountWarningCell
   case SettingsFormFieldView
   case SettingsFooterView
