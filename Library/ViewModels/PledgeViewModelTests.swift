@@ -1,4 +1,5 @@
 import Foundation
+import Prelude
 import ReactiveSwift
 import ReactiveExtensions
 import Result
@@ -14,6 +15,7 @@ final class PledgeViewModelTests: TestCase {
   private let amount = TestObserver<Double, NoError>()
   private let currency = TestObserver<String, NoError>()
   private let isLoggedIn = TestObserver<Bool, NoError>()
+  private let estimatedDelivery = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
@@ -38,9 +40,13 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testReloadWithData_loggedIn() {
+  func testAmountCurrencyAndEstimatedDeliveryDate() {
+    let estimatedDelivery = 1468527587.32843
+
     let project = Project.template
     let reward = Reward.template
     let user = User.template
+      |> Reward.lens.estimatedDeliveryOn .~ estimatedDelivery
 
     withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(project: project, reward: reward)
@@ -50,5 +56,10 @@ final class PledgeViewModelTests: TestCase {
       self.currency.assertValues(["$"])
       self.isLoggedIn.assertValues([true])
     }
+    self.amount.assertValues([10])
+    self.currency.assertValues(["$"])
+    self.estimatedDelivery.assertValues(
+      [Format.date(secondsInUTC: estimatedDelivery, template: "MMMMyyyy", timeZone: UTCTimeZone)]
+    )
   }
 }

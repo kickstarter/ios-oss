@@ -9,13 +9,13 @@ final class PledgeDataSourceTests: XCTestCase {
 
   // swiftlint:disable line_length
   func testLoad_loggedIn() {
-    self.dataSource.load(amount: 100, currency: "USD", isLoggedIn: true)
+    self.dataSource.load(amount: 100, currency: "USD", delivery: "May 2020", isLoggedIn: true)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
-    XCTAssertEqual(PledgeRowCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 0))
+    XCTAssertEqual(PledgeDescriptionCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 0))
     XCTAssertEqual(PledgeAmountCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 1))
     XCTAssertEqual(PledgeShippingLocationCell.defaultReusableId, self.dataSource.reusableId(item: 1, section: 1))
     XCTAssertEqual(PledgeRowCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 2))

@@ -4,7 +4,7 @@ import Prelude
 import ReactiveSwift
 import Result
 
-public typealias PledgeTableViewData = (amount: Double, currency: String, isLoggedIn: Bool)
+public typealias PledgeTableViewData = (amount: Double, currency: String, delivery: String, isLoggedIn: Bool)
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
@@ -34,11 +34,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let amountAndCurrency = projectAndReward.signal
       .map { (project, reward) in
-        (reward.minimum, currencySymbol(forCountry: project.country).trimmed())
-    }
-
-    self.reloadWithData = Signal.combineLatest(amountAndCurrency, isLoggedIn)
-      .map(unpack)
+        (reward.minimum,
+         currencySymbol(forCountry: project.country).trimmed(),
+         reward.estimatedDeliveryOn
+          .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? "") }
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)

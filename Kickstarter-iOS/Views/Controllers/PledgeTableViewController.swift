@@ -27,6 +27,7 @@ class PledgeTableViewController: UITableViewController {
 
     self.tableView.registerCellClass(PledgeAmountCell.self)
     self.tableView.registerCellClass(PledgeContinueCell.self)
+    self.tableView.registerCellClass(PledgeDescriptionCell.self)
     self.tableView.registerCellClass(PledgeRowCell.self)
     self.tableView.registerCellClass(PledgeShippingLocationCell.self)
     self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
@@ -50,8 +51,8 @@ class PledgeTableViewController: UITableViewController {
 
     self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] (amount, currency, isLoggedIn) in
-        self?.dataSource.load(amount: amount, currency: currency, isLoggedIn: isLoggedIn)
+      .observeValues { [weak self] (amount, currency, delivery, isLoggedIn) in
+        self?.dataSource.load(amount: amount, currency: currency, delivery: delivert, isLoggedIn: isLoggedIn)
 
         self?.tableView.reloadData()
     }
