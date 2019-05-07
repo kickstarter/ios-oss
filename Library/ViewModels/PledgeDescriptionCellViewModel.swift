@@ -7,7 +7,7 @@ import Result
 
 public protocol PledgeDescriptionCellViewModelInputs {
   func configureWith(estimatedDeliveryDate: String)
-  func tapped()
+  func learnMoreTapped()
 }
 
 public protocol PledgeDescriptionCellViewModelOutputs {
@@ -26,16 +26,16 @@ PledgeDescriptionCellViewModelInputs, PledgeDescriptionCellViewModelOutputs {
   public init() {
     self.estimatedDeliveryText = self.estimatedDeliveryDateProperty.signal
 
-    self.presentTrustAndSafety = self.tappedProperty.signal
+    self.presentTrustAndSafety = self.learnMoreTappedProperty.signal
   }
 
   private let estimatedDeliveryDateProperty = MutableProperty<String>("")
   public func configureWith(estimatedDeliveryDate: String) {
     self.estimatedDeliveryDateProperty.value = estimatedDeliveryDate
   }
-  private let tappedProperty = MutableProperty(())
-  public func tapped() {
-    self.tappedProperty.value = ()
+  private let learnMoreTappedProperty = MutableProperty(())
+  public func learnMoreTapped() {
+    self.learnMoreTappedProperty.value = ()
   }
 
   public let estimatedDeliveryText: Signal<String, NoError>

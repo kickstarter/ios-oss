@@ -31,7 +31,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var spacerView: UIView = { UIView(frame: .zero) }()
+  private lazy var spacerView = UIView(frame: .zero)
   private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
   // MARK: - Lifecycle
@@ -39,25 +39,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    _ = (self.rootStackView, self.contentView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = ([self.containerImageView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = (self.pledgeImageView, self.containerImageView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    self.configureStackView()
+    self.configureSubviews()
     self.bindViewModel()
-
-    NSLayoutConstraint.activate([
-      self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
-      self.containerImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
-      self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
-    ])
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -96,6 +79,27 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     _ = self.learnMoreTextView
       |> learnMoreTextViewStyle
+  }
+
+  private func configureSubviews() {
+    _ = (self.rootStackView, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = ([self.containerImageView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.pledgeImageView, self.containerImageView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    self.configureStackView()
+
+    NSLayoutConstraint.activate([
+      self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
+      self.containerImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
+      self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
+      ])
   }
 
   private func configureStackView() {
@@ -141,12 +145,6 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     }
   }
 
-  // MARK: - Actions
-
-  @objc private func learnMoreButtonTapped() {
-    self.viewModel.inputs.tapped()
-  }
-
   // MARK: - Configuration
 
   internal func configureWith(value: String) {
@@ -162,7 +160,7 @@ extension PledgeDescriptionCell: UITextViewDelegate {
 
   func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange,
                 interaction: UITextItemInteraction) -> Bool {
-    self.viewModel.inputs.tapped()
+    self.viewModel.inputs.learnMoreTapped()
     return false
   }
 }

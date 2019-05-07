@@ -28,7 +28,7 @@ internal final class PledgeDescriptionCellViewModelTests: TestCase {
   }
 
   func testPresentTrustAndSafety() {
-    self.vm.inputs.tapped()
+    self.vm.inputs.learnMoreTapped()
     self.presentTrustAndSafety.assertDidEmitValue()
   }
 }
