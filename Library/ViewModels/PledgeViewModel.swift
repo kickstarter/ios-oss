@@ -32,12 +32,22 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    let amountAndCurrency = projectAndReward.signal
+    let amountCurrencyDelivery = projectAndReward.signal
       .map { (project, reward) in
         (reward.minimum,
          currencySymbol(forCountry: project.country).trimmed(),
          reward.estimatedDeliveryOn
           .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? "") }
+
+    self.reloadWithData = Signal.combineLatest(amountCurrencyDelivery, isLoggedIn)
+      .map { arg in
+        let (amountCurrencyDelivery, isLoggedIn) = arg
+
+        return (amountCurrencyDelivery.0,
+                amountCurrencyDelivery.1,
+                amountCurrencyDelivery.2,
+                isLoggedIn)
+    }
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
