@@ -961,6 +961,7 @@
 		D0B065D42280A83100142B7A /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
 		D0B065D52280A85200142B7A /* OnePasswordExtension.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7D2257FADF00532AC1 /* OnePasswordExtension.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B065D62280A96900142B7A /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0B065E22281033100142B7A /* 1Password.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0B065E12281033100142B7A /* 1Password.xcassets */; };
 		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0BB2D901E54895700EE1D9D /* LiveStreamChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */; };
@@ -2295,6 +2296,7 @@
 		D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyTableViewHeader.swift; sourceTree = "<group>"; };
 		D0A787BE2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+AutoLayoutHeaderView.swift"; sourceTree = "<group>"; };
 		D0A7880E2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewModelTests.swift; sourceTree = "<group>"; };
+		D0B065E12281033100142B7A /* 1Password.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = 1Password.xcassets; path = "Carthage/Checkouts/onepassword-extension/1Password.xcassets"; sourceTree = SOURCE_ROOT; };
 		D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamChatDataSource.swift; sourceTree = "<group>"; };
 		D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelope.swift; sourceTree = "<group>"; };
 		D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveStreamSubscribeEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -3259,6 +3261,7 @@
 				A7D1F9551C850B7C000D41D5 /* Info.plist */,
 				A7D1F9471C850B7C000D41D5 /* AppDelegate.swift */,
 				A7D1F9501C850B7C000D41D5 /* Assets.xcassets */,
+				D0B065E12281033100142B7A /* 1Password.xcassets */,
 				A7E315BD1C88AA56000DD85A /* DataSources */,
 				0127FC511C98BFD000E335C6 /* Library */,
 				A7A5F8221D11ECF60036139A /* Locales */,
@@ -4428,6 +4431,7 @@
 				777C67F4220A22FD009F8D42 /* SettingsTableViewHeader.xib in Resources */,
 				D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */,
 				80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */,
+				D0B065E22281033100142B7A /* 1Password.xcassets in Resources */,
 				A75798C31D6A24CD0063CEEC /* DebugPushNotifications.storyboard in Resources */,
 				A73923C31D272242004524C3 /* Login.storyboard in Resources */,
 				770E441521137F3700396D46 /* SettingsNotificationPickerCell.xib in Resources */,
