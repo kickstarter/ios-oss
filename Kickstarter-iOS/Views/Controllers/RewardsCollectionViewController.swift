@@ -175,7 +175,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
   private func calculateItemSize(from layout: UICollectionViewFlowLayout,
                                  using collectionView: UICollectionView) -> CGSize {
-    let cardWidth: CGFloat = Layout.Card.width
+    let cardWidth = Layout.Card.width
 
     let sectionInsets = layout.sectionInset
     var adjustedContentInset = UIEdgeInsets.zero
