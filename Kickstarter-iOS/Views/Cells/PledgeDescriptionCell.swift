@@ -31,12 +31,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var descriptionLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var spacerView: UIView = { UIView(frame: .zero) }()
-  private lazy var learnMoreButton: UIButton = {
-    return MultiLineButton(type: .custom)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
+  private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
   // MARK: - Lifecycle
 
@@ -55,7 +51,6 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> ksr_constrainViewToEdgesInParent()
 
     self.configureStackView()
-    self.learnMoreButton.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
     self.bindViewModel()
 
     NSLayoutConstraint.activate([
@@ -96,15 +91,11 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     _ = self.dateLabel
       |> dateLabelStyle
 
-    _ = self.descriptionLabel
+    _ = self.learnMoreTextView
       |> checkoutBackgroundStyle
-    _ = self.descriptionLabel
-      |> descriptionLabelStyle
 
-    _ = self.learnMoreButton
-      |> checkoutBackgroundStyle
-    _ = self.learnMoreButton
-      |> learnMoreButtonStyle
+    _ = self.learnMoreTextView
+      |> learnMoreTextViewStyle
   }
 
   private func configureStackView() {
@@ -112,11 +103,14 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       self.spacerView.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height)
     ])
 
-   _ = ([self.spacerView,
+    let views = [
+      self.spacerView,
       self.estimatedDeliveryLabel,
       self.dateLabel,
-      self.descriptionLabel,
-      self.learnMoreButton], self.descriptionStackView)
+      self.learnMoreTextView
+    ]
+
+   _ = (views, self.descriptionStackView)
     |> ksr_addArrangedSubviewsToStackView()
 
     if #available(iOS 11.0, *) {
@@ -160,6 +154,19 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   }
 }
 
+extension PledgeDescriptionCell: UITextViewDelegate {
+  func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment,
+                in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    return false
+  }
+
+  func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange,
+                interaction: UITextItemInteraction) -> Bool {
+    self.viewModel.inputs.tapped()
+    return false
+  }
+}
+
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.alignment .~ UIStackView.Alignment.top
@@ -193,23 +200,42 @@ private let dateLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.numberOfLines .~ 0
 }
 
-private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
-  label
-    |> \.text  %~ { _ in Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life() }
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
-    |> \.font .~ UIFont.ksr_caption1()
+private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
+  _ = textView
+    |> \.attributedText .~ attributedLearnMoreText()
+    |> \.isScrollEnabled .~ false
+    |> \.isEditable .~ false
+    |> \.isUserInteractionEnabled .~ true
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
+
+  _ = textView
+    |> \.textContainerInset .~ UIEdgeInsets.zero
+    |> \.textContainer.lineFragmentPadding .~ 0
+    |> \.linkTextAttributes .~ [
+      .foregroundColor: UIColor.ksr_green_500
+  ]
+
+  return textView
 }
 
-private let learnMoreButtonStyle = { (button: UIButton) -> UIButton in
-  button
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_green_500
-    |> UIButton.lens.titleLabel.font %~~ {  _, label in
-      label.traitCollection.isRegularRegular ? .ksr_body(size: 17.0) : .ksr_body(size: 14.0)
-    }
-    |> UIButton.lens.contentHorizontalAlignment .~ .left
-    |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_500
-    |> UIButton.lens.title(for: .normal) %~ { _ in
-      return Strings.Learn_more_about_accountability() }
+private func attributedLearnMoreText() -> NSAttributedString {
+  let string = """
+  \(Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life())
+  \(Strings.Learn_more_about_accountability())
+  """ as NSString
+
+  let linkRange = string.range(of: Strings.Learn_more_about_accountability())
+  let stringRange = string.range(of: string as String)
+
+  let attributedString = NSMutableAttributedString(string: string as String)
+
+  let url = urlForHelpType(
+    HelpType.trust, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+  )
+
+  attributedString.addAttribute(.font, value: UIFont.ksr_caption1(size: 12), range: stringRange)
+  attributedString.addAttribute(.foregroundColor, value: UIColor.ksr_text_dark_grey_500, range: stringRange)
+  attributedString.addAttribute(.link, value: url as Any, range: linkRange)
+
+  return attributedString
 }
