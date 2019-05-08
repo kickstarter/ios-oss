@@ -231,7 +231,7 @@ private func attributedLearnMoreText() -> NSAttributedString {
     HelpType.trust, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
   )
 
-  attributedString.addAttribute(.font, value: UIFont.ksr_caption1(size: 12), range: stringRange)
+  attributedString.addAttribute(.font, value: UIFont.ksr_caption1(), range: stringRange)
   attributedString.addAttribute(.foregroundColor, value: UIColor.ksr_text_dark_grey_500, range: stringRange)
   attributedString.addAttribute(.link, value: url as Any, range: linkRange)
 
