@@ -9,7 +9,7 @@ final class PledgeDataSource: ValueCellDataSource {
     case summary
   }
 
-  func load(amount: Double, currency: String, delivery: String) {
+  func load(amount: Double, currency: String, delivery: String, isLoggedIn: Bool) {
     self.appendRow(
       value: delivery,
       cellClass: PledgeDescriptionCell.self,
@@ -28,11 +28,21 @@ final class PledgeDataSource: ValueCellDataSource {
       toSection: Section.inputs.rawValue
     )
 
+    self.loadSummarySection(isLoggedIn: isLoggedIn)
+  }
+
+  private func loadSummarySection(isLoggedIn: Bool) {
     self.appendRow(
       value: "Total",
       cellClass: PledgeRowCell.self,
       toSection: Section.summary.rawValue
     )
+
+    if !isLoggedIn {
+      self.appendRow(value: (),
+                     cellClass: PledgeContinueCell.self,
+                     toSection: Section.summary.rawValue)
+    }
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
@@ -44,6 +54,8 @@ final class PledgeDataSource: ValueCellDataSource {
     case let (cell as PledgeRowCell, value as String):
       cell.configureWith(value: value)
     case let (cell as PledgeShippingLocationCell, value as (String, String, Double)):
+      cell.configureWith(value: value)
+    case let (cell as PledgeContinueCell, value as ()):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

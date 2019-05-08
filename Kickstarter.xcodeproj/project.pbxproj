@@ -168,7 +168,6 @@
 		774A76EE20D863EF0012A71F /* BetaTools.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774A76AF20D83F6B0012A71F /* BetaTools.storyboard */; };
 		774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */; };
 		774ACC19225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774ACC18225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift */; };
-		77502FC22147D92000620BBC /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
 		77539E6C2147E4EE00A564CD /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
 		77539E6D2147E50E00A564CD /* Stripe.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */; };
@@ -211,6 +210,7 @@
 		77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440020F64F0B005F6B38 /* HelpDataSource.swift */; };
 		77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440220F65074005F6B38 /* HelpViewController.swift */; };
 		77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */; };
+		77ED5200227A004700DAAD13 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
 		77EFBAA62268D32000DA5C3C /* RewardsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAA52268D32000DA5C3C /* RewardsCollectionViewController.swift */; };
 		77EFBAE02268D34A00DA5C3C /* RewardsCollectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBADE2268D33E00DA5C3C /* RewardsCollectionViewControllerTests.swift */; };
 		77EFBAE32268D48A00DA5C3C /* RewardsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */; };
@@ -228,6 +228,7 @@
 		77FA6CAB20F3E3C200809E31 /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */; };
 		77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6CD120F53E5E00809E31 /* SettingsDataSourceTests.swift */; };
 		77FB8BF720F6586500F91EEB /* SettingsHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */; };
+		77FD60A122735AED0084B84C /* PledgeContinueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FD60A022735AED0084B84C /* PledgeContinueCell.swift */; };
 		77FD8B44216D6167000A95AC /* LoadingBarButtonItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */; };
 		77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */; };
 		8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */; };
@@ -1474,6 +1475,7 @@
 		77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewCell.xib; sourceTree = "<group>"; };
 		77FA6CD120F53E5E00809E31 /* SettingsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSourceTests.swift; sourceTree = "<group>"; };
 		77FB8BF620F6586500F91EEB /* SettingsHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsHeaderView.xib; sourceTree = "<group>"; };
+		77FD60A022735AED0084B84C /* PledgeContinueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeContinueCell.swift; sourceTree = "<group>"; };
 		77FD8B43216D6167000A95AC /* LoadingBarButtonItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingBarButtonItemView.xib; sourceTree = "<group>"; };
 		77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBarButtonItemView.swift; sourceTree = "<group>"; };
 		8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDraftStyles.swift; sourceTree = "<group>"; };
@@ -2317,6 +2319,27 @@
 				D09D4ECF2289D63500C33B77 /* Curry.framework in Frameworks */,
 				D0B7124922AEEDF900317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68AA22AF105B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
+				A701B5EF1EB384E1001D4E5F /* PassKit.framework in Frameworks */,
+				77ED5200227A004700DAAD13 /* Stripe.framework in Frameworks */,
+				D0D2ABA21E964852008D298A /* libsqlite3.tbd in Frameworks */,
+				D0D2AB5B1E964849008D298A /* CoreMedia.framework in Frameworks */,
+				A709698C1D1468A200DB39D3 /* Alamofire.framework in Frameworks */,
+				D0D2AB581E964849008D298A /* AVFoundation.framework in Frameworks */,
+				A709698D1D1468A200DB39D3 /* AlamofireImage.framework in Frameworks */,
+				D0D2AB631E964849008D298A /* SystemConfiguration.framework in Frameworks */,
+				D0D2ABA11E964852008D298A /* libicucore.tbd in Frameworks */,
+				D0D2AB571E964849008D298A /* AudioToolbox.framework in Frameworks */,
+				D0D2AB5D1E964849008D298A /* CoreVideo.framework in Frameworks */,
+				D0D2AB611E964849008D298A /* QuartzCore.framework in Frameworks */,
+				017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
+				D0D2AB5C1E964849008D298A /* CoreTelephony.framework in Frameworks */,
+				D0D2AB601E964849008D298A /* OpenTok.framework in Frameworks */,
+				017E88B31CD29C9D003FE5D6 /* FBSDKLoginKit.framework in Frameworks */,
+				D0D2ABA01E964852008D298A /* libc++.tbd in Frameworks */,
+				D0D2ABA31E964852008D298A /* libz.tbd in Frameworks */,
+				D0D2AB651E964849008D298A /* VideoToolbox.framework in Frameworks */,
+				D0D2AB621E964849008D298A /* Security.framework in Frameworks */,
+				D0D2AB5F1E964849008D298A /* OpenGLES.framework in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
 				D09D4ED52289D6B100C33B77 /* OnePasswordExtension.framework in Frameworks */,
 				D0D58DC62257FD0200532AC1 /* Prelude.framework in Frameworks */,
@@ -2634,6 +2657,8 @@
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
+				77FD60A022735AED0084B84C /* PledgeContinueCell.swift */,
+				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
 				370ACAFF225D337900C8745F /* PledgeAmountCell.swift */,
 				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */,
 				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
@@ -4735,6 +4760,7 @@
 				D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */,
 				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,
 				37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */,
+				77FD60A122735AED0084B84C /* PledgeContinueCell.swift in Sources */,
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */,
 				D6B6766920FF8D850082717D /* SettingsNewslettersDataSource.swift in Sources */,
