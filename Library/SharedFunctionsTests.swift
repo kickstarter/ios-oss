@@ -184,31 +184,31 @@ final class SharedFunctionsTests: TestCase {
   }
 
   func testAttributedStringWithLinks() {
-    let string1 = "What a lovely string with a link and another link" as NSString
-    let attrString1 = NSAttributedString(string: string1 as String)
+    let string = "What a lovely string with a link and another link" as NSString
+    let attrString = NSAttributedString(string: string as String)
     let links: [AttributedLinkData] = [
       ("a link", URL(string: "link://a_link"), [.foregroundColor: UIColor.blue]),
       ("another link", URL(string: "link://another_link"), [:])
     ]
-    let string1WithLinks = ksr_attributedString(attrString1, with: links)
+    let stringWithLinks = ksr_attributedString(attrString, with: links)
 
-    let aLinkRange = string1.range(of: "a link")
-    let anotherLinkRange = string1.range(of: "another link")
-    let fullRange = string1.range(of: string1 as String)
+    let aLinkRange = string.range(of: "a link")
+    let anotherLinkRange = string.range(of: "another link")
+    let fullRange = string.range(of: string as String)
 
-    let string1Link1Attribute = string1WithLinks
+    let aLinkAttribute = stringWithLinks
       .attribute(.link, at: aLinkRange.location, longestEffectiveRange: nil, in: fullRange)
-    let string1Link1ColorAttribute = string1WithLinks
+    let aLinkColorAttribute = stringWithLinks
       .attribute(.foregroundColor, at: aLinkRange.location, longestEffectiveRange: nil, in: fullRange)
-    let string1Link2Attribute = string1WithLinks
+    let anotherLinkAttribute = stringWithLinks
       .attribute(.link, at: anotherLinkRange.location, longestEffectiveRange: nil, in: fullRange)
-    let string1Link2ColorAttribute = string1WithLinks
+    let anotherLinkColorAttribute = stringWithLinks
       .attribute(.foregroundColor, at: anotherLinkRange.location, longestEffectiveRange: nil, in: fullRange)
 
-    XCTAssertNotNil(string1Link1Attribute, "a link is a link")
-    XCTAssertNotNil(string1Link1ColorAttribute, "a link has a foreground color")
-    XCTAssertNotNil(string1Link2Attribute, "another link is a link")
-    XCTAssertNil(string1Link2ColorAttribute, "another link has no foreground color")
+    XCTAssertNotNil(aLinkAttribute, "a link is a link")
+    XCTAssertNotNil(aLinkColorAttribute, "a link has a foreground color")
+    XCTAssertNotNil(anotherLinkAttribute, "another link is a link")
+    XCTAssertNil(anotherLinkColorAttribute, "another link has no foreground color")
   }
 
   func testByPledgingYouAgree() {
