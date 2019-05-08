@@ -174,3 +174,19 @@ public func ksr_isOSVersionAvailable(_ version: Double) -> Bool {
 
   return false
 }
+
+public typealias AttributedLinkData = (text: String, url: URL?, attributes: [NSAttributedString.Key: Any])
+
+public func ksr_attributedString(_ attributedString: NSAttributedString,
+                                 with links: [AttributedLinkData]) -> NSAttributedString {
+  let string = attributedString.string as NSString
+  let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
+
+  links.map { text, url, attributes -> (attributes: [NSAttributedString.Key: Any], range: NSRange) in
+    (attributes.merging([.link: url as Any]) { $1 }, string.range(of: text))
+  }
+  .filter { _, range in range.location != NSNotFound }
+  .forEach(mutableAttributedString.addAttributes)
+
+  return mutableAttributedString
+}

@@ -182,4 +182,62 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(ksr_isOSVersionAvailable(12.123))
     XCTAssertTrue(ksr_isOSVersionAvailable(12.9))
   }
+
+  func testAttributedStringWithLinks() {
+    let string1 = "What a lovely string with a link and another link" as NSString
+    let attrString1 = NSAttributedString(string: string1 as String)
+    let links: [AttributedLinkData] = [
+      ("a link", URL(string: "link://a_link"), [.foregroundColor: UIColor.blue]),
+      ("another link", URL(string: "link://another_link"), [:])
+    ]
+    let string1WithLinks = ksr_attributedString(attrString1, with: links)
+
+    let aLinkRange = string1.range(of: "a link")
+    let anotherLinkRange = string1.range(of: "another link")
+    let fullRange = string1.range(of: string1 as String)
+
+    let string1Link1Attribute = string1WithLinks
+      .attribute(.link, at: aLinkRange.location, longestEffectiveRange: nil, in: fullRange)
+    let string1Link1ColorAttribute = string1WithLinks
+      .attribute(.foregroundColor, at: aLinkRange.location, longestEffectiveRange: nil, in: fullRange)
+    let string1Link2Attribute = string1WithLinks
+      .attribute(.link, at: anotherLinkRange.location, longestEffectiveRange: nil, in: fullRange)
+    let string1Link2ColorAttribute = string1WithLinks
+      .attribute(.foregroundColor, at: anotherLinkRange.location, longestEffectiveRange: nil, in: fullRange)
+
+    XCTAssertNotNil(string1Link1Attribute, "a link is a link")
+    XCTAssertNotNil(string1Link1ColorAttribute, "a link has a foreground color")
+    XCTAssertNotNil(string1Link2Attribute, "another link is a link")
+    XCTAssertNil(string1Link2ColorAttribute, "another link has no foreground color")
+  }
+
+  func testByPledgingYouAgree() {
+    let string = Strings.By_pledging_you_agree() as NSString
+    let attrString = NSAttributedString(string: string as String)
+    let links: [AttributedLinkData] = [
+      ("Terms of Use", URL(string: "link://terms_of_use"), [:]),
+      ("Privacy Policy", URL(string: "link://privacy_policy"), [:]),
+      ("Cookie Policy", URL(string: "link://cookie_policy"), [:])
+    ]
+
+    let attrStringWithLinks = ksr_attributedString(attrString, with: links)
+
+    let termsLinkRange = string.range(of: "Terms of Use")
+    let privacyLinkRange = string.range(of: "Privacy Policy")
+    let cookieLinkRange = string.range(of: "Cookie Policy")
+    let fullRange = string.range(of: string as String)
+
+    let termsLinkAttribute = attrStringWithLinks
+      .attribute(.link, at: termsLinkRange.location, longestEffectiveRange: nil, in: fullRange)
+
+    let privacyLinkAttribute = attrStringWithLinks
+      .attribute(.link, at: privacyLinkRange.location, longestEffectiveRange: nil, in: fullRange)
+
+    let cookieLinkAttribute = attrStringWithLinks
+      .attribute(.link, at: cookieLinkRange.location, longestEffectiveRange: nil, in: fullRange)
+
+    XCTAssertNotNil(termsLinkAttribute)
+    XCTAssertNotNil(privacyLinkAttribute)
+    XCTAssertNotNil(cookieLinkAttribute)
+  }
 }

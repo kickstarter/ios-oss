@@ -222,18 +222,19 @@ private func attributedLearnMoreText() -> NSAttributedString {
   \(Strings.Learn_more_about_accountability())
   """ as NSString
 
-  let linkRange = string.range(of: Strings.Learn_more_about_accountability())
-  let stringRange = string.range(of: string as String)
+  let attributes: [NSAttributedString.Key: Any] = [
+    .font: UIFont.ksr_caption1(size: 12),
+    .foregroundColor: UIColor.ksr_text_dark_grey_500
+  ]
 
-  let attributedString = NSMutableAttributedString(string: string as String)
+  let attributedString = NSMutableAttributedString(string: string as String, attributes: attributes)
 
   let url = urlForHelpType(
     HelpType.trust, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
   )
 
-  attributedString.addAttribute(.font, value: UIFont.ksr_caption1(size: 12), range: stringRange)
-  attributedString.addAttribute(.foregroundColor, value: UIColor.ksr_text_dark_grey_500, range: stringRange)
-  attributedString.addAttribute(.link, value: url as Any, range: linkRange)
-
-  return attributedString
+  return ksr_attributedString(
+    attributedString,
+    with: [(Strings.Learn_more_about_accountability(), url, [:])]
+  )
 }
