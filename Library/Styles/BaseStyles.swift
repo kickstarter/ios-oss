@@ -22,6 +22,7 @@ public typealias LabelStyle = (UILabel) -> UILabel
 public typealias StackViewStyle = (UIStackView) -> UIStackView
 public typealias TableViewStyle = (UITableView) -> UITableView
 public typealias TextFieldStyle = (UITextField) -> UITextField
+public typealias TextViewStyle = (UITextView) -> UITextView
 public typealias ViewStyle = (UIView) -> UIView
 
 public func baseControllerStyle<VC: UIViewControllerProtocol>() -> ((VC) -> VC) {
