@@ -6,6 +6,9 @@ import UIKit
 public protocol ProjectPamphletViewControllerDelegate: class {
   func projectPamphlet(_ controller: ProjectPamphletViewController,
                        panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer)
+  func projectPamphletViewController(_ projectPamphletViewController: ProjectPamphletViewController,
+                                     didTapBackThisProject project: Project,
+                                     refTag: RefTag?)
 }
 
 public final class ProjectPamphletViewController: UIViewController {
@@ -135,10 +138,13 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.layoutMargins .~ .init(all: backThisProjectContainerViewMargins)
 
     _ = self.backThisProjectButton
-      |> backThisProjectButtonStyle
+      |> checkoutGreenButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in
+        return Strings.project_back_button()
+    }
 
     _ = self.backThisProjectButton.titleLabel
-      ?|> backThisProjectButtonTitleLabelStyle
+      ?|> checkoutGreenButtonTitleLabelStyle
   }
 
   public override func bindViewModel() {
@@ -202,7 +208,9 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
-
+    self.delegate?.projectPamphletViewController(self,
+                                                 didTapBackThisProject: project,
+                                                 refTag: refTag)
   }
 
   // MARK: - Private Helpers
@@ -267,30 +275,4 @@ extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
   public func projectNavBarControllerDidTapTitle(_ controller: ProjectNavBarViewController) {
     self.contentController.tableView.scrollToTop()
   }
-}
-
-// MARK: - Styles
-
-private var backThisProjectButtonStyle = { (button: UIButton) -> UIButton in
-  button
-    |> greenButtonStyle
-    |> roundedStyle(cornerRadius: 12)
-    |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-    |> UIButton.lens.title(for: .normal) %~ { _ in
-      return Strings.project_back_button()
-  }
-}
-
-private var backThisProjectButtonTitleLabelStyle = { (titleLabel: UILabel?) -> UILabel? in
-  _ = titleLabel
-    ?|> \.font .~ UIFont.ksr_headline()
-    ?|> \.numberOfLines .~ 0
-
-  // Breaking this up to help the compiler
-  _ = titleLabel
-    ?|> \.textAlignment .~ NSTextAlignment.center
-    ?|> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-
-  return titleLabel
 }

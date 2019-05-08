@@ -86,7 +86,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     } else if let backing = project.personalization.backing {
       self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
       self.set(values: [(project, .right(backing))],
-               cellClass: RewardCell.self,
+               cellClass: DeprecatedRewardCell.self,
                inSection: Section.calloutReward.rawValue)
     }
   }
@@ -105,10 +105,10 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       }
 
       self.set(values: availableRewards(for: project),
-               cellClass: RewardCell.self,
+               cellClass: DeprecatedRewardCell.self,
                inSection: Section.availableRewards.rawValue)
       self.set(values: unavailableRewards(for: project),
-               cellClass: RewardCell.self,
+               cellClass: DeprecatedRewardCell.self,
                inSection: Section.unavailableRewards.rawValue)
     }
   }
@@ -163,7 +163,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
 
     switch (cell, value) {
-    case let (cell as RewardCell, value as (Project, Either<Reward, Backing>)):
+    case let (cell as DeprecatedRewardCell, value as (Project, Either<Reward, Backing>)):
       cell.configureWith(value: value)
     case let (cell as ProjectPamphletMainCell, value as Project):
       cell.configureWith(value: value)
