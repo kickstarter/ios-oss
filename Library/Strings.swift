@@ -3746,8 +3746,8 @@ with friends."
    - **de**: "Kickstarter ist kein Geschäft."
    - **es**: "Kickstarter no es una tienda."
    - **fr**: "Kickstarter n'est pas un magasin."
-   - **ja**: "Kickstarter は商品を購入する場ではありません。"
-  */
+   - **ja**: "Kickstarterはオンラインストアではありません。"
+   */
   public static func Kickstarter_is_not_a_store() -> String {
     return localizedString(
       key: "Kickstarter_is_not_a_store",

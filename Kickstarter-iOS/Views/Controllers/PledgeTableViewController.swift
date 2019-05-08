@@ -66,6 +66,22 @@ class PledgeTableViewController: UITableViewController {
     let footerView = tableView.dequeueReusableHeaderFooterView(withClass: PledgeFooterView.self)
     return footerView
   }
+
+  internal override func tableView(_ tableView: UITableView,
+                                   willDisplay cell: UITableViewCell,
+                                   forRowAt indexPath: IndexPath) {
+    if let descriptionCell = cell as? PledgeDescriptionCell {
+      descriptionCell.delegate = self
+    }
+  }
+}
+
+extension PledgeTableViewController: PledgeDescriptionCellDelegate {
+ internal func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell) {
+    let vc = HelpWebViewController.configuredWith(helpType: .trust)
+    let nav = UINavigationController(rootViewController: vc)
+    self.present(nav, animated: true, completion: nil)
+  }
 }
 
 // MARK: - Styles

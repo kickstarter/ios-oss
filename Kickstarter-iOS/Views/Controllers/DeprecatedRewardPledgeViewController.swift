@@ -230,7 +230,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.disclaimerButton
       |> UIButton.lens.accessibilityLabel %~ { _ in
-        Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life()
+        Strings.Kickstarter_is_not_a_store()
+          + " " + Strings.Its_a_way_to_bring_creative_projects_to_life()
           + " " + Strings.Learn_more_about_accountability()
     }
 
