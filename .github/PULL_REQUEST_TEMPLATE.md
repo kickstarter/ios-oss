@@ -26,6 +26,10 @@ Trello, screenshots, external resources?
 - [ ] Works with VoiceOver
 - [ ] Supports Dynamic Type 
 
+# 🏎 Performance
+
+- [ ] Optimized Blended Layers (screenshots)
+
 # ✅ Acceptance criteria
 
 - [ ] Steps to test this feature
