@@ -40,13 +40,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? "") }
 
     self.reloadWithData = Signal.combineLatest(amountCurrencyDelivery, isLoggedIn)
-      .map { arg in
-        let (amountCurrencyDelivery, isLoggedIn) = arg
+      .map { amountCurrencyDelivery, isLoggedIn in
+        let (amount, currency, delivery) = amountCurrencyDelivery
 
-        return (amountCurrencyDelivery.0,
-                amountCurrencyDelivery.1,
-                amountCurrencyDelivery.2,
-                isLoggedIn)
+        return (amount, currency, delivery, isLoggedIn)
     }
   }
 
