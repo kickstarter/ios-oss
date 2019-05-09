@@ -39,11 +39,7 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
     <> TVC.lens.tableView.rowHeight .~ UITableView.automaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 
-  #if os(iOS)
-    return style <> TVC.lens.tableView.separatorStyle .~ .none
-  #else
-    return style
-  #endif
+  return style <> TVC.lens.tableView.separatorStyle .~ .none
 }
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {

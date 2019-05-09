@@ -4,9 +4,7 @@ import SystemConfiguration
 
 public enum Reachability {
   case wifi
-  #if os(iOS)
   case wwan
-  #endif
   case none
 
   public static var current: Reachability {
@@ -56,11 +54,10 @@ private func reachabilityFlags(forNetworkReachability networkReachability: SCNet
 }
 
 private func reachability(forFlags flags: SCNetworkReachabilityFlags) -> Reachability {
-  #if os(iOS)
   if flags.contains(.isWWAN) {
     return .wwan
   }
-  #endif
+
   if flags.contains(.reachable) {
     return .wifi
   }
