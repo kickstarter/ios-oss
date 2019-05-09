@@ -102,7 +102,7 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.shadowOpacity .~ 0.12
       |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
       |> \.shadowRadius .~ 1.0
-      |> \.cornerRadius .~ 16.0
+      |> \.cornerRadius .~ CheckoutStyleConstants.cardStyleRoundedCornerRadius
 
     if #available(iOS 11.0, *) {
       _ = self.backThisProjectContainerView.layer

@@ -1,6 +1,10 @@
 import Prelude
 import UIKit
 
+public enum CheckoutStyleConstants {
+  public static let cardStyleRoundedCornerRadius: CGFloat = 16.0
+}
+
 public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
   return { (stackView: UIStackView) in
     let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)

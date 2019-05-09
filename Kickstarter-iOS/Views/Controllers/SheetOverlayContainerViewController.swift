@@ -1,8 +1,10 @@
 import UIKit
+import Library
 import Prelude
 
-// A view controller intended to be used as a container for another view controller
-// SheetOverlayContainerViewController masks the contained VC in a "card-like" way
+/* SheetOverlayContainerViewController intended to be used as a container for another view controller
+    that you would like to render as a "sheet" or "card" that partially covers the content beneath it.
+*/
 
 final class SheetOverlayContainerViewController: UIViewController {
   private let transitionAnimator = SheetOverlayTransitionAnimator()
@@ -10,7 +12,9 @@ final class SheetOverlayContainerViewController: UIViewController {
   init(childViewController: UIViewController, childViewOffset: CGFloat) {
     super.init(nibName: nil, bundle: nil)
 
-    self.modalPresentationStyle = .custom
+    _ = self
+      |> \.modalPresentationStyle .~ .custom
+      |> \.transitioningDelegate .~ self
 
     self.addChild(childViewController)
     self.configureChildView(view: childViewController.view, offset: childViewOffset)
@@ -30,12 +34,12 @@ final class SheetOverlayContainerViewController: UIViewController {
     view.frame = CGRect(x: superviewFrame.origin.x,
                         y: offset,
                         width: superviewFrame.width,
-                        height: superviewFrame.height)
+                        height: superviewFrame.height - offset)
 
     if #available(iOS 11.0, *) {
       _ = view.layer
         |> \.masksToBounds .~ true
-        |> \.cornerRadius .~ 16.0
+        |> \.cornerRadius .~ CheckoutStyleConstants.cardStyleRoundedCornerRadius
         |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
     }
   }
