@@ -171,28 +171,11 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
   func projectPamphletViewController(_ projectPamphletViewController: ProjectPamphletViewController,
                                      didTapBackThisProject project: Project,
                                      refTag: RefTag?) {
-//    let rewardsViewController = RewardsCollectionViewController.instantiate(with: project, refTag: refTag)
-//
-//    let navigationController = UINavigationController(rootViewController: rewardsViewController)
-//
-//    self.present(navigationController, animated: true)
-    let addNewCardVC = AddNewCardViewController.instantiate()
-    addNewCardVC.delegate = self
-    let navigationController = UINavigationController.init(rootViewController: addNewCardVC)
-    let cardVC = SheetOverlayContainerViewController(childViewController: navigationController, childViewOffset: 45)
-    cardVC.transitioningDelegate = cardVC
+    let rewardsViewController = RewardsCollectionViewController.instantiate(with: project, refTag: refTag)
 
-    self.present(cardVC, animated: true)
-  }
-}
+    let navigationController = UINavigationController(rootViewController: rewardsViewController)
 
-extension ProjectNavigatorViewController: AddNewCardViewControllerDelegate {
-  func addNewCardViewController(_ viewController: AddNewCardViewController, didSucceedWithMessage message: String) {
-    //
-  }
-
-  func addNewCardViewControllerDismissed(_ viewController: AddNewCardViewController) {
-    self.dismiss(animated: true, completion: nil)
+    self.present(navigationController, animated: true)
   }
 }
 
