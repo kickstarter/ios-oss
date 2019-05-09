@@ -149,27 +149,10 @@ public func settingsStackViewStyle(_ stackView: UIStackView) -> UIStackView {
 }
 
 public func settingsGroupedTableViewStyle(_ tableView: UITableView) -> UITableView {
-  let style = tableView
+  return tableView
     |> \.allowsSelection .~ false
     |> \.backgroundColor .~ .ksr_grey_200
     |> \.separatorInset .~ .zero
-
-  if #available(iOS 11, *) { } else {
-    let estimatedSectionFooterHeight: CGFloat = 44
-    let estimatedSectionHeaderHeight: CGFloat = 100
-    let estimatedRowHeight: CGFloat = 44
-    let height = UITableView.automaticDimension
-
-    return style
-      |> \.estimatedSectionFooterHeight .~ estimatedSectionFooterHeight
-      |> \.estimatedSectionHeaderHeight .~ estimatedSectionHeaderHeight
-      |> \.estimatedRowHeight .~ estimatedRowHeight
-      |> \.sectionFooterHeight .~ height
-      |> \.sectionHeaderHeight .~ height
-      |> \.rowHeight .~ height
-  }
-
-  return style
 }
 
 public func settingsTextFieldStyle(_ textField: UITextField) -> UITextField {

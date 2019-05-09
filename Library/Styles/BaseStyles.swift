@@ -137,11 +137,8 @@ public let formFieldStyle: TextFieldStyle = { (textField: UITextField) in
 }
 
 public let ignoresInvertColorsImageViewStyle: ImageViewStyle = { (imageView: UIImageView) in
-  if #available(iOS 11, *) {
-    return imageView
-      |> \.accessibilityIgnoresInvertColors .~ true
-  }
   return imageView
+    |> \.accessibilityIgnoresInvertColors .~ true
 }
 
 public let separatorStyle: ViewStyle = { (view: UIView) in
