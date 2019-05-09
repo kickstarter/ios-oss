@@ -179,7 +179,7 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
     let addNewCardVC = AddNewCardViewController.instantiate()
     addNewCardVC.delegate = self
     let navigationController = UINavigationController.init(rootViewController: addNewCardVC)
-    let cardVC = CardContainerViewController(childViewController: navigationController, childViewOffset: 45)
+    let cardVC = SheetOverlayContainerViewController(childViewController: navigationController, childViewOffset: 45)
     cardVC.transitioningDelegate = cardVC
 
     self.present(cardVC, animated: true)

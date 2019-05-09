@@ -1,15 +1,16 @@
 import UIKit
+import Prelude
 
 // A view controller intended to be used as a container for another view controller
-// CardContainerViewController masks the contained VC in a "card-like" way
+// SheetOverlayContainerViewController masks the contained VC in a "card-like" way
 
-final class CardContainerViewController: UIViewController {
+final class SheetOverlayContainerViewController: UIViewController {
   private let transitionAnimator = SheetOverlayTransitionAnimator()
 
   init(childViewController: UIViewController, childViewOffset: CGFloat) {
     super.init(nibName: nil, bundle: nil)
 
-    self.modalPresentationStyle = .pageSheet
+    self.modalPresentationStyle = .custom
 
     self.addChild(childViewController)
     self.configureChildView(view: childViewController.view, offset: childViewOffset)
@@ -24,13 +25,23 @@ final class CardContainerViewController: UIViewController {
   private func configureChildView(view: UIView, offset: CGFloat) {
     self.view.addSubview(view)
 
-    view.frame = self.view.frame.offsetBy(dx: 0, dy: offset)
-    view.layer.cornerRadius = 12
-    view.layer.masksToBounds = true
+    let superviewFrame = self.view.frame
+
+    view.frame = CGRect(x: superviewFrame.origin.x,
+                        y: offset,
+                        width: superviewFrame.width,
+                        height: superviewFrame.height)
+
+    if #available(iOS 11.0, *) {
+      _ = view.layer
+        |> \.masksToBounds .~ true
+        |> \.cornerRadius .~ 16.0
+        |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+    }
   }
 }
 
-extension CardContainerViewController: UIViewControllerTransitioningDelegate {
+extension SheetOverlayContainerViewController: UIViewControllerTransitioningDelegate {
   func animationController(forPresented presented: UIViewController, presenting: UIViewController,
                            source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
     return self.transitionAnimator

@@ -32,17 +32,16 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
     containerView: UIView,
     transitionContext: UIViewControllerContextTransitioning) {
 
-    let darkOverlay = UIView(frame: toVC.view.frame)
+    let darkOverlay = UIView(frame: fromVC.view.frame)
     darkOverlay.backgroundColor = UIColor.ksr_soft_black.withAlphaComponent(0.8)
     darkOverlay.alpha = 0.0
 
-    fromVC.view.backgroundColor = .clear
+    toVC.view.backgroundColor = .clear
 
     toVC.view.frame = fromVC.view.frame.offsetBy(dx: 0, dy: toVC.view.frame.height)
 
-    containerView.addSubview(fromVC.view)
     containerView.addSubview(darkOverlay)
-    containerView.insertSubview(toVC.view, aboveSubview: darkOverlay)
+    containerView.addSubview(toVC.view)
 
     let toFrame = fromVC.view.frame
 
@@ -64,6 +63,26 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
                                 toViewController toVC: UIViewController,
                                 containerView: UIView,
                                 transitionContext: UIViewControllerContextTransitioning) {
+    let darkOverlay = UIView(frame: toVC.view.frame)
+    darkOverlay.backgroundColor = UIColor.ksr_soft_black.withAlphaComponent(0.8)
+    darkOverlay.alpha = 1.0
 
+    containerView.insertSubview(darkOverlay, belowSubview: fromVC.view)
+
+    fromVC.view.backgroundColor = .clear
+
+    let toFrame = toVC.view.frame.offsetBy(dx: 0, dy: fromVC.view.frame.height)
+
+    UIView.animate(
+      withDuration: self.transitionDuration(using: transitionContext),
+      delay: 0,
+      options: .curveEaseInOut,
+      animations: {
+        fromVC.view.frame = toFrame
+        darkOverlay.alpha = 0.0
+    }, completion: { _ in
+      darkOverlay.removeFromSuperview()
+      transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+    })
   }
 }

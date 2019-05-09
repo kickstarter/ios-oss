@@ -30,17 +30,6 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let backThisProjectContainerSublayer: CAShapeLayer = {
-    let mask = CAShapeLayer()
-      |> \.fillColor .~ UIColor.white.cgColor
-      |> \.shadowColor .~ UIColor.black.cgColor
-      |> \.shadowOpacity .~ 0.12
-      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-      |> \.shadowRadius .~ 1.0
-
-    return mask
-  }()
-
   public static func configuredWith(projectOrParam: Either<Project, Param>,
                                     refTag: RefTag?) -> ProjectPamphletViewController {
 
@@ -84,7 +73,6 @@ public final class ProjectPamphletViewController: UIViewController {
                     constant: initialTopConstraint)
 
     if self.shouldShowNativeCheckout() {
-      self.configureSublayers()
       self.updateContentInsets()
     }
   }
@@ -102,40 +90,24 @@ public final class ProjectPamphletViewController: UIViewController {
     }
   }
 
-  private func configureViews() {
-    // Configure subviews
-    self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
-
-    self.view.addSubview(self.backThisProjectContainerView)
-
-    self.backThisProjectButton.addTarget(self, action: #selector(backThisProjectTapped), for: .touchUpInside)
-
-    // Configure constraints
-    let backThisProjectContainerViewConstraints = [
-      self.backThisProjectContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-    ]
-
-    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
-    let minHeight = Styles.minTouchSize.height
-
-    let backThisProjectButtonConstraints = [
-      self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-      self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
-      self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
-      self.backThisProjectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
-    ]
-
-    NSLayoutConstraint.activate(backThisProjectContainerViewConstraints + backThisProjectButtonConstraints)
-  }
-
   public override func bindStyles() {
     super.bindStyles()
 
     _ = self.backThisProjectContainerView
       |> \.layoutMargins .~ .init(all: backThisProjectContainerViewMargins)
+
+    _ = self.backThisProjectContainerView.layer
+      |> \.backgroundColor .~ UIColor.white.cgColor
+      |> \.shadowColor .~ UIColor.black.cgColor
+      |> \.shadowOpacity .~ 0.12
+      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
+      |> \.shadowRadius .~ 1.0
+      |> \.cornerRadius .~ 16.0
+
+    if #available(iOS 11.0, *) {
+      _ = self.backThisProjectContainerView.layer
+        |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+    }
 
     _ = self.backThisProjectButton
       |> checkoutGreenButtonStyle
@@ -188,18 +160,37 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   // MARK: - Private View Setup Functions
-  private func configureSublayers() {
-    let updatedPath = UIBezierPath(roundedRect: self.backThisProjectContainerView.bounds,
-                                   byRoundingCorners: [.topLeft, .topRight],
-                                   cornerRadii: CGSize(width: 16, height: 16))
 
-    _ = self.backThisProjectContainerSublayer
-      |> \.path .~ updatedPath.cgPath
+  private func configureViews() {
+    // Configure subviews
+    self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
 
-    if self.backThisProjectContainerView.layer.sublayers?.count == 1 {
-      self.backThisProjectContainerView.layer.insertSublayer(self.backThisProjectContainerSublayer, at: 0)
-    }
+    self.view.addSubview(self.backThisProjectContainerView)
+
+    self.backThisProjectButton.addTarget(self, action: #selector(backThisProjectTapped), for: .touchUpInside)
+
+    // Configure constraints
+    let backThisProjectContainerViewConstraints = [
+      self.backThisProjectContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    ]
+
+    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
+    let minHeight = Styles.minTouchSize.height
+
+    let backThisProjectButtonConstraints = [
+      self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+      self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+      self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
+      self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
+      self.backThisProjectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
+    ]
+
+    NSLayoutConstraint.activate(backThisProjectContainerViewConstraints + backThisProjectButtonConstraints)
   }
+
+  // MARK: - Private Helpers
 
   private func setInitial(constraints: [NSLayoutConstraint?], constant: CGFloat) {
     constraints.forEach {
@@ -213,7 +204,6 @@ public final class ProjectPamphletViewController: UIViewController {
                                                  refTag: refTag)
   }
 
-  // MARK: - Private Helpers
   private func shouldShowNativeCheckout() -> Bool {
     // Show native checkout only if the `ios_native_checkout` flag is enabled
     return AppEnvironment.current.config?.features[Feature.checkout.rawValue] == .some(true)
