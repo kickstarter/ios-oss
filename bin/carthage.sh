@@ -9,16 +9,15 @@ brew install https://github.com/Homebrew/homebrew-core/raw/684f2002f6e83c1de95bf
 brew switch carthage 0.33.0
 
 # Cache Cartfile
-
-if ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
-  # If not running on CircleCI, update deps, don't cache Cartfile.resolved
+if [ -n "$FORCE_CARTHAGE" ] || ! [ $(cmp -s Cartfile.resolved Carthage/Cartfile.resolved) ]; then
+  # If not running on CircleCI, update dependencies
   if [ -z "${CIRCLECI:-}" ]; then
     echo "Updating dependencies"
     carthage update --platform iOS
-  # Else if running on CircleCI, build resolved deps and cache Cartfile.resolved
+  # Else if running on CircleCI, build resolved dependencies
   else
     echo "Resolving dependencies"
     carthage bootstrap --platform iOS
-    cp Cartfile.resolved Carthage
   fi
+  cp Cartfile.resolved Carthage
 fi
