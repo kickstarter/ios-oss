@@ -3,13 +3,13 @@ import Library
 import KsApi
 import Prelude
 
-final class RewardsCollectionViewController: UICollectionViewController {
-  enum Layout {
-    enum Card {
-      static let width: CGFloat = 249
-    }
+private enum Layout {
+  enum Card {
+    static let width: CGFloat = 249
   }
+}
 
+final class RewardsCollectionViewController: UICollectionViewController {
   // MARK: - Properties
 
   private let dataSource = RewardsCollectionViewDataSource()
