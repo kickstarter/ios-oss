@@ -2,9 +2,10 @@ import UIKit
 import Library
 import Prelude
 
-/* SheetOverlayContainerViewController intended to be used as a container for another view controller
-    that you would like to render as a "sheet" or "card" that partially covers the content beneath it.
-*/
+/**
+ SheetOverlayContainerViewController intended to be used as a container for another view controller
+ that you would like to render as a "sheet" or "card" that partially covers the content beneath it.
+ */
 
 final class SheetOverlayContainerViewController: UIViewController {
   private let transitionAnimator = SheetOverlayTransitionAnimator()
