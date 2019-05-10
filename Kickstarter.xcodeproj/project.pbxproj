@@ -1166,6 +1166,7 @@
 		D7A37D7A1E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */; };
 		D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */; };
 		D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */; };
+		D7E20E6D2284A3BD00BA61A0 /* ProjectStatesContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D741577A2284849000C0B907 /* ProjectStatesContainerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2924,6 +2925,7 @@
 		D72370932119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewControllerTests.swift; sourceTree = "<group>"; };
 		D7237095211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFollowCellViewModelTests.swift; sourceTree = "<group>"; };
 		D7237097211A3925001EA4CA /* SettingsFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsFollowCell.swift; sourceTree = "<group>"; };
+		D741577A2284849000C0B907 /* ProjectStatesContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatesContainerView.swift; sourceTree = "<group>"; };
 		D7417CD520BF12F4004DABA6 /* ExportDataEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDataEnvelope.swift; sourceTree = "<group>"; };
 		D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportStateEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordInput.swift; sourceTree = "<group>"; };
@@ -3385,6 +3387,7 @@
 			isa = PBXGroup;
 			children = (
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
+				D741577A2284849000C0B907 /* ProjectStatesContainerView.swift */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
@@ -3464,7 +3467,6 @@
 				A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
 				77FD60A022735AED0084B84C /* PledgeContinueCell.swift */,
-				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
 				370ACAFF225D337900C8745F /* PledgeAmountCell.swift */,
 				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */,
 				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
@@ -6339,6 +6341,7 @@
 				A75A29281CE0B7DD00D35E5C /* BackingCell.swift in Sources */,
 				A79F53001D8F50CF00C051B8 /* ProjectPamphletSubpageCell.swift in Sources */,
 				013672E11E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift in Sources */,
+				D7E20E6D2284A3BD00BA61A0 /* ProjectStatesContainerView.swift in Sources */,
 				A75A29251CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */,
 				A7CC14361D00E73D00035C52 /* FindFriendsViewController.swift in Sources */,
 				3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */,

@@ -21,15 +21,13 @@ public final class ProjectPamphletViewController: UIViewController {
   @IBOutlet weak private var navBarTopConstraint: NSLayoutConstraint!
 
   private let backThisProjectContainerViewMargins = Styles.grid(3)
-  private let backThisProjectContainerView: UIView = {
-    return UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private let backThisProjectContainerView: ProjectStatesContainerView = {
+    return ProjectStatesContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
   private let backThisProjectButton: UIButton = {
      return MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
   private let backThisProjectContainerSublayer: CAShapeLayer = {
     let mask = CAShapeLayer()
       |> \.fillColor .~ UIColor.white.cgColor
@@ -104,11 +102,11 @@ public final class ProjectPamphletViewController: UIViewController {
 
   private func configureViews() {
     // Configure subviews
-    self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
+//    self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
 
     self.view.addSubview(self.backThisProjectContainerView)
 
-    self.backThisProjectButton.addTarget(self, action: #selector(backThisProjectTapped), for: .touchUpInside)
+//    self.backThisProjectButton.addTarget(self, action: #selector(backThisProjectTapped), for: .touchUpInside)
 
     // Configure constraints
     let backThisProjectContainerViewConstraints = [
@@ -116,19 +114,19 @@ public final class ProjectPamphletViewController: UIViewController {
       self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     ]
+//
+//    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
+//    let minHeight = Styles.minTouchSize.height
 
-    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
-    let minHeight = Styles.minTouchSize.height
+//    let backThisProjectButtonConstraints = [
+//      self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+//      self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+//      self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
+//      self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
+//      self.backThisProjectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
+//    ]
 
-    let backThisProjectButtonConstraints = [
-      self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-      self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
-      self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
-      self.backThisProjectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
-    ]
-
-    NSLayoutConstraint.activate(backThisProjectContainerViewConstraints + backThisProjectButtonConstraints)
+    NSLayoutConstraint.activate(backThisProjectContainerViewConstraints)// + backThisProjectButtonConstraints)
   }
 
   public override func bindStyles() {
@@ -137,14 +135,14 @@ public final class ProjectPamphletViewController: UIViewController {
     _ = self.backThisProjectContainerView
       |> \.layoutMargins .~ .init(all: backThisProjectContainerViewMargins)
 
-    _ = self.backThisProjectButton
-      |> checkoutGreenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        return Strings.project_back_button()
-    }
-
-    _ = self.backThisProjectButton.titleLabel
-      ?|> checkoutGreenButtonTitleLabelStyle
+//    _ = self.backThisProjectButton
+//      |> checkoutGreenButtonStyle
+//      |> UIButton.lens.title(for: .normal) %~ { _ in
+//        return Strings.project_back_button()
+//    }
+//
+//    _ = self.backThisProjectButton.titleLabel
+//      ?|> checkoutGreenButtonTitleLabelStyle
   }
 
   public override func bindViewModel() {
@@ -179,6 +177,12 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] value in
         self?.navBarTopConstraint.constant = value
+    }
+
+    self.viewModel.outputs.projectStateOutput
+      .observeForUI()
+      .observeValues { [weak self] type in
+        self?.backThisProjectContainerView.configure(value: type)
     }
   }
 

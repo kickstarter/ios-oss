@@ -45,6 +45,9 @@ public protocol ProjectPamphletViewModelOutputs {
 
   /// Emits a float to update topLayoutConstraints constant.
   var topLayoutConstraintConstant: Signal<CGFloat, NoError> { get }
+
+  var projectStateOutput: Signal<ProjectStateCTAType, NoError> { get }
+
 }
 
 public protocol ProjectPamphletViewModelType {
@@ -70,11 +73,25 @@ ProjectPamphletViewModelOutputs {
         }
     }
 
+    let user = viewDidLoadProperty.signal
+      .switchMap { _ in
+        AppEnvironment.current.apiService.fetchUserSelf()
+          .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
+          .demoteErrors()
+    }
+
     self.goToRewards = freshProjectAndLiveStreamsAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, _, refTag in
         return (project, refTag)
     }
+
+    let project = freshProjectAndLiveStreamsAndRefTag
+      .map { project, _, _ in project }
+
+    self.projectStateOutput = Signal.combineLatest(project, user)
+      .map { project, user in projectStateButton(backer: user, project: project) }
+
 
     self.configureChildViewControllersWithProjectAndLiveStreams = freshProjectAndLiveStreamsAndRefTag
       .map { project, liveStreams, refTag in (project, liveStreams ?? [], refTag) }
@@ -170,6 +187,8 @@ ProjectPamphletViewModelOutputs {
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
   public let topLayoutConstraintConstant: Signal<CGFloat, NoError>
 
+  public let projectStateOutput: Signal<ProjectStateCTAType, NoError>
+
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }
 }
@@ -246,6 +265,15 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   return HTTPCookie(properties: properties)
 }
 
+private func projectStateButton(backer: User, project: Project) -> ProjectStateCTAType {
+
+  if project.state == .live {
+    return ProjectStateCTAType.viewBacking
+  }
+
+  return ProjectStateCTAType.viewRewards
+}
+
 private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
   -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> {
 
@@ -270,4 +298,24 @@ private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, 
       return projectAndLiveStreams.prefix(value: (project, nil))
     }
     return projectAndLiveStreams
+}
+
+public enum ProjectStateCTAType {
+  case pledge
+  case manage
+  case viewBacking
+  case viewRewards
+
+  public var buttonTitle: String {
+    switch self {
+    case .pledge:
+      return "Back this project"
+    case .manage:
+      return "Manage"
+    case .viewBacking:
+      return "View your pledge"
+    case .viewRewards:
+      return "View rewards"
+    }
+  }
 }
