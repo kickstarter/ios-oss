@@ -6990,11 +6990,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
-					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
-				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
@@ -7103,10 +7098,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
-				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
@@ -7130,10 +7121,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
@@ -7869,11 +7856,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=appletv*]" = (
-					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/tvOS/HockeySDK.embeddedframework",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/tvOS",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",

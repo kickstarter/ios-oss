@@ -32,17 +32,11 @@ public protocol ShareViewModelInputs {
   /// Call with the context that this sharing is taking place in.
   func configureWith(shareContext: ShareContext, shareContextView: UIView?)
 
-  /// Call when the direct-share facebook button is pressed.
-  func facebookButtonTapped()
-
   /// Call when the general share button is pressed.
   func shareButtonTapped()
 
   /// Call from the UIActivityViewController's completion handler.
   func shareActivityCompletion(with data: ShareActivityCompletionData)
-
-  /// Call when the direct-share twitter button is pressed.
-  func twitterButtonTapped()
 }
 
 public protocol ShareViewModelOutputs {
@@ -131,10 +125,6 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   public func configureWith(shareContext: ShareContext, shareContextView: UIView?) {
     self.shareContextProperty.value = (shareContext, shareContextView)
   }
-  fileprivate let facebookButtonTappedProperty = MutableProperty(())
-  public func facebookButtonTapped() {
-    self.facebookButtonTappedProperty.value = ()
-  }
   fileprivate let shareButtonTappedProperty = MutableProperty(())
   public func shareButtonTapped() {
     self.shareButtonTappedProperty.value = ()
@@ -142,10 +132,6 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   fileprivate let shareActivityCompletionProperty = MutableProperty<ShareActivityCompletionData?>(nil)
   public func shareActivityCompletion(with data: ShareActivityCompletionData) {
     self.shareActivityCompletionProperty.value = data
-  }
-  fileprivate let twitterButtonTappedProperty = MutableProperty(())
-  public func twitterButtonTapped() {
-    self.twitterButtonTappedProperty.value = ()
   }
 
   public let showShareSheet: Signal<(UIActivityViewController, UIView?), NoError>

@@ -6,7 +6,6 @@
 import Prelude
 import ReactiveSwift
 import Result
-import Social
 import XCTest
 
 internal final class ShareViewModelTests: TestCase {

@@ -62,7 +62,7 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private var initialTopConstraint: CGFloat {
-    return parent?.view.safeAreaInsets.top ?? 0.0
+    return self.parent?.view.safeAreaInsets.top ?? 0.0
   }
 
   public override func bindViewModel() {
