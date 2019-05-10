@@ -13,7 +13,14 @@ private enum Layout {
   }
 }
 
+internal protocol PledgeDescriptionCellDelegate: class {
+  func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell)
+}
+
 final class PledgeDescriptionCell: UITableViewCell, ValueCell {
+  fileprivate let viewModel = PledgeDescriptionCellViewModel()
+  internal weak var delegate: PledgeDescriptionCellDelegate?
+
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -24,34 +31,16 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var descriptionLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var learnMoreLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var spacerView: UIView = {
-    return UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
+  private lazy var spacerView = UIView(frame: .zero)
+  private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
   // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    _ = (self.rootStackView, self.contentView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = ([self.containerImageView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = (self.pledgeImageView, self.containerImageView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    self.configureStackView()
-
-    NSLayoutConstraint.activate([
-      self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
-      self.containerImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
-      self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
-    ])
+    self.configureSubviews()
+    self.bindViewModel()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -85,22 +74,32 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     _ = self.dateLabel
       |> dateLabelStyle
 
-    _ = self.descriptionLabel
+    _ = self.learnMoreTextView
       |> checkoutBackgroundStyle
-    _ = self.descriptionLabel
-      |> descriptionLabelStyle
 
-    _ = self.learnMoreLabel
-      |> checkoutBackgroundStyle
-    _ = self.learnMoreLabel
-      |> learnMoreLabelStyle
+    _ = self.learnMoreTextView
+      |> learnMoreTextViewStyle
   }
 
-  // MARK: - Configuration
+  private func configureSubviews() {
+    _ = (self.rootStackView, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
-  func configureWith(value: String) {
-    _ = self.dateLabel
-      |> \.text .~ value
+    _ = ([self.containerImageView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.pledgeImageView, self.containerImageView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    self.configureStackView()
+
+    NSLayoutConstraint.activate([
+      self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
+      self.containerImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
+      self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
+      ])
   }
 
   private func configureStackView() {
@@ -108,11 +107,14 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       self.spacerView.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height)
     ])
 
-   _ = ([self.spacerView,
+    let views = [
+      self.spacerView,
       self.estimatedDeliveryLabel,
       self.dateLabel,
-      self.descriptionLabel,
-      self.learnMoreLabel], self.descriptionStackView)
+      self.learnMoreTextView
+    ]
+
+   _ = (views, self.descriptionStackView)
     |> ksr_addArrangedSubviewsToStackView()
 
     if #available(iOS 11.0, *) {
@@ -124,9 +126,42 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       view.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height).isActive = true
       self.descriptionStackView.insertArrangedSubview(view, at: 3)
     }
-
     _ = ([self.descriptionStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  // MARK: - Binding
+
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
+    self.dateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryText
+
+    self.viewModel.outputs.presentTrustAndSafety
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let _self = self else { return }
+        self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(_self)
+    }
+  }
+
+  // MARK: - Configuration
+
+  internal func configureWith(value: String) {
+    self.viewModel.inputs.configureWith(estimatedDeliveryDate: value)
+  }
+}
+
+extension PledgeDescriptionCell: UITextViewDelegate {
+  func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment,
+                in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    return false
+  }
+
+  func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange,
+                interaction: UITextItemInteraction) -> Bool {
+    self.viewModel.inputs.learnMoreTapped()
+    return false
   }
 }
 
@@ -163,20 +198,42 @@ private let dateLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.numberOfLines .~ 0
 }
 
-private let descriptionLabelStyle: LabelStyle = { (label: UILabel) in
-  label
-    |> \.text  %~ { _ in Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life() }
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
-    |> \.font .~ UIFont.ksr_caption1()
+private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
+  _ = textView
+    |> \.attributedText .~ attributedLearnMoreText()
+    |> \.isScrollEnabled .~ false
+    |> \.isEditable .~ false
+    |> \.isUserInteractionEnabled .~ true
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
+
+  _ = textView
+    |> \.textContainerInset .~ UIEdgeInsets.zero
+    |> \.textContainer.lineFragmentPadding .~ 0
+    |> \.linkTextAttributes .~ [
+      .foregroundColor: UIColor.ksr_green_500
+  ]
+
+  return textView
 }
 
-private let learnMoreLabelStyle: LabelStyle = { (label: UILabel) in
-  label
-    |> \.text  %~ { _ in "\(Strings.Learn_more_about_accountability())." }
-    |> \.textColor .~ UIColor.ksr_green_500
-    |> \.font .~ UIFont.ksr_caption1()
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
+private func attributedLearnMoreText() -> NSAttributedString {
+  let string = """
+  \(Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life())
+  \(Strings.Learn_more_about_accountability())
+  """ as NSString
+
+  let linkRange = string.range(of: Strings.Learn_more_about_accountability())
+  let stringRange = string.range(of: string as String)
+
+  let attributedString = NSMutableAttributedString(string: string as String)
+
+  let url = urlForHelpType(
+    HelpType.trust, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+  )
+
+  attributedString.addAttribute(.font, value: UIFont.ksr_caption1(), range: stringRange)
+  attributedString.addAttribute(.foregroundColor, value: UIColor.ksr_text_dark_grey_500, range: stringRange)
+  attributedString.addAttribute(.link, value: url as Any, range: linkRange)
+
+  return attributedString
 }

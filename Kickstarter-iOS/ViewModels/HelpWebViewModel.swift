@@ -45,7 +45,7 @@ internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInp
   }
 }
 
-private func urlForHelpType(_ helpType: HelpType, baseUrl: URL) -> URL? {
+public func urlForHelpType(_ helpType: HelpType, baseUrl: URL) -> URL? {
   switch helpType {
   case .cookie:
     return baseUrl.appendingPathComponent("cookies")
