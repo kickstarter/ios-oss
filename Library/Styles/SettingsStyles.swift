@@ -139,10 +139,10 @@ public func settingsLabelStyle(_ label: UILabel) -> UILabel {
 public func settingsStackViewStyle(_ stackView: UIStackView) -> UIStackView {
   return stackView
     |> \.axis %~~ { _, stackView in
-      stackView.traitCollection.ksr_isAccessibilityCategory() ? .vertical : .horizontal
+      stackView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .vertical : .horizontal
     }
     |> \.alignment %~~ { _, stackView in
-      stackView.traitCollection.ksr_isAccessibilityCategory() ? .leading : .fill
+      stackView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .leading : .fill
     }
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.spacing .~ 8
@@ -160,6 +160,6 @@ public func settingsTextFieldStyle(_ textField: UITextField) -> UITextField {
     |> \.backgroundColor .~ .white
     |> \.font %~ { _ in .ksr_body() }
     |> \.textAlignment %~~ { _, stackView in
-      stackView.traitCollection.ksr_isAccessibilityCategory() ? .left : .right
+      stackView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .left : .right
   }
 }
