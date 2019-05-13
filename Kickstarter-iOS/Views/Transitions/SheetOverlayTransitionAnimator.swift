@@ -78,6 +78,7 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
                                 containerView: UIView,
                                 transitionContext: UIViewControllerContextTransitioning) {
     _ = self.darkOverlayView
+      |> \.frame .~ fromVC.view.frame
       |> \.alpha .~ 1.0
 
     _ = fromVC.view

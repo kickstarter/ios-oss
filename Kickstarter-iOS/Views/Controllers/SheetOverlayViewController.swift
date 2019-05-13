@@ -8,6 +8,8 @@ import Prelude
  */
 
 final class SheetOverlayViewController: UIViewController {
+  // MARK: - Properties
+
   private let childViewController: UIViewController
   private let offset: CGFloat
   private let transitionAnimator = SheetOverlayTransitionAnimator()
@@ -51,15 +53,17 @@ final class SheetOverlayViewController: UIViewController {
     }
 
     let isRegular = UIScreen.main.traitCollection.isRegularRegular
-    let leftRightMargins = isRegular ? offset : 0.0
+    let portraitWidth = min(UIScreen.main.bounds.height, UIScreen.main.bounds.width)
 
     NSLayoutConstraint.activate([view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
                                  view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-                                 view.leftAnchor.constraint(equalTo: self.view.leftAnchor,
-                                                            constant: leftRightMargins),
-                                 view.rightAnchor.constraint(equalTo: self.view.rightAnchor,
-                                                             constant: -leftRightMargins),
                                  view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: offset)])
+
+    if isRegular {
+      view.widthAnchor.constraint(equalToConstant: portraitWidth).isActive = true
+    } else {
+      view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+    }
   }
 }
 
