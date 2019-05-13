@@ -266,12 +266,16 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
 }
 
 private func projectStateButton(backer: User, project: Project) -> ProjectStateCTAType {
+  let projectIsBacked = project.personalization.isBacking
 
-  if project.state == .live {
-    return ProjectStateCTAType.viewBacking
+  switch project.state {
+  case .live:
+    return projectIsBacked! ? ProjectStateCTAType.manage : ProjectStateCTAType.pledge
+  case .canceled, .failed, .suspended, .successful:
+    return projectIsBacked! ? ProjectStateCTAType.viewBacking : ProjectStateCTAType.viewRewards
+  default:
+    return ProjectStateCTAType.viewRewards
   }
-
-  return ProjectStateCTAType.viewRewards
 }
 
 private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
@@ -316,6 +320,26 @@ public enum ProjectStateCTAType {
       return "View your pledge"
     case .viewRewards:
       return "View rewards"
+    }
+  }
+
+  public var buttonBackgroundColor: UIColor {
+    switch self {
+    case .pledge:
+      return .ksr_green_500
+    case .manage:
+      return .ksr_blue
+    case .viewBacking, .viewRewards:
+      return .ksr_soft_black
+    }
+  }
+
+  public var labelIsHidden: Bool {
+    switch self {
+    case .pledge, .viewBacking, .viewRewards:
+      return true
+    case .manage:
+      return false
     }
   }
 }
