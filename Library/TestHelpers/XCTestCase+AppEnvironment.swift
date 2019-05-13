@@ -6,7 +6,6 @@ import KsApi
 import ReactiveSwift
 import Result
 import KsApi
-import LiveStream
 
 extension XCTestCase {
 
@@ -38,7 +37,6 @@ extension XCTestCase {
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-    liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
@@ -68,7 +66,6 @@ extension XCTestCase {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
-        liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
         pushRegistrationType: pushRegistrationType,

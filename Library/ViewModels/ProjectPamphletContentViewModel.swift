@@ -1,13 +1,11 @@
 import KsApi
-import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
 
 public protocol ProjectPamphletContentViewModelInputs {
-  func configureWith(project: Project, liveStreamEvents: [LiveStreamEvent])
+  func configureWith(project: Project)
   func tappedComments()
-  func tapped(liveStreamEvent: LiveStreamEvent)
   func tappedPledgeAnyAmount()
   func tapped(rewardOrBacking: Either<Reward, Backing>)
   func tappedUpdates()
@@ -19,12 +17,10 @@ public protocol ProjectPamphletContentViewModelInputs {
 public protocol ProjectPamphletContentViewModelOutputs {
   var goToBacking: Signal<Project, NoError> { get }
   var goToComments: Signal<Project, NoError> { get }
-  var goToLiveStream: Signal<(Project, LiveStreamEvent), NoError> { get }
-  var goToLiveStreamCountdown: Signal<(Project, LiveStreamEvent), NoError> { get }
   var goToRewardPledge: Signal<(Project, Reward), NoError> { get }
   var goToUpdates: Signal<Project, NoError> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, NoError> { get }
-  var loadProjectAndLiveStreamsIntoDataSource: Signal<(Project, [LiveStreamEvent], Bool), NoError> { get }
+  var loadProjectIntoDataSource: Signal<(Project, Bool), NoError> { get }
   var rewardTitleCellVisible: Signal<Bool, NoError> { get }
 }
 
@@ -37,13 +33,11 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public init() {
-    let projectAndLiveStreamEvents = Signal.combineLatest(
+    let project = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      )
-      .map(first)
-
-    let project = projectAndLiveStreamEvents.map(first)
+    )
+    .map(first)
 
     let loadDataSourceOnSwipeCompletion = self.viewDidAppearAnimatedProperty.signal
       .filter(isTrue)
@@ -66,12 +60,12 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.rewardTitleCellVisible = project
       .map { $0.state == .live && $0.personalization.isBacking == true }
 
-    self.loadProjectAndLiveStreamsIntoDataSource = Signal.combineLatest(
-      projectAndLiveStreamEvents,
+    self.loadProjectIntoDataSource = Signal.combineLatest(
+      project,
       timeToLoadDataSource,
       self.rewardTitleCellVisible
-      )
-      .map { projectAndLive, _, rewardVisible in (projectAndLive.0, projectAndLive.1, rewardVisible) }
+    )
+    .map { project, _, rewardVisible in (project, rewardVisible) }
 
     self.loadMinimalProjectIntoDataSource = project
       .takePairWhen(self.viewWillAppearAnimatedProperty.signal)
@@ -99,33 +93,16 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
     self.goToUpdates = project
       .takeWhen(self.tappedUpdatesProperty.signal)
-
-    self.goToLiveStream = project
-      .takePairWhen(
-        self.tappedLiveStreamProperty.signal.skipNil()
-          .filter(shouldGoToLiveStream(withLiveStreamEvent:))
-    )
-
-    self.goToLiveStreamCountdown = project
-      .takePairWhen(
-        self.tappedLiveStreamProperty.signal.skipNil()
-          .filter({ !shouldGoToLiveStream(withLiveStreamEvent: $0) })
-    )
   }
 
-  fileprivate let configDataProperty = MutableProperty<(Project, [LiveStreamEvent])?>(nil)
-  public func configureWith(project: Project, liveStreamEvents: [LiveStreamEvent]) {
-    self.configDataProperty.value = (project, liveStreamEvents)
+  fileprivate let configDataProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
+    self.configDataProperty.value = project
   }
 
   fileprivate let tappedCommentsProperty = MutableProperty(())
   public func tappedComments() {
     self.tappedCommentsProperty.value = ()
-  }
-
-  private let tappedLiveStreamProperty = MutableProperty<LiveStreamEvent?>(nil)
-  public func tapped(liveStreamEvent: LiveStreamEvent) {
-    self.tappedLiveStreamProperty.value = liveStreamEvent
   }
 
   fileprivate let tappedPledgeAnyAmountProperty = MutableProperty(())
@@ -160,12 +137,10 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
 
   public let goToBacking: Signal<Project, NoError>
   public let goToComments: Signal<Project, NoError>
-  public let goToLiveStream: Signal<(Project, LiveStreamEvent), NoError>
-  public let goToLiveStreamCountdown: Signal<(Project, LiveStreamEvent), NoError>
   public let goToRewardPledge: Signal<(Project, Reward), NoError>
   public let goToUpdates: Signal<Project, NoError>
   public let loadMinimalProjectIntoDataSource: Signal<Project, NoError>
-  public let loadProjectAndLiveStreamsIntoDataSource: Signal<(Project, [LiveStreamEvent], Bool), NoError>
+  public let loadProjectIntoDataSource: Signal<(Project, Bool), NoError>
   public let rewardTitleCellVisible: Signal<Bool, NoError>
 
   public var inputs: ProjectPamphletContentViewModelInputs { return self }
@@ -177,11 +152,6 @@ private func reward(forBacking backing: Backing, inProject project: Project) -> 
   return backing.reward
     ?? project.rewards.filter { $0.id == backing.rewardId }.first
     ?? Reward.noReward
-}
-
-private func shouldGoToLiveStream(withLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> Bool {
-  return liveStreamEvent.liveNow
-    || liveStreamEvent.startDate < AppEnvironment.current.dateType.init().date
 }
 
 private func goToRewardPledgeData(forProject project: Project, rewardOrBacking: Either<Reward, Backing>)

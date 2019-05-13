@@ -17,7 +17,7 @@ internal final class LoginToutViewControllerTests: TestCase {
   func testLoginToutView() {
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
-    let intents = [LoginIntent.generic, .starProject, .messageCreator, .backProject, .liveStreamSubscribe]
+    let intents = [LoginIntent.generic, .starProject, .messageCreator, .backProject]
 
     combos(Language.allLanguages, devices, intents).forEach { language, device, intent in
       withEnvironment(language: language) {
