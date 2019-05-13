@@ -97,12 +97,12 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.layoutMargins .~ .init(all: backThisProjectContainerViewMargins)
 
     _ = self.backThisProjectContainerView.layer
+      |> checkoutLayerCardStyleRounded
       |> \.backgroundColor .~ UIColor.white.cgColor
       |> \.shadowColor .~ UIColor.black.cgColor
       |> \.shadowOpacity .~ 0.12
       |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
       |> \.shadowRadius .~ 1.0
-      |> \.cornerRadius .~ CheckoutStyleConstants.cardStyleRoundedCornerRadius
 
     if #available(iOS 11.0, *) {
       _ = self.backThisProjectContainerView.layer

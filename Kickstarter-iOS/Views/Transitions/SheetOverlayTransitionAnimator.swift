@@ -33,6 +33,8 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
     }
   }
 
+  // MARK: - Presentation
+
   private func animatePresentation(
     fromViewController fromVC: UIViewController,
     toViewController toVC: UIViewController,
@@ -68,6 +70,8 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
       transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
     })
   }
+
+  // MARK: - Dismissal
 
   private func animateDismissal(fromViewController fromVC: UIViewController,
                                 toViewController toVC: UIViewController,
