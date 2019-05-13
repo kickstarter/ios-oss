@@ -167,6 +167,7 @@
 		770E46252114E15D00396D46 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 770E45ED2114E15D00396D46 /* Crashlytics.framework */; };
 		770E46262114E15D00396D46 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 770E46242114E15D00396D46 /* Fabric.framework */; };
 		771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */; };
+		771E3C632289DBA8003E7CF1 /* SheetOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */; };
 		77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */; };
 		77216D6020F3D27C0061BE82 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77216D5F20F3D27C0061BE82 /* Settings.storyboard */; };
 		77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216D9720F3D2E40061BE82 /* SettingsViewController.swift */; };
@@ -193,7 +194,6 @@
 		778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */; };
 		778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */; };
 		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
-		778CCC19228224A800FB8D35 /* SheetOverlayContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778CCC18228224A800FB8D35 /* SheetOverlayContainerViewController.swift */; };
 		778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778CCC5122822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift */; };
 		778CCCDA2285BF8900FB8D35 /* UIView+AutolayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778CCCD92285BF8900FB8D35 /* UIView+AutolayoutTests.swift */; };
 		7790DF502200D395005DBB11 /* SettingsFormFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */; };
@@ -1999,6 +1999,7 @@
 		770E45ED2114E15D00396D46 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Fabric/Crashlytics.framework; sourceTree = "<group>"; };
 		770E46242114E15D00396D46 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Frameworks/Fabric/Fabric.framework; sourceTree = "<group>"; };
 		771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsDataSourceTests.swift; sourceTree = "<group>"; };
+		771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetOverlayViewController.swift; sourceTree = "<group>"; };
 		77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConnectionType.swift; sourceTree = "<group>"; };
 		77216D5F20F3D27C0061BE82 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		77216D9720F3D2E40061BE82 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -2023,7 +2024,6 @@
 		778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSourceTests.swift; sourceTree = "<group>"; };
 		778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewControllerTests.swift; sourceTree = "<group>"; };
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
-		778CCC18228224A800FB8D35 /* SheetOverlayContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetOverlayContainerViewController.swift; sourceTree = "<group>"; };
 		778CCC5122822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetOverlayTransitionAnimator.swift; sourceTree = "<group>"; };
 		778CCCD92285BF8900FB8D35 /* UIView+AutolayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutolayoutTests.swift"; sourceTree = "<group>"; };
 		7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFormFieldView.swift; sourceTree = "<group>"; };
@@ -3525,7 +3525,6 @@
 				A7ED202B1E8323E900BFFA01 /* BackingViewControllerTests.swift */,
 				774A76E820D841110012A71F /* BetaToolsViewController.swift */,
 				774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */,
-				778CCC18228224A800FB8D35 /* SheetOverlayContainerViewController.swift */,
 				776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */,
 				D6B6871721923BA6005F5DA7 /* ChangeEmailViewControllerTests.swift */,
 				7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */,
@@ -3618,6 +3617,7 @@
 				D6B4F0012107B3D00079159D /* SettingsNewslettersViewControllerTests.swift */,
 				D6AD9A7F20EA720F0015A18B /* SettingsNotificationsViewController.swift */,
 				D6B6F91720EE955B00A295F7 /* SettingsNotificationsViewControllerTests.swift */,
+				771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */,
 				D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */,
 				D72370932119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift */,
 				77216D9720F3D2E40061BE82 /* SettingsViewController.swift */,
@@ -6275,6 +6275,7 @@
 				37DEC2262257CC110051EF9B /* PledgeViewController.swift in Sources */,
 				77EFBAE72268E37200DA5C3C /* RewardsCollectionViewDataSource.swift in Sources */,
 				77F9A9B02135FB760082A11E /* FindFriendsCell.swift in Sources */,
+				771E3C632289DBA8003E7CF1 /* SheetOverlayViewController.swift in Sources */,
 				0146E3231CC0296900082C5B /* FacebookConfirmationViewController.swift in Sources */,
 				D79F0F712102973A00D3B32C /* SettingsPrivacyDeleteAccountCell.swift in Sources */,
 				D077CC8B1E53359A004E8FDF /* LiveStreamChatViewController.swift in Sources */,
@@ -6330,7 +6331,6 @@
 				A7A0534E1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */,
 				A75AB2231C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				A75A292E1CE0B95300D35E5C /* MessagesDataSource.swift in Sources */,
-				778CCC19228224A800FB8D35 /* SheetOverlayContainerViewController.swift in Sources */,
 				A74382051D3458C900040A95 /* PaddingCell.swift in Sources */,
 				0169F9841D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift in Sources */,
 				A71003E01CDD06E600B4F4D7 /* MessageThreadCell.swift in Sources */,

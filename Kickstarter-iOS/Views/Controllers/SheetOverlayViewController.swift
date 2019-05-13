@@ -3,11 +3,11 @@ import Library
 import Prelude
 
 /**
- SheetOverlayContainerViewController is intended to be used as a container for another view controller
+ SheetOverlayViewController is intended to be used as a container for another view controller
  that renders as a "sheet" or "card" that partially covers the content beneath it.
  */
 
-final class SheetOverlayContainerViewController: UIViewController {
+final class SheetOverlayViewController: UIViewController {
   private let childViewController: UIViewController
   private let offset: CGFloat
   private let transitionAnimator = SheetOverlayTransitionAnimator()
@@ -63,7 +63,7 @@ final class SheetOverlayContainerViewController: UIViewController {
   }
 }
 
-extension SheetOverlayContainerViewController: UIViewControllerTransitioningDelegate {
+extension SheetOverlayViewController: UIViewControllerTransitioningDelegate {
   func animationController(forPresented presented: UIViewController, presenting: UIViewController,
                            source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
     return self.transitionAnimator
