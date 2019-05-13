@@ -20,21 +20,10 @@ class ProjectStatesContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-//    let margins = self.layoutMarginsGuide
-//    let minHeight = Styles.minTouchSize.height
-//
-//    let buttonConstraints = [
-//      self.button.leftAnchor.constraint(equalTo: margins.leftAnchor),
-//      self.button.rightAnchor.constraint(equalTo: margins.rightAnchor),
-//      self.button.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
-//      self.button.topAnchor.constraint(equalTo: margins.topAnchor),
-//      self.button.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
-//    ]
+    NSLayoutConstraint.activate([self.button.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)])
 
     _ = ([self.label, self.button], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
-//     NSLayoutConstraint.activate(buttonConstraints)
   }
 
   func configure(value: ProjectStateCTAType) {
