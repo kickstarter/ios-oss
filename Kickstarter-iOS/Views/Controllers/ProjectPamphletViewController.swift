@@ -162,10 +162,11 @@ public final class ProjectPamphletViewController: UIViewController {
   // MARK: - Private View Setup Functions
 
   private func configureViews() {
-    // Configure subviews
-    self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
+    _ = (self.backThisProjectButton, self.backThisProjectContainerView)
+      |> ksr_addSubviewToParent()
 
-    self.view.addSubview(self.backThisProjectContainerView)
+    _ = (self.backThisProjectContainerView, self.view)
+      |> ksr_addSubviewToParent()
 
     self.backThisProjectButton.addTarget(self, action: #selector(backThisProjectTapped), for: .touchUpInside)
 

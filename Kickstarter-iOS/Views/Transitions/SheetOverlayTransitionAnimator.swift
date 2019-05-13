@@ -13,10 +13,9 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
   }
 
   func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-    guard let fromVC = transitionContext.viewController(forKey: .from),
-      let toVC = transitionContext.viewController(forKey: .to) else {
-        return
-    }
+    guard
+      let fromVC = transitionContext.viewController(forKey: .from),
+      let toVC = transitionContext.viewController(forKey: .to) else { return }
 
     let containerView = transitionContext.containerView
 
@@ -84,7 +83,8 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
     _ = fromVC.view
       |> \.backgroundColor .~ .clear
 
-    containerView.insertSubview(self.darkOverlayView, belowSubview: fromVC.view)
+    _ = containerView
+      |> ksr_insertSubview(self.darkOverlayView, belowSubview: fromVC.view)
 
     let toFrame = toVC.view.frame.offsetBy(dx: 0, dy: fromVC.view.frame.height)
 
