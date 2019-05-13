@@ -9,7 +9,7 @@ brew install https://github.com/Homebrew/homebrew-core/raw/684f2002f6e83c1de95bf
 brew switch carthage 0.33.0
 
 # Cache Cartfile
-if [ -n "$FORCE_CARTHAGE" ] || ! [ $(cmp -s Cartfile.resolved Carthage/Cartfile.resolved) ]; then
+if [ -n "$FORCE_CARTHAGE" ] || [[ $(cmp Cartfile.resolved Carthage/Cartfile.resolved) ]]; then
   # If not running on CircleCI, update dependencies
   if [ -z "${CIRCLECI:-}" ]; then
     echo "Updating dependencies"
