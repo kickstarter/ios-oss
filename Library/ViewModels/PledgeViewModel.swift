@@ -12,7 +12,9 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
+  var selectedShippingRule: Signal<ShippingRule, NoError> { get }
   var reloadWithData: Signal<PledgeTableViewData, NoError> { get }
+  var shippingIsLoading: Signal<Bool, NoError> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -27,6 +29,33 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
       .map(first)
       .skipNil()
+
+//    let shouldLoadShippingRules = projectAndReward.map { _, reward in reward.shipping.enabled }
+
+    let shippingRulesEvent = projectAndReward
+      .switchMap { (project, reward)
+        -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, NoError> in
+        // TODO: verify if this is the correct check we should be making
+        guard reward.shipping.enabled else {
+          return SignalProducer(value: .value([]))
+        }
+
+        return AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id,
+                                                                          rewardId: reward.id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map(ShippingRulesEnvelope.lens.shippingRules.view)
+          .retry(upTo: 3)
+          .materialize()
+    }
+
+    self.shippingIsLoading = Signal.merge(shippingRulesEvent.values().mapConst(false),
+                                          shippingRulesEvent.errors().mapConst(false)
+    )
+
+    let defaultShippingRule = shippingRulesEvent.values()
+      .map(defaultShippingRule(fromShippingRules:))
+
+    self.selectedShippingRule = defaultShippingRule.skipNil()
 
     let isLoggedIn = projectAndReward
       .map { _ in AppEnvironment.current.currentUser }
@@ -57,7 +86,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
+  public let selectedShippingRule: Signal<ShippingRule, NoError>
   public let reloadWithData: Signal<PledgeTableViewData, NoError>
+  public let shippingIsLoading: Signal<Bool, NoError>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }

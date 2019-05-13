@@ -2,6 +2,8 @@ import Foundation
 import KsApi
 import Library
 
+typealias PledgeShippingLocationCellValue = (location: String, currency: String, rate: Double)
+
 final class PledgeDataSource: ValueCellDataSource {
   enum Section: Int {
     case project
@@ -29,6 +31,13 @@ final class PledgeDataSource: ValueCellDataSource {
     )
 
     self.loadSummarySection(isLoggedIn: isLoggedIn)
+  }
+
+  func loadSelectedShippingLocation(_ shippingLocation: String) {
+    self.set(value: (location: shippingLocation, currency: "$", rate: 7.50),
+             cellClass: PledgeShippingLocationCell.self,
+             inSection: Section.inputs.rawValue,
+             row: 1)
   }
 
   private func loadSummarySection(isLoggedIn: Bool) {

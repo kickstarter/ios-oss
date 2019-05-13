@@ -56,6 +56,16 @@ class PledgeTableViewController: UITableViewController {
 
         self?.tableView.reloadData()
     }
+
+    self.viewModel.outputs.selectedShippingRule
+      .observeForUI()
+      .observeValues { [weak self] shippingRule in
+        self?.dataSource.loadSelectedShippingLocation(shippingRule.location.localizedName)
+
+        let shippingIndexPath = IndexPath(item: 1, section: PledgeDataSource.Section.inputs.rawValue)
+
+        self?.tableView.reloadRows(at: [shippingIndexPath], with: .automatic)
+    }
   }
 
   // MARK: - UITableViewDelegate
