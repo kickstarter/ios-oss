@@ -5370,11 +5370,6 @@
 					"@loader_path/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
-					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -5490,12 +5485,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-				);
-				INFOPLIST_FILE = "Kickstarter-iOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -5516,10 +5505,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
@@ -6036,6 +6021,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = KickstarterUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -6072,6 +6058,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = KickstarterUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -6106,6 +6093,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = KickstarterUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -6140,6 +6128,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = KickstarterUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -6292,11 +6281,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
-					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphone*]" = (
-					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK/iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Frameworks/FBSDK/iOS",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Library-iOSTests";
