@@ -2029,29 +2029,25 @@ private func properties(reward: Reward, prefix: String = "backer_reward_") -> [S
 }
 
 private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String? {
-  #if os(iOS)
-    guard let shareType = shareType else { return nil }
+  guard let shareType = shareType else { return nil }
 
-    if shareType == .postToFacebook {
-      return "facebook"
-    } else if shareType == .message {
-      return "message"
-    } else if shareType == .mail {
-      return "email"
-    } else if shareType == .copyToPasteboard {
-      return "copy link"
-    } else if shareType == .postToTwitter {
-      return "twitter"
-    } else if shareType == UIActivity.ActivityType("com.apple.mobilenotes.SharingExtension") {
-      return "notes"
-    } else if shareType == SafariActivityType {
-      return "safari"
-    } else {
-      return shareType.rawValue
-    }
-  #else
-    return nil
-  #endif
+  if shareType == .postToFacebook {
+    return "facebook"
+  } else if shareType == .message {
+    return "message"
+  } else if shareType == .mail {
+    return "email"
+  } else if shareType == .copyToPasteboard {
+    return "copy link"
+  } else if shareType == .postToTwitter {
+    return "twitter"
+  } else if shareType == UIActivity.ActivityType("com.apple.mobilenotes.SharingExtension") {
+    return "notes"
+  } else if shareType == SafariActivityType {
+    return "safari"
+  } else {
+    return shareType.rawValue
+  }
 }
 
 extension Koala {
