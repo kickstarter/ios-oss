@@ -1,4 +1,3 @@
-#if os(iOS)
 import Foundation
 import UIKit
 
@@ -40,4 +39,3 @@ public final class SafariActivity: UIActivity {
     self.activityDidFinish(true)
   }
 }
-#endif

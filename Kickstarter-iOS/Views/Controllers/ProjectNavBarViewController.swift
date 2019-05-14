@@ -1,7 +1,6 @@
 import KsApi
 import Library
 import Prelude
-import Social
 import UIKit
 
 public protocol ProjectNavBarViewControllerDelegate: class {
