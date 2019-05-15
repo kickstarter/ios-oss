@@ -4,8 +4,7 @@ import Result
 import XCTest
 @testable import Library
 @testable import KsApi
-@testable import Kickstarter_Framework
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 import Foundation
 

@@ -3,7 +3,7 @@ import Result
 import XCTest
 @testable import Library
 @testable import KsApi
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 internal final class ActivityUpdateViewModelTests: TestCase {
   fileprivate let vm: ActivityUpdateViewModelType = ActivityUpdateViewModel()

@@ -3,8 +3,8 @@ import Result
 import ReactiveSwift
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
 import Prelude
 
 internal final class CommentsEmptyStateCellViewModelTest: TestCase {

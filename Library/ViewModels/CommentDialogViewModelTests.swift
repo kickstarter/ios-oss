@@ -3,8 +3,8 @@ import Result
 import ReactiveSwift
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
 
 internal final class CommentDialogViewModelTests: TestCase {
   internal let vm: CommentDialogViewModelType = CommentDialogViewModel()

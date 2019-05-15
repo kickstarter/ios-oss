@@ -5,7 +5,7 @@ import Result
 import XCTest
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 internal final class VideoViewModelTests: TestCase {
   internal let vm = VideoViewModel()

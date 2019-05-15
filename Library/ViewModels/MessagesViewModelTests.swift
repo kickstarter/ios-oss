@@ -1,6 +1,6 @@
 import XCTest
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import KsApi
 import ReactiveSwift

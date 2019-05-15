@@ -1,6 +1,7 @@
 import Foundation
 import Library
 import KsApi
+import UIKit
 
 internal final class DashboardProjectsDrawerDataSource: ValueCellDataSource {
   internal func load(data: [ProjectsDrawerData]) {

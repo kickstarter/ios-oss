@@ -92,6 +92,7 @@ public let loginWithEmailButtonStyle = borderButtonStyle
 public let onePasswordButtonStyle = UIButton.lens.accessibilityLabel %~ { _
   in Strings.login_buttons_one_password()
 }
+<> \.tintColor .~  .ksr_dark_grey_500
 
 public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
 

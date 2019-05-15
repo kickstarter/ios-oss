@@ -4,8 +4,8 @@ import ReactiveSwift
 import Prelude
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
 
   internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
   let vm: DashboardRewardRowStackViewViewModelType = DashboardRewardRowStackViewViewModel()
