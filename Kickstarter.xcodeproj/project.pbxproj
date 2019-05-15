@@ -664,7 +664,7 @@
 		D00698EA225CF62B00EB58BD /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698EB225CF63C00EB58BD /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A371922580E9D00F46F47 /* FBSnapshotTestCase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; };
-		D00A3720225815FA00F46F47 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D00A371F225815FA00F46F47 /* AlamofireImage.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		D00A3720225815FA00F46F47 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D00A371F225815FA00F46F47 /* AlamofireImage.framework */; };
 		D00A373F2258270600F46F47 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D00A373E2258270600F46F47 /* Alamofire.framework */; };
 		D00A374E225829F500F46F47 /* Prelude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A374F225829FE00F46F47 /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -2479,17 +2479,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0D58DC32257FCA900532AC1 /* Prelude_UIKit.framework in Frameworks */,
+				D0BE6F262286395500D05A10 /* Argo.framework in Frameworks */,
+				D04307A221853D530004FDC0 /* Crashlytics.framework in Frameworks */,
+				D0BE6F272286395900D05A10 /* Curry.framework in Frameworks */,
+				01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */,
+				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
 				D00A3765225BCE2600F46F47 /* Prelude.framework in Frameworks */,
+				D0D58DC32257FCA900532AC1 /* Prelude_UIKit.framework in Frameworks */,
+				D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */,
+				D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */,
 				D0BE6F292286398400D05A10 /* Result.framework in Frameworks */,
 				D0BE6F2A2286398400D05A10 /* Runes.framework in Frameworks */,
-				D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */,
-				01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */,
-				D0BE6F272286395900D05A10 /* Curry.framework in Frameworks */,
-				D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */,
-				D0BE6F262286395500D05A10 /* Argo.framework in Frameworks */,
-				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
-				D04307A221853D530004FDC0 /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2548,29 +2548,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D09D4ED42289D6A100C33B77 /* LiveStream.framework in Frameworks */,
-				D09D4ECE2289D63500C33B77 /* Argo.framework in Frameworks */,
-				D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */,
-				D09D4ED82289D6E600C33B77 /* Result.framework in Frameworks */,
-				D09362A9225D693000E1411A /* Stripe.framework in Frameworks */,
-				D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */,
-				D09D4ECF2289D63500C33B77 /* Curry.framework in Frameworks */,
-				D09D4ED02289D63500C33B77 /* Runes.framework in Frameworks */,
-				D09D4ECD2289D60500C33B77 /* AVFoundation.framework in Frameworks */,
-				D09D4ECC2289D5FF00C33B77 /* AVKit.framework in Frameworks */,
-				017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
-				D0D58DC22257FC7E00532AC1 /* UIKit.framework in Frameworks */,
-				D0A02F1B2258071B00BAA209 /* VideoToolbox.framework in Frameworks */,
-				D0A02F1A2258071B00BAA209 /* AudioToolbox.framework in Frameworks */,
-				D0D58DC52257FD0200532AC1 /* Prelude_UIKit.framework in Frameworks */,
-				D0D58DC62257FD0200532AC1 /* Prelude.framework in Frameworks */,
 				D00A373F2258270600F46F47 /* Alamofire.framework in Frameworks */,
 				D00A3720225815FA00F46F47 /* AlamofireImage.framework in Frameworks */,
-				D0F8F915225806EA0008BAF8 /* GLKit.framework in Frameworks */,
-				D09D4ED52289D6B100C33B77 /* OnePasswordExtension.framework in Frameworks */,
-				D09D4ED32289D68B00C33B77 /* HockeySDK.framework in Frameworks */,
+				D09D4ECE2289D63500C33B77 /* Argo.framework in Frameworks */,
+				D0A02F1A2258071B00BAA209 /* AudioToolbox.framework in Frameworks */,
+				D09D4ECC2289D5FF00C33B77 /* AVKit.framework in Frameworks */,
+				D09D4ECD2289D60500C33B77 /* AVFoundation.framework in Frameworks */,
+				D09D4ECF2289D63500C33B77 /* Curry.framework in Frameworks */,
+				017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
 				D06EE2812257FE5F00E956D2 /* Foundation.framework in Frameworks */,
+				D0F8F915225806EA0008BAF8 /* GLKit.framework in Frameworks */,
+				D09D4ED32289D68B00C33B77 /* HockeySDK.framework in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
+				D09D4ED42289D6A100C33B77 /* LiveStream.framework in Frameworks */,
+				D09D4ED52289D6B100C33B77 /* OnePasswordExtension.framework in Frameworks */,
+				D0D58DC62257FD0200532AC1 /* Prelude.framework in Frameworks */,
+				D0D58DC52257FD0200532AC1 /* Prelude_UIKit.framework in Frameworks */,
+				D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */,
+				D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */,
+				D09D4ED82289D6E600C33B77 /* Result.framework in Frameworks */,
+				D09D4ED02289D63500C33B77 /* Runes.framework in Frameworks */,
+				D09362A9225D693000E1411A /* Stripe.framework in Frameworks */,
+				D0D58DC22257FC7E00532AC1 /* UIKit.framework in Frameworks */,
+				D0A02F1B2258071B00BAA209 /* VideoToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2578,21 +2578,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D06EE2802257FE5700E956D2 /* Foundation.framework in Frameworks */,
-				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
-				A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */,
-				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
-				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
-				770E46252114E15D00396D46 /* Crashlytics.framework in Frameworks */,
-				D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */,
 				D0D58D872257FAE000532AC1 /* Argo.framework in Frameworks */,
-				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
-				D0D58D8A2257FAE000532AC1 /* OnePasswordExtension.framework in Frameworks */,
+				770E46252114E15D00396D46 /* Crashlytics.framework in Frameworks */,
+				D0D58D902257FAE000532AC1 /* Curry.framework in Frameworks */,
+				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
+				D06EE2802257FE5700E956D2 /* Foundation.framework in Frameworks */,
 				D0D58D8B2257FAE000532AC1 /* HockeySDK.framework in Frameworks */,
+				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
+				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
+				A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */,
+				D0D58D8A2257FAE000532AC1 /* OnePasswordExtension.framework in Frameworks */,
+				D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */,
+				D0D58D8E2257FAE000532AC1 /* Prelude_UIKit.framework in Frameworks */,
+				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
 				D0D58D8C2257FAE000532AC1 /* ReactiveSwift.framework in Frameworks */,
 				D0D58D8D2257FAE000532AC1 /* Result.framework in Frameworks */,
-				D0D58D8E2257FAE000532AC1 /* Prelude_UIKit.framework in Frameworks */,
-				D0D58D902257FAE000532AC1 /* Curry.framework in Frameworks */,
 				D0D58D912257FAE000532AC1 /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2611,12 +2611,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0D58DC12257FB8C00532AC1 /* Argo.framework in Frameworks */,
+				D0BE6F182286333A00D05A10 /* Curry.framework in Frameworks */,
 				D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */,
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */,
 				D0BE6F21228634C700D05A10 /* Result.framework in Frameworks */,
-				D0D58DC12257FB8C00532AC1 /* Argo.framework in Frameworks */,
-				D0BE6F182286333A00D05A10 /* Curry.framework in Frameworks */,
 				D0BE6F192286333A00D05A10 /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
