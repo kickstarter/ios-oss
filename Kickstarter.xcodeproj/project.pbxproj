@@ -664,10 +664,8 @@
 		D00698EA225CF62B00EB58BD /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698EB225CF63C00EB58BD /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A371922580E9D00F46F47 /* FBSnapshotTestCase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; };
-		D00A3720225815FA00F46F47 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D00A371F225815FA00F46F47 /* AlamofireImage.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		D00A3720225815FA00F46F47 /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D00A371F225815FA00F46F47 /* AlamofireImage.framework */; };
 		D00A373F2258270600F46F47 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D00A373E2258270600F46F47 /* Alamofire.framework */; };
-		D00A37402258276200F46F47 /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D00A373E2258270600F46F47 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00A37412258276200F46F47 /* AlamofireImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D00A371F225815FA00F46F47 /* AlamofireImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A374E225829F500F46F47 /* Prelude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A374F225829FE00F46F47 /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A375022582A1300F46F47 /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -687,7 +685,6 @@
 		D00A3762225BCD1600F46F47 /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A3765225BCE2600F46F47 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; };
 		D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
-		D00A376D225BD6E600F46F47 /* Prelude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */; };
 		D01587591EEB2DE4006E7684 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015876A1EEB2ED6006E7684 /* NSURLSession.swift */; };
@@ -929,13 +926,23 @@
 		D0936299225D50EB00E1411A /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D09362A7225D62FC00E1411A /* Kickstarter_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */; };
 		D09362A9225D693000E1411A /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09362A8225D693000E1411A /* Stripe.framework */; };
-		D09362AA225D693800E1411A /* Stripe.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D09362A8225D693000E1411A /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */; };
 		D093B46321A86F7F00910962 /* PushRegistrationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B46221A86F7E00910962 /* PushRegistrationType.swift */; };
 		D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B49B21A86FD800910962 /* PushRegistration.swift */; };
 		D093B4F021A8B14100910962 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		D0971E14221E070800DFEF9B /* SelectCurrencyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0971DDB221E05B600DFEF9B /* SelectCurrencyDataSource.swift */; };
 		D0971E16221E083100DFEF9B /* SelectCurrencyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0971E15221E083100DFEF9B /* SelectCurrencyCell.swift */; };
+		D09D4ECC2289D5FF00C33B77 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D09D4ECB2289D5FF00C33B77 /* AVKit.framework */; };
+		D09D4ECD2289D60500C33B77 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D922257FAF100532AC1 /* AVFoundation.framework */; };
+		D09D4ECE2289D63500C33B77 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; };
+		D09D4ECF2289D63500C33B77 /* Curry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; };
+		D09D4ED02289D63500C33B77 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; };
+		D09D4ED32289D68B00C33B77 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7E2257FADF00532AC1 /* HockeySDK.framework */; };
+		D09D4ED42289D6A100C33B77 /* LiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BA54291E1E493500E54377 /* LiveStream.framework */; };
+		D09D4ED52289D6B100C33B77 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7D2257FADF00532AC1 /* OnePasswordExtension.framework */; };
+		D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
+		D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
+		D09D4ED82289D6E600C33B77 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; };
 		D0A02F1A2258071B00BAA209 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A556882258050800F75A08 /* AudioToolbox.framework */; };
 		D0A02F1B2258071B00BAA209 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D962257FAF200532AC1 /* VideoToolbox.framework */; };
 		D0A55687225804D800F75A08 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A55686225804D800F75A08 /* GLKit.framework */; };
@@ -963,6 +970,17 @@
 		D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0BB2D901E54895700EE1D9D /* LiveStreamChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BB2D541E54894E00EE1D9D /* LiveStreamChatDataSource.swift */; };
+		D0BE6F182286333A00D05A10 /* Curry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; };
+		D0BE6F192286333A00D05A10 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; };
+		D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; };
+		D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
+		D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
+		D0BE6F21228634C700D05A10 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; };
+		D0BE6F262286395500D05A10 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; };
+		D0BE6F272286395900D05A10 /* Curry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; };
+		D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
+		D0BE6F292286398400D05A10 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; };
+		D0BE6F2A2286398400D05A10 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; };
 		D0C5957F1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C5957E1E49C835003A29EC /* LiveStreamSubscribeEnvelope.swift */; };
 		D0C595BB1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C595BA1E49CD0D003A29EC /* LiveStreamSubscribeEnvelopeTests.swift */; };
 		D0C595BD1E49FFB5003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C595BC1E49FFB4003A29EC /* LiveStreamSubscribeEnvelopeTemplates.swift */; };
@@ -1341,16 +1359,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D00A376C225BD6DC00F46F47 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				D00A376D225BD6E600F46F47 /* Prelude.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D0B065C82280A29700142B7A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1368,18 +1376,6 @@
 				D0B065CB2280A2FD00142B7A /* Result.framework in CopyFiles */,
 				D0B065CA2280A2DC00142B7A /* ReactiveSwift.framework in CopyFiles */,
 				D0B065C92280A2A700142B7A /* FBSnapshotTestCase.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D0FC17E022580B9B001F76DA /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				D09362AA225D693800E1411A /* Stripe.framework in CopyFiles */,
-				D00A37402258276200F46F47 /* Alamofire.framework in CopyFiles */,
-				D00A37412258276200F46F47 /* AlamofireImage.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2284,6 +2280,8 @@
 		D093B4B721A8B0E000910962 /* MockPushRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPushRegistration.swift; sourceTree = "<group>"; };
 		D0971DDB221E05B600DFEF9B /* SelectCurrencyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyDataSource.swift; sourceTree = "<group>"; };
 		D0971E15221E083100DFEF9B /* SelectCurrencyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyCell.swift; sourceTree = "<group>"; };
+		D09D4ECB2289D5FF00C33B77 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		D09D4ED12289D65A00C33B77 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		D0A55686225804D800F75A08 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		D0A556882258050800F75A08 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D0A5568A2258052B00F75A08 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -2481,12 +2479,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D00A3765225BCE2600F46F47 /* Prelude.framework in Frameworks */,
-				01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */,
-				D0D58DC32257FCA900532AC1 /* Prelude_UIKit.framework in Frameworks */,
-				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
-				D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */,
+				D0BE6F262286395500D05A10 /* Argo.framework in Frameworks */,
 				D04307A221853D530004FDC0 /* Crashlytics.framework in Frameworks */,
+				D0BE6F272286395900D05A10 /* Curry.framework in Frameworks */,
+				01D31A3A1CCA786A0037A178 /* FBSDKCoreKit.framework in Frameworks */,
+				D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */,
+				D00A3765225BCE2600F46F47 /* Prelude.framework in Frameworks */,
+				D0D58DC32257FCA900532AC1 /* Prelude_UIKit.framework in Frameworks */,
+				D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */,
+				D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */,
+				D0BE6F292286398400D05A10 /* Result.framework in Frameworks */,
+				D0BE6F2A2286398400D05A10 /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2545,18 +2548,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
-				D0D58DC22257FC7E00532AC1 /* UIKit.framework in Frameworks */,
-				D0A02F1B2258071B00BAA209 /* VideoToolbox.framework in Frameworks */,
-				D0D58DC52257FD0200532AC1 /* Prelude_UIKit.framework in Frameworks */,
-				D0A02F1A2258071B00BAA209 /* AudioToolbox.framework in Frameworks */,
-				D0D58DC62257FD0200532AC1 /* Prelude.framework in Frameworks */,
 				D00A373F2258270600F46F47 /* Alamofire.framework in Frameworks */,
 				D00A3720225815FA00F46F47 /* AlamofireImage.framework in Frameworks */,
-				D0F8F915225806EA0008BAF8 /* GLKit.framework in Frameworks */,
+				D09D4ECE2289D63500C33B77 /* Argo.framework in Frameworks */,
+				D0A02F1A2258071B00BAA209 /* AudioToolbox.framework in Frameworks */,
+				D09D4ECC2289D5FF00C33B77 /* AVKit.framework in Frameworks */,
+				D09D4ECD2289D60500C33B77 /* AVFoundation.framework in Frameworks */,
+				D09D4ECF2289D63500C33B77 /* Curry.framework in Frameworks */,
+				017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
 				D06EE2812257FE5F00E956D2 /* Foundation.framework in Frameworks */,
+				D0F8F915225806EA0008BAF8 /* GLKit.framework in Frameworks */,
+				D09D4ED32289D68B00C33B77 /* HockeySDK.framework in Frameworks */,
 				A76127C01C93100C00EDCCB9 /* Library.framework in Frameworks */,
+				D09D4ED42289D6A100C33B77 /* LiveStream.framework in Frameworks */,
+				D09D4ED52289D6B100C33B77 /* OnePasswordExtension.framework in Frameworks */,
+				D0D58DC62257FD0200532AC1 /* Prelude.framework in Frameworks */,
+				D0D58DC52257FD0200532AC1 /* Prelude_UIKit.framework in Frameworks */,
+				D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */,
+				D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */,
+				D09D4ED82289D6E600C33B77 /* Result.framework in Frameworks */,
+				D09D4ED02289D63500C33B77 /* Runes.framework in Frameworks */,
 				D09362A9225D693000E1411A /* Stripe.framework in Frameworks */,
+				D0D58DC22257FC7E00532AC1 /* UIKit.framework in Frameworks */,
+				D0A02F1B2258071B00BAA209 /* VideoToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2564,21 +2578,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D06EE2802257FE5700E956D2 /* Foundation.framework in Frameworks */,
-				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
-				A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */,
-				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
-				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
-				770E46252114E15D00396D46 /* Crashlytics.framework in Frameworks */,
-				D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */,
 				D0D58D872257FAE000532AC1 /* Argo.framework in Frameworks */,
-				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
-				D0D58D8A2257FAE000532AC1 /* OnePasswordExtension.framework in Frameworks */,
+				770E46252114E15D00396D46 /* Crashlytics.framework in Frameworks */,
+				D0D58D902257FAE000532AC1 /* Curry.framework in Frameworks */,
+				A7722F401D2D3B6B0049BCDC /* FBSDKCoreKit.framework in Frameworks */,
+				D06EE2802257FE5700E956D2 /* Foundation.framework in Frameworks */,
 				D0D58D8B2257FAE000532AC1 /* HockeySDK.framework in Frameworks */,
+				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
+				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
+				A7BA543E1E1E493600E54377 /* LiveStream.framework in Frameworks */,
+				D0D58D8A2257FAE000532AC1 /* OnePasswordExtension.framework in Frameworks */,
+				D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */,
+				D0D58D8E2257FAE000532AC1 /* Prelude_UIKit.framework in Frameworks */,
+				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
 				D0D58D8C2257FAE000532AC1 /* ReactiveSwift.framework in Frameworks */,
 				D0D58D8D2257FAE000532AC1 /* Result.framework in Frameworks */,
-				D0D58D8E2257FAE000532AC1 /* Prelude_UIKit.framework in Frameworks */,
-				D0D58D902257FAE000532AC1 /* Curry.framework in Frameworks */,
 				D0D58D912257FAE000532AC1 /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2598,6 +2612,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0D58DC12257FB8C00532AC1 /* Argo.framework in Frameworks */,
+				D0BE6F182286333A00D05A10 /* Curry.framework in Frameworks */,
+				D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */,
+				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
+				D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */,
+				D0BE6F21228634C700D05A10 /* Result.framework in Frameworks */,
+				D0BE6F192286333A00D05A10 /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3313,6 +3333,8 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D09D4ED12289D65A00C33B77 /* CoreImage.framework */,
+				D09D4ECB2289D5FF00C33B77 /* AVKit.framework */,
 				D09362A8225D693000E1411A /* Stripe.framework */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
@@ -4076,7 +4098,7 @@
 				A75511381C8642B3005355CF /* Frameworks */,
 				A75511391C8642B3005355CF /* Headers */,
 				A755113A1C8642B3005355CF /* Resources */,
-				D00A376C225BD6DC00F46F47 /* CopyFiles */,
+				D0EA60A2228B6A85007DB557 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -4152,7 +4174,7 @@
 				A7C7959A1C873A870081977F /* Frameworks */,
 				A7C7959B1C873A870081977F /* Headers */,
 				A7C7959C1C873A870081977F /* Resources */,
-				D0FC17E022580B9B001F76DA /* CopyFiles */,
+				D0EA60A3228B6AD6007DB557 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -4217,6 +4239,7 @@
 				D015874C1EEB2DE4006E7684 /* Frameworks */,
 				D015874D1EEB2DE4006E7684 /* Headers */,
 				D015874E1EEB2DE4006E7684 /* Resources */,
+				D0EA60A4228B6BB6007DB557 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -4542,19 +4565,79 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$(SRCROOT)/carthage-input-files.xcfilelist",
+				"$(SRCROOT)/Carthage-xcfilelist/app-input-files.xcfilelist",
 			);
 			inputPaths = (
 			);
 			name = Carthage;
 			outputFileListPaths = (
-				"$(SRCROOT)/carthage-output-files.xcfilelist",
+				"$(SRCROOT)/Carthage-xcfilelist/app-output-files.xcfilelist",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+		D0EA60A2228B6A85007DB557 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/Carthage-xcfilelist/library-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = Carthage;
+			outputFileListPaths = (
+				"$(SRCROOT)/Carthage-xcfilelist/library-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bin/carthage-debug-copy.sh\n";
+		};
+		D0EA60A3228B6AD6007DB557 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/Carthage-xcfilelist/kickstarter-framework-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = Carthage;
+			outputFileListPaths = (
+				"$(SRCROOT)/Carthage-xcfilelist/kickstarter-framework-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bin/carthage-debug-copy.sh\n";
+		};
+		D0EA60A4228B6BB6007DB557 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/Carthage-xcfilelist/ksapi-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = Carthage;
+			outputFileListPaths = (
+				"$(SRCROOT)/Carthage-xcfilelist/ksapi-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bin/carthage-debug-copy.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
