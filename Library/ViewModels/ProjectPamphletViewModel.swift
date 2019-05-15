@@ -46,7 +46,7 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a float to update topLayoutConstraints constant.
   var topLayoutConstraintConstant: Signal<CGFloat, NoError> { get }
 
-  var projectStateOutput: Signal<ProjectStateCTAType, NoError> { get }
+  var projectStateOutput: Signal<(ProjectStateCTAType, String?), NoError> { get }
 
 }
 
@@ -91,7 +91,6 @@ ProjectPamphletViewModelOutputs {
 
     self.projectStateOutput = Signal.combineLatest(project, user)
       .map { project, user in projectStateButton(backer: user, project: project) }
-
 
     self.configureChildViewControllersWithProjectAndLiveStreams = freshProjectAndLiveStreamsAndRefTag
       .map { project, liveStreams, refTag in (project, liveStreams ?? [], refTag) }
@@ -187,7 +186,7 @@ ProjectPamphletViewModelOutputs {
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
   public let topLayoutConstraintConstant: Signal<CGFloat, NoError>
 
-  public let projectStateOutput: Signal<ProjectStateCTAType, NoError>
+  public let projectStateOutput: Signal<(ProjectStateCTAType, String?), NoError>
 
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }
@@ -265,16 +264,17 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   return HTTPCookie(properties: properties)
 }
 
-private func projectStateButton(backer: User, project: Project) -> ProjectStateCTAType {
+private func projectStateButton(backer: User, project: Project) -> (ProjectStateCTAType, String?) {
   let projectIsBacked = project.personalization.isBacking
+  let projectRewardTitle = project.personalization.backing?.reward?.title
 
   switch project.state {
   case .live:
-    return projectIsBacked! ? ProjectStateCTAType.manage : ProjectStateCTAType.pledge
+    return projectIsBacked! ? (ProjectStateCTAType.manage, projectRewardTitle ) : (ProjectStateCTAType.pledge, projectRewardTitle)
   case .canceled, .failed, .suspended, .successful:
-    return projectIsBacked! ? ProjectStateCTAType.viewBacking : ProjectStateCTAType.viewRewards
+    return projectIsBacked! ? (ProjectStateCTAType.viewBacking, projectRewardTitle) : (ProjectStateCTAType.viewRewards, projectRewardTitle)
   default:
-    return ProjectStateCTAType.viewRewards
+    return (ProjectStateCTAType.viewRewards, projectRewardTitle)
   }
 }
 
@@ -334,7 +334,7 @@ public enum ProjectStateCTAType {
     }
   }
 
-  public var labelIsHidden: Bool {
+  public var stackViewIsHidden: Bool {
     switch self {
     case .pledge, .viewBacking, .viewRewards:
       return true

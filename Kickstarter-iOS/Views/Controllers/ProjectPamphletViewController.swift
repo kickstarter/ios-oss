@@ -181,8 +181,8 @@ public final class ProjectPamphletViewController: UIViewController {
 
     self.viewModel.outputs.projectStateOutput
       .observeForUI()
-      .observeValues { [weak self] type in
-        self?.backThisProjectContainerView.configure(value: type)
+      .observeValues { [weak self] type, rewardTitle in
+        self?.backThisProjectContainerView.configure(value: type, rewardTitle: rewardTitle ?? "reward title...")
     }
   }
 

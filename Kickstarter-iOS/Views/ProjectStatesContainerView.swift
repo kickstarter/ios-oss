@@ -6,6 +6,8 @@ class ProjectStatesContainerView: UIView {
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var labelStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var backerLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var label: UILabel = { UILabel(frame: .zero) }()
   private lazy var button: UIButton = {
      return MultiLineButton(type: .custom)
@@ -22,11 +24,14 @@ class ProjectStatesContainerView: UIView {
 
     NSLayoutConstraint.activate([self.button.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)])
 
-    _ = ([self.label, self.button], self.rootStackView)
+    _ = ([self.backerLabel, self.label], self.labelStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.labelStackView, self.button], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  func configure(value: ProjectStateCTAType) {
+  func configure(value: ProjectStateCTAType, rewardTitle: String) {
 
     _ = self.button
       |> projectStateButtonStyle
@@ -35,38 +40,45 @@ class ProjectStatesContainerView: UIView {
       |> UIButton.lens.backgroundColor(for: .normal) %~ { _ in
             value.buttonBackgroundColor }
 
+    _ = self.backerLabel
+      |> \.text %~ { _ in "You're a backer"}
+
     _ = self.label
-      |> \.text %~ { _ in "This shows up" }
-      |> \.isHidden .~ value.labelIsHidden
+      |> \.text %~ { _ in rewardTitle }
+      |> \.font .~ .ksr_caption1(size: 14)
+      |> \.textColor .~ .ksr_dark_grey_500
 
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.labelStackView
+      |> \.axis .~ NSLayoutConstraint.Axis.vertical
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.isHidden .~ value.stackViewIsHidden
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
-  override  func bindStyles() {
-    super.bindStyles()
-
-
-  }
 }
 
-private let projectStateButtonStyle: ButtonStyle = { (button: UIButton) in button
+private let projectStateButtonStyle: ButtonStyle = { (button: UIButton) in
+  button
       |> roundedStyle(cornerRadius: 12)
       |> UIButton.lens.titleColor(for: .normal) .~ .white
+      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
       |> UIButton.lens.layer.borderWidth .~ 0
       |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
 }
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
-    |> \.alignment .~ UIStackView.Alignment.top
+    |> \.alignment .~ UIStackView.Alignment.center
+    |> \.distribution .~ UIStackView.Distribution.equalCentering
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(4))
-    |> \.spacing .~ Styles.grid(3)
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
+//    |> \.spacing .~ Styles.grid(2)
 }
