@@ -183,6 +183,7 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(foregroundColor, attributes[NSAttributedString.Key.foregroundColor] as? UIColor)
   }
 
+  // swiftlint:disable line_length
   func testBaselineOffset_FontLargerThanSuperscriptFont() {
     let currencySymbol = "CZK"
     let font = UIFont.ksr_title1()
@@ -409,6 +410,7 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(foregroundColor, fractionAttributes[NSAttributedString.Key.foregroundColor] as? UIColor)
     XCTAssertEqual(offset, fractionAttributes[NSAttributedString.Key.baselineOffset] as? CGFloat)
   }
+  // swiftlint:enable line_length
 
   func testCountdownProducer() {
     let future: TimeInterval = TimeInterval(1*60*60*24) + TimeInterval(16*60*60) + TimeInterval(34*60) + 2
