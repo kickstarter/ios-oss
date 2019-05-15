@@ -5,7 +5,7 @@ import ReactiveSwift
 import ReactiveExtensions
 
 public protocol ProjectStatesContainerViewViewModelInputs {
-
+  func configureWith(project: Project, backing: Backing)
 }
 
 public protocol ProjectStatesContainerViewViewModelOutputs {
@@ -23,6 +23,12 @@ public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerVi
   public init() {
     self.buttonTitleText = .empty
   }
+
+  fileprivate let projectAndBackingProperty = MutableProperty<(Project, Backing)?>(nil)
+  public func configureWith(project: Project, backing: Backing) {
+    self.projectAndBackingProperty.value = (project, backing)
+  }
+
 
   public var inputs: ProjectStatesContainerViewViewModelInputs { return self }
   public var outputs: ProjectStatesContainerViewViewModelOutputs { return self }

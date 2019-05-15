@@ -179,10 +179,16 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.navBarTopConstraint.constant = value
     }
 
-    self.viewModel.outputs.projectStateOutput
+//    self.viewModel.outputs.projectStateOutput // Project, Reward, Backing is here
+//      .observeForUI()
+//      .observeValues { [weak self] type, rewardTitle in
+//        self?.backThisProjectContainerView.configure(value: type, rewardTitle: rewardTitle ?? "reward title...")
+//    }
+
+    self.viewModel.outputs.projectAndBacking
       .observeForUI()
-      .observeValues { [weak self] type, rewardTitle in
-        self?.backThisProjectContainerView.configure(value: type, rewardTitle: rewardTitle ?? "reward title...")
+      .observeValues { [weak self] project, backing in
+        self?.backThisProjectContainerView.configure(project: project, backing: backing)
     }
   }
 

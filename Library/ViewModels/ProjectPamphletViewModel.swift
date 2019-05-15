@@ -48,6 +48,8 @@ public protocol ProjectPamphletViewModelOutputs {
 
   var projectStateOutput: Signal<(ProjectStateCTAType, String?), NoError> { get }
 
+  var projectAndBacking: Signal <(Project, Backing), NoError> { get }
+
 }
 
 public protocol ProjectPamphletViewModelType {
@@ -88,6 +90,19 @@ ProjectPamphletViewModelOutputs {
 
     let project = freshProjectAndLiveStreamsAndRefTag
       .map { project, _, _ in project }
+
+    let projectAndUser = Signal.combineLatest(project, user)
+
+    let projectAndBackingEvent = projectAndUser
+      .switchMap { project, backer in
+        AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: backer)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .retry(upTo: 3)
+          .map { (project, $0) }
+          .materialize()
+    }
+
+    self.projectAndBacking = projectAndBackingEvent.values()
 
     self.projectStateOutput = Signal.combineLatest(project, user)
       .map { project, user in projectStateButton(backer: user, project: project) }
@@ -187,6 +202,7 @@ ProjectPamphletViewModelOutputs {
   public let topLayoutConstraintConstant: Signal<CGFloat, NoError>
 
   public let projectStateOutput: Signal<(ProjectStateCTAType, String?), NoError>
+  public let projectAndBacking: Signal<(Project, Backing), NoError>
 
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }

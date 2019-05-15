@@ -1,8 +1,10 @@
 import Library
+import KsApi
 import Prelude
 import UIKit
 
 class ProjectStatesContainerView: UIView {
+  fileprivate let vm: ProjectStatesContainerViewViewModelType = ProjectStatesContainerViewViewModel()
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -31,30 +33,32 @@ class ProjectStatesContainerView: UIView {
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  func configure(value: ProjectStateCTAType, rewardTitle: String) {
+  func configureWith(project: Project, backing: Backing) // Project, Reward, Backing
+  {
 
-    _ = self.button
-      |> projectStateButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        return value.buttonTitle }
-      |> UIButton.lens.backgroundColor(for: .normal) %~ { _ in
-            value.buttonBackgroundColor }
-
-    _ = self.backerLabel
-      |> \.text %~ { _ in "You're a backer"}
-
-    _ = self.label
-      |> \.text %~ { _ in rewardTitle }
-      |> \.font .~ .ksr_caption1(size: 14)
-      |> \.textColor .~ .ksr_dark_grey_500
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.labelStackView
-      |> \.axis .~ NSLayoutConstraint.Axis.vertical
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.isLayoutMarginsRelativeArrangement .~ true
+    self.vm.configureWith(project: project, backing: backing)
+//    _ = self.button
+//      |> projectStateButtonStyle
+//      |> UIButton.lens.title(for: .normal) %~ { _ in
+//        return value.buttonTitle }
+//      |> UIButton.lens.backgroundColor(for: .normal) %~ { _ in
+//            value.buttonBackgroundColor }
+//
+//    _ = self.backerLabel
+//      |> \.text %~ { _ in "You're a backer"}
+//
+//    _ = self.label
+//      |> \.text %~ { _ in rewardTitle }
+//      |> \.font .~ .ksr_caption1(size: 14)
+//      |> \.textColor .~ .ksr_dark_grey_500
+//
+//    _ = self.rootStackView
+//      |> rootStackViewStyle
+//
+//    _ = self.labelStackView
+//      |> \.axis .~ NSLayoutConstraint.Axis.vertical
+//      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+//      |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.isHidden .~ value.stackViewIsHidden
   }
 
@@ -80,5 +84,4 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
-//    |> \.spacing .~ Styles.grid(2)
 }
