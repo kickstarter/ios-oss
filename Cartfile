@@ -5,8 +5,7 @@ github "kickstarter/Kickstarter-ReactiveExtensions" "e15cb0830053a2f770ab575fbe0
 
 ### 3rd Party
 
-github "Alamofire/Alamofire" == 4.7.3
-github "Alamofire/AlamofireImage" == 3.4.1
+github "Alamofire/AlamofireImage" == 3.5.2
 github "AgileBits/onepassword-extension" == 1.8.4
 github "bitstadium/HockeySDK-iOS" == 5.1.2
 github "antitypical/Result" "4.1.0"

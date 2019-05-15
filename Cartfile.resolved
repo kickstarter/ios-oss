@@ -1,6 +1,6 @@
 github "AgileBits/onepassword-extension" "framework/1.8.4"
-github "Alamofire/Alamofire" "4.7.3"
-github "Alamofire/AlamofireImage" "3.4.1"
+github "Alamofire/Alamofire" "4.8.2"
+github "Alamofire/AlamofireImage" "3.5.2"
 github "ReactiveCocoa/ReactiveSwift" "4.0.0"
 github "antitypical/Result" "4.1.0"
 github "bitstadium/HockeySDK-iOS" "5.1.2"
