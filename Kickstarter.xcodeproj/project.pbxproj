@@ -2928,7 +2928,6 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D09362A8225D693000E1411A /* Stripe.framework */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
 				D0D58D7A2257FADE00532AC1 /* Argo.framework */,
@@ -2945,6 +2944,7 @@
 				D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */,
 				D0D58D802257FADF00532AC1 /* Result.framework */,
 				D0D58D842257FAE000532AC1 /* Runes.framework */,
+				D09362A8225D693000E1411A /* Stripe.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
