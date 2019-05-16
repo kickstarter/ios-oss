@@ -49,14 +49,6 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.reloadWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.dataSource.load(data: data)
-
-        self?.tableView.reloadData()
-    }
-
     self.viewModel.outputs.selectedShippingRule
       .observeForUI()
       .observeValues { [weak self] shippingRule in
@@ -69,18 +61,26 @@ class PledgeTableViewController: UITableViewController {
         self?.tableView.reloadRows(at: [shippingIndexPath], with: .automatic)
     }
 
+    self.viewModel.outputs.reloadWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.dataSource.load(data: data)
+
+        self?.tableView.reloadData()
+    }
+
     self.viewModel.outputs.shippingIsLoading
       .observeForUI()
       .observeValues { [weak self] isLoading in
-//        guard let _self = self,
-//          let shippingIndexPath = _self.dataSource.shippingCellIndexPath() else { return }
-//
-//        guard let shippingLocationCell = _self.dataSource
-//            .tableView(_self.tableView, cellForRowAt: shippingIndexPath) as? PledgeShippingLocationCell else {
-//          return
-//        }
-//
-//        shippingLocationCell.animate(isLoading)
+        guard let _self = self,
+          let shippingIndexPath = _self.dataSource.shippingCellIndexPath() else { return }
+
+        guard let shippingLocationCell = _self.dataSource
+            .tableView(_self.tableView, cellForRowAt: shippingIndexPath) as? PledgeShippingLocationCell else {
+          return
+        }
+
+        shippingLocationCell.animate(isLoading)
     }
   }
 

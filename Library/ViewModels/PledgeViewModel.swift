@@ -46,14 +46,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let shouldLoadShippingRules = reward.map { $0.shipping.enabled }
 
-    self.reloadWithData = Signal.combineLatest(amountCurrencyDelivery, isLoggedIn, shouldLoadShippingRules)
+    let pledgeViewData: Signal<PledgeTableViewData, NoError> = Signal.combineLatest(amountCurrencyDelivery, isLoggedIn, shouldLoadShippingRules)
       .map { amountCurrencyDelivery, isLoggedIn, requiresShippingRules in
         let (amount, currency, delivery) = amountCurrencyDelivery
 
         return (amount, currency, delivery, isLoggedIn, requiresShippingRules)
     }
 
-    let shippingRulesEvent = projectAndReward
+    self.reloadWithData = pledgeViewData.logEvents(identifier: "**RELOAD WITH DATA**")
+
+    // Shipping Rules network request should begin as a soon as `reloadWithData` has fired
+    // Reminder that `reloadWithData` populates the table view
+    let shippingRulesEvent = self.reloadWithData
+      .flatMap { _ in projectAndReward }
+//      .takeWhen(pledgeViewData.ignoreValues())
+      .logEvents(identifier: "**SHIPPING RULES FIRING**")
       .filter { _, reward in reward.shipping.enabled }
       .switchMap { (project, reward)
         -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, NoError> in
@@ -63,21 +70,24 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
           .retry(upTo: 3)
           .materialize()
-      }
+      }.logEvents(identifier: "**SHIPPING RULES EVENT**")
+
+    shippingRulesEvent.observeValues { _ in
+      print("**HERE**")
+    }
 
     let defaultShippingRule = shippingRulesEvent.values()
       .map(defaultShippingRule(fromShippingRules:))
 
     self.selectedShippingRule = defaultShippingRule.skipNil()
 
-    let shippingShouldBeginLoading = Signal.combineLatest(self.reloadWithData, shouldLoadShippingRules)
-      .map(second)
+    let shippingShouldBeginLoading = pledgeViewData.signal
+      .map { $0.requiresShippingRules }
       .filter(isTrue)
+      .logEvents(identifier: "**SHIPPING SHOULD BEGIN LOADING**")
 
     self.shippingIsLoading = Signal.merge(shippingShouldBeginLoading,
-                                          shippingRulesEvent.values().mapConst(false),
-                                          shippingRulesEvent.errors().mapConst(false)
-    )
+                                          shippingRulesEvent.filter { $0.isTerminating }.mapConst(false))
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
