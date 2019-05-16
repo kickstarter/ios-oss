@@ -5,7 +5,7 @@ import XCTest
 @testable import KsApi
 @testable import Library
 @testable import LiveStream
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 internal final class LiveStreamNavTitleViewTests: TestCase {
 

@@ -5,7 +5,7 @@ import XCTest
 @testable import KsApi
 @testable import LiveStream
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 private let pages: [LiveStreamContainerPage] = [
   .info(project: .template, liveStreamEvent: .template, refTag: .projectPage, presentedFromProject: false),

@@ -3,7 +3,6 @@ import UIKit
 import ReactiveSwift
 import Result
 
-#if os(iOS)
 public final class Keyboard {
   public typealias Change = (frame: CGRect, duration: TimeInterval, options: UIView.AnimationOptions,
     notificationName: Notification.Name)
@@ -41,4 +40,3 @@ public final class Keyboard {
     ))
   }
 }
-#endif

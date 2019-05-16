@@ -6,7 +6,7 @@ import KsApi
 import Prelude
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 internal final class ProfileViewModelTests: TestCase {
   private let vm = ProfileViewModel()

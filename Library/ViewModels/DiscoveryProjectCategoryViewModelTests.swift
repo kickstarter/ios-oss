@@ -4,7 +4,7 @@ import Result
 import Library
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 class DiscoveryProjectCategoryViewModelTests: XCTestCase {
     internal let vm = DiscoveryProjectCategoryViewModel()

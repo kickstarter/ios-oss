@@ -1,6 +1,6 @@
 import XCTest
 import UIKit
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import Library
 import Prelude
