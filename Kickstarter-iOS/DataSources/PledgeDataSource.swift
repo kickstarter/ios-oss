@@ -11,33 +11,75 @@ final class PledgeDataSource: ValueCellDataSource {
     case summary
   }
 
-  func load(amount: Double, currency: String, delivery: String, isLoggedIn: Bool) {
+  enum PledgeInputRow {
+    case shippingLocation(location: String, currency: String, rate: Double)
+    case pledgeAmount(amount: Double, currency: String)
+
+    var isShipping: Bool {
+      switch self {
+      case .shippingLocation: return true
+      default: return false
+      }
+    }
+
+    var isPledgeAmount: Bool {
+      switch self {
+      case .pledgeAmount: return true
+      default: return false
+      }
+    }
+  }
+
+  func load(data: PledgeTableViewData) {
+    self.loadProjectSection(delivery: data.delivery)
+
+    self.loadInputsSection(amount: data.amount, currency: data.currency, rate: 7.50,
+                           requiresShippingRules: data.requiresShippingRules)
+
+    self.loadSummarySection(isLoggedIn: data.isLoggedIn)
+  }
+
+  func loadSelectedShippingLocation(_ shippingLocation: String) {
+    self.set(value: PledgeInputRow.shippingLocation(location: shippingLocation, currency: "$", rate: 7.50),
+             cellClass: PledgeShippingLocationCell.self,
+             inSection: Section.inputs.rawValue,
+             row: 1)
+  }
+
+  func shippingCellIndexPath() -> IndexPath? {
+    let inputsRowCount = self.numberOfItems(in: PledgeDataSource.Section.inputs.rawValue)
+
+    guard inputsRowCount > 0 else { return nil }
+
+    let shippingIndexPath = IndexPath(item: inputsRowCount - 1, section: PledgeDataSource.Section.inputs.rawValue)
+
+    guard self.indexPathIsShippingLocationCell(shippingIndexPath) else { return nil }
+
+    return shippingIndexPath
+  }
+
+  private func loadProjectSection(delivery: String) {
     self.appendRow(
       value: delivery,
       cellClass: PledgeDescriptionCell.self,
       toSection: Section.project.rawValue
     )
+  }
 
+  private func loadInputsSection(amount: Double, currency: String, rate: Double, requiresShippingRules: Bool) {
     self.appendRow(
-      value: (amount, currency),
+      value: PledgeInputRow.pledgeAmount(amount: amount, currency: currency),
       cellClass: PledgeAmountCell.self,
       toSection: Section.inputs.rawValue
     )
 
-    self.appendRow(
-      value: (location: "British Indian Ocean Territory", currency: "$", rate: 7.50),
-      cellClass: PledgeShippingLocationCell.self,
-      toSection: Section.inputs.rawValue
-    )
-
-    self.loadSummarySection(isLoggedIn: isLoggedIn)
-  }
-
-  func loadSelectedShippingLocation(_ shippingLocation: String) {
-    self.set(value: (location: shippingLocation, currency: "$", rate: 7.50),
-             cellClass: PledgeShippingLocationCell.self,
-             inSection: Section.inputs.rawValue,
-             row: 1)
+    if requiresShippingRules {
+      self.appendRow(
+        value: PledgeInputRow.shippingLocation(location: "Location", currency: currency, rate: rate),
+        cellClass: PledgeShippingLocationCell.self,
+        toSection: Section.inputs.rawValue
+      )
+    }
   }
 
   private func loadSummarySection(isLoggedIn: Bool) {
@@ -54,15 +96,19 @@ final class PledgeDataSource: ValueCellDataSource {
     }
   }
 
+  internal func indexPathIsShippingLocationCell(_ indexPath: IndexPath) -> Bool {
+    return (self[indexPath] as? PledgeInputRow)?.isShipping == true
+  }
+
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as PledgeAmountCell, value as (Double, String)):
+    case let (cell as PledgeAmountCell, value as PledgeInputRow):
       cell.configureWith(value: value)
     case let (cell as PledgeDescriptionCell, value as String):
       cell.configureWith(value: value)
     case let (cell as PledgeRowCell, value as String):
       cell.configureWith(value: value)
-    case let (cell as PledgeShippingLocationCell, value as (String, String, Double)):
+    case let (cell as PledgeShippingLocationCell, value as PledgeInputRow):
       cell.configureWith(value: value)
     case let (cell as PledgeContinueCell, value as ()):
       cell.configureWith(value: value)

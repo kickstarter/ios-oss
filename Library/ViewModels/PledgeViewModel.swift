@@ -4,7 +4,8 @@ import Prelude
 import ReactiveSwift
 import Result
 
-public typealias PledgeTableViewData = (amount: Double, currency: String, delivery: String, isLoggedIn: Bool)
+public typealias PledgeTableViewData = (amount: Double, currency: String, delivery: String, isLoggedIn: Bool,
+  requiresShippingRules: Bool)
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
@@ -30,36 +31,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(first)
       .skipNil()
 
-//    let shouldLoadShippingRules = projectAndReward.map { _, reward in reward.shipping.enabled }
-
-    let shippingRulesEvent = projectAndReward
-      .switchMap { (project, reward)
-        -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, NoError> in
-        // TODO: verify if this is the correct check we should be making
-        guard reward.shipping.enabled else {
-          return SignalProducer(value: .value([]))
-        }
-
-        return AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id,
-                                                                          rewardId: reward.id)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map(ShippingRulesEnvelope.lens.shippingRules.view)
-          .retry(upTo: 3)
-          .materialize()
-    }
-
-    self.shippingIsLoading = Signal.merge(shippingRulesEvent.values().mapConst(false),
-                                          shippingRulesEvent.errors().mapConst(false)
-    )
-
-    let defaultShippingRule = shippingRulesEvent.values()
-      .map(defaultShippingRule(fromShippingRules:))
-
-    self.selectedShippingRule = defaultShippingRule.skipNil()
-
-    let isLoggedIn = projectAndReward
-      .map { _ in AppEnvironment.current.currentUser }
-      .map(isNotNil)
+    let reward = projectAndReward.map(second)
 
     let amountCurrencyDelivery = projectAndReward.signal
       .map { (project, reward) in
@@ -68,12 +40,44 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
          reward.estimatedDeliveryOn
           .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? "") }
 
-    self.reloadWithData = Signal.combineLatest(amountCurrencyDelivery, isLoggedIn)
-      .map { amountCurrencyDelivery, isLoggedIn in
+    let isLoggedIn = projectAndReward
+      .map { _ in AppEnvironment.current.currentUser }
+      .map(isNotNil)
+
+    let shouldLoadShippingRules = reward.map { $0.shipping.enabled }
+
+    self.reloadWithData = Signal.combineLatest(amountCurrencyDelivery, isLoggedIn, shouldLoadShippingRules)
+      .map { amountCurrencyDelivery, isLoggedIn, requiresShippingRules in
         let (amount, currency, delivery) = amountCurrencyDelivery
 
-        return (amount, currency, delivery, isLoggedIn)
+        return (amount, currency, delivery, isLoggedIn, requiresShippingRules)
     }
+
+    let shippingRulesEvent = projectAndReward
+      .filter { _, reward in reward.shipping.enabled }
+      .switchMap { (project, reward)
+        -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, NoError> in
+        return AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id,
+                                                                          rewardId: reward.id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map(ShippingRulesEnvelope.lens.shippingRules.view)
+          .retry(upTo: 3)
+          .materialize()
+      }
+
+    let defaultShippingRule = shippingRulesEvent.values()
+      .map(defaultShippingRule(fromShippingRules:))
+
+    self.selectedShippingRule = defaultShippingRule.skipNil()
+
+    let shippingShouldBeginLoading = Signal.combineLatest(self.reloadWithData, shouldLoadShippingRules)
+      .map(second)
+      .filter(isTrue)
+
+    self.shippingIsLoading = Signal.merge(shippingShouldBeginLoading,
+                                          shippingRulesEvent.values().mapConst(false),
+                                          shippingRulesEvent.errors().mapConst(false)
+    )
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -86,8 +90,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let selectedShippingRule: Signal<ShippingRule, NoError>
   public let reloadWithData: Signal<PledgeTableViewData, NoError>
+  public let selectedShippingRule: Signal<ShippingRule, NoError>
   public let shippingIsLoading: Signal<Bool, NoError>
 
   public var inputs: PledgeViewModelInputs { return self }

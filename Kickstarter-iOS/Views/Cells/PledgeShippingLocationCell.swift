@@ -74,9 +74,19 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: (location: String, currency: String, rate: Double)) {
-    self.countryButton.setTitle(value.location, for: .normal)
-    self.amountLabel.text = "+\(value.currency)\(value.rate)"
+  func configureWith(value: PledgeDataSource.PledgeInputRow) {
+    guard case .shippingLocation(let location, let currency, let rate) = value else {
+      return
+    }
+
+    self.countryButton.setTitle(location, for: .normal)
+    self.amountLabel.text = "+\(currency)\(rate)"
+  }
+
+  // MARK: - Public Functions
+
+  func animate(_ isLoading: Bool) {
+    //
   }
 }
 

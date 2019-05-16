@@ -51,8 +51,8 @@ class PledgeTableViewController: UITableViewController {
 
     self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] (amount, currency, delivery, isLoggedIn) in
-        self?.dataSource.load(amount: amount, currency: currency, delivery: delivery, isLoggedIn: isLoggedIn)
+      .observeValues { [weak self] data in
+        self?.dataSource.load(data: data)
 
         self?.tableView.reloadData()
     }
@@ -62,9 +62,25 @@ class PledgeTableViewController: UITableViewController {
       .observeValues { [weak self] shippingRule in
         self?.dataSource.loadSelectedShippingLocation(shippingRule.location.localizedName)
 
-        let shippingIndexPath = IndexPath(item: 1, section: PledgeDataSource.Section.inputs.rawValue)
+        guard let shippingIndexPath = self?.dataSource.shippingCellIndexPath() else {
+          return
+        }
 
         self?.tableView.reloadRows(at: [shippingIndexPath], with: .automatic)
+    }
+
+    self.viewModel.outputs.shippingIsLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+//        guard let _self = self,
+//          let shippingIndexPath = _self.dataSource.shippingCellIndexPath() else { return }
+//
+//        guard let shippingLocationCell = _self.dataSource
+//            .tableView(_self.tableView, cellForRowAt: shippingIndexPath) as? PledgeShippingLocationCell else {
+//          return
+//        }
+//
+//        shippingLocationCell.animate(isLoading)
     }
   }
 
