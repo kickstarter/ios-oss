@@ -13,8 +13,8 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
-  var selectedShippingRule: Signal<ShippingRule, NoError> { get }
   var reloadWithData: Signal<PledgeTableViewData, NoError> { get }
+  var selectedShippingRule: Signal<ShippingRule, NoError> { get }
   var shippingIsLoading: Signal<Bool, NoError> { get }
 }
 

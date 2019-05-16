@@ -59,4 +59,34 @@ final class PledgeViewModelTests: TestCase {
       )
     }
   }
+
+  func testReloadData_requiresShippingRules_isTrue() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.amount.assertValues([10])
+      self.currency.assertValues(["$"])
+      self.isLoggedIn.assertValues([true])
+      self.estimatedDelivery.assertValues(
+        [Format.date(secondsInUTC: estimatedDelivery, template: "MMMMyyyy", timeZone: UTCTimeZone)]
+      )
+    }
+  }
+
+  func testReloadData_requiresShippingRules_isFalse() {
+
+  }
+
+  func testSelectedShippingRule() {
+
+  }
+
+  func testShippingIsLoading() {
+
+  }
 }
