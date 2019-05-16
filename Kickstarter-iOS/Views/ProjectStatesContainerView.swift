@@ -37,6 +37,7 @@ class ProjectStatesContainerView: UIView {
     self.button.rac.title = self.vm.outputs.buttonTitleText
     self.button.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
     self.labelStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
+    self.label.rac.text = self.vm.outputs.rewardTitle
   }
 
   func configureWith(project: Project, user: User) {
@@ -44,6 +45,7 @@ class ProjectStatesContainerView: UIView {
       |> projectStateButtonStyle
 
     _ = self.backerLabel
+      |> \.font .~ .ksr_headline(size: 14)
       |> \.text %~ { _ in "You're a backer"}
 
     _ = self.label

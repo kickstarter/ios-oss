@@ -32,7 +32,7 @@ public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerVi
     self.buttonTitleText = projectState.map { $0.buttonTitle }
     self.buttonBackgroundColor = projectState.map { $0.buttonBackgroundColor }
     self.stackViewIsHidden = projectState.map { $0.stackViewIsHidden }
-    self.rewardTitle = .empty
+    self.rewardTitle = projectAndUser.map { project, _ in project.personalization.backing?.reward?.title ?? "Title for unavailable reward" }
   }
 
   fileprivate let projectAndBackingProperty = MutableProperty<(Project, User)?>(nil)

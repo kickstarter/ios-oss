@@ -93,16 +93,21 @@ ProjectPamphletViewModelOutputs {
 
     let projectAndUser = Signal.combineLatest(project, user)
 
-    let projectAndBackingEvent = projectAndUser
-      .switchMap { project, backer in
-        AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: backer)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .retry(upTo: 3)
-          .map { (project, $0, backer) }
-          .materialize()
-    }
+//    let projectAndBackingEvent = projectAndUser
+//      .switchMap { value -> SignalProducer<(Project, Backing, User), NoError> in
+//        let (project, backer) = value
+//
+//        let request = project.personalization.isBacking == .some(true)
+//          ? AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: backer)
+//          : AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: backer)
+//
+//        return request
+//          .map { (project, $0, backer) }
+//          .demoteErrors()
+//    }
 
-    self.projectAndBacking = projectAndBackingEvent.values()
+    self.projectAndBacking = .empty
+//projectAndBackingEvent//.values()
 
     self.projectAndUser = Signal.combineLatest(project, user)
 
