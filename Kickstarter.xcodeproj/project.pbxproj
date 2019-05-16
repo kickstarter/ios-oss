@@ -111,8 +111,6 @@
 		37DEC22C2257CDBA0051EF9B /* PledgeDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC22B2257CDBA0051EF9B /* PledgeDataSourceTests.swift */; };
 		37DEC22E2257CDD50051EF9B /* PledgeRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */; };
 		37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E9E29F225EABB000D29DD7 /* AmountInputView.swift */; };
-		37F39BB5221D05FA00E0FA65 /* UITraitCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F39BB4221D05FA00E0FA65 /* UITraitCollection.swift */; };
-		37F39BEE221D062900E0FA65 /* UITraitCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F39BED221D062900E0FA65 /* UITraitCollectionTests.swift */; };
 		37FDAFAC2273BA4700662CC8 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAF702273B7FF00662CC8 /* UIStackView.swift */; };
 		37FDAFAD2273BA4B00662CC8 /* UIStackView+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */; };
 		37FEFBC8222F1E4F00FCA608 /* ProcessInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */; };
@@ -168,8 +166,6 @@
 		774A76EE20D863EF0012A71F /* BetaTools.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774A76AF20D83F6B0012A71F /* BetaTools.storyboard */; };
 		774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */; };
 		774ACC19225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774ACC18225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift */; };
-		77539E6C2147E4EE00A564CD /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
-		77539E6D2147E50E00A564CD /* Stripe.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */; };
 		77556F5420A099B3008CEA57 /* Config+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F1C20A09993008CEA57 /* Config+Helpers.swift */; };
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
@@ -211,7 +207,6 @@
 		77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440020F64F0B005F6B38 /* HelpDataSource.swift */; };
 		77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440220F65074005F6B38 /* HelpViewController.swift */; };
 		77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */; };
-		77ED5200227A004700DAAD13 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775229A72146805400595846 /* Stripe.framework */; };
 		77EFBAA62268D32000DA5C3C /* RewardsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAA52268D32000DA5C3C /* RewardsCollectionViewController.swift */; };
 		77EFBAE02268D34A00DA5C3C /* RewardsCollectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBADE2268D33E00DA5C3C /* RewardsCollectionViewControllerTests.swift */; };
 		77EFBAE32268D48A00DA5C3C /* RewardsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */; };
@@ -1363,8 +1358,6 @@
 		37DEC22B2257CDBA0051EF9B /* PledgeDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDataSourceTests.swift; sourceTree = "<group>"; };
 		37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRowCell.swift; sourceTree = "<group>"; };
 		37E9E29F225EABB000D29DD7 /* AmountInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountInputView.swift; sourceTree = "<group>"; };
-		37F39BB4221D05FA00E0FA65 /* UITraitCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitCollection.swift; sourceTree = "<group>"; };
-		37F39BED221D062900E0FA65 /* UITraitCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitCollectionTests.swift; sourceTree = "<group>"; };
 		37FDAF702273B7FF00662CC8 /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Tests.swift"; sourceTree = "<group>"; };
 		37FEFBC7222F1E4F00FCA608 /* ProcessInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoType.swift; sourceTree = "<group>"; };
@@ -1421,7 +1414,6 @@
 		774A76E820D841110012A71F /* BetaToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewController.swift; sourceTree = "<group>"; };
 		774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewControllerTests.swift; sourceTree = "<group>"; };
 		774ACC18225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletViewControllerTests.swift; sourceTree = "<group>"; };
-		775229A72146805400595846 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stripe.framework; path = Frameworks/Stripe/Stripe.framework; sourceTree = "<group>"; };
 		7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		77556F1C20A09993008CEA57 /* Config+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+Helpers.swift"; sourceTree = "<group>"; };
 		77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2337,6 +2329,10 @@
 				D0D2AB571E964849008D298A /* AudioToolbox.framework in Frameworks */,
 				D0D2AB5D1E964849008D298A /* CoreVideo.framework in Frameworks */,
 				D0D2AB611E964849008D298A /* QuartzCore.framework in Frameworks */,
+				D0A02F1A2258071B00BAA209 /* AudioToolbox.framework in Frameworks */,
+				D09D4ECC2289D5FF00C33B77 /* AVKit.framework in Frameworks */,
+				D09D4ECD2289D60500C33B77 /* AVFoundation.framework in Frameworks */,
+				D09D4ECF2289D63500C33B77 /* Curry.framework in Frameworks */,
 				017E88B41CD29CA1003FE5D6 /* FBSDKCoreKit.framework in Frameworks */,
 				D0D2AB5C1E964849008D298A /* CoreTelephony.framework in Frameworks */,
 				D0D2AB601E964849008D298A /* OpenTok.framework in Frameworks */,
@@ -2664,7 +2660,6 @@
 				A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
 				77FD60A022735AED0084B84C /* PledgeContinueCell.swift */,
-				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
 				370ACAFF225D337900C8745F /* PledgeAmountCell.swift */,
 				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */,
 				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,

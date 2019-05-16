@@ -51,7 +51,9 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView
-      |> checkoutAdaptableStackViewStyle(self.traitCollection.ksr_isAccessibilityCategory())
+      |> checkoutAdaptableStackViewStyle(
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      )
 
     _ = self.amountLabel
       |> amountLabelStyle

@@ -1,6 +1,7 @@
 import Foundation
 import KsApi
 import Library
+import UIKit
 
 final class RewardsCollectionViewDataSource: ValueCellDataSource {
   func load(rewards: [Reward]) {

@@ -42,7 +42,7 @@ class AmountInputView: UIView {
     _ = self.textField
       |> textFieldStyle
 
-    let isAccessibilityCategory = self.traitCollection.ksr_isAccessibilityCategory()
+    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
     _ = self.stackView
       |> stackViewStyle
