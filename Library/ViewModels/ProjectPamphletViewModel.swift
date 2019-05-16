@@ -46,9 +46,9 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a float to update topLayoutConstraints constant.
   var topLayoutConstraintConstant: Signal<CGFloat, NoError> { get }
 
-  var projectStateOutput: Signal<(ProjectStateCTAType, String?), NoError> { get }
+  var projectAndUser: Signal<(Project, User), NoError> { get }
 
-  var projectAndBacking: Signal <(Project, Backing), NoError> { get }
+  var projectAndBacking: Signal <(Project, Backing, User), NoError> { get }
 
 }
 
@@ -98,14 +98,13 @@ ProjectPamphletViewModelOutputs {
         AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: backer)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .retry(upTo: 3)
-          .map { (project, $0) }
+          .map { (project, $0, backer) }
           .materialize()
     }
 
     self.projectAndBacking = projectAndBackingEvent.values()
 
-    self.projectStateOutput = Signal.combineLatest(project, user)
-      .map { project, user in projectStateButton(backer: user, project: project) }
+    self.projectAndUser = Signal.combineLatest(project, user)
 
     self.configureChildViewControllersWithProjectAndLiveStreams = freshProjectAndLiveStreamsAndRefTag
       .map { project, liveStreams, refTag in (project, liveStreams ?? [], refTag) }
@@ -201,8 +200,8 @@ ProjectPamphletViewModelOutputs {
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
   public let topLayoutConstraintConstant: Signal<CGFloat, NoError>
 
-  public let projectStateOutput: Signal<(ProjectStateCTAType, String?), NoError>
-  public let projectAndBacking: Signal<(Project, Backing), NoError>
+  public let projectAndUser: Signal<(Project, User), NoError>
+  public let projectAndBacking: Signal<(Project, Backing, User), NoError>
 
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }
@@ -280,19 +279,7 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   return HTTPCookie(properties: properties)
 }
 
-private func projectStateButton(backer: User, project: Project) -> (ProjectStateCTAType, String?) {
-  let projectIsBacked = project.personalization.isBacking
-  let projectRewardTitle = project.personalization.backing?.reward?.title
 
-  switch project.state {
-  case .live:
-    return projectIsBacked! ? (ProjectStateCTAType.manage, projectRewardTitle ) : (ProjectStateCTAType.pledge, projectRewardTitle)
-  case .canceled, .failed, .suspended, .successful:
-    return projectIsBacked! ? (ProjectStateCTAType.viewBacking, projectRewardTitle) : (ProjectStateCTAType.viewRewards, projectRewardTitle)
-  default:
-    return (ProjectStateCTAType.viewRewards, projectRewardTitle)
-  }
-}
 
 private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
   -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> {
@@ -320,42 +307,4 @@ private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, 
     return projectAndLiveStreams
 }
 
-public enum ProjectStateCTAType {
-  case pledge
-  case manage
-  case viewBacking
-  case viewRewards
 
-  public var buttonTitle: String {
-    switch self {
-    case .pledge:
-      return "Back this project"
-    case .manage:
-      return "Manage"
-    case .viewBacking:
-      return "View your pledge"
-    case .viewRewards:
-      return "View rewards"
-    }
-  }
-
-  public var buttonBackgroundColor: UIColor {
-    switch self {
-    case .pledge:
-      return .ksr_green_500
-    case .manage:
-      return .ksr_blue
-    case .viewBacking, .viewRewards:
-      return .ksr_soft_black
-    }
-  }
-
-  public var stackViewIsHidden: Bool {
-    switch self {
-    case .pledge, .viewBacking, .viewRewards:
-      return true
-    case .manage:
-      return false
-    }
-  }
-}

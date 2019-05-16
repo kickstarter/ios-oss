@@ -24,42 +24,41 @@ class ProjectStatesContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    NSLayoutConstraint.activate([self.button.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)])
+    NSLayoutConstraint.activate(
+      [self.button.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)]
+    )
 
     _ = ([self.backerLabel, self.label], self.labelStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.labelStackView, self.button], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.button.rac.title = self.vm.outputs.buttonTitleText
+    self.button.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
+    self.labelStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
   }
 
-  func configureWith(project: Project, backing: Backing) // Project, Reward, Backing
-  {
+  func configureWith(project: Project, user: User) {
+    _ = self.button
+      |> projectStateButtonStyle
 
-    self.vm.configureWith(project: project, backing: backing)
-//    _ = self.button
-//      |> projectStateButtonStyle
-//      |> UIButton.lens.title(for: .normal) %~ { _ in
-//        return value.buttonTitle }
-//      |> UIButton.lens.backgroundColor(for: .normal) %~ { _ in
-//            value.buttonBackgroundColor }
-//
-//    _ = self.backerLabel
-//      |> \.text %~ { _ in "You're a backer"}
-//
-//    _ = self.label
-//      |> \.text %~ { _ in rewardTitle }
-//      |> \.font .~ .ksr_caption1(size: 14)
-//      |> \.textColor .~ .ksr_dark_grey_500
-//
-//    _ = self.rootStackView
-//      |> rootStackViewStyle
-//
-//    _ = self.labelStackView
-//      |> \.axis .~ NSLayoutConstraint.Axis.vertical
-//      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-//      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.isHidden .~ value.stackViewIsHidden
+    _ = self.backerLabel
+      |> \.text %~ { _ in "You're a backer"}
+
+    _ = self.label
+      |> \.font .~ .ksr_caption1(size: 14)
+      |> \.textColor .~ .ksr_dark_grey_500
+
+    _ = self.rootStackView
+      |> rootStackViewStyle
+
+    _ = self.labelStackView
+      |> \.axis .~ NSLayoutConstraint.Axis.vertical
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+
+    self.vm.inputs.configureWith(project: project, user: user)
   }
 
   required init?(coder aDecoder: NSCoder) {
