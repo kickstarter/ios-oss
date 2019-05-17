@@ -46,7 +46,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let shouldLoadShippingRules = reward.map { $0.shipping.enabled }
 
-    let pledgeViewData: Signal<PledgeTableViewData, NoError> = Signal.combineLatest(amountCurrencyDelivery, isLoggedIn, shouldLoadShippingRules)
+    let pledgeViewData: Signal<PledgeTableViewData, NoError> = Signal
+      .combineLatest(amountCurrencyDelivery, isLoggedIn, shouldLoadShippingRules)
       .map { amountCurrencyDelivery, isLoggedIn, requiresShippingRules in
         let (amount, currency, delivery) = amountCurrencyDelivery
 
@@ -55,13 +56,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.reloadWithData = pledgeViewData.logEvents(identifier: "**RELOAD WITH DATA**")
 
+    let projectReward = MutableProperty<(Project, Reward)?>(nil)
+    projectReward <~ projectAndReward
+
     // Shipping Rules network request should begin as a soon as `reloadWithData` has fired
     // Reminder that `reloadWithData` populates the table view
-    let shippingRulesEvent = self.reloadWithData
-      .flatMap { _ in projectAndReward }
-//      .takeWhen(pledgeViewData.ignoreValues())
-      .logEvents(identifier: "**SHIPPING RULES FIRING**")
+    let shippingRulesEvent = projectAndReward
       .filter { _, reward in reward.shipping.enabled }
+      .logEvents(identifier: "**SHIPPING RULES FIRING**")
       .switchMap { (project, reward)
         -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, NoError> in
         return AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id,
@@ -72,14 +74,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           .materialize()
       }.logEvents(identifier: "**SHIPPING RULES EVENT**")
 
-    shippingRulesEvent.observeValues { _ in
-      print("**HERE**")
-    }
-
-    let defaultShippingRule = shippingRulesEvent.values()
+    let selectedShippingRuleProperty = MutableProperty<ShippingRule?>(nil)
+    selectedShippingRuleProperty <~ shippingRulesEvent.values()
       .map(defaultShippingRule(fromShippingRules:))
 
-    self.selectedShippingRule = defaultShippingRule.skipNil()
+    self.selectedShippingRule = Signal
+      .combineLatest(selectedShippingRuleProperty.signal, self.reloadWithData)
+      .map(first)
+      .skipNil()
 
     let shippingShouldBeginLoading = pledgeViewData.signal
       .map { $0.requiresShippingRules }
