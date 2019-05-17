@@ -18,10 +18,8 @@ internal final class DiscoveryViewModelTests: TestCase {
   fileprivate let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
   fileprivate let updateSortPagerStyle = TestObserver<Int?, NoError>()
 
-  let recsInitialParams = .defaults
-    |> DiscoveryParams.lens.recommended .~ true
-    |> DiscoveryParams.lens.backed .~ false
-  let initialParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
+  let initialParams = .defaults
+    |> DiscoveryParams.lens.includePOTD .~ true
 
   let categoryParams = .defaults |> DiscoveryParams.lens.category .~ .art
   let subcategoryParams = .defaults |> DiscoveryParams.lens.category .~ .documentary
@@ -83,6 +81,21 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.loadFilterIntoDataSource.assertValues([initialParams, starredParams],
                                                "New params load into data source after selecting.")
+  }
+
+  func testLoadRecommendedProjectsIntoDataSource_UserLoggedIn() {
+
+    let recsInitialParams = .defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.backed .~ false
+
+    withEnvironment(config: Config.template, currentUser: User.template) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([recsInitialParams])
+    }
   }
 
   func testConfigureNavigationHeader() {

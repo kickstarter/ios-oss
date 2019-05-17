@@ -72,6 +72,12 @@ public protocol DiscoveryViewModelType {
 
 private func initialParam() -> DiscoveryParams {
 
+  if AppEnvironment.current.currentUser != nil {
+    return DiscoveryParams.defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.backed .~ false
+      |> DiscoveryParams.lens.recommended .~ true
+  }
     return DiscoveryParams.defaults
       |> DiscoveryParams.lens.includePOTD .~ true
 }
