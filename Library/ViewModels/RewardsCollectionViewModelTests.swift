@@ -3,7 +3,7 @@ import ReactiveExtensions
 import XCTest
 import Result
 @testable import KsApi
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 @testable import Library
 
 final class RewardsCollectionViewModelTests: TestCase {

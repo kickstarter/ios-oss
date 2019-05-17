@@ -1,5 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import Library
+import UIKit
 
 final class PledgeTableViewControllerTests: TestCase {
   override func setUp() {
