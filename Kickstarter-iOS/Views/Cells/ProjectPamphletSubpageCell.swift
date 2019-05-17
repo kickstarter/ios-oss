@@ -6,7 +6,6 @@ import UIKit
 internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
   @IBOutlet private weak var countContainerView: UIView!
   @IBOutlet private weak var countLabel: UILabel!
-  @IBOutlet private weak var liveNowImageView: UIImageView!
   @IBOutlet private weak var rootStackView: UIStackView!
   @IBOutlet private weak var separatorView: UIView!
   @IBOutlet private weak var subpageLabel: UILabel!
@@ -17,7 +16,6 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
   internal func configureWith(value subpage: ProjectPamphletSubpage) {
     self.viewModel.inputs.configureWith(subpage: subpage)
     self.setNeedsLayout()
-    self.liveNowImageView.attachLiveNowAnimation()
   }
 
   internal override func bindStyles() {
@@ -46,11 +44,6 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.distribution .~ .fill
 
-    _ = self.liveNowImageView
-      |> UIImageView.lens.tintColor .~ .ksr_green_500
-      |> UIImageView.lens.contentHuggingPriority(for: .horizontal) .~ UILayoutPriority.required
-      |> UIImageView.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriority.required
-
     _ = [self.separatorView, self.topSeparatorView]
       ||> separatorStyle
 
@@ -78,7 +71,6 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
         self?.countContainerView.layer.borderColor = $0.cgColor
     }
 
-    self.liveNowImageView.rac.hidden = self.viewModel.outputs.liveNowImageViewHidden
     self.topSeparatorView.rac.hidden = self.viewModel.outputs.topSeparatorViewHidden
     self.separatorView.rac.hidden = self.viewModel.outputs.separatorViewHidden
 

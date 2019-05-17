@@ -213,7 +213,6 @@ public enum Query {
     case isEmailVerified
     case isFollowing
     case isSocializing
-    case ksrLiveAuthToken
     case location(NonEmptySet<Location>)
     case membershipProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case name
@@ -403,7 +402,6 @@ extension Query.User: QueryType {
     case .isEmailVerified:                      return "isEmailVerified"
     case .isFollowing:                          return "isFollowing"
     case .isSocializing:                        return "isSocializing"
-    case .ksrLiveAuthToken:                     return "ksrLiveAuthToken"
     case let .location(fields):                 return "location { \(join(fields)) }"
     case let .membershipProjects(args, fields): return "membershipProjects\(connection(args, fields))"
     case .name:                                 return "name"

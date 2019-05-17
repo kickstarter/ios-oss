@@ -522,9 +522,6 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vAH-qI-wPb">
                                             <rect key="frame" x="20" y="11" width="360" height="34"/>
                                             <subviews>
-                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="253" verticalHuggingPriority="251" image="live-indicator" translatesAutoresizingMaskIntoConstraints="NO" id="946-cU-6Dn">
-                                                    <rect key="frame" x="0.0" y="11.5" width="0.0" height="11"/>
-                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BQJ-bs-AP3">
                                                     <rect key="frame" x="0.0" y="7" width="216" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -583,7 +580,6 @@
                                 <connections>
                                     <outlet property="countContainerView" destination="gk5-Oh-PZV" id="yEG-Co-8xU"/>
                                     <outlet property="countLabel" destination="iVO-lV-sJE" id="v6p-Sp-bQb"/>
-                                    <outlet property="liveNowImageView" destination="946-cU-6Dn" id="Vvi-w9-CLw"/>
                                     <outlet property="rootStackView" destination="vAH-qI-wPb" id="tba-t4-MeJ"/>
                                     <outlet property="separatorView" destination="jcl-90-mB6" id="HKm-yc-N8B"/>
                                     <outlet property="subpageLabel" destination="BQJ-bs-AP3" id="LcJ-ib-NHU"/>
@@ -726,7 +722,4 @@
             <point key="canvasLocation" x="870.39999999999998" y="279.76011994002999"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="live-indicator" width="11" height="11"/>
-    </resources>
 </document>

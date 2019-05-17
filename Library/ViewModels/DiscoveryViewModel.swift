@@ -39,12 +39,6 @@ public protocol DiscoveryViewModelOutputs {
   /// Emits an array of sorts that should be used to configure the sort pager controller.
   var configureSortPager: Signal<[DiscoveryParams.Sort], NoError> { get }
 
-  /// Emits a boolean that determines if the discovery pages view is hidden.
-  var discoveryPagesViewHidden: Signal<Bool, NoError> { get }
-
-  /// Emits a boolean that determines if the live stream discovery view is hidden.
-  var liveStreamDiscoveryViewHidden: Signal<Bool, NoError> { get }
-
   /// Emits a discovery params value that should be passed to all the pages in discovery.
   var loadFilterIntoDataSource: Signal<DiscoveryParams, NoError> { get }
 
@@ -57,9 +51,6 @@ public protocol DiscoveryViewModelOutputs {
 
   /// Emits to disable/enable the sorts when an empty state is displayed/dismissed.
   var sortsAreEnabled: Signal<Bool, NoError> { get }
-
-  /// Emits a boolean that determines if the sorts view is hidden.
-  var sortViewHidden: Signal<Bool, NoError> { get }
 
   /// Emits a category id to update the sort pager view controller style.
   var updateSortPagerStyle: Signal<Int?, NoError> { get }
@@ -102,9 +93,7 @@ DiscoveryViewModelOutputs {
       .skipRepeats()
 
     self.configureNavigationHeader = currentParams
-
     self.loadFilterIntoDataSource = currentParams
-      .filter { $0.hasLiveStreams != .some(true) }
 
     let swipeToSort = self.willTransitionToPageProperty.signal
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
@@ -142,15 +131,6 @@ DiscoveryViewModelOutputs {
     self.sortPagerSelectedSortProperty.signal.skipNil()
       .skipRepeats(==)
       .observeValues { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .tap) }
-
-    self.liveStreamDiscoveryViewHidden = currentParams
-      .map { $0.hasLiveStreams != .some(true) }
-      .skipRepeats()
-
-    self.discoveryPagesViewHidden = self.liveStreamDiscoveryViewHidden
-      .map(negate)
-
-    self.sortViewHidden = self.discoveryPagesViewHidden
 
     swipeToSort
       .observeValues {
@@ -195,13 +175,10 @@ DiscoveryViewModelOutputs {
   public let configureNavigationHeader: Signal<DiscoveryParams, NoError>
   public let configurePagerDataSource: Signal<[DiscoveryParams.Sort], NoError>
   public let configureSortPager: Signal<[DiscoveryParams.Sort], NoError>
-  public let discoveryPagesViewHidden: Signal<Bool, NoError>
-  public let liveStreamDiscoveryViewHidden: Signal<Bool, NoError>
   public let loadFilterIntoDataSource: Signal<DiscoveryParams, NoError>
   public let navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewController.NavigationDirection), NoError>
   public let selectSortPage: Signal<DiscoveryParams.Sort, NoError>
   public let sortsAreEnabled: Signal<Bool, NoError>
-  public let sortViewHidden: Signal<Bool, NoError>
   public let updateSortPagerStyle: Signal<Int?, NoError>
 
   public var inputs: DiscoveryViewModelInputs { return self }

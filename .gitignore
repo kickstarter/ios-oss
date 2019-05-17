@@ -70,10 +70,8 @@ fastlane/screenshots
 # FBSnapshot failures
 Screenshots/FailureDiffs/*
 
-Frameworks/OpenTok/*
 Frameworks/native-secrets
 Frameworks/Fabric/*
-Frameworks/Stripe/*
 .fastlane/report.xml
 .fastlane/README.md
 

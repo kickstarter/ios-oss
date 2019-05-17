@@ -3,7 +3,6 @@ import Runes
 import FBSDKCoreKit
 import Foundation
 import KsApi
-import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
@@ -130,7 +129,6 @@ public struct AppEnvironment: AppEnvironmentType {
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-    liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
@@ -160,7 +158,6 @@ public struct AppEnvironment: AppEnvironmentType {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
-        liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
         pushRegistrationType: pushRegistrationType,
@@ -194,7 +191,6 @@ public struct AppEnvironment: AppEnvironmentType {
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-    liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
@@ -224,7 +220,6 @@ public struct AppEnvironment: AppEnvironmentType {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
-        liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
         pushRegistrationType: pushRegistrationType,
