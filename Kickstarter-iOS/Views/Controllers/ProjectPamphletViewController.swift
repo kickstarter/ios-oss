@@ -93,7 +93,7 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.layoutMargins .~ .init(all: backThisProjectContainerViewMargins)
 
     _ = self.backThisProjectContainerView.layer
-      |> checkoutLayerCardStyleRounded
+      |> checkoutLayerCardRoundedStyle
       |> \.backgroundColor .~ UIColor.white.cgColor
       |> \.shadowColor .~ UIColor.black.cgColor
       |> \.shadowOpacity .~ 0.12

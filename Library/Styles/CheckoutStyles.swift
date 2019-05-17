@@ -69,7 +69,7 @@ public let checkoutWhiteBackgroundStyle: ViewStyle = { (view: UIView) in
     |> \.backgroundColor .~ UIColor.white
 }
 
-public let checkoutLayerCardStyleRounded: LayerStyle = { layer in
+public let checkoutLayerCardRoundedStyle: LayerStyle = { layer in
   layer
     |> \.cornerRadius .~ 16.0
 }
