@@ -83,14 +83,30 @@ internal final class DiscoveryViewModelTests: TestCase {
                                                "New params load into data source after selecting.")
   }
 
-  func testLoadRecommendedProjectsIntoDataSource_UserLoggedIn() {
+  func testLoadRecommendedProjectsIntoDataSource_UserOptedOutOfRecommendations() {
+
+    let user = User.template
+      |> \.optedOutOfRecommendations .~ true
+
+    withEnvironment(config: Config.template, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([initialParams])
+    }
+  }
+
+  func testLoadRecommendedProjectsIntoDataSource_UserOptedInOfRecommendations() {
 
     let recsInitialParams = .defaults
       |> DiscoveryParams.lens.includePOTD .~ true
       |> DiscoveryParams.lens.recommended .~ true
       |> DiscoveryParams.lens.backed .~ false
 
-    withEnvironment(config: Config.template, currentUser: User.template) {
+    let user = User.template
+      |> \.optedOutOfRecommendations .~ false
+
+    withEnvironment(config: Config.template, currentUser: user) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 

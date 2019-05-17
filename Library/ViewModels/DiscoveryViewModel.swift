@@ -72,14 +72,18 @@ public protocol DiscoveryViewModelType {
 
 private func initialParam() -> DiscoveryParams {
 
-  if AppEnvironment.current.currentUser != nil {
+  let user = AppEnvironment.current.currentUser
+  let optedOutOfRecommendations = user?.optedOutOfRecommendations ?? true
+
+  if user == nil || optedOutOfRecommendations {
     return DiscoveryParams.defaults
       |> DiscoveryParams.lens.includePOTD .~ true
-      |> DiscoveryParams.lens.backed .~ false
-      |> DiscoveryParams.lens.recommended .~ true
   }
-    return DiscoveryParams.defaults
-      |> DiscoveryParams.lens.includePOTD .~ true
+
+  return DiscoveryParams.defaults
+    |> DiscoveryParams.lens.includePOTD .~ true
+    |> DiscoveryParams.lens.backed .~ false
+    |> DiscoveryParams.lens.recommended .~ true
 }
 
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
@@ -95,7 +99,7 @@ DiscoveryViewModelOutputs {
       self.viewWillAppearProperty.signal.take(first: 1).map { _ in initialParam() },
       self.filterWithParamsProperty.signal.skipNil()
       )
-    .skipRepeats()
+      .skipRepeats()
 
     self.configureNavigationHeader = currentParams
 
