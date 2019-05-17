@@ -85,6 +85,28 @@ jobs:
           paths:
             - "Frameworks/Stripe"
 
+      - restore_cache:
+          name: Restore Bundler Cache
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Install Bundler
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+
+      - save_cache:
+          name: Save Bundler Cache
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Danger
+          command: bundle exec danger --verbose
+
       - run:
           name: SwiftLint
           command: make lint
