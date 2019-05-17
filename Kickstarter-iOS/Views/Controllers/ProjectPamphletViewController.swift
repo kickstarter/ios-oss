@@ -99,11 +99,7 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.shadowOpacity .~ 0.12
       |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
       |> \.shadowRadius .~ 1.0
-
-    if #available(iOS 11.0, *) {
-      _ = self.backThisProjectContainerView.layer
-        |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-    }
+      |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 
     _ = self.backThisProjectButton
       |> checkoutGreenButtonStyle
@@ -210,16 +206,7 @@ public final class ProjectPamphletViewController: UIViewController {
     let buttonSize = self.backThisProjectButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     let bottomInset = buttonSize.height + 2 * self.backThisProjectContainerViewMargins
 
-    if #available(iOS 11.0, *) {
-      self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
-    } else {
-      let insets = self.contentController.tableView.contentInset
-
-      self.contentController.tableView.contentInset = UIEdgeInsets(top: insets.top,
-                                                                   left: insets.left,
-                                                                   bottom: bottomInset,
-                                                                   right: insets.right)
-    }
+    self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
   }
 
   // MARK: - Selectors
