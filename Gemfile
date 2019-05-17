@@ -1,6 +1,9 @@
 # Gemfile
 
 source 'https://rubygems.org'
+
+gem 'danger'
+gem 'danger-swiftformat'
 gem 'fastlane'
 gem 'xcode-install'
 gem 'fog-aws'
