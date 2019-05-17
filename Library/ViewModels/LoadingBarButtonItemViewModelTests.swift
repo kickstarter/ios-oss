@@ -2,7 +2,7 @@ import Result
 import Prelude
 import XCTest
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 final class LoadingBarButtonItemViewModelTests: TestCase {
   private let vm: LoadingBarButtonItemViewModelType = LoadingBarButtonItemViewModel()

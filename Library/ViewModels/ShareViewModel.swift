@@ -1,10 +1,8 @@
-#if os(iOS)
 import KsApi
 import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
-import Social
 
 public struct ShareActivityCompletionData {
   internal let activityType: UIActivity.ActivityType?
@@ -25,34 +23,23 @@ public struct ShareActivityCompletionData {
 
 /// These share types provide us access to knowing when the user successfully shares through that method,
 /// or when the user cancels.
-private let firstPartyShareTypes: [UIActivity.ActivityType] = [.postToFacebook, .postToTwitter, .postToWeibo,
-                                                      .message, .mail, .copyToPasteboard, .addToReadingList,
-                                                      .postToTencentWeibo, .airDrop, SafariActivityType]
+private let firstPartyShareTypes: [UIActivity.ActivityType] = [
+  .postToFacebook, .postToTwitter, .postToWeibo, .message, .mail, .copyToPasteboard, .addToReadingList,
+  .postToTencentWeibo, .airDrop, SafariActivityType
+]
 
 public protocol ShareViewModelInputs {
   /// Call with the context that this sharing is taking place in.
   func configureWith(shareContext: ShareContext, shareContextView: UIView?)
-
-  /// Call when the direct-share facebook button is pressed.
-  func facebookButtonTapped()
 
   /// Call when the general share button is pressed.
   func shareButtonTapped()
 
   /// Call from the UIActivityViewController's completion handler.
   func shareActivityCompletion(with data: ShareActivityCompletionData)
-
-  /// Call from the SLComposeViewController's completion handler
-  func shareComposeCompletion(result: SLComposeViewControllerResult)
-
-  /// Call when the direct-share twitter button is pressed.
-  func twitterButtonTapped()
 }
 
 public protocol ShareViewModelOutputs {
-  /// Emits when the share compose controller show be presented.
-  var showShareCompose: Signal<SLComposeViewController, NoError> { get }
-
   /// Emits when the share sheet should be presented.
   var showShareSheet: Signal<(UIActivityViewController, UIView?), NoError> { get }
 }
@@ -64,7 +51,7 @@ public protocol ShareViewModelType {
 
 public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, ShareViewModelOutputs {
 
-    public init() {
+  public init() {
     let shareContextAndView = self.shareContextProperty.signal.skipNil()
     let shareContext = self.shareContextProperty.signal.skipNil().map(first)
 
@@ -76,34 +63,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
       }
       .skipNil()
 
-    let directShareService = Signal.merge(
-      self.facebookButtonTappedProperty.signal.mapConst(SLServiceTypeFacebook),
-      self.twitterButtonTappedProperty.signal.mapConst(SLServiceTypeTwitter)
-      )
-
-    self.showShareCompose = shareContext
-      .takePairWhen(directShareService)
-      .map(shareComposeController(forShareContext:serviceType:))
-      .skipNil()
-
-    let directShareCompletion = Signal.merge(
-      self.facebookButtonTappedProperty.signal.mapConst(UIActivity.ActivityType.postToFacebook),
-      self.twitterButtonTappedProperty.signal.mapConst(UIActivity.ActivityType.postToTwitter)
-      )
-      .takePairWhen(self.shareComposeCompletionProperty.signal.skipNil())
-      .map { service, result in
-        ShareActivityCompletionData(
-          activityType: service,
-          completed: result == .done,
-          returnedItems: nil,
-          activityError: nil
-        )
-    }
-
-    let shareCompletion = Signal.merge(
-      directShareCompletion,
-      self.shareActivityCompletionProperty.signal.skipNil()
-      )
+    let shareCompletion = self.shareActivityCompletionProperty.signal.skipNil()
 
     let shareActivityCompletion = shareContext
       .takePairWhen(shareCompletion)
@@ -165,10 +125,6 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   public func configureWith(shareContext: ShareContext, shareContextView: UIView?) {
     self.shareContextProperty.value = (shareContext, shareContextView)
   }
-  fileprivate let facebookButtonTappedProperty = MutableProperty(())
-  public func facebookButtonTapped() {
-    self.facebookButtonTappedProperty.value = ()
-  }
   fileprivate let shareButtonTappedProperty = MutableProperty(())
   public func shareButtonTapped() {
     self.shareButtonTappedProperty.value = ()
@@ -177,16 +133,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   public func shareActivityCompletion(with data: ShareActivityCompletionData) {
     self.shareActivityCompletionProperty.value = data
   }
-  fileprivate let shareComposeCompletionProperty = MutableProperty<SLComposeViewControllerResult?>(nil)
-  public func shareComposeCompletion(result: SLComposeViewControllerResult) {
-    self.shareComposeCompletionProperty.value = result
-  }
-  fileprivate let twitterButtonTappedProperty = MutableProperty(())
-  public func twitterButtonTapped() {
-    self.twitterButtonTappedProperty.value = ()
-  }
 
-  public let showShareCompose: Signal<SLComposeViewController, NoError>
   public let showShareSheet: Signal<(UIActivityViewController, UIView?), NoError>
 
   public var inputs: ShareViewModelInputs { return self }
@@ -254,7 +201,6 @@ private func activityController(forShareContext shareContext: ShareContext) -> U
 }
 
 private func twitterInitialText(forShareContext shareContext: ShareContext) -> String {
-
   switch shareContext {
   case let .creatorDashboard(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
@@ -273,20 +219,6 @@ private func twitterInitialText(forShareContext shareContext: ShareContext) -> S
   }
 }
 
-private func shareComposeController(forShareContext shareContext: ShareContext, serviceType: String)
-  -> SLComposeViewController? {
-
-    let controller = SLComposeViewController(forServiceType: serviceType)
-
-    shareUrl(forShareContext: shareContext).doIfSome { controller?.add($0) }
-
-    if serviceType == SLServiceTypeTwitter {
-      controller?.setInitialText(twitterInitialText(forShareContext: shareContext))
-    }
-
-    return controller
-}
-
 private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> String {
   if liveStreamEvent.liveNow {
     return Strings.Creator_name_is_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
@@ -301,4 +233,3 @@ private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEv
     in_duration: Format.relative(secondsInUTC: liveStreamEvent.startDate.timeIntervalSince1970)
   )
 }
-#endif

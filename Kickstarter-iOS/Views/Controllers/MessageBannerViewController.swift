@@ -17,14 +17,6 @@ final class MessageBannerViewController: UIViewController, NibLoading {
   internal var bottomConstraint: NSLayoutConstraint?
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
 
-  private var bottomSafeAreaInset: CGFloat {
-    if #available(iOS 11.0, *) {
-      return self.view.superview?.safeAreaInsets.bottom ?? 0
-    } else {
-      return 0
-    }
-  }
-
   struct AnimationConstants {
     static let hideDuration: TimeInterval = 0.25
     static let showDuration: TimeInterval = 0.3
@@ -103,7 +95,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
   private func showViewAndAnimate(_ isHidden: Bool) {
     let duration = isHidden ? AnimationConstants.hideDuration : AnimationConstants.showDuration
 
-    let hiddenConstant = self.view.frame.height + self.bottomSafeAreaInset
+    let hiddenConstant = self.view.frame.height + (self.view.superview?.safeAreaInsets.bottom ?? 0)
 
     if !isHidden {
       self.view.isHidden = isHidden

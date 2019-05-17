@@ -5,7 +5,7 @@ import Result
 import Prelude
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 internal final class SettingsNewslettersViewModelTests: TestCase {
   let vm = SettingsNewslettersViewModel()

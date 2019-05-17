@@ -1,6 +1,6 @@
 import XCTest
 @testable import KsApi
-@testable import Prelude
+import Prelude
 @testable import Library
 
 class ProjectActivityItemProviderTests: XCTestCase {

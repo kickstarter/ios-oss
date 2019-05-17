@@ -1,0 +1,17 @@
+### Internal
+
+github "kickstarter/Kickstarter-Prelude" "c96c90b026d45839724e827f881dcba3ec812725"
+github "kickstarter/Kickstarter-ReactiveExtensions" "e15cb0830053a2f770ab575fbe0f4c72631830cc"
+
+### 3rd Party
+
+github "Alamofire/AlamofireImage" == 3.5.2
+github "AgileBits/onepassword-extension" == 1.8.4
+github "bitstadium/HockeySDK-iOS" == 5.1.2
+github "antitypical/Result" "4.1.0"
+github "ReactiveCocoa/ReactiveSwift" == 4.0.0
+github "stripe/stripe-ios" == 13.2.0
+github "uber/ios-snapshot-test-case" == 4.0.0
+github "thoughtbot/Argo" "39f06f089d25c111444e5a85eef64586e54756ac"
+github "thoughtbot/Curry" "b6bf27ec9d711f607a8c7da9ca69ee9eaa201a22"
+github "thoughtbot/Runes" "e1bb1f7a589fe9172dc3410203f8b62373ea92a4"

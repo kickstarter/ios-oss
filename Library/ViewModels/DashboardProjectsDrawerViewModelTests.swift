@@ -4,7 +4,7 @@ import ReactiveSwift
 import Prelude
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 internal final class DashboardProjectsDrawerViewModelTests: TestCase {
   internal let vm: DashboardProjectsDrawerViewModelType = DashboardProjectsDrawerViewModel()
