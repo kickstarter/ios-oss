@@ -21,8 +21,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
   internal static func instantiate() -> SignupViewController {
     let vc = Storyboard.Login.instantiate(SignupViewController.self)
-//    vc.viewModel.inputs.configureWithTextProperty.value = "HELLO"
-    vc.viewModel.inputs.configureWithTextObserver.send(value: "HELLO")
     vc.helpViewModel.inputs.configureWith(helpContext: .signup)
     vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
     return vc
