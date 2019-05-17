@@ -32,8 +32,6 @@ public final class SignupViewModel {
   }
 
   public typealias Outputs = (
-    configureWithText: Signal<String, NoError>,
-
     // Call when the emailTextField should become the first responder
     emailTextFieldBecomeFirstResponder: Signal<(), NoError>,
     // Call when the sign up button should be enabled
@@ -139,7 +137,6 @@ public final class SignupViewModel {
       .observeValues { AppEnvironment.current.koala.trackSignupView() }
 
     return (
-      configureWithText: configureWithText,
       emailTextFieldBecomeFirstResponder: emailTextFieldBecomeFirstResponder,
       isSignupButtonEnabled: isSignupButtonEnabled,
       logIntoEnvironment: logIntoEnvironment,

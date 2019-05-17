@@ -96,7 +96,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
   internal override func bindViewModel() {
     let (
-      configureWithText,
       emailTextFieldBecomeFirstResponder,
       isSignupButtonEnabled,
       logIntoEnvironment,
@@ -112,11 +111,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.newsletterSwitch.rac.on = setWeeklyNewsletterState
     self.passwordTextField.rac.becomeFirstResponder = passwordTextFieldBecomeFirstResponder
     self.signupButton.rac.enabled = isSignupButtonEnabled
-
-    configureWithText
-      .observeValues { text in
-        print("CONFIGURE WITH TEXT OBSERVED: \(text)")
-    }
 
     logIntoEnvironment
       .observeValues { [weak self] in
