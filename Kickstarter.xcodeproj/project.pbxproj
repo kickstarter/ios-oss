@@ -820,7 +820,6 @@
 		D05DFC4F227A5878006F3B68 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D085100F219500F200BC418B /* PaymentSourceDeleteMutation.swift */; };
 		D08510122195015F00BC418B /* PaymentSourceDeleteInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08510112195015F00BC418B /* PaymentSourceDeleteInput.swift */; };
-		D08A81771DFAACD3000128DB /* ClearNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */; };
 		D08CD1C021910C97009F89F0 /* GraphIDBridging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */; };
 		D08CD1F921910DF5009F89F0 /* UnwatchProjectMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1F821910DF5009F89F0 /* UnwatchProjectMutation.swift */; };
 		D08CD1FF21913166009F89F0 /* WatchProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */; };
@@ -2041,7 +2040,6 @@
 		D05DFC45227A578C006F3B68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D085100F219500F200BC418B /* PaymentSourceDeleteMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceDeleteMutation.swift; sourceTree = "<group>"; };
 		D08510112195015F00BC418B /* PaymentSourceDeleteInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceDeleteInput.swift; sourceTree = "<group>"; };
-		D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClearNavigationBar.swift; sourceTree = "<group>"; };
 		D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphIDBridging.swift; sourceTree = "<group>"; };
 		D08CD1F821910DF5009F89F0 /* UnwatchProjectMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnwatchProjectMutation.swift; sourceTree = "<group>"; };
 		D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProjectViewModel.swift; sourceTree = "<group>"; };
@@ -2721,7 +2719,6 @@
 				9DBF80DE1D666CAC007F2843 /* CheckoutModels.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7ED1F131E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift */,
-				D08A816F1DFAA7EF000128DB /* ClearNavigationBar.swift */,
 				77556F1C20A09993008CEA57 /* Config+Helpers.swift */,
 				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
 				D798A6AD21656D970053D097 /* Currency.swift */,
@@ -4284,7 +4281,6 @@
 				A72C3A8C1D00F6A80075227E /* ExpandableRow.swift in Sources */,
 				D04AAC25218BB70D00CF713E /* FindFriendsCellViewModel.swift in Sources */,
 				9DBF80DF1D666CAC007F2843 /* CheckoutModels.swift in Sources */,
-				D08A81771DFAACD3000128DB /* ClearNavigationBar.swift in Sources */,
 				D04AABF8218BB2FD00CF713E /* SettingsNotificationsViewModel.swift in Sources */,
 				9DC204B71D1B46BD003C1636 /* ProjectActivityNegativeStateChangeCellViewModel.swift in Sources */,
 				A7698B2A1D00602800953FD3 /* LoginViewModel.swift in Sources */,
