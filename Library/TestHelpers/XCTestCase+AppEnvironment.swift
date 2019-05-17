@@ -1,6 +1,5 @@
 import XCTest
 @testable import Library
-import AVFoundation
 import Foundation
 import KsApi
 import ReactiveSwift
