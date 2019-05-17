@@ -4020,7 +4020,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bin/carthage-debug-copy.sh\n";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 		D0EA60A3228B6AD6007DB557 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4040,7 +4040,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bin/carthage-debug-copy.sh\n";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 		D0EA60A4228B6BB6007DB557 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4060,7 +4060,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bin/carthage-debug-copy.sh\n";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
