@@ -1,6 +1,6 @@
 import XCTest
 @testable import KsApi
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
 import Result

@@ -3,6 +3,7 @@ import KsApi
 import Prelude
 import Prelude_UIKit
 import UIKit
+import WebKit
 
 internal class WebViewController: UIViewController {
   internal let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())

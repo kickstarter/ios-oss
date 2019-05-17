@@ -91,6 +91,16 @@
                ReferencedContainer = "container:Kickstarter.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D05DFC40227A578B006F3B68"
+               BuildableName = "KickstarterUITests.xctest"
+               BlueprintName = "KickstarterUITests"
+               ReferencedContainer = "container:Kickstarter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

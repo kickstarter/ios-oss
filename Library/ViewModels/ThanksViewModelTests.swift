@@ -1,9 +1,9 @@
 import XCTest
 import ReactiveSwift
 import UIKit
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
-@testable import Result
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import Result
 @testable import KsApi
 @testable import Library
 import Prelude

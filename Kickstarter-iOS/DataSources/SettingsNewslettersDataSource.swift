@@ -1,5 +1,6 @@
 import Library
 import KsApi
+import UIKit
 
 internal final class SettingsNewslettersDataSource: ValueCellDataSource {
 

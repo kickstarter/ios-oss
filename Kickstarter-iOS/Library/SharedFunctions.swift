@@ -1,4 +1,5 @@
 import Library
+import UIKit
 
 public func logoutAndDismiss(viewController: UIViewController,
                              appEnvironment: AppEnvironmentType.Type = AppEnvironment.self,

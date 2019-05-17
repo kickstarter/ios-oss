@@ -216,24 +216,29 @@ private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> 
   return textView
 }
 
-private func attributedLearnMoreText() -> NSAttributedString {
-  let string = """
-  \(Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life())
-  \(Strings.Learn_more_about_accountability())
-  """ as NSString
-
-  let linkRange = string.range(of: Strings.Learn_more_about_accountability())
-  let stringRange = string.range(of: string as String)
-
-  let attributedString = NSMutableAttributedString(string: string as String)
-
-  let url = urlForHelpType(
-    HelpType.trust, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+private func attributedLearnMoreText() -> NSAttributedString? {
+  // swiftlint:disable line_length
+  let string = localizedString(
+    key: "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability",
+    defaultValue: "<p>Kickstarter is not a store. It's a way to bring creative projects to life.</br><a href=\"https://www.kickstarter.com/trust\">Learn more about accountability</a><p>"
   )
+  // swiftlint:enable line_length
 
-  attributedString.addAttribute(.font, value: UIFont.ksr_caption1(), range: stringRange)
-  attributedString.addAttribute(.foregroundColor, value: UIColor.ksr_text_dark_grey_500, range: stringRange)
-  attributedString.addAttribute(.link, value: url as Any, range: linkRange)
+  guard let attributedString = try? NSMutableAttributedString(
+    data: Data(bytes: string.utf8),
+    options: [.documentType: NSAttributedString.DocumentType.html],
+    documentAttributes: nil
+  ) else { return nil }
+
+  let attributes: [NSAttributedString.Key: Any] = [
+    .font: UIFont.ksr_caption1(),
+    .foregroundColor: UIColor.ksr_text_dark_grey_500,
+    .underlineStyle: 0
+  ]
+
+  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
+
+  attributedString.addAttributes(attributes, range: fullRange)
 
   return attributedString
 }

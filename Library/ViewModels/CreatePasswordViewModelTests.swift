@@ -4,7 +4,7 @@ import XCTest
 
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 final class CreatePasswordViewModelTests: TestCase {
   private let vm: CreatePasswordViewModelType = CreatePasswordViewModel()

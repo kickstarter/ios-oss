@@ -1,3 +1,4 @@
+import Foundation
 import Library
 @testable import Kickstarter_Framework
 

@@ -1,4 +1,3 @@
-#if os(iOS)
 import KsApi
 import UIKit
 
@@ -42,4 +41,3 @@ public final class UpdateActivityItemProvider: UIActivityItemProvider {
     }
   }
 }
-#endif

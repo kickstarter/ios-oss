@@ -1,4 +1,3 @@
-#if os(iOS)
 import Prelude
 import ReactiveSwift
 import Result
@@ -164,4 +163,3 @@ private func noEmailError() -> UIAlertController {
 
   return alertController
 }
-#endif

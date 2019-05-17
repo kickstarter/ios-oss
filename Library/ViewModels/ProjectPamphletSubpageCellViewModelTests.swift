@@ -6,7 +6,7 @@ import Prelude
 @testable import KsApi
 @testable import LiveStream
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   private let vm: ProjectPamphletSubpageCellViewModelType = ProjectPamphletSubpageCellViewModel()

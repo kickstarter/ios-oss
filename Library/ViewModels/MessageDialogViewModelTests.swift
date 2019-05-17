@@ -1,7 +1,7 @@
 import XCTest
 @testable import Library
 import Prelude
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import Result
 @testable import KsApi

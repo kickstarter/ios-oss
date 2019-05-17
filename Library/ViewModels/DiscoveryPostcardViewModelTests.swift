@@ -3,7 +3,7 @@ import Result
 import XCTest
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 /* swiftlint:disable force_unwrapping */
 internal final class DiscoveryPostcardViewModelTests: TestCase {
