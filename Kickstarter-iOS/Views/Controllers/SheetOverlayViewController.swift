@@ -46,7 +46,7 @@ final class SheetOverlayViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     _ = view.layer
-      |> checkoutLayerCardStyleRounded
+      |> checkoutLayerCardRoundedStyle
       |> \.masksToBounds .~ true
       |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 
