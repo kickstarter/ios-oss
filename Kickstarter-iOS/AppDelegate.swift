@@ -35,6 +35,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
+    UIImageView.appearance(whenContainedInInstancesOf: [UITabBar.self])
+      .accessibilityIgnoresInvertColors = true
+
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
         ubiquitousStore: NSUbiquitousKeyValueStore.default,

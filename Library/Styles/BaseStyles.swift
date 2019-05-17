@@ -15,6 +15,7 @@ public enum Styles {
 }
 
 public typealias ButtonStyle = (UIButton) -> UIButton
+public typealias ImageViewStyle = (UIImageView) -> UIImageView
 public typealias LabelStyle = (UILabel) -> UILabel
 public typealias StackViewStyle = (UIStackView) -> UIStackView
 public typealias TableViewStyle = (UITableView) -> UITableView
@@ -38,11 +39,7 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
     <> TVC.lens.tableView.rowHeight .~ UITableView.automaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 
-  #if os(iOS)
-    return style <> TVC.lens.tableView.separatorStyle .~ .none
-  #else
-    return style
-  #endif
+  return style <> TVC.lens.tableView.separatorStyle .~ .none
 }
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {
@@ -133,6 +130,11 @@ public let formFieldStyle: TextFieldStyle = { (textField: UITextField) in
     |> \.font .~ UIFont.ksr_body()
     |> \.textColor .~ UIColor.ksr_soft_black
     |> \.tintColor .~ UIColor.ksr_green_700
+}
+
+public let ignoresInvertColorsImageViewStyle: ImageViewStyle = { (imageView: UIImageView) in
+  return imageView
+    |> \.accessibilityIgnoresInvertColors .~ true
 }
 
 public let separatorStyle: ViewStyle = { (view: UIView) in

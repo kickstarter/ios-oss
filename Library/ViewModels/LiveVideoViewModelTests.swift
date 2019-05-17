@@ -1,8 +1,8 @@
 import XCTest
 import ReactiveSwift
 import Result
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
 @testable import Library
 @testable import LiveStream
 

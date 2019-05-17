@@ -1,8 +1,8 @@
 import XCTest
-@testable import ReactiveSwift
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import ReactiveExtensions_TestHelpers
 @testable import KsApi
-@testable import Result
+import Result
 @testable import Library
 
 final class ResetPasswordViewModelTests: TestCase {

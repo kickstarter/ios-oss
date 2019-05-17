@@ -2,10 +2,10 @@ import Prelude
 import XCTest
 @testable import Library
 @testable import KsApi
-@testable import ReactiveSwift
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
-@testable import Result
+import ReactiveSwift
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import Result
 
 final class ChangeEmailViewModelTests: TestCase {
   fileprivate let vm: ChangeEmailViewModelType = ChangeEmailViewModel()

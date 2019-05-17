@@ -3,6 +3,7 @@ import Library
 import Prelude
 import SafariServices
 import UIKit
+import WebKit
 
 internal final class UpdateViewController: WebViewController {
   fileprivate let viewModel: UpdateViewModelType = UpdateViewModel()
@@ -71,7 +72,7 @@ internal final class UpdateViewController: WebViewController {
 
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
-      .observeValues { [weak self] url in self?.goToSafariBrowser(url: url) }
+      .observeValues { [weak self] in self?.goTo(url: $0) }
   }
 
   internal func webView(_ webView: WKWebView,
@@ -98,12 +99,6 @@ internal final class UpdateViewController: WebViewController {
   fileprivate func goTo(project: Project, refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
     self.present(vc, animated: true, completion: nil)
-  }
-
-  fileprivate func goToSafariBrowser(url: URL) {
-    let controller = SFSafariViewController(url: url)
-    controller.modalPresentationStyle = .overFullScreen
-    self.present(controller, animated: true, completion: nil)
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {

@@ -4,9 +4,9 @@ import XCTest
 @testable import KsApi
 @testable import Library
 @testable import LiveStream
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
-@testable import Result
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import Result
 
 final class LiveStreamDiscoveryLiveNowCellViewModelTests: TestCase {
   let vm: LiveStreamDiscoveryLiveNowCellViewModelType = LiveStreamDiscoveryLiveNowCellViewModel()

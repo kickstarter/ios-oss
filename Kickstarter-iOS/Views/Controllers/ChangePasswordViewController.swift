@@ -1,6 +1,7 @@
 import Foundation
 import KsApi
 import Library
+import OnePasswordExtension
 import Prelude
 
 final class ChangePasswordViewController: UIViewController, MessageBannerViewControllerPresenting {

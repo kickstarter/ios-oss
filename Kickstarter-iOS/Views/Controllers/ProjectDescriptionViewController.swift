@@ -1,8 +1,10 @@
+import Foundation
 import KsApi
 import Library
 import Prelude
 import SafariServices
 import UIKit
+import WebKit
 
 internal final class ProjectDescriptionViewController: WebViewController {
   fileprivate let viewModel: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
@@ -64,7 +66,7 @@ internal final class ProjectDescriptionViewController: WebViewController {
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.goToSafariBrowser(url: $0)
+        self?.goTo(url: $0)
     }
 
     self.loadingIndicator.rac.animating = self.viewModel.outputs.isLoading
@@ -115,12 +117,6 @@ internal final class ProjectDescriptionViewController: WebViewController {
     self.present(UINavigationController(rootViewController: vc),
                  animated: true,
                  completion: nil)
-  }
-
-  fileprivate func goToSafariBrowser(url: URL) {
-    let controller = SFSafariViewController(url: url)
-    controller.modalPresentationStyle = .overFullScreen
-    self.present(controller, animated: true, completion: nil)
   }
 }
 

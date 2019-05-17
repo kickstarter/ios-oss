@@ -3,8 +3,7 @@ import ReactiveSwift
 import Result
 @testable import KsApi
 @testable import Library
-@testable import Kickstarter_Framework
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 import Foundation
 

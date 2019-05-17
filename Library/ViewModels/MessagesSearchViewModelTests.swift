@@ -1,7 +1,7 @@
 // swiftlint:disable force_cast
 import XCTest
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 @testable import KsApi
 import KsApi
 import ReactiveSwift

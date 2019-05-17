@@ -70,6 +70,9 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
     _ = self.percentFundedLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
 
+    _ = self.projectImageView
+      |> ignoresInvertColorsImageViewStyle
+
     _ = self.projectInfoStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
