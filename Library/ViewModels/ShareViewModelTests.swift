@@ -1,6 +1,5 @@
 @testable import KsApi
 @testable import Library
-@testable import LiveStream
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import Prelude
@@ -68,23 +67,6 @@ internal final class ShareViewModelTests: TestCase {
     self.vm.inputs.shareButtonTapped()
 
     self.showShareSheet.assertValueCount(1)
-  }
-
-  func testShowShareSheet_LiveStream() {
-    let project = Project.template
-    let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.webUrl .~ "http://www.kickstarter.com"
-
-    self.showShareSheet.assertValueCount(0)
-    XCTAssertEqual([], self.trackingClient.events)
-    XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
-
-    self.vm.inputs.configureWith(shareContext: .liveStream(project, event), shareContextView: nil)
-    self.vm.inputs.shareButtonTapped()
-
-    self.showShareSheet.assertValueCount(1)
-    XCTAssertEqual(["Showed Share Sheet"], self.trackingClient.events)
-    XCTAssertEqual(["live_stream_replay"], self.trackingClient.properties(forKey: "context", as: String.self))
   }
 
   func testTracking_CancelShareSheet() {

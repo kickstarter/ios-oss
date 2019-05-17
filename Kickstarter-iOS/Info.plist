@@ -65,8 +65,6 @@
 	<string>69103156693</string>
 	<key>FacebookDisplayName</key>
 	<string>Kickstarter</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>

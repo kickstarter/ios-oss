@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,12 +22,6 @@
                                 <rect key="frame" x="0.0" y="116" width="400" height="484"/>
                                 <connections>
                                     <segue destination="ynw-dc-pxD" kind="embed" id="5LZ-9P-sMI"/>
-                                </connections>
-                            </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FbJ-Sz-gTi" userLabel="Live stream container">
-                                <rect key="frame" x="0.0" y="64" width="400" height="536"/>
-                                <connections>
-                                    <segue destination="UAu-DY-esz" kind="embed" id="kVE-io-dOw"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Doj-qA-CRz" userLabel="Sorts container">
@@ -53,19 +46,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="dUb-ni-s34" firstAttribute="top" secondItem="bgp-rK-1DR" secondAttribute="top" id="5jZ-Uk-gLE"/>
-                            <constraint firstItem="FbJ-Sz-gTi" firstAttribute="leading" secondItem="dUb-ni-s34" secondAttribute="leading" id="6rH-us-STJ"/>
                             <constraint firstItem="FAX-pt-y2u" firstAttribute="top" secondItem="Doj-qA-CRz" secondAttribute="bottom" id="9Dr-uo-nMZ"/>
                             <constraint firstItem="dUb-ni-s34" firstAttribute="leading" secondItem="bgp-rK-1DR" secondAttribute="leading" id="Ato-za-9z9"/>
-                            <constraint firstItem="bgp-rK-1DR" firstAttribute="bottom" secondItem="FbJ-Sz-gTi" secondAttribute="bottom" id="Ggf-9q-yZh"/>
                             <constraint firstItem="bgp-rK-1DR" firstAttribute="trailing" secondItem="FAX-pt-y2u" secondAttribute="trailing" id="Haf-Tu-zCG"/>
                             <constraint firstItem="Doj-qA-CRz" firstAttribute="leading" secondItem="bgp-rK-1DR" secondAttribute="leading" id="JuW-Ce-Bj2"/>
-                            <constraint firstItem="FbJ-Sz-gTi" firstAttribute="top" secondItem="dUb-ni-s34" secondAttribute="bottom" constant="-1" id="QAs-lR-vmg"/>
                             <constraint firstItem="bgp-rK-1DR" firstAttribute="trailing" secondItem="Doj-qA-CRz" secondAttribute="trailing" id="ZjO-cl-xir"/>
                             <constraint firstItem="bgp-rK-1DR" firstAttribute="trailing" secondItem="dUb-ni-s34" secondAttribute="trailing" id="gmC-ma-ITZ"/>
                             <constraint firstItem="bgp-rK-1DR" firstAttribute="bottom" secondItem="FAX-pt-y2u" secondAttribute="bottom" id="hJB-FS-xfb"/>
                             <constraint firstItem="FAX-pt-y2u" firstAttribute="leading" secondItem="bgp-rK-1DR" secondAttribute="leading" id="kmN-nP-oOI"/>
                             <constraint firstItem="dUb-ni-s34" firstAttribute="bottom" secondItem="Doj-qA-CRz" secondAttribute="top" constant="-1" id="u4R-oC-L5u"/>
-                            <constraint firstItem="FbJ-Sz-gTi" firstAttribute="trailing" secondItem="dUb-ni-s34" secondAttribute="trailing" id="yQO-9K-sdn"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bgp-rK-1DR"/>
                     </view>
@@ -152,11 +141,8 @@
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="live-indicator" translatesAutoresizingMaskIntoConstraints="NO" id="2gr-FJ-6h7">
-                                                            <rect key="frame" x="10.5" y="5.5" width="11" height="11"/>
-                                                        </imageView>
                                                         <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Nas-2T-LXH">
-                                                            <rect key="frame" x="27.5" y="11" width="317.5" height="0.0"/>
+                                                            <rect key="frame" x="10.5" y="11" width="334.5" height="0.0"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" id="b9E-4T-Aii"/>
@@ -176,7 +162,6 @@
                                         <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                         <connections>
                                             <outlet property="filterTitleLabel" destination="BZy-2b-lTV" id="Wbj-n1-Hf9"/>
-                                            <outlet property="liveIndicatorImageView" destination="2gr-FJ-6h7" id="0Vr-7p-Hfr"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DiscoveryExpandableRowCell" rowHeight="44" id="dTW-Od-pFz" customClass="DiscoveryExpandableRowCell" customModule="Kickstarter_Framework" customModuleProvider="target">
@@ -232,10 +217,10 @@
                                                     <color key="backgroundColor" red="1" green="0.3282980492" blue="0.66772108890000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check-circle" translatesAutoresizingMaskIntoConstraints="NO" id="DYV-Ke-KPO">
-                                                    <rect key="frame" x="39.5" y="13" width="18" height="19"/>
+                                                    <rect key="frame" x="39.5" y="12.5" width="18" height="19"/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark-selected-filter" translatesAutoresizingMaskIntoConstraints="NO" id="958-VA-ktz">
-                                                    <rect key="frame" x="43.5" y="19" width="11" height="8"/>
+                                                    <rect key="frame" x="43" y="18" width="11" height="8"/>
                                                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </imageView>
                                             </subviews>
@@ -270,7 +255,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Qf2-5A-IVT">
-                                                    <rect key="frame" x="177" y="17" width="20" height="20"/>
+                                                    <rect key="frame" x="177.5" y="17.5" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
                                             <constraints>
@@ -601,14 +586,6 @@
             </objects>
             <point key="canvasLocation" x="1339.2" y="-1313.793103448276"/>
         </scene>
-        <!--LiveStreamDiscoveryViewController-->
-        <scene sceneID="y5a-Cj-TAa">
-            <objects>
-                <viewControllerPlaceholder storyboardName="LiveStreamDiscovery" referencedIdentifier="LiveStreamDiscoveryViewController" id="UAu-DY-esz" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KFD-Cw-XC8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1320" y="-292"/>
-        </scene>
     </scenes>
     <resources>
         <image name="arrow-down" width="11" height="6"/>
@@ -616,6 +593,5 @@
         <image name="checkmark-selected-filter" width="11" height="8"/>
         <image name="icon--bookmark" width="22" height="22"/>
         <image name="icon--bookmark-outline" width="22" height="22"/>
-        <image name="live-indicator" width="11" height="11"/>
     </resources>
 </document>
