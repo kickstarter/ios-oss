@@ -24,7 +24,7 @@ base_job: &base_job
     XCODE_VERSION: *xcode_version
 
 jobs:
-  swiftlint-and-cache:
+  build-and-cache:
     <<: *base_job
     steps:
       - restore_cache:
@@ -106,13 +106,6 @@ jobs:
       - run:
           name: Danger
           command: bundle exec danger --verbose
-
-      - run:
-          name: SwiftLint
-          command: make lint
-
-      - store_artifacts:
-          path: /tmp/swiftlint-report.json
 
   # Kickstarter tests
   kickstarter-tests:
@@ -621,7 +614,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - swiftlint-and-cache
+      - build-and-cache
       - kickstarter-tests
       - kickstarter-ui-tests
       - library-tests
@@ -635,7 +628,7 @@ workflows:
             branches:
               only: master
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
@@ -645,7 +638,7 @@ workflows:
             branches:
               only: /beta-dist-.*/
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
@@ -655,7 +648,7 @@ workflows:
             branches:
               only: /alpha-dist.*/
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
@@ -665,7 +658,7 @@ workflows:
             branches:
               only: itunes-dist
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests

@@ -41,11 +41,6 @@ clean:
 dependencies: carthage-bootstrap configs secrets fabric
 
 bootstrap: hooks dependencies
-	brew update || brew update
-	brew unlink swiftlint || true
-	brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/686375d8bc672a439ca9fcf27794a394239b3ee6/Formula/swiftlint.rb
-	brew switch swiftlint 0.29.2
-	brew link --overwrite swiftlint
 
 carthage-bootstrap:
 	set -o pipefail; bin/carthage.sh;
