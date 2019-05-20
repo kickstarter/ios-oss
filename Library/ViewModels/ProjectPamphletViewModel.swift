@@ -48,7 +48,7 @@ public protocol ProjectPamphletViewModelOutputs {
 
   var projectAndUser: Signal<(Project, User), NoError> { get }
 
-  var projectAndBacking: Signal <(Project, Backing, User), NoError> { get }
+  var projectAndBacking: Signal <(Project, User, Backing), NoError> { get }
 
 }
 
@@ -92,22 +92,18 @@ ProjectPamphletViewModelOutputs {
       .map { project, _, _ in project }
 
     let projectAndUser = Signal.combineLatest(project, user)
-
-//    let projectAndBackingEvent = projectAndUser
-//      .switchMap { value -> SignalProducer<(Project, Backing, User), NoError> in
-//        let (project, backer) = value
 //
-//        let request = project.personalization.isBacking == .some(true)
-//          ? AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: backer)
-//          : AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: backer)
-//
-//        return request
-//          .map { (project, $0, backer) }
-//          .demoteErrors()
+//    let backing = SignalProducer<Backing, NoError>(value: Backing.template).map().switchMap { backing in
+//      backing
+//      }
+//      projectAndUser
+//      .switchMap { project, user in
+//           AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
+//            .demoteErrors()
 //    }
-
+//
     self.projectAndBacking = .empty
-//projectAndBackingEvent//.values()
+      //Signal.combineLatest(projectAndUser, backing).map(unpack)
 
     self.projectAndUser = Signal.combineLatest(project, user)
 
@@ -206,7 +202,7 @@ ProjectPamphletViewModelOutputs {
   public let topLayoutConstraintConstant: Signal<CGFloat, NoError>
 
   public let projectAndUser: Signal<(Project, User), NoError>
-  public let projectAndBacking: Signal<(Project, Backing, User), NoError>
+  public let projectAndBacking: Signal<(Project, User, Backing), NoError>
 
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }

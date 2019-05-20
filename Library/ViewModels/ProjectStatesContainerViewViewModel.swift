@@ -9,8 +9,8 @@ public protocol ProjectStatesContainerViewViewModelInputs {
 }
 
 public protocol ProjectStatesContainerViewViewModelOutputs {
-  var buttonTitleText: Signal<String, NoError> { get }
   var buttonBackgroundColor: Signal<UIColor, NoError> { get }
+  var buttonTitleText: Signal<String, NoError> { get }
   var rewardTitle: Signal<String, NoError> { get }
   var stackViewIsHidden: Signal<Bool, NoError> { get }
 }
@@ -50,54 +50,15 @@ public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerVi
 }
 
 private func projectStateButton(backer: User, project: Project) -> ProjectStateCTAType {
-  let projectIsBacked = project.personalization.isBacking
+  guard let projectIsBacked = project.personalization.isBacking
+    else { return ProjectStateCTAType.viewRewards }
 
   switch project.state {
   case .live:
-    return projectIsBacked! ? ProjectStateCTAType.manage : ProjectStateCTAType.pledge
+    return projectIsBacked ? ProjectStateCTAType.manage : ProjectStateCTAType.pledge
   case .canceled, .failed, .suspended, .successful:
-    return projectIsBacked! ? ProjectStateCTAType.viewBacking : ProjectStateCTAType.viewRewards
+    return projectIsBacked ? ProjectStateCTAType.viewBacking : ProjectStateCTAType.viewRewards
   default:
     return ProjectStateCTAType.viewRewards
-  }
-}
-
-public enum ProjectStateCTAType {
-  case pledge
-  case manage
-  case viewBacking
-  case viewRewards
-
-  public var buttonTitle: String {
-    switch self {
-    case .pledge:
-      return "Back this project"
-    case .manage:
-      return "Manage"
-    case .viewBacking:
-      return "View your pledge"
-    case .viewRewards:
-      return "View rewards"
-    }
-  }
-
-  public var buttonBackgroundColor: UIColor {
-    switch self {
-    case .pledge:
-      return .ksr_green_500
-    case .manage:
-      return .ksr_blue
-    case .viewBacking, .viewRewards:
-      return .ksr_soft_black
-    }
-  }
-
-  public var stackViewIsHidden: Bool {
-    switch self {
-    case .pledge, .viewBacking, .viewRewards:
-      return true
-    case .manage:
-      return false
-    }
   }
 }

@@ -184,10 +184,10 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeValues { [weak self] project, user in
         self?.backThisProjectContainerView.configureWith(project: project, user: user)
     }
-//
+
 //    self.viewModel.outputs.projectAndBacking
 //      .observeForUI()
-//      .observeValues { [weak self] project, _, user in
+//      .observeValues { [weak self] project, user, _ in
 //        self?.backThisProjectContainerView.configureWith(project: project, user: user)
 //    }
   }
