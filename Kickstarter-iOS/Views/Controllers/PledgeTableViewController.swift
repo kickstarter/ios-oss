@@ -49,10 +49,10 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.selectedShippingRule
+    self.viewModel.outputs.selectedShippingRuleData
       .observeForUI()
-      .observeValues { [weak self] shippingRule in
-        self?.dataSource.loadSelectedShippingLocation(shippingRule.location.localizedName)
+      .observeValues { [weak self] selectedShippingRuleData in
+        self?.dataSource.loadSelectedShippingRule(data: selectedShippingRuleData)
 
         guard let shippingIndexPath = self?.dataSource.shippingCellIndexPath() else {
           return
