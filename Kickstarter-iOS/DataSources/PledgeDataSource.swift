@@ -1,6 +1,7 @@
 import Foundation
 import KsApi
 import Library
+import UIKit
 
 typealias PledgeShippingLocationCellValue = (location: String, currency: String, rate: Double)
 

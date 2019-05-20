@@ -50,7 +50,9 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView
-      |> checkoutAdaptableStackViewStyle(self.traitCollection.ksr_isAccessibilityCategory())
+      |> checkoutAdaptableStackViewStyle(
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      )
 
     _ = self.titleLabel
       |> checkoutTitleLabelStyle

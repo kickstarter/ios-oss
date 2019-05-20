@@ -3,6 +3,7 @@ import Library
 import Prelude
 import ReactiveSwift
 import UIKit
+import WebKit
 
 internal final class WebModalViewController: WebViewController {
   fileprivate let viewModel: WebModalViewModelType = WebModalViewModel()

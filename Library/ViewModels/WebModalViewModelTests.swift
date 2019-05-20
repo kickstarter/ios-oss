@@ -5,7 +5,7 @@ import WebKit
 import XCTest
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 internal final class WebModalViewModelTests: TestCase {
   fileprivate let vm: WebModalViewModelType = WebModalViewModel()

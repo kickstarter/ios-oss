@@ -1,8 +1,8 @@
 import Foundation
 import XCTest
 @testable import KsApi
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
 import KsApi
 import ReactiveSwift
 import Result
