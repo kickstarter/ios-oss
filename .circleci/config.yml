@@ -44,49 +44,54 @@ jobs:
           command: *store_stripe_version
 
       - restore_cache:
+          name: Restore Fabric SDK
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - restore_cache:
+          name: Restore Stripe SDK
           keys:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
-          name: Store Xcode Version
+          name: Cache Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
-          name: Restore Carthage Cache
+          name: Restore Carthage
           keys:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - save_cache:
-          name: Save Carthage Cache
+          name: Cache Carthage
           key: carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - Carthage
 
       - save_cache:
+          name: Cache git
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
 
       - save_cache:
+          name: Cache Fabric SDK
           key: fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
           paths:
             - "Frameworks/Fabric"
 
       - save_cache:
+          name: Cache Stripe SDK
           key: stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
           paths:
             - "Frameworks/Stripe"
 
       - restore_cache:
-          name: Restore Bundler Cache
+          name: Restore Bundler
           keys:
             - v1-gems-{{ checksum "Gemfile.lock" }}
 
@@ -98,7 +103,7 @@ jobs:
             BUNDLE_RETRY: 3
 
       - save_cache:
-          name: Save Bundler Cache
+          name: Cache Bundler
           key: v1-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
