@@ -117,9 +117,6 @@ cleanup:
 
 	@git push -d private $(CIRCLE_BRANCH)
 
-lint:
-	swiftlint lint --reporter json --strict
-
 strings:
 	cp Frameworks/native-secrets/ios/Secrets.swift bin/StringsScript/Sources/StringsScriptCore
 	./bin/strings-script "./Library/Strings.swift" "./Kickstarter-iOS/Locales"
