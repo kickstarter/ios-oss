@@ -27,6 +27,7 @@ excluded:
   - Library/Strings.swift
   - bin/strings.swift
   - bin/StringsScript/Sources/StringsScriptCore/Secrets.swift
+  - vendor
 reporter: "xcode"
 custom_rules:
   localized_lensing:
