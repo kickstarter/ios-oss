@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import UIKit
 
 internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewControllerDataSource {
 

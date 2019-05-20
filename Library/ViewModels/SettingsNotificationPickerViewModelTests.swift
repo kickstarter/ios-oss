@@ -2,9 +2,8 @@ import Library
 import Prelude
 import Result
 import XCTest
-@testable import Kickstarter_Framework
 @testable import KsApi
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 final class SettingsNotificationPickerViewModelTests: TestCase {
   private let vm = SettingsNotificationPickerViewModel()

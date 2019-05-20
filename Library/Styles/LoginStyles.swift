@@ -45,14 +45,9 @@ public let emailFieldStyle = formFieldStyle
   <> UITextField.lens.keyboardType .~ .emailAddress
 
 public func emailFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
-  let style = textField
+  return textField
     |> emailFieldStyle
-
-  if #available(iOS 11, *) {
-    return style
-      |> \.textContentType .~ .username
-  }
-  return style
+    |> \.textContentType .~ .username
 }
 
 public let fbLoginButtonStyle = facebookButtonStyle
@@ -97,6 +92,7 @@ public let loginWithEmailButtonStyle = borderButtonStyle
 public let onePasswordButtonStyle = UIButton.lens.accessibilityLabel %~ { _
   in Strings.login_buttons_one_password()
 }
+<> \.tintColor .~  .ksr_dark_grey_500
 
 public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
 
@@ -105,14 +101,9 @@ public let passwordFieldStyle = formFieldStyle
   <> UITextField.lens.secureTextEntry .~ true
 
 public func passwordFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
-  let style = textField
+  return textField
     |> passwordFieldStyle
-
-  if #available(iOS 11, *) {
-    return style
-      |> \.textContentType .~ .password
-  }
-  return style
+    |> \.textContentType .~ .password
 }
 
 public func newPasswordFieldAutoFillStyle(_ textField: UITextField) -> UITextField {

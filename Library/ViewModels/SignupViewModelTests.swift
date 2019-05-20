@@ -1,9 +1,9 @@
 import XCTest
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
-@testable import ReactiveSwift
-@testable import Result
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import Result
 
 internal final class SignupViewModelTests: TestCase {
   fileprivate let vm: SignupViewModelType = SignupViewModel()

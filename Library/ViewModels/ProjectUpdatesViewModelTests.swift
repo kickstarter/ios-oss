@@ -6,7 +6,7 @@ import XCTest
 import WebKit
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 final class ProjectUpdatesViewModelTests: TestCase {
   fileprivate let vm: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()

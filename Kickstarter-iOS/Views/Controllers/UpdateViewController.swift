@@ -3,6 +3,7 @@ import Library
 import Prelude
 import SafariServices
 import UIKit
+import WebKit
 
 internal final class UpdateViewController: WebViewController {
   fileprivate let viewModel: UpdateViewModelType = UpdateViewModel()
