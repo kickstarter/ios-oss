@@ -83,7 +83,7 @@ internal final class DiscoveryViewModelTests: TestCase {
                                                "New params load into data source after selecting.")
   }
 
-  func testLoadRecommendedProjectsIntoDataSource_UserOptedOutOfRecommendations() {
+  func testLoadRecommendedProjectsIntoDataSource_UserRecommendationsOptedOut() {
 
     let user = User.template
       |> \.optedOutOfRecommendations .~ true
@@ -96,7 +96,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     }
   }
 
-  func testLoadRecommendedProjectsIntoDataSource_UserOptedInOfRecommendations() {
+  func testLoadRecommendedProjectsIntoDataSource_UserRecommendationsOptedIn() {
 
     let recsInitialParams = .defaults
       |> DiscoveryParams.lens.includePOTD .~ true
