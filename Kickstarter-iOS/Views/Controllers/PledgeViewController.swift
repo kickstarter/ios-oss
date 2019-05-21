@@ -33,10 +33,6 @@ final class PledgeViewController: UIViewController {
 
       _ = (childView, self.view) |> ksr_constrainViewToEdgesInParent()
     }
-
-    let closeButton = UIBarButtonItem(title: "close", style: .plain, target: self, action: #selector(closeView))
-
-    self.navigationItem.setLeftBarButton(closeButton, animated: true)
   }
 
   @objc func closeView() {
