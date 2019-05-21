@@ -1,0 +1,19 @@
+# Indent by 2 spaces
+--indent 2
+
+# Reference `self` explicitly
+--self insert
+
+# Commas
+--commas inline
+
+# Range operators
+--ranges nospace
+
+# Hoisting
+--patternlet inline
+
+# Void instead of `()` tuple
+--disable void
+
+# Excluded
