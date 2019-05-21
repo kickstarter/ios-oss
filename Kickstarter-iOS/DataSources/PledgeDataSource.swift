@@ -32,8 +32,8 @@ final class PledgeDataSource: ValueCellDataSource {
   func load(data: PledgeTableViewData) {
     self.loadProjectSection(delivery: data.delivery)
 
-    self.loadInputsSection(amount: data.amount, currency: data.currency, rate: 7.50,
-                           requiresShippingRules: data.requiresShippingRules)
+    self.loadInputsSection(amount: data.amount, currency: data.currency, currencyCode: data.currencyCode,
+                           rate: 7.50, requiresShippingRules: data.requiresShippingRules)
 
     self.loadSummarySection(isLoggedIn: data.isLoggedIn)
   }
@@ -67,7 +67,7 @@ final class PledgeDataSource: ValueCellDataSource {
     )
   }
 
-  private func loadInputsSection(amount: Double, currency: String, rate: Double,
+  private func loadInputsSection(amount: Double, currency: String, currencyCode: String, rate: Double,
                                  requiresShippingRules: Bool) {
     self.appendRow(
       value: PledgeInputRow.pledgeAmount(amount: amount, currency: currency),
@@ -77,7 +77,7 @@ final class PledgeDataSource: ValueCellDataSource {
 
     if requiresShippingRules {
       self.appendRow(
-        value: PledgeInputRow.shippingLocation(location: "", amount: 0.0, currencyCode: "USD"),
+        value: PledgeInputRow.shippingLocation(location: "", amount: 0.0, currencyCode: currencyCode),
         cellClass: PledgeShippingLocationCell.self,
         toSection: Section.inputs.rawValue
       )

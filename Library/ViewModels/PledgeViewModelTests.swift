@@ -27,8 +27,12 @@ private let shippingRules = locations
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
+  private let apiDelayInterval = DispatchTimeInterval.milliseconds(50)
+  private let loadingDelayInterval = DispatchTimeInterval.milliseconds(10)
+
   private let amount = TestObserver<Double, NoError>()
   private let currency = TestObserver<String, NoError>()
+  private let currencyCode = TestObserver<String, NoError>()
   private let isLoggedIn = TestObserver<Bool, NoError>()
   private let estimatedDelivery = TestObserver<String, NoError>()
   private let requiresShippingRules = TestObserver<Bool, NoError>()
@@ -43,6 +47,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.outputs.reloadWithData.map { $0.amount }.observe(self.amount.observer)
     self.vm.outputs.reloadWithData.map { $0.currency }.observe(self.currency.observer)
+    self.vm.outputs.reloadWithData.map { $0.currencyCode }.observe(self.currencyCode.observer)
     self.vm.outputs.reloadWithData.map { $0.isLoggedIn }.observe(self.isLoggedIn.observer)
     self.vm.outputs.reloadWithData.map { $0.delivery }.observe(self.estimatedDelivery.observer)
     self.vm.outputs.reloadWithData.map { $0.requiresShippingRules }
@@ -59,12 +64,8 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testReloadWithData_loggedOut() {
-
-    let project = Project.template
-    let reward = Reward.template
-
     withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(project: .template, reward: .template)
       self.vm.inputs.viewDidLoad()
 
       self.isLoggedIn.assertValues([false])
@@ -92,16 +93,32 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  func testReloadData_currencyCode() {
+    let project = Project.template
+      |> \.stats.currency .~ "CAD"
+
+    self.vm.inputs.configureWith(project: project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.currencyCode.assertValues(["CAD"])
+  }
+
   func testReloadData_requiresShippingRules_isTrue() {
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    self.vm.inputs.configureWith(project: project, reward: reward)
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(apiDelayInterval: self.apiDelayInterval) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
 
-    self.shippingIsLoading.assertValues([true], "Shipping cell begins loading")
-    self.requiresShippingRules.assertValues([true])
+      self.requiresShippingRules.assertValues([true])
+      self.shippingIsLoading.assertDidNotEmitValue()
+
+      self.scheduler.advance(by: self.loadingDelayInterval)
+
+      self.shippingIsLoading.assertValues([true], "Shipping cell begins loading")
+    }
   }
 
   func testReloadData_requiresShippingRules_isFalse() {
@@ -138,9 +155,9 @@ final class PledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.first(where: { $0.location == .australia })!
     let projectCurrency = Project.template.stats.currency
 
-    withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
-      config: .template |> Config.lens.countryCode .~ "AU") {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
+                    apiDelayInterval: self.apiDelayInterval,
+                    config: .template |> Config.lens.countryCode .~ "AU") {
 
         self.vm.inputs.configureWith(project: .template, reward: reward)
         self.vm.inputs.viewDidLoad()
@@ -148,9 +165,13 @@ final class PledgeViewModelTests: TestCase {
         self.selectedShippingRuleLocation.assertDidNotEmitValue()
         self.selectedShippingRuleCurrency.assertDidNotEmitValue()
         self.selectedShippingRuleAmount.assertDidNotEmitValue()
+        self.shippingIsLoading.assertDidNotEmitValue()
+
+        self.scheduler.advance(by: self.loadingDelayInterval)
+
         self.shippingIsLoading.assertValues([true])
 
-        self.scheduler.advance()
+        self.scheduler.run()
 
         self.selectedShippingRuleLocation.assertValues(["Local Australia"])
         self.selectedShippingRuleAmount.assertValues([defaultShippingRule.cost])
@@ -168,6 +189,7 @@ final class PledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
+      apiDelayInterval: self.apiDelayInterval,
       config: .template |> Config.lens.countryCode .~ "XYZ") {
 
         self.vm.inputs.configureWith(project: .template, reward: reward)
@@ -176,9 +198,13 @@ final class PledgeViewModelTests: TestCase {
         self.selectedShippingRuleLocation.assertDidNotEmitValue()
         self.selectedShippingRuleCurrency.assertDidNotEmitValue()
         self.selectedShippingRuleAmount.assertDidNotEmitValue()
+        self.shippingIsLoading.assertDidNotEmitValue()
+
+        self.scheduler.advance(by: self.loadingDelayInterval)
+
         self.shippingIsLoading.assertValues([true])
 
-        self.scheduler.advance()
+        self.scheduler.run()
 
         self.selectedShippingRuleLocation.assertValues(["Local United States"])
         self.selectedShippingRuleAmount.assertValues([defaultShippingRule.cost])
@@ -203,6 +229,7 @@ final class PledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(error: error)),
+      apiDelayInterval: self.apiDelayInterval,
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
 
         self.vm.inputs.configureWith(project: .template, reward: reward)
@@ -211,11 +238,11 @@ final class PledgeViewModelTests: TestCase {
         self.selectedShippingRuleLocation.assertDidNotEmitValue()
         self.selectedShippingRuleCurrency.assertDidNotEmitValue()
         self.selectedShippingRuleAmount.assertDidNotEmitValue()
-        self.shippingIsLoading.assertValues([true])
+        self.shippingIsLoading.assertDidNotEmitValue()
 
-        self.scheduler.advance()
+        self.scheduler.run()
 
-        self.shippingIsLoading.assertValues([true, false])
+        self.shippingIsLoading.assertValues([false])
         self.shippingRulesError.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
     }
   }

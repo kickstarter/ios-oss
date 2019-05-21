@@ -49,6 +49,14 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.reloadWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.dataSource.load(data: data)
+
+        self?.tableView.reloadData()
+    }
+
     self.viewModel.outputs.selectedShippingRuleData
       .observeForUI()
       .observeValues { [weak self] selectedShippingRuleData in
@@ -59,14 +67,6 @@ class PledgeTableViewController: UITableViewController {
         }
 
         self?.tableView.reloadRows(at: [shippingIndexPath], with: .automatic)
-    }
-
-    self.viewModel.outputs.reloadWithData
-      .observeForUI()
-      .observeValues { [weak self] data in
-        self?.dataSource.load(data: data)
-
-        self?.tableView.reloadData()
     }
 
     self.viewModel.outputs.shippingIsLoading

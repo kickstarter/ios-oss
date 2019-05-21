@@ -9,7 +9,7 @@ final class PledgeDataSourceTests: XCTestCase {
 
   // swiftlint:disable line_length
   func testLoad_loggedIn() {
-    let data = PledgeTableViewData(amount: 100, currency: "USD", delivery: "May 2020", isLoggedIn: true, requiresShippingRules: true)
+    let data = PledgeTableViewData(amount: 100, currency: "$", currencyCode: "USD", delivery: "May 2020", isLoggedIn: true, requiresShippingRules: true)
     self.dataSource.load(data: data)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
@@ -23,7 +23,7 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoad_loggedOut() {
-    let data = PledgeTableViewData(amount: 100, currency: "USD", delivery: "May 2020", isLoggedIn: false, requiresShippingRules: true)
+    let data = PledgeTableViewData(amount: 100, currency: "$", currencyCode: "USD", delivery: "May 2020", isLoggedIn: false, requiresShippingRules: true)
     self.dataSource.load(data: data)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
@@ -38,7 +38,7 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoad_requiresShippingRules_isFalse() {
-    let data = PledgeTableViewData(amount: 100, currency: "USD", delivery: "May 2020", isLoggedIn: false, requiresShippingRules: false)
+    let data = PledgeTableViewData(amount: 100, currency: "$", currencyCode: "USD", delivery: "May 2020", isLoggedIn: false, requiresShippingRules: false)
     self.dataSource.load(data: data)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))

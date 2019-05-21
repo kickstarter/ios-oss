@@ -4,6 +4,7 @@ import Prelude
 import UIKit
 
 final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
+
   // MARK: - Properties
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -78,11 +79,8 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   func configureWith(value: PledgeDataSource.PledgeInputRow) {
-    guard case .shippingLocation(let location, let amount, let currencyCode) = value else {
-      return
-    }
-
-    guard let country = Project.Country(currencyCode: currencyCode) else {
+    guard case .shippingLocation(let location, let amount, let currencyCode) = value,
+      let country = Project.Country(currencyCode: currencyCode) else {
       return
     }
 
@@ -94,9 +92,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Public Functions
 
-  func animate(_ isLoading: Bool) {
-    //
-  }
+  func animate(_ isLoading: Bool) {}
 }
 
 // MARK: - Styles
