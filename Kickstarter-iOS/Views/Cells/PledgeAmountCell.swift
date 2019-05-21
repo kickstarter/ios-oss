@@ -71,7 +71,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     guard case .pledgeAmount(let amount, let currency) = value else {
       return
     }
-    
+
     self.amountInputView.configureWith(
       amount: String(format: "%i", amount),
       placeholder: "\(0)",

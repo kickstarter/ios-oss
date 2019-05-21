@@ -36,7 +36,6 @@ final class PledgeViewController: UIViewController {
 
     let closeButton = UIBarButtonItem(title: "close", style: .plain, target: self, action: #selector(closeView))
 
-
     self.navigationItem.setLeftBarButton(closeButton, animated: true)
   }
 
