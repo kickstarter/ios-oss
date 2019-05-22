@@ -11,6 +11,7 @@ public protocol SettingsRecommendationsCellViewModelInputs {
 }
 
 public protocol SettingsRecommendationsCellViewModelOutputs {
+  var postNotification: Signal<Notification, NoError> { get }
   var recommendationsOn: Signal<Bool, NoError> { get }
   var unableToSaveError: Signal<String, NoError> { get }
   var updateCurrentUser: Signal<User, NoError> { get }
@@ -47,6 +48,14 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
           .materialize()
     }
 
+    self.postNotification = updateEvent.values()
+      .map { _ in
+        Notification(
+          name: .ksr_recommendationSettingChanged,
+          userInfo: nil
+        )
+    }
+
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
@@ -76,6 +85,7 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
     self.recommendationsTappedProperty.value = on
   }
 
+  public let postNotification: Signal<Notification, NoError>
   public let recommendationsOn: Signal<Bool, NoError>
   public let unableToSaveError: Signal<String, NoError>
   public let updateCurrentUser: Signal<User, NoError>

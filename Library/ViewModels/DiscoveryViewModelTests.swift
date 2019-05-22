@@ -114,6 +114,34 @@ internal final class DiscoveryViewModelTests: TestCase {
     }
   }
 
+  func testLoadRecommendedProjectsIntoDataSource_AfterChangingSetting() {
+
+    let recsInitialParams = .defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.backed .~ false
+
+    let user = User.template
+      |> \.optedOutOfRecommendations .~ false
+
+    let optedOutUser = User.template
+      |> \.optedOutOfRecommendations .~ true
+
+    withEnvironment(config: Config.template, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([recsInitialParams])
+
+      withEnvironment(currentUser: optedOutUser) {
+
+        self.vm.inputs.didChangeRecommendationsSetting()
+
+        self.configureNavigationHeader.assertValues([recsInitialParams, initialParams])
+      }
+    }
+  }
+
   func testConfigureNavigationHeader() {
     self.configureNavigationHeader.assertValueCount(0)
 
@@ -128,7 +156,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     Signal.merge(
       self.vm.outputs.configurePagerDataSource.mapConst("configureDataSource"),
       self.vm.outputs.loadFilterIntoDataSource.mapConst("loadFilterIntoDataSource")
-    ).observe(test.observer)
+      ).observe(test.observer)
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)

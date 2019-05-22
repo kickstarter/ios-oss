@@ -7,6 +7,8 @@ internal final class DiscoveryViewController: UIViewController {
   fileprivate let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   fileprivate var dataSource: DiscoveryPagesDataSource!
 
+  private var recommendationsChangedObserver: Any?
+
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
@@ -35,7 +37,18 @@ internal final class DiscoveryViewController: UIViewController {
       .compactMap { $0 as? DiscoveryNavigationHeaderViewController }.first
     self.navigationHeaderViewController.delegate = self
 
+    self.recommendationsChangedObserver = NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_recommendationSettingChanged,
+                   object: nil,
+                   queue: nil) { [weak self] _ in
+      self?.viewModel.inputs.didChangeRecommendationsSetting()
+    }
+
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.recommendationsChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   override func viewWillAppear(_ animated: Bool) {

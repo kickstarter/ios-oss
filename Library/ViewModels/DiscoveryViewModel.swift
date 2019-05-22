@@ -7,6 +7,10 @@ import ReactiveExtensions
 import Result
 
 public protocol DiscoveryViewModelInputs {
+
+  /// Call when Recommendations setting changes on Settings > Account > Privacy > Recommendations.
+  func didChangeRecommendationsSetting()
+
   /// Call when params have been selected.
   func filter(withParams params: DiscoveryParams)
 
@@ -87,7 +91,8 @@ DiscoveryViewModelOutputs {
     self.configureSortPager = self.configurePagerDataSource
 
     let currentParams = Signal.merge(
-      self.viewWillAppearProperty.signal.take(first: 1).map { _ in initialParam() },
+      self.didChangeRecommendationsSettingProperty.signal.map { _ in initialParam() },
+      self.viewWillAppearProperty.signal.map { _ in initialParam() },
       self.filterWithParamsProperty.signal.skipNil()
       )
       .skipRepeats()
@@ -140,6 +145,11 @@ DiscoveryViewModelOutputs {
     currentParams
       .takeWhen(self.viewWillAppearProperty.signal.skipNil().filter(isFalse))
       .observeValues { AppEnvironment.current.koala.trackDiscoveryViewed(params: $0) }
+  }
+
+  fileprivate let didChangeRecommendationsSettingProperty = MutableProperty(())
+  public func didChangeRecommendationsSetting() {
+    self.didChangeRecommendationsSettingProperty.value = ()
   }
 
   fileprivate let filterWithParamsProperty = MutableProperty<DiscoveryParams?>(nil)
