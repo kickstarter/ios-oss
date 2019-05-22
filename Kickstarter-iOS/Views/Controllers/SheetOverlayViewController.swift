@@ -45,12 +45,10 @@ final class SheetOverlayViewController: UIViewController {
     _ = view
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
-    if #available(iOS 11.0, *) {
-      _ = view.layer
-        |> checkoutLayerCardRoundedStyle
-        |> \.masksToBounds .~ true
-        |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-    }
+    _ = view.layer
+      |> checkoutLayerCardRoundedStyle
+      |> \.masksToBounds .~ true
+      |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 
     let isRegular = UIScreen.main.traitCollection.isRegularRegular
     let portraitWidth = min(UIScreen.main.bounds.height, UIScreen.main.bounds.width)
