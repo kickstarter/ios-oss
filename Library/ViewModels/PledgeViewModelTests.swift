@@ -100,7 +100,7 @@ final class PledgeViewModelTests: TestCase {
     self.currencyCode.assertValues(["CAD"])
   }
 
-  func testReloadData_requiresShippingRules_isTrue() {
+  func testReloadData_requiresShippingRules() {
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
@@ -109,23 +109,6 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.requiresShippingRules.assertValues([true])
-    self.shippingIsLoading.assertDidNotEmitValue()
-
-    self.vm.inputs.reloadData()
-
-    self.shippingIsLoading.assertValues([true], "Shipping cell begins loading")
-  }
-
-  func testReloadData_requiresShippingRules_isFalse() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ false
-
-    self.vm.inputs.configureWith(project: project, reward: reward)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingIsLoading.assertDidNotEmitValue()
-    self.requiresShippingRules.assertValues([false])
   }
 
   func testSelectedShippingInfo_shippingDisabled() {
@@ -146,7 +129,7 @@ final class PledgeViewModelTests: TestCase {
     self.shippingIsLoading.assertDidNotEmitValue()
   }
 
-  func testSelectedShippingRule_recognizedCountry() {
+  func testSelectedShippingRule_shippingEnabled_recognizedCountry() {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
     // swiftlint:disable:next force_unwrapping
@@ -177,7 +160,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testSelectedShippingRule_WithUnrecognizedCountry() {
+  func testSelectedShippingRule_shippingEnabled_unrecognizedCountry() {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
     // swiftlint:disable:next force_unwrapping
