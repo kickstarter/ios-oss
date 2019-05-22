@@ -2,8 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import Result
-import UIKit.UIColor
-import UIKit.UIFont
 import UserNotifications
 
 /**
