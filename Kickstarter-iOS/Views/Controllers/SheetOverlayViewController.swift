@@ -14,8 +14,8 @@ final class SheetOverlayViewController: UIViewController {
   private let offset: CGFloat
   private let transitionAnimator = SheetOverlayTransitionAnimator()
 
-  init(childViewController: UIViewController, offset: CGFloat = 45.0) {
-    self.childViewController = childViewController
+  init(child: UIViewController, offset: CGFloat = 45.0) {
+    self.childViewController = child
     self.offset = offset
 
     super.init(nibName: nil, bundle: nil)
@@ -33,19 +33,19 @@ final class SheetOverlayViewController: UIViewController {
     super.viewDidLoad()
 
     self.addChild(self.childViewController)
-    self.configureChildView(view: self.childViewController.view, offset: self.offset)
+    self.configure(childView: self.childViewController.view, offset: self.offset)
 
     self.childViewController.didMove(toParent: self)
   }
 
-  private func configureChildView(view: UIView, offset: CGFloat) {
-    _ = (view, self.view)
+  private func configure(childView: UIView, offset: CGFloat) {
+    _ = (childView, self.view)
       |> ksr_addSubviewToParent()
 
-    _ = view
+    _ = childView
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
-    _ = view.layer
+    _ = childView.layer
       |> checkoutLayerCardRoundedStyle
       |> \.masksToBounds .~ true
       |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
@@ -53,14 +53,14 @@ final class SheetOverlayViewController: UIViewController {
     let isRegular = UIScreen.main.traitCollection.isRegularRegular
     let portraitWidth = min(UIScreen.main.bounds.height, UIScreen.main.bounds.width)
 
-    NSLayoutConstraint.activate([view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                                 view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-                                 view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: offset)])
+    NSLayoutConstraint.activate([childView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                                 childView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+                                 childView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: offset)])
 
     if isRegular {
-      view.widthAnchor.constraint(equalToConstant: portraitWidth).isActive = true
+      childView.widthAnchor.constraint(equalToConstant: portraitWidth).isActive = true
     } else {
-      view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+      childView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
     }
   }
 }
