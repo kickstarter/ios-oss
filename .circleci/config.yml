@@ -150,7 +150,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -205,7 +205,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -258,7 +258,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -311,7 +311,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -381,7 +381,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -455,7 +455,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -524,7 +524,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -582,7 +582,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
