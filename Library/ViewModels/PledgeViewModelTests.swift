@@ -136,11 +136,14 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward)
     self.vm.inputs.viewDidLoad()
 
+    self.requiresShippingRules.assertValues([false])
+
+    self.vm.inputs.reloadData()
+
     self.selectedShippingRuleLocation.assertDidNotEmitValue()
     self.selectedShippingRuleCurrency.assertDidNotEmitValue()
     self.selectedShippingRuleAmount.assertDidNotEmitValue()
     self.shippingIsLoading.assertDidNotEmitValue()
-    self.requiresShippingRules.assertValues([false])
   }
 
   func testSelectedShippingRule_recognizedCountry() {

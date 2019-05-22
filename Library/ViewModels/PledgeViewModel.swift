@@ -85,7 +85,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.selectedShippingRuleData = Signal.combineLatest(project,
                                                          defaultSelectedShippingRuleProperty.signal.skipNil(),
-                                                         self.reloadWithData)
+                                                         self.reloadDataProperty.signal)
       .map { project, shippingRule, _ -> SelectedShippingRuleData in
         let projectCurrency = project.stats.currency
 
