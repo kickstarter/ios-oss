@@ -88,6 +88,28 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
   }
 
+  private func setRewards(project: Project, _ visible: Bool) {
+    let rewardData = project.rewards
+      .filter { isMainReward(reward: $0, project: project) }
+      .sorted()
+      .map { (project, Either<Reward, Backing>.left($0)) }
+
+    if !rewardData.isEmpty {
+      if visible {
+        self.set(values: [project],
+                 cellClass: RewardsTitleCell.self,
+                 inSection: Section.rewardsTitle.rawValue)
+      }
+
+      self.set(values: availableRewards(for: project),
+               cellClass: DeprecatedRewardCell.self,
+               inSection: Section.availableRewards.rawValue)
+      self.set(values: unavailableRewards(for: project),
+               cellClass: DeprecatedRewardCell.self,
+               inSection: Section.unavailableRewards.rawValue)
+    }
+  }
+
   internal func indexPathForMainCell() -> IndexPath {
     return IndexPath(item: 0, section: Section.main.rawValue)
   }

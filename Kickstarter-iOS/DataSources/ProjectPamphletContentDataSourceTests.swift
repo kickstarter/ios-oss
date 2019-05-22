@@ -58,7 +58,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       let project = Project.template
         |> Project.lens.rewards .~ [availableReward, unavailableReward]
 
-      dataSource.load(project: project, liveStreamEvents: [])
+      dataSource.load(project: project)
 
       XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
     }
@@ -79,7 +79,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       let project = Project.template
         |> Project.lens.rewards .~ [availableReward, unavailableReward]
 
-      dataSource.load(project: project, liveStreamEvents: [])
+      dataSource.load(project: project)
 
       XCTAssertEqual(7, self.dataSource.numberOfSections(in: self.tableView))
       XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: availableSection))
