@@ -1,3 +1,4 @@
+import KsApi
 import Library
 import Prelude
 import UIKit
@@ -78,16 +79,14 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: (location: String, currency: String, rate: Double)) {
+  func configureWith(value: (location: String, amount: Double)) {
     self.countryButton.setTitle(value.location, for: .normal)
 
-    self.amountLabel.attributedText = attributedCurrencyString(
-      currencySymbol: value.currency,
-      amount: value.rate,
-      fractionDigits: 2,
-      font: UIFont.ksr_title1(),
-      superscriptFont: UIFont.ksr_body(),
-      foregroundColor: UIColor.ksr_text_dark_grey_500
+    self.amountLabel.attributedText = Format.attributedCurrency(
+      value.amount,
+      country: Project.Country.ca,
+      defaultAttributes: amountLabelDefaultAttributes(),
+      superscriptAttributes: amountLabelSuperscriptAttributes()
     )
   }
 }
@@ -112,4 +111,20 @@ private let countryButtonStyle: ButtonStyle = { (button: UIButton) in
 private let countryButtonTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.lineBreakMode .~ .byTruncatingTail
+}
+
+// MARK: - Attributes
+
+private func amountLabelDefaultAttributes() -> [NSAttributedString.Key: Any] {
+  return [
+    .font: UIFont.ksr_title1(),
+    .foregroundColor: UIColor.ksr_text_dark_grey_500
+  ]
+}
+
+private func amountLabelSuperscriptAttributes() -> [NSAttributedString.Key: Any] {
+  return [
+    .font: UIFont.ksr_body(),
+    .baselineOffset: UIFont.ksr_body().baselineOffsetToSuperscript(of: UIFont.ksr_title1())
+  ]
 }

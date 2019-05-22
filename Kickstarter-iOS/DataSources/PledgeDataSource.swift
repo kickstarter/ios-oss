@@ -1,5 +1,4 @@
 import Foundation
-import KsApi
 import Library
 
 final class PledgeDataSource: ValueCellDataSource {
@@ -23,7 +22,7 @@ final class PledgeDataSource: ValueCellDataSource {
     )
 
     self.appendRow(
-      value: (location: "British Indian Ocean Territory", currency: "$", rate: 7.50),
+      value: (location: "British Indian Ocean Territory", amount: 7.50),
       cellClass: PledgeShippingLocationCell.self,
       toSection: Section.inputs.rawValue
     )
@@ -41,7 +40,7 @@ final class PledgeDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as PledgeRowCell, value as String):
       cell.configureWith(value: value)
-    case let (cell as PledgeShippingLocationCell, value as (String, String, Double)):
+    case let (cell as PledgeShippingLocationCell, value as (String, Double)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
