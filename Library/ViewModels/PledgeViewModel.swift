@@ -32,8 +32,6 @@ public protocol PledgeViewModelType {
 }
 
 public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, PledgeViewModelOutputs {
-  private let defaultSelectedShippingRuleProperty = MutableProperty<ShippingRule?>(nil)
-
   public init() {
     let projectAndReward = Signal.combineLatest(
       self.configureProjectAndRewardProperty.signal, self.viewDidLoadProperty.signal
@@ -80,11 +78,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           .materialize()
       }
 
-    self.defaultSelectedShippingRuleProperty <~ shippingRulesEvent.values()
+    let defaultSelectedShippingRule = shippingRulesEvent.values()
       .map(defaultShippingRule(fromShippingRules:))
 
     self.selectedShippingRuleData = Signal.combineLatest(project,
-                                                         defaultSelectedShippingRuleProperty.signal.skipNil(),
+                                                         defaultSelectedShippingRule.skipNil(),
                                                          self.reloadDataProperty.signal)
       .map { project, shippingRule, _ -> SelectedShippingRuleData in
         let projectCurrency = project.stats.currency
