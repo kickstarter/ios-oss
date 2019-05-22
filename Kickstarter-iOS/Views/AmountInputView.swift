@@ -67,7 +67,7 @@ class AmountInputView: UIView {
 
 private let labelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.font .~ UIFont.ksr_caption1()
+    |> \.font .~ UIFont.ksr_body()
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.textAlignment .~ NSTextAlignment.right
     |> \.textColor .~ UIColor.ksr_green_500
