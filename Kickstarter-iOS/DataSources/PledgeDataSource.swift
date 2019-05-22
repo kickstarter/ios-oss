@@ -34,7 +34,7 @@ final class PledgeDataSource: ValueCellDataSource {
     )
 
     self.appendRow(
-      value: "Total",
+      value: Strings.Total(),
       cellClass: PledgeRowCell.self,
       toSection: Section.summary.rawValue
     )
