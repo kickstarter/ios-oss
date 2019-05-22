@@ -61,7 +61,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.reloadWithData = Signal.combineLatest(amountCurrencyDeliveryShipping, isLoggedIn)
       .map { amountCurrencyDeliveryShipping, isLoggedIn in
         let (amount, currency, delivery, shipping) = amountCurrencyDeliveryShipping
-        
+
         return (amount, currency, delivery, shipping, isLoggedIn)
     }
   }
