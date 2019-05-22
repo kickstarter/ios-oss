@@ -40,7 +40,7 @@ class ProjectStatesContainerView: UIView {
     self.label.rac.text = self.vm.outputs.rewardTitle
   }
 
-  func configureWith(project: Project, user: User) {
+  func configureWith(project: Project, user: User, backing: Backing) {
     _ = self.button
       |> projectStateButtonStyle
 
@@ -60,7 +60,7 @@ class ProjectStatesContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.isLayoutMarginsRelativeArrangement .~ true
 
-    self.vm.inputs.configureWith(project: project, user: user)
+    self.vm.inputs.configureWith(project: project, user: user, backing: backing)
   }
 
   required init?(coder aDecoder: NSCoder) {

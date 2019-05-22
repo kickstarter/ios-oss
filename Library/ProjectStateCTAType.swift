@@ -9,13 +9,13 @@ public enum ProjectStateCTAType {
   public var buttonTitle: String {
     switch self {
     case .pledge:
-      return "Back this project"
+      return Strings.Back_this_project()
     case .manage:
       return "Manage"
     case .viewBacking:
-      return "View your pledge"
+      return Strings.View_your_pledge()
     case .viewRewards:
-      return "View rewards"
+      return "View_rewards"
     }
   }
 

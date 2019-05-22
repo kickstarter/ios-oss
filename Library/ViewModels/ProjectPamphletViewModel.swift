@@ -93,17 +93,13 @@ ProjectPamphletViewModelOutputs {
 
     let projectAndUser = Signal.combineLatest(project, user)
 //
-//    let backing = SignalProducer<Backing, NoError>(value: Backing.template).map().switchMap { backing in
-//      backing
-//      }
-//      projectAndUser
-//      .switchMap { project, user in
-//           AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
-//            .demoteErrors()
-//    }
+    let backing = projectAndUser
+      .switchMap { project, user in
+           AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
+            .demoteErrors()
+    }
 //
-    self.projectAndBacking = .empty
-      //Signal.combineLatest(projectAndUser, backing).map(unpack)
+    self.projectAndBacking = Signal.combineLatest(projectAndUser, backing).map(unpack)
 
     self.projectAndUser = Signal.combineLatest(project, user)
 

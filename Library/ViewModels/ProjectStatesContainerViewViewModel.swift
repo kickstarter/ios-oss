@@ -5,7 +5,7 @@ import ReactiveSwift
 import ReactiveExtensions
 
 public protocol ProjectStatesContainerViewViewModelInputs {
-  func configureWith(project: Project, user: User)
+  func configureWith(project: Project, user: User, backing: Backing)
 }
 
 public protocol ProjectStatesContainerViewViewModelOutputs {
@@ -27,17 +27,21 @@ public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerVi
     let projectAndUser = self.projectAndBackingProperty.signal.skipNil()
 
     let projectState = projectAndUser
-      .map { project, user in projectStateButton(backer: user, project: project) }
+      .map { project, user, _ in projectStateButton(backer: user, project: project) }
+
+    let backing = projectAndUser
+      .map { _, _, backing in backing }
 
     self.buttonTitleText = projectState.map { $0.buttonTitle }
     self.buttonBackgroundColor = projectState.map { $0.buttonBackgroundColor }
     self.stackViewIsHidden = projectState.map { $0.stackViewIsHidden }
-    self.rewardTitle = projectAndUser.map { project, _ in project.personalization.backing?.reward?.title ?? "Title for unavailable reward" }
+    self.rewardTitle = backing.map {
+      $0.reward?.title ?? "Thank you for supporting this project" }
   }
 
-  fileprivate let projectAndBackingProperty = MutableProperty<(Project, User)?>(nil)
-  public func configureWith(project: Project, user: User) {
-    self.projectAndBackingProperty.value = (project, user)
+  fileprivate let projectAndBackingProperty = MutableProperty<(Project, User, Backing)?>(nil)
+  public func configureWith(project: Project, user: User, backing: Backing) {
+    self.projectAndBackingProperty.value = (project, user, backing)
   }
 
   public var inputs: ProjectStatesContainerViewViewModelInputs { return self }

@@ -175,17 +175,17 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.navBarTopConstraint.constant = value
     }
 
-    self.viewModel.outputs.projectAndUser // Project, Reward, Backing is here
-      .observeForUI()
-      .observeValues { [weak self] project, user in
-        self?.backThisProjectContainerView.configureWith(project: project, user: user)
-    }
-
-//    self.viewModel.outputs.projectAndBacking
+//    self.viewModel.outputs.projectAndUser // Project, Reward, Backing is here
 //      .observeForUI()
-//      .observeValues { [weak self] project, user, _ in
+//      .observeValues { [weak self] project, user in
 //        self?.backThisProjectContainerView.configureWith(project: project, user: user)
 //    }
+
+    self.viewModel.outputs.projectAndBacking
+      .observeForUI()
+      .observeValues { [weak self] project, user, backing in
+        self?.backThisProjectContainerView.configureWith(project: project, user: user, backing: backing)
+    }
   }
 
   public override func willTransition(to newCollection: UITraitCollection,
