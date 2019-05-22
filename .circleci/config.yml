@@ -54,7 +54,7 @@ jobs:
             - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
-          name: Cache Xcode Version
+          name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
