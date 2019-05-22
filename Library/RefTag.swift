@@ -13,10 +13,6 @@ public enum RefTag {
   case dashboardActivity
   case discovery
   case discoveryWithSort(DiscoveryParams.Sort)
-  case liveStream
-  case liveStreamCountdown
-  case liveStreamDiscovery
-  case liveStreamReplay
   case messageThread
   case profile
   case profileBacked
@@ -64,10 +60,6 @@ public enum RefTag {
     case "discovery_home":            self = .discoveryWithSort(.magic)
     case "discovery_newest":          self = .discoveryWithSort(.newest)
     case "discovery_popular":         self = .discoveryWithSort(.popular)
-    case "live_stream":               self = .liveStream
-    case "live_stream_countdown":     self = .liveStreamCountdown
-    case "live_stream_discovery":     self = .liveStreamDiscovery
-    case "live_stream_replay":        self = .liveStreamReplay
     case "message_thread":            self = .messageThread
     case "profile":                   self = .profile
     case "profile_backed":            self = .profileBacked
@@ -125,14 +117,6 @@ public enum RefTag {
       return "discovery"
     case let .discoveryWithSort(sort):
       return "discovery" + sortRefTagSuffix(sort)
-    case .liveStream:
-      return "live_stream"
-    case .liveStreamCountdown:
-      return "live_stream_countdown"
-    case .liveStreamDiscovery:
-      return "live_stream_discovery"
-    case .liveStreamReplay:
-      return "live_stream_replay"
     case .messageThread:
       return "message_thread"
     case .profile:
@@ -175,38 +159,7 @@ public enum RefTag {
   }
 }
 
-extension RefTag: Equatable {
-}
-public func == (lhs: RefTag, rhs: RefTag) -> Bool {
-  switch (lhs, rhs) {
-  case (.activity, .activity), (.category, .category), (.categoryFeatured, .categoryFeatured),
-    (.activitySample, .activitySample), (.city, .city), (.dashboard, .dashboard),
-    (.dashboardActivity, .dashboardActivity), (.discovery, .discovery),
-    (.liveStreamCountdown, .liveStreamCountdown), (.liveStreamDiscovery, .liveStreamDiscovery),
-    (.liveStreamReplay, .liveStreamReplay), (.messageThread, .messageThread), (.profile, .profile),
-    (.profileBacked, .profileBacked), (.profileSaved, .profileSaved), (.projectPage, .projectPage),
-    (.push, .push), (.recommended, .recommended), (.search, .search), (.searchFeatured, .searchFeatured),
-    (.searchPopular, .searchPopular), (.searchPopularFeatured, .searchPopularFeatured), (.social, .social),
-    (.thanks, .thanks), (.update, .update):
-    return true
-  case let (.categoryWithSort(lhs), .categoryWithSort(rhs)):
-    return lhs == rhs
-  case let (.discoveryWithSort(lhs), .discoveryWithSort(rhs)):
-    return lhs == rhs
-  case let (.recommendedWithSort(lhs), .recommendedWithSort(rhs)):
-    return lhs == rhs
-  case let (.recsWithSort(lhs), .recsWithSort(rhs)):
-    return lhs == rhs
-  case let (.socialWithSort(lhs), .socialWithSort(rhs)):
-    return lhs == rhs
-  case let (.starredWithSort(lhs), .starredWithSort(rhs)):
-    return lhs == rhs
-  case let (.unrecognized(lhs), .unrecognized(rhs)):
-    return lhs == rhs
-  default:
-    return false
-  }
-}
+extension RefTag: Equatable {}
 
 extension RefTag: CustomStringConvertible {
   public var description: String {

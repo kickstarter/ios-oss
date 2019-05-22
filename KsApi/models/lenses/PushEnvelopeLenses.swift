@@ -4,49 +4,43 @@ extension PushEnvelope {
   public enum lens {
     public static let activity = Lens<PushEnvelope, PushEnvelope.Activity?>(
       view: { $0.activity },
-      set: { .init(activity: $0, aps: $1.aps, forCreator: $1.forCreator, liveStream: $1.liveStream,
+      set: { .init(activity: $0, aps: $1.aps, forCreator: $1.forCreator,
                    message: $1.message, project: $1.project, survey: $1.survey, update: $1.update) }
     )
 
     public static let aps = Lens<PushEnvelope, PushEnvelope.ApsEnvelope>(
       view: { $0.aps },
-      set: { .init(activity: $1.activity, aps: $0, forCreator: $1.forCreator, liveStream: $1.liveStream,
+      set: { .init(activity: $1.activity, aps: $0, forCreator: $1.forCreator,
                    message: $1.message, project: $1.project, survey: $1.survey, update: $1.update) }
     )
 
     public static let forCreator = Lens<PushEnvelope, Bool?>(
       view: { $0.forCreator },
-      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $0, liveStream: $1.liveStream,
-                   message: $1.message, project: $1.project, survey: $1.survey, update: $1.update) }
-    )
-
-    public static let liveStream = Lens<PushEnvelope, PushEnvelope.LiveStream?>(
-      view: { $0.liveStream },
-      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $1.forCreator, liveStream: $0,
+      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $0,
                    message: $1.message, project: $1.project, survey: $1.survey, update: $1.update) }
     )
 
     public static let message = Lens<PushEnvelope, PushEnvelope.Message?>(
       view: { $0.message },
-      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $1.forCreator, liveStream: $1.liveStream,
+      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $1.forCreator,
                    message: $0, project: $1.project, survey: $1.survey, update: $1.update) }
     )
 
     public static let project = Lens<PushEnvelope, PushEnvelope.Project?>(
       view: { $0.project },
-      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $1.forCreator, liveStream: $1.liveStream,
+      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $1.forCreator,
                    message: $1.message, project: $0, survey: $1.survey, update: $1.update) }
     )
 
     public static let survey = Lens<PushEnvelope, PushEnvelope.Survey?>(
       view: { $0.survey },
-      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $1.forCreator, liveStream: $1.liveStream,
+      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $1.forCreator,
                    message: $1.message, project: $1.project, survey: $0, update: $1.update) }
     )
 
     public static let update = Lens<PushEnvelope, PushEnvelope.Update?>(
       view: { $0.update },
-      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $1.forCreator, liveStream: $1.liveStream,
+      set: { .init(activity: $1.activity, aps: $1.aps, forCreator: $1.forCreator,
                    message: $1.message, project: $1.project, survey: $1.survey, update: $0) }
     )
   }

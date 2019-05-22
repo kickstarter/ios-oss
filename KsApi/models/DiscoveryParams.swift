@@ -9,7 +9,6 @@ public struct DiscoveryParams {
   public private(set) var category: Category?
   public private(set) var collaborated: Bool?
   public private(set) var created: Bool?
-  public private(set) var hasLiveStreams: Bool?
   public private(set) var hasVideo: Bool?
   public private(set) var includePOTD: Bool?
   public private(set) var page: Int?
@@ -37,9 +36,8 @@ public struct DiscoveryParams {
     case popular = "popularity"
   }
 
-  public static let defaults = DiscoveryParams(backed: nil, category: nil,
-                                               collaborated: nil, created: nil,
-                                               hasLiveStreams: nil, hasVideo: nil, includePOTD: nil,
+  public static let defaults = DiscoveryParams(backed: nil, category: nil, collaborated: nil,
+                                               created: nil, hasVideo: nil, includePOTD: nil,
                                                page: nil, perPage: nil, query: nil, recommended: nil,
                                                seed: nil, similarTo: nil, social: nil, sort: nil,
                                                staffPicks: nil, starred: nil, state: nil)
@@ -50,7 +48,6 @@ public struct DiscoveryParams {
     params["category_id"] = self.category?.intID?.description
     params["collaborated"] = self.collaborated?.description
     params["created"] = self.created?.description
-    params["has_live_streams"] = self.hasLiveStreams?.description
     params["has_video"] = self.hasVideo?.description
     params["page"] = self.page?.description
     params["per_page"] = self.perPage?.description
@@ -97,7 +94,6 @@ extension DiscoveryParams: Argo.Decodable {
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "created" >>- stringToBool) as Decoded<Bool?>)
     let tmp2 = tmp1
-      <*> json <|? "has_live_streams"
       <*> ((json <|? "has_video" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "include_potd" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "page" >>- stringToInt) as Decoded<Int?>)

@@ -1,6 +1,5 @@
 import KsApi
 import Library
-import LiveStream
 import Prelude
 
 internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
@@ -33,17 +32,15 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
   }
 
-  internal func load(project: Project, liveStreamEvents: [LiveStreamEvent], visible: Bool = false) {
+  internal func load(project: Project, visible: Bool = false) {
     self.clearValues()
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
 
-    let liveStreamSubpages = self.liveStreamSubpages(forLiveStreamEvents: liveStreamEvents)
-
-    let values = liveStreamSubpages + [
-      .comments(project.stats.commentsCount as Int?, liveStreamSubpages.isEmpty ? .first : .middle),
+    let values: [ProjectPamphletSubpage] = [
+      .comments(project.stats.commentsCount as Int?, .first),
       .updates(project.stats.updatesCount as Int?, .last)
-      ]
+    ]
 
     self.set(
       values: values,
@@ -91,44 +88,6 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
   }
 
-  private func setRewards(project: Project, _ visible: Bool) {
-    let rewardData = project.rewards
-      .filter { isMainReward(reward: $0, project: project) }
-      .sorted()
-      .map { (project, Either<Reward, Backing>.left($0)) }
-
-    if !rewardData.isEmpty {
-      if visible {
-        self.set(values: [project],
-                 cellClass: RewardsTitleCell.self,
-                 inSection: Section.rewardsTitle.rawValue)
-      }
-
-      self.set(values: availableRewards(for: project),
-               cellClass: DeprecatedRewardCell.self,
-               inSection: Section.availableRewards.rawValue)
-      self.set(values: unavailableRewards(for: project),
-               cellClass: DeprecatedRewardCell.self,
-               inSection: Section.unavailableRewards.rawValue)
-    }
-  }
-
-  private func liveStreamSubpages(forLiveStreamEvents liveStreamEvents: [LiveStreamEvent]) ->
-    [ProjectPamphletSubpage] {
-
-    guard AppEnvironment.current.config?.features[Feature.liveStreams.rawValue] != .some(false)
-      else { return [] }
-
-    return liveStreamEvents
-      .sorted(comparator: LiveStreamEvent.canonicalLiveStreamEventComparator(
-        now: AppEnvironment.current.dateType.init().date)
-      )
-      .enumerated()
-      .map { idx, liveStreamEvent in
-        ProjectPamphletSubpage.liveStream(liveStreamEvent: liveStreamEvent, idx == 0 ? .first : .middle)
-    }
-  }
-
   internal func indexPathForMainCell() -> IndexPath {
     return IndexPath(item: 0, section: Section.main.rawValue)
   }
@@ -139,14 +98,6 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
   internal func indexPathIsUpdatesSubpage(_ indexPath: IndexPath) -> Bool {
     return (self[indexPath] as? ProjectPamphletSubpage)?.isUpdates == true
-  }
-
-  internal func indexPathIsLiveStreamSubpage(indexPath: IndexPath) -> Bool {
-    return (self[indexPath] as? ProjectPamphletSubpage)?.isLiveStream == true
-  }
-
-  internal func liveStream(forIndexPath indexPath: IndexPath) -> LiveStreamEvent? {
-    return (self[indexPath] as? ProjectPamphletSubpage)?.liveStreamEvent
   }
 
   internal func indexPathIsPledgeAnyAmountCell(_ indexPath: IndexPath) -> Bool {

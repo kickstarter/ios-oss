@@ -44,7 +44,6 @@ public enum Navigation {
     case faqs
     case friends
     case messageCreator
-    case liveStream(eventId: Int)
     case pledge(Navigation.Project.Pledge)
     case updates
     case update(Int, Navigation.Project.Update)
@@ -137,8 +136,6 @@ public func == (lhs: Navigation.Project, rhs: Navigation.Project) -> Bool {
     return true
   case (.messageCreator, .messageCreator):
     return true
-  case let (.liveStream(eventId: lhs), .liveStream(eventId: rhs)):
-    return lhs == rhs
   case let (.pledge(lhsPledge), .pledge(rhsPledge)):
     return lhsPledge == rhsPledge
   case (.updates, .updates):
