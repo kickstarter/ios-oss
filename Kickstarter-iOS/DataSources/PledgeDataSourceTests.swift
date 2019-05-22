@@ -1,7 +1,6 @@
 import XCTest
 @testable import Kickstarter_Framework
 @testable import Library
-@testable import KsApi
 
 final class PledgeDataSourceTests: XCTestCase {
   let dataSource = PledgeDataSource()
@@ -9,7 +8,11 @@ final class PledgeDataSourceTests: XCTestCase {
 
   // swiftlint:disable line_length
   func testLoad() {
-    self.dataSource.load(amount: 100, currency: "USD")
+    self.dataSource.load(
+      amount: 100,
+      currency: "USD",
+      shipping: (location: "Brooklyn", amount: NSAttributedString(string: "CA$ 7.50"))
+    )
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))

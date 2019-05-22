@@ -8,7 +8,7 @@ final class PledgeDataSource: ValueCellDataSource {
     case summary
   }
 
-  func load(amount: Double, currency: String) {
+  func load(amount: Double, currency: String, shipping: (location: String, amount: NSAttributedString?)) {
     self.appendRow(
       value: "Description",
       cellClass: PledgeRowCell.self,
@@ -22,7 +22,7 @@ final class PledgeDataSource: ValueCellDataSource {
     )
 
     self.appendRow(
-      value: (location: "British Indian Ocean Territory", amount: 7.50),
+      value: shipping,
       cellClass: PledgeShippingLocationCell.self,
       toSection: Section.inputs.rawValue
     )
@@ -40,7 +40,7 @@ final class PledgeDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as PledgeRowCell, value as String):
       cell.configureWith(value: value)
-    case let (cell as PledgeShippingLocationCell, value as (String, Double)):
+    case let (cell as PledgeShippingLocationCell, value as (String, NSAttributedString?)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

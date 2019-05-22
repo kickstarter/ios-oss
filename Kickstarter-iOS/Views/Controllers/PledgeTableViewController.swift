@@ -47,10 +47,10 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.amountAndCurrency
+    self.viewModel.outputs.amountCurrencyAndShipping
       .observeForUI()
-      .observeValues { [weak self] (amount, currency) in
-        self?.dataSource.load(amount: amount, currency: currency)
+      .observeValues { [weak self] (amount, currency, shipping) in
+        self?.dataSource.load(amount: amount, currency: currency, shipping: shipping)
         self?.tableView.reloadData()
     }
   }

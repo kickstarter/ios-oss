@@ -10,7 +10,7 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
-  var amountAndCurrency: Signal<(Double, String), NoError> { get }
+  var amountCurrencyAndShipping: Signal<(Double, String, (String, NSAttributedString?)), NoError> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -26,9 +26,22 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(first)
       .skipNil()
 
-    self.amountAndCurrency = projectAndReward.signal
+    self.amountCurrencyAndShipping = projectAndReward.signal
       .map { (project, reward) in
-        (reward.minimum, currencySymbol(forCountry: project.country).trimmed())
+        (
+          reward.minimum,
+          currencySymbol(forCountry: project.country).trimmed(),
+          (
+            "Brooklyn",
+            Format.attributedCurrency(
+              7.5,
+              country: project.country,
+              omitCurrencyCode: project.stats.omitUSCurrencyCode,
+              defaultAttributes: checkoutCurrencyDefaultAttributes(),
+              superscriptAttributes: checkoutCurrencySuperscriptAttributes()
+            )
+          )
+        )
     }
   }
 
@@ -42,7 +55,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let amountAndCurrency: Signal<(Double, String), NoError>
+  public let amountCurrencyAndShipping: Signal<(Double, String, (String, NSAttributedString?)), NoError>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }

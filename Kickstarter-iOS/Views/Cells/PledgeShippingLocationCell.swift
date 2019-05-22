@@ -1,4 +1,3 @@
-import KsApi
 import Library
 import Prelude
 import UIKit
@@ -79,15 +78,9 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: (location: String, amount: Double)) {
+  func configureWith(value: (location: String, amount: NSAttributedString?)) {
     self.countryButton.setTitle(value.location, for: .normal)
-
-    self.amountLabel.attributedText = Format.attributedCurrency(
-      value.amount,
-      country: Project.Country.ca,
-      defaultAttributes: amountLabelDefaultAttributes(),
-      superscriptAttributes: amountLabelSuperscriptAttributes()
-    )
+    self.amountLabel.attributedText = value.amount
   }
 }
 
