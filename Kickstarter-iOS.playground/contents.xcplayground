@@ -13,6 +13,7 @@
         <page name='Discovery'/>
         <page name='FacebookConfirmation'/>
         <page name='FindFriends'/>
+        <page name='Format'/>
         <page name='GraphQL'/>
         <page name='LoginTout'/>
         <page name='ProjectActivities'/>
@@ -24,7 +25,6 @@
         <page name='Settings'/>
         <page name='Signup'/>
         <page name='Strings'/>
-        <page name='Strings+Currency'/>
         <page name='Thanks'/>
         <page name='TwoFactor'/>
         <page name='Typography'/>
