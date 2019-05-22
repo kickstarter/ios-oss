@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import OnePasswordExtension
 import Prelude
 import ReactiveSwift
 import UIKit

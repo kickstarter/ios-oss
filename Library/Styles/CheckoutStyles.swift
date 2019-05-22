@@ -34,6 +34,26 @@ public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> 
   }
 }
 
+public let checkoutGreenButtonStyle: ButtonStyle = { button -> UIButton in
+  button
+    |> greenButtonStyle
+    |> roundedStyle(cornerRadius: 12)
+    |> UIButton.lens.layer.borderWidth .~ 0
+    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+}
+
+public let checkoutGreenButtonTitleLabelStyle = { (titleLabel: UILabel?) -> UILabel? in
+  _ = titleLabel
+    ?|> \.font .~ UIFont.ksr_headline()
+    ?|> \.numberOfLines .~ 0
+
+  _ = titleLabel
+    ?|> \.textAlignment .~ NSTextAlignment.center
+    ?|> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
+
+  return titleLabel
+}
+
 public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.ksr_grey_300
@@ -65,4 +85,9 @@ public let checkoutTitleLabelStyle: LabelStyle = { (label: UILabel) in
 public let checkoutWhiteBackgroundStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.white
+}
+
+public let checkoutLayerCardRoundedStyle: LayerStyle = { layer in
+  layer
+    |> \.cornerRadius .~ 16.0
 }

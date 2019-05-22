@@ -7,10 +7,9 @@ import Result
 import XCTest
 import UserNotifications
 @testable import Library
-@testable import LiveStream
 @testable import Kickstarter_Framework
 @testable import KsApi
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
@@ -25,9 +24,6 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let goToDashboard = TestObserver<Param?, NoError>()
   fileprivate let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
   private let goToProjectActivities = TestObserver<Param, NoError>()
-  private let goToLiveStreamProject = TestObserver<Project, NoError>()
-  private let goToLiveStreamLiveStreamEvent = TestObserver<LiveStreamEvent, NoError>()
-  private let goToLiveStreamRefTag = TestObserver<RefTag?, NoError>()
   fileprivate let goToLogin = TestObserver<(), NoError>()
   fileprivate let goToProfile = TestObserver<(), NoError>()
   private let goToMobileSafari = TestObserver<URL, NoError>()
@@ -53,9 +49,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
-    self.vm.outputs.goToLiveStream.map(first).observe(self.goToLiveStreamProject.observer)
-    self.vm.outputs.goToLiveStream.map(second).observe(self.goToLiveStreamLiveStreamEvent.observer)
-    self.vm.outputs.goToLiveStream.map(third).observe(self.goToLiveStreamRefTag.observer)
     self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
@@ -943,36 +936,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.didReceive(remoteNotification: pushData)
 
     self.presentViewController.assertValues([2])
-  }
-
-  func testOpenNotification_LiveStream() {
-    let project = .template
-      |> Project.lens.id .~ 24
-    let liveStreamEvent = .template
-      |> LiveStreamEvent.lens.id .~ 42
-
-    let pushData: [String: Any] = [
-      "aps": [
-        "alert": "A live stream as started!"
-      ],
-      "project": [
-        "id": project.id
-      ],
-      "live_stream": [
-        "id": liveStreamEvent.id
-      ],
-    ]
-
-    let apiService = MockService(fetchProjectResponse: project)
-    let liveService = MockLiveStreamService(fetchEventResult: .success(liveStreamEvent))
-    withEnvironment(apiService: apiService, liveStreamService: liveService) {
-
-      self.vm.inputs.didReceive(remoteNotification: pushData)
-
-      self.goToLiveStreamProject.assertValues([project])
-      self.goToLiveStreamLiveStreamEvent.assertValues([liveStreamEvent])
-      self.goToLiveStreamRefTag.assertValues([.push])
-    }
   }
 
   func testOpenNotification_UnrecognizedActivityType() {

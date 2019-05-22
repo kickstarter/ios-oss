@@ -139,37 +139,20 @@ public func settingsLabelStyle(_ label: UILabel) -> UILabel {
 public func settingsStackViewStyle(_ stackView: UIStackView) -> UIStackView {
   return stackView
     |> \.axis %~~ { _, stackView in
-      stackView.traitCollection.ksr_isAccessibilityCategory() ? .vertical : .horizontal
+      stackView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .vertical : .horizontal
     }
     |> \.alignment %~~ { _, stackView in
-      stackView.traitCollection.ksr_isAccessibilityCategory() ? .leading : .fill
+      stackView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .leading : .fill
     }
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.spacing .~ 8
 }
 
 public func settingsGroupedTableViewStyle(_ tableView: UITableView) -> UITableView {
-  let style = tableView
+  return tableView
     |> \.allowsSelection .~ false
     |> \.backgroundColor .~ .ksr_grey_200
     |> \.separatorInset .~ .zero
-
-  if #available(iOS 11, *) { } else {
-    let estimatedSectionFooterHeight: CGFloat = 44
-    let estimatedSectionHeaderHeight: CGFloat = 100
-    let estimatedRowHeight: CGFloat = 44
-    let height = UITableView.automaticDimension
-
-    return style
-      |> \.estimatedSectionFooterHeight .~ estimatedSectionFooterHeight
-      |> \.estimatedSectionHeaderHeight .~ estimatedSectionHeaderHeight
-      |> \.estimatedRowHeight .~ estimatedRowHeight
-      |> \.sectionFooterHeight .~ height
-      |> \.sectionHeaderHeight .~ height
-      |> \.rowHeight .~ height
-  }
-
-  return style
 }
 
 public func settingsTextFieldStyle(_ textField: UITextField) -> UITextField {
@@ -177,6 +160,6 @@ public func settingsTextFieldStyle(_ textField: UITextField) -> UITextField {
     |> \.backgroundColor .~ .white
     |> \.font %~ { _ in .ksr_body() }
     |> \.textAlignment %~~ { _, stackView in
-      stackView.traitCollection.ksr_isAccessibilityCategory() ? .left : .right
+      stackView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .left : .right
   }
 }

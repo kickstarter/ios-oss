@@ -9,11 +9,8 @@ IOS_VERSION ?= 12.1
 IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
-OPENTOK_VERSION ?= 2.10.2
 FABRIC_SDK_VERSION ?= 3.10.5
 FABRIC_SDK_URL ?= https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip
-STRIPE_SDK_VERSION ?= 13.2.0
-STRIPE_SDK_URL ?= https://github.com/stripe/stripe-ios/releases/download/vINSERT_SDK_VERSION/Stripe.framework.zip
 COMMIT ?= $(CIRCLE_SHA1)
 
 ifeq ($(PLATFORM),iOS)
@@ -41,7 +38,7 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: submodules configs secrets opentok fabric stripe
+dependencies: carthage-bootstrap configs secrets fabric
 
 bootstrap: hooks dependencies
 	brew update || brew update
@@ -50,9 +47,8 @@ bootstrap: hooks dependencies
 	brew switch swiftlint 0.29.2
 	brew link --overwrite swiftlint
 
-submodules:
-	git submodule sync --recursive || true
-	git submodule update --init --recursive || true
+carthage-bootstrap:
+	set -o pipefail; bin/carthage.sh;
 
 configs = $(basename $(wildcard Kickstarter-iOS/Configs/*.example))
 $(configs):
@@ -143,29 +139,7 @@ secrets:
 		|| true; \
 	fi
 
-VERSION_FILE = Frameworks/OpenTok/version
-CURRENT_OPENTOK_VERSION = $(shell cat $(VERSION_FILE))
-ifeq ($(CURRENT_OPENTOK_VERSION),)
-	CURRENT_OPENTOK_VERSION = first
-endif
-opentok:
-	@if [ $(OPENTOK_VERSION) != $(CURRENT_OPENTOK_VERSION) ]; \
-	then \
-		echo "Downloading OpenTok v$(OPENTOK_VERSION)"; \
-		mkdir -p Frameworks/OpenTok; \
-		curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-$(OPENTOK_VERSION) \
-		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-$(OPENTOK_VERSION)/OpenTok.framework \
-		|| true; \
-	fi
-	@if [ -e Frameworks/OpenTok/OpenTok.framework ]; \
-	then \
-		echo "$(OPENTOK_VERSION)" > $(VERSION_FILE); \
-	fi
-
 fabric:
 	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) $(FABRIC_SDK_URL); \
 
-stripe:
-	bin/download_framework.sh Stripe $(STRIPE_SDK_VERSION) $(STRIPE_SDK_URL); \
-
-.PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok fabric
+.PHONY: test-all test clean dependencies submodules deploy lint secrets strings fabric

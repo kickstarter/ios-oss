@@ -5,7 +5,6 @@ import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-@testable import LiveStream
 
 internal final class ProjectPamphletContentViewControllerTests: TestCase {
   fileprivate var cosmicSurgery: Project!
@@ -247,52 +246,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         self.scheduler.advance()
 
         FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
-      }
-    }
-  }
-
-  func testNonBacker_LiveProject_WithLiveStreams() {
-    let currentlyLiveStream = .template
-      |> LiveStreamEvent.lens.id .~ 1
-      |> LiveStreamEvent.lens.liveNow .~ true
-
-    let futureLiveStream = .template
-      |> LiveStreamEvent.lens.id .~ 2
-      |> LiveStreamEvent.lens.liveNow .~ false
-      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(60 * 60 * 24 * 2).date
-
-    let pastLiveStream = .template
-      |> LiveStreamEvent.lens.id .~ 3
-      |> LiveStreamEvent.lens.liveNow .~ false
-      |> LiveStreamEvent.lens.startDate .~ MockDate().addingTimeInterval(-60 * 60 * 12).date
-
-    let project = self.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.rewards .~ []
-
-    let envelope = LiveStreamEventsEnvelope(numberOfLiveStreams: 3,
-                                            liveStreamEvents: [
-                                              currentlyLiveStream,
-                                              futureLiveStream,
-                                              pastLiveStream])
-
-    let liveService = MockLiveStreamService(fetchEventsForProjectResult: Result(envelope))
-    let apiService = MockService(fetchProjectResponse: project)
-
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
-      language, device in
-      withEnvironment(
-      apiService: apiService,
-      language: language,
-      liveStreamService: liveService,
-      locale: .init(identifier: language.rawValue)) {
-
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_044 : 800
-        self.scheduler.advance()
-
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
       }
     }
   }

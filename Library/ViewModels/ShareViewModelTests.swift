@@ -1,24 +1,20 @@
 @testable import KsApi
 @testable import Library
-@testable import LiveStream
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
 import Prelude
 import ReactiveSwift
 import Result
-import Social
 import XCTest
 
 internal final class ShareViewModelTests: TestCase {
   internal let vm: ShareViewModelType = ShareViewModel()
 
-  fileprivate let showShareCompose = TestObserver<SLComposeViewController, NoError>()
   fileprivate let showShareSheet = TestObserver<(UIActivityViewController, UIView?), NoError>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.showShareCompose.observe(self.showShareCompose.observer)
     self.vm.outputs.showShareSheet.observe(self.showShareSheet.observer)
   }
 
@@ -71,23 +67,6 @@ internal final class ShareViewModelTests: TestCase {
     self.vm.inputs.shareButtonTapped()
 
     self.showShareSheet.assertValueCount(1)
-  }
-
-  func testShowShareSheet_LiveStream() {
-    let project = Project.template
-    let event = LiveStreamEvent.template
-      |> LiveStreamEvent.lens.webUrl .~ "http://www.kickstarter.com"
-
-    self.showShareSheet.assertValueCount(0)
-    XCTAssertEqual([], self.trackingClient.events)
-    XCTAssertEqual([], self.trackingClient.properties(forKey: "context", as: String.self))
-
-    self.vm.inputs.configureWith(shareContext: .liveStream(project, event), shareContextView: nil)
-    self.vm.inputs.shareButtonTapped()
-
-    self.showShareSheet.assertValueCount(1)
-    XCTAssertEqual(["Showed Share Sheet"], self.trackingClient.events)
-    XCTAssertEqual(["live_stream_replay"], self.trackingClient.properties(forKey: "context", as: String.self))
   }
 
   func testTracking_CancelShareSheet() {
@@ -338,94 +317,6 @@ internal final class ShareViewModelTests: TestCase {
       [nil,
        nil,
        UIActivity.ActivityType.postToTwitter.rawValue, UIActivity.ActivityType.postToTwitter.rawValue,
-       UIActivity.ActivityType.postToTwitter.rawValue, UIActivity.ActivityType.postToTwitter.rawValue],
-      self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
-    )
-  }
-
-  func testDirectFacebookShare() {
-    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
-    self.vm.inputs.facebookButtonTapped()
-    self.vm.inputs.shareComposeCompletion(result: .done)
-
-    self.showShareCompose.assertValueCount(1)
-    XCTAssertEqual(["Showed Share", "Project Show Share"], self.trackingClient.events)
-
-    self.scheduler.advance(by: .seconds(1))
-
-    XCTAssertEqual(["Showed Share", "Project Show Share", "Shared", "Project Share"],
-                   self.trackingClient.events)
-
-    XCTAssertEqual(["project", "project", "project", "project"],
-                   self.trackingClient.properties(forKey: "context", as: String.self))
-    XCTAssertEqual(
-      [UIActivity.ActivityType.postToFacebook.rawValue, UIActivity.ActivityType.postToFacebook.rawValue,
-       UIActivity.ActivityType.postToFacebook.rawValue, UIActivity.ActivityType.postToFacebook.rawValue],
-      self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
-    )
-  }
-
-  func testDirectFacebookShareCanceled() {
-    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
-    self.vm.inputs.facebookButtonTapped()
-    self.vm.inputs.shareComposeCompletion(result: .cancelled)
-
-    self.showShareCompose.assertValueCount(1)
-    XCTAssertEqual(["Showed Share", "Project Show Share"], self.trackingClient.events)
-
-    self.scheduler.advance(by: .seconds(1))
-
-    XCTAssertEqual(["Showed Share", "Project Show Share", "Canceled Share", "Project Cancel Share"],
-                   self.trackingClient.events)
-
-    XCTAssertEqual(["project", "project", "project", "project"],
-                   self.trackingClient.properties(forKey: "context", as: String.self))
-    XCTAssertEqual(
-      [UIActivity.ActivityType.postToFacebook.rawValue, UIActivity.ActivityType.postToFacebook.rawValue,
-       UIActivity.ActivityType.postToFacebook.rawValue, UIActivity.ActivityType.postToFacebook.rawValue],
-      self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
-    )
-  }
-
-  func testDirectTwitterShare() {
-    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
-    self.vm.inputs.twitterButtonTapped()
-    self.vm.inputs.shareComposeCompletion(result: .done)
-
-    self.showShareCompose.assertValueCount(1)
-    XCTAssertEqual(["Showed Share", "Project Show Share"], self.trackingClient.events)
-
-    self.scheduler.advance(by: .seconds(1))
-
-    XCTAssertEqual(["Showed Share", "Project Show Share", "Shared", "Project Share"],
-                   self.trackingClient.events)
-
-    XCTAssertEqual(["project", "project", "project", "project"],
-                   self.trackingClient.properties(forKey: "context", as: String.self))
-    XCTAssertEqual(
-      [UIActivity.ActivityType.postToTwitter.rawValue, UIActivity.ActivityType.postToTwitter.rawValue,
-       UIActivity.ActivityType.postToTwitter.rawValue, UIActivity.ActivityType.postToTwitter.rawValue],
-      self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
-    )
-  }
-
-  func testDirectTwitterShareCanceled() {
-    self.vm.inputs.configureWith(shareContext: .project(.template), shareContextView: nil)
-    self.vm.inputs.twitterButtonTapped()
-    self.vm.inputs.shareComposeCompletion(result: .cancelled)
-
-    self.showShareCompose.assertValueCount(1)
-    XCTAssertEqual(["Showed Share", "Project Show Share"], self.trackingClient.events)
-
-    self.scheduler.advance(by: .seconds(1))
-
-    XCTAssertEqual(["Showed Share", "Project Show Share", "Canceled Share", "Project Cancel Share"],
-                   self.trackingClient.events)
-
-    XCTAssertEqual(["project", "project", "project", "project"],
-                   self.trackingClient.properties(forKey: "context", as: String.self))
-    XCTAssertEqual(
-      [UIActivity.ActivityType.postToTwitter.rawValue, UIActivity.ActivityType.postToTwitter.rawValue,
        UIActivity.ActivityType.postToTwitter.rawValue, UIActivity.ActivityType.postToTwitter.rawValue],
       self.trackingClient.properties(forKey: "share_activity_type", as: String.self)
     )

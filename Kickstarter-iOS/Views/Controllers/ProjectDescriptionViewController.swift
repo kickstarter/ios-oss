@@ -1,8 +1,10 @@
+import Foundation
 import KsApi
 import Library
 import Prelude
 import SafariServices
 import UIKit
+import WebKit
 
 internal final class ProjectDescriptionViewController: WebViewController {
   fileprivate let viewModel: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()

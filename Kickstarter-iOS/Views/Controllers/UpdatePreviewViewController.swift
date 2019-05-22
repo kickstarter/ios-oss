@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import UIKit
+import WebKit
 
 internal final class UpdatePreviewViewController: WebViewController {
   fileprivate let viewModel: UpdatePreviewViewModelType = UpdatePreviewViewModel()

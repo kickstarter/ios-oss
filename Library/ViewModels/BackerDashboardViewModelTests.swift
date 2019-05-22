@@ -3,9 +3,8 @@ import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
-@testable import LiveStream
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 internal final class BackerDashboardViewModelTests: TestCase {
   private let vm: BackerDashboardViewModelType = BackerDashboardViewModel()

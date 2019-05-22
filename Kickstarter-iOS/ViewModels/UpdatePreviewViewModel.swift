@@ -2,6 +2,7 @@ import KsApi
 import Library
 import ReactiveSwift
 import Result
+import WebKit
 
 internal protocol UpdatePreviewViewModelInputs {
   /// Call with the update draft.

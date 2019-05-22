@@ -1,5 +1,4 @@
 import KsApi
-import LiveStream
 import Library
 import PassKit
 import Prelude
@@ -18,8 +17,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   fileprivate let viewModel: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
   fileprivate var navBarController: ProjectNavBarViewController!
 
-  internal func configureWith(project: Project, liveStreamEvents: [LiveStreamEvent]) {
-    self.viewModel.inputs.configureWith(project: project, liveStreamEvents: liveStreamEvents)
+  internal func configureWith(project: Project) {
+    self.viewModel.inputs.configureWith(project: project)
   }
 
   public override func viewDidLoad() {
@@ -30,7 +29,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       self, action: #selector(scrollViewPanGestureRecognizerDidChange(_:))
     )
 
-    self.tableView.register(nib: .RewardCell)
+    self.tableView.register(nib: .DeprecatedRewardCell)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -57,10 +56,10 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.loadProjectAndLiveStreamsIntoDataSource
+    self.viewModel.outputs.loadProjectIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] project, liveStreamEvents, visible in
-        self?.dataSource.load(project: project, liveStreamEvents: liveStreamEvents, visible: visible )
+      .observeValues { [weak self] project, visible in
+        self?.dataSource.load(project: project, visible: visible )
         self?.tableView.reloadData()
     }
 
@@ -79,18 +78,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToComments(project: $0) }
 
-    self.viewModel.outputs.goToLiveStream
-      .observeForControllerAction()
-      .observeValues { [weak self] project, liveStreamEvent in
-        self?.goToLiveStream(project: project, liveStreamEvent: liveStreamEvent)
-    }
-
-    self.viewModel.outputs.goToLiveStreamCountdown
-      .observeForControllerAction()
-      .observeValues { [weak self] project, liveStreamEvent in
-        self?.goToLiveStreamCountdown(project: project, liveStreamEvent: liveStreamEvent)
-    }
-
     self.viewModel.outputs.goToUpdates
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToUpdates(project: $0) }
@@ -107,8 +94,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       self.viewModel.inputs.tapped(rewardOrBacking: rewardOrBacking)
     } else if self.dataSource.indexPathIsPledgeAnyAmountCell(indexPath) {
       self.viewModel.inputs.tappedPledgeAnyAmount()
-    } else if let liveStreamEvent = self.dataSource.liveStream(forIndexPath: indexPath) {
-      self.viewModel.inputs.tapped(liveStreamEvent: liveStreamEvent)
     } else if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
       self.viewModel.inputs.tappedComments()
     } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
@@ -122,7 +107,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     if let cell = cell as? ProjectPamphletMainCell {
       cell.delegate = self
-    } else if let cell = cell as? RewardCell {
+    } else if let cell = cell as? DeprecatedRewardCell {
       cell.delegate = self
     }
   }
@@ -160,32 +145,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       self.present(nav, animated: true, completion: nil)
     } else {
       self.navigationController?.pushViewController(vc, animated: true)
-    }
-  }
-
-  private func goToLiveStream(project: Project, liveStreamEvent: LiveStreamEvent) {
-    let vc = LiveStreamContainerViewController.configuredWith(project: project,
-                                                              liveStreamEvent: liveStreamEvent,
-                                                              refTag: .projectPage,
-                                                              presentedFromProject: true)
-    let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
-    nav.viewControllers = [vc]
-
-    DispatchQueue.main.async {
-      self.present(nav, animated: true, completion: nil)
-    }
-  }
-
-  private func goToLiveStreamCountdown(project: Project, liveStreamEvent: LiveStreamEvent) {
-    let vc = LiveStreamCountdownViewController.configuredWith(project: project,
-                                                              liveStreamEvent: liveStreamEvent,
-                                                              refTag: .projectPage,
-                                                              presentedFromProject: true)
-    let nav = UINavigationController(navigationBarClass: ClearNavigationBar.self, toolbarClass: nil)
-    nav.viewControllers = [vc]
-
-    DispatchQueue.main.async {
-      self.present(nav, animated: true, completion: nil)
     }
   }
 
@@ -271,7 +230,7 @@ extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
 }
 
 extension ProjectPamphletContentViewController: RewardCellDelegate {
-  internal func rewardCellWantsExpansion(_ cell: RewardCell) {
+  internal func rewardCellWantsExpansion(_ cell: DeprecatedRewardCell) {
     cell.contentView.setNeedsUpdateConstraints()
     self.tableView.beginUpdates()
     self.tableView.endUpdates()

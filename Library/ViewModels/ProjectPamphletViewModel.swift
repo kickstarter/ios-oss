@@ -1,5 +1,4 @@
 import KsApi
-import LiveStream
 import Prelude
 import ReactiveSwift
 import Result
@@ -28,8 +27,7 @@ public protocol ProjectPamphletViewModelInputs {
 
 public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
-  var configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
-    RefTag?), NoError> { get }
+  var configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen
   var goToRewards: Signal<(Project, RefTag?), NoError> { get }
@@ -57,27 +55,27 @@ ProjectPamphletViewModelOutputs {
 
   public init() {
 
-    let freshProjectAndLiveStreamsAndRefTag = self.configDataProperty.signal.skipNil()
+    let freshProjectAndRefTag = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
         self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
       ))
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
-        fetchProjectAndLiveStreams(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
-          .map { project, liveStreams in
-            (project, liveStreams, refTag.map(cleanUp(refTag:)))
+        fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
+          .map { project in
+            (project, refTag.map(cleanUp(refTag:)))
         }
     }
 
-    self.goToRewards = freshProjectAndLiveStreamsAndRefTag
+    self.goToRewards = freshProjectAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
-      .map { project, _, refTag in
+      .map { project, refTag in
         return (project, refTag)
     }
 
-    self.configureChildViewControllersWithProjectAndLiveStreams = freshProjectAndLiveStreamsAndRefTag
-      .map { project, liveStreams, refTag in (project, liveStreams ?? [], refTag) }
+    self.configureChildViewControllersWithProject = freshProjectAndRefTag
+      .map { project, refTag in (project, refTag) }
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
@@ -95,27 +93,25 @@ ProjectPamphletViewModelOutputs {
       .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
       .map(topLayoutConstraintConstant(initialTopConstraint:traitCollection:))
 
-    let cookieRefTag = freshProjectAndLiveStreamsAndRefTag
-      .map { project, _, refTag in
+    let cookieRefTag = freshProjectAndRefTag
+      .map { project, refTag in
         cookieRefTagFor(project: project) ?? refTag
       }
       .take(first: 1)
 
-    Signal.combineLatest(freshProjectAndLiveStreamsAndRefTag,
+    Signal.combineLatest(freshProjectAndRefTag,
                          cookieRefTag,
                          self.viewDidAppearAnimated.signal.ignoreValues()
       )
-      .map { (project: $0.0, liveStreamEvents: $0.1, refTag: $0.2, cookieRefTag: $1, _: $2) }
-      .filter { _, liveStreamEvents, _, _, _ in liveStreamEvents != nil }
+      .map { (project: $0.0, refTag: $0.1, cookieRefTag: $1, _: $2) }
       .take(first: 1)
-      .observeValues { project, liveStreamEvents, refTag, cookieRefTag, _ in
+      .observeValues { project, refTag, cookieRefTag, _ in
         AppEnvironment.current.koala.trackProjectShow(project,
-                                                      liveStreamEvents: liveStreamEvents,
                                                       refTag: refTag,
                                                       cookieRefTag: cookieRefTag)
     }
 
-    Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndLiveStreamsAndRefTag.map(first))
+    Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
       .take(first: 1)
       .map(cookieFrom(refTag:project:))
       .skipNil()
@@ -158,8 +154,7 @@ ProjectPamphletViewModelOutputs {
     self.willTransitionToCollectionProperty.value = collection
   }
 
-  public let configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
-    RefTag?), NoError>
+  public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError>
   fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
     return self.prefersStatusBarHiddenProperty.value
@@ -246,28 +241,18 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   return HTTPCookie(properties: properties)
 }
 
-private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
-  -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> {
+private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
+  -> SignalProducer<Project, NoError> {
 
     let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
 
-    let projectAndLiveStreams = AppEnvironment.current.apiService.fetchProject(param: param)
+    let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
       .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       .demoteErrors()
-      .flatMap { project -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> in
-
-        AppEnvironment.current.liveStreamService
-          .fetchEvents(forProjectId: project.id, uid: AppEnvironment.current.currentUser?.id)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .flatMapError { _ in SignalProducer(error: SomeError()) }
-          .timeout(after: 5, raising: SomeError(), on: AppEnvironment.current.scheduler)
-          .materialize()
-          .map { (project, .some($0.value?.liveStreamEvents ?? [])) }
-          .take(first: 1)
-    }
 
     if let project = projectOrParam.left, shouldPrefix {
-      return projectAndLiveStreams.prefix(value: (project, nil))
+      return projectProducer.prefix(value: project)
     }
-    return projectAndLiveStreams
+
+    return projectProducer
 }

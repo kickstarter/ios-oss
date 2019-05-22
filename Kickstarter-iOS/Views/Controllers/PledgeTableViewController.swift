@@ -26,6 +26,8 @@ class PledgeTableViewController: UITableViewController {
       |> \.dataSource .~ self.dataSource
 
     self.tableView.registerCellClass(PledgeAmountCell.self)
+    self.tableView.registerCellClass(PledgeContinueCell.self)
+    self.tableView.registerCellClass(PledgeDescriptionCell.self)
     self.tableView.registerCellClass(PledgeRowCell.self)
     self.tableView.registerCellClass(PledgeShippingLocationCell.self)
     self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
@@ -47,10 +49,12 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.amountCurrencyAndShipping
+    self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] (amount, currency, shipping) in
-        self?.dataSource.load(amount: amount, currency: currency, shipping: shipping)
+      .observeValues { [weak self] (amount, currency, delivery, shipping, isLoggedIn) in
+        self?.dataSource.load(
+          amount: amount, currency: currency, delivery: delivery, shipping: shipping, isLoggedIn: isLoggedIn
+        )
         self?.tableView.reloadData()
     }
   }
@@ -63,6 +67,22 @@ class PledgeTableViewController: UITableViewController {
     let footerView = tableView.dequeueReusableHeaderFooterView(withClass: PledgeFooterView.self)
     return footerView
   }
+
+  internal override func tableView(_ tableView: UITableView,
+                                   willDisplay cell: UITableViewCell,
+                                   forRowAt indexPath: IndexPath) {
+    if let descriptionCell = cell as? PledgeDescriptionCell {
+      descriptionCell.delegate = self
+    }
+  }
+}
+
+extension PledgeTableViewController: PledgeDescriptionCellDelegate {
+ internal func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell) {
+    let vc = HelpWebViewController.configuredWith(helpType: .trust)
+    let nav = UINavigationController(rootViewController: vc)
+    self.present(nav, animated: true, completion: nil)
+  }
 }
 
 // MARK: - Styles
@@ -74,17 +94,6 @@ private func tableViewStyle(_ tableView: UITableView) -> UITableView {
     |> \.contentInset .~ UIEdgeInsets(top: -35)
     |> \.sectionFooterHeight .~ PledgeFooterView.defaultHeight
     |> \.sectionHeaderHeight .~ 0
-
-  if #available(iOS 11, *) { } else {
-    let estimatedHeight: CGFloat = 44
-
-    return style
-      |> \.contentInset .~ UIEdgeInsets(top: 30)
-      |> \.estimatedSectionFooterHeight .~ estimatedHeight
-      |> \.estimatedSectionHeaderHeight .~ estimatedHeight
-      |> \.estimatedRowHeight .~ estimatedHeight
-      |> \.rowHeight .~ UITableView.automaticDimension
-  }
 
   return style
 }

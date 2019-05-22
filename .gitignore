@@ -50,9 +50,7 @@ playground.xcworkspace
 
 # Carthage
 #
-# Add this line if you want to avoid checking in source code from Carthage dependencies.
-# Carthage/Checkouts
-
+Carthage/Checkouts
 Carthage/Build
 Carthage/Cartfile.resolved
 
@@ -72,10 +70,8 @@ fastlane/screenshots
 # FBSnapshot failures
 Screenshots/FailureDiffs/*
 
-Frameworks/OpenTok/*
 Frameworks/native-secrets
 Frameworks/Fabric/*
-Frameworks/Stripe/*
 .fastlane/report.xml
 .fastlane/README.md
 

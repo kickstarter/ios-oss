@@ -4,7 +4,7 @@ import Result
 import XCTest
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 
 internal final class AddNewCardViewModelTests: TestCase {
   private let vm: AddNewCardViewModelType = AddNewCardViewModel()

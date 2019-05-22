@@ -4,8 +4,8 @@ import Result
 import XCTest
 @testable import KsApi
 @testable import Library
-@testable import ReactiveExtensions
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
 
 internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
   internal let vm = DashboardReferrerRowStackViewViewModel()

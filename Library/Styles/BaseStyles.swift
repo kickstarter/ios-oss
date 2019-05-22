@@ -16,21 +16,19 @@ public enum Styles {
 }
 
 public typealias ButtonStyle = (UIButton) -> UIButton
+public typealias CollectionViewStyle = (UICollectionView) -> UICollectionView
 public typealias ImageViewStyle = (UIImageView) -> UIImageView
 public typealias LabelStyle = (UILabel) -> UILabel
+public typealias LayerStyle = (CALayer) -> CALayer
 public typealias StackViewStyle = (UIStackView) -> UIStackView
 public typealias TableViewStyle = (UITableView) -> UITableView
 public typealias TextFieldStyle = (UITextField) -> UITextField
+public typealias TextViewStyle = (UITextView) -> UITextView
 public typealias ViewStyle = (UIView) -> UIView
 
 public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
   return VC.lens.view.backgroundColor .~ .white
     <> (VC.lens.navigationController..navBarLens) %~ { $0.map(baseNavigationBarStyle) }
-}
-
-public func baseLiveStreamControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
-  return VC.lens.view.backgroundColor .~ .black
-    <> (VC.lens.navigationController..navBarLens) %~ { $0.map(clearNavigationBarStyle) }
 }
 
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
@@ -40,11 +38,7 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
     <> TVC.lens.tableView.rowHeight .~ UITableView.automaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 
-  #if os(iOS)
-    return style <> TVC.lens.tableView.separatorStyle .~ .none
-  #else
-    return style
-  #endif
+  return style <> TVC.lens.tableView.separatorStyle .~ .none
 }
 
 public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {
@@ -138,11 +132,8 @@ public let formFieldStyle: TextFieldStyle = { (textField: UITextField) in
 }
 
 public let ignoresInvertColorsImageViewStyle: ImageViewStyle = { (imageView: UIImageView) in
-  if #available(iOS 11, *) {
-    return imageView
-      |> \.accessibilityIgnoresInvertColors .~ true
-  }
   return imageView
+    |> \.accessibilityIgnoresInvertColors .~ true
 }
 
 public let separatorStyle: ViewStyle = { (view: UIView) in
@@ -175,10 +166,3 @@ private let baseNavigationBarStyle =
     <> UINavigationBar.lens.isTranslucent .~ false
     <> UINavigationBar.lens.barTintColor .~ .white
     <> UINavigationBar.lens.tintColor .~ .ksr_green_700
-
-private let clearNavigationBarStyle =
-  UINavigationBar.lens.titleTextAttributes .~ [
-    NSAttributedString.Key.foregroundColor: UIColor.white
-    ]
-    <> UINavigationBar.lens.isTranslucent .~ true
-    <> UINavigationBar.lens.shadowImage .~ UIImage()

@@ -1,6 +1,6 @@
 // swiftlint:disable force_cast
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 import MessageUI
 import Prelude
 import ReactiveSwift

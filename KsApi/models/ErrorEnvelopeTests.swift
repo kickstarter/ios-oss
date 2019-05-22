@@ -1,6 +1,6 @@
 import XCTest
 @testable import KsApi
-@testable import Argo
+import Argo
 
 class ErrorEnvelopeTests: XCTestCase {
 

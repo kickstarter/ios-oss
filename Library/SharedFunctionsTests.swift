@@ -2,7 +2,7 @@ import Foundation
 import ReactiveSwift
 import Result
 @testable import Library
-@testable import ReactiveExtensions_TestHelpers
+import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class SharedFunctionsTests: TestCase {

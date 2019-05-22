@@ -226,6 +226,7 @@
 "Kickstarter_Music" = "Kickstarter Music";
 "Kickstarter_if_funded" = "Kickstarter (達成した時)";
 "Kickstarter_is_not_a_store" = "Kickstarter は商品を購入する場ではありません。";
+"Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life" = "Kickstarter は普通のお店とは全く違います。クリエイティブなプロジェクトに生命を吹き込む場です。";
 "Know_when_creators_and_backers_message_you" = "クリエイターやバッカ―からメッセージが届いた場合にすぐ分かるように、通知機能を有効にしましょう。";
 "Learn_more_about_accountability" = "報告義務に関してさらに詳しく";
 "Left_count_left.few" = "残り%{left_count}";
