@@ -56,5 +56,12 @@ final class RewardsCollectionViewModelTests: TestCase {
     //swiftlint:disable:next force_unwrapping
     self.goToPledgeReward.assertValues([project.rewards.first!])
     self.goToPledgeRefTag.assertValues([.activity])
+
+    self.vm.inputs.rewardSelected(at: project.rewards.endIndex - 1)
+
+    self.goToPledgeProject.assertValues([project, project])
+    //swiftlint:disable:next force_unwrapping
+    self.goToPledgeReward.assertValues([project.rewards.first!, project.rewards.last!])
+    self.goToPledgeRefTag.assertValues([.activity, .activity])
   }
 }
