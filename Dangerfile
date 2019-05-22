@@ -2,6 +2,8 @@
 warn("Big PR") if git.lines_of_code > 5
 
 # SwiftLint
+swiftlint.config_file = '.swiftlint.yml'
+swiftlint.binary_path = 'bin/swiftlint'
 swiftlint.lint_files inline_mode: true
 
 # SwiftFormat

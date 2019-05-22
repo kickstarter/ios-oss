@@ -3965,7 +3965,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n    if [ -z \"$CI\" ]; then\n        echo \"Running swiftlint...\"\n        swiftlint\n    fi\nelse\n    echo \"warning: swiftlint not installed, run brew install swiftlint\"\nfi";
+			shellScript = "if [ -z \"$CI\" ]; then\n    echo \"Running Swiftlint...\"\n    bin/swiftlint\nfi\n";
 		};
 		7713662C20E4048B00D7D7AD /* Fabric */ = {
 			isa = PBXShellScriptBuildPhase;
