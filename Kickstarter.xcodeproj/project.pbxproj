@@ -90,6 +90,8 @@
 		373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25C222A0D8900769FC2 /* PasswordValidation.swift */; };
 		373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */; };
 		374F507922614A1000DE6746 /* PledgeFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374F507822614A1000DE6746 /* PledgeFooterView.swift */; };
+		3757D0CE228E51F800241AE6 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3757D0CD228E51F800241AE6 /* UIFont.swift */; };
+		3757D107228E521600241AE6 /* UIFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3757D106228E521600241AE6 /* UIFontTests.swift */; };
 		37637ED8224AA03D00777AD2 /* CreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */; };
 		37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */; };
 		3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */; };
@@ -1907,6 +1909,8 @@
 		373AB25C222A0D8900769FC2 /* PasswordValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidation.swift; sourceTree = "<group>"; };
 		373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
 		374F507822614A1000DE6746 /* PledgeFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeFooterView.swift; sourceTree = "<group>"; };
+		3757D0CD228E51F800241AE6 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		3757D106228E521600241AE6 /* UIFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontTests.swift; sourceTree = "<group>"; };
 		37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewController.swift; sourceTree = "<group>"; };
 		37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedHeaderView.swift; sourceTree = "<group>"; };
 		3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextInputCell.swift; sourceTree = "<group>"; };
@@ -3861,6 +3865,8 @@
 				A7ED1F231E830FDC00BFFA01 /* UIColorTests.swift */,
 				A78537BB1CB5416700385B73 /* UIDeviceType.swift */,
 				D78E4EE2218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift */,
+				3757D0CD228E51F800241AE6 /* UIFont.swift */,
+				3757D106228E521600241AE6 /* UIFontTests.swift */,
 				A7C725951C85D36D005A016B /* UIGestureRecognizer-Extensions.swift */,
 				A7C725961C85D36D005A016B /* UILabel+IBClear.swift */,
 				A7ED1F241E830FDC00BFFA01 /* UILabel+IBClearTests.swift */,
@@ -5832,6 +5838,7 @@
 				A7F441CF1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift in Sources */,
 				A7F441CB1D005A9400FE6FC5 /* MessagesSearchViewModel.swift in Sources */,
 				A7CC14651D00E81B00035C52 /* FriendsSource.swift in Sources */,
+				3757D0CE228E51F800241AE6 /* UIFont.swift in Sources */,
 				9D9F581B1D1324E200CE81DE /* DashboardViewModel.swift in Sources */,
 				D796867C20FE655300E54C61 /* SettingsFollowCellViewModel.swift in Sources */,
 				D79A01A42242E8CD004BC6A8 /* AppEnvironmentType.swift in Sources */,
@@ -6001,6 +6008,7 @@
 				A70E9EE61E859C96009E67F2 /* LiveStreamNavTitleViewModelTests.swift in Sources */,
 				A7ED1FAC1E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift in Sources */,
 				A7ED20021E831C5C00BFFA01 /* ThanksViewModelTests.swift in Sources */,
+				3757D107228E521600241AE6 /* UIFontTests.swift in Sources */,
 				A7ED1F351E830FDC00BFFA01 /* String+SimpleHTMLTests.swift in Sources */,
 				A7ED1FAB1E831C5C00BFFA01 /* CommentDialogViewModelTests.swift in Sources */,
 				A7ED1FB31E831C5C00BFFA01 /* ActivitySampleBackingCellViewModelTests.swift in Sources */,
