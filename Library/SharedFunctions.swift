@@ -81,50 +81,6 @@ internal func minPledgeAmount(forProject project: Project, reward: Reward?) -> D
   return minAndMaxPledgeAmount(forProject: project, reward: reward).min
 }
 
-public func attributedCurrencyString(
-  currencySymbol: String,
-  amount: Double,
-  fractionDigits: UInt,
-  font: UIFont,
-  superscriptFont: UIFont,
-  foregroundColor: UIColor
-  ) -> NSAttributedString {
-  // Drop decimal places
-  let formattedString = String(format: "\(currencySymbol)%.\(fractionDigits)f", amount)
-
-  let attributedString = NSMutableAttributedString(string: formattedString)
-  let franctionDigitsAndSeparator = Int(fractionDigits == 0 ? fractionDigits : fractionDigits + 1)
-
-  // Calculate prefix and suffix ranges
-  let prefix = NSRange(location: 0, length: currencySymbol.count)
-  let range = NSRange(location: 0, length: attributedString.length)
-  let suffix = NSRange(
-    location: attributedString.length - franctionDigitsAndSeparator,
-    length: franctionDigitsAndSeparator
-  )
-
-  // Calculate vertical offset based on the height of a capital character of the two fonts
-  let maxCapHeight: CGFloat = max(font.capHeight, superscriptFont.capHeight)
-  let minCapHeight: CGFloat = min(font.capHeight, superscriptFont.capHeight)
-  let multiplier: CGFloat = font.capHeight > superscriptFont.capHeight ? 1 : 0
-  let baselineOffset = NSNumber(value: Float(multiplier * (maxCapHeight - minCapHeight)))
-
-  // Set font for the whole string
-  attributedString.addAttribute(NSAttributedString.Key.font, value: font, range: range)
-  // Set foreground color for the whole string
-  attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: foregroundColor, range: range)
-  // Replace prefix font
-  attributedString.addAttribute(NSAttributedString.Key.font, value: superscriptFont, range: prefix)
-  // Offset prefix vertically from the baseline
-  attributedString.addAttribute(NSAttributedString.Key.baselineOffset, value: baselineOffset, range: prefix)
-  // Replace suffix font
-  attributedString.addAttribute(NSAttributedString.Key.font, value: superscriptFont, range: suffix)
-  // Offset suffix vertically from the baseline
-  attributedString.addAttribute(NSAttributedString.Key.baselineOffset, value: baselineOffset, range: suffix)
-
-  return NSAttributedString(attributedString: attributedString)
-}
-
 /**
  Returns the full currency symbol for a country. Special logic is added around prefixing currency symbols
  with country/currency codes based on a variety of factors.
