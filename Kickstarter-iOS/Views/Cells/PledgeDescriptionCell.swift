@@ -117,15 +117,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
    _ = (views, self.descriptionStackView)
     |> ksr_addArrangedSubviewsToStackView()
 
-    if #available(iOS 11.0, *) {
-      self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
-    } else {
-      let view: UIView = {
-        return UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      }()
-      view.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height).isActive = true
-      self.descriptionStackView.insertArrangedSubview(view, at: 3)
-    }
+    self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
+
     _ = ([self.descriptionStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }

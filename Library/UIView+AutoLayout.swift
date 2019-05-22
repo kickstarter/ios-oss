@@ -7,6 +7,15 @@ public func ksr_addSubviewToParent() -> ((UIView, UIView) -> (UIView, UIView)) {
   }
 }
 
+public func ksr_insertSubview(_ subview: UIView, belowSubview otherSubview: UIView)
+  -> ((UIView) -> (UIView)) {
+  return { view in
+    view.insertSubview(subview, belowSubview: otherSubview)
+
+    return view
+  }
+}
+
 public func ksr_insertSubviewInParent(at index: Int) -> ((UIView, UIView) -> (UIView, UIView)) {
   return { (subview, parent) in
     parent.insertSubview(subview, at: index)

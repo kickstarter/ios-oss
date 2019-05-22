@@ -178,11 +178,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     let cardWidth = Layout.Card.width
 
     let sectionInsets = layout.sectionInset
-    var adjustedContentInset = UIEdgeInsets.zero
-
-    if #available(iOS 11.0, *) {
-      adjustedContentInset = collectionView.adjustedContentInset
-    }
+    let adjustedContentInset = collectionView.adjustedContentInset
 
     let topBottomSectionInsets = sectionInsets.top + sectionInsets.bottom
     let topBottomContentInsets = adjustedContentInset.top + adjustedContentInset.bottom
