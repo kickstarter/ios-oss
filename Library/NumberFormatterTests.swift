@@ -4,22 +4,22 @@ import XCTest
 final class NumberFormatterTests: TestCase {
   // MARK: - Properties
 
-  let defaultAttributes: [NSAttributedString.Key: Any] = [
+  let defaultAttributes: String.Attributes = [
     .font: UIFont.preferredFont(forTextStyle: .title1),
     .foregroundColor: UIColor.black
   ]
 
-  let currencySymbolAttributes: [NSAttributedString.Key: Any] = [
+  let currencySymbolAttributes: String.Attributes = [
     .backgroundColor: UIColor.cyan,
     .font: UIFont.preferredFont(forTextStyle: .body),
   ]
 
-  let decimalSeparatorAttributes: [NSAttributedString.Key: Any] = [
+  let decimalSeparatorAttributes: String.Attributes = [
     .font: UIFont.preferredFont(forTextStyle: .body),
     .strokeColor: UIColor.magenta
   ]
 
-  let fractionDigitsAttributes: [NSAttributedString.Key: Any] = [
+  let fractionDigitsAttributes: String.Attributes = [
     .font: UIFont.preferredFont(forTextStyle: .body),
     .underlineColor: UIColor.orange
   ]
@@ -139,7 +139,7 @@ final class NumberFormatterTests: TestCase {
   }
 }
 
-private func == (lhs: [NSAttributedString.Key: Any], rhs: [NSAttributedString.Key: Any] ) -> Bool {
+private func == (lhs: String.Attributes, rhs: String.Attributes ) -> Bool {
   return NSDictionary(dictionary: lhs).isEqual(to: rhs)
 }
 

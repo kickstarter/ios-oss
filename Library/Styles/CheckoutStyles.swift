@@ -3,14 +3,14 @@ import UIKit
 
 // MARK: - Attributes
 
-public func checkoutCurrencyDefaultAttributes() -> [NSAttributedString.Key: Any] {
+public func checkoutCurrencyDefaultAttributes() -> String.Attributes {
   return [
     .font: UIFont.ksr_title1(),
     .foregroundColor: UIColor.ksr_text_dark_grey_500
   ]
 }
 
-public func checkoutCurrencySuperscriptAttributes() -> [NSAttributedString.Key: Any] {
+public func checkoutCurrencySuperscriptAttributes() -> String.Attributes {
   return [
     .font: UIFont.ksr_body(),
     .baselineOffset: UIFont.ksr_body().baselineOffsetToSuperscript(of: UIFont.ksr_title1())

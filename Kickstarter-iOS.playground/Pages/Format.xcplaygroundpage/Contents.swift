@@ -1,12 +1,12 @@
 import UIKit
 @testable import Library
 
-let defaultAttributes: [NSAttributedString.Key: Any] = [
+let defaultAttributes: String.Attributes = [
   .font: UIFont.ksr_title1(),
   .foregroundColor: UIColor.cyan
 ]
 
-let superscriptAttributes: [NSAttributedString.Key: Any] = [
+let superscriptAttributes: String.Attributes = [
   .font: UIFont.ksr_body(),
   .baselineOffset: UIFont.ksr_body().baselineOffsetToSuperscript(of: UIFont.ksr_title1())
 ]

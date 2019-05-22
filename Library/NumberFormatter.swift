@@ -4,10 +4,10 @@ import Foundation
 final class AttributedNumberFormatter: NumberFormatter {
   // MARK: - Properties
 
-  var defaultAttributes: [NSAttributedString.Key: Any] = [:]
-  var currencySymbolAttributes: [NSAttributedString.Key: Any] = [:]
-  var decimalSeparatorAttributes: [NSAttributedString.Key: Any] = [:]
-  var fractionDigitsAttributes: [NSAttributedString.Key: Any] = [:]
+  var defaultAttributes: String.Attributes = [:]
+  var currencySymbolAttributes: String.Attributes = [:]
+  var decimalSeparatorAttributes: String.Attributes = [:]
+  var fractionDigitsAttributes: String.Attributes = [:]
 
   // MARK: - Attributed string
 
