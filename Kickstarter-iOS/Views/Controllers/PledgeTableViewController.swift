@@ -94,16 +94,5 @@ private func tableViewStyle(_ tableView: UITableView) -> UITableView {
     |> \.sectionFooterHeight .~ PledgeFooterView.defaultHeight
     |> \.sectionHeaderHeight .~ 0
 
-  if #available(iOS 11, *) { } else {
-    let estimatedHeight: CGFloat = 44
-
-    return style
-      |> \.contentInset .~ UIEdgeInsets(top: 30)
-      |> \.estimatedSectionFooterHeight .~ estimatedHeight
-      |> \.estimatedSectionHeaderHeight .~ estimatedHeight
-      |> \.estimatedRowHeight .~ estimatedHeight
-      |> \.rowHeight .~ UITableView.automaticDimension
-  }
-
   return style
 }

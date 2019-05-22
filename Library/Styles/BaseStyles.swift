@@ -19,6 +19,7 @@ public typealias ButtonStyle = (UIButton) -> UIButton
 public typealias CollectionViewStyle = (UICollectionView) -> UICollectionView
 public typealias ImageViewStyle = (UIImageView) -> UIImageView
 public typealias LabelStyle = (UILabel) -> UILabel
+public typealias LayerStyle = (CALayer) -> CALayer
 public typealias StackViewStyle = (UIStackView) -> UIStackView
 public typealias TableViewStyle = (UITableView) -> UITableView
 public typealias TextFieldStyle = (UITextField) -> UITextField
