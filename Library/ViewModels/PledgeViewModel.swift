@@ -4,15 +4,18 @@ import Prelude
 import ReactiveSwift
 import Result
 
-public typealias PledgeTableViewData = (amount: Double, currency: String, currencyCode: String,
-  delivery: String,
-  isLoggedIn: Bool,
-  requiresShippingRules: Bool)
+public typealias PledgeTableViewData = (amount: Double,
+                                        currency: String,
+                                        currencyCode: String,
+                                        delivery: String,
+                                        isLoggedIn: Bool,
+                                        requiresShippingRules: Bool)
 
 public typealias SelectedShippingRuleData = (location: String, amount: Double, currencyCode: String)
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
+  func reloadData()
   func viewDidLoad()
 }
 
@@ -89,22 +92,29 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         return (shippingRule.location.localizedName, shippingRule.cost, projectCurrency)
       }
 
-    let shippingShouldBeginLoading = self.reloadWithData.signal
-      .map { $0.requiresShippingRules }
+    let shippingShouldBeginLoading = shouldLoadShippingRules
       .filter(isTrue)
+
+    let shippingIsLoading = Signal.merge(shippingShouldBeginLoading,
+                                         shippingRulesEvent.filter { $0.isTerminating }.mapConst(false))
+
+    // Ensure that table view's reloadData has completed at least once before triggering loading events
+    self.shippingIsLoading = Signal.combineLatest(self.reloadDataProperty.signal, shippingIsLoading)
+      .map(second)
 
     self.shippingRulesError = shippingRulesEvent.errors().map { _ in
       Strings.We_were_unable_to_load_the_shipping_destinations()
     }
-
-    self.shippingIsLoading = Signal.merge(shippingShouldBeginLoading,
-                                          shippingRulesEvent.filter { $0.isTerminating }.mapConst(false))
-      .ksr_debounce(.milliseconds(1), on: AppEnvironment.current.scheduler)
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
   public func configureWith(project: Project, reward: Reward) {
     self.configureProjectAndRewardProperty.value = (project, reward)
+  }
+
+  private let reloadDataProperty = MutableProperty<Void>(())
+  public func reloadData() {
+    self.reloadDataProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())

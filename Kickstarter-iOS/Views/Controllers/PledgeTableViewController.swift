@@ -7,6 +7,7 @@ class PledgeTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let dataSource: PledgeDataSource = PledgeDataSource()
+  private var shippingLocationCell: PledgeShippingLocationCell?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
   // MARK: - Lifecycle
@@ -55,6 +56,8 @@ class PledgeTableViewController: UITableViewController {
         self?.dataSource.load(data: data)
 
         self?.tableView.reloadData()
+
+        self?.viewModel.inputs.reloadData()
     }
 
     self.viewModel.outputs.selectedShippingRuleData
@@ -72,15 +75,7 @@ class PledgeTableViewController: UITableViewController {
     self.viewModel.outputs.shippingIsLoading
       .observeForUI()
       .observeValues { [weak self] isLoading in
-        guard let _self = self,
-          let shippingIndexPath = _self.dataSource.shippingCellIndexPath() else { return }
-
-        guard let shippingLocationCell = _self.dataSource
-            .tableView(_self.tableView, cellForRowAt: shippingIndexPath) as? PledgeShippingLocationCell else {
-          return
-        }
-
-        shippingLocationCell.animate(isLoading)
+        self?.shippingLocationCell?.animate(isLoading)
     }
   }
 
@@ -98,6 +93,8 @@ class PledgeTableViewController: UITableViewController {
                                    forRowAt indexPath: IndexPath) {
     if let descriptionCell = cell as? PledgeDescriptionCell {
       descriptionCell.delegate = self
+    } else if let shippingLocationCell = cell as? PledgeShippingLocationCell {
+      self.shippingLocationCell = shippingLocationCell
     }
   }
 }

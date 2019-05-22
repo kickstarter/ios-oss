@@ -34,8 +34,4 @@ final class PledgeViewController: UIViewController {
       _ = (childView, self.view) |> ksr_constrainViewToEdgesInParent()
     }
   }
-
-  @objc func closeView() {
-    self.dismiss(animated: true, completion: nil)
-  }
 }

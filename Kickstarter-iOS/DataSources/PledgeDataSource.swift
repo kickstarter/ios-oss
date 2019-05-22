@@ -11,8 +11,8 @@ final class PledgeDataSource: ValueCellDataSource {
   }
 
   enum PledgeInputRow {
-    case shippingLocation(location: String, amount: Double, currencyCode: String)
     case pledgeAmount(amount: Double, currency: String)
+    case shippingLocation(location: String, amount: Double, currencyCode: String)
 
     var isShipping: Bool {
       switch self {
@@ -33,12 +33,14 @@ final class PledgeDataSource: ValueCellDataSource {
     self.loadProjectSection(delivery: data.delivery)
 
     self.loadInputsSection(amount: data.amount, currency: data.currency, currencyCode: data.currencyCode,
-                           rate: 7.50, requiresShippingRules: data.requiresShippingRules)
+                           requiresShippingRules: data.requiresShippingRules)
 
     self.loadSummarySection(isLoggedIn: data.isLoggedIn)
   }
 
   func loadSelectedShippingRule(data: SelectedShippingRuleData) {
+    guard self.numberOfItems(in: PledgeDataSource.Section.inputs.rawValue) > 1 else { return }
+
     self.set(value: PledgeInputRow.shippingLocation(location: data.location, amount: data.amount,
                                                     currencyCode: data.currencyCode),
              cellClass: PledgeShippingLocationCell.self,
@@ -67,7 +69,7 @@ final class PledgeDataSource: ValueCellDataSource {
     )
   }
 
-  private func loadInputsSection(amount: Double, currency: String, currencyCode: String, rate: Double,
+  private func loadInputsSection(amount: Double, currency: String, currencyCode: String,
                                  requiresShippingRules: Bool) {
     self.appendRow(
       value: PledgeInputRow.pledgeAmount(amount: amount, currency: currency),
@@ -98,7 +100,7 @@ final class PledgeDataSource: ValueCellDataSource {
     }
   }
 
-  internal func indexPathIsShippingLocationCell(_ indexPath: IndexPath) -> Bool {
+  private func indexPathIsShippingLocationCell(_ indexPath: IndexPath) -> Bool {
     return (self[indexPath] as? PledgeInputRow)?.isShipping == true
   }
 
