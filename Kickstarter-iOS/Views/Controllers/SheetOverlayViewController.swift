@@ -55,7 +55,8 @@ final class SheetOverlayViewController: UIViewController {
 
     NSLayoutConstraint.activate([childView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
                                  childView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-                                 childView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: offset)])
+                                 childView.topAnchor.constraint(equalTo: self.view.topAnchor,
+                                                                constant: offset)])
 
     if isRegular {
       childView.widthAnchor.constraint(equalToConstant: portraitWidth).isActive = true
