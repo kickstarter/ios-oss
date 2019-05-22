@@ -112,19 +112,3 @@ private let countryButtonTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.lineBreakMode .~ .byTruncatingTail
 }
-
-// MARK: - Attributes
-
-private func amountLabelDefaultAttributes() -> [NSAttributedString.Key: Any] {
-  return [
-    .font: UIFont.ksr_title1(),
-    .foregroundColor: UIColor.ksr_text_dark_grey_500
-  ]
-}
-
-private func amountLabelSuperscriptAttributes() -> [NSAttributedString.Key: Any] {
-  return [
-    .font: UIFont.ksr_body(),
-    .baselineOffset: UIFont.ksr_body().baselineOffsetToSuperscript(of: UIFont.ksr_title1())
-  ]
-}
