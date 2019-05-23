@@ -1,5 +1,4 @@
 import Foundation
-import KsApi
 import Library
 import UIKit
 
@@ -10,7 +9,12 @@ final class PledgeDataSource: ValueCellDataSource {
     case summary
   }
 
-  func load(amount: Double, currency: String, delivery: String, isLoggedIn: Bool) {
+  func load(
+    amount: Double,
+    currency: String,
+    delivery: String,
+    shipping: (location: String, amount: NSAttributedString?),
+    isLoggedIn: Bool) {
     self.appendRow(
       value: delivery,
       cellClass: PledgeDescriptionCell.self,
@@ -24,25 +28,23 @@ final class PledgeDataSource: ValueCellDataSource {
     )
 
     self.appendRow(
-      value: (location: "British Indian Ocean Territory", currency: "$", rate: 7.50),
+      value: shipping,
       cellClass: PledgeShippingLocationCell.self,
       toSection: Section.inputs.rawValue
     )
 
-    self.loadSummarySection(isLoggedIn: isLoggedIn)
-  }
-
-  private func loadSummarySection(isLoggedIn: Bool) {
     self.appendRow(
-      value: "Total",
+      value: Strings.Total(),
       cellClass: PledgeRowCell.self,
       toSection: Section.summary.rawValue
     )
 
     if !isLoggedIn {
-      self.appendRow(value: (),
-                     cellClass: PledgeContinueCell.self,
-                     toSection: Section.summary.rawValue)
+      self.appendRow(
+        value: (),
+        cellClass: PledgeContinueCell.self,
+        toSection: Section.summary.rawValue
+      )
     }
   }
 
@@ -50,13 +52,13 @@ final class PledgeDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as PledgeAmountCell, value as (Double, String)):
       cell.configureWith(value: value)
+    case let (cell as PledgeContinueCell, value as ()):
+      cell.configureWith(value: value)
     case let (cell as PledgeDescriptionCell, value as String):
       cell.configureWith(value: value)
     case let (cell as PledgeRowCell, value as String):
       cell.configureWith(value: value)
-    case let (cell as PledgeShippingLocationCell, value as (String, String, Double)):
-      cell.configureWith(value: value)
-    case let (cell as PledgeContinueCell, value as ()):
+    case let (cell as PledgeShippingLocationCell, value as (String, NSAttributedString?)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

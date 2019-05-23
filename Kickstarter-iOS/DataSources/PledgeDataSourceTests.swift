@@ -1,7 +1,6 @@
 import XCTest
 @testable import Kickstarter_Framework
 @testable import Library
-@testable import KsApi
 
 final class PledgeDataSourceTests: XCTestCase {
   let dataSource = PledgeDataSource()
@@ -9,7 +8,13 @@ final class PledgeDataSourceTests: XCTestCase {
 
   // swiftlint:disable line_length
   func testLoad_loggedIn() {
-    self.dataSource.load(amount: 100, currency: "USD", delivery: "May 2020", isLoggedIn: true)
+    self.dataSource.load(
+      amount: 100,
+      currency: "USD",
+      delivery: "May 2020",
+      shipping: ("Brooklyn", NSAttributedString(string: "CA$ 7.50")),
+      isLoggedIn: true
+    )
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
@@ -22,7 +27,13 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoad_loggedOut() {
-    self.dataSource.load(amount: 100, currency: "USD", delivery: "May 2020", isLoggedIn: false)
+    self.dataSource.load(
+      amount: 100,
+      currency: "USD",
+      delivery: "May 2020",
+      shipping: ("Brooklyn", NSAttributedString(string: "CA$ 7.50")),
+      isLoggedIn: false
+    )
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))

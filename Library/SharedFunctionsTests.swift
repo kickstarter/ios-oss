@@ -6,7 +6,6 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class SharedFunctionsTests: TestCase {
-
   func testCountdownProducer() {
     let future: TimeInterval = TimeInterval(1*60*60*24) + TimeInterval(16*60*60) + TimeInterval(34*60) + 2
     let futureDate = MockDate().addingTimeInterval(future).date
