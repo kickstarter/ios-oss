@@ -73,9 +73,6 @@ disabled_rules:
   - weak_delegate
   - xctfail_message
 line_length: 110
-type_body_length:
-  warning: 300
-  error: 400
 excluded:
   - Carthage/
   - Frameworks/
