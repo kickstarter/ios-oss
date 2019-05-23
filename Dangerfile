@@ -1,5 +1,5 @@
 # PR size
-warn("Big PR") if git.lines_of_code > 5
+warn("Big PR") if git.lines_of_code > 350
 
 # SwiftLint
 swiftlint.config_file = '.swiftlint.yml'
