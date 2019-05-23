@@ -23,9 +23,4 @@
 --disable void
 
 # Excluded
-bin
-Carthage
-Frameworks
-Library/Styles/Colors.swift
-Library/Strings.swift
-vendor
+--exclude bin,Carthage,Frameworks,Library/Styles/Colors.swift,Library/Strings.swift,vendor
