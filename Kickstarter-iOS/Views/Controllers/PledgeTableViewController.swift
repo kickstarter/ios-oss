@@ -51,9 +51,10 @@ class PledgeTableViewController: UITableViewController {
 
     self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] (amount, currency, delivery, isLoggedIn) in
-        self?.dataSource.load(amount: amount, currency: currency, delivery: delivery, isLoggedIn: isLoggedIn)
-
+      .observeValues { [weak self] (amount, currency, delivery, shipping, isLoggedIn) in
+        self?.dataSource.load(
+          amount: amount, currency: currency, delivery: delivery, shipping: shipping, isLoggedIn: isLoggedIn
+        )
         self?.tableView.reloadData()
     }
   }

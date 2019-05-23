@@ -114,6 +114,30 @@ public enum Format {
       ?? (symbol + "\(amount)")
   }
 
+  public static func attributedCurrency(_ amount: Double,
+                                        country: Project.Country,
+                                        omitCurrencyCode: Bool = false,
+                                        defaultAttributes: String.Attributes = [:],
+                                        superscriptAttributes: String.Attributes = [:],
+                                        env: Environment = AppEnvironment.current) -> NSAttributedString? {
+    let symbol = currencySymbol(forCountry: country, omitCurrencyCode: omitCurrencyCode, env: env)
+    let config = NumberFormatterConfig.defaultCurrencyConfig
+      |> NumberFormatterConfig.lens.locale .~ env.locale
+      |> NumberFormatterConfig.lens.currencySymbol .~ symbol
+      |> NumberFormatterConfig.lens.maximumFractionDigits .~ 2
+
+    guard let formatter = NumberFormatterConfig.cachedFormatter(forConfig: config)
+      as? AttributedNumberFormatter else { return nil }
+
+    _ = formatter
+      |> \.defaultAttributes .~ defaultAttributes
+      |> \.currencySymbolAttributes .~ superscriptAttributes
+      |> \.decimalSeparatorAttributes .~ superscriptAttributes
+      |> \.fractionDigitsAttributes .~ superscriptAttributes
+
+    return formatter.attributedString(for: amount)
+  }
+
   /**
    Create a date from a string with the given format
 
@@ -410,7 +434,7 @@ private struct NumberFormatterConfig {
   fileprivate let currencySymbol: String
 
   fileprivate func formatter() -> NumberFormatter {
-    let formatter = NumberFormatter()
+    let formatter = AttributedNumberFormatter()
     formatter.numberStyle = self.numberStyle
     formatter.roundingMode = self.roundingMode
     formatter.maximumFractionDigits = self.maximumFractionDigits

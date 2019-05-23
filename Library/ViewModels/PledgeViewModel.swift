@@ -4,7 +4,13 @@ import Prelude
 import ReactiveSwift
 import Result
 
-public typealias PledgeTableViewData = (amount: Double, currency: String, delivery: String, isLoggedIn: Bool)
+public typealias PledgeTableViewData = (
+  amount: Double,
+  currency: String,
+  delivery: String,
+  shipping: (location: String, amount: NSAttributedString?),
+  isLoggedIn: Bool
+)
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
@@ -32,18 +38,31 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    let amountCurrencyDelivery = projectAndReward.signal
-      .map { (project, reward) in
-        (reward.minimum,
-         currencySymbol(forCountry: project.country).trimmed(),
-         reward.estimatedDeliveryOn
-          .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? "") }
+    let amountCurrencyDeliveryShipping = projectAndReward.signal
+      .map { (project, reward) -> (Double, String, String, (String, NSAttributedString?)) in
+        let amount = reward.minimum
+        let currency = currencySymbol(forCountry: project.country).trimmed()
+        let delivery = reward.estimatedDeliveryOn
+          .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? ""
+        let shipping = (
+          "Brooklyn",
+          Format.attributedCurrency(
+            7.5,
+            country: project.country,
+            omitCurrencyCode: project.stats.omitUSCurrencyCode,
+            defaultAttributes: checkoutCurrencyDefaultAttributes(),
+            superscriptAttributes: checkoutCurrencySuperscriptAttributes()
+          )
+        )
 
-    self.reloadWithData = Signal.combineLatest(amountCurrencyDelivery, isLoggedIn)
-      .map { amountCurrencyDelivery, isLoggedIn in
-        let (amount, currency, delivery) = amountCurrencyDelivery
+        return (amount, currency, delivery, shipping)
+    }
 
-        return (amount, currency, delivery, isLoggedIn)
+    self.reloadWithData = Signal.combineLatest(amountCurrencyDeliveryShipping, isLoggedIn)
+      .map { amountCurrencyDeliveryShipping, isLoggedIn in
+        let (amount, currency, delivery, shipping) = amountCurrencyDeliveryShipping
+
+        return (amount, currency, delivery, shipping, isLoggedIn)
     }
   }
 

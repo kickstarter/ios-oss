@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<playground version='6.0' target-platform='ios' display-mode='raw'>
+<playground version='6.0' target-platform='ios' display-mode='raw' executeOnSourceChanges='false'>
     <pages>
         <page name='_Introduction'/>
         <page name='_ScratchWork'/>
@@ -13,6 +13,7 @@
         <page name='Discovery'/>
         <page name='FacebookConfirmation'/>
         <page name='FindFriends'/>
+        <page name='Format'/>
         <page name='GraphQL'/>
         <page name='LoginTout'/>
         <page name='ProjectActivities'/>
