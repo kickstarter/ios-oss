@@ -3,9 +3,7 @@ version: 2
 xcode_version: &xcode_version 10.1.0
 iphone_name: &iphone_name iPhone 8
 fabric_sdk_version: &fabric_sdk_version 3.10.5
-stripe_sdk_version: &stripe_sdk_version 13.2.0
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
-store_stripe_version: &store_stripe_version echo "$STRIPE_SDK_VERSION" > stripe_version.txt
 preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (12.1) [" || true
 
 base_job: &base_job
@@ -19,7 +17,6 @@ base_job: &base_job
     LC_ALL: en_US.UTF-8
     LANG: en_US.UTF-8
     FABRIC_SDK_VERSION: *fabric_sdk_version
-    STRIPE_SDK_VERSION: *stripe_sdk_version
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
 
@@ -39,19 +36,10 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
       - restore_cache:
           name: Restore Fabric SDK
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          name: Restore Stripe SDK
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -83,12 +71,6 @@ jobs:
           key: fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
           paths:
             - "Frameworks/Fabric"
-
-      - save_cache:
-          name: Cache Stripe SDK
-          key: stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
-          paths:
-            - "Frameworks/Stripe"
 
       - restore_cache:
           name: Restore Bundler
@@ -128,17 +110,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -183,17 +157,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -236,17 +202,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -289,17 +247,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -359,17 +309,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -433,17 +375,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -502,17 +436,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -560,17 +486,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
