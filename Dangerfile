@@ -10,4 +10,4 @@ swiftlint.lint_files inline_mode: true
 # SwiftFormat
 swiftformat.binary_path = "bin/swiftformat"
 swiftformat.additional_args = "--config Configs/Kickstarter.swiftformat"
-swiftformat.check_format(fail_on_error: true)
+swiftformat.check_format
