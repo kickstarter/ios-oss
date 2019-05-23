@@ -8,12 +8,24 @@
 --commas inline
 
 # Range operators
---ranges nospace
+--ranges no-space
 
 # Hoisting
 --patternlet inline
+
+# Headers
+--header strip
+
+# Unused args
+--stripunusedargs always
 
 # Void instead of `()` tuple
 --disable void
 
 # Excluded
+bin
+Carthage
+Frameworks
+Library/Styles/Colors.swift
+Library/Strings.swift
+vendor
