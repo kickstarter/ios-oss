@@ -4,10 +4,10 @@ import Result
 import KsApi
 import Prelude
 
-public typealias GoToPledgeData = (project: Project, reward: Reward, refTag: RefTag?)
+public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?)
 
 public protocol RewardsCollectionViewModelOutputs {
-  var goToPledge: Signal<GoToPledgeData, NoError> { get }
+  var goToPledge: Signal<PledgeData, NoError> { get }
   var reloadDataWithRewards: Signal<[Reward], NoError> { get }
 }
 
@@ -40,7 +40,7 @@ RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
       selectedReward,
       self.configureWithRefTagProperty.signal)
       .map { project, reward, refTag in
-        return GoToPledgeData(project: project, reward: reward, refTag: refTag)
+        return PledgeData(project: project, reward: reward, refTag: refTag)
     }
   }
 
@@ -61,7 +61,7 @@ RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let goToPledge: Signal<GoToPledgeData, NoError>
+  public let goToPledge: Signal<PledgeData, NoError>
   public let reloadDataWithRewards: Signal<[Reward], NoError>
 
   public var inputs: RewardsCollectionViewModelInputs { return self }
