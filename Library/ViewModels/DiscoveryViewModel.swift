@@ -65,24 +65,22 @@ public protocol DiscoveryViewModelType {
   var outputs: DiscoveryViewModelOutputs { get }
 }
 
-private func initialParam() -> DiscoveryParams {
-
-  let user = AppEnvironment.current.currentUser
-  let optedOutOfRecommendations = user?.optedOutOfRecommendations ?? true
-
-  if user == nil || optedOutOfRecommendations {
-    return DiscoveryParams.defaults
-      |> DiscoveryParams.lens.includePOTD .~ true
-  }
-
-  return DiscoveryParams.defaults
-    |> DiscoveryParams.lens.includePOTD .~ true
-    |> DiscoveryParams.lens.backed .~ false
-    |> DiscoveryParams.lens.recommended .~ true
-}
-
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
 DiscoveryViewModelOutputs {
+
+  private static func initialParams() -> DiscoveryParams {
+    let user = AppEnvironment.current.currentUser
+    let optedOutOfRecommendations = user?.optedOutOfRecommendations ?? true
+
+    if user == nil || optedOutOfRecommendations {
+      return DiscoveryParams.defaults
+        |> DiscoveryParams.lens.includePOTD .~ true
+    }
+    return DiscoveryParams.defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.backed .~ false
+      |> DiscoveryParams.lens.recommended .~ true
+  }
 
   public init() {
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon]
@@ -90,9 +88,16 @@ DiscoveryViewModelOutputs {
     self.configurePagerDataSource = self.viewDidLoadProperty.signal.mapConst(sorts)
     self.configureSortPager = self.configurePagerDataSource
 
+    let initialParams = Signal.merge(
+      self.viewWillAppearProperty.signal.take(first: 1).ignoreValues(),
+      self.didChangeRecommendationsSettingProperty.signal
+        .takeWhen(self.viewWillAppearProperty.signal)
+    )
+      .map(DiscoveryViewModel.initialParams)
+      .skipRepeats()
+
     let currentParams = Signal.merge(
-      self.didChangeRecommendationsSettingProperty.signal.map { _ in initialParam() },
-      self.viewWillAppearProperty.signal.map { _ in initialParam() },
+      initialParams,
       self.filterWithParamsProperty.signal.skipNil()
       )
       .skipRepeats()

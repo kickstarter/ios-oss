@@ -41,7 +41,7 @@ internal final class SettingsRecommendationsCellViewModelTests: TestCase {
   }
 
   func testPostNotification() {
-    let notification = Notification(name: Notification.Name.ksr_recommendationSettingChanged)
+    let notification = Notification(name: Notification.Name.ksr_recommendationsSettingChanged)
     let user = User.template
 
     withEnvironment(apiService: MockService(fetchUserSelfResponse: user)) {

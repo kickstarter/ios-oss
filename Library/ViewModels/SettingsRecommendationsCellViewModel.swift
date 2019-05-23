@@ -51,7 +51,7 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
     self.postNotification = updateEvent.values()
       .map { _ in
         Notification(
-          name: .ksr_recommendationSettingChanged,
+          name: .ksr_recommendationsSettingChanged,
           userInfo: nil
         )
     }

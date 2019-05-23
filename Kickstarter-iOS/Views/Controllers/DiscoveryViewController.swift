@@ -38,7 +38,7 @@ internal final class DiscoveryViewController: UIViewController {
     self.navigationHeaderViewController.delegate = self
 
     self.recommendationsChangedObserver = NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_recommendationSettingChanged,
+      .addObserver(forName: Notification.Name.ksr_recommendationsSettingChanged,
                    object: nil,
                    queue: nil) { [weak self] _ in
       self?.viewModel.inputs.didChangeRecommendationsSetting()
