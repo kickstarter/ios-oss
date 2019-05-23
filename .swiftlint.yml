@@ -23,7 +23,6 @@ excluded:
   - Carthage/
   - Frameworks/
   - Kickstarter-iOS.playground/
-  - Kickstarter-tvOS.playground/
   - Library/Strings.swift
   - bin/strings.swift
   - bin/StringsScript/Sources/StringsScriptCore/Secrets.swift
