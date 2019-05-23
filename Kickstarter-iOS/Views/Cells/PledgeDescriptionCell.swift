@@ -223,7 +223,7 @@ private func attributedLearnMoreText() -> NSAttributedString? {
     documentAttributes: nil
   ) else { return nil }
 
-  let attributes: [NSAttributedString.Key: Any] = [
+  let attributes: String.Attributes = [
     .font: UIFont.ksr_caption1(),
     .foregroundColor: UIColor.ksr_text_dark_grey_500,
     .underlineStyle: 0

@@ -55,6 +55,8 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       )
 
     _ = self.titleLabel
+      |> checkoutBackgroundStyle
+    _ = self.titleLabel
       |> checkoutTitleLabelStyle
       |> \.text %~ { _ in Strings.Your_pledge_amount() }
 
