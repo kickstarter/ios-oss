@@ -105,10 +105,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.reloadDataWithRewards
+    self.viewModel.outputs.reloadDataWithValues
       .observeForUI()
-      .observeValues { [weak self] rewards in
-        self?.dataSource.load(rewards: rewards)
+      .observeValues { [weak self] values in
+        self?.dataSource.load(values)
         self?.collectionView.reloadData()
     }
   }

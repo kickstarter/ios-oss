@@ -5,7 +5,7 @@ import KsApi
 import Prelude
 
 public protocol RewardsCollectionViewModelOutputs {
-  var reloadDataWithRewards: Signal<[Reward], NoError> { get }
+  var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], NoError> { get }
 }
 
 public protocol RewardsCollectionViewModelInputs {
@@ -21,18 +21,29 @@ protocol RewardsCollectionViewModelType {
 public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
   public init() {
-    self.reloadDataWithRewards = Signal.combineLatest(
+    let project = Signal.combineLatest(
       self.configureWithProjectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
       .map(first)
-      .map { $0.rewards }
+
+    let rewards = Signal.combineLatest(
+      self.configureWithRewardsProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal)
+      .map(first)
+
+    self.reloadDataWithValues = Signal.combineLatest(project, rewards)
+      .map { project, rewards in
+        return rewards.map { (project, Either<Reward, Backing>.left($0)) }
+      }
   }
 
   private let configureWithProjectProperty = MutableProperty<Project?>(nil)
+  private let configureWithRewardsProperty = MutableProperty<[Reward]?>(nil)
   private let configureWithRefTagProperty = MutableProperty<RefTag?>(nil)
   public func configure(with project: Project, refTag: RefTag?) {
     self.configureWithProjectProperty.value = project
+    self.configureWithRewardsProperty.value = project.rewards
     self.configureWithRefTagProperty.value = refTag
   }
 
@@ -41,7 +52,7 @@ RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let reloadDataWithRewards: Signal<[Reward], NoError>
+  public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], NoError>
 
   public var inputs: RewardsCollectionViewModelInputs { return self }
   public var outputs: RewardsCollectionViewModelOutputs { return self }
