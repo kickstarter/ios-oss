@@ -21,7 +21,7 @@ base_job: &base_job
     XCODE_VERSION: *xcode_version
 
 jobs:
-  swiftlint-and-cache:
+  build-and-cache:
     <<: *base_job
     steps:
       - restore_cache:
@@ -37,6 +37,7 @@ jobs:
           command: *store_fabric_sdk_version
 
       - restore_cache:
+          name: Restore Fabric SDK
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
@@ -45,36 +46,53 @@ jobs:
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
-          name: Restore Carthage Cache
+          name: Restore Carthage
           keys:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - save_cache:
-          name: Save Carthage Cache
+          name: Cache Carthage
           key: carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - Carthage
 
       - save_cache:
+          name: Cache git
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
 
       - save_cache:
+          name: Cache Fabric SDK
           key: fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
           paths:
             - "Frameworks/Fabric"
 
-      - run:
-          name: SwiftLint
-          command: make lint
+      - restore_cache:
+          name: Restore Bundler
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
 
-      - store_artifacts:
-          path: /tmp/swiftlint-report.json
+      - run:
+          name: Install Bundler
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+
+      - save_cache:
+          name: Cache Bundler
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Danger
+          command: bundle exec danger --verbose
 
   # Kickstarter tests
   kickstarter-tests:
@@ -106,7 +124,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -153,7 +171,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -198,7 +216,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -243,7 +261,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -305,7 +323,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -371,7 +389,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -432,7 +450,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -482,7 +500,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -519,7 +537,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - swiftlint-and-cache
+      - build-and-cache
       - kickstarter-tests
       - kickstarter-ui-tests
       - library-tests
@@ -533,7 +551,7 @@ workflows:
             branches:
               only: master
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
@@ -543,7 +561,7 @@ workflows:
             branches:
               only: /beta-dist-.*/
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
@@ -553,7 +571,7 @@ workflows:
             branches:
               only: /alpha-dist.*/
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
@@ -563,7 +581,7 @@ workflows:
             branches:
               only: itunes-dist
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
