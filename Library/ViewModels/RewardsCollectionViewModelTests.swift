@@ -10,8 +10,8 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let vm: RewardsCollectionViewModelType = RewardsCollectionViewModel()
 
   private let goToPledgeProject = TestObserver<Project, NoError>()
-  private let goToPledgeReward = TestObserver<Reward, NoError>()
   private let goToPledgeRefTag = TestObserver<RefTag?, NoError>()
+  private let goToPledgeReward = TestObserver<Reward, NoError>()
   private let reloadDataWithRewards = TestObserver<[Reward], NoError>()
 
   override func setUp() {
@@ -53,15 +53,15 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.rewardSelected(at: 0)
 
     self.goToPledgeProject.assertValues([project])
-    //swiftlint:disable:next force_unwrapping
-    self.goToPledgeReward.assertValues([project.rewards.first!])
+    self.goToPledgeReward.assertValues([project.rewards[0]])
     self.goToPledgeRefTag.assertValues([.activity])
 
-    self.vm.inputs.rewardSelected(at: project.rewards.endIndex - 1)
+    let endIndex = project.rewards.endIndex
+
+    self.vm.inputs.rewardSelected(at: endIndex - 1)
 
     self.goToPledgeProject.assertValues([project, project])
-    //swiftlint:disable:next force_unwrapping
-    self.goToPledgeReward.assertValues([project.rewards.first!, project.rewards.last!])
+    self.goToPledgeReward.assertValues([project.rewards[0], project.rewards[endIndex - 1]])
     self.goToPledgeRefTag.assertValues([.activity, .activity])
   }
 }
