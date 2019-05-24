@@ -4083,7 +4083,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n    if [ -z \"$CI\" ]; then\n        echo \"Running swiftlint...\"\n        swiftlint\n    fi\nelse\n    echo \"warning: swiftlint not installed, run brew install swiftlint\"\nfi";
+			shellScript = "if [ -z \"$CI\" ]; then\n    echo \"Running Swiftlint...\"\n    bin/swiftlint\nfi\n";
 		};
 		7713662C20E4048B00D7D7AD /* Fabric */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4138,7 +4138,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bin/carthage-debug-copy.sh\n";
+			shellScript = "${SRCROOT}/bin/carthage-debug-copy.sh\n";
 		};
 		D0EA60A3228B6AD6007DB557 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4158,7 +4158,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bin/carthage-debug-copy.sh\n";
+			shellScript = "${SRCROOT}/bin/carthage-debug-copy.sh\n";
 		};
 		D0EA60A4228B6BB6007DB557 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4178,7 +4178,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "bin/carthage-debug-copy.sh\n";
+			shellScript = "${SRCROOT}/bin/carthage-debug-copy.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
