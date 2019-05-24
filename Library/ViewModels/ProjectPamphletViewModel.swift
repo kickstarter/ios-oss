@@ -53,10 +53,10 @@ public protocol ProjectPamphletViewModelType {
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
   ProjectPamphletViewModelOutputs {
   public init() {
-    let freshProjectAndRefTag = configDataProperty.signal.skipNil()
+    let freshProjectAndRefTag = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
-        viewDidLoadProperty.signal.mapConst(true),
-        viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
+        self.viewDidLoadProperty.signal.mapConst(true),
+        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
       ))
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
@@ -66,29 +66,29 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           }
       }
 
-    goToRewards = freshProjectAndRefTag
-      .takeWhen(backThisProjectTappedProperty.signal)
+    self.goToRewards = freshProjectAndRefTag
+      .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
         (project, refTag)
       }
 
-    configureChildViewControllersWithProject = freshProjectAndRefTag
+    self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
 
-    prefersStatusBarHiddenProperty <~ viewWillAppearAnimated.signal.mapConst(true)
+    self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
-    setNeedsStatusBarAppearanceUpdate = Signal.merge(
-      viewWillAppearAnimated.signal.ignoreValues(),
-      willTransitionToCollectionProperty.signal.ignoreValues()
+    self.setNeedsStatusBarAppearanceUpdate = Signal.merge(
+      self.viewWillAppearAnimated.signal.ignoreValues(),
+      self.willTransitionToCollectionProperty.signal.ignoreValues()
     )
 
-    setNavigationBarHiddenAnimated = Signal.merge(
-      viewDidLoadProperty.signal.mapConst((true, false)),
-      viewWillAppearAnimated.signal.skip(first: 1).map { (true, $0) }
+    self.setNavigationBarHiddenAnimated = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst((true, false)),
+      self.viewWillAppearAnimated.signal.skip(first: 1).map { (true, $0) }
     )
 
-    topLayoutConstraintConstant = initialTopConstraintProperty.signal.skipNil()
-      .takePairWhen(willTransitionToCollectionProperty.signal.skipNil())
+    self.topLayoutConstraintConstant = self.initialTopConstraintProperty.signal.skipNil()
+      .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
       .map(topLayoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     let cookieRefTag = freshProjectAndRefTag
@@ -100,7 +100,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     Signal.combineLatest(
       freshProjectAndRefTag,
       cookieRefTag,
-      viewDidAppearAnimated.signal.ignoreValues()
+      self.viewDidAppearAnimated.signal.ignoreValues()
     )
     .map { (project: $0.0, refTag: $0.1, cookieRefTag: $1, _: $2) }
     .take(first: 1)
@@ -121,44 +121,44 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
   private let backThisProjectTappedProperty = MutableProperty(())
   public func backThisProjectTapped() {
-    backThisProjectTappedProperty.value = ()
+    self.backThisProjectTappedProperty.value = ()
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
   public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
-    configDataProperty.value = (projectOrParam, refTag)
+    self.configDataProperty.value = (projectOrParam, refTag)
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
-    viewDidLoadProperty.value = ()
+    self.viewDidLoadProperty.value = ()
   }
 
   fileprivate let initialTopConstraintProperty = MutableProperty<CGFloat?>(nil)
   public func initial(topConstraint: CGFloat) {
-    initialTopConstraintProperty.value = topConstraint
+    self.initialTopConstraintProperty.value = topConstraint
   }
 
   fileprivate let viewDidAppearAnimated = MutableProperty(false)
   public func viewDidAppear(animated: Bool) {
-    viewDidAppearAnimated.value = animated
+    self.viewDidAppearAnimated.value = animated
   }
 
   fileprivate let viewWillAppearAnimated = MutableProperty(false)
   public func viewWillAppear(animated: Bool) {
-    viewWillAppearAnimated.value = animated
+    self.viewWillAppearAnimated.value = animated
   }
 
   fileprivate let willTransitionToCollectionProperty =
     MutableProperty<UITraitCollection?>(nil)
   public func willTransition(toNewCollection collection: UITraitCollection) {
-    willTransitionToCollectionProperty.value = collection
+    self.willTransitionToCollectionProperty.value = collection
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError>
   fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
-    return prefersStatusBarHiddenProperty.value
+    return self.prefersStatusBarHiddenProperty.value
   }
 
   public let goToRewards: Signal<(Project, RefTag?), NoError>
