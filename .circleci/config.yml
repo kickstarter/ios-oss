@@ -1,14 +1,14 @@
 version: 2
 
-xcode_version: &xcode_version 10.1.0
+xcode_version: &xcode_version 10.2.0
 iphone_name: &iphone_name iPhone 8
 fabric_sdk_version: &fabric_sdk_version 3.10.5
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
-preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (12.1) [" || true
+preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (12.2) [" || true
 
 base_job: &base_job
   macos:
-    xcode: "10.1.0"
+    xcode: *xcode_version
   working_directory: ~/kickstarter
   environment:
     CIRCLE_ARTIFACTS: /tmp

@@ -5,12 +5,15 @@ SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
 RELEASE ?= itunes
-IOS_VERSION ?= 12.1
+IOS_VERSION ?= 12.2
 IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
 FABRIC_SDK_VERSION ?= 3.10.5
+HOCKEY_SDK_VERSION ?= 5.1.4
 FABRIC_SDK_URL ?= https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip
+HOCKEY_SDK_URL ?= https://github.com/bitstadium/HockeySDK-iOS/releases/download/INSERT_SDK_VERSION/HockeySDK-iOS-INSERT_SDK_VERSION.zip
+HOCKEY_FRAMEWORK_NESTED_PATH ?= HockeySDK-iOS/HockeySDK.embeddedframework
 COMMIT ?= $(CIRCLE_SHA1)
 
 ifeq ($(PLATFORM),iOS)
@@ -38,7 +41,7 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: carthage-bootstrap configs secrets fabric
+dependencies: carthage-bootstrap configs secrets fabric hockey
 
 bootstrap: hooks dependencies
 
@@ -133,5 +136,8 @@ secrets:
 
 fabric:
 	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) $(FABRIC_SDK_URL); \
+
+hockey:
+	bin/download_framework.sh HockeySDK $(HOCKEY_SDK_VERSION) $(HOCKEY_SDK_URL) $(HOCKEY_FRAMEWORK_NESTED_PATH); \
 
 .PHONY: test-all test clean dependencies submodules deploy lint secrets strings fabric
