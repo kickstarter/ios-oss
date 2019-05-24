@@ -13,7 +13,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
   // MARK: - Properties
 
   private let dataSource = RewardsCollectionViewDataSource()
-  private let viewModel = RewardsCollectionViewModel()
+  fileprivate let viewModel = RewardsCollectionViewModel()
 
   private let hiddenPagingScrollView: UIScrollView = {
     UIScrollView()
@@ -111,6 +111,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self?.dataSource.load(rewards: rewards)
         self?.collectionView.reloadData()
     }
+
+    self.viewModel.outputs.goToPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward, refTag in
+        self?.goToPledge(project: project, reward: reward, refTag: refTag)
+    }
   }
 
   // MARK: - Private Helpers
@@ -190,10 +196,25 @@ final class RewardsCollectionViewController: UICollectionViewController {
     return CGSize(width: itemWidth, height: itemHeight)
   }
 
+  private func goToPledge(project: Project, reward: Reward, refTag: RefTag?) {
+    let pledgeViewController = PledgeViewController.instantiate()
+    pledgeViewController.configureWith(project: project, reward: reward)
+
+    self.navigationController?.pushViewController(pledgeViewController, animated: true)
+  }
+
   // MARK: - Public Functions
 
   @objc func closeButtonTapped() {
     self.navigationController?.dismiss(animated: true)
+  }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension RewardsCollectionViewController {
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    self.viewModel.inputs.rewardSelected(at: indexPath.row)
   }
 }
 
