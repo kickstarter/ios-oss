@@ -5,7 +5,7 @@ import Prelude
 import ReactiveSwift
 
 final class RewardCell: UICollectionViewCell, ValueCell {
-  private let viewModel: RewardCellViewModelType = DeprecatedRewardCellViewModel()
+  private let viewModel: DeprecatedRewardCellViewModelType = DeprecatedRewardCellViewModel()
 
   private let scrollView = UIScrollView(frame: .zero)
   private let pledgeButtonLayoutGuide = UILayoutGuide()

@@ -3,47 +3,33 @@ import Prelude
 import ReactiveSwift
 import Result
 
-public protocol DeprecatedRewardCellViewModelInputs {
+public protocol RewardCellViewModelInputs {
   func boundStyles()
   func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
   func tapped()
 }
 
-public protocol DeprecatedRewardCellViewModelOutputs {
-  var allGoneHidden: Signal<Bool, NoError> { get }
+public protocol RewardCellViewModelOutputs {
   var conversionLabelHidden: Signal<Bool, NoError> { get }
   var conversionLabelText: Signal<String, NoError> { get }
-  var descriptionLabelHidden: Signal<Bool, NoError> { get }
+  var descriptionStackViewHidden: Signal<Bool, NoError> { get }
   var descriptionLabelText: Signal<String, NoError> { get }
-  var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
-  var footerLabelText: Signal<String, NoError> { get }
-  var footerStackViewHidden: Signal<Bool, NoError> { get }
   var items: Signal<[String], NoError> { get }
-  var itemsContainerHidden: Signal<Bool, NoError> { get }
-  var manageButtonHidden: Signal<Bool, NoError> { get }
-  var minimumAndConversionLabelsColor: Signal<UIColor, NoError> { get }
-  var minimumLabelText: Signal<String, NoError> { get }
-  var notifyDelegateRewardCellWantsExpansion: Signal<(), NoError> { get }
-  var pledgeButtonHidden: Signal<Bool, NoError> { get }
+  var includedItemsStackViewHidden: Signal<Bool, NoError> { get }
+  var rewardMinimumLabelText: Signal<String, NoError> { get }
+  var pledgeButtonEnabled: Signal<Bool, NoError> { get }
   var pledgeButtonTitleText: Signal<String, NoError> { get }
-  var shippingLocationsStackViewHidden: Signal<Bool, NoError> { get }
-  var shippingLocationsSummaryLabelText: Signal<String, NoError> { get }
-  var titleLabelHidden: Signal<Bool, NoError> { get }
-  var titleLabelText: Signal<String, NoError> { get }
-  var titleLabelTextColor: Signal<UIColor, NoError> { get }
-  var updateTopMarginsForIsBacking: Signal<Bool, NoError> { get }
-  var viewPledgeButtonHidden: Signal<Bool, NoError> { get }
-  var youreABackerLabelText: Signal<String, NoError> { get }
-  var youreABackerViewHidden: Signal<Bool, NoError> { get }
+  var rewardTitleLabelHidden: Signal<Bool, NoError> { get }
+  var rewardTitleLabelText: Signal<String, NoError> { get }
 }
 
-public protocol DeprecatedRewardCellViewModelType {
-  var inputs: DeprecatedRewardCellViewModelInputs { get }
-  var outputs: DeprecatedRewardCellViewModelOutputs { get }
+public protocol RewardCellViewModelType {
+  var inputs: RewardCellViewModelInputs { get }
+  var outputs: RewardCellViewModelOutputs { get }
 }
 
-public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelType,
-  DeprecatedRewardCellViewModelInputs, DeprecatedRewardCellViewModelOutputs {
+public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs,
+RewardCellViewModelOutputs {
 
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), NoError> =
@@ -68,7 +54,7 @@ public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelT
         let (country, rate) = zip(
           project.stats.currentCountry,
           project.stats.currentCurrencyRate
-        ) ?? (.us, project.stats.staticUsdRate)
+          ) ?? (.us, project.stats.staticUsdRate)
         switch rewardOrBacking {
         case let .left(reward):
           let min = minPledgeAmount(forProject: project, reward: reward)
@@ -83,7 +69,7 @@ public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelT
       }
       .map(Strings.About_reward_amount(reward_amount:))
 
-    self.minimumLabelText = projectAndRewardOrBacking
+    self.rewardMinimumLabelText = projectAndRewardOrBacking
       .map { project, rewardOrBacking in
         switch rewardOrBacking {
         case let .left(reward):
@@ -109,13 +95,13 @@ public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelT
     self.minimumAndConversionLabelsColor = projectAndReward
       .map(minimumRewardAmountTextColor(project:reward:))
 
-    self.titleLabelHidden = reward
+    self.rewardTitleLabelHidden = reward
       .map { $0.title == nil && $0 != Reward.noReward }
 
-    self.titleLabelText = projectAndReward
+    self.rewardTitleLabelText = projectAndReward
       .map(rewardTitle(project:reward:))
 
-    self.titleLabelTextColor = projectAndReward
+    self.rewardTitleLabelTextColor = projectAndReward
       .map { project, reward in
         reward.remaining != 0 || userIsBacking(reward: reward, inProject: project) || project.state != .live
           ? .ksr_soft_black
@@ -125,7 +111,7 @@ public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelT
     let youreABacker = projectAndReward
       .map { project, reward in
         userIsBacking(reward: reward, inProject: project)
-      }
+    }
 
     self.youreABackerViewHidden = youreABacker
       .map(negate)
@@ -143,9 +129,9 @@ public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelT
       .map { reward in
         reward.estimatedDeliveryOn.map {
           Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone)
+        }
       }
-    }
-    .skipNil()
+      .skipNil()
 
     let rewardItemsIsEmpty = reward
       .map { $0.rewardsItems.isEmpty }
@@ -162,12 +148,12 @@ public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelT
           rewardsItem.quantity > 1
             ? "(\(Format.wholeNumber(rewardsItem.quantity))) \(rewardsItem.item.name)"
             : rewardsItem.item.name
-      }
+        }
     }
 
     let rewardIsCollapsed = projectAndReward
       .map { project, reward in
-       shouldCollapse(reward: reward, forProject: project)
+        shouldCollapse(reward: reward, forProject: project)
     }
 
     self.allGoneHidden = projectAndReward
@@ -184,66 +170,21 @@ public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelT
 
     self.footerStackViewHidden = Signal.merge(
       projectAndReward
-      .map { project, reward in
-        reward.estimatedDeliveryOn == nil || shouldCollapse(reward: reward, forProject: project)
-        },
-        isNoReward.takeWhen(self.tappedProperty.signal)
-      )
+        .map { project, reward in
+          reward.estimatedDeliveryOn == nil || shouldCollapse(reward: reward, forProject: project)
+      },
+      isNoReward.takeWhen(self.tappedProperty.signal)
+    )
 
     self.descriptionLabelHidden = Signal.merge(
       rewardIsCollapsed,
       self.tappedProperty.signal.mapConst(false)
     )
 
-    self.updateTopMarginsForIsBacking = Signal.combineLatest(youreABacker, self.boundStylesProperty.signal)
-      .map(first)
-
-    self.manageButtonHidden = Signal.zip(project, youreABacker)
-      .map { project, youreABacker in
-        project.state != .live || !youreABacker
-    }
-
-    self.viewPledgeButtonHidden = Signal.zip(project, youreABacker)
-      .map { project, youreABacker in
-        project.state == .live || !youreABacker
-    }
-
-    self.pledgeButtonHidden = Signal.zip(project, reward, youreABacker)
-      .map { project, reward, youreABacker in
-        project.state != .live || reward.remaining == 0 || youreABacker
-    }
-
     self.pledgeButtonTitleText = project.map {
       $0.personalization.isBacking == true
         ? Strings.Select_this_reward_instead()
         : Strings.Select_this_reward()
-    }
-
-    self.shippingLocationsStackViewHidden = reward.map {
-      $0.shipping.summary == nil
-    }
-
-    self.shippingLocationsSummaryLabelText = reward.map {
-      $0.shipping.summary ?? ""
-    }
-
-    self.notifyDelegateRewardCellWantsExpansion = allGoneAndNotABacker
-      .takeWhen(self.tappedProperty.signal)
-      .filter(isTrue)
-      .ignoreValues()
-      .take(first: 1)
-
-    self.footerLabelText = projectAndReward
-      .map(footerString(project:reward:))
-
-    projectAndReward
-      .takeWhen(self.notifyDelegateRewardCellWantsExpansion)
-      .observeValues { project, reward in
-        AppEnvironment.current.koala.trackExpandedUnavailableReward(
-          reward,
-          project: project,
-          pledgeContext: pledgeContext(forProject: project, reward: reward)
-        )
     }
   }
 
@@ -262,55 +203,20 @@ public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelT
     self.tappedProperty.value = ()
   }
 
-  public let allGoneHidden: Signal<Bool, NoError>
   public let conversionLabelHidden: Signal<Bool, NoError>
   public let conversionLabelText: Signal<String, NoError>
-  public let descriptionLabelHidden: Signal<Bool, NoError>
+  public let descriptionStackViewHidden: Signal<Bool, NoError>
   public let descriptionLabelText: Signal<String, NoError>
-  public let estimatedDeliveryDateLabelText: Signal<String, NoError>
-  public let footerLabelText: Signal<String, NoError>
-  public let footerStackViewHidden: Signal<Bool, NoError>
   public let items: Signal<[String], NoError>
-  public let itemsContainerHidden: Signal<Bool, NoError>
-  public let manageButtonHidden: Signal<Bool, NoError>
-  public let minimumAndConversionLabelsColor: Signal<UIColor, NoError>
-  public let minimumLabelText: Signal<String, NoError>
-  public let notifyDelegateRewardCellWantsExpansion: Signal<(), NoError>
-  public let pledgeButtonHidden: Signal<Bool, NoError>
+  public let includedItemsStackViewHidden: Signal<Bool, NoError>
+  public let rewardMinimumLabelText: Signal<String, NoError>
+  public let pledgeButtonEnabled: Signal<Bool, NoError>
   public let pledgeButtonTitleText: Signal<String, NoError>
-  public let shippingLocationsStackViewHidden: Signal<Bool, NoError>
-  public let shippingLocationsSummaryLabelText: Signal<String, NoError>
-  public let titleLabelHidden: Signal<Bool, NoError>
-  public let titleLabelText: Signal<String, NoError>
-  public let titleLabelTextColor: Signal<UIColor, NoError>
-  public let updateTopMarginsForIsBacking: Signal<Bool, NoError>
-  public let viewPledgeButtonHidden: Signal<Bool, NoError>
-  public let youreABackerLabelText: Signal<String, NoError>
-  public let youreABackerViewHidden: Signal<Bool, NoError>
+  public let rewardTitleLabelHidden: Signal<Bool, NoError>
+  public let rewardTitleLabelText: Signal<String, NoError>
 
-  public var inputs: DeprecatedRewardCellViewModelInputs { return self }
-  public var outputs: DeprecatedRewardCellViewModelOutputs { return self }
-}
-
-private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> UIColor {
-  if project.state != .successful && project.state != .live && reward.remaining == 0 {
-    return .ksr_text_dark_grey_500
-  } else if project.state == .live && reward.remaining == 0 &&
-    userIsBacking(reward: reward, inProject: project) {
-    return .ksr_green_700
-  } else if project.state != .live && reward.remaining == 0 &&
-    userIsBacking(reward: reward, inProject: project) {
-    return .ksr_text_dark_grey_500
-  } else if (project.state == .live && reward.remaining == 0) ||
-    (project.state != .live && reward.remaining == 0) {
-    return .ksr_text_dark_grey_400
-  } else if project.state == .live {
-    return .ksr_green_700
-  } else if project.state != .live {
-    return .ksr_soft_black
-  } else {
-    return .ksr_soft_black
-  }
+  public var inputs: RewardCellViewModelInputs { return self }
+  public var outputs: RewardCellViewModelOutputs { return self }
 }
 
 private func needsConversion(project: Project) -> Bool {
@@ -344,8 +250,8 @@ private func footerString(project: Project, reward: Reward) -> String {
   var parts: [String] = []
 
   if let endsAt = reward.endsAt, project.state == .live
-      && endsAt > 0
-      && endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
+    && endsAt > 0
+    && endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
 
     let (time, unit) = Format.duration(secondsInUTC: min(endsAt, project.dates.deadline),
                                        abbreviate: true,
@@ -373,10 +279,4 @@ private func formattedAmount(for backing: Backing) -> String {
     ? String(Int(amount))
     : String(format: "%.2f", backing.amount)
   return backingAmount
-}
-
-private func shouldCollapse(reward: Reward, forProject project: Project) -> Bool {
-  return reward.remaining == .some(0)
-    && !userIsBacking(reward: reward, inProject: project)
-    && project.state == .live
 }

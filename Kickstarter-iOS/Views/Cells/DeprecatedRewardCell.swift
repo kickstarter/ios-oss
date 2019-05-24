@@ -9,7 +9,7 @@ internal protocol RewardCellDelegate: class {
 
 internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
   internal var delegate: RewardCellDelegate?
-  fileprivate let viewModel: RewardCellViewModelType = DeprecatedRewardCellViewModel()
+  fileprivate let viewModel: DeprecatedRewardCellViewModelType = DeprecatedRewardCellViewModel()
 
   @IBOutlet fileprivate weak var allGoneContainerView: UIView!
   @IBOutlet fileprivate weak var allGoneLabel: UILabel!

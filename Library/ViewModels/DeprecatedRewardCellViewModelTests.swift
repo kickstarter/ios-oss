@@ -8,7 +8,7 @@ import ReactiveExtensions_TestHelpers
 @testable import Library
 
 final class DeprecatedRewardCellViewModelTests: TestCase {
-  fileprivate let vm: RewardCellViewModelType = DeprecatedRewardCellViewModel()
+  fileprivate let vm: DeprecatedRewardCellViewModelType = DeprecatedRewardCellViewModel()
 
   fileprivate let allGoneHidden = TestObserver<Bool, NoError>()
   fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
