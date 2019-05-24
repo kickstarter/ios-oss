@@ -2,12 +2,8 @@ version: 2
 
 xcode_version: &xcode_version 10.1.0
 iphone_name: &iphone_name iPhone 8
-opentok_version: &opentok_version 2.10.2
 fabric_sdk_version: &fabric_sdk_version 3.10.5
-stripe_sdk_version: &stripe_sdk_version 13.2.0
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
-store_opentok_version: &store_opentok_version echo "$OPENTOK_VERSION" > opentok_version.txt
-store_stripe_version: &store_stripe_version echo "$STRIPE_SDK_VERSION" > stripe_version.txt
 preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (12.1) [" || true
 
 base_job: &base_job
@@ -21,13 +17,11 @@ base_job: &base_job
     LC_ALL: en_US.UTF-8
     LANG: en_US.UTF-8
     FABRIC_SDK_VERSION: *fabric_sdk_version
-    STRIPE_SDK_VERSION: *stripe_sdk_version
-    OPENTOK_VERSION: *opentok_version
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
 
 jobs:
-  swiftlint-and-cache:
+  build-and-cache:
     <<: *base_job
     steps:
       - restore_cache:
@@ -42,71 +36,63 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
       - restore_cache:
-          keys:
-            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-
-      - restore_cache:
+          name: Restore Fabric SDK
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
-          name: Restore Carthage Cache
+          name: Restore Carthage
           keys:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - save_cache:
-          name: Save Carthage Cache
+          name: Cache Carthage
           key: carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - Carthage
 
       - save_cache:
+          name: Cache git
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
 
       - save_cache:
-          key: opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-          paths:
-            - "Frameworks/OpenTok"
-
-      - save_cache:
+          name: Cache Fabric SDK
           key: fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
           paths:
             - "Frameworks/Fabric"
 
-      - save_cache:
-          key: stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
-          paths:
-            - "Frameworks/Stripe"
+      - restore_cache:
+          name: Restore Bundler
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
 
       - run:
-          name: SwiftLint
-          command: make lint
+          name: Install Bundler
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
 
-      - store_artifacts:
-          path: /tmp/swiftlint-report.json
+      - save_cache:
+          name: Cache Bundler
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Danger
+          command: bundle exec danger --verbose
 
   # Kickstarter tests
   kickstarter-tests:
@@ -124,25 +110,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
-      - restore_cache:
-          keys:
-            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -154,7 +124,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -187,25 +157,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
-      - restore_cache:
-          keys:
-            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -217,7 +171,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -227,67 +181,6 @@ jobs:
       - run:
           name: Library tests
           command: PLATFORM=iOS TARGET=Library make test
-          no_output_timeout: "20m" # 20 minutes
-
-      - store_artifacts:
-          path: /tmp/xcode_raw.log
-
-  # LiveStream tests
-  livestream-tests:
-    <<: *base_job
-    steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
-      - restore_cache:
-          keys:
-            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
-
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Make bootstrap
-          command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
-
-      - run:
-          name: LiveStream tests
-          command: SCHEME=LiveStream make test
           no_output_timeout: "20m" # 20 minutes
 
       - store_artifacts:
@@ -309,25 +202,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
-      - restore_cache:
-          keys:
-            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -339,7 +216,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -370,25 +247,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
-      - restore_cache:
-          keys:
-            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -400,7 +261,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - run:
@@ -448,25 +309,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
-      - restore_cache:
-          keys:
-            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -478,7 +323,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -530,25 +375,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
-      - restore_cache:
-          keys:
-            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -560,7 +389,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -607,25 +436,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
-      - restore_cache:
-          keys:
-            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -637,7 +450,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -673,25 +486,9 @@ jobs:
           name: Store Fabric SDK Version
           command: *store_fabric_sdk_version
 
-      - run:
-          name: Store OpenTok Version
-          command: *store_opentok_version
-
-      - run:
-          name: Store Stripe Version
-          command: *store_stripe_version
-
-      - restore_cache:
-          keys:
-            - opentok-sdk-cache-{{ checksum "opentok_version.txt" }}
-
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - restore_cache:
-          keys:
-            - stripe-sdk-cache-{{ checksum "stripe_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -703,7 +500,7 @@ jobs:
             - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
-          name: Make bootstrap
+          name: Bootstrap
           command: make bootstrap
 
       - restore_cache:
@@ -740,11 +537,10 @@ workflows:
   version: 2
   build:
     jobs:
-      - swiftlint-and-cache
+      - build-and-cache
       - kickstarter-tests
       - kickstarter-ui-tests
       - library-tests
-      - livestream-tests
       - ksapi-tests
       - refresh_app_store_dsyms:
           filters:
@@ -755,44 +551,40 @@ workflows:
             branches:
               only: master
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
-            - livestream-tests
             - ksapi-tests
       - beta:
           filters:
             branches:
               only: /beta-dist-.*/
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
-            - livestream-tests
             - ksapi-tests
       - alpha:
           filters:
             branches:
               only: /alpha-dist.*/
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
-            - livestream-tests
             - ksapi-tests
       - itunes:
           filters:
             branches:
               only: itunes-dist
           requires:
-            - swiftlint-and-cache
+            - build-and-cache
             - kickstarter-tests
             - kickstarter-ui-tests
             - library-tests
-            - livestream-tests
             - ksapi-tests
 
 experimental:

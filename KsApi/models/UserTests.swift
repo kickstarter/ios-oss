@@ -28,7 +28,6 @@ final class UserTests: XCTestCase {
       "games_newsletter": false,
       "notify_of_comment_replies": false,
       "facebook_connected": false,
-      "ksr_live_token": "token",
       "location": [
         "country": "US",
         "id": 12,
@@ -55,7 +54,6 @@ final class UserTests: XCTestCase {
     XCTAssertEqual(false, user?.notifications.commentReplies)
     XCTAssertEqual(false, user?.facebookConnected)
     XCTAssertEqual(false, user?.isFriend)
-    XCTAssertEqual("token", user?.liveAuthToken)
     XCTAssertNotNil(user?.location)
     XCTAssertEqual(json as NSDictionary?, user?.encode() as NSDictionary?)
   }
@@ -76,7 +74,6 @@ final class UserTests: XCTestCase {
       "weekly_newsletter": false,
       "notify_of_comment_replies": false,
       "facebook_connected": false,
-      "ksr_live_token": "token",
       "location": [
         "country": "US",
         "id": 12,

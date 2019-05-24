@@ -3,7 +3,6 @@ import ReactiveSwift
 import Result
 import XCTest
 @testable import KsApi
-@testable import LiveStream
 @testable import Library
 import ReactiveExtensions_TestHelpers
 

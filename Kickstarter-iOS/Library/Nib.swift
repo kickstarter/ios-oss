@@ -7,7 +7,6 @@ public enum Nib: String {
   case DiscoveryPostcardCell
   case DiscoveryProjectCategoryView
   case FindFriendsCell
-  case LiveStreamNavTitleView
   case LoadingBarButtonItemView
   case MessageBannerViewController
   case PaymentMethodsFooterView

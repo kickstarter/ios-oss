@@ -7,7 +7,6 @@ public struct User {
   public private(set) var facebookConnected: Bool?
   public private(set) var id: Int
   public private(set) var isFriend: Bool?
-  public private(set) var liveAuthToken: String?
   public private(set) var location: Location?
   public private(set) var name: String
   public private(set) var needsFreshFacebookToken: Bool?
@@ -105,7 +104,6 @@ extension User: Argo.Decodable {
       <*> json <| "id"
     let tmp2 = tmp1
       <*> json <|? "is_friend"
-      <*> json <|? "ksr_live_token"
       <*> (json <|? "location" <|> .success(nil))
     let tmp3 = tmp2
       <*> json <| "name"
@@ -127,7 +125,6 @@ extension User: EncodableType {
     result["facebook_connected"] = self.facebookConnected ?? false
     result["id"] = self.id
     result["is_friend"] = self.isFriend ?? false
-    result["ksr_live_token"] = self.liveAuthToken
     result["location"] = self.location?.encode()
     result["name"] = self.name
     result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false

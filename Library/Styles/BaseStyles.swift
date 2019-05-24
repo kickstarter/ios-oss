@@ -27,11 +27,6 @@ public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC
     <> (VC.lens.navigationController..navBarLens) %~ { $0.map(baseNavigationBarStyle) }
 }
 
-public func baseLiveStreamControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
-  return VC.lens.view.backgroundColor .~ .black
-    <> (VC.lens.navigationController..navBarLens) %~ { $0.map(clearNavigationBarStyle) }
-}
-
 public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
@@ -167,10 +162,3 @@ private let baseNavigationBarStyle =
     <> UINavigationBar.lens.isTranslucent .~ false
     <> UINavigationBar.lens.barTintColor .~ .white
     <> UINavigationBar.lens.tintColor .~ .ksr_green_700
-
-private let clearNavigationBarStyle =
-  UINavigationBar.lens.titleTextAttributes .~ [
-    NSAttributedString.Key.foregroundColor: UIColor.white
-    ]
-    <> UINavigationBar.lens.isTranslucent .~ true
-    <> UINavigationBar.lens.shadowImage .~ UIImage()
