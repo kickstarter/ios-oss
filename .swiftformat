@@ -10,9 +10,6 @@
 # Range operators
 --ranges no-space
 
-# Hoisting
---patternlet inline
-
 # Headers
 --header strip
 
