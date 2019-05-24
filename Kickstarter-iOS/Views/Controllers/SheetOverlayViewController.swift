@@ -1,6 +1,6 @@
-import UIKit
 import Library
 import Prelude
+import UIKit
 
 /**
  SheetOverlayViewController is intended to be used as a container for another view controller
@@ -25,7 +25,7 @@ final class SheetOverlayViewController: UIViewController {
       |> \.transitioningDelegate .~ self
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -53,10 +53,14 @@ final class SheetOverlayViewController: UIViewController {
     let isRegular = UIScreen.main.traitCollection.isRegularRegular
     let portraitWidth = min(UIScreen.main.bounds.height, UIScreen.main.bounds.width)
 
-    NSLayoutConstraint.activate([childView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                                 childView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-                                 childView.topAnchor.constraint(equalTo: self.view.topAnchor,
-                                                                constant: offset)])
+    NSLayoutConstraint.activate([
+      childView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+      childView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      childView.topAnchor.constraint(
+        equalTo: self.view.topAnchor,
+        constant: offset
+      )
+    ])
 
     if isRegular {
       childView.widthAnchor.constraint(equalToConstant: portraitWidth).isActive = true
@@ -67,12 +71,14 @@ final class SheetOverlayViewController: UIViewController {
 }
 
 extension SheetOverlayViewController: UIViewControllerTransitioningDelegate {
-  func animationController(forPresented presented: UIViewController, presenting: UIViewController,
-                           source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+  func animationController(
+    forPresented _: UIViewController, presenting _: UIViewController,
+    source _: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
     return self.transitionAnimator
   }
 
-  func animationController(forDismissed dismissed: UIViewController) ->
+  func animationController(forDismissed _: UIViewController) ->
     UIViewControllerAnimatedTransitioning? {
     return self.transitionAnimator
   }

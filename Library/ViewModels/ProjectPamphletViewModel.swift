@@ -51,46 +51,44 @@ public protocol ProjectPamphletViewModelType {
 }
 
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
-ProjectPamphletViewModelOutputs {
-
+  ProjectPamphletViewModelOutputs {
   public init() {
-
-    let freshProjectAndRefTag = self.configDataProperty.signal.skipNil()
+    let freshProjectAndRefTag = configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
-        self.viewDidLoadProperty.signal.mapConst(true),
-        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
+        viewDidLoadProperty.signal.mapConst(true),
+        viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
       ))
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
           .map { project in
             (project, refTag.map(cleanUp(refTag:)))
-        }
-    }
+          }
+      }
 
-    self.goToRewards = freshProjectAndRefTag
-      .takeWhen(self.backThisProjectTappedProperty.signal)
+    goToRewards = freshProjectAndRefTag
+      .takeWhen(backThisProjectTappedProperty.signal)
       .map { project, refTag in
-        return (project, refTag)
-    }
+        (project, refTag)
+      }
 
-    self.configureChildViewControllersWithProject = freshProjectAndRefTag
+    configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
 
-    self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
+    prefersStatusBarHiddenProperty <~ viewWillAppearAnimated.signal.mapConst(true)
 
-    self.setNeedsStatusBarAppearanceUpdate = Signal.merge(
-      self.viewWillAppearAnimated.signal.ignoreValues(),
-      self.willTransitionToCollectionProperty.signal.ignoreValues()
+    setNeedsStatusBarAppearanceUpdate = Signal.merge(
+      viewWillAppearAnimated.signal.ignoreValues(),
+      willTransitionToCollectionProperty.signal.ignoreValues()
     )
 
-    self.setNavigationBarHiddenAnimated = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst((true, false)),
-      self.viewWillAppearAnimated.signal.skip(first: 1).map { (true, $0) }
+    setNavigationBarHiddenAnimated = Signal.merge(
+      viewDidLoadProperty.signal.mapConst((true, false)),
+      viewWillAppearAnimated.signal.skip(first: 1).map { (true, $0) }
     )
 
-    self.topLayoutConstraintConstant = self.initialTopConstraintProperty.signal.skipNil()
-      .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
+    topLayoutConstraintConstant = initialTopConstraintProperty.signal.skipNil()
+      .takePairWhen(willTransitionToCollectionProperty.signal.skipNil())
       .map(topLayoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     let cookieRefTag = freshProjectAndRefTag
@@ -99,16 +97,19 @@ ProjectPamphletViewModelOutputs {
       }
       .take(first: 1)
 
-    Signal.combineLatest(freshProjectAndRefTag,
-                         cookieRefTag,
-                         self.viewDidAppearAnimated.signal.ignoreValues()
+    Signal.combineLatest(
+      freshProjectAndRefTag,
+      cookieRefTag,
+      viewDidAppearAnimated.signal.ignoreValues()
+    )
+    .map { (project: $0.0, refTag: $0.1, cookieRefTag: $1, _: $2) }
+    .take(first: 1)
+    .observeValues { project, refTag, cookieRefTag, _ in
+      AppEnvironment.current.koala.trackProjectShow(
+        project,
+        refTag: refTag,
+        cookieRefTag: cookieRefTag
       )
-      .map { (project: $0.0, refTag: $0.1, cookieRefTag: $1, _: $2) }
-      .take(first: 1)
-      .observeValues { project, refTag, cookieRefTag, _ in
-        AppEnvironment.current.koala.trackProjectShow(project,
-                                                      refTag: refTag,
-                                                      cookieRefTag: cookieRefTag)
     }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
@@ -120,44 +121,44 @@ ProjectPamphletViewModelOutputs {
 
   private let backThisProjectTappedProperty = MutableProperty(())
   public func backThisProjectTapped() {
-    self.backThisProjectTappedProperty.value = ()
+    backThisProjectTappedProperty.value = ()
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
   public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
-    self.configDataProperty.value = (projectOrParam, refTag)
+    configDataProperty.value = (projectOrParam, refTag)
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
+    viewDidLoadProperty.value = ()
   }
 
   fileprivate let initialTopConstraintProperty = MutableProperty<CGFloat?>(nil)
   public func initial(topConstraint: CGFloat) {
-    self.initialTopConstraintProperty.value = topConstraint
+    initialTopConstraintProperty.value = topConstraint
   }
 
   fileprivate let viewDidAppearAnimated = MutableProperty(false)
   public func viewDidAppear(animated: Bool) {
-    self.viewDidAppearAnimated.value = animated
+    viewDidAppearAnimated.value = animated
   }
 
   fileprivate let viewWillAppearAnimated = MutableProperty(false)
   public func viewWillAppear(animated: Bool) {
-    self.viewWillAppearAnimated.value = animated
+    viewWillAppearAnimated.value = animated
   }
 
   fileprivate let willTransitionToCollectionProperty =
     MutableProperty<UITraitCollection?>(nil)
   public func willTransition(toNewCollection collection: UITraitCollection) {
-    self.willTransitionToCollectionProperty.value = collection
+    willTransitionToCollectionProperty.value = collection
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError>
   fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
-    return self.prefersStatusBarHiddenProperty.value
+    return prefersStatusBarHiddenProperty.value
   }
 
   public let goToRewards: Signal<(Project, RefTag?), NoError>
@@ -172,18 +173,19 @@ ProjectPamphletViewModelOutputs {
 private let cookieSeparator = "?"
 private let escapedCookieSeparator = "%3F"
 
-private func topLayoutConstraintConstant(initialTopConstraint: CGFloat,
-                                         traitCollection: UITraitCollection) -> CGFloat {
+private func topLayoutConstraintConstant(
+  initialTopConstraint: CGFloat,
+  traitCollection: UITraitCollection
+) -> CGFloat {
   guard !traitCollection.isRegularRegular else {
     return 0.0
   }
-   return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
+  return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
 }
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
 private func cookieRefTagFor(project: Project) -> RefTag? {
-
   return AppEnvironment.current.cookieStorage.cookies?
     .filter { cookie in cookie.name == cookieName(project) }
     .first
@@ -199,7 +201,6 @@ private func cookieName(_ project: Project) -> String {
 // Tries to extract the name of the ref tag from a cookie. It has to do double work in case the cookie
 // is accidentally encoded with a `%3F` instead of a `?`.
 private func refTagName(fromCookie cookie: HTTPCookie) -> String {
-
   return cleanUp(refTagString: cookie.value)
 }
 
@@ -210,7 +211,6 @@ private func cleanUp(refTag: RefTag) -> RefTag {
 
 // Tries to remove cruft from a ref tag string.
 private func cleanUp(refTagString: String) -> String {
-
   let secondPass = refTagString.components(separatedBy: escapedCookieSeparator)
   if let name = secondPass.first, secondPass.count == 2 {
     return String(name)
@@ -226,14 +226,13 @@ private func cleanUp(refTagString: String) -> String {
 
 // Constructs a cookie from a ref tag and project.
 private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
-
   let timestamp = Int(AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970)
 
   var properties: [HTTPCookiePropertyKey: Any] = [:]
-  properties[.name]    = cookieName(project)
-  properties[.value]   = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
-  properties[.domain]  = URL(string: project.urls.web.project)?.host
-  properties[.path]    = URL(string: project.urls.web.project)?.path
+  properties[.name] = cookieName(project)
+  properties[.value] = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
+  properties[.domain] = URL(string: project.urls.web.project)?.host
+  properties[.path] = URL(string: project.urls.web.project)?.path
   properties[.version] = 0
   properties[.expires] = AppEnvironment.current.dateType
     .init(timeIntervalSince1970: project.dates.deadline).date
@@ -243,16 +242,15 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
 
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
   -> SignalProducer<Project, NoError> {
+  let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
 
-    let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+  let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .demoteErrors()
 
-    let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
-      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-      .demoteErrors()
+  if let project = projectOrParam.left, shouldPrefix {
+    return projectProducer.prefix(value: project)
+  }
 
-    if let project = projectOrParam.left, shouldPrefix {
-      return projectProducer.prefix(value: project)
-    }
-
-    return projectProducer
+  return projectProducer
 }

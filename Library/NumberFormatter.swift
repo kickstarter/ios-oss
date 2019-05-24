@@ -11,7 +11,7 @@ final class AttributedNumberFormatter: NumberFormatter {
 
   // MARK: - Attributed string
 
-  override func attributedString(for obj: Any, withDefaultAttributes attrs: [NSAttributedString.Key: Any]? = nil) -> NSAttributedString? {
+  override func attributedString(for obj: Any, withDefaultAttributes _: [NSAttributedString.Key: Any]? = nil) -> NSAttributedString? {
     guard let number = obj as? NSNumber, let string = string(from: number) else { return nil }
 
     let mutableAttributedString = NSMutableAttributedString(

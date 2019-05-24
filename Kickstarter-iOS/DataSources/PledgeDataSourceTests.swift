@@ -1,6 +1,6 @@
-import XCTest
 @testable import Kickstarter_Framework
 @testable import Library
+import XCTest
 
 final class PledgeDataSourceTests: XCTestCase {
   let dataSource = PledgeDataSource()
@@ -45,5 +45,6 @@ final class PledgeDataSourceTests: XCTestCase {
     XCTAssertEqual(PledgeRowCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 2))
     XCTAssertEqual(PledgeContinueCell.defaultReusableId, self.dataSource.reusableId(item: 1, section: 2))
   }
+
   // swiftlint:enable line_length
 }

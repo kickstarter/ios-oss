@@ -31,8 +31,10 @@ extension UITableView {
   }
 
   public func registerHeaderFooter(nib: Nib, inBundle bundle: Bundle = .framework) {
-    self.register(UINib(nibName: nib.rawValue, bundle: bundle),
-                  forHeaderFooterViewReuseIdentifier: nib.rawValue)
+    self.register(
+      UINib(nibName: nib.rawValue, bundle: bundle),
+      forHeaderFooterViewReuseIdentifier: nib.rawValue
+    )
   }
 }
 
@@ -47,8 +49,8 @@ extension NibLoading {
     guard let view = UINib(nibName: nib.rawValue, bundle: .framework)
       .instantiate(withOwner: self, options: nil)
       .first as? Self else {
-        assertionFailure("Nib not found")
-        return nil
+      assertionFailure("Nib not found")
+      return nil
     }
 
     return view

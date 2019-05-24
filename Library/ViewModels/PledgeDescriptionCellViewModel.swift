@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 import Result
 
 public protocol PledgeDescriptionCellViewModelInputs {
@@ -21,8 +21,7 @@ public protocol PledgeDescriptionCellViewModelType {
 }
 
 public final class PledgeDescriptionCellViewModel: PledgeDescriptionCellViewModelType,
-PledgeDescriptionCellViewModelInputs, PledgeDescriptionCellViewModelOutputs {
-
+  PledgeDescriptionCellViewModelInputs, PledgeDescriptionCellViewModelOutputs {
   public init() {
     self.estimatedDeliveryText = self.estimatedDeliveryDateProperty.signal
 
@@ -33,6 +32,7 @@ PledgeDescriptionCellViewModelInputs, PledgeDescriptionCellViewModelOutputs {
   public func configureWith(estimatedDeliveryDate: String) {
     self.estimatedDeliveryDateProperty.value = estimatedDeliveryDate
   }
+
   private let learnMoreTappedProperty = MutableProperty(())
   public func learnMoreTapped() {
     self.learnMoreTappedProperty.value = ()

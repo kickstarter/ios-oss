@@ -1,8 +1,8 @@
-import Prelude
-import XCTest
+@testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-@testable import Kickstarter_Framework
+import Prelude
+import XCTest
 
 internal final class ProjectPamphletViewControllerTests: TestCase {
   private var project: Project = .cosmicSurgery
@@ -12,7 +12,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
     self.project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ "" // prevents flaky tests caused by async photo download
-      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.rewards %~ { rewards in
         [
           rewards[0]
@@ -22,7 +22,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         ]
       }
       |> Project.lens.state .~ .live
-      |> Project.lens.stats.pledged .~ (Project.template.stats.goal * 3/4)
+      |> Project.lens.stats.pledged .~ (Project.template.stats.goal * 3 / 4)
 
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
@@ -44,7 +44,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
+        parent.view.frame.size.height = device == .pad ? 2300 : 1800
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -60,7 +60,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_200 : 800
+        parent.view.frame.size.height = device == .pad ? 1200 : 800
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
       }
@@ -77,7 +77,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+        parent.view.frame.size.height = device == .pad ? 1200 : parent.view.frame.size.height
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
       }
@@ -93,7 +93,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
+        parent.view.frame.size.height = device == .pad ? 2300 : 1800
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }

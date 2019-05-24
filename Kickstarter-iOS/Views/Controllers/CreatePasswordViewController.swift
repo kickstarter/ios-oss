@@ -46,27 +46,28 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
 
     self.saveButtonView.addTarget(
       self.createPasswordTableViewController,
-      action: #selector(createPasswordTableViewController.saveButtonTapped(_:))
+      action: #selector(self.createPasswordTableViewController.saveButtonTapped(_:))
     )
   }
 }
 
 // swiftlint:disable line_length
 extension CreatePasswordViewController: CreatePasswordTableViewControllerDelegate {
-  func createPasswordTableViewController(_ viewController: CreatePasswordTableViewController, setSaveButtonIsEnabled isEnabled: Bool) {
+  func createPasswordTableViewController(_: CreatePasswordTableViewController, setSaveButtonIsEnabled isEnabled: Bool) {
     self.saveButtonView.setIsEnabled(isEnabled: isEnabled)
   }
 
-  func createPasswordTableViewControllerStartAnimatingSaveButton(_ viewController: CreatePasswordTableViewController) {
+  func createPasswordTableViewControllerStartAnimatingSaveButton(_: CreatePasswordTableViewController) {
     self.saveButtonView.startAnimating()
   }
 
-  func createPasswordTableViewControllerStopAnimatingSaveButton(_ viewController: CreatePasswordTableViewController) {
+  func createPasswordTableViewControllerStopAnimatingSaveButton(_: CreatePasswordTableViewController) {
     self.saveButtonView.stopAnimating()
   }
 
-  func createPasswordTableViewController(_ viewController: CreatePasswordTableViewController, showErrorMessage message: String) {
+  func createPasswordTableViewController(_: CreatePasswordTableViewController, showErrorMessage message: String) {
     self.messageBannerViewController?.showBanner(with: .error, message: message)
   }
 }
+
 // swiftlint:enable line_length

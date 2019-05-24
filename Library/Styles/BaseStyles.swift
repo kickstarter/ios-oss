@@ -11,7 +11,7 @@ public enum Styles {
   }
 
   public static func gridHalf(_ count: Int) -> CGFloat {
-    return grid(count) / 2.0
+    return self.grid(count) / 2.0
   }
 }
 
@@ -26,13 +26,13 @@ public typealias TextFieldStyle = (UITextField) -> UITextField
 public typealias TextViewStyle = (UITextView) -> UITextView
 public typealias ViewStyle = (UIView) -> UIView
 
-public func baseControllerStyle <VC: UIViewControllerProtocol> () -> ((VC) -> VC) {
+public func baseControllerStyle<VC: UIViewControllerProtocol>() -> ((VC) -> VC) {
   return VC.lens.view.backgroundColor .~ .white
-    <> (VC.lens.navigationController..navBarLens) %~ { $0.map(baseNavigationBarStyle) }
+    <> (VC.lens.navigationController .. navBarLens) %~ { $0.map(baseNavigationBarStyle) }
 }
 
-public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
-  (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
+public func baseTableControllerStyle<TVC: UITableViewControllerProtocol>
+(estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
     <> TVC.lens.view.backgroundColor .~ .white
     <> TVC.lens.tableView.rowHeight .~ UITableView.automaticDimension
@@ -41,24 +41,22 @@ public func baseTableControllerStyle <TVC: UITableViewControllerProtocol>
   return style <> TVC.lens.tableView.separatorStyle .~ .none
 }
 
-public func baseTableViewCellStyle <TVC: UITableViewCellProtocol> () -> ((TVC) -> TVC) {
-
+public func baseTableViewCellStyle<TVC: UITableViewCellProtocol>() -> ((TVC) -> TVC) {
   return
     TVC.lens.contentView.layoutMargins %~~ { _, cell in
       if cell.traitCollection.isRegularRegular {
         return .init(topBottom: Styles.grid(3), leftRight: Styles.grid(12))
       }
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-      }
-      <> TVC.lens.backgroundColor .~ .white
-      <> (TVC.lens.contentView..UIView.lens.preservesSuperviewLayoutMargins) .~ false
-      <> TVC.lens.layoutMargins .~ .init(all: 0.0)
-      <> TVC.lens.preservesSuperviewLayoutMargins .~ false
-      <> TVC.lens.selectionStyle .~ .none
+    }
+    <> TVC.lens.backgroundColor .~ .white
+    <> (TVC.lens.contentView .. UIView.lens.preservesSuperviewLayoutMargins) .~ false
+    <> TVC.lens.layoutMargins .~ .init(all: 0.0)
+    <> TVC.lens.preservesSuperviewLayoutMargins .~ false
+    <> TVC.lens.selectionStyle .~ .none
 }
 
 public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UIActivityIndicatorView {
-
   return indicator
     |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
     |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
@@ -70,17 +68,15 @@ public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UI
 
  - returns: A view transformer that rounds corners, sets background color, and sets border color.
  */
-public func cardStyle <V: UIViewProtocol> (cornerRadius radius: CGFloat = 0) -> ((V) -> V) {
-
+public func cardStyle<V: UIViewProtocol>(cornerRadius radius: CGFloat = 0) -> ((V) -> V) {
   return roundedStyle(cornerRadius: radius)
     <> V.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
     <> V.lens.layer.borderWidth .~ 1.0
     <> V.lens.backgroundColor .~ .white
 }
 
-public func darkCardStyle <V: UIViewProtocol>
-  (cornerRadius radius: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
-
+public func darkCardStyle<V: UIViewProtocol>
+(cornerRadius radius: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
   return cardStyle(cornerRadius: radius)
     <> V.lens.layer.borderColor .~ UIColor.ksr_text_dark_grey_500.cgColor
 }
@@ -88,22 +84,24 @@ public func darkCardStyle <V: UIViewProtocol>
 public let containerViewBackgroundStyle =
   UIView.lens.backgroundColor .~ .ksr_grey_100
 
-public func dropShadowStyle <V: UIViewProtocol> (radius: CGFloat = 2.0,
-                                                 offset: CGSize = .init(width: 0, height: 1)) -> ((V) -> V) {
+public func dropShadowStyle<V: UIViewProtocol>(
+  radius: CGFloat = 2.0,
+  offset: CGSize = .init(width: 0, height: 1)
+) -> ((V) -> V) {
   return
     V.lens.layer.shadowColor .~ UIColor.black.cgColor
-      <> V.lens.layer.shadowOpacity .~ 0.17
-      <> V.lens.layer.shadowRadius .~ radius
-      <> V.lens.layer.masksToBounds .~ false
-      <> V.lens.layer.shouldRasterize .~ true
-      <> V.lens.layer.shadowOffset .~ offset
+    <> V.lens.layer.shadowOpacity .~ 0.17
+    <> V.lens.layer.shadowRadius .~ radius
+    <> V.lens.layer.masksToBounds .~ false
+    <> V.lens.layer.shouldRasterize .~ true
+    <> V.lens.layer.shadowOffset .~ offset
 }
 
-public func dropShadowStyleMedium <V: UIViewProtocol> () -> ((V) -> V) {
+public func dropShadowStyleMedium<V: UIViewProtocol>() -> ((V) -> V) {
   return dropShadowStyle(radius: 5.0, offset: .init(width: 0, height: 2.0))
 }
 
-public func dropShadowStyleLarge <V: UIViewProtocol> () -> ((V) -> V) {
+public func dropShadowStyleLarge<V: UIViewProtocol>() -> ((V) -> V) {
   return dropShadowStyle(radius: 6.0, offset: .init(width: 0, height: 3.0))
 }
 
@@ -112,7 +110,7 @@ public let feedTableViewCellStyle = baseTableViewCellStyle()
     cell.traitCollection.isRegularRegular
       ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(30))
       : .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(2))
-}
+  }
 
 public let formTextInputStyle: TextFieldStyle = { (textField: UITextField) in
   textField
@@ -132,7 +130,7 @@ public let formFieldStyle: TextFieldStyle = { (textField: UITextField) in
 }
 
 public let ignoresInvertColorsImageViewStyle: ImageViewStyle = { (imageView: UIImageView) in
-  return imageView
+  imageView
     |> \.accessibilityIgnoresInvertColors .~ true
 }
 
@@ -147,7 +145,7 @@ public let separatorStyle: ViewStyle = { (view: UIView) in
 
  - returns: A view transformer that rounds corners.
  */
-public func roundedStyle <V: UIViewProtocol> (cornerRadius r: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
+public func roundedStyle<V: UIViewProtocol>(cornerRadius r: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
   return V.lens.clipsToBounds .~ true
     <> V.lens.layer.masksToBounds .~ true
     <> V.lens.layer.cornerRadius .~ r
@@ -162,7 +160,7 @@ private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
 private let baseNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
     NSAttributedString.Key.foregroundColor: UIColor.black
-    ]
-    <> UINavigationBar.lens.isTranslucent .~ false
-    <> UINavigationBar.lens.barTintColor .~ .white
-    <> UINavigationBar.lens.tintColor .~ .ksr_green_700
+  ]
+  <> UINavigationBar.lens.isTranslucent .~ false
+  <> UINavigationBar.lens.barTintColor .~ .white
+  <> UINavigationBar.lens.tintColor .~ .ksr_green_700

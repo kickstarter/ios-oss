@@ -1,7 +1,7 @@
 import UIKit
 
 public func ksr_addSubviewToParent() -> ((UIView, UIView) -> (UIView, UIView)) {
-  return { (subview, parent) in
+  return { subview, parent in
     parent.addSubview(subview)
     return (subview, parent)
   }
@@ -17,7 +17,7 @@ public func ksr_insertSubview(_ subview: UIView, belowSubview otherSubview: UIVi
 }
 
 public func ksr_insertSubviewInParent(at index: Int) -> ((UIView, UIView) -> (UIView, UIView)) {
-  return { (subview, parent) in
+  return { subview, parent in
     parent.insertSubview(subview, at: index)
     return (subview, parent)
   }
@@ -25,7 +25,7 @@ public func ksr_insertSubviewInParent(at index: Int) -> ((UIView, UIView) -> (UI
 
 public func ksr_constrainViewToEdgesInParent(priority: UILayoutPriority = .required)
   -> ((UIView, UIView) -> (UIView, UIView)) {
-  return { (subview, parent) in
+  return { subview, parent in
     subview.translatesAutoresizingMaskIntoConstraints = false
 
     let constraints = [
@@ -44,7 +44,7 @@ public func ksr_constrainViewToEdgesInParent(priority: UILayoutPriority = .requi
 }
 
 public func ksr_constrainViewToMarginsInParent() -> ((UIView, UIView) -> (UIView, UIView)) {
-  return { (subview, parent) in
+  return { subview, parent in
     subview.translatesAutoresizingMaskIntoConstraints = false
 
     let constraints = [

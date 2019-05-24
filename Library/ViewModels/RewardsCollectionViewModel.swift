@@ -1,8 +1,8 @@
 import Foundation
-import ReactiveSwift
-import Result
 import KsApi
 import Prelude
+import ReactiveSwift
+import Result
 
 public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?)
 
@@ -23,24 +23,26 @@ protocol RewardsCollectionViewModelType {
 }
 
 public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
-RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
+  RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
   public init() {
     self.reloadDataWithRewards = Signal.combineLatest(
       self.configureWithProjectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
-      .map(first)
-      .map { $0.rewards }
+    .map(first)
+    .map { $0.rewards }
 
-    let selectedReward = reloadDataWithRewards
+    let selectedReward = self.reloadDataWithRewards
       .takePairWhen(self.rewardSelectedIndexProperty.signal.skipNil())
       .map { rewards, index in rewards[index] }
 
-    self.goToPledge = Signal.combineLatest(self.configureWithProjectProperty.signal.skipNil(),
+    self.goToPledge = Signal.combineLatest(
+      self.configureWithProjectProperty.signal.skipNil(),
       selectedReward,
-      self.configureWithRefTagProperty.signal)
-      .map { project, reward, refTag in
-        return PledgeData(project: project, reward: reward, refTag: refTag)
+      self.configureWithRefTagProperty.signal
+    )
+    .map { project, reward, refTag in
+      PledgeData(project: project, reward: reward, refTag: refTag)
     }
   }
 

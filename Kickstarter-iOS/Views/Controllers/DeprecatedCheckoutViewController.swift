@@ -12,28 +12,31 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
   fileprivate let viewModel: DeprecatedCheckoutViewModelType = DeprecatedCheckoutViewModel()
   private var sessionStartedObserver: Any?
 
-  internal static func configuredWith(initialRequest: URLRequest,
-                                      project: Project,
-                                      reward: Reward) -> DeprecatedCheckoutViewController {
-
-      let vc = Storyboard.Checkout.instantiate(DeprecatedCheckoutViewController.self)
-      vc.viewModel.inputs.configureWith(
-        initialRequest: initialRequest,
-        project: project,
-        reward: reward,
-        applePayCapable: PKPaymentAuthorizationViewController.applePayCapable(for: project)
-      )
-      return vc
+  internal static func configuredWith(
+    initialRequest: URLRequest,
+    project: Project,
+    reward: Reward
+  ) -> DeprecatedCheckoutViewController {
+    let vc = Storyboard.Checkout.instantiate(DeprecatedCheckoutViewController.self)
+    vc.viewModel.inputs.configureWith(
+      initialRequest: initialRequest,
+      project: project,
+      reward: reward,
+      applePayCapable: PKPaymentAuthorizationViewController.applePayCapable(for: project)
+    )
+    return vc
   }
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.navigationItem.leftBarButtonItem =
-      UIBarButtonItem(title: Strings.general_navigation_buttons_cancel(),
-                      style: .plain,
-                      target: self,
-                      action: #selector(cancelButtonTapped))
+      UIBarButtonItem(
+        title: Strings.general_navigation_buttons_cancel(),
+        style: .plain,
+        target: self,
+        action: #selector(self.cancelButtonTapped)
+      )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -53,7 +56,7 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
       .observeForControllerAction()
       .observeValues { [weak self] js in
         _ = self?.webView.stringByEvaluatingJavaScript(from: js)
-    }
+      }
 
     self.viewModel.outputs.setStripePublishableKey
       .observeForUI()
@@ -72,7 +75,7 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
       .observeValues { [weak self] project in
         UIFeedbackGenerator.ksr_success()
         self?.goToThanks(project: project)
-    }
+      }
 
     self.viewModel.outputs.goToWebModal
       .observeForControllerAction()
@@ -94,7 +97,7 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
       .observeForControllerAction()
       .observeValues { [weak self] request in
         self?.webView.loadRequest(request)
-    }
+      }
 
     self.viewModel.outputs.goToPaymentAuthorization
       .observeForControllerAction()
@@ -104,17 +107,19 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.dismiss(animated: true, completion: nil)
-    }
+      }
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-    }
+      }
   }
 
-  internal func webView(_ webView: UIWebView,
-                        shouldStartLoadWith request: URLRequest,
-                        navigationType: UIWebView.NavigationType) -> Bool {
+  internal func webView(
+    _: UIWebView,
+    shouldStartLoadWith request: URLRequest,
+    navigationType: UIWebView.NavigationType
+  ) -> Bool {
     return self.viewModel.inputs.shouldStartLoad(withRequest: request, navigationType: navigationType)
   }
 
@@ -170,17 +175,17 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
 }
 
 extension DeprecatedCheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
-
   internal func paymentAuthorizationViewControllerWillAuthorizePayment(
-    _ controller: PKPaymentAuthorizationViewController) {
+    _: PKPaymentAuthorizationViewController
+  ) {
     self.viewModel.inputs.paymentAuthorizationWillAuthorizePayment()
   }
 
   internal func paymentAuthorizationViewController(
-    _ controller: PKPaymentAuthorizationViewController,
+    _: PKPaymentAuthorizationViewController,
     didAuthorizePayment payment: PKPayment,
-    completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
-
+    completion: @escaping (PKPaymentAuthorizationStatus) -> Void
+  ) {
     self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: .init(payment: payment))
 
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
@@ -194,8 +199,8 @@ extension DeprecatedCheckoutViewController: PKPaymentAuthorizationViewController
   }
 
   internal func paymentAuthorizationViewControllerDidFinish(
-    _ controller: PKPaymentAuthorizationViewController) {
-
+    _ controller: PKPaymentAuthorizationViewController
+  ) {
     controller.dismiss(animated: true) {
       self.viewModel.inputs.paymentAuthorizationDidFinish()
     }
