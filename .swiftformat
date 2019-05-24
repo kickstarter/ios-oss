@@ -4,6 +4,9 @@
 # Indent by 2 spaces
 --indent 2
 
+# Reference `self` explicitly
+--self insert
+
 # Commas
 --commas inline
 
@@ -21,7 +24,7 @@
 --wrapcollections before-first
 
 # Void instead of `()` tuple
---disable void,redundantInit,redundantSelf
+--disable void,redundantInit
 
 # Excluded
 --exclude bin,Carthage,Frameworks,Library/Styles/Colors.swift,Library/Strings.swift,vendor
