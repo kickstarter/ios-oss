@@ -1,8 +1,8 @@
+# And operator &&
+--disable andOperator
+
 # Indent by 2 spaces
 --indent 2
-
-# Reference `self` explicitly
---self insert
 
 # Commas
 --commas inline
@@ -16,8 +16,12 @@
 # Unused args
 --stripunusedargs always
 
+# Wrap
+--wraparguments before-first
+--wrapcollections before-first
+
 # Void instead of `()` tuple
---disable void
+--disable void,redundantInit,redundantSelf
 
 # Excluded
 --exclude bin,Carthage,Frameworks,Library/Styles/Colors.swift,Library/Strings.swift,vendor
