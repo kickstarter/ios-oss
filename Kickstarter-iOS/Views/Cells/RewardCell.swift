@@ -7,6 +7,9 @@ import ReactiveSwift
 final class RewardCell: UICollectionViewCell, ValueCell {
   private let viewModel: RewardCellViewModelType = DeprecatedRewardCellViewModel()
 
+  private let scrollView = UIScrollView(frame: .zero)
+  private let pledgeButtonLayoutGuide = UILayoutGuide()
+
   // UIStackViews
   private let containerView = UIView(frame: .zero)
   private let baseStackView = UIStackView(frame: .zero)
@@ -44,6 +47,9 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.pledgeButton.titleLabel
       ?|> checkoutGreenButtonTitleLabelStyle
 
+    _ = self.scrollView
+      |> scrollViewStyle
+
     [self.baseStackView,
      self.priceStackView,
      self.includedItemsStackView,
@@ -55,6 +61,9 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     _ = self.baseStackView
       |> baseStackViewStyle
+
+    _ = self.priceStackView
+      |> priceStackViewStyle
 
     [self.includedItemsTitleLabel, self.descriptionTitleLabel].forEach { label in
       _ = label
@@ -121,6 +130,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
   private func configureViews() {
     _ = self.contentView
+      |> \.layoutMargins .~ .init(all: Styles.grid(3))
       |> \.backgroundColor .~ .ksr_grey_200
 
     _ = self.containerView
@@ -128,13 +138,18 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> roundedStyle(cornerRadius: Styles.grid(3))
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
-    _ = (self.containerView, self.contentView)
+    _ = (self.scrollView, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.containerView, self.scrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
     _ = (self.baseStackView, self.containerView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+
+    self.containerView.addLayoutGuide(self.pledgeButtonLayoutGuide)
 
     _ = ([self.priceStackView, self.includedItemsStackView, self.descriptionStackView], self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -148,29 +163,60 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = ([self.descriptionTitleLabel, self.descriptionLabel], self.descriptionStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.pledgeButton, self.containerView)
+    _ = (self.pledgeButton, self.contentView)
       |> ksr_addSubviewToParent()
 
     self.setupConstraints()
   }
 
   private func setupConstraints() {
-    _ = self.pledgeButton
+    let baseStackView = self.baseStackView
+    let containerView = self.containerView
+    let pledgeButton = self.pledgeButton
+    let pledgeButtonLayoutGuide = self.pledgeButtonLayoutGuide
+
+    // Container view
+    NSLayoutConstraint.activate([containerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)])
+
+    // Base stack view
+    _ = baseStackView
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
-    let topConstraint = self.pledgeButton.topAnchor.constraint(equalTo: self.baseStackView.bottomAnchor)
+    let containerMargins = containerView.layoutMarginsGuide
+
+    NSLayoutConstraint.activate([baseStackView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+                                 baseStackView.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+                                 baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
+      ])
+
+    // Pledge button
+    _ = pledgeButton
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+
+    let topConstraint = pledgeButton.topAnchor.constraint(equalTo: pledgeButtonLayoutGuide.topAnchor)
     _ = topConstraint
       |> \.priority .~ .defaultLow
       |> \.isActive .~ true
 
-    let margins = self.containerView.layoutMarginsGuide
+    let contentMargins = self.contentView.layoutMarginsGuide
 
-    NSLayoutConstraint.activate([self.pledgeButton.leftAnchor.constraint(equalTo: margins.leftAnchor),
-                                 self.pledgeButton.rightAnchor.constraint(equalTo: margins.rightAnchor),
-                                 self.pledgeButton.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
-                                 self.pledgeButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
+    NSLayoutConstraint.activate([pledgeButton.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
+                                 pledgeButton.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
+                                 // swiftlint:disable:next line_length
+                                 pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: contentMargins.bottomAnchor),
+                                 // swiftlint:disable:next line_length
+                                 pledgeButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
       ])
 
+    // Pledge button layout anchor
+    NSLayoutConstraint.activate([
+      pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
+      pledgeButtonLayoutGuide.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+      pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+      pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: baseStackView.bottomAnchor,
+                                                   constant: Styles.grid(3)),
+      pledgeButtonLayoutGuide.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
+      ])
   }
 
   fileprivate func load(items: [String]) {
@@ -225,7 +271,7 @@ private let baseStackViewStyle: StackViewStyle = { stackView in
 private let minimumPriceLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_green_500
-    |> \.font .~ .ksr_headline()
+    |> \.font .~ UIFont.ksr_headline().bolded
 }
 
 private let minimumPriceConversionLabelStyle: LabelStyle = { label in
@@ -234,10 +280,20 @@ private let minimumPriceConversionLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_headline(size: 13)
 }
 
+private let priceStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.spacing .~ Styles.grid(1)
+}
+
 private let rewardTitleLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ UIFont.ksr_headline(size: 24).bolded
+}
+
+private let scrollViewStyle: ScrollStyle = { scrollView in
+  scrollView
+    |> \.showsVerticalScrollIndicator .~ false
 }
 
 private let sectionStackViewStyle: StackViewStyle = { stackView in
