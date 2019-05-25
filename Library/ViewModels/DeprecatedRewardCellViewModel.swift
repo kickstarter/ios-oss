@@ -348,9 +348,9 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
 private func footerString(project: Project, reward: Reward) -> String {
   var parts: [String] = []
 
-  if let endsAt = reward.endsAt, project.state == .live
-    && endsAt > 0
-    && endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
+  if let endsAt = reward.endsAt, project.state == .live,
+    endsAt > 0,
+    endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
     let (time, unit) = Format.duration(
       secondsInUTC: min(endsAt, project.dates.deadline),
       abbreviate: true,
@@ -360,7 +360,7 @@ private func footerString(project: Project, reward: Reward) -> String {
     parts.append(Strings.Time_left_left(time_left: time + " " + unit))
   }
 
-  if let remaining = reward.remaining, reward.limit != nil && project.state == .live {
+  if let remaining = reward.remaining, reward.limit != nil, project.state == .live {
     parts.append(Strings.Left_count_left(left_count: remaining))
   }
 

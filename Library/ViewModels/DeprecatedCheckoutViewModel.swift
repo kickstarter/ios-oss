@@ -447,8 +447,7 @@ private func isStripeRequest(request: URLRequest) -> Bool {
   return request.url?.host?.hasSuffix("stripe.com") == true
 }
 
-private func applePayCheckoutNextJS(forPaymentData paymentData: PaymentData, stripeToken: String)
-  -> String? {
+private func applePayCheckoutNextJS(forPaymentData paymentData: PaymentData, stripeToken: String) -> String? {
   let tokenData = paymentData.tokenData
 
   var json: [String: [String: String]] = [:]

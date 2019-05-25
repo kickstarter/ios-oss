@@ -269,7 +269,7 @@ public enum Format {
       string = abbreviate
         ? Strings.dates_time_hours_abbreviated(time_count: count)
         : Strings.dates_time_hours(time_count: count)
-    } else if minute > 0 && second >= 0 {
+    } else if minute > 0, second >= 0 {
       string = abbreviate
         ? Strings.dates_time_minutes_abbreviated(time_count: minute)
         : Strings.dates_time_minutes(time_count: minute)
