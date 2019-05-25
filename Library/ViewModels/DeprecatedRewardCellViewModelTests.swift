@@ -400,6 +400,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
     self.footerLabelText.assertValues(["42\u{00a0}backers"])
   }
+
   // swiftlint:enable line_length
 
   func testFooterViewHidden_WithRewards() {

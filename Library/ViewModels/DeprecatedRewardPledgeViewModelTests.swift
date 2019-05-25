@@ -1759,7 +1759,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testOrLabelHidden() {
-    //todo
+    // todo
     // orLabelHidden
   }
 
