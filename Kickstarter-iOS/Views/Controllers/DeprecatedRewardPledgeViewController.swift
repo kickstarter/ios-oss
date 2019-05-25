@@ -400,8 +400,9 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.isUserInteractionEnabled .~ false
 
     _ = self.shippingContainerView
-      |> UIView.lens.layoutMargins .~
-      .init(top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(4))
+      |> UIView.lens.layoutMargins .~ .init(
+        top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(4)
+      )
       |> roundedStyle(cornerRadius: 0)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
       |> UIView.lens.layer.borderWidth .~ 1

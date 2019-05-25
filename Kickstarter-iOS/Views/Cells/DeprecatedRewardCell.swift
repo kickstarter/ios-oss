@@ -77,8 +77,9 @@ internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
 
     _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
-      |> UIStackView.lens.layoutMargins
-      .~ .init(top: Styles.grid(3), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+      |> UIStackView.lens.layoutMargins .~ .init(
+        top: Styles.grid(3), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2)
+      )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.minimumStackView
