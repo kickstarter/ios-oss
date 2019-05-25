@@ -89,7 +89,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     self.topLayoutConstraintConstant = self.initialTopConstraintProperty.signal.skipNil()
       .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
-      .map(topLayoutConstraintConstant(initialTopConstraint:traitCollection:))
+      .map(layoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     let cookieRefTag = freshProjectAndRefTag
       .map { project, refTag in
@@ -173,7 +173,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 private let cookieSeparator = "?"
 private let escapedCookieSeparator = "%3F"
 
-private func topLayoutConstraintConstant(
+private func layoutConstraintConstant(
   initialTopConstraint: CGFloat,
   traitCollection: UITraitCollection
 ) -> CGFloat {

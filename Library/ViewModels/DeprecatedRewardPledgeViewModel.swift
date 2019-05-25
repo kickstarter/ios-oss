@@ -262,7 +262,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     let shippingRules = shippingRulesEvent.values()
 
     self.navigationTitle = projectAndReward
-      .map(navigationTitle(forProject:reward:))
+      .map(title(forProject:reward:))
 
     self.setStripeAppleMerchantIdentifier = applePayCapable
       .filter(isTrue)
@@ -1168,7 +1168,7 @@ private func changePaymentMethod(project: Project) -> SignalProducer<URLRequest,
     .skipNil()
 }
 
-private func navigationTitle(forProject project: Project, reward: Reward) -> String {
+private func title(forProject project: Project, reward: Reward) -> String {
   guard project.personalization.isBacking != true else {
     if reward == Reward.noReward {
       return Strings.Manage_your_pledge()
