@@ -42,7 +42,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
     self.onePasswordButton.addTarget(self,
-                                     action: #selector(self.onePasswordButtonTapped),
+                                     action: #selector(ChangeEmailViewController.onePasswordButtonTapped),
                                      for: .touchUpInside)
 
     self.viewModel.inputs.onePassword(

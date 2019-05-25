@@ -47,7 +47,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: self,
-      action: #selector(self.closeButtonTapped)
+      action: #selector(RewardsCollectionViewController.closeButtonTapped)
     )
 
     _ = closeButton

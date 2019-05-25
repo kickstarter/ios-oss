@@ -35,7 +35,7 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
         title: Strings.general_navigation_buttons_cancel(),
         style: .plain,
         target: self,
-        action: #selector(self.cancelButtonTapped)
+        action: #selector(DeprecatedCheckoutViewController.cancelButtonTapped)
       )
 
     self.viewModel.inputs.viewDidLoad()

@@ -102,45 +102,69 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
 
     self.applePayButton.addTarget(
-      self, action: #selector(self.applePayButtonTapped), for: .touchUpInside
+      self,
+      action: #selector(DeprecatedRewardPledgeViewController.applePayButtonTapped),
+      for: .touchUpInside
     )
     self.cancelPledgeButton.addTarget(
-      self, action: #selector(self.cancelPledgeButtonTapped), for: .touchUpInside
+      self,
+      action: #selector(DeprecatedRewardPledgeViewController.cancelPledgeButtonTapped),
+      for: .touchUpInside
     )
     self.changePaymentMethodButton.addTarget(
-      self, action: #selector(self.changePaymentMethodButtonTapped), for: .touchUpInside
+      self,
+      action: #selector(DeprecatedRewardPledgeViewController.changePaymentMethodButtonTapped),
+      for: .touchUpInside
     )
     self.continueToPaymentButton.addTarget(
-      self, action: #selector(self.continueWithPaymentButtonTapped), for: .touchUpInside
+      self,
+      action: #selector(DeprecatedRewardPledgeViewController.continueWithPaymentButtonTapped),
+      for: .touchUpInside
     )
     self.descriptionLabel.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(self.expandRewardDescriptionTapped))
+      UITapGestureRecognizer(
+        target: self, action: #selector(DeprecatedRewardPledgeViewController.expandRewardDescriptionTapped)
+      )
     )
     self.differentPaymentMethodButton.addTarget(
-      self, action: #selector(self.differentPaymentMethodTapped), for: .touchUpInside
+      self,
+      action: #selector(DeprecatedRewardPledgeViewController.differentPaymentMethodTapped),
+      for: .touchUpInside
     )
     self.disclaimerButton.addTarget(
-      self, action: #selector(self.disclaimerButtonTapped), for: .touchUpInside
-    )
-    self.pledgeTextField.addTarget(
-      self, action: #selector(self.pledgedTextFieldChanged), for: .editingChanged
+      self,
+      action: #selector(DeprecatedRewardPledgeViewController.disclaimerButtonTapped),
+      for: .touchUpInside
     )
     self.pledgeTextField.addTarget(
       self,
-      action: #selector(self.pledgedTextFieldDoneEditing),
+      action: #selector(DeprecatedRewardPledgeViewController.pledgedTextFieldChanged),
+      for: .editingChanged
+    )
+    self.pledgeTextField.addTarget(
+      self,
+      action: #selector(DeprecatedRewardPledgeViewController.pledgedTextFieldDoneEditing),
       for: [.editingDidEndOnExit, .editingDidEnd]
     )
     self.readMoreContainerView.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(self.expandRewardDescriptionTapped))
+      UITapGestureRecognizer(
+        target: self, action: #selector(DeprecatedRewardPledgeViewController.expandRewardDescriptionTapped)
+      )
     )
     self.shippingDestinationButton.addTarget(
-      self, action: #selector(self.shippingButtonTapped), for: .touchUpInside
+      self,
+      action: #selector(DeprecatedRewardPledgeViewController.shippingButtonTapped),
+      for: .touchUpInside
     )
     self.titleLabel.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(self.expandRewardDescriptionTapped))
+      UITapGestureRecognizer(
+        target: self, action: #selector(DeprecatedRewardPledgeViewController.expandRewardDescriptionTapped)
+      )
     )
     self.updatePledgeButton.addTarget(
-      self, action: #selector(self.updatePledgeButtonTapped), for: .touchUpInside
+      self,
+      action: #selector(DeprecatedRewardPledgeViewController.updatePledgeButtonTapped),
+      for: .touchUpInside
     )
 
     self.sessionStartedObserver = NotificationCenter

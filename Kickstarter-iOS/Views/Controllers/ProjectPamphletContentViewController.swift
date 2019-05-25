@@ -28,7 +28,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
     self.tableView.panGestureRecognizer.addTarget(
-      self, action: #selector(self.scrollViewPanGestureRecognizerDidChange(_:))
+      self,
+      action: #selector(ProjectPamphletContentViewController.scrollViewPanGestureRecognizerDidChange(_:))
     )
 
     self.tableView.register(nib: .DeprecatedRewardCell)

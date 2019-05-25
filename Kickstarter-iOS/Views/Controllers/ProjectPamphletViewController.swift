@@ -170,7 +170,7 @@ public final class ProjectPamphletViewController: UIViewController {
       |> ksr_addSubviewToParent()
 
     self.backThisProjectButton.addTarget(
-      self, action: #selector(self.backThisProjectTapped), for: .touchUpInside
+      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
     )
 
     // Configure constraints

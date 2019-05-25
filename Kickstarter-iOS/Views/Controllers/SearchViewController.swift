@@ -40,24 +40,24 @@ internal final class SearchViewController: UITableViewController {
 
     self.cancelButton.addTarget(
       self,
-      action: #selector(self.cancelButtonPressed),
+      action: #selector(SearchViewController.cancelButtonPressed),
       for: .touchUpInside
     )
 
     self.searchTextField.addTarget(
       self,
-      action: #selector(self.searchTextChanged(_:)),
+      action: #selector(SearchViewController.searchTextChanged(_:)),
       for: .editingChanged
     )
 
     self.searchTextField.addTarget(
       self,
-      action: #selector(self.searchTextEditingDidEnd),
+      action: #selector(SearchViewController.searchTextEditingDidEnd),
       for: .editingDidEndOnExit
     )
 
     self.searchBarContainerView.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(self.searchBarContainerTapped))
+      UITapGestureRecognizer(target: self, action: #selector(SearchViewController.searchBarContainerTapped))
     )
 
     self.searchTextField.delegate = self

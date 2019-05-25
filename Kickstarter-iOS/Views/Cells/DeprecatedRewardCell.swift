@@ -46,7 +46,7 @@ internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapped))
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(DeprecatedRewardCell.tapped))
     tapRecognizer.cancelsTouchesInView = false
     tapRecognizer.delaysTouchesBegan = false
     tapRecognizer.delaysTouchesEnded = false
