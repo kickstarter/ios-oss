@@ -161,7 +161,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       countryCode: "ZZ",
       currencyCode: "ZZD",
       currencySymbol: "µ",
-      maxPledge: 10000,
+      maxPledge: 10_000,
       minPledge: 1,
       trailingCode: true
     )
@@ -209,7 +209,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ "USD"
       |> Project.lens.stats.currentCurrencyRate .~ 2
     let reward = .template
-      |> Reward.lens.minimum .~ 1000
+      |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -227,7 +227,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template
-      |> Reward.lens.minimum .~ 1000
+      |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -246,7 +246,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.currentCurrencyRate .~ 1.2
     let reward = .template
-      |> Reward.lens.minimum .~ 1000
+      |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -264,7 +264,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template
-      |> Reward.lens.minimum .~ 1000
+      |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -1517,7 +1517,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
               |> Item.lens.name .~ "The thing"
           ),
         .template
-          |> RewardsItem.lens.quantity .~ 1000
+          |> RewardsItem.lens.quantity .~ 1_000
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The other thing"
@@ -1561,7 +1561,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
               |> Item.lens.name .~ "The thing"
           ),
         .template
-          |> RewardsItem.lens.quantity .~ 1000
+          |> RewardsItem.lens.quantity .~ 1_000
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The other thing"
@@ -1593,7 +1593,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
               |> Item.lens.name .~ "The thing"
           ),
         .template
-          |> RewardsItem.lens.quantity .~ 1000
+          |> RewardsItem.lens.quantity .~ 1_000
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The other thing"

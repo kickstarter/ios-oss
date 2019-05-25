@@ -84,7 +84,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
       countryCode: "ZZ",
       currencyCode: "ZZD",
       currencySymbol: "µ",
-      maxPledge: 10000,
+      maxPledge: 10_000,
       minPledge: 1,
       trailingCode: true
     )

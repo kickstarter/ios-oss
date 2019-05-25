@@ -30,7 +30,7 @@ final class NumberFormatterTests: TestCase {
     let formatter = AttributedNumberFormatter()
     formatter.defaultAttributes = self.defaultAttributes
 
-    guard let attributedString = formatter.attributedString(for: 1000) else {
+    guard let attributedString = formatter.attributedString(for: 1_000) else {
       XCTFail("attributedString should not be nil")
       return
     }
@@ -52,7 +52,7 @@ final class NumberFormatterTests: TestCase {
     formatter.defaultAttributes = self.defaultAttributes
     formatter.decimalSeparatorAttributes = self.decimalSeparatorAttributes
 
-    guard let attributedString = formatter.attributedString(for: 1000) else {
+    guard let attributedString = formatter.attributedString(for: 1_000) else {
       XCTFail("attributedString should not be nil")
       return
     }
@@ -76,7 +76,7 @@ final class NumberFormatterTests: TestCase {
     formatter.defaultAttributes = self.defaultAttributes
     formatter.fractionDigitsAttributes = self.fractionDigitsAttributes
 
-    guard let attributedString = formatter.attributedString(for: 1000) else {
+    guard let attributedString = formatter.attributedString(for: 1_000) else {
       XCTFail("attributedString should not be nil")
       return
     }
@@ -100,7 +100,7 @@ final class NumberFormatterTests: TestCase {
     formatter.decimalSeparatorAttributes = self.decimalSeparatorAttributes
     formatter.fractionDigitsAttributes = self.fractionDigitsAttributes
 
-    guard let attributedString = formatter.attributedString(for: 1000) else {
+    guard let attributedString = formatter.attributedString(for: 1_000) else {
       XCTFail("attributedString should not be nil")
       return
     }

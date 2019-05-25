@@ -44,7 +44,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2300 : 1800
+        parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -60,7 +60,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1200 : 800
+        parent.view.frame.size.height = device == .pad ? 1_200 : 800
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
       }
@@ -77,7 +77,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1200 : parent.view.frame.size.height
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
       }
@@ -93,7 +93,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2300 : 1800
+        parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }

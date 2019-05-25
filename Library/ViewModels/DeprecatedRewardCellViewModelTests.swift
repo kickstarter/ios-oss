@@ -138,7 +138,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
   func testConversionLabel_US_User_US_Project_ConfiguredWithReward() {
     let project = .template |> Project.lens.country .~ .us
-    let reward = .template |> Reward.lens.minimum .~ 1000
+    let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
@@ -253,7 +253,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
   func testConversionLabel_NonUS_User_US_Project() {
     let project = .template |> Project.lens.country .~ .us
-    let reward = .template |> Reward.lens.minimum .~ 1000
+    let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
@@ -271,7 +271,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.currentCurrencyRate .~ nil
-    let reward = .template |> Reward.lens.minimum .~ 1000
+    let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
@@ -440,7 +440,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
               |> Item.lens.name .~ "The thing"
           ),
         .template
-          |> RewardsItem.lens.quantity .~ 1000
+          |> RewardsItem.lens.quantity .~ 1_000
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The other thing"
@@ -533,7 +533,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
   func testMinimumLabel_NotAllGone() {
     let project = Project.template
-    let reward = .template |> Reward.lens.minimum .~ 1000
+    let reward = .template |> Reward.lens.minimum .~ 1_000
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
@@ -544,7 +544,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   func testMinimumLabel_AllGone() {
     let project = Project.template
     let reward = .template
-      |> Reward.lens.minimum .~ 1000
+      |> Reward.lens.minimum .~ 1_000
       |> Reward.lens.remaining .~ 0
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
@@ -714,7 +714,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
   func testMinimumLabel_AllGoneUserIsNonBackerLiveProject() {
     let reward = .template
-      |> Reward.lens.minimum .~ 1000
+      |> Reward.lens.minimum .~ 1_000
       |> Reward.lens.remaining .~ 0
     let project = .template
       |> Project.lens.state .~ .live
@@ -730,7 +730,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
   func testMinimumLabel_AllGoneUserIsNonBackerNonLiveProject() {
     let reward = .template
-      |> Reward.lens.minimum .~ 1000
+      |> Reward.lens.minimum .~ 1_000
       |> Reward.lens.remaining .~ 0
     let project = .template
       |> Project.lens.state .~ .successful
@@ -746,7 +746,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
   func testMinimumLabel_AllGoneUserIsBackerLiveProject() {
     let reward = .template
-      |> Reward.lens.minimum .~ 1000
+      |> Reward.lens.minimum .~ 1_000
       |> Reward.lens.remaining .~ 0
     let project = .template
       |> Project.lens.state .~ .live
@@ -767,7 +767,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
   func testMinimumLabel_AllGoneUserIsBackerNonLiveProject() {
     let reward = .template
-      |> Reward.lens.minimum .~ 1000
+      |> Reward.lens.minimum .~ 1_000
       |> Reward.lens.remaining .~ 0
     let project = .template
       |> Project.lens.state .~ .successful
