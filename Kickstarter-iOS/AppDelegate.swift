@@ -2,7 +2,7 @@ import Crashlytics
 import Fabric
 import FBSDKCoreKit
 import Foundation
-//import HockeySDK
+import HockeySDK
 #if DEBUG
   @testable import KsApi
 #else
@@ -145,20 +145,20 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
 
-//    self.viewModel.outputs.configureHockey
-//      .observeForUI()
-//      .observeValues { [weak self] data in
-//        guard let _self = self else { return }
-//        let manager = BITHockeyManager.shared()
-//        manager.delegate = _self
-//        manager.configure(withIdentifier: data.appIdentifier)
-//        manager.crashManager.crashManagerStatus = .disabled
-//        manager.isUpdateManagerDisabled = data.disableUpdates
-//        manager.userID = data.userId
-//        manager.userName = data.userName
-//        manager.start()
-//        manager.authenticator.authenticateInstallation()
-//    }
+    self.viewModel.outputs.configureHockey
+      .observeForUI()
+      .observeValues { [weak self] data in
+        guard let _self = self else { return }
+        let manager = BITHockeyManager.shared()
+        manager.delegate = _self
+        manager.configure(withIdentifier: data.appIdentifier)
+        manager.crashManager.crashManagerStatus = .disabled
+        manager.isUpdateManagerDisabled = data.disableUpdates
+        manager.userID = data.userId
+        manager.userName = data.userName
+        manager.start()
+        manager.authenticator.authenticateInstallation()
+    }
 
     #if RELEASE || HOCKEY
     self.viewModel.outputs.configureFabric
@@ -324,11 +324,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 }
 
-//extension AppDelegate: BITHockeyManagerDelegate {
-//  func crashManagerDidFinishSendingCrashReport(_ crashManager: BITCrashManager!) {
-//    self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
-//  }
-//}
+extension AppDelegate: BITHockeyManagerDelegate {
+  func crashManagerDidFinishSendingCrashReport(_ crashManager: BITCrashManager!) {
+    self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
+  }
+}
 
 extension AppDelegate: URLSessionTaskDelegate {
   public func urlSession(_ session: URLSession,
