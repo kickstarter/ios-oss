@@ -5,7 +5,7 @@ github "kickstarter/Kickstarter-ReactiveExtensions" "efe17ab3ca9710f012a552991f7
 
 ### 3rd Party
 
-github "Alamofire/AlamofireImage" == 3.5.2
+github "Alamofire/AlamofireImage" "c41f8b0acfbb3180fe045df73596e4332c338633"
 github "AgileBits/onepassword-extension" == 1.8.4
 github "ReactiveCocoa/ReactiveSwift" == 5.0.1
 github "stripe/stripe-ios" == 13.2.0

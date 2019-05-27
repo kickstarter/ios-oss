@@ -13,7 +13,7 @@ FABRIC_SDK_VERSION ?= 3.10.5
 HOCKEY_SDK_VERSION ?= 5.1.4
 FABRIC_SDK_URL ?= https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip
 HOCKEY_SDK_URL ?= https://github.com/bitstadium/HockeySDK-iOS/releases/download/INSERT_SDK_VERSION/HockeySDK-iOS-INSERT_SDK_VERSION.zip
-HOCKEY_FRAMEWORK_NESTED_PATH ?= HockeySDK-iOS/HockeySDK.embeddedframework
+HOCKEY_FRAMEWORK_NESTED_PATH ?= HockeySDK-iOS/HockeySDKAllFeatures/HockeySDK.embeddedframework
 COMMIT ?= $(CIRCLE_SHA1)
 
 ifeq ($(PLATFORM),iOS)

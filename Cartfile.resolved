@@ -1,6 +1,6 @@
 github "AgileBits/onepassword-extension" "framework/1.8.4"
-github "Alamofire/Alamofire" "4.8.2"
-github "Alamofire/AlamofireImage" "3.5.2"
+github "Alamofire/Alamofire" "5.0.0-beta.6"
+github "Alamofire/AlamofireImage" "c41f8b0acfbb3180fe045df73596e4332c338633"
 github "ReactiveCocoa/ReactiveSwift" "5.0.1"
 github "antitypical/Result" "4.1.0"
 github "kickstarter/Kickstarter-Prelude" "c96c90b026d45839724e827f881dcba3ec812725"
