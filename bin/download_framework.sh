@@ -24,7 +24,7 @@ if [ "$SDK_VERSION" != "$CURRENT_SDK_VERSION" ]; then \
   rm framework.zip; \
 
   if [ ! -z "$FRAMEWORK_NESTED_PATH" ]; then \
-    mv Frameworks/$SDK_NAME/$FRAMEWORK_NESTED_PATH Frameworks/$SDK_NAME
+    mv Frameworks/$SDK_NAME/$FRAMEWORK_NESTED_PATH/* Frameworks/$SDK_NAME
   fi
 fi
 if [ -e Frameworks/$SDK_NAME/$SDK_NAME.framework ]; then \

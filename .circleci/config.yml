@@ -51,7 +51,7 @@ jobs:
       - restore_cache:
           name: Restore Hockey SDK
           keys:
-            - hockey-sdk-cache-{{ checksum "hockey_version.txt" }}
+            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -86,7 +86,7 @@ jobs:
 
       - save_cache:
           name: Cache Hockey SDK
-          key: hockey-sdk-cache-{{ checksum "hockey_version.txt" }}
+          key: hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
           paths:
             - "Frameworks/HockeySDK"
 
@@ -139,7 +139,7 @@ jobs:
       - restore_cache:
           name: Restore Hockey SDK
           keys:
-            - hockey-sdk-cache-{{ checksum "hockey_version.txt" }}
+            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -195,7 +195,7 @@ jobs:
       - restore_cache:
           name: Restore Hockey SDK
           keys:
-            - hockey-sdk-cache-{{ checksum "hockey_version.txt" }}
+            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -249,7 +249,7 @@ jobs:
       - restore_cache:
           name: Restore Hockey SDK
           keys:
-            - hockey-sdk-cache-{{ checksum "hockey_version.txt" }}
+            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -303,7 +303,7 @@ jobs:
       - restore_cache:
           name: Restore Hockey SDK
           keys:
-            - hockey-sdk-cache-{{ checksum "hockey_version.txt" }}
+            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -374,7 +374,7 @@ jobs:
       - restore_cache:
           name: Restore Hockey SDK
           keys:
-            - hockey-sdk-cache-{{ checksum "hockey_version.txt" }}
+            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -449,7 +449,7 @@ jobs:
       - restore_cache:
           name: Restore Hockey SDK
           keys:
-            - hockey-sdk-cache-{{ checksum "hockey_version.txt" }}
+            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -519,7 +519,7 @@ jobs:
       - restore_cache:
           name: Restore Hockey SDK
           keys:
-            - hockey-sdk-cache-{{ checksum "hockey_version.txt" }}
+            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -578,7 +578,7 @@ jobs:
       - restore_cache:
           name: Restore Hockey SDK
           keys:
-            - hockey-sdk-cache-{{ checksum "hockey_version.txt" }}
+            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
