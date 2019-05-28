@@ -52,7 +52,7 @@ extension NibLoading {
       .first as? Self else {
         assertionFailure("Nib not found")
         return nil
-    }
+      }
     // swiftformat:enable indent
 
     return view

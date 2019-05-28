@@ -12,18 +12,19 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
   fileprivate let viewModel: DeprecatedCheckoutViewModelType = DeprecatedCheckoutViewModel()
   private var sessionStartedObserver: Any?
 
-  internal static func configuredWith(initialRequest: URLRequest,
-                                      project: Project,
-                                      reward: Reward) -> DeprecatedCheckoutViewController {
-
-      let vc = Storyboard.Checkout.instantiate(DeprecatedCheckoutViewController.self)
-      vc.viewModel.inputs.configureWith(
-        initialRequest: initialRequest,
-        project: project,
-        reward: reward,
-        applePayCapable: PKPaymentAuthorizationViewController.applePayCapable(for: project)
-      )
-      return vc
+  internal static func configuredWith(
+    initialRequest: URLRequest,
+    project: Project,
+    reward: Reward
+  ) -> DeprecatedCheckoutViewController {
+    let vc = Storyboard.Checkout.instantiate(DeprecatedCheckoutViewController.self)
+    vc.viewModel.inputs.configureWith(
+      initialRequest: initialRequest,
+      project: project,
+      reward: reward,
+      applePayCapable: PKPaymentAuthorizationViewController.applePayCapable(for: project)
+    )
+    return vc
   }
 
   internal override func viewDidLoad() {
@@ -34,7 +35,7 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
         title: Strings.general_navigation_buttons_cancel(),
         style: .plain,
         target: self,
-        action: #selector(self.cancelButtonTapped)
+        action: #selector(DeprecatedCheckoutViewController.cancelButtonTapped)
       )
 
     self.viewModel.inputs.viewDidLoad()
@@ -174,7 +175,6 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
 }
 
 extension DeprecatedCheckoutViewController: PKPaymentAuthorizationViewControllerDelegate {
-
   internal func paymentAuthorizationViewControllerWillAuthorizePayment(
     _: PKPaymentAuthorizationViewController
   ) {

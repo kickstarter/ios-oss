@@ -1,5 +1,5 @@
-import XCTest
 @testable import Library
+import XCTest
 
 final class UIViewAutoLayoutExtensionTests: TestCase {
   func test_insertSubviewInParentAtIndex_oneSubview() {

@@ -51,7 +51,6 @@ public protocol ProjectPamphletViewModelType {
 
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
   ProjectPamphletViewModelOutputs {
-
   public init() {
     let freshProjectAndRefTag = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
@@ -63,14 +62,14 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
           .map { project in
             (project, refTag.map(cleanUp(refTag:)))
-        }
+          }
       }
 
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
-        return (project, refTag)
-    }
+        (project, refTag)
+      }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -89,7 +88,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     self.topLayoutConstraintConstant = self.initialTopConstraintProperty.signal.skipNil()
       .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
-      .map(topLayoutConstraintConstant(initialTopConstraint:traitCollection:))
+      .map(layoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     let cookieRefTag = freshProjectAndRefTag
       .map { project, refTag in
@@ -173,8 +172,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 private let cookieSeparator = "?"
 private let escapedCookieSeparator = "%3F"
 
-private func topLayoutConstraintConstantWithInitialTopConstraint(
-  _ initialTopConstraint: CGFloat,
+private func layoutConstraintConstant(
+  initialTopConstraint: CGFloat,
   traitCollection: UITraitCollection
 ) -> CGFloat {
   guard !traitCollection.isRegularRegular else {
@@ -187,7 +186,6 @@ private func topLayoutConstraintConstantWithInitialTopConstraint(
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
 private func cookieRefTagFor(project: Project) -> RefTag? {
-
   return AppEnvironment.current.cookieStorage.cookies?
     .filter { cookie in cookie.name == cookieName(project) }
     .first
@@ -203,7 +201,6 @@ private func cookieName(_ project: Project) -> String {
 // Tries to extract the name of the ref tag from a cookie. It has to do double work in case the cookie
 // is accidentally encoded with a `%3F` instead of a `?`.
 private func refTagName(fromCookie cookie: HTTPCookie) -> String {
-
   return cleanUp(refTagString: cookie.value)
 }
 
@@ -214,7 +211,6 @@ private func cleanUp(refTag: RefTag) -> RefTag {
 
 // Tries to remove cruft from a ref tag string.
 private func cleanUp(refTagString: String) -> String {
-
   let secondPass = refTagString.components(separatedBy: escapedCookieSeparator)
   if let name = secondPass.first, secondPass.count == 2 {
     return String(name)
@@ -230,14 +226,13 @@ private func cleanUp(refTagString: String) -> String {
 
 // Constructs a cookie from a ref tag and project.
 private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
-
   let timestamp = Int(AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970)
 
   var properties: [HTTPCookiePropertyKey: Any] = [:]
-  properties[.name]    = cookieName(project)
-  properties[.value]   = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
-  properties[.domain]  = URL(string: project.urls.web.project)?.host
-  properties[.path]    = URL(string: project.urls.web.project)?.path
+  properties[.name] = cookieName(project)
+  properties[.value] = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
+  properties[.domain] = URL(string: project.urls.web.project)?.host
+  properties[.path] = URL(string: project.urls.web.project)?.path
   properties[.version] = 0
   properties[.expires] = AppEnvironment.current.dateType
     .init(timeIntervalSince1970: project.dates.deadline).date

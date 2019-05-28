@@ -2,7 +2,7 @@ import KsApi
 import Library
 import Prelude
 
-internal protocol RewardCellDelegate: class {
+internal protocol RewardCellDelegate: AnyObject {
   /// Called when the reward cell needs to perform an expansion animation.
   func rewardCellWantsExpansion(_ cell: DeprecatedRewardCell)
 }
@@ -11,42 +11,42 @@ internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
   internal var delegate: RewardCellDelegate?
   fileprivate let viewModel: RewardCellViewModelType = DeprecatedRewardCellViewModel()
 
-  @IBOutlet fileprivate weak var allGoneContainerView: UIView!
-  @IBOutlet fileprivate weak var allGoneLabel: UILabel!
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var checkmarkImageView: UIImageView!
-  @IBOutlet fileprivate weak var conversionLabel: UILabel!
-  @IBOutlet fileprivate weak var descriptionLabel: UILabel!
-  @IBOutlet fileprivate weak var estimatedDeliveryDateLabel: UILabel!
-  @IBOutlet fileprivate weak var estimatedDeliveryLabel: UILabel!
-  @IBOutlet fileprivate weak var estimatedDeliveryDateStackView: UIStackView!
-  @IBOutlet fileprivate weak var footerLabel: UILabel!
-  @IBOutlet fileprivate weak var footerStackView: UIStackView!
-  @IBOutlet fileprivate weak var includesTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var itemsContainerStackView: UIStackView!
-  @IBOutlet fileprivate weak var itemsHeaderStackView: UIStackView!
-  @IBOutlet fileprivate weak var itemsStackView: UIStackView!
-  @IBOutlet fileprivate weak var manageRewardButton: UIButton!
-  @IBOutlet fileprivate weak var minimumLabel: UILabel!
-  @IBOutlet fileprivate weak var minimumStackView: UIStackView!
-  @IBOutlet fileprivate weak var rewardTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
-  @IBOutlet fileprivate weak var selectRewardButton: UIButton!
-  @IBOutlet fileprivate weak var shippingLocationsLabel: UILabel!
-  @IBOutlet fileprivate weak var shippingLocationsStackView: UIStackView!
-  @IBOutlet fileprivate weak var shippingLocationsSummaryLabel: UILabel!
+  @IBOutlet fileprivate var allGoneContainerView: UIView!
+  @IBOutlet fileprivate var allGoneLabel: UILabel!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var checkmarkImageView: UIImageView!
+  @IBOutlet fileprivate var conversionLabel: UILabel!
+  @IBOutlet fileprivate var descriptionLabel: UILabel!
+  @IBOutlet fileprivate var estimatedDeliveryDateLabel: UILabel!
+  @IBOutlet fileprivate var estimatedDeliveryLabel: UILabel!
+  @IBOutlet fileprivate var estimatedDeliveryDateStackView: UIStackView!
+  @IBOutlet fileprivate var footerLabel: UILabel!
+  @IBOutlet fileprivate var footerStackView: UIStackView!
+  @IBOutlet fileprivate var includesTitleLabel: UILabel!
+  @IBOutlet fileprivate var itemsContainerStackView: UIStackView!
+  @IBOutlet fileprivate var itemsHeaderStackView: UIStackView!
+  @IBOutlet fileprivate var itemsStackView: UIStackView!
+  @IBOutlet fileprivate var manageRewardButton: UIButton!
+  @IBOutlet fileprivate var minimumLabel: UILabel!
+  @IBOutlet fileprivate var minimumStackView: UIStackView!
+  @IBOutlet fileprivate var rewardTitleLabel: UILabel!
+  @IBOutlet fileprivate var rootStackView: UIStackView!
+  @IBOutlet fileprivate var selectRewardButton: UIButton!
+  @IBOutlet fileprivate var shippingLocationsLabel: UILabel!
+  @IBOutlet fileprivate var shippingLocationsStackView: UIStackView!
+  @IBOutlet fileprivate var shippingLocationsSummaryLabel: UILabel!
   @IBOutlet fileprivate var separatorViews: [UIView]!
-  @IBOutlet fileprivate weak var titleDescriptionStackView: UIStackView!
-  @IBOutlet fileprivate weak var viewYourPledgeButton: UIButton!
-  @IBOutlet fileprivate weak var youreABackerCheckmarkImageView: UIImageView!
-  @IBOutlet fileprivate weak var youreABackerContainerView: UIView!
-  @IBOutlet fileprivate weak var youreABackerLabel: UILabel!
-  @IBOutlet fileprivate weak var youreABackerStackView: UIStackView!
+  @IBOutlet fileprivate var titleDescriptionStackView: UIStackView!
+  @IBOutlet fileprivate var viewYourPledgeButton: UIButton!
+  @IBOutlet fileprivate var youreABackerCheckmarkImageView: UIImageView!
+  @IBOutlet fileprivate var youreABackerContainerView: UIView!
+  @IBOutlet fileprivate var youreABackerLabel: UILabel!
+  @IBOutlet fileprivate var youreABackerStackView: UIStackView!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(DeprecatedRewardCell.tapped))
     tapRecognizer.cancelsTouchesInView = false
     tapRecognizer.delaysTouchesBegan = false
     tapRecognizer.delaysTouchesEnded = false
@@ -67,18 +67,19 @@ internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
       |> DeprecatedRewardCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
-      |> (DeprecatedRewardCell.lens.contentView..UIView.lens.layoutMargins) %~~ { _, cell in
+      |> (DeprecatedRewardCell.lens.contentView .. UIView.lens.layoutMargins) %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(2), left: Styles.grid(16), bottom: Styles.grid(4), right: Styles.grid(16))
           : .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
       }
-      |> DeprecatedRewardCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
+      |> DeprecatedRewardCell.lens.contentView .. UIView.lens.backgroundColor .~ projectCellBackgroundColor()
       |> UIView.lens.contentMode .~ .top
 
     _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(4)
-      |> UIStackView.lens.layoutMargins
-        .~ .init(top: Styles.grid(3), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+      |> UIStackView.lens.layoutMargins .~ .init(
+        top: Styles.grid(3), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2)
+      )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.minimumStackView
@@ -96,8 +97,10 @@ internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
     _ = [self.itemsContainerStackView, self.itemsHeaderStackView, self.itemsStackView]
       ||> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    _ = [self.minimumStackView, self.titleDescriptionStackView,
-         self.itemsContainerStackView, self.footerStackView]
+    _ = [
+      self.minimumStackView, self.titleDescriptionStackView,
+      self.itemsContainerStackView, self.footerStackView
+    ]
       ||> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(2))
       ||> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
@@ -157,7 +160,7 @@ internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.tintColor .~ .ksr_text_dark_grey_500
       |> UIImageView.lens.image %~ { _ in
         UIImage(named: "checkmark-icon", in: .framework, compatibleWith: nil)
-    }
+      }
 
     _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
@@ -234,13 +237,13 @@ internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] in
         self.doIfSome { $0.delegate?.rewardCellWantsExpansion($0) }
-    }
+      }
 
     self.viewModel.outputs.updateTopMarginsForIsBacking
       .observeForUI()
       .observeValues { [weak self] isBacking in
         self?.contentView.layoutMargins.top = Styles.grid(isBacking ? 3 : 1)
-    }
+      }
 
     self.viewModel.outputs.items
       .observeForUI()

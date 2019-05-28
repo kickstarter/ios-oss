@@ -51,12 +51,12 @@ class PledgeTableViewController: UITableViewController {
 
     self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] (amount, currency, delivery, shipping, isLoggedIn) in
+      .observeValues { [weak self] amount, currency, delivery, shipping, isLoggedIn in
         self?.dataSource.load(
           amount: amount, currency: currency, delivery: delivery, shipping: shipping, isLoggedIn: isLoggedIn
         )
         self?.tableView.reloadData()
-    }
+      }
   }
 
   // MARK: - UITableViewDelegate
@@ -68,9 +68,11 @@ class PledgeTableViewController: UITableViewController {
     return footerView
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
+  internal override func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt _: IndexPath
+  ) {
     if let descriptionCell = cell as? PledgeDescriptionCell {
       descriptionCell.delegate = self
     }
@@ -78,7 +80,7 @@ class PledgeTableViewController: UITableViewController {
 }
 
 extension PledgeTableViewController: PledgeDescriptionCellDelegate {
- internal func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell) {
+  internal func pledgeDescriptionCellDidPresentTrustAndSafety(_: PledgeDescriptionCell) {
     let vc = HelpWebViewController.configuredWith(helpType: .trust)
     let nav = UINavigationController(rootViewController: vc)
     self.present(nav, animated: true, completion: nil)

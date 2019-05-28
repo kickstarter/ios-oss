@@ -188,7 +188,7 @@
 		778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */; };
 		77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */; };
 		778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778CCC5122822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift */; };
-		778CCCDA2285BF8900FB8D35 /* UIView+AutolayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778CCCD92285BF8900FB8D35 /* UIView+AutolayoutTests.swift */; };
+		778CCCDA2285BF8900FB8D35 /* UIView+AutoLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778CCCD92285BF8900FB8D35 /* UIView+AutoLayoutTests.swift */; };
 		7790DF502200D395005DBB11 /* SettingsFormFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */; };
 		7790DF892200D3BD005DBB11 /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
 		7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */; };
@@ -1445,7 +1445,7 @@
 		778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewControllerTests.swift; sourceTree = "<group>"; };
 		77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksProjectsDataSourceTests.swift; sourceTree = "<group>"; };
 		778CCC5122822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetOverlayTransitionAnimator.swift; sourceTree = "<group>"; };
-		778CCCD92285BF8900FB8D35 /* UIView+AutolayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutolayoutTests.swift"; sourceTree = "<group>"; };
+		778CCCD92285BF8900FB8D35 /* UIView+AutoLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayoutTests.swift"; sourceTree = "<group>"; };
 		7790DF4F2200D395005DBB11 /* SettingsFormFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFormFieldView.swift; sourceTree = "<group>"; };
 		7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsFormFieldView.xib; sourceTree = "<group>"; };
 		7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
@@ -2966,7 +2966,7 @@
 				D0A787BE2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift */,
 				01A7A4BF1C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift */,
 				37BB45C82243031100E7392A /* UIView+AutoLayout.swift */,
-				778CCCD92285BF8900FB8D35 /* UIView+AutolayoutTests.swift */,
+				778CCCD92285BF8900FB8D35 /* UIView+AutoLayoutTests.swift */,
 				A733795F1D0EDFEE00C91445 /* UIViewController-Preparation.swift */,
 				370BE71522541C8100B44DB2 /* UIViewController+URL.swift */,
 				370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */,
@@ -4640,7 +4640,7 @@
 				A7ED1FC31E831C5C00BFFA01 /* ProfileViewModelTests.swift in Sources */,
 				A7ED20011E831C5C00BFFA01 /* SignupViewModelTests.swift in Sources */,
 				A7ED1FF71E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift in Sources */,
-				778CCCDA2285BF8900FB8D35 /* UIView+AutolayoutTests.swift in Sources */,
+				778CCCDA2285BF8900FB8D35 /* UIView+AutoLayoutTests.swift in Sources */,
 				373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */,
 				D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */,
 				A7ED1FF51E831C5C00BFFA01 /* ProjectNavBarViewModelTests.swift in Sources */,

@@ -1,6 +1,6 @@
-import UIKit
 import Foundation
 import Prelude
+import UIKit
 
 final class MultiLineButton: UIButton {
   override var intrinsicContentSize: CGSize {
@@ -8,7 +8,7 @@ final class MultiLineButton: UIButton {
     let titleInsets = self.titleEdgeInsets
 
     return CGSize(
-      width: titleInsets.left + size.width  + titleInsets.right,
+      width: titleInsets.left + size.width + titleInsets.right,
       height: titleInsets.top + size.height + titleInsets.bottom
     )
   }
