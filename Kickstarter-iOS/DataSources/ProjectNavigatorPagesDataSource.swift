@@ -24,11 +24,12 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
   }
 
   internal func initialController() -> UIViewController? {
-    return self.playlist.index(of: self.initialProject).flatMap(self.controllerFor(index:))
+    return self.playlist.firstIndex(of: self.initialProject).flatMap(self.controllerFor(index:))
   }
 
   internal func initialPamphletController() -> ProjectPamphletViewController? {
-    return self.playlist.index(of: self.initialProject).flatMap(self.projectPamphletControllerFor(index:))
+    return self.playlist.firstIndex(of: self.initialProject)
+      .flatMap(self.projectPamphletControllerFor(index:))
   }
 
   internal func controllerFor(index: Int) -> UIViewController? {
@@ -49,7 +50,7 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
   }
 
   internal func indexFor(controller: UIViewController) -> Int? {
-    return self.viewControllers.index { $0 == controller }
+    return self.viewControllers.firstIndex { $0 == controller }
   }
 
   internal func projectFor(controller: UIViewController) -> Project? {
@@ -60,7 +61,7 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
     _ pageViewController: UIPageViewController,
     viewControllerAfter viewController: UIViewController) -> UIViewController? {
 
-    guard let pageIdx = self.viewControllers.index(where: { $0 == viewController }) else {
+    guard let pageIdx = self.viewControllers.firstIndex(where: { $0 == viewController }) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
 
@@ -84,7 +85,7 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
     viewControllerBefore
     viewController: UIViewController) -> UIViewController? {
 
-    guard let pageIdx = self.viewControllers.index(where: { $0 == viewController }) else {
+    guard let pageIdx = self.viewControllers.firstIndex(where: { $0 == viewController }) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
 

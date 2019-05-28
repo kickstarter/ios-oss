@@ -16,7 +16,7 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.recommendationsSwitch]
+      |> \.accessibilityElements .~ [self.recommendationsSwitch as Any]
 
     _ = self.recommendationsSwitch
       |> \.accessibilityLabel %~ { _ in Strings.Recommendations() }

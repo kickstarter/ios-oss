@@ -1841,6 +1841,8 @@ public final class Koala {
       return "Portrait Upside Down"
     case .unknown:
       return "Unknown"
+    @unknown default:
+      fatalError()
     }
   }
 

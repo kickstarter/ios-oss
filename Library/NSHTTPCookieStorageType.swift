@@ -20,7 +20,7 @@ internal final class MockCookieStorage: HTTPCookieStorageProtocol {
   }
 
   internal func deleteCookie(_ cookie: HTTPCookie) {
-    if let idx = self.storage.index(of: cookie) {
+    if let idx = self.storage.firstIndex(of: cookie) {
       self.storage.remove(at: idx)
     }
   }

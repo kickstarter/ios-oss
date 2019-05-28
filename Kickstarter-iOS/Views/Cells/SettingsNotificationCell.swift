@@ -41,7 +41,9 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     _ = self.stackView
       |> \.accessibilityElements .~ (
-        accessibilityElementsHidden ? [self.emailNotificationsButton, self.pushNotificationsButton] : nil
+        accessibilityElementsHidden
+          ? [self.emailNotificationsButton, self.pushNotificationsButton].map { $0 as Any }
+          : nil
     )
 
     _ = self.titleLabel

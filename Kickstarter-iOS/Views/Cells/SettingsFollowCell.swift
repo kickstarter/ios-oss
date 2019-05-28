@@ -24,7 +24,7 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.followingSwitch]
+      |> \.accessibilityElements .~ [self.followingSwitch as Any]
 
     _ = self.followingSwitch
       |> \.accessibilityLabel %~ { _ in Strings.Following() }

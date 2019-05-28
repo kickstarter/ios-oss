@@ -37,12 +37,12 @@ private let gqlPath = "graph"
 
 public struct ServerConfig: ServerConfigType {
 
-  public fileprivate(set) var apiBaseUrl: URL
-  public fileprivate(set) var webBaseUrl: URL
-  public fileprivate(set) var apiClientAuth: ClientAuthType
-  public fileprivate(set) var basicHTTPAuth: BasicHTTPAuthType?
-  public fileprivate(set) var graphQLEndpointUrl: URL
-  public fileprivate(set) var environment: EnvironmentType
+  public var apiBaseUrl: URL
+  public var webBaseUrl: URL
+  public var apiClientAuth: ClientAuthType
+  public var basicHTTPAuth: BasicHTTPAuthType?
+  public var graphQLEndpointUrl: URL
+  public var environment: EnvironmentType
 
   public static let production: ServerConfigType = ServerConfig(
     apiBaseUrl: URL(string: "https://\(Secrets.Api.Endpoint.production)")!,

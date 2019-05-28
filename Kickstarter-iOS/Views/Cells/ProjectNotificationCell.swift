@@ -20,7 +20,7 @@ internal final class ProjectNotificationCell: UITableViewCell, ValueCell {
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.notificationSwitch]
+      |> \.accessibilityElements .~ [self.notificationSwitch as Any]
 
     self.notificationSwitch.addTarget(self, action: #selector(notificationTapped), for: .valueChanged)
   }
