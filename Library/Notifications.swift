@@ -5,7 +5,7 @@ public enum CurrentUserNotifications {
   public static let environmentChanged = "CurrentUserNotification.environmentChanged"
   public static let localePreferencesChanged = "CurrentUserNotification.localePreferencesChanged"
   public static let projectSaved = "CurrentUserNotifications.projectSaved"
-  public static let recommendationsSettingChanged = "CurrentUserNotifications.recommendationSettingChanged"
+  public static let recommendationsSettingChanged = "CurrentUserNotifications.recommendationsSettingChanged"
   public static let savedProjectEmptyStateTapped = "CurrentUserNotifications.savedProjectEmptyStateTapped"
   public static let sessionEnded = "CurrentUserNotifications.sessionEnded"
   public static let sessionStarted = "CurrentUserNotifications.sessionStarted"
