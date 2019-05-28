@@ -136,6 +136,7 @@ internal final class DiscoveryViewModelTests: TestCase {
       withEnvironment(currentUser: optedOutUser) {
 
         self.vm.inputs.didChangeRecommendationsSetting()
+        self.vm.inputs.viewWillAppear(animated: false)
 
         self.configureNavigationHeader.assertValues([recsInitialParams, initialParams])
       }

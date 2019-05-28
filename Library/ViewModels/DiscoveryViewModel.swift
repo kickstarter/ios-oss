@@ -69,10 +69,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 DiscoveryViewModelOutputs {
 
   private static func initialParams() -> DiscoveryParams {
-    let user = AppEnvironment.current.currentUser
-    let optedOutOfRecommendations = user?.optedOutOfRecommendations ?? true
-
-    if user == nil || optedOutOfRecommendations {
+    guard AppEnvironment.current.currentUser?.optedOutOfRecommendations == .some(false) else {
       return DiscoveryParams.defaults
         |> DiscoveryParams.lens.includePOTD .~ true
     }
