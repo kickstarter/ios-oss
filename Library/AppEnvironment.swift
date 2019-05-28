@@ -5,7 +5,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 /**
  A global stack that captures the current state of global objects that the app wants access to.
@@ -132,7 +131,7 @@ public struct AppEnvironment: AppEnvironmentType {
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
-    reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
+    reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
@@ -194,7 +193,7 @@ public struct AppEnvironment: AppEnvironmentType {
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
-    reachability: SignalProducer<Reachability, NoError> = AppEnvironment.current.reachability,
+    reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {

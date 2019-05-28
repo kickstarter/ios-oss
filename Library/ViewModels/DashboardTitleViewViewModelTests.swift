@@ -1,5 +1,4 @@
 import XCTest
-import Result
 import ReactiveSwift
 import Prelude
 @testable import KsApi
@@ -9,13 +8,13 @@ import ReactiveExtensions_TestHelpers
 internal final class DashboardTitleViewViewModelTests: TestCase {
   internal let vm: DashboardTitleViewViewModelType = DashboardTitleViewViewModel()
 
-  let hideArrow = TestObserver<Bool, NoError>()
-  let notifyDelegateShowHideProjectsDrawer = TestObserver<(), NoError>()
-  let titleText = TestObserver<String, NoError>()
-  let titleButtonIsEnabled = TestObserver<Bool, NoError>()
-  let updateArrowState = TestObserver<DrawerState, NoError>()
-  let titleAccessibilityLabel = TestObserver<String, NoError>()
-  let titleAccessibilityHint = TestObserver<String, NoError>()
+  let hideArrow = TestObserver<Bool, Never>()
+  let notifyDelegateShowHideProjectsDrawer = TestObserver<(), Never>()
+  let titleText = TestObserver<String, Never>()
+  let titleButtonIsEnabled = TestObserver<Bool, Never>()
+  let updateArrowState = TestObserver<DrawerState, Never>()
+  let titleAccessibilityLabel = TestObserver<String, Never>()
+  let titleAccessibilityHint = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()

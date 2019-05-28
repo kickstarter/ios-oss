@@ -1,6 +1,5 @@
 import Library
 import Prelude
-import Result
 import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
@@ -22,7 +21,7 @@ internal final class RewardPledgeViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
-        fetchShippingRulesResult: Result([
+        fetchShippingRulesResult: Result(success: [
           .template |> ShippingRule.lens.location .~ .usa,
           .template |> ShippingRule.lens.location .~ .canada,
           .template |> ShippingRule.lens.location .~ .greatBritain,

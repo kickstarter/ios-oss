@@ -3,13 +3,12 @@ import XCTest
 import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
-import Result
 
 internal final class ActivityFriendBackingViewModelTests: TestCase {
   fileprivate let vm: ActivityFriendBackingViewModelType = ActivityFriendBackingViewModel()
 
-  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let friendTitleLabel = TestObserver<String, NoError>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let friendTitleLabel = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

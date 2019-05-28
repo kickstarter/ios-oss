@@ -1,7 +1,6 @@
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import XCTest
 @testable import KsApi
 import ReactiveExtensions_TestHelpers
@@ -10,28 +9,28 @@ import ReactiveExtensions_TestHelpers
 final class ProjectPamphletMainCellViewModelTests: TestCase {
   fileprivate let vm: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
 
-  fileprivate let statsStackViewAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let backersTitleLabelText = TestObserver<String, NoError>()
-  fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let conversionLabelText = TestObserver<String, NoError>()
-  fileprivate let creatorImageUrl = TestObserver<String?, NoError>()
-  fileprivate let creatorLabelText = TestObserver<String, NoError>()
-  fileprivate let deadlineSubtitleLabelText = TestObserver<String, NoError>()
-  fileprivate let deadlineTitleLabelText = TestObserver<String, NoError>()
-  fileprivate let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, NoError>()
-  private let opacityForViews = TestObserver<CGFloat, NoError>()
-  fileprivate let pledgedSubtitleLabelText = TestObserver<String, NoError>()
-  fileprivate let pledgedTitleLabelText = TestObserver<String, NoError>()
-  fileprivate let pledgedTitleLabelTextColor = TestObserver<UIColor, NoError>()
-  fileprivate let progressPercentage = TestObserver<Float, NoError>()
-  fileprivate let projectBlurbLabelText = TestObserver<String, NoError>()
-  fileprivate let projectImageUrl = TestObserver<String?, NoError>()
-  fileprivate let projectNameLabelText = TestObserver<String, NoError>()
-  fileprivate let projectStateLabelText = TestObserver<String, NoError>()
-  fileprivate let projectStateLabelTextColor = TestObserver<UIColor, NoError>()
-  fileprivate let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, NoError>()
-  fileprivate let stateLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let youreABackerLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let statsStackViewAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let backersTitleLabelText = TestObserver<String, Never>()
+  fileprivate let conversionLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let conversionLabelText = TestObserver<String, Never>()
+  fileprivate let creatorImageUrl = TestObserver<String?, Never>()
+  fileprivate let creatorLabelText = TestObserver<String, Never>()
+  fileprivate let deadlineSubtitleLabelText = TestObserver<String, Never>()
+  fileprivate let deadlineTitleLabelText = TestObserver<String, Never>()
+  fileprivate let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, Never>()
+  private let opacityForViews = TestObserver<CGFloat, Never>()
+  fileprivate let pledgedSubtitleLabelText = TestObserver<String, Never>()
+  fileprivate let pledgedTitleLabelText = TestObserver<String, Never>()
+  fileprivate let pledgedTitleLabelTextColor = TestObserver<UIColor, Never>()
+  fileprivate let progressPercentage = TestObserver<Float, Never>()
+  fileprivate let projectBlurbLabelText = TestObserver<String, Never>()
+  fileprivate let projectImageUrl = TestObserver<String?, Never>()
+  fileprivate let projectNameLabelText = TestObserver<String, Never>()
+  fileprivate let projectStateLabelText = TestObserver<String, Never>()
+  fileprivate let projectStateLabelTextColor = TestObserver<UIColor, Never>()
+  fileprivate let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, Never>()
+  fileprivate let stateLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let youreABackerLabelHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

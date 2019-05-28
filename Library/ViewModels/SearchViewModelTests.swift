@@ -5,27 +5,26 @@ import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import KsApi
 import ReactiveSwift
-import Result
 @testable import Library
 import Prelude
 
 internal final class SearchViewModelTests: TestCase {
   fileprivate let vm: SearchViewModelType! = SearchViewModel()
 
-  fileprivate let changeSearchFieldFocusFocused = TestObserver<Bool, NoError>()
-  fileprivate let changeSearchFieldFocusAnimated = TestObserver<Bool, NoError>()
-  fileprivate let goToRefTag = TestObserver<RefTag, NoError>()
-  private let hasAddedProjects = TestObserver<Bool, NoError>()
-  fileprivate let hasProjects = TestObserver<Bool, NoError>()
-  fileprivate let isPopularTitleVisible = TestObserver<Bool, NoError>()
-  fileprivate let popularLoaderIndicatorIsAnimating = TestObserver<Bool, NoError>()
-  fileprivate var noProjects = TestObserver<Bool, NoError>()
-  fileprivate let resignFirstResponder = TestObserver<(), NoError>()
-  private let scrollToProjectRow = TestObserver<Int, NoError>()
-  fileprivate let searchFieldText = TestObserver<String, NoError>()
-  fileprivate let searchLoaderIndicatorIsAnimating = TestObserver<Bool, NoError>()
-  fileprivate let showEmptyState = TestObserver<Bool, NoError>()
-  fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, NoError>()
+  fileprivate let changeSearchFieldFocusFocused = TestObserver<Bool, Never>()
+  fileprivate let changeSearchFieldFocusAnimated = TestObserver<Bool, Never>()
+  fileprivate let goToRefTag = TestObserver<RefTag, Never>()
+  private let hasAddedProjects = TestObserver<Bool, Never>()
+  fileprivate let hasProjects = TestObserver<Bool, Never>()
+  fileprivate let isPopularTitleVisible = TestObserver<Bool, Never>()
+  fileprivate let popularLoaderIndicatorIsAnimating = TestObserver<Bool, Never>()
+  fileprivate var noProjects = TestObserver<Bool, Never>()
+  fileprivate let resignFirstResponder = TestObserver<(), Never>()
+  private let scrollToProjectRow = TestObserver<Int, Never>()
+  fileprivate let searchFieldText = TestObserver<String, Never>()
+  fileprivate let searchLoaderIndicatorIsAnimating = TestObserver<Bool, Never>()
+  fileprivate let showEmptyState = TestObserver<Bool, Never>()
+  fileprivate let showEmptyStateParams = TestObserver<DiscoveryParams, Never>()
 
   override func setUp() {
     super.setUp()
@@ -401,7 +400,7 @@ internal final class SearchViewModelTests: TestCase {
     let debounceDelay = TestCase.interval
 
     withEnvironment(debounceInterval: debounceDelay) {
-      let projects = TestObserver<[Int], NoError>()
+      let projects = TestObserver<[Int], Never>()
       self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
       self.vm.inputs.viewWillAppear(animated: true)
@@ -441,7 +440,7 @@ internal final class SearchViewModelTests: TestCase {
     let debounceDelay = DispatchTimeInterval.seconds(1)
 
     withEnvironment(apiDelayInterval: apiDelay, debounceInterval: debounceDelay) {
-      let projects = TestObserver<[Int], NoError>()
+      let projects = TestObserver<[Int], Never>()
       self.vm.outputs.projects.map { $0.map { $0.id } }.observe(projects.observer)
 
       self.vm.inputs.viewWillAppear(animated: true)

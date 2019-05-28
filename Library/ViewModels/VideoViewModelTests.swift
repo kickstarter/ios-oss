@@ -1,7 +1,6 @@
 import AVFoundation
 import Library
 import Prelude
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,18 +8,18 @@ import ReactiveExtensions_TestHelpers
 
 internal final class VideoViewModelTests: TestCase {
   internal let vm = VideoViewModel()
-  internal let addCompletionObserver = TestObserver<CMTime, NoError>()
-  internal let configurePlayerWithURL = TestObserver<String, NoError>()
-  internal let incrementVideoCompletion = TestObserver<VoidEnvelope, NoError>()
-  internal let incrementVideoStart = TestObserver<VoidEnvelope, NoError>()
-  internal let opacityForViews = TestObserver<CGFloat, NoError>()
-  internal let pauseVideo = TestObserver<Void, NoError>()
-  internal let playVideo = TestObserver<Void, NoError>()
-  internal let playButtonHidden = TestObserver<Bool, NoError>()
-  internal let projectImageHidden = TestObserver<Bool, NoError>()
-  internal let projectImageURL = TestObserver<String?, NoError>()
-  internal let seekToBeginning = TestObserver<Void, NoError>()
-  internal let videoViewHidden = TestObserver<Bool, NoError>()
+  internal let addCompletionObserver = TestObserver<CMTime, Never>()
+  internal let configurePlayerWithURL = TestObserver<String, Never>()
+  internal let incrementVideoCompletion = TestObserver<VoidEnvelope, Never>()
+  internal let incrementVideoStart = TestObserver<VoidEnvelope, Never>()
+  internal let opacityForViews = TestObserver<CGFloat, Never>()
+  internal let pauseVideo = TestObserver<Void, Never>()
+  internal let playVideo = TestObserver<Void, Never>()
+  internal let playButtonHidden = TestObserver<Bool, Never>()
+  internal let projectImageHidden = TestObserver<Bool, Never>()
+  internal let projectImageURL = TestObserver<String?, Never>()
+  internal let seekToBeginning = TestObserver<Void, Never>()
+  internal let videoViewHidden = TestObserver<Bool, Never>()
 
   let pauseRate = 0.0
   let playRate = 1.0

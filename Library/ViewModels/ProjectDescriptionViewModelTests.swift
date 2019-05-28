@@ -1,7 +1,6 @@
 // swiftlint:disable force_unwrapping
 import Prelude
 import ReactiveSwift
-import Result
 import WebKit
 import XCTest
 @testable import KsApi
@@ -11,12 +10,12 @@ import ReactiveExtensions_TestHelpers
 final class ProjectDescriptionViewModelTests: TestCase {
   fileprivate let vm: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
 
-  fileprivate let goBackToProject = TestObserver<(), NoError>()
-  fileprivate let goToMessageDialog = TestObserver<(MessageSubject, Koala.MessageDialogContext), NoError>()
-  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
-  fileprivate let isLoading = TestObserver<Bool, NoError>()
-  fileprivate let loadWebViewRequest = TestObserver<URLRequest, NoError>()
-  fileprivate let showErrorAlert = TestObserver<NSError, NoError>()
+  fileprivate let goBackToProject = TestObserver<(), Never>()
+  fileprivate let goToMessageDialog = TestObserver<(MessageSubject, Koala.MessageDialogContext), Never>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
+  fileprivate let isLoading = TestObserver<Bool, Never>()
+  fileprivate let loadWebViewRequest = TestObserver<URLRequest, Never>()
+  fileprivate let showErrorAlert = TestObserver<NSError, Never>()
 
   override func setUp() {
     super.setUp()

@@ -1,10 +1,9 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol FindFriendsCellViewModelOutputs {
-  var isDisabled: Signal<Bool, NoError> { get }
+  var isDisabled: Signal<Bool, Never> { get }
 }
 
 public protocol FindFriendsCellViewModelInputs {
@@ -32,7 +31,7 @@ FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
     self.userProperty.value = user
   }
 
-  public let isDisabled: Signal<Bool, NoError>
+  public let isDisabled: Signal<Bool, Never>
 
   public var outputs: FindFriendsCellViewModelOutputs {
     return self

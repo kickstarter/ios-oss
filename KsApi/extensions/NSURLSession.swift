@@ -4,7 +4,6 @@ import Runes
 import Foundation
 import Prelude
 import ReactiveSwift
-import Result
 
 private func parseJSONData(_ data: Data) -> Any? {
   return (try? JSONSerialization.jsonObject(with: data, options: []))
@@ -110,7 +109,7 @@ private let boundary = "k1ck574r73r154c0mp4ny"
 extension URLSession {
   // Returns a producer that will execute the given upload once for each invocation of start().
   fileprivate func rac_dataWithRequest(_ request: URLRequest, uploading file: URL, named name: String)
-    -> SignalProducer<(Data, URLResponse), AnyError> {
+    -> SignalProducer<(Data, URLResponse), Error> {
 
       var mutableRequest = request
 
@@ -134,7 +133,7 @@ extension URLSession {
       return SignalProducer { observer, disposable in
         let task = self.dataTask(with: mutableRequest) { data, response, error in
           guard let data = data, let response = response else {
-            observer.send(error: AnyError(error ?? defaultSessionError))
+            observer.send(error: error ?? defaultSessionError)
             return
           }
           observer.send(value: (data, response))

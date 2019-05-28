@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public enum EmptyState: String {
   case activity = "activity"
@@ -27,22 +26,22 @@ public protocol EmptyStatesViewModelInputs {
 
 public protocol EmptyStatesViewModelOutputs {
   /// Emits a constant float value for the bottom layout constraint.
-  var bottomLayoutConstraintConstant: Signal<CGFloat, NoError> { get }
+  var bottomLayoutConstraintConstant: Signal<CGFloat, Never> { get }
 
   /// Emits the button text.
-  var mainButtonText: Signal<String, NoError> { get }
+  var mainButtonText: Signal<String, Never> { get }
 
   /// Emits to notify the delegate to go to Discovery with params.
-  var notifyDelegateToGoToDiscovery: Signal<DiscoveryParams?, NoError> { get }
+  var notifyDelegateToGoToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
   /// Emits to notify the delegate to go to Friends.
-  var notifyDelegateToGoToFriends: Signal<(), NoError> { get }
+  var notifyDelegateToGoToFriends: Signal<(), Never> { get }
 
   /// Emits the subtitle label text.
-  var subtitleLabelText: Signal<String, NoError> { get }
+  var subtitleLabelText: Signal<String, Never> { get }
 
   /// Emits the title label text.
-  var titleLabelText: Signal<String, NoError> { get }
+  var titleLabelText: Signal<String, Never> { get }
 }
 
 public protocol EmptyStatesViewModelType {
@@ -106,12 +105,12 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
     self.viewWillAppearProperty.value = ()
   }
 
-  public let bottomLayoutConstraintConstant: Signal<CGFloat, NoError>
-  public let mainButtonText: Signal<String, NoError>
-  public let notifyDelegateToGoToDiscovery: Signal<DiscoveryParams?, NoError>
-  public let notifyDelegateToGoToFriends: Signal<(), NoError>
-  public let subtitleLabelText: Signal<String, NoError>
-  public let titleLabelText: Signal<String, NoError>
+  public let bottomLayoutConstraintConstant: Signal<CGFloat, Never>
+  public let mainButtonText: Signal<String, Never>
+  public let notifyDelegateToGoToDiscovery: Signal<DiscoveryParams?, Never>
+  public let notifyDelegateToGoToFriends: Signal<(), Never>
+  public let subtitleLabelText: Signal<String, Never>
+  public let titleLabelText: Signal<String, Never>
 
   public var inputs: EmptyStatesViewModelInputs { return self }
   public var outputs: EmptyStatesViewModelOutputs { return self }

@@ -1,5 +1,4 @@
 import XCTest
-import Result
 import ReactiveSwift
 @testable import KsApi
 @testable import Library
@@ -9,13 +8,13 @@ import ReactiveExtensions_TestHelpers
 internal final class CommentDialogViewModelTests: TestCase {
   internal let vm: CommentDialogViewModelType = CommentDialogViewModel()
 
-  internal let bodyTextViewText = TestObserver<String, NoError>()
-  internal var postButtonEnabled = TestObserver<Bool, NoError>()
-  internal var loadingViewIsHidden = TestObserver<Bool, NoError>()
-  internal var presentError = TestObserver<String, NoError>()
-  internal let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Comment, NoError>()
-  internal let notifyPresenterDialogWantsDismissal = TestObserver<(), NoError>()
-  internal let showKeyboard = TestObserver<Bool, NoError>()
+  internal let bodyTextViewText = TestObserver<String, Never>()
+  internal var postButtonEnabled = TestObserver<Bool, Never>()
+  internal var loadingViewIsHidden = TestObserver<Bool, Never>()
+  internal var presentError = TestObserver<String, Never>()
+  internal let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Comment, Never>()
+  internal let notifyPresenterDialogWantsDismissal = TestObserver<(), Never>()
+  internal let showKeyboard = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()

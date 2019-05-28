@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol ActitiviesViewModelInputs {
   /// Called when the project image in an update activity cell is tapped.
@@ -58,46 +57,46 @@ public protocol ActitiviesViewModelInputs {
 
 public protocol ActivitiesViewModelOutputs {
   /// Emits an array of activities that should be displayed
-  var activities: Signal<[Activity], NoError> { get }
+  var activities: Signal<[Activity], Never> { get }
 
   /// Emits when should remove Facebook Connect section
-  var deleteFacebookConnectSection: Signal<(), NoError> { get }
+  var deleteFacebookConnectSection: Signal<(), Never> { get }
 
   /// Emits when should remove Find Friends section.
-  var deleteFindFriendsSection: Signal<(), NoError> { get }
+  var deleteFindFriendsSection: Signal<(), Never> { get }
 
   /// Emits when we should dismiss the empty state controller.
-  var hideEmptyState: Signal<(), NoError> { get }
+  var hideEmptyState: Signal<(), Never> { get }
 
   /// Emits when should transition to Friends view with source (.Activity).
-  var goToFriends: Signal<FriendsSource, NoError> { get }
+  var goToFriends: Signal<FriendsSource, Never> { get }
 
   /// Emits a project and ref tag that should be used to present a project controller.
-  var goToProject: Signal<(Project, RefTag), NoError> { get }
+  var goToProject: Signal<(Project, RefTag), Never> { get }
 
   /// Emits a survey response when we should navigate to the survey to fill it out.
-  var goToSurveyResponse: Signal<SurveyResponse, NoError> { get }
+  var goToSurveyResponse: Signal<SurveyResponse, Never> { get }
 
   /// Emits a project and update when we should navigate to that update.
-  var goToUpdate: Signal<(Project, Update), NoError> { get }
+  var goToUpdate: Signal<(Project, Update), Never> { get }
 
   /// Emits a boolean that indicates if the activities are refreshing.
-  var isRefreshing: Signal<Bool, NoError> { get }
+  var isRefreshing: Signal<Bool, Never> { get }
 
   /// Emits `true` when logged-in, `false` when logged-out, when we should show the empty state controller.
-  var showEmptyStateIsLoggedIn: Signal<Bool, NoError> { get }
+  var showEmptyStateIsLoggedIn: Signal<Bool, Never> { get }
 
   /// Emits an AlertError to be displayed.
-  var showFacebookConnectErrorAlert: Signal<AlertError, NoError> { get }
+  var showFacebookConnectErrorAlert: Signal<AlertError, Never> { get }
 
   /// Emits whether Facebook Connect header cell should show with the .Activity source.
-  var showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError> { get }
+  var showFacebookConnectSection: Signal<(FriendsSource, Bool), Never> { get }
 
   /// Emits whether Find Friends header cell should show with the .Activity source.
-  var showFindFriendsSection: Signal<(FriendsSource, Bool), NoError> { get }
+  var showFindFriendsSection: Signal<(FriendsSource, Bool), Never> { get }
 
   /// Emits a non-`nil` survey response if there is an unanswered one available, and `nil` otherwise.
-  var unansweredSurveys: Signal<[SurveyResponse], NoError> { get }
+  var unansweredSurveys: Signal<[SurveyResponse], Never> { get }
 }
 
 public protocol ActivitiesViewModelType {
@@ -144,7 +143,7 @@ ActivitiesViewModelOutputs {
 
     let clearedActivitiesOnSessionEnd = self.userSessionEndedProperty.signal.mapConst([Activity]())
 
-    let activityToUpdate: Signal<Activity?, NoError> = self.viewWillAppearProperty.signal.skipNil()
+    let activityToUpdate: Signal<Activity?, Never> = self.viewWillAppearProperty.signal.skipNil()
       .take(first: 1).mapConst(nil)
 
     let updatedActivities = Signal.combineLatest(activities, activityToUpdate)
@@ -262,7 +261,7 @@ ActivitiesViewModelOutputs {
     self.goToUpdate = self.tappedActivityProperty.signal.skipNil()
       .filter { $0.category == .update }
       .map { ($0.project, $0.update) }
-      .flatMap { (project, update) -> SignalProducer<(Project, Update), NoError> in
+      .flatMap { (project, update) -> SignalProducer<(Project, Update), Never> in
         guard let project = project, let update = update else { return .empty }
         return SignalProducer(value: (project, update))
       }
@@ -341,20 +340,20 @@ ActivitiesViewModelOutputs {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let activities: Signal<[Activity], NoError>
-  public let deleteFacebookConnectSection: Signal<(), NoError>
-  public let deleteFindFriendsSection: Signal<(), NoError>
-  public let hideEmptyState: Signal<(), NoError>
-  public let isRefreshing: Signal<Bool, NoError>
-  public let goToFriends: Signal<FriendsSource, NoError>
-  public let goToProject: Signal<(Project, RefTag), NoError>
-  public let goToSurveyResponse: Signal<SurveyResponse, NoError>
-  public let goToUpdate: Signal<(Project, Update), NoError>
-  public let showEmptyStateIsLoggedIn: Signal<Bool, NoError>
-  public let showFindFriendsSection: Signal<(FriendsSource, Bool), NoError>
-  public let showFacebookConnectSection: Signal<(FriendsSource, Bool), NoError>
-  public let showFacebookConnectErrorAlert: Signal<AlertError, NoError>
-  public let unansweredSurveys: Signal<[SurveyResponse], NoError>
+  public let activities: Signal<[Activity], Never>
+  public let deleteFacebookConnectSection: Signal<(), Never>
+  public let deleteFindFriendsSection: Signal<(), Never>
+  public let hideEmptyState: Signal<(), Never>
+  public let isRefreshing: Signal<Bool, Never>
+  public let goToFriends: Signal<FriendsSource, Never>
+  public let goToProject: Signal<(Project, RefTag), Never>
+  public let goToSurveyResponse: Signal<SurveyResponse, Never>
+  public let goToUpdate: Signal<(Project, Update), Never>
+  public let showEmptyStateIsLoggedIn: Signal<Bool, Never>
+  public let showFindFriendsSection: Signal<(FriendsSource, Bool), Never>
+  public let showFacebookConnectSection: Signal<(FriendsSource, Bool), Never>
+  public let showFacebookConnectErrorAlert: Signal<AlertError, Never>
+  public let unansweredSurveys: Signal<[SurveyResponse], Never>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }

@@ -3,7 +3,6 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
-import Result
 import UserNotifications
 
 public struct HockeyConfigData {
@@ -87,13 +86,13 @@ public protocol AppDelegateViewModelOutputs {
   var applicationDidFinishLaunchingReturnValue: Bool { get }
 
   /// Emits the application icon badge number
-  var applicationIconBadgeNumber: Signal<Int, NoError> { get }
+  var applicationIconBadgeNumber: Signal<Int, Never> { get }
 
   /// Emits when the application should configure Fabric
-  var configureFabric: Signal<(), NoError> { get}
+  var configureFabric: Signal<(), Never> { get}
 
   /// Emits an app identifier that should be used to configure the hockey app manager.
-  var configureHockey: Signal<HockeyConfigData, NoError> { get }
+  var configureHockey: Signal<HockeyConfigData, Never> { get }
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
@@ -102,70 +101,70 @@ public protocol AppDelegateViewModelOutputs {
   var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
-  var findRedirectUrl: Signal<URL, NoError> { get }
+  var findRedirectUrl: Signal<URL, Never> { get }
 
   /// Emits when opening the app with an invalid access token.
-  var forceLogout: Signal<(), NoError> { get }
+  var forceLogout: Signal<(), Never> { get }
 
   /// Emits when the root view controller should navigate to activity.
-  var goToActivity: Signal<(), NoError> { get }
+  var goToActivity: Signal<(), Never> { get }
 
   /// Emits when application should navigate to the creator's message thread
-  var goToCreatorMessageThread: Signal<(Param, MessageThread), NoError> { get }
+  var goToCreatorMessageThread: Signal<(Param, MessageThread), Never> { get }
 
   /// Emits when the root view controller should navigate to the creator dashboard.
-  var goToDashboard: Signal<Param?, NoError> { get }
+  var goToDashboard: Signal<Param?, Never> { get }
 
   /// Emits when the root view controller should navigate to the creator dashboard.
-  var goToDiscovery: Signal<DiscoveryParams?, NoError> { get }
+  var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
   /// Emits when the root view controller should navigate to the login screen.
-  var goToLogin: Signal<(), NoError> { get }
+  var goToLogin: Signal<(), Never> { get }
 
   /// Emits a message thread when we should navigate to it.
-  var goToMessageThread: Signal<MessageThread, NoError> { get }
+  var goToMessageThread: Signal<MessageThread, Never> { get }
 
   /// Emits when the root view controller should navigate to the user's profile.
-  var goToProfile: Signal<(), NoError> { get }
+  var goToProfile: Signal<(), Never> { get }
 
   /// Emits when should navigate to the project activities view
-  var goToProjectActivities: Signal<Param, NoError> { get }
+  var goToProjectActivities: Signal<Param, Never> { get }
 
   /// Emits a URL when we should open it in the safari browser.
-  var goToMobileSafari: Signal<URL, NoError> { get }
+  var goToMobileSafari: Signal<URL, Never> { get }
 
   /// Emits when the root view controller should navigate to search.
-  var goToSearch: Signal<(), NoError> { get }
+  var goToSearch: Signal<(), Never> { get }
 
   /// Emits an Notification that should be immediately posted.
-  var postNotification: Signal<Notification, NoError> { get }
+  var postNotification: Signal<Notification, Never> { get }
 
   /// Emits when a view controller should be presented.
-  var presentViewController: Signal<UIViewController, NoError> { get }
+  var presentViewController: Signal<UIViewController, Never> { get }
 
   /// Emits when the push token registration begins.
-  var pushTokenRegistrationStarted: Signal<(), NoError> { get }
+  var pushTokenRegistrationStarted: Signal<(), Never> { get }
 
   /// Emits the push token that has been successfully registered on the server.
-  var pushTokenSuccessfullyRegistered: Signal<String, NoError> { get }
+  var pushTokenSuccessfullyRegistered: Signal<String, Never> { get }
 
   /// Emits an array of short cut items to put into the shared application.
-  var setApplicationShortcutItems: Signal<[ShortcutItem], NoError> { get }
+  var setApplicationShortcutItems: Signal<[ShortcutItem], Never> { get }
 
   /// Emits when an alert should be shown.
-  var showAlert: Signal<Notification, NoError> { get }
+  var showAlert: Signal<Notification, Never> { get }
 
   /// Emits to synchronize iCloud on app launch.
-  var synchronizeUbiquitousStore: Signal<(), NoError> { get }
+  var synchronizeUbiquitousStore: Signal<(), Never> { get }
 
   /// Emits when we should unregister the user from notifications.
-  var unregisterForRemoteNotifications: Signal<(), NoError> { get }
+  var unregisterForRemoteNotifications: Signal<(), Never> { get }
 
   /// Emits a fresh user to be updated in the app environment.
-  var updateCurrentUserInEnvironment: Signal<User, NoError> { get }
+  var updateCurrentUserInEnvironment: Signal<User, Never> { get }
 
   /// Emits a config value that should be updated in the environment.
-  var updateConfigInEnvironment: Signal<Config, NoError> { get }
+  var updateConfigInEnvironment: Signal<Config, Never> { get }
 }
 
 public protocol AppDelegateViewModelType {
@@ -186,7 +185,7 @@ AppDelegateViewModelOutputs {
         self.userSessionStartedProperty.signal
       )
       .ksr_debounce(.seconds(5), on: AppEnvironment.current.scheduler)
-      .switchMap { _ -> SignalProducer<Signal<User?, ErrorEnvelope>.Event, NoError> in
+      .switchMap { _ -> SignalProducer<Signal<User?, ErrorEnvelope>.Event, Never> in
         AppEnvironment.current.apiService.isAuthenticated || AppEnvironment.current.currentUser != nil
           ? AppEnvironment.current.apiService.fetchUserSelf().wrapInOptional().materialize()
           : SignalProducer(value: .value(nil))
@@ -327,7 +326,7 @@ AppDelegateViewModelOutputs {
         return .some(rawParams)
       }
       .skipNil()
-      .switchMap { rawParams -> SignalProducer<DiscoveryParams?, NoError> in
+      .switchMap { rawParams -> SignalProducer<DiscoveryParams?, Never> in
         guard
           let rawParams = rawParams,
           let params = DiscoveryParams.decode(.init(rawParams)).value
@@ -705,33 +704,33 @@ AppDelegateViewModelOutputs {
     return applicationDidFinishLaunchingReturnValueProperty.value
   }
 
-  public let applicationIconBadgeNumber: Signal<Int, NoError>
-  public let configureFabric: Signal<(), NoError>
-  public let configureHockey: Signal<HockeyConfigData, NoError>
+  public let applicationIconBadgeNumber: Signal<Int, Never>
+  public let configureFabric: Signal<(), Never>
+  public let configureHockey: Signal<HockeyConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let facebookOpenURLReturnValue = MutableProperty(false)
-  public let findRedirectUrl: Signal<URL, NoError>
-  public let forceLogout: Signal<(), NoError>
-  public let goToActivity: Signal<(), NoError>
-  public let goToCreatorMessageThread: Signal<(Param, MessageThread), NoError>
-  public let goToDashboard: Signal<Param?, NoError>
-  public let goToDiscovery: Signal<DiscoveryParams?, NoError>
-  public let goToLogin: Signal<(), NoError>
-  public let goToMessageThread: Signal<MessageThread, NoError>
-  public let goToProfile: Signal<(), NoError>
-  public let goToProjectActivities: Signal<Param, NoError>
-  public let goToMobileSafari: Signal<URL, NoError>
-  public let goToSearch: Signal<(), NoError>
-  public let postNotification: Signal<Notification, NoError>
-  public let presentViewController: Signal<UIViewController, NoError>
-  public let pushTokenRegistrationStarted: Signal<(), NoError>
-  public let pushTokenSuccessfullyRegistered: Signal<String, NoError>
-  public let setApplicationShortcutItems: Signal<[ShortcutItem], NoError>
-  public let showAlert: Signal<Notification, NoError>
-  public let synchronizeUbiquitousStore: Signal<(), NoError>
-  public let unregisterForRemoteNotifications: Signal<(), NoError>
-  public let updateCurrentUserInEnvironment: Signal<User, NoError>
-  public let updateConfigInEnvironment: Signal<Config, NoError>
+  public let findRedirectUrl: Signal<URL, Never>
+  public let forceLogout: Signal<(), Never>
+  public let goToActivity: Signal<(), Never>
+  public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
+  public let goToDashboard: Signal<Param?, Never>
+  public let goToDiscovery: Signal<DiscoveryParams?, Never>
+  public let goToLogin: Signal<(), Never>
+  public let goToMessageThread: Signal<MessageThread, Never>
+  public let goToProfile: Signal<(), Never>
+  public let goToProjectActivities: Signal<Param, Never>
+  public let goToMobileSafari: Signal<URL, Never>
+  public let goToSearch: Signal<(), Never>
+  public let postNotification: Signal<Notification, Never>
+  public let presentViewController: Signal<UIViewController, Never>
+  public let pushTokenRegistrationStarted: Signal<(), Never>
+  public let pushTokenSuccessfullyRegistered: Signal<String, Never>
+  public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
+  public let showAlert: Signal<Notification, Never>
+  public let synchronizeUbiquitousStore: Signal<(), Never>
+  public let unregisterForRemoteNotifications: Signal<(), Never>
+  public let updateCurrentUserInEnvironment: Signal<User, Never>
+  public let updateConfigInEnvironment: Signal<Config, Never>
 }
 
 private func deviceToken(fromData data: Data) -> String {
@@ -809,7 +808,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 }
 
 // Figures out a `Navigation` to route the user to from a shortcut item.
-private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, NoError> {
+private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, Never> {
 
   switch shortcutItem {
   case .creatorDashboard:
@@ -833,7 +832,7 @@ private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalPr
 }
 
 // Figures out which shortcut items to show to a user.
-private func shortcutItems(forUser user: User?) -> SignalProducer<[ShortcutItem], NoError> {
+private func shortcutItems(forUser user: User?) -> SignalProducer<[ShortcutItem], Never> {
 
   guard let user = user else {
     return SignalProducer(value: shortcutItems(isProjectMember: false, hasRecommendations: false))
@@ -846,7 +845,7 @@ private func shortcutItems(forUser user: User?) -> SignalProducer<[ShortcutItem]
 
   let recommendationsCount = AppEnvironment.current.apiService.fetchDiscovery(params: recommendationParams)
     .map { $0.stats.count }
-    .flatMapError { _ in SignalProducer<Int, NoError>(value: 0) }
+    .flatMapError { _ in SignalProducer<Int, Never>(value: 0) }
 
   return recommendationsCount
     .map { recommendationsCount in

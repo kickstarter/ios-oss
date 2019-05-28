@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ProjectPamphletMainCellViewModelInputs {
   /// Call when cell awakeFromNib is called.
@@ -26,88 +25,88 @@ public protocol ProjectPamphletMainCellViewModelInputs {
 public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a string to use for the backer subtitle label.
-  var backersSubtitleLabelText: Signal<String, NoError> { get }
+  var backersSubtitleLabelText: Signal<String, Never> { get }
 
   /// Emits a string to use for the backers title label.
-  var backersTitleLabelText: Signal<String, NoError> { get }
+  var backersTitleLabelText: Signal<String, Never> { get }
 
   /// Emits a string to use for the category name label.
-  var categoryNameLabelText: Signal<String, NoError> { get }
+  var categoryNameLabelText: Signal<String, Never> { get }
 
   /// Emits a project when the video player controller should be configured.
-  var configureVideoPlayerController: Signal<Project, NoError> { get }
+  var configureVideoPlayerController: Signal<Project, Never> { get }
 
   /// Emits a boolean that determines if the conversion labels should be hidden.
-  var conversionLabelHidden: Signal<Bool, NoError> { get }
+  var conversionLabelHidden: Signal<Bool, Never> { get }
 
   /// Emits a string for the conversion label.
-  var conversionLabelText: Signal<String, NoError> { get }
+  var conversionLabelText: Signal<String, Never> { get }
 
   /// Emits an image url to be loaded into the creator's image view.
-  var creatorImageUrl: Signal<URL?, NoError> { get }
+  var creatorImageUrl: Signal<URL?, Never> { get }
 
   /// Emits text to be put into the creator label.
-  var creatorLabelText: Signal<String, NoError> { get }
+  var creatorLabelText: Signal<String, Never> { get }
 
   /// Emits the text for the deadline subtitle label.
-  var deadlineSubtitleLabelText: Signal<String, NoError> { get }
+  var deadlineSubtitleLabelText: Signal<String, Never> { get }
 
   /// Emits the text for the deadline title label.
-  var deadlineTitleLabelText: Signal<String, NoError> { get }
+  var deadlineTitleLabelText: Signal<String, Never> { get }
 
   /// Emits the background color of the funding progress bar view.
-  var fundingProgressBarViewBackgroundColor: Signal<UIColor, NoError> { get }
+  var fundingProgressBarViewBackgroundColor: Signal<UIColor, Never> { get }
 
   /// Emits a string to use for the location name label.
-  var locationNameLabelText: Signal<String, NoError> { get }
+  var locationNameLabelText: Signal<String, Never> { get }
 
   /// Emits the project when we should go to the campaign view for the project.
-  var notifyDelegateToGoToCampaign: Signal<Project, NoError> { get }
+  var notifyDelegateToGoToCampaign: Signal<Project, Never> { get }
 
   /// Emits the project when we should go to the creator's view for the project.
-  var notifyDelegateToGoToCreator: Signal<Project, NoError> { get }
+  var notifyDelegateToGoToCreator: Signal<Project, Never> { get }
 
   /// Emits an alpha value for views to create transition after full project loads.
-  var opacityForViews: Signal<CGFloat, NoError> { get }
+  var opacityForViews: Signal<CGFloat, Never> { get }
 
   /// Emits the text for the pledged subtitle label.
-  var pledgedSubtitleLabelText: Signal<String, NoError> { get }
+  var pledgedSubtitleLabelText: Signal<String, Never> { get }
 
   /// Emits the text for the pledged title label.
-  var pledgedTitleLabelText: Signal<String, NoError> { get }
+  var pledgedTitleLabelText: Signal<String, Never> { get }
 
   /// Emits the text color of the pledged title label.
-  var pledgedTitleLabelTextColor: Signal<UIColor, NoError> { get }
+  var pledgedTitleLabelTextColor: Signal<UIColor, Never> { get }
 
   /// Emits a percentage between 0.0 and 1.0 that can be used to render the funding progress bar.
-  var progressPercentage: Signal<Float, NoError> { get }
+  var progressPercentage: Signal<Float, Never> { get }
 
   /// Emits text to be put into the project blurb label.
-  var projectBlurbLabelText: Signal<String, NoError> { get }
+  var projectBlurbLabelText: Signal<String, Never> { get }
 
   /// Emits a URL to be loaded into the project's image view.
-  var projectImageUrl: Signal<URL?, NoError> { get }
+  var projectImageUrl: Signal<URL?, Never> { get }
 
   /// Emits text to be put into the project name label.
-  var projectNameLabelText: Signal<String, NoError> { get }
+  var projectNameLabelText: Signal<String, Never> { get }
 
   /// Emits a string that should be put into the project state label.
-  var projectStateLabelText: Signal<String, NoError> { get }
+  var projectStateLabelText: Signal<String, Never> { get }
 
   /// Emits the text color of the project state label.
-  var projectStateLabelTextColor: Signal<UIColor, NoError> { get }
+  var projectStateLabelTextColor: Signal<UIColor, Never> { get }
 
   /// Emits the text color of the backer and deadline title label.
-  var projectUnsuccessfulLabelTextColor: Signal<UIColor, NoError> { get }
+  var projectUnsuccessfulLabelTextColor: Signal<UIColor, Never> { get }
 
   /// Emits a boolean that determines if the project state label should be hidden.
-  var stateLabelHidden: Signal<Bool, NoError> { get }
+  var stateLabelHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to use for the stats stack view accessibility value.
-  var statsStackViewAccessibilityLabel: Signal<String, NoError> { get }
+  var statsStackViewAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the "you're a backer" label should be hidden.
-  var youreABackerLabelHidden: Signal<Bool, NoError> { get }
+  var youreABackerLabelHidden: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectPamphletMainCellViewModelType {
@@ -264,34 +263,34 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.videoDidStartProperty.value = ()
   }
 
-  public let backersSubtitleLabelText: Signal<String, NoError>
-  public let backersTitleLabelText: Signal<String, NoError>
-  public let categoryNameLabelText: Signal<String, NoError>
-  public let configureVideoPlayerController: Signal<Project, NoError>
-  public let conversionLabelHidden: Signal<Bool, NoError>
-  public let conversionLabelText: Signal<String, NoError>
-  public let creatorImageUrl: Signal<URL?, NoError>
-  public let creatorLabelText: Signal<String, NoError>
-  public let deadlineSubtitleLabelText: Signal<String, NoError>
-  public let deadlineTitleLabelText: Signal<String, NoError>
-  public let fundingProgressBarViewBackgroundColor: Signal<UIColor, NoError>
-  public let locationNameLabelText: Signal<String, NoError>
-  public let notifyDelegateToGoToCampaign: Signal<Project, NoError>
-  public let notifyDelegateToGoToCreator: Signal<Project, NoError>
-  public let opacityForViews: Signal<CGFloat, NoError>
-  public let pledgedSubtitleLabelText: Signal<String, NoError>
-  public let pledgedTitleLabelText: Signal<String, NoError>
-  public let pledgedTitleLabelTextColor: Signal<UIColor, NoError>
-  public let progressPercentage: Signal<Float, NoError>
-  public let projectBlurbLabelText: Signal<String, NoError>
-  public let projectImageUrl: Signal<URL?, NoError>
-  public let projectNameLabelText: Signal<String, NoError>
-  public let projectStateLabelText: Signal<String, NoError>
-  public let projectStateLabelTextColor: Signal<UIColor, NoError>
-  public let projectUnsuccessfulLabelTextColor: Signal<UIColor, NoError>
-  public let stateLabelHidden: Signal<Bool, NoError>
-  public let statsStackViewAccessibilityLabel: Signal<String, NoError>
-  public let youreABackerLabelHidden: Signal<Bool, NoError>
+  public let backersSubtitleLabelText: Signal<String, Never>
+  public let backersTitleLabelText: Signal<String, Never>
+  public let categoryNameLabelText: Signal<String, Never>
+  public let configureVideoPlayerController: Signal<Project, Never>
+  public let conversionLabelHidden: Signal<Bool, Never>
+  public let conversionLabelText: Signal<String, Never>
+  public let creatorImageUrl: Signal<URL?, Never>
+  public let creatorLabelText: Signal<String, Never>
+  public let deadlineSubtitleLabelText: Signal<String, Never>
+  public let deadlineTitleLabelText: Signal<String, Never>
+  public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
+  public let locationNameLabelText: Signal<String, Never>
+  public let notifyDelegateToGoToCampaign: Signal<Project, Never>
+  public let notifyDelegateToGoToCreator: Signal<Project, Never>
+  public let opacityForViews: Signal<CGFloat, Never>
+  public let pledgedSubtitleLabelText: Signal<String, Never>
+  public let pledgedTitleLabelText: Signal<String, Never>
+  public let pledgedTitleLabelTextColor: Signal<UIColor, Never>
+  public let progressPercentage: Signal<Float, Never>
+  public let projectBlurbLabelText: Signal<String, Never>
+  public let projectImageUrl: Signal<URL?, Never>
+  public let projectNameLabelText: Signal<String, Never>
+  public let projectStateLabelText: Signal<String, Never>
+  public let projectStateLabelTextColor: Signal<UIColor, Never>
+  public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
+  public let stateLabelHidden: Signal<Bool, Never>
+  public let statsStackViewAccessibilityLabel: Signal<String, Never>
+  public let youreABackerLabelHidden: Signal<Bool, Never>
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }
   public var outputs: ProjectPamphletMainCellViewModelOutputs { return self }

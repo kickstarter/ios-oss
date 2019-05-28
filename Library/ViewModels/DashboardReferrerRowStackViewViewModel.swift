@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol DashboardReferrerRowStackViewViewModelInputs {
   /// Call to configure cell with referrer data.
@@ -11,16 +10,16 @@ public protocol DashboardReferrerRowStackViewViewModelInputs {
 
 public protocol DashboardReferrerRowStackViewViewModelOutputs {
   /// Emits the number of backers to be displayed.
-  var backersText: Signal<String, NoError> { get }
+  var backersText: Signal<String, Never> { get }
 
   /// Emits the amount pledged and percentage to be displayed.
-  var pledgedText: Signal<String, NoError> { get }
+  var pledgedText: Signal<String, Never> { get }
 
   /// Emits the referrer source to be displayed.
-  var sourceText: Signal<String, NoError> { get }
+  var sourceText: Signal<String, Never> { get }
 
   /// Emits the text color of the row labels to be displayed.
-  var textColor: Signal<UIColor, NoError> { get }
+  var textColor: Signal<UIColor, Never> { get }
 }
 
 public protocol DashboardReferrerRowStackViewViewModelType {
@@ -62,10 +61,10 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
     self.countryReferrerProperty.value = (country, referrer)
   }
 
-  public let backersText: Signal<String, NoError>
-  public let pledgedText: Signal<String, NoError>
-  public let sourceText: Signal<String, NoError>
-  public let textColor: Signal<UIColor, NoError>
+  public let backersText: Signal<String, Never>
+  public let pledgedText: Signal<String, Never>
+  public let sourceText: Signal<String, Never>
+  public let textColor: Signal<UIColor, Never>
 
   public var inputs: DashboardReferrerRowStackViewViewModelInputs { return self }
   public var outputs: DashboardReferrerRowStackViewViewModelOutputs { return self }

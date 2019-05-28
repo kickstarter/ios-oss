@@ -3,19 +3,18 @@ import XCTest
 import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
-import Result
 
 internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityUpdateCellViewModelType = ProjectActivityUpdateCellViewModel()
 
-  fileprivate let activityTitle = TestObserver<String, NoError>()
-  fileprivate let body = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
-  fileprivate let commentsCount = TestObserver<String, NoError>()
+  fileprivate let activityTitle = TestObserver<String, Never>()
+  fileprivate let body = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityValue = TestObserver<String, Never>()
+  fileprivate let commentsCount = TestObserver<String, Never>()
   fileprivate let defaultUser = User.template |> \.name .~ "Christopher"
-  fileprivate let likesCount = TestObserver<String, NoError>()
-  fileprivate let updateTitle = TestObserver<String, NoError>()
+  fileprivate let likesCount = TestObserver<String, Never>()
+  fileprivate let updateTitle = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

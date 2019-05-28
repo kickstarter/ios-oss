@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 protocol SettingsAccountPickerCellViewModelInputs {
   func configure(with cellValue: SettingsCellValue)
@@ -9,8 +8,8 @@ protocol SettingsAccountPickerCellViewModelInputs {
 }
 
 protocol SettingsAccountPickerCellViewModelOutputs {
-  var notifyCurrencyPickerCellRemoved: Signal<Bool, NoError> { get }
-  var updateCurrencyDetailText: Signal<String, NoError> { get }
+  var notifyCurrencyPickerCellRemoved: Signal<Bool, Never> { get }
+  var updateCurrencyDetailText: Signal<String, Never> { get }
 }
 
 protocol SettingsAccountPickerCellViewModelType {
@@ -38,8 +37,8 @@ SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType
     self.cellTypeProperty.value = cellValue.cellType as? SettingsAccountCellType
   }
 
-  public let notifyCurrencyPickerCellRemoved: Signal<Bool, NoError>
-  public let updateCurrencyDetailText: Signal<String, NoError>
+  public let notifyCurrencyPickerCellRemoved: Signal<Bool, Never>
+  public let updateCurrencyDetailText: Signal<String, Never>
 
   var inputs: SettingsAccountPickerCellViewModelInputs { return self }
   var outputs: SettingsAccountPickerCellViewModelOutputs { return self }

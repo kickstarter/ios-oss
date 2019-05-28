@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 import ReactiveSwift
-import Result
 import KsApi
 import Prelude
 @testable import KsApi
@@ -10,15 +9,15 @@ import ReactiveExtensions_TestHelpers
 
 internal final class ProfileViewModelTests: TestCase {
   private let vm = ProfileViewModel()
-  private let user = TestObserver<User, NoError>()
-  private let hasAddedProjects = TestObserver<Bool, NoError>()
-  private let hasBackedProjects = TestObserver<Bool, NoError>()
-  private let goToProject = TestObserver<Project, NoError>()
-  private let goToProjects = TestObserver<[Project], NoError>()
-  private let goToRefTag = TestObserver<RefTag, NoError>()
-  private let goToSettings = TestObserver<Void, NoError>()
-  private let scrollToProjectItem = TestObserver<Int, NoError>()
-  private let showEmptyState = TestObserver<Bool, NoError>()
+  private let user = TestObserver<User, Never>()
+  private let hasAddedProjects = TestObserver<Bool, Never>()
+  private let hasBackedProjects = TestObserver<Bool, Never>()
+  private let goToProject = TestObserver<Project, Never>()
+  private let goToProjects = TestObserver<[Project], Never>()
+  private let goToRefTag = TestObserver<RefTag, Never>()
+  private let goToSettings = TestObserver<Void, Never>()
+  private let scrollToProjectItem = TestObserver<Int, Never>()
+  private let showEmptyState = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()

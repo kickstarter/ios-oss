@@ -1,7 +1,6 @@
 // swiftlint:disable force_unwrapping
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 import WebKit
 @testable import KsApi
@@ -11,14 +10,14 @@ import ReactiveExtensions_TestHelpers
 final class ProjectUpdatesViewModelTests: TestCase {
   fileprivate let vm: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()
 
-  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
-  fileprivate let goToUpdateId = TestObserver<Int, NoError>()
-  fileprivate let goToUpdateCommentId = TestObserver<Int, NoError>()
-  fileprivate let isActivityIndicatorHidden = TestObserver<Bool, NoError>()
-  fileprivate let makePhoneCall = TestObserver<URL, NoError>()
-  fileprivate let showMailCompose = TestObserver<String, NoError>()
-  fileprivate let showNoEmailError = TestObserver<UIAlertController, NoError>()
-  fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
+  fileprivate let goToUpdateId = TestObserver<Int, Never>()
+  fileprivate let goToUpdateCommentId = TestObserver<Int, Never>()
+  fileprivate let isActivityIndicatorHidden = TestObserver<Bool, Never>()
+  fileprivate let makePhoneCall = TestObserver<URL, Never>()
+  fileprivate let showMailCompose = TestObserver<String, Never>()
+  fileprivate let showNoEmailError = TestObserver<UIAlertController, Never>()
+  fileprivate let webViewLoadRequest = TestObserver<URLRequest, Never>()
 
   internal override func setUp() {
     super.setUp()

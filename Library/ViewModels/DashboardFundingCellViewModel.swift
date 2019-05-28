@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public struct FundingGraphData {
   public let project: Project
@@ -26,40 +25,40 @@ public protocol DashboardFundingCellViewModelInputs {
 
 public protocol DashboardFundingCellViewModelOutputs {
   /// Emits the backers count text to be displayed.
-  var backersText: Signal<String, NoError> { get }
+  var backersText: Signal<String, Never> { get }
 
   /// Emits the relevant cell information to be spoken on voiceover.
-  var cellAccessibilityValue: Signal<String, NoError> { get }
+  var cellAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits the deadline date text (e.g. Jul 26) to be displayed.
-  var deadlineDateText: Signal<String, NoError> { get }
+  var deadlineDateText: Signal<String, Never> { get }
 
   /// Emits the disparate funding data to be displayed in the funding graph.
-  var graphData: Signal<FundingGraphData, NoError> { get }
+  var graphData: Signal<FundingGraphData, Never> { get }
 
   /// Emits the pledged of goal text to be displayed.
-  var goalText: Signal<String, NoError> { get }
+  var goalText: Signal<String, Never> { get }
 
   /// Emits the launch date text (e.g. Jun 26) to be displayed.
-  var launchDateText: Signal<String, NoError> { get }
+  var launchDateText: Signal<String, Never> { get }
 
   /// Emits the amount pledged text to be displayed.
-  var pledgedText: Signal<String, NoError> { get }
+  var pledgedText: Signal<String, Never> { get }
 
   /// Emits the time remaining (units) text to be displayed.
-  var timeRemainingSubtitleText: Signal<String, NoError> { get }
+  var timeRemainingSubtitleText: Signal<String, Never> { get }
 
   /// Emits the time remaining (value) text to be displayed.
-  var timeRemainingTitleText: Signal<String, NoError> { get }
+  var timeRemainingTitleText: Signal<String, Never> { get }
 
   /// Emits the bottom y axis pledge interval label to be displayed.
-  var graphYAxisBottomLabelText: Signal<String, NoError> { get }
+  var graphYAxisBottomLabelText: Signal<String, Never> { get }
 
   /// Emits the middle y axis pledge interval label to be displayed.
-  var graphYAxisMiddleLabelText: Signal<String, NoError> { get }
+  var graphYAxisMiddleLabelText: Signal<String, Never> { get }
 
   /// Emits the top y axis pledge interval label to be displayed.
-  var graphYAxisTopLabelText: Signal<String, NoError> { get }
+  var graphYAxisTopLabelText: Signal<String, Never> { get }
 }
 
 public protocol DashboardFundingCellViewModelType {
@@ -148,18 +147,18 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
     self.statsProjectProperty.value = (stats, project)
   }
 
-  public let backersText: Signal<String, NoError>
-  public let cellAccessibilityValue: Signal<String, NoError>
-  public let deadlineDateText: Signal<String, NoError>
-  public let goalText: Signal<String, NoError>
-  public let graphData: Signal<FundingGraphData, NoError>
-  public let graphYAxisBottomLabelText: Signal<String, NoError>
-  public let graphYAxisMiddleLabelText: Signal<String, NoError>
-  public let graphYAxisTopLabelText: Signal<String, NoError>
-  public let launchDateText: Signal<String, NoError>
-  public let pledgedText: Signal<String, NoError>
-  public let timeRemainingSubtitleText: Signal<String, NoError>
-  public let timeRemainingTitleText: Signal<String, NoError>
+  public let backersText: Signal<String, Never>
+  public let cellAccessibilityValue: Signal<String, Never>
+  public let deadlineDateText: Signal<String, Never>
+  public let goalText: Signal<String, Never>
+  public let graphData: Signal<FundingGraphData, Never>
+  public let graphYAxisBottomLabelText: Signal<String, Never>
+  public let graphYAxisMiddleLabelText: Signal<String, Never>
+  public let graphYAxisTopLabelText: Signal<String, Never>
+  public let launchDateText: Signal<String, Never>
+  public let pledgedText: Signal<String, Never>
+  public let timeRemainingSubtitleText: Signal<String, Never>
+  public let timeRemainingTitleText: Signal<String, Never>
 
   public var inputs: DashboardFundingCellViewModelInputs { return self }
   public var outputs: DashboardFundingCellViewModelOutputs { return self }

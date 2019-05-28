@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol TwoFactorViewModelInputs {
   /// Call when code textfield is updated
@@ -32,25 +31,25 @@ public protocol TwoFactorViewModelInputs {
 
 public protocol TwoFactorViewModelOutputs {
   /// Emits when the code text field is the first responder.
-  var codeTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
+  var codeTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 
   /// Emits whether the form is valid or not
-  var isFormValid: Signal<Bool, NoError> { get }
+  var isFormValid: Signal<Bool, Never> { get }
 
   /// Emits whether a request is loading or not
-  var isLoading: Signal<Bool, NoError> { get }
+  var isLoading: Signal<Bool, Never> { get }
 
   /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
+  var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
 
   /// Emits when a login success notification should be posted.
-  var postNotification: Signal<(Notification, Notification), NoError> { get }
+  var postNotification: Signal<(Notification, Notification), Never> { get }
 
   /// Emits when code was resent successfully
-  var resendSuccess: Signal<(), NoError> { get }
+  var resendSuccess: Signal<(), Never> { get }
 
   /// Emits a message when the code submitted is not correct or login fails
-  var showError: Signal<String, NoError> { get }
+  var showError: Signal<String, Never> { get }
 }
 
 public protocol TwoFactorViewModelType {
@@ -198,13 +197,13 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     self.viewWillAppearProperty.value = ()
   }
 
-  public let codeTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let isFormValid: Signal<Bool, NoError>
-  public let isLoading: Signal<Bool, NoError>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public let postNotification: Signal<(Notification, Notification), NoError>
-  public let resendSuccess: Signal<(), NoError>
-  public let showError: Signal<String, NoError>
+  public let codeTextFieldBecomeFirstResponder: Signal<(), Never>
+  public let isFormValid: Signal<Bool, Never>
+  public let isLoading: Signal<Bool, Never>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let postNotification: Signal<(Notification, Notification), Never>
+  public let resendSuccess: Signal<(), Never>
+  public let showError: Signal<String, Never>
 
   public var inputs: TwoFactorViewModelInputs { return self }
   public var outputs: TwoFactorViewModelOutputs { return self }

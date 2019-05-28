@@ -2,17 +2,16 @@ import XCTest
 import ReactiveSwift
 import ReactiveExtensions_TestHelpers
 @testable import KsApi
-import Result
 @testable import Library
 
 final class ResetPasswordViewModelTests: TestCase {
   internal let vm: ResetPasswordViewModelType = ResetPasswordViewModel()
-  internal let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  internal let formIsValid = TestObserver<Bool, NoError>()
-  internal let showResetSuccess = TestObserver<String, NoError>()
-  internal let returnToLogin = TestObserver<(), NoError>()
-  internal let showError = TestObserver<String, NoError>()
-  internal let setEmailInitial = TestObserver<String, NoError>()
+  internal let emailTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  internal let formIsValid = TestObserver<Bool, Never>()
+  internal let showResetSuccess = TestObserver<String, Never>()
+  internal let returnToLogin = TestObserver<(), Never>()
+  internal let showError = TestObserver<String, Never>()
+  internal let setEmailInitial = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()

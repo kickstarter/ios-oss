@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol SettingsRecommendationsCellViewModelInputs {
   func configureWith(user: User)
@@ -11,9 +10,9 @@ public protocol SettingsRecommendationsCellViewModelInputs {
 }
 
 public protocol SettingsRecommendationsCellViewModelOutputs {
-  var recommendationsOn: Signal<Bool, NoError> { get }
-  var unableToSaveError: Signal<String, NoError> { get }
-  var updateCurrentUser: Signal<User, NoError> { get }
+  var recommendationsOn: Signal<Bool, Never> { get }
+  var unableToSaveError: Signal<String, Never> { get }
+  var updateCurrentUser: Signal<User, Never> { get }
 }
 
 public protocol SettingsRecommendationsCellViewModelType {
@@ -27,7 +26,7 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
     let initialUser = configureWithProperty.signal
       .skipNil()
 
-    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
+    let userAttributeChanged: Signal<(UserAttribute, Bool), Never> =
       self.recommendationsTappedProperty.signal.map {
       (UserAttribute.privacy(UserAttribute.Privacy.recommendations), !$0)
     }
@@ -76,9 +75,9 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
     self.recommendationsTappedProperty.value = on
   }
 
-  public let recommendationsOn: Signal<Bool, NoError>
-  public let unableToSaveError: Signal<String, NoError>
-  public let updateCurrentUser: Signal<User, NoError>
+  public let recommendationsOn: Signal<Bool, Never>
+  public let unableToSaveError: Signal<String, Never>
+  public let updateCurrentUser: Signal<User, Never>
 
   public var inputs: SettingsRecommendationsCellViewModelInputs { return self }
   public var outputs: SettingsRecommendationsCellViewModelOutputs { return self }

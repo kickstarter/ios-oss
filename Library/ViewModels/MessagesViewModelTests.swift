@@ -4,24 +4,23 @@ import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import KsApi
 import ReactiveSwift
-import Result
 import Prelude
 
 internal final class MessagesViewModelTests: TestCase {
   fileprivate let vm: MessagesViewModelType = MessagesViewModel()
 
-  fileprivate let backingAndProjectAndIsFromBacking = TestObserver<(Backing, Project, Bool), NoError>()
-  fileprivate let emptyStateIsVisible = TestObserver<Bool, NoError>()
-  fileprivate let emptyStateMessage = TestObserver<String, NoError>()
-  fileprivate let goToBackingProject = TestObserver<Project, NoError>()
-  fileprivate let goToBackingUser = TestObserver<User, NoError>()
-  fileprivate let goToProject = TestObserver<Project, NoError>()
-  fileprivate let goToRefTag = TestObserver<RefTag, NoError>()
-  fileprivate let messages = TestObserver<[Message], NoError>()
-  fileprivate let presentMessageDialog = TestObserver<MessageThread, NoError>()
-  fileprivate let project = TestObserver<Project, NoError>()
-  fileprivate let replyButtonIsEnabled = TestObserver<Bool, NoError>()
-  fileprivate let successfullyMarkedAsRead = TestObserver<(), NoError>()
+  fileprivate let backingAndProjectAndIsFromBacking = TestObserver<(Backing, Project, Bool), Never>()
+  fileprivate let emptyStateIsVisible = TestObserver<Bool, Never>()
+  fileprivate let emptyStateMessage = TestObserver<String, Never>()
+  fileprivate let goToBackingProject = TestObserver<Project, Never>()
+  fileprivate let goToBackingUser = TestObserver<User, Never>()
+  fileprivate let goToProject = TestObserver<Project, Never>()
+  fileprivate let goToRefTag = TestObserver<RefTag, Never>()
+  fileprivate let messages = TestObserver<[Message], Never>()
+  fileprivate let presentMessageDialog = TestObserver<MessageThread, Never>()
+  fileprivate let project = TestObserver<Project, Never>()
+  fileprivate let replyButtonIsEnabled = TestObserver<Bool, Never>()
+  fileprivate let successfullyMarkedAsRead = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -83,7 +82,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResult: Result(value: messageThread))
+    let apiService = MockService(fetchMessageThreadResult: Result(success: messageThread))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -110,7 +109,7 @@ internal final class MessagesViewModelTests: TestCase {
       exception: nil
     )
 
-    let apiService = MockService(fetchMessageThreadResult: Result(error: errorUnknown))
+    let apiService = MockService(fetchMessageThreadResult: Result(failure: errorUnknown))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -133,7 +132,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResult: Result(value: messageThread))
+    let apiService = MockService(fetchMessageThreadResult: Result(success: messageThread))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -175,7 +174,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResult: Result(value: messageThread))
+    let apiService = MockService(fetchMessageThreadResult: Result(success: messageThread))
 
     withEnvironment(apiService: apiService, currentUser: currentUser) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -204,7 +203,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResult: Result(value: messageThread))
+    let apiService = MockService(fetchMessageThreadResult: Result(success: messageThread))
 
     withEnvironment(apiService: apiService, currentUser: currentUser) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -230,7 +229,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResult: Result(value: messageThread))
+    let apiService = MockService(fetchMessageThreadResult: Result(success: messageThread))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))

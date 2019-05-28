@@ -1,5 +1,4 @@
 import Prelude
-import Result
 import XCTest
 @testable import Library
 @testable import KsApi
@@ -7,14 +6,14 @@ import ReactiveExtensions_TestHelpers
 
 internal final class ActivityUpdateViewModelTests: TestCase {
   fileprivate let vm: ActivityUpdateViewModelType = ActivityUpdateViewModel()
-  fileprivate let body = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let notifyDelegateTappedProjectImage = TestObserver<Activity, NoError>()
-  fileprivate let projectButtonAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let projectImageURL = TestObserver<String?, NoError>()
-  fileprivate let projectName = TestObserver<String, NoError>()
-  fileprivate let sequenceTitle = TestObserver<String, NoError>()
-  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let body = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let notifyDelegateTappedProjectImage = TestObserver<Activity, Never>()
+  fileprivate let projectButtonAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let projectImageURL = TestObserver<String?, Never>()
+  fileprivate let projectName = TestObserver<String, Never>()
+  fileprivate let sequenceTitle = TestObserver<String, Never>()
+  fileprivate let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

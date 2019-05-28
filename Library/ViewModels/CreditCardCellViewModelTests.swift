@@ -1,5 +1,4 @@
 import XCTest
-import Result
 import ReactiveSwift
 import Prelude
 @testable import KsApi
@@ -10,10 +9,10 @@ internal final class CreditCardCellViewModelTests: TestCase {
 
   internal let vm: CreditCardCellViewModelType = CreditCardCellViewModel()
 
-  let cardImage = TestObserver<UIImage?, NoError>()
-  let cardNumberAccessibilityLabel = TestObserver<String, NoError>()
-  let cardNumberText = TestObserver<String, NoError>()
-  let expirationDateText = TestObserver<String, NoError>()
+  let cardImage = TestObserver<UIImage?, Never>()
+  let cardNumberAccessibilityLabel = TestObserver<String, Never>()
+  let cardNumberText = TestObserver<String, Never>()
+  let expirationDateText = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()

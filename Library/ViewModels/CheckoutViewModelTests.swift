@@ -4,7 +4,6 @@ import XCTest
 @testable import Library
 @testable import KsApi
 import ReactiveExtensions_TestHelpers
-import Result
 import KsApi
 import PassKit
 import Prelude
@@ -14,20 +13,20 @@ private let questionMark = CharacterSet(charactersIn: "?")
 final class CheckoutViewModelTests: TestCase {
   fileprivate let vm: CheckoutViewModelType = CheckoutViewModel()
 
-  fileprivate let closeLoginTout = TestObserver<(), NoError>()
-  fileprivate let dismissViewController = TestObserver<(), NoError>()
-  fileprivate let evaluateJavascript = TestObserver<String, NoError>()
-  fileprivate let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
-  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
-  fileprivate let goToThanks = TestObserver<Project, NoError>()
-  fileprivate let goToWebModal = TestObserver<URLRequest, NoError>()
-  fileprivate let openLoginTout = TestObserver<(), NoError>()
-  fileprivate let popViewController = TestObserver<(), NoError>()
-  fileprivate let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
-  fileprivate let setStripePublishableKey = TestObserver<String, NoError>()
-  fileprivate let showAlert = TestObserver<String, NoError>()
-  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
-  fileprivate let webViewLoadRequestURL = TestObserver<String, NoError>()
+  fileprivate let closeLoginTout = TestObserver<(), Never>()
+  fileprivate let dismissViewController = TestObserver<(), Never>()
+  fileprivate let evaluateJavascript = TestObserver<String, Never>()
+  fileprivate let goToPaymentAuthorization = TestObserver<NSDictionary, Never>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
+  fileprivate let goToThanks = TestObserver<Project, Never>()
+  fileprivate let goToWebModal = TestObserver<URLRequest, Never>()
+  fileprivate let openLoginTout = TestObserver<(), Never>()
+  fileprivate let popViewController = TestObserver<(), Never>()
+  fileprivate let setStripeAppleMerchantIdentifier = TestObserver<String, Never>()
+  fileprivate let setStripePublishableKey = TestObserver<String, Never>()
+  fileprivate let showAlert = TestObserver<String, Never>()
+  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, Never>()
+  fileprivate let webViewLoadRequestURL = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

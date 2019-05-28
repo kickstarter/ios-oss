@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 import ReactiveSwift
-import Result
 import Prelude
 @testable import KsApi
 @testable import Library
@@ -9,11 +8,11 @@ import ReactiveExtensions_TestHelpers
 
 internal final class SettingsPrivacyViewModelTests: TestCase {
   let vm = SettingsPrivacyViewModel()
-  internal let focusScreenReaderOnFollowingCell = TestObserver<Void, NoError>()
-  internal let reloadData = TestObserver<User, NoError>()
-  internal let resetFollowingSection = TestObserver<Void, NoError>()
-  internal let unableToSaveError = TestObserver<String, NoError>()
-  internal let updateCurrentUser = TestObserver<User, NoError>()
+  internal let focusScreenReaderOnFollowingCell = TestObserver<Void, Never>()
+  internal let reloadData = TestObserver<User, Never>()
+  internal let resetFollowingSection = TestObserver<Void, Never>()
+  internal let unableToSaveError = TestObserver<String, Never>()
+  internal let updateCurrentUser = TestObserver<User, Never>()
 
   internal override func setUp() {
     super.setUp()

@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ChangeEmailViewModelInputs {
   func emailFieldTextDidChange(text: String?)
@@ -18,25 +17,25 @@ public protocol ChangeEmailViewModelInputs {
 }
 
 public protocol ChangeEmailViewModelOutputs {
-  var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
-  var didChangeEmail: Signal<Void, NoError> { get }
-  var didFailToChangeEmail: Signal<String, NoError> { get }
-  var didFailToSendVerificationEmail: Signal<String, NoError> { get }
-  var didSendVerificationEmail: Signal<Void, NoError> { get }
-  var dismissKeyboard: Signal<Void, NoError> { get }
-  var emailText: Signal<String, NoError> { get }
-  var messageLabelViewHidden: Signal<Bool, NoError> { get }
-  var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
-  var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
-  var passwordFieldBecomeFirstResponder: Signal<Void, NoError> { get }
-  var passwordText: Signal<String, NoError> { get }
-  var resendVerificationEmailViewIsHidden: Signal<Bool, NoError> { get }
-  var resetFields: Signal<String, NoError> { get }
-  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
-  var textFieldsAreEnabled: Signal<Bool, NoError> { get }
-  var unverifiedEmailLabelHidden: Signal<Bool, NoError> { get }
-  var warningMessageLabelHidden: Signal<Bool, NoError> { get }
-  var verificationEmailButtonTitle: Signal<String, NoError> { get }
+  var activityIndicatorShouldShow: Signal<Bool, Never> { get }
+  var didChangeEmail: Signal<Void, Never> { get }
+  var didFailToChangeEmail: Signal<String, Never> { get }
+  var didFailToSendVerificationEmail: Signal<String, Never> { get }
+  var didSendVerificationEmail: Signal<Void, Never> { get }
+  var dismissKeyboard: Signal<Void, Never> { get }
+  var emailText: Signal<String, Never> { get }
+  var messageLabelViewHidden: Signal<Bool, Never> { get }
+  var onePasswordButtonIsHidden: Signal<Bool, Never> { get }
+  var onePasswordFindLoginForURLString: Signal<String, Never> { get }
+  var passwordFieldBecomeFirstResponder: Signal<Void, Never> { get }
+  var passwordText: Signal<String, Never> { get }
+  var resendVerificationEmailViewIsHidden: Signal<Bool, Never> { get }
+  var resetFields: Signal<String, Never> { get }
+  var saveButtonIsEnabled: Signal<Bool, Never> { get }
+  var textFieldsAreEnabled: Signal<Bool, Never> { get }
+  var unverifiedEmailLabelHidden: Signal<Bool, Never> { get }
+  var warningMessageLabelHidden: Signal<Bool, Never> { get }
+  var verificationEmailButtonTitle: Signal<String, Never> { get }
 }
 
 public protocol ChangeEmailViewModelType {
@@ -234,25 +233,25 @@ ChangeEmailViewModelOutputs {
     self.textFieldShouldReturnProperty.value = returnKeyType
   }
 
-  public let activityIndicatorShouldShow: Signal<Bool, NoError>
-  public let didChangeEmail: Signal<Void, NoError>
-  public let didFailToChangeEmail: Signal<String, NoError>
-  public let didFailToSendVerificationEmail: Signal<String, NoError>
-  public let didSendVerificationEmail: Signal<Void, NoError>
-  public let dismissKeyboard: Signal<Void, NoError>
-  public let emailText: Signal<String, NoError>
-  public let messageLabelViewHidden: Signal<Bool, NoError>
-  public let onePasswordButtonIsHidden: Signal<Bool, NoError>
-  public let onePasswordFindLoginForURLString: Signal<String, NoError>
-  public let passwordFieldBecomeFirstResponder: Signal<Void, NoError>
-  public let passwordText: Signal<String, NoError>
-  public let resendVerificationEmailViewIsHidden: Signal<Bool, NoError>
-  public let resetFields: Signal<String, NoError>
-  public let saveButtonIsEnabled: Signal<Bool, NoError>
-  public let textFieldsAreEnabled: Signal<Bool, NoError>
-  public let unverifiedEmailLabelHidden: Signal<Bool, NoError>
-  public let verificationEmailButtonTitle: Signal<String, NoError>
-  public let warningMessageLabelHidden: Signal<Bool, NoError>
+  public let activityIndicatorShouldShow: Signal<Bool, Never>
+  public let didChangeEmail: Signal<Void, Never>
+  public let didFailToChangeEmail: Signal<String, Never>
+  public let didFailToSendVerificationEmail: Signal<String, Never>
+  public let didSendVerificationEmail: Signal<Void, Never>
+  public let dismissKeyboard: Signal<Void, Never>
+  public let emailText: Signal<String, Never>
+  public let messageLabelViewHidden: Signal<Bool, Never>
+  public let onePasswordButtonIsHidden: Signal<Bool, Never>
+  public let onePasswordFindLoginForURLString: Signal<String, Never>
+  public let passwordFieldBecomeFirstResponder: Signal<Void, Never>
+  public let passwordText: Signal<String, Never>
+  public let resendVerificationEmailViewIsHidden: Signal<Bool, Never>
+  public let resetFields: Signal<String, Never>
+  public let saveButtonIsEnabled: Signal<Bool, Never>
+  public let textFieldsAreEnabled: Signal<Bool, Never>
+  public let unverifiedEmailLabelHidden: Signal<Bool, Never>
+  public let verificationEmailButtonTitle: Signal<String, Never>
+  public let warningMessageLabelHidden: Signal<Bool, Never>
 
   public var inputs: ChangeEmailViewModelInputs {
     return self

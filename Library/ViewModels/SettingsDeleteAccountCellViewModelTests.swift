@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,7 +8,7 @@ import ReactiveExtensions_TestHelpers
 
 internal final class SettingsDeleteAccountCellViewModelTests: TestCase {
   internal let vm = SettingsDeleteAccountCellViewModel()
-  internal let notifyDeleteAccountTapped = TestObserver<URL, NoError>()
+  internal let notifyDeleteAccountTapped = TestObserver<URL, Never>()
 
   internal override func setUp() {
     super.setUp()

@@ -5,7 +5,6 @@ import PassKit
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol CheckoutViewModelInputs {
   /// Call when the back button is tapped.
@@ -44,43 +43,43 @@ public protocol CheckoutViewModelInputs {
 
 public protocol CheckoutViewModelOutputs {
   /// Emits when the login tout should be closed.
-  var closeLoginTout: Signal<Void, NoError> { get }
+  var closeLoginTout: Signal<Void, Never> { get }
 
   /// Emits when the modal view controller should be dismissed.
-  var dismissViewController: Signal<Void, NoError> { get }
+  var dismissViewController: Signal<Void, Never> { get }
 
   /// Emits a string that should be evaluated as javascript in the webview.
-  var evaluateJavascript: Signal<String, NoError> { get }
+  var evaluateJavascript: Signal<String, Never> { get }
 
   /// Emits a payment request object that is to be used to present a payment authorization controller.
-  var goToPaymentAuthorization: Signal<PKPaymentRequest, NoError> { get }
+  var goToPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<URL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, Never> { get }
 
   /// Emits when the thanks screen should be loaded.
-  var goToThanks: Signal<Project, NoError> { get }
+  var goToThanks: Signal<Project, Never> { get }
 
   /// Emits when the web modal should be loaded.
-  var goToWebModal: Signal<URLRequest, NoError> { get }
+  var goToWebModal: Signal<URLRequest, Never> { get }
 
   /// Emits when the login tout should be opened.
-  var openLoginTout: Signal<Void, NoError> { get }
+  var openLoginTout: Signal<Void, Never> { get }
 
   /// Emits when the view controller should be popped.
-  var popViewController: Signal<Void, NoError> { get }
+  var popViewController: Signal<Void, Never> { get }
 
   /// Emits a string to be used to set the Stripe library's apple merchant identifier.
-  var setStripeAppleMerchantIdentifier: Signal<String, NoError> { get }
+  var setStripeAppleMerchantIdentifier: Signal<String, Never> { get }
 
   /// Emits a string to be used to set the Stripe library's publishable key.
-  var setStripePublishableKey: Signal<String, NoError> { get }
+  var setStripePublishableKey: Signal<String, Never> { get }
 
   /// Emits when an alert should be shown.
-  var showAlert: Signal<String, NoError> { get }
+  var showAlert: Signal<String, Never> { get }
 
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
 
 public protocol CheckoutViewModelType: CheckoutViewModelInputs, CheckoutViewModelOutputs {
@@ -383,21 +382,21 @@ public final class CheckoutViewModel: CheckoutViewModelType {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let closeLoginTout: Signal<Void, NoError>
-  public let dismissViewController: Signal<Void, NoError>
-  public let evaluateJavascript: Signal<String, NoError>
-  public let goToPaymentAuthorization: Signal<PKPaymentRequest, NoError>
-  public let goToSafariBrowser: Signal<URL, NoError>
-  public let goToThanks: Signal<Project, NoError>
-  public let goToWebModal: Signal<URLRequest, NoError>
-  public let openLoginTout: Signal<Void, NoError>
-  public let popViewController: Signal<Void, NoError>
-  public let setStripeAppleMerchantIdentifier: Signal<String, NoError>
-  public let setStripePublishableKey: Signal<String, NoError>
-  public var showAlert: Signal<String, NoError> {
+  public let closeLoginTout: Signal<Void, Never>
+  public let dismissViewController: Signal<Void, Never>
+  public let evaluateJavascript: Signal<String, Never>
+  public let goToPaymentAuthorization: Signal<PKPaymentRequest, Never>
+  public let goToSafariBrowser: Signal<URL, Never>
+  public let goToThanks: Signal<Project, Never>
+  public let goToWebModal: Signal<URLRequest, Never>
+  public let openLoginTout: Signal<Void, Never>
+  public let popViewController: Signal<Void, Never>
+  public let setStripeAppleMerchantIdentifier: Signal<String, Never>
+  public let setStripePublishableKey: Signal<String, Never>
+  public var showAlert: Signal<String, Never> {
     return self.checkoutRacingViewModel.outputs.showAlert
   }
-  public let webViewLoadRequest: Signal<URLRequest, NoError>
+  public let webViewLoadRequest: Signal<URLRequest, Never>
 
   public var inputs: CheckoutViewModelInputs { return self }
   public var outputs: CheckoutViewModelOutputs { return self }

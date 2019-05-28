@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol DashboardVideoCellViewModelInputs {
   /// Call to configure cell with video stats.
@@ -11,28 +10,28 @@ public protocol DashboardVideoCellViewModelInputs {
 
 public protocol DashboardVideoCellViewModelOutputs {
   /// Emits the total completion percentage to be displayed.
-  var completionPercentage: Signal<String, NoError> { get }
+  var completionPercentage: Signal<String, Never> { get }
 
   /// Emits the count of external starts to be displayed.
-  var externalStartCount: Signal<String, NoError> { get }
+  var externalStartCount: Signal<String, Never> { get }
 
   /// Emits the external start progress to be displayed in a progress bar.
-  var externalStartProgress: Signal<CGFloat, NoError> { get }
+  var externalStartProgress: Signal<CGFloat, Never> { get }
 
   /// Emits text for the external label.
-  var externalText: Signal<String, NoError> { get }
+  var externalText: Signal<String, Never> { get }
 
   /// Emits the count of internal starts to be displayed.
-  var internalStartCount: Signal<String, NoError> { get }
+  var internalStartCount: Signal<String, Never> { get }
 
   /// Emits the internal start progress to be displayed in a progress bar.
-  var internalStartProgress: Signal<CGFloat, NoError> { get }
+  var internalStartProgress: Signal<CGFloat, Never> { get }
 
   /// Emits text for the internal label.
-  var internalText: Signal<String, NoError> { get }
+  var internalText: Signal<String, Never> { get }
 
   /// Emits the total count of video starts to be displayed.
-  var totalStartCount: Signal<NSAttributedString, NoError> { get }
+  var totalStartCount: Signal<NSAttributedString, Never> { get }
 }
 
 public protocol DashboardVideoCellViewModelType {
@@ -86,14 +85,14 @@ public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInput
     self.statsProperty.value = stats
   }
 
-  public let completionPercentage: Signal<String, NoError>
-  public let externalStartCount: Signal<String, NoError>
-  public let externalStartProgress: Signal<CGFloat, NoError>
-  public let externalText: Signal<String, NoError>
-  public let internalStartCount: Signal<String, NoError>
-  public let internalStartProgress: Signal<CGFloat, NoError>
-  public let internalText: Signal<String, NoError>
-  public let totalStartCount: Signal<NSAttributedString, NoError>
+  public let completionPercentage: Signal<String, Never>
+  public let externalStartCount: Signal<String, Never>
+  public let externalStartProgress: Signal<CGFloat, Never>
+  public let externalText: Signal<String, Never>
+  public let internalStartCount: Signal<String, Never>
+  public let internalStartProgress: Signal<CGFloat, Never>
+  public let internalText: Signal<String, Never>
+  public let totalStartCount: Signal<NSAttributedString, Never>
 
   public var inputs: DashboardVideoCellViewModelInputs { return self }
   public var outputs: DashboardVideoCellViewModelOutputs { return self }

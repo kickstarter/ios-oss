@@ -1,5 +1,4 @@
 import XCTest
-import Result
 import Prelude
 @testable import KsApi
 @testable import Library
@@ -8,11 +7,11 @@ import ReactiveExtensions_TestHelpers
 internal final class DashboardRewardsCellViewModelTests: TestCase {
   let vm: DashboardRewardsCellViewModelType = DashboardRewardsCellViewModel()
 
-  let hideSeeAllTiersButton = TestObserver<Bool, NoError>()
-  let notifyDelegateAddedRewardRows = TestObserver<Void, NoError>()
-  let rewardsRowCountry = TestObserver<Project.Country, NoError>()
-  let rewardsRowRewards = TestObserver<[ProjectStatsEnvelope.RewardStats], NoError>()
-  let rewardsRowTotalPledged = TestObserver<Int, NoError>()
+  let hideSeeAllTiersButton = TestObserver<Bool, Never>()
+  let notifyDelegateAddedRewardRows = TestObserver<Void, Never>()
+  let rewardsRowCountry = TestObserver<Project.Country, Never>()
+  let rewardsRowRewards = TestObserver<[ProjectStatsEnvelope.RewardStats], Never>()
+  let rewardsRowTotalPledged = TestObserver<Int, Never>()
 
   let reward1 = Reward.template
   let reward2 = Reward.noReward

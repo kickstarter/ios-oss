@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol RewardCellViewModelInputs {
   func boundStyles()
@@ -10,31 +9,31 @@ public protocol RewardCellViewModelInputs {
 }
 
 public protocol RewardCellViewModelOutputs {
-  var allGoneHidden: Signal<Bool, NoError> { get }
-  var conversionLabelHidden: Signal<Bool, NoError> { get }
-  var conversionLabelText: Signal<String, NoError> { get }
-  var descriptionLabelHidden: Signal<Bool, NoError> { get }
-  var descriptionLabelText: Signal<String, NoError> { get }
-  var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
-  var footerLabelText: Signal<String, NoError> { get }
-  var footerStackViewHidden: Signal<Bool, NoError> { get }
-  var items: Signal<[String], NoError> { get }
-  var itemsContainerHidden: Signal<Bool, NoError> { get }
-  var manageButtonHidden: Signal<Bool, NoError> { get }
-  var minimumAndConversionLabelsColor: Signal<UIColor, NoError> { get }
-  var minimumLabelText: Signal<String, NoError> { get }
-  var notifyDelegateRewardCellWantsExpansion: Signal<(), NoError> { get }
-  var pledgeButtonHidden: Signal<Bool, NoError> { get }
-  var pledgeButtonTitleText: Signal<String, NoError> { get }
-  var shippingLocationsStackViewHidden: Signal<Bool, NoError> { get }
-  var shippingLocationsSummaryLabelText: Signal<String, NoError> { get }
-  var titleLabelHidden: Signal<Bool, NoError> { get }
-  var titleLabelText: Signal<String, NoError> { get }
-  var titleLabelTextColor: Signal<UIColor, NoError> { get }
-  var updateTopMarginsForIsBacking: Signal<Bool, NoError> { get }
-  var viewPledgeButtonHidden: Signal<Bool, NoError> { get }
-  var youreABackerLabelText: Signal<String, NoError> { get }
-  var youreABackerViewHidden: Signal<Bool, NoError> { get }
+  var allGoneHidden: Signal<Bool, Never> { get }
+  var conversionLabelHidden: Signal<Bool, Never> { get }
+  var conversionLabelText: Signal<String, Never> { get }
+  var descriptionLabelHidden: Signal<Bool, Never> { get }
+  var descriptionLabelText: Signal<String, Never> { get }
+  var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
+  var footerLabelText: Signal<String, Never> { get }
+  var footerStackViewHidden: Signal<Bool, Never> { get }
+  var items: Signal<[String], Never> { get }
+  var itemsContainerHidden: Signal<Bool, Never> { get }
+  var manageButtonHidden: Signal<Bool, Never> { get }
+  var minimumAndConversionLabelsColor: Signal<UIColor, Never> { get }
+  var minimumLabelText: Signal<String, Never> { get }
+  var notifyDelegateRewardCellWantsExpansion: Signal<(), Never> { get }
+  var pledgeButtonHidden: Signal<Bool, Never> { get }
+  var pledgeButtonTitleText: Signal<String, Never> { get }
+  var shippingLocationsStackViewHidden: Signal<Bool, Never> { get }
+  var shippingLocationsSummaryLabelText: Signal<String, Never> { get }
+  var titleLabelHidden: Signal<Bool, Never> { get }
+  var titleLabelText: Signal<String, Never> { get }
+  var titleLabelTextColor: Signal<UIColor, Never> { get }
+  var updateTopMarginsForIsBacking: Signal<Bool, Never> { get }
+  var viewPledgeButtonHidden: Signal<Bool, Never> { get }
+  var youreABackerLabelText: Signal<String, Never> { get }
+  var youreABackerViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol RewardCellViewModelType {
@@ -46,12 +45,12 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
 RewardCellViewModelOutputs {
 
   public init() {
-    let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), NoError> =
+    let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
       self.projectAndRewardOrBackingProperty.signal.skipNil()
 
-    let project: Signal<Project, NoError> = projectAndRewardOrBacking.map(first)
+    let project: Signal<Project, Never> = projectAndRewardOrBacking.map(first)
 
-    let reward: Signal<Reward, NoError> = projectAndRewardOrBacking
+    let reward: Signal<Reward, Never> = projectAndRewardOrBacking
       .map { project, rewardOrBacking -> Reward in
         rewardOrBacking.left
           ?? rewardOrBacking.right?.reward
@@ -262,31 +261,31 @@ RewardCellViewModelOutputs {
     self.tappedProperty.value = ()
   }
 
-  public let allGoneHidden: Signal<Bool, NoError>
-  public let conversionLabelHidden: Signal<Bool, NoError>
-  public let conversionLabelText: Signal<String, NoError>
-  public let descriptionLabelHidden: Signal<Bool, NoError>
-  public let descriptionLabelText: Signal<String, NoError>
-  public let estimatedDeliveryDateLabelText: Signal<String, NoError>
-  public let footerLabelText: Signal<String, NoError>
-  public let footerStackViewHidden: Signal<Bool, NoError>
-  public let items: Signal<[String], NoError>
-  public let itemsContainerHidden: Signal<Bool, NoError>
-  public let manageButtonHidden: Signal<Bool, NoError>
-  public let minimumAndConversionLabelsColor: Signal<UIColor, NoError>
-  public let minimumLabelText: Signal<String, NoError>
-  public let notifyDelegateRewardCellWantsExpansion: Signal<(), NoError>
-  public let pledgeButtonHidden: Signal<Bool, NoError>
-  public let pledgeButtonTitleText: Signal<String, NoError>
-  public let shippingLocationsStackViewHidden: Signal<Bool, NoError>
-  public let shippingLocationsSummaryLabelText: Signal<String, NoError>
-  public let titleLabelHidden: Signal<Bool, NoError>
-  public let titleLabelText: Signal<String, NoError>
-  public let titleLabelTextColor: Signal<UIColor, NoError>
-  public let updateTopMarginsForIsBacking: Signal<Bool, NoError>
-  public let viewPledgeButtonHidden: Signal<Bool, NoError>
-  public let youreABackerLabelText: Signal<String, NoError>
-  public let youreABackerViewHidden: Signal<Bool, NoError>
+  public let allGoneHidden: Signal<Bool, Never>
+  public let conversionLabelHidden: Signal<Bool, Never>
+  public let conversionLabelText: Signal<String, Never>
+  public let descriptionLabelHidden: Signal<Bool, Never>
+  public let descriptionLabelText: Signal<String, Never>
+  public let estimatedDeliveryDateLabelText: Signal<String, Never>
+  public let footerLabelText: Signal<String, Never>
+  public let footerStackViewHidden: Signal<Bool, Never>
+  public let items: Signal<[String], Never>
+  public let itemsContainerHidden: Signal<Bool, Never>
+  public let manageButtonHidden: Signal<Bool, Never>
+  public let minimumAndConversionLabelsColor: Signal<UIColor, Never>
+  public let minimumLabelText: Signal<String, Never>
+  public let notifyDelegateRewardCellWantsExpansion: Signal<(), Never>
+  public let pledgeButtonHidden: Signal<Bool, Never>
+  public let pledgeButtonTitleText: Signal<String, Never>
+  public let shippingLocationsStackViewHidden: Signal<Bool, Never>
+  public let shippingLocationsSummaryLabelText: Signal<String, Never>
+  public let titleLabelHidden: Signal<Bool, Never>
+  public let titleLabelText: Signal<String, Never>
+  public let titleLabelTextColor: Signal<UIColor, Never>
+  public let updateTopMarginsForIsBacking: Signal<Bool, Never>
+  public let viewPledgeButtonHidden: Signal<Bool, Never>
+  public let youreABackerLabelText: Signal<String, Never>
+  public let youreABackerViewHidden: Signal<Bool, Never>
 
   public var inputs: RewardCellViewModelInputs { return self }
   public var outputs: RewardCellViewModelOutputs { return self }

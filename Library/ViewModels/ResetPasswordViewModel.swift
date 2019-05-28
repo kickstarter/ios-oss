@@ -1,6 +1,5 @@
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import KsApi
 
 public protocol ResetPasswordViewModelInputs {
@@ -16,17 +15,17 @@ public protocol ResetPasswordViewModelInputs {
 
 public protocol ResetPasswordViewModelOutputs {
   /// Sets whether the email text field is the first responder.
-  var emailTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
+  var emailTextFieldBecomeFirstResponder: Signal<(), Never> { get }
   /// Emits email address to set email textfield
-  var setEmailInitial: Signal<String, NoError> { get }
+  var setEmailInitial: Signal<String, Never> { get }
   /// Emits Bool representing form validity
-  var formIsValid: Signal<Bool, NoError> { get }
+  var formIsValid: Signal<Bool, Never> { get }
   /// Emits email String when reset is successful
-  var showResetSuccess: Signal<String, NoError> { get }
+  var showResetSuccess: Signal<String, Never> { get }
   /// Emits after user closes popup confirmation
-  var returnToLogin: Signal<(), NoError> { get }
+  var returnToLogin: Signal<(), Never> { get }
   /// Emits error message String on reset fail
-  var showError: Signal<String, NoError> { get }
+  var showError: Signal<String, Never> { get }
 }
 
 public protocol ResetPasswordViewModelType {
@@ -99,12 +98,12 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
     self.confirmResetButtonPressedProperty.value = ()
   }
 
-  public let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let formIsValid: Signal<Bool, NoError>
-  public let showResetSuccess: Signal<String, NoError>
-  public var returnToLogin: Signal<(), NoError>
-  public var setEmailInitial: Signal<String, NoError>
-  public let showError: Signal<String, NoError>
+  public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
+  public let formIsValid: Signal<Bool, Never>
+  public let showResetSuccess: Signal<String, Never>
+  public var returnToLogin: Signal<(), Never>
+  public var setEmailInitial: Signal<String, Never>
+  public let showError: Signal<String, Never>
 
   public var inputs: ResetPasswordViewModelInputs { return self }
   public var outputs: ResetPasswordViewModelOutputs { return self }
