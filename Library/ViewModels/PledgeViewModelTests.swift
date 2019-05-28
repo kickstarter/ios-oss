@@ -47,7 +47,7 @@ final class PledgeViewModelTests: TestCase {
         [Format.date(secondsInUTC: estimatedDelivery, template: "MMMMyyyy", timeZone: UTCTimeZone)]
       )
       self.shippingLocation.assertValues(["Brooklyn"])
-      self.shippingAmount.assertValues(["$7.50"])
+      self.shippingAmount.assertValues(["+$7.50"])
       self.isLoggedIn.assertValues([false])
     }
   }
@@ -68,7 +68,7 @@ final class PledgeViewModelTests: TestCase {
         [Format.date(secondsInUTC: estimatedDelivery, template: "MMMMyyyy", timeZone: UTCTimeZone)]
       )
       self.shippingLocation.assertValues(["Brooklyn"])
-      self.shippingAmount.assertValues(["$7.50"])
+      self.shippingAmount.assertValues(["+$7.50"])
       self.isLoggedIn.assertValues([true])
     }
   }

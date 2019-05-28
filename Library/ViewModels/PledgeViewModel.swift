@@ -46,13 +46,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? ""
         let shipping = (
           "Brooklyn",
-          Format.attributedCurrency(
-            7.5,
-            country: project.country,
-            omitCurrencyCode: project.stats.omitUSCurrencyCode,
-            defaultAttributes: checkoutCurrencyDefaultAttributes(),
-            superscriptAttributes: checkoutCurrencySuperscriptAttributes()
-          )
+          shippingValue(for: project)
         )
 
         return (amount, currency, delivery, shipping)
@@ -80,4 +74,23 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
+}
+
+// MARK: - Functions
+
+private func shippingValue(for project: Project) -> NSAttributedString? {
+  let defaultAttributes = checkoutCurrencyDefaultAttributes()
+  let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
+  guard
+    let attributedCurrency = Format.attributedCurrency(
+      7.5,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode,
+      defaultAttributes: defaultAttributes,
+      superscriptAttributes: superscriptAttributes
+    ) else { return nil }
+
+  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { (_, new) in new }
+
+  return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }
