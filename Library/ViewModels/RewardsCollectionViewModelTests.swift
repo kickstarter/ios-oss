@@ -1,10 +1,10 @@
-import ReactiveSwift
-import ReactiveExtensions
-import XCTest
-import Result
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 @testable import Library
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import Result
+import XCTest
 
 final class RewardsCollectionViewModelTests: TestCase {
   private let vm: RewardsCollectionViewModelType = RewardsCollectionViewModel()

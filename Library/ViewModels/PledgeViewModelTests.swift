@@ -1,7 +1,7 @@
 import Foundation
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 import Result
 import XCTest
 
@@ -33,7 +33,7 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testReloadWithData_loggedOut() {
-    let estimatedDelivery = 1468527587.32843
+    let estimatedDelivery = 1_468_527_587.32843
     let project = Project.template
     let reward = Reward.template |> Reward.lens.estimatedDeliveryOn .~ estimatedDelivery
 
@@ -53,7 +53,7 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testReloadWithData_loggedIn() {
-    let estimatedDelivery = 1468527587.32843
+    let estimatedDelivery = 1_468_527_587.32843
     let project = Project.template
     let reward = Reward.template |> Reward.lens.estimatedDeliveryOn .~ estimatedDelivery
     let user = User.template

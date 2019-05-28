@@ -110,6 +110,6 @@ public extension String {
 
 // MARK: - Functions
 
-func == (lhs: String.Attributes, rhs: String.Attributes ) -> Bool {
+func == (lhs: String.Attributes, rhs: String.Attributes) -> Bool {
   return NSDictionary(dictionary: lhs).isEqual(to: rhs)
 }

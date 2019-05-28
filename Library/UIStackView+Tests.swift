@@ -1,6 +1,6 @@
+@testable import Library
 import Prelude
 import XCTest
-@testable import Library
 
 final class UIStackViewTests: XCTestCase {
   func testAddArrangedSubviewsToStackView() {

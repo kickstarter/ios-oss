@@ -7,15 +7,15 @@ internal final class SearchViewController: UITableViewController {
   internal let viewModel: SearchViewModelType = SearchViewModel()
   fileprivate let dataSource = SearchDataSource()
 
-  @IBOutlet fileprivate weak var cancelButton: UIButton!
-  @IBOutlet fileprivate weak var centeringStackView: UIStackView!
-  @IBOutlet fileprivate weak var innerSearchStackView: UIStackView!
-  @IBOutlet fileprivate weak var searchBarContainerView: UIView!
-  @IBOutlet fileprivate weak var searchIconImageView: UIImageView!
-  @IBOutlet fileprivate weak var searchStackView: UIStackView!
-  @IBOutlet fileprivate weak var searchStackViewWidthConstraint: NSLayoutConstraint!
-  @IBOutlet fileprivate weak var searchTextField: UITextField!
-  @IBOutlet fileprivate weak var searchTextFieldHeightConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate var cancelButton: UIButton!
+  @IBOutlet fileprivate var centeringStackView: UIStackView!
+  @IBOutlet fileprivate var innerSearchStackView: UIStackView!
+  @IBOutlet fileprivate var searchBarContainerView: UIView!
+  @IBOutlet fileprivate var searchIconImageView: UIImageView!
+  @IBOutlet fileprivate var searchStackView: UIStackView!
+  @IBOutlet fileprivate var searchStackViewWidthConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate var searchTextField: UITextField!
+  @IBOutlet fileprivate var searchTextFieldHeightConstraint: NSLayoutConstraint!
 
   private let backgroundView = UIView()
   private let popularLoaderIndicator = UIActivityIndicatorView()
@@ -38,20 +38,26 @@ internal final class SearchViewController: UITableViewController {
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    self.cancelButton.addTarget(self,
-                                action: #selector(cancelButtonPressed),
-                                for: .touchUpInside)
+    self.cancelButton.addTarget(
+      self,
+      action: #selector(SearchViewController.cancelButtonPressed),
+      for: .touchUpInside
+    )
 
-    self.searchTextField.addTarget(self,
-                                   action: #selector(searchTextChanged(_:)),
-                                   for: .editingChanged)
+    self.searchTextField.addTarget(
+      self,
+      action: #selector(SearchViewController.searchTextChanged(_:)),
+      for: .editingChanged
+    )
 
-    self.searchTextField.addTarget(self,
-                                   action: #selector(searchTextEditingDidEnd),
-                                   for: .editingDidEndOnExit)
+    self.searchTextField.addTarget(
+      self,
+      action: #selector(SearchViewController.searchTextEditingDidEnd),
+      for: .editingDidEndOnExit
+    )
 
     self.searchBarContainerView.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(searchBarContainerTapped))
+      UITapGestureRecognizer(target: self, action: #selector(SearchViewController.searchBarContainerTapped))
     )
 
     self.searchTextField.delegate = self
@@ -70,7 +76,7 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self.cancelButton
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
-      |> UIButton.lens.titleLabel.font .~ .ksr_callout(size:15)
+      |> UIButton.lens.titleLabel.font .~ .ksr_callout(size: 15)
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.discovery_search_cancel() }
 
     _ = self.searchBarContainerView
@@ -106,60 +112,63 @@ internal final class SearchViewController: UITableViewController {
   }
 
   internal override func bindViewModel() {
-
     self.viewModel.outputs.projects
       .observeForUI()
       .observeValues { [weak self] projects in
         self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
-    }
+      }
 
     self.viewModel.outputs.isPopularTitleVisible
       .observeForUI()
       .observeValues { [weak self] visible in
         self?.dataSource.popularTitle(isVisible: visible)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.searchLoaderIndicatorIsAnimating
       .observeForUI()
       .observeValues { [weak self] isAnimating in
         guard let _self = self else { return }
-        _self.tableView.tableHeaderView = isAnimating ? _self.searchLoaderIndicator :  nil
+        _self.tableView.tableHeaderView = isAnimating ? _self.searchLoaderIndicator : nil
         if let headerView = _self.tableView.tableHeaderView {
-          headerView.frame = CGRect(x: headerView.frame.origin.x,
-                                    y: headerView.frame.origin.y,
-                                    width: headerView.frame.size.width,
-                                    height: Styles.grid(15))
+          headerView.frame = CGRect(
+            x: headerView.frame.origin.x,
+            y: headerView.frame.origin.y,
+            width: headerView.frame.size.width,
+            height: Styles.grid(15)
+          )
         }
-    }
+      }
 
     self.viewModel.outputs.popularLoaderIndicatorIsAnimating
       .observeForUI()
       .observeValues { [weak self] isAnimating in
         guard let _self = self else { return }
-        _self.tableView.tableHeaderView = isAnimating ? _self.popularLoaderIndicator :  nil
+        _self.tableView.tableHeaderView = isAnimating ? _self.popularLoaderIndicator : nil
         if let headerView = _self.tableView.tableHeaderView {
-          headerView.frame = CGRect(x: headerView.frame.origin.x,
-                                    y: headerView.frame.origin.y,
-                                    width: headerView.frame.size.width,
-                                    height: Styles.grid(15))
+          headerView.frame = CGRect(
+            x: headerView.frame.origin.x,
+            y: headerView.frame.origin.y,
+            width: headerView.frame.size.width,
+            height: Styles.grid(15)
+          )
         }
-    }
+      }
 
     self.viewModel.outputs.showEmptyState
       .observeForUI()
       .observeValues { [weak self] params, visible in
         self?.dataSource.load(params: params, visible: visible)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, refTag in
         self?.goTo(project: project, projects: projects, refTag: refTag)
-    }
+      }
 
     self.searchTextField.rac.text = self.viewModel.outputs.searchFieldText
     self.searchTextField.rac.isFirstResponder = self.viewModel.outputs.resignFirstResponder.mapConst(false)
@@ -171,7 +180,7 @@ internal final class SearchViewController: UITableViewController {
       .observeForControllerAction() // NB: don't change this until we figure out the deadlock problem.
       .observeValues { [weak self] in
         self?.changeSearchFieldFocus(focus: $0, animated: $1)
-    }
+      }
 
     self.viewModel.outputs.scrollToProjectRow
       .observeForControllerAction()
@@ -183,14 +192,16 @@ internal final class SearchViewController: UITableViewController {
   }
 
   fileprivate func goTo(project: Project, projects: [Project], refTag: RefTag) {
-    let vc = ProjectNavigatorViewController.configuredWith(project: project,
-                                                           refTag: refTag,
-                                                           initialPlaylist: projects,
-                                                           navigatorDelegate: self)
+    let vc = ProjectNavigatorViewController.configuredWith(
+      project: project,
+      refTag: refTag,
+      initialPlaylist: projects,
+      navigatorDelegate: self
+    )
     self.present(vc, animated: true, completion: nil)
   }
 
-  fileprivate func changeSearchFieldFocus(focus: Bool, animated: Bool) {
+  fileprivate func changeSearchFieldFocus(focus: Bool, animated _: Bool) {
     if focus {
       self.cancelButton.isHidden = false
 
@@ -210,7 +221,7 @@ internal final class SearchViewController: UITableViewController {
     }
   }
 
-  internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  internal override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let project = self.dataSource[indexPath] as? Project else {
       return
     }
@@ -218,12 +229,15 @@ internal final class SearchViewController: UITableViewController {
     self.viewModel.inputs.tapped(project: project)
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
-
-    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
-                                         outOf: self.dataSource.numberOfItems())
+  internal override func tableView(
+    _: UITableView,
+    willDisplay _: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
+    self.viewModel.inputs.willDisplayRow(
+      self.dataSource.itemIndexAt(indexPath),
+      outOf: self.dataSource.numberOfItems()
+    )
   }
 
   private func updateProjectPlaylist(_ playlist: [Project]) {
@@ -249,11 +263,11 @@ internal final class SearchViewController: UITableViewController {
 }
 
 extension SearchViewController: UITextFieldDelegate {
-  internal func textFieldDidBeginEditing(_ textField: UITextField) {
+  internal func textFieldDidBeginEditing(_: UITextField) {
     self.viewModel.inputs.searchFieldDidBeginEditing()
   }
 
-  internal func textFieldShouldClear(_ textField: UITextField) -> Bool {
+  internal func textFieldShouldClear(_: UITextField) -> Bool {
     self.viewModel.inputs.clearSearchText()
     return true
   }
@@ -265,4 +279,4 @@ extension SearchViewController: ProjectNavigatorDelegate {
   }
 }
 
-extension SearchViewController: TabBarControllerScrollable { }
+extension SearchViewController: TabBarControllerScrollable {}

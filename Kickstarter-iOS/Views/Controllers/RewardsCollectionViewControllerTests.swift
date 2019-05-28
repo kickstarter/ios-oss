@@ -1,5 +1,5 @@
-@testable import Library
 @testable import Kickstarter_Framework
+@testable import Library
 import UIKit
 
 final class RewardsCollectionViewControllerTests: TestCase {

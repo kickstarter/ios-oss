@@ -14,7 +14,8 @@ final class PledgeDataSource: ValueCellDataSource {
     currency: String,
     delivery: String,
     shipping: (location: String, amount: NSAttributedString?),
-    isLoggedIn: Bool) {
+    isLoggedIn: Bool
+  ) {
     self.appendRow(
       value: delivery,
       cellClass: PledgeDescriptionCell.self,

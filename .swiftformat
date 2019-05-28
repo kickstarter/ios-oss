@@ -1,26 +1,32 @@
-# Indent by 2 spaces
+# fileHeader
+--header strip
+
+# indent
 --indent 2
 
+# numberFormatting
+--decimalgrouping 3
+
+# redundantSelf
 # Reference `self` explicitly
 --self insert
 
-# Commas
---commas inline
-
-# Range operators
+# ranges
 --ranges no-space
 
-# Hoisting
---patternlet inline
+# trailingCommas
+--commas inline
 
-# Headers
---header strip
-
-# Unused args
+# unusedArguments
 --stripunusedargs always
 
-# Void instead of `()` tuple
+# wrapArguments
+--wraparguments before-first
+--wrapcollections before-first
+
+# Disabled rules
+--disable redundantInit
 --disable void
 
-# Excluded
---exclude bin,Carthage,Frameworks,Library/Styles/Colors.swift,Library/Strings.swift,vendor
+# Excluded files
+--exclude bin,Carthage,Frameworks,Library/Strings.swift,Library/Styles/Colors.swift,vendor
