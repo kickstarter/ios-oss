@@ -127,7 +127,7 @@ private func stringToBool(_ string: String?) -> Decoded<Bool?> {
 
 private func stringToInt(_ string: String?) -> Decoded<Int?> {
   guard let string = string else { return .success(nil) }
-  return Int(string).map(Decoded.success) ?? .failure(.custom("Could not parse string into int."))
+  return Int(string).map(Decoded<Int?>.success) ?? .failure(.custom("Could not parse string into int."))
 }
 
 private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
