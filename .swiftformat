@@ -1,0 +1,26 @@
+# Indent by 2 spaces
+--indent 2
+
+# Reference `self` explicitly
+--self insert
+
+# Commas
+--commas inline
+
+# Range operators
+--ranges no-space
+
+# Hoisting
+--patternlet inline
+
+# Headers
+--header strip
+
+# Unused args
+--stripunusedargs always
+
+# Void instead of `()` tuple
+--disable void
+
+# Excluded
+--exclude bin,Carthage,Frameworks,Library/Styles/Colors.swift,Library/Strings.swift,vendor
