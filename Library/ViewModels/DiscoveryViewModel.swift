@@ -7,6 +7,10 @@ import ReactiveExtensions
 import Result
 
 public protocol DiscoveryViewModelInputs {
+
+  /// Call when Recommendations setting changes on Settings > Account > Privacy > Recommendations.
+  func didChangeRecommendationsSetting()
+
   /// Call when params have been selected.
   func filter(withParams params: DiscoveryParams)
 
@@ -61,14 +65,19 @@ public protocol DiscoveryViewModelType {
   var outputs: DiscoveryViewModelOutputs { get }
 }
 
-private func initialParam() -> DiscoveryParams {
-
-    return DiscoveryParams.defaults
-      |> DiscoveryParams.lens.includePOTD .~ true
-}
-
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
 DiscoveryViewModelOutputs {
+
+  private static func initialParams() -> DiscoveryParams {
+    guard AppEnvironment.current.currentUser?.optedOutOfRecommendations == .some(false) else {
+      return DiscoveryParams.defaults
+        |> DiscoveryParams.lens.includePOTD .~ true
+    }
+    return DiscoveryParams.defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.backed .~ false
+      |> DiscoveryParams.lens.recommended .~ true
+  }
 
   public init() {
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon]
@@ -76,11 +85,19 @@ DiscoveryViewModelOutputs {
     self.configurePagerDataSource = self.viewDidLoadProperty.signal.mapConst(sorts)
     self.configureSortPager = self.configurePagerDataSource
 
+    let initialParams = Signal.merge(
+      self.viewWillAppearProperty.signal.take(first: 1).ignoreValues(),
+      self.didChangeRecommendationsSettingProperty.signal
+        .takeWhen(self.viewWillAppearProperty.signal)
+    )
+      .map(DiscoveryViewModel.initialParams)
+      .skipRepeats()
+
     let currentParams = Signal.merge(
-      self.viewWillAppearProperty.signal.take(first: 1).map { _ in initialParam() },
+      initialParams,
       self.filterWithParamsProperty.signal.skipNil()
       )
-    .skipRepeats()
+      .skipRepeats()
 
     self.configureNavigationHeader = currentParams
     self.loadFilterIntoDataSource = currentParams
@@ -130,6 +147,11 @@ DiscoveryViewModelOutputs {
     currentParams
       .takeWhen(self.viewWillAppearProperty.signal.skipNil().filter(isFalse))
       .observeValues { AppEnvironment.current.koala.trackDiscoveryViewed(params: $0) }
+  }
+
+  fileprivate let didChangeRecommendationsSettingProperty = MutableProperty(())
+  public func didChangeRecommendationsSetting() {
+    self.didChangeRecommendationsSettingProperty.value = ()
   }
 
   fileprivate let filterWithParamsProperty = MutableProperty<DiscoveryParams?>(nil)

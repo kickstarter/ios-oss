@@ -49,6 +49,10 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.postNotification
+      .observeForUI()
+      .observeValues { NotificationCenter.default.post($0) }
+
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()
       .observeValues { user in AppEnvironment.updateCurrentUser(user) }

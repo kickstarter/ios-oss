@@ -18,10 +18,8 @@ internal final class DiscoveryViewModelTests: TestCase {
   fileprivate let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
   fileprivate let updateSortPagerStyle = TestObserver<Int?, NoError>()
 
-  let recsInitialParams = .defaults
-    |> DiscoveryParams.lens.recommended .~ true
-    |> DiscoveryParams.lens.backed .~ false
-  let initialParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
+  let initialParams = .defaults
+    |> DiscoveryParams.lens.includePOTD .~ true
 
   let categoryParams = .defaults |> DiscoveryParams.lens.category .~ .art
   let subcategoryParams = .defaults |> DiscoveryParams.lens.category .~ .documentary
@@ -85,6 +83,66 @@ internal final class DiscoveryViewModelTests: TestCase {
                                                "New params load into data source after selecting.")
   }
 
+  func testLoadRecommendedProjectsIntoDataSource_UserRecommendationsOptedOut() {
+
+    let user = User.template
+      |> \.optedOutOfRecommendations .~ true
+
+    withEnvironment(config: Config.template, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([initialParams])
+    }
+  }
+
+  func testLoadRecommendedProjectsIntoDataSource_UserRecommendationsOptedIn() {
+
+    let recsInitialParams = .defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.backed .~ false
+
+    let user = User.template
+      |> \.optedOutOfRecommendations .~ false
+
+    withEnvironment(config: Config.template, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([recsInitialParams])
+    }
+  }
+
+  func testLoadRecommendedProjectsIntoDataSource_AfterChangingSetting() {
+
+    let recsInitialParams = .defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.backed .~ false
+
+    let user = User.template
+      |> \.optedOutOfRecommendations .~ false
+
+    let optedOutUser = User.template
+      |> \.optedOutOfRecommendations .~ true
+
+    withEnvironment(config: Config.template, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([recsInitialParams])
+
+      withEnvironment(currentUser: optedOutUser) {
+
+        self.vm.inputs.didChangeRecommendationsSetting()
+        self.vm.inputs.viewWillAppear(animated: false)
+
+        self.configureNavigationHeader.assertValues([recsInitialParams, initialParams])
+      }
+    }
+  }
+
   func testConfigureNavigationHeader() {
     self.configureNavigationHeader.assertValueCount(0)
 
@@ -99,7 +157,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     Signal.merge(
       self.vm.outputs.configurePagerDataSource.mapConst("configureDataSource"),
       self.vm.outputs.loadFilterIntoDataSource.mapConst("loadFilterIntoDataSource")
-    ).observe(test.observer)
+      ).observe(test.observer)
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)
