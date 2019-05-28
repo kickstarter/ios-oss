@@ -1,9 +1,9 @@
-import XCTest
 @testable import KsApi
 @testable import Library
-import ReactiveExtensions_TestHelpers
 import Prelude
+import ReactiveExtensions_TestHelpers
 import Result
+import XCTest
 
 internal final class PledgeDescriptionCellViewModelTests: TestCase {
   private let vm: PledgeDescriptionCellViewModelType = PledgeDescriptionCellViewModel()
@@ -14,12 +14,12 @@ internal final class PledgeDescriptionCellViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.estimatedDeliveryText.observe(estimatedDeliveryText.observer)
-    self.vm.outputs.presentTrustAndSafety.observe(presentTrustAndSafety.observer)
+    self.vm.outputs.estimatedDeliveryText.observe(self.estimatedDeliveryText.observer)
+    self.vm.outputs.presentTrustAndSafety.observe(self.presentTrustAndSafety.observer)
   }
 
   func testEstimatedDeliveryDate() {
-    let estimatedDelivery = 1468527587.32843
+    let estimatedDelivery = 1_468_527_587.32843
 
     let date = Format.date(secondsInUTC: estimatedDelivery, template: "MMMMyyyy", timeZone: UTCTimeZone)
 

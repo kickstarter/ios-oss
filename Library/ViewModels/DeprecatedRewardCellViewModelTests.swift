@@ -359,8 +359,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ 100
       |> Reward.lens.remaining .~ 20
-      |> Reward.lens.endsAt
-      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -371,8 +370,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     let reward = .template
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ nil
-      |> Reward.lens.endsAt
-      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -390,17 +388,19 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     self.footerLabelText.assertValues(["42\u{00a0}backers"])
   }
 
+  // swiftlint:disable line_length
   func testFooterLabelText_NotLimited_Expired_Live() {
     let reward = .template
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ nil
-      |> Reward.lens.endsAt
-      .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
     self.footerLabelText.assertValues(["42\u{00a0}backers"])
   }
+
+  // swiftlint:enable line_length
 
   func testFooterViewHidden_WithRewards() {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))

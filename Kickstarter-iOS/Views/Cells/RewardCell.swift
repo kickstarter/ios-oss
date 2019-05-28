@@ -12,7 +12,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     self.configureViews()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -29,5 +29,5 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> ksr_constrainViewToEdgesInParent()
   }
 
-  func configureWith(value: Reward) {}
+  func configureWith(value _: Reward) {}
 }

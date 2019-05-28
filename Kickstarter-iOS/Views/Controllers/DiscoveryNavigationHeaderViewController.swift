@@ -49,16 +49,21 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.betaToolsButton.addTarget(
       self,
-      action: #selector(self.betaToolsButtonTapped),
+      action: #selector(DiscoveryNavigationHeaderViewController.betaToolsButtonTapped),
       for: .touchUpInside
     )
 
     self.favoriteButton.addTarget(
-      self, action: #selector(self.favoriteButtonTapped),
+      self,
+      action: #selector(DiscoveryNavigationHeaderViewController.favoriteButtonTapped),
       for: .touchUpInside
     )
 
-    self.titleButton.addTarget(self, action: #selector(self.titleButtonTapped), for: .touchUpInside)
+    self.titleButton.addTarget(
+      self,
+      action: #selector(DiscoveryNavigationHeaderViewController.titleButtonTapped),
+      for: .touchUpInside
+    )
 
     self.viewModel.inputs.viewDidLoad()
   }

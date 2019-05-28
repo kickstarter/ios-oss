@@ -46,7 +46,7 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
 
     self.saveButtonView.addTarget(
       self.createPasswordTableViewController,
-      action: #selector(self.createPasswordTableViewController.saveButtonTapped(_:))
+      action: #selector(CreatePasswordTableViewController.saveButtonTapped(_:))
     )
   }
 }

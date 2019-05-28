@@ -11,7 +11,7 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
     self.setupSubviews()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -27,14 +27,14 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
     _ = self.continueButton
       |> checkoutGreenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
-        return Strings.Continue()
-    }
+        Strings.Continue()
+      }
 
     _ = self.continueButton.titleLabel
       ?|> checkoutGreenButtonTitleLabelStyle
   }
 
-  func configureWith(value: ()) {}
+  func configureWith(value _: ()) {}
 
   private func setupSubviews() {
     _ = (self.continueButton, self.contentView)

@@ -114,12 +114,14 @@ public enum Format {
       ?? (symbol + "\(amount)")
   }
 
-  public static func attributedCurrency(_ amount: Double,
-                                        country: Project.Country,
-                                        omitCurrencyCode: Bool = false,
-                                        defaultAttributes: String.Attributes = [:],
-                                        superscriptAttributes: String.Attributes = [:],
-                                        env: Environment = AppEnvironment.current) -> NSAttributedString? {
+  public static func attributedCurrency(
+    _ amount: Double,
+    country: Project.Country,
+    omitCurrencyCode: Bool = false,
+    defaultAttributes: String.Attributes = [:],
+    superscriptAttributes: String.Attributes = [:],
+    env: Environment = AppEnvironment.current
+  ) -> NSAttributedString? {
     let symbol = currencySymbol(forCountry: country, omitCurrencyCode: omitCurrencyCode, env: env)
     let config = NumberFormatterConfig.defaultCurrencyConfig
       |> NumberFormatterConfig.lens.locale .~ env.locale

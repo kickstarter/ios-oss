@@ -11,7 +11,7 @@ final class NumberFormatterTests: TestCase {
 
   let currencySymbolAttributes: String.Attributes = [
     .backgroundColor: UIColor.cyan,
-    .font: UIFont.preferredFont(forTextStyle: .body),
+    .font: UIFont.preferredFont(forTextStyle: .body)
   ]
 
   let decimalSeparatorAttributes: String.Attributes = [
@@ -62,10 +62,11 @@ final class NumberFormatterTests: TestCase {
     let range = attributedString.range(of: ".")
     let attributedSubstring = attributedString.attributedSubstring(from: range)
     let attributes = attributedSubstring.attributes(at: 0, effectiveRange: nil)
-    let expectedAttributes = self.defaultAttributes.merging(self.decimalSeparatorAttributes) { (_, new) in new }
+    let expectedAttributes = self.defaultAttributes.merging(self.decimalSeparatorAttributes) { _, new in new }
 
     XCTAssertTrue(expectedAttributes == attributes)
   }
+
   // swiftlint:enable line_length
 
   func testAttributedString_FractionDigits() {
@@ -85,7 +86,7 @@ final class NumberFormatterTests: TestCase {
     let range = attributedString.range(of: "00", options: .backwards)
     let attributedSubstring = attributedString.attributedSubstring(from: range)
     let attributes = attributedSubstring.attributes(at: 0, effectiveRange: nil)
-    let expectedAttributes = self.defaultAttributes.merging(self.fractionDigitsAttributes) { (_, new) in new }
+    let expectedAttributes = self.defaultAttributes.merging(self.fractionDigitsAttributes) { _, new in new }
 
     XCTAssertTrue(expectedAttributes == attributes)
   }
@@ -109,7 +110,7 @@ final class NumberFormatterTests: TestCase {
     var range = attributedString.range(of: "€")
     var attributedSubstring = attributedString.attributedSubstring(from: range)
     var attributes = attributedSubstring.attributes(at: 0, effectiveRange: nil)
-    var expectedAttributes = self.defaultAttributes.merging(self.currencySymbolAttributes) { (_, new) in new }
+    var expectedAttributes = self.defaultAttributes.merging(self.currencySymbolAttributes) { _, new in new }
 
     XCTAssertEqual("€", attributedSubstring.string)
     XCTAssertTrue(expectedAttributes == attributes)
@@ -124,7 +125,7 @@ final class NumberFormatterTests: TestCase {
     range = attributedString.range(of: ".")
     attributedSubstring = attributedString.attributedSubstring(from: range)
     attributes = attributedSubstring.attributes(at: 0, effectiveRange: nil)
-    expectedAttributes = self.defaultAttributes.merging(self.decimalSeparatorAttributes) { (_, new) in new }
+    expectedAttributes = self.defaultAttributes.merging(self.decimalSeparatorAttributes) { _, new in new }
 
     XCTAssertEqual(".", attributedSubstring.string)
     XCTAssertTrue(expectedAttributes == attributes)
@@ -132,14 +133,14 @@ final class NumberFormatterTests: TestCase {
     range = attributedString.range(of: "00", options: .backwards)
     attributedSubstring = attributedString.attributedSubstring(from: range)
     attributes = attributedSubstring.attributes(at: 0, effectiveRange: nil)
-    expectedAttributes = self.defaultAttributes.merging(self.fractionDigitsAttributes) { (_, new) in new }
+    expectedAttributes = self.defaultAttributes.merging(self.fractionDigitsAttributes) { _, new in new }
 
     XCTAssertEqual("00", attributedSubstring.string)
     XCTAssertTrue(expectedAttributes == attributes)
   }
 }
 
-private func == (lhs: String.Attributes, rhs: String.Attributes ) -> Bool {
+private func == (lhs: String.Attributes, rhs: String.Attributes) -> Bool {
   return NSDictionary(dictionary: lhs).isEqual(to: rhs)
 }
 

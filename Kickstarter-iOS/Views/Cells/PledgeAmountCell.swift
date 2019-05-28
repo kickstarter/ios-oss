@@ -14,6 +14,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var stepper: UIStepper = { UIStepper(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -37,7 +38,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 

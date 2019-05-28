@@ -210,7 +210,6 @@ private typealias Inputs = DeprecatedRewardPledgeViewModelInputs
 private typealias Outputs = DeprecatedRewardPledgeViewModelOutputs
 
 public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
-
   fileprivate let rewardViewModel: RewardCellViewModelType = DeprecatedRewardCellViewModel()
 
   public init() {
@@ -262,7 +261,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     let shippingRules = shippingRulesEvent.values()
 
     self.navigationTitle = projectAndReward
-      .map(navigationTitleForProject(_:reward:))
+      .map(title(forProject:reward:))
 
     self.setStripeAppleMerchantIdentifier = applePayCapable
       .filter(isTrue)
@@ -482,7 +481,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     .map(paymentRequest(forProject:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
 
     let isLoading = MutableProperty(false)
-    self.pledgeIsLoading = isLoading.signal
+    pledgeIsLoading = isLoading.signal
 
     self.loadingOverlayIsHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
@@ -1168,7 +1167,7 @@ private func changePaymentMethod(project: Project) -> SignalProducer<URLRequest,
     .skipNil()
 }
 
-private func navigationTitleForProject(_ project: Project, reward: Reward) -> String {
+private func title(forProject project: Project, reward: Reward) -> String {
   guard project.personalization.isBacking != true else {
     if reward == Reward.noReward {
       return Strings.Manage_your_pledge()

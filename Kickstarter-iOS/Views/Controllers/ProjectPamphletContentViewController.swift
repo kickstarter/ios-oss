@@ -28,7 +28,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
     self.tableView.panGestureRecognizer.addTarget(
-      self, action: #selector(self.scrollViewPanGestureRecognizerDidChange(_:))
+      self,
+      action: #selector(ProjectPamphletContentViewController.scrollViewPanGestureRecognizerDidChange(_:))
     )
 
     self.tableView.register(nib: .DeprecatedRewardCell)
@@ -118,9 +119,11 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   fileprivate func goToRewardPledge(project: Project, reward: Reward) {
     let applePayCapable = PKPaymentAuthorizationViewController.applePayCapable(for: project)
 
-    let vc = DeprecatedRewardPledgeViewController.configuredWith(project: project,
-                                                                 reward: reward,
-                                                                 applePayCapable: applePayCapable)
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(
+      project: project,
+      reward: reward,
+      applePayCapable: applePayCapable
+    )
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
     self.present(nav, animated: true, completion: nil)

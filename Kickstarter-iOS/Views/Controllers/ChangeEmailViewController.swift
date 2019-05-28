@@ -37,13 +37,13 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
-    self.saveButtonView.addTarget(self, action: #selector(self.saveButtonTapped(_:)))
+    self.saveButtonView.addTarget(self, action: #selector(ChangeEmailViewController.saveButtonTapped(_:)))
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
     self.onePasswordButton.addTarget(
       self,
-      action: #selector(self.onePasswordButtonTapped),
+      action: #selector(ChangeEmailViewController.onePasswordButtonTapped),
       for: .touchUpInside
     )
 
