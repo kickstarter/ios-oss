@@ -13,7 +13,7 @@ private enum Layout {
   }
 }
 
-internal protocol PledgeDescriptionCellDelegate: class {
+internal protocol PledgeDescriptionCellDelegate: AnyObject {
   func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell)
 }
 
@@ -25,9 +25,13 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var containerImageView: UIView = {
-    return UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
+    UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var pledgeImageView: UIImageView = {
-    return UIImageView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
+    UIImageView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
@@ -43,7 +47,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -99,7 +103,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
       self.containerImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
       self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
-      ])
+    ])
   }
 
   private func configureStackView() {
@@ -114,8 +118,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       self.learnMoreTextView
     ]
 
-   _ = (views, self.descriptionStackView)
-    |> ksr_addArrangedSubviewsToStackView()
+    _ = (views, self.descriptionStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
 
@@ -135,7 +139,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] in
         guard let _self = self else { return }
         self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(_self)
-    }
+      }
   }
 
   // MARK: - Configuration
@@ -146,13 +150,17 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 }
 
 extension PledgeDescriptionCell: UITextViewDelegate {
-  func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment,
-                in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+  func textView(
+    _: UITextView, shouldInteractWith _: NSTextAttachment,
+    in _: NSRange, interaction _: UITextItemInteraction
+  ) -> Bool {
     return false
   }
 
-  func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange,
-                interaction: UITextItemInteraction) -> Bool {
+  func textView(
+    _: UITextView, shouldInteractWith _: URL, in _: NSRange,
+    interaction _: UITextItemInteraction
+  ) -> Bool {
     self.viewModel.inputs.learnMoreTapped()
     return false
   }
@@ -204,7 +212,7 @@ private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> 
     |> \.textContainer.lineFragmentPadding .~ 0
     |> \.linkTextAttributes .~ [
       .foregroundColor: UIColor.ksr_green_500
-  ]
+    ]
 
   return textView
 }

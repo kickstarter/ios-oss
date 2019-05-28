@@ -1,5 +1,5 @@
-import KsApi
 import Foundation
+import KsApi
 import Prelude
 import ReactiveSwift
 import Result
@@ -31,8 +31,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let projectAndReward = Signal.combineLatest(
       self.configureProjectAndRewardProperty.signal, self.viewDidLoadProperty.signal
     )
-      .map(first)
-      .skipNil()
+    .map(first)
+    .skipNil()
 
     let isLoggedIn = projectAndReward
       .map { _ in AppEnvironment.current.currentUser }
@@ -56,14 +56,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
 
         return (amount, currency, delivery, shipping)
-    }
+      }
 
     self.reloadWithData = Signal.combineLatest(amountCurrencyDeliveryShipping, isLoggedIn)
       .map { amountCurrencyDeliveryShipping, isLoggedIn in
         let (amount, currency, delivery, shipping) = amountCurrencyDeliveryShipping
 
         return (amount, currency, delivery, shipping, isLoggedIn)
-    }
+      }
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)

@@ -5,9 +5,11 @@ import UIKit
 
 final class RewardsCollectionViewDataSource: ValueCellDataSource {
   func load(rewards: [Reward]) {
-    self.set(values: rewards,
-             cellClass: RewardCell.self,
-             inSection: 0)
+    self.set(
+      values: rewards,
+      cellClass: RewardCell.self,
+      inSection: 0
+    )
   }
 
   override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
