@@ -6,10 +6,12 @@ public extension UILabel {
     // Determines if Label is truncated
     guard let string = self.text else { return false }
 
+    guard let font = self.font else { return false }
+
     let size: CGSize = string.boundingRect(
       with: CGSize(width: self.frame.size.width, height: CGFloat.greatestFiniteMagnitude),
       options: [.usesLineFragmentOrigin],
-      attributes: [NSAttributedString.Key.font: self.font as Any],
+      attributes: [NSAttributedString.Key.font: font],
       context: nil
       ).size
 
