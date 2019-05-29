@@ -21,7 +21,7 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.deleteAccountButton as Any]
+      |> \.accessibilityElements .~ [self.deleteAccountButton].compact()
 
     _ = self.deleteAccountButton
       |> \.accessibilityLabel %~ { _ in Strings.Delete_my_Kickstarter_Account() }

@@ -272,7 +272,7 @@ private func shouldEnableSaveButton(email: String?, newEmail: String?, password:
     else { return false  }
 
   return ![newEmail, password]
-    .compactMap { $0 }
+    .compact()
     .map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     .contains(false)
 }

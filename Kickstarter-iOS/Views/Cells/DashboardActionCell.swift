@@ -45,7 +45,7 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
     _ = self |> baseTableViewCellStyle()
     self.isAccessibilityElement = false
     self.accessibilityElements = [self.activityButton, self.messagesButton, self.postUpdateButton]
-      .map { $0 as Any }
+      .compact()
     _ = self.activityButton |> dashboardActivityButtonStyle
     _ = self.lastUpdatePublishedAtLabel |> dashboardLastUpdatePublishedAtLabelStyle
     _ = self.messagesButton |> dashboardMessagesButtonStyle
