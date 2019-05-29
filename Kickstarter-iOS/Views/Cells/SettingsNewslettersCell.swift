@@ -24,7 +24,7 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.newslettersSwitch as Any]
+      |> \.accessibilityElements .~ [self.newslettersSwitch].compactMap { $0 }
   }
 
   func configureWith(value: (newsletter: Newsletter, user: User)) {
