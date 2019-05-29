@@ -223,14 +223,14 @@ private func stringToInt(_ string: String?) -> Decoded<Int?> {
 
   return
     Double(string).flatMap(Int.init).map(Decoded.success)
-      ?? Int(string).map(Decoded.success)
+      ?? Int(string).map(Decoded<Int?>.success)
       ?? .failure(.custom("Could not parse string into int."))
 }
 
 private func stringToDouble(_ string: String?) -> Decoded<Double?> {
   guard let string = string else { return .success(nil) }
 
-  return Double(string).map(Decoded.success) ?? .success(0)
+  return Double(string).map(Decoded<Double?>.success) ?? .success(0)
 }
 
 private func stringToDouble(_ string: String) -> Decoded<Double> {

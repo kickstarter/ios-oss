@@ -71,7 +71,8 @@ fastlane/screenshots
 Screenshots/FailureDiffs/*
 
 Frameworks/native-secrets
-Frameworks/Fabric/*
+Frameworks/Fabric
+Frameworks/HockeySDK
 .fastlane/report.xml
 .fastlane/README.md
 

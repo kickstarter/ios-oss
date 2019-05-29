@@ -175,7 +175,7 @@ final class ServiceTypeTests: XCTestCase {
       "http://api-hq.ksr.com/v1/test?client_id=deadbeef&currency=USD&key=value",
       request.url?.absoluteString)
     XCTAssertEqual(
-      ["Kickstarter-iOS-App": "1", "Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+      ["Kickstarter-iOS-App": "\(testToolBuildNumber())", "Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
         "Accept-Language": "en", "Kickstarter-App-Id": "com.kickstarter.test",
         "User-Agent": userAgent()],
       request.allHTTPHeaderFields!
@@ -205,7 +205,7 @@ final class ServiceTypeTests: XCTestCase {
     XCTAssertEqual("http://api.ksr.com/v1/test?client_id=deadbeef&currency=USD&key=value",
                    request.url?.absoluteString)
     XCTAssertEqual(
-      ["Kickstarter-iOS-App": "1", "Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
+      ["Kickstarter-iOS-App": "\(testToolBuildNumber())", "Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
         "Accept-Language": "en", "Kickstarter-App-Id": "com.kickstarter.test",
         "User-Agent": userAgent()],
       request.allHTTPHeaderFields!
@@ -246,7 +246,19 @@ final class ServiceTypeTests: XCTestCase {
   }
 }
 
+// swiftlint:disable line_length
 private func userAgent() -> String {
-  return "Kickstarter/1 (\(UIDevice.current.model); iOS \(UIDevice.current.systemVersion) "
-    + "Scale/\(UIScreen.main.scale))"
+  return """
+  com.apple.dt.xctest.tool/\(testToolBuildNumber()) (\(UIDevice.current.model); iOS \(UIDevice.current.systemVersion) Scale/\(UIScreen.main.scale))
+  """
+}
+// swiftlint:enable line_length
+
+private func testToolBuildNumber() -> Double {
+  guard
+    let buildString = Bundle.main.infoDictionary?["CFBundleVersion"] as? String,
+    let buildNumber = Double(buildString)
+  else { return 0 }
+  
+  return buildNumber
 }
