@@ -92,7 +92,7 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
 
   public init() {
     let currentParams = Signal.merge(
-      self.paramsProperty.signal.skipNil(),
+      self.paramsProperty.signal.skipNil().skipRepeats(),
       self.filtersSelectedRowProperty.signal.skipNil().map { $0.params }
     )
 

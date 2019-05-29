@@ -8,12 +8,14 @@ import ReactiveExtensions_TestHelpers
 
 internal final class SettingsRecommendationsCellViewModelTests: TestCase {
   internal let vm = SettingsRecommendationsCellViewModel()
+  internal let postNotification = TestObserver<Notification, Never>()
   internal let recommendationsOn = TestObserver<Bool, Never>()
   internal let unableToSaveError = TestObserver<String, Never>()
   internal let updateCurrentUser = TestObserver<User, Never>()
 
   internal override func setUp() {
     super.setUp()
+    self.vm.outputs.postNotification.observe(self.postNotification.observer)
     self.vm.outputs.recommendationsOn.observe(self.recommendationsOn.observer)
     self.vm.outputs.unableToSaveError.observe(self.unableToSaveError.observer)
     self.vm.outputs.updateCurrentUser.observe(self.updateCurrentUser.observer)
@@ -35,6 +37,21 @@ internal final class SettingsRecommendationsCellViewModelTests: TestCase {
     self.updateCurrentUser.assertValueCount(2)
     self.vm.inputs.recommendationsTapped(on: true)
     self.updateCurrentUser.assertValueCount(3)
+  }
+
+  func testPostNotification() {
+    let notification = Notification(name: Notification.Name.ksr_recommendationsSettingChanged)
+    let user = User.template
+
+    withEnvironment(apiService: MockService(fetchUserSelfResponse: user)) {
+      self.vm.inputs.configureWith(user: user)
+      self.postNotification.assertDidNotEmitValue()
+      self.vm.inputs.recommendationsTapped(on: true)
+
+      self.scheduler.advance()
+
+      self.postNotification.assertValue(notification)
+    }
   }
 
   func testUnableToSaveError() {
