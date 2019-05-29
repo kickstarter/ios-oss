@@ -4,20 +4,20 @@ import Curry
 import Runes
 
 public struct Author: Swift.Decodable {
-  public private(set) var avatar: Avatar
-  public private(set) var id: Int
-  public private(set) var name: String
-  public private(set) var urls: Url
+  public var avatar: Avatar
+  public var id: Int
+  public var name: String
+  public var urls: Url
 
   public struct Avatar: Swift.Decodable {
-    public private(set) var medium: String?
-    public private(set) var small: String
-    public private(set) var thumb: String
+    public var medium: String?
+    public var small: String
+    public var thumb: String
   }
 
   public struct Url {
-    public private(set) var api: String
-    public private(set) var web: String
+    public var api: String
+    public var web: String
   }
 }
 

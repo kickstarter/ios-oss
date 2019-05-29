@@ -12,12 +12,12 @@ private let unrecognizedCategoryId: Int = -1
 
 public struct Category: Swift.Decodable {
   public static let gamesId: Int = 12
-  public fileprivate(set) var id: String
-  public fileprivate(set) var name: String
+  public var id: String
+  public var name: String
   internal let _parent: ParentCategory?
-  public fileprivate(set) var parentId: String?
-  public fileprivate(set) var subcategories: SubcategoryConnection?
-  public fileprivate(set) var totalProjectCount: Int?
+  public var parentId: String?
+  public var subcategories: SubcategoryConnection?
+  public var totalProjectCount: Int?
 
   public init(id: String,
               name: String,

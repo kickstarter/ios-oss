@@ -185,7 +185,7 @@ internal final class SortPagerViewController: UIViewController {
 
     let zipped = zip(sorts, self.sortsStackView.arrangedSubviews)
     for (sort, view) in zipped {
-      let index = sorts.index(of: sort)
+      let index = sorts.firstIndex(of: sort)
       _ = (view as? UIButton)
         ?|> discoverySortPagerButtonStyle(sort: sort,
                                           categoryId: categoryId,

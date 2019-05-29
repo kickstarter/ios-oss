@@ -246,7 +246,7 @@ DashboardViewModelType {
         DashboardTitleViewData(
           drawerState: drawerState,
           isArrowHidden: projects.count <= 1,
-          currentProjectIndex: projects.index(of: selectedProject) ?? 0
+          currentProjectIndex: projects.firstIndex(of: selectedProject) ?? 0
         )
     }
 
@@ -260,7 +260,7 @@ DashboardViewModelType {
         projects.map { project in
           ProjectsDrawerData(
             project: project,
-            indexNum: projects.index(of: project) ?? 0,
+            indexNum: projects.firstIndex(of: project) ?? 0,
             isChecked: project == selectedProject
           )
         }

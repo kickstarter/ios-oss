@@ -70,7 +70,7 @@ SelectCurrencyViewModelOutputs {
       selectedCurrency,
       initialChosenCurrency
     )
-    .map { currencies(orderedBySelected: $1).index(of: $0) }
+    .map { currencies(orderedBySelected: $1).firstIndex(of: $0) }
     .skipNil()
 
     self.deselectCellAtIndex = self.selectCellAtIndex
