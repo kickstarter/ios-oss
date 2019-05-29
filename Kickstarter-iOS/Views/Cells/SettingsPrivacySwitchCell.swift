@@ -22,7 +22,7 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.switchButton].compactMap { $0 }
+      |> \.accessibilityElements .~ [self.switchButton].compact()
   }
 
   func configureWith(value: SettingsPrivacySwitchCellValue) {

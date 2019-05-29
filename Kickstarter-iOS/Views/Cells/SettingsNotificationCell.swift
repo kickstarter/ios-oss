@@ -42,7 +42,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     _ = self.stackView
       |> \.accessibilityElements .~ (
         accessibilityElementsHidden
-          ? [self.emailNotificationsButton, self.pushNotificationsButton].compactMap { $0 }
+          ? [self.emailNotificationsButton, self.pushNotificationsButton].compact()
           : nil
     )
 

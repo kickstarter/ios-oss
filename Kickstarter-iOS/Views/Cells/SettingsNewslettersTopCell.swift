@@ -24,7 +24,7 @@ final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.newsletterSwitch].compactMap { $0 }
+      |> \.accessibilityElements .~ [self.newsletterSwitch].compact()
 
     _ = self.descriptionLabel
       |> \.text %~ { _ in Strings.Stay_up_to_date_newsletter() }
