@@ -25,6 +25,12 @@ internal class TestCase: FBSnapshotTestCase {
 
   override func setUp() {
     super.setUp()
+
+    let preferredDeviceName = "iPhone 8"
+    if !UIDevice.current.name.contains(preferredDeviceName) {
+      fatalError("Please only test and record screenshots on \(preferredDeviceName)")
+    }
+
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
