@@ -202,14 +202,14 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .map(first)
 
     let discoveryControllerIndex = self.setViewControllers
-      .map { $0.index(of: .discovery) }
+      .map { $0.firstIndex(of: .discovery) }
       .skipNil()
 
     self.filterDiscovery = discoveryControllerIndex
       .takePairWhen(self.switchToDiscoveryProperty.signal.skipNil())
 
     let dashboardControllerIndex = self.setViewControllers
-      .map { $0.index(where: { $0.isDashboard }) }
+      .map { $0.firstIndex(where: { $0.isDashboard }) }
       .skipNil()
 
     self.switchDashboardProject = Signal

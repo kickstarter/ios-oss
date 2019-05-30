@@ -64,7 +64,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.selectCellAtIndex.assertValues([0])
 
     withEnvironment(apiService: MockService(changeCurrencyResponse: .init())) {
-      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.index(of: .AUD) ?? -1)
+      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
       let audSelectededCurrencyData = selectedCurrencyData(with: usdSelectedOrdering, selected: .AUD)
@@ -127,7 +127,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.selectCellAtIndex.assertValues([0])
 
     withEnvironment(apiService: MockService(changeCurrencyError: .invalidInput)) {
-      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.index(of: .AUD) ?? -1)
+      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
       let audSelectededCurrencyData = selectedCurrencyData(with: usdSelectedOrdering, selected: .AUD)
@@ -171,7 +171,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
 
     withEnvironment(apiService: MockService(changeCurrencyResponse: .init())) {
-      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.index(of: .CHF) ?? -1)
+      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .CHF) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
       self.scheduler.advance()

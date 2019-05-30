@@ -1,11 +1,11 @@
 import Foundation
 
 public struct CreatePaymentSourceEnvelope: Decodable {
-  public private(set) var createPaymentSource: CreatePaymentSource
+  public var createPaymentSource: CreatePaymentSource
 
   public struct CreatePaymentSource: Decodable {
-    public private(set) var errorMessage: String?
-    public private(set) var isSuccessful: Bool
+    public var errorMessage: String?
+    public var isSuccessful: Bool
   }
 }
 

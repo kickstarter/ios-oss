@@ -8,6 +8,6 @@ public protocol GraphIDBridging {
 
 extension GraphIDBridging {
   public var graphID: String {
-    return Data(bytes: "\(type(of: self).modelName)-\(self.id)".utf8).base64EncodedString()
+    return Data("\(type(of: self).modelName)-\(self.id)".utf8).base64EncodedString()
   }
 }

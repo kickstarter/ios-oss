@@ -82,6 +82,6 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   }
 
   private func index(of section: SettingsAccountSectionType) -> Int? {
-    return self.filteredSections.index(of: section)
+    return self.filteredSections.firstIndex(of: section)
   }
 }
