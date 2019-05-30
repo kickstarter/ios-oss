@@ -5,13 +5,14 @@ import ReactiveSwift
 import Result
 
 public typealias PledgeTableViewData = (amount: Double,
-                                        currency: String,
-                                        currencyCode: String,
-                                        delivery: String,
+                                        currencySymbol: String,
+                                        estimatedDelivery: String,
+                                        shippingLocation: String,
+                                        shippingAmount: NSAttributedString?,
                                         isLoggedIn: Bool,
                                         requiresShippingRules: Bool)
 
-public typealias SelectedShippingRuleData = (location: String, amount: Double, currencyCode: String)
+public typealias SelectedShippingRuleData = (location: String, amount: NSAttributedString?)
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
@@ -42,11 +43,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let project = projectAndReward.map(first)
     let reward = projectAndReward.map(second)
 
-    let amountCurrencyCurrencyCodeDelivery = projectAndReward.signal
-         project.stats.currency,
-
-        return (amount, currency, delivery, shipping)
-      }
+    let amountCurrencySymbolDeliveryShipping = projectAndReward.signal
+      .map { (project, reward) in
+        return amountCurrencySymbolEstimatedDeliveryAndShipping(project: project, reward: reward)
+    }
 
     let isLoggedIn = projectAndReward
       .map { _ in AppEnvironment.current.currentUser }
@@ -55,11 +55,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let shouldLoadShippingRules = reward.map { $0.shipping.enabled }
 
     let pledgeViewData: Signal<PledgeTableViewData, NoError> = Signal
-      .combineLatest(amountCurrencyCurrencyCodeDelivery, isLoggedIn, shouldLoadShippingRules)
-      .map { amountCurrencyCurrencyCodeDelivery, isLoggedIn, requiresShippingRules in
-        let (amount, currency, currencyCode, delivery) = amountCurrencyCurrencyCodeDelivery
+      .combineLatest(amountCurrencySymbolDeliveryShipping, isLoggedIn, shouldLoadShippingRules)
+      .map { amountCurrencySymbolDeliveryShipping, isLoggedIn, requiresShippingRules in
+        let (amount, currencySymbol, estimatedDelivery, shippingLocation, shippingAmount) = amountCurrencySymbolDeliveryShipping
 
-        return (amount, currency, currencyCode, delivery, isLoggedIn, requiresShippingRules)
+        return (amount, currencySymbol, estimatedDelivery, shippingLocation, shippingAmount, isLoggedIn, requiresShippingRules)
     }
 
     self.reloadWithData = pledgeViewData
@@ -83,9 +83,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
                                                          defaultSelectedShippingRule.skipNil(),
                                                          self.reloadDataProperty.signal)
       .map { project, shippingRule, _ -> SelectedShippingRuleData in
-        let projectCurrency = project.stats.currency
+        let formattedShippingAmount = Format.attributedCurrency(shippingRule.cost,
+                                                                country: project.country,
+                                                                omitCurrencyCode: project.stats.omitUSCurrencyCode,
+                                                                defaultAttributes: checkoutCurrencyDefaultAttributes(),
+                                                                superscriptAttributes: checkoutCurrencySuperscriptAttributes()
+                                                              )
 
-        return (shippingRule.location.localizedName, shippingRule.cost, projectCurrency)
+        return (shippingRule.location.localizedName, formattedShippingAmount)
       }
 
     let shippingShouldBeginLoading = shouldLoadShippingRules
@@ -125,4 +130,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
+}
+
+private func amountCurrencySymbolEstimatedDeliveryAndShipping(project: Project, reward: Reward) -> (Double, String, String, String, NSAttributedString?) {
+  let amount = reward.minimum
+  let currencySymbol = SharedFunctions.currencySymbol(forCountry: project.country).trimmed()
+  let estimatedDelivery = reward.estimatedDeliveryOn
+    .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? ""
+  let shippingLocation = ""
+  let shippingAmount: NSAttributedString? = nil
+
+  return (amount, currencySymbol, estimatedDelivery, shippingLocation, shippingAmount)
 }

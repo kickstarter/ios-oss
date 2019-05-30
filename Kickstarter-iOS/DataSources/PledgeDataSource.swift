@@ -10,8 +10,8 @@ final class PledgeDataSource: ValueCellDataSource {
   }
 
   enum PledgeInputRow {
-    case pledgeAmount(amount: Double, currency: String)
-    case shippingLocation(location: String, amount: Double, currencyCode: String)
+    case pledgeAmount(amount: Double, currencySymbol: String)
+    case shippingLocation(location: String, amount: NSAttributedString?)
 
     var isShipping: Bool {
       switch self {
@@ -31,7 +31,7 @@ final class PledgeDataSource: ValueCellDataSource {
   func load(data: PledgeTableViewData) {
     self.loadProjectSection(delivery: data.delivery)
 
-    self.loadInputsSection(amount: data.amount, currency: data.currency, currencyCode: data.currencyCode,
+    self.loadInputsSection(amount: data.amount, currencySymbol: data.currencySymbol, currencyCode: data.currencyCode,
                            requiresShippingRules: data.requiresShippingRules)
 
     self.loadSummarySection(isLoggedIn: data.isLoggedIn)
@@ -40,8 +40,7 @@ final class PledgeDataSource: ValueCellDataSource {
   func loadSelectedShippingRule(data: SelectedShippingRuleData) {
     guard self.numberOfItems(in: PledgeDataSource.Section.inputs.rawValue) > 1 else { return }
 
-    self.set(value: PledgeInputRow.shippingLocation(location: data.location, amount: data.amount,
-                                                    currencyCode: data.currencyCode),
+    self.set(value: PledgeInputRow.shippingLocation(location: data.location, amount: data.amount),
              cellClass: PledgeShippingLocationCell.self,
              inSection: Section.inputs.rawValue,
              row: 1)
@@ -49,9 +48,6 @@ final class PledgeDataSource: ValueCellDataSource {
 
   func shippingCellIndexPath() -> IndexPath? {
     let inputsRowCount = self.numberOfItems(in: PledgeDataSource.Section.inputs.rawValue)
-
-    guard inputsRowCount > 0 else { return nil }
-
     let shippingIndexPath = IndexPath(item: inputsRowCount - 1,
                                       section: PledgeDataSource.Section.inputs.rawValue)
 
@@ -68,17 +64,17 @@ final class PledgeDataSource: ValueCellDataSource {
     )
   }
 
-  private func loadInputsSection(amount: Double, currency: String, currencyCode: String,
+  private func loadInputsSection(amount: Double, currencySymbol: String,
                                  requiresShippingRules: Bool) {
     self.appendRow(
-      value: PledgeInputRow.pledgeAmount(amount: amount, currency: currency),
+      value: PledgeInputRow.pledgeAmount(amount: amount, currency: currencySymbol),
       cellClass: PledgeAmountCell.self,
       toSection: Section.inputs.rawValue
     )
 
     if requiresShippingRules {
       self.appendRow(
-        value: PledgeInputRow.shippingLocation(location: "", amount: 0.0, currencyCode: currencyCode),
+        value: PledgeInputRow.shippingLocation(location: "", amount: nil),
         cellClass: PledgeShippingLocationCell.self,
         toSection: Section.inputs.rawValue
       )

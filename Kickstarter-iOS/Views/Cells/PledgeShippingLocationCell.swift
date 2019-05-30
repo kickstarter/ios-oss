@@ -83,16 +83,10 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   func configureWith(value: PledgeDataSource.PledgeInputRow) {
-    guard case .shippingLocation(let location, let amount, let currencyCode) = value,
-      let country = Project.Country(currencyCode: currencyCode) else {
+    guard case .shippingLocation(let location, let amount) = value else {
       return
     }
 
-    let formattedAmount = Format.currency(amount, country: country)
-
-    self.countryButton.setTitle(location, for: .normal)
-    self.amountLabel.text = Strings.plus_shipping_cost(shipping_cost: formattedAmount)
-  func configureWith(value: (location: String, amount: NSAttributedString?)) {
     self.countryButton.setTitle(value.location, for: .normal)
     self.amountLabel.attributedText = value.amount
   }
