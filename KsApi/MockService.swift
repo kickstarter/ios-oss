@@ -699,7 +699,9 @@
       }
     }
 
-    internal func fetchGraph<A>(query _: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {
+    internal func fetchGraph<A>(
+      query _: NonEmptySet<Query>
+    ) -> SignalProducer<A, GraphError> where A: Decodable {
       return .empty
     }
 
@@ -886,7 +888,9 @@
       )
     }
 
-    internal func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
+    internal func fetchProject(
+      _ params: DiscoveryParams
+    ) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
       if let envelope = self.fetchDiscoveryResponse {
         return SignalProducer(value: envelope)
       }

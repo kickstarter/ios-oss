@@ -15,7 +15,8 @@ public struct EnvironmentVariables {
 extension EnvironmentVariables {
   public var isKoalaTrackingEnabled: Bool {
     #if DEBUG
-      guard let value = self.processInfo.environment[VariableName.koalaTracking.rawValue] else { return false }
+      guard
+        let value = self.processInfo.environment[VariableName.koalaTracking.rawValue] else { return false }
 
       return NSString(string: value).boolValue
     #else

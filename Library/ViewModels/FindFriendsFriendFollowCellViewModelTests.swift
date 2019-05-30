@@ -5,9 +5,10 @@ import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import UIKit.UIActivity
-// swiftlint:disable force_cast
 import XCTest
 
+// swiftlint:disable force_cast
+// swiftlint:disable line_length
 final class FindFriendsFriendFollowCellViewModelTests: TestCase {
   let vm: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
 

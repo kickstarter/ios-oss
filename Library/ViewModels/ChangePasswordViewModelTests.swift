@@ -34,7 +34,8 @@ final class ChangePasswordViewModelTests: TestCase {
     self.vm.outputs.changePasswordSuccess.observe(self.changePasswordSuccess.observer)
     self.vm.outputs.confirmNewPasswordBecomeFirstResponder
       .observe(self.confirmNewPasswordBecomeFirstResponder.observer)
-    self.vm.outputs.currentPasswordBecomeFirstResponder.observe(self.currentPasswordBecomeFirstResponder.observer)
+    self.vm.outputs.currentPasswordBecomeFirstResponder
+      .observe(self.currentPasswordBecomeFirstResponder.observer)
     self.vm.outputs.currentPasswordPrefillValue.observe(self.currentPasswordPrefillValue.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.newPasswordBecomeFirstResponder.observe(self.newPasswordBecomeFirstResponder.observer)

@@ -12,7 +12,8 @@ internal final class ProjectNotificationsViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.projectNotifications.map { !$0.isEmpty }.observe(self.projectNotificationsPresent.observer)
+    self.vm.outputs.projectNotifications.map { !$0.isEmpty }
+      .observe(self.projectNotificationsPresent.observer)
   }
 
   func testProjectNotificationsEmit() {

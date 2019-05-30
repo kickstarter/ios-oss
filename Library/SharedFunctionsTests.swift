@@ -4,6 +4,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable line_length
 final class SharedFunctionsTests: TestCase {
   func testCountdownProducer() {
     let future: TimeInterval = TimeInterval(1 * 60 * 60 * 24) + TimeInterval(16 * 60 * 60) + TimeInterval(34 * 60) + 2

@@ -36,11 +36,13 @@ final class ThanksViewModelTests: TestCase {
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToProjects.observer)
     self.vm.outputs.goToProject.map { $0.2 }.observe(self.goToRefTag.observer)
     self.vm.outputs.postContextualNotification.observe(self.postContextualNotification.observer)
-    self.vm.outputs.postUserUpdatedNotification.map { $0.name }.observe(self.postUserUpdatedNotification.observer)
+    self.vm.outputs.postUserUpdatedNotification.map { $0.name }
+      .observe(self.postUserUpdatedNotification.observer)
     self.vm.outputs.showGamesNewsletterAlert.observe(self.showGamesNewsletterAlert.observer)
     self.vm.outputs.showGamesNewsletterOptInAlert.observe(self.showGamesNewsletterOptInAlert.observer)
     self.vm.outputs.showRatingAlert.observe(self.showRatingAlert.observer)
-    self.vm.outputs.showRecommendations.map { projects, _ in projects }.observe(self.showRecommendations.observer)
+    self.vm.outputs.showRecommendations.map { projects, _ in projects }
+      .observe(self.showRecommendations.observer)
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
   }
 

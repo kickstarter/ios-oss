@@ -58,7 +58,8 @@ final class UpdateDraftViewModelTests: TestCase {
     self.vm.outputs.showRemoveAttachmentFailure.observe(self.showRemoveAttachmentFailure.observer)
     self.vm.outputs.showSaveFailure.observe(self.showSaveFailure.observer)
     self.vm.outputs.title.observe(self.title.observer)
-    self.vm.outputs.titleTextFieldBecomeFirstResponder.observe(self.titleTextFieldBecomeFirstResponder.observer)
+    self.vm.outputs.titleTextFieldBecomeFirstResponder
+      .observe(self.titleTextFieldBecomeFirstResponder.observer)
   }
 
   func testConfiguredBlank() {

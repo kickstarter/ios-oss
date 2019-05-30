@@ -33,7 +33,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
     self.vm.outputs.hideCloseButton.observe(self.hideCloseButton.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.notifyDelegateToDismissHeader.observe(self.notifyPresenterToDismissHeader.observer)
-    self.vm.outputs.notifyDelegateUserFacebookConnected.observe(self.notifyPresenterUserFacebookConnected.observer)
+    self.vm.outputs.notifyDelegateUserFacebookConnected
+      .observe(self.notifyPresenterUserFacebookConnected.observer)
     self.vm.outputs.postUserUpdatedNotification.map { $0.name }
       .observe(self.postUserUpdatedNotification.observer)
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)

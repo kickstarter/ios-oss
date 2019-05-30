@@ -256,7 +256,9 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.Filter_by_saved_projects()
     ])
 
-    self.vm.inputs.filtersSelected(row: self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams)
+    self.vm.inputs.filtersSelected(
+      row: self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams
+    )
 
     self.arrowOpacity.assertValues([0.0, 1.0])
     self.arrowOpacityAnimated.assertValues([false, true])
@@ -308,7 +310,9 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? "")
     ])
 
-    self.vm.inputs.filtersSelected(row: self.selectableRow |> SelectableRow.lens.params .~ self.subcategoryParams)
+    self.vm.inputs.filtersSelected(
+      row: self.selectableRow |> SelectableRow.lens.params .~ self.subcategoryParams
+    )
 
     self.arrowOpacity.assertValues([0.0, 1.0])
     self.arrowOpacityAnimated.assertValues([false, true])
@@ -371,7 +375,9 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.notifyDelegateFilterSelectedParams.assertValues([DiscoveryParams.defaults])
 
-    self.vm.inputs.filtersSelected(row: self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams)
+    self.vm.inputs.filtersSelected(
+      row: self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams
+    )
 
     self.notifyDelegateFilterSelectedParams.assertValues([DiscoveryParams.defaults, categoryParams])
   }

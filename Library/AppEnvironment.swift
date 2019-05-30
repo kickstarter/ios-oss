@@ -85,7 +85,9 @@ public struct AppEnvironment: AppEnvironmentType {
 
   // Push a new environment onto the stack.
   public static func pushEnvironment(_ env: Environment) {
-    self.saveEnvironment(environment: env, ubiquitousStore: env.ubiquitousStore, userDefaults: env.userDefaults)
+    self.saveEnvironment(
+      environment: env, ubiquitousStore: env.ubiquitousStore, userDefaults: env.userDefaults
+    )
     self.stack.append(env)
   }
 

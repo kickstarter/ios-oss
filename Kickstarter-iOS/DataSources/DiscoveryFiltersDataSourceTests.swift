@@ -4,6 +4,7 @@ import KsApi
 import Prelude
 import XCTest
 
+// swiftlint:disable line_length
 internal final class DiscoveryFiltersDataSourceTests: XCTestCase {
   fileprivate let collectionsHeader = DiscoveryFiltersDataSource.Section.collectionsHeader.rawValue
   fileprivate let collections = DiscoveryFiltersDataSource.Section.collections.rawValue
