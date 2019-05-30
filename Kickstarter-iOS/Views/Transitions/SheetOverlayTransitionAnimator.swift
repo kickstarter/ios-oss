@@ -1,6 +1,6 @@
-import UIKit
 import Library
 import Prelude
+import UIKit
 
 final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
   private let darkOverlayView: UIView = {
@@ -8,7 +8,7 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
       |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
   }()
 
-  func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+  func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
     return 0.3
   }
 
@@ -20,15 +20,19 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
     let containerView = transitionContext.containerView
 
     if toVC.isBeingPresented {
-      self.animatePresentation(fromViewController: fromVC,
-                               toViewController: toVC,
-                               containerView: containerView,
-                               transitionContext: transitionContext)
+      self.animatePresentation(
+        fromViewController: fromVC,
+        toViewController: toVC,
+        containerView: containerView,
+        transitionContext: transitionContext
+      )
     } else {
-      self.animateDismissal(fromViewController: fromVC,
-                            toViewController: toVC,
-                            containerView: containerView,
-                            transitionContext: transitionContext)
+      self.animateDismissal(
+        fromViewController: fromVC,
+        toViewController: toVC,
+        containerView: containerView,
+        transitionContext: transitionContext
+      )
     }
   }
 
@@ -38,7 +42,8 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
     fromViewController fromVC: UIViewController,
     toViewController toVC: UIViewController,
     containerView: UIView,
-    transitionContext: UIViewControllerContextTransitioning) {
+    transitionContext: UIViewControllerContextTransitioning
+  ) {
     _ = self.darkOverlayView
       |> \.alpha .~ 0.0
       |> \.frame .~ fromVC.view.frame
@@ -62,20 +67,23 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
       animations: { [weak self] in
         toVC.view.frame = toFrame
         self?.darkOverlayView.alpha = 1.0
-    }, completion: { [weak self] _ in
-      toVC.view.backgroundColor = self?.darkOverlayView.backgroundColor
-      self?.darkOverlayView.removeFromSuperview()
+      }, completion: { [weak self] _ in
+        toVC.view.backgroundColor = self?.darkOverlayView.backgroundColor
+        self?.darkOverlayView.removeFromSuperview()
 
-      transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-    })
+        transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+      }
+    )
   }
 
   // MARK: - Dismissal
 
-  private func animateDismissal(fromViewController fromVC: UIViewController,
-                                toViewController toVC: UIViewController,
-                                containerView: UIView,
-                                transitionContext: UIViewControllerContextTransitioning) {
+  private func animateDismissal(
+    fromViewController fromVC: UIViewController,
+    toViewController toVC: UIViewController,
+    containerView: UIView,
+    transitionContext: UIViewControllerContextTransitioning
+  ) {
     _ = self.darkOverlayView
       |> \.frame .~ fromVC.view.frame
       |> \.alpha .~ 1.0
@@ -95,10 +103,11 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
       animations: { [weak self] in
         fromVC.view.frame = toFrame
         self?.darkOverlayView.alpha = 0.0
-    }, completion: { [weak self] _ in
-      self?.darkOverlayView.removeFromSuperview()
+      }, completion: { [weak self] _ in
+        self?.darkOverlayView.removeFromSuperview()
 
-      transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-    })
+        transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+      }
+    )
   }
 }

@@ -40,7 +40,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -58,6 +58,8 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       )
 
     _ = self.amountLabel
+      |> checkoutBackgroundStyle
+    _ = self.amountLabel
       |> amountLabelStyle
 
     _ = self.countryButton
@@ -68,6 +70,8 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     _ = self.countryButton.titleLabel
       ?|> countryButtonTitleLabelStyle
 
+    _ = self.titleLabel
+      |> checkoutBackgroundStyle
     _ = self.titleLabel
       |> checkoutTitleLabelStyle
       |> \.text %~ { _ in Strings.Your_shipping_location() }
@@ -88,6 +92,9 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
     self.countryButton.setTitle(location, for: .normal)
     self.amountLabel.text = Strings.plus_shipping_cost(shipping_cost: formattedAmount)
+  func configureWith(value: (location: String, amount: NSAttributedString?)) {
+    self.countryButton.setTitle(value.location, for: .normal)
+    self.amountLabel.attributedText = value.amount
   }
 
   // MARK: - Public Functions
@@ -100,8 +107,6 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 private let amountLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.font .~ UIFont.ksr_title1()
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
 }
 
 private let countryButtonStyle: ButtonStyle = { (button: UIButton) in

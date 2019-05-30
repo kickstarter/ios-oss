@@ -1,13 +1,13 @@
+@testable import KsApi
+@testable import Library
 // swiftlint:disable force_unwrapping
 import PassKit
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import Result
 import XCTest
-@testable import KsApi
-@testable import Library
-import ReactiveExtensions_TestHelpers
 
 private let locations: [Location] = [
   .usa,
@@ -22,7 +22,7 @@ private let shippingRules = locations
     .template
       |> ShippingRule.lens.location .~ location
       |> ShippingRule.lens.cost .~ Double(idx + 1)
-} ||> ShippingRule.lens.location..Location.lens.localizedName %~ { "Local " + $0 }
+  } ||> ShippingRule.lens.location .. Location.lens.localizedName %~ { "Local " + $0 }
 
 private let sortedShippingRules = shippingRules
   .sorted { lhs, rhs in lhs.location.displayableName < rhs.location.displayableName }
@@ -157,12 +157,14 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testApplePayButtonHidden_UnsupportedApplePayCountry() {
-    let unsupportedCountry = Project.Country(countryCode: "ZZ",
-                                             currencyCode: "ZZD",
-                                             currencySymbol: "µ",
-                                             maxPledge: 10_000,
-                                             minPledge: 1,
-                                             trailingCode: true)
+    let unsupportedCountry = Project.Country(
+      countryCode: "ZZ",
+      currencyCode: "ZZD",
+      currencySymbol: "µ",
+      maxPledge: 10_000,
+      minPledge: 1,
+      trailingCode: true
+    )
     let project = .template
       |> Project.lens.country .~ unsupportedCountry
 
@@ -276,36 +278,36 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   func testCountryAndShippingAmountLabelText_WithRecognizedCountry() {
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
-      config: .template |> Config.lens.countryCode .~ "AU") {
+      config: .template |> Config.lens.countryCode .~ "AU"
+    ) {
+      self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
 
-        self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
-        self.vm.inputs.viewDidLoad()
+      self.countryLabelText.assertValues([""])
+      self.shippingAmountLabelText.assertValues([""])
 
-        self.countryLabelText.assertValues([""])
-        self.shippingAmountLabelText.assertValues([""])
+      self.scheduler.advance()
 
-        self.scheduler.advance()
-
-        self.countryLabelText.assertValues(["", "Local Australia"])
-        self.shippingAmountLabelText.assertValues(["", "+$4"])
+      self.countryLabelText.assertValues(["", "Local Australia"])
+      self.shippingAmountLabelText.assertValues(["", "+$4"])
     }
   }
 
   func testCountryAndShippingAmountLabelText_WithUnrecognizedCountry() {
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
-      config: .template |> Config.lens.countryCode .~ "XYZ") {
+      config: .template |> Config.lens.countryCode .~ "XYZ"
+    ) {
+      self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
 
-        self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
-        self.vm.inputs.viewDidLoad()
+      self.countryLabelText.assertValues([""])
+      self.shippingAmountLabelText.assertValues([""])
 
-        self.countryLabelText.assertValues([""])
-        self.shippingAmountLabelText.assertValues([""])
+      self.scheduler.advance()
 
-        self.scheduler.advance()
-
-        self.countryLabelText.assertValues(["", "Local United States"])
-        self.shippingAmountLabelText.assertValues(["", "+$1"])
+      self.countryLabelText.assertValues(["", "Local United States"])
+      self.shippingAmountLabelText.assertValues(["", "+$1"])
     }
   }
 
@@ -317,32 +319,32 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
 
-        self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
-        self.vm.inputs.viewDidLoad()
+      self.countryLabelText.assertValues([""])
+      self.shippingAmountLabelText.assertValues([""])
 
-        self.countryLabelText.assertValues([""])
-        self.shippingAmountLabelText.assertValues([""])
+      self.scheduler.advance()
 
-        self.scheduler.advance()
+      self.countryLabelText.assertValues(["", defaultShippingRule.location.localizedName])
+      self.shippingAmountLabelText.assertValues([
+        "", "+" + Format.currency(Int(defaultShippingRule.cost), country: project.country)
+      ])
 
-        self.countryLabelText.assertValues(["", defaultShippingRule.location.localizedName])
-        self.shippingAmountLabelText.assertValues([
-          "", "+" + Format.currency(Int(defaultShippingRule.cost), country: project.country)
-          ])
+      self.vm.inputs.shippingButtonTapped()
+      self.vm.inputs.change(shippingRule: otherShippingRule)
 
-        self.vm.inputs.shippingButtonTapped()
-        self.vm.inputs.change(shippingRule: otherShippingRule)
-
-        self.countryLabelText.assertValues([
-          "", defaultShippingRule.location.localizedName, otherShippingRule.location.localizedName
-          ])
-        self.shippingAmountLabelText.assertValues([
-          "",
-          "+" + Format.currency(Int(defaultShippingRule.cost), country: project.country),
-          "+" + Format.currency(Int(otherShippingRule.cost), country: project.country)
-          ])
+      self.countryLabelText.assertValues([
+        "", defaultShippingRule.location.localizedName, otherShippingRule.location.localizedName
+      ])
+      self.shippingAmountLabelText.assertValues([
+        "",
+        "+" + Format.currency(Int(defaultShippingRule.cost), country: project.country),
+        "+" + Format.currency(Int(otherShippingRule.cost), country: project.country)
+      ])
     }
   }
 
@@ -408,10 +410,14 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.expandRewardDescription.assertValueCount(1)
 
-    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Expanded Reward Description"],
-                   self.trackingClient.events)
-    XCTAssertEqual(["new_pledge", "new_pledge", "new_pledge"],
-                   self.trackingClient.properties(forKey: "pledge_context", as: String.self))
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Expanded Reward Description"],
+      self.trackingClient.events
+    )
+    XCTAssertEqual(
+      ["new_pledge", "new_pledge", "new_pledge"],
+      self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+    )
   }
 
   func testFulfillmentAndShippingFooterStackViewHidden_ShippingEnabled() {
@@ -463,7 +469,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ reward
-    )
+      )
 
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
@@ -473,8 +479,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.vm.inputs.cancelPledgeButtonTapped()
 
-    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button"],
-                   self.trackingClient.events)
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button"],
+      self.trackingClient.events
+    )
     XCTAssertEqual(
       [nil, nil, "cancel"],
       self.trackingClient.properties(forKey: "type", as: String.self)
@@ -497,7 +505,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.vm.inputs.applePayButtonTapped()
 
-      let paymentRequest: NSDictionary =  [
+      let paymentRequest: NSDictionary = [
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
@@ -538,7 +546,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.vm.inputs.applePayButtonTapped()
 
-      let paymentRequest: NSDictionary =  [
+      let paymentRequest: NSDictionary = [
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
@@ -581,7 +589,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.vm.inputs.applePayButtonTapped()
 
-      let paymentRequest: NSDictionary =  [
+      let paymentRequest: NSDictionary = [
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
@@ -617,46 +625,47 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-        self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
-        self.vm.inputs.viewDidLoad()
-        self.scheduler.advance()
+      self.applePayButtonHidden.assertValues([false])
+      self.goToPaymentAuthorization.assertValues([])
 
-        self.applePayButtonHidden.assertValues([false])
-        self.goToPaymentAuthorization.assertValues([])
+      self.vm.inputs.applePayButtonTapped()
 
-        self.vm.inputs.applePayButtonTapped()
+      let paymentRequest: NSDictionary = [
+        "countryCode": project.country.countryCode,
+        "currencyCode": project.country.currencyCode,
+        "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
+        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
+        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "shippingType": PKShippingType.shipping.rawValue,
+        "paymentSummaryItems": [[String: Any]].init(
+          arrayLiteral:
+          [
+            "label": project.name,
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ],
+          [
+            "label": "Shipping",
+            "amount": NSDecimalNumber(value: defaultShippingRule.cost),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ],
+          [
+            "label": "Kickstarter (if funded)",
+            "amount": NSDecimalNumber(value: Double(defaultShippingRule.cost) + reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ]
+        )
+      ]
 
-        let paymentRequest: NSDictionary =  [
-          "countryCode": project.country.countryCode,
-          "currencyCode": project.country.currencyCode,
-          "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
-          "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-          "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
-          "shippingType": PKShippingType.shipping.rawValue,
-          "paymentSummaryItems": [[String: Any]].init(arrayLiteral:
-            [
-              "label": project.name,
-              "amount": NSDecimalNumber(value: reward.minimum),
-              "type": PKPaymentSummaryItemType.final.rawValue
-            ],
-            [
-              "label": "Shipping",
-              "amount": NSDecimalNumber(value: defaultShippingRule.cost),
-              "type": PKPaymentSummaryItemType.final.rawValue
-            ],
-            [
-              "label": "Kickstarter (if funded)",
-              "amount": NSDecimalNumber(value: Double(defaultShippingRule.cost) + reward.minimum),
-              "type": PKPaymentSummaryItemType.final.rawValue
-            ]
-          )
-        ]
-
-        self.goToPaymentAuthorization.assertValues([paymentRequest])
-        self.goToCheckoutRequest.assertValueCount(0)
-        self.goToCheckoutProject.assertValues([])
+      self.goToPaymentAuthorization.assertValues([paymentRequest])
+      self.goToCheckoutRequest.assertValueCount(0)
+      self.goToCheckoutProject.assertValues([])
     }
   }
 
@@ -669,47 +678,48 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-        self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
-        self.vm.inputs.viewDidLoad()
-        self.scheduler.advance()
+      self.applePayButtonHidden.assertValues([false])
+      self.goToPaymentAuthorization.assertValues([])
 
-        self.applePayButtonHidden.assertValues([false])
-        self.goToPaymentAuthorization.assertValues([])
+      self.vm.inputs.pledgeTextFieldChanged("50")
+      self.vm.inputs.applePayButtonTapped()
 
-        self.vm.inputs.pledgeTextFieldChanged("50")
-        self.vm.inputs.applePayButtonTapped()
+      let paymentRequest: NSDictionary = [
+        "countryCode": project.country.countryCode,
+        "currencyCode": project.country.currencyCode,
+        "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
+        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
+        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "shippingType": PKShippingType.shipping.rawValue,
+        "paymentSummaryItems": [[String: Any]].init(
+          arrayLiteral:
+          [
+            "label": project.name,
+            "amount": NSDecimalNumber(value: 50),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ],
+          [
+            "label": "Shipping",
+            "amount": NSDecimalNumber(value: defaultShippingRule.cost),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ],
+          [
+            "label": "Kickstarter (if funded)",
+            "amount": NSDecimalNumber(value: Int(defaultShippingRule.cost) + 50),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ]
+        )
+      ]
 
-        let paymentRequest: NSDictionary =  [
-          "countryCode": project.country.countryCode,
-          "currencyCode": project.country.currencyCode,
-          "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
-          "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-          "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
-          "shippingType": PKShippingType.shipping.rawValue,
-          "paymentSummaryItems": [[String: Any]].init(arrayLiteral:
-            [
-              "label": project.name,
-              "amount": NSDecimalNumber(value: 50),
-              "type": PKPaymentSummaryItemType.final.rawValue
-            ],
-            [
-              "label": "Shipping",
-              "amount": NSDecimalNumber(value: defaultShippingRule.cost),
-              "type": PKPaymentSummaryItemType.final.rawValue
-            ],
-            [
-              "label": "Kickstarter (if funded)",
-              "amount": NSDecimalNumber(value: Int(defaultShippingRule.cost) + 50),
-              "type": PKPaymentSummaryItemType.final.rawValue
-            ]
-          )
-        ]
-
-        self.goToPaymentAuthorization.assertValues([paymentRequest])
-        self.goToCheckoutRequest.assertValueCount(0)
-        self.goToCheckoutProject.assertValues([])
+      self.goToPaymentAuthorization.assertValues([paymentRequest])
+      self.goToCheckoutRequest.assertValueCount(0)
+      self.goToCheckoutProject.assertValues([])
     }
   }
 
@@ -723,48 +733,49 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-        self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
-        self.vm.inputs.viewDidLoad()
-        self.scheduler.advance()
+      self.applePayButtonHidden.assertValues([false])
+      self.goToPaymentAuthorization.assertValues([])
 
-        self.applePayButtonHidden.assertValues([false])
-        self.goToPaymentAuthorization.assertValues([])
+      self.vm.inputs.shippingButtonTapped()
+      self.vm.inputs.change(shippingRule: changedShippingRule)
+      self.vm.inputs.applePayButtonTapped()
 
-        self.vm.inputs.shippingButtonTapped()
-        self.vm.inputs.change(shippingRule: changedShippingRule)
-        self.vm.inputs.applePayButtonTapped()
+      let paymentRequest: NSDictionary = [
+        "countryCode": project.country.countryCode,
+        "currencyCode": project.country.currencyCode,
+        "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
+        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
+        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "shippingType": PKShippingType.shipping.rawValue,
+        "paymentSummaryItems": [[String: Any]].init(
+          arrayLiteral:
+          [
+            "label": project.name,
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ],
+          [
+            "label": "Shipping",
+            "amount": NSDecimalNumber(value: changedShippingRule.cost),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ],
+          [
+            "label": "Kickstarter (if funded)",
+            "amount": NSDecimalNumber(value: Double(changedShippingRule.cost) + reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ]
+        )
+      ]
 
-        let paymentRequest: NSDictionary =  [
-          "countryCode": project.country.countryCode,
-          "currencyCode": project.country.currencyCode,
-          "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
-          "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-          "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
-          "shippingType": PKShippingType.shipping.rawValue,
-          "paymentSummaryItems": [[String: Any]].init(arrayLiteral:
-            [
-              "label": project.name,
-              "amount": NSDecimalNumber(value: reward.minimum),
-              "type": PKPaymentSummaryItemType.final.rawValue
-            ],
-            [
-              "label": "Shipping",
-              "amount": NSDecimalNumber(value: changedShippingRule.cost),
-              "type": PKPaymentSummaryItemType.final.rawValue
-            ],
-            [
-              "label": "Kickstarter (if funded)",
-              "amount": NSDecimalNumber(value: Double(changedShippingRule.cost) + reward.minimum),
-              "type": PKPaymentSummaryItemType.final.rawValue
-            ]
-          )
-        ]
-
-        self.goToPaymentAuthorization.assertValues([paymentRequest])
-        self.goToCheckoutRequest.assertValueCount(0)
-        self.goToCheckoutProject.assertValues([])
+      self.goToPaymentAuthorization.assertValues([paymentRequest])
+      self.goToCheckoutRequest.assertValueCount(0)
+      self.goToCheckoutProject.assertValues([])
     }
   }
 
@@ -784,27 +795,37 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
-        "Showed Apple Pay Sheet"],
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet"
+      ],
       self.trackingClient.events
     )
 
     self.vm.inputs.paymentAuthorizationDidFinish()
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
-        "Showed Apple Pay Sheet", "Apple Pay Canceled", "Canceled Apple Pay"],
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Canceled", "Canceled Apple Pay"
+      ],
       self.trackingClient.events
     )
     XCTAssertEqual(
-      ["new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge",
-        "new_pledge"],
+      [
+        "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge",
+        "new_pledge"
+      ],
       self.trackingClient.properties(forKey: "pledge_context", as: String.self)
     )
-    XCTAssertEqual([nil, nil, "apple_pay", nil, nil, nil, nil],
-                   self.trackingClient.properties(forKey: "type", as: String.self))
-    XCTAssertEqual([nil, nil, "Reward Selection", nil, nil, nil, nil],
-                   self.trackingClient.properties(forKey: "context", as: String.self))
+    XCTAssertEqual(
+      [nil, nil, "apple_pay", nil, nil, nil, nil],
+      self.trackingClient.properties(forKey: "type", as: String.self)
+    )
+    XCTAssertEqual(
+      [nil, nil, "Reward Selection", nil, nil, nil, nil],
+      self.trackingClient.properties(forKey: "context", as: String.self)
+    )
 
     self.pledgeIsLoading.assertValueCount(0)
     self.loadingOverlayIsHidden.assertValues([true])
@@ -824,8 +845,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
-        "Showed Apple Pay Sheet"],
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet"
+      ],
       self.trackingClient.events
     )
 
@@ -839,14 +862,18 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
-        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"],
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"
+      ],
       self.trackingClient.events
     )
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
-        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"],
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"
+      ],
       self.trackingClient.events
     )
 
@@ -861,9 +888,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.loadingOverlayIsHidden.assertValues([true, false, true])
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
         "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
-        "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token"],
+        "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token"
+      ],
       self.trackingClient.events
     )
 
@@ -876,15 +905,19 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.goToThanks.assertValues([project])
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
         "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
-        "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token", "Apple Pay Finished"],
+        "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token", "Apple Pay Finished"
+      ],
       self.trackingClient.events
     )
 
     XCTAssertEqual(
-      ["new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge",
-        "new_pledge", "new_pledge", "new_pledge"],
+      [
+        "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge",
+        "new_pledge", "new_pledge", "new_pledge"
+      ],
       self.trackingClient.properties(forKey: "pledge_context", as: String.self)
     )
   }
@@ -903,8 +936,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
-        "Showed Apple Pay Sheet"],
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet"
+      ],
       self.trackingClient.events
     )
 
@@ -918,8 +953,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
-        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"],
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+        "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"
+      ],
       self.trackingClient.events
     )
 
@@ -928,9 +965,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
         "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
-        "Apple Pay Stripe Token Errored", "Errored Apple Pay Stripe Token"],
+        "Apple Pay Stripe Token Errored", "Errored Apple Pay Stripe Token"
+      ],
       self.trackingClient.events
     )
 
@@ -939,15 +978,19 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.inputs.paymentAuthorizationDidFinish()
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
+      [
+        "Reward Checkout", "Selected Reward", "Clicked Reward Pledge Button", "Apple Pay Show Sheet",
         "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
         "Apple Pay Stripe Token Errored", "Errored Apple Pay Stripe Token", "Apple Pay Canceled",
-        "Canceled Apple Pay"],
+        "Canceled Apple Pay"
+      ],
       self.trackingClient.events
     )
     XCTAssertEqual(
-      ["new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge",
-        "new_pledge", "new_pledge", "new_pledge", "new_pledge"],
+      [
+        "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge", "new_pledge",
+        "new_pledge", "new_pledge", "new_pledge", "new_pledge"
+      ],
       self.trackingClient.properties(forKey: "pledge_context", as: String.self)
     )
 
@@ -957,13 +1000,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testDiscoverCard_NotAvailable_ProjectsOutsideUS() {
-
     let project = Project.template
       |> Project.lens.country .~ Project.Country.au
     let user = User.template
 
     withEnvironment(currentUser: user) {
-
       XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
         .contains(.discover))
       XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
@@ -972,12 +1013,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testDiscoverCard_NotAvailable_ProjectsInsideUS_UserOutsideUS() {
-
     let env = Environment.init(countryCode: "AU")
     let project = Project.template
 
     withEnvironment(env) {
-
       XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
         .contains(.discover))
       XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
@@ -986,7 +1025,6 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testDiscoverCard_Available_ProjectsInsideUS_UserInUS() {
-
     let project = Project.template
     let user = User.template
     let config = Config.template
@@ -1178,7 +1216,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         .template
           |> Backing.lens.reward .~ oldReward
           |> Backing.lens.rewardId .~ oldReward.id
-    )
+      )
 
     self.vm.inputs.configureWith(project: project, reward: newReward, applePayCapable: true)
     self.vm.inputs.viewDidLoad()
@@ -1223,7 +1261,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           |> Backing.lens.shippingAmount .~ 0
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
-    )
+      )
 
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
     self.vm.inputs.viewDidLoad()
@@ -1260,8 +1298,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
   func testGoToCheckout_AfterValidationError() {
     withEnvironment(currentUser: .template) {
-      let dkCountry = Project.Country(countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
-                                      maxPledge: nil, minPledge: nil, trailingCode: true)
+      let dkCountry = Project.Country(
+        countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
+        maxPledge: nil, minPledge: nil, trailingCode: true
+      )
       let project = .template
         |> Project.lens.country .~ dkCountry
       let reward = .template
@@ -1288,8 +1328,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.vm.inputs.pledgeTextFieldDidEndEditing()
 
       XCTAssertEqual(
-        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-          "Clicked Reward Pledge Button"],
+        [
+          "Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Clicked Reward Pledge Button"
+        ],
         self.trackingClient.events
       )
       self.loadingOverlayIsHidden.assertValues([true, false])
@@ -1299,8 +1341,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.showAlertMessage.assertValues(["Please enter an amount of DKK 20 or more."])
       self.showAlertShouldDismiss.assertValues([false])
       XCTAssertEqual(
-        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-          "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"],
+        [
+          "Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"
+        ],
         self.trackingClient.events
       )
 
@@ -1321,9 +1365,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.showAlertMessage.assertValues(["Please enter an amount of DKK 20 or more."])
       self.showAlertShouldDismiss.assertValues([false])
       XCTAssertEqual(
-        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+        [
+          "Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
           "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click",
-          "Clicked Reward Pledge Button"],
+          "Clicked Reward Pledge Button"
+        ],
         self.trackingClient.events
       )
 
@@ -1345,7 +1391,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         .template
           |> Backing.lens.reward .~ oldReward
           |> Backing.lens.rewardId .~ oldReward.id
-    )
+      )
 
     self.vm.inputs.configureWith(project: project, reward: newReward, applePayCapable: true)
     self.vm.inputs.viewDidLoad()
@@ -1387,7 +1433,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           |> Backing.lens.shippingAmount .~ 0
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
-    )
+      )
 
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
     self.vm.inputs.viewDidLoad()
@@ -1428,33 +1474,37 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+      self.vm.inputs.shippingButtonTapped()
 
-        self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
-        self.vm.inputs.viewDidLoad()
-        self.scheduler.advance()
-        self.vm.inputs.shippingButtonTapped()
+      self.goToShippingPickerProject.assertValues([project])
+      self.goToShippingPickerShippingRules.assertValues([shippingRules])
+      self.goToShippingPickerSelectedShippingRule.assertValues([defaultShippingRule])
+      XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
-        self.goToShippingPickerProject.assertValues([project])
-        self.goToShippingPickerShippingRules.assertValues([shippingRules])
-        self.goToShippingPickerSelectedShippingRule.assertValues([defaultShippingRule])
-        XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
+      self.vm.inputs.change(shippingRule: otherShippingRule)
 
-        self.vm.inputs.change(shippingRule: otherShippingRule)
+      XCTAssertEqual(
+        [
+          "Reward Checkout", "Selected Reward", "Checkout Location Changed",
+          "Selected Shipping Destination"
+        ],
+        self.trackingClient.events
+      )
+      XCTAssertEqual(
+        ["new_pledge", "new_pledge", "new_pledge", "new_pledge"],
+        self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+      )
 
-        XCTAssertEqual(
-          ["Reward Checkout", "Selected Reward", "Checkout Location Changed",
-            "Selected Shipping Destination"],
-          self.trackingClient.events
-        )
-        XCTAssertEqual(["new_pledge", "new_pledge", "new_pledge", "new_pledge"],
-                       self.trackingClient.properties(forKey: "pledge_context", as: String.self))
+      self.vm.inputs.shippingButtonTapped()
 
-        self.vm.inputs.shippingButtonTapped()
-
-        self.goToShippingPickerProject.assertValues([project, project])
-        self.goToShippingPickerShippingRules.assertValues([shippingRules, shippingRules])
-        self.goToShippingPickerSelectedShippingRule.assertValues([defaultShippingRule, otherShippingRule])
+      self.goToShippingPickerProject.assertValues([project, project])
+      self.goToShippingPickerShippingRules.assertValues([shippingRules, shippingRules])
+      self.goToShippingPickerSelectedShippingRule.assertValues([defaultShippingRule, otherShippingRule])
     }
   }
 
@@ -1465,14 +1515,14 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The thing"
-        ),
+          ),
         .template
           |> RewardsItem.lens.quantity .~ 1_000
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The other thing"
-        ),
-    ]
+          )
+      ]
 
     self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
@@ -1509,13 +1559,13 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The thing"
-        ),
+          ),
         .template
           |> RewardsItem.lens.quantity .~ 1_000
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The other thing"
-        ),
+          )
       ]
 
     self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
@@ -1541,14 +1591,14 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The thing"
-        ),
+          ),
         .template
           |> RewardsItem.lens.quantity .~ 1_000
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The other thing"
-        ),
-    ]
+          )
+      ]
 
     self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
 
@@ -1581,7 +1631,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.minimumLabelText.assertValues([
       Format.currency(reward.minimum, country: project.country)
-      ])
+    ])
   }
 
   func testMinimumLabelText_NoReward() {
@@ -1619,7 +1669,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       Strings.rewards_title_pledge_reward_currency_or_more(
         reward_currency: Format.currency(50, country: project.country)
       )
-      ])
+    ])
   }
 
   func testNavigationTitle_Backer_ManageSameReward() {
@@ -1629,7 +1679,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ reward
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -1643,7 +1693,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ (reward |> Reward.lens.id %~ { $0 + 1 })
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -1657,7 +1707,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ Reward.noReward
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -1672,7 +1722,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         .template
           |> Backing.lens.rewardId .~ 42
           |> Backing.lens.reward .~ (reward |> Reward.lens.id .~ 42)
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -1687,7 +1737,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         .template
           |> Backing.lens.rewardId .~ 0
           |> Backing.lens.reward .~ Reward.noReward
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -1701,7 +1751,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ .template
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -1709,8 +1759,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testOrLabelHidden() {
-    //todo
-    //orLabelHidden
+    // todo
+    // orLabelHidden
   }
 
   func testPledgeCurrencyLabelText_USProject_USBacker() {
@@ -1801,43 +1851,63 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum)],
-                                          "Sets initial value of pledge text field.")
+    self.pledgeTextFieldText.assertValues(
+      [String(format: "%.2f", reward.minimum)],
+      "Sets initial value of pledge text field."
+    )
     XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
     self.vm.inputs.pledgeTextFieldChanged("48")
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum)],
-                                          "Pledge field isn't set while editing.")
-    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
-                   self.trackingClient.events)
-
-    self.vm.inputs.pledgeTextFieldDidEndEditing()
-
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum)],
-                                          "Pledge field isn't set when done editing with valid value.")
-    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
-                   self.trackingClient.events)
-
-    self.vm.inputs.pledgeTextFieldChanged("20")
-
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum)],
-                                          "Pledge field isn't set while editing.")
+    self.pledgeTextFieldText.assertValues(
+      [String(format: "%.2f", reward.minimum)],
+      "Pledge field isn't set while editing."
+    )
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-        "Checkout Amount Changed", "Changed Pledge Amount"],
+      ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
       self.trackingClient.events
     )
 
     self.vm.inputs.pledgeTextFieldDidEndEditing()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum),
-                                           String(format: "%.2f", reward.minimum)],
-                                          "Pledge field is reset when done editing with invalid value.")
+    self.pledgeTextFieldText.assertValues(
+      [String(format: "%.2f", reward.minimum)],
+      "Pledge field isn't set when done editing with valid value."
+    )
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
+      self.trackingClient.events
+    )
+
+    self.vm.inputs.pledgeTextFieldChanged("20")
+
+    self.pledgeTextFieldText.assertValues(
+      [String(format: "%.2f", reward.minimum)],
+      "Pledge field isn't set while editing."
+    )
+    XCTAssertEqual(
+      [
+        "Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+        "Checkout Amount Changed", "Changed Pledge Amount"
+      ],
+      self.trackingClient.events
+    )
+
+    self.vm.inputs.pledgeTextFieldDidEndEditing()
+
+    self.pledgeTextFieldText.assertValues(
+      [
+        String(format: "%.2f", reward.minimum),
+        String(format: "%.2f", reward.minimum)
+      ],
+      "Pledge field is reset when done editing with invalid value."
+    )
 
     XCTAssertEqual(
-      ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-        "Checkout Amount Changed", "Changed Pledge Amount"],
+      [
+        "Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+        "Checkout Amount Changed", "Changed Pledge Amount"
+      ],
       self.trackingClient.events
     )
     XCTAssertEqual(
@@ -1859,13 +1929,14 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           |> Backing.lens.amount .~ reward.minimum
           |> Backing.lens.shippingAmount .~ nil
           |> Backing.lens.reward .~ reward
-
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum)],
-                                          "Sets initial value of pledge text field.")
+    self.pledgeTextFieldText.assertValues(
+      [String(format: "%.2f", reward.minimum)],
+      "Sets initial value of pledge text field."
+    )
   }
 
   func testPledgeTextFieldText_ManageReward_PledgedExtra_NoShipping() {
@@ -1877,13 +1948,14 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           |> Backing.lens.amount .~ (reward.minimum + 10.00)
           |> Backing.lens.shippingAmount .~ nil
           |> Backing.lens.reward .~ reward
-
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum + 10.00)],
-                                          "Sets initial value of pledge text field.")
+    self.pledgeTextFieldText.assertValues(
+      [String(format: "%.2f", reward.minimum + 10.00)],
+      "Sets initial value of pledge text field."
+    )
   }
 
   func testPledgeTextFieldText_ManageReward_WithShipping() {
@@ -1895,13 +1967,14 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           |> Backing.lens.amount .~ (reward.minimum + 10.00)
           |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.reward .~ reward
-
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", Double(reward.minimum))],
-                                          "Sets initial value of pledge text field.")
+    self.pledgeTextFieldText.assertValues(
+      [String(format: "%.2f", Double(reward.minimum))],
+      "Sets initial value of pledge text field."
+    )
   }
 
   func testPledgeTextFieldText_ManageReward_PledgedExtra_WithShipping() {
@@ -1913,13 +1986,14 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           |> Backing.lens.amount .~ (reward.minimum + 20.00 + 10.00)
           |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.reward .~ reward
-
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
-    self.pledgeTextFieldText.assertValues([String(format: "%.2f", reward.minimum + 20.00)],
-                                          "Sets initial value of pledge text field.")
+    self.pledgeTextFieldText.assertValues(
+      [String(format: "%.2f", reward.minimum + 20.00)],
+      "Sets initial value of pledge text field."
+    )
   }
 
   func testPledgeTextFieldText_ManageNoReward() {
@@ -1932,8 +2006,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           |> Backing.lens.shippingAmount .~ nil
           |> Backing.lens.reward .~ nil
           |> Backing.lens.rewardId .~ nil
-
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -2118,8 +2191,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
   func testShowAlert_WithReward() {
     withEnvironment(currentUser: .template) {
-      let dkCountry = Project.Country(countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
-                                      maxPledge: nil, minPledge: nil, trailingCode: true)
+      let dkCountry = Project.Country(
+        countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
+        maxPledge: nil, minPledge: nil, trailingCode: true
+      )
       let project = .template
         |> Project.lens.country .~ dkCountry
       let reward = .template
@@ -2141,8 +2216,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.vm.inputs.continueToPaymentsButtonTapped()
 
       XCTAssertEqual(
-        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-          "Clicked Reward Pledge Button"],
+        [
+          "Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Clicked Reward Pledge Button"
+        ],
         self.trackingClient.events
       )
 
@@ -2151,8 +2228,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.showAlertMessage.assertValues(["Please enter an amount of DKK 20 or more."])
       self.showAlertShouldDismiss.assertValues([false])
       XCTAssertEqual(
-        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
-        "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"],
+        [
+          "Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+          "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"
+        ],
         self.trackingClient.events
       )
 
@@ -2163,18 +2242,22 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.vm.inputs.pledgeTextFieldChanged("100000")
 
       XCTAssertEqual(
-        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+        [
+          "Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
           "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click", "Checkout Amount Changed",
-          "Changed Pledge Amount"],
+          "Changed Pledge Amount"
+        ],
         self.trackingClient.events
       )
 
       self.vm.inputs.continueToPaymentsButtonTapped()
 
       XCTAssertEqual(
-        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+        [
+          "Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
           "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click", "Checkout Amount Changed",
-          "Changed Pledge Amount", "Clicked Reward Pledge Button"],
+          "Changed Pledge Amount", "Clicked Reward Pledge Button"
+        ],
         self.trackingClient.events
       )
 
@@ -2183,7 +2266,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.showAlertMessage.assertValues([
         "Please enter an amount of DKK 20 or more.",
         "Please enter an amount of DKK 65,000 or less."
-        ])
+      ])
       self.showAlertShouldDismiss.assertValues([false, false])
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
@@ -2191,15 +2274,19 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.dismissViewController.assertValueCount(0)
 
       XCTAssertEqual(
-        ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
+        [
+          "Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount",
           "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click", "Checkout Amount Changed",
-          "Changed Pledge Amount", "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"],
+          "Changed Pledge Amount", "Clicked Reward Pledge Button", "Errored Reward Pledge Button Click"
+        ],
         self.trackingClient.events
       )
 
       XCTAssertEqual(
-        [nil, nil, nil, nil, "payment_methods", "MINIMUM_AMOUNT", nil, nil, "payment_methods",
-          "MAXIMUM_AMOUNT"],
+        [
+          nil, nil, nil, nil, "payment_methods", "MINIMUM_AMOUNT", nil, nil, "payment_methods",
+          "MAXIMUM_AMOUNT"
+        ],
         self.trackingClient.properties(forKey: "type", as: String.self)
       )
     }
@@ -2207,8 +2294,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
   func testShowAlert_WithNoReward() {
     withEnvironment(currentUser: .template) {
-      let dkCountry = Project.Country(countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
-                                      maxPledge: nil, minPledge: nil, trailingCode: true)
+      let dkCountry = Project.Country(
+        countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
+        maxPledge: nil, minPledge: nil, trailingCode: true
+      )
       let project = .template
         |> Project.lens.country .~ dkCountry
       let reward = Reward.noReward
@@ -2237,7 +2326,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.showAlertMessage.assertValues([
         "Please enter an amount of DKK 5 or more.",
         "Please enter an amount of DKK 65,000 or less."
-        ])
+      ])
       self.showAlertShouldDismiss.assertValues([false, false])
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
@@ -2247,9 +2336,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testTitleLabel_WithTitle() {
-    self.vm.inputs.configureWith(project: .template,
-                                 reward: .template |> Reward.lens.title .~ "Howdy!",
-                                 applePayCapable: false)
+    self.vm.inputs.configureWith(
+      project: .template,
+      reward: .template |> Reward.lens.title .~ "Howdy!",
+      applePayCapable: false
+    )
     self.vm.inputs.viewDidLoad()
 
     self.titleLabelText.assertValues(["Howdy!"])
@@ -2257,9 +2348,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testTitleLabel_WithoutTitle() {
-    self.vm.inputs.configureWith(project: .template,
-                                 reward: .template |> Reward.lens.title .~ nil,
-                                 applePayCapable: false)
+    self.vm.inputs.configureWith(
+      project: .template,
+      reward: .template |> Reward.lens.title .~ nil,
+      applePayCapable: false
+    )
     self.vm.inputs.viewDidLoad()
 
     self.titleLabelText.assertValues([""])
@@ -2280,8 +2373,10 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
       self.trackingClient.events
     )
-    XCTAssertEqual(["new_pledge", "new_pledge", "new_pledge", "new_pledge"],
-                   self.trackingClient.properties(forKey: "pledge_context", as: String.self))
+    XCTAssertEqual(
+      ["new_pledge", "new_pledge", "new_pledge", "new_pledge"],
+      self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+    )
   }
 
   func testTrackChangedPledgeAmount_ManagingPledge() {
@@ -2291,7 +2386,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ reward
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -2299,10 +2394,14 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.vm.inputs.pledgeTextFieldChanged("48")
 
-    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
-                   self.trackingClient.events)
-    XCTAssertEqual(["manage_reward", "manage_reward", "manage_reward", "manage_reward"],
-                   self.trackingClient.properties(forKey: "pledge_context", as: String.self))
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
+      self.trackingClient.events
+    )
+    XCTAssertEqual(
+      ["manage_reward", "manage_reward", "manage_reward", "manage_reward"],
+      self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+    )
   }
 
   func testTrackChangedPledgeAmount_ManagingReward() {
@@ -2316,7 +2415,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ oldReward
-    )
+      )
     self.vm.inputs.configureWith(project: project, reward: newReward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -2324,10 +2423,14 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.vm.inputs.pledgeTextFieldChanged("48")
 
-    XCTAssertEqual(["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
-                   self.trackingClient.events)
-    XCTAssertEqual(["change_reward", "change_reward", "change_reward", "change_reward"],
-                   self.trackingClient.properties(forKey: "pledge_context", as: String.self))
+    XCTAssertEqual(
+      ["Reward Checkout", "Selected Reward", "Checkout Amount Changed", "Changed Pledge Amount"],
+      self.trackingClient.events
+    )
+    XCTAssertEqual(
+      ["change_reward", "change_reward", "change_reward", "change_reward"],
+      self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+    )
   }
 
   func testShippingRulesErrored() {
@@ -2342,24 +2445,24 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(error: error)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
 
-        self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
-        self.vm.inputs.viewDidLoad()
+      self.shippingIsLoading.assertValues([true])
+      self.showAlertMessage.assertValueCount(0)
 
-        self.shippingIsLoading.assertValues([true])
-        self.showAlertMessage.assertValueCount(0)
+      self.scheduler.advance()
 
-        self.scheduler.advance()
+      self.shippingIsLoading.assertValues([true, false])
+      self.showAlertMessage.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
+      self.showAlertShouldDismiss.assertValues([true])
+      self.dismissViewController.assertValueCount(0)
 
-        self.shippingIsLoading.assertValues([true, false])
-        self.showAlertMessage.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
-        self.showAlertShouldDismiss.assertValues([true])
-        self.dismissViewController.assertValueCount(0)
+      self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-        self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
-
-        self.dismissViewController.assertValueCount(1)
+      self.dismissViewController.assertValueCount(1)
     }
   }
 
@@ -2382,8 +2485,31 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(createPledgeResult: Result(error: errorUnknown)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
+      self.vm.inputs.continueToPaymentsButtonTapped()
+
+      self.showAlertMessage.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.showAlertMessage.assertValues(["Something went wrong yo."])
+      self.showAlertShouldDismiss.assertValues([true])
+      self.dismissViewController.assertValueCount(0)
+
+      self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+      self.dismissViewController.assertValueCount(1)
+
+      withEnvironment(
+        apiService: MockService(createPledgeResult: Result(error: errorEmptyMessage)),
+        config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+      ) {
         self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
         self.vm.inputs.viewDidLoad()
 
@@ -2391,43 +2517,20 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
         self.vm.inputs.continueToPaymentsButtonTapped()
 
-        self.showAlertMessage.assertValueCount(0)
+        self.showAlertMessage.assertValueCount(1)
 
         self.scheduler.advance()
 
-        self.showAlertMessage.assertValues(["Something went wrong yo."])
-        self.showAlertShouldDismiss.assertValues([true])
-        self.dismissViewController.assertValueCount(0)
+        self.showAlertMessage.assertValues(
+          ["Something went wrong yo.", Strings.general_error_something_wrong()]
+        )
+        self.showAlertShouldDismiss.assertValues([true, true])
+        self.dismissViewController.assertValueCount(1)
 
         self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-        self.dismissViewController.assertValueCount(1)
-
-        withEnvironment(
-          apiService: MockService(createPledgeResult: Result(error: errorEmptyMessage)),
-          config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
-
-            self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
-            self.vm.inputs.viewDidLoad()
-
-            self.scheduler.advance()
-
-            self.vm.inputs.continueToPaymentsButtonTapped()
-
-            self.showAlertMessage.assertValueCount(1)
-
-            self.scheduler.advance()
-
-            self.showAlertMessage.assertValues(
-              ["Something went wrong yo.", Strings.general_error_something_wrong()]
-            )
-            self.showAlertShouldDismiss.assertValues([true, true])
-            self.dismissViewController.assertValueCount(1)
-
-            self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
-
-            self.dismissViewController.assertValueCount(2)
-        }
+        self.dismissViewController.assertValueCount(2)
+      }
     }
   }
 
@@ -2450,8 +2553,31 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(changePaymentMethodResult: Result(error: errorUnknown)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
+      self.vm.inputs.changePaymentMethodButtonTapped()
+
+      self.showAlertMessage.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.showAlertMessage.assertValues(["Something went wrong yo."])
+      self.showAlertShouldDismiss.assertValues([true])
+      self.dismissViewController.assertValueCount(0)
+
+      self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+      self.dismissViewController.assertValueCount(1)
+
+      withEnvironment(
+        apiService: MockService(changePaymentMethodResult: Result(error: errorEmptyMessage)),
+        config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+      ) {
         self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
         self.vm.inputs.viewDidLoad()
 
@@ -2459,43 +2585,20 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
         self.vm.inputs.changePaymentMethodButtonTapped()
 
-        self.showAlertMessage.assertValueCount(0)
+        self.showAlertMessage.assertValueCount(1)
 
         self.scheduler.advance()
 
-        self.showAlertMessage.assertValues(["Something went wrong yo."])
-        self.showAlertShouldDismiss.assertValues([true])
-        self.dismissViewController.assertValueCount(0)
+        self.showAlertMessage.assertValues(
+          ["Something went wrong yo.", Strings.general_error_something_wrong()]
+        )
+        self.showAlertShouldDismiss.assertValues([true, true])
+        self.dismissViewController.assertValueCount(1)
 
         self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-        self.dismissViewController.assertValueCount(1)
-
-        withEnvironment(
-          apiService: MockService(changePaymentMethodResult: Result(error: errorEmptyMessage)),
-          config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
-
-            self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
-            self.vm.inputs.viewDidLoad()
-
-            self.scheduler.advance()
-
-            self.vm.inputs.changePaymentMethodButtonTapped()
-
-            self.showAlertMessage.assertValueCount(1)
-
-            self.scheduler.advance()
-
-            self.showAlertMessage.assertValues(
-              ["Something went wrong yo.", Strings.general_error_something_wrong()]
-            )
-            self.showAlertShouldDismiss.assertValues([true, true])
-            self.dismissViewController.assertValueCount(1)
-
-            self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
-
-            self.dismissViewController.assertValueCount(2)
-        }
+        self.dismissViewController.assertValueCount(2)
+      }
     }
   }
 
@@ -2518,8 +2621,31 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(updatePledgeResult: Result(error: errorUnknown)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
+      self.vm.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
+      self.vm.inputs.updatePledgeButtonTapped()
+
+      self.showAlertMessage.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.showAlertMessage.assertValues(["Something went wrong yo."])
+      self.showAlertShouldDismiss.assertValues([true])
+      self.dismissViewController.assertValueCount(0)
+
+      self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+      self.dismissViewController.assertValueCount(1)
+
+      withEnvironment(
+        apiService: MockService(updatePledgeResult: Result(error: errorEmptyMessage)),
+        config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+      ) {
         self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
         self.vm.inputs.viewDidLoad()
 
@@ -2527,43 +2653,20 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
         self.vm.inputs.updatePledgeButtonTapped()
 
-        self.showAlertMessage.assertValueCount(0)
+        self.showAlertMessage.assertValueCount(1)
 
         self.scheduler.advance()
 
-        self.showAlertMessage.assertValues(["Something went wrong yo."])
-        self.showAlertShouldDismiss.assertValues([true])
-        self.dismissViewController.assertValueCount(0)
+        self.showAlertMessage.assertValues(
+          ["Something went wrong yo.", Strings.general_error_something_wrong()]
+        )
+        self.showAlertShouldDismiss.assertValues([true, true])
+        self.dismissViewController.assertValueCount(1)
 
         self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-        self.dismissViewController.assertValueCount(1)
-
-        withEnvironment(
-          apiService: MockService(updatePledgeResult: Result(error: errorEmptyMessage)),
-          config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
-
-            self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
-            self.vm.inputs.viewDidLoad()
-
-            self.scheduler.advance()
-
-            self.vm.inputs.updatePledgeButtonTapped()
-
-            self.showAlertMessage.assertValueCount(1)
-
-            self.scheduler.advance()
-
-            self.showAlertMessage.assertValues(
-              ["Something went wrong yo.", Strings.general_error_something_wrong()]
-            )
-            self.showAlertShouldDismiss.assertValues([true, true])
-            self.dismissViewController.assertValueCount(1)
-
-            self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
-
-            self.dismissViewController.assertValueCount(2)
-        }
+        self.dismissViewController.assertValueCount(2)
+      }
     }
   }
 
@@ -2586,9 +2689,42 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(createPledgeResult: Result(error: errorUnknown)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: true)
+      self.vm.inputs.viewDidLoad()
 
-        self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: true)
+      self.scheduler.advance()
+
+      self.vm.inputs.applePayButtonTapped()
+      self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
+      self.vm.inputs.paymentAuthorization(
+        didAuthorizePayment: .init(
+          tokenData: .init(
+            paymentMethodData: .init(displayName: "AmEx", network: .amex, type: .credit),
+            transactionIdentifier: "apple_pay_deadbeef"
+          )
+        )
+      )
+      _ = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
+
+      self.showAlertMessage.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.showAlertMessage.assertValues(["Something went wrong yo."])
+      self.showAlertShouldDismiss.assertValues([true])
+      self.dismissViewController.assertValueCount(0)
+
+      self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
+
+      self.dismissViewController.assertValueCount(1)
+
+      withEnvironment(
+        apiService: MockService(createPledgeResult: Result(error: errorEmptyMessage)),
+        config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+      ) {
+        self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
         self.vm.inputs.viewDidLoad()
 
         self.scheduler.advance()
@@ -2605,53 +2741,20 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         )
         _ = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
 
-        self.showAlertMessage.assertValueCount(0)
+        self.showAlertMessage.assertValueCount(1)
 
         self.scheduler.advance()
 
-        self.showAlertMessage.assertValues(["Something went wrong yo."])
-        self.showAlertShouldDismiss.assertValues([true])
-        self.dismissViewController.assertValueCount(0)
+        self.showAlertMessage.assertValues(
+          ["Something went wrong yo.", Strings.general_error_something_wrong()]
+        )
+        self.showAlertShouldDismiss.assertValues([true, true])
+        self.dismissViewController.assertValueCount(1)
 
         self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-        self.dismissViewController.assertValueCount(1)
-
-        withEnvironment(
-          apiService: MockService(createPledgeResult: Result(error: errorEmptyMessage)),
-          config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
-
-            self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
-            self.vm.inputs.viewDidLoad()
-
-            self.scheduler.advance()
-
-            self.vm.inputs.applePayButtonTapped()
-            self.vm.inputs.paymentAuthorizationWillAuthorizePayment()
-            self.vm.inputs.paymentAuthorization(
-              didAuthorizePayment: .init(
-                tokenData: .init(
-                  paymentMethodData: .init(displayName: "AmEx", network: .amex, type: .credit),
-                  transactionIdentifier: "apple_pay_deadbeef"
-                )
-              )
-            )
-            _ = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
-
-            self.showAlertMessage.assertValueCount(1)
-
-            self.scheduler.advance()
-
-            self.showAlertMessage.assertValues(
-              ["Something went wrong yo.", Strings.general_error_something_wrong()]
-            )
-            self.showAlertShouldDismiss.assertValues([true, true])
-            self.dismissViewController.assertValueCount(1)
-
-            self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
-
-            self.dismissViewController.assertValueCount(2)
-        }
+        self.dismissViewController.assertValueCount(2)
+      }
     }
   }
 

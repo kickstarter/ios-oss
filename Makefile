@@ -5,13 +5,15 @@ SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
 RELEASE ?= itunes
-IOS_VERSION ?= 12.1
+IOS_VERSION ?= 12.2
 IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
-OPENTOK_VERSION ?= 2.10.2
 FABRIC_SDK_VERSION ?= 3.10.5
+HOCKEY_SDK_VERSION ?= 5.1.4
 FABRIC_SDK_URL ?= https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip
+HOCKEY_SDK_URL ?= https://github.com/bitstadium/HockeySDK-iOS/releases/download/INSERT_SDK_VERSION/HockeySDK-iOS-INSERT_SDK_VERSION.zip
+HOCKEY_FRAMEWORK_NESTED_PATH ?= HockeySDK-iOS/HockeySDKAllFeatures/HockeySDK.embeddedframework
 COMMIT ?= $(CIRCLE_SHA1)
 
 ifeq ($(PLATFORM),iOS)
@@ -39,14 +41,9 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: carthage-bootstrap configs secrets opentok fabric
+dependencies: carthage-bootstrap configs secrets fabric hockey
 
 bootstrap: hooks dependencies
-	brew update || brew update
-	brew unlink swiftlint || true
-	brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/686375d8bc672a439ca9fcf27794a394239b3ee6/Formula/swiftlint.rb
-	brew switch swiftlint 0.29.2
-	brew link --overwrite swiftlint
 
 carthage-bootstrap:
 	set -o pipefail; bin/carthage.sh;
@@ -123,9 +120,6 @@ cleanup:
 
 	@git push -d private $(CIRCLE_BRANCH)
 
-lint:
-	swiftlint lint --reporter json --strict
-
 strings:
 	cp Frameworks/native-secrets/ios/Secrets.swift bin/StringsScript/Sources/StringsScriptCore
 	./bin/strings-script "./Library/Strings.swift" "./Kickstarter-iOS/Locales"
@@ -140,26 +134,10 @@ secrets:
 		|| true; \
 	fi
 
-VERSION_FILE = Frameworks/OpenTok/version
-CURRENT_OPENTOK_VERSION = $(shell cat $(VERSION_FILE))
-ifeq ($(CURRENT_OPENTOK_VERSION),)
-	CURRENT_OPENTOK_VERSION = first
-endif
-opentok:
-	@if [ $(OPENTOK_VERSION) != $(CURRENT_OPENTOK_VERSION) ]; \
-	then \
-		echo "Downloading OpenTok v$(OPENTOK_VERSION)"; \
-		mkdir -p Frameworks/OpenTok; \
-		curl -s -N -L https://tokbox.com/downloads/opentok-ios-sdk-$(OPENTOK_VERSION) \
-		| tar -xz --strip 1 --directory Frameworks/OpenTok OpenTok-iOS-$(OPENTOK_VERSION)/OpenTok.framework \
-		|| true; \
-	fi
-	@if [ -e Frameworks/OpenTok/OpenTok.framework ]; \
-	then \
-		echo "$(OPENTOK_VERSION)" > $(VERSION_FILE); \
-	fi
-
 fabric:
 	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) $(FABRIC_SDK_URL); \
 
-.PHONY: test-all test clean dependencies submodules deploy lint secrets strings opentok fabric
+hockey:
+	bin/download_framework.sh HockeySDK $(HOCKEY_SDK_VERSION) $(HOCKEY_SDK_URL) $(HOCKEY_FRAMEWORK_NESTED_PATH); \
+
+.PHONY: test-all test clean dependencies submodules deploy lint secrets strings fabric

@@ -1,5 +1,4 @@
 import Foundation
-import KsApi
 import Library
 import UIKit
 
@@ -88,15 +87,17 @@ final class PledgeDataSource: ValueCellDataSource {
 
   private func loadSummarySection(isLoggedIn: Bool) {
     self.appendRow(
-      value: "Total",
+      value: Strings.Total(),
       cellClass: PledgeRowCell.self,
       toSection: Section.summary.rawValue
     )
 
     if !isLoggedIn {
-      self.appendRow(value: (),
-                     cellClass: PledgeContinueCell.self,
-                     toSection: Section.summary.rawValue)
+      self.appendRow(
+        value: (),
+        cellClass: PledgeContinueCell.self,
+        toSection: Section.summary.rawValue
+      )
     }
   }
 
@@ -107,6 +108,8 @@ final class PledgeDataSource: ValueCellDataSource {
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as PledgeAmountCell, value as PledgeInputRow):
+      cell.configureWith(value: value)
+    case let (cell as PledgeContinueCell, value as ()):
       cell.configureWith(value: value)
     case let (cell as PledgeDescriptionCell, value as String):
       cell.configureWith(value: value)

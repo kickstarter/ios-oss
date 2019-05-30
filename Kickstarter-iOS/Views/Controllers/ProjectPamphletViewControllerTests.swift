@@ -1,8 +1,8 @@
-import Prelude
-import XCTest
+@testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-@testable import Kickstarter_Framework
+import Prelude
+import XCTest
 
 internal final class ProjectPamphletViewControllerTests: TestCase {
   private var project: Project = .cosmicSurgery
@@ -12,7 +12,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
     self.project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ "" // prevents flaky tests caused by async photo download
-      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.rewards %~ { rewards in
         [
           rewards[0]
@@ -22,7 +22,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         ]
       }
       |> Project.lens.state .~ .live
-      |> Project.lens.stats.pledged .~ (Project.template.stats.goal * 3/4)
+      |> Project.lens.stats.pledged .~ (Project.template.stats.goal * 3 / 4)
 
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)

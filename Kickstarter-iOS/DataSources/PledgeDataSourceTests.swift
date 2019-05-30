@@ -1,7 +1,6 @@
-import XCTest
 @testable import Kickstarter_Framework
 @testable import Library
-@testable import KsApi
+import XCTest
 
 final class PledgeDataSourceTests: XCTestCase {
   let dataSource = PledgeDataSource()

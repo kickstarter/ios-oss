@@ -6,7 +6,6 @@ import Result
 import XCTest
 @testable import KsApi
 @testable import Library
-@testable import LiveStream
 
 internal class TestCase: FBSnapshotTestCase {
   internal static let interval = DispatchTimeInterval.milliseconds(1)
@@ -17,7 +16,6 @@ internal class TestCase: FBSnapshotTestCase {
   internal let cookieStorage = MockCookieStorage()
   internal let dateType = MockDate.self
   internal let facebookAppDelegate = MockFacebookAppDelegate()
-  internal let liveStreamService = MockLiveStreamService()
   internal let mainBundle = MockBundle()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
@@ -56,7 +54,6 @@ internal class TestCase: FBSnapshotTestCase {
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
       launchedCountries: .init(),
-      liveStreamService: self.liveStreamService,
       locale: .init(identifier: "en_US"),
       mainBundle: mainBundle,
       pushRegistrationType: MockPushRegistration.self,

@@ -71,7 +71,7 @@ public let settingsSeparatorStyle = UIView.lens.backgroundColor .~ .ksr_grey_500
 
 public let settingsNotificationIconButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
-    <> UIButton.lens.tintColor .~ .ksr_text_dark_grey_400
+  <> UIButton.lens.tintColor .~ .ksr_text_dark_grey_400
 
 public let settingsSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
   <> UISwitch.lens.tintColor .~ .ksr_grey_600
@@ -117,7 +117,8 @@ public func settingsFooterContentViewStyle(_ view: UIView) -> UIView {
       top: Styles.grid(1),
       left: Styles.grid(2),
       bottom: Styles.grid(0),
-      right: Styles.grid(2))
+      right: Styles.grid(2)
+    )
 }
 
 public func settingsHeaderContentViewStyle(_ view: UIView) -> UIView {
@@ -127,7 +128,8 @@ public func settingsHeaderContentViewStyle(_ view: UIView) -> UIView {
       top: Styles.grid(5),
       left: Styles.grid(2),
       bottom: Styles.grid(2),
-      right: Styles.grid(2))
+      right: Styles.grid(2)
+    )
 }
 
 public func settingsLabelStyle(_ label: UILabel) -> UILabel {
@@ -161,5 +163,5 @@ public func settingsTextFieldStyle(_ textField: UITextField) -> UITextField {
     |> \.font %~ { _ in .ksr_body() }
     |> \.textAlignment %~~ { _, stackView in
       stackView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .left : .right
-  }
+    }
 }

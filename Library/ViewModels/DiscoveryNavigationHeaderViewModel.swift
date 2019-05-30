@@ -93,7 +93,7 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
 
   public init() {
     let currentParams = Signal.merge(
-      self.paramsProperty.signal.skipNil(),
+      self.paramsProperty.signal.skipNil().skipRepeats(),
       self.filtersSelectedRowProperty.signal.skipNil().map { $0.params }
     )
 
@@ -296,8 +296,6 @@ private func stringsForTitle(params: DiscoveryParams) -> (filter: String, subcat
 
   if params.staffPicks == true {
     filterText = Strings.Projects_We_Love()
-  } else if params.hasLiveStreams == .some(true) {
-    filterText = "Kickstarter Live"
   } else if params.starred == true {
     filterText = Strings.Saved()
   } else if params.social == true {
@@ -337,18 +335,18 @@ private func string(forCategoryId id: String) -> String {
 }
 
 private func isFavoriteCategoryStored(withId id: Int) -> Bool {
-  return AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.index(of: id) != nil ||
-    AppEnvironment.current.userDefaults.favoriteCategoryIds.index(of: id) != nil
+  return AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.firstIndex(of: id) != nil ||
+    AppEnvironment.current.userDefaults.favoriteCategoryIds.firstIndex(of: id) != nil
 }
 
 private func toggleStoredFavoriteCategory(withId id: Int) {
-  if let index = AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.index(of: id) {
+  if let index = AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.firstIndex(of: id) {
     AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.remove(at: index)
   } else {
     AppEnvironment.current.ubiquitousStore.favoriteCategoryIds.append(id)
   }
 
-  if let index = AppEnvironment.current.userDefaults.favoriteCategoryIds.index(of: id) {
+  if let index = AppEnvironment.current.userDefaults.favoriteCategoryIds.firstIndex(of: id) {
     AppEnvironment.current.userDefaults.favoriteCategoryIds.remove(at: index)
   } else {
     AppEnvironment.current.userDefaults.favoriteCategoryIds.append(id)

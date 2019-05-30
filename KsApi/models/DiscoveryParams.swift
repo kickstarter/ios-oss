@@ -5,24 +5,23 @@ import Prelude
 
 public struct DiscoveryParams {
 
-  public private(set) var backed: Bool?
-  public private(set) var category: Category?
-  public private(set) var collaborated: Bool?
-  public private(set) var created: Bool?
-  public private(set) var hasLiveStreams: Bool?
-  public private(set) var hasVideo: Bool?
-  public private(set) var includePOTD: Bool?
-  public private(set) var page: Int?
-  public private(set) var perPage: Int?
-  public private(set) var query: String?
-  public private(set) var recommended: Bool?
-  public private(set) var seed: Int?
-  public private(set) var similarTo: Project?
-  public private(set) var social: Bool?
-  public private(set) var sort: Sort?
-  public private(set) var staffPicks: Bool?
-  public private(set) var starred: Bool?
-  public private(set) var state: State?
+  public var backed: Bool?
+  public var category: Category?
+  public var collaborated: Bool?
+  public var created: Bool?
+  public var hasVideo: Bool?
+  public var includePOTD: Bool?
+  public var page: Int?
+  public var perPage: Int?
+  public var query: String?
+  public var recommended: Bool?
+  public var seed: Int?
+  public var similarTo: Project?
+  public var social: Bool?
+  public var sort: Sort?
+  public var staffPicks: Bool?
+  public var starred: Bool?
+  public var state: State?
 
   public enum State: String, Argo.Decodable {
     case all
@@ -37,9 +36,8 @@ public struct DiscoveryParams {
     case popular = "popularity"
   }
 
-  public static let defaults = DiscoveryParams(backed: nil, category: nil,
-                                               collaborated: nil, created: nil,
-                                               hasLiveStreams: nil, hasVideo: nil, includePOTD: nil,
+  public static let defaults = DiscoveryParams(backed: nil, category: nil, collaborated: nil,
+                                               created: nil, hasVideo: nil, includePOTD: nil,
                                                page: nil, perPage: nil, query: nil, recommended: nil,
                                                seed: nil, similarTo: nil, social: nil, sort: nil,
                                                staffPicks: nil, starred: nil, state: nil)
@@ -50,7 +48,6 @@ public struct DiscoveryParams {
     params["category_id"] = self.category?.intID?.description
     params["collaborated"] = self.collaborated?.description
     params["created"] = self.created?.description
-    params["has_live_streams"] = self.hasLiveStreams?.description
     params["has_video"] = self.hasVideo?.description
     params["page"] = self.page?.description
     params["per_page"] = self.perPage?.description
@@ -97,7 +94,6 @@ extension DiscoveryParams: Argo.Decodable {
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "created" >>- stringToBool) as Decoded<Bool?>)
     let tmp2 = tmp1
-      <*> json <|? "has_live_streams"
       <*> ((json <|? "has_video" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "include_potd" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "page" >>- stringToInt) as Decoded<Int?>)
@@ -131,7 +127,7 @@ private func stringToBool(_ string: String?) -> Decoded<Bool?> {
 
 private func stringToInt(_ string: String?) -> Decoded<Int?> {
   guard let string = string else { return .success(nil) }
-  return Int(string).map(Decoded.success) ?? .failure(.custom("Could not parse string into int."))
+  return Int(string).map(Decoded<Int?>.success) ?? .failure(.custom("Could not parse string into int."))
 }
 
 private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {

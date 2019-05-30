@@ -1,13 +1,13 @@
 import Prelude
 
-/// Graph Response
+// MARK: - Graph Response
 
 public struct GraphResponse<T: Decodable>: Decodable {
   let data: T?
   let errors: [GraphResponseError]?
 }
 
-/// Base Query Types
+// MARK: - Base Query Types
 
 extension Never: CustomStringConvertible {
   public var description: String {
@@ -16,12 +16,6 @@ extension Never: CustomStringConvertible {
 }
 
 public protocol QueryType: CustomStringConvertible, Hashable {}
-
-extension QueryType {
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(self.description)
-  }
-}
 
 public enum Connection<Q: QueryType> {
   case pageInfo(NonEmptySet<PageInfo>)
@@ -213,7 +207,6 @@ public enum Query {
     case isEmailVerified
     case isFollowing
     case isSocializing
-    case ksrLiveAuthToken
     case location(NonEmptySet<Location>)
     case membershipProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case name
@@ -329,7 +322,7 @@ extension Connection: QueryType {
   }
 }
 
-/// Category
+// MARK: - Category
 
 extension Query.Category: QueryType {
   public var description: String {
@@ -355,7 +348,7 @@ extension Query.Category.ProjectsConnection.Argument: CustomStringConvertible {
   }
 }
 
-/// Project
+// MARK: - Project
 
 extension Query.Project: QueryType {
   public var description: String {
@@ -367,7 +360,7 @@ extension Query.Project: QueryType {
   }
 }
 
-/// Update
+// MARK: - Update
 
 extension Query.Project.Update: QueryType {
   public var description: String {
@@ -380,7 +373,7 @@ extension Query.Project.Update: QueryType {
   }
 }
 
-// MARK: User
+// MARK: - User
 
 extension Query.User: QueryType {
   public var description: String {
@@ -403,7 +396,6 @@ extension Query.User: QueryType {
     case .isEmailVerified:                      return "isEmailVerified"
     case .isFollowing:                          return "isFollowing"
     case .isSocializing:                        return "isSocializing"
-    case .ksrLiveAuthToken:                     return "ksrLiveAuthToken"
     case let .location(fields):                 return "location { \(join(fields)) }"
     case let .membershipProjects(args, fields): return "membershipProjects\(connection(args, fields))"
     case .name:                                 return "name"
@@ -427,21 +419,21 @@ extension Query.User.CreditCard: QueryType {
   }
 }
 
-// MARK: NewsletterSubscriptions
+// MARK: - NewsletterSubscriptions
 extension Query.NewsletterSubscriptions: QueryType {
   public var description: String {
     return self.rawValue
   }
 }
 
-// MARK: Notifications
+// MARK: - Notifications
 extension Query.Notifications: QueryType {
   public var description: String {
     return self.rawValue
   }
 }
 
-/// Location
+// MARK: - Location
 
 extension Query.Location: QueryType {
   public var description: String {
@@ -458,7 +450,7 @@ extension Query.Amount: QueryType {
   }
 }
 
-/// Conversation
+// MARK: - Conversation
 
 extension Query.Conversation: QueryType {
   public var description: String {
@@ -468,7 +460,7 @@ extension Query.Conversation: QueryType {
   }
 }
 
-/// Helpers
+// MARK: - Helpers
 
 private func connection<T, U>(_ args: Set<QueryArg<T>>, _ fields: NonEmptySet<Connection<U>>) -> String {
   return "\(_args(args)) { \(join(fields)) }"
@@ -476,4 +468,42 @@ private func connection<T, U>(_ args: Set<QueryArg<T>>, _ fields: NonEmptySet<Co
 
 private func _args<T>(_ args: Set<QueryArg<T>>) -> String {
   return !args.isEmpty ? "(\(join(args)))" : ""
+}
+
+// MARK: - Hashable
+
+extension QueryType {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension Query.User.CreditCard {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension Query.Location {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension Query.NewsletterSubscriptions {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension PageInfo {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension Query.Notifications {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
 }

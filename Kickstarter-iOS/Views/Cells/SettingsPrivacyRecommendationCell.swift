@@ -16,7 +16,7 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.recommendationsSwitch]
+      |> \.accessibilityElements .~ [self.recommendationsSwitch].compact()
 
     _ = self.recommendationsSwitch
       |> \.accessibilityLabel %~ { _ in Strings.Recommendations() }
@@ -48,6 +48,10 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.postNotification
+      .observeForUI()
+      .observeValues { NotificationCenter.default.post($0) }
 
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()

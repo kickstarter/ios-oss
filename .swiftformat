@@ -1,0 +1,32 @@
+# fileHeader
+--header strip
+
+# indent
+--indent 2
+
+# numberFormatting
+--decimalgrouping 3
+
+# redundantSelf
+# Reference `self` explicitly
+--self insert
+
+# ranges
+--ranges no-space
+
+# trailingCommas
+--commas inline
+
+# unusedArguments
+--stripunusedargs always
+
+# wrapArguments
+--wraparguments before-first
+--wrapcollections before-first
+
+# Disabled rules
+--disable redundantInit
+--disable void
+
+# Excluded files
+--exclude bin,Carthage,Frameworks,Library/Strings.swift,Library/Styles/Colors.swift,vendor

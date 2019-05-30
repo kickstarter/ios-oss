@@ -1,5 +1,5 @@
-import KsApi
 import Foundation
+import KsApi
 import Prelude
 import ReactiveSwift
 import Result
@@ -36,19 +36,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let projectAndReward = Signal.combineLatest(
       self.configureProjectAndRewardProperty.signal, self.viewDidLoadProperty.signal
     )
-      .map(first)
-      .skipNil()
+    .map(first)
+    .skipNil()
 
     let project = projectAndReward.map(first)
     let reward = projectAndReward.map(second)
 
     let amountCurrencyCurrencyCodeDelivery = projectAndReward.signal
-      .map { (project, reward) in
-        (reward.minimum,
-         currencySymbol(forCountry: project.country).trimmed(),
          project.stats.currency,
-         reward.estimatedDeliveryOn
-          .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? "") }
+
+        return (amount, currency, delivery, shipping)
+      }
 
     let isLoggedIn = projectAndReward
       .map { _ in AppEnvironment.current.currentUser }

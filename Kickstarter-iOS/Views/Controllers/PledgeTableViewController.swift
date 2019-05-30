@@ -88,9 +88,11 @@ class PledgeTableViewController: UITableViewController {
     return footerView
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
+  internal override func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt _: IndexPath
+  ) {
     if let descriptionCell = cell as? PledgeDescriptionCell {
       descriptionCell.delegate = self
     } else if let shippingLocationCell = cell as? PledgeShippingLocationCell {
@@ -100,7 +102,7 @@ class PledgeTableViewController: UITableViewController {
 }
 
 extension PledgeTableViewController: PledgeDescriptionCellDelegate {
- internal func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell) {
+  internal func pledgeDescriptionCellDidPresentTrustAndSafety(_: PledgeDescriptionCell) {
     let vc = HelpWebViewController.configuredWith(helpType: .trust)
     let nav = UINavigationController(rootViewController: vc)
     self.present(nav, animated: true, completion: nil)
