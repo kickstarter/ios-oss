@@ -1,20 +1,19 @@
 // swiftlint:disable force_unwrapping
 import XCTest
 import ReactiveSwift
-import Result
 @testable import KsApi
 import ReactiveExtensions_TestHelpers
 @testable import Library
 
 final class TwoFactorViewModelTests: TestCase {
   let vm: TwoFactorViewModelType = TwoFactorViewModel()
-  var codeTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  var isFormValid = TestObserver<Bool, NoError>()
-  var isLoading = TestObserver<Bool, NoError>()
-  var logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  var postNotificationName = TestObserver<(Notification.Name, Notification.Name), NoError>()
-  var resendSuccess = TestObserver<(), NoError>()
-  var showError = TestObserver<String, NoError>()
+  var codeTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  var isFormValid = TestObserver<Bool, Never>()
+  var isLoading = TestObserver<Bool, Never>()
+  var logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  var postNotificationName = TestObserver<(Notification.Name, Notification.Name), Never>()
+  var resendSuccess = TestObserver<(), Never>()
+  var showError = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

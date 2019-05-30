@@ -2,7 +2,6 @@
 @testable import KsApi
 @testable import Library
 import Prelude
-import Result
 import XCTest
 
 private let creator = User.template |> \.avatar.small .~ ""

@@ -1,5 +1,4 @@
 import Prelude
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -8,15 +7,15 @@ import ReactiveExtensions_TestHelpers
 internal final class WatchProjectViewModelTests: TestCase {
   internal let vm = WatchProjectViewModel()
 
-  internal let generateImpactFeedback = TestObserver<(), NoError>()
-  internal let generateSelectionFeedback = TestObserver<(), NoError>()
-  internal let generateSuccessFeedback = TestObserver<(), NoError>()
-  internal let goToLoginTout = TestObserver<(), NoError>()
-  internal let postNotificationWithProject = TestObserver<Project, NoError>() //fixme: test
-  internal let saveButtonAccessibilityValue = TestObserver<String, NoError>()
-  internal let saveButtonSelected = TestObserver<Bool, NoError>()
-  internal let showNotificationDialog = TestObserver<Notification.Name, NoError>()
-  internal let showProjectSavedAlert = TestObserver<Void, NoError>()
+  internal let generateImpactFeedback = TestObserver<(), Never>()
+  internal let generateSelectionFeedback = TestObserver<(), Never>()
+  internal let generateSuccessFeedback = TestObserver<(), Never>()
+  internal let goToLoginTout = TestObserver<(), Never>()
+  internal let postNotificationWithProject = TestObserver<Project, Never>() //fixme: test
+  internal let saveButtonAccessibilityValue = TestObserver<String, Never>()
+  internal let saveButtonSelected = TestObserver<Bool, Never>()
+  internal let showNotificationDialog = TestObserver<Notification.Name, Never>()
+  internal let showProjectSavedAlert = TestObserver<Void, Never>()
 
   internal override func setUp() {
     super.setUp()

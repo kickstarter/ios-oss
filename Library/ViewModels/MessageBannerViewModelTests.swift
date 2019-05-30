@@ -1,7 +1,6 @@
 import Foundation
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import Library
 import ReactiveExtensions_TestHelpers
@@ -9,13 +8,13 @@ import ReactiveExtensions_TestHelpers
 internal final class MessageBannerViewModelTests: TestCase {
   let vm = MessageBannerViewModel()
 
-  let bannerBackgroundColor = TestObserver<UIColor, NoError>()
-  let bannerMessage = TestObserver<String, NoError>()
-  let iconIsHidden = TestObserver<Bool, NoError>()
-  let iconTintColor = TestObserver<UIColor, NoError>()
-  let messageBannerViewIsHidden = TestObserver<Bool, NoError>()
-  let messageTextAlignment = TestObserver<NSTextAlignment, NoError>()
-  let messageTextColor = TestObserver<UIColor, NoError>()
+  let bannerBackgroundColor = TestObserver<UIColor, Never>()
+  let bannerMessage = TestObserver<String, Never>()
+  let iconIsHidden = TestObserver<Bool, Never>()
+  let iconTintColor = TestObserver<UIColor, Never>()
+  let messageBannerViewIsHidden = TestObserver<Bool, Never>()
+  let messageTextAlignment = TestObserver<NSTextAlignment, Never>()
+  let messageTextColor = TestObserver<UIColor, Never>()
 
   internal override func setUp() {
     super.setUp()

@@ -6,7 +6,6 @@ import UIKit.UIActivity
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
 @testable import KsApi
 @testable import Library
 @testable import FBSDKLoginKit
@@ -14,16 +13,16 @@ import Result
   final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   let vm: FindFriendsFacebookConnectCellViewModelType = FindFriendsFacebookConnectCellViewModel()
 
-  let attemptFacebookLogin = TestObserver<(), NoError>()
-  let hideCloseButton = TestObserver<Bool, NoError>()
-  let isLoading = TestObserver<Bool, NoError>()
-  let notifyPresenterToDismissHeader = TestObserver<(), NoError>()
-  let notifyPresenterUserFacebookConnected = TestObserver<(), NoError>()
-  let postUserUpdatedNotification = TestObserver<Notification.Name, NoError>()
-  let updateUserInEnvironment = TestObserver<User, NoError>()
-  let showErrorAlert = TestObserver<AlertError, NoError>()
-  let subtitle = TestObserver<String, NoError>()
-  let title = TestObserver<String, NoError>()
+  let attemptFacebookLogin = TestObserver<(), Never>()
+  let hideCloseButton = TestObserver<Bool, Never>()
+  let isLoading = TestObserver<Bool, Never>()
+  let notifyPresenterToDismissHeader = TestObserver<(), Never>()
+  let notifyPresenterUserFacebookConnected = TestObserver<(), Never>()
+  let postUserUpdatedNotification = TestObserver<Notification.Name, Never>()
+  let updateUserInEnvironment = TestObserver<User, Never>()
+  let showErrorAlert = TestObserver<AlertError, Never>()
+  let subtitle = TestObserver<String, Never>()
+  let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

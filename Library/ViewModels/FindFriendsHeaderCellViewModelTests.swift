@@ -2,15 +2,14 @@ import XCTest
 @testable import Library
 @testable import KsApi
 import ReactiveExtensions_TestHelpers
-import Result
 import KsApi
 import Prelude
 
 final class FindFriendsHeaderCellViewModelTests: TestCase {
   let vm: FindFriendsHeaderCellViewModelType = FindFriendsHeaderCellViewModel()
 
-  let notifyPresenterGoToFriends = TestObserver<(), NoError>()
-  let notifyPresenterToDismissHeader = TestObserver<(), NoError>()
+  let notifyPresenterGoToFriends = TestObserver<(), Never>()
+  let notifyPresenterToDismissHeader = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()

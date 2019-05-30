@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ActivityFriendFollowCellViewModelInputs {
   /// Call to configure activity with Activity.
@@ -13,13 +12,13 @@ public protocol ActivityFriendFollowCellViewModelInputs {
 
 public protocol ActivityFriendFollowCellViewModelOutputs {
   /// Emits a URL to the friend image.
-  var friendImageURL: Signal<URL?, NoError> { get }
+  var friendImageURL: Signal<URL?, Never> { get }
 
   /// Emits whether to hide the follow button.
-  var hideFollowButton: Signal<Bool, NoError> { get }
+  var hideFollowButton: Signal<Bool, Never> { get }
 
   /// Emits text for title label.
-  var title: Signal<NSAttributedString, NoError> { get }
+  var title: Signal<NSAttributedString, Never> { get }
 }
 
 public final class ActivityFriendFollowCellViewModel: ActivityFriendFollowCellViewModelInputs,
@@ -72,9 +71,9 @@ ActivityFriendFollowCellViewModelOutputs {
     self.followButtonTappedProperty.value = ()
   }
 
-  public let friendImageURL: Signal<URL?, NoError>
-  public let hideFollowButton: Signal<Bool, NoError>
-  public let title: Signal<NSAttributedString, NoError>
+  public let friendImageURL: Signal<URL?, Never>
+  public let hideFollowButton: Signal<Bool, Never>
+  public let title: Signal<NSAttributedString, Never>
 
   public var inputs: ActivityFriendFollowCellViewModelInputs { return self }
   public var outputs: ActivityFriendFollowCellViewModelOutputs { return self }

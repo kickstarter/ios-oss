@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol CreatePasswordViewModelInputs {
   func cellAtIndexPathShouldBecomeFirstResponder(_ indexPath: IndexPath?)
@@ -15,18 +14,18 @@ public protocol CreatePasswordViewModelInputs {
 }
 
 public protocol CreatePasswordViewModelOutputs {
-  var accessibilityFocusValidationLabel: Signal<Void, NoError> { get }
-  var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
-  var cellAtIndexPathDidBecomeFirstResponder: Signal<IndexPath, NoError> { get }
-  var createPasswordFailure: Signal<String, NoError> { get }
-  var createPasswordSuccess: Signal<Void, NoError> { get }
-  var dismissKeyboard: Signal<Void, NoError> { get }
-  var newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
-  var newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, NoError> { get }
-  var newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, NoError> { get }
-  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
-  var validationLabelIsHidden: Signal<Bool, NoError> { get }
-  var validationLabelText: Signal<String?, NoError> { get }
+  var accessibilityFocusValidationLabel: Signal<Void, Never> { get }
+  var activityIndicatorShouldShow: Signal<Bool, Never> { get }
+  var cellAtIndexPathDidBecomeFirstResponder: Signal<IndexPath, Never> { get }
+  var createPasswordFailure: Signal<String, Never> { get }
+  var createPasswordSuccess: Signal<Void, Never> { get }
+  var dismissKeyboard: Signal<Void, Never> { get }
+  var newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, Never> { get }
+  var newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, Never> { get }
+  var newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, Never> { get }
+  var saveButtonIsEnabled: Signal<Bool, Never> { get }
+  var validationLabelIsHidden: Signal<Bool, Never> { get }
+  var validationLabelText: Signal<String?, Never> { get }
 
   func currentValidationLabelText() -> String?
 }
@@ -163,18 +162,18 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
     self.cellAtIndexPathShouldBecomeFirstResponderProperty.value = indexPath
   }
 
-  public let accessibilityFocusValidationLabel: Signal<Void, NoError>
-  public let activityIndicatorShouldShow: Signal<Bool, NoError>
-  public let cellAtIndexPathDidBecomeFirstResponder: Signal<IndexPath, NoError>
-  public let createPasswordFailure: Signal<String, NoError>
-  public let createPasswordSuccess: Signal<Void, NoError>
-  public let dismissKeyboard: Signal<Void, NoError>
-  public let newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, NoError>
-  public let newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, NoError>
-  public let newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, NoError>
-  public let saveButtonIsEnabled: Signal<Bool, NoError>
-  public let validationLabelIsHidden: Signal<Bool, NoError>
-  public let validationLabelText: Signal<String?, NoError>
+  public let accessibilityFocusValidationLabel: Signal<Void, Never>
+  public let activityIndicatorShouldShow: Signal<Bool, Never>
+  public let cellAtIndexPathDidBecomeFirstResponder: Signal<IndexPath, Never>
+  public let createPasswordFailure: Signal<String, Never>
+  public let createPasswordSuccess: Signal<Void, Never>
+  public let dismissKeyboard: Signal<Void, Never>
+  public let newPasswordTextFieldDidBecomeFirstResponder: Signal<Void, Never>
+  public let newPasswordConfirmationTextFieldDidBecomeFirstResponder: Signal<Void, Never>
+  public let newPasswordConfirmationTextFieldDidResignFirstResponder: Signal<Void, Never>
+  public let saveButtonIsEnabled: Signal<Bool, Never>
+  public let validationLabelIsHidden: Signal<Bool, Never>
+  public let validationLabelText: Signal<String?, Never>
 
   private let currentValidationLabelTextProperty = MutableProperty<String?>(nil)
   public func currentValidationLabelText() -> String? {

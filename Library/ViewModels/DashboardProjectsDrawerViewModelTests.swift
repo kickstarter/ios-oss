@@ -1,5 +1,4 @@
 import XCTest
-import Result
 import ReactiveSwift
 import Prelude
 @testable import KsApi
@@ -9,11 +8,11 @@ import ReactiveExtensions_TestHelpers
 internal final class DashboardProjectsDrawerViewModelTests: TestCase {
   internal let vm: DashboardProjectsDrawerViewModelType = DashboardProjectsDrawerViewModel()
 
-  let projectsDrawerData = TestObserver<[ProjectsDrawerData], NoError>()
-  let notifyDelegateToCloseDrawer = TestObserver<(), NoError>()
-  let notifyDelegateDidAnimateOut = TestObserver<(), NoError>()
-  let notifyDelegateProjectCellTapped = TestObserver<Project, NoError>()
-  let focusScreenReaderOnFirstProject = TestObserver<(), NoError>()
+  let projectsDrawerData = TestObserver<[ProjectsDrawerData], Never>()
+  let notifyDelegateToCloseDrawer = TestObserver<(), Never>()
+  let notifyDelegateDidAnimateOut = TestObserver<(), Never>()
+  let notifyDelegateProjectCellTapped = TestObserver<Project, Never>()
+  let focusScreenReaderOnFirstProject = TestObserver<(), Never>()
 
   let project1 = .template |> Project.lens.id .~ 4
   let project2 = .template |> Project.lens.id .~ 6

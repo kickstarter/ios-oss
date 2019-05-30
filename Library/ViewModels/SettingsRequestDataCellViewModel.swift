@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol SettingsRequestDataCellViewModelInputs {
   func awakeFromNib()
@@ -13,16 +12,16 @@ public protocol SettingsRequestDataCellViewModelInputs {
 }
 
 public protocol SettingsRequestDataCellViewModelOutputs {
-  var dataExpirationAndChevronHidden: Signal<Bool, NoError> { get }
-  var goToSafari: Signal<String, NoError> { get }
-  var requestDataButtonEnabled: Signal<Bool, NoError> { get }
-  var requestedDataExpirationDate: Signal<String, NoError> { get }
-  var requestDataLoadingIndicator: Signal<Bool, NoError> { get }
-  var requestDataText: Signal<String, NoError> { get }
-  var requestDataTextHidden: Signal<Bool, NoError> { get }
-  var showPreparingDataAndCheckBackLaterText: Signal<Bool, NoError> { get }
-  var showRequestDataPrompt: Signal<String, NoError> { get }
-  var unableToRequestDataError: Signal<String, NoError> { get }
+  var dataExpirationAndChevronHidden: Signal<Bool, Never> { get }
+  var goToSafari: Signal<String, Never> { get }
+  var requestDataButtonEnabled: Signal<Bool, Never> { get }
+  var requestedDataExpirationDate: Signal<String, Never> { get }
+  var requestDataLoadingIndicator: Signal<Bool, Never> { get }
+  var requestDataText: Signal<String, Never> { get }
+  var requestDataTextHidden: Signal<Bool, Never> { get }
+  var showPreparingDataAndCheckBackLaterText: Signal<Bool, Never> { get }
+  var showRequestDataPrompt: Signal<String, Never> { get }
+  var unableToRequestDataError: Signal<String, Never> { get }
 }
 
 public protocol SettingsRequestDataCellViewModelType {
@@ -132,16 +131,16 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     self.startRequestDataTappedProperty.value = ()
   }
 
-  public let dataExpirationAndChevronHidden: Signal<Bool, NoError>
-  public let goToSafari: Signal<String, NoError>
-  public let requestDataButtonEnabled: Signal<Bool, NoError>
-  public let requestedDataExpirationDate: Signal<String, NoError>
-  public let requestDataLoadingIndicator: Signal<Bool, NoError>
-  public let requestDataText: Signal<String, NoError>
-  public let requestDataTextHidden: Signal<Bool, NoError>
-  public let showPreparingDataAndCheckBackLaterText: Signal<Bool, NoError>
-  public let showRequestDataPrompt: Signal<String, NoError>
-  public let unableToRequestDataError: Signal<String, NoError>
+  public let dataExpirationAndChevronHidden: Signal<Bool, Never>
+  public let goToSafari: Signal<String, Never>
+  public let requestDataButtonEnabled: Signal<Bool, Never>
+  public let requestedDataExpirationDate: Signal<String, Never>
+  public let requestDataLoadingIndicator: Signal<Bool, Never>
+  public let requestDataText: Signal<String, Never>
+  public let requestDataTextHidden: Signal<Bool, Never>
+  public let showPreparingDataAndCheckBackLaterText: Signal<Bool, Never>
+  public let showRequestDataPrompt: Signal<String, Never>
+  public let unableToRequestDataError: Signal<String, Never>
 
   public var inputs: SettingsRequestDataCellViewModelInputs { return self }
   public var outputs: SettingsRequestDataCellViewModelOutputs { return self }

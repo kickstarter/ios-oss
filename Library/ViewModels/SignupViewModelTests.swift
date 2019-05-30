@@ -3,18 +3,17 @@ import XCTest
 @testable import Library
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 
 internal final class SignupViewModelTests: TestCase {
   fileprivate let vm: SignupViewModelType = SignupViewModel()
-  fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let isSignupButtonEnabled = TestObserver<Bool, NoError>()
-  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  fileprivate let nameTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let postNotification = TestObserver<Notification.Name, NoError>()
-  fileprivate let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
-  fileprivate let showError = TestObserver<String, NoError>()
+  fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let isSignupButtonEnabled = TestObserver<Bool, Never>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let nameTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let postNotification = TestObserver<Notification.Name, Never>()
+  fileprivate let setWeeklyNewsletterState = TestObserver<Bool, Never>()
+  fileprivate let showError = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

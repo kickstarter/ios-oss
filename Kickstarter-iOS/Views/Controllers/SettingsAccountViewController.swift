@@ -2,7 +2,6 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
-import Result
 import UIKit
 
 final class SettingsAccountViewController: UIViewController, MessageBannerViewControllerPresenting {

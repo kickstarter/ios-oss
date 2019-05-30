@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,14 +8,14 @@ import ReactiveExtensions_TestHelpers
 final class ProjectPamphletContentViewModelTests: TestCase {
   fileprivate let vm: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
 
-  fileprivate let goToBacking = TestObserver<Project, NoError>()
-  fileprivate let goToComments = TestObserver<Project, NoError>()
-  fileprivate let goToRewardPledgeProject = TestObserver<Project, NoError>()
-  fileprivate let goToRewardPledgeReward = TestObserver<Reward, NoError>()
-  fileprivate let goToUpdates = TestObserver<Project, NoError>()
-  fileprivate let loadProjectIntoDataSource = TestObserver<Project, NoError>()
-  fileprivate let loadMinimalProjectIntoDataSource = TestObserver<Project, NoError>()
-  fileprivate let rewardTitleCellVisible = TestObserver<Bool, NoError>()
+  fileprivate let goToBacking = TestObserver<Project, Never>()
+  fileprivate let goToComments = TestObserver<Project, Never>()
+  fileprivate let goToRewardPledgeProject = TestObserver<Project, Never>()
+  fileprivate let goToRewardPledgeReward = TestObserver<Reward, Never>()
+  fileprivate let goToUpdates = TestObserver<Project, Never>()
+  fileprivate let loadProjectIntoDataSource = TestObserver<Project, Never>()
+  fileprivate let loadMinimalProjectIntoDataSource = TestObserver<Project, Never>()
+  fileprivate let rewardTitleCellVisible = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

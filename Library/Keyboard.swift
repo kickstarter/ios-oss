@@ -1,16 +1,15 @@
 import Foundation
 import UIKit
 import ReactiveSwift
-import Result
 
 public final class Keyboard {
   public typealias Change = (frame: CGRect, duration: TimeInterval, options: UIView.AnimationOptions,
     notificationName: Notification.Name)
 
   public static let shared = Keyboard()
-  private let (changeSignal, changeObserver) = Signal<Change, NoError>.pipe()
+  private let (changeSignal, changeObserver) = Signal<Change, Never>.pipe()
 
-  public static var change: Signal<Change, NoError> {
+  public static var change: Signal<Change, Never> {
     return self.shared.changeSignal
   }
 

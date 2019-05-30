@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,14 +8,14 @@ import ReactiveExtensions_TestHelpers
 
 internal final class DashboardVideoCellViewModelTests: TestCase {
   internal let vm = DashboardVideoCellViewModel()
-  internal let completionPercentage = TestObserver<String, NoError>()
-  internal let externalStartCount = TestObserver<String, NoError>()
-  internal let externalStartProgress = TestObserver<CGFloat, NoError>()
-  internal let externalText = TestObserver<String, NoError>()
-  internal let internalStartCount = TestObserver<String, NoError>()
-  internal let internalStartProgress = TestObserver<CGFloat, NoError>()
-  internal let internalText = TestObserver<String, NoError>()
-  internal let totalStartCount = TestObserver<String, NoError>()
+  internal let completionPercentage = TestObserver<String, Never>()
+  internal let externalStartCount = TestObserver<String, Never>()
+  internal let externalStartProgress = TestObserver<CGFloat, Never>()
+  internal let externalText = TestObserver<String, Never>()
+  internal let internalStartCount = TestObserver<String, Never>()
+  internal let internalStartProgress = TestObserver<CGFloat, Never>()
+  internal let internalText = TestObserver<String, Never>()
+  internal let totalStartCount = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()

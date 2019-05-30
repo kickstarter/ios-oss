@@ -4,17 +4,16 @@ import ReactiveExtensions_TestHelpers
 import MessageUI
 import Prelude
 import ReactiveSwift
-import Result
 import UIKit
 import XCTest
 
 internal final class HelpViewModelTests: TestCase {
   fileprivate let vm: HelpViewModelType = HelpViewModel()
 
-  fileprivate let showNoEmailError = TestObserver<UIAlertController, NoError>()
-  fileprivate let showHelpSheet = TestObserver<[HelpType], NoError>()
-  fileprivate let showMailCompose = TestObserver<(), NoError>()
-  fileprivate let showWebHelp = TestObserver<HelpType, NoError>()
+  fileprivate let showNoEmailError = TestObserver<UIAlertController, Never>()
+  fileprivate let showHelpSheet = TestObserver<[HelpType], Never>()
+  fileprivate let showMailCompose = TestObserver<(), Never>()
+  fileprivate let showWebHelp = TestObserver<HelpType, Never>()
 
   override func setUp() {
     super.setUp()

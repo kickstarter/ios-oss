@@ -3,13 +3,12 @@ import XCTest
 import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
-import Result
 
 internal final class ProjectActivitySuccessViewModelTests: TestCase {
   fileprivate let vm: ProjectActivitySuccessCellViewModelType = ProjectActivitySuccessCellViewModel()
 
-  fileprivate let backgroundImage = TestObserver<String?, NoError>()
-  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let backgroundImage = TestObserver<String?, Never>()
+  fileprivate let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

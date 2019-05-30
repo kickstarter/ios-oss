@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol SortPagerViewModelInputs {
   /// Call with the sorts that the view was configured with.
@@ -31,23 +30,23 @@ public protocol SortPagerViewModelInputs {
 
 public protocol SortPagerViewModelOutputs {
   /// Emits a list of sorts that should be used to create sort buttons.
-  var createSortButtons: Signal<[DiscoveryParams.Sort], NoError> { get }
+  var createSortButtons: Signal<[DiscoveryParams.Sort], Never> { get }
 
   /// Emits a bool whether the indicator view should be hidden, used for rotation.
-  var indicatorViewIsHidden: Signal<Bool, NoError> { get }
+  var indicatorViewIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a sort that should be passed on to the view's delegate.
-  var notifyDelegateOfSelectedSort: Signal<DiscoveryParams.Sort, NoError> { get }
+  var notifyDelegateOfSelectedSort: Signal<DiscoveryParams.Sort, Never> { get }
 
   /// Emits an index to pin the indicator view to a particular button view and whether to animate it.
-  var pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError> { get }
+  var pinSelectedIndicatorToPage: Signal<(Int, Bool), Never> { get }
 
   /// Emits an index of the selected button to update all button selected states.
-  var setSelectedButton: Signal<Int, NoError> { get }
+  var setSelectedButton: Signal<Int, Never> { get }
 
   /// Emits a category id to update style on sort change (e.g. filter selection).
   var updateSortStyle: Signal<(categoryId: Int?, sorts: [DiscoveryParams.Sort], animated: Bool),
-    NoError> { get }
+    Never> { get }
 }
 
 public protocol SortPagerViewModelType {
@@ -59,7 +58,7 @@ public final class SortPagerViewModel: SortPagerViewModelType, SortPagerViewMode
 SortPagerViewModelOutputs {
 
     public init() {
-    let sorts: Signal<[DiscoveryParams.Sort], NoError> = self.sortsProperty.signal.skipNil()
+    let sorts: Signal<[DiscoveryParams.Sort], Never> = self.sortsProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)
 
     self.createSortButtons = sorts.take(first: 1)
@@ -70,7 +69,7 @@ SortPagerViewModelOutputs {
       )
       .map { sorts, id, animated in (categoryId: id, sorts: sorts, animated: animated) }
 
-    let selectedPage: Signal<(Int, Int), NoError> = Signal.combineLatest(
+    let selectedPage: Signal<(Int, Int), Never> = Signal.combineLatest(
       sorts,
       self.selectSortProperty.signal.skipNil()
     )
@@ -79,7 +78,7 @@ SortPagerViewModelOutputs {
         return (sorts.firstIndex(of: sort) ?? 0, sorts.count)
     }
 
-    let pageIndex: Signal<Int, NoError> = sorts.mapConst(0)
+    let pageIndex: Signal<Int, Never> = sorts.mapConst(0)
 
     self.setSelectedButton = Signal.merge(
       pageIndex.take(first: 1),
@@ -157,13 +156,13 @@ SortPagerViewModelOutputs {
     self.viewWillAppearProperty.value = ()
   }
 
-  public let createSortButtons: Signal<[DiscoveryParams.Sort], NoError>
-  public var indicatorViewIsHidden: Signal<Bool, NoError>
-  public let notifyDelegateOfSelectedSort: Signal<DiscoveryParams.Sort, NoError>
-  public let pinSelectedIndicatorToPage: Signal<(Int, Bool), NoError>
-  public let setSelectedButton: Signal<Int, NoError>
+  public let createSortButtons: Signal<[DiscoveryParams.Sort], Never>
+  public var indicatorViewIsHidden: Signal<Bool, Never>
+  public let notifyDelegateOfSelectedSort: Signal<DiscoveryParams.Sort, Never>
+  public let pinSelectedIndicatorToPage: Signal<(Int, Bool), Never>
+  public let setSelectedButton: Signal<Int, Never>
   public let updateSortStyle: Signal<(categoryId: Int?, sorts: [DiscoveryParams.Sort], animated: Bool),
-    NoError>
+    Never>
 
   public var inputs: SortPagerViewModelInputs { return self }
   public var outputs: SortPagerViewModelOutputs { return self }

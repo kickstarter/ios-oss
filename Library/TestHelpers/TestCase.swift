@@ -2,7 +2,6 @@ import AVFoundation
 import FBSnapshotTestCase
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library

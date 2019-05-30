@@ -3,7 +3,6 @@ import ReactiveSwift
 import UIKit
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -11,21 +10,21 @@ import Prelude
 final class ThanksViewModelTests: TestCase {
   let vm: ThanksViewModelType = ThanksViewModel()
 
-  let backedProjectText = TestObserver<String, NoError>()
-  let goToDiscovery = TestObserver<KsApi.Category, NoError>()
-  let goToProject = TestObserver<Project, NoError>()
-  let goToProjects = TestObserver<[Project], NoError>()
-  let goToRefTag = TestObserver<RefTag, NoError>()
-  let showRatingAlert = TestObserver<(), NoError>()
-  let showGamesNewsletterAlert = TestObserver<(), NoError>()
-  let showGamesNewsletterOptInAlert = TestObserver<String, NoError>()
-  let showRecommendations = TestObserver<[Project], NoError>()
-  let dismissToRootViewController = TestObserver<(), NoError>()
-  let postContextualNotification = TestObserver<(), NoError>()
-  let postUserUpdatedNotification = TestObserver<Notification.Name, NoError>()
-  let updateUserInEnvironment = TestObserver<User, NoError>()
-  let facebookButtonIsHidden = TestObserver<Bool, NoError>()
-  let twitterButtonIsHidden = TestObserver<Bool, NoError>()
+  let backedProjectText = TestObserver<String, Never>()
+  let goToDiscovery = TestObserver<KsApi.Category, Never>()
+  let goToProject = TestObserver<Project, Never>()
+  let goToProjects = TestObserver<[Project], Never>()
+  let goToRefTag = TestObserver<RefTag, Never>()
+  let showRatingAlert = TestObserver<(), Never>()
+  let showGamesNewsletterAlert = TestObserver<(), Never>()
+  let showGamesNewsletterOptInAlert = TestObserver<String, Never>()
+  let showRecommendations = TestObserver<[Project], Never>()
+  let dismissToRootViewController = TestObserver<(), Never>()
+  let postContextualNotification = TestObserver<(), Never>()
+  let postUserUpdatedNotification = TestObserver<Notification.Name, Never>()
+  let updateUserInEnvironment = TestObserver<User, Never>()
+  let facebookButtonIsHidden = TestObserver<Bool, Never>()
+  let twitterButtonIsHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -119,9 +118,9 @@ final class ThanksViewModelTests: TestCase {
                      "Newsletter pref saved")
 
       let secondVM: ThanksViewModelType = ThanksViewModel()
-      let secondShowRatingAlert = TestObserver<(), NoError>()
+      let secondShowRatingAlert = TestObserver<(), Never>()
       secondVM.outputs.showRatingAlert.observe(secondShowRatingAlert.observer)
-      let secondShowGamesNewsletterAlert = TestObserver<(), NoError>()
+      let secondShowGamesNewsletterAlert = TestObserver<(), Never>()
       secondVM.outputs.showGamesNewsletterAlert.observe(secondShowGamesNewsletterAlert.observer)
 
       secondVM.inputs.project(.template |> Project.lens.category .~ .games)

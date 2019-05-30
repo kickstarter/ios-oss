@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol ProjectNotificationCellViewModelInputs {
   /// Call with the initial cell notification value.
@@ -14,13 +13,13 @@ public protocol ProjectNotificationCellViewModelInputs {
 
 public protocol ProjectNotificationCellViewModelOutputs {
   /// Emits the project name.
-  var name: Signal<String, NoError> { get }
+  var name: Signal<String, Never> { get }
 
   /// Emits true when the notification is turned on, false otherwise.
-  var notificationOn: Signal<Bool, NoError> { get }
+  var notificationOn: Signal<Bool, Never> { get }
 
   /// Emits when an update error has occurred and a message should be displayed.
-  var notifyDelegateOfSaveError: Signal<String, NoError> { get }
+  var notifyDelegateOfSaveError: Signal<String, Never> { get }
 }
 
 public protocol ProjectNotificationCellViewModelType {
@@ -94,9 +93,9 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
     self.notificationTappedProperty.value = on
   }
 
-  public let name: Signal<String, NoError>
-  public let notificationOn: Signal<Bool, NoError>
-  public let notifyDelegateOfSaveError: Signal<String, NoError>
+  public let name: Signal<String, Never>
+  public let notificationOn: Signal<Bool, Never>
+  public let notifyDelegateOfSaveError: Signal<String, Never>
 
   public var inputs: ProjectNotificationCellViewModelInputs { return self }
   public var outputs: ProjectNotificationCellViewModelOutputs { return self }

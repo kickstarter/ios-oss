@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import UIKit
 
 public protocol CreditCardCellViewModelInputs {
@@ -12,16 +11,16 @@ public protocol CreditCardCellViewModelInputs {
 
 public protocol CreditCardCellViewModelOutputs {
   /// Emits the card's image.
-  var cardImage: Signal<UIImage?, NoError> { get }
+  var cardImage: Signal<UIImage?, Never> { get }
 
   /// Emits a formatted accessibility string containing the card type, number and last four digits
-  var cardNumberAccessibilityLabel: Signal<String, NoError> { get }
+  var cardNumberAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits a formatted string containing the card's last four digits.
-  var cardNumberText: Signal<String, NoError> { get }
+  var cardNumberText: Signal<String, Never> { get }
 
   /// Emits the formatted card's expirationdate.
-  var expirationDateText: Signal<String, NoError> { get }
+  var expirationDateText: Signal<String, Never> { get }
 }
 
 public protocol CreditCardCellViewModelType {
@@ -58,10 +57,10 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
     self.cardProperty.value = creditCard
   }
 
-  public let cardNumberAccessibilityLabel: Signal<String, NoError>
-  public let cardImage: Signal<UIImage?, NoError>
-  public let expirationDateText: Signal<String, NoError>
-  public let cardNumberText: Signal<String, NoError>
+  public let cardNumberAccessibilityLabel: Signal<String, Never>
+  public let cardImage: Signal<UIImage?, Never>
+  public let expirationDateText: Signal<String, Never>
+  public let cardNumberText: Signal<String, Never>
 
   public var inputs: CreditCardCellViewModelInputs { return self }
   public var outputs: CreditCardCellViewModelOutputs { return self }

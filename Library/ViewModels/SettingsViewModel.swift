@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import KsApi
 
 public protocol SettingsViewModelInputs {
@@ -14,11 +13,11 @@ public protocol SettingsViewModelInputs {
 
 public protocol SettingsViewModelOutputs {
   var findFriendsDisabledProperty: MutableProperty<Bool> { get }
-  var goToAppStoreRating: Signal<String, NoError> { get }
-  var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
-  var reloadDataWithUser: Signal<User, NoError> { get }
-  var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError> { get }
-  var transitionToViewController: Signal<UIViewController, NoError> { get }
+  var goToAppStoreRating: Signal<String, Never> { get }
+  var logoutWithParams: Signal<DiscoveryParams, Never> { get }
+  var reloadDataWithUser: Signal<User, Never> { get }
+  var showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), Never> { get }
+  var transitionToViewController: Signal<UIViewController, Never> { get }
 }
 
 public protocol SettingsViewModelType {
@@ -123,11 +122,11 @@ SettingsViewModelOutputs, SettingsViewModelType {
   }
 
   public let findFriendsDisabledProperty = MutableProperty<Bool>(false)
-  public let goToAppStoreRating: Signal<String, NoError>
-  public let logoutWithParams: Signal<DiscoveryParams, NoError>
-  public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), NoError>
-  public let reloadDataWithUser: Signal<User, NoError>
-  public let transitionToViewController: Signal<UIViewController, NoError>
+  public let goToAppStoreRating: Signal<String, Never>
+  public let logoutWithParams: Signal<DiscoveryParams, Never>
+  public let showConfirmLogoutPrompt: Signal<(message: String, cancel: String, confirm: String), Never>
+  public let reloadDataWithUser: Signal<User, Never>
+  public let transitionToViewController: Signal<UIViewController, Never>
 
   public var inputs: SettingsViewModelInputs { return self }
   public var outputs: SettingsViewModelOutputs { return self }

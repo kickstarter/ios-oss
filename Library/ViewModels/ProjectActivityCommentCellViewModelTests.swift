@@ -3,20 +3,19 @@ import XCTest
 @testable import Library
 import ReactiveExtensions_TestHelpers
 import Prelude
-import Result
 
 internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityCommentCellViewModelType = ProjectActivityCommentCellViewModel()
 
-  fileprivate let authorImage = TestObserver<String?, NoError>()
-  fileprivate let body = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
+  fileprivate let authorImage = TestObserver<String?, Never>()
+  fileprivate let body = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityValue = TestObserver<String, Never>()
   fileprivate let defaultUser = User.template |> \.id .~ 9
-  fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
-  fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, Comment), NoError>()
-  fileprivate let pledgeFooterIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), Never>()
+  fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, Comment), Never>()
+  fileprivate let pledgeFooterIsHidden = TestObserver<Bool, Never>()
+  fileprivate let title = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()

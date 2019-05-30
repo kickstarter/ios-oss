@@ -5,18 +5,17 @@ import ReactiveExtensions_TestHelpers
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 import WebKit
 import XCTest
 
 final class UpdatePreviewViewModelTests: TestCase {
   fileprivate let vm: UpdatePreviewViewModelType = UpdatePreviewViewModel()
 
-  fileprivate let showPublishConfirmation = TestObserver<String, NoError>()
-  fileprivate let showPublishFailure = TestObserver<(), NoError>()
-  fileprivate let goToUpdate = TestObserver<Update, NoError>()
-  fileprivate let goToUpdateProject = TestObserver<Project, NoError>()
-  fileprivate let webViewLoadRequest = TestObserver<String?, NoError>()
+  fileprivate let showPublishConfirmation = TestObserver<String, Never>()
+  fileprivate let showPublishFailure = TestObserver<(), Never>()
+  fileprivate let goToUpdate = TestObserver<Update, Never>()
+  fileprivate let goToUpdateProject = TestObserver<Project, Never>()
+  fileprivate let webViewLoadRequest = TestObserver<String?, Never>()
 
   override func setUp() {
     super.setUp()

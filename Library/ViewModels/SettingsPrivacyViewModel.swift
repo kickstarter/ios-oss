@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol SettingsPrivacyViewModelInputs {
   func didCancelSocialOptOut()
@@ -14,11 +13,11 @@ public protocol SettingsPrivacyViewModelInputs {
 }
 
 public protocol SettingsPrivacyViewModelOutputs {
-  var focusScreenReaderOnFollowingCell: Signal<Void, NoError> { get }
-  var reloadData: Signal<User, NoError> { get }
-  var resetFollowingSection: Signal<Void, NoError> { get }
-  var unableToSaveError: Signal<String, NoError> { get }
-  var updateCurrentUser: Signal<User, NoError> { get }
+  var focusScreenReaderOnFollowingCell: Signal<Void, Never> { get }
+  var reloadData: Signal<User, Never> { get }
+  var resetFollowingSection: Signal<Void, Never> { get }
+  var unableToSaveError: Signal<String, Never> { get }
+  var updateCurrentUser: Signal<User, Never> { get }
 }
 
 public protocol SettingsPrivacyViewModelType {
@@ -41,7 +40,7 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
 
     self.reloadData = initialUser
 
-    let privateProfileAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
+    let privateProfileAttributeChanged: Signal<(UserAttribute, Bool), Never> =
       self.privateProfileProperty.signal.negate()
       .map { (UserAttribute.privacy(UserAttribute.Privacy.showPublicProfile), $0) }
 
@@ -115,11 +114,11 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let focusScreenReaderOnFollowingCell: Signal<Void, NoError>
-  public let reloadData: Signal<User, NoError>
-  public let resetFollowingSection: Signal<Void, NoError>
-  public let unableToSaveError: Signal<String, NoError>
-  public let updateCurrentUser: Signal<User, NoError>
+  public let focusScreenReaderOnFollowingCell: Signal<Void, Never>
+  public let reloadData: Signal<User, Never>
+  public let resetFollowingSection: Signal<Void, Never>
+  public let unableToSaveError: Signal<String, Never>
+  public let updateCurrentUser: Signal<User, Never>
 
   public var inputs: SettingsPrivacyViewModelInputs { return self }
   public var outputs: SettingsPrivacyViewModelOutputs { return self }

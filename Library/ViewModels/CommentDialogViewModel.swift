@@ -1,6 +1,5 @@
 import ReactiveSwift
 import KsApi
-import Result
 import Prelude
 
 public struct CommentDialogData {
@@ -35,31 +34,31 @@ public protocol CommentDialogViewModelInputs {
 
 public protocol CommentDialogViewModelOutputs {
   /// Emits a string that should be put into the body text view.
-  var bodyTextViewText: Signal<String, NoError> { get }
+  var bodyTextViewText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the post button is enabled.
-  var postButtonEnabled: Signal<Bool, NoError> { get }
+  var postButtonEnabled: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the comment is currently posting.
-  var loadingViewIsHidden: Signal<Bool, NoError> { get }
+  var loadingViewIsHidden: Signal<Bool, Never> { get }
 
   /// Emits the newly posted comment when the present of this dialog should be notified that posting
   /// was successful.
-  var notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, NoError> { get }
+  var notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, Never> { get }
 
   /// Emits when the dialog should notify its presenter that it wants to be dismissed.
-  var notifyPresenterDialogWantsDismissal: Signal<(), NoError> { get }
+  var notifyPresenterDialogWantsDismissal: Signal<(), Never> { get }
 
   /// Emits the string to be used as the subtitle of the comment dialog.
-  var subtitle: Signal<String, NoError> { get }
+  var subtitle: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the keyboard should be shown or not.
-  var showKeyboard: Signal<Bool, NoError> { get }
+  var showKeyboard: Signal<Bool, Never> { get }
 }
 
 public protocol CommentDialogViewModelErrors {
   /// Emits a string error description when there has been an error posting a comment.
-  var presentError: Signal<String, NoError> { get }
+  var presentError: Signal<String, Never> { get }
 }
 
 public protocol CommentDialogViewModelType {
@@ -104,15 +103,15 @@ CommentDialogViewModelOutputs, CommentDialogViewModelErrors {
     self.cancelButtonPressedProperty.value = ()
   }
 
-  public let bodyTextViewText: Signal<String, NoError>
-  public let postButtonEnabled: Signal<Bool, NoError>
-  public let loadingViewIsHidden: Signal<Bool, NoError>
-  public let notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, NoError>
-  public let notifyPresenterDialogWantsDismissal: Signal<(), NoError>
-  public let subtitle: Signal<String, NoError>
-  public let showKeyboard: Signal<Bool, NoError>
+  public let bodyTextViewText: Signal<String, Never>
+  public let postButtonEnabled: Signal<Bool, Never>
+  public let loadingViewIsHidden: Signal<Bool, Never>
+  public let notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, Never>
+  public let notifyPresenterDialogWantsDismissal: Signal<(), Never>
+  public let subtitle: Signal<String, Never>
+  public let showKeyboard: Signal<Bool, Never>
 
-  public let presentError: Signal<String, NoError>
+  public let presentError: Signal<String, Never>
 
   public var inputs: CommentDialogViewModelInputs { return self }
   public var outputs: CommentDialogViewModelOutputs { return self }

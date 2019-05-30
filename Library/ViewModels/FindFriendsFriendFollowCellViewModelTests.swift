@@ -4,7 +4,6 @@ import ReactiveSwift
 import UIKit.UIActivity
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -12,19 +11,19 @@ import Prelude
 final class FindFriendsFriendFollowCellViewModelTests: TestCase {
   let vm: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
 
-  let cellAccessibilityValue = TestObserver<String, NoError>()
-  let enableFollowButton = TestObserver<Bool, NoError>()
-  let enableUnfollowButton = TestObserver<Bool, NoError>()
-  let followButtonAccessibilityLabel = TestObserver<String, NoError>()
-  let imageURL = TestObserver<String?, NoError>()
-  let location = TestObserver<String, NoError>()
-  let friendName = TestObserver<String, NoError>()
-  let projectsBackedText = TestObserver<String, NoError>()
-  let projectsCreatedText = TestObserver<String, NoError>()
-  let hideFollowButton = TestObserver<Bool, NoError>()
-  let hideUnfollowButton = TestObserver<Bool, NoError>()
-  let hideProjectsCreated = TestObserver<Bool, NoError>()
-  let unfollowButtonAccessibilityLabel = TestObserver<String, NoError>()
+  let cellAccessibilityValue = TestObserver<String, Never>()
+  let enableFollowButton = TestObserver<Bool, Never>()
+  let enableUnfollowButton = TestObserver<Bool, Never>()
+  let followButtonAccessibilityLabel = TestObserver<String, Never>()
+  let imageURL = TestObserver<String?, Never>()
+  let location = TestObserver<String, Never>()
+  let friendName = TestObserver<String, Never>()
+  let projectsBackedText = TestObserver<String, Never>()
+  let projectsCreatedText = TestObserver<String, Never>()
+  let hideFollowButton = TestObserver<Bool, Never>()
+  let hideUnfollowButton = TestObserver<Bool, Never>()
+  let hideProjectsCreated = TestObserver<Bool, Never>()
+  let unfollowButtonAccessibilityLabel = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

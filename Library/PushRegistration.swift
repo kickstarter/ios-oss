@@ -1,6 +1,5 @@
 import Foundation
 import ReactiveSwift
-import Result
 import UIKit
 import UserNotifications
 
@@ -15,7 +14,7 @@ public struct PushRegistration: PushRegistrationType {
 
    - returns: A signal producer.
    */
-  public static func register(for options: UNAuthorizationOptions) -> SignalProducer<Bool, NoError> {
+  public static func register(for options: UNAuthorizationOptions) -> SignalProducer<Bool, Never> {
     return SignalProducer { observer, _ in
       UNUserNotificationCenter.current()
         .requestAuthorization(options: options, completionHandler: { isGranted, _ in
@@ -38,7 +37,7 @@ public struct PushRegistration: PushRegistrationType {
 
    - returns: A signal producer.
    */
-  public static func hasAuthorizedNotifications() -> SignalProducer<Bool, NoError> {
+  public static func hasAuthorizedNotifications() -> SignalProducer<Bool, Never> {
       return SignalProducer { observer, _ in
         UNUserNotificationCenter.current().getNotificationSettings { settings in
           observer.send(value: settings.authorizationStatus == .authorized)

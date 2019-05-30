@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelInputs {
   /// Call to set the activity and project.
@@ -11,7 +10,7 @@ public protocol ProjectActivityNegativeStateChangeCellViewModelInputs {
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelOutputs {
   /// Emits the title of the activity.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<String, Never> { get }
 }
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelType {
@@ -58,7 +57,7 @@ ProjectActivityNegativeStateChangeCellViewModelOutputs {
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let title: Signal<String, NoError>
+  public let title: Signal<String, Never>
 
   public var inputs: ProjectActivityNegativeStateChangeCellViewModelInputs { return self }
   public var outputs: ProjectActivityNegativeStateChangeCellViewModelOutputs { return self }

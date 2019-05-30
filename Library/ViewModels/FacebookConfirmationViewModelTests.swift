@@ -3,18 +3,17 @@ import XCTest
 import ReactiveSwift
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
 @testable import KsApi
 @testable import Library
 
 final class FacebookConfirmationViewModelTests: TestCase {
   let vm: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
-  let displayEmail = TestObserver<String, NoError>()
-  let sendNewsletters = TestObserver<Bool, NoError>()
-  let showLogin = TestObserver<(), NoError>()
-  let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  let postNotification = TestObserver<Notification.Name, NoError>()
-  let showSignupError = TestObserver<String, NoError>()
+  let displayEmail = TestObserver<String, Never>()
+  let sendNewsletters = TestObserver<Bool, Never>()
+  let showLogin = TestObserver<(), Never>()
+  let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  let postNotification = TestObserver<Notification.Name, Never>()
+  let showSignupError = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

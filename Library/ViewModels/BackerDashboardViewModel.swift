@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public enum BackerDashboardTab {
   case backed
@@ -45,52 +44,52 @@ public protocol BackerDashboardViewModelInputs {
 
 public protocol BackerDashboardViewModelOutputs {
   /// Emits a URL for the avatar image view.
-  var avatarURL: Signal<URL?, NoError> { get }
+  var avatarURL: Signal<URL?, Never> { get }
 
   /// Emits a string for the backed button title label.
-  var backedButtonTitleText: Signal<String, NoError> { get }
+  var backedButtonTitleText: Signal<String, Never> { get }
 
   /// Emits a string for the backer name label.
-  var backerNameText: Signal<String, NoError> { get }
+  var backerNameText: Signal<String, Never> { get }
 
   /// Emits the initial BackerDashboardTab and a default Sort to configure the page view controller.
-  var configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), NoError> { get }
+  var configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), Never> { get }
 
   /// The currently selected tab.
   var currentSelectedTab: BackerDashboardTab { get }
 
   /// Emits a CGFloat to set the top constraint of the embedded views when the sort bar is hidden or not.
-  var embeddedViewTopConstraintConstant: Signal<CGFloat, NoError> { get }
+  var embeddedViewTopConstraintConstant: Signal<CGFloat, Never> { get }
 
   /// Emits when to present Messages.
-  var goToMessages: Signal<(), NoError> { get }
+  var goToMessages: Signal<(), Never> { get }
 
   /// Emits when to navigate to Settings.
-  var goToSettings: Signal<(), NoError> { get }
+  var goToSettings: Signal<(), Never> { get }
 
   /// The starting value of the header top constraint that is needed to calculate the distance panned.
   var initialTopConstant: CGFloat { get }
 
   /// Emits a BackerDashboardTab to navigate to.
-  var navigateToTab: Signal<BackerDashboardTab, NoError> { get }
+  var navigateToTab: Signal<BackerDashboardTab, Never> { get }
 
   /// Emits a BackerDashboardTab to pin the indicator view to with or without animation.
-  var pinSelectedIndicatorToTab: Signal<(BackerDashboardTab, Bool), NoError> { get }
+  var pinSelectedIndicatorToTab: Signal<(BackerDashboardTab, Bool), Never> { get }
 
   /// Emits an Notification that should be immediately posted.
-  var postNotification: Signal<Notification, NoError> { get }
+  var postNotification: Signal<Notification, Never> { get }
 
   /// Emits a string for the saved button title label.
-  var savedButtonTitleText: Signal<String, NoError> { get }
+  var savedButtonTitleText: Signal<String, Never> { get }
 
   /// Emits the selected BackerDashboardTab to set the selected button and update all button selected states.
-  var setSelectedButton: Signal<BackerDashboardTab, NoError> { get }
+  var setSelectedButton: Signal<BackerDashboardTab, Never> { get }
 
   /// Emits a boolean whether the sort bar is hidden or not.
-  var sortBarIsHidden: Signal<Bool, NoError> { get }
+  var sortBarIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a fresh user to be updated in the app environment.
-  var updateCurrentUserInEnvironment: Signal<User, NoError> { get }
+  var updateCurrentUserInEnvironment: Signal<User, Never> { get }
 
 }
 
@@ -236,20 +235,20 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.willTransitionToPageProperty.value = nextPage
   }
 
-  public let avatarURL: Signal<URL?, NoError>
-  public let backedButtonTitleText: Signal<String, NoError>
-  public let backerNameText: Signal<String, NoError>
-  public let configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), NoError>
-  public let embeddedViewTopConstraintConstant: Signal<CGFloat, NoError>
-  public let goToMessages: Signal<(), NoError>
-  public let goToSettings: Signal<(), NoError>
-  public let navigateToTab: Signal<BackerDashboardTab, NoError>
-  public let pinSelectedIndicatorToTab: Signal<(BackerDashboardTab, Bool), NoError>
-  public let postNotification: Signal<Notification, NoError>
-  public let savedButtonTitleText: Signal<String, NoError>
-  public let setSelectedButton: Signal<BackerDashboardTab, NoError>
-  public let sortBarIsHidden: Signal<Bool, NoError>
-  public let updateCurrentUserInEnvironment: Signal<User, NoError>
+  public let avatarURL: Signal<URL?, Never>
+  public let backedButtonTitleText: Signal<String, Never>
+  public let backerNameText: Signal<String, Never>
+  public let configurePagesDataSource: Signal<(BackerDashboardTab, DiscoveryParams.Sort), Never>
+  public let embeddedViewTopConstraintConstant: Signal<CGFloat, Never>
+  public let goToMessages: Signal<(), Never>
+  public let goToSettings: Signal<(), Never>
+  public let navigateToTab: Signal<BackerDashboardTab, Never>
+  public let pinSelectedIndicatorToTab: Signal<(BackerDashboardTab, Bool), Never>
+  public let postNotification: Signal<Notification, Never>
+  public let savedButtonTitleText: Signal<String, Never>
+  public let setSelectedButton: Signal<BackerDashboardTab, Never>
+  public let sortBarIsHidden: Signal<Bool, Never>
+  public let updateCurrentUserInEnvironment: Signal<User, Never>
 
   public var inputs: BackerDashboardViewModelInputs { return self }
   public var outputs: BackerDashboardViewModelOutputs { return self }

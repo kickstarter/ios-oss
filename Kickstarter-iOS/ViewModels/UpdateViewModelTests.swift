@@ -6,7 +6,6 @@ import ReactiveExtensions_TestHelpers
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 import WebKit
 import XCTest
 
@@ -17,11 +16,11 @@ final class UpdateViewModelTests: TestCase {
   fileprivate let update = .template
     |> Update.lens.projectId .~ 1
 
-  fileprivate let goToComments = TestObserver<Update, NoError>()
-  fileprivate let goToProject = TestObserver<Project, NoError>()
-  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
-  fileprivate let title = TestObserver<String, NoError>()
-  fileprivate let webViewLoadRequest = TestObserver<String?, NoError>()
+  fileprivate let goToComments = TestObserver<Update, Never>()
+  fileprivate let goToProject = TestObserver<Project, Never>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
+  fileprivate let title = TestObserver<String, Never>()
+  fileprivate let webViewLoadRequest = TestObserver<String?, Never>()
 
   override func setUp() {
     super.setUp()

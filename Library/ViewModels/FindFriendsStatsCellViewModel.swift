@@ -1,7 +1,6 @@
 import KsApi
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import Prelude
 
 public protocol FindFriendsStatsCellViewModelInputs {
@@ -14,19 +13,19 @@ public protocol FindFriendsStatsCellViewModelInputs {
 
 public protocol FindFriendsStatsCellViewModelOutputs {
   /// Emits total friends' backed projects text
-  var backedProjectsCountText: Signal<String, NoError> { get }
+  var backedProjectsCountText: Signal<String, Never> { get }
 
   /// Emits text for Follow All button
-  var followAllText: Signal<String, NoError> { get }
+  var followAllText: Signal<String, Never> { get }
 
   /// Emits friends count text
-  var friendsCountText: Signal<String, NoError> { get }
+  var friendsCountText: Signal<String, Never> { get }
 
   /// Emits whether Follow All button should show
-  var hideFollowAllButton: Signal<Bool, NoError> { get }
+  var hideFollowAllButton: Signal<Bool, Never> { get }
 
   /// Emits when should show Follow All confirmation alert with friends count
-  var notifyDelegateShowFollowAllFriendsAlert: Signal<Int, NoError> { get }
+  var notifyDelegateShowFollowAllFriendsAlert: Signal<Int, Never> { get }
 }
 
 public protocol FindFriendsStatsCellViewModelType {
@@ -37,10 +36,10 @@ public protocol FindFriendsStatsCellViewModelType {
 public final class FindFriendsStatsCellViewModel: FindFriendsStatsCellViewModelType,
   FindFriendsStatsCellViewModelInputs, FindFriendsStatsCellViewModelOutputs {
   public init() {
-    let friendProjectsCount: Signal<Int, NoError> = self.configureWithStatsProperty.signal
+    let friendProjectsCount: Signal<Int, Never> = self.configureWithStatsProperty.signal
       .map { $0?.stats.friendProjectsCount ?? 0 }
 
-    let remoteFriendCount: Signal<Int, NoError> = self.configureWithStatsProperty.signal
+    let remoteFriendCount: Signal<Int, Never> = self.configureWithStatsProperty.signal
       .map { $0?.stats.remoteFriendsCount ?? 0 }
 
     self.backedProjectsCountText = friendProjectsCount.map { Format.wholeNumber($0) }
@@ -82,9 +81,9 @@ public final class FindFriendsStatsCellViewModel: FindFriendsStatsCellViewModelT
     followAllButtonTappedProperty.value = ()
   }
 
-  public let backedProjectsCountText: Signal<String, NoError>
-  public let followAllText: Signal<String, NoError>
-  public let friendsCountText: Signal<String, NoError>
-  public let hideFollowAllButton: Signal<Bool, NoError>
-  public let notifyDelegateShowFollowAllFriendsAlert: Signal<Int, NoError>
+  public let backedProjectsCountText: Signal<String, Never>
+  public let followAllText: Signal<String, Never>
+  public let friendsCountText: Signal<String, Never>
+  public let hideFollowAllButton: Signal<Bool, Never>
+  public let notifyDelegateShowFollowAllFriendsAlert: Signal<Int, Never>
 }

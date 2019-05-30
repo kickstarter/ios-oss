@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ProjectNavigatorViewModelInputs {
   /// Call with the config data given to the view.
@@ -25,28 +24,28 @@ public protocol ProjectNavigatorViewModelInputs {
 
 public protocol ProjectNavigatorViewModelOutputs {
   /// Emits when the transition animator should be canceled.
-  var cancelInteractiveTransition: Signal<(), NoError> { get }
+  var cancelInteractiveTransition: Signal<(), Never> { get }
 
   /// Emits when the controller should be dismissed.
-  var dismissViewController: Signal<(), NoError> { get }
+  var dismissViewController: Signal<(), Never> { get }
 
   /// Emits when the transition animator should be finished.
-  var finishInteractiveTransition: Signal<(), NoError> { get }
+  var finishInteractiveTransition: Signal<(), Never> { get }
 
   /// Emits when to notify delegate that a transition was completed with the current row index.
-  var notifyDelegateTransitionedToProjectIndex: Signal<Int, NoError> { get }
+  var notifyDelegateTransitionedToProjectIndex: Signal<Int, Never> { get }
 
   /// Emits when the initial view controllers should be set on the page controller.
-  var setInitialPagerViewController: Signal<(), NoError> { get }
+  var setInitialPagerViewController: Signal<(), Never> { get }
 
   /// Emits when the controller's `setNeedsStatusBarAppearanceUpdate` method needs to be called
-  var setNeedsStatusBarAppearanceUpdate: Signal<(), NoError> { get }
+  var setNeedsStatusBarAppearanceUpdate: Signal<(), Never> { get }
 
   /// Emits when the transition animator needs to have its `isInFlight` property updated.
-  var setTransitionAnimatorIsInFlight: Signal<Bool, NoError> { get }
+  var setTransitionAnimatorIsInFlight: Signal<Bool, Never> { get }
 
   /// Emits when the transition animator should be updated.
-  var updateInteractiveTransition: Signal<CGFloat, NoError> { get }
+  var updateInteractiveTransition: Signal<CGFloat, Never> { get }
 }
 
 public protocol ProjectNavigatorViewModelType {
@@ -185,14 +184,14 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
                                                  velocity: velocity)
   }
 
-  public let cancelInteractiveTransition: Signal<(), NoError>
-  public let dismissViewController: Signal<(), NoError>
-  public let finishInteractiveTransition: Signal<(), NoError>
-  public let notifyDelegateTransitionedToProjectIndex: Signal<Int, NoError>
-  public let setInitialPagerViewController: Signal<(), NoError>
-  public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
-  public let setTransitionAnimatorIsInFlight: Signal<Bool, NoError>
-  public let updateInteractiveTransition: Signal<CGFloat, NoError>
+  public let cancelInteractiveTransition: Signal<(), Never>
+  public let dismissViewController: Signal<(), Never>
+  public let finishInteractiveTransition: Signal<(), Never>
+  public let notifyDelegateTransitionedToProjectIndex: Signal<Int, Never>
+  public let setInitialPagerViewController: Signal<(), Never>
+  public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
+  public let setTransitionAnimatorIsInFlight: Signal<Bool, Never>
+  public let updateInteractiveTransition: Signal<CGFloat, Never>
 
   public var inputs: ProjectNavigatorViewModelInputs { return self }
   public var outputs: ProjectNavigatorViewModelOutputs { return self }

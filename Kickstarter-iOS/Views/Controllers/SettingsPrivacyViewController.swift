@@ -3,7 +3,6 @@ import Library
 import Prelude
 import Prelude_UIKit
 import SafariServices
-import Result
 import UIKit
 
 internal final class SettingsPrivacyViewController: UITableViewController {

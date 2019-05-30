@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import KsApi
 
 public protocol ProjectPamphletSubpageCellViewModelInputs {
@@ -10,28 +9,28 @@ public protocol ProjectPamphletSubpageCellViewModelInputs {
 
 public protocol ProjectPamphletSubpageCellViewModelOutputs {
   /// Emits the background color for the count label
-  var countLabelBackgroundColor: Signal<UIColor, NoError> { get }
+  var countLabelBackgroundColor: Signal<UIColor, Never> { get }
 
   /// Emits the border color for the count label
-  var countLabelBorderColor: Signal<UIColor, NoError> { get }
+  var countLabelBorderColor: Signal<UIColor, Never> { get }
 
   /// Emits the count label's text
-  var countLabelText: Signal<String, NoError> { get }
+  var countLabelText: Signal<String, Never> { get }
 
   /// Emits the count label's text color
-  var countLabelTextColor: Signal<UIColor, NoError> { get }
+  var countLabelTextColor: Signal<UIColor, Never> { get }
 
   /// Emits the cell's primary label text
-  var labelText: Signal<String, NoError> { get }
+  var labelText: Signal<String, Never> { get }
 
   /// Emits the cell's primary label text color
-  var labelTextColor: Signal<UIColor, NoError> { get }
+  var labelTextColor: Signal<UIColor, Never> { get }
 
   /// Emits when the top gradient view should be hidden
-  var topSeparatorViewHidden: Signal<Bool, NoError> { get }
+  var topSeparatorViewHidden: Signal<Bool, Never> { get }
 
   /// Emits when the separator view should be hidden
-  var separatorViewHidden: Signal<Bool, NoError> { get }
+  var separatorViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectPamphletSubpageCellViewModelType {
@@ -75,14 +74,14 @@ ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOu
     self.subpageProperty.value = subpage
   }
 
-  public let countLabelText: Signal<String, NoError>
-  public let countLabelTextColor: Signal<UIColor, NoError>
-  public let countLabelBorderColor: Signal<UIColor, NoError>
-  public let countLabelBackgroundColor: Signal<UIColor, NoError>
-  public let labelText: Signal<String, NoError>
-  public let labelTextColor: Signal<UIColor, NoError>
-  public let topSeparatorViewHidden: Signal<Bool, NoError>
-  public let separatorViewHidden: Signal<Bool, NoError>
+  public let countLabelText: Signal<String, Never>
+  public let countLabelTextColor: Signal<UIColor, Never>
+  public let countLabelBorderColor: Signal<UIColor, Never>
+  public let countLabelBackgroundColor: Signal<UIColor, Never>
+  public let labelText: Signal<String, Never>
+  public let labelTextColor: Signal<UIColor, Never>
+  public let topSeparatorViewHidden: Signal<Bool, Never>
+  public let separatorViewHidden: Signal<Bool, Never>
 
   public var inputs: ProjectPamphletSubpageCellViewModelInputs { return self }
   public var outputs: ProjectPamphletSubpageCellViewModelOutputs { return self }

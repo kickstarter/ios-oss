@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol ProjectActivityBackingCellViewModelInputs {
   /// Call when the backing button is pressed.
@@ -17,49 +16,49 @@ public protocol ProjectActivityBackingCellViewModelInputs {
 
 public protocol ProjectActivityBackingCellViewModelOutputs {
   /// Emits a URL for the backer's avatar.
-  var backerImageURL: Signal<URL?, NoError> { get }
+  var backerImageURL: Signal<URL?, Never> { get }
 
   /// Emits the cell's accessibility label.
-  var cellAccessibilityLabel: Signal<String, NoError> { get }
+  var cellAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits the cell's accessibility value.
-  var cellAccessibilityValue: Signal<String, NoError> { get }
+  var cellAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits when the delegate should go to the backing screen.
-  var notifyDelegateGoToBacking: Signal<(Project, User), NoError> { get }
+  var notifyDelegateGoToBacking: Signal<(Project, User), Never> { get }
 
   /// Emits when the delegate should go to the send message screen.
-  var notifyDelegateGoToSendMessage: Signal<(Project, Backing), NoError> { get }
+  var notifyDelegateGoToSendMessage: Signal<(Project, Backing), Never> { get }
 
   /// Emits the new pledge amount.
-  var pledgeAmount: Signal<String, NoError> { get }
+  var pledgeAmount: Signal<String, Never> { get }
 
   /// Emits whether the pledge amount label should be hidden.
-  var pledgeAmountLabelIsHidden: Signal<Bool, NoError> { get }
+  var pledgeAmountLabelIsHidden: Signal<Bool, Never> { get }
 
   /// Emits whether the pledge amounts stack view should be hidden.
-  var pledgeAmountsStackViewIsHidden: Signal<Bool, NoError> { get }
+  var pledgeAmountsStackViewIsHidden: Signal<Bool, Never> { get }
 
   /// Emits where the pledge details separator stack view should be hidden.
-  var pledgeDetailsSeparatorStackViewIsHidden: Signal<Bool, NoError> { get }
+  var pledgeDetailsSeparatorStackViewIsHidden: Signal<Bool, Never> { get }
 
   /// Emits the old pledge amount.
-  var previousPledgeAmount: Signal<String, NoError> { get }
+  var previousPledgeAmount: Signal<String, Never> { get }
 
   /// Emits whether the previous pledge amount label should be hidden.
-  var previousPledgeAmountLabelIsHidden: Signal<Bool, NoError> { get }
+  var previousPledgeAmountLabelIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a description of the reward.
-  var reward: Signal<String, NoError> { get }
+  var reward: Signal<String, Never> { get }
 
   /// Emits whether the reward label should be hidden.
-  var rewardLabelIsHidden: Signal<Bool, NoError> { get }
+  var rewardLabelIsHidden: Signal<Bool, Never> { get }
 
   /// Emits whether the send message button should be hidden.
-  var sendMessageButtonAndBulletSeparatorHidden: Signal<Bool, NoError> { get }
+  var sendMessageButtonAndBulletSeparatorHidden: Signal<Bool, Never> { get }
 
   /// Emits the activity's title.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<String, Never> { get }
 }
 
 public protocol ProjectActivityBackingCellViewModelType {
@@ -81,20 +80,20 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.cellAccessibilityLabel = title.map { title in title.htmlStripped() ?? "" }
 
     self.cellAccessibilityValue = activityAndProject
-      .flatMap { activity, project -> SignalProducer<String, NoError> in
+      .flatMap { activity, project -> SignalProducer<String, Never> in
         return .init(value: accessibilityValue(activity: activity, project: project))
     }
 
     self.notifyDelegateGoToBacking = activityAndProject
       .takeWhen(self.backingButtonPressedProperty.signal)
-      .flatMap { activity, project -> SignalProducer<(Project, User), NoError> in
+      .flatMap { activity, project -> SignalProducer<(Project, User), Never> in
         guard let user = activity.user else { return .empty }
         return .init(value: (project, user))
     }
 
     self.notifyDelegateGoToSendMessage = activityAndProject
       .takeWhen(self.sendMessageButtonPressedProperty.signal)
-      .flatMap { activity, project -> SignalProducer<(Project, Backing), NoError> in
+      .flatMap { activity, project -> SignalProducer<(Project, Backing), Never> in
         guard let backing = activity.memberData.backing else { return .empty }
         return .init(value: (project, backing))
     }
@@ -159,21 +158,21 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.sendMessageButtonPressedProperty.value = ()
   }
 
-  public let backerImageURL: Signal<URL?, NoError>
-  public let cellAccessibilityLabel: Signal<String, NoError>
-  public let cellAccessibilityValue: Signal<String, NoError>
-  public let notifyDelegateGoToBacking: Signal<(Project, User), NoError>
-  public let notifyDelegateGoToSendMessage: Signal<(Project, Backing), NoError>
-  public let pledgeAmount: Signal<String, NoError>
-  public let pledgeAmountLabelIsHidden: Signal<Bool, NoError>
-  public let pledgeAmountsStackViewIsHidden: Signal<Bool, NoError>
-  public let pledgeDetailsSeparatorStackViewIsHidden: Signal<Bool, NoError>
-  public let previousPledgeAmount: Signal<String, NoError>
-  public let previousPledgeAmountLabelIsHidden: Signal<Bool, NoError>
-  public let reward: Signal<String, NoError>
-  public let rewardLabelIsHidden: Signal<Bool, NoError>
-  public var sendMessageButtonAndBulletSeparatorHidden: Signal<Bool, NoError>
-  public let title: Signal<String, NoError>
+  public let backerImageURL: Signal<URL?, Never>
+  public let cellAccessibilityLabel: Signal<String, Never>
+  public let cellAccessibilityValue: Signal<String, Never>
+  public let notifyDelegateGoToBacking: Signal<(Project, User), Never>
+  public let notifyDelegateGoToSendMessage: Signal<(Project, Backing), Never>
+  public let pledgeAmount: Signal<String, Never>
+  public let pledgeAmountLabelIsHidden: Signal<Bool, Never>
+  public let pledgeAmountsStackViewIsHidden: Signal<Bool, Never>
+  public let pledgeDetailsSeparatorStackViewIsHidden: Signal<Bool, Never>
+  public let previousPledgeAmount: Signal<String, Never>
+  public let previousPledgeAmountLabelIsHidden: Signal<Bool, Never>
+  public let reward: Signal<String, Never>
+  public let rewardLabelIsHidden: Signal<Bool, Never>
+  public var sendMessageButtonAndBulletSeparatorHidden: Signal<Bool, Never>
+  public let title: Signal<String, Never>
 
   public var inputs: ProjectActivityBackingCellViewModelInputs { return self }
   public var outputs: ProjectActivityBackingCellViewModelOutputs { return self }
