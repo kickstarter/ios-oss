@@ -1,6 +1,5 @@
 import KsApi
 import Prelude
-import Result
 
 private let flushInterval = 60.0
 private let chunkSize = 4

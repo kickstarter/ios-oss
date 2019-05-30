@@ -5,22 +5,21 @@ import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import KsApi
 import ReactiveSwift
-import Result
 @testable import Library
 import Prelude
 
 internal final class SelectCurrencyViewModelTests: TestCase {
   private let vm: SelectCurrencyViewModelType = SelectCurrencyViewModel()
 
-  private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
-  private let deselectCellAtIndex = TestObserver<Int, NoError>()
-  private let didUpdateCurrency = TestObserver<(), NoError>()
-  private let reloadDataWithCurrenciesData = TestObserver<[SelectedCurrencyData], NoError>()
-  private let reloadDataWithCurrenciesReload = TestObserver<Bool, NoError>()
-  private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
-  private let selectCellAtIndex = TestObserver<Int, NoError>()
-  private let updateCurrencyDidFailWithError = TestObserver<String, NoError>()
-  private let updateCurrencyDidSucceed = TestObserver<(), NoError>()
+  private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
+  private let deselectCellAtIndex = TestObserver<Int, Never>()
+  private let didUpdateCurrency = TestObserver<(), Never>()
+  private let reloadDataWithCurrenciesData = TestObserver<[SelectedCurrencyData], Never>()
+  private let reloadDataWithCurrenciesReload = TestObserver<Bool, Never>()
+  private let saveButtonIsEnabled = TestObserver<Bool, Never>()
+  private let selectCellAtIndex = TestObserver<Int, Never>()
+  private let updateCurrencyDidFailWithError = TestObserver<String, Never>()
+  private let updateCurrencyDidSucceed = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -64,7 +63,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.selectCellAtIndex.assertValues([0])
 
     withEnvironment(apiService: MockService(changeCurrencyResponse: .init())) {
-      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.index(of: .AUD) ?? -1)
+      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
       let audSelectededCurrencyData = selectedCurrencyData(with: usdSelectedOrdering, selected: .AUD)
@@ -127,7 +126,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.selectCellAtIndex.assertValues([0])
 
     withEnvironment(apiService: MockService(changeCurrencyError: .invalidInput)) {
-      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.index(of: .AUD) ?? -1)
+      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
       let audSelectededCurrencyData = selectedCurrencyData(with: usdSelectedOrdering, selected: .AUD)
@@ -171,7 +170,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
 
     withEnvironment(apiService: MockService(changeCurrencyResponse: .init())) {
-      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.index(of: .CHF) ?? -1)
+      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .CHF) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
       self.scheduler.advance()

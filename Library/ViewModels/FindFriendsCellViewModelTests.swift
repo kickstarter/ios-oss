@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import Library
 @testable import KsApi
@@ -11,7 +10,7 @@ import Foundation
 internal final class FindFriendsCellViewModelTests: TestCase {
   private let vm = FindFriendsCellViewModel()
 
-  private let isDisabled = TestObserver<Bool, NoError>()
+  private let isDisabled = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

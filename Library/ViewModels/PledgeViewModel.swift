@@ -2,8 +2,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
-
 public typealias PledgeTableViewData = (
   amount: Double,
   currency: String,
@@ -18,7 +16,7 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
-  var reloadWithData: Signal<PledgeTableViewData, NoError> { get }
+  var reloadWithData: Signal<PledgeTableViewData, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -70,7 +68,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let reloadWithData: Signal<PledgeTableViewData, NoError>
+  public let reloadWithData: Signal<PledgeTableViewData, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }

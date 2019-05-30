@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol WatchProjectViewModelInputs {
   func awakeFromNib()
@@ -16,31 +15,31 @@ public protocol WatchProjectViewModelInputs {
 
 public protocol WatchProjectViewModelOutputs {
   /// Emits when haptic feedback should be generated
-  var generateImpactFeedback: Signal<(), NoError> { get }
+  var generateImpactFeedback: Signal<(), Never> { get }
 
   /// Emits when haptic feedback should be generated
-  var generateSelectionFeedback: Signal<(), NoError> { get }
+  var generateSelectionFeedback: Signal<(), Never> { get }
 
   /// Emits when haptic feedback should be generated
-  var generateSuccessFeedback: Signal<(), NoError> { get }
+  var generateSuccessFeedback: Signal<(), Never> { get }
 
   /// Emits when the login tout should be shown to the user.
-  var goToLoginTout: Signal<(), NoError> { get }
+  var goToLoginTout: Signal<(), Never> { get }
 
   /// Emits a project.
-  var postNotificationWithProject: Signal<Project, NoError> { get }
+  var postNotificationWithProject: Signal<Project, Never> { get }
 
   /// Emits the accessibility hint for the star button.
-  var saveButtonAccessibilityValue: Signal<String, NoError> { get }
+  var saveButtonAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the save button is selected.
-  var saveButtonSelected: Signal<Bool, NoError> { get }
+  var saveButtonSelected: Signal<Bool, Never> { get }
 
   /// Emits when a contextual Push Notification dialog should be shown.
-  var showNotificationDialog: Signal<Notification, NoError> { get }
+  var showNotificationDialog: Signal<Notification, Never> { get }
 
   /// Emits when the project has been successfully saved and a prompt should be shown to the user.
-  var showProjectSavedAlert: Signal<Void, NoError> { get }
+  var showProjectSavedAlert: Signal<Void, Never> { get }
 }
 
 public protocol WatchProjectViewModelType {
@@ -220,15 +219,15 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let generateImpactFeedback: Signal<(), NoError>
-  public let generateSuccessFeedback: Signal<(), NoError>
-  public let generateSelectionFeedback: Signal<(), NoError>
-  public let goToLoginTout: Signal<(), NoError>
-  public let postNotificationWithProject: Signal<Project, NoError>
-  public let saveButtonAccessibilityValue: Signal<String, NoError>
-  public let saveButtonSelected: Signal<Bool, NoError>
-  public let showNotificationDialog: Signal<Notification, NoError>
-  public let showProjectSavedAlert: Signal<Void, NoError>
+  public let generateImpactFeedback: Signal<(), Never>
+  public let generateSuccessFeedback: Signal<(), Never>
+  public let generateSelectionFeedback: Signal<(), Never>
+  public let goToLoginTout: Signal<(), Never>
+  public let postNotificationWithProject: Signal<Project, Never>
+  public let saveButtonAccessibilityValue: Signal<String, Never>
+  public let saveButtonSelected: Signal<Bool, Never>
+  public let showNotificationDialog: Signal<Notification, Never>
+  public let showProjectSavedAlert: Signal<Void, Never>
 
   public var inputs: WatchProjectViewModelInputs { return self }
   public var outputs: WatchProjectViewModelOutputs { return self }

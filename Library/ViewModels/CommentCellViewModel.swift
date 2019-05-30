@@ -1,7 +1,6 @@
 import Foundation
 import KsApi
 import ReactiveSwift
-import Result
 import UIKit
 
 public protocol CommentCellViewModelInputs {
@@ -9,14 +8,14 @@ public protocol CommentCellViewModelInputs {
 }
 
 public protocol CommentCellViewModelOutputs {
-  var avatarUrl: Signal<URL?, NoError> { get }
-  var body: Signal<String, NoError> { get }
-  var bodyColor: Signal<UIColor, NoError> { get }
-  var bodyFont: Signal<UIFont, NoError> { get }
-  var creatorHidden: Signal<Bool, NoError> { get }
-  var name: Signal<String, NoError> { get }
-  var timestamp: Signal<String, NoError> { get }
-  var youHidden: Signal<Bool, NoError> { get }
+  var avatarUrl: Signal<URL?, Never> { get }
+  var body: Signal<String, Never> { get }
+  var bodyColor: Signal<UIColor, Never> { get }
+  var bodyFont: Signal<UIFont, Never> { get }
+  var creatorHidden: Signal<Bool, Never> { get }
+  var name: Signal<String, Never> { get }
+  var timestamp: Signal<String, Never> { get }
+  var youHidden: Signal<Bool, Never> { get }
 }
 
 public protocol CommentCellViewModelType {
@@ -65,14 +64,14 @@ CommentCellViewModelOutputs {
     self.commentProjectViewer.value = (comment, project, viewer)
   }
 
-  public let avatarUrl: Signal<URL?, NoError>
-  public let body: Signal<String, NoError>
-  public let bodyColor: Signal<UIColor, NoError>
-  public let bodyFont: Signal<UIFont, NoError>
-  public let creatorHidden: Signal<Bool, NoError>
-  public let name: Signal<String, NoError>
-  public let timestamp: Signal<String, NoError>
-  public let youHidden: Signal<Bool, NoError>
+  public let avatarUrl: Signal<URL?, Never>
+  public let body: Signal<String, Never>
+  public let bodyColor: Signal<UIColor, Never>
+  public let bodyFont: Signal<UIFont, Never>
+  public let creatorHidden: Signal<Bool, Never>
+  public let name: Signal<String, Never>
+  public let timestamp: Signal<String, Never>
+  public let youHidden: Signal<Bool, Never>
 
   public var inputs: CommentCellViewModelInputs { return self }
   public var outputs: CommentCellViewModelOutputs { return self }

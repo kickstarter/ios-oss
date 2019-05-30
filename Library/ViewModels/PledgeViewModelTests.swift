@@ -2,7 +2,6 @@ import Foundation
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import Result
 import XCTest
 
 @testable import KsApi
@@ -12,12 +11,12 @@ import ReactiveExtensions_TestHelpers
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
-  private let amount = TestObserver<Double, NoError>()
-  private let currency = TestObserver<String, NoError>()
-  private let estimatedDelivery = TestObserver<String, NoError>()
-  private let shippingLocation = TestObserver<String, NoError>()
-  private let shippingAmount = TestObserver<String, NoError>()
-  private let isLoggedIn = TestObserver<Bool, NoError>()
+  private let amount = TestObserver<Double, Never>()
+  private let currency = TestObserver<String, Never>()
+  private let estimatedDelivery = TestObserver<String, Never>()
+  private let shippingLocation = TestObserver<String, Never>()
+  private let shippingAmount = TestObserver<String, Never>()
+  private let isLoggedIn = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

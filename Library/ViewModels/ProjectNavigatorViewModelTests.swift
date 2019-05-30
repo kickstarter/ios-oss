@@ -3,21 +3,20 @@
 import ReactiveExtensions_TestHelpers
 import Prelude
 import ReactiveSwift
-import Result
 import UIKit
 import XCTest
 
 internal final class ProjectNavigatorViewModelTests: TestCase {
   fileprivate let vm: ProjectNavigatorViewModelType = ProjectNavigatorViewModel()
 
-  fileprivate let cancelInteractiveTransition = TestObserver<(), NoError>()
-  fileprivate let dismissViewController = TestObserver<(), NoError>()
-  fileprivate let finishInteractiveTransition = TestObserver<(), NoError>()
-  private let notifyDelegateTransitionedToProjectIndex = TestObserver<Int, NoError>()
-  fileprivate let setInitialPagerViewController = TestObserver<(), NoError>()
-  fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
-  fileprivate let setTransitionAnimatorIsInFlight = TestObserver<Bool, NoError>()
-  fileprivate let updateInteractiveTransition = TestObserver<CGFloat, NoError>()
+  fileprivate let cancelInteractiveTransition = TestObserver<(), Never>()
+  fileprivate let dismissViewController = TestObserver<(), Never>()
+  fileprivate let finishInteractiveTransition = TestObserver<(), Never>()
+  private let notifyDelegateTransitionedToProjectIndex = TestObserver<Int, Never>()
+  fileprivate let setInitialPagerViewController = TestObserver<(), Never>()
+  fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), Never>()
+  fileprivate let setTransitionAnimatorIsInFlight = TestObserver<Bool, Never>()
+  fileprivate let updateInteractiveTransition = TestObserver<CGFloat, Never>()
 
   override func setUp() {
     super.setUp()

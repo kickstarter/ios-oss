@@ -4,7 +4,6 @@ import ReactiveSwift
 import UIKit.UIActivity
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -12,14 +11,14 @@ import Prelude
 final class FindFriendsViewModelTests: TestCase {
   let vm: FindFriendsViewModelType = FindFriendsViewModel()
 
-  let friends = TestObserver<[User], NoError>()
-  let goToDiscovery = TestObserver<DiscoveryParams, NoError>()
-  let showErrorAlert = TestObserver<AlertError, NoError>()
-  let showFacebookConnect = TestObserver<Bool, NoError>()
-  let showFollowAllFriendsAlert = TestObserver<Int, NoError>()
-  let showLoadingIndicatorView = TestObserver<Bool, NoError>()
-  let stats = TestObserver<FriendStatsEnvelope, NoError>()
-  let statsSource = TestObserver<FriendsSource, NoError>()
+  let friends = TestObserver<[User], Never>()
+  let goToDiscovery = TestObserver<DiscoveryParams, Never>()
+  let showErrorAlert = TestObserver<AlertError, Never>()
+  let showFacebookConnect = TestObserver<Bool, Never>()
+  let showFollowAllFriendsAlert = TestObserver<Int, Never>()
+  let showLoadingIndicatorView = TestObserver<Bool, Never>()
+  let stats = TestObserver<FriendStatsEnvelope, Never>()
+  let statsSource = TestObserver<FriendsSource, Never>()
 
   override func setUp() {
     super.setUp()

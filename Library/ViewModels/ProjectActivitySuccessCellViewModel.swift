@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol ProjectActivitySuccessCellViewModelInputs {
   /// Call to set the activity and project.
@@ -11,10 +10,10 @@ public protocol ProjectActivitySuccessCellViewModelInputs {
 
 public protocol ProjectActivitySuccessCellViewModelOutputs {
   /// Emits the background image URL.
-  var backgroundImageURL: Signal<URL?, NoError> { get }
+  var backgroundImageURL: Signal<URL?, Never> { get }
 
   /// Emits the title of the activity.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<String, Never> { get }
 }
 
 public protocol ProjectActivitySuccessCellViewModelType {
@@ -47,8 +46,8 @@ ProjectActivitySuccessCellViewModelInputs, ProjectActivitySuccessCellViewModelOu
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let backgroundImageURL: Signal<URL?, NoError>
-  public let title: Signal<String, NoError>
+  public let backgroundImageURL: Signal<URL?, Never>
+  public let title: Signal<String, Never>
 
   public var inputs: ProjectActivitySuccessCellViewModelInputs { return self }
   public var outputs: ProjectActivitySuccessCellViewModelOutputs { return self }

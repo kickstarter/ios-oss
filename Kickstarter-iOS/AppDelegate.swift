@@ -13,7 +13,6 @@ import Library
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import Result
 import SafariServices
 import UIKit
 import UserNotifications

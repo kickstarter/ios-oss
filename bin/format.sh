@@ -1,3 +1,3 @@
 #!/bin/sh
 
-bin/swiftformat --config ".swiftformat" --swiftversion 4.2 "$@"
+bin/swiftformat --config ".swiftformat" --swiftversion 5.0 "$@"

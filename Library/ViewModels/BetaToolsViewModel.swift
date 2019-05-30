@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol BetaToolsViewModelInputs {
   func betaFeedbackButtonTapped(canSendMail: Bool)
@@ -13,11 +12,11 @@ public protocol BetaToolsViewModelInputs {
 }
 
 public protocol BetaToolsViewModelOutputs {
-  var currentLanguage: Signal<Language, NoError> { get }
-  var environmentSwitcherButtonTitle: Signal<String, NoError> { get }
-  var goToBetaFeedback: Signal<(), NoError> { get }
-  var betaFeedbackMailDisabled: Signal<(), NoError> { get }
-  var logoutWithParams: Signal<DiscoveryParams, NoError> { get }
+  var currentLanguage: Signal<Language, Never> { get }
+  var environmentSwitcherButtonTitle: Signal<String, Never> { get }
+  var goToBetaFeedback: Signal<(), Never> { get }
+  var betaFeedbackMailDisabled: Signal<(), Never> { get }
+  var logoutWithParams: Signal<DiscoveryParams, Never> { get }
 }
 
 public protocol BetaToolsViewModelType {
@@ -83,9 +82,9 @@ BetaToolsViewModelInputs, BetaToolsViewModelOutputs {
     self.currentLanguageProperty.value = language
   }
 
-  public let goToBetaFeedback: Signal<(), NoError>
-  public let betaFeedbackMailDisabled: Signal<(), NoError>
-  public let currentLanguage: Signal<Language, NoError>
-  public let environmentSwitcherButtonTitle: Signal<String, NoError>
-  public let logoutWithParams: Signal<DiscoveryParams, NoError>
+  public let goToBetaFeedback: Signal<(), Never>
+  public let betaFeedbackMailDisabled: Signal<(), Never>
+  public let currentLanguage: Signal<Language, Never>
+  public let environmentSwitcherButtonTitle: Signal<String, Never>
+  public let logoutWithParams: Signal<DiscoveryParams, Never>
 }

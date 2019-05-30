@@ -1,5 +1,4 @@
 import KsApi
-import Result
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
@@ -9,8 +8,8 @@ public protocol DiscoveryProjectCategoryViewModelInputs {
 }
 
 public protocol DiscoveryProjectCategoryViewModelOutputs {
-  var categoryNameText: Signal<String, NoError> { get }
-  var categoryImage: Signal<UIImage?, NoError> { get }
+  var categoryNameText: Signal<String, Never> { get }
+  var categoryImage: Signal<UIImage?, Never> { get }
 }
 
 public protocol DiscoveryProjectCategoryViewModelType {
@@ -29,8 +28,8 @@ DiscoveryProjectCategoryViewModelOutputs {
     self.categoryImage = imageStringProperty.signal.skipNil().map { UIImage(named: $0) }
   }
 
-  public var categoryNameText: Signal<String, NoError>
-  public var categoryImage: Signal<UIImage?, NoError>
+  public var categoryNameText: Signal<String, Never>
+  public var categoryImage: Signal<UIImage?, Never>
 
   private let categoryNameTextProperty = MutableProperty<String?>(nil)
   private let imageStringProperty = MutableProperty<String?>(nil)

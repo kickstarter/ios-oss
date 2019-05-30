@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ActivityFriendBackingViewModelInputs {
   /// Call to configure with an Activity.
@@ -10,28 +9,28 @@ public protocol ActivityFriendBackingViewModelInputs {
 
 public protocol ActivityFriendBackingViewModelOutputs {
   /// Emits an a11y label for the cell.
-  var cellAccessibilityLabel: Signal<String, NoError> { get }
+  var cellAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits an URL for the friend avatar image view.
-  var friendImageURL: Signal<URL?, NoError> { get }
+  var friendImageURL: Signal<URL?, Never> { get }
 
   /// Emits an attributed string for the "friend backed" label.
-  var friendTitle: Signal<NSAttributedString, NoError> { get }
+  var friendTitle: Signal<NSAttributedString, Never> { get }
 
   /// Emits a color for the funding progress bar.
-  var fundingBarColor: Signal<UIColor, NoError> { get }
+  var fundingBarColor: Signal<UIColor, Never> { get }
 
   /// Emits a percentage between 0.0 and 1.0 that can be used to render the funding progress bar.
-  var fundingProgressPercentage: Signal<Float, NoError> { get }
+  var fundingProgressPercentage: Signal<Float, Never> { get }
 
   /// Emits an attributed string for percent funded label.
-  var percentFundedText: Signal<NSAttributedString, NoError> { get }
+  var percentFundedText: Signal<NSAttributedString, Never> { get }
 
   /// Emits a url to the project image.
-  var projectImageURL: Signal<URL?, NoError> { get }
+  var projectImageURL: Signal<URL?, Never> { get }
 
   /// Emits text for the project name label.
-  var projectName: Signal<String, NoError> { get }
+  var projectName: Signal<String, Never> { get }
 }
 
 public protocol ActivityFriendBackingViewModelType {
@@ -93,14 +92,14 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
     self.activityProperty.value = activity
   }
 
-  public let friendImageURL: Signal<URL?, NoError>
-  public let friendTitle: Signal<NSAttributedString, NoError>
-  public let fundingBarColor: Signal<UIColor, NoError>
-  public let fundingProgressPercentage: Signal<Float, NoError>
-  public let percentFundedText: Signal<NSAttributedString, NoError>
-  public let projectName: Signal<String, NoError>
-  public let projectImageURL: Signal<URL?, NoError>
-  public let cellAccessibilityLabel: Signal<String, NoError>
+  public let friendImageURL: Signal<URL?, Never>
+  public let friendTitle: Signal<NSAttributedString, Never>
+  public let fundingBarColor: Signal<UIColor, Never>
+  public let fundingProgressPercentage: Signal<Float, Never>
+  public let percentFundedText: Signal<NSAttributedString, Never>
+  public let projectName: Signal<String, Never>
+  public let projectImageURL: Signal<URL?, Never>
+  public let cellAccessibilityLabel: Signal<String, Never>
 
   public var inputs: ActivityFriendBackingViewModelInputs { return self }
   public var outputs: ActivityFriendBackingViewModelOutputs { return self }

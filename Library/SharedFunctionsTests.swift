@@ -2,7 +2,6 @@ import Foundation
 @testable import Library
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 import XCTest
 
 final class SharedFunctionsTests: TestCase {
@@ -12,10 +11,10 @@ final class SharedFunctionsTests: TestCase {
     let futureDate = MockDate().addingTimeInterval(future).date
     let countdown = countdownProducer(to: futureDate)
 
-    let dayTest = TestObserver<String, NoError>()
-    let hourTest = TestObserver<String, NoError>()
-    let minuteTest = TestObserver<String, NoError>()
-    let secondTest = TestObserver<String, NoError>()
+    let dayTest = TestObserver<String, Never>()
+    let hourTest = TestObserver<String, Never>()
+    let minuteTest = TestObserver<String, Never>()
+    let secondTest = TestObserver<String, Never>()
 
     countdown.map { $0.day }.start(dayTest.observer)
     countdown.map { $0.hour }.start(hourTest.observer)
@@ -58,10 +57,10 @@ final class SharedFunctionsTests: TestCase {
       let futureDate = MockDate().addingTimeInterval(future).date
       let countdown = countdownProducer(to: futureDate)
 
-      let dayTest = TestObserver<String, NoError>()
-      let hourTest = TestObserver<String, NoError>()
-      let minuteTest = TestObserver<String, NoError>()
-      let secondTest = TestObserver<String, NoError>()
+      let dayTest = TestObserver<String, Never>()
+      let hourTest = TestObserver<String, Never>()
+      let minuteTest = TestObserver<String, Never>()
+      let secondTest = TestObserver<String, Never>()
 
       countdown.map { $0.day }.start(dayTest.observer)
       countdown.map { $0.hour }.start(hourTest.observer)
@@ -109,10 +108,10 @@ final class SharedFunctionsTests: TestCase {
   func testCountdownProducer_CompletesWhenReachesDate() {
     let countdown = countdownProducer(to: MockDate().addingTimeInterval(2).date)
 
-    let dayTest = TestObserver<String, NoError>()
-    let hourTest = TestObserver<String, NoError>()
-    let minuteTest = TestObserver<String, NoError>()
-    let secondTest = TestObserver<String, NoError>()
+    let dayTest = TestObserver<String, Never>()
+    let hourTest = TestObserver<String, Never>()
+    let minuteTest = TestObserver<String, Never>()
+    let secondTest = TestObserver<String, Never>()
 
     countdown.map { $0.day }.start(dayTest.observer)
     countdown.map { $0.hour }.start(hourTest.observer)

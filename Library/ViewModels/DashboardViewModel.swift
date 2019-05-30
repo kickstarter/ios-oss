@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public enum DrawerState {
   case open
@@ -59,52 +58,52 @@ public protocol DashboardViewModelInputs {
 
 public protocol DashboardViewModelOutputs {
   /// Emits when should animate out projects drawer.
-  var animateOutProjectsDrawer: Signal<(), NoError> { get }
+  var animateOutProjectsDrawer: Signal<(), Never> { get }
 
   /// Emits when should dismiss projects drawer.
-  var dismissProjectsDrawer: Signal<(), NoError> { get }
+  var dismissProjectsDrawer: Signal<(), Never> { get }
 
   /// Emits when to focus the screen reader on the titleView.
-  var focusScreenReaderOnTitleView: Signal<(), NoError> { get }
+  var focusScreenReaderOnTitleView: Signal<(), Never> { get }
 
   /// Emits the funding stats and project to be displayed in the funding cell.
   var fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
-                           project: Project), NoError> { get }
+                           project: Project), Never> { get }
 
   /// Emits when navigating to project activities
-  var goToActivities: Signal<Project, NoError> { get }
+  var goToActivities: Signal<Project, Never> { get }
 
   /// Emits when to go to project messages thread
-  var goToMessages: Signal<Project, NoError> { get }
+  var goToMessages: Signal<Project, Never> { get }
 
   /// Emits when opening specific project message thread
-  var goToMessageThread: Signal<(Project, MessageThread), NoError> { get }
+  var goToMessageThread: Signal<(Project, MessageThread), Never> { get }
 
   /// Emits when to go to the project page.
-  var goToProject: Signal<(Project, RefTag), NoError> { get }
+  var goToProject: Signal<(Project, RefTag), Never> { get }
 
   /// Emits when should present projects drawer with data to populate it.
-  var presentProjectsDrawer: Signal<[ProjectsDrawerData], NoError> { get }
+  var presentProjectsDrawer: Signal<[ProjectsDrawerData], Never> { get }
 
   /// Emits the currently selected project to display in the context and action cells.
-  var project: Signal<Project, NoError> { get }
+  var project: Signal<Project, Never> { get }
 
   /// Emits a boolean that determines if projects are currently loading.
-  var loaderIsAnimating: Signal<Bool, NoError> { get }
+  var loaderIsAnimating: Signal<Bool, Never> { get }
 
   /// Emits the cumulative, project, and referreral distribution data to display in the referrers cell.
   var referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats,
     project: Project, aggregates: ProjectStatsEnvelope.ReferralAggregateStats,
-    stats: [ProjectStatsEnvelope.ReferrerStats]), NoError> { get }
+    stats: [ProjectStatsEnvelope.ReferrerStats]), Never> { get }
 
   /// Emits the project, reward stats, and cumulative pledges to display in the rewards cell.
-  var rewardData: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError> { get }
+  var rewardData: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), Never> { get }
 
   /// Emits the video stats to display in the video cell.
-  var videoStats: Signal<ProjectStatsEnvelope.VideoStats, NoError> { get }
+  var videoStats: Signal<ProjectStatsEnvelope.VideoStats, Never> { get }
 
   /// Emits data for the title view.
-  var updateTitleViewData: Signal<DashboardTitleViewData, NoError> { get }
+  var updateTitleViewData: Signal<DashboardTitleViewData, Never> { get }
 }
 
 public protocol DashboardViewModelType {
@@ -246,7 +245,7 @@ DashboardViewModelType {
         DashboardTitleViewData(
           drawerState: drawerState,
           isArrowHidden: projects.count <= 1,
-          currentProjectIndex: projects.index(of: selectedProject) ?? 0
+          currentProjectIndex: projects.firstIndex(of: selectedProject) ?? 0
         )
     }
 
@@ -260,7 +259,7 @@ DashboardViewModelType {
         projects.map { project in
           ProjectsDrawerData(
             project: project,
-            indexNum: projects.index(of: project) ?? 0,
+            indexNum: projects.firstIndex(of: project) ?? 0,
             isChecked: project == selectedProject
           )
         }
@@ -364,24 +363,24 @@ DashboardViewModelType {
     self.messagesCellTappedProperty.value = ()
   }
 
-  public let animateOutProjectsDrawer: Signal<(), NoError>
-  public let dismissProjectsDrawer: Signal<(), NoError>
-  public let focusScreenReaderOnTitleView: Signal<(), NoError>
+  public let animateOutProjectsDrawer: Signal<(), Never>
+  public let dismissProjectsDrawer: Signal<(), Never>
+  public let focusScreenReaderOnTitleView: Signal<(), Never>
   public let fundingData: Signal<(funding: [ProjectStatsEnvelope.FundingDateStats],
-    project: Project), NoError>
-  public let goToActivities: Signal<Project, NoError>
-  public let goToMessages: Signal<Project, NoError>
-  public let goToMessageThread: Signal<(Project, MessageThread), NoError>
-  public let goToProject: Signal<(Project, RefTag), NoError>
-  public let project: Signal<Project, NoError>
-  public let loaderIsAnimating: Signal<Bool, NoError>
-  public let presentProjectsDrawer: Signal<[ProjectsDrawerData], NoError>
+    project: Project), Never>
+  public let goToActivities: Signal<Project, Never>
+  public let goToMessages: Signal<Project, Never>
+  public let goToMessageThread: Signal<(Project, MessageThread), Never>
+  public let goToProject: Signal<(Project, RefTag), Never>
+  public let project: Signal<Project, Never>
+  public let loaderIsAnimating: Signal<Bool, Never>
+  public let presentProjectsDrawer: Signal<[ProjectsDrawerData], Never>
   public let referrerData: Signal<(cumulative: ProjectStatsEnvelope.CumulativeStats,
     project: Project, aggregates: ProjectStatsEnvelope.ReferralAggregateStats,
-    stats: [ProjectStatsEnvelope.ReferrerStats]), NoError>
-  public let rewardData: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), NoError>
-  public let videoStats: Signal<ProjectStatsEnvelope.VideoStats, NoError>
-  public let updateTitleViewData: Signal<DashboardTitleViewData, NoError>
+    stats: [ProjectStatsEnvelope.ReferrerStats]), Never>
+  public let rewardData: Signal<(stats: [ProjectStatsEnvelope.RewardStats], project: Project), Never>
+  public let videoStats: Signal<ProjectStatsEnvelope.VideoStats, Never>
+  public let updateTitleViewData: Signal<DashboardTitleViewData, Never>
 
   public var inputs: DashboardViewModelInputs { return self }
   public var outputs: DashboardViewModelOutputs { return self }

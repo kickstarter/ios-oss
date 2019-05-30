@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,9 +8,9 @@ import ReactiveExtensions_TestHelpers
 
 internal final class ActivitySampleBackingCellViewModelTests: TestCase {
   internal let vm = ActivitySampleBackingCellViewModel()
-  internal let backingTitleText = TestObserver<String, NoError>()
-  internal let backerImage = TestObserver<String?, NoError>()
-  internal let goToActivity = TestObserver<Void, NoError>()
+  internal let backingTitleText = TestObserver<String, Never>()
+  internal let backerImage = TestObserver<String?, Never>()
+  internal let goToActivity = TestObserver<Void, Never>()
 
   internal override func setUp() {
     super.setUp()

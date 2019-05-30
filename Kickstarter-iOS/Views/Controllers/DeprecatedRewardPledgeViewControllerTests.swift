@@ -2,7 +2,6 @@
 @testable import KsApi
 import Library
 import Prelude
-import Result
 import XCTest
 
 private let tolerance: CGFloat = 0.0001
@@ -22,7 +21,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
-        fetchShippingRulesResult: Result([
+        fetchShippingRulesResult: Result(success: [
           .template |> ShippingRule.lens.location .~ .usa,
           .template |> ShippingRule.lens.location .~ .canada,
           .template |> ShippingRule.lens.location .~ .greatBritain,

@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol RewardShippingPickerViewModelInputs {
   /// Call when the cancel button is tapped.
@@ -27,19 +26,19 @@ public protocol RewardShippingPickerViewModelInputs {
 
 public protocol RewardShippingPickerViewModelOutputs {
   /// Emits an array of strings to be used as the picker's data source.
-  var dataSource: Signal<[String], NoError> { get }
+  var dataSource: Signal<[String], Never> { get }
 
   /// Emits an accessibility hint for the done button.
-  var doneButtonAccessibilityHint: Signal<String, NoError> { get }
+  var doneButtonAccessibilityHint: Signal<String, Never> { get }
 
   /// Emits a shipping rule when the delegate should be notified that the user has chosen a shipping rule.
-  var notifyDelegateChoseShippingRule: Signal<ShippingRule, NoError> { get }
+  var notifyDelegateChoseShippingRule: Signal<ShippingRule, Never> { get }
 
   /// Emits when the delegate should be notified that the user wants to cancel.
-  var notifyDelegateToCancel: Signal<(), NoError> { get }
+  var notifyDelegateToCancel: Signal<(), Never> { get }
 
   /// Emits when a row should be selected in the picker view.
-  var selectRow: Signal<Int, NoError> { get }
+  var selectRow: Signal<Int, Never> { get }
 }
 
 public protocol RewardShippingPickerViewModelType {
@@ -68,7 +67,7 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
 
     self.selectRow = projectAndSortedShippingRulesAndSelectedShippingRule
       .map { _, shippingRules, selectedShippingRule in
-        shippingRules.index(of: selectedShippingRule) ?? 0
+        shippingRules.firstIndex(of: selectedShippingRule) ?? 0
       }
       .takeWhen(self.viewWillAppearProperty.signal)
 
@@ -130,11 +129,11 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
     self.viewWillAppearProperty.value = ()
   }
 
-  public let dataSource: Signal<[String], NoError>
-  public let doneButtonAccessibilityHint: Signal<String, NoError>
-  public let notifyDelegateChoseShippingRule: Signal<ShippingRule, NoError>
-  public let notifyDelegateToCancel: Signal<(), NoError>
-  public let selectRow: Signal<Int, NoError>
+  public let dataSource: Signal<[String], Never>
+  public let doneButtonAccessibilityHint: Signal<String, Never>
+  public let notifyDelegateChoseShippingRule: Signal<ShippingRule, Never>
+  public let notifyDelegateToCancel: Signal<(), Never>
+  public let selectRow: Signal<Int, Never>
 
   public var inputs: RewardShippingPickerViewModelInputs { return self }
   public var outputs: RewardShippingPickerViewModelOutputs { return self }

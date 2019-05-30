@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol SettingsFollowCellViewModelInputs {
   func configureWith(user: User)
@@ -11,9 +10,9 @@ public protocol SettingsFollowCellViewModelInputs {
 }
 
 public protocol SettingsFollowCellViewModelOutputs {
-  var followingPrivacyOn: Signal<Bool, NoError> { get }
-  var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
-  var updateCurrentUser: Signal<User, NoError> { get }
+  var followingPrivacyOn: Signal<Bool, Never> { get }
+  var showPrivacyFollowingPrompt: Signal<(), Never> { get }
+  var updateCurrentUser: Signal<User, Never> { get }
 }
 
 public protocol SettingsFollowCellViewModelType {
@@ -27,7 +26,7 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
   public init() {
     let initialUser = configureWithProperty.signal.skipNil()
 
-    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
+    let userAttributeChanged: Signal<(UserAttribute, Bool), Never> =
       self.followTappedProperty.signal.filter { $0 == true }.map {
         (UserAttribute.privacy(UserAttribute.Privacy.following), $0)
     }
@@ -58,9 +57,9 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
     self.followTappedProperty.value = on
   }
 
-  public let followingPrivacyOn: Signal<Bool, NoError>
-  public let showPrivacyFollowingPrompt: Signal<(), NoError>
-  public let updateCurrentUser: Signal<User, NoError>
+  public let followingPrivacyOn: Signal<Bool, Never>
+  public let showPrivacyFollowingPrompt: Signal<(), Never>
+  public let updateCurrentUser: Signal<User, Never>
 
   public var inputs: SettingsFollowCellViewModelInputs { return self }
   public var outputs: SettingsFollowCellViewModelOutputs { return self }

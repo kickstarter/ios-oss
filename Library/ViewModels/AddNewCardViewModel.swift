@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public typealias Month = UInt
 public typealias Year = UInt
@@ -27,17 +26,17 @@ public protocol AddNewCardViewModelInputs {
 }
 
 public protocol AddNewCardViewModelOutputs {
-  var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
-  var addNewCardFailure: Signal<String, NoError> { get }
-  var addNewCardSuccess: Signal<String, NoError> { get }
-  var creditCardValidationErrorContainerHidden: Signal<Bool, NoError> { get }
-  var cardholderNameBecomeFirstResponder: Signal<Void, NoError> { get }
-  var dismissKeyboard: Signal<Void, NoError> { get }
-  var paymentDetails: Signal<PaymentDetails, NoError> { get }
-  var paymentDetailsBecomeFirstResponder: Signal<Void, NoError> { get }
-  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
-  var setStripePublishableKey: Signal<String, NoError> { get }
-  var zipcodeTextFieldBecomeFirstResponder: Signal<Void, NoError> { get }
+  var activityIndicatorShouldShow: Signal<Bool, Never> { get }
+  var addNewCardFailure: Signal<String, Never> { get }
+  var addNewCardSuccess: Signal<String, Never> { get }
+  var creditCardValidationErrorContainerHidden: Signal<Bool, Never> { get }
+  var cardholderNameBecomeFirstResponder: Signal<Void, Never> { get }
+  var dismissKeyboard: Signal<Void, Never> { get }
+  var paymentDetails: Signal<PaymentDetails, Never> { get }
+  var paymentDetailsBecomeFirstResponder: Signal<Void, Never> { get }
+  var saveButtonIsEnabled: Signal<Bool, Never> { get }
+  var setStripePublishableKey: Signal<String, Never> { get }
+  var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
 }
 
 public protocol AddNewCardViewModelType {
@@ -70,7 +69,7 @@ AddNewCardViewModelOutputs {
     self.zipcodeTextFieldBecomeFirstResponder = self.paymentCardTextFieldDidEndEditingProperty.signal
 
     let zipcode = self.zipcodeProperty.signal.skipNil()
-    let zipcodeIsValid: Signal<Bool, NoError> = zipcode.map { !$0.isEmpty }
+    let zipcodeIsValid: Signal<Bool, Never> = zipcode.map { !$0.isEmpty }
 
     let cardBrandValidAndCardNumberValid = Signal
       .combineLatest(self.cardBrandIsValidProperty.signal,
@@ -234,17 +233,17 @@ AddNewCardViewModelOutputs {
     self.zipcodeTextFieldDidEndEditingProperty.value = ()
   }
 
-  public let activityIndicatorShouldShow: Signal<Bool, NoError>
-  public let addNewCardFailure: Signal<String, NoError>
-  public let addNewCardSuccess: Signal<String, NoError>
-  public let creditCardValidationErrorContainerHidden: Signal<Bool, NoError>
-  public let cardholderNameBecomeFirstResponder: Signal<Void, NoError>
-  public let dismissKeyboard: Signal<Void, NoError>
-  public let paymentDetails: Signal<PaymentDetails, NoError>
-  public let paymentDetailsBecomeFirstResponder: Signal<Void, NoError>
-  public let saveButtonIsEnabled: Signal<Bool, NoError>
-  public let setStripePublishableKey: Signal<String, NoError>
-  public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, NoError>
+  public let activityIndicatorShouldShow: Signal<Bool, Never>
+  public let addNewCardFailure: Signal<String, Never>
+  public let addNewCardSuccess: Signal<String, Never>
+  public let creditCardValidationErrorContainerHidden: Signal<Bool, Never>
+  public let cardholderNameBecomeFirstResponder: Signal<Void, Never>
+  public let dismissKeyboard: Signal<Void, Never>
+  public let paymentDetails: Signal<PaymentDetails, Never>
+  public let paymentDetailsBecomeFirstResponder: Signal<Void, Never>
+  public let saveButtonIsEnabled: Signal<Bool, Never>
+  public let setStripePublishableKey: Signal<String, Never>
+  public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }

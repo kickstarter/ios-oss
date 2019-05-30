@@ -4,7 +4,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol DiscoveryViewModelInputs {
 
@@ -35,29 +34,29 @@ public protocol DiscoveryViewModelInputs {
 
 public protocol DiscoveryViewModelOutputs {
   /// Emits params to configure the navigation header.
-  var configureNavigationHeader: Signal<DiscoveryParams, NoError> { get }
+  var configureNavigationHeader: Signal<DiscoveryParams, Never> { get }
 
   /// Emits an array of sorts that should be used to configure the pager data source.
-  var configurePagerDataSource: Signal<[DiscoveryParams.Sort], NoError> { get }
+  var configurePagerDataSource: Signal<[DiscoveryParams.Sort], Never> { get }
 
   /// Emits an array of sorts that should be used to configure the sort pager controller.
-  var configureSortPager: Signal<[DiscoveryParams.Sort], NoError> { get }
+  var configureSortPager: Signal<[DiscoveryParams.Sort], Never> { get }
 
   /// Emits a discovery params value that should be passed to all the pages in discovery.
-  var loadFilterIntoDataSource: Signal<DiscoveryParams, NoError> { get }
+  var loadFilterIntoDataSource: Signal<DiscoveryParams, Never> { get }
 
   /// Emits when we should manually navigate to a sort's page.
   var navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewController.NavigationDirection),
-    NoError> { get }
+    Never> { get }
 
   /// Emits a sort that should be passed on to the sort pager view controller.
-  var selectSortPage: Signal<DiscoveryParams.Sort, NoError> { get }
+  var selectSortPage: Signal<DiscoveryParams.Sort, Never> { get }
 
   /// Emits to disable/enable the sorts when an empty state is displayed/dismissed.
-  var sortsAreEnabled: Signal<Bool, NoError> { get }
+  var sortsAreEnabled: Signal<Bool, Never> { get }
 
   /// Emits a category id to update the sort pager view controller style.
-  var updateSortPagerStyle: Signal<Int?, NoError> { get }
+  var updateSortPagerStyle: Signal<Int?, Never> { get }
 }
 
 public protocol DiscoveryViewModelType {
@@ -124,8 +123,8 @@ DiscoveryViewModelOutputs {
       .combinePrevious((sort: .magic, ignore: true))
       .filter { _, next in !next.ignore }
       .map { previous, next in
-        let lhs = sorts.index(of: next.sort) ?? -1
-        let rhs = sorts.index(of: previous.sort) ?? 9999
+        let lhs = sorts.firstIndex(of: next.sort) ?? -1
+        let rhs = sorts.firstIndex(of: previous.sort) ?? 9999
         return (next.sort, lhs < rhs ? .reverse : .forward)
     }
 
@@ -184,14 +183,14 @@ DiscoveryViewModelOutputs {
     self.viewWillAppearProperty.value = animated
   }
 
-  public let configureNavigationHeader: Signal<DiscoveryParams, NoError>
-  public let configurePagerDataSource: Signal<[DiscoveryParams.Sort], NoError>
-  public let configureSortPager: Signal<[DiscoveryParams.Sort], NoError>
-  public let loadFilterIntoDataSource: Signal<DiscoveryParams, NoError>
-  public let navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewController.NavigationDirection), NoError>
-  public let selectSortPage: Signal<DiscoveryParams.Sort, NoError>
-  public let sortsAreEnabled: Signal<Bool, NoError>
-  public let updateSortPagerStyle: Signal<Int?, NoError>
+  public let configureNavigationHeader: Signal<DiscoveryParams, Never>
+  public let configurePagerDataSource: Signal<[DiscoveryParams.Sort], Never>
+  public let configureSortPager: Signal<[DiscoveryParams.Sort], Never>
+  public let loadFilterIntoDataSource: Signal<DiscoveryParams, Never>
+  public let navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewController.NavigationDirection), Never>
+  public let selectSortPage: Signal<DiscoveryParams.Sort, Never>
+  public let sortsAreEnabled: Signal<Bool, Never>
+  public let updateSortPagerStyle: Signal<Int?, Never>
 
   public var inputs: DiscoveryViewModelInputs { return self }
   public var outputs: DiscoveryViewModelOutputs { return self }

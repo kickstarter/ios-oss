@@ -3,7 +3,6 @@
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import Result
 import XCTest
 import UserNotifications
 @testable import Library
@@ -14,29 +13,29 @@ import ReactiveExtensions_TestHelpers
 final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
-  fileprivate let applicationIconBadgeNumber = TestObserver<Int, NoError>()
-  fileprivate let configureFabric = TestObserver<(), NoError>()
-  fileprivate let configureHockey = TestObserver<HockeyConfigData, NoError>()
-  fileprivate let didAcceptReceivingRemoteNotifications = TestObserver<(), NoError>()
-  private let findRedirectUrl = TestObserver<URL, NoError>()
-  fileprivate let forceLogout = TestObserver<(), NoError>()
-  fileprivate let goToActivity = TestObserver<(), NoError>()
-  fileprivate let goToDashboard = TestObserver<Param?, NoError>()
-  fileprivate let goToDiscovery = TestObserver<DiscoveryParams?, NoError>()
-  private let goToProjectActivities = TestObserver<Param, NoError>()
-  fileprivate let goToLogin = TestObserver<(), NoError>()
-  fileprivate let goToProfile = TestObserver<(), NoError>()
-  private let goToMobileSafari = TestObserver<URL, NoError>()
-  fileprivate let goToSearch = TestObserver<(), NoError>()
-  fileprivate let postNotificationName = TestObserver<Notification.Name, NoError>()
-  fileprivate let presentViewController = TestObserver<Int, NoError>()
-  fileprivate let pushRegistrationStarted = TestObserver<(), NoError>()
-  fileprivate let pushTokenSuccessfullyRegistered = TestObserver<String, NoError>()
-  fileprivate let setApplicationShortcutItems = TestObserver<[ShortcutItem], NoError>()
-  fileprivate let showAlert = TestObserver<Notification, NoError>()
-  fileprivate let unregisterForRemoteNotifications = TestObserver<(), NoError>()
-  fileprivate let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
-  fileprivate let updateConfigInEnvironment = TestObserver<Config, NoError>()
+  fileprivate let applicationIconBadgeNumber = TestObserver<Int, Never>()
+  fileprivate let configureFabric = TestObserver<(), Never>()
+  fileprivate let configureHockey = TestObserver<HockeyConfigData, Never>()
+  fileprivate let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
+  private let findRedirectUrl = TestObserver<URL, Never>()
+  fileprivate let forceLogout = TestObserver<(), Never>()
+  fileprivate let goToActivity = TestObserver<(), Never>()
+  fileprivate let goToDashboard = TestObserver<Param?, Never>()
+  fileprivate let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
+  private let goToProjectActivities = TestObserver<Param, Never>()
+  fileprivate let goToLogin = TestObserver<(), Never>()
+  fileprivate let goToProfile = TestObserver<(), Never>()
+  private let goToMobileSafari = TestObserver<URL, Never>()
+  fileprivate let goToSearch = TestObserver<(), Never>()
+  fileprivate let postNotificationName = TestObserver<Notification.Name, Never>()
+  fileprivate let presentViewController = TestObserver<Int, Never>()
+  fileprivate let pushRegistrationStarted = TestObserver<(), Never>()
+  fileprivate let pushTokenSuccessfullyRegistered = TestObserver<String, Never>()
+  fileprivate let setApplicationShortcutItems = TestObserver<[ShortcutItem], Never>()
+  fileprivate let showAlert = TestObserver<Notification, Never>()
+  fileprivate let unregisterForRemoteNotifications = TestObserver<(), Never>()
+  fileprivate let updateCurrentUserInEnvironment = TestObserver<User, Never>()
+  fileprivate let updateConfigInEnvironment = TestObserver<Config, Never>()
 
   override func setUp() {
     super.setUp()

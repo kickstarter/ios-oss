@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 import UIKit
 
 public protocol UpdateDraftViewModelInputs {
@@ -56,73 +55,73 @@ public protocol UpdateDraftViewModelInputs {
 
 public protocol UpdateDraftViewModelOutputs {
   /// An attachment was added.
-  var attachmentAdded: Signal<UpdateDraft.Attachment, NoError> { get }
+  var attachmentAdded: Signal<UpdateDraft.Attachment, Never> { get }
 
   /// An attachment was removed.
-  var attachmentRemoved: Signal<UpdateDraft.Attachment, NoError> { get }
+  var attachmentRemoved: Signal<UpdateDraft.Attachment, Never> { get }
 
   /// An collection of attachments.
-  var attachments: Signal<[UpdateDraft.Attachment], NoError> { get }
+  var attachments: Signal<[UpdateDraft.Attachment], Never> { get }
 
   /// The draft's working body.
-  var body: Signal<String, NoError> { get }
+  var body: Signal<String, Never> { get }
 
   /// When the body text view should become first responder.
-  var bodyTextViewBecomeFirstResponder: Signal<(), NoError> { get }
+  var bodyTextViewBecomeFirstResponder: Signal<(), Never> { get }
 
   /// Emits when the view controller should show a preview.
-  var goToPreview: Signal<UpdateDraft, NoError> { get }
+  var goToPreview: Signal<UpdateDraft, Never> { get }
 
   /// Whether or not to show the attachments section.
-  var isAttachmentsSectionHidden: Signal<Bool, NoError> { get }
+  var isAttachmentsSectionHidden: Signal<Bool, Never> { get }
 
   /// Whether or not the draft is being fetched from the API.
-  var isLoading: Signal<Bool, NoError> { get }
+  var isLoading: Signal<Bool, Never> { get }
 
   /// Whether or not the draft is limited to backers only.
-  var isBackersOnly: Signal<Bool, NoError> { get }
+  var isBackersOnly: Signal<Bool, Never> { get }
 
   /// Whether or not the body placeholder is visible.
-  var isBodyPlaceholderHidden: Signal<Bool, NoError> { get }
+  var isBodyPlaceholderHidden: Signal<Bool, Never> { get }
 
   /// Whether or no the preview button should be enabled.
-  var isPreviewButtonEnabled: Signal<Bool, NoError> { get }
+  var isPreviewButtonEnabled: Signal<Bool, Never> { get }
 
   /// Emits the update number, formatted.
-  var navigationItemTitle: Signal<String, NoError> { get }
+  var navigationItemTitle: Signal<String, Never> { get }
 
   /// Emits when the view controller should be dismissed.
-  var notifyPresenterViewControllerWantsDismissal: Signal<(), NoError> { get }
+  var notifyPresenterViewControllerWantsDismissal: Signal<(), Never> { get }
 
   /// Emits when the keyboard should be dismissed.
-  var resignFirstResponder: Signal<(), NoError> { get }
+  var resignFirstResponder: Signal<(), Never> { get }
 
   /// Emits when adding an attachment fails.
-  var showAddAttachmentFailure: Signal<(), NoError> { get }
+  var showAddAttachmentFailure: Signal<(), Never> { get }
 
   /// Emits when add attachment is tapped.
-  var showAttachmentActions: Signal<[AttachmentSource], NoError> { get }
+  var showAttachmentActions: Signal<[AttachmentSource], Never> { get }
 
   /// Emits when the creator selects "add photo" or "choose from camera roll".
-  var showImagePicker: Signal<AttachmentSource, NoError> { get }
+  var showImagePicker: Signal<AttachmentSource, Never> { get }
 
   /// Emits when the view controller should show a load error.
-  var showLoadFailure: Signal<(), NoError> { get }
+  var showLoadFailure: Signal<(), Never> { get }
 
   /// Emits when an attachment is tapped.
-  var showRemoveAttachmentConfirmation: Signal<UpdateDraft.Attachment, NoError> { get }
+  var showRemoveAttachmentConfirmation: Signal<UpdateDraft.Attachment, Never> { get }
 
   /// Emits when removing an attachment failed.
-  var showRemoveAttachmentFailure: Signal<(), NoError> { get }
+  var showRemoveAttachmentFailure: Signal<(), Never> { get }
 
   /// Emits when a save fails.
-  var showSaveFailure: Signal<(), NoError> { get }
+  var showSaveFailure: Signal<(), Never> { get }
 
   /// The draft's working title.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<String, Never> { get }
 
   /// When the body text view should become first responder.
-  var titleTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
+  var titleTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 }
 
 public protocol UpdateDraftViewModelType {
@@ -135,7 +134,7 @@ UpdateDraftViewModelOutputs {
     public init() {
     // MARK: Loading
 
-    let project: Signal<Project, NoError> = self.projectProperty.signal.skipNil()
+    let project: Signal<Project, Never> = self.projectProperty.signal.skipNil()
 
     let draftEvent =
       Signal.combineLatest(self.viewDidLoadProperty.signal, project)
@@ -146,7 +145,7 @@ UpdateDraftViewModelOutputs {
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     }
 
-    let draft: Signal<UpdateDraft, NoError> = draftEvent.values()
+    let draft: Signal<UpdateDraft, Never> = draftEvent.values()
 
     self.showLoadFailure = draftEvent.errors().ignoreValues()
 
@@ -165,16 +164,16 @@ UpdateDraftViewModelOutputs {
     self.title = draft.map { $0.update.title }
     self.body = draft.map { $0.update.body ?? "" }
 
-    let wasBackersOnly: Signal<Bool, NoError> = draft.map { $0.update.isPublic }.map(negate)
+    let wasBackersOnly: Signal<Bool, Never> = draft.map { $0.update.isPublic }.map(negate)
 
     self.isBackersOnly = Signal.merge(wasBackersOnly, self.isBackersOnlyOnProperty.signal)
 
-    let currentTitle: Signal<String, NoError> = Signal.merge(self.title, self.titleTextChangedProperty.signal)
-    let currentBody: Signal<String, NoError> = Signal.merge(self.body, self.bodyTextChangedProperty.signal)
+    let currentTitle: Signal<String, Never> = Signal.merge(self.title, self.titleTextChangedProperty.signal)
+    let currentBody: Signal<String, Never> = Signal.merge(self.body, self.bodyTextChangedProperty.signal)
 
-    let titleChanged: Signal<Bool, NoError> = hasChanged(self.title, currentTitle)
-    let bodyChanged: Signal<Bool, NoError> = hasChanged(self.body, currentBody)
-    let isBackersOnlyChanged: Signal<Bool, NoError> = hasChanged(wasBackersOnly, self.isBackersOnly)
+    let titleChanged: Signal<Bool, Never> = hasChanged(self.title, currentTitle)
+    let bodyChanged: Signal<Bool, Never> = hasChanged(self.body, currentBody)
+    let isBackersOnlyChanged: Signal<Bool, Never> = hasChanged(wasBackersOnly, self.isBackersOnly)
 
     // MARK: Attachments
 
@@ -202,7 +201,7 @@ UpdateDraftViewModelOutputs {
     self.attachmentAdded = addAttachmentEvent.values()
       .map(UpdateDraft.Attachment.image)
 
-    let addedAttachments: Signal<[UpdateDraft.Attachment], NoError> = Signal
+    let addedAttachments: Signal<[UpdateDraft.Attachment], Never> = Signal
       .merge(
         self.attachments,
         self.attachments
@@ -217,10 +216,10 @@ UpdateDraftViewModelOutputs {
       .map { attachments, id in attachments.filter { $0.id == id }.first }
       .skipNil()
 
-    let removeAttachmentEvent: Signal<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, NoError> = draft
+    let removeAttachmentEvent: Signal<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, Never> = draft
       .takePairWhen(self.removeAttachmentProperty.signal.skipNil())
       .switchMap { (draft, attachment)
-        -> SignalProducer<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, NoError> in
+        -> SignalProducer<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, Never> in
         guard case let .image(image) = attachment else { fatalError("Video not supported") }
         return AppEnvironment.current.apiService.delete(image: image, fromDraft: draft)
           .materialize()
@@ -232,7 +231,7 @@ UpdateDraftViewModelOutputs {
     self.attachmentRemoved = removeAttachmentEvent.values()
       .map(UpdateDraft.Attachment.image)
 
-      let removedAttachments: Signal<[UpdateDraft.Attachment], NoError> = addedAttachments
+      let removedAttachments: Signal<[UpdateDraft.Attachment], Never> = addedAttachments
       .switchMap { [attachmentRemoved] attachments in
         attachmentRemoved
           .scan(attachments) { currentAttachments, toRemove in
@@ -240,7 +239,7 @@ UpdateDraftViewModelOutputs {
         }
     }
 
-    let currentAttachments: Signal<[UpdateDraft.Attachment], NoError> = Signal
+    let currentAttachments: Signal<[UpdateDraft.Attachment], Never> = Signal
       .merge(
         self.attachments,
         addedAttachments,
@@ -256,7 +255,7 @@ UpdateDraftViewModelOutputs {
 
     // MARK: Validation
 
-    let hasContent: Signal<Bool, NoError> = Signal.combineLatest(currentTitle, currentBody, self.attachments)
+    let hasContent: Signal<Bool, Never> = Signal.combineLatest(currentTitle, currentBody, self.attachments)
       .map { title, body, attachments in
         !title.trimmed().isEmpty && (!body.trimmed().isEmpty || !attachments.isEmpty)
     }
@@ -270,10 +269,10 @@ UpdateDraftViewModelOutputs {
 
     // MARK: Focus
 
-    let draftHasTitle: Signal<Bool, NoError> = draft
+    let draftHasTitle: Signal<Bool, Never> = draft
       .map { !$0.update.title.isEmpty }
 
-    let draftHasBody: Signal<Bool, NoError> = draft
+    let draftHasBody: Signal<Bool, Never> = draft
       .map { !($0.update.body ?? "").isEmpty }
 
     self.titleTextFieldBecomeFirstResponder = draftHasTitle
@@ -295,7 +294,7 @@ UpdateDraftViewModelOutputs {
 
     // MARK: Saving
 
-    let saveAction: Signal<SaveAction, NoError> = Signal.merge(
+    let saveAction: Signal<SaveAction, Never> = Signal.merge(
       self.closeButtonTappedProperty.signal.mapConst(SaveAction.dismiss),
       self.previewButtonTappedProperty.signal.mapConst(SaveAction.preview)
     )
@@ -308,13 +307,13 @@ UpdateDraftViewModelOutputs {
       )
       .takeWhen(saveAction)
       .flatMap { (draft, title, body, isBackersOnly) ->
-        SignalProducer<Signal<UpdateDraft, ErrorEnvelope>.Event, NoError> in
+        SignalProducer<Signal<UpdateDraft, ErrorEnvelope>.Event, Never> in
 
         let unchanged = draft.update.title == title
           && draft.update.body == body
           && draft.update.isPublic == !isBackersOnly
 
-        let producer: SignalProducer<Signal<UpdateDraft, ErrorEnvelope>.Event, NoError>
+        let producer: SignalProducer<Signal<UpdateDraft, ErrorEnvelope>.Event, Never>
 
         if unchanged {
           producer = SignalProducer(value: .value(draft))
@@ -515,29 +514,29 @@ UpdateDraftViewModelOutputs {
   }
 
   // OUTPUTS
-  public let attachmentAdded: Signal<UpdateDraft.Attachment, NoError>
-  public let attachmentRemoved: Signal<UpdateDraft.Attachment, NoError>
-  public let attachments: Signal<[UpdateDraft.Attachment], NoError>
-  public let body: Signal<String, NoError>
-  public let bodyTextViewBecomeFirstResponder: Signal<(), NoError>
-  public let goToPreview: Signal<UpdateDraft, NoError>
-  public let isAttachmentsSectionHidden: Signal<Bool, NoError>
-  public let isLoading: Signal<Bool, NoError>
-  public let isBodyPlaceholderHidden: Signal<Bool, NoError>
-  public let isBackersOnly: Signal<Bool, NoError>
-  public let isPreviewButtonEnabled: Signal<Bool, NoError>
-  public let navigationItemTitle: Signal<String, NoError>
-  public let notifyPresenterViewControllerWantsDismissal: Signal<(), NoError>
-  public let resignFirstResponder: Signal<(), NoError>
-  public let showAddAttachmentFailure: Signal<(), NoError>
-  public let showAttachmentActions: Signal<[AttachmentSource], NoError>
-  public let showImagePicker: Signal<AttachmentSource, NoError>
-  public let showLoadFailure: Signal<(), NoError>
-  public let showRemoveAttachmentConfirmation: Signal<UpdateDraft.Attachment, NoError>
-  public let showRemoveAttachmentFailure: Signal<(), NoError>
-  public let showSaveFailure: Signal<(), NoError>
-  public let title: Signal<String, NoError>
-  public let titleTextFieldBecomeFirstResponder: Signal<(), NoError>
+  public let attachmentAdded: Signal<UpdateDraft.Attachment, Never>
+  public let attachmentRemoved: Signal<UpdateDraft.Attachment, Never>
+  public let attachments: Signal<[UpdateDraft.Attachment], Never>
+  public let body: Signal<String, Never>
+  public let bodyTextViewBecomeFirstResponder: Signal<(), Never>
+  public let goToPreview: Signal<UpdateDraft, Never>
+  public let isAttachmentsSectionHidden: Signal<Bool, Never>
+  public let isLoading: Signal<Bool, Never>
+  public let isBodyPlaceholderHidden: Signal<Bool, Never>
+  public let isBackersOnly: Signal<Bool, Never>
+  public let isPreviewButtonEnabled: Signal<Bool, Never>
+  public let navigationItemTitle: Signal<String, Never>
+  public let notifyPresenterViewControllerWantsDismissal: Signal<(), Never>
+  public let resignFirstResponder: Signal<(), Never>
+  public let showAddAttachmentFailure: Signal<(), Never>
+  public let showAttachmentActions: Signal<[AttachmentSource], Never>
+  public let showImagePicker: Signal<AttachmentSource, Never>
+  public let showLoadFailure: Signal<(), Never>
+  public let showRemoveAttachmentConfirmation: Signal<UpdateDraft.Attachment, Never>
+  public let showRemoveAttachmentFailure: Signal<(), Never>
+  public let showSaveFailure: Signal<(), Never>
+  public let title: Signal<String, Never>
+  public let titleTextFieldBecomeFirstResponder: Signal<(), Never>
 
   public var inputs: UpdateDraftViewModelInputs { return self }
   public var outputs: UpdateDraftViewModelOutputs { return self }
@@ -592,8 +591,8 @@ private enum SaveAction {
   case preview
 }
 
-private func hasChanged<T: Equatable>(_ original: Signal<T, NoError>, _ updated: Signal<T, NoError>)
-  -> Signal<Bool, NoError> {
+private func hasChanged<T: Equatable>(_ original: Signal<T, Never>, _ updated: Signal<T, Never>)
+  -> Signal<Bool, Never> {
 
     return Signal
       .merge(

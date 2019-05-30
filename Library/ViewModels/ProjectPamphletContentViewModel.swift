@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ProjectPamphletContentViewModelInputs {
   func configureWith(project: Project)
@@ -15,13 +14,13 @@ public protocol ProjectPamphletContentViewModelInputs {
 }
 
 public protocol ProjectPamphletContentViewModelOutputs {
-  var goToBacking: Signal<Project, NoError> { get }
-  var goToComments: Signal<Project, NoError> { get }
-  var goToRewardPledge: Signal<(Project, Reward), NoError> { get }
-  var goToUpdates: Signal<Project, NoError> { get }
-  var loadMinimalProjectIntoDataSource: Signal<Project, NoError> { get }
-  var loadProjectIntoDataSource: Signal<(Project, Bool), NoError> { get }
-  var rewardTitleCellVisible: Signal<Bool, NoError> { get }
+  var goToBacking: Signal<Project, Never> { get }
+  var goToComments: Signal<Project, Never> { get }
+  var goToRewardPledge: Signal<(Project, Reward), Never> { get }
+  var goToUpdates: Signal<Project, Never> { get }
+  var loadMinimalProjectIntoDataSource: Signal<Project, Never> { get }
+  var loadProjectIntoDataSource: Signal<(Project, Bool), Never> { get }
+  var rewardTitleCellVisible: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectPamphletContentViewModelType {
@@ -135,13 +134,13 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.viewWillAppearAnimatedProperty.value = animated
   }
 
-  public let goToBacking: Signal<Project, NoError>
-  public let goToComments: Signal<Project, NoError>
-  public let goToRewardPledge: Signal<(Project, Reward), NoError>
-  public let goToUpdates: Signal<Project, NoError>
-  public let loadMinimalProjectIntoDataSource: Signal<Project, NoError>
-  public let loadProjectIntoDataSource: Signal<(Project, Bool), NoError>
-  public let rewardTitleCellVisible: Signal<Bool, NoError>
+  public let goToBacking: Signal<Project, Never>
+  public let goToComments: Signal<Project, Never>
+  public let goToRewardPledge: Signal<(Project, Reward), Never>
+  public let goToUpdates: Signal<Project, Never>
+  public let loadMinimalProjectIntoDataSource: Signal<Project, Never>
+  public let loadProjectIntoDataSource: Signal<(Project, Bool), Never>
+  public let rewardTitleCellVisible: Signal<Bool, Never>
 
   public var inputs: ProjectPamphletContentViewModelInputs { return self }
   public var outputs: ProjectPamphletContentViewModelOutputs { return self }

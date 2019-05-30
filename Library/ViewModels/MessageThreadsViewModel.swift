@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol MessageThreadsViewModelInputs {
   /// Call when the mailbox chooser button is pressed.
@@ -29,25 +28,25 @@ public protocol MessageThreadsViewModelInputs {
 
 public protocol MessageThreadsViewModelOutputs {
   /// Emits a boolean that determines if the empty state is visible.
-  var emptyStateIsVisible: Signal<Bool, NoError> { get }
+  var emptyStateIsVisible: Signal<Bool, Never> { get }
 
   /// Emits when we should go to the search messages screen.
-  var goToSearch: Signal<(), NoError> { get }
+  var goToSearch: Signal<(), Never> { get }
 
   /// Emits a boolean that determines if the footer loading view is hidden.
-  var loadingFooterIsHidden: Signal<Bool, NoError> { get }
+  var loadingFooterIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a string of the mailbox we are currently viewing.
-  var mailboxName: Signal<String, NoError> { get }
+  var mailboxName: Signal<String, Never> { get }
 
   /// Emits an array of message threads to be displayed.
-  var messageThreads: Signal<[MessageThread], NoError> { get }
+  var messageThreads: Signal<[MessageThread], Never> { get }
 
   /// Emits when the refresh control should end refreshing.
-  var refreshControlEndRefreshing: Signal<(), NoError> { get }
+  var refreshControlEndRefreshing: Signal<(), Never> { get }
 
   /// Emits when an action sheet should be displayed that allows the user to choose mailboxes.
-  var showMailboxChooserActionSheet: Signal<(), NoError> { get }
+  var showMailboxChooserActionSheet: Signal<(), Never> { get }
 }
 
 public protocol MessageThreadsViewModelType {
@@ -165,13 +164,13 @@ MessageThreadsViewModelOutputs {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let emptyStateIsVisible: Signal<Bool, NoError>
-  public let loadingFooterIsHidden: Signal<Bool, NoError>
-  public let goToSearch: Signal<(), NoError>
-  public let mailboxName: Signal<String, NoError>
-  public let messageThreads: Signal<[MessageThread], NoError>
-  public let refreshControlEndRefreshing: Signal<(), NoError>
-  public let showMailboxChooserActionSheet: Signal<(), NoError>
+  public let emptyStateIsVisible: Signal<Bool, Never>
+  public let loadingFooterIsHidden: Signal<Bool, Never>
+  public let goToSearch: Signal<(), Never>
+  public let mailboxName: Signal<String, Never>
+  public let messageThreads: Signal<[MessageThread], Never>
+  public let refreshControlEndRefreshing: Signal<(), Never>
+  public let showMailboxChooserActionSheet: Signal<(), Never>
 
   public var inputs: MessageThreadsViewModelInputs { return self }
   public var outputs: MessageThreadsViewModelOutputs { return self }

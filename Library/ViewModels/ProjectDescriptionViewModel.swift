@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 import WebKit
 
 public protocol ProjectDescriptionViewModelInputs {
@@ -29,22 +28,22 @@ public protocol ProjectDescriptionViewModelOutputs {
   var decidedPolicyForNavigationAction: WKNavigationActionPolicy { get }
 
   /// Emits when we should go back to the project.
-  var goBackToProject: Signal<(), NoError> { get }
+  var goBackToProject: Signal<(), Never> { get }
 
   /// Emits when we should navigate to the message dialog.
-  var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
+  var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<URL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, Never> { get }
 
   /// Emits when a web request is loading.
-  var isLoading: Signal<Bool, NoError> { get }
+  var isLoading: Signal<Bool, Never> { get }
 
   /// Emits a url request that should be loaded into the webview.
-  var loadWebViewRequest: Signal<URLRequest, NoError> { get }
+  var loadWebViewRequest: Signal<URLRequest, Never> { get }
 
   /// Emits when an error should be displayed.
-  var showErrorAlert: Signal<Error, NoError> { get }
+  var showErrorAlert: Signal<Error, Never> { get }
 }
 
 public protocol ProjectDescriptionViewModelType {
@@ -159,12 +158,12 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
     self.webViewDidStartProvisionalNavigationProperty.value = ()
   }
 
-  public let goBackToProject: Signal<(), NoError>
-  public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
-  public let goToSafariBrowser: Signal<URL, NoError>
-  public let isLoading: Signal<Bool, NoError>
-  public let loadWebViewRequest: Signal<URLRequest, NoError>
-  public let showErrorAlert: Signal<Error, NoError>
+  public let goBackToProject: Signal<(), Never>
+  public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
+  public let goToSafariBrowser: Signal<URL, Never>
+  public let isLoading: Signal<Bool, Never>
+  public let loadWebViewRequest: Signal<URLRequest, Never>
+  public let showErrorAlert: Signal<Error, Never>
 
   public var inputs: ProjectDescriptionViewModelInputs { return self }
   public var outputs: ProjectDescriptionViewModelOutputs { return self }

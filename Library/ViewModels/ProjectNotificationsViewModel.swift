@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol ProjectNotificationsViewModelInputs {
   /// Call when the view loads.
@@ -12,7 +11,7 @@ public protocol ProjectNotificationsViewModelInputs {
 
 public protocol ProjectNotificationsViewModelOutputs {
   /// Emits a list of project notifications that should be displayed.
-  var projectNotifications: Signal<[ProjectNotification], NoError> { get }
+  var projectNotifications: Signal<[ProjectNotification], Never> { get }
 }
 
 public protocol ProjectNotificationsViewModelType {
@@ -36,7 +35,7 @@ public final class ProjectNotificationsViewModel: ProjectNotificationsViewModelT
     self.viewDidLoadProperty.value = ()
   }
 
-  public let projectNotifications: Signal<[ProjectNotification], NoError>
+  public let projectNotifications: Signal<[ProjectNotification], Never>
 
   public var inputs: ProjectNotificationsViewModelInputs { return self }
   public var outputs: ProjectNotificationsViewModelOutputs { return self }

@@ -2,14 +2,13 @@
 @testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
-import Result
 import XCTest
 
 internal final class PledgeDescriptionCellViewModelTests: TestCase {
   private let vm: PledgeDescriptionCellViewModelType = PledgeDescriptionCellViewModel()
 
-  private let estimatedDeliveryText = TestObserver<String, NoError>()
-  private let presentTrustAndSafety = TestObserver<Void, NoError>()
+  private let estimatedDeliveryText = TestObserver<String, Never>()
+  private let presentTrustAndSafety = TestObserver<Void, Never>()
 
   override func setUp() {
     super.setUp()

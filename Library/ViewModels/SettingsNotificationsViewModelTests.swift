@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 import ReactiveSwift
-import Result
 import Prelude
 @testable import KsApi
 @testable import Library
@@ -10,11 +9,11 @@ import ReactiveExtensions_TestHelpers
 internal final class SettingsNotificationsViewModelTests: TestCase {
   let vm = SettingsNotificationsViewModel()
 
-  let goToManageProjectNotifications = TestObserver<Void, NoError>()
-  let pickerViewIsHidden = TestObserver<Bool, NoError>()
-  let pickerViewSelectedRow = TestObserver<EmailFrequency, NoError>()
-  let unableToSaveError = TestObserver<String, NoError>()
-  let updateCurrentUser = TestObserver<User, NoError>()
+  let goToManageProjectNotifications = TestObserver<Void, Never>()
+  let pickerViewIsHidden = TestObserver<Bool, Never>()
+  let pickerViewSelectedRow = TestObserver<EmailFrequency, Never>()
+  let unableToSaveError = TestObserver<String, Never>()
+  let updateCurrentUser = TestObserver<User, Never>()
 
   internal override func setUp() {
     super.setUp()

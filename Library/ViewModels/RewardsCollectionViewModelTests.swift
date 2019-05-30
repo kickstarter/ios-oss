@@ -3,16 +3,15 @@
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 import XCTest
 
 final class RewardsCollectionViewModelTests: TestCase {
   private let vm: RewardsCollectionViewModelType = RewardsCollectionViewModel()
 
-  private let goToPledgeProject = TestObserver<Project, NoError>()
-  private let goToPledgeRefTag = TestObserver<RefTag?, NoError>()
-  private let goToPledgeReward = TestObserver<Reward, NoError>()
-  private let reloadDataWithRewards = TestObserver<[Reward], NoError>()
+  private let goToPledgeProject = TestObserver<Project, Never>()
+  private let goToPledgeRefTag = TestObserver<RefTag?, Never>()
+  private let goToPledgeReward = TestObserver<Reward, Never>()
+  private let reloadDataWithRewards = TestObserver<[Reward], Never>()
 
   override func setUp() {
     super.setUp()

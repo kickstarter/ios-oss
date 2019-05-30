@@ -2,7 +2,6 @@ import AVFoundation
 import Foundation
 import KsApi
 import ReactiveSwift
-import Result
 import FBSDKCoreKit
 
 /**
@@ -85,7 +84,7 @@ public struct Environment {
   public let pushRegistrationType: PushRegistrationType.Type
 
   /// A reachability signal producer.
-  public let reachability: SignalProducer<Reachability, NoError>
+  public let reachability: SignalProducer<Reachability, Never>
 
   /// A scheduler to use for all time-based RAC operators. Default value is
   /// `QueueScheduler.mainQueueScheduler`.
@@ -121,7 +120,7 @@ public struct Environment {
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
     pushRegistrationType: PushRegistrationType.Type = PushRegistration.self,
-    reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
+    reachability: SignalProducer<Reachability, Never> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
     userDefaults: KeyValueStoreType = UserDefaults.standard) {

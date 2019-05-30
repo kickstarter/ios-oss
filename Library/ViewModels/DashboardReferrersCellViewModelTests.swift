@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,17 +8,17 @@ import ReactiveExtensions_TestHelpers
 
 internal final class DashboardReferrersCellViewModelTests: TestCase {
   internal let vm = DashboardReferrersCellViewModel()
-  internal let averagePledgeText = TestObserver<String, NoError>()
-  internal let customPercentText = TestObserver<String, NoError>()
-  internal let customPledgedText = TestObserver<String, NoError>()
-  internal let externalPercentText = TestObserver<String, NoError>()
-  internal let externalPledgedText = TestObserver<String, NoError>()
-  internal let internalPercentText = TestObserver<String, NoError>()
-  internal let internalPledgedText = TestObserver<String, NoError>()
-  internal let notifyDelegateAddedReferrerRows = TestObserver<Void, NoError>()
-  internal let referrersRowCountry = TestObserver<Project.Country, NoError>()
-  internal let referrersRowReferrers = TestObserver<[ProjectStatsEnvelope.ReferrerStats], NoError>()
-  internal let showMoreReferrersButtonHidden = TestObserver<Bool, NoError>()
+  internal let averagePledgeText = TestObserver<String, Never>()
+  internal let customPercentText = TestObserver<String, Never>()
+  internal let customPledgedText = TestObserver<String, Never>()
+  internal let externalPercentText = TestObserver<String, Never>()
+  internal let externalPledgedText = TestObserver<String, Never>()
+  internal let internalPercentText = TestObserver<String, Never>()
+  internal let internalPledgedText = TestObserver<String, Never>()
+  internal let notifyDelegateAddedReferrerRows = TestObserver<Void, Never>()
+  internal let referrersRowCountry = TestObserver<Project.Country, Never>()
+  internal let referrersRowReferrers = TestObserver<[ProjectStatsEnvelope.ReferrerStats], Never>()
+  internal let showMoreReferrersButtonHidden = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()

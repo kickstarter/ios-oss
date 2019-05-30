@@ -1,13 +1,12 @@
 import KsApi
 import ReactiveSwift
-import Result
 
 public protocol SearchEmptyStateCellViewModelInputs {
   func configureWith(param: DiscoveryParams)
 }
 
 public protocol SearchEmptyStateCellViewModelOutputs {
-  var searchTermNotFoundLabelText: Signal<String, NoError> { get }
+  var searchTermNotFoundLabelText: Signal<String, Never> { get }
 }
 
 public protocol SearchEmptyStateCellViewModelType {
@@ -29,7 +28,7 @@ SearchEmptyStateCellViewModelInputs, SearchEmptyStateCellViewModelOutputs {
     self.paramProperty.value = param
   }
 
-  public let searchTermNotFoundLabelText: Signal<String, NoError>
+  public let searchTermNotFoundLabelText: Signal<String, Never>
 
   public var inputs: SearchEmptyStateCellViewModelInputs { return self }
   public var outputs: SearchEmptyStateCellViewModelOutputs { return self }

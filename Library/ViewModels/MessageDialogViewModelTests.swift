@@ -3,19 +3,18 @@ import XCTest
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 @testable import KsApi
 
 internal final class MessageDialogViewModelTests: TestCase {
   fileprivate let vm: MessageDialogViewModelType = MessageDialogViewModel()
 
-  fileprivate let loadingViewIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let postButtonEnabled = TestObserver<Bool, NoError>()
-  fileprivate let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Message, NoError>()
-  fileprivate let notifyPresenterDialogWantsDismissal = TestObserver<(), NoError>()
-  fileprivate let recipientName = TestObserver<String, NoError>()
-  fileprivate let keyboardIsVisible = TestObserver<Bool, NoError>()
-  fileprivate let showAlertMessage = TestObserver<String, NoError>()
+  fileprivate let loadingViewIsHidden = TestObserver<Bool, Never>()
+  fileprivate let postButtonEnabled = TestObserver<Bool, Never>()
+  fileprivate let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Message, Never>()
+  fileprivate let notifyPresenterDialogWantsDismissal = TestObserver<(), Never>()
+  fileprivate let recipientName = TestObserver<String, Never>()
+  fileprivate let keyboardIsVisible = TestObserver<Bool, Never>()
+  fileprivate let showAlertMessage = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

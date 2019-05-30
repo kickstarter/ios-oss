@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol LoginViewModelInputs {
 
@@ -48,46 +47,46 @@ public protocol LoginViewModelInputs {
 
 public protocol LoginViewModelOutputs {
   /// Emits when to dismiss a textfield keyboard
-  var dismissKeyboard: Signal<(), NoError> { get }
+  var dismissKeyboard: Signal<(), Never> { get }
 
   /// Emits text that should be put into the email field.
-  var emailText: Signal<String, NoError> { get }
+  var emailText: Signal<String, Never> { get }
 
   /// Sets whether the email text field is the first responder.
-  var emailTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
+  var emailTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 
   /// Bool value whether form is valid
-  var isFormValid: Signal<Bool, NoError> { get }
+  var isFormValid: Signal<Bool, Never> { get }
 
   /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
+  var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
 
   /// Emits a boolean that determines if the onepassword button should be hidden or not.
-  var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
+  var onePasswordButtonIsHidden: Signal<Bool, Never> { get }
 
   /// Emits when we should request from the onepassword extension a login.
-  var onePasswordFindLoginForURLString: Signal<String, NoError> { get }
+  var onePasswordFindLoginForURLString: Signal<String, Never> { get }
 
   /// Emits text that should be put into the password field.
-  var passwordText: Signal<String, NoError> { get }
+  var passwordText: Signal<String, Never> { get }
 
   /// Emits when the password textfield should become the first responder
-  var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
+  var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 
   /// Emits when a login success notification should be posted.
-  var postNotification: Signal<(Notification, Notification), NoError> { get }
+  var postNotification: Signal<(Notification, Notification), Never> { get }
 
   /// Emits when a login error has occurred and a message should be displayed.
-  var showError: Signal<String, NoError> { get }
+  var showError: Signal<String, Never> { get }
 
   /// Emits when the reset password screen should be shown
-  var showResetPassword: Signal<(), NoError> { get }
+  var showResetPassword: Signal<(), Never> { get }
 
   // Emits when the show/hide password button is toggled
-  var showHidePasswordButtonToggled: Signal<Bool, NoError> { get }
+  var showHidePasswordButtonToggled: Signal<Bool, Never> { get }
 
   /// Emits when TFA is required for login.
-  var tfaChallenge: Signal<(email: String, password: String), NoError> { get }
+  var tfaChallenge: Signal<(email: String, password: String), Never> { get }
 }
 
 public protocol LoginViewModelType {
@@ -236,20 +235,20 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     self.viewDidLoadProperty.value = ()
   }
 
-  public let dismissKeyboard: Signal<(), NoError>
-  public let emailText: Signal<String, NoError>
-  public let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let isFormValid: Signal<Bool, NoError>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public var onePasswordButtonIsHidden: Signal<Bool, NoError>
-  public let onePasswordFindLoginForURLString: Signal<String, NoError>
-  public let passwordText: Signal<String, NoError>
-  public let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let postNotification: Signal<(Notification, Notification), NoError>
-  public let showError: Signal<String, NoError>
-  public let showResetPassword: Signal<(), NoError>
-  public let showHidePasswordButtonToggled: Signal<Bool, NoError>
-  public let tfaChallenge: Signal<(email: String, password: String), NoError>
+  public let dismissKeyboard: Signal<(), Never>
+  public let emailText: Signal<String, Never>
+  public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
+  public let isFormValid: Signal<Bool, Never>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public var onePasswordButtonIsHidden: Signal<Bool, Never>
+  public let onePasswordFindLoginForURLString: Signal<String, Never>
+  public let passwordText: Signal<String, Never>
+  public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
+  public let postNotification: Signal<(Notification, Notification), Never>
+  public let showError: Signal<String, Never>
+  public let showResetPassword: Signal<(), Never>
+  public let showHidePasswordButtonToggled: Signal<Bool, Never>
+  public let tfaChallenge: Signal<(email: String, password: String), Never>
 }
 
 private func isValid(email: String, password: String) -> Bool {

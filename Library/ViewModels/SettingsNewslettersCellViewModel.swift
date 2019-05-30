@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol SettingsNewslettersCellViewModelInputs {
   func allNewslettersSwitchTapped(on: Bool)
@@ -11,11 +10,11 @@ public protocol SettingsNewslettersCellViewModelInputs {
 }
 
 public protocol SettingsNewslettersCellViewModelOutputs {
-  var showOptInPrompt: Signal<String, NoError> { get }
-  var subscribeToAllSwitchIsOn: Signal<Bool?, NoError> { get }
-  var switchIsOn: Signal<Bool?, NoError> { get }
-  var unableToSaveError: Signal<String, NoError> { get }
-  var updateCurrentUser: Signal<User, NoError> { get }
+  var showOptInPrompt: Signal<String, Never> { get }
+  var subscribeToAllSwitchIsOn: Signal<Bool?, Never> { get }
+  var switchIsOn: Signal<Bool?, Never> { get }
+  var unableToSaveError: Signal<String, Never> { get }
+  var updateCurrentUser: Signal<User, Never> { get }
 }
 
 public protocol SettingsNewslettersCellViewModelType {
@@ -32,7 +31,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 
     let initialUser = self.initialUserProperty.signal.skipNil()
 
-    let newsletterOn: Signal<(Newsletter, Bool), NoError> = newsletter
+    let newsletterOn: Signal<(Newsletter, Bool), Never> = newsletter
       .takePairWhen(self.newslettersSwitchTappedProperty.signal.skipNil())
       .map { newsletter, isOn in (newsletter, isOn) }
 
@@ -122,11 +121,11 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
     self.allNewslettersSwitchProperty.value = on
   }
 
-  public let showOptInPrompt: Signal<String, NoError>
-  public let subscribeToAllSwitchIsOn: Signal<Bool?, NoError>
-  public let switchIsOn: Signal<Bool?, NoError>
-  public let unableToSaveError: Signal<String, NoError>
-  public let updateCurrentUser: Signal<User, NoError>
+  public let showOptInPrompt: Signal<String, Never>
+  public let subscribeToAllSwitchIsOn: Signal<Bool?, Never>
+  public let switchIsOn: Signal<Bool?, Never>
+  public let unableToSaveError: Signal<String, Never>
+  public let updateCurrentUser: Signal<User, Never>
 
   public var inputs: SettingsNewslettersCellViewModelInputs { return self }
   public var outputs: SettingsNewslettersCellViewModelOutputs { return self }
