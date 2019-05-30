@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 import ReactiveSwift
-import Result
 import Prelude
 @testable import KsApi
 @testable import Library
@@ -11,9 +10,9 @@ import ReactiveExtensions_TestHelpers
 internal final class SettingsAccountViewModelTests: TestCase {
   let vm = SettingsAccountViewModel(SettingsAccountViewController.viewController(for:currency:))
 
-  private let fetchAccountFieldsError = TestObserver<Void, NoError>()
-  private let reloadDataShouldHideWarningIcon = TestObserver<Bool, NoError>()
-  private let reloadDataCurrency = TestObserver<Currency, NoError>()
+  private let fetchAccountFieldsError = TestObserver<Void, Never>()
+  private let reloadDataShouldHideWarningIcon = TestObserver<Bool, Never>()
+  private let reloadDataCurrency = TestObserver<Currency, Never>()
 
   internal override func setUp() {
     super.setUp()

@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ProjectPamphletViewModelInputs {
   /// Call with the project given to the view controller.
@@ -24,19 +23,19 @@ public protocol ProjectPamphletViewModelInputs {
 
 public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
-  var configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError> { get }
+  var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
   /// Return this value from the view's `prefersStatusBarHidden` method.
   var prefersStatusBarHidden: Bool { get }
 
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
-  var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), NoError> { get }
+  var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
 
   /// Emits when the `setNeedsStatusBarAppearanceUpdate` method should be called on the view.
-  var setNeedsStatusBarAppearanceUpdate: Signal<(), NoError> { get }
+  var setNeedsStatusBarAppearanceUpdate: Signal<(), Never> { get }
 
   /// Emits a float to update topLayoutConstraints constant.
-  var topLayoutConstraintConstant: Signal<CGFloat, NoError> { get }
+  var topLayoutConstraintConstant: Signal<CGFloat, Never> { get }
 }
 
 public protocol ProjectPamphletViewModelType {
@@ -137,15 +136,15 @@ ProjectPamphletViewModelOutputs {
     self.willTransitionToCollectionProperty.value = collection
   }
 
-  public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), NoError>
+  public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
     return self.prefersStatusBarHiddenProperty.value
   }
 
-  public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), NoError>
-  public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
-  public let topLayoutConstraintConstant: Signal<CGFloat, NoError>
+  public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
+  public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
+  public let topLayoutConstraintConstant: Signal<CGFloat, Never>
 
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }
@@ -224,7 +223,7 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
 }
 
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
-  -> SignalProducer<Project, NoError> {
+  -> SignalProducer<Project, Never> {
 
     let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
 

@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,14 +8,14 @@ import ReactiveExtensions_TestHelpers
 internal final class BackerDashboardProjectCellViewModelTests: TestCase {
   private let vm: BackerDashboardProjectCellViewModelType = BackerDashboardProjectCellViewModel()
 
-  private let metadataIconIsHidden = TestObserver<Bool, NoError>()
-  private let metadataText = TestObserver<String, NoError>()
-  private let percentFundedText = TestObserver<String, NoError>()
-  private let photoURL = TestObserver<String, NoError>()
-  private let progress = TestObserver<Float, NoError>()
-  private let progressBarColor = TestObserver<UIColor, NoError>()
-  private let projectTitleText = TestObserver<String, NoError>()
-  private let savedIconIsHidden = TestObserver<Bool, NoError>()
+  private let metadataIconIsHidden = TestObserver<Bool, Never>()
+  private let metadataText = TestObserver<String, Never>()
+  private let percentFundedText = TestObserver<String, Never>()
+  private let photoURL = TestObserver<String, Never>()
+  private let progress = TestObserver<Float, Never>()
+  private let progressBarColor = TestObserver<UIColor, Never>()
+  private let projectTitleText = TestObserver<String, Never>()
+  private let savedIconIsHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

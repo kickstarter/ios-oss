@@ -1,18 +1,17 @@
 import Foundation
 @testable import Library
 import ReactiveSwift
-import Result
 import UserNotifications
 
 public struct MockPushRegistration: PushRegistrationType {
-  static var registerProducer: SignalProducer<Bool, NoError> = .empty
-  static var hasAuthorizedNotificationsProducer: SignalProducer<Bool, NoError> = .empty
+  static var registerProducer: SignalProducer<Bool, Never> = .empty
+  static var hasAuthorizedNotificationsProducer: SignalProducer<Bool, Never> = .empty
 
-  public static func register(for options: UNAuthorizationOptions) -> SignalProducer<Bool, NoError> {
+  public static func register(for options: UNAuthorizationOptions) -> SignalProducer<Bool, Never> {
     return self.registerProducer
   }
 
-  public static func hasAuthorizedNotifications() -> SignalProducer<Bool, NoError> {
+  public static func hasAuthorizedNotifications() -> SignalProducer<Bool, Never> {
     return self.hasAuthorizedNotificationsProducer
   }
 }

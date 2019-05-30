@@ -5,20 +5,19 @@ import UIKit
 @testable import KsApi
 import ReactiveExtensions_TestHelpers
 import KsApi
-import Result
 import ReactiveSwift
 import Prelude
 
 final class RootViewModelTests: TestCase {
   let vm: RootViewModelType = RootViewModel()
-  let viewControllerNames = TestObserver<[String], NoError>()
-  let filterDiscovery = TestObserver<DiscoveryParams, NoError>()
-  let selectedIndex = TestObserver<RootViewControllerIndex, NoError>()
-  let setBadgeValueAtIndexValue = TestObserver<String?, NoError>()
-  let setBadgeValueAtIndexIndex = TestObserver<RootViewControllerIndex, NoError>()
-  let scrollToTopControllerName = TestObserver<String, NoError>()
-  let switchDashboardProject = TestObserver<Param, NoError>()
-  let tabBarItemsData = TestObserver<TabBarItemsData, NoError>()
+  let viewControllerNames = TestObserver<[String], Never>()
+  let filterDiscovery = TestObserver<DiscoveryParams, Never>()
+  let selectedIndex = TestObserver<RootViewControllerIndex, Never>()
+  let setBadgeValueAtIndexValue = TestObserver<String?, Never>()
+  let setBadgeValueAtIndexIndex = TestObserver<RootViewControllerIndex, Never>()
+  let scrollToTopControllerName = TestObserver<String, Never>()
+  let switchDashboardProject = TestObserver<Param, Never>()
+  let tabBarItemsData = TestObserver<TabBarItemsData, Never>()
 
   override func setUp() {
     super.setUp()
@@ -90,7 +89,7 @@ final class RootViewModelTests: TestCase {
   }
 
   func testSetViewControllers() {
-    let viewControllerNames = TestObserver<[String], NoError>()
+    let viewControllerNames = TestObserver<[String], Never>()
     vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
@@ -172,7 +171,7 @@ final class RootViewModelTests: TestCase {
   }
 
   func testViewControllersDontOverEmit() {
-    let viewControllerNames = TestObserver<[String], NoError>()
+    let viewControllerNames = TestObserver<[String], Never>()
     vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
@@ -186,7 +185,7 @@ final class RootViewModelTests: TestCase {
   }
 
   func testUpdateUserLocalePreferences() {
-    let viewControllerNames = TestObserver<[String], NoError>()
+    let viewControllerNames = TestObserver<[String], Never>()
     vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
@@ -357,7 +356,7 @@ final class RootViewModelTests: TestCase {
   func testSetViewControllers_DoesNotFilterDiscovery() {
     self.filterDiscovery.assertValueCount(0)
 
-    let viewControllerNames = TestObserver<[String], NoError>()
+    let viewControllerNames = TestObserver<[String], Never>()
     vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 

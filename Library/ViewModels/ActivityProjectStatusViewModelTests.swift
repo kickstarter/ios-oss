@@ -1,5 +1,4 @@
 import Prelude
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -7,10 +6,10 @@ import ReactiveExtensions_TestHelpers
 
 internal final class ActivityProjectStatusViewModelTests: TestCase {
   fileprivate let vm: ActivityProjectStatusViewModelType = ActivityProjectStatusViewModel()
-  fileprivate let metadataText = TestObserver<String, NoError>()
-  fileprivate let percentFundedText = TestObserver<String, NoError>()
-  fileprivate let projectImageURL = TestObserver<String?, NoError>()
-  fileprivate let projectName = TestObserver<String, NoError>()
+  fileprivate let metadataText = TestObserver<String, Never>()
+  fileprivate let percentFundedText = TestObserver<String, Never>()
+  fileprivate let projectImageURL = TestObserver<String?, Never>()
+  fileprivate let projectName = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

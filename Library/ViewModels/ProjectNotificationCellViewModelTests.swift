@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -8,9 +7,9 @@ import ReactiveExtensions_TestHelpers
 
 internal final class ProjectNotificationCellViewModelTests: TestCase {
   internal let vm = ProjectNotificationCellViewModel()
-  internal let projectName = TestObserver<String, NoError>()
-  internal let notificationOn = TestObserver<Bool, NoError>()
-  internal let notifyDelegateOfSaveError = TestObserver<String, NoError>()
+  internal let projectName = TestObserver<String, Never>()
+  internal let notificationOn = TestObserver<Bool, Never>()
+  internal let notifyDelegateOfSaveError = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()

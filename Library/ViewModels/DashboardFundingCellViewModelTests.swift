@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,17 +8,17 @@ import ReactiveExtensions_TestHelpers
 
 internal final class DashboardFundingCellViewModelTests: TestCase {
   internal let vm = DashboardFundingCellViewModel()
-  internal let backersText = TestObserver<String, NoError>()
-  internal let cellAccessibilityValue = TestObserver<String, NoError>()
-  internal let deadlineDateText = TestObserver<String, NoError>()
-  internal let goalText = TestObserver<String, NoError>()
-  internal let launchDateText = TestObserver<String, NoError>()
-  internal let pledgedText = TestObserver<String, NoError>()
-  internal let project = TestObserver<Project, NoError>()
-  internal let stats = TestObserver<[ProjectStatsEnvelope.FundingDateStats], NoError>()
-  internal let timeRemainingSubtitleText = TestObserver<String, NoError>()
-  internal let timeRemainingTitleText = TestObserver<String, NoError>()
-  internal let yAxisTickSize = TestObserver<CGFloat, NoError>()
+  internal let backersText = TestObserver<String, Never>()
+  internal let cellAccessibilityValue = TestObserver<String, Never>()
+  internal let deadlineDateText = TestObserver<String, Never>()
+  internal let goalText = TestObserver<String, Never>()
+  internal let launchDateText = TestObserver<String, Never>()
+  internal let pledgedText = TestObserver<String, Never>()
+  internal let project = TestObserver<Project, Never>()
+  internal let stats = TestObserver<[ProjectStatsEnvelope.FundingDateStats], Never>()
+  internal let timeRemainingSubtitleText = TestObserver<String, Never>()
+  internal let timeRemainingTitleText = TestObserver<String, Never>()
+  internal let yAxisTickSize = TestObserver<CGFloat, Never>()
 
   internal override func setUp() {
     super.setUp()

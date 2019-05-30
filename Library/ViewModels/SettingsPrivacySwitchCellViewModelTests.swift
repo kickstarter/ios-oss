@@ -1,13 +1,12 @@
 import Library
 import Prelude
-import Result
 import XCTest
 @testable import KsApi
 import ReactiveExtensions_TestHelpers
 
 final class SettingsPrivacySwitchCellViewModelTests: TestCase {
-  private let privacySwitchIsOn = TestObserver<Bool, NoError>()
-  private let privacySwitchToggledOn = TestObserver<Bool, NoError>()
+  private let privacySwitchIsOn = TestObserver<Bool, Never>()
+  private let privacySwitchToggledOn = TestObserver<Bool, Never>()
 
   private let vm = SettingsPrivacySwitchCellViewModel()
 

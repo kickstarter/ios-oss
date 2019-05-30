@@ -5,30 +5,29 @@ import XCTest
 import ReactiveSwift
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
 
 final class ChangeEmailViewModelTests: TestCase {
   fileprivate let vm: ChangeEmailViewModelType = ChangeEmailViewModel()
 
-  private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
-  private let didChangeEmail = TestObserver<Void, NoError>()
-  private let didFailToChangeEmail = TestObserver<String, NoError>()
-  private let didFailToSendVerificationEmail = TestObserver<String, NoError>()
-  private let didSendVerificationEmail = TestObserver<Void, NoError>()
-  private let dismissKeyboard = TestObserver<(), NoError>()
-  private let emailText = TestObserver<String, NoError>()
-  private let messageLabelViewHidden = TestObserver<Bool, NoError>()
-  private let onePasswordButtonIsHidden = TestObserver<Bool, NoError>()
-  private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-  private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
-  private let passwordText = TestObserver<String, NoError>()
-  private let resendVerificationEmailViewIsHidden = TestObserver<Bool, NoError>()
-  private let resetFields = TestObserver<String, NoError>()
-  private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
-  private let textFieldsAreEnabled = TestObserver<Bool, NoError>()
-  private let unverifiedEmailLabelHidden = TestObserver<Bool, NoError>()
-  private let warningMessageLabelHidden = TestObserver<Bool, NoError>()
-  private let verificationEmailButtonTitle = TestObserver<String, NoError>()
+  private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
+  private let didChangeEmail = TestObserver<Void, Never>()
+  private let didFailToChangeEmail = TestObserver<String, Never>()
+  private let didFailToSendVerificationEmail = TestObserver<String, Never>()
+  private let didSendVerificationEmail = TestObserver<Void, Never>()
+  private let dismissKeyboard = TestObserver<(), Never>()
+  private let emailText = TestObserver<String, Never>()
+  private let messageLabelViewHidden = TestObserver<Bool, Never>()
+  private let onePasswordButtonIsHidden = TestObserver<Bool, Never>()
+  private let onePasswordFindLoginForURLString = TestObserver<String, Never>()
+  private let passwordFieldBecomeFirstResponder = TestObserver<Void, Never>()
+  private let passwordText = TestObserver<String, Never>()
+  private let resendVerificationEmailViewIsHidden = TestObserver<Bool, Never>()
+  private let resetFields = TestObserver<String, Never>()
+  private let saveButtonIsEnabled = TestObserver<Bool, Never>()
+  private let textFieldsAreEnabled = TestObserver<Bool, Never>()
+  private let unverifiedEmailLabelHidden = TestObserver<Bool, Never>()
+  private let warningMessageLabelHidden = TestObserver<Bool, Never>()
+  private let verificationEmailButtonTitle = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

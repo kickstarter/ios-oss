@@ -1,7 +1,9 @@
 import Foundation
+import Library
 import UIKit
 
  final class MockApplication: UIApplicationType {
+  var applicationIconBadgeNumber = 0
   var canOpenURL = false
   var canOpenURLWasCalled = false
   var openUrlWasCalled = false

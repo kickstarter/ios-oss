@@ -1,6 +1,5 @@
 import KsApi
 import ReactiveSwift
-import Result
 import UIKit
 
 public protocol BackingCellViewModelInputs {
@@ -8,12 +7,12 @@ public protocol BackingCellViewModelInputs {
 }
 public protocol BackingCellViewModelOutputs {
   /// Emits a boolean whether the backing info button is hidden or not.
-  var backingInfoButtonIsHidden: Signal<Bool, NoError> { get }
+  var backingInfoButtonIsHidden: Signal<Bool, Never> { get }
 
-  var pledged: Signal<String, NoError> { get }
-  var reward: Signal<String, NoError> { get }
-  var delivery: Signal<String, NoError> { get }
-  var rootStackViewAlignment: Signal<UIStackView.Alignment, NoError> { get }
+  var pledged: Signal<String, Never> { get }
+  var reward: Signal<String, Never> { get }
+  var delivery: Signal<String, Never> { get }
+  var rootStackViewAlignment: Signal<UIStackView.Alignment, Never> { get }
 }
 
 public protocol BackingCellViewModelType {
@@ -55,11 +54,11 @@ BackingCellViewModelOutputs {
     self.backingAndProjectAndIsFromBackingProperty.value = (backing, project, isFromBacking)
   }
 
-  public let backingInfoButtonIsHidden: Signal<Bool, NoError>
-  public let pledged: Signal<String, NoError>
-  public let reward: Signal<String, NoError>
-  public let delivery: Signal<String, NoError>
-  public let rootStackViewAlignment: Signal<UIStackView.Alignment, NoError>
+  public let backingInfoButtonIsHidden: Signal<Bool, Never>
+  public let pledged: Signal<String, Never>
+  public let reward: Signal<String, Never>
+  public let delivery: Signal<String, Never>
+  public let rootStackViewAlignment: Signal<UIStackView.Alignment, Never>
 
   public var inputs: BackingCellViewModelInputs { return self }
   public var outputs: BackingCellViewModelOutputs { return self }

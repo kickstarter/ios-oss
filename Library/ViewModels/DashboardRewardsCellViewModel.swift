@@ -1,7 +1,6 @@
 import KsApi
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import Prelude
 
 public struct RewardsRowData {
@@ -37,13 +36,13 @@ public protocol DashboardRewardsCellViewModelInputs {
 
 public protocol DashboardRewardsCellViewModelOutputs {
   /// Emits when should hide See all tiers button.
-  var hideSeeAllTiersButton: Signal<Bool, NoError> { get }
+  var hideSeeAllTiersButton: Signal<Bool, Never> { get }
 
   /// Emits when should notify the delegate that reward rows have been added to the stack view.
-  var notifyDelegateAddedRewardRows: Signal<Void, NoError> { get }
+  var notifyDelegateAddedRewardRows: Signal<Void, Never> { get }
 
   /// Emits RewardsRowData. Rewards array is truncated if 'see all' button is present.
-  var rewardsRowData: Signal<RewardsRowData, NoError> { get }
+  var rewardsRowData: Signal<RewardsRowData, Never> { get }
 }
 
 public protocol DashboardRewardsCellViewModelType {
@@ -119,9 +118,9 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
   public var inputs: DashboardRewardsCellViewModelInputs { return self }
   public var outputs: DashboardRewardsCellViewModelOutputs { return self }
 
-  public let hideSeeAllTiersButton: Signal<Bool, NoError>
-  public let notifyDelegateAddedRewardRows: Signal<Void, NoError>
-  public let rewardsRowData: Signal<RewardsRowData, NoError>
+  public let hideSeeAllTiersButton: Signal<Bool, Never>
+  public let notifyDelegateAddedRewardRows: Signal<Void, Never>
+  public let rewardsRowData: Signal<RewardsRowData, Never>
 
   fileprivate let backersButtonTappedProperty = MutableProperty(())
   public func backersButtonTapped() {

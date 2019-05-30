@@ -2,7 +2,6 @@ import Library
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 import UIKit
 
 public let maxBadgeValue = 99
@@ -133,26 +132,26 @@ internal protocol RootViewModelInputs {
 
 internal protocol RootViewModelOutputs {
   /// Emits when the discovery VC should filter with specific params.
-  var filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), NoError> { get }
+  var filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), Never> { get }
 
   /// Emits a controller index that should be scrolled to the top. This requires figuring out what kind of
   /// controller it is, and setting its `contentOffset`.
-  var scrollToTop: Signal<RootViewControllerIndex, NoError> { get }
+  var scrollToTop: Signal<RootViewControllerIndex, Never> { get }
 
   /// Emits an index that the tab bar should be switched to.
-  var selectedIndex: Signal<RootViewControllerIndex, NoError> { get }
+  var selectedIndex: Signal<RootViewControllerIndex, Never> { get }
 
   /// Emits the badge value to be set at a particular tab index
-  var setBadgeValueAtIndex: Signal<RootTabBarItemBadgeValueData, NoError> { get }
+  var setBadgeValueAtIndex: Signal<RootTabBarItemBadgeValueData, Never> { get }
 
   /// Emits the array of view controllers that should be set on the tab bar.
-  var setViewControllers: Signal<[RootViewControllerData], NoError> { get }
+  var setViewControllers: Signal<[RootViewControllerData], Never> { get }
 
   /// Emits when the dashboard should switch projects.
-  var switchDashboardProject: Signal<(RootViewControllerIndex, Param), NoError> { get }
+  var switchDashboardProject: Signal<(RootViewControllerIndex, Param), Never> { get }
 
   /// Emits data for setting tab bar item styles.
-  var tabBarItemsData: Signal<TabBarItemsData, NoError> { get }
+  var tabBarItemsData: Signal<TabBarItemsData, Never> { get }
 }
 
 internal protocol RootViewModelType {
@@ -171,7 +170,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       )
       .map { AppEnvironment.current.currentUser }
 
-    let userState: Signal<(isLoggedIn: Bool, isMember: Bool), NoError> = currentUser
+    let userState: Signal<(isLoggedIn: Bool, isMember: Bool), Never> = currentUser
       .map { ($0 != nil, ($0?.stats.memberProjectsCount ?? 0) > 0) }
       .skipRepeats(==)
 
@@ -332,13 +331,13 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     self.viewDidLoadProperty.value = ()
   }
 
-  internal let filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), NoError>
-  internal let scrollToTop: Signal<RootViewControllerIndex, NoError>
-  internal let selectedIndex: Signal<RootViewControllerIndex, NoError>
-  internal let setBadgeValueAtIndex: Signal<RootTabBarItemBadgeValueData, NoError>
-  internal let setViewControllers: Signal<[RootViewControllerData], NoError>
-  internal let switchDashboardProject: Signal<(Int, Param), NoError>
-  internal let tabBarItemsData: Signal<TabBarItemsData, NoError>
+  internal let filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), Never>
+  internal let scrollToTop: Signal<RootViewControllerIndex, Never>
+  internal let selectedIndex: Signal<RootViewControllerIndex, Never>
+  internal let setBadgeValueAtIndex: Signal<RootTabBarItemBadgeValueData, Never>
+  internal let setViewControllers: Signal<[RootViewControllerData], Never>
+  internal let switchDashboardProject: Signal<(Int, Param), Never>
+  internal let tabBarItemsData: Signal<TabBarItemsData, Never>
 
   internal var inputs: RootViewModelInputs { return self }
   internal var outputs: RootViewModelOutputs { return self }

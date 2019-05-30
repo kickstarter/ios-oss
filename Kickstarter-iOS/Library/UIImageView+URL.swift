@@ -1,7 +1,6 @@
 import AlamofireImage
 import ReactiveExtensions
 import ReactiveSwift
-import Result
 import UIKit
 
 extension UIImageView {
@@ -35,7 +34,7 @@ private enum Associations {
 }
 
 extension Rac where Object: UIImageView {
-  public var imageUrl: Signal<URL?, NoError> {
+  public var imageUrl: Signal<URL?, Never> {
     nonmutating set {
       let prop: MutableProperty<URL?> = lazyMutableProperty(
         object,

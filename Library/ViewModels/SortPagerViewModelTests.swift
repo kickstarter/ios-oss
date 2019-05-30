@@ -3,22 +3,21 @@
 import ReactiveExtensions_TestHelpers
 import Prelude
 import ReactiveSwift
-import Result
 import UIKit
 import XCTest
 
 internal final class SortPagerViewModelTests: TestCase {
   fileprivate let vm: SortPagerViewModelType = SortPagerViewModel()
 
-  fileprivate let createSortButtons = TestObserver<[DiscoveryParams.Sort], NoError>()
-  fileprivate let indicatorViewIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let notifyDelegateOfSelectedSort = TestObserver<DiscoveryParams.Sort, NoError>()
-  fileprivate let pinSelectedIndicatorToPage = TestObserver<Int, NoError>()
-  fileprivate let pinSelectedIndicatorAnimated = TestObserver<Bool, NoError>()
-  fileprivate let setSelectedButton = TestObserver<Int, NoError>()
-  fileprivate let updateSortStyleId = TestObserver<Int?, NoError>()
-  fileprivate let updateSortStyleSorts = TestObserver<[DiscoveryParams.Sort], NoError>()
-  fileprivate let updateSortStyleAnimated = TestObserver<Bool, NoError>()
+  fileprivate let createSortButtons = TestObserver<[DiscoveryParams.Sort], Never>()
+  fileprivate let indicatorViewIsHidden = TestObserver<Bool, Never>()
+  fileprivate let notifyDelegateOfSelectedSort = TestObserver<DiscoveryParams.Sort, Never>()
+  fileprivate let pinSelectedIndicatorToPage = TestObserver<Int, Never>()
+  fileprivate let pinSelectedIndicatorAnimated = TestObserver<Bool, Never>()
+  fileprivate let setSelectedButton = TestObserver<Int, Never>()
+  fileprivate let updateSortStyleId = TestObserver<Int?, Never>()
+  fileprivate let updateSortStyleSorts = TestObserver<[DiscoveryParams.Sort], Never>()
+  fileprivate let updateSortStyleAnimated = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

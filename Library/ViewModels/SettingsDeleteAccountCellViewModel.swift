@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol SettingsDeleteAccountCellViewModelInputs {
   func configureWith(user: User)
@@ -11,7 +10,7 @@ public protocol SettingsDeleteAccountCellViewModelInputs {
 }
 
 public protocol SettingsDeleteAccountCellViewModelOutputs {
-  var notifyDeleteAccountTapped: Signal<URL, NoError> { get }
+  var notifyDeleteAccountTapped: Signal<URL, Never> { get }
 }
 
 public protocol SettingsDeleteAccountCellViewModelType {
@@ -41,7 +40,7 @@ public final class SettingsDeleteAccountCellViewModel: SettingsDeleteAccountCell
     self.configureWithProperty.value = user
   }
 
-  public let notifyDeleteAccountTapped: Signal<URL, NoError>
+  public let notifyDeleteAccountTapped: Signal<URL, Never>
 
   public var inputs: SettingsDeleteAccountCellViewModelInputs { return self }
   public var outputs: SettingsDeleteAccountCellViewModelOutputs { return self }

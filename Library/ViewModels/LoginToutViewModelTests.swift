@@ -4,7 +4,6 @@ import XCTest
 import ReactiveSwift
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
 @testable import Library
 @testable import FBSDKLoginKit
 @testable import FBSDKCoreKit
@@ -13,18 +12,18 @@ final class LoginToutViewModelTests: TestCase {
 
   fileprivate let vm: LoginToutViewModelType = LoginToutViewModel()
 
-  fileprivate let attemptFacebookLogin = TestObserver<(), NoError>()
-  fileprivate let dismissViewController = TestObserver<(), NoError>()
-  fileprivate let headlineLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let isLoading = TestObserver<Bool, NoError>()
-  fileprivate let logInContextText = TestObserver<String, NoError>()
-  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  fileprivate let postNotification = TestObserver<(Notification.Name, Notification.Name), NoError>()
-  fileprivate let showFacebookErrorAlert = TestObserver<AlertError, NoError>()
-  fileprivate let startFacebookConfirmation = TestObserver<String, NoError>()
-  fileprivate let startLogin = TestObserver<(), NoError>()
-  fileprivate let startSignup = TestObserver<(), NoError>()
-  fileprivate let startTwoFactorChallenge = TestObserver<String, NoError>()
+  fileprivate let attemptFacebookLogin = TestObserver<(), Never>()
+  fileprivate let dismissViewController = TestObserver<(), Never>()
+  fileprivate let headlineLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let isLoading = TestObserver<Bool, Never>()
+  fileprivate let logInContextText = TestObserver<String, Never>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let postNotification = TestObserver<(Notification.Name, Notification.Name), Never>()
+  fileprivate let showFacebookErrorAlert = TestObserver<AlertError, Never>()
+  fileprivate let startFacebookConfirmation = TestObserver<String, Never>()
+  fileprivate let startLogin = TestObserver<(), Never>()
+  fileprivate let startSignup = TestObserver<(), Never>()
+  fileprivate let startTwoFactorChallenge = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,9 +8,9 @@ import ReactiveExtensions_TestHelpers
 
 internal final class ActivitySampleFollowCellViewModelTests: TestCase {
   internal let vm = ActivitySampleFollowCellViewModel()
-  internal let friendFollowText = TestObserver<String, NoError>()
-  internal let friendImage = TestObserver<String?, NoError>()
-  internal let goToActivity = TestObserver<Void, NoError>()
+  internal let friendFollowText = TestObserver<String, Never>()
+  internal let friendImage = TestObserver<String?, Never>()
+  internal let goToActivity = TestObserver<Void, Never>()
 
   internal override func setUp() {
     super.setUp()

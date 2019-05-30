@@ -1,6 +1,5 @@
 // swiftlint:disable force_unwrapping
 import XCTest
-import Result
 import ReactiveSwift
 @testable import KsApi
 @testable import Library
@@ -11,12 +10,12 @@ import Prelude
 internal final class CommentsViewModelTests: TestCase {
   internal let vm: CommentsViewModelType = CommentsViewModel()
 
-  internal let emptyStateVisible = TestObserver<Bool, NoError>()
-  internal let hasComments = TestObserver<Bool, NoError>()
-  internal let commentBarButtonVisible = TestObserver<Bool, NoError>()
-  internal let presentPostCommentDialog = TestObserver<(Project, Update?), NoError>()
-  internal let loginToutIsOpen = TestObserver<Bool, NoError>()
-  internal let commentsAreLoading = TestObserver<Bool, NoError>()
+  internal let emptyStateVisible = TestObserver<Bool, Never>()
+  internal let hasComments = TestObserver<Bool, Never>()
+  internal let commentBarButtonVisible = TestObserver<Bool, Never>()
+  internal let presentPostCommentDialog = TestObserver<(Project, Update?), Never>()
+  internal let loginToutIsOpen = TestObserver<Bool, Never>()
+  internal let commentsAreLoading = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -183,7 +182,7 @@ internal final class CommentsViewModelTests: TestCase {
   func testPaginationAndRefresh_Update() {
     let update = Update.template
 
-    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(.template))) {
+    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
       self.vm.inputs.configureWith(project: nil, update: update)
       self.vm.inputs.viewDidLoad()
 
@@ -196,7 +195,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([true], "A set of comments is emitted.")
       self.commentsAreLoading.assertValues([true, false])
 
-      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(.template))) {
+      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
         self.hasComments.assertValues([true], "No new comments are emitted.")
@@ -229,7 +228,7 @@ internal final class CommentsViewModelTests: TestCase {
   func testUpdateComments_NoProjectProvided() {
     let update = Update.template
 
-    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(.template))) {
+    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
       self.vm.inputs.configureWith(project: nil, update: update)
       self.vm.inputs.viewDidLoad()
 
@@ -242,7 +241,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([true], "A set of comments is emitted.")
       self.commentsAreLoading.assertValues([true, false])
 
-      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(.template))) {
+      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
         self.hasComments.assertValues([true], "No new comments are emitted.")

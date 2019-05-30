@@ -1,7 +1,6 @@
 import KsApi
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import WebKit
 
 public protocol WebModalViewModelInputs {
@@ -20,10 +19,10 @@ public protocol WebModalViewModelInputs {
 
 public protocol WebModalViewModelOutputs {
   /// Emits when the view controller should be dismissed.
-  var dismissViewController: Signal<Void, NoError> { get }
+  var dismissViewController: Signal<Void, Never> { get }
 
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
 
 public protocol WebModalViewModelType: WebModalViewModelInputs, WebModalViewModelOutputs {
@@ -65,8 +64,8 @@ public final class WebModalViewModel: WebModalViewModelType {
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
-  public let dismissViewController: Signal<Void, NoError>
-  public let webViewLoadRequest: Signal<URLRequest, NoError>
+  public let dismissViewController: Signal<Void, Never>
+  public let webViewLoadRequest: Signal<URLRequest, Never>
 
   public var inputs: WebModalViewModelInputs { return self }
   public var outputs: WebModalViewModelOutputs { return self }

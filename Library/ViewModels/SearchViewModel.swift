@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import ReactiveSwift
 import KsApi
-import Result
 import Prelude
 
 public protocol SearchViewModelInputs {
@@ -45,34 +44,34 @@ public protocol SearchViewModelInputs {
 public protocol SearchViewModelOutputs {
   /// Emits booleans that determines if the search field should be focused or not, and whether that focus
   /// should be animated.
-  var changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError> { get }
+  var changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never> { get }
 
   /// Emits a project, playlist and ref tag when the projet navigator should be opened.
-  var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
+  var goToProject: Signal<(Project, [Project], RefTag), Never> { get }
 
   /// Emits true when the popular title should be shown, and false otherwise.
-  var isPopularTitleVisible: Signal<Bool, NoError> { get }
+  var isPopularTitleVisible: Signal<Bool, Never> { get }
 
   /// Emits when loading indicator should be animated.
-  var popularLoaderIndicatorIsAnimating: Signal<Bool, NoError> { get }
+  var popularLoaderIndicatorIsAnimating: Signal<Bool, Never> { get }
 
    /// Emits an array of projects when they should be shown on the screen.
-  var projects: Signal<[Project], NoError> { get }
+  var projects: Signal<[Project], Never> { get }
 
   /// Emits when the search field should resign focus.
-  var resignFirstResponder: Signal<(), NoError> { get }
+  var resignFirstResponder: Signal<(), Never> { get }
 
   /// Emits when should scroll to project with row number.
-  var scrollToProjectRow: Signal<Int, NoError> { get }
+  var scrollToProjectRow: Signal<Int, Never> { get }
 
   /// Emits a string that should be filled into the search field.
-  var searchFieldText: Signal<String, NoError> { get }
+  var searchFieldText: Signal<String, Never> { get }
 
   /// Emits when loading indicator should be hidden.
-  var searchLoaderIndicatorIsAnimating: Signal<Bool, NoError> { get }
+  var searchLoaderIndicatorIsAnimating: Signal<Bool, Never> { get }
 
   /// Emits true when no search results should be shown, and false otherwise.
-  var showEmptyState: Signal<(DiscoveryParams, Bool), NoError> { get }
+  var showEmptyState: Signal<(DiscoveryParams, Bool), Never> { get }
 }
 
 public protocol SearchViewModelType {
@@ -110,7 +109,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map { query, _ in query.isEmpty }
       .skipRepeats()
 
-      let requestFirstPageWith: Signal<DiscoveryParams, NoError> = query
+      let requestFirstPageWith: Signal<DiscoveryParams, Never> = query
       .filter { !$0.isEmpty }
       .map { .defaults |> DiscoveryParams.lens.query .~ $0 }
 
@@ -272,16 +271,16 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), NoError>
-  public let goToProject: Signal<(Project, [Project], RefTag), NoError>
-  public let isPopularTitleVisible: Signal<Bool, NoError>
-  public let popularLoaderIndicatorIsAnimating: Signal<Bool, NoError>
-  public let projects: Signal<[Project], NoError>
-  public let resignFirstResponder: Signal<(), NoError>
-  public let scrollToProjectRow: Signal<Int, NoError>
-  public let searchFieldText: Signal<String, NoError>
-  public let searchLoaderIndicatorIsAnimating: Signal<Bool, NoError>
-  public let showEmptyState: Signal<(DiscoveryParams, Bool), NoError>
+  public let changeSearchFieldFocus: Signal<(focused: Bool, animate: Bool), Never>
+  public let goToProject: Signal<(Project, [Project], RefTag), Never>
+  public let isPopularTitleVisible: Signal<Bool, Never>
+  public let popularLoaderIndicatorIsAnimating: Signal<Bool, Never>
+  public let projects: Signal<[Project], Never>
+  public let resignFirstResponder: Signal<(), Never>
+  public let scrollToProjectRow: Signal<Int, Never>
+  public let searchFieldText: Signal<String, Never>
+  public let searchLoaderIndicatorIsAnimating: Signal<Bool, Never>
+  public let showEmptyState: Signal<(DiscoveryParams, Bool), Never>
 
   public var inputs: SearchViewModelInputs { return self }
   public var outputs: SearchViewModelOutputs { return self }

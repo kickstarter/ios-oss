@@ -1,6 +1,5 @@
 import KsApi
 import Prelude
-import Result
 import ReactiveSwift
 import ReactiveExtensions
 
@@ -11,19 +10,19 @@ public protocol DashboardProjectsDrawerCellViewModelInputs {
 
 public protocol DashboardProjectsDrawerCellViewModelOutputs {
   /// Emits label for accessibility.
-  var cellAccessibilityLabel: Signal<String, NoError> { get }
+  var cellAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits value for accessibility.
-  var cellAccessibilityValue: Signal<String, NoError> { get }
+  var cellAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits whether should show checkmark or not.
-  var isCheckmarkHidden: Signal<Bool, NoError> { get }
+  var isCheckmarkHidden: Signal<Bool, Never> { get }
 
   /// Emits with project name label text.
-  var projectNameText: Signal<String, NoError> { get }
+  var projectNameText: Signal<String, Never> { get }
 
   /// Emits with project number label text.
-  var projectNumberText: Signal<String, NoError> { get }
+  var projectNumberText: Signal<String, Never> { get }
 }
 
 public protocol DashboardProjectsDrawerCellViewModelType {
@@ -51,11 +50,11 @@ public final class DashboardProjectsDrawerCellViewModel: DashboardProjectsDrawer
   public var inputs: DashboardProjectsDrawerCellViewModelInputs { return self }
   public var outputs: DashboardProjectsDrawerCellViewModelOutputs { return self }
 
-  public let cellAccessibilityLabel: Signal<String, NoError>
-  public let cellAccessibilityValue: Signal<String, NoError>
-  public let projectNameText: Signal<String, NoError>
-  public let projectNumberText: Signal<String, NoError>
-  public let isCheckmarkHidden: Signal<Bool, NoError>
+  public let cellAccessibilityLabel: Signal<String, Never>
+  public let cellAccessibilityValue: Signal<String, Never>
+  public let projectNameText: Signal<String, Never>
+  public let projectNumberText: Signal<String, Never>
+  public let isCheckmarkHidden: Signal<Bool, Never>
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   fileprivate let orderNumProperty = MutableProperty<Int>(0)

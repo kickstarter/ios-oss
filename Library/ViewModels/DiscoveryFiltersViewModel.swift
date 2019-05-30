@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol DiscoveryFiltersViewModelInputs {
   /// Call with the row that is selected when the filters appear and array of loaded categories.
@@ -22,26 +21,26 @@ public protocol DiscoveryFiltersViewModelInputs {
 
 public protocol DiscoveryFiltersViewModelOutputs {
   /// Emits when to animate in the view.
-  var animateInView: Signal<(), NoError> { get }
+  var animateInView: Signal<(), Never> { get }
 
   /// Emits whether the categories are loading for the activity indicator view.
-  var loadingIndicatorIsVisible: Signal<Bool, NoError> { get }
+  var loadingIndicatorIsVisible: Signal<Bool, Never> { get }
 
   /**
    Emits an array of expandable rows to put into the categories section of filters,
    a category id to set row styles, and an optional category id for setting scrollTo position.
    **/
   var loadCategoryRows: Signal<(rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
-    NoError> { get }
+    Never> { get }
 
   /// Emits an array of selectable rows for the favorites section and category id to set row styles.
-  var loadFavoriteRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError> { get }
+  var loadFavoriteRows: Signal<(rows: [SelectableRow], categoryId: Int?), Never> { get }
 
   /// Emits an array of selectable rows to put into the top filters section and category id to set row styles.
-  var loadTopRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError> { get }
+  var loadTopRows: Signal<(rows: [SelectableRow], categoryId: Int?), Never> { get }
 
   /// Emits a selectable row when the delegate should be notified of the selection.
-  var notifyDelegateOfSelectedRow: Signal<SelectableRow, NoError> { get }
+  var notifyDelegateOfSelectedRow: Signal<SelectableRow, Never> { get }
 
   /// A bool that determines whether a cell should be animated when it is displayed.
   var shouldAnimateSelectableCell: Bool { get }
@@ -191,13 +190,13 @@ DiscoveryFiltersViewModelInputs, DiscoveryFiltersViewModelOutputs {
     return self.shouldAnimateSelectableCellProperty.value
   }
 
-  public let animateInView: Signal<(), NoError>
-  public let loadingIndicatorIsVisible: Signal<Bool, NoError>
+  public let animateInView: Signal<(), Never>
+  public let loadingIndicatorIsVisible: Signal<Bool, Never>
   public let loadCategoryRows: Signal<(rows: [ExpandableRow], categoryId: Int?, selectedRowId: Int?),
-  NoError>
-  public let loadFavoriteRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError>
-  public let loadTopRows: Signal<(rows: [SelectableRow], categoryId: Int?), NoError>
-  public let notifyDelegateOfSelectedRow: Signal<SelectableRow, NoError>
+  Never>
+  public let loadFavoriteRows: Signal<(rows: [SelectableRow], categoryId: Int?), Never>
+  public let loadTopRows: Signal<(rows: [SelectableRow], categoryId: Int?), Never>
+  public let notifyDelegateOfSelectedRow: Signal<SelectableRow, Never>
 
   public var inputs: DiscoveryFiltersViewModelInputs { return self }
   public var outputs: DiscoveryFiltersViewModelOutputs { return self }

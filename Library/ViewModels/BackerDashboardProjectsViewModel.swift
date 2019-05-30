@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public enum ProfileProjectsType {
   case backed
@@ -45,19 +44,19 @@ public protocol BackerDashboardProjectsViewModelInputs {
 
 public protocol BackerDashboardProjectsViewModelOutputs {
   /// Emits a boolean that determines if the empty state is visible and a ProfileProjectsType.
-  var emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), NoError> { get }
+  var emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), Never> { get }
 
   /// Emits the project, projects, and ref tag when should go to project page.
-  var goToProject: Signal<(Project, [Project], RefTag), NoError > { get }
+  var goToProject: Signal<(Project, [Project], RefTag), Never> { get }
 
   /// Emits when the pull-to-refresh control is refreshing or not.
-  var isRefreshing: Signal<Bool, NoError> { get }
+  var isRefreshing: Signal<Bool, Never> { get }
 
   /// Emits a list of projects for the tableview datasource.
-  var projects: Signal<[Project], NoError> { get }
+  var projects: Signal<[Project], Never> { get }
 
   /// Emits when should scroll to the table view row while swiping projects in the navigator.
-  var scrollToProjectRow: Signal<Int, NoError> { get }
+  var scrollToProjectRow: Signal<Int, Never> { get }
 }
 
 public protocol BackerDashboardProjectsViewModelType {
@@ -112,7 +111,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       .filter(isTrue)
       .ignoreValues()
 
-    let isLoading: Signal<Bool, NoError>
+    let isLoading: Signal<Bool, Never>
     (self.projects, isLoading, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
@@ -188,11 +187,11 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     self.viewDidLoadProperty.value = ()
   }
 
-  public let emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), NoError>
-  public let goToProject: Signal<(Project, [Project], RefTag), NoError>
-  public let isRefreshing: Signal<Bool, NoError>
-  public let projects: Signal<[Project], NoError>
-  public let scrollToProjectRow: Signal<Int, NoError>
+  public let emptyStateIsVisible: Signal<(Bool, ProfileProjectsType), Never>
+  public let goToProject: Signal<(Project, [Project], RefTag), Never>
+  public let isRefreshing: Signal<Bool, Never>
+  public let projects: Signal<[Project], Never>
+  public let scrollToProjectRow: Signal<Int, Never>
 
   public var inputs: BackerDashboardProjectsViewModelInputs { return self }
   public var outputs: BackerDashboardProjectsViewModelOutputs { return self }

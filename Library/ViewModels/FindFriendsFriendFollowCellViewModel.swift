@@ -1,7 +1,6 @@
 import KsApi
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import Prelude
 
 public protocol FindFriendsFriendFollowCellViewModelInputs {
@@ -17,43 +16,43 @@ public protocol FindFriendsFriendFollowCellViewModelInputs {
 
 public protocol FindFriendsFriendFollowCellViewModelOutputs {
   /// Emits accessibilityValue for the Cell
-  var cellAccessibilityValue: Signal<String, NoError> { get }
+  var cellAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits whether Follow button should be enabled
-  var enableFollowButton: Signal<Bool, NoError> { get }
+  var enableFollowButton: Signal<Bool, Never> { get }
 
   /// Emits whether Unfollow button should be enabled
-  var enableUnfollowButton: Signal<Bool, NoError> { get }
+  var enableUnfollowButton: Signal<Bool, Never> { get }
 
   // Emits follow button accessibilityLabel that includes friend's name
-  var followButtonAccessibilityLabel: Signal<String, NoError> { get }
+  var followButtonAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits when to show Follow button
-  var hideFollowButton: Signal<Bool, NoError> { get }
+  var hideFollowButton: Signal<Bool, Never> { get }
 
   /// Emits whether should show projects created text
-  var hideProjectsCreated: Signal<Bool, NoError> { get }
+  var hideProjectsCreated: Signal<Bool, Never> { get }
 
   /// Emits when to show Unfollow button
-  var hideUnfollowButton: Signal<Bool, NoError> { get }
+  var hideUnfollowButton: Signal<Bool, Never> { get }
 
   /// Emits an URL to friend's avatar
-  var imageURL: Signal<URL?, NoError> { get }
+  var imageURL: Signal<URL?, Never> { get }
 
   /// Emits friend's location
-  var location: Signal<String, NoError> { get }
+  var location: Signal<String, Never> { get }
 
   /// Emits friend's name
-  var name: Signal<String, NoError> { get }
+  var name: Signal<String, Never> { get }
 
   /// Emits number of projects backed text
-  var projectsBackedText: Signal<String, NoError> { get }
+  var projectsBackedText: Signal<String, Never> { get }
 
   /// Emits number of projects created text
-  var projectsCreatedText: Signal<String, NoError> { get }
+  var projectsCreatedText: Signal<String, Never> { get }
 
   // Emits unfollow button accessibilityLabel that includes friend's name
-  var unfollowButtonAccessibilityLabel: Signal<String, NoError> { get }
+  var unfollowButtonAccessibilityLabel: Signal<String, Never> { get }
 
 }
 
@@ -65,7 +64,7 @@ public protocol FindFriendsFriendFollowCellViewModelType {
 public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollowCellViewModelType,
   FindFriendsFriendFollowCellViewModelInputs, FindFriendsFriendFollowCellViewModelOutputs {
     public init() {
-    let friend: Signal<User, NoError> = self.configureWithFriendProperty.signal.skipNil()
+    let friend: Signal<User, Never> = self.configureWithFriendProperty.signal.skipNil()
       .map(cached(friend:))
 
     self.imageURL = friend.map { (friend: User) -> URL? in URL(string: friend.avatar.medium) }
@@ -78,7 +77,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       .map { (friend: User) -> Int in friend.stats.backedProjectsCount ?? 0 }
       .map(Strings.social_following_friend_projects_count_backed(backed_count:))
 
-    let projectsCreatedCount: Signal<Int, NoError> = friend.map { (friend: User) -> Int in
+    let projectsCreatedCount: Signal<Int, Never> = friend.map { (friend: User) -> Int in
       friend.stats.createdProjectsCount ?? 0
     }
 
@@ -95,7 +94,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     let isLoadingFollowRequest: MutableProperty<Bool> = MutableProperty(false)
     let isLoadingUnfollowRequest: MutableProperty<Bool> = MutableProperty(false)
 
-      let followFriendEvent: Signal<Signal<User, ErrorEnvelope>.Event, NoError> = friend
+      let followFriendEvent: Signal<Signal<User, ErrorEnvelope>.Event, Never> = friend
       .takeWhen(self.followButtonTappedProperty.signal)
       .switchMap { user in
         AppEnvironment.current.apiService.followFriend(userId: user.id)
@@ -111,7 +110,7 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
           .materialize()
     }
 
-    let unfollowFriendEvent: Signal<Signal<User, ErrorEnvelope>.Event, NoError> = friend
+    let unfollowFriendEvent: Signal<Signal<User, ErrorEnvelope>.Event, Never> = friend
       .takeWhen(self.unfollowButtonTappedProperty.signal)
       .switchMap { user in
         AppEnvironment.current.apiService.unfollowFriend(userId: user.id)
@@ -127,13 +126,13 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
           .materialize()
     }
 
-    let updatedFriendToFollowed: Signal<User, NoError> = followFriendEvent.values()
+    let updatedFriendToFollowed: Signal<User, Never> = followFriendEvent.values()
       .on(value: { (friend: User) -> Void in cache(friend: friend, isFriend: true) })
 
-    let updatedFriendToUnfollowed: Signal<User, NoError> = unfollowFriendEvent.values()
+    let updatedFriendToUnfollowed: Signal<User, Never> = unfollowFriendEvent.values()
       .on(value: { (friend: User) -> Void in cache(friend: friend, isFriend: false) })
 
-      let isFollowed: Signal<Bool, NoError> = Signal.merge(
+      let isFollowed: Signal<Bool, Never> = Signal.merge(
         friend, updatedFriendToFollowed, updatedFriendToUnfollowed
       )
       .map { $0.isFriend ?? false }
@@ -189,19 +188,19 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
     unfollowButtonTappedProperty.value = ()
   }
 
-  public let cellAccessibilityValue: Signal<String, NoError>
-  public let enableFollowButton: Signal<Bool, NoError>
-  public let enableUnfollowButton: Signal<Bool, NoError>
-  public let followButtonAccessibilityLabel: Signal<String, NoError>
-  public let hideFollowButton: Signal<Bool, NoError>
-  public let hideProjectsCreated: Signal<Bool, NoError>
-  public let hideUnfollowButton: Signal<Bool, NoError>
-  public let imageURL: Signal<URL?, NoError>
-  public let location: Signal<String, NoError>
-  public let name: Signal<String, NoError>
-  public let projectsBackedText: Signal<String, NoError>
-  public let projectsCreatedText: Signal<String, NoError>
-  public let unfollowButtonAccessibilityLabel: Signal<String, NoError>
+  public let cellAccessibilityValue: Signal<String, Never>
+  public let enableFollowButton: Signal<Bool, Never>
+  public let enableUnfollowButton: Signal<Bool, Never>
+  public let followButtonAccessibilityLabel: Signal<String, Never>
+  public let hideFollowButton: Signal<Bool, Never>
+  public let hideProjectsCreated: Signal<Bool, Never>
+  public let hideUnfollowButton: Signal<Bool, Never>
+  public let imageURL: Signal<URL?, Never>
+  public let location: Signal<String, Never>
+  public let name: Signal<String, Never>
+  public let projectsBackedText: Signal<String, Never>
+  public let projectsCreatedText: Signal<String, Never>
+  public let unfollowButtonAccessibilityLabel: Signal<String, Never>
 }
 
 private func cached(friend: User) -> User {

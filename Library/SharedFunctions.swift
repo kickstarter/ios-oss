@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 import UserNotifications
 
 /**
@@ -119,7 +118,7 @@ public func currencySymbol(forCountry country: Project.Country,
 ///
 /// - returns: A signal producer.
 public func countdownProducer(to date: Date)
-  -> SignalProducer<(day: String, hour: String, minute: String, second: String), NoError> {
+  -> SignalProducer<(day: String, hour: String, minute: String, second: String), Never> {
 
     func formattedComponents(dateComponents: DateComponents)
       -> (day: String, hour: String, minute: String, second: String) {
@@ -136,12 +135,12 @@ public func countdownProducer(to date: Date)
     let timeUntilNextRoundSecond = ceil(now.timeIntervalSince1970) - now.timeIntervalSince1970
 
     // A timer that emits every second, but with a small delay so that it emits on a roundeded second.
-    let everySecond = SignalProducer<(), NoError>(value: ())
+    let everySecond = SignalProducer<(), Never>(value: ())
       .ksr_delay(.milliseconds(Int(timeUntilNextRoundSecond * 1000)), on: AppEnvironment.current.scheduler)
       .flatMap { SignalProducer.timer(interval: .seconds(1), on: AppEnvironment.current.scheduler) }
 
     return SignalProducer.merge(
-      SignalProducer<Date, NoError>(value: now),
+      SignalProducer<Date, Never>(value: now),
       everySecond
       )
       .map { currentDate in

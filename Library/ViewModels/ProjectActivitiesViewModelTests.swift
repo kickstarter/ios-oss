@@ -2,19 +2,18 @@ import XCTest
 @testable import Library
 @testable import KsApi
 import ReactiveExtensions_TestHelpers
-import Result
 import KsApi
 import Prelude
 
 final class ProjectActivitiesViewModelTests: TestCase {
   fileprivate let vm: ProjectActivitiesViewModelType = ProjectActivitiesViewModel()
 
-  fileprivate let activitiesPresent = TestObserver<Bool, NoError>()
-  fileprivate let goTo = TestObserver<ProjectActivitiesGoTo, NoError>()
-  fileprivate let groupedDates = TestObserver<Bool, NoError>()
-  fileprivate let isRefreshing = TestObserver<Bool, NoError>()
-  fileprivate let project = TestObserver<Project, NoError>()
-  fileprivate let showEmptyState = TestObserver<Bool, NoError>()
+  fileprivate let activitiesPresent = TestObserver<Bool, Never>()
+  fileprivate let goTo = TestObserver<ProjectActivitiesGoTo, Never>()
+  fileprivate let groupedDates = TestObserver<Bool, Never>()
+  fileprivate let isRefreshing = TestObserver<Bool, Never>()
+  fileprivate let project = TestObserver<Project, Never>()
+  fileprivate let showEmptyState = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

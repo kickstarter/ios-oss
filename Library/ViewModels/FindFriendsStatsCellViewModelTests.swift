@@ -3,7 +3,6 @@ import ReactiveSwift
 import UIKit.UIActivity
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -11,11 +10,11 @@ import Prelude
 final class FindFriendsStatsCellViewModelTests: TestCase {
   let vm: FindFriendsStatsCellViewModelType = FindFriendsStatsCellViewModel()
 
-  let backedProjectsCountText = TestObserver<String, NoError>()
-  let followAllText = TestObserver<String, NoError>()
-  let friendsCountText = TestObserver<String, NoError>()
-  let hideFollowAllButton = TestObserver<Bool, NoError>()
-  let showFollowAllFriendsAlert = TestObserver<Int, NoError>()
+  let backedProjectsCountText = TestObserver<String, Never>()
+  let followAllText = TestObserver<String, Never>()
+  let friendsCountText = TestObserver<String, Never>()
+  let hideFollowAllButton = TestObserver<Bool, Never>()
+  let showFollowAllFriendsAlert = TestObserver<Int, Never>()
 
   override func setUp() {
     super.setUp()

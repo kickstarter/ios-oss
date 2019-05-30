@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,12 +8,12 @@ import ReactiveExtensions_TestHelpers
 final class ProjectPamphletViewModelTests: TestCase {
   fileprivate var vm: ProjectPamphletViewModelType!
 
-  fileprivate let configureChildViewControllersWithProject = TestObserver<Project, NoError>()
-  fileprivate let configureChildViewControllersWithRefTag = TestObserver<RefTag?, NoError>()
-  fileprivate let setNavigationBarHidden = TestObserver<Bool, NoError>()
-  fileprivate let setNavigationBarAnimated = TestObserver<Bool, NoError>()
-  fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
-  fileprivate let topLayoutConstraintConstant = TestObserver<CGFloat, NoError>()
+  fileprivate let configureChildViewControllersWithProject = TestObserver<Project, Never>()
+  fileprivate let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
+  fileprivate let setNavigationBarHidden = TestObserver<Bool, Never>()
+  fileprivate let setNavigationBarAnimated = TestObserver<Bool, Never>()
+  fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), Never>()
+  fileprivate let topLayoutConstraintConstant = TestObserver<CGFloat, Never>()
 
   internal override func setUp() {
     super.setUp()

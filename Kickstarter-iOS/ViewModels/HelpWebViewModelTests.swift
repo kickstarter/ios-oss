@@ -4,13 +4,12 @@
 import ReactiveExtensions_TestHelpers
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 
 internal final class HelpWebViewModelTests: TestCase {
   fileprivate let vm: HelpWebViewModelType = HelpWebViewModel()
 
-  fileprivate let webViewLoadRequest = TestObserver<String, NoError>()
+  fileprivate let webViewLoadRequest = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

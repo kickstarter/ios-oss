@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,7 +8,7 @@ import ReactiveExtensions_TestHelpers
 
 internal final class ProjectNotificationsViewModelTests: TestCase {
   internal let vm = ProjectNotificationsViewModel()
-  internal let projectNotificationsPresent = TestObserver<Bool, NoError>()
+  internal let projectNotificationsPresent = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()

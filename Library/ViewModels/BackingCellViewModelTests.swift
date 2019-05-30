@@ -2,17 +2,16 @@ import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 @testable import KsApi
 
 internal final class BackingCellViewModelTests: TestCase {
   fileprivate let vm: BackingCellViewModelType = BackingCellViewModel()
 
-  private let backingInfoButtonIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let delivery = TestObserver<String, NoError>()
-  fileprivate let pledged = TestObserver<String, NoError>()
-  fileprivate let reward = TestObserver<String, NoError>()
-  fileprivate let rootStackViewAlignment = TestObserver<UIStackView.Alignment, NoError>()
+  private let backingInfoButtonIsHidden = TestObserver<Bool, Never>()
+  fileprivate let delivery = TestObserver<String, Never>()
+  fileprivate let pledged = TestObserver<String, Never>()
+  fileprivate let reward = TestObserver<String, Never>()
+  fileprivate let rootStackViewAlignment = TestObserver<UIStackView.Alignment, Never>()
 
   override func setUp() {
     super.setUp()

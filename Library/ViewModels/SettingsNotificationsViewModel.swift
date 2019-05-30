@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol SettingsNotificationsViewModelInputs {
   func didSelectRow(cellType: SettingsNotificationCellType)
@@ -15,11 +14,11 @@ public protocol SettingsNotificationsViewModelInputs {
 }
 
 public protocol SettingsNotificationsViewModelOutputs {
-  var goToManageProjectNotifications: Signal<Void, NoError> { get }
-  var pickerViewIsHidden: Signal<Bool, NoError> { get }
-  var pickerViewSelectedRow: Signal<EmailFrequency, NoError> { get }
-  var updateCurrentUser: Signal<User, NoError> { get }
-  var unableToSaveError: Signal<String, NoError> { get }
+  var goToManageProjectNotifications: Signal<Void, Never> { get }
+  var pickerViewIsHidden: Signal<Bool, Never> { get }
+  var pickerViewSelectedRow: Signal<EmailFrequency, Never> { get }
+  var updateCurrentUser: Signal<User, Never> { get }
+  var unableToSaveError: Signal<String, Never> { get }
 }
 
 public protocol SettingsNotificationsViewModelType {
@@ -149,11 +148,11 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.updateUserErrorProperty.value = error
   }
 
-  public let goToManageProjectNotifications: Signal<Void, NoError>
-  public let pickerViewIsHidden: Signal<Bool, NoError>
-  public let pickerViewSelectedRow: Signal<EmailFrequency, NoError>
-  public let unableToSaveError: Signal<String, NoError>
-  public let updateCurrentUser: Signal<User, NoError>
+  public let goToManageProjectNotifications: Signal<Void, Never>
+  public let pickerViewIsHidden: Signal<Bool, Never>
+  public let pickerViewSelectedRow: Signal<EmailFrequency, Never>
+  public let unableToSaveError: Signal<String, Never>
+  public let updateCurrentUser: Signal<User, Never>
 
   public var inputs: SettingsNotificationsViewModelInputs { return self }
   public var outputs: SettingsNotificationsViewModelOutputs { return self }

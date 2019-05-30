@@ -2,7 +2,6 @@ import KsApi
 import PassKit
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol RewardPledgeViewModelInputs {
   /// Call when the apple pay button is tapped.
@@ -74,131 +73,131 @@ public protocol RewardPledgeViewModelInputs {
 
 public protocol RewardPledgeViewModelOutputs {
   /// Emits a boolean that determines if the apple pay button is hidden.
-  var applePayButtonHidden: Signal<Bool, NoError> { get }
+  var applePayButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the cancel pledge button should be hidden.
-  var cancelPledgeButtonHidden: Signal<Bool, NoError> { get }
+  var cancelPledgeButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the change method button should be hidden.
-  var changePaymentMethodButtonHidden: Signal<Bool, NoError> { get }
+  var changePaymentMethodButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the "continue to payments" button is hidden.
-  var continueToPaymentsButtonHidden: Signal<Bool, NoError> { get }
+  var continueToPaymentsButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the conversion label is hidden.
-  var conversionLabelHidden: Signal<Bool, NoError> { get }
+  var conversionLabelHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the conversion label.
-  var conversionLabelText: Signal<String, NoError> { get }
+  var conversionLabelText: Signal<String, Never> { get }
 
   /// Emits a string to be put into the shipping country label.
-  var countryLabelText: Signal<String, NoError> { get }
+  var countryLabelText: Signal<String, Never> { get }
 
   /// Emits a string to be put into the description label.
-  var descriptionLabelText: Signal<String, NoError> { get }
+  var descriptionLabelText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the "different payment method" button is hidden.
-  var differentPaymentMethodButtonHidden: Signal<Bool, NoError> { get }
+  var differentPaymentMethodButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits when the controller should be dismissed.
-  var dismissViewController: Signal<(), NoError> { get }
+  var dismissViewController: Signal<(), Never> { get }
 
   /// Emits a string to be put into the estimated delivery date label.
-  var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
+  var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the estimated fulfillment stack view should be hidden.
-  var estimatedFulfillmentStackViewHidden: Signal<Bool, NoError> { get }
+  var estimatedFulfillmentStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits when the reward description should be expanded.
-  var expandRewardDescription: Signal<(), NoError> { get }
+  var expandRewardDescription: Signal<(), Never> { get }
 
   /// Emits when the entire fulfillment and shipping stack view should be hidden.
-  var fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, NoError> { get }
+  var fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits when the checkout screen should be shown to the user.
-  var goToCheckout: Signal<(URLRequest, Project, Reward), NoError> { get }
+  var goToCheckout: Signal<(URLRequest, Project, Reward), Never> { get }
 
   /// Emits when the login tout should be shown to the user.
-  var goToLoginTout: Signal<(), NoError> { get }
+  var goToLoginTout: Signal<(), Never> { get }
 
   /// Emits a payment request object that is to be used to present a payment authorization controller.
-  var goToPaymentAuthorization: Signal<PKPaymentRequest, NoError> { get }
+  var goToPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
 
   /// Emits a project, list of shipping rules, and current selected shipping rule that are to be used to
   /// go to the shipping picker.
-  var goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), NoError> { get }
+  var goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
 
   /// Emits when we should go to the thanks screen.
-  var goToThanks: Signal<Project, NoError> { get }
+  var goToThanks: Signal<Project, Never> { get }
 
   /// Emits when we should go to the trust & safety page.
-  var goToTrustAndSafety: Signal<(), NoError> { get }
+  var goToTrustAndSafety: Signal<(), Never> { get }
 
   /// Emits an array of strings that are to be loaded into the itemization stack view.
-  var items: Signal<[String], NoError> { get }
+  var items: Signal<[String], Never> { get }
 
   /// Emits a boolean that determines if the itemization stack view is hidden.
-  var itemsContainerHidden: Signal<Bool, NoError> { get }
+  var itemsContainerHidden: Signal<Bool, Never> { get }
 
   /// Emits whether loading overlay view should be hidden.
-  var loadingOverlayIsHidden: Signal<Bool, NoError> { get }
+  var loadingOverlayIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the minimum pledge label.
-  var minimumLabelText: Signal<String, NoError> { get }
+  var minimumLabelText: Signal<String, Never> { get }
 
   /// Emits a string for the title of the navigation controller.
-  var navigationTitle: Signal<String, NoError> { get }
+  var navigationTitle: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the -or- separator label should be hidden.
-  var orLabelHidden: Signal<Bool, NoError> { get }
+  var orLabelHidden: Signal<Bool, Never> { get }
 
   /// Emits a height constant for the padding view constraint.
-  var paddingViewHeightConstant: Signal<CGFloat, NoError> { get }
+  var paddingViewHeightConstant: Signal<CGFloat, Never> { get }
 
   /// Emits a string to be put into the currency label.
-  var pledgeCurrencyLabelText: Signal<String, NoError> { get }
+  var pledgeCurrencyLabelText: Signal<String, Never> { get }
 
   /// Emits a bool whether a pledge is loading for the indicator view.
-  var pledgeIsLoading: Signal<Bool, NoError> { get }
+  var pledgeIsLoading: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the pledge text field.
-  var pledgeTextFieldText: Signal<String, NoError> { get }
+  var pledgeTextFieldText: Signal<String, Never> { get }
 
   /// Emits a boolean when the read more container should be hidden.
-  var readMoreContainerViewHidden: Signal<Bool, NoError> { get }
+  var readMoreContainerViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be used to set the Stripe library's apple merchant identifier.
-  var setStripeAppleMerchantIdentifier: Signal<String, NoError> { get }
+  var setStripeAppleMerchantIdentifier: Signal<String, Never> { get }
 
   /// Emits a string to be used to set the Stripe library's publishable key.
-  var setStripePublishableKey: Signal<String, NoError> { get }
+  var setStripePublishableKey: Signal<String, Never> { get }
 
   /// Emits a string to be put into the shipping amount label.
-  var shippingAmountLabelText: Signal<String, NoError> { get }
+  var shippingAmountLabelText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the shipping container view should be hidden.
-  var shippingInputStackViewHidden: Signal<Bool, NoError> { get }
+  var shippingInputStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean to determine if shipping loader should animate or not.
-  var shippingIsLoading: Signal<Bool, NoError> { get }
+  var shippingIsLoading: Signal<Bool, Never> { get }
 
   /// Emits a string that should be put into the shipping locations label.
-  var shippingLocationsLabelText: Signal<String, NoError> { get }
+  var shippingLocationsLabelText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the top shipping stack view should be hidden.
-  var shippingStackViewHidden: Signal<Bool, NoError> { get }
+  var shippingStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be shown in an alert controller and whether closing it dismisses the view controller.
-  var showAlert: Signal<(message: String, shouldDismiss: Bool), NoError> { get }
+  var showAlert: Signal<(message: String, shouldDismiss: Bool), Never> { get }
 
   /// Emits a boolean that determines if the title label should be hidden.
-  var titleLabelHidden: Signal<Bool, NoError> { get }
+  var titleLabelHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the title label.
-  var titleLabelText: Signal<String, NoError> { get }
+  var titleLabelText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the update pledge button should be hidden.
-  var updatePledgeButtonHidden: Signal<Bool, NoError> { get }
+  var updatePledgeButtonHidden: Signal<Bool, Never> { get }
 }
 
 public protocol RewardPledgeViewModelType {
@@ -238,7 +237,7 @@ RewardPledgeViewModelOutputs {
 
     let shippingRulesEvent = projectAndReward
       .switchMap { (project, reward)
-        -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, NoError> in
+        -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
         guard reward != Reward.noReward else {
           return SignalProducer(value: .value([]))
         }
@@ -573,7 +572,7 @@ RewardPledgeViewModelOutputs {
       .takeWhen(completedPledge)
 
     let updatedPledgeNeedsNewCheckout = updatePledgeEvent.values()
-      .flatMap { request, project, reward -> SignalProducer<(URLRequest, Project, Reward), NoError> in
+      .flatMap { request, project, reward -> SignalProducer<(URLRequest, Project, Reward), Never> in
         guard let request = request else { return .empty }
         return SignalProducer(value: (request, project, reward))
     }
@@ -722,7 +721,7 @@ RewardPledgeViewModelOutputs {
         )
     }
 
-    let continueCheckoutType: Signal<Koala.ClickedRewardPledgeButtonType, NoError> = Signal.merge(
+    let continueCheckoutType: Signal<Koala.ClickedRewardPledgeButtonType, Never> = Signal.merge(
       self.continueToPaymentsButtonTappedProperty.signal.mapConst(.paymentMethods),
       self.applePayButtonTappedProperty.signal.mapConst(.applePay),
       self.differentPaymentMethodButtonTappedProperty.signal.mapConst(.paymentMethods),
@@ -880,61 +879,61 @@ RewardPledgeViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let applePayButtonHidden: Signal<Bool, NoError>
-  public let continueToPaymentsButtonHidden: Signal<Bool, NoError>
-  public var conversionLabelHidden: Signal<Bool, NoError> {
+  public let applePayButtonHidden: Signal<Bool, Never>
+  public let continueToPaymentsButtonHidden: Signal<Bool, Never>
+  public var conversionLabelHidden: Signal<Bool, Never> {
     return self.rewardViewModel.outputs.conversionLabelHidden
   }
-  public var conversionLabelText: Signal<String, NoError> {
+  public var conversionLabelText: Signal<String, Never> {
     return self.rewardViewModel.outputs.conversionLabelText
   }
-  public let countryLabelText: Signal<String, NoError>
-  public var descriptionLabelText: Signal<String, NoError> {
+  public let countryLabelText: Signal<String, Never>
+  public var descriptionLabelText: Signal<String, Never> {
     return self.rewardViewModel.outputs.descriptionLabelText
   }
-  public let differentPaymentMethodButtonHidden: Signal<Bool, NoError>
-  public let dismissViewController: Signal<(), NoError>
-  public let estimatedDeliveryDateLabelText: Signal<String, NoError>
-  public let estimatedFulfillmentStackViewHidden: Signal<Bool, NoError>
-  public let expandRewardDescription: Signal<(), NoError>
-  public let fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, NoError>
-  public let goToCheckout: Signal<(URLRequest, Project, Reward), NoError>
-  public let goToLoginTout: Signal<(), NoError>
-  public let goToPaymentAuthorization: Signal<PKPaymentRequest, NoError>
-  public let goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), NoError>
-  public let goToThanks: Signal<Project, NoError>
-  public let goToTrustAndSafety: Signal<(), NoError>
-  public var items: Signal<[String], NoError> {
+  public let differentPaymentMethodButtonHidden: Signal<Bool, Never>
+  public let dismissViewController: Signal<(), Never>
+  public let estimatedDeliveryDateLabelText: Signal<String, Never>
+  public let estimatedFulfillmentStackViewHidden: Signal<Bool, Never>
+  public let expandRewardDescription: Signal<(), Never>
+  public let fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, Never>
+  public let goToCheckout: Signal<(URLRequest, Project, Reward), Never>
+  public let goToLoginTout: Signal<(), Never>
+  public let goToPaymentAuthorization: Signal<PKPaymentRequest, Never>
+  public let goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), Never>
+  public let goToThanks: Signal<Project, Never>
+  public let goToTrustAndSafety: Signal<(), Never>
+  public var items: Signal<[String], Never> {
     return self.rewardViewModel.outputs.items
   }
-  public let itemsContainerHidden: Signal<Bool, NoError>
-  public let loadingOverlayIsHidden: Signal<Bool, NoError>
-  public var minimumLabelText: Signal<String, NoError> {
+  public let itemsContainerHidden: Signal<Bool, Never>
+  public let loadingOverlayIsHidden: Signal<Bool, Never>
+  public var minimumLabelText: Signal<String, Never> {
     return self.rewardViewModel.outputs.minimumLabelText
   }
-  public let navigationTitle: Signal<String, NoError>
-  public let orLabelHidden: Signal<Bool, NoError>
-  public let paddingViewHeightConstant: Signal<CGFloat, NoError>
-  public let pledgeCurrencyLabelText: Signal<String, NoError>
-  public let pledgeIsLoading: Signal<Bool, NoError>
-  public let pledgeTextFieldText: Signal<String, NoError>
-  public let readMoreContainerViewHidden: Signal<Bool, NoError>
-  public let setStripeAppleMerchantIdentifier: Signal<String, NoError>
-  public let setStripePublishableKey: Signal<String, NoError>
-  public let shippingAmountLabelText: Signal<String, NoError>
-  public let shippingInputStackViewHidden: Signal<Bool, NoError>
-  public let shippingIsLoading: Signal<Bool, NoError>
-  public let shippingLocationsLabelText: Signal<String, NoError>
-  public let shippingStackViewHidden: Signal<Bool, NoError>
-  public let showAlert: Signal<(message: String, shouldDismiss: Bool), NoError>
-  public var titleLabelHidden: Signal<Bool, NoError> {
+  public let navigationTitle: Signal<String, Never>
+  public let orLabelHidden: Signal<Bool, Never>
+  public let paddingViewHeightConstant: Signal<CGFloat, Never>
+  public let pledgeCurrencyLabelText: Signal<String, Never>
+  public let pledgeIsLoading: Signal<Bool, Never>
+  public let pledgeTextFieldText: Signal<String, Never>
+  public let readMoreContainerViewHidden: Signal<Bool, Never>
+  public let setStripeAppleMerchantIdentifier: Signal<String, Never>
+  public let setStripePublishableKey: Signal<String, Never>
+  public let shippingAmountLabelText: Signal<String, Never>
+  public let shippingInputStackViewHidden: Signal<Bool, Never>
+  public let shippingIsLoading: Signal<Bool, Never>
+  public let shippingLocationsLabelText: Signal<String, Never>
+  public let shippingStackViewHidden: Signal<Bool, Never>
+  public let showAlert: Signal<(message: String, shouldDismiss: Bool), Never>
+  public var titleLabelHidden: Signal<Bool, Never> {
     return self.rewardViewModel.outputs.titleLabelHidden
   }
-  public let titleLabelText: Signal<String, NoError>
+  public let titleLabelText: Signal<String, Never>
 
-  public let updatePledgeButtonHidden: Signal<Bool, NoError>
-  public let changePaymentMethodButtonHidden: Signal<Bool, NoError>
-  public let cancelPledgeButtonHidden: Signal<Bool, NoError>
+  public let updatePledgeButtonHidden: Signal<Bool, Never>
+  public let changePaymentMethodButtonHidden: Signal<Bool, Never>
+  public let cancelPledgeButtonHidden: Signal<Bool, Never>
 
   public var inputs: RewardPledgeViewModelInputs { return self }
   public var outputs: RewardPledgeViewModelOutputs { return self }

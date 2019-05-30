@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 import ReactiveSwift
-import Result
 @testable import KsApi
 @testable import Library
 import ReactiveExtensions_TestHelpers
@@ -10,15 +9,15 @@ import Prelude
 internal final class PaymentMethodsViewModelTests: TestCase {
 
   private let vm = PaymentMethodsViewModel()
-  private let editButtonIsEnabled = TestObserver<Bool, NoError>()
-  private let editButtonTitle = TestObserver<String, NoError>()
-  private let errorLoadingPaymentMethods = TestObserver<String, NoError>()
-  private let goToAddCardScreen = TestObserver<Void, NoError>()
-  private let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
-  private let presentBanner = TestObserver<String, NoError>()
-  private let reloadData = TestObserver<Void, NoError>()
-  private let showAlert = TestObserver<String, NoError>()
-  private let tableViewIsEditing = TestObserver<Bool, NoError>()
+  private let editButtonIsEnabled = TestObserver<Bool, Never>()
+  private let editButtonTitle = TestObserver<String, Never>()
+  private let errorLoadingPaymentMethods = TestObserver<String, Never>()
+  private let goToAddCardScreen = TestObserver<Void, Never>()
+  private let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
+  private let presentBanner = TestObserver<String, Never>()
+  private let reloadData = TestObserver<Void, Never>()
+  private let showAlert = TestObserver<String, Never>()
+  private let tableViewIsEditing = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()

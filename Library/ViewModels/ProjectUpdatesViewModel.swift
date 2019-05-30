@@ -2,7 +2,6 @@ import KsApi
 import MessageUI
 import Prelude
 import ReactiveSwift
-import Result
 import WebKit
 
 public protocol ProjectUpdatesViewModelInputs {
@@ -32,28 +31,28 @@ public protocol ProjectUpdatesViewModelInputs {
 
 public protocol ProjectUpdatesViewModelOutputs {
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<URL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, Never> { get }
 
   /// Emits with the project and update when we should go to the update.
-  var goToUpdate: Signal<(Project, Update), NoError> { get }
+  var goToUpdate: Signal<(Project, Update), Never> { get }
 
   /// Emits with the project when we should go to the update comments.
-  var goToUpdateComments: Signal<Update, NoError> { get }
+  var goToUpdateComments: Signal<Update, Never> { get }
 
   /// Emits when the webview content is loading.
-  var isActivityIndicatorHidden: Signal<Bool, NoError> { get }
+  var isActivityIndicatorHidden: Signal<Bool, Never> { get }
 
   /// Emits when app should make phone call.
-  var makePhoneCall: Signal<URL, NoError> { get }
+  var makePhoneCall: Signal<URL, Never> { get }
 
   /// Emits to show a MFMailComposeViewController.
-  var showMailCompose: Signal<String, NoError> { get }
+  var showMailCompose: Signal<String, Never> { get }
 
   /// Emits to show an alert when device can not send emails.
-  var showNoEmailError: Signal<UIAlertController, NoError> { get }
+  var showNoEmailError: Signal<UIAlertController, Never> { get }
 
   /// Emits a request that should be loaded into the web view.
-  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
 
 public protocol ProjectUpdatesViewModelType {
@@ -212,14 +211,14 @@ ProjectUpdatesViewModelOutputs {
     self.webViewDidStartProvisionalNavigationProperty.value = ()
   }
 
-  public let goToSafariBrowser: Signal<URL, NoError>
-  public let goToUpdate: Signal<(Project, Update), NoError>
-  public let goToUpdateComments: Signal<Update, NoError>
-  public let isActivityIndicatorHidden: Signal<Bool, NoError>
-  public let makePhoneCall: Signal<URL, NoError>
-  public let showMailCompose: Signal<String, NoError>
-  public let showNoEmailError: Signal<UIAlertController, NoError>
-  public let webViewLoadRequest: Signal<URLRequest, NoError>
+  public let goToSafariBrowser: Signal<URL, Never>
+  public let goToUpdate: Signal<(Project, Update), Never>
+  public let goToUpdateComments: Signal<Update, Never>
+  public let isActivityIndicatorHidden: Signal<Bool, Never>
+  public let makePhoneCall: Signal<URL, Never>
+  public let showMailCompose: Signal<String, Never>
+  public let showNoEmailError: Signal<UIAlertController, Never>
+  public let webViewLoadRequest: Signal<URLRequest, Never>
 
   public var inputs: ProjectUpdatesViewModelInputs { return self }
   public var outputs: ProjectUpdatesViewModelOutputs { return self }

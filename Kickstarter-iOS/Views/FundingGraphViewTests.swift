@@ -1,7 +1,6 @@
 // swiftlint:disable force_unwrapping
 import Library
 import Prelude
-import Result
 import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
@@ -10,7 +9,7 @@ import ReactiveExtensions_TestHelpers
 internal final class FundingGraphViewTests: TestCase {
 
   fileprivate let vm: DashboardFundingCellViewModelType = DashboardFundingCellViewModel()
-  fileprivate let graphData = TestObserver<FundingGraphData, NoError>()
+  fileprivate let graphData = TestObserver<FundingGraphData, Never>()
 
   override func setUp() {
     super.setUp()
