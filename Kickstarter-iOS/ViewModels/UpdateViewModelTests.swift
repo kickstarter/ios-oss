@@ -1,6 +1,5 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
-// swiftlint:disable force_unwrapping
 @testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
@@ -8,6 +7,7 @@ import ReactiveSwift
 import WebKit
 import XCTest
 
+// swiftlint:disable force_unwrapping
 final class UpdateViewModelTests: TestCase {
   fileprivate let vm: UpdateViewModelType = UpdateViewModel()
 
