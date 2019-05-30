@@ -12,15 +12,15 @@ public enum Experiment {
 public typealias Features = [String: Bool]
 
 public struct Config {
-  public private(set) var abExperiments: [String: String]
-  public private(set) var appId: Int
-  public private(set) var applePayCountries: [String]
-  public private(set) var countryCode: String
-  public private(set) var features: Features
-  public private(set) var iTunesLink: String
-  public private(set) var launchedCountries: [Project.Country]
-  public private(set) var locale: String
-  public private(set) var stripePublishableKey: String
+  public var abExperiments: [String: String]
+  public var appId: Int
+  public var applePayCountries: [String]
+  public var countryCode: String
+  public var features: Features
+  public var iTunesLink: String
+  public var launchedCountries: [Project.Country]
+  public var locale: String
+  public var stripePublishableKey: String
 
   public var abExperimentsArray: [String] {
     let stringsArray = self.abExperiments.map { key, value in

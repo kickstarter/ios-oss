@@ -1213,5 +1213,5 @@ private enum PledgeError: Error {
 private func applePayButtonHiddenFor(applePayCapable: Bool, project: Project) -> Bool {
   return !applePayCapable
     || project.personalization.isBacking == .some(true)
-    || AppEnvironment.current.config?.applePayCountries.index(of: project.country.countryCode) == nil
+    || AppEnvironment.current.config?.applePayCountries.firstIndex(of: project.country.countryCode) == nil
 }

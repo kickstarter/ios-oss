@@ -68,7 +68,7 @@ RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
 
     self.selectRow = projectAndSortedShippingRulesAndSelectedShippingRule
       .map { _, shippingRules, selectedShippingRule in
-        shippingRules.index(of: selectedShippingRule) ?? 0
+        shippingRules.firstIndex(of: selectedShippingRule) ?? 0
       }
       .takeWhen(self.viewWillAppearProperty.signal)
 

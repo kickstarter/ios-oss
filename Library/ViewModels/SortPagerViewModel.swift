@@ -76,7 +76,7 @@ SortPagerViewModelOutputs {
     )
       .map { (arg) -> (Int, Int) in
         let (sorts, sort) = arg
-        return (sorts.index(of: sort) ?? 0, sorts.count)
+        return (sorts.firstIndex(of: sort) ?? 0, sorts.count)
     }
 
     let pageIndex: Signal<Int, NoError> = sorts.mapConst(0)

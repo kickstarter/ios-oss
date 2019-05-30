@@ -17,7 +17,7 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
   }
 
   internal func indexFor(controller: UIViewController) -> Int? {
-    return self.viewControllers.index(of: controller)
+    return self.viewControllers.firstIndex(of: controller)
   }
 
   internal func sortFor(controller: UIViewController) -> DiscoveryParams.Sort? {
@@ -30,7 +30,7 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
   }
 
   internal func controllerFor(sort: DiscoveryParams.Sort) -> UIViewController? {
-    guard let index = self.sorts.index(of: sort) else { return nil }
+    guard let index = self.sorts.firstIndex(of: sort) else { return nil }
     return self.viewControllers[index]
   }
 
@@ -38,7 +38,7 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
     _ pageViewController: UIPageViewController,
     viewControllerAfter viewController: UIViewController) -> UIViewController? {
 
-    guard let pageIdx = self.viewControllers.index(of: viewController) else {
+    guard let pageIdx = self.viewControllers.firstIndex(of: viewController) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
 
@@ -54,7 +54,7 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
     _ pageViewController: UIPageViewController,
     viewControllerBefore viewController: UIViewController) -> UIViewController? {
 
-    guard let pageIdx = self.viewControllers.index(of: viewController) else {
+    guard let pageIdx = self.viewControllers.firstIndex(of: viewController) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
 
