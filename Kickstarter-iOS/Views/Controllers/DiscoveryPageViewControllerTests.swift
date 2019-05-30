@@ -1,6 +1,6 @@
 @testable import Kickstarter_Framework
-import KsApi
-import Library
+@testable import KsApi
+@testable import Library
 import Prelude
 
 internal final class DiscoveryPageViewControllerTests: TestCase {

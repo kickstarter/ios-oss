@@ -1,5 +1,5 @@
 @testable import Kickstarter_Framework
-import KsApi
+@testable import KsApi
 import Library
 import Prelude
 
