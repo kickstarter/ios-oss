@@ -187,13 +187,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     self.referrersStackView.subviews.forEach { $0.removeFromSuperview() }
 
     let referrers = data.referrers
-      .map {
-        DashboardReferrerRowStackView(
-        frame: self.frame,
-        country: data.country,
-        referrer: $0
-      )
-      }
+      .map { DashboardReferrerRowStackView(frame: self.frame, country: data.country, referrer: $0) }
 
     let refsCount = referrers.count
     (0..<refsCount).forEach {

@@ -102,12 +102,13 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
     self.mainStackView.subviews.forEach { $0.removeFromSuperview() }
 
     let stats = data.rewardsStats
-      .map { DashboardRewardRowStackView(
-        frame: self.frame,
-        country: data.country,
-        reward: $0,
-        totalPledged: data.totalPledged
-      )
+      .map {
+        DashboardRewardRowStackView(
+          frame: self.frame,
+          country: data.country,
+          reward: $0,
+          totalPledged: data.totalPledged
+        )
       }
 
     let statsCount = stats.count

@@ -45,10 +45,8 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
       .map { Strings.Card_ending_in_last_four(last_four: $0.lastFour) }
 
     self.expirationDateText = self.cardProperty.signal.skipNil()
-      .map { Strings.Credit_card_expiration(
-        expiration_date: formatted(dateString: $0.formattedExpirationDate)
-      )
-      }
+      .map { $0.formattedExpirationDate }
+      .map { Strings.Credit_card_expiration(expiration_date: formatted(dateString: $0)) }
   }
 
   fileprivate let cardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)

@@ -233,12 +233,13 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       }
 
     self.showFacebookConnectSection = surveyValuesOrErrors
-      .map { (
-        .activity,
-        FindFriendsFacebookConnectCellViewModel
-          .showFacebookConnectionSection(for: AppEnvironment.current.currentUser) &&
-          !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
-      )
+      .map {
+        (
+          .activity,
+          FindFriendsFacebookConnectCellViewModel
+            .showFacebookConnectionSection(for: AppEnvironment.current.currentUser) &&
+            !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
+        )
       }
 
     self.deleteFacebookConnectSection = self.dismissFacebookConnectSectionProperty.signal

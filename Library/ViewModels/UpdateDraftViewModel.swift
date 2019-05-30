@@ -155,10 +155,8 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
     )
 
     self.navigationItemTitle = draft
-      .map { Strings.dashboard_post_update_compose_update_number(
-        update_number: Format.wholeNumber($0.update.sequence)
-      )
-      }
+      .map { $0.update.sequence }
+      .map { Strings.dashboard_post_update_compose_update_number(update_number: Format.wholeNumber($0)) }
 
     // MARK: Form Fields
 
