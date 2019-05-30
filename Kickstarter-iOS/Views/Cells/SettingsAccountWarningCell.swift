@@ -3,9 +3,9 @@ import Prelude
 import UIKit
 
 final class SettingsAccountWarningCell: UITableViewCell, ValueCell, NibLoading {
-  @IBOutlet fileprivate weak var arrowIconImage: UIImageView!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
-  @IBOutlet fileprivate weak var warningIconImage: UIImageView!
+  @IBOutlet fileprivate var arrowIconImage: UIImageView!
+  @IBOutlet fileprivate var titleLabel: UILabel!
+  @IBOutlet fileprivate var warningIconImage: UIImageView!
 
   func configureWith(value shouldHideAlertIcon: Bool) {
     _ = self
@@ -18,7 +18,7 @@ final class SettingsAccountWarningCell: UITableViewCell, ValueCell, NibLoading {
       _ = self
         |> \.accessibilityHint %~ { _ in
           Strings.Email_unverified()
-      }
+        }
     }
   }
 
@@ -29,7 +29,7 @@ final class SettingsAccountWarningCell: UITableViewCell, ValueCell, NibLoading {
       |> settingsTitleLabelStyle
       |> \.text %~ { _ in
         SettingsAccountCellType.changeEmail.title
-    }
+      }
 
     _ = self.warningIconImage
       |> \.tintColor .~ .ksr_apricot_600

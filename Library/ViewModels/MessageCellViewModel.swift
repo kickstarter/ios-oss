@@ -19,8 +19,7 @@ public protocol MessageCellViewModelType {
 }
 
 public final class MessageCellViewModel: MessageCellViewModelType, MessageCellViewModelInputs,
-MessageCellViewModelOutputs {
-
+  MessageCellViewModelOutputs {
   public init() {
     let message = self.messageProperty.signal.skipNil()
 

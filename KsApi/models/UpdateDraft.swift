@@ -88,5 +88,4 @@ extension UpdateDraft.Video: Argo.Decodable {
   }
 }
 
-extension UpdateDraft.Video.Status: Argo.Decodable {
-}
+extension UpdateDraft.Video.Status: Argo.Decodable {}

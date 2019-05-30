@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol DashboardTitleViewViewModelInputs {
   /// Call to update the data for the title.
@@ -42,7 +42,6 @@ public protocol DashboardTitleViewViewModelType {
 public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
   DashboardTitleViewViewModelInputs, DashboardTitleViewViewModelOutputs {
   public init() {
-
     self.titleText = self.currentProjectIndexProperty.signal.skipNil()
       .map { Strings.dashboard_switcher_project_number(current_project_index: "\($0 + 1)") }
 
@@ -70,7 +69,7 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
         case .closed:
           return Strings.dashboard_switcher_accessibility_label_opens_list_of_projects()
         }
-    }
+      }
   }
 
   public var inputs: DashboardTitleViewViewModelInputs { return self }
@@ -90,8 +89,9 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
     self.currentProjectIndexProperty.value = data.currentProjectIndex
     self.updateDrawerStateHideArrowProperty.value = (data.drawerState, data.isArrowHidden)
   }
+
   fileprivate let titleButtonTappedProperty = MutableProperty(())
   public func titleButtonTapped() {
-    titleButtonTappedProperty.value = ()
+    self.titleButtonTappedProperty.value = ()
   }
 }

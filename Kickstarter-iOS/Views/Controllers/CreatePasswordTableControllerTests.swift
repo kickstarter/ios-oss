@@ -1,6 +1,6 @@
-import Prelude
 @testable import Kickstarter_Framework
 @testable import Library
+import Prelude
 import XCTest
 
 final class CreatePasswordTableViewControllerTests: TestCase {
@@ -50,10 +50,10 @@ final class CreatePasswordTableViewControllerTests: TestCase {
   }
 }
 
-fileprivate final class MockCreatePasswordTableViewController: UITableViewController,
-CreatePasswordTableViewControllerType {
-  @objc func newPasswordTextFieldChanged(_ sender: UITextField) { }
-  @objc func newPasswordTextFieldDidReturn(_ sender: UITextField) { }
-  @objc func newPasswordConfirmationTextFieldChanged(_ sender: UITextField) { }
-  @objc func newPasswordConfirmationTextFieldDidReturn(_ sender: UITextField) { }
+private final class MockCreatePasswordTableViewController: UITableViewController,
+  CreatePasswordTableViewControllerType {
+  @objc func newPasswordTextFieldChanged(_: UITextField) {}
+  @objc func newPasswordTextFieldDidReturn(_: UITextField) {}
+  @objc func newPasswordConfirmationTextFieldChanged(_: UITextField) {}
+  @objc func newPasswordConfirmationTextFieldDidReturn(_: UITextField) {}
 }

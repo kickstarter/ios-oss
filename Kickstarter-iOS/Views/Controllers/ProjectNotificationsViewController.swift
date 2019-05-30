@@ -43,12 +43,14 @@ internal final class ProjectNotificationsViewController: UITableViewController {
       .observeValues { [weak self] notifications in
         self?.dataSource.load(notifications: notifications)
         self?.tableView.reloadData()
-    }
+      }
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
+  internal override func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt _: IndexPath
+  ) {
     if let cell = cell as? ProjectNotificationCell {
       cell.delegate = self
     }
@@ -56,16 +58,17 @@ internal final class ProjectNotificationsViewController: UITableViewController {
 }
 
 extension ProjectNotificationsViewController: UITabBarDelegate {
-  override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+  override func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
     return 0.1 // Required to remove the footer in UITableViewStyleGrouped
   }
 }
 
 extension ProjectNotificationsViewController: ProjectNotificationCellDelegate {
-  internal func projectNotificationCell(_ cell: ProjectNotificationCell?, notificationSaveError: String) {
-    self.present(UIAlertController.genericError(notificationSaveError),
-                               animated: true,
-                               completion: nil
+  internal func projectNotificationCell(_: ProjectNotificationCell?, notificationSaveError: String) {
+    self.present(
+      UIAlertController.genericError(notificationSaveError),
+      animated: true,
+      completion: nil
     )
   }
 }

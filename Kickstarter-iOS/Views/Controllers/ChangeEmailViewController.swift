@@ -6,20 +6,20 @@ import ReactiveSwift
 import UIKit
 
 internal final class ChangeEmailViewController: UIViewController, MessageBannerViewControllerPresenting {
-  @IBOutlet fileprivate weak var currentEmailContainer: UIView!
-  @IBOutlet fileprivate weak var currentEmailTitle: UILabel!
-  @IBOutlet fileprivate weak var currentEmailValue: UILabel!
-  @IBOutlet fileprivate weak var messageLabelView: UIView!
-  @IBOutlet fileprivate weak var newEmailLabel: UILabel!
-  @IBOutlet fileprivate weak var newEmailTextField: UITextField!
-  @IBOutlet fileprivate weak var onePasswordButton: UIButton!
-  @IBOutlet fileprivate weak var passwordLabel: UILabel!
-  @IBOutlet fileprivate weak var passwordTextField: UITextField!
-  @IBOutlet fileprivate weak var resendVerificationEmailButton: UIButton!
-  @IBOutlet fileprivate weak var resendVerificationEmailView: UIView!
-  @IBOutlet fileprivate weak var scrollView: UIScrollView!
-  @IBOutlet fileprivate weak var unverifiedEmailLabel: UILabel!
-  @IBOutlet fileprivate weak var warningMessageLabel: UILabel!
+  @IBOutlet fileprivate var currentEmailContainer: UIView!
+  @IBOutlet fileprivate var currentEmailTitle: UILabel!
+  @IBOutlet fileprivate var currentEmailValue: UILabel!
+  @IBOutlet fileprivate var messageLabelView: UIView!
+  @IBOutlet fileprivate var newEmailLabel: UILabel!
+  @IBOutlet fileprivate var newEmailTextField: UITextField!
+  @IBOutlet fileprivate var onePasswordButton: UIButton!
+  @IBOutlet fileprivate var passwordLabel: UILabel!
+  @IBOutlet fileprivate var passwordTextField: UITextField!
+  @IBOutlet fileprivate var resendVerificationEmailButton: UIButton!
+  @IBOutlet fileprivate var resendVerificationEmailView: UIView!
+  @IBOutlet fileprivate var scrollView: UIScrollView!
+  @IBOutlet fileprivate var unverifiedEmailLabel: UILabel!
+  @IBOutlet fileprivate var warningMessageLabel: UILabel!
 
   private let viewModel: ChangeEmailViewModelType = ChangeEmailViewModel()
   internal var messageBannerViewController: MessageBannerViewController?
@@ -37,13 +37,15 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
-    self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped(_:)))
+    self.saveButtonView.addTarget(self, action: #selector(self.saveButtonTapped(_:)))
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
-    self.onePasswordButton.addTarget(self,
-                                     action: #selector(self.onePasswordButtonTapped),
-                                     for: .touchUpInside)
+    self.onePasswordButton.addTarget(
+      self,
+      action: #selector(self.onePasswordButtonTapped),
+      for: .touchUpInside
+    )
 
     self.viewModel.inputs.onePassword(
       isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
@@ -71,7 +73,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
       |> settingsViewControllerStyle
       |> \.title %~ { _ in
         Strings.Change_email()
-    }
+      }
 
     _ = self.onePasswordButton
       |> onePasswordButtonStyle
@@ -143,14 +145,14 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
         } else {
           self?.saveButtonView.stopAnimating()
         }
-    }
+      }
 
     self.viewModel.outputs.saveButtonIsEnabled
       .observeForUI()
       .observeValues { [weak self] isEnabled in
         self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
         self?.viewModel.inputs.saveButtonIsEnabled(isEnabled)
-    }
+      }
 
     self.viewModel.outputs.onePasswordFindLoginForURLString
       .observeForControllerAction()
@@ -160,68 +162,72 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
       .observeForUI()
       .observeValues { [weak self] error in
         self?.messageBannerViewController?.showBanner(with: .error, message: error)
-    }
+      }
 
     self.viewModel.outputs.didChangeEmail
       .observeForUI()
       .observeValues { [weak self] in
-        self?.messageBannerViewController?.showBanner(with: .success,
-                                           message: Strings.Got_it_your_changes_have_been_saved())
-    }
+        self?.messageBannerViewController?.showBanner(
+          with: .success,
+          message: Strings.Got_it_your_changes_have_been_saved()
+        )
+      }
 
     self.viewModel.outputs.didSendVerificationEmail
       .observeForUI()
       .observeValues { [weak self] in
-        self?.messageBannerViewController?.showBanner(with: .success,
-                                           message: Strings.Verification_email_sent())
-    }
+        self?.messageBannerViewController?.showBanner(
+          with: .success,
+          message: Strings.Verification_email_sent()
+        )
+      }
 
     self.viewModel.outputs.didFailToSendVerificationEmail
       .observeForUI()
       .observeValues { [weak self] error in
         self?.messageBannerViewController?.showBanner(with: .error, message: error)
-    }
+      }
 
     self.viewModel.outputs.passwordFieldBecomeFirstResponder
       .observeForUI()
       .observeValues { [weak self] in
         self?.passwordTextField.becomeFirstResponder()
-    }
+      }
 
     self.viewModel.outputs.resetFields
       .observeForUI()
       .observeValues { [weak self] emptyString in
         self?.resetFields(string: emptyString)
-    }
+      }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForUI()
       .observeValues { [weak self] in
         self?.dismissKeyboard()
-    }
+      }
 
     self.viewModel.outputs.textFieldsAreEnabled
       .observeForUI()
       .observeValues { [weak self] isEnabled in
         self?.enableTextFields(isEnabled)
-    }
+      }
 
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
         self?.scrollView.handleKeyboardVisibilityDidChange(change)
-    }
+      }
   }
 
-  @IBAction func saveButtonTapped(_ sender: Any) {
+  @IBAction func saveButtonTapped(_: Any) {
     self.viewModel.inputs.saveButtonTapped()
   }
 
-  @IBAction func resendVerificationEmailButtonTapped(_ sender: Any) {
+  @IBAction func resendVerificationEmailButtonTapped(_: Any) {
     self.viewModel.inputs.resendVerificationEmailButtonTapped()
   }
 
-  @IBAction func onePasswordButtonTapped(_ sender: Any) {
+  @IBAction func onePasswordButtonTapped(_: Any) {
     self.viewModel.inputs.onePasswordButtonTapped()
   }
 
@@ -234,7 +240,6 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
   }
 
   fileprivate func onePasswordFindLogin(forURLString string: String) {
-
     OnePasswordExtension.shared()
       .findLogin(forURLString: string, for: self, sender: self.onePasswordButton) { result, _ in
         guard let result = result else { return }
@@ -242,7 +247,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
         self.viewModel.inputs.onePasswordFound(
           password: result[AppExtensionPasswordKey] as? String
         )
-    }
+      }
   }
 
   private func dismissKeyboard() {
@@ -254,9 +259,9 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
     _ = self.passwordTextField
       ?|> \.text %~ { _ in string }
 
-    _ =  self.newEmailTextField
+    _ = self.newEmailTextField
       ?|> \.text %~ { _ in string }
-    }
+  }
 
   private func enableTextFields(_ isEnabled: Bool) {
     _ = [self.newEmailTextField, self.passwordTextField]
@@ -266,7 +271,6 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
 
 extension ChangeEmailViewController: UITextFieldDelegate {
   internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-
     self.viewModel.inputs.textFieldShouldReturn(with: textField.returnKeyType)
     return textField.resignFirstResponder()
   }
@@ -304,7 +308,7 @@ private let newEmailTextFieldStyle: TextFieldStyle = { (textField: UITextField) 
     |> \.returnKeyType .~ UIReturnKeyType.next
     |> \.attributedPlaceholder %~ { _ in
       settingsAttributedPlaceholder(Strings.login_placeholder_email())
-  }
+    }
 }
 
 private let passwordLabelStyle: LabelStyle = { (label: UILabel) in
@@ -318,7 +322,7 @@ private let passwordTextFieldStyle: TextFieldStyle = { (textField: UITextField) 
     |> \.returnKeyType .~ UIReturnKeyType.done
     |> \.attributedPlaceholder %~ { _ in
       settingsAttributedPlaceholder(Strings.login_placeholder_password())
-  }
+    }
 }
 
 private let resendVerificationEmailButtonStyle: ButtonStyle = { (button: UIButton) in

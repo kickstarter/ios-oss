@@ -17,16 +17,15 @@ public protocol SettingsNotificationPickerViewModelType {
 
 public final class SettingsNotificationPickerViewModel: SettingsNotificationPickerViewModelOutputs,
   SettingsNotificationPickerViewModelInputs, SettingsNotificationPickerViewModelType {
-
   public init() {
-    let initialUser = initialUserProperty.signal.skipNil()
+    let initialUser = self.initialUserProperty.signal.skipNil()
 
     let userDefinedEmailFrequency = initialUser.signal
       .map { user in
         user |> UserAttribute.notification(.creatorDigest).keyPath.view
       }.skipNil()
       .map { creatorDigestEnabled in
-        return creatorDigestEnabled ? EmailFrequency.dailySummary : EmailFrequency.twiceADaySummary
+        creatorDigestEnabled ? EmailFrequency.dailySummary : EmailFrequency.twiceADaySummary
       }
 
     self.frequencyValueText = userDefinedEmailFrequency.signal

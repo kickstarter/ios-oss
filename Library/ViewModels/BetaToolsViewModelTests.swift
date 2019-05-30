@@ -1,8 +1,8 @@
-import XCTest
-import ReactiveSwift
 @testable import KsApi
 @testable import Library
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 import Foundation
 
@@ -40,7 +40,6 @@ final class BetaToolsViewModelTests: TestCase {
   }
 
   func testLogoutWithParamsEmits_WhenEnvironmentChanges() {
-
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)

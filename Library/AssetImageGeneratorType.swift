@@ -1,8 +1,7 @@
-import class Foundation.NSValue
 import AVFoundation
+import class Foundation.NSValue
 
 public protocol AssetImageGeneratorType {
-
   init(asset: AVAsset)
 
   func generateCGImagesAsynchronously(
@@ -11,5 +10,4 @@ public protocol AssetImageGeneratorType {
   )
 }
 
-extension AVAssetImageGenerator: AssetImageGeneratorType {
-}
+extension AVAssetImageGenerator: AssetImageGeneratorType {}

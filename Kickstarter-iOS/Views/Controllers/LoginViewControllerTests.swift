@@ -1,9 +1,8 @@
 import Foundation
-import Library
 @testable import Kickstarter_Framework
+import Library
 
 internal final class LoginViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)

@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import UIKit
 
 internal final class BackerDashboardProjectsDataSource: ValueCellDataSource {
@@ -9,15 +9,18 @@ internal final class BackerDashboardProjectsDataSource: ValueCellDataSource {
   }
 
   internal func emptyState(visible: Bool, projectsType: ProfileProjectsType) {
-    self.set(values: visible ? [projectsType] : [],
-             cellClass: BackerDashboardEmptyStateCell.self,
-             inSection: Section.emptyState.rawValue)
+    self.set(
+      values: visible ? [projectsType] : [],
+      cellClass: BackerDashboardEmptyStateCell.self,
+      inSection: Section.emptyState.rawValue
+    )
   }
 
   internal func load(projects: [Project]) {
-    self.set(values: projects,
-             cellClass: BackerDashboardProjectCell.self,
-             inSection: Section.projects.rawValue
+    self.set(
+      values: projects,
+      cellClass: BackerDashboardProjectCell.self,
+      inSection: Section.projects.rawValue
     )
   }
 

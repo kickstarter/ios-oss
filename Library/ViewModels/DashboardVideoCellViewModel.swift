@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol DashboardVideoCellViewModelInputs {
   /// Call to configure cell with video stats.
@@ -41,7 +41,6 @@ public protocol DashboardVideoCellViewModelType {
 
 public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInputs,
   DashboardVideoCellViewModelOutputs, DashboardVideoCellViewModelType {
-
   public init() {
     let videoStats = self.statsProperty.signal.skipNil()
 
@@ -50,7 +49,7 @@ public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInput
         Strings.dashboard_graphs_video_stats_percent_plays_completed(
           percent_plays_completed: formattedCompletionPercentage(videoStats: $0)
         )
-    }
+      }
 
     self.externalStartCount = videoStats
       .map { Format.wholeNumber($0.externalStarts) }
@@ -69,15 +68,17 @@ public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInput
         )
         return string.simpleHtmlAttributedString(font: UIFont.ksr_body(), bold: UIFont.ksr_body().bolded)
           ?? NSAttributedString(string: "")
-    }
+      }
 
     self.internalText = videoStats
       .map { Format.percentage(Double(internalStartPercentage(videoStats: $0))) +
-        " " + Strings.dashboard_graphs_video_stats_on_kickstarter() }
+        " " + Strings.dashboard_graphs_video_stats_on_kickstarter()
+      }
 
     self.externalText = videoStats
       .map { Format.percentage(Double(externalStartPercentage(videoStats: $0))) +
-        " " + Strings.dashboard_graphs_video_stats_off_site() }
+        " " + Strings.dashboard_graphs_video_stats_off_site()
+      }
   }
 
   fileprivate let statsProperty = MutableProperty<ProjectStatsEnvelope.VideoStats?>(nil)

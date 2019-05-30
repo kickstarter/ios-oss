@@ -23,10 +23,8 @@ public protocol SettingsNewslettersCellViewModelType {
 }
 
 public final class SettingsNewsletterCellViewModel: SettingsNewslettersCellViewModelType,
-SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs {
-
+  SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs {
   public init() {
-
     let newsletter = self.newsletterProperty.signal.skipNil()
 
     let initialUser = self.initialUserProperty.signal.skipNil()
@@ -51,21 +49,21 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
           let (attribute, on) = attributeAndOn
           return user |> attribute.keyPath .~ on
         }
-    }
+      }
 
     let updateUserAllOn = initialUser
       .takePairWhen(self.allNewslettersSwitchProperty.signal.skipNil())
       .map { user, on in
-        return user
+        user
           |> \.newsletters .~ User.NewsletterSubscriptions.all(on: on)
-    }
+      }
 
     let updateEvent = Signal.merge(updatedUser, updateUserAllOn)
       .switchMap { user in
         AppEnvironment.current.apiService.updateUserSelf(user)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.unableToSaveError = updateEvent.errors()
       .map { env in
@@ -75,11 +73,13 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
     let initialUserOnError = initialUser
       .takeWhen(self.unableToSaveError)
 
-    self.updateCurrentUser = Signal.merge(initialUser,
-                                          updatedUser,
-                                          updateUserAllOn,
-                                          initialUserOnError)
-      .takeWhen(updateEvent.values().ignoreValues())
+    self.updateCurrentUser = Signal.merge(
+      initialUser,
+      updatedUser,
+      updateUserAllOn,
+      initialUserOnError
+    )
+    .takeWhen(updateEvent.values().ignoreValues())
 
     self.subscribeToAllSwitchIsOn = initialUser
       .map(userIsSubscribedToAll(user:))
@@ -97,8 +97,8 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
             newsletterType: newsletter, sendNewsletter: on, project: nil, context: .settings
           )
         default: break
+        }
       }
-    }
   }
 
   fileprivate let initialUserProperty = MutableProperty<User?>(nil)
@@ -107,6 +107,7 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
     self.newsletterProperty.value = value.newsletter
     self.initialUserProperty.value = value.user
   }
+
   public func configureWith(value: User) {
     self.initialUserProperty.value = value
   }
@@ -132,7 +133,6 @@ SettingsNewslettersCellViewModelInputs, SettingsNewslettersCellViewModelOutputs 
 }
 
 private func userIsSubscribedToAll(user: User) -> Bool? {
-
   return user.newsletters.arts == true
     && user.newsletters.games == true
     && user.newsletters.happening == true
@@ -145,6 +145,5 @@ private func userIsSubscribedToAll(user: User) -> Bool? {
 }
 
 private func userIsSubscribed(user: User, newsletter: Newsletter) -> Bool? {
-
   return user |> UserAttribute.newsletter(newsletter).keyPath.view
 }

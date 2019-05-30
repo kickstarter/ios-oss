@@ -1,7 +1,7 @@
 import KsApi
-import ReactiveSwift
-import ReactiveExtensions
 import Prelude
+import ReactiveExtensions
+import ReactiveSwift
 
 public protocol FindFriendsStatsCellViewModelInputs {
   /// Call to set with stats and the source from whence it comes
@@ -62,23 +62,23 @@ public final class FindFriendsStatsCellViewModel: FindFriendsStatsCellViewModelT
   fileprivate let configureWithStatsProperty = MutableProperty<FriendStatsEnvelope?>(nil)
   fileprivate let configureWithSourceProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
   public func configureWith(stats: FriendStatsEnvelope, source: FriendsSource) {
-    configureWithStatsProperty.value = stats
-    configureWithSourceProperty.value = source
+    self.configureWithStatsProperty.value = stats
+    self.configureWithSourceProperty.value = source
   }
 
   fileprivate let confirmFollowAllFriendsProperty = MutableProperty(())
   func confirmFollowAllFriends() {
-    confirmFollowAllFriendsProperty.value = ()
+    self.confirmFollowAllFriendsProperty.value = ()
   }
 
   fileprivate let declineFollowAllFriendsProperty = MutableProperty(())
   func declineFollowAllFriends() {
-    declineFollowAllFriendsProperty.value = ()
+    self.declineFollowAllFriendsProperty.value = ()
   }
 
   fileprivate let followAllButtonTappedProperty = MutableProperty(())
   public func followAllButtonTapped() {
-    followAllButtonTappedProperty.value = ()
+    self.followAllButtonTappedProperty.value = ()
   }
 
   public let backedProjectsCountText: Signal<String, Never>

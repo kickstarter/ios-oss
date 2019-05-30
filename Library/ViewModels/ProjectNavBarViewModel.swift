@@ -45,14 +45,13 @@ public protocol ProjectNavBarViewModelType {
 }
 
 public final class ProjectNavBarViewModel: ProjectNavBarViewModelType,
-ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
-
+  ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
   public init() {
     let configuredProjectAndRefTag = Signal.combineLatest(
       self.projectAndRefTagProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      )
-      .map(first)
+    )
+    .map(first)
 
     let configuredProject = configuredProjectAndRefTag.map(first)
 
@@ -74,8 +73,8 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     let projectImageIsVisible = Signal.merge(
       self.projectImageIsVisibleProperty.signal,
       self.viewDidLoadProperty.signal.mapConst(true)
-      )
-      .skipRepeats()
+    )
+    .skipRepeats()
 
     self.categoryHiddenAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, false)),
@@ -85,26 +84,26 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
           (videoIsPlaying ? true : !projectImageIsVisible, true)
         }
         .skip(first: 1)
-      )
-      .skipRepeats { $0.hidden == $1.hidden }
+    )
+    .skipRepeats { $0.hidden == $1.hidden }
 
     self.navBarShadowVisible = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
       self.projectPageDidScrollToTopProperty.signal
-      )
-      .skipRepeats()
+    )
+    .skipRepeats()
 
     self.titleHiddenAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((true, false)),
       self.projectImageIsVisibleProperty.signal.map { ($0, true) }
-      )
-      .skipRepeats { $0.hidden == $1.hidden }
+    )
+    .skipRepeats { $0.hidden == $1.hidden }
 
     self.backgroundOpaqueAndAnimate = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((false, false)),
       self.projectImageIsVisibleProperty.signal.map { (!$0, true) }
-      )
-      .skipRepeats { $0.opaque == $1.opaque }
+    )
+    .skipRepeats { $0.opaque == $1.opaque }
 
     self.dismissViewController = self.closeButtonTappedProperty.signal
 
@@ -112,7 +111,7 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
       .takeWhen(self.closeButtonTappedProperty.signal)
       .observeValues { project, refTag in
         AppEnvironment.current.koala.trackClosedProjectPage(project, refTag: refTag, gestureType: .tap)
-    }
+      }
   }
 
   fileprivate let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)

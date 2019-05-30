@@ -42,10 +42,11 @@ public enum SettingsNotificationSectionType: Int {
     }
   }
 
-  public static var allCases: [SettingsNotificationSectionType] = [.backedProjects,
-                                                                   .creator,
-                                                                   .social
-                                                                   ]
+  public static var allCases: [SettingsNotificationSectionType] = [
+    .backedProjects,
+    .creator,
+    .social
+  ]
 }
 
 public enum SettingsNotificationCellType {
@@ -61,18 +62,19 @@ public enum SettingsNotificationCellType {
   case friendBacksProject
   case commentReplyDigest
 
-  public static var allCases: [SettingsNotificationCellType] = [.projectUpdates,
-                                                                .projectNotifications,
-                                                                .pledgeActivity,
-                                                                .emailFrequency,
-                                                                .newComments,
-                                                                .newLikes,
-                                                                .creatorTips,
-                                                                .messages,
-                                                                .newFollowers,
-                                                                .friendBacksProject,
-                                                                .commentReplyDigest
-                                                                ]
+  public static var allCases: [SettingsNotificationCellType] = [
+    .projectUpdates,
+    .projectNotifications,
+    .pledgeActivity,
+    .emailFrequency,
+    .newComments,
+    .newLikes,
+    .creatorTips,
+    .messages,
+    .newFollowers,
+    .friendBacksProject,
+    .commentReplyDigest
+  ]
 
   public var accessibilityTraits: UIAccessibilityTraits {
     switch self {

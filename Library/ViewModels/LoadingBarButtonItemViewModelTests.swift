@@ -1,7 +1,7 @@
-import Prelude
-import XCTest
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class LoadingBarButtonItemViewModelTests: TestCase {
   private let vm: LoadingBarButtonItemViewModelType = LoadingBarButtonItemViewModel()
@@ -14,10 +14,10 @@ final class LoadingBarButtonItemViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.activityIndicatorIsLoading.observe(activityIndicatorIsLoading.observer)
-    self.vm.outputs.titleButtonIsEnabled.observe(titleButtonIsEnabled.observer)
-    self.vm.outputs.titleButtonIsHidden.observe(titleButtonIsHidden.observer)
-    self.vm.outputs.titleButtonText.observe(titleButtonText.observer)
+    self.vm.outputs.activityIndicatorIsLoading.observe(self.activityIndicatorIsLoading.observer)
+    self.vm.outputs.titleButtonIsEnabled.observe(self.titleButtonIsEnabled.observer)
+    self.vm.outputs.titleButtonIsHidden.observe(self.titleButtonIsHidden.observer)
+    self.vm.outputs.titleButtonText.observe(self.titleButtonText.observer)
   }
 
   func testSetIsEnabled() {

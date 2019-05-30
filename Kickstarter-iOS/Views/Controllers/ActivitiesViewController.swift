@@ -22,12 +22,12 @@ internal final class ActivitiesViewController: UITableViewController {
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-    }
+      }
 
     self.sessionEndedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
-    }
+      }
   }
 
   deinit {
@@ -46,7 +46,7 @@ internal final class ActivitiesViewController: UITableViewController {
 
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.gridHalf(3)))
 
-    self.tableView.dataSource = dataSource
+    self.tableView.dataSource = self.dataSource
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
     self.emptyStatesController = emptyVC
@@ -74,7 +74,7 @@ internal final class ActivitiesViewController: UITableViewController {
       |> UINavigationItem.lens.title %~ { _ in Strings.activity_navigation_title_activity() }
   }
 
-    internal override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.activities
@@ -82,21 +82,21 @@ internal final class ActivitiesViewController: UITableViewController {
       .observeValues { [weak self] activities in
         self?.dataSource.load(activities: activities)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.showFacebookConnectSection
       .observeForUI()
       .observeValues { [weak self] source, shouldShow in
         self?.dataSource.facebookConnect(source: source, visible: shouldShow)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.showFindFriendsSection
       .observeForUI()
       .observeValues { [weak self] source, shouldShow in
         self?.dataSource.findFriends(source: source, visible: shouldShow)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.showEmptyStateIsLoggedIn
       .observeForUI()
@@ -106,14 +106,14 @@ internal final class ActivitiesViewController: UITableViewController {
           self?.emptyStatesController?.view.isHidden = false
           self?.view.bringSubviewToFront(emptyVC.view)
         }
-    }
+      }
 
     self.viewModel.outputs.hideEmptyState
       .observeForUI()
       .observeValues { [weak self] in
         self?.tableView.bounces = true
         self?.emptyStatesController?.view.isHidden = true
-    }
+      }
 
     self.refreshControl?.rac.refreshing = self.viewModel.outputs.isRefreshing
 
@@ -121,25 +121,25 @@ internal final class ActivitiesViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project, refTag in
         self?.present(project: project, refTag: refTag)
-    }
+      }
 
     self.viewModel.outputs.deleteFacebookConnectSection
       .observeForUI()
       .observeValues { [weak self] in
         self?.deleteFacebookSection()
-    }
+      }
 
     self.viewModel.outputs.deleteFindFriendsSection
       .observeForUI()
       .observeValues { [weak self] in
         self?.deleteFindFriendsSection()
-    }
+      }
 
     self.viewModel.outputs.goToFriends
       .observeForControllerAction()
       .observeValues { [weak self] source in
         self?.goToFriends(source: source)
-    }
+      }
 
     self.viewModel.outputs.showFacebookConnectErrorAlert
       .observeForControllerAction()
@@ -149,32 +149,33 @@ internal final class ActivitiesViewController: UITableViewController {
           animated: true,
           completion: nil
         )
-    }
+      }
 
     self.viewModel.outputs.unansweredSurveys
       .observeForUI()
       .observeValues { [weak self] in
         self?.dataSource.load(surveys: $0)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.goToSurveyResponse
       .observeForControllerAction()
       .observeValues { [weak self] surveyResponse in
         self?.goToSurveyResponse(surveyResponse: surveyResponse)
-    }
+      }
 
     self.viewModel.outputs.goToUpdate
       .observeForControllerAction()
       .observeValues { [weak self] project, update in
         self?.goToUpdate(project: project, update: update)
-    }
+      }
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
-
+  internal override func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
     if let cell = cell as? ActivityUpdateCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? FindFriendsFacebookConnectCell, cell.delegate == nil {
@@ -185,11 +186,13 @@ internal final class ActivitiesViewController: UITableViewController {
       cell.delegate = self
     }
 
-    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
-                                         outOf: self.dataSource.numberOfItems())
+    self.viewModel.inputs.willDisplayRow(
+      self.dataSource.itemIndexAt(indexPath),
+      outOf: self.dataSource.numberOfItems()
+    )
   }
 
-  internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  internal override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let activity = self.dataSource[indexPath] as? Activity else {
       return
     }
@@ -202,12 +205,11 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 
   fileprivate func present(project: Project, refTag: RefTag) {
-
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
     self.present(vc, animated: true, completion: nil)
   }
 
-  fileprivate func goToFriends(source: FriendsSource) {
+  fileprivate func goToFriends(source _: FriendsSource) {
     let vc = FindFriendsViewController.configuredWith(source: .activity)
     self.navigationController?.pushViewController(vc, animated: true)
   }
@@ -281,9 +283,10 @@ extension ActivitiesViewController: ActivitySurveyResponseCellDelegate {
 }
 
 extension ActivitiesViewController: EmptyStatesViewControllerDelegate {
-  func emptyStatesViewController(_ viewController: EmptyStatesViewController,
-                                 goToDiscoveryWithParams params: DiscoveryParams?) {
-
+  func emptyStatesViewController(
+    _: EmptyStatesViewController,
+    goToDiscoveryWithParams params: DiscoveryParams?
+  ) {
     guard let tabController = self.tabBarController as? RootTabBarViewController else { return }
     tabController.switchToDiscovery(params: params)
   }
@@ -297,4 +300,4 @@ extension ActivitiesViewController: SurveyResponseViewControllerDelegate {
   }
 }
 
-extension ActivitiesViewController: TabBarControllerScrollable { }
+extension ActivitiesViewController: TabBarControllerScrollable {}

@@ -31,21 +31,31 @@ public final class KoalaTrackingClient: TrackingClientType {
     self.URLSession = URLSession
 
     let notifications = NotificationCenter.default
-    notifications.addObserver(self,
-                              selector: #selector(applicationDidBecomeActive),
-                              name: UIApplication.didBecomeActiveNotification, object: nil)
-    notifications.addObserver(self,
-                              selector: #selector(applicationDidEnterBackground),
-                              name: UIApplication.didEnterBackgroundNotification, object: nil)
-    notifications.addObserver(self,
-                              selector: #selector(applicationWillEnterForeground),
-                              name: UIApplication.willEnterForegroundNotification, object: nil)
-    notifications.addObserver(self,
-                              selector: #selector(applicationWillResignActive),
-                              name: UIApplication.willResignActiveNotification, object: nil)
-    notifications.addObserver(self,
-                              selector: #selector(applicationWillTerminate),
-                              name: UIApplication.willTerminateNotification, object: nil)
+    notifications.addObserver(
+      self,
+      selector: #selector(applicationDidBecomeActive),
+      name: UIApplication.didBecomeActiveNotification, object: nil
+    )
+    notifications.addObserver(
+      self,
+      selector: #selector(applicationDidEnterBackground),
+      name: UIApplication.didEnterBackgroundNotification, object: nil
+    )
+    notifications.addObserver(
+      self,
+      selector: #selector(applicationWillEnterForeground),
+      name: UIApplication.willEnterForegroundNotification, object: nil
+    )
+    notifications.addObserver(
+      self,
+      selector: #selector(applicationWillResignActive),
+      name: UIApplication.willResignActiveNotification, object: nil
+    )
+    notifications.addObserver(
+      self,
+      selector: #selector(applicationWillTerminate),
+      name: UIApplication.willTerminateNotification, object: nil
+    )
 
     self.load()
     self.startTimer()
@@ -63,7 +73,7 @@ public final class KoalaTrackingClient: TrackingClientType {
 
   fileprivate func startTimer() {
     self.timer = Timer.scheduledTimer(
-      timeInterval: flushInterval, target: self, selector: #selector(flush), userInfo: nil, repeats: true
+      timeInterval: flushInterval, target: self, selector: #selector(self.flush), userInfo: nil, repeats: true
     )
   }
 
@@ -77,11 +87,11 @@ public final class KoalaTrackingClient: TrackingClientType {
 
       while !self.buffer.isEmpty {
         guard
-          nil != KoalaTrackingClient.base64Payload(Array(self.buffer.prefix(chunkSize)))
-            .flatMap(self.koalaURL)
-            .flatMap(KoalaTrackingClient.koalaRequest)
-            .flatMap(self.synchronousKoalaResult)
-          else { break }
+          KoalaTrackingClient.base64Payload(Array(self.buffer.prefix(chunkSize)))
+          .flatMap(self.koalaURL)
+          .flatMap(KoalaTrackingClient.koalaRequest)
+          .flatMap(self.synchronousKoalaResult) != nil
+        else { break }
 
         self.buffer.removeFirst(min(chunkSize, self.buffer.count))
       }
@@ -103,7 +113,7 @@ public final class KoalaTrackingClient: TrackingClientType {
       guard
         let file = self.fileName(), FileManager.default.fileExists(atPath: file),
         let buffer = NSKeyedUnarchiver.unarchiveObject(withFile: file) as? [[String: Any]]
-        else { return }
+      else { return }
 
       self.buffer = buffer + self.buffer
 
@@ -198,5 +208,5 @@ extension KoalaTrackingClient {
 
 // Helper function inserted by Swift 4.2 migrator.
 private func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
-	return UIBackgroundTaskIdentifier(rawValue: input)
+  return UIBackgroundTaskIdentifier(rawValue: input)
 }

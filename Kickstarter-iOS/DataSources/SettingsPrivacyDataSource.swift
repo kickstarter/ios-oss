@@ -1,6 +1,6 @@
 import Foundation
-import Library
 import KsApi
+import Library
 import UIKit
 
 internal enum Section: Int {
@@ -27,39 +27,53 @@ internal final class SettingsPrivacyDataSource: ValueCellDataSource {
   internal func load(user: User) {
     let followingCellValue = SettingsPrivacyStaticCellValue(cellType: .following, user: user)
 
-    self.set(values: [followingCellValue],
-             cellClass: SettingsFollowCell.self,
-             inSection: Section.following.rawValue)
+    self.set(
+      values: [followingCellValue],
+      cellClass: SettingsFollowCell.self,
+      inSection: Section.following.rawValue
+    )
 
-    self.set(values: [followingCellValue.cellType.description],
-             cellClass: SettingsPrivacyStaticCell.self,
-             inSection: Section.followingFooter.rawValue)
+    self.set(
+      values: [followingCellValue.cellType.description],
+      cellClass: SettingsPrivacyStaticCell.self,
+      inSection: Section.followingFooter.rawValue
+    )
 
     let recommendationsCellValue = SettingsPrivacyStaticCellValue(cellType: .recommendations, user: user)
 
-    self.set(values: [recommendationsCellValue],
-             cellClass: SettingsPrivacyRecommendationCell.self,
-             inSection: Section.recommendations.rawValue)
+    self.set(
+      values: [recommendationsCellValue],
+      cellClass: SettingsPrivacyRecommendationCell.self,
+      inSection: Section.recommendations.rawValue
+    )
 
-    self.set(values: [recommendationsCellValue.cellType.description],
-             cellClass: SettingsPrivacyStaticCell.self,
-             inSection: Section.recommendationsFooter.rawValue)
+    self.set(
+      values: [recommendationsCellValue.cellType.description],
+      cellClass: SettingsPrivacyStaticCell.self,
+      inSection: Section.recommendationsFooter.rawValue
+    )
 
     if !user.isCreator {
       let cellValue = SettingsPrivacySwitchCellValue(cellType: .privacy, user: user)
 
-      self.set(values: [cellValue],
-               cellClass: SettingsPrivacySwitchCell.self,
-               inSection: Section.privateProfile.rawValue)
+      self.set(
+        values: [cellValue],
+        cellClass: SettingsPrivacySwitchCell.self,
+        inSection: Section.privateProfile.rawValue
+      )
     }
 
-    self.set(values: [user],
-             cellClass: SettingsPrivacyRequestDataCell.self,
-             inSection: Section.requestData.rawValue)
+    self.set(
+      values: [user],
+      cellClass: SettingsPrivacyRequestDataCell.self,
+      inSection: Section.requestData.rawValue
+    )
 
-    self.set(values: [user],
-             cellClass: SettingsPrivacyDeleteAccountCell.self,
-             inSection: Section.deleteAccount.rawValue)
+    self.set(
+      values: [user],
+      cellClass: SettingsPrivacyDeleteAccountCell.self,
+      inSection: Section.deleteAccount.rawValue
+    )
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

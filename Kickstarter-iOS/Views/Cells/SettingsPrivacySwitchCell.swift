@@ -2,16 +2,18 @@ import Foundation
 import Library
 import Prelude
 
-protocol SettingsPrivacySwitchCellDelegate: class {
-  func privacySettingsSwitchCell(_ cell: SettingsPrivacySwitchCell,
-                                 didTogglePrivacySwitch on: Bool)
+protocol SettingsPrivacySwitchCellDelegate: AnyObject {
+  func privacySettingsSwitchCell(
+    _ cell: SettingsPrivacySwitchCell,
+    didTogglePrivacySwitch on: Bool
+  )
 }
 
 final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
-  @IBOutlet fileprivate weak var primaryDescriptionLabel: UILabel!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
-  @IBOutlet fileprivate weak var secondaryDescriptionLabel: UILabel!
-  @IBOutlet fileprivate weak var switchButton: UISwitch!
+  @IBOutlet fileprivate var primaryDescriptionLabel: UILabel!
+  @IBOutlet fileprivate var titleLabel: UILabel!
+  @IBOutlet fileprivate var secondaryDescriptionLabel: UILabel!
+  @IBOutlet fileprivate var switchButton: UISwitch!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
   private let viewModel = SettingsPrivacySwitchCellViewModel()
@@ -71,11 +73,11 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
 
     self.viewModel.privacySwitchToggledOn
       .observeForControllerAction()
-      .observeValues { [weak self] (privacyEnabled) in
-        guard let `self` = self else { return }
+      .observeValues { [weak self] privacyEnabled in
+        guard let self = self else { return }
 
         self.delegate?.privacySettingsSwitchCell(self, didTogglePrivacySwitch: privacyEnabled)
-    }
+      }
   }
 
   @IBAction func switchToggled(_ sender: UISwitch) {

@@ -4,9 +4,9 @@ import Library
 import Prelude
 
 final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCell {
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
-  @IBOutlet fileprivate weak var currentEmailFrequencyLabel: UILabel!
-  @IBOutlet fileprivate weak var separatorView: UIView!
+  @IBOutlet fileprivate var titleLabel: UILabel!
+  @IBOutlet fileprivate var currentEmailFrequencyLabel: UILabel!
+  @IBOutlet fileprivate var separatorView: UIView!
 
   private let viewModel: SettingsNotificationPickerViewModelType = SettingsNotificationPickerViewModel()
 
@@ -16,27 +16,27 @@ final class SettingsNotificationPickerCell: UITableViewCell, NibLoading, ValueCe
     _ = self
       |> \.accessibilityTraits .~ value.cellType.accessibilityTraits
 
-    _ = titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.text .~ value.cellType.title
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = titleLabel
+    _ = self.titleLabel
       |> settingsTitleLabelStyle
 
-    _ = currentEmailFrequencyLabel
+    _ = self.currentEmailFrequencyLabel
       |> UILabel.lens.font .~ .ksr_body()
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
-    _ = separatorView
+    _ = self.separatorView
       |> separatorStyle
   }
 
   override func bindViewModel() {
     super.bindViewModel()
 
-    currentEmailFrequencyLabel.rac.text = self.viewModel.outputs.frequencyValueText
+    self.currentEmailFrequencyLabel.rac.text = self.viewModel.outputs.frequencyValueText
   }
 }

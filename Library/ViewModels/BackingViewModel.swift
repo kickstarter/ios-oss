@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol BackingViewModelInputs {
   /// Configures the view model with a project.
@@ -80,7 +80,6 @@ public protocol BackingViewModelOutputs {
 
   /// Emits text for total pledge amount label.
   var totalPledgeAmount: Signal<String, Never> { get }
-
 }
 
 public protocol BackingViewModelType {
@@ -89,20 +88,19 @@ public protocol BackingViewModelType {
 }
 
 public final class BackingViewModel: BackingViewModelType, BackingViewModelInputs, BackingViewModelOutputs {
-
   public init() {
     let projectAndBackerAndBackerIsCurrentUser = Signal.combineLatest(
       self.projectAndBackerProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      )
-      .map(first)
-      .map { (project, backer) -> (Project, User, Bool) in
-        let currentUser = AppEnvironment.current.currentUser
+    )
+    .map(first)
+    .map { (project, backer) -> (Project, User, Bool) in
+      let currentUser = AppEnvironment.current.currentUser
 
-        guard let backer = backer ?? currentUser else {
-          fatalError("Backer was not supplied.")
-        }
-        return (project, backer, currentUser == backer)
+      guard let backer = backer ?? currentUser else {
+        fatalError("Backer was not supplied.")
+      }
+      return (project, backer, currentUser == backer)
     }
 
     let projectAndBackingAndBackerIsCurrentUserEvent = projectAndBackerAndBackerIsCurrentUser
@@ -112,7 +110,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
           .retry(upTo: 3)
           .map { (project, $0, backerIsCurrentUser) }
           .materialize()
-    }
+      }
 
     let projectAndBackingAndBackerIsCurrentUser = projectAndBackingAndBackerIsCurrentUserEvent.values()
 
@@ -129,10 +127,11 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .map(unpack)
       .switchMap { project, backer, received in
         AppEnvironment.current.apiService.backingUpdate(
-          forProject: project, forUser: backer, received: received)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-    }
+          forProject: project, forUser: backer, received: received
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+      }
 
     let markedReceivedBacking = rewardReceivedEvent.values().map { $0 }
 
@@ -140,10 +139,10 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .map { $0.backerCompleted ?? false }
       .skipRepeats()
 
-    self.markAsReceivedSectionIsHidden = Signal.merge (
+    self.markAsReceivedSectionIsHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
       projectAndBackingAndBackerIsCurrentUser.map { project, backing, backer in
-        shouldHideMarkReceived(backing: backing, project: project, backer: backer )
+        shouldHideMarkReceived(backing: backing, project: project, backer: backer)
       }
     )
     .skip(first: 1)
@@ -173,10 +172,12 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.pledgeAmount = Signal.merge(
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-        let basicPledge = backing.amount - Double((backing.shippingAmount ?? 0))
-        return Format.currency(basicPledge,
-                               country: project.country,
-                               omitCurrencyCode: project.stats.omitUSCurrencyCode)
+        let basicPledge = backing.amount - Double(backing.shippingAmount ?? 0)
+        return Format.currency(
+          basicPledge,
+          country: project.country,
+          omitCurrencyCode: project.stats.omitUSCurrencyCode
+        )
       }
     )
 
@@ -185,24 +186,26 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       projectAndBackingAndBackerIsCurrentUser
         .map { project, backing, _ in
           Format.currency(backing.shippingAmount ?? 0, country: project.country)
-      }
+        }
     )
 
     self.totalPledgeAmount = Signal.merge(
       emptyStringOnLoad,
       projectAndBackingAndBackerIsCurrentUser.map { project, backing, _ in
-        Format.currency(backing.amount,
-                        country: project.country,
-                        omitCurrencyCode: project.stats.omitUSCurrencyCode)
+        Format.currency(
+          backing.amount,
+          country: project.country,
+          omitCurrencyCode: project.stats.omitUSCurrencyCode
+        )
       }
     )
 
     self.statusDescription = Signal.merge(
       emptyStringOnLoad.mapConst(NSAttributedString(string: "")),
       projectAndBackingAndBackerIsCurrentUser
-      .map { project, backing, backerIsCurrentUser in
-        statusDescString(for: backing, project: project, backerIsCurrentUser: backerIsCurrentUser)
-      }
+        .map { project, backing, backerIsCurrentUser in
+          statusDescString(for: backing, project: project, backerIsCurrentUser: backerIsCurrentUser)
+        }
     )
 
     self.rewardSectionTitle = Signal.merge(
@@ -210,7 +213,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       projectAndBackingAndBackerIsCurrentUser
         .map { project, backing, backerIsCurrentUser in
           rewardTitle(for: backing.reward, project: project, backerIsCurrentUser: backerIsCurrentUser)
-      }
+        }
     )
 
     self.rewardTitleWithAmount = Signal.merge(
@@ -219,7 +222,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
         .map { project, backing, _ in
           let currency = Format.currency(backing.reward?.minimum ?? 0, country: project.country)
           return backing.reward?.title.map { currency + " - " + $0 } ?? currency
-      }
+        }
     )
 
     self.rewardDescription = Signal.merge(
@@ -239,7 +242,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
         backerIsCurrentUser
           ? (MessageSubject.project(project), .backerModal)
           : (MessageSubject.backing(backing), .backerModal)
-    }
+      }
 
     self.messageButtonTitleText = projectAndBackerAndBackerIsCurrentUser
       .map { _, _, backerIsCurrentUser in
@@ -257,7 +260,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .map { _ in AppEnvironment.current.language == .en ? .horizontal : .vertical }
 
     project.observeValues { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
-}
+  }
 
   fileprivate let messageCreatorTappedProperty = MutableProperty(())
   public func messageCreatorTapped() {
@@ -310,12 +313,11 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
 }
 
 private func shouldHideMarkReceived(backing: Backing, project: Project, backer: Bool) -> Bool {
-
   if backing.reward?.isNoReward == .some(true) {
     return true
   } else if backing.status != .collected {
     return true
-  } else if !project.memberData.permissions.isEmpty && backer {
+  } else if !project.memberData.permissions.isEmpty, backer {
     return false
   } else if !project.memberData.permissions.isEmpty {
     return true
@@ -326,7 +328,6 @@ private func shouldHideMarkReceived(backing: Backing, project: Project, backer: 
 
 private func statusDescString(for backing: Backing, project: Project, backerIsCurrentUser: Bool)
   -> NSAttributedString {
-
   let string: String
   switch backing.status {
   case .canceled:
@@ -347,13 +348,13 @@ private func statusDescString(for backing: Backing, project: Project, backerIsCu
     let isCanceledOrFailed = (project.state == .canceled || project.state == .failed)
     string = backerIsCurrentUser
       ? (isCanceledOrFailed
-          ? Strings.Your_pledge_was_canceled_or_the_creator_canceled()
-          : Strings.Youve_pledged_to_support_this_project()
-        )
+        ? Strings.Your_pledge_was_canceled_or_the_creator_canceled()
+        : Strings.Youve_pledged_to_support_this_project()
+      )
       : (isCanceledOrFailed
-          ? Strings.Either_the_pledge_or_the_project_was_canceled()
-          : Strings.Backer_has_pledged_to_this_project()
-        )
+        ? Strings.Either_the_pledge_or_the_project_was_canceled()
+        : Strings.Backer_has_pledged_to_this_project()
+      )
   case .preauth:
     fatalError()
   }
@@ -371,9 +372,8 @@ private func statusDescString(for backing: Backing, project: Project, backerIsCu
   }
 }
 
-private func pledgeTitle(for project: Project, backing: Backing, backerIsCurrentUser: Bool)
+private func pledgeTitle(for _: Project, backing: Backing, backerIsCurrentUser: Bool)
   -> NSAttributedString {
-
   let date = Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
 
   let titleString = backerIsCurrentUser
@@ -388,18 +388,20 @@ private func pledgeTitle(for project: Project, backing: Backing, backerIsCurrent
     bold: [
       NSAttributedString.Key.font: UIFont.ksr_headline(size: 15),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-    ])
+    ]
+  )
     ?? .init()
 }
 
-private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentUser: Bool)
+private func rewardTitle(for reward: Reward?, project _: Project, backerIsCurrentUser: Bool)
   -> NSAttributedString {
-
   guard let estimatedDate = reward?.estimatedDeliveryOn else { return .init() }
 
-  let date = Format.date(secondsInUTC: estimatedDate,
-                         template: "MMMyyyy",
-                         timeZone: UTCTimeZone)
+  let date = Format.date(
+    secondsInUTC: estimatedDate,
+    template: "MMMyyyy",
+    timeZone: UTCTimeZone
+  )
 
   let titleString = backerIsCurrentUser
     ? Strings.Your_reward_estimated_for_delivery_in_date(delivery_date: date)
@@ -413,6 +415,7 @@ private func rewardTitle(for reward: Reward?, project: Project, backerIsCurrentU
     bold: [
       NSAttributedString.Key.font: UIFont.ksr_headline(size: 15),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-    ])
+    ]
+  )
     ?? .init()
 }

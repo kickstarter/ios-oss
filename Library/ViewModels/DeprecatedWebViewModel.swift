@@ -24,8 +24,7 @@ public protocol DeprecatedWebViewModelType {
 }
 
 public final class DeprecatedWebViewModel: DeprecatedWebViewModelType, DeprecatedWebViewModelInputs,
-DeprecatedWebViewModelOutputs {
-
+  DeprecatedWebViewModelOutputs {
   public init() {
     self.loadingOverlayIsHiddenAndAnimate = Signal.merge(
       // Hide when first starting out
@@ -42,8 +41,8 @@ DeprecatedWebViewModelOutputs {
       self.webViewDidFailErrorProperty.signal
         .filter { ($0 as NSError?)?.code != .some(102) }
         .mapConst((true, true))
-      )
-      .skipRepeats(==)
+    )
+    .skipRepeats(==)
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

@@ -1,8 +1,8 @@
-import XCTest
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
+@testable import Library
 import Prelude
+import XCTest
 
 internal final class DashboardProjectsDrawerDataSourceTests: XCTestCase {
   let dataSource = DashboardProjectsDrawerDataSource()
@@ -16,12 +16,12 @@ internal final class DashboardProjectsDrawerDataSourceTests: XCTestCase {
     let data2 = ProjectsDrawerData(project: project2, indexNum: 1, isChecked: false)
     let data = [data1, data2]
 
-    XCTAssertEqual(0, self.dataSource.numberOfSections(in: tableView))
+    XCTAssertEqual(0, self.dataSource.numberOfSections(in: self.tableView))
 
     self.dataSource.load(data: data)
 
-    XCTAssertEqual(1, self.dataSource.numberOfSections(in: tableView))
-    XCTAssertEqual(2, self.dataSource.tableView(tableView, numberOfRowsInSection: 0))
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
     XCTAssertEqual("DashboardProjectsDrawerCell", self.dataSource.reusableId(item: 0, section: 0))
     XCTAssertEqual("DashboardProjectsDrawerCell", self.dataSource.reusableId(item: 1, section: 0))
 

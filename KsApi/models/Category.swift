@@ -4,7 +4,7 @@ public struct ParentCategory: Swift.Decodable {
   public let name: String
 
   public var categoryType: Category {
-      return Category(id: id, name: name)
+    return Category(id: self.id, name: self.name)
   }
 }
 
@@ -19,12 +19,14 @@ public struct Category: Swift.Decodable {
   public var subcategories: SubcategoryConnection?
   public var totalProjectCount: Int?
 
-  public init(id: String,
-              name: String,
-              parentCategory: ParentCategory? = nil,
-              parentId: String? = nil,
-              subcategories: SubcategoryConnection? = nil,
-              totalProjectCount: Int? = nil) {
+  public init(
+    id: String,
+    name: String,
+    parentCategory: ParentCategory? = nil,
+    parentId: String? = nil,
+    subcategories: SubcategoryConnection? = nil,
+    totalProjectCount: Int? = nil
+  ) {
     self.id = id
     self.name = name
     self.parentId = parentId
@@ -34,7 +36,7 @@ public struct Category: Swift.Decodable {
   }
 
   public var intID: Int? {
-    return decompose(id: id)
+    return decompose(id: self.id)
   }
 
   /*
@@ -48,7 +50,7 @@ public struct Category: Swift.Decodable {
   }
 
   public var parent: Category? {
-    return _parent?.categoryType
+    return self._parent?.categoryType
   }
 
   public struct SubcategoryConnection: Swift.Decodable {
@@ -81,7 +83,6 @@ public struct Category: Swift.Decodable {
 }
 
 extension Category {
-
   private enum CodingKeys: String, CodingKey {
     case id, name, parentId, _parent = "parentCategory", subcategories, totalProjectCount
   }
@@ -104,7 +105,7 @@ extension ParentCategory: Hashable {
 }
 
 extension ParentCategory: Equatable {
-  static public func == (lhs: ParentCategory, rhs: ParentCategory) -> Bool {
+  public static func == (lhs: ParentCategory, rhs: ParentCategory) -> Bool {
     return lhs.id == rhs.id
   }
 }
@@ -115,11 +116,11 @@ public func < (lhs: Category, rhs: Category) -> Bool {
     return false
   }
 
-  if lhs.isRoot && lhs.id == rhs.parent?.id {
+  if lhs.isRoot, lhs.id == rhs.parent?.id {
     return true
   }
 
-  if !lhs.isRoot && lhs.parent?.id == rhs.id {
+  if !lhs.isRoot, lhs.parent?.id == rhs.id {
     return false
   }
 
@@ -131,7 +132,7 @@ public func < (lhs: Category, rhs: Category) -> Bool {
 }
 
 extension Category: Equatable {
-  static public func == (lhs: Category, rhs: Category) -> Bool {
+  public static func == (lhs: Category, rhs: Category) -> Bool {
     return lhs.id == rhs.id
   }
 }

@@ -42,8 +42,7 @@ public protocol ActivityUpdateViewModelType {
 }
 
 public final class ActivityUpdateViewModel: ActivityUpdateViewModelType, ActivityUpdateViewModelInputs,
-ActivityUpdateViewModelOutputs {
-
+  ActivityUpdateViewModelOutputs {
   public init() {
     let activity = self.activityProperty.signal.skipNil()
     let project = activity.map { $0.project }.skipNil()
@@ -72,6 +71,7 @@ ActivityUpdateViewModelOutputs {
   public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
+
   fileprivate let tappedProjectImageProperty = MutableProperty(())
   public func tappedProjectImage() {
     self.tappedProjectImageProperty.value = ()
@@ -102,15 +102,15 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
   )
 
   let attributedString = fullString.simpleHtmlAttributedString(
-      base: [
-        NSAttributedString.Key.font: UIFont.ksr_footnote(),
-        NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-      ],
-      bold: [
-        NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
-        NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-      ]
-    )
+    base: [
+      NSAttributedString.Key.font: UIFont.ksr_footnote(),
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+    ],
+    bold: [
+      NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+    ]
+  )
     ?? .init(string: "")
 
   let mutableString = NSMutableAttributedString(attributedString: attributedString)
@@ -118,15 +118,16 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
   let timeNumber = time.components(separatedBy: decimalCharacterSet).first
 
   if let timeRange = mutableString.string.range(of: time), let timeNumber = timeNumber {
-
     let timeStartIndex = mutableString.string
       .distance(from: mutableString.string.startIndex, to: timeRange.lowerBound)
     let timeNumberStartIndex = mutableString.string
       .distance(from: time.startIndex, to: timeNumber.startIndex)
 
     mutableString.addAttributes(
-      [NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
-       NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black],
+      [
+        NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
+        NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+      ],
       range: NSRange(location: timeStartIndex + timeNumberStartIndex, length: timeNumber.count)
     )
   }

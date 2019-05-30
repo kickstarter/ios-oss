@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ActivitySampleBackingCellViewModelInputs {
   /// Call to configure cell with activity value.
@@ -29,7 +29,6 @@ public protocol ActivitySampleBackingCellViewModelType {
 
 public final class ActivitySampleBackingCellViewModel: ActivitySampleBackingCellViewModelInputs,
   ActivitySampleBackingCellViewModelOutputs, ActivitySampleBackingCellViewModelType {
-
   public init() {
     let activity = self.activityProperty.signal.skipNil()
 

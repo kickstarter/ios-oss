@@ -28,22 +28,22 @@ final class ChangePasswordViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.accessibilityFocusValidationErrorLabel
-      .observe(accessibilityFocusValidationErrorLabel.observer)
-    self.vm.outputs.activityIndicatorShouldShow.observe(activityIndicatorShouldShow.observer)
-    self.vm.outputs.changePasswordFailure.observe(changePasswordFailure.observer)
-    self.vm.outputs.changePasswordSuccess.observe(changePasswordSuccess.observer)
+      .observe(self.accessibilityFocusValidationErrorLabel.observer)
+    self.vm.outputs.activityIndicatorShouldShow.observe(self.activityIndicatorShouldShow.observer)
+    self.vm.outputs.changePasswordFailure.observe(self.changePasswordFailure.observer)
+    self.vm.outputs.changePasswordSuccess.observe(self.changePasswordSuccess.observer)
     self.vm.outputs.confirmNewPasswordBecomeFirstResponder
-      .observe(confirmNewPasswordBecomeFirstResponder.observer)
-    self.vm.outputs.currentPasswordBecomeFirstResponder.observe(currentPasswordBecomeFirstResponder.observer)
-    self.vm.outputs.currentPasswordPrefillValue.observe(currentPasswordPrefillValue.observer)
-    self.vm.outputs.dismissKeyboard.observe(dismissKeyboard.observer)
-    self.vm.outputs.newPasswordBecomeFirstResponder.observe(newPasswordBecomeFirstResponder.observer)
+      .observe(self.confirmNewPasswordBecomeFirstResponder.observer)
+    self.vm.outputs.currentPasswordBecomeFirstResponder.observe(self.currentPasswordBecomeFirstResponder.observer)
+    self.vm.outputs.currentPasswordPrefillValue.observe(self.currentPasswordPrefillValue.observer)
+    self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
+    self.vm.outputs.newPasswordBecomeFirstResponder.observe(self.newPasswordBecomeFirstResponder.observer)
     self.vm.outputs.onePasswordFindPasswordForURLString
-      .observe(onePasswordFindPasswordForURLString.observer)
-    self.vm.outputs.onePasswordButtonIsHidden.observe(onePasswordButtonIsHidden.observer)
-    self.vm.outputs.saveButtonIsEnabled.observe(saveButtonIsEnabled.observer)
-    self.vm.outputs.validationErrorLabelIsHidden.observe(validationErrorLabelIsHidden.observer)
-    self.vm.outputs.validationErrorLabelMessage.observe(validationErrorLabelMessage.observer)
+      .observe(self.onePasswordFindPasswordForURLString.observer)
+    self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonIsHidden.observer)
+    self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
+    self.vm.outputs.validationErrorLabelIsHidden.observe(self.validationErrorLabelIsHidden.observer)
+    self.vm.outputs.validationErrorLabelMessage.observe(self.validationErrorLabelMessage.observer)
   }
 
   func testChangePassword() {

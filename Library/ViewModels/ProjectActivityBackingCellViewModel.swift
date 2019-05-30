@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ProjectActivityBackingCellViewModelInputs {
   /// Call when the backing button is pressed.
@@ -67,36 +67,35 @@ public protocol ProjectActivityBackingCellViewModelType {
 }
 
 public final class ProjectActivityBackingCellViewModel: ProjectActivityBackingCellViewModelType,
-ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOutputs {
-
-    public init() {
+  ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOutputs {
+  public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
     let title = activity.map(title(activity:))
 
     self.backerImageURL = activityAndProject
-      .map { activity, _ in ( activity.user?.avatar.medium).flatMap(URL.init) }
+      .map { activity, _ in (activity.user?.avatar.medium).flatMap(URL.init) }
 
     self.cellAccessibilityLabel = title.map { title in title.htmlStripped() ?? "" }
 
     self.cellAccessibilityValue = activityAndProject
       .flatMap { activity, project -> SignalProducer<String, Never> in
-        return .init(value: accessibilityValue(activity: activity, project: project))
-    }
+        .init(value: accessibilityValue(activity: activity, project: project))
+      }
 
     self.notifyDelegateGoToBacking = activityAndProject
       .takeWhen(self.backingButtonPressedProperty.signal)
       .flatMap { activity, project -> SignalProducer<(Project, User), Never> in
         guard let user = activity.user else { return .empty }
         return .init(value: (project, user))
-    }
+      }
 
     self.notifyDelegateGoToSendMessage = activityAndProject
       .takeWhen(self.sendMessageButtonPressedProperty.signal)
       .flatMap { activity, project -> SignalProducer<(Project, Backing), Never> in
         guard let backing = activity.memberData.backing else { return .empty }
         return .init(value: (project, backing))
-    }
+      }
 
     self.pledgeAmount = activityAndProject
       .map(amount(activity:project:))
@@ -117,9 +116,9 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     let pledgeAmountsStackViewIsHidden = Signal.zip(
       pledgeAmountLabelIsHidden,
       previousPledgeAmountLabelIsHidden
-      )
-      .map { $0 && $1 }
-      .skipRepeats()
+    )
+    .map { $0 && $1 }
+    .skipRepeats()
 
     self.pledgeAmountsStackViewIsHidden = pledgeAmountsStackViewIsHidden
 
@@ -138,9 +137,9 @@ ProjectActivityBackingCellViewModelInputs, ProjectActivityBackingCellViewModelOu
     self.pledgeDetailsSeparatorStackViewIsHidden = Signal.zip(
       pledgeAmountsStackViewIsHidden,
       rewardLabelIsHidden
-      )
-      .map { $0 || $1 }
-      .skipRepeats()
+    )
+    .map { $0 || $1 }
+    .skipRepeats()
   }
 
   fileprivate let backingButtonPressedProperty = MutableProperty(())
@@ -188,7 +187,8 @@ private func accessibilityValue(activity: Activity, project: Project) -> String 
   case .backingAmount:
     return Strings.Amount_previous_amount(
       amount: amount(activity: activity, project: project),
-      previous_amount: oldAmount(activity: activity, project: project))
+      previous_amount: oldAmount(activity: activity, project: project)
+    )
   case .backingReward:
     return rewardSummary(activity: activity, project: project).htmlStripped() ?? ""
   case .backingDropped, .cancellation, .commentPost, .commentProject, .failure, .follow, .funding,

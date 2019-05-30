@@ -90,7 +90,6 @@ public protocol BackerDashboardViewModelOutputs {
 
   /// Emits a fresh user to be updated in the app environment.
   var updateCurrentUserInEnvironment: Signal<User, Never> { get }
-
 }
 
 public protocol BackerDashboardViewModelType {
@@ -100,7 +99,6 @@ public protocol BackerDashboardViewModelType {
 
 public final class BackerDashboardViewModel: BackerDashboardViewModelType, BackerDashboardViewModelInputs,
   BackerDashboardViewModelOutputs {
-
   public init() {
     self.configurePagesDataSource = self.viewDidLoadProperty.signal
       .map { (.backed, DiscoveryParams.Sort.endingSoon) }
@@ -111,7 +109,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
           .materialize()
-    }
+      }
 
     let user = fetchedUserEvent.values()
 
@@ -123,7 +121,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.avatarURL = user.map { URL(string: $0.avatar.large ?? $0.avatar.medium) }
 
     self.backedButtonTitleText = user.map { user in
-        Strings.projects_count_newline_backed(projects_count: user.stats.backedProjectsCount ?? 0)
+      Strings.projects_count_newline_backed(projects_count: user.stats.backedProjectsCount ?? 0)
     }
 
     self.backerNameText = user.map { $0.name }
@@ -165,7 +163,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.initialTopConstantProperty <~ self.beganPanGestureProperty.signal
       .skipNil()
-      // n.b. This min value accounts for when the header is collapsed by panning the header view 
+      // n.b. This min value accounts for when the header is collapsed by panning the header view
       // instead of the tableView.
       .map { headerTopConstant, scrollViewYOffset in
         min(headerTopConstant, -scrollViewYOffset)

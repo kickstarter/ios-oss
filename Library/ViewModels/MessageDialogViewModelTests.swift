@@ -1,9 +1,9 @@
-import XCTest
+@testable import KsApi
 @testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-@testable import KsApi
+import XCTest
 
 internal final class MessageDialogViewModelTests: TestCase {
   fileprivate let vm: MessageDialogViewModelType = MessageDialogViewModel()
@@ -40,7 +40,7 @@ internal final class MessageDialogViewModelTests: TestCase {
 
   func testRecipientNameWhenBackingHasNoBacker() {
     let backing = .template
-        |> Backing.lens.backer .~ nil
+      |> Backing.lens.backer .~ nil
     let name = "Blobber"
     let backer = User.template
       |> \.name .~ name
@@ -124,8 +124,10 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
 
     XCTAssertEqual(["Viewed Message Editor", "Message Sent", "Sent Message"], self.trackingClient.events)
-    XCTAssertEqual([nil, true, nil],
-                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+    XCTAssertEqual(
+      [nil, true, nil],
+      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
+    )
   }
 
   func testPostingMessageToCreator() {

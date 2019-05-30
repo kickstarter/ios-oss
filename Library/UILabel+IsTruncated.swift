@@ -1,8 +1,7 @@
 import UIKit.UILabel
 
 public extension UILabel {
-
-  public func isTruncated() -> Bool {
+  func isTruncated() -> Bool {
     // Determines if Label is truncated
     guard let string = self.text, let font = self.font else { return false }
 
@@ -11,7 +10,7 @@ public extension UILabel {
       options: [.usesLineFragmentOrigin],
       attributes: [NSAttributedString.Key.font: font],
       context: nil
-      ).size
+    ).size
 
     return size.height > self.bounds.size.height
   }

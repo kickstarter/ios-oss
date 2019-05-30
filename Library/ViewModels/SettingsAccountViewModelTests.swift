@@ -1,11 +1,11 @@
 import Foundation
-import XCTest
-import ReactiveSwift
-import Prelude
+@testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-@testable import Kickstarter_Framework
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class SettingsAccountViewModelTests: TestCase {
   let vm = SettingsAccountViewModel(SettingsAccountViewController.viewController(for:currency:))

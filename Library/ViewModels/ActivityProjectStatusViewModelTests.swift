@@ -1,8 +1,8 @@
-import Prelude
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ActivityProjectStatusViewModelTests: TestCase {
   fileprivate let vm: ActivityProjectStatusViewModelType = ActivityProjectStatusViewModel()

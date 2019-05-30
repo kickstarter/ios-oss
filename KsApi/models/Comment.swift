@@ -11,7 +11,6 @@ public struct Comment {
 }
 
 extension Comment: Swift.Decodable {
-
   enum CodingKeys: String, CodingKey {
     case author
     case body
@@ -42,8 +41,8 @@ extension Comment: Argo.Decodable {
   }
 }
 
-extension Comment: Equatable {
-}
+extension Comment: Equatable {}
+
 public func == (lhs: Comment, rhs: Comment) -> Bool {
   return lhs.id == rhs.id
 }

@@ -1,11 +1,10 @@
-import XCTest
 @testable import Library
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class PaginateTests: TestCase {
-
   let (newRequest, newRequestObserver) = Signal<Int, Never>.pipe()
   let (nextPage, nextPageObserver) = Signal<(), Never>.pipe()
   let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { p in .init(value: [p]) }
@@ -14,8 +13,8 @@ final class PaginateTests: TestCase {
   let cursorFromEnvelope: ([Int]) -> Int = { ($0.last ?? 0) + 1 }
 
   func testEmitsEmptyState_ClearOnNewRequest() {
-    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { p in .init(value: []) }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -46,8 +45,8 @@ final class PaginateTests: TestCase {
   }
 
   func testEmitsEmptyState_ClearOnNewRequest_With_Repeats() {
-    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { p in .init(value: []) }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -79,8 +78,8 @@ final class PaginateTests: TestCase {
   }
 
   func testEmitsEmptyState_DoNotClearOnNewRequest() {
-    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { p in .init(value: []) }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -111,8 +110,8 @@ final class PaginateTests: TestCase {
   }
 
   func testEmitsEmptyState_DoNotClearOnNewRequest_With_Repeats() {
-    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { p in .init(value: []) }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -230,8 +229,10 @@ final class PaginateTests: TestCase {
     self.scheduler.advance()
 
     valuesTest.assertValues([[1], [1, 2], [], [0], [0, 1]], "New page of values emits.")
-    loadingTest.assertValues([true, false, true, false, true, false, true, false, true, false],
-                             "Loading finishes.")
+    loadingTest.assertValues(
+      [true, false, true, false, true, false, true, false, true, false],
+      "Loading finishes."
+    )
   }
 
   func testPaginateFlow_With_Repeats() {
@@ -322,8 +323,10 @@ final class PaginateTests: TestCase {
     self.scheduler.advance()
 
     valuesTest.assertValues([[1], [1, 2], [1, 2], [], [0], [], [0]], "Repeated value emits.")
-    loadingTest.assertValues([true, false, true, false, true, false, true, false, true, false],
-                             "Loading starts.")
+    loadingTest.assertValues(
+      [true, false, true, false, true, false, true, false, true, false],
+      "Loading starts."
+    )
   }
 
   func testPaginate_DoesntClearOnNewRequest() {
@@ -528,7 +531,7 @@ final class PaginateTests: TestCase {
     let requestFromParams: (Int) -> SignalProducer<[Int], Never> = {
       p in p == 2 ? .init(value: []) : .init(value: [1, 2])
     }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { c in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
     let (values, _, _) = paginate(
       requestFirstPageWith: newRequest,

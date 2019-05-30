@@ -4,7 +4,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal protocol DashboardRewardsCellDelegate: class {
+internal protocol DashboardRewardsCellDelegate: AnyObject {
   /// Call when stack view rows are added to expand the cell size.
   func dashboardRewardsCellDidAddRewardRows(_ cell: DashboardRewardsCell?)
 }
@@ -12,34 +12,42 @@ internal protocol DashboardRewardsCellDelegate: class {
 internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: DashboardRewardsCellViewModelType = DashboardRewardsCellViewModel()
 
-  @IBOutlet fileprivate weak var containerView: UIView!
-  @IBOutlet fileprivate weak var mainStackView: UIStackView!
-  @IBOutlet fileprivate weak var rewardsTitle: UILabel!
-  @IBOutlet fileprivate weak var topRewardsButton: UIButton!
-  @IBOutlet fileprivate weak var backersButton: UIButton!
-  @IBOutlet fileprivate weak var pledgedButton: UIButton!
-  @IBOutlet fileprivate weak var seeAllTiersButton: UIButton!
+  @IBOutlet fileprivate var containerView: UIView!
+  @IBOutlet fileprivate var mainStackView: UIStackView!
+  @IBOutlet fileprivate var rewardsTitle: UILabel!
+  @IBOutlet fileprivate var topRewardsButton: UIButton!
+  @IBOutlet fileprivate var backersButton: UIButton!
+  @IBOutlet fileprivate var pledgedButton: UIButton!
+  @IBOutlet fileprivate var seeAllTiersButton: UIButton!
 
   internal weak var delegate: DashboardRewardsCellDelegate?
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.topRewardsButton.addTarget(self,
-                                    action: #selector(topRewardsButtonTapped),
-                                    for: .touchUpInside)
+    self.topRewardsButton.addTarget(
+      self,
+      action: #selector(self.topRewardsButtonTapped),
+      for: .touchUpInside
+    )
 
-    self.backersButton.addTarget(self,
-                                 action: #selector(backersButtonTapped),
-                                 for: .touchUpInside)
+    self.backersButton.addTarget(
+      self,
+      action: #selector(self.backersButtonTapped),
+      for: .touchUpInside
+    )
 
-    self.pledgedButton.addTarget(self,
-                                 action: #selector(pledgedButtonTapped),
-                                 for: .touchUpInside)
+    self.pledgedButton.addTarget(
+      self,
+      action: #selector(self.pledgedButtonTapped),
+      for: .touchUpInside
+    )
 
-    self.seeAllTiersButton.addTarget(self,
-                                 action: #selector(seeAllTiersButtonTapped),
-                                 for: .touchUpInside)
+    self.seeAllTiersButton.addTarget(
+      self,
+      action: #selector(self.seeAllTiersButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   internal override func bindStyles() {
@@ -71,7 +79,7 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
       |> dashboardGreenTextBorderButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.dashboard_graphs_rewards_view_more_reward_stats()
-    }
+      }
   }
 
   internal override func bindViewModel() {
@@ -81,24 +89,25 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.delegate?.dashboardRewardsCellDidAddRewardRows(self)
-    }
+      }
 
     self.viewModel.outputs.rewardsRowData
       .observeForUI()
       .observeValues { [weak self] data in
         self?.addRewardRows(withData: data)
-    }
+      }
   }
 
   internal func addRewardRows(withData data: RewardsRowData) {
-    mainStackView.subviews.forEach { $0.removeFromSuperview() }
+    self.mainStackView.subviews.forEach { $0.removeFromSuperview() }
 
     let stats = data.rewardsStats
       .map { DashboardRewardRowStackView(
         frame: self.frame,
         country: data.country,
         reward: $0,
-        totalPledged: data.totalPledged)
+        totalPledged: data.totalPledged
+      )
       }
 
     let statsCount = stats.count
@@ -115,8 +124,10 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
     }
   }
 
-  internal func configureWith(value: (rewardStats: [ProjectStatsEnvelope.RewardStats],
-                              project: Project)) {
+  internal func configureWith(value: (
+    rewardStats: [ProjectStatsEnvelope.RewardStats],
+    project: Project
+  )) {
     self.viewModel.inputs.configureWith(rewardStats: value.0, project: value.1)
   }
 

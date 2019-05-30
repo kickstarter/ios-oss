@@ -130,8 +130,8 @@ public protocol UpdateDraftViewModelType {
 }
 
 public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftViewModelInputs,
-UpdateDraftViewModelOutputs {
-    public init() {
+  UpdateDraftViewModelOutputs {
+  public init() {
     // MARK: Loading
 
     let project: Signal<Project, Never> = self.projectProperty.signal.skipNil()
@@ -143,7 +143,7 @@ UpdateDraftViewModelOutputs {
         AppEnvironment.current.apiService.fetchUpdateDraft(forProject: $0)
           .materialize()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    }
+      }
 
     let draft: Signal<UpdateDraft, Never> = draftEvent.values()
 
@@ -156,8 +156,9 @@ UpdateDraftViewModelOutputs {
 
     self.navigationItemTitle = draft
       .map { Strings.dashboard_post_update_compose_update_number(
-        update_number: Format.wholeNumber($0.update.sequence))
-    }
+        update_number: Format.wholeNumber($0.update.sequence)
+      )
+      }
 
     // MARK: Form Fields
 
@@ -181,7 +182,7 @@ UpdateDraftViewModelOutputs {
       .map {
         $0.images.map(UpdateDraft.Attachment.image)
           + [$0.video.map(UpdateDraft.Attachment.video)].compact()
-    }
+      }
 
     self.showAttachmentActions = self.addAttachmentButtonTappedProperty.signal
 
@@ -191,10 +192,10 @@ UpdateDraftViewModelOutputs {
     let addAttachmentEvent = draft
       .takePairWhen(self.imagePickedProperty.signal.skipNil().map(first))
       .switchMap { draft, url in
-        return AppEnvironment.current.apiService.addImage(file: url, toDraft: draft)
+        AppEnvironment.current.apiService.addImage(file: url, toDraft: draft)
           .materialize()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    }
+      }
 
     self.showAddAttachmentFailure = addAttachmentEvent.errors().ignoreValues()
 
@@ -208,8 +209,8 @@ UpdateDraftViewModelOutputs {
           .switchMap { [attachmentAdded] attachments in
             attachmentAdded
               .scan(attachments) { $0 + [$1] }
-        }
-    )
+          }
+      )
 
     self.showRemoveAttachmentConfirmation = addedAttachments
       .takePairWhen(self.attachmentTappedProperty.signal)
@@ -224,27 +225,27 @@ UpdateDraftViewModelOutputs {
         return AppEnvironment.current.apiService.delete(image: image, fromDraft: draft)
           .materialize()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    }
+      }
 
     self.showRemoveAttachmentFailure = removeAttachmentEvent.errors().ignoreValues()
 
     self.attachmentRemoved = removeAttachmentEvent.values()
       .map(UpdateDraft.Attachment.image)
 
-      let removedAttachments: Signal<[UpdateDraft.Attachment], Never> = addedAttachments
+    let removedAttachments: Signal<[UpdateDraft.Attachment], Never> = addedAttachments
       .switchMap { [attachmentRemoved] attachments in
         attachmentRemoved
           .scan(attachments) { currentAttachments, toRemove in
             currentAttachments.filter { toRemove != $0 }
-        }
-    }
+          }
+      }
 
     let currentAttachments: Signal<[UpdateDraft.Attachment], Never> = Signal
       .merge(
         self.attachments,
         addedAttachments,
         removedAttachments
-    )
+      )
 
     self.isAttachmentsSectionHidden = Signal
       .merge(
@@ -258,7 +259,7 @@ UpdateDraftViewModelOutputs {
     let hasContent: Signal<Bool, Never> = Signal.combineLatest(currentTitle, currentBody, self.attachments)
       .map { title, body, attachments in
         !title.trimmed().isEmpty && (!body.trimmed().isEmpty || !attachments.isEmpty)
-    }
+      }
 
     self.isPreviewButtonEnabled = Signal
       .merge(
@@ -304,28 +305,28 @@ UpdateDraftViewModelOutputs {
       currentTitle,
       currentBody,
       self.isBackersOnly
-      )
-      .takeWhen(saveAction)
-      .flatMap { (draft, title, body, isBackersOnly) ->
-        SignalProducer<Signal<UpdateDraft, ErrorEnvelope>.Event, Never> in
+    )
+    .takeWhen(saveAction)
+    .flatMap { (draft, title, body, isBackersOnly) ->
+      SignalProducer<Signal<UpdateDraft, ErrorEnvelope>.Event, Never> in
 
-        let unchanged = draft.update.title == title
-          && draft.update.body == body
-          && draft.update.isPublic == !isBackersOnly
+      let unchanged = draft.update.title == title
+        && draft.update.body == body
+        && draft.update.isPublic == !isBackersOnly
 
-        let producer: SignalProducer<Signal<UpdateDraft, ErrorEnvelope>.Event, Never>
+      let producer: SignalProducer<Signal<UpdateDraft, ErrorEnvelope>.Event, Never>
 
-        if unchanged {
-          producer = SignalProducer(value: .value(draft))
-        } else {
-          producer = AppEnvironment.current.apiService
-            .update(draft: draft, title: title, body: body, isPublic: !isBackersOnly)
-            .materialize()
-        }
-
-        return producer
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+      if unchanged {
+        producer = SignalProducer(value: .value(draft))
+      } else {
+        producer = AppEnvironment.current.apiService
+          .update(draft: draft, title: title, body: body, isPublic: !isBackersOnly)
+          .materialize()
       }
+
+      return producer
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    }
     let currentDraft = currentDraftEvent.values()
 
     self.notifyPresenterViewControllerWantsDismissal = Signal.merge(
@@ -333,7 +334,8 @@ UpdateDraftViewModelOutputs {
       saveAction
         .takeWhen(currentDraft)
         .filter { $0 == .dismiss }
-        .ignoreValues())
+        .ignoreValues()
+    )
 
     self.showSaveFailure = currentDraftEvent.errors().ignoreValues()
 
@@ -381,55 +383,55 @@ UpdateDraftViewModelOutputs {
       .takeWhen(isBackersOnlySynced)
       .observeValues {
         AppEnvironment.current.koala.trackChangedUpdateDraftVisibility(forProject: $0, isPublic: !$1)
-    }
+      }
 
     project
       .takeWhen(self.addAttachmentSheetButtonTappedProperty.signal)
       .observeValues {
         AppEnvironment.current.koala.trackStartedAddUpdateDraftAttachment(forProject: $0)
-    }
+      }
 
     Signal.combineLatest(project, self.imagePickedProperty.signal.skipNil().map(second))
       .takeWhen(self.attachmentAdded)
       .observeValues {
         AppEnvironment.current.koala.trackCompletedAddUpdateDraftAttachment(forProject: $0, attachedFrom: $1)
-    }
+      }
 
     project
       .takeWhen(self.imagePickerCanceledProperty.signal)
       .observeValues {
         AppEnvironment.current.koala.trackCanceledAddUpdateDraftAttachment(forProject: $0)
-    }
+      }
 
     project
       .takeWhen(self.showAddAttachmentFailure)
       .observeValues {
         AppEnvironment.current.koala.trackFailedAddUpdateDraftAttachment(forProject: $0)
-    }
+      }
 
     project
       .takeWhen(self.attachmentTappedProperty.signal)
       .observeValues {
         AppEnvironment.current.koala.trackStartedRemoveUpdateDraftAttachment(forProject: $0)
-    }
+      }
 
     project
       .takeWhen(self.attachmentRemoved)
       .observeValues {
         AppEnvironment.current.koala.trackCompletedRemoveUpdateDraftAttachment(forProject: $0)
-    }
+      }
 
     project
       .takeWhen(self.removeAttachmentConfirmationCanceledProperty.signal)
       .observeValues {
         AppEnvironment.current.koala.trackCanceledRemoveUpdateDraftAttachment(forProject: $0)
-    }
+      }
 
     project
       .takeWhen(self.showRemoveAttachmentFailure)
       .observeValues {
         AppEnvironment.current.koala.trackFailedRemoveUpdateDraftAttachment(forProject: $0)
-    }
+      }
   }
 
   // INPUTS
@@ -543,7 +545,7 @@ UpdateDraftViewModelOutputs {
 }
 
 public enum AttachmentSource: String {
-  case camera = "camera"
+  case camera
   case cameraRoll = "camera_roll"
 
   public init(sourceType: UIImagePickerController.SourceType) {
@@ -593,12 +595,11 @@ private enum SaveAction {
 
 private func hasChanged<T: Equatable>(_ original: Signal<T, Never>, _ updated: Signal<T, Never>)
   -> Signal<Bool, Never> {
-
-    return Signal
-      .merge(
-        original.mapConst(false),
-        Signal.combineLatest(original, updated)
-          .map(!=)
-      )
-      .skipRepeats()
+  return Signal
+    .merge(
+      original.mapConst(false),
+      Signal.combineLatest(original, updated)
+        .map(!=)
+    )
+    .skipRepeats()
 }

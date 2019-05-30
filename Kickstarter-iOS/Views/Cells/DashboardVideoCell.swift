@@ -7,23 +7,23 @@ import UIKit
 internal final class DashboardVideoCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: DashboardVideoCellViewModelType = DashboardVideoCellViewModel()
 
-  @IBOutlet fileprivate weak var completionPercentageLabel: UILabel!
-  @IBOutlet fileprivate weak var externalLabel: UILabel!
-  @IBOutlet fileprivate weak var externalPlaysCountLabel: UILabel!
-  @IBOutlet fileprivate weak var externalPlaysProgressView: UIView!
-  @IBOutlet fileprivate weak var graphBackgroundView: UIView!
-  @IBOutlet fileprivate weak var internalLabel: UILabel!
-  @IBOutlet fileprivate weak var internalPlaysCountLabel: UILabel!
-  @IBOutlet fileprivate weak var internalPlaysProgressView: UIView!
+  @IBOutlet fileprivate var completionPercentageLabel: UILabel!
+  @IBOutlet fileprivate var externalLabel: UILabel!
+  @IBOutlet fileprivate var externalPlaysCountLabel: UILabel!
+  @IBOutlet fileprivate var externalPlaysProgressView: UIView!
+  @IBOutlet fileprivate var graphBackgroundView: UIView!
+  @IBOutlet fileprivate var internalLabel: UILabel!
+  @IBOutlet fileprivate var internalPlaysCountLabel: UILabel!
+  @IBOutlet fileprivate var internalPlaysProgressView: UIView!
   @IBOutlet fileprivate var separatorViews: [UIView]!
-  @IBOutlet fileprivate weak var statsContainerView: UIView!
-  @IBOutlet fileprivate weak var totalPlaysContainerView: UIView!
-  @IBOutlet fileprivate weak var totalPlaysCountLabel: UILabel!
-  @IBOutlet fileprivate weak var totalPlaysStackView: UIStackView!
-  @IBOutlet fileprivate weak var videoPlaysTitleLabel: UILabel!
+  @IBOutlet fileprivate var statsContainerView: UIView!
+  @IBOutlet fileprivate var totalPlaysContainerView: UIView!
+  @IBOutlet fileprivate var totalPlaysCountLabel: UILabel!
+  @IBOutlet fileprivate var totalPlaysStackView: UIStackView!
+  @IBOutlet fileprivate var videoPlaysTitleLabel: UILabel!
 
-  @IBOutlet fileprivate weak var graphStatsContainerView: UIView!
-  @IBOutlet fileprivate weak var graphStatsStackView: UIStackView!
+  @IBOutlet fileprivate var graphStatsContainerView: UIView!
+  @IBOutlet fileprivate var graphStatsStackView: UIStackView!
 
   internal override func bindStyles() {
     super.bindStyles()
@@ -100,7 +100,7 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
         let anchorY = progress == 0 ? 0 : 0.5 / progress
         element?.layer.anchorPoint = CGPoint(x: 0.5, y: 1 - CGFloat(anchorY))
         element?.transform = CGAffineTransform(scaleX: 1.0, y: CGFloat(progress))
-    }
+      }
 
     self.viewModel.outputs.internalStartProgress
       .observeForUI()
@@ -108,7 +108,7 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
         let anchorY = progress == 0 ? 0 : 0.5 / progress
         element?.layer.anchorPoint = CGPoint(x: 0.5, y: 1 - CGFloat(anchorY))
         element?.transform = CGAffineTransform(scaleX: 1.0, y: CGFloat(progress))
-    }
+      }
   }
 
   internal func configureWith(value: ProjectStatsEnvelope.VideoStats) {

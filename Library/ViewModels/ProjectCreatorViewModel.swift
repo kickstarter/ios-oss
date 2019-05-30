@@ -38,8 +38,7 @@ public protocol ProjectCreatorViewModelType {
 }
 
 public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, ProjectCreatorViewModelInputs,
-ProjectCreatorViewModelOutputs {
-
+  ProjectCreatorViewModelOutputs {
   public init() {
     let navigationAction = self.navigationAction.signal.skipNil()
     let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
@@ -52,9 +51,9 @@ ProjectCreatorViewModelOutputs {
 
     self.loadWebViewRequest = project.map {
       URL(string: $0.urls.web.project)?.appendingPathComponent("creator_bio")
-      }
-      .skipNil()
-      .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
+    }
+    .skipNil()
+    .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     self.decidedPolicy <~ navigationAction
       .map { $0.navigationType == .other ? .allow : .cancel }
@@ -71,7 +70,7 @@ ProjectCreatorViewModelOutputs {
     self.goBackToProject = Signal.combineLatest(project, navigationAction)
       .filter { $1.navigationType == .linkActivated }
       .filter { project, navigation in
-         project.urls.web.project == navigation.request.url?.absoluteString
+        project.urls.web.project == navigation.request.url?.absoluteString
       }
       .ignoreValues()
 
@@ -88,7 +87,7 @@ ProjectCreatorViewModelOutputs {
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectCreator)
-    }
+      }
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -107,6 +106,7 @@ ProjectCreatorViewModelOutputs {
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+
   public let goBackToProject: Signal<(), Never>
   public let goToLoginTout: Signal<LoginIntent, Never>
   public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never>

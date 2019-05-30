@@ -1,8 +1,8 @@
-import Prelude
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class WatchProjectViewModelTests: TestCase {
   internal let vm = WatchProjectViewModel()
@@ -11,7 +11,7 @@ internal final class WatchProjectViewModelTests: TestCase {
   internal let generateSelectionFeedback = TestObserver<(), Never>()
   internal let generateSuccessFeedback = TestObserver<(), Never>()
   internal let goToLoginTout = TestObserver<(), Never>()
-  internal let postNotificationWithProject = TestObserver<Project, Never>() //fixme: test
+  internal let postNotificationWithProject = TestObserver<Project, Never>() // fixme: test
   internal let saveButtonAccessibilityValue = TestObserver<String, Never>()
   internal let saveButtonSelected = TestObserver<Bool, Never>()
   internal let showNotificationDialog = TestObserver<Notification.Name, Never>()
@@ -77,9 +77,10 @@ internal final class WatchProjectViewModelTests: TestCase {
   func testWatchProject_WithError() {
     let project = Project.template
 
-    withEnvironment(apiService: MockService(watchProjectMutationResult: .failure(.invalidInput)),
-                    currentUser: .template) {
-
+    withEnvironment(
+      apiService: MockService(watchProjectMutationResult: .failure(.invalidInput)),
+      currentUser: .template
+    ) {
       self.vm.inputs.configure(with: project)
       self.vm.inputs.viewDidLoad()
 
@@ -87,13 +88,17 @@ internal final class WatchProjectViewModelTests: TestCase {
 
       self.vm.inputs.saveButtonTapped(selected: false)
 
-      self.saveButtonSelected.assertValues([false, true],
-                                           "Emits true because it's toggled immmediately.")
+      self.saveButtonSelected.assertValues(
+        [false, true],
+        "Emits true because it's toggled immmediately."
+      )
 
       self.scheduler.advance(by: .milliseconds(500))
 
-      self.saveButtonSelected.assertValues([false, true, false],
-                                           "Returns to false on error.")
+      self.saveButtonSelected.assertValues(
+        [false, true, false],
+        "Returns to false on error."
+      )
     }
   }
 
@@ -101,9 +106,10 @@ internal final class WatchProjectViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isStarred .~ true
 
-    withEnvironment(apiService: MockService(unwatchProjectMutationResult: .success(.unwatchTemplate)),
-                    currentUser: .template) {
-
+    withEnvironment(
+      apiService: MockService(unwatchProjectMutationResult: .success(.unwatchTemplate)),
+      currentUser: .template
+    ) {
       self.vm.inputs.configure(with: project)
       self.vm.inputs.viewDidLoad()
 
@@ -128,37 +134,37 @@ internal final class WatchProjectViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(unwatchProjectMutationResult: .success(.unwatchTemplate)),
-      currentUser: .template) {
+      currentUser: .template
+    ) {
+      self.vm.inputs.configure(with: project)
+      self.vm.inputs.viewDidLoad()
 
-        self.vm.inputs.configure(with: project)
-        self.vm.inputs.viewDidLoad()
+      self.saveButtonSelected.assertValues([true], "Save button is selected at first.")
 
-        self.saveButtonSelected.assertValues([true], "Save button is selected at first.")
+      self.vm.inputs.saveButtonTapped(selected: true)
 
-        self.vm.inputs.saveButtonTapped(selected: true)
+      self.saveButtonSelected.assertValues([true, false], "Emits false immediately.")
 
-        self.saveButtonSelected.assertValues([true, false], "Emits false immediately.")
+      self.vm.inputs.saveButtonTapped(selected: false)
+      self.scheduler.advance(by: .milliseconds(250))
 
-        self.vm.inputs.saveButtonTapped(selected: false)
-        self.scheduler.advance(by: .milliseconds(250))
+      self.vm.inputs.saveButtonTapped(selected: true)
+      self.scheduler.advance(by: .milliseconds(250))
 
-        self.vm.inputs.saveButtonTapped(selected: true)
-        self.scheduler.advance(by: .milliseconds(250))
+      self.vm.inputs.saveButtonTapped(selected: false)
+      self.scheduler.advance(by: .milliseconds(250))
 
-        self.vm.inputs.saveButtonTapped(selected: false)
-        self.scheduler.advance(by: .milliseconds(250))
+      self.saveButtonSelected.assertValues(
+        [true, false, true, false, true], "State flips back and forth as button is tapped."
+      )
 
-        self.saveButtonSelected.assertValues(
-          [true, false, true, false, true], "State flips back and forth as button is tapped."
-        )
+      self.vm.inputs.saveButtonTapped(selected: true)
+      self.scheduler.advance(by: .milliseconds(500))
 
-        self.vm.inputs.saveButtonTapped(selected: true)
-        self.scheduler.advance(by: .milliseconds(500))
-
-        self.saveButtonSelected.assertValues(
-          [true, false, true, false, true, false],
-          "Network call is made after 0.5 seconds of no taps, value from response is always used"
-        )
+      self.saveButtonSelected.assertValues(
+        [true, false, true, false, true, false],
+        "Network call is made after 0.5 seconds of no taps, value from response is always used"
+      )
     }
   }
 
@@ -167,7 +173,6 @@ internal final class WatchProjectViewModelTests: TestCase {
       |> Project.lens.personalization.isStarred .~ false
 
     withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.watchTemplate))) {
-
       self.vm.inputs.configure(with: project)
       self.vm.inputs.viewDidLoad()
 
@@ -175,33 +180,45 @@ internal final class WatchProjectViewModelTests: TestCase {
 
       self.vm.inputs.saveButtonTapped(selected: false)
 
-      self.saveButtonSelected.assertValues([false],
-                                           "Nothing is emitted when save button tapped while logged out.")
+      self.saveButtonSelected.assertValues(
+        [false],
+        "Nothing is emitted when save button tapped while logged out."
+      )
 
-      self.goToLoginTout.assertValueCount(1,
-                                          "Prompt to login when save button tapped while logged out.")
+      self.goToLoginTout.assertValueCount(
+        1,
+        "Prompt to login when save button tapped while logged out."
+      )
 
       AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
       self.vm.inputs.userSessionStarted()
 
-      self.saveButtonSelected.assertValues([false, true],
-                                           "Once logged in, the save button is selected immediately.")
+      self.saveButtonSelected.assertValues(
+        [false, true],
+        "Once logged in, the save button is selected immediately."
+      )
 
       self.scheduler.advance(by: .milliseconds(500))
 
-      self.saveButtonSelected.assertValues([false, true],
-                                           "Save button stays selected after API request.")
+      self.saveButtonSelected.assertValues(
+        [false, true],
+        "Save button stays selected after API request."
+      )
 
       withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.watchTemplate))) {
         self.vm.inputs.saveButtonTapped(selected: true)
 
-        self.saveButtonSelected.assertValues([false, true, false],
-                                             "Save button is deselected.")
+        self.saveButtonSelected.assertValues(
+          [false, true, false],
+          "Save button is deselected."
+        )
 
         self.scheduler.advance(by: .milliseconds(500))
 
-        self.saveButtonSelected.assertValues([false, true, false],
-                                             "The save button remains unselected.")
+        self.saveButtonSelected.assertValues(
+          [false, true, false],
+          "The save button remains unselected."
+        )
       }
     }
   }
@@ -271,30 +288,42 @@ internal final class WatchProjectViewModelTests: TestCase {
 
       self.scheduler.advance(by: .milliseconds(500))
 
-      self.saveButtonSelected.assertValues([false, true],
-                                           "Save button remains selected.")
+      self.saveButtonSelected.assertValues(
+        [false, true],
+        "Save button remains selected."
+      )
 
       self.showProjectSavedAlert.assertValueCount(1, "The save project prompt shows.")
-      XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"],
-                     trackingClient.events, "A star koala event is tracked.")
+      XCTAssertEqual(
+        ["Project Star", "Starred Project", "Saved Project"],
+        trackingClient.events, "A star koala event is tracked."
+      )
 
       withEnvironment(apiService: MockService(unwatchProjectMutationResult: .success(.unwatchTemplate))) {
         self.vm.inputs.saveButtonTapped(selected: true)
 
-        self.saveButtonSelected.assertValues([false, true, false],
-                                             "Save button deselects immediately.")
+        self.saveButtonSelected.assertValues(
+          [false, true, false],
+          "Save button deselects immediately."
+        )
         self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved", "Unsaved"])
 
         self.scheduler.advance(by: .milliseconds(500))
 
-        self.saveButtonSelected.assertValues([false, true, false],
-                                             "The save button remains unselected.")
+        self.saveButtonSelected.assertValues(
+          [false, true, false],
+          "The save button remains unselected."
+        )
         self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved", "Unsaved"])
 
         self.showProjectSavedAlert.assertValueCount(1, "The save project prompt only showed for starring.")
-        XCTAssertEqual(["Project Star", "Starred Project", "Saved Project", "Project Unstar",
-                        "Unstarred Project", "Unsaved Project"],
-                       self.trackingClient.events, "An unstar koala event is tracked.")
+        XCTAssertEqual(
+          [
+            "Project Star", "Starred Project", "Saved Project", "Project Unstar",
+            "Unstarred Project", "Unsaved Project"
+          ],
+          self.trackingClient.events, "An unstar koala event is tracked."
+        )
       }
     }
   }
@@ -317,8 +346,10 @@ internal final class WatchProjectViewModelTests: TestCase {
         0, "The save project prompt doesn't show cause it's less than 48hrs."
       )
 
-      XCTAssertEqual(["Project Star", "Starred Project", "Saved Project"], self.trackingClient.events,
-                     "A star koala event is tracked.")
+      XCTAssertEqual(
+        ["Project Star", "Starred Project", "Saved Project"], self.trackingClient.events,
+        "A star koala event is tracked."
+      )
     }
   }
 }

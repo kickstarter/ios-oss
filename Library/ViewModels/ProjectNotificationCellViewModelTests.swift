@@ -1,9 +1,9 @@
-import Prelude
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class ProjectNotificationCellViewModelTests: TestCase {
   internal let vm = ProjectNotificationCellViewModel()
@@ -13,9 +13,9 @@ internal final class ProjectNotificationCellViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.name.observe(projectName.observer)
-    self.vm.outputs.notificationOn.observe(notificationOn.observer)
-    self.vm.outputs.notifyDelegateOfSaveError.observe(notifyDelegateOfSaveError.observer)
+    self.vm.outputs.name.observe(self.projectName.observer)
+    self.vm.outputs.notificationOn.observe(self.notificationOn.observer)
+    self.vm.outputs.notifyDelegateOfSaveError.observe(self.notifyDelegateOfSaveError.observer)
   }
 
   internal func testCellReuse() {
@@ -63,8 +63,10 @@ internal final class ProjectNotificationCellViewModelTests: TestCase {
     self.notificationOn.assertValues([false, true, false], "Notification turned off.")
     self.notifyDelegateOfSaveError.assertDidNotEmitValue("Notification preference saved successfully.")
 
-    XCTAssertEqual(["Changed Project Notifications", "Changed Project Notifications",
-      "Changed Project Notifications"], self.trackingClient.events)
+    XCTAssertEqual([
+      "Changed Project Notifications", "Changed Project Notifications",
+      "Changed Project Notifications"
+    ], self.trackingClient.events)
   }
 
   internal func testUpdateError() {
@@ -88,22 +90,30 @@ internal final class ProjectNotificationCellViewModelTests: TestCase {
       self.notificationOn.assertValues([false, true, false], "Notification was not successfully saved.")
 
       self.vm.inputs.notificationTapped(on: true)
-      self.notificationOn.assertValues([false, true, false, true],
-                                       "Notification immediately turned on on tap.")
+      self.notificationOn.assertValues(
+        [false, true, false, true],
+        "Notification immediately turned on on tap."
+      )
 
       self.scheduler.advance()
       self.notifyDelegateOfSaveError.assertValueCount(2, "Updating notification errored.")
-      self.notificationOn.assertValues([false, true, false, true, false],
-                                       "Notification was not successfully saved.")
+      self.notificationOn.assertValues(
+        [false, true, false, true, false],
+        "Notification was not successfully saved."
+      )
 
       self.vm.inputs.notificationTapped(on: true)
-      self.notificationOn.assertValues([false, true, false, true, false, true],
-                                       "Notification immediately turned on on tap.")
+      self.notificationOn.assertValues(
+        [false, true, false, true, false, true],
+        "Notification immediately turned on on tap."
+      )
 
       self.scheduler.advance()
       self.notifyDelegateOfSaveError.assertValueCount(3, "Updating notification errored.")
-      self.notificationOn.assertValues([false, true, false, true, false, true, false],
-                                       "Notification still not saved.")
+      self.notificationOn.assertValues(
+        [false, true, false, true, false, true, false],
+        "Notification still not saved."
+      )
     }
   }
 
@@ -135,21 +145,29 @@ internal final class ProjectNotificationCellViewModelTests: TestCase {
       self.notificationOn.assertValues([false, true, false, true], "Notification immediately turned on.")
 
       self.scheduler.advance()
-      self.notificationOn.assertValues([false, true, false, true, false],
-                                       "Notification reverted to off after failure.")
+      self.notificationOn.assertValues(
+        [false, true, false, true, false],
+        "Notification reverted to off after failure."
+      )
 
       self.vm.inputs.configureWith(notification: notification)
 
-      self.notificationOn.assertValues([false, true, false, true, false],
-                                       "Notification still off after cell reuse.")
+      self.notificationOn.assertValues(
+        [false, true, false, true, false],
+        "Notification still off after cell reuse."
+      )
     }
 
     self.vm.inputs.notificationTapped(on: true)
-    self.notificationOn.assertValues([false, true, false, true, false, true],
-                                     "Notification turned on on tap.")
+    self.notificationOn.assertValues(
+      [false, true, false, true, false, true],
+      "Notification turned on on tap."
+    )
 
     self.scheduler.advance()
-    self.notificationOn.assertValues([false, true, false, true, false, true],
-                                     "Notification remains on after API request.")
+    self.notificationOn.assertValues(
+      [false, true, false, true, false, true],
+      "Notification remains on after API request."
+    )
   }
 }

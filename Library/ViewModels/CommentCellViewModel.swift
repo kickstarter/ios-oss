@@ -24,8 +24,7 @@ public protocol CommentCellViewModelType {
 }
 
 public final class CommentCellViewModel: CommentCellViewModelType, CommentCellViewModelInputs,
-CommentCellViewModelOutputs {
-
+  CommentCellViewModelOutputs {
   public init() {
     let comment = self.commentProjectViewer.signal.skipNil()
       .map { comment, _, _ in comment }
@@ -56,7 +55,7 @@ CommentCellViewModelOutputs {
     self.youHidden = self.commentProjectViewer.signal.skipNil()
       .map { comment, project, viewer in
         comment.author.id != viewer?.id || comment.author.id == project.creator.id
-    }
+      }
   }
 
   fileprivate let commentProjectViewer = MutableProperty<(Comment, Project, User?)?>(nil)

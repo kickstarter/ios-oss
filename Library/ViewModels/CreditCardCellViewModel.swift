@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 import UIKit
 
 public protocol CreditCardCellViewModelInputs {
@@ -29,18 +29,17 @@ public protocol CreditCardCellViewModelType {
 }
 
 public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
-CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
-
+  CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
   public init() {
     self.cardImage = self.cardProperty.signal.skipNil()
-      .map(cardImage(with:))
+      .map(cardImageForCard)
 
     self.cardNumberAccessibilityLabel = self.cardProperty.signal.skipNil()
       .map {
-        return [$0.type?.description, Strings.Card_ending_in_last_four(last_four: $0.lastFour)]
+        [$0.type?.description, Strings.Card_ending_in_last_four(last_four: $0.lastFour)]
           .compact()
           .joined(separator: ", ")
-    }
+      }
 
     self.cardNumberText = self.cardProperty.signal.skipNil()
       .map { Strings.Card_ending_in_last_four(last_four: $0.lastFour) }
@@ -48,8 +47,8 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
     self.expirationDateText = self.cardProperty.signal.skipNil()
       .map { Strings.Credit_card_expiration(
         expiration_date: formatted(dateString: $0.formattedExpirationDate)
-        )
-    }
+      )
+      }
   }
 
   fileprivate let cardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -66,22 +65,26 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
   public var outputs: CreditCardCellViewModelOutputs { return self }
 }
 
-private func cardImage(with card: GraphUserCreditCard.CreditCard) -> UIImage? {
+private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
   return image(named: card.imageName)
 }
 
 private func formatted(dateString: String) -> String {
   let date = toDate(dateString: dateString)
-  return Format.date(secondsInUTC: date.timeIntervalSince1970,
-                     template: "MM-yyyy",
-                     timeZone: UTCTimeZone)
+  return Format.date(
+    secondsInUTC: date.timeIntervalSince1970,
+    template: "MM-yyyy",
+    timeZone: UTCTimeZone
+  )
 }
 
 private func toDate(dateString: String) -> Date {
   // Always use UTC timezone here this date should be timezone agnostic
-  guard let date = Format.date(from: dateString,
-                               dateFormat: "yyyy-MM",
-                               timeZone: UTCTimeZone) else {
+  guard let date = Format.date(
+    from: dateString,
+    dateFormat: "yyyy-MM",
+    timeZone: UTCTimeZone
+  ) else {
     fatalError("Unable to parse date format")
   }
 

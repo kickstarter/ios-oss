@@ -5,17 +5,21 @@ import UIKit
 internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControllerDataSource {
   private let viewControllers: [UIViewController]
 
-  internal init(delegate: UIViewController, sort: DiscoveryParams.Sort) {
-    let backedController = BackerDashboardProjectsViewController.configuredWith(projectsType: .backed,
-                                                                                sort: sort)
+  internal init(delegate _: UIViewController, sort: DiscoveryParams.Sort) {
+    let backedController = BackerDashboardProjectsViewController.configuredWith(
+      projectsType: .backed,
+      sort: sort
+    )
 
-    let savedController = BackerDashboardProjectsViewController.configuredWith(projectsType: .saved,
-                                                                               sort: sort)
+    let savedController = BackerDashboardProjectsViewController.configuredWith(
+      projectsType: .saved,
+      sort: sort
+    )
 
     self.viewControllers = BackerDashboardTab.allTabs.map { tab in
       switch tab {
       case .backed: return backedController
-      case .saved:  return savedController
+      case .saved: return savedController
       }
     }
   }
@@ -34,9 +38,9 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
   }
 
   internal func pageViewController(
-    _ pageViewController: UIPageViewController,
-    viewControllerAfter viewController: UIViewController) -> UIViewController? {
-
+    _: UIPageViewController,
+    viewControllerAfter viewController: UIViewController
+  ) -> UIViewController? {
     guard let pageIdx = self.viewControllers.firstIndex(of: viewController) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
@@ -50,9 +54,9 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
   }
 
   internal func pageViewController(
-    _ pageViewController: UIPageViewController,
-    viewControllerBefore viewController: UIViewController) -> UIViewController? {
-
+    _: UIPageViewController,
+    viewControllerBefore viewController: UIViewController
+  ) -> UIViewController? {
     guard let pageIdx = self.viewControllers.firstIndex(of: viewController) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }

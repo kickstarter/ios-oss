@@ -4,12 +4,11 @@ import UIKit
 import UserNotifications
 
 internal final class DebugPushNotificationsViewController: UIViewController {
-
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
-  @IBOutlet fileprivate weak var scrollView: UIScrollView!
+  @IBOutlet fileprivate var rootStackView: UIStackView!
+  @IBOutlet fileprivate var scrollView: UIScrollView!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
-    internal override func bindStyles() {
+  internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -53,8 +52,8 @@ internal final class DebugPushNotificationsViewController: UIViewController {
     _ = buttons
       ||> greenButtonStyle
       ||> UIButton.lens.contentEdgeInsets %~ {
-        .init(top: $0.top/2, left: $0.left/2, bottom: $0.bottom/2, right: $0.right/2)
-    }
+        .init(top: $0.top / 2, left: $0.left / 2, bottom: $0.bottom / 2, right: $0.right / 2)
+      }
 
     inAppButtons.enumerated().forEach { idx, button in
       _ = button
@@ -83,28 +82,31 @@ internal final class DebugPushNotificationsViewController: UIViewController {
   }
 
   fileprivate func scheduleNotification(forIndex index: Int, delay: Bool) {
-    guard index >= 0 && index < allPushData.count else { return }
+    guard index >= 0, index < allPushData.count else { return }
 
     let pushData = allPushData[index]
     self.addNotificationRequest(delay: delay, pushData: pushData)
   }
 
   private func addNotificationRequest(delay: Bool, pushData: [String: Any]) {
-
     let identifier = "notify-test"
 
     let content = UNMutableNotificationContent()
-    content.body = body(from: pushData)
+    content.body = self.body(from: pushData)
     content.userInfo = pushData
     content.categoryIdentifier = identifier
 
     // timeInterval must be greater than 0.
-    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: delay ? 5 : 0.5,
-                                                    repeats: false)
+    let trigger = UNTimeIntervalNotificationTrigger(
+      timeInterval: delay ? 5 : 0.5,
+      repeats: false
+    )
 
-    let request = UNNotificationRequest(identifier: identifier,
-                                        content: content,
-                                        trigger: trigger)
+    let request = UNNotificationRequest(
+      identifier: identifier,
+      content: content,
+      trigger: trigger
+    )
 
     UNUserNotificationCenter.current().add(request)
   }
@@ -121,7 +123,7 @@ private let backingPushData: [String: Any] = [
   "activity": [
     "category": "backing",
     "id": 1,
-    "project_id": 1929840910
+    "project_id": 1_929_840_910
   ]
 ]
 
@@ -132,8 +134,8 @@ private let updatePushData: [String: Any] = [
   "activity": [
     "category": "update",
     "id": 1,
-    "project_id": 1929840910,
-    "update_id": 190349
+    "project_id": 1_929_840_910,
+    "update_id": 190_349
   ]
 ]
 
@@ -144,7 +146,7 @@ private let successPushData: [String: Any] = [
   "activity": [
     "category": "success",
     "id": 1,
-    "project_id": 1929840910
+    "project_id": 1_929_840_910
   ]
 ]
 
@@ -155,7 +157,7 @@ private let failurePushData: [String: Any] = [
   "activity": [
     "category": "failure",
     "id": 1,
-    "project_id": 1929840910
+    "project_id": 1_929_840_910
   ]
 ]
 
@@ -166,7 +168,7 @@ private let cancellationPushData: [String: Any] = [
   "activity": [
     "category": "cancellation",
     "id": 1,
-    "project_id": 1929840910
+    "project_id": 1_929_840_910
   ]
 ]
 
@@ -185,29 +187,29 @@ private let messagePushData: [String: Any] = [
     "alert": "Chinati Foundation sent you a message about Robert Irwin Project."
   ],
   "message": [
-    "message_thread_id": 17848074,
-    "project_id": 820501933
+    "message_thread_id": 17_848_074,
+    "project_id": 820_501_933
   ]
 ]
 
 private let surveyPushData: [String: Any] = [
   "aps": [
-    "alert": "Response needed! Get your reward for backing Help Me Transform This Pile of Wood.",
+    "alert": "Response needed! Get your reward for backing Help Me Transform This Pile of Wood."
   ],
   "survey": [
-    "id": 15182605,
-    "project_id": 820501933
+    "id": 15_182_605,
+    "project_id": 820_501_933
   ]
 ]
 
 // swiftlint:disable line_length
 private let reminderPushData: [String: Any] = [
   "aps": [
-    "alert": "Reminder! This Pile of Wood is ending soon.",
+    "alert": "Reminder! This Pile of Wood is ending soon."
   ],
   "project": [
     "photo": "https://ksr-ugc.imgix.net/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?w=160&h=90&fit=fill&bg=FBFAF8&v=1464773625&auto=format&q=92&s=fc738d87d861a96333e9f93bee680c27",
-    "id": 820501933,
+    "id": 820_501_933
   ]
 ]
 // swiftlint:enable line_length
@@ -219,7 +221,7 @@ private let backingForCreatorPushData: [String: Any] = [
   "activity": [
     "category": "backing",
     "id": 1,
-    "project_id": 820501933
+    "project_id": 820_501_933
   ],
   "for_creator": true
 ]
@@ -229,8 +231,8 @@ private let messageForCreatorPushData: [String: Any] = [
     "alert": "Blob McBlobby sent you a message about Help Me Transform This Pile Of Wood."
   ],
   "message": [
-    "message_thread_id": 17848074,
-    "project_id": 820501933
+    "message_thread_id": 17_848_074,
+    "project_id": 820_501_933
   ],
   "for_creator": true
 ]
@@ -242,7 +244,7 @@ private let failureForCreatorPushData: [String: Any] = [
   "activity": [
     "category": "failure",
     "id": 1,
-    "project_id": 820501933
+    "project_id": 820_501_933
   ],
   "for_creator": true
 ]
@@ -254,7 +256,7 @@ private let successForCreatorPushData: [String: Any] = [
   "activity": [
     "category": "success",
     "id": 1,
-    "project_id": 820501933
+    "project_id": 820_501_933
   ],
   "for_creator": true
 ]
@@ -266,7 +268,7 @@ private let cancellationForCreatorPushData: [String: Any] = [
   "activity": [
     "category": "cancellation",
     "id": 1,
-    "project_id": 820501933
+    "project_id": 820_501_933
   ],
   "for_creator": true
 ]
@@ -278,7 +280,7 @@ private let projectCommentForCreatorPushData: [String: Any] = [
   "activity": [
     "category": "comment-project",
     "id": 1,
-    "project_id": 820501933
+    "project_id": 820_501_933
   ],
   "for_creator": true
 ]
@@ -290,8 +292,8 @@ private let updateCommentForCreatorPushData: [String: Any] = [
   "activity": [
     "category": "comment-post",
     "id": 1,
-    "project_id": 820501933,
-    "update_id": 1731094
+    "project_id": 820_501_933,
+    "update_id": 1_731_094
   ],
   "for_creator": true
 ]
@@ -301,8 +303,8 @@ private let postLikeForCreatorPushData: [String: Any] = [
     "alert": "Blob liked your update: Important message from Tim..."
   ],
   "post": [
-    "id": 175622,
-    "project_id": 1929840910
+    "id": 175_622,
+    "project_id": 1_929_840_910
   ],
   "for_creator": true
 ]
@@ -324,5 +326,5 @@ private let allPushData: [[String: Any]] = [
   cancellationForCreatorPushData,
   projectCommentForCreatorPushData,
   updateCommentForCreatorPushData,
-  postLikeForCreatorPushData,
+  postLikeForCreatorPushData
 ]

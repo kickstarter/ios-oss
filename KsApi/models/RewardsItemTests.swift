@@ -1,9 +1,8 @@
+@testable import KsApi
 import Prelude
 import XCTest
-@testable import KsApi
 
 final class RewardsItemTests: XCTestCase {
-
   func testDecoding() {
     let decoded = RewardsItem.decodeJSONDictionary([
       "id": 1,

@@ -1,12 +1,11 @@
-import XCTest
-import ReactiveSwift
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class CreditCardCellViewModelTests: TestCase {
-
   internal let vm: CreditCardCellViewModelType = CreditCardCellViewModel()
 
   let cardImage = TestObserver<UIImage?, Never>()
@@ -17,10 +16,10 @@ internal final class CreditCardCellViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.cardImage.observe(cardImage.observer)
-    self.vm.outputs.cardNumberAccessibilityLabel.observe(cardNumberAccessibilityLabel.observer)
-    self.vm.outputs.cardNumberText.observe(cardNumberText.observer)
-    self.vm.outputs.expirationDateText.observe(expirationDateText.observer)
+    self.vm.outputs.cardImage.observe(self.cardImage.observer)
+    self.vm.outputs.cardNumberAccessibilityLabel.observe(self.cardNumberAccessibilityLabel.observer)
+    self.vm.outputs.cardNumberText.observe(self.cardNumberText.observer)
+    self.vm.outputs.expirationDateText.observe(self.expirationDateText.observer)
   }
 
   func testCardInfoForSupportedCards() {

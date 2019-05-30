@@ -20,7 +20,8 @@ public enum UserInfoKeys {
 
 extension Notification.Name {
   public static let ksr_dataRequested = Notification.Name(rawValue: CurrentUserNotifications.dataRequested)
-  public static let ksr_environmentChanged = Notification.Name(rawValue:
+  public static let ksr_environmentChanged = Notification.Name(
+    rawValue:
     CurrentUserNotifications.environmentChanged
   )
   public static let ksr_projectSaved = Notification.Name(rawValue: CurrentUserNotifications.projectSaved)
@@ -32,7 +33,8 @@ extension Notification.Name {
   public static let ksr_sessionEnded = Notification.Name(rawValue: CurrentUserNotifications.sessionEnded)
   public static let ksr_showNotificationsDialog =
     Notification.Name(rawValue: CurrentUserNotifications.showNotificationsDialog)
-  public static let ksr_userLocalePreferencesChanged = Notification.Name(rawValue:
+  public static let ksr_userLocalePreferencesChanged = Notification.Name(
+    rawValue:
     CurrentUserNotifications.localePreferencesChanged
   )
   public static let ksr_userUpdated = Notification.Name(rawValue: CurrentUserNotifications.userUpdated)

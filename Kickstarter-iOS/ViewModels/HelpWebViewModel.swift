@@ -38,6 +38,7 @@ internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInp
   func configureWith(helpType: HelpType) {
     self.helpTypeProperty.value = helpType
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   func viewDidLoad() {
     self.viewDidLoadProperty.value = ()

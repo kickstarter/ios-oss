@@ -30,25 +30,29 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
 
     let refreshControl = UIRefreshControl()
-    refreshControl.addTarget(self,
-                             action: #selector(pulledToRefresh),
-                             for: .valueChanged)
+    refreshControl.addTarget(
+      self,
+      action: #selector(self.pulledToRefresh),
+      for: .valueChanged
+    )
     self.refreshControl = refreshControl
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-    }
+      }
 
     self.sessionEndedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
-    }
+      }
 
     self.currentEnvironmentChangedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_environmentChanged, object: nil, queue: nil, using: { [weak self] _ in
-        self?.viewModel.inputs.currentEnvironmentChanged(environment:
-          AppEnvironment.current.apiService.serverConfig.environment)
+        self?.viewModel.inputs.currentEnvironmentChanged(
+          environment:
+          AppEnvironment.current.apiService.serverConfig.environment
+        )
       })
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
@@ -60,8 +64,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
       emptyVC.view.topAnchor.constraint(equalTo: self.view.topAnchor),
       emptyVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
       emptyVC.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      emptyVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-      ])
+      emptyVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+    ])
     emptyVC.didMove(toParent: self)
   }
 
@@ -101,24 +105,24 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.projectsAreLoadingAnimated
       .observeForUI()
-      .observeValues { [weak self] (isLoading, animated) in
+      .observeValues { [weak self] isLoading, animated in
         if isLoading {
-          UIView.perform(animated: true, {
+          UIView.perform(animated: true) {
             self?.refreshControl?.beginRefreshing()
-          })
+          }
         } else {
-          UIView.perform(animated: animated, {
+          UIView.perform(animated: animated) {
             self?.refreshControl?.endRefreshing()
-          })
+          }
         }
-    }
+      }
 
     self.viewModel.outputs.activitiesForSample
       .observeForUI()
       .observeValues { [weak self] activities in
         self?.dataSource.load(activities: activities)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.asyncReloadData
       .observeForUI()
@@ -126,7 +130,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
         DispatchQueue.main.async {
           self?.tableView.reloadData()
         }
-    }
+      }
 
     self.viewModel.outputs.goToActivityProject
       .observeForControllerAction()
@@ -136,7 +140,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goTo(project: $0, initialPlaylist: $1, refTag: $2)
-    }
+      }
 
     self.viewModel.outputs.goToProjectUpdate
       .observeForControllerAction()
@@ -148,29 +152,31 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.dataSource.load(projects: projects, params: params)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
-    }
+      }
 
     self.viewModel.outputs.showOnboarding
       .observeForUI()
       .observeValues { [weak self] in
         self?.dataSource.show(onboarding: $0)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.setScrollsToTop
       .observeForUI()
       .observeValues { [weak self] in
         _ = self?.tableView ?|> UIScrollView.lens.scrollsToTop .~ $0
-    }
+      }
 
     self.viewModel.outputs.scrollToProjectRow
       .observeForUI()
       .observeValues { [weak self] row in
         guard let _self = self else { return }
-        _self.tableView.scrollToRow(at: _self.dataSource.indexPath(forProjectRow: row),
-                                    at: .top,
-                                    animated: false)
-    }
+        _self.tableView.scrollToRow(
+          at: _self.dataSource.indexPath(forProjectRow: row),
+          at: .top,
+          animated: false
+        )
+      }
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
@@ -180,7 +186,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] emptyState in
         self?.showEmptyState(emptyState)
-    }
+      }
 
     self.viewModel.outputs.hideEmptyState
       .observeForUI()
@@ -191,13 +197,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
         if let discovery = self?.parent?.parent as? DiscoveryViewController {
           discovery.setSortsEnabled(true)
         }
-    }
+      }
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
-
+  internal override func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
     if let cell = cell as? DiscoveryPostcardCell {
       cell.delegate = self
     } else if let cell = cell as? ActivitySampleBackingCell, cell.delegate == nil {
@@ -210,13 +217,16 @@ internal final class DiscoveryPageViewController: UITableViewController {
       cell.delegate = self
     }
 
-    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
-                                         outOf: self.dataSource.numberOfItems())
+    self.viewModel.inputs.willDisplayRow(
+      self.dataSource.itemIndexAt(indexPath),
+      outOf: self.dataSource.numberOfItems()
+    )
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   didSelectRowAt indexPath: IndexPath) {
-
+  internal override func tableView(
+    _: UITableView,
+    didSelectRowAt indexPath: IndexPath
+  ) {
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
       self.viewModel.inputs.tapped(project: project)
     } else if let activity = self.dataSource.activityAtIndexPath(indexPath) {
@@ -225,14 +235,15 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
-
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
 
       self?.shareViewModel.inputs.shareActivityCompletion(
-        with: .init(activityType: activityType,
-                    completed: completed,
-                    returnedItems: returnedItems,
-                    activityError: error)
+        with: .init(
+          activityType: activityType,
+          completed: completed,
+          returnedItems: returnedItems,
+          activityError: error
+        )
       )
     }
 
@@ -251,10 +262,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   fileprivate func goTo(project: Project, initialPlaylist: [Project], refTag: RefTag) {
-    let vc = ProjectNavigatorViewController.configuredWith(project: project,
-                                                           refTag: refTag,
-                                                           initialPlaylist: initialPlaylist,
-                                                           navigatorDelegate: self)
+    let vc = ProjectNavigatorViewController.configuredWith(
+      project: project,
+      refTag: refTag,
+      initialPlaylist: initialPlaylist,
+      navigatorDelegate: self
+    )
     self.present(vc, animated: true, completion: nil)
   }
 
@@ -269,10 +282,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
     emptyVC.setEmptyState(emptyState)
     emptyVC.view.isHidden = false
     self.view.bringSubviewToFront(emptyVC.view)
-    UIView.animate(withDuration: 0.3,
-                   animations: {
-                    self.emptyStatesController?.view.alpha = 1.0
-    }, completion: nil)
+    UIView.animate(
+      withDuration: 0.3,
+      animations: {
+        self.emptyStatesController?.view.alpha = 1.0
+      }, completion: nil
+    )
     if let discovery = self.parent?.parent as? DiscoveryViewController {
       discovery.setSortsEnabled(false)
     }
@@ -289,7 +304,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 }
 
 extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, ActivitySampleFollowCellDelegate,
-ActivitySampleProjectCellDelegate {
+  ActivitySampleProjectCellDelegate {
   internal func goToActivity() {
     guard let root = self.tabBarController as? RootTabBarViewController else { return }
     root.switchToActivities()
@@ -307,9 +322,10 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
 }
 
 extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
-  func emptyStatesViewController(_ viewController: EmptyStatesViewController,
-                                 goToDiscoveryWithParams params: DiscoveryParams?) {
-
+  func emptyStatesViewController(
+    _: EmptyStatesViewController,
+    goToDiscoveryWithParams params: DiscoveryParams?
+  ) {
     self.view.window?.rootViewController
       .flatMap { $0 as? RootTabBarViewController }
       .doIfSome { $0.switchToDiscovery(params: params) }
@@ -322,8 +338,10 @@ extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
 }
 
 extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
-  internal func discoveryPostcard(cell: DiscoveryPostcardCell, tappedShare context: ShareContext,
-                                  fromSourceView: UIView) {
+  internal func discoveryPostcard(
+    cell _: DiscoveryPostcardCell, tappedShare context: ShareContext,
+    fromSourceView: UIView
+  ) {
     self.shareViewModel.inputs.configureWith(shareContext: context, shareContextView: fromSourceView)
     self.shareViewModel.inputs.shareButtonTapped()
   }
@@ -332,7 +350,8 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
     let alertController = UIAlertController(
       title: Strings.Project_saved(),
       message: Strings.Well_remind_you_forty_eight_hours_before_this_project_ends(),
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
     alertController.addAction(
       UIAlertAction(
         title: Strings.Got_it(),

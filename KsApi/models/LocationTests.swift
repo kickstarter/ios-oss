@@ -1,16 +1,14 @@
-import XCTest
 @testable import KsApi
 import Prelude
+import XCTest
 
 final class LocationTests: XCTestCase {
-
   func testEquatable() {
     XCTAssertEqual(Location.template, Location.template)
     XCTAssertNotEqual(Location.template, Location.template |> Location.lens.id %~ { $0 + 1 })
   }
 
   func testJSONParsing_WithPartialData() {
-
     let location = Location.decodeJSONDictionary([
       "id": 1
     ])
@@ -20,13 +18,13 @@ final class LocationTests: XCTestCase {
 
   func testJSONParsing_WithFullData_SwiftDecodable() {
     let json = """
-                { "country": "US",
-                  "id": 1,
-                  "displayable_name": "Brooklyn, NY",
-                  "localized_name": "Brooklyn, NY",
-                  "name": "Brooklyn"
-                }
-               """
+     { "country": "US",
+       "id": 1,
+       "displayable_name": "Brooklyn, NY",
+       "localized_name": "Brooklyn, NY",
+       "name": "Brooklyn"
+     }
+    """
     let data = json.data(using: .utf8)
     // swiftlint:disable:next force_unwrapping
     let location = try? JSONDecoder().decode(Location.self, from: data!)
@@ -38,7 +36,6 @@ final class LocationTests: XCTestCase {
   }
 
   func testJSONParsing_WithFullData() {
-
     let location = Location.decodeJSONDictionary([
       "country": "US",
       "id": 1,

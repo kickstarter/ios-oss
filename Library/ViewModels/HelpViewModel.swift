@@ -1,6 +1,6 @@
+import MessageUI
 import Prelude
 import ReactiveSwift
-import MessageUI
 
 public enum HelpContext {
   case loginTout
@@ -62,7 +62,7 @@ public protocol HelpViewModelType {
 }
 
 public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpViewModelOutputs {
-    public init() {
+  public init() {
     let context = self.helpContextProperty.signal.skipNil()
     let canSendEmail = self.canSendEmailProperty.signal.skipNil()
     let helpTypeTapped = self.helpTypeButtonTappedProperty.signal.skipNil()
@@ -109,7 +109,7 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
       .filter { $1 == .cancelled }
       .observeValues { context, _ in
         AppEnvironment.current.koala.trackCanceledContactEmail(context: context)
-    }
+      }
   }
 
   public var inputs: HelpViewModelInputs { return self }
@@ -124,22 +124,27 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
   public func canSendEmail(_ canSend: Bool) {
     self.canSendEmailProperty.value = canSend
   }
+
   fileprivate let cancelHelpSheetButtonTappedProperty = MutableProperty(())
   public func cancelHelpSheetButtonTapped() {
     self.cancelHelpSheetButtonTappedProperty.value = ()
   }
+
   fileprivate let helpContextProperty = MutableProperty<HelpContext?>(nil)
   public func configureWith(helpContext: HelpContext) {
     self.helpContextProperty.value = helpContext
   }
+
   fileprivate let showHelpSheetButtonTappedProperty = MutableProperty(())
   public func showHelpSheetButtonTapped() {
     self.showHelpSheetButtonTappedProperty.value = ()
   }
+
   fileprivate let helpTypeButtonTappedProperty = MutableProperty<HelpType?>(nil)
   public func helpTypeButtonTapped(_ helpType: HelpType) {
     self.helpTypeButtonTappedProperty.value = helpType
   }
+
   fileprivate let mailComposeCompletionProperty = MutableProperty<MFMailComposeResult?>(nil)
   public func mailComposeCompletion(result: MFMailComposeResult) {
     self.mailComposeCompletionProperty.value = result

@@ -1,10 +1,10 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import UIKit
-import PlaygroundSupport
 
 //: __Thanks Page__
 
@@ -23,12 +23,12 @@ let projects = [
 let projectsResponse = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
 AppEnvironment.replaceCurrentEnvironment(
-    apiService: MockService(
-        oauthToken: OauthToken(token: "deadbeef"),
-        fetchDiscoveryResponse: projectsResponse
-    ),
-    language: .en, locale: Locale(identifier: "en"),
-    mainBundle: Bundle.framework
+  apiService: MockService(
+    oauthToken: OauthToken(token: "deadbeef"),
+    fetchDiscoveryResponse: projectsResponse
+  ),
+  language: .en, locale: Locale(identifier: "en"),
+  mainBundle: Bundle.framework
 )
 
 initialize()

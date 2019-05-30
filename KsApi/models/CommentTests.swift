@@ -1,10 +1,8 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class CommentTests: XCTestCase {
-
   func testJSONParsing_WithCompleteData() {
-
     let comment = Comment.decodeJSONDictionary([
       "author": [
         "id": 1,
@@ -24,17 +22,16 @@ final class CommentTests: XCTestCase {
         ]
       ],
       "body": "hello!",
-      "created_at": 123456789.0,
-      "deleted_at": 123456789.0,
+      "created_at": 123_456_789.0,
+      "deleted_at": 123_456_789.0,
       "id": 1
-      ])
+    ])
 
     XCTAssertNil(comment.error)
     XCTAssertEqual(1, comment.value?.id)
   }
 
   func testJSONParsing_ZeroDeletedAt() {
-
     let comment = Comment.decodeJSONDictionary([
       "author": [
         "id": 1,
@@ -54,10 +51,10 @@ final class CommentTests: XCTestCase {
         ]
       ],
       "body": "hello!",
-      "created_at": 123456789.0,
+      "created_at": 123_456_789.0,
       "deleted_at": 0,
       "id": 1
-      ])
+    ])
 
     XCTAssertNil(comment.error)
     XCTAssertNotNil(comment.value)

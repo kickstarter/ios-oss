@@ -31,8 +31,10 @@ extension UITableView {
   }
 
   public func registerHeaderFooter(nib: Nib, inBundle bundle: Bundle = .framework) {
-    self.register(UINib(nibName: nib.rawValue, bundle: bundle),
-                  forHeaderFooterViewReuseIdentifier: nib.rawValue)
+    self.register(
+      UINib(nibName: nib.rawValue, bundle: bundle),
+      forHeaderFooterViewReuseIdentifier: nib.rawValue
+    )
   }
 }
 
@@ -44,12 +46,14 @@ protocol NibLoading {
 
 extension NibLoading {
   static func fromNib(nib: Nib) -> Self? {
+    // swiftformat:disable indent
     guard let view = UINib(nibName: nib.rawValue, bundle: .framework)
       .instantiate(withOwner: self, options: nil)
       .first as? Self else {
         assertionFailure("Nib not found")
         return nil
     }
+    // swiftformat:enable indent
 
     return view
   }

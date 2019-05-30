@@ -2,7 +2,7 @@ import Library
 import Prelude
 
 final class SettingsHeaderView: UITableViewHeaderFooterView {
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   func configure(title: String) {
     _ = self
@@ -10,14 +10,14 @@ final class SettingsHeaderView: UITableViewHeaderFooterView {
       |> \.accessibilityTraits .~ .header
       |> \.isAccessibilityElement .~ true
 
-    _ = titleLabel
+    _ = self.titleLabel
       |> \.text .~ title
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = titleLabel
+    _ = self.titleLabel
       |> settingsSectionLabelStyle
   }
 }

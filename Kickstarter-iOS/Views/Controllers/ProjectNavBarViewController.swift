@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-public protocol ProjectNavBarViewControllerDelegate: class {
+public protocol ProjectNavBarViewControllerDelegate: AnyObject {
   func projectNavBarControllerDidTapTitle(_ controller: ProjectNavBarViewController)
 }
 
@@ -15,12 +15,12 @@ public final class ProjectNavBarViewController: UIViewController {
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
 
-  @IBOutlet fileprivate weak var backgroundView: UIView!
-  @IBOutlet fileprivate weak var closeButton: UIButton!
-  @IBOutlet fileprivate weak var navContainerView: UIView!
-  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
-  @IBOutlet fileprivate weak var shareButton: UIButton!
-  @IBOutlet fileprivate weak var saveButton: UIButton!
+  @IBOutlet fileprivate var backgroundView: UIView!
+  @IBOutlet fileprivate var closeButton: UIButton!
+  @IBOutlet fileprivate var navContainerView: UIView!
+  @IBOutlet fileprivate var projectNameLabel: UILabel!
+  @IBOutlet fileprivate var shareButton: UIButton!
+  @IBOutlet fileprivate var saveButton: UIButton!
 
   internal func configureWith(project: Project, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, refTag: refTag)
@@ -47,25 +47,25 @@ public final class ProjectNavBarViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-    self.shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
-    self.saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
-    self.saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchDown)
+    self.closeButton.addTarget(self, action: #selector(self.closeButtonTapped), for: .touchUpInside)
+    self.shareButton.addTarget(self, action: #selector(self.shareButtonTapped), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(self.saveButtonTapped(_:)), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(self.saveButtonPressed), for: .touchDown)
     self.projectNameLabel.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(projectNameTapped))
+      UITapGestureRecognizer(target: self, action: #selector(self.projectNameTapped))
     )
 
     self.sessionStartedObserver = NotificationCenter
       .default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.watchProjectViewModel.inputs.userSessionStarted()
-    }
+      }
 
     self.sessionEndedObserver = NotificationCenter
       .default
       .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.watchProjectViewModel.inputs.userSessionEnded()
-    }
+      }
 
     self.viewModel.inputs.viewDidLoad()
     self.watchProjectViewModel.inputs.viewDidLoad()
@@ -124,31 +124,31 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.saveButton.generateImpactFeedback(style: .light)
-    }
+      }
 
     self.watchProjectViewModel.outputs.generateSuccessFeedback
       .observeForUI()
       .observeValues { [weak self] in
         self?.saveButton.generateSuccessFeedback()
-    }
+      }
 
     self.watchProjectViewModel.outputs.generateSelectionFeedback
       .observeForUI()
       .observeValues { [weak self] in
         self?.saveButton.generateSelectionFeedback()
-    }
+      }
 
     self.watchProjectViewModel.outputs.showProjectSavedAlert
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showProjectStarredPrompt()
-    }
+      }
 
     self.watchProjectViewModel.outputs.goToLoginTout
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToLoginTout()
-    }
+      }
 
     self.viewModel.outputs.navBarShadowVisible
       .observeForUI()
@@ -156,7 +156,7 @@ public final class ProjectNavBarViewController: UIViewController {
         UIView.animate(withDuration: 0.0) {
           self?.backgroundView.layer.shadowOpacity = didScrollToTop ? 0 : 1
         }
-    }
+      }
 
     self.viewModel.outputs.titleHiddenAndAnimate
       .observeForUI()
@@ -164,7 +164,7 @@ public final class ProjectNavBarViewController: UIViewController {
         UIView.animate(withDuration: animate ? 0.2 : 0) {
           self?.projectNameLabel.alpha = hidden ? 0 : 1
         }
-    }
+      }
 
     self.viewModel.outputs.backgroundOpaqueAndAnimate
       .observeForUI()
@@ -172,21 +172,23 @@ public final class ProjectNavBarViewController: UIViewController {
         UIView.animate(withDuration: animate ? 0.2 : 0) {
           self?.navContainerView.backgroundColor = opaque ? .white : .clear
         }
-    }
+      }
 
     self.viewModel.outputs.dismissViewController
       .observeForUI()
       .observeValues { [weak self] in
         self?.dismiss(animated: true, completion: nil)
-    }
+      }
 
     self.watchProjectViewModel.outputs.postNotificationWithProject
       .observeForUI()
       .observeValues { project in
-        NotificationCenter.default.post(name: Notification.Name.ksr_projectSaved,
-                                        object: nil,
-                                        userInfo: ["project": project])
-    }
+        NotificationCenter.default.post(
+          name: Notification.Name.ksr_projectSaved,
+          object: nil,
+          userInfo: ["project": project]
+        )
+      }
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
@@ -197,7 +199,8 @@ public final class ProjectNavBarViewController: UIViewController {
     let alert = UIAlertController(
       title: Strings.Project_saved(),
       message: Strings.Well_remind_you_forty_eight_hours_before_this_project_ends(),
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
     alert.addAction(
       UIAlertAction(
         title: Strings.Got_it(),
@@ -218,14 +221,15 @@ public final class ProjectNavBarViewController: UIViewController {
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
-
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
 
       self?.shareViewModel.inputs.shareActivityCompletion(
-        with: .init(activityType: activityType,
-                    completed: completed,
-                    returnedItems: returnedItems,
-                    activityError: error)
+        with: .init(
+          activityType: activityType,
+          completed: completed,
+          returnedItems: returnedItems,
+          activityError: error
+        )
       )
     }
 

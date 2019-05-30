@@ -1,10 +1,10 @@
 import Argo
-import Runes
 import FBSDKCoreKit
 import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
+import Runes
 
 /**
  A global stack that captures the current state of global objects that the app wants access to.
@@ -25,10 +25,10 @@ public struct AppEnvironment: AppEnvironmentType {
    - parameter envelope: An access token envelope with the api access token and user.
    */
   public static func login(_ envelope: AccessTokenEnvelope) {
-    replaceCurrentEnvironment(
-      apiService: current.apiService.login(OauthToken(token: envelope.accessToken)),
+    self.replaceCurrentEnvironment(
+      apiService: self.current.apiService.login(OauthToken(token: envelope.accessToken)),
       currentUser: envelope.user,
-      koala: current.koala |> Koala.lens.loggedInUser .~ envelope.user
+      koala: self.current.koala |> Koala.lens.loggedInUser .~ envelope.user
     )
   }
 
@@ -39,14 +39,13 @@ public struct AppEnvironment: AppEnvironmentType {
    - parameter user: A user model.
    */
   public static func updateCurrentUser(_ user: User) {
-    replaceCurrentEnvironment(
+    self.replaceCurrentEnvironment(
       currentUser: user,
-      koala: current.koala |> Koala.lens.loggedInUser .~ user
+      koala: self.current.koala |> Koala.lens.loggedInUser .~ user
     )
   }
 
   public static func updateServerConfig(_ config: ServerConfigType) {
-
     let service = Service(serverConfig: config)
 
     replaceCurrentEnvironment(
@@ -55,7 +54,7 @@ public struct AppEnvironment: AppEnvironmentType {
   }
 
   public static func updateConfig(_ config: Config) {
-    replaceCurrentEnvironment(
+    self.replaceCurrentEnvironment(
       config: config,
       countryCode: config.countryCode,
       koala: AppEnvironment.current.koala |> Koala.lens.config .~ config
@@ -63,7 +62,7 @@ public struct AppEnvironment: AppEnvironmentType {
   }
 
   public static func updateLanguage(_ language: Language) {
-    replaceCurrentEnvironment(language: language)
+    self.replaceCurrentEnvironment(language: language)
   }
 
   // Invoke when you want to end the user's session.
@@ -71,11 +70,11 @@ public struct AppEnvironment: AppEnvironmentType {
     let storage = AppEnvironment.current.cookieStorage
     storage.cookies?.forEach(storage.deleteCookie)
 
-    replaceCurrentEnvironment(
+    self.replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),
       cache: type(of: AppEnvironment.current.cache).init(),
       currentUser: nil,
-      koala: current.koala |> Koala.lens.loggedInUser .~ nil
+      koala: self.current.koala |> Koala.lens.loggedInUser .~ nil
     )
   }
 
@@ -86,25 +85,27 @@ public struct AppEnvironment: AppEnvironmentType {
 
   // Push a new environment onto the stack.
   public static func pushEnvironment(_ env: Environment) {
-    saveEnvironment(environment: env, ubiquitousStore: env.ubiquitousStore, userDefaults: env.userDefaults)
-    stack.append(env)
+    self.saveEnvironment(environment: env, ubiquitousStore: env.ubiquitousStore, userDefaults: env.userDefaults)
+    self.stack.append(env)
   }
 
   // Pop an environment off the stack.
   @discardableResult
   public static func popEnvironment() -> Environment? {
-    let last = stack.popLast()
-    let next = current ?? Environment()
-    saveEnvironment(environment: next,
-                    ubiquitousStore: next.ubiquitousStore,
-                    userDefaults: next.userDefaults)
+    let last = self.stack.popLast()
+    let next = self.current ?? Environment()
+    self.saveEnvironment(
+      environment: next,
+      ubiquitousStore: next.ubiquitousStore,
+      userDefaults: next.userDefaults
+    )
     return last
   }
 
   // Replace the current environment with a new environment.
   public static func replaceCurrentEnvironment(_ env: Environment) {
-    pushEnvironment(env)
-    stack.remove(at: stack.count - 2)
+    self.pushEnvironment(env)
+    self.stack.remove(at: self.stack.count - 2)
   }
 
   // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
@@ -134,9 +135,9 @@ public struct AppEnvironment: AppEnvironmentType {
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
-    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
-
-    pushEnvironment(
+    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults
+  ) {
+    self.pushEnvironment(
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
@@ -196,9 +197,9 @@ public struct AppEnvironment: AppEnvironmentType {
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
-    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults) {
-
-    replaceCurrentEnvironment(
+    userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults
+  ) {
+    self.replaceCurrentEnvironment(
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
@@ -231,12 +232,13 @@ public struct AppEnvironment: AppEnvironmentType {
   }
 
   // Returns the last saved environment from user defaults.
-  public static func fromStorage(ubiquitousStore: KeyValueStoreType,
-                                 userDefaults: KeyValueStoreType) -> Environment {
+  public static func fromStorage(
+    ubiquitousStore _: KeyValueStoreType,
+    userDefaults: KeyValueStoreType
+  ) -> Environment {
+    let data = userDefaults.dictionary(forKey: self.environmentStorageKey) ?? [:]
 
-    let data = userDefaults.dictionary(forKey: environmentStorageKey) ?? [:]
-
-    var service = current.apiService
+    var service = self.current.apiService
     var currentUser: User?
     let config: Config? = data["config"].flatMap(decode)
 
@@ -261,8 +263,8 @@ public struct AppEnvironment: AppEnvironmentType {
           graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl
         ),
         oauthToken: service.oauthToken,
-        language: current.language.rawValue,
-        currency: current.locale.currencyCode ?? "USD"
+        language: self.current.language.rawValue,
+        currency: self.current.locale.currencyCode ?? "USD"
       )
     }
 
@@ -271,7 +273,6 @@ public struct AppEnvironment: AppEnvironmentType {
       let apiBaseUrl = URL(string: apiBaseUrlString),
       let webBaseUrlString = data["apiService.serverConfig.webBaseUrl"] as? String,
       let webBaseUrl = URL(string: webBaseUrlString) {
-
       service = Service(
         serverConfig: ServerConfig(
           apiBaseUrl: apiBaseUrl,
@@ -281,15 +282,14 @@ public struct AppEnvironment: AppEnvironmentType {
           graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl
         ),
         oauthToken: service.oauthToken,
-        language: current.language.rawValue,
-        currency: current.locale.currencyCode ?? "USD"
+        language: self.current.language.rawValue,
+        currency: self.current.locale.currencyCode ?? "USD"
       )
     }
 
     // Try restoring the basic auth data for the api service
     if let username = data["apiService.serverConfig.basicHTTPAuth.username"] as? String,
       let password = data["apiService.serverConfig.basicHTTPAuth.password"] as? String {
-
       service = Service(
         serverConfig: ServerConfig(
           apiBaseUrl: service.serverConfig.apiBaseUrl,
@@ -299,8 +299,8 @@ public struct AppEnvironment: AppEnvironmentType {
           graphQLEndpointUrl: service.serverConfig.graphQLEndpointUrl
         ),
         oauthToken: service.oauthToken,
-        language: current.language.rawValue,
-        currency: current.locale.currencyCode ?? "USD"
+        language: self.current.language.rawValue,
+        currency: self.current.locale.currencyCode ?? "USD"
       )
     }
 
@@ -312,8 +312,8 @@ public struct AppEnvironment: AppEnvironmentType {
       service = Service(
         serverConfig: serverConfig,
         oauthToken: service.oauthToken,
-        language: current.language.rawValue,
-        currency: current.locale.currencyCode ?? "USD"
+        language: self.current.language.rawValue,
+        currency: self.current.locale.currencyCode ?? "USD"
       )
     }
 
@@ -326,15 +326,16 @@ public struct AppEnvironment: AppEnvironmentType {
       apiService: service,
       config: config,
       currentUser: currentUser,
-      koala: current.koala |> Koala.lens.loggedInUser .~ currentUser
+      koala: self.current.koala |> Koala.lens.loggedInUser .~ currentUser
     )
   }
 
   // Saves some key data for the current environment
-  internal static func saveEnvironment(environment env: Environment = AppEnvironment.current,
-                                       ubiquitousStore: KeyValueStoreType,
-                                       userDefaults: KeyValueStoreType) {
-
+  internal static func saveEnvironment(
+    environment env: Environment = AppEnvironment.current,
+    ubiquitousStore _: KeyValueStoreType,
+    userDefaults: KeyValueStoreType
+  ) {
     var data: [String: Any] = [:]
 
     data["apiService.oauthToken.token"] = env.apiService.oauthToken?.token
@@ -351,7 +352,7 @@ public struct AppEnvironment: AppEnvironmentType {
     data["config"] = env.config?.encode()
     data["currentUser"] = env.currentUser?.encode()
 
-    userDefaults.set(data, forKey: environmentStorageKey)
+    userDefaults.set(data, forKey: self.environmentStorageKey)
   }
 }
 

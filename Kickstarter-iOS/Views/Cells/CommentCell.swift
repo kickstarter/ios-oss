@@ -1,24 +1,24 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import UIKit
 
 internal final class CommentCell: UITableViewCell, ValueCell {
   fileprivate let viewModel = CommentCellViewModel()
 
-  @IBOutlet fileprivate weak var authorAndTimestampStackView: UIStackView!
-  @IBOutlet fileprivate weak var authorStackView: UIStackView!
-  @IBOutlet fileprivate weak var avatarImageView: UIImageView!
-  @IBOutlet fileprivate weak var bodyTextView: UITextView!
-  @IBOutlet fileprivate weak var commentStackView: UIStackView!
-  @IBOutlet fileprivate weak var creatorLabel: UILabel!
-  @IBOutlet fileprivate weak var creatorView: UIView!
-  @IBOutlet fileprivate weak var nameLabel: UILabel!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
-  @IBOutlet fileprivate weak var separatorView: UIView!
-  @IBOutlet fileprivate weak var timestampLabel: UILabel!
-  @IBOutlet fileprivate weak var youLabel: UILabel!
-  @IBOutlet fileprivate weak var youView: UIView!
+  @IBOutlet fileprivate var authorAndTimestampStackView: UIStackView!
+  @IBOutlet fileprivate var authorStackView: UIStackView!
+  @IBOutlet fileprivate var avatarImageView: UIImageView!
+  @IBOutlet fileprivate var bodyTextView: UITextView!
+  @IBOutlet fileprivate var commentStackView: UIStackView!
+  @IBOutlet fileprivate var creatorLabel: UILabel!
+  @IBOutlet fileprivate var creatorView: UIView!
+  @IBOutlet fileprivate var nameLabel: UILabel!
+  @IBOutlet fileprivate var rootStackView: UIStackView!
+  @IBOutlet fileprivate var separatorView: UIView!
+  @IBOutlet fileprivate var timestampLabel: UILabel!
+  @IBOutlet fileprivate var youLabel: UILabel!
+  @IBOutlet fileprivate var youView: UIView!
 
   internal override func bindStyles() {
     super.bindStyles()
@@ -92,23 +92,23 @@ internal final class CommentCell: UITableViewCell, ValueCell {
       .on(event: { [weak self] _ in
         self?.avatarImageView.af_cancelImageRequest()
         self?.avatarImageView.image = nil
-        })
+      })
       .skipNil()
       .observeValues { [weak self] url in
         self?.avatarImageView.af_setImage(withURL: url)
-    }
+      }
 
     self.viewModel.outputs.bodyColor
       .observeForUI()
       .observeValues { [weak self] color in
         self?.bodyTextView.textColor = color
-    }
+      }
 
     self.viewModel.outputs.bodyFont
       .observeForUI()
       .observeValues { [weak self] font in
         self?.bodyTextView.font = font
-    }
+      }
 
     self.bodyTextView.rac.text = self.viewModel.outputs.body
     self.creatorView.rac.hidden = self.viewModel.outputs.creatorHidden

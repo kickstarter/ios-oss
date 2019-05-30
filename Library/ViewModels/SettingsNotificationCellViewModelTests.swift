@@ -1,14 +1,14 @@
-import XCTest
+@testable import KsApi
 import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
-@testable import KsApi
+import XCTest
 
 final class SettingsNotificationCellViewModelTests: TestCase {
   private let vm = SettingsNotificationCellViewModel()
 
   private let enableButtonAnimation = TestObserver<Bool, Never>()
-  private let emailNotificationsButtonAccessibilityLabel =  TestObserver<String, Never>()
+  private let emailNotificationsButtonAccessibilityLabel = TestObserver<String, Never>()
   private let emailNotificationsEnabled = TestObserver<Bool, Never>()
   private let emailNotificationButtonIsHidden = TestObserver<Bool, Never>()
   private let pushNotificationButtonIsHidden = TestObserver<Bool, Never>()
@@ -22,18 +22,18 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.enableButtonAnimation.observe(enableButtonAnimation.observer)
+    self.vm.outputs.enableButtonAnimation.observe(self.enableButtonAnimation.observer)
     self.vm.outputs.emailNotificationsButtonAccessibilityLabel
-      .observe(emailNotificationsButtonAccessibilityLabel.observer)
-    self.vm.outputs.emailNotificationsEnabled.observe(emailNotificationsEnabled.observer)
-    self.vm.outputs.emailNotificationButtonIsHidden.observe(emailNotificationButtonIsHidden.observer)
+      .observe(self.emailNotificationsButtonAccessibilityLabel.observer)
+    self.vm.outputs.emailNotificationsEnabled.observe(self.emailNotificationsEnabled.observer)
+    self.vm.outputs.emailNotificationButtonIsHidden.observe(self.emailNotificationButtonIsHidden.observer)
     self.vm.outputs.pushNotificationsButtonAccessibilityLabel
-      .observe(pushNotificationsButtonAccessibilityLabel.observer)
-    self.vm.outputs.pushNotificationButtonIsHidden.observe(pushNotificationButtonIsHidden.observer)
-    self.vm.outputs.projectCountText.observe(projectCountText.observer)
-    self.vm.pushNotificationsEnabled.observe(pushNotificationsEnabled.observer)
-    self.vm.unableToSaveError.observe(unableToSaveError.observer)
-    self.vm.updateCurrentUser.observe(updateCurrentUser.observer)
+      .observe(self.pushNotificationsButtonAccessibilityLabel.observer)
+    self.vm.outputs.pushNotificationButtonIsHidden.observe(self.pushNotificationButtonIsHidden.observer)
+    self.vm.outputs.projectCountText.observe(self.projectCountText.observer)
+    self.vm.pushNotificationsEnabled.observe(self.pushNotificationsEnabled.observer)
+    self.vm.unableToSaveError.observe(self.unableToSaveError.observer)
+    self.vm.updateCurrentUser.observe(self.updateCurrentUser.observer)
   }
 
   func testEnableButtonAnimation_turnedOn() {
@@ -55,8 +55,10 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testEmailNotificationButtonAccessibilityLabel_disabled() {
-    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
-                                                                             notificationType: .email)
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(
+      cellType: .projectUpdates,
+      notificationType: .email
+    )
 
     guard let notification = notificationType else {
       XCTFail("Notification cannot be nil")
@@ -76,8 +78,10 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testEmailNotificationButtonAccessibilityLabel_enabled() {
-    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
-                                                                             notificationType: .email)
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(
+      cellType: .projectUpdates,
+      notificationType: .email
+    )
 
     guard let notification = notificationType else {
       XCTFail("Notification cannot be nil")
@@ -97,8 +101,10 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testPushNotificationButtonAccessibilityLabel_disabled() {
-    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
-                                                                             notificationType: .push)
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(
+      cellType: .projectUpdates,
+      notificationType: .push
+    )
 
     guard let notification = notificationType else {
       XCTFail("Notification cannot be nil")
@@ -118,8 +124,10 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testPushNotificationButtonAccessibilityLabel_enabled() {
-    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
-                                                                             notificationType: .push)
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(
+      cellType: .projectUpdates,
+      notificationType: .push
+    )
 
     guard let notification = notificationType else {
       XCTFail("Notification cannot be nil")
@@ -139,8 +147,10 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testEmailNotificationsEnabled() {
-    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
-                                                                         notificationType: .email)
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(
+      cellType: .projectUpdates,
+      notificationType: .email
+    )
 
     guard let notification = notificationType else {
       XCTFail("Notification cannot be nil")
@@ -158,8 +168,10 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testEmailNotificationsDisabled() {
-    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
-                                                                             notificationType: .email)
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(
+      cellType: .projectUpdates,
+      notificationType: .email
+    )
 
     guard let notification = notificationType else {
       XCTFail("Notification cannot be nil")
@@ -177,8 +189,10 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testPushNotificationsEnabled() {
-    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
-                                                                             notificationType: .push)
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(
+      cellType: .projectUpdates,
+      notificationType: .push
+    )
 
     guard let notification = notificationType else {
       XCTFail("Notification cannot be nil")
@@ -196,8 +210,10 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testPushNotificationsDisabled() {
-    let notificationType = SettingsNotificationCellViewModel.notificationFor(cellType: .projectUpdates,
-                                                                             notificationType: .push)
+    let notificationType = SettingsNotificationCellViewModel.notificationFor(
+      cellType: .projectUpdates,
+      notificationType: .push
+    )
 
     guard let notification = notificationType else {
       XCTFail("Notification cannot be nil")
@@ -294,11 +310,13 @@ final class SettingsNotificationCellViewModelTests: TestCase {
   }
 
   func testUnabletoSaveError() {
-    let error = ErrorEnvelope(errorMessages: ["Something bad happened"],
-                              ksrCode: nil,
-                              httpCode: 500,
-                              exception: nil,
-                              facebookUser: nil)
+    let error = ErrorEnvelope(
+      errorMessages: ["Something bad happened"],
+      ksrCode: nil,
+      httpCode: 500,
+      exception: nil,
+      facebookUser: nil
+    )
     let mockService = MockService(updateUserSelfError: error)
 
     let user = User.template |> UserAttribute.notification(.updates).keyPath .~ true

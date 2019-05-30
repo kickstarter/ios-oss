@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol SettingsNotificationsViewModelInputs {
   func didSelectRow(cellType: SettingsNotificationCellType)
@@ -29,22 +29,22 @@ public protocol SettingsNotificationsViewModelType {
 }
 
 public final class SettingsNotificationsViewModel: SettingsNotificationsViewModelType,
-SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
+  SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   public init() {
-    let initialUser = viewDidLoadProperty.signal
+    let initialUser = self.viewDidLoadProperty.signal
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()
-        .wrapInOptional()
-        .prefix(value: AppEnvironment.current.currentUser)
-        .demoteErrors()
-    }.skipNil()
+          .wrapInOptional()
+          .prefix(value: AppEnvironment.current.currentUser)
+          .demoteErrors()
+      }.skipNil()
 
-    let userAttributeChanged = emailFrequencyProperty.signal
+    let userAttributeChanged = self.emailFrequencyProperty.signal
       .map { frequency -> (UserAttribute, Bool) in
         let digestValue = frequency == .dailySummary ? true : false
 
         return (UserAttribute.notification(.creatorDigest), digestValue)
-    }
+      }
 
     let updatedUser = initialUser.signal
       .switchMap { user in
@@ -52,29 +52,30 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
           let (attribute, on) = attributeAndOn
           return user |> attribute.keyPath .~ on
         }
-    }
+      }
 
     let updateEvent = updatedUser
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     let updateEmailFrequencyError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
-    }
+      }
 
     let emailFrequencyUpdated = updateEvent.values()
 
     self.unableToSaveError = Signal.merge(
-      updateUserErrorProperty.signal.skipNil(),
-      updateEmailFrequencyError.signal)
+      self.updateUserErrorProperty.signal.skipNil(),
+      updateEmailFrequencyError.signal
+    )
 
     self.updateCurrentUser = Signal.merge(
       initialUser,
-      updatedUserProperty.signal.skipNil(),
+      self.updatedUserProperty.signal.skipNil(),
       emailFrequencyUpdated
     )
 
@@ -87,8 +88,8 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     self.pickerViewIsHidden = Signal.merge(
       emailFrequencyCellSelected.signal.mapConst(false),
-      emailFrequencyProperty.signal.mapConst(true),
-      dismissPickerTapProperty.signal.mapConst(true),
+      self.emailFrequencyProperty.signal.mapConst(true),
+      self.dismissPickerTapProperty.signal.mapConst(true),
       projectActivityEmailFrequencyDisabled.signal.mapConst(true)
     ).skipRepeats()
 
@@ -96,8 +97,8 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       .map { $0 |> UserAttribute.notification(.creatorDigest).keyPath.view }
       .skipNil()
       .map { creatorDigest -> EmailFrequency in
-        return creatorDigest ? EmailFrequency.dailySummary : EmailFrequency.twiceADaySummary
-    }
+        creatorDigest ? EmailFrequency.dailySummary : EmailFrequency.twiceADaySummary
+      }
 
     let manageProjectNotificationsSelected = self.selectedCellType.signal
       .skipNil()

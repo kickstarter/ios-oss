@@ -1,10 +1,9 @@
 import Argo
 import Curry
-import Runes
 import Prelude
+import Runes
 
 public struct DiscoveryParams {
-
   public var backed: Bool?
   public var category: Category?
   public var collaborated: Bool?
@@ -36,11 +35,13 @@ public struct DiscoveryParams {
     case popular = "popularity"
   }
 
-  public static let defaults = DiscoveryParams(backed: nil, category: nil, collaborated: nil,
-                                               created: nil, hasVideo: nil, includePOTD: nil,
-                                               page: nil, perPage: nil, query: nil, recommended: nil,
-                                               seed: nil, similarTo: nil, social: nil, sort: nil,
-                                               staffPicks: nil, starred: nil, state: nil)
+  public static let defaults = DiscoveryParams(
+    backed: nil, category: nil, collaborated: nil,
+    created: nil, hasVideo: nil, includePOTD: nil,
+    page: nil, perPage: nil, query: nil, recommended: nil,
+    seed: nil, similarTo: nil, social: nil, sort: nil,
+    staffPicks: nil, starred: nil, state: nil
+  )
 
   public var queryParams: [String: String] {
     var params: [String: String] = [:]
@@ -139,14 +140,15 @@ private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
 }
 
 private func decodeToGraphCategory(_ json: JSON?) -> Decoded<Category> {
-
   guard let jsonObj = json else {
     return .success(Category(id: "-1", name: "Unknown Category"))
   }
   switch jsonObj {
-  case .object(let dic):
-    let category = Category(id: categoryInfo(dic)?.0 ?? "",
-                                                   name: categoryInfo(dic)?.1 ?? "")
+  case let .object(dic):
+    let category = Category(
+      id: categoryInfo(dic)?.0 ?? "",
+      name: categoryInfo(dic)?.1 ?? ""
+    )
     return .success(category)
   default:
     return .failure(DecodeError.custom("JSON should be object type"))
@@ -158,7 +160,7 @@ private func categoryInfo(_ json: [String: JSON]) -> (String, String)? {
     return nil
   }
   switch (id, name) {
-  case (.number(let id), .string(let name)):
+  case let (.number(id), .string(name)):
     return ("\(id)", name)
   default:
     return nil

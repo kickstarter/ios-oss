@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public enum ProfileProjectsType {
   case backed
@@ -10,8 +10,8 @@ public enum ProfileProjectsType {
 
   var trackingString: String {
     switch self {
-    case .backed:  return "backed"
-    case .saved:   return "saved"
+    case .backed: return "backed"
+    case .saved: return "saved"
     }
   }
 }
@@ -66,7 +66,6 @@ public protocol BackerDashboardProjectsViewModelType {
 
 public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsViewModelType,
   BackerDashboardProjectsViewModelInputs, BackerDashboardProjectsViewModelOutputs {
-
   public init() {
     let projectsTypeAndSort = self.configureWithProjectsTypeAndSortProperty.signal.skipNil()
     let projectsType = projectsTypeAndSort.map(first)
@@ -74,18 +73,20 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     let userUpdatedProjectsCount = Signal.merge(
       self.viewWillAppearProperty.signal.ignoreValues(),
       self.currentUserUpdatedProperty.signal
+    )
+    .map { _ -> (Int, Int) in
+      (
+        AppEnvironment.current.currentUser?.stats.backedProjectsCount ?? 0,
+        AppEnvironment.current.currentUser?.stats.starredProjectsCount ?? 0
       )
-      .map { _ -> (Int, Int) in
-        (AppEnvironment.current.currentUser?.stats.backedProjectsCount ?? 0,
-         AppEnvironment.current.currentUser?.stats.starredProjectsCount ?? 0)
-      }
-      .skipRepeats { $0 == $1 }
+    }
+    .skipRepeats { $0 == $1 }
 
     let requestFirstPageWith = projectsTypeAndSort
       .takeWhen(Signal.merge(
         userUpdatedProjectsCount.ignoreValues(),
         self.refreshProperty.signal
-        )
+      )
       )
       .map { (pType, sort) -> DiscoveryParams in
         switch pType {
@@ -105,11 +106,11 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     let isCloseToBottom = Signal.merge(
       self.willDisplayRowProperty.signal.skipNil(),
       self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
-      )
-      .map { row, total in total > 5 && row >= total - 3 }
-      .skipRepeats()
-      .filter(isTrue)
-      .ignoreValues()
+    )
+    .map { row, total in total > 5 && row >= total - 3 }
+    .skipRepeats()
+    .filter(isTrue)
+    .ignoreValues()
 
     let isLoading: Signal<Bool, Never>
     (self.projects, isLoading, _) = paginate(
@@ -120,14 +121,15 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
-      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
+      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) }
+    )
 
     self.isRefreshing = isLoading
 
     self.emptyStateIsVisible = Signal.combineLatest(projectsType, self.projects)
       .map { type, projects in
         (projects.isEmpty, type)
-    }
+      }
 
     self.goToProject = Signal.combineLatest(projectsType, self.projects)
       .takePairWhen(self.projectTappedProperty.signal.skipNil())
@@ -135,7 +137,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       .map { projectsType, projects, project in
         let ref = (projectsType == .backed) ? RefTag.profileBacked : RefTag.profileSaved
         return (project, projects, ref)
-    }
+      }
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
@@ -143,7 +145,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       .takeWhen(self.viewWillAppearProperty.signal.filter(isFalse))
       .observeValues { pType in
         AppEnvironment.current.koala.trackViewedProfileTab(projectsType: pType)
-    }
+      }
   }
 
   private let configureWithProjectsTypeAndSortProperty =

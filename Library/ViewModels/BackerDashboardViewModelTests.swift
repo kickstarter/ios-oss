@@ -1,9 +1,9 @@
-import Prelude
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class BackerDashboardViewModelTests: TestCase {
   private let vm: BackerDashboardViewModelType = BackerDashboardViewModel()
@@ -189,8 +189,10 @@ internal final class BackerDashboardViewModelTests: TestCase {
 
     self.vm.inputs.viewWillAppear(true)
 
-    XCTAssertEqual(["Profile View My", "Viewed Profile"], self.trackingClient.events,
-                   "Tracking does not emit")
+    XCTAssertEqual(
+      ["Profile View My", "Viewed Profile"], self.trackingClient.events,
+      "Tracking does not emit"
+    )
   }
 
   func testHeaderPanning() {

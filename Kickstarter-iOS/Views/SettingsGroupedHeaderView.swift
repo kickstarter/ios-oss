@@ -21,7 +21,7 @@ final class SettingsGroupedHeaderView: UITableViewHeaderFooterView {
     self.contentView.addSubviewConstrainedToMargins(self.label)
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 

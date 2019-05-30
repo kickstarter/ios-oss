@@ -1,10 +1,10 @@
+@testable import Kickstarter_Framework
 @testable import KsApi
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import UIKit
-import PlaygroundSupport
-@testable import Kickstarter_Framework
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
@@ -19,7 +19,7 @@ let paramsWithSubcategory = .defaults
   |> DiscoveryParams.lens.category .~ (
     .documentary
       |> Category.lens.name .~ "Documentary"
-)
+  )
 
 // Instantiate users for logged in and out states.
 let brando = User.brando
@@ -88,4 +88,3 @@ let frame = parent.view.frame
 
 PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
-

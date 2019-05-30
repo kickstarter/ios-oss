@@ -1,11 +1,10 @@
+@testable import Kickstarter_Framework
+@testable import KsApi
 import Library
 import Prelude
 import XCTest
-@testable import Kickstarter_Framework
-@testable import KsApi
 
 internal final class ProjectNavBarViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     UIView.setAnimationsEnabled(false)
@@ -19,7 +18,6 @@ internal final class ProjectNavBarViewControllerTests: TestCase {
   }
 
   func testCategory() {
-
     let navBar = Storyboard.ProjectPamphlet.instantiate(ProjectNavBarViewController.self)
     navBar.configureWith(
       project: Project.lens.category.set(Category.art, .template), refTag: nil

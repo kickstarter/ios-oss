@@ -6,40 +6,40 @@ import UIKit
 @IBDesignable internal final class DiscoveryProjectCategoryView: UIView, NibLoading {
   private let viewModel: DiscoveryProjectCategoryViewModelType = DiscoveryProjectCategoryViewModel()
 
-  @IBOutlet private weak var blurView: UIImageView!
-  @IBOutlet private weak var categoryStackView: UIStackView!
-  @IBOutlet private weak var categoryViewImageView: UIImageView!
-  @IBOutlet private weak var categoryViewLabel: UILabel!
+  @IBOutlet private var blurView: UIImageView!
+  @IBOutlet private var categoryStackView: UIStackView!
+  @IBOutlet private var categoryViewImageView: UIImageView!
+  @IBOutlet private var categoryViewLabel: UILabel!
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
 
   internal func configureWith(name: String, imageNameString: String) {
-    viewModel.inputs.configureWith(name: name, imageNameString: imageNameString)
+    self.viewModel.inputs.configureWith(name: name, imageNameString: imageNameString)
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = blurView
+    _ = self.blurView
       |> UIImageView.lens.image .~ UIImage(named: "white--gradient--layer")
 
-    _ = categoryViewLabel
+    _ = self.categoryViewLabel
       |> postcardCategoryLabelStyle
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    categoryViewLabel.rac.text = viewModel.outputs.categoryNameText
+    self.categoryViewLabel.rac.text = self.viewModel.outputs.categoryNameText
 
-    viewModel.outputs.categoryImage.signal
+    self.viewModel.outputs.categoryImage.signal
       .observeForUI()
-      .observeValues { [weak self] (image) in
+      .observeValues { [weak self] image in
         guard let strongSelf = self else { return }
-      _ = strongSelf.categoryViewImageView
-        |> UIImageView.lens.image .~ image
-    }
+        _ = strongSelf.categoryViewImageView
+          |> UIImageView.lens.image .~ image
+      }
   }
 }

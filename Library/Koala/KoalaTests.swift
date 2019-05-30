@@ -1,11 +1,10 @@
-import XCTest
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class KoalaTests: TestCase {
-
   func testDefaultProperties() {
     let bundle = MockBundle()
     let client = MockTrackingClient()
@@ -14,8 +13,10 @@ final class KoalaTests: TestCase {
       |> Config.lens.locale .~ "en"
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
-    let koala = Koala(bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
-                      screen: screen)
+    let koala = Koala(
+      bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
+      screen: screen
+    )
 
     koala.trackAppOpen()
     XCTAssertEqual(["App Open", "Opened App"], client.events)
@@ -25,8 +26,10 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("Apple", properties?["manufacturer"] as? String)
 
     XCTAssertEqual(bundle.infoDictionary?["CFBundleVersion"] as? Int, properties?["app_version"] as? Int)
-    XCTAssertEqual(bundle.infoDictionary?["CFBundleShortVersionString"] as? String,
-                   properties?["app_release"] as? String)
+    XCTAssertEqual(
+      bundle.infoDictionary?["CFBundleShortVersionString"] as? String,
+      properties?["app_release"] as? String
+    )
     XCTAssertNotNil(properties?["model"])
     XCTAssertEqual(device.systemName, properties?["os"] as? String)
     XCTAssertEqual(device.systemVersion, properties?["os_version"] as? String)
@@ -148,12 +151,18 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("recommended", properties?["referrer_credit"] as? String)
 
     XCTAssertEqual(project.creator.id, properties?["creator_uid"] as? Int)
-    XCTAssertEqual(project.creator.stats.backedProjectsCount,
-                   properties?["creator_backed_projects_count"] as? Int)
-    XCTAssertEqual(project.creator.stats.createdProjectsCount,
-                   properties?["creator_created_projects_count"] as? Int)
-    XCTAssertEqual(project.creator.stats.starredProjectsCount,
-                   properties?["creator_starred_projects_count"] as? Int)
+    XCTAssertEqual(
+      project.creator.stats.backedProjectsCount,
+      properties?["creator_backed_projects_count"] as? Int
+    )
+    XCTAssertEqual(
+      project.creator.stats.createdProjectsCount,
+      properties?["creator_created_projects_count"] as? Int
+    )
+    XCTAssertEqual(
+      project.creator.stats.starredProjectsCount,
+      properties?["creator_starred_projects_count"] as? Int
+    )
   }
 
   func testProjectProperties_LoggedInUser() {
@@ -362,8 +371,10 @@ final class KoalaTests: TestCase {
     let config = Config.template
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
-    let koala = Koala(bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
-                      screen: screen)
+    let koala = Koala(
+      bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
+      screen: screen
+    )
 
     var callBackEvents = [String]()
     var callBackProperties: [String: Any]?

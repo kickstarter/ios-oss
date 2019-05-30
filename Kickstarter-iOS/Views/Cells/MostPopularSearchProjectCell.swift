@@ -8,19 +8,19 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: MostPopularSearchProjectCellViewModelType =
     MostPopularSearchProjectCellViewModel()
 
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
-  @IBOutlet fileprivate weak var metadataIconImageView: UIImageView!
-  @IBOutlet fileprivate weak var metadataLabel: UILabel!
-  @IBOutlet fileprivate weak var percentFundedLabel: UILabel!
-  @IBOutlet fileprivate weak var progressBarView: UIView!
-  @IBOutlet fileprivate weak var progressStaticView: UIView!
-  @IBOutlet fileprivate weak var projectImageView: UIImageView!
-  @IBOutlet fileprivate weak var projectInfoOverlayView: UIView!
-  @IBOutlet fileprivate weak var projectInfoStackView: UIStackView!
-  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
-  @IBOutlet fileprivate weak var separateView: UIView!
-  @IBOutlet fileprivate weak var statsStackView: UIStackView!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var metadataBackgroundView: UIView!
+  @IBOutlet fileprivate var metadataIconImageView: UIImageView!
+  @IBOutlet fileprivate var metadataLabel: UILabel!
+  @IBOutlet fileprivate var percentFundedLabel: UILabel!
+  @IBOutlet fileprivate var progressBarView: UIView!
+  @IBOutlet fileprivate var progressStaticView: UIView!
+  @IBOutlet fileprivate var projectImageView: UIImageView!
+  @IBOutlet fileprivate var projectInfoOverlayView: UIView!
+  @IBOutlet fileprivate var projectInfoStackView: UIStackView!
+  @IBOutlet fileprivate var projectNameLabel: UILabel!
+  @IBOutlet fileprivate var separateView: UIView!
+  @IBOutlet fileprivate var statsStackView: UIStackView!
 
   internal func configureWith(value: Project) {
     self.viewModel.inputs.configureWith(project: value)
@@ -36,7 +36,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
-    }
+      }
 
     _ = self.cardView
       |> cardStyle()
@@ -54,7 +54,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
         label.traitCollection.isRegularRegular
           ? .init(all: Styles.grid(6))
           : .init(all: Styles.grid(2))
-    }
+      }
 
     _ = self.metadataBackgroundView
       |> UIView.lens.layer.borderColor .~ UIColor.white.cgColor
@@ -110,6 +110,6 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
         let anchorX = progress == 0 ? 0 : 0.5 / progress
         element?.layer.anchorPoint = CGPoint(x: CGFloat(max(anchorX, 0.5)), y: 0.5)
         element?.transform = CGAffineTransform(scaleX: CGFloat(min(progress, 1.0)), y: 1.0)
-    }
+      }
   }
 }
