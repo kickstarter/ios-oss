@@ -5,7 +5,10 @@ import ReactiveSwift
 import Result
 import UIKit
 
+public let maxBadgeValue = 99
+
 typealias RootViewControllerIndex = Int
+typealias RootTabBarItemBadgeValueData = (String?, RootViewControllerIndex)
 
 internal enum RootViewControllerData: Equatable {
   case discovery
@@ -139,6 +142,9 @@ internal protocol RootViewModelOutputs {
   /// Emits an index that the tab bar should be switched to.
   var selectedIndex: Signal<RootViewControllerIndex, NoError> { get }
 
+  /// Emits the badge value to be set at a particular tab index
+  var setBadgeValueAtIndex: Signal<RootTabBarItemBadgeValueData, NoError> { get }
+
   /// Emits the array of view controllers that should be set on the tab bar.
   var setViewControllers: Signal<[RootViewControllerData], NoError> { get }
 
@@ -237,6 +243,15 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     )
     .map { idx, vcs, _ in clamp(0, vcs.count - 1)(idx) }
 
+    let activityViewControllerIndex = self.setViewControllers
+      .map { $0.firstIndex(where: { $0 == .activities }) }
+      .skipNil()
+      .map { $0 as RootViewControllerIndex }
+
+    self.setBadgeValueAtIndex = activityViewControllerIndex
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .map { index in (activitiesBadgeValue(), index) }
+
     let shouldSelectIndex = self.shouldSelectIndexProperty.signal
       .skipNil()
 
@@ -320,6 +335,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal let filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), NoError>
   internal let scrollToTop: Signal<RootViewControllerIndex, NoError>
   internal let selectedIndex: Signal<RootViewControllerIndex, NoError>
+  internal let setBadgeValueAtIndex: Signal<RootTabBarItemBadgeValueData, NoError>
   internal let setViewControllers: Signal<[RootViewControllerData], NoError>
   internal let switchDashboardProject: Signal<(Int, Param), NoError>
   internal let tabBarItemsData: Signal<TabBarItemsData, NoError>
@@ -375,4 +391,14 @@ extension TabBarItem: Equatable {
     default: return false
     }
   }
+}
+
+func activitiesBadgeValue() -> String? {
+  let count = min(AppEnvironment.current.application.applicationIconBadgeNumber, maxBadgeValue)
+
+  guard count > 0 else { return nil }
+
+  let plusSign = AppEnvironment.current.application.applicationIconBadgeNumber > maxBadgeValue ? "+" : ""
+
+  return "\(count)\(plusSign)"
 }
