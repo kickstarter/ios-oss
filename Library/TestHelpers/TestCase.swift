@@ -26,10 +26,7 @@ internal class TestCase: FBSnapshotTestCase {
   override func setUp() {
     super.setUp()
 
-    let preferredDeviceName = "iPhone 8"
-    if !UIDevice.current.name.contains(preferredDeviceName) {
-      fatalError("Please only test and record screenshots on \(preferredDeviceName)")
-    }
+    preferredSimulatorCheck()
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -73,5 +70,16 @@ internal class TestCase: FBSnapshotTestCase {
   override func tearDown() {
     super.tearDown()
     AppEnvironment.popEnvironment()
+  }
+}
+
+internal func preferredSimulatorCheck() {
+  guard
+    let identifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"],
+    ["iPhone10,1", "iPhone10,4"].contains(identifier),
+    AppEnvironment.current.isOSVersionAvailable(12)
+  else {
+    XCTFail("Please only test and record screenshots on an iPhone 8 simulator running iOS 12")
+    fatalError()
   }
 }
