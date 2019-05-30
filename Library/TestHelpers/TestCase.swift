@@ -79,7 +79,6 @@ internal func preferredSimulatorCheck() {
     ["iPhone10,1", "iPhone10,4"].contains(identifier),
     AppEnvironment.current.isOSVersionAvailable(12)
   else {
-    XCTFail("Please only test and record screenshots on an iPhone 8 simulator running iOS 12")
-    fatalError()
+    fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 12")
   }
 }
