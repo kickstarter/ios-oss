@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public struct ReferrersRowData {
   public let country: Project.Country
@@ -43,40 +42,40 @@ public protocol DashboardReferrersCellViewModelInputs {
 
 public protocol DashboardReferrersCellViewModelOutputs {
   /// Emits the average pledge text to be displayed.
-  var averagePledgeText: Signal<String, NoError> { get }
+  var averagePledgeText: Signal<String, Never> { get }
 
   /// Emits the custom percent text to be displayed.
-  var customPercentText: Signal<String, NoError> { get }
+  var customPercentText: Signal<String, Never> { get }
 
   /// Emits the pledged via custom text to be displayed.
-  var customPledgedText: Signal<String, NoError> { get }
+  var customPledgedText: Signal<String, Never> { get }
 
   /// Emits the external pledge percentage to be displayed in a chart.
-  var externalPercentage: Signal<Double, NoError> { get }
+  var externalPercentage: Signal<Double, Never> { get }
 
   /// Emits the percent pledged via external text to be displayed.
-  var externalPercentText: Signal<String, NoError> { get }
+  var externalPercentText: Signal<String, Never> { get }
 
   /// Emits the pledged via external text to be displayed.
-  var externalPledgedText: Signal<String, NoError> { get }
+  var externalPledgedText: Signal<String, Never> { get }
 
   /// Emits the internal pledge percentage to be displayed in a chart.
-  var internalPercentage: Signal<Double, NoError> { get }
+  var internalPercentage: Signal<Double, Never> { get }
 
   /// Emits the percent pledged via internal text to be displayed.
-  var internalPercentText: Signal<String, NoError> { get }
+  var internalPercentText: Signal<String, Never> { get }
 
   /// Emits the pledged via internal text to be displayed.
-  var internalPledgedText: Signal<String, NoError> { get }
+  var internalPledgedText: Signal<String, Never> { get }
 
   /// Emits when should notify the delegate that referrer rows have been added to the stack view.
-  var notifyDelegateAddedReferrerRows: Signal<Void, NoError> { get }
+  var notifyDelegateAddedReferrerRows: Signal<Void, Never> { get }
 
   /// Emits the referrers row data to be displayed in each referrers stack view row.
-  var referrersRowData: Signal<ReferrersRowData, NoError> { get }
+  var referrersRowData: Signal<ReferrersRowData, Never> { get }
 
   /// Emits a boolean to determine when the show more referrers button should be hidden.
-  var showMoreReferrersButtonHidden: Signal<Bool, NoError> { get }
+  var showMoreReferrersButtonHidden: Signal<Bool, Never> { get }
 }
 
 public protocol DashboardReferrersCellViewModelType {
@@ -232,18 +231,18 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
     self.sourceButtonTappedProperty.value = ()
   }
 
-  public let averagePledgeText: Signal<String, NoError>
-  public let customPercentText: Signal<String, NoError>
-  public let customPledgedText: Signal<String, NoError>
-  public let externalPercentage: Signal<Double, NoError>
-  public let externalPercentText: Signal<String, NoError>
-  public let externalPledgedText: Signal<String, NoError>
-  public let internalPercentage: Signal<Double, NoError>
-  public let internalPercentText: Signal<String, NoError>
-  public let internalPledgedText: Signal<String, NoError>
-  public let notifyDelegateAddedReferrerRows: Signal<Void, NoError>
-  public let referrersRowData: Signal<ReferrersRowData, NoError>
-  public let showMoreReferrersButtonHidden: Signal<Bool, NoError>
+  public let averagePledgeText: Signal<String, Never>
+  public let customPercentText: Signal<String, Never>
+  public let customPledgedText: Signal<String, Never>
+  public let externalPercentage: Signal<Double, Never>
+  public let externalPercentText: Signal<String, Never>
+  public let externalPledgedText: Signal<String, Never>
+  public let internalPercentage: Signal<Double, Never>
+  public let internalPercentText: Signal<String, Never>
+  public let internalPledgedText: Signal<String, Never>
+  public let notifyDelegateAddedReferrerRows: Signal<Void, Never>
+  public let referrersRowData: Signal<ReferrersRowData, Never>
+  public let showMoreReferrersButtonHidden: Signal<Bool, Never>
 
   public var inputs: DashboardReferrersCellViewModelInputs { return self }
   public var outputs: DashboardReferrersCellViewModelOutputs { return self }

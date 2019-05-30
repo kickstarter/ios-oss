@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,13 +8,13 @@ import ReactiveExtensions_TestHelpers
 internal final class BackerDashboardProjectsViewModelTests: TestCase {
   private let vm: BackerDashboardProjectsViewModelType = BackerDashboardProjectsViewModel()
 
-  private let emptyStateIsVisible = TestObserver<Bool, NoError>()
-  private let emptyStateProjectsType = TestObserver<ProfileProjectsType, NoError>()
-  private let isRefreshing = TestObserver<Bool, NoError>()
-  private let goToProject = TestObserver<Project, NoError>()
-  private let goToProjectRefTag = TestObserver<RefTag, NoError>()
-  private let projects = TestObserver<[Project], NoError>()
-  private let scrollToProjectRow = TestObserver<Int, NoError>()
+  private let emptyStateIsVisible = TestObserver<Bool, Never>()
+  private let emptyStateProjectsType = TestObserver<ProfileProjectsType, Never>()
+  private let isRefreshing = TestObserver<Bool, Never>()
+  private let goToProject = TestObserver<Project, Never>()
+  private let goToProjectRefTag = TestObserver<RefTag, Never>()
+  private let projects = TestObserver<[Project], Never>()
+  private let scrollToProjectRow = TestObserver<Int, Never>()
 
   override func setUp() {
     super.setUp()

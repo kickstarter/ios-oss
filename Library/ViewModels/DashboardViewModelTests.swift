@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -10,19 +9,19 @@ import ReactiveExtensions_TestHelpers
 internal final class DashboardViewModelTests: TestCase {
   internal let vm: DashboardViewModelType = DashboardViewModel()
 
-  internal let animateOutProjectsDrawer = TestObserver<(), NoError>()
-  internal let dismissProjectsDrawer = TestObserver<(), NoError>()
-  internal let focusScreenReaderOnTitleView = TestObserver<(), NoError>()
-  internal let fundingStats = TestObserver<[ProjectStatsEnvelope.FundingDateStats], NoError>()
-  internal let goToMessageThread = TestObserver<Project, NoError>()
-  internal let loaderIsAnimating = TestObserver<Bool, NoError>()
-  internal let presentProjectsDrawer = TestObserver<[ProjectsDrawerData], NoError>()
-  internal let project = TestObserver<Project, NoError>()
-  internal let referrerCumulativeStats = TestObserver<ProjectStatsEnvelope.CumulativeStats, NoError>()
-  internal let referrerStats = TestObserver<[ProjectStatsEnvelope.ReferrerStats], NoError>()
-  internal let rewardStats = TestObserver<[ProjectStatsEnvelope.RewardStats], NoError>()
-  internal let updateTitleViewData = TestObserver<DashboardTitleViewData, NoError>()
-  internal let videoStats = TestObserver<ProjectStatsEnvelope.VideoStats, NoError>()
+  internal let animateOutProjectsDrawer = TestObserver<(), Never>()
+  internal let dismissProjectsDrawer = TestObserver<(), Never>()
+  internal let focusScreenReaderOnTitleView = TestObserver<(), Never>()
+  internal let fundingStats = TestObserver<[ProjectStatsEnvelope.FundingDateStats], Never>()
+  internal let goToMessageThread = TestObserver<Project, Never>()
+  internal let loaderIsAnimating = TestObserver<Bool, Never>()
+  internal let presentProjectsDrawer = TestObserver<[ProjectsDrawerData], Never>()
+  internal let project = TestObserver<Project, Never>()
+  internal let referrerCumulativeStats = TestObserver<ProjectStatsEnvelope.CumulativeStats, Never>()
+  internal let referrerStats = TestObserver<[ProjectStatsEnvelope.ReferrerStats], Never>()
+  internal let rewardStats = TestObserver<[ProjectStatsEnvelope.RewardStats], Never>()
+  internal let updateTitleViewData = TestObserver<DashboardTitleViewData, Never>()
+  internal let videoStats = TestObserver<ProjectStatsEnvelope.VideoStats, Never>()
 
   let project1 = Project.template
   let project2 = .template |> Project.lens.id .~ 4

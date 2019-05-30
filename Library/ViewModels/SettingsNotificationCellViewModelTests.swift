@@ -1,5 +1,4 @@
 import XCTest
-import Result
 import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
@@ -8,17 +7,17 @@ import ReactiveExtensions_TestHelpers
 final class SettingsNotificationCellViewModelTests: TestCase {
   private let vm = SettingsNotificationCellViewModel()
 
-  private let enableButtonAnimation = TestObserver<Bool, NoError>()
-  private let emailNotificationsButtonAccessibilityLabel =  TestObserver<String, NoError>()
-  private let emailNotificationsEnabled = TestObserver<Bool, NoError>()
-  private let emailNotificationButtonIsHidden = TestObserver<Bool, NoError>()
-  private let pushNotificationButtonIsHidden = TestObserver<Bool, NoError>()
-  private let manageProjectNotificationsButtonAccessibilityHint = TestObserver<String, NoError>()
-  private let projectCountText = TestObserver<String, NoError>()
-  private let pushNotificationsButtonAccessibilityLabel = TestObserver<String, NoError>()
-  private let pushNotificationsEnabled = TestObserver<Bool, NoError>()
-  private let unableToSaveError = TestObserver<String, NoError>()
-  private let updateCurrentUser = TestObserver<User, NoError>()
+  private let enableButtonAnimation = TestObserver<Bool, Never>()
+  private let emailNotificationsButtonAccessibilityLabel =  TestObserver<String, Never>()
+  private let emailNotificationsEnabled = TestObserver<Bool, Never>()
+  private let emailNotificationButtonIsHidden = TestObserver<Bool, Never>()
+  private let pushNotificationButtonIsHidden = TestObserver<Bool, Never>()
+  private let manageProjectNotificationsButtonAccessibilityHint = TestObserver<String, Never>()
+  private let projectCountText = TestObserver<String, Never>()
+  private let pushNotificationsButtonAccessibilityLabel = TestObserver<String, Never>()
+  private let pushNotificationsEnabled = TestObserver<Bool, Never>()
+  private let unableToSaveError = TestObserver<String, Never>()
+  private let updateCurrentUser = TestObserver<User, Never>()
 
   override func setUp() {
     super.setUp()

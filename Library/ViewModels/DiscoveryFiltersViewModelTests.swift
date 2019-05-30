@@ -3,7 +3,6 @@ import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 
 // A whole bunch of data to play around with in tests.
@@ -46,16 +45,16 @@ private let categories =
 internal final class DiscoveryFiltersViewModelTests: TestCase {
   private let vm: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
 
-  private let animateInView = TestObserver<(), NoError>()
-  private let loadCategoryRows = TestObserver<[ExpandableRow], NoError>()
-  private let loadCategoryRowsInitialId = TestObserver<Int?, NoError>()
-  private let loadCategoryRowsSelectedId = TestObserver<Int?, NoError>()
-  private let loadingIndicatorisVisible = TestObserver<Bool, NoError>()
-  private let loadTopRows = TestObserver<[SelectableRow], NoError>()
-  private let loadTopRowsInitialId = TestObserver<Int?, NoError>()
-  private let notifyDelegateOfSelectedRow = TestObserver<SelectableRow, NoError>()
-  private let loadFavoriteRows = TestObserver<[SelectableRow], NoError>()
-  private let loadFavoriteRowsId = TestObserver<Int?, NoError>()
+  private let animateInView = TestObserver<(), Never>()
+  private let loadCategoryRows = TestObserver<[ExpandableRow], Never>()
+  private let loadCategoryRowsInitialId = TestObserver<Int?, Never>()
+  private let loadCategoryRowsSelectedId = TestObserver<Int?, Never>()
+  private let loadingIndicatorisVisible = TestObserver<Bool, Never>()
+  private let loadTopRows = TestObserver<[SelectableRow], Never>()
+  private let loadTopRowsInitialId = TestObserver<Int?, Never>()
+  private let notifyDelegateOfSelectedRow = TestObserver<SelectableRow, Never>()
+  private let loadFavoriteRows = TestObserver<[SelectableRow], Never>()
+  private let loadFavoriteRowsId = TestObserver<Int?, Never>()
 
   private let categoriesResponse = RootCategoriesEnvelope.template
     |> RootCategoriesEnvelope.lens.categories .~ categories

@@ -3,31 +3,30 @@
 import ReactiveExtensions_TestHelpers
 import Prelude
 import ReactiveSwift
-import Result
 import UIKit
 import XCTest
 
 internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let vm: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
-  fileprivate let activitiesForSample = TestObserver<[Activity], NoError>()
-  fileprivate let asyncReloadData = TestObserver<(), NoError>()
-  fileprivate let goToActivityProject = TestObserver<Project, NoError>()
-  fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, NoError>()
-  fileprivate let goToPlaylist = TestObserver<[Project], NoError>()
-  fileprivate let goToPlaylistProject = TestObserver<Project, NoError>()
-  fileprivate let goToPlaylistRefTag = TestObserver<RefTag, NoError>()
-  fileprivate let goToProjectUpdate = TestObserver<Update, NoError>()
-  fileprivate let hasAddedProjects = TestObserver<Bool, NoError>()
-  fileprivate let hasLoadedProjects = TestObserver<(), NoError>()
-  fileprivate let hasRemovedProjects = TestObserver<Bool, NoError>()
-  fileprivate let hideEmptyState = TestObserver<(), NoError>()
-  fileprivate let projectsAreLoading = TestObserver<Bool, NoError>()
-  fileprivate let projectsAreLoadingAnimated = TestObserver<(Bool, Bool), NoError>()
-  fileprivate let setScrollsToTop = TestObserver<Bool, NoError>()
-  private let scrollToProjectRow = TestObserver<Int, NoError>()
-  fileprivate let showEmptyState = TestObserver<EmptyState, NoError>()
-  fileprivate let showOnboarding = TestObserver<Bool, NoError>()
+  fileprivate let activitiesForSample = TestObserver<[Activity], Never>()
+  fileprivate let asyncReloadData = TestObserver<(), Never>()
+  fileprivate let goToActivityProject = TestObserver<Project, Never>()
+  fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, Never>()
+  fileprivate let goToPlaylist = TestObserver<[Project], Never>()
+  fileprivate let goToPlaylistProject = TestObserver<Project, Never>()
+  fileprivate let goToPlaylistRefTag = TestObserver<RefTag, Never>()
+  fileprivate let goToProjectUpdate = TestObserver<Update, Never>()
+  fileprivate let hasAddedProjects = TestObserver<Bool, Never>()
+  fileprivate let hasLoadedProjects = TestObserver<(), Never>()
+  fileprivate let hasRemovedProjects = TestObserver<Bool, Never>()
+  fileprivate let hideEmptyState = TestObserver<(), Never>()
+  fileprivate let projectsAreLoading = TestObserver<Bool, Never>()
+  fileprivate let projectsAreLoadingAnimated = TestObserver<(Bool, Bool), Never>()
+  fileprivate let setScrollsToTop = TestObserver<Bool, Never>()
+  private let scrollToProjectRow = TestObserver<Int, Never>()
+  fileprivate let showEmptyState = TestObserver<EmptyState, Never>()
+  fileprivate let showOnboarding = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()

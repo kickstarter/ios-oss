@@ -651,7 +651,6 @@
 		D00698E2225CF57200EB58BD /* Prelude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00698E5225CF5A700EB58BD /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E7225CF60200EB58BD /* Argo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E8225CF61300EB58BD /* OnePasswordExtension.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7D2257FADF00532AC1 /* OnePasswordExtension.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -664,7 +663,6 @@
 		D00A374F225829FE00F46F47 /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A375022582A1300F46F47 /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A375122582A1B00F46F47 /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00A375222582A2400F46F47 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A375322582A2C00F46F47 /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A375922582CCE00F46F47 /* Argo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A3765225BCE2600F46F47 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; };
@@ -869,7 +867,6 @@
 		D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0936295225D50C200E1411A /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936296225D50CA00E1411A /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936297225D50D800E1411A /* Prelude_UIKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936298225D50E100E1411A /* OnePasswordExtension.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7D2257FADF00532AC1 /* OnePasswordExtension.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -888,7 +885,6 @@
 		D09D4ED52289D6B100C33B77 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7D2257FADF00532AC1 /* OnePasswordExtension.framework */; };
 		D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
 		D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
-		D09D4ED82289D6E600C33B77 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; };
 		D0A787B52204D40E006AE4F4 /* SelectCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787B42204D40E006AE4F4 /* SelectCurrencyViewController.swift */; };
 		D0A787BB2204D66B006AE4F4 /* SelectCurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BA2204D66A006AE4F4 /* SelectCurrencyViewModel.swift */; };
 		D0A787BD2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */; };
@@ -897,7 +893,6 @@
 		D0B065C72280A27500142B7A /* FBSnapshotTestCase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; };
 		D0B065C92280A2A700142B7A /* FBSnapshotTestCase.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B065CA2280A2DC00142B7A /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0B065CB2280A2FD00142B7A /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B065CC2280A31100142B7A /* Argo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B065CD2280A32800142B7A /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B065CE2280A66B00142B7A /* Prelude_UIKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -915,11 +910,9 @@
 		D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; };
 		D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
 		D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
-		D0BE6F21228634C700D05A10 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; };
 		D0BE6F262286395500D05A10 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; };
 		D0BE6F272286395900D05A10 /* Curry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; };
 		D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
-		D0BE6F292286398400D05A10 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; };
 		D0BE6F2A2286398400D05A10 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; };
 		D0D10BB81EEB394D005EBAD0 /* KsApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01587501EEB2DE4006E7684 /* KsApi.framework */; };
 		D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877B1EEB2ED6006E7684 /* ActivityTests.swift */; };
@@ -960,7 +953,6 @@
 		D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
 		D0D58D8A2257FAE000532AC1 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7D2257FADF00532AC1 /* OnePasswordExtension.framework */; };
 		D0D58D8C2257FAE000532AC1 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
-		D0D58D8D2257FAE000532AC1 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D802257FADF00532AC1 /* Result.framework */; };
 		D0D58D8E2257FAE000532AC1 /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */; };
 		D0D58D902257FAE000532AC1 /* Curry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; };
 		D0D58D912257FAE000532AC1 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; };
@@ -1191,7 +1183,6 @@
 				D0936298225D50E100E1411A /* OnePasswordExtension.framework in CopyFiles */,
 				D0936297225D50D800E1411A /* Prelude_UIKit.framework in CopyFiles */,
 				D0936296225D50CA00E1411A /* Runes.framework in CopyFiles */,
-				D0936295225D50C200E1411A /* Result.framework in CopyFiles */,
 				D0936294225D50B900E1411A /* ReactiveSwift.framework in CopyFiles */,
 				D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
 				D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */,
@@ -1212,7 +1203,6 @@
 				D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */,
 				D00698E8225CF61300EB58BD /* OnePasswordExtension.framework in CopyFiles */,
 				D00698E7225CF60200EB58BD /* Argo.framework in CopyFiles */,
-				D00698E5225CF5A700EB58BD /* Result.framework in CopyFiles */,
 				D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */,
 				D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
 				D00698E1225CF57200EB58BD /* Prelude_UIKit.framework in CopyFiles */,
@@ -1229,7 +1219,6 @@
 			files = (
 				D00A375922582CCE00F46F47 /* Argo.framework in CopyFiles */,
 				D00A375322582A2C00F46F47 /* Runes.framework in CopyFiles */,
-				D00A375222582A2400F46F47 /* Result.framework in CopyFiles */,
 				D00A375122582A1B00F46F47 /* ReactiveSwift.framework in CopyFiles */,
 				D00A375022582A1300F46F47 /* ReactiveExtensions.framework in CopyFiles */,
 				D00A374F225829FE00F46F47 /* Curry.framework in CopyFiles */,
@@ -1251,7 +1240,6 @@
 				D0B065CF2280A66B00142B7A /* Prelude.framework in CopyFiles */,
 				D0B065CD2280A32800142B7A /* Curry.framework in CopyFiles */,
 				D0B065CC2280A31100142B7A /* Argo.framework in CopyFiles */,
-				D0B065CB2280A2FD00142B7A /* Result.framework in CopyFiles */,
 				D0B065CA2280A2DC00142B7A /* ReactiveSwift.framework in CopyFiles */,
 				D0B065C92280A2A700142B7A /* FBSnapshotTestCase.framework in CopyFiles */,
 			);
@@ -2144,7 +2132,6 @@
 		D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSnapshotTestCase.framework; path = Carthage/Build/iOS/FBSnapshotTestCase.framework; sourceTree = "<group>"; };
 		D0D58D7D2257FADF00532AC1 /* OnePasswordExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OnePasswordExtension.framework; path = Carthage/Build/iOS/OnePasswordExtension.framework; sourceTree = "<group>"; };
 		D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = Carthage/Build/iOS/ReactiveSwift.framework; sourceTree = "<group>"; };
-		D0D58D802257FADF00532AC1 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Prelude_UIKit.framework; path = Carthage/Build/iOS/Prelude_UIKit.framework; sourceTree = "<group>"; };
 		D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveExtensions_TestHelpers.framework; path = Carthage/Build/iOS/ReactiveExtensions_TestHelpers.framework; sourceTree = "<group>"; };
 		D0D58D832257FAE000532AC1 /* Curry.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Curry.framework; path = Carthage/Build/iOS/Curry.framework; sourceTree = "<group>"; };
@@ -2300,7 +2287,6 @@
 				D0D58DC32257FCA900532AC1 /* Prelude_UIKit.framework in Frameworks */,
 				D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */,
-				D0BE6F292286398400D05A10 /* Result.framework in Frameworks */,
 				D0BE6F2A2286398400D05A10 /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2328,7 +2314,6 @@
 				D0D58DC52257FD0200532AC1 /* Prelude_UIKit.framework in Frameworks */,
 				D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */,
 				D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */,
-				D09D4ED82289D6E600C33B77 /* Result.framework in Frameworks */,
 				D09D4ED02289D63500C33B77 /* Runes.framework in Frameworks */,
 				D09362A9225D693000E1411A /* Stripe.framework in Frameworks */,
 			);
@@ -2350,7 +2335,6 @@
 				D0D58D8E2257FAE000532AC1 /* Prelude_UIKit.framework in Frameworks */,
 				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
 				D0D58D8C2257FAE000532AC1 /* ReactiveSwift.framework in Frameworks */,
-				D0D58D8D2257FAE000532AC1 /* Result.framework in Frameworks */,
 				D0D58D912257FAE000532AC1 /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2374,7 +2358,6 @@
 				D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */,
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */,
-				D0BE6F21228634C700D05A10 /* Result.framework in Frameworks */,
 				D0BE6F192286333A00D05A10 /* Runes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3039,7 +3022,6 @@
 				D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */,
 				D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */,
 				D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */,
-				D0D58D802257FADF00532AC1 /* Result.framework */,
 				D0D58D842257FAE000532AC1 /* Runes.framework */,
 				D09362A8225D693000E1411A /* Stripe.framework */,
 				D054464E229C7E8300A3CC66 /* HockeySDK */,

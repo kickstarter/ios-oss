@@ -3,13 +3,12 @@ import XCTest
 @testable import KsApi
 import ReactiveExtensions_TestHelpers
 import Prelude
-import Result
 
 final class CheckoutRacingViewModelTests: TestCase {
   fileprivate let vm: CheckoutRacingViewModelType = CheckoutRacingViewModel()
 
-  fileprivate let goToThanks = TestObserver<Void, NoError>()
-  fileprivate let showAlert = TestObserver<String, NoError>()
+  fileprivate let goToThanks = TestObserver<Void, Never>()
+  fileprivate let showAlert = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

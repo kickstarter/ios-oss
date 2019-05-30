@@ -1,5 +1,4 @@
 import XCTest
-import Result
 import ReactiveSwift
 import Prelude
 @testable import KsApi
@@ -9,9 +8,9 @@ import ReactiveExtensions_TestHelpers
   internal final class DashboardProjectsDrawerCellViewModelTests: TestCase {
   internal let vm: DashboardProjectsDrawerCellViewModelType = DashboardProjectsDrawerCellViewModel()
 
-  let isCheckmarkHidden = TestObserver<Bool, NoError>()
-  let projectNameText = TestObserver<String, NoError>()
-  let projectNumberText = TestObserver<String, NoError>()
+  let isCheckmarkHidden = TestObserver<Bool, Never>()
+  let projectNameText = TestObserver<String, Never>()
+  let projectNumberText = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()

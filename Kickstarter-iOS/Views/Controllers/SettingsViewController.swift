@@ -2,7 +2,6 @@ import Library
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 final class SettingsViewController: UIViewController {
   @IBOutlet fileprivate weak var tableView: UITableView!

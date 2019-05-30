@@ -3,7 +3,6 @@ import UIKit
 import KsApi
 import Library
 import ReactiveSwift
-import Result
 import Prelude
 
 internal final class CommentsViewController: UITableViewController {

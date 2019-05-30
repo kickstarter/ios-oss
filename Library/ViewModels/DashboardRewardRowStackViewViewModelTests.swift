@@ -1,5 +1,4 @@
 import XCTest
-import Result
 import ReactiveSwift
 import Prelude
 @testable import KsApi
@@ -10,9 +9,9 @@ import ReactiveExtensions_TestHelpers
   internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
   let vm: DashboardRewardRowStackViewViewModelType = DashboardRewardRowStackViewViewModel()
 
-  let backersText = TestObserver<String, NoError>()
-  let pledgedText = TestObserver<String, NoError>()
-  let topRewardText = TestObserver<String, NoError>()
+  let backersText = TestObserver<String, Never>()
+  let pledgedText = TestObserver<String, Never>()
+  let topRewardText = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

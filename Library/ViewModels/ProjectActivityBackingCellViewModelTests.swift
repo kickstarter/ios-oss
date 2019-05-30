@@ -3,26 +3,25 @@ import XCTest
 @testable import Library
 import ReactiveExtensions_TestHelpers
 import Prelude
-import Result
 
 internal final class ProjectActivityBackingCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityBackingCellViewModelType = ProjectActivityBackingCellViewModel()
 
-  fileprivate let backerImage = TestObserver<String?, NoError>()
-  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
+  fileprivate let backerImage = TestObserver<String?, Never>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityValue = TestObserver<String, Never>()
   fileprivate let defaultUser = User.template |> \.id .~ 90
-  fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
-  fileprivate let notifyDelegateGoToSendMessage = TestObserver<(Project, Backing), NoError>()
-  fileprivate let pledgeAmount = TestObserver<String, NoError>()
-  fileprivate let pledgeAmountLabelIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let pledgeAmountsStackViewIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let pledgeDetailsSeparatorStackViewIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let previousPledgeAmount = TestObserver<String, NoError>()
-  fileprivate let previousPledgeAmountLabelIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let reward = TestObserver<String, NoError>()
-  fileprivate let rewardLabelIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), Never>()
+  fileprivate let notifyDelegateGoToSendMessage = TestObserver<(Project, Backing), Never>()
+  fileprivate let pledgeAmount = TestObserver<String, Never>()
+  fileprivate let pledgeAmountLabelIsHidden = TestObserver<Bool, Never>()
+  fileprivate let pledgeAmountsStackViewIsHidden = TestObserver<Bool, Never>()
+  fileprivate let pledgeDetailsSeparatorStackViewIsHidden = TestObserver<Bool, Never>()
+  fileprivate let previousPledgeAmount = TestObserver<String, Never>()
+  fileprivate let previousPledgeAmountLabelIsHidden = TestObserver<Bool, Never>()
+  fileprivate let reward = TestObserver<String, Never>()
+  fileprivate let rewardLabelIsHidden = TestObserver<Bool, Never>()
+  fileprivate let title = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()

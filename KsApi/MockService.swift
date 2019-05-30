@@ -2,7 +2,6 @@
 import Foundation
 import Prelude
 import ReactiveSwift
-import Result
 
 internal struct MockService: ServiceType {
   internal let appId: String

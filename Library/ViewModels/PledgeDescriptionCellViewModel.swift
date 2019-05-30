@@ -3,16 +3,14 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import Result
-
 public protocol PledgeDescriptionCellViewModelInputs {
   func configureWith(estimatedDeliveryDate: String)
   func learnMoreTapped()
 }
 
 public protocol PledgeDescriptionCellViewModelOutputs {
-  var estimatedDeliveryText: Signal<String, NoError> { get }
-  var presentTrustAndSafety: Signal<Void, NoError> { get }
+  var estimatedDeliveryText: Signal<String, Never> { get }
+  var presentTrustAndSafety: Signal<Void, Never> { get }
 }
 
 public protocol PledgeDescriptionCellViewModelType {
@@ -38,8 +36,8 @@ public final class PledgeDescriptionCellViewModel: PledgeDescriptionCellViewMode
     self.learnMoreTappedProperty.value = ()
   }
 
-  public let estimatedDeliveryText: Signal<String, NoError>
-  public let presentTrustAndSafety: Signal<Void, NoError>
+  public let estimatedDeliveryText: Signal<String, Never>
+  public let presentTrustAndSafety: Signal<Void, Never>
 
   public var inputs: PledgeDescriptionCellViewModelInputs { return self }
   public var outputs: PledgeDescriptionCellViewModelOutputs { return self }

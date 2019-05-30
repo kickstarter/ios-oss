@@ -1,7 +1,6 @@
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import XCTest
 @testable import KsApi
 import ReactiveExtensions_TestHelpers
@@ -10,15 +9,15 @@ import ReactiveExtensions_TestHelpers
 final class DiscoveryExpandableRowCellViewModelTests: TestCase {
   fileprivate let vm: DiscoveryExpandableRowCellViewModelType = DiscoveryExpandableRowCellViewModel()
 
-  fileprivate let cellAccessibilityHint = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let expandCategoryStyleExpandableRow = TestObserver<ExpandableRow, NoError>()
-  fileprivate let expandCategoryStyleCategoryId = TestObserver<Int?, NoError>()
-  fileprivate let filterIsExpanded = TestObserver<Bool, NoError>()
-  fileprivate let filterTitleLabelText = TestObserver<String, NoError>()
-  fileprivate let projectsCountLabelAlpha = TestObserver<CGFloat, NoError>()
-  fileprivate let projectsCountLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let projectsCountLabelText = TestObserver<String, NoError>()
+  fileprivate let cellAccessibilityHint = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let expandCategoryStyleExpandableRow = TestObserver<ExpandableRow, Never>()
+  fileprivate let expandCategoryStyleCategoryId = TestObserver<Int?, Never>()
+  fileprivate let filterIsExpanded = TestObserver<Bool, Never>()
+  fileprivate let filterTitleLabelText = TestObserver<String, Never>()
+  fileprivate let projectsCountLabelAlpha = TestObserver<CGFloat, Never>()
+  fileprivate let projectsCountLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let projectsCountLabelText = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

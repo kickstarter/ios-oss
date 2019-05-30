@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ChangePasswordViewModelInputs {
   func currentPasswordFieldTextChanged(text: String)
@@ -19,20 +18,20 @@ public protocol ChangePasswordViewModelInputs {
 }
 
 public protocol ChangePasswordViewModelOutputs {
-  var accessibilityFocusValidationErrorLabel: Signal<Void, NoError> { get }
-  var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
-  var changePasswordFailure: Signal<String, NoError> { get }
-  var changePasswordSuccess: Signal<Void, NoError> { get }
-  var confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
-  var currentPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
-  var currentPasswordPrefillValue: Signal<String, NoError> { get }
-  var dismissKeyboard: Signal<Void, NoError> { get }
-  var newPasswordBecomeFirstResponder: Signal<Void, NoError> { get }
-  var onePasswordButtonIsHidden: Signal<Bool, NoError> { get }
-  var onePasswordFindPasswordForURLString: Signal<String, NoError> { get }
-  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
-  var validationErrorLabelIsHidden: Signal<Bool, NoError> { get }
-  var validationErrorLabelMessage: Signal<String, NoError> { get }
+  var accessibilityFocusValidationErrorLabel: Signal<Void, Never> { get }
+  var activityIndicatorShouldShow: Signal<Bool, Never> { get }
+  var changePasswordFailure: Signal<String, Never> { get }
+  var changePasswordSuccess: Signal<Void, Never> { get }
+  var confirmNewPasswordBecomeFirstResponder: Signal<Void, Never> { get }
+  var currentPasswordBecomeFirstResponder: Signal<Void, Never> { get }
+  var currentPasswordPrefillValue: Signal<String, Never> { get }
+  var dismissKeyboard: Signal<Void, Never> { get }
+  var newPasswordBecomeFirstResponder: Signal<Void, Never> { get }
+  var onePasswordButtonIsHidden: Signal<Bool, Never> { get }
+  var onePasswordFindPasswordForURLString: Signal<String, Never> { get }
+  var saveButtonIsEnabled: Signal<Bool, Never> { get }
+  var validationErrorLabelIsHidden: Signal<Bool, Never> { get }
+  var validationErrorLabelMessage: Signal<String, Never> { get }
 }
 
 public protocol ChangePasswordViewModelType {
@@ -43,7 +42,7 @@ public protocol ChangePasswordViewModelType {
 public class ChangePasswordViewModel: ChangePasswordViewModelType,
 ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public init() {
-    let currentPasswordSignal: Signal<String, NoError> = Signal
+    let currentPasswordSignal: Signal<String, Never> = Signal
       .merge(self.currentPasswordProperty.signal,
              self.onePasswordPrefillPasswordProperty.signal.skipNil())
 
@@ -203,20 +202,20 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
     self.viewDidAppearProperty.value = ()
   }
 
-  public let accessibilityFocusValidationErrorLabel: Signal<Void, NoError>
-  public let activityIndicatorShouldShow: Signal<Bool, NoError>
-  public let changePasswordFailure: Signal<String, NoError>
-  public let changePasswordSuccess: Signal<Void, NoError>
-  public let confirmNewPasswordBecomeFirstResponder: Signal<Void, NoError>
-  public let currentPasswordBecomeFirstResponder: Signal<Void, NoError>
-  public let currentPasswordPrefillValue: Signal<String, NoError>
-  public let dismissKeyboard: Signal<Void, NoError>
-  public let validationErrorLabelIsHidden: Signal<Bool, NoError>
-  public let validationErrorLabelMessage: Signal<String, NoError>
-  public let newPasswordBecomeFirstResponder: Signal<Void, NoError>
-  public let onePasswordButtonIsHidden: Signal<Bool, NoError>
-  public let onePasswordFindPasswordForURLString: Signal<String, NoError>
-  public let saveButtonIsEnabled: Signal<Bool, NoError>
+  public let accessibilityFocusValidationErrorLabel: Signal<Void, Never>
+  public let activityIndicatorShouldShow: Signal<Bool, Never>
+  public let changePasswordFailure: Signal<String, Never>
+  public let changePasswordSuccess: Signal<Void, Never>
+  public let confirmNewPasswordBecomeFirstResponder: Signal<Void, Never>
+  public let currentPasswordBecomeFirstResponder: Signal<Void, Never>
+  public let currentPasswordPrefillValue: Signal<String, Never>
+  public let dismissKeyboard: Signal<Void, Never>
+  public let validationErrorLabelIsHidden: Signal<Bool, Never>
+  public let validationErrorLabelMessage: Signal<String, Never>
+  public let newPasswordBecomeFirstResponder: Signal<Void, Never>
+  public let onePasswordButtonIsHidden: Signal<Bool, Never>
+  public let onePasswordFindPasswordForURLString: Signal<String, Never>
+  public let saveButtonIsEnabled: Signal<Bool, Never>
 
   public var inputs: ChangePasswordViewModelInputs {
     return self

@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 import ReactiveSwift
-import Result
 import Prelude
 @testable import KsApi
 @testable import Library
@@ -10,11 +9,11 @@ import ReactiveExtensions_TestHelpers
 internal final class SettingsNewsletterCellViewModelTests: TestCase {
   let vm = SettingsNewsletterCellViewModel()
 
-  let showOptInPrompt = TestObserver<String, NoError>()
-  let subscribeToAllSwitchIsOn = TestObserver<Bool?, NoError>()
-  let switchIsOn = TestObserver<Bool?, NoError>()
-  let unableToSaveError = TestObserver<String, NoError>()
-  let updateCurrentUser = TestObserver<User, NoError>()
+  let showOptInPrompt = TestObserver<String, Never>()
+  let subscribeToAllSwitchIsOn = TestObserver<Bool?, Never>()
+  let switchIsOn = TestObserver<Bool?, Never>()
+  let unableToSaveError = TestObserver<String, Never>()
+  let updateCurrentUser = TestObserver<User, Never>()
 
   internal override func setUp() {
     super.setUp()

@@ -1,6 +1,5 @@
 import XCTest
 import Prelude
-import Result
 import Library
 @testable import KsApi
 @testable import Library
@@ -8,8 +7,8 @@ import ReactiveExtensions_TestHelpers
 
 class DiscoveryProjectCategoryViewModelTests: XCTestCase {
     internal let vm = DiscoveryProjectCategoryViewModel()
-    internal let categoryViewLabelText = TestObserver<String, NoError>()
-    internal let categoryImage = TestObserver<UIImage?, NoError>()
+    internal let categoryViewLabelText = TestObserver<String, Never>()
+    internal let categoryImage = TestObserver<UIImage?, Never>()
 
     override func setUp() {
       super.setUp()

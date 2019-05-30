@@ -2,7 +2,6 @@
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -29,11 +28,11 @@ private let sortedShippingRules = shippingRules
 internal final class RewardShippingPickerViewModelTests: TestCase {
   fileprivate let vm: RewardShippingPickerViewModelType = RewardShippingPickerViewModel()
 
-  fileprivate let dataSource = TestObserver<[String], NoError>()
-  fileprivate let doneButtonAccessibilityHint = TestObserver<String, NoError>()
-  fileprivate let notifyDelegateChoseShippingRule = TestObserver<ShippingRule, NoError>()
-  fileprivate let notifyDelegateToCancel = TestObserver<(), NoError>()
-  fileprivate let selectRow = TestObserver<Int, NoError>()
+  fileprivate let dataSource = TestObserver<[String], Never>()
+  fileprivate let doneButtonAccessibilityHint = TestObserver<String, Never>()
+  fileprivate let notifyDelegateChoseShippingRule = TestObserver<ShippingRule, Never>()
+  fileprivate let notifyDelegateToCancel = TestObserver<(), Never>()
+  fileprivate let selectRow = TestObserver<Int, Never>()
 
   override func setUp() {
     super.setUp()

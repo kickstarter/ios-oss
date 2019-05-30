@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,10 +8,10 @@ import ReactiveExtensions_TestHelpers
 
 internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
   internal let vm = DashboardReferrerRowStackViewViewModel()
-  internal let backersText = TestObserver<String, NoError>()
-  internal let pledgedText = TestObserver<String, NoError>()
-  internal let sourceText = TestObserver<String, NoError>()
-  internal let textColor = TestObserver<UIColor, NoError>()
+  internal let backersText = TestObserver<String, Never>()
+  internal let pledgedText = TestObserver<String, Never>()
+  internal let sourceText = TestObserver<String, Never>()
+  internal let textColor = TestObserver<UIColor, Never>()
 
   internal override func setUp() {
     super.setUp()

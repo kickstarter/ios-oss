@@ -1,7 +1,6 @@
 import KsApi
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import Prelude
 
 public protocol FindFriendsViewModelInputs {
@@ -41,25 +40,25 @@ public protocol FindFriendsViewModelInputs {
 
 public protocol FindFriendsViewModelOutputs {
   /// Emits an array of friend users with the source that presented the controller.
-  var friends: Signal<([User], FriendsSource), NoError> { get }
+  var friends: Signal<([User], FriendsSource), Never> { get }
 
   /// Emits DiscoveryParams when should go to Discovery
-  var goToDiscovery: Signal<DiscoveryParams, NoError> { get }
+  var goToDiscovery: Signal<DiscoveryParams, Never> { get }
 
   /// Emits when error alert should show with AlertError
-  var showErrorAlert: Signal<AlertError, NoError> { get }
+  var showErrorAlert: Signal<AlertError, Never> { get }
 
   /// Emits bool whether Facebook Connect view should show with the source that presented the controller.
-  var showFacebookConnect: Signal<(FriendsSource, Bool), NoError> { get }
+  var showFacebookConnect: Signal<(FriendsSource, Bool), Never> { get }
 
   /// Emits friends count when should display "Follow all friends" alert.
-  var showFollowAllFriendsAlert: Signal<Int, NoError> { get }
+  var showFollowAllFriendsAlert: Signal<Int, Never> { get }
 
   /// Emits a boolean that determines if loader is hidden.
-  var showLoadingIndicatorView: Signal<Bool, NoError> { get }
+  var showLoadingIndicatorView: Signal<Bool, Never> { get }
 
   /// Emits the current user and the source that presented the controller.
-  var stats: Signal<(FriendStatsEnvelope, FriendsSource), NoError> { get }
+  var stats: Signal<(FriendStatsEnvelope, FriendsSource), Never> { get }
 }
 
 public protocol FindFriendsViewModelType {
@@ -215,13 +214,13 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let friends: Signal<([User], FriendsSource), NoError>
-  public let goToDiscovery: Signal<DiscoveryParams, NoError>
-  public let showErrorAlert: Signal<AlertError, NoError>
-  public let showFacebookConnect: Signal<(FriendsSource, Bool), NoError>
-  public let showFollowAllFriendsAlert: Signal<Int, NoError>
-  public let showLoadingIndicatorView: Signal<Bool, NoError>
-  public let stats: Signal<(FriendStatsEnvelope, FriendsSource), NoError>
+  public let friends: Signal<([User], FriendsSource), Never>
+  public let goToDiscovery: Signal<DiscoveryParams, Never>
+  public let showErrorAlert: Signal<AlertError, Never>
+  public let showFacebookConnect: Signal<(FriendsSource, Bool), Never>
+  public let showFollowAllFriendsAlert: Signal<Int, Never>
+  public let showLoadingIndicatorView: Signal<Bool, Never>
+  public let stats: Signal<(FriendStatsEnvelope, FriendsSource), Never>
 
   public var inputs: FindFriendsViewModelInputs { return self }
   public var outputs: FindFriendsViewModelOutputs { return self }

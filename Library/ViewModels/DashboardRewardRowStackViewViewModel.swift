@@ -1,7 +1,6 @@
 import KsApi
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import Prelude
 
 public protocol DashboardRewardRowStackViewViewModelInputs {
@@ -13,13 +12,13 @@ public protocol DashboardRewardRowStackViewViewModelInputs {
 
 public protocol DashboardRewardRowStackViewViewModelOutputs {
   /// Emits string for backer text label.
-  var backersText: Signal<String, NoError> { get }
+  var backersText: Signal<String, Never> { get }
 
   /// Emits string for pledged text label.
-  var pledgedText: Signal<String, NoError> { get }
+  var pledgedText: Signal<String, Never> { get }
 
   /// Emits string for top rewards text label.
-  var topRewardText: Signal<String, NoError> { get }
+  var topRewardText: Signal<String, Never> { get }
 }
 
 public protocol DashboardRewardRowStackViewViewModelType {
@@ -50,9 +49,9 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
   public var inputs: DashboardRewardRowStackViewViewModelInputs { return self }
   public var outputs: DashboardRewardRowStackViewViewModelOutputs { return self }
 
-  public let backersText: Signal<String, NoError>
-  public let pledgedText: Signal<String, NoError>
-  public let topRewardText: Signal<String, NoError>
+  public let backersText: Signal<String, Never>
+  public let pledgedText: Signal<String, Never>
+  public let topRewardText: Signal<String, Never>
 
   fileprivate let countryRewardPledgedProperty =
     MutableProperty<(Project.Country, ProjectStatsEnvelope.RewardStats, Int)?>(nil)

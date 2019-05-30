@@ -3,12 +3,11 @@ import XCTest
 import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
-import Result
 
 internal final class ProjectActivityLaunchCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityLaunchCellViewModelType = ProjectActivityLaunchCellViewModel()
 
-  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

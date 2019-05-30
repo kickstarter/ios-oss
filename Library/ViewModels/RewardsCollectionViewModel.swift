@@ -2,13 +2,11 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
-
 public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?)
 
 public protocol RewardsCollectionViewModelOutputs {
-  var goToPledge: Signal<PledgeData, NoError> { get }
-  var reloadDataWithRewards: Signal<[Reward], NoError> { get }
+  var goToPledge: Signal<PledgeData, Never> { get }
+  var reloadDataWithRewards: Signal<[Reward], Never> { get }
 }
 
 public protocol RewardsCollectionViewModelInputs {
@@ -63,8 +61,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let goToPledge: Signal<PledgeData, NoError>
-  public let reloadDataWithRewards: Signal<[Reward], NoError>
+  public let goToPledge: Signal<PledgeData, Never>
+  public let reloadDataWithRewards: Signal<[Reward], Never>
 
   public var inputs: RewardsCollectionViewModelInputs { return self }
   public var outputs: RewardsCollectionViewModelOutputs { return self }

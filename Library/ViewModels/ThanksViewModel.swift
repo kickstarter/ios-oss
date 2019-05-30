@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol ThanksViewModelInputs {
   /// Call when the view controller view did load
@@ -29,37 +28,37 @@ public protocol ThanksViewModelInputs {
 
 public protocol ThanksViewModelOutputs {
   /// Emits backed project subheader text to display
-  var backedProjectText: Signal<NSAttributedString, NoError> { get }
+  var backedProjectText: Signal<NSAttributedString, Never> { get }
 
   /// Emits when view controller should dismiss
-  var dismissToRootViewController: Signal<(), NoError> { get }
+  var dismissToRootViewController: Signal<(), Never> { get }
 
   /// Emits DiscoveryParams when should go to Discovery
-  var goToDiscovery: Signal<DiscoveryParams, NoError> { get }
+  var goToDiscovery: Signal<DiscoveryParams, Never> { get }
 
   /// Emits project when should go to Project page
-  var goToProject: Signal<(Project, [Project], RefTag), NoError> { get }
+  var goToProject: Signal<(Project, [Project], RefTag), Never> { get }
 
   /// Emits when a user pledges a project for the first time.
-  var postContextualNotification: Signal<(), NoError> { get }
+  var postContextualNotification: Signal<(), Never> { get }
 
   /// Emits when a user updated notification should be posted
-  var postUserUpdatedNotification: Signal<Notification, NoError> { get }
+  var postUserUpdatedNotification: Signal<Notification, Never> { get }
 
   /// Emits when should show games newsletter alert
-  var showGamesNewsletterAlert: Signal <(), NoError> { get }
+  var showGamesNewsletterAlert: Signal <(), Never> { get }
 
   /// Emits newsletter title when should show games newsletter opt-in alert
-  var showGamesNewsletterOptInAlert: Signal <String, NoError> { get }
+  var showGamesNewsletterOptInAlert: Signal <String, Never> { get }
 
   /// Emits when should show rating alert
-  var showRatingAlert: Signal <(), NoError> { get }
+  var showRatingAlert: Signal <(), Never> { get }
 
   /// Emits array of projects and a category when should show recommendations
-  var showRecommendations: Signal <([Project], KsApi.Category), NoError> { get }
+  var showRecommendations: Signal <([Project], KsApi.Category), Never> { get }
 
   /// Emits a User that can be used to replace the current user in the environment
-  var updateUserInEnvironment: Signal<User, NoError> { get }
+  var updateUserInEnvironment: Signal<User, Never> { get }
 }
 
 public protocol ThanksViewModelType {
@@ -113,7 +112,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.goToDiscovery = self.categoryCellTappedProperty.signal.skipNil()
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
-    let rootCategory: Signal<KsApi.Category, NoError> = project
+    let rootCategory: Signal<KsApi.Category, Never> = project
       .map { toBase64($0.category) }
       .flatMap {
         return AppEnvironment.current.apiService.fetchGraphCategory(query: categoryBy(id: $0))
@@ -223,17 +222,17 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   }
 
   // MARK: ThanksViewModelOutputs
-  public let dismissToRootViewController: Signal<(), NoError>
-  public let goToDiscovery: Signal<DiscoveryParams, NoError>
-  public let backedProjectText: Signal<NSAttributedString, NoError>
-  public let goToProject: Signal<(Project, [Project], RefTag), NoError>
-  public let postContextualNotification: Signal<(), NoError>
-  public let postUserUpdatedNotification: Signal<Notification, NoError>
-  public let showRatingAlert: Signal<(), NoError>
-  public let showGamesNewsletterAlert: Signal<(), NoError>
-  public let showGamesNewsletterOptInAlert: Signal<String, NoError>
-  public let showRecommendations: Signal<([Project], KsApi.Category), NoError>
-  public let updateUserInEnvironment: Signal<User, NoError>
+  public let dismissToRootViewController: Signal<(), Never>
+  public let goToDiscovery: Signal<DiscoveryParams, Never>
+  public let backedProjectText: Signal<NSAttributedString, Never>
+  public let goToProject: Signal<(Project, [Project], RefTag), Never>
+  public let postContextualNotification: Signal<(), Never>
+  public let postUserUpdatedNotification: Signal<Notification, Never>
+  public let showRatingAlert: Signal<(), Never>
+  public let showGamesNewsletterAlert: Signal<(), Never>
+  public let showGamesNewsletterOptInAlert: Signal<String, Never>
+  public let showRecommendations: Signal<([Project], KsApi.Category), Never>
+  public let updateUserInEnvironment: Signal<User, Never>
 }
 
 /*
@@ -251,7 +250,7 @@ private func toBase64(_ category: KsApi.Category) -> String {
 
 private func relatedProjects(toProject project: Project,
                              inCategory category: KsApi.Category) ->
-  SignalProducer<[Project], NoError> {
+  SignalProducer<[Project], Never> {
 
     let base = DiscoveryParams.lens.perPage .~ 3 <> DiscoveryParams.lens.backed .~ false
 

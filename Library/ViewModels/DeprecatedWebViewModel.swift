@@ -1,5 +1,4 @@
 import ReactiveSwift
-import Result
 
 public protocol DeprecatedWebViewModelInputs {
   /// Call when the view loads.
@@ -16,7 +15,7 @@ public protocol DeprecatedWebViewModelInputs {
 }
 
 public protocol DeprecatedWebViewModelOutputs {
-  var loadingOverlayIsHiddenAndAnimate: Signal<(isHidden: Bool, animate: Bool), NoError> { get }
+  var loadingOverlayIsHiddenAndAnimate: Signal<(isHidden: Bool, animate: Bool), Never> { get }
 }
 
 public protocol DeprecatedWebViewModelType {
@@ -67,7 +66,7 @@ DeprecatedWebViewModelOutputs {
     self.webViewDidStartLoadProperty.value = ()
   }
 
-  public let loadingOverlayIsHiddenAndAnimate: Signal<(isHidden: Bool, animate: Bool), NoError>
+  public let loadingOverlayIsHiddenAndAnimate: Signal<(isHidden: Bool, animate: Bool), Never>
 
   public var inputs: DeprecatedWebViewModelInputs { return self }
   public var outputs: DeprecatedWebViewModelOutputs { return self }

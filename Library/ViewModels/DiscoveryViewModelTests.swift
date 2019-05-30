@@ -3,20 +3,19 @@
 import ReactiveExtensions_TestHelpers
 import Prelude
 import ReactiveSwift
-import Result
 import UIKit
 import XCTest
 
 internal final class DiscoveryViewModelTests: TestCase {
   fileprivate let vm: DiscoveryViewModelType = DiscoveryViewModel()
 
-  fileprivate let configureDataSource = TestObserver<[DiscoveryParams.Sort], NoError>()
-  fileprivate let configureNavigationHeader = TestObserver<DiscoveryParams, NoError>()
-  fileprivate let loadFilterIntoDataSource = TestObserver<DiscoveryParams, NoError>()
-  fileprivate let navigateToSort = TestObserver<DiscoveryParams.Sort, NoError>()
-  fileprivate let navigateDirection = TestObserver<UIPageViewController.NavigationDirection, NoError>()
-  fileprivate let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
-  fileprivate let updateSortPagerStyle = TestObserver<Int?, NoError>()
+  fileprivate let configureDataSource = TestObserver<[DiscoveryParams.Sort], Never>()
+  fileprivate let configureNavigationHeader = TestObserver<DiscoveryParams, Never>()
+  fileprivate let loadFilterIntoDataSource = TestObserver<DiscoveryParams, Never>()
+  fileprivate let navigateToSort = TestObserver<DiscoveryParams.Sort, Never>()
+  fileprivate let navigateDirection = TestObserver<UIPageViewController.NavigationDirection, Never>()
+  fileprivate let selectSortPage = TestObserver<DiscoveryParams.Sort, Never>()
+  fileprivate let updateSortPagerStyle = TestObserver<Int?, Never>()
 
   let initialParams = .defaults
     |> DiscoveryParams.lens.includePOTD .~ true
@@ -153,7 +152,7 @@ internal final class DiscoveryViewModelTests: TestCase {
   }
 
   func testOrdering() {
-    let test = TestObserver<String, NoError>()
+    let test = TestObserver<String, Never>()
     Signal.merge(
       self.vm.outputs.configurePagerDataSource.mapConst("configureDataSource"),
       self.vm.outputs.loadFilterIntoDataSource.mapConst("loadFilterIntoDataSource")

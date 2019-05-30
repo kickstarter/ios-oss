@@ -4,7 +4,6 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
-import Result
 import WebKit
 
 private struct UpdateData {
@@ -26,19 +25,19 @@ internal protocol UpdateViewModelInputs {
 
 internal protocol UpdateViewModelOutputs {
   /// Emits when we should go to comments for the update.
-  var goToComments: Signal<Update, NoError> { get }
+  var goToComments: Signal<Update, Never> { get }
 
   /// Emits when we should go to the project.
-  var goToProject: Signal<(Project, RefTag), NoError> { get }
+  var goToProject: Signal<(Project, RefTag), Never> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<URL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, Never> { get }
 
   /// Emits the title of the controller.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<String, Never> { get }
 
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
 
 internal protocol UpdateViewModelType {
@@ -117,11 +116,11 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
     self.goToProject = project
       .takePairWhen(possiblyGoToProject)
-      .switchMap { (project, projectParamAndRefTag) -> SignalProducer<(Project, RefTag), NoError> in
+      .switchMap { (project, projectParamAndRefTag) -> SignalProducer<(Project, RefTag), Never> in
 
         guard let (projectParam, refTag) = projectParamAndRefTag else { return .empty }
 
-        let producer: SignalProducer<Project, NoError>
+        let producer: SignalProducer<Project, Never>
 
         if projectParam == .id(project.id) || projectParam == .slug(project.slug) {
           producer = SignalProducer(value: project)
@@ -168,11 +167,11 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
     self.viewDidLoadProperty.value = ()
   }
 
-  internal let goToComments: Signal<Update, NoError>
-  internal let goToProject: Signal<(Project, RefTag), NoError>
-  internal let goToSafariBrowser: Signal<URL, NoError>
-  internal let title: Signal<String, NoError>
-  internal let webViewLoadRequest: Signal<URLRequest, NoError>
+  internal let goToComments: Signal<Update, Never>
+  internal let goToProject: Signal<(Project, RefTag), Never>
+  internal let goToSafariBrowser: Signal<URL, Never>
+  internal let title: Signal<String, Never>
+  internal let webViewLoadRequest: Signal<URLRequest, Never>
 
   internal var inputs: UpdateViewModelInputs { return self }
   internal var outputs: UpdateViewModelOutputs { return self }

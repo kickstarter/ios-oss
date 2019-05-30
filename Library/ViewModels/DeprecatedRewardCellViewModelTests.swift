@@ -4,36 +4,35 @@ import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 import XCTest
 
 final class DeprecatedRewardCellViewModelTests: TestCase {
   fileprivate let vm: RewardCellViewModelType = DeprecatedRewardCellViewModel()
 
-  fileprivate let allGoneHidden = TestObserver<Bool, NoError>()
-  fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let conversionLabelText = TestObserver<String, NoError>()
-  fileprivate let descriptionLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let descriptionLabelText = TestObserver<String, NoError>()
-  fileprivate let estimatedDeliveryDateLabelText = TestObserver<String, NoError>()
-  fileprivate let footerLabelText = TestObserver<String, NoError>()
-  fileprivate let footerStackViewHidden = TestObserver<Bool, NoError>()
-  fileprivate let items = TestObserver<[String], NoError>()
-  fileprivate let itemsContainerHidden = TestObserver<Bool, NoError>()
-  fileprivate let manageButtonHidden = TestObserver<Bool, NoError>() // todo
-  fileprivate let minimumAndConversionLabelsColor = TestObserver<UIColor, NoError>()
-  fileprivate let minimumLabelText = TestObserver<String, NoError>()
-  fileprivate let notifyDelegateRewardCellWantsExpansion = TestObserver<(), NoError>()
-  fileprivate let pledgeButtonHidden = TestObserver<Bool, NoError>() // todo
-  fileprivate let pledgeButtonTitleText = TestObserver<String, NoError>() // todo
-  fileprivate let titleLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let titleLabelText = TestObserver<String, NoError>()
-  fileprivate let titleLabelTextColor = TestObserver<UIColor, NoError>()
-  fileprivate let shippingLocationsStackViewHidden = TestObserver<Bool, NoError>()
-  fileprivate let shippingLocationsSummaryLabelText = TestObserver<String, NoError>()
-  fileprivate let updateTopMarginsForIsBacking = TestObserver<Bool, NoError>() // todo
-  fileprivate let viewPledgeButtonHidden = TestObserver<Bool, NoError>() // todo
-  fileprivate let youreABackerViewHidden = TestObserver<Bool, NoError>() // todo
+  fileprivate let allGoneHidden = TestObserver<Bool, Never>()
+  fileprivate let conversionLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let conversionLabelText = TestObserver<String, Never>()
+  fileprivate let descriptionLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let descriptionLabelText = TestObserver<String, Never>()
+  fileprivate let estimatedDeliveryDateLabelText = TestObserver<String, Never>()
+  fileprivate let footerLabelText = TestObserver<String, Never>()
+  fileprivate let footerStackViewHidden = TestObserver<Bool, Never>()
+  fileprivate let items = TestObserver<[String], Never>()
+  fileprivate let itemsContainerHidden = TestObserver<Bool, Never>()
+  fileprivate let manageButtonHidden = TestObserver<Bool, Never>() // todo
+  fileprivate let minimumAndConversionLabelsColor = TestObserver<UIColor, Never>()
+  fileprivate let minimumLabelText = TestObserver<String, Never>()
+  fileprivate let notifyDelegateRewardCellWantsExpansion = TestObserver<(), Never>()
+  fileprivate let pledgeButtonHidden = TestObserver<Bool, Never>() // todo
+  fileprivate let pledgeButtonTitleText = TestObserver<String, Never>() // todo
+  fileprivate let titleLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let titleLabelText = TestObserver<String, Never>()
+  fileprivate let titleLabelTextColor = TestObserver<UIColor, Never>()
+  fileprivate let shippingLocationsStackViewHidden = TestObserver<Bool, Never>()
+  fileprivate let shippingLocationsSummaryLabelText = TestObserver<String, Never>()
+  fileprivate let updateTopMarginsForIsBacking = TestObserver<Bool, Never>() // todo
+  fileprivate let viewPledgeButtonHidden = TestObserver<Bool, Never>() // todo
+  fileprivate let youreABackerViewHidden = TestObserver<Bool, Never>() // todo
 
   override func setUp() {
     super.setUp()

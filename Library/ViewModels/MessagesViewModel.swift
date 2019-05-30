@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol MessagesViewModelInputs {
   /// Call when the backing button is pressed.
@@ -28,31 +27,31 @@ public protocol MessagesViewModelOutputs {
    Emits a Backing and Project that can be used to populate the BackingCell.
    The boolean tells if navigation to this screen occurred from the backing info screen.
   */
-  var backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), NoError> { get }
+  var backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), Never> { get }
 
   /// Emits a boolean that determines if the empty state is visible and a message to display.
-  var emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), NoError> { get }
+  var emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), Never> { get }
 
   /// Emits when we should go to the backing screen.
-  var goToBacking: Signal<(Project, User), NoError> { get }
+  var goToBacking: Signal<(Project, User), Never> { get }
 
   /// Emits when we should go to the projet.
-  var goToProject: Signal<(Project, RefTag), NoError> { get }
+  var goToProject: Signal<(Project, RefTag), Never> { get }
 
   /// Emits a list of messages to be displayed.
-  var messages: Signal<[Message], NoError> { get }
+  var messages: Signal<[Message], Never> { get }
 
   /// Emits when we should show the message dialog.
-  var presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), NoError> { get }
+  var presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), Never> { get }
 
   /// Emits the project we are viewing the messages for.
-  var project: Signal<Project, NoError> { get }
+  var project: Signal<Project, Never> { get }
 
   /// Emits a bool whether the reply button is enabled.
-  var replyButtonIsEnabled: Signal<Bool, NoError> { get }
+  var replyButtonIsEnabled: Signal<Bool, Never> { get }
 
   /// Emits when the thread has been marked as read.
-  var successfullyMarkedAsRead: Signal<(), NoError> { get }
+  var successfullyMarkedAsRead: Signal<(), Never> { get }
 }
 
 public protocol MessagesViewModelType {
@@ -96,7 +95,7 @@ MessagesViewModelOutputs {
       backingOrThread.takeWhen(self.messageSentProperty.signal)
       )
       .switchMap { backingOrThread
-        -> SignalProducer<Signal<MessageThreadEnvelope?, ErrorEnvelope>.Event, NoError> in
+        -> SignalProducer<Signal<MessageThreadEnvelope?, ErrorEnvelope>.Event, Never> in
         switch backingOrThread {
         case let .left(backing):
           return AppEnvironment.current.apiService.fetchMessageThread(backing: backing)
@@ -117,7 +116,7 @@ MessagesViewModelOutputs {
     self.backingAndProjectAndIsFromBacking = Signal.combineLatest(
       configBacking, self.project, participant, currentUser
       )
-      .switchMap { value -> SignalProducer<(Backing, Project, Bool), NoError> in
+      .switchMap { value -> SignalProducer<(Backing, Project, Bool), Never> in
         let (backing, project, participant, currentUser) = value
 
         if let backing = backing {
@@ -214,15 +213,15 @@ MessagesViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), NoError>
-  public let emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), NoError>
-  public let goToBacking: Signal<(Project, User), NoError>
-  public let goToProject: Signal<(Project, RefTag), NoError>
-  public let messages: Signal<[Message], NoError>
-  public let presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), NoError>
-  public let project: Signal<Project, NoError>
-  public let replyButtonIsEnabled: Signal<Bool, NoError>
-  public let successfullyMarkedAsRead: Signal<(), NoError>
+  public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), Never>
+  public let emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), Never>
+  public let goToBacking: Signal<(Project, User), Never>
+  public let goToProject: Signal<(Project, RefTag), Never>
+  public let messages: Signal<[Message], Never>
+  public let presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), Never>
+  public let project: Signal<Project, Never>
+  public let replyButtonIsEnabled: Signal<Bool, Never>
+  public let successfullyMarkedAsRead: Signal<(), Never>
 
   public var inputs: MessagesViewModelInputs { return self }
   public var outputs: MessagesViewModelOutputs { return self }

@@ -2,7 +2,6 @@ import UIKit
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 import ReactiveExtensions
 import Library
 

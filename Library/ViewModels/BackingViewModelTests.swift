@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,28 +8,28 @@ import ReactiveExtensions_TestHelpers
 internal final class BackingViewModelTests: TestCase {
   private let vm: BackingViewModelType = BackingViewModel()
 
-  private let backerAvatarURL = TestObserver<String?, NoError>()
-  private let backerName = TestObserver<String, NoError>()
-  private let backerSequence = TestObserver<String, NoError>()
-  private let goToMessageCreatorSubject = TestObserver<MessageSubject, NoError>()
-  private let goToMessageCreatorContext = TestObserver<Koala.MessageDialogContext, NoError>()
-  private let goToMessagesBacking = TestObserver<Backing, NoError>()
-  private let goToMessagesProject = TestObserver<Project, NoError>()
-  private let loaderIsAnimating = TestObserver<Bool, NoError>()
-  private let markAsReceivedSectionIsHidden = TestObserver<Bool, NoError>()
-  private let messageButtonTitleText = TestObserver<String, NoError>()
-  private let opacityForContainers = TestObserver<CGFloat, NoError>()
-  private let pledgeAmount = TestObserver<String, NoError>()
-  private let pledgeSectionTitle = TestObserver<String, NoError>()
-  private let rewardDescription = TestObserver<String, NoError>()
-  private let rewardMarkedReceived = TestObserver<Bool, NoError>()
-  private let rewardSectionAndShippingIsHidden = TestObserver<Bool, NoError>()
-  private let rewardSectionTitle = TestObserver<String, NoError>()
-  private let rewardTitleWithAmount = TestObserver<String, NoError>()
-  private let rootStackViewAxis = TestObserver<NSLayoutConstraint.Axis, NoError>()
-  private let shippingAmount = TestObserver<String, NoError>()
-  private let statusDescription = TestObserver<String, NoError>()
-  private let totalPledgeAmount = TestObserver<String, NoError>()
+  private let backerAvatarURL = TestObserver<String?, Never>()
+  private let backerName = TestObserver<String, Never>()
+  private let backerSequence = TestObserver<String, Never>()
+  private let goToMessageCreatorSubject = TestObserver<MessageSubject, Never>()
+  private let goToMessageCreatorContext = TestObserver<Koala.MessageDialogContext, Never>()
+  private let goToMessagesBacking = TestObserver<Backing, Never>()
+  private let goToMessagesProject = TestObserver<Project, Never>()
+  private let loaderIsAnimating = TestObserver<Bool, Never>()
+  private let markAsReceivedSectionIsHidden = TestObserver<Bool, Never>()
+  private let messageButtonTitleText = TestObserver<String, Never>()
+  private let opacityForContainers = TestObserver<CGFloat, Never>()
+  private let pledgeAmount = TestObserver<String, Never>()
+  private let pledgeSectionTitle = TestObserver<String, Never>()
+  private let rewardDescription = TestObserver<String, Never>()
+  private let rewardMarkedReceived = TestObserver<Bool, Never>()
+  private let rewardSectionAndShippingIsHidden = TestObserver<Bool, Never>()
+  private let rewardSectionTitle = TestObserver<String, Never>()
+  private let rewardTitleWithAmount = TestObserver<String, Never>()
+  private let rootStackViewAxis = TestObserver<NSLayoutConstraint.Axis, Never>()
+  private let shippingAmount = TestObserver<String, Never>()
+  private let statusDescription = TestObserver<String, Never>()
+  private let totalPledgeAmount = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
