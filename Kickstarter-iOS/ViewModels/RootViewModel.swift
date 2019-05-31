@@ -400,7 +400,7 @@ extension TabBarItem: Equatable {
 
 private func activitiesBadgeValue() -> String? {
   let maxBadgeValue = 99
-  
+
   let applicationIconBadgeNumber = AppEnvironment.current.application.applicationIconBadgeNumber
   let count = min(applicationIconBadgeNumber, maxBadgeValue)
 

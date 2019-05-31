@@ -122,9 +122,9 @@ public final class RootTabBarViewController: UITabBarController {
 
     self.viewModel.outputs.setBadgeValueAtIndex
       .observeForUI()
-      .observeValues { [weak self] (value, index) in
+      .observeValues { [weak self] value, index in
         self?.tabBarItem(atIndex: index)?.badgeValue = value
-    }
+      }
   }
 
   public func switchToActivities() {
