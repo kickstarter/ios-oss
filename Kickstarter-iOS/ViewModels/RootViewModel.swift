@@ -4,8 +4,6 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public let maxBadgeValue = 99
-
 typealias RootViewControllerIndex = Int
 typealias RootTabBarItemBadgeValueData = (String?, RootViewControllerIndex)
 
@@ -392,12 +390,15 @@ extension TabBarItem: Equatable {
   }
 }
 
-func activitiesBadgeValue() -> String? {
-  let count = min(AppEnvironment.current.application.applicationIconBadgeNumber, maxBadgeValue)
+private func activitiesBadgeValue() -> String? {
+  let maxBadgeValue = 99
+  
+  let applicationIconBadgeNumber = AppEnvironment.current.application.applicationIconBadgeNumber
+  let count = min(applicationIconBadgeNumber, maxBadgeValue)
 
   guard count > 0 else { return nil }
 
-  let plusSign = AppEnvironment.current.application.applicationIconBadgeNumber > maxBadgeValue ? "+" : ""
+  let plusSign = applicationIconBadgeNumber > maxBadgeValue ? "+" : ""
 
   return "\(count)\(plusSign)"
 }
