@@ -6,7 +6,7 @@ final class SettingsFooterView: UITableViewHeaderFooterView {
 
   // MARK: - Properties
 
-  @IBOutlet private weak var titleLabel: UILabel!
+  @IBOutlet private var titleLabel: UILabel!
 
   // MARK: - Lifecycle
 

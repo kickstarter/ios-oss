@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ActitiviesViewModelInputs {
   /// Called when the project image in an update activity cell is tapped.
@@ -105,8 +105,8 @@ public protocol ActivitiesViewModelType {
 }
 
 public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewModelInputs,
-ActivitiesViewModelOutputs {
-    public init() {
+  ActivitiesViewModelOutputs {
+  public init() {
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in total > 3 && row >= total - 2 }
       .skipRepeats()
@@ -119,7 +119,7 @@ ActivitiesViewModelOutputs {
         self.viewWillAppearProperty.signal.skipNil().filter(isTrue).ignoreValues(),
         self.refreshProperty.signal
       )
-        .filter { AppEnvironment.current.currentUser != nil }
+      .filter { AppEnvironment.current.currentUser != nil }
 
     let (paginatedActivities, isLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPage,
@@ -137,7 +137,7 @@ ActivitiesViewModelOutputs {
         !next.isEmpty
           ? (acc + next).distincts().sorted { $0.id > $1.id }
           : next
-    }
+      }
 
     self.isRefreshing = isLoading
 
@@ -179,7 +179,7 @@ ActivitiesViewModelOutputs {
     self.showEmptyStateIsLoggedIn = Signal.merge(
       loggedInForEmptyState,
       loggedOutForEmptyState
-      )
+    )
 
     self.hideEmptyState = Signal.merge(
       self.viewDidLoadProperty.signal.ignoreValues(),
@@ -207,18 +207,20 @@ ActivitiesViewModelOutputs {
       .takeWhen(Signal.merge(
         self.viewWillAppearProperty.signal.skipNil().filter(isFalse).ignoreValues(),
         self.surveyResponseViewControllerDismissedProperty.signal
-        )
+      )
       )
       .filter { $0 != nil }
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchUnansweredSurveyResponses()
           .materialize()
-    }
+      }
 
     self.unansweredSurveys = surveyEvents.values()
 
-    let surveyValuesOrErrors = Signal.merge(surveyEvents.values().ignoreValues(),
-                                            surveyEvents.errors().ignoreValues())
+    let surveyValuesOrErrors = Signal.merge(
+      surveyEvents.values().ignoreValues(),
+      surveyEvents.errors().ignoreValues()
+    )
 
     self.showFindFriendsSection = surveyValuesOrErrors
       .map {
@@ -226,16 +228,18 @@ ActivitiesViewModelOutputs {
           .activity,
           !FindFriendsFacebookConnectCellViewModel
             .showFacebookConnectionSection(for: AppEnvironment.current.currentUser)
-          && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
+            && !AppEnvironment.current.userDefaults.hasClosedFindFriendsInActivity
         )
-    }
+      }
 
     self.showFacebookConnectSection = surveyValuesOrErrors
-      .map { (
-        .activity,
-        FindFriendsFacebookConnectCellViewModel
-          .showFacebookConnectionSection(for: AppEnvironment.current.currentUser) &&
-        !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity)
+      .map {
+        (
+          .activity,
+          FindFriendsFacebookConnectCellViewModel
+            .showFacebookConnectionSection(for: AppEnvironment.current.currentUser) &&
+            !AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity
+        )
       }
 
     self.deleteFacebookConnectSection = self.dismissFacebookConnectSectionProperty.signal
@@ -247,8 +251,8 @@ ActivitiesViewModelOutputs {
     self.goToFriends = Signal.merge(
       self.goToFriendsProperty.signal,
       self.userFacebookConnectedProperty.signal
-      )
-      .mapConst(.activity)
+    )
+    .mapConst(.activity)
 
     self.dismissFacebookConnectSectionProperty.signal
       .observeValues { AppEnvironment.current.userDefaults.hasClosedFacebookConnectInActivity = true }
@@ -281,60 +285,74 @@ ActivitiesViewModelOutputs {
 
   fileprivate let dismissFacebookConnectSectionProperty = MutableProperty(())
   public func findFriendsFacebookConnectCellDidDismissHeader() {
-    dismissFacebookConnectSectionProperty.value = ()
+    self.dismissFacebookConnectSectionProperty.value = ()
   }
+
   fileprivate let dismissFindFriendsSectionProperty = MutableProperty(())
   public func findFriendsHeaderCellDismissHeader() {
-    dismissFindFriendsSectionProperty.value = ()
+    self.dismissFindFriendsSectionProperty.value = ()
   }
+
   fileprivate let goToFriendsProperty = MutableProperty(())
   public func findFriendsHeaderCellGoToFriends() {
-    goToFriendsProperty.value = ()
+    self.goToFriendsProperty.value = ()
   }
+
   fileprivate let showFacebookConnectErrorAlertProperty = MutableProperty<AlertError?>(nil)
   public func findFriendsFacebookConnectCellShowErrorAlert(_ alert: AlertError) {
-    showFacebookConnectErrorAlertProperty.value = alert
+    self.showFacebookConnectErrorAlertProperty.value = alert
   }
+
   fileprivate let viewWillAppearProperty = MutableProperty<Bool?>(nil)
   public func viewWillAppear(animated: Bool) {
     self.viewWillAppearProperty.value = animated
   }
+
   fileprivate let refreshProperty = MutableProperty(())
   public func refresh() {
     self.refreshProperty.value = ()
   }
+
   fileprivate let surveyResponseViewControllerDismissedProperty = MutableProperty(())
   public func surveyResponseViewControllerDismissed() {
     self.surveyResponseViewControllerDismissedProperty.value = ()
   }
+
   fileprivate let tappedActivityProjectImage = MutableProperty<Activity?>(nil)
   public func activityUpdateCellTappedProjectImage(activity: Activity) {
     self.tappedActivityProjectImage.value = activity
   }
+
   fileprivate let tappedSurveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
   public func tappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse) {
     self.tappedSurveyResponseProperty.value = surveyResponse
   }
+
   fileprivate let tappedActivityProperty = MutableProperty<Activity?>(nil)
   public func tappedActivity(_ activity: Activity) {
     self.tappedActivityProperty.value = activity
   }
+
   fileprivate let userFacebookConnectedProperty = MutableProperty(())
   public func findFriendsFacebookConnectCellDidFacebookConnectUser() {
-    userFacebookConnectedProperty.value = ()
+    self.userFacebookConnectedProperty.value = ()
   }
+
   fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
+
   fileprivate let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+
   fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)

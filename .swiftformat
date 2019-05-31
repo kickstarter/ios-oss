@@ -6,6 +6,10 @@
 
 # numberFormatting
 --decimalgrouping 3
+<<<<<<< HEAD
+=======
+--hexgrouping "ignore"
+>>>>>>> master
 
 # redundantSelf
 # Reference `self` explicitly

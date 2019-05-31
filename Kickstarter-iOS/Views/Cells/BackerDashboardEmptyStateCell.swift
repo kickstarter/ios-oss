@@ -4,11 +4,10 @@ import Prelude
 import UIKit
 
 internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
-
-  @IBOutlet private weak var filledHeartIconImageView: UIImageView!
-  @IBOutlet private weak var messageLabel: UILabel!
-  @IBOutlet private weak var titleLabel: UILabel!
-  @IBOutlet private weak var iconImageView: UIImageView!
+  @IBOutlet private var filledHeartIconImageView: UIImageView!
+  @IBOutlet private var messageLabel: UILabel!
+  @IBOutlet private var titleLabel: UILabel!
+  @IBOutlet private var iconImageView: UIImageView!
 
   private var isAnimating: Bool = false
   private let duration = 0.4
@@ -24,9 +23,11 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
       self.titleLabel.text = Strings.Explore_creative_projects()
       _ = self.iconImageView
         |> UIImageView.lens.image
-        .~ UIImage(named: "icon--eye",
-                   in: .framework,
-                   compatibleWith: nil)
+        .~ UIImage(
+          named: "icon--eye",
+          in: .framework,
+          compatibleWith: nil
+        )
       _ = self.filledHeartIconImageView
         |> UIImageView.lens.isHidden .~ true
     case .saved:
@@ -35,16 +36,15 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
 
       NotificationCenter.default.addObserver(
         self,
-        selector: #selector(animateToFilledHeart),
+        selector: #selector(self.animateToFilledHeart),
         name: .ksr_savedProjectEmptyStateTapped,
         object: nil
       )
-      animateToFilledHeart()
+      self.animateToFilledHeart()
     }
   }
 
   @objc internal func animateToFilledHeart() {
-
     guard self.isAnimating == false else { return }
 
     UIView.animate(
@@ -64,7 +64,7 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
         _self.iconImageView.transform = _self.shrunkHeartTransform
         _self.filledHeartIconImageView.transform = _self.expandedHearTransform
         _self.filledHeartIconImageView.alpha = _self.visibleHeartAlpha
-        },
+      },
       completion: { [weak self] _ in
         guard let _self = self else { return }
         _self.animateToOutlineHeart()
@@ -106,7 +106,7 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(20))
           : .init(topBottom: Styles.grid(10), leftRight: Styles.grid(3))
-    }
+      }
     _ = self.messageLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
       |> UILabel.lens.font .~ UIFont.ksr_body(size: 15.0)

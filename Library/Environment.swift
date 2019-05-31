@@ -1,8 +1,8 @@
 import AVFoundation
+import FBSDKCoreKit
 import Foundation
 import KsApi
 import ReactiveSwift
-import FBSDKCoreKit
 
 /**
  A collection of **all** global variables and singletons that the app wants access to.
@@ -123,8 +123,8 @@ public struct Environment {
     reachability: SignalProducer<Reachability, Never> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
-    userDefaults: KeyValueStoreType = UserDefaults.standard) {
-
+    userDefaults: KeyValueStoreType = UserDefaults.standard
+  ) {
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
     self.application = application

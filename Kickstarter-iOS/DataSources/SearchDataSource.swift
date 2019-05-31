@@ -11,30 +11,38 @@ internal final class SearchDataSource: ValueCellDataSource {
   }
 
   internal func popularTitle(isVisible visible: Bool) {
-    self.set(cellIdentifiers: visible ? ["MostPopularCell"] : [],
-             inSection: Section.popularTitle.rawValue)
+    self.set(
+      cellIdentifiers: visible ? ["MostPopularCell"] : [],
+      inSection: Section.popularTitle.rawValue
+    )
   }
 
   internal func load(params: DiscoveryParams, visible: Bool) {
-    self.set(values: visible ? [params] : [],
-             cellClass: SearchEmptyStateCell.self,
-             inSection: Section.noResults.rawValue)
+    self.set(
+      values: visible ? [params] : [],
+      cellClass: SearchEmptyStateCell.self,
+      inSection: Section.noResults.rawValue
+    )
   }
 
   internal func load(projects: [Project]) {
     self.clearValues(section: Section.projects.rawValue)
 
     if let mostPopular = projects.first {
-      self.appendRow(value: mostPopular,
-                     cellClass: MostPopularSearchProjectCell.self,
-                     toSection: Section.projects.rawValue)
+      self.appendRow(
+        value: mostPopular,
+        cellClass: MostPopularSearchProjectCell.self,
+        toSection: Section.projects.rawValue
+      )
     }
 
     if !projects.isEmpty {
       projects.dropFirst().forEach {
-        self.appendRow(value: $0,
-                       cellClass: BackerDashboardProjectCell.self,
-                       toSection: Section.projects.rawValue)
+        self.appendRow(
+          value: $0,
+          cellClass: BackerDashboardProjectCell.self,
+          toSection: Section.projects.rawValue
+        )
       }
     }
   }

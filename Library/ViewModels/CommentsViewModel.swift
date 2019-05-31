@@ -1,7 +1,7 @@
-import ReactiveSwift
-import ReactiveExtensions
 import KsApi
 import Prelude
+import ReactiveExtensions
+import ReactiveSwift
 
 public protocol CommentsViewModelInputs {
   /// Call when the comment button is pressed.
@@ -56,26 +56,27 @@ public protocol CommentsViewModelType {
 }
 
 public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelInputs,
-CommentsViewModelOutputs {
-
-    public init() {
+  CommentsViewModelOutputs {
+  public init() {
     let projectOrUpdate = Signal.combineLatest(
       self.projectAndUpdateProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      )
-      .map(first)
-      .flatMap { project, update in
-        return SignalProducer(value: project.map(Either.left) ?? update.map(Either.right))
-          .skipNil()
+    )
+    .map(first)
+    .flatMap { project, update in
+      SignalProducer(value: project.map(Either.left) ?? update.map(Either.right))
+        .skipNil()
     }
 
     let initialProject = projectOrUpdate
       .flatMap { projectOrUpdate in
-        projectOrUpdate.ifLeft(SignalProducer.init(value:),
+        projectOrUpdate.ifLeft(
+          SignalProducer.init(value:),
           ifRight: {
             AppEnvironment.current.apiService.fetchProject(param: .id($0.projectId)).demoteErrors()
-        })
-    }
+          }
+        )
+      }
 
     let refreshedProjectOnLogin = initialProject
       .takeWhen(self.userSessionStartedProperty.signal)
@@ -93,8 +94,8 @@ CommentsViewModelOutputs {
     let user = Signal.merge(
       self.viewDidLoadProperty.signal,
       self.userSessionStartedProperty.signal
-      )
-      .map { AppEnvironment.current.currentUser }
+    )
+    .map { AppEnvironment.current.currentUser }
 
     let requestFirstPageWith = Signal.merge(
       projectOrUpdate,
@@ -109,10 +110,13 @@ CommentsViewModelOutputs {
       valuesFromEnvelope: { $0.comments },
       cursorFromEnvelope: { $0.urls.api.moreComments },
       requestFromParams: { updateOrProject in
-        updateOrProject.ifLeft(AppEnvironment.current.apiService.fetchComments(project:),
-          ifRight: AppEnvironment.current.apiService.fetchComments(update:))
+        updateOrProject.ifLeft(
+          AppEnvironment.current.apiService.fetchComments(project:),
+          ifRight: AppEnvironment.current.apiService.fetchComments(update:)
+        )
       },
-      requestFromCursor: { AppEnvironment.current.apiService.fetchComments(paginationUrl: $0) })
+      requestFromCursor: { AppEnvironment.current.apiService.fetchComments(paginationUrl: $0) }
+    )
 
     self.commentsAreLoading = isLoading
 
@@ -132,8 +136,8 @@ CommentsViewModelOutputs {
     self.commentBarButtonVisible = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
       userCanComment
-      )
-      .skipRepeats()
+    )
+    .skipRepeats()
 
     self.presentPostCommentDialog = Signal.combineLatest(project, update)
       .takeWhen(
@@ -150,7 +154,7 @@ CommentsViewModelOutputs {
         AppEnvironment.current.koala.trackCommentsView(
           project: project, update: update, context: update == nil ? .project : .update
         )
-    }
+      }
 
     Signal.combineLatest(project, update)
       .takeWhen(pageCount.skip(first: 1).filter { $0 == 1 })
@@ -158,7 +162,7 @@ CommentsViewModelOutputs {
         AppEnvironment.current.koala.trackLoadNewerComments(
           project: project, update: update, context: update == nil ? .project : .update
         )
-    }
+      }
 
     Signal.combineLatest(project, update)
       .takePairWhen(pageCount.skip(first: 1).filter { $0 > 1 })
@@ -167,7 +171,7 @@ CommentsViewModelOutputs {
         AppEnvironment.current.koala.trackLoadOlderComments(
           project: project, update: update, page: pageCount, context: update == nil ? .project : .update
         )
-    }
+      }
   }
 
   fileprivate let commentButtonPressedProperty = MutableProperty(())

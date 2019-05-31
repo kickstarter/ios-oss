@@ -1,10 +1,10 @@
 import Foundation
-import XCTest
-import ReactiveSwift
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class SettingsNotificationsViewModelTests: TestCase {
   let vm = SettingsNotificationsViewModel()
@@ -94,13 +94,17 @@ internal final class SettingsNotificationsViewModelTests: TestCase {
     let user = User.template
       |> UserAttribute.notification(.creatorDigest).keyPath .~ true
 
-    let errorEnvelope = ErrorEnvelope(errorMessages: ["Something went wrong"],
-                              ksrCode: nil,
-                              httpCode: 500,
-                              exception: nil)
+    let errorEnvelope = ErrorEnvelope(
+      errorMessages: ["Something went wrong"],
+      ksrCode: nil,
+      httpCode: 500,
+      exception: nil
+    )
 
-    let mockService = MockService(fetchUserSelfResponse: user,
-                                  updateUserSelfError: errorEnvelope)
+    let mockService = MockService(
+      fetchUserSelfResponse: user,
+      updateUserSelfError: errorEnvelope
+    )
 
     withEnvironment(apiService: mockService, currentUser: user) {
       self.vm.viewDidLoad()

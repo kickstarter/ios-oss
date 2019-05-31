@@ -1,10 +1,10 @@
-import Prelude
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class DashboardActionCellViewModelTests: TestCase {
   fileprivate let vm = DashboardActionCellViewModel()
@@ -162,8 +162,10 @@ internal final class DashboardActionCellViewModelTests: TestCase {
       self.lastUpdatePublishedLabelHidden
         .assertValues([true], "Last update label is hidden without post permissions.")
       self.messagesRowHidden.assertValues([true], "Messages row is hidden for non-creator.")
-      self.postUpdateButtonHidden.assertValues([true],
-                                               "Post update button is hidden without post permissions.")
+      self.postUpdateButtonHidden.assertValues(
+        [true],
+        "Post update button is hidden without post permissions."
+      )
     }
   }
 }

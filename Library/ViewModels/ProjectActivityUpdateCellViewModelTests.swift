@@ -1,8 +1,8 @@
-import XCTest
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityUpdateCellViewModelType = ProjectActivityUpdateCellViewModel()
@@ -87,11 +87,11 @@ internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = (Strings.dashboard_activity_update_number_posted_time_count_days_ago(
-        space: "\u{00a0}",
-        update_number: "9",
-        time_count_days_ago: Format.relative(secondsInUTC: publishedAt)
-      )
-      .htmlStripped() ?? "")
+      space: "\u{00a0}",
+      update_number: "9",
+      time_count_days_ago: Format.relative(secondsInUTC: publishedAt)
+    )
+    .htmlStripped() ?? "")
     self.cellAccessibilityLabel.assertValues([expected], "Emits accessibility label")
   }
 

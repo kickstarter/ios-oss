@@ -3,19 +3,18 @@ import Library
 import Prelude
 import UIKit
 
-internal protocol SettingsNewslettersCellDelegate: class {
+internal protocol SettingsNewslettersCellDelegate: AnyObject {
   func didUpdate(user: User)
   func failedToUpdateUser(_ message: String)
   func shouldShowOptInAlert(_ newsletterName: String)
 }
 
 internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
-
   private let viewModel: SettingsNewslettersCellViewModelType = SettingsNewsletterCellViewModel()
 
-  @IBOutlet fileprivate weak var newslettersDescriptionLabel: UILabel!
-  @IBOutlet fileprivate weak var newslettersLabel: UILabel!
-  @IBOutlet fileprivate weak var newslettersSwitch: UISwitch!
+  @IBOutlet fileprivate var newslettersDescriptionLabel: UILabel!
+  @IBOutlet fileprivate var newslettersLabel: UILabel!
+  @IBOutlet fileprivate var newslettersSwitch: UISwitch!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
   public weak var delegate: SettingsNewslettersCellDelegate?
@@ -64,19 +63,19 @@ internal final class SettingsNewslettersCell: UITableViewCell, ValueCell {
       .observeForControllerAction()
       .observeValues { [weak self] newsletter in
         self?.delegate?.shouldShowOptInAlert(newsletter)
-    }
+      }
 
     self.viewModel.outputs.unableToSaveError
       .observeForUI()
       .observeValues { [weak self] in
         self?.delegate?.failedToUpdateUser($0)
-    }
+      }
 
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()
       .observeValues { [weak self] in
         self?.delegate?.didUpdate(user: $0)
-    }
+      }
   }
 
   @IBAction func newslettersSwitchTapped(_ sender: UISwitch) {

@@ -1,5 +1,5 @@
-import XCTest
 @testable import Library
+import XCTest
 
 class LocalizedStringTests: XCTestCase {
   fileprivate let mockBundle = MockBundle()
@@ -15,9 +15,11 @@ class LocalizedStringTests: XCTestCase {
         localizedString(key: "hello_format", substitutions: ["a": "A", "b": "B"], bundle: mockBundle)
       )
 
-      XCTAssertEqual("",
-                     localizedString(key: "echo", bundle: mockBundle),
-                     "When key/value are equal we should return an empty string")
+      XCTAssertEqual(
+        "",
+        localizedString(key: "echo", bundle: mockBundle),
+        "When key/value are equal we should return an empty string"
+      )
     }
   }
 

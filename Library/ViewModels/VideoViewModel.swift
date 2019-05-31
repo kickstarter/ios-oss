@@ -1,8 +1,8 @@
 import AVFoundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 private let playRate = 1.0
 private let pauseRate = 0.0
@@ -83,9 +83,7 @@ public protocol VideoViewModelType {
 }
 
 public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, VideoViewModelType {
-
-    public init() {
-
+  public init() {
     let project = Signal.combineLatest(
       self.projectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
@@ -145,8 +143,8 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     let elementsHiddenOnPlayback = Signal.merge(
       self.playVideo.mapConst(true),
       reachedEndOfVideo.mapConst(false)
-      )
-      .skipRepeats()
+    )
+    .skipRepeats()
 
     self.projectImageHidden = Signal.merge(elementsHiddenOnPlayback, project.mapConst(false))
       .skipRepeats()
@@ -154,8 +152,8 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.playButtonHidden = Signal.merge(
       project.map { $0.video == nil },
       elementsHiddenOnPlayback
-      )
-      .skipRepeats()
+    )
+    .skipRepeats()
 
     self.projectImageURL = project.map { URL(string: $0.photo.full) }.skipRepeats(==)
 
@@ -166,7 +164,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
       .switchMap {
         AppEnvironment.current.apiService.incrementVideoCompletion(forProject: $0)
           .demoteErrors()
-    }
+      }
 
     self.incrementVideoStart = Signal.combineLatest(project, videoStarted)
       .map(first)
@@ -210,34 +208,42 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public func crossedCompletionThreshold() {
     self.crossedCompletionThresholdProperty.value = ()
   }
+
   fileprivate let durationProperty = MutableProperty<CMTime?>(nil)
   public func durationChanged(toNew duration: CMTime) {
     self.durationProperty.value = duration
   }
+
   fileprivate let playButtonTappedProperty = MutableProperty(())
   public func playButtonTapped() {
     self.playButtonTappedProperty.value = ()
   }
+
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
     self.projectProperty.value = project
   }
+
   fileprivate let rateCurrentTimeProperty = MutableProperty<(Double, CMTime)?>(nil)
   public func rateChanged(toNew rate: Double, atTime currentTime: CMTime) {
     self.rateCurrentTimeProperty.value = (rate, currentTime)
   }
+
   fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
+
   fileprivate let viewDidDisappearProperty = MutableProperty(false)
   public func viewDidDisappear(animated: Bool) {
     self.viewDidDisappearProperty.value = animated
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+
   fileprivate let viewWillDisappearProperty = MutableProperty(())
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()

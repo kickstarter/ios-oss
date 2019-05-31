@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ProjectNotificationsViewModelInputs {
   /// Call when the view loads.
@@ -22,12 +22,11 @@ public protocol ProjectNotificationsViewModelType {
 public final class ProjectNotificationsViewModel: ProjectNotificationsViewModelType,
   ProjectNotificationsViewModelInputs, ProjectNotificationsViewModelOutputs {
   public init() {
-
     self.projectNotifications = self.viewDidLoadProperty.signal
       .flatMap {
         AppEnvironment.current.apiService.fetchProjectNotifications()
           .demoteErrors()
-    }
+      }
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

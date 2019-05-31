@@ -1,11 +1,11 @@
+import KsApi
 import Library
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import KsApi
 import UIKit
 
-internal protocol ActivityUpdateCellDelegate: class {
+internal protocol ActivityUpdateCellDelegate: AnyObject {
   /// Call with the activity value when navigating to the activity's project.
   func activityUpdateCellTappedProjectImage(activity: Activity)
 }
@@ -14,14 +14,14 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
   fileprivate var viewModel: ActivityUpdateViewModelType = ActivityUpdateViewModel()
   internal weak var delegate: ActivityUpdateCellDelegate?
 
-  @IBOutlet fileprivate weak var bodyLabel: UILabel!
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var containerView: UIView!
-  @IBOutlet fileprivate weak var projectImageButton: UIButton!
-  @IBOutlet fileprivate weak var projectImageView: UIImageView!
-  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
-  @IBOutlet fileprivate weak var updateSequenceLabel: UILabel!
+  @IBOutlet fileprivate var bodyLabel: UILabel!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var containerView: UIView!
+  @IBOutlet fileprivate var projectImageButton: UIButton!
+  @IBOutlet fileprivate var projectImageView: UIImageView!
+  @IBOutlet fileprivate var projectNameLabel: UILabel!
+  @IBOutlet fileprivate var titleLabel: UILabel!
+  @IBOutlet fileprivate var updateSequenceLabel: UILabel!
 
   internal func configureWith(value: Activity) {
     self.viewModel.inputs.configureWith(activity: value)
@@ -47,13 +47,13 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
       .skipNil()
       .observeValues { [weak projectImageView] url in
         projectImageView?.af_setImage(withURL: url)
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateTappedProjectImage
       .observeForUI()
       .observeValues { [weak self] activity in
         self?.delegate?.activityUpdateCellTappedProjectImage(activity: activity)
-    }
+      }
   }
 
   internal override func bindStyles() {

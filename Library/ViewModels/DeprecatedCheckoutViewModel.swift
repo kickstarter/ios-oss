@@ -404,6 +404,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
   public var showAlert: Signal<String, Never> {
     return self.checkoutRacingViewModel.outputs.showAlert
   }
+
   public let webViewLoadRequest: Signal<URLRequest, Never>
 
   public var inputs: DeprecatedCheckoutViewModelInputs { return self }

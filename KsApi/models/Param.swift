@@ -43,7 +43,6 @@ public enum Param {
 
 extension Param: Equatable {}
 public func == (lhs: Param, rhs: Param) -> Bool {
-
   switch (lhs, rhs) {
   case let (.id(lhs), .id(rhs)):
     return lhs == rhs

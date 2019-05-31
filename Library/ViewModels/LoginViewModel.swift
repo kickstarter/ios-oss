@@ -1,10 +1,9 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol LoginViewModelInputs {
-
   /// String value of email textfield text
   func emailChanged(_ email: String?)
 
@@ -95,8 +94,7 @@ public protocol LoginViewModelType {
 }
 
 public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, LoginViewModelOutputs {
-
-    public init() {
+  public init() {
     let emailAndPassword = Signal.combineLatest(
       .merge(self.emailChangedProperty.signal.skipNil(), self.prefillEmailProperty.signal.skipNil()),
       .merge(self.passwordChangedProperty.signal.skipNil(), self.prefillPasswordProperty.signal.skipNil())
@@ -113,7 +111,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       Signal.combineLatest(
         self.prefillEmailProperty.signal,
         self.prefillPasswordProperty.signal
-        ).ignoreValues()
+      ).ignoreValues()
     )
 
     let loginEvent = emailAndPassword
@@ -121,7 +119,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       .switchMap { email, password in
         AppEnvironment.current.apiService.login(email: email, password: password, code: nil)
           .materialize()
-    }
+      }
 
     self.logIntoEnvironment = loginEvent.values()
 
@@ -135,9 +133,13 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(
-        (Notification(name: .ksr_sessionStarted),
-         Notification(name: .ksr_showNotificationsDialog,
-                      userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]))
+        (
+          Notification(name: .ksr_sessionStarted),
+          Notification(
+            name: .ksr_showNotificationsDialog,
+            userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
+          )
+        )
       )
 
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
@@ -147,7 +149,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       .filter { $0.ksrCode != .TfaRequired }
       .map { env in
         env.errorMessages.first ?? Strings.login_errors_unable_to_log_in()
-    }
+      }
 
     self.showResetPassword = self.resetPasswordPressedProperty.signal
 
@@ -182,44 +184,54 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
+
   fileprivate let emailChangedProperty = MutableProperty<String?>(nil)
   public func emailChanged(_ email: String?) {
     self.emailChangedProperty.value = email
   }
+
   fileprivate let passwordChangedProperty = MutableProperty<String?>(nil)
   public func passwordChanged(_ password: String?) {
     self.passwordChangedProperty.value = password
   }
+
   fileprivate let loginButtonPressedProperty = MutableProperty(())
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
   }
+
   fileprivate let onePasswordButtonTappedProperty = MutableProperty(())
   public func onePasswordButtonTapped() {
     self.onePasswordButtonTappedProperty.value = ()
   }
+
   fileprivate let prefillEmailProperty = MutableProperty<String?>(nil)
   fileprivate let prefillPasswordProperty = MutableProperty<String?>(nil)
   public func onePasswordFoundLogin(email: String?, password: String?) {
     self.prefillEmailProperty.value = email
     self.prefillPasswordProperty.value = password
   }
+
   fileprivate let onePasswordIsAvailableProperty = MutableProperty(false)
   public func onePassword(isAvailable available: Bool) {
     self.onePasswordIsAvailableProperty.value = available
   }
+
   fileprivate let emailTextFieldDoneEditingProperty = MutableProperty(())
   public func emailTextFieldDoneEditing() {
     self.emailTextFieldDoneEditingProperty.value = ()
   }
+
   fileprivate let passwordTextFieldDoneEditingProperty = MutableProperty(())
   public func passwordTextFieldDoneEditing() {
     self.passwordTextFieldDoneEditingProperty.value = ()
   }
+
   fileprivate let environmentLoggedInProperty = MutableProperty(())
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
+
   fileprivate let resetPasswordPressedProperty = MutableProperty(())
   public func resetPasswordButtonPressed() {
     self.resetPasswordPressedProperty.value = ()
@@ -227,7 +239,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
   fileprivate let shouldShowPasswordProperty = MutableProperty(false)
   public func showHidePasswordButtonTapped() {
-    self.shouldShowPasswordProperty.value = shouldShowPasswordProperty.negate().value
+    self.shouldShowPasswordProperty.value = self.shouldShowPasswordProperty.negate().value
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

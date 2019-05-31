@@ -1,10 +1,10 @@
-import XCTest
-import UIKit
-import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
 import ReactiveSwift
+import UIKit
+import XCTest
 
 final class UpdateDraftViewModelTests: TestCase {
   let vm: UpdateDraftViewModelType = UpdateDraftViewModel()
@@ -35,30 +35,31 @@ final class UpdateDraftViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    vm.outputs.attachmentAdded.observe(self.attachmentAdded.observer)
-    vm.outputs.attachmentRemoved.observe(self.attachmentRemoved.observer)
-    vm.outputs.attachments.observe(self.attachments.observer)
-    vm.outputs.body.observe(self.body.observer)
-    vm.outputs.bodyTextViewBecomeFirstResponder.observe(self.bodyTextViewBecomeFirstResponder.observer)
-    vm.outputs.goToPreview.observe(self.goToPreview.observer)
-    vm.outputs.isAttachmentsSectionHidden.observe(self.isAttachmentsSectionHidden.observer)
-    vm.outputs.isBackersOnly.observe(self.isBackersOnly.observer)
-    vm.outputs.isBodyPlaceholderHidden.observe(self.isBodyPlaceholderHidden.observer)
-    vm.outputs.isLoading.observe(self.isLoading.observer)
-    vm.outputs.isPreviewButtonEnabled.observe(self.isPreviewButtonEnabled.observer)
-    vm.outputs.navigationItemTitle.observe(self.navigationItemTitle.observer)
-    vm.outputs.notifyPresenterViewControllerWantsDismissal
+    self.vm.outputs.attachmentAdded.observe(self.attachmentAdded.observer)
+    self.vm.outputs.attachmentRemoved.observe(self.attachmentRemoved.observer)
+    self.vm.outputs.attachments.observe(self.attachments.observer)
+    self.vm.outputs.body.observe(self.body.observer)
+    self.vm.outputs.bodyTextViewBecomeFirstResponder.observe(self.bodyTextViewBecomeFirstResponder.observer)
+    self.vm.outputs.goToPreview.observe(self.goToPreview.observer)
+    self.vm.outputs.isAttachmentsSectionHidden.observe(self.isAttachmentsSectionHidden.observer)
+    self.vm.outputs.isBackersOnly.observe(self.isBackersOnly.observer)
+    self.vm.outputs.isBodyPlaceholderHidden.observe(self.isBodyPlaceholderHidden.observer)
+    self.vm.outputs.isLoading.observe(self.isLoading.observer)
+    self.vm.outputs.isPreviewButtonEnabled.observe(self.isPreviewButtonEnabled.observer)
+    self.vm.outputs.navigationItemTitle.observe(self.navigationItemTitle.observer)
+    self.vm.outputs.notifyPresenterViewControllerWantsDismissal
       .observe(self.notifyPresenterViewControllerWantsDismissal.observer)
-    vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
-    vm.outputs.showAddAttachmentFailure.observe(self.showAddAttachmentFailure.observer)
-    vm.outputs.showAttachmentActions.observe(self.showAttachmentActions.observer)
-    vm.outputs.showImagePicker.observe(self.showImagePicker.observer)
-    vm.outputs.showLoadFailure.observe(self.showLoadFailure.observer)
-    vm.outputs.showRemoveAttachmentConfirmation.observe(self.showRemoveAttachmentConfirmation.observer)
-    vm.outputs.showRemoveAttachmentFailure.observe(self.showRemoveAttachmentFailure.observer)
-    vm.outputs.showSaveFailure.observe(self.showSaveFailure.observer)
-    vm.outputs.title.observe(self.title.observer)
-    vm.outputs.titleTextFieldBecomeFirstResponder.observe(self.titleTextFieldBecomeFirstResponder.observer)
+    self.vm.outputs.resignFirstResponder.observe(self.resignFirstResponder.observer)
+    self.vm.outputs.showAddAttachmentFailure.observe(self.showAddAttachmentFailure.observer)
+    self.vm.outputs.showAttachmentActions.observe(self.showAttachmentActions.observer)
+    self.vm.outputs.showImagePicker.observe(self.showImagePicker.observer)
+    self.vm.outputs.showLoadFailure.observe(self.showLoadFailure.observer)
+    self.vm.outputs.showRemoveAttachmentConfirmation.observe(self.showRemoveAttachmentConfirmation.observer)
+    self.vm.outputs.showRemoveAttachmentFailure.observe(self.showRemoveAttachmentFailure.observer)
+    self.vm.outputs.showSaveFailure.observe(self.showSaveFailure.observer)
+    self.vm.outputs.title.observe(self.title.observer)
+    self.vm.outputs.titleTextFieldBecomeFirstResponder
+      .observe(self.titleTextFieldBecomeFirstResponder.observer)
   }
 
   func testConfiguredBlank() {
@@ -81,8 +82,11 @@ final class UpdateDraftViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      self.navigationItemTitle.assertValues([Strings.dashboard_post_update_compose_update_number(
-        update_number: Format.wholeNumber(7))])
+      self.navigationItemTitle.assertValues([
+        Strings.dashboard_post_update_compose_update_number(
+          update_number: Format.wholeNumber(7)
+        )
+      ])
     }
   }
 
@@ -277,8 +281,10 @@ final class UpdateDraftViewModelTests: TestCase {
       self.showImagePicker.assertValues([.cameraRoll])
 
       self.vm.inputs.imagePickerCanceled()
-      XCTAssertEqual(["Viewed Draft", "Started Add Attachment", "Canceled Add Attachment"],
-                     self.trackingClient.events, "Koala attachment events tracked")
+      XCTAssertEqual(
+        ["Viewed Draft", "Started Add Attachment", "Canceled Add Attachment"],
+        self.trackingClient.events, "Koala attachment events tracked"
+      )
 
       self.vm.inputs.addAttachmentButtonTapped(availableSources: [.camera, .cameraRoll])
       self.showAttachmentActions.assertValues([[.cameraRoll], [.camera, .cameraRoll]])
@@ -293,37 +299,45 @@ final class UpdateDraftViewModelTests: TestCase {
       self.scheduler.advance()
       self.attachmentAdded.assertValues([.image(image)])
 
-      XCTAssertEqual([
-        "Viewed Draft", "Started Add Attachment", "Canceled Add Attachment",
-        "Started Add Attachment", "Completed Add Attachment"],
-                     self.trackingClient.events, "Koala attachment events tracked")
+      XCTAssertEqual(
+        [
+          "Viewed Draft", "Started Add Attachment", "Canceled Add Attachment",
+          "Started Add Attachment", "Completed Add Attachment"
+        ],
+        self.trackingClient.events, "Koala attachment events tracked"
+      )
     }
   }
 
   func testAddAttachmentFailure() {
-    withEnvironment(apiService: MockService(fetchDraftResponse: .blank,
-      addAttachmentError: .couldNotParseJSON)) {
-        self.vm.inputs.configureWith(project: .template)
-        self.vm.inputs.viewDidLoad()
-        self.scheduler.advance()
+    withEnvironment(apiService: MockService(
+      fetchDraftResponse: .blank,
+      addAttachmentError: .couldNotParseJSON
+    )) {
+      self.vm.inputs.configureWith(project: .template)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-        self.vm.inputs.addAttachmentButtonTapped(availableSources: [.cameraRoll])
-        self.showAttachmentActions.assertValues([[.cameraRoll]])
+      self.vm.inputs.addAttachmentButtonTapped(availableSources: [.cameraRoll])
+      self.showAttachmentActions.assertValues([[.cameraRoll]])
 
-        self.vm.inputs.addAttachmentSheetButtonTapped(.cameraRoll)
-        self.showImagePicker.assertValues([.cameraRoll])
+      self.vm.inputs.addAttachmentSheetButtonTapped(.cameraRoll)
+      self.showImagePicker.assertValues([.cameraRoll])
 
-        // swiftlint:disable:next force_unwrapping
-        self.vm.inputs.imagePicked(url: URL(string: "/tmp/photo.jpg")!, fromSource: .cameraRoll)
+      // swiftlint:disable:next force_unwrapping
+      self.vm.inputs.imagePicked(url: URL(string: "/tmp/photo.jpg")!, fromSource: .cameraRoll)
 
-        self.showAddAttachmentFailure.assertValueCount(0)
-        self.scheduler.advance()
-        self.attachmentAdded.assertValues([])
-        self.showAddAttachmentFailure.assertValueCount(1)
+      self.showAddAttachmentFailure.assertValueCount(0)
+      self.scheduler.advance()
+      self.attachmentAdded.assertValues([])
+      self.showAddAttachmentFailure.assertValueCount(1)
 
-        XCTAssertEqual([
-          "Viewed Draft", "Started Add Attachment", "Failed Add Attachment"],
-                       self.trackingClient.events, "Koala attachment events tracked")
+      XCTAssertEqual(
+        [
+          "Viewed Draft", "Started Add Attachment", "Failed Add Attachment"
+        ],
+        self.trackingClient.events, "Koala attachment events tracked"
+      )
     }
   }
 
@@ -351,10 +365,13 @@ final class UpdateDraftViewModelTests: TestCase {
       self.scheduler.advance()
       self.attachmentRemoved.assertValues([.image(image)])
 
-      XCTAssertEqual([
-        "Viewed Draft", "Started Remove Attachment", "Canceled Remove Attachment",
-        "Started Remove Attachment", "Completed Remove Attachment"],
-                     self.trackingClient.events, "Koala attachment events tracked")
+      XCTAssertEqual(
+        [
+          "Viewed Draft", "Started Remove Attachment", "Canceled Remove Attachment",
+          "Started Remove Attachment", "Completed Remove Attachment"
+        ],
+        self.trackingClient.events, "Koala attachment events tracked"
+      )
     }
   }
 
@@ -362,25 +379,30 @@ final class UpdateDraftViewModelTests: TestCase {
     let id = 1
     let image = .template |> UpdateDraft.Image.lens.id .~ id
     let draft = .template |> UpdateDraft.lens.images .~ [image]
-    withEnvironment(apiService: MockService(fetchDraftResponse: draft,
-      removeAttachmentError: .couldNotParseJSON)) {
-        self.vm.inputs.configureWith(project: .template)
-        self.vm.inputs.viewDidLoad()
-        self.scheduler.advance()
+    withEnvironment(apiService: MockService(
+      fetchDraftResponse: draft,
+      removeAttachmentError: .couldNotParseJSON
+    )) {
+      self.vm.inputs.configureWith(project: .template)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
 
-        self.vm.inputs.attachmentTapped(id: id)
-        self.showRemoveAttachmentConfirmation.assertValues([.image(image)])
+      self.vm.inputs.attachmentTapped(id: id)
+      self.showRemoveAttachmentConfirmation.assertValues([.image(image)])
 
-        self.vm.inputs.remove(attachment: .image(image))
+      self.vm.inputs.remove(attachment: .image(image))
 
-        self.showRemoveAttachmentFailure.assertValueCount(0)
-        self.scheduler.advance()
-        self.attachmentRemoved.assertValues([])
-        self.showRemoveAttachmentFailure.assertValueCount(1)
+      self.showRemoveAttachmentFailure.assertValueCount(0)
+      self.scheduler.advance()
+      self.attachmentRemoved.assertValues([])
+      self.showRemoveAttachmentFailure.assertValueCount(1)
 
-        XCTAssertEqual([
-          "Viewed Draft", "Started Remove Attachment", "Failed Remove Attachment"],
-                       self.trackingClient.events, "Koala attachment events tracked")
+      XCTAssertEqual(
+        [
+          "Viewed Draft", "Started Remove Attachment", "Failed Remove Attachment"
+        ],
+        self.trackingClient.events, "Koala attachment events tracked"
+      )
     }
   }
 
@@ -389,7 +411,8 @@ final class UpdateDraftViewModelTests: TestCase {
     let image = .template |> UpdateDraft.Image.lens.id .~ id
     withEnvironment(
       apiService: MockService(
-        fetchDraftResponse: .blank, addAttachmentResponse: image, removeAttachmentResponse: image)
+        fetchDraftResponse: .blank, addAttachmentResponse: image, removeAttachmentResponse: image
+      )
     ) {
       self.vm.inputs.configureWith(project: .template)
       self.vm.inputs.viewDidLoad()
@@ -425,7 +448,8 @@ final class UpdateDraftViewModelTests: TestCase {
     let draft = .template |> UpdateDraft.lens.images .~ [existingImage]
     withEnvironment(
       apiService: MockService(
-        fetchDraftResponse: draft, addAttachmentResponse: newImage, removeAttachmentResponse: existingImage)
+        fetchDraftResponse: draft, addAttachmentResponse: newImage, removeAttachmentResponse: existingImage
+      )
     ) {
       self.vm.inputs.configureWith(project: .template)
       self.vm.inputs.viewDidLoad()
@@ -483,8 +507,10 @@ final class UpdateDraftViewModelTests: TestCase {
       self.resignFirstResponder.assertValueCount(1)
       self.notifyPresenterViewControllerWantsDismissal.assertValueCount(1)
 
-      XCTAssertEqual(["Viewed Draft", "Closed Draft"], self.trackingClient.events,
-                     "Koala closed draft is tracked")
+      XCTAssertEqual(
+        ["Viewed Draft", "Closed Draft"], self.trackingClient.events,
+        "Koala closed draft is tracked"
+      )
     }
   }
 
@@ -501,8 +527,10 @@ final class UpdateDraftViewModelTests: TestCase {
 
       self.notifyPresenterViewControllerWantsDismissal.assertValueCount(1)
 
-      XCTAssertEqual(["Viewed Draft", "Closed Draft", "Edited Title"], self.trackingClient.events,
-                     "Koala edited title is tracked")
+      XCTAssertEqual(
+        ["Viewed Draft", "Closed Draft", "Edited Title"], self.trackingClient.events,
+        "Koala edited title is tracked"
+      )
     }
   }
 
@@ -517,8 +545,10 @@ final class UpdateDraftViewModelTests: TestCase {
       self.vm.inputs.previewButtonTapped()
       self.scheduler.advance()
 
-      XCTAssertEqual(["Viewed Draft", "Previewed Update", "Update Preview"], self.trackingClient.events,
-                     "Koala previewed update is tracked")
+      XCTAssertEqual(
+        ["Viewed Draft", "Previewed Update", "Update Preview"], self.trackingClient.events,
+        "Koala previewed update is tracked"
+      )
 
       self.goToPreview.assertValues([draft])
     }
@@ -539,8 +569,10 @@ final class UpdateDraftViewModelTests: TestCase {
 
       self.notifyPresenterViewControllerWantsDismissal.assertValueCount(0)
 
-      XCTAssertEqual(["Viewed Draft", "Previewed Update", "Update Preview", "Edited Title"],
-                     self.trackingClient.events, "Koala previewed update is tracked")
+      XCTAssertEqual(
+        ["Viewed Draft", "Previewed Update", "Update Preview", "Edited Title"],
+        self.trackingClient.events, "Koala previewed update is tracked"
+      )
 
       self.goToPreview.assertValues([draft])
     }
@@ -559,8 +591,10 @@ final class UpdateDraftViewModelTests: TestCase {
 
       self.notifyPresenterViewControllerWantsDismissal.assertValueCount(1)
 
-      XCTAssertEqual(["Viewed Draft", "Closed Draft", "Edited Body"], self.trackingClient.events,
-                     "Koala body editing is tracked")
+      XCTAssertEqual(
+        ["Viewed Draft", "Closed Draft", "Edited Body"], self.trackingClient.events,
+        "Koala body editing is tracked"
+      )
     }
   }
 
@@ -578,8 +612,10 @@ final class UpdateDraftViewModelTests: TestCase {
 
       self.notifyPresenterViewControllerWantsDismissal.assertValueCount(1)
 
-      XCTAssertEqual(["Viewed Draft", "Closed Draft", "Changed Visibility"], self.trackingClient.events,
-                     "Koala changed visibility is tracked")
+      XCTAssertEqual(
+        ["Viewed Draft", "Closed Draft", "Changed Visibility"], self.trackingClient.events,
+        "Koala changed visibility is tracked"
+      )
     }
   }
 

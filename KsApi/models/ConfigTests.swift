@@ -1,34 +1,36 @@
-import XCTest
-@testable import KsApi
 import Argo
 import Curry
+@testable import KsApi
 import Runes
+import XCTest
 
 final class ConfigTests: XCTestCase {
-
   let json: [String: Any] = [
     "ab_experiments": [
       "2001_space_odyssey": "control",
       "dr_strangelove": "experiment"
     ],
-    "app_id": 123456789,
+    "app_id": 123_456_789,
     "apple_pay_countries": ["US", "GB", "CA"],
     "country_code": "US",
     "features": [
       "feature1": true,
-      "feature2": false,
+      "feature2": false
     ],
     "itunes_link": "http://www.itunes.com",
     "launched_countries": [
-      [ "trailing_code": false,
-        "currency_symbol": "€",
-        "currency_code": "EUR",
-        "name": "ES" ],
       [
         "trailing_code": false,
         "currency_symbol": "€",
         "currency_code": "EUR",
-        "name": "FR" ]
+        "name": "ES"
+      ],
+      [
+        "trailing_code": false,
+        "currency_symbol": "€",
+        "currency_code": "EUR",
+        "name": "FR"
+      ]
     ],
     "locale": "en",
     "stripe": [
@@ -37,7 +39,7 @@ final class ConfigTests: XCTestCase {
   ]
 
   func testSwiftDecoding() {
-    let data = try? JSONSerialization.data(withJSONObject: json, options: [])
+    let data = try? JSONSerialization.data(withJSONObject: self.json, options: [])
 
     if let data = data, let config = try? JSONDecoder().decode(Config.self, from: data) {
       self.assertValues(of: config)
@@ -48,7 +50,7 @@ final class ConfigTests: XCTestCase {
 
   func testDecoding() {
     // Confirm json decoded successfully
-    let decodedConfig = Config.decodeJSONDictionary(json)
+    let decodedConfig = Config.decodeJSONDictionary(self.json)
     XCTAssertNil(decodedConfig.error)
 
     // swiftlint:disable:next force_unwrapping
@@ -57,9 +59,8 @@ final class ConfigTests: XCTestCase {
   }
 
   private func assertValues(of config: Config) {
-
     XCTAssertEqual(["2001_space_odyssey": "control", "dr_strangelove": "experiment"], config.abExperiments)
-    XCTAssertEqual(123456789, config.appId)
+    XCTAssertEqual(123_456_789, config.appId)
     XCTAssertEqual("US", config.countryCode)
     XCTAssertEqual(["US", "GB", "CA"], config.applePayCountries)
     XCTAssertEqual(["feature1": true, "feature2": false], config.features)

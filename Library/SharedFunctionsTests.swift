@@ -4,6 +4,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable line_length
 final class SharedFunctionsTests: TestCase {
   func testCountdownProducer() {
     // swiftlint:disable:next line_length

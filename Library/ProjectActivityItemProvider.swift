@@ -2,7 +2,6 @@ import KsApi
 import UIKit
 
 public final class ProjectActivityItemProvider: UIActivityItemProvider {
-
   private var project: Project?
 
   public convenience init(project: Project) {
@@ -13,18 +12,19 @@ public final class ProjectActivityItemProvider: UIActivityItemProvider {
 
   public override func activityViewController(
     _ activityViewController: UIActivityViewController,
-    itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+    itemForActivityType activityType: UIActivity.ActivityType?
+  ) -> Any? {
     if let project = self.project {
       if activityType == .mail || activityType == .message {
-        return formattedString(for: project)
+        return self.formattedString(for: project)
       } else if activityType == .postToTwitter {
         return Strings.project_checkout_share_twitter_via_kickstarter(
-          project_or_update_title: formattedString(for: project)
+          project_or_update_title: self.formattedString(for: project)
         )
       } else if activityType == .copyToPasteboard || activityType == .postToFacebook {
         return project.urls.web.project
       } else {
-        return formattedString(for: project)
+        return self.formattedString(for: project)
       }
     }
     return self.activityViewControllerPlaceholderItem(activityViewController)
@@ -32,8 +32,8 @@ public final class ProjectActivityItemProvider: UIActivityItemProvider {
 
   private func formattedString(for project: Project) -> String {
     return """
-            \(project.name)\n
-            \(project.urls.web.project)
-           """
+     \(project.name)\n
+     \(project.urls.web.project)
+    """
   }
 }

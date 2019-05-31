@@ -4,7 +4,6 @@ import Prelude
 import UIKit
 
 internal final class BackerDashboardProjectsViewController: UITableViewController {
-
   private var userUpdatedObserver: Any?
   fileprivate let viewModel: BackerDashboardProjectsViewModelType = BackerDashboardProjectsViewModel()
   fileprivate let dataSource = BackerDashboardProjectsDataSource()
@@ -19,10 +18,10 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.dataSource = dataSource
+    self.tableView.dataSource = self.dataSource
 
     let refreshControl = UIRefreshControl()
-    refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+    refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
     self.refreshControl = refreshControl
 
     self.tableView.register(nib: .BackerDashboardEmptyStateCell)
@@ -34,7 +33,7 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
       .default
       .addObserver(forName: Notification.Name.ksr_userUpdated, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.currentUserUpdated()
-    }
+      }
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -60,14 +59,14 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
         } else {
           self?.refreshControl?.endRefreshing()
         }
-    }
+      }
 
     self.viewModel.outputs.emptyStateIsVisible
       .observeForUI()
       .observeValues { [weak self] isVisible, type in
         self?.dataSource.emptyState(visible: isVisible, projectsType: type)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.projects
       .observeForUI()
@@ -75,22 +74,24 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
         self?.dataSource.load(projects: $0)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist($0)
-    }
+      }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, reftag in
         self?.goTo(project: project, initialPlaylist: projects, refTag: reftag)
-    }
+      }
 
     self.viewModel.outputs.scrollToProjectRow
       .observeForUI()
       .observeValues { [weak self] row in
         guard let _self = self else { return }
-        _self.tableView.scrollToRow(at: _self.dataSource.indexPath(for: row),
-                                    at: .top,
-                                    animated: false)
-    }
+        _self.tableView.scrollToRow(
+          at: _self.dataSource.indexPath(for: row),
+          at: .top,
+          animated: false
+        )
+      }
   }
 
   internal override func bindStyles() {
@@ -100,15 +101,18 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
       |> baseTableControllerStyle()
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
-
-    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
-                                         outOf: self.dataSource.numberOfItems())
+  internal override func tableView(
+    _: UITableView,
+    willDisplay _: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
+    self.viewModel.inputs.willDisplayRow(
+      self.dataSource.itemIndexAt(indexPath),
+      outOf: self.dataSource.numberOfItems()
+    )
   }
 
-  internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  internal override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let project = self.dataSource[indexPath] as? Project else {
       return
     }
@@ -117,10 +121,12 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
   }
 
   private func goTo(project: Project, initialPlaylist: [Project], refTag: RefTag) {
-    let vc = ProjectNavigatorViewController.configuredWith(project: project,
-                                                           refTag: refTag,
-                                                           initialPlaylist: initialPlaylist,
-                                                           navigatorDelegate: self)
+    let vc = ProjectNavigatorViewController.configuredWith(
+      project: project,
+      refTag: refTag,
+      initialPlaylist: initialPlaylist,
+      navigatorDelegate: self
+    )
     self.present(vc, animated: true, completion: nil)
   }
 

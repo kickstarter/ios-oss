@@ -1,7 +1,7 @@
 import KsApi
-import ReactiveSwift
-import ReactiveExtensions
 import Prelude
+import ReactiveExtensions
+import ReactiveSwift
 
 public struct RewardsRowData {
   public let country: Project.Country
@@ -52,7 +52,7 @@ public protocol DashboardRewardsCellViewModelType {
 
 public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelType,
   DashboardRewardsCellViewModelInputs, DashboardRewardsCellViewModelOutputs {
-    public init() {
+  public init() {
     let statsProject = self.statsProjectProperty.signal.skipNil()
 
     let rewards = statsProject
@@ -82,14 +82,14 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
     let allRewardsRowData = Signal.combineLatest(
       statsProject.map { $1 },
       allRewards
-      )
-      .map { project, stats in
-        RewardsRowData(country: project.country, rewardsStats: stats, totalPledged: project.stats.pledged)
+    )
+    .map { project, stats in
+      RewardsRowData(country: project.country, rewardsStats: stats, totalPledged: project.stats.pledged)
     }
 
     let allTiersButtonIsHidden = Signal.merge(
       rewards.map { $0.count < 5 },
-      seeAllTiersButtonTappedProperty.signal.mapConst(true)
+      self.seeAllTiersButtonTappedProperty.signal.mapConst(true)
     )
 
     self.hideSeeAllTiersButton = allTiersButtonIsHidden.skipRepeats()
@@ -99,13 +99,15 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
       .map { rowData, isHidden in
         let rewardCount = rowData.rewardsStats.count
         let maxRewards = isHidden ? rowData.rewardsStats :
-          Array(rowData.rewardsStats[0..<(min(3, rewardCount))])
+          Array(rowData.rewardsStats[0..<min(3, rewardCount)])
 
-        return RewardsRowData(country: rowData.country,
-                            rewardsStats: maxRewards,
-                            totalPledged: rowData.totalPledged)
-    }
-    .skipRepeats(==)
+        return RewardsRowData(
+          country: rowData.country,
+          rewardsStats: maxRewards,
+          totalPledged: rowData.totalPledged
+        )
+      }
+      .skipRepeats(==)
 
     self.notifyDelegateAddedRewardRows = self.seeAllTiersButtonTappedProperty.signal
 
@@ -124,39 +126,42 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
 
   fileprivate let backersButtonTappedProperty = MutableProperty(())
   public func backersButtonTapped() {
-    backersButtonTappedProperty.value = ()
+    self.backersButtonTappedProperty.value = ()
   }
+
   fileprivate let statsProjectProperty =
     MutableProperty<([ProjectStatsEnvelope.RewardStats], Project)?>(nil)
   public func configureWith(rewardStats: [ProjectStatsEnvelope.RewardStats], project: Project) {
     self.statsProjectProperty.value = (rewardStats, project)
   }
+
   fileprivate let pledgedButtonTappedProperty = MutableProperty(())
   public func pledgedButtonTapped() {
-    pledgedButtonTappedProperty.value = ()
+    self.pledgedButtonTappedProperty.value = ()
   }
+
   fileprivate let seeAllTiersButtonTappedProperty = MutableProperty(())
   public func seeAllTiersButtonTapped() {
-    seeAllTiersButtonTappedProperty.value = ()
+    self.seeAllTiersButtonTappedProperty.value = ()
   }
+
   fileprivate let topRewardsButtonTappedProperty = MutableProperty(())
   public func topRewardsButtonTapped() {
-    topRewardsButtonTappedProperty.value = ()
+    self.topRewardsButtonTappedProperty.value = ()
   }
 }
 
 private func allRewardsStats(rewards: [Reward], stats: [ProjectStatsEnvelope.RewardStats])
   -> [ProjectStatsEnvelope.RewardStats] {
+  let statsIds = stats.map { $0.rewardId }
 
-    let statsIds = stats.map { $0.rewardId }
-
-    let zeroPledgedStats = rewards.filter { !statsIds.contains($0.id) }
-      .map {
-        return .zero
-          |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ ($0.backersCount ?? 0)
-          |> ProjectStatsEnvelope.RewardStats.lens.id .~ $0.id
-          |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ $0.minimum
+  let zeroPledgedStats = rewards.filter { !statsIds.contains($0.id) }
+    .map {
+      .zero
+        |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ ($0.backersCount ?? 0)
+        |> ProjectStatsEnvelope.RewardStats.lens.id .~ $0.id
+        |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ $0.minimum
     }
 
-    return zeroPledgedStats + stats
+  return zeroPledgedStats + stats
 }

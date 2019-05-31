@@ -3,10 +3,10 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueCell {
-  @IBOutlet private weak var filterTitleLabel: UILabel!
-  @IBOutlet private weak var highlightView: UIView!
-  @IBOutlet private weak var circleImageView: UIImageView!
-  @IBOutlet private weak var checkImageView: UIImageView!
+  @IBOutlet private var filterTitleLabel: UILabel!
+  @IBOutlet private var highlightView: UIView!
+  @IBOutlet private var circleImageView: UIImageView!
+  @IBOutlet private var checkImageView: UIImageView!
 
   private var rowIsSelected: Bool = false
 
@@ -43,16 +43,20 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
-          ? .init(top: Styles.grid(2),
-                       left: Styles.grid(6),
-                       bottom: Styles.grid(2),
-                       right: Styles.grid(2))
-          : .init(top: Styles.grid(2),
-                     left: Styles.grid(4),
-                     bottom: Styles.grid(2),
-                     right: Styles.grid(2))
+          ? .init(
+            top: Styles.grid(2),
+            left: Styles.grid(6),
+            bottom: Styles.grid(2),
+            right: Styles.grid(2)
+          )
+          : .init(
+            top: Styles.grid(2),
+            left: Styles.grid(4),
+            bottom: Styles.grid(2),
+            right: Styles.grid(2)
+          )
       }
-     |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
   }
 
   internal func willDisplay() {
@@ -60,7 +64,8 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? self.rowIsSelected ? UIFont.ksr_subhead(size: 18).bolded : .ksr_subhead(size: 18)
-          : self.rowIsSelected ? UIFont.ksr_subhead().bolded : .ksr_subhead() }
+          : self.rowIsSelected ? UIFont.ksr_subhead().bolded : .ksr_subhead()
+      }
   }
 
   internal func animateIn(delayOffset: Int) {
@@ -68,19 +73,23 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
     self.alpha = 0
     let delay = 0.03 * Double(delayOffset)
 
-    UIView.animate(withDuration: 0.3, delay: delay, options: .curveEaseOut, animations: {
+    UIView.animate(
+      withDuration: 0.3, delay: delay, options: .curveEaseOut, animations: {
         self.alpha = 1
       },
-      completion: nil)
+      completion: nil
+    )
 
-    UIView.animate(withDuration: 0.3,
-                               delay: delay,
-                               usingSpringWithDamping: 0.7,
-                               initialSpringVelocity: 1.0,
-                               options: .curveEaseOut,
-                               animations: {
-                                self.contentView.transform = CGAffineTransform.identity
-                                },
-                               completion: nil)
+    UIView.animate(
+      withDuration: 0.3,
+      delay: delay,
+      usingSpringWithDamping: 0.7,
+      initialSpringVelocity: 1.0,
+      options: .curveEaseOut,
+      animations: {
+        self.contentView.transform = CGAffineTransform.identity
+      },
+      completion: nil
+    )
   }
 }

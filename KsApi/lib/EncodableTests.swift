@@ -1,8 +1,7 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class EncodableTests: XCTestCase {
-
   struct EncodableModel: EncodableType {
     let name: String
     func encode() -> [String: Any] {

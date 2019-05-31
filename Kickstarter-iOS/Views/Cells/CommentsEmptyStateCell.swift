@@ -4,7 +4,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal protocol CommentsEmptyStateCellDelegate: class {
+internal protocol CommentsEmptyStateCellDelegate: AnyObject {
   /// Call when we should navigate back to the project.
   func commentEmptyStateCellGoBackToProject()
 
@@ -19,25 +19,29 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
   internal weak var delegate: CommentsEmptyStateCellDelegate?
   fileprivate let viewModel: CommentsEmptyStateCellViewModelType = CommentsEmptyStateCellViewModel()
 
-  @IBOutlet fileprivate weak var backProjectButton: UIButton!
-  @IBOutlet fileprivate weak var leaveACommentButton: UIButton!
-  @IBOutlet fileprivate weak var loginButton: UIButton!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
-  @IBOutlet fileprivate weak var subtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var backProjectButton: UIButton!
+  @IBOutlet fileprivate var leaveACommentButton: UIButton!
+  @IBOutlet fileprivate var loginButton: UIButton!
+  @IBOutlet fileprivate var rootStackView: UIStackView!
+  @IBOutlet fileprivate var subtitleLabel: UILabel!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.backProjectButton.addTarget(self,
-                                     action: #selector(backProjectTapped),
-                                     for: .touchUpInside)
+    self.backProjectButton.addTarget(
+      self,
+      action: #selector(self.backProjectTapped),
+      for: .touchUpInside
+    )
 
-    self.leaveACommentButton.addTarget(self,
-                                       action: #selector(leaveACommentTapped),
-                                       for: .touchUpInside)
+    self.leaveACommentButton.addTarget(
+      self,
+      action: #selector(self.leaveACommentTapped),
+      for: .touchUpInside
+    )
 
-    self.loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+    self.loginButton.addTarget(self, action: #selector(self.loginTapped), for: .touchUpInside)
   }
 
   internal override func bindStyles() {
@@ -57,7 +61,7 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.general_navigation_buttons_comment() }
       |> UIButton.lens.accessibilityHint %~ { _ in
         Strings.accessibility_dashboard_buttons_post_update_hint()
-    }
+      }
 
     _ = self.backProjectButton
       |> borderButtonStyle

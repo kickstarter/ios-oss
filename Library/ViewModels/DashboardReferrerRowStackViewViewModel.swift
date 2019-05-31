@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol DashboardReferrerRowStackViewViewModelInputs {
   /// Call to configure cell with referrer data.
@@ -29,7 +29,6 @@ public protocol DashboardReferrerRowStackViewViewModelType {
 
 public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowStackViewViewModelInputs,
   DashboardReferrerRowStackViewViewModelOutputs, DashboardReferrerRowStackViewViewModelType {
-
   public init() {
     let countryReferrer = self.countryReferrerProperty.signal.skipNil()
 
@@ -39,7 +38,7 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
       .map { country, referrer in
         Format.currency(Int(referrer.pledged), country: country) + " ("
           + Format.percentage(referrer.percentageOfDollars) + ")"
-    }
+      }
 
     self.sourceText = countryReferrer.map { _, referrer in referrer.referrerName }
 

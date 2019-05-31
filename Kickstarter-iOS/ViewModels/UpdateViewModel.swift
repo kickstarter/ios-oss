@@ -46,8 +46,7 @@ internal protocol UpdateViewModelType {
 }
 
 internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs, UpdateViewModelOutputs {
-
-    internal init() {
+  internal init() {
     let configurationData = self.configurationDataProperty.signal.skipNil()
 
     let initialUpdate = configurationData.map { $0.update }
@@ -77,10 +76,10 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .map(Navigation.Project.updateWithRequest)
       .skipNil()
       .switchMap { project, update in
-        return AppEnvironment.current.apiService
+        AppEnvironment.current.apiService
           .fetchUpdate(updateId: update, projectParam: project)
           .demoteErrors()
-    }
+      }
 
     let currentUpdate = Signal.merge(initialUpdate, anotherUpdate)
 
@@ -93,17 +92,17 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
         action.navigationType == .other || action.targetFrame?.mainFrame == .some(false)
           ? .allow
           : .cancel
-    }
+      }
 
     let possiblyGoToComments = currentUpdate
       .takePairWhen(navigationAction)
       .map { update, action -> Update? in
-        if action.navigationType == .linkActivated
-          && Navigation.Project.updateCommentsWithRequest(action.request) != nil {
+        if action.navigationType == .linkActivated,
+          Navigation.Project.updateCommentsWithRequest(action.request) != nil {
           return update
         }
         return nil
-    }
+      }
 
     self.goToComments = possiblyGoToComments.skipNil()
 
@@ -112,7 +111,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
         action.navigationType == .linkActivated
           ? Navigation.Project.withRequest(action.request)
           : nil
-    }
+      }
 
     self.goToProject = project
       .takePairWhen(possiblyGoToProject)
@@ -146,7 +145,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdate)
-    }
+      }
   }
 
   fileprivate let configurationDataProperty = MutableProperty<UpdateData?>(nil)
@@ -158,8 +157,8 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
   fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)
   internal func decidePolicyFor(navigationAction: WKNavigationActionData)
     -> WKNavigationActionPolicy {
-      self.policyForNavigationActionProperty.value = navigationAction
-      return self.policyDecisionProperty.value
+    self.policyForNavigationActionProperty.value = navigationAction
+    return self.policyDecisionProperty.value
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

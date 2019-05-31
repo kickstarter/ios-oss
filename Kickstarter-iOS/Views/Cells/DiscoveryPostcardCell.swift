@@ -4,8 +4,7 @@ import Library
 import Prelude
 import UIKit
 
-internal protocol DiscoveryPostcardCellDelegate: class {
-
+internal protocol DiscoveryPostcardCellDelegate: AnyObject {
   /// Called when the heart/save button is tapped
   func discoveryPostcardCellProjectSaveAlert()
 
@@ -18,33 +17,33 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
   internal weak var delegate: DiscoveryPostcardCellDelegate?
 
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var backgroundGradientView: GradientView!
-  @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var backersTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
-  @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
-  @IBOutlet fileprivate weak var fundingSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var fundingTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var metadataBackgroundView: UIView!
-  @IBOutlet fileprivate weak var metadataIconImageView: UIImageView!
-  @IBOutlet fileprivate weak var metadataLabel: UILabel!
-  @IBOutlet fileprivate weak var metadataStackView: UIStackView!
-  @IBOutlet fileprivate weak var metadataView: UIView!
-  @IBOutlet fileprivate weak var projectImageView: UIImageView!
-  @IBOutlet fileprivate weak var projectInfoStackView: UIStackView!
-  @IBOutlet fileprivate weak var projectNameAndBlurbLabel: UILabel!
-  @IBOutlet fileprivate weak var projectStateSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var projectCategoriesStackView: UIStackView!
-  @IBOutlet fileprivate weak var projectStateTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var projectStateStackView: UIStackView!
-  @IBOutlet fileprivate weak var projectStatsStackView: UIStackView!
-  @IBOutlet fileprivate weak var saveButton: UIButton!
-  @IBOutlet fileprivate weak var socialAvatarImageView: UIImageView!
-  @IBOutlet fileprivate weak var socialLabel: UILabel!
-  @IBOutlet fileprivate weak var socialStackView: UIStackView!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var backgroundGradientView: GradientView!
+  @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var backersTitleLabel: UILabel!
+  @IBOutlet fileprivate var deadlineSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var deadlineTitleLabel: UILabel!
+  @IBOutlet fileprivate var fundingProgressBarView: UIView!
+  @IBOutlet fileprivate var fundingProgressContainerView: UIView!
+  @IBOutlet fileprivate var fundingSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var fundingTitleLabel: UILabel!
+  @IBOutlet fileprivate var metadataBackgroundView: UIView!
+  @IBOutlet fileprivate var metadataIconImageView: UIImageView!
+  @IBOutlet fileprivate var metadataLabel: UILabel!
+  @IBOutlet fileprivate var metadataStackView: UIStackView!
+  @IBOutlet fileprivate var metadataView: UIView!
+  @IBOutlet fileprivate var projectImageView: UIImageView!
+  @IBOutlet fileprivate var projectInfoStackView: UIStackView!
+  @IBOutlet fileprivate var projectNameAndBlurbLabel: UILabel!
+  @IBOutlet fileprivate var projectStateSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var projectCategoriesStackView: UIStackView!
+  @IBOutlet fileprivate var projectStateTitleLabel: UILabel!
+  @IBOutlet fileprivate var projectStateStackView: UIStackView!
+  @IBOutlet fileprivate var projectStatsStackView: UIStackView!
+  @IBOutlet fileprivate var saveButton: UIButton!
+  @IBOutlet fileprivate var socialAvatarImageView: UIImageView!
+  @IBOutlet fileprivate var socialLabel: UILabel!
+  @IBOutlet fileprivate var socialStackView: UIStackView!
 
   fileprivate weak var projectCategoryView: DiscoveryProjectCategoryView!
   fileprivate weak var projectIsStaffPickView: DiscoveryProjectCategoryView!
@@ -60,7 +59,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       self.projectCategoryView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
       self.projectCategoryView.setContentHuggingPriority(.required, for: .horizontal)
 
-      projectCategoriesStackView.addArrangedSubview(self.projectCategoryView)
+      self.projectCategoriesStackView.addArrangedSubview(self.projectCategoryView)
     }
 
     if let staffPickView = DiscoveryProjectCategoryView.fromNib(nib: Nib.DiscoveryProjectCategoryView) {
@@ -69,22 +68,22 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       self.projectIsStaffPickView.setContentCompressionResistancePriority(.required, for: .horizontal)
       self.projectIsStaffPickView.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
-      projectCategoriesStackView.addArrangedSubview(self.projectIsStaffPickView)
+      self.projectCategoriesStackView.addArrangedSubview(self.projectIsStaffPickView)
     }
 
-    self.saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(self.saveButtonTapped(_:)), for: .touchUpInside)
 
-    self.saveButton.addTarget(self, action: #selector(saveButtonPressed(_:)), for: .touchDown)
+    self.saveButton.addTarget(self, action: #selector(self.saveButtonPressed(_:)), for: .touchDown)
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.watchProjectViewModel.inputs.userSessionStarted()
-    }
+      }
 
     self.sessionEndedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.watchProjectViewModel.inputs.userSessionEnded()
-    }
+      }
 
     self.projectSavedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
@@ -110,8 +109,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.backgroundGradientView.startPoint = .zero
     self.backgroundGradientView.endPoint = CGPoint(x: 0, y: 1)
-    let gradient: [(UIColor?, Float)] =  [(UIColor.init(white: 0.0, alpha: 0.5), 0),
-                                          (UIColor.init(white: 0.0, alpha: 0.0), 1)]
+    let gradient: [(UIColor?, Float)] = [
+      (UIColor.init(white: 0.0, alpha: 0.5), 0),
+      (UIColor.init(white: 0.0, alpha: 0.0), 1)
+    ]
     self.backgroundGradientView.setGradient(gradient)
 
     _ = self
@@ -124,7 +125,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       }
       |> DiscoveryPostcardCell.lens.accessibilityHint %~ { _ in
         Strings.dashboard_tout_accessibility_hint_opens_project()
-    }
+      }
 
     _ = [self.backersTitleLabel, self.deadlineTitleLabel]
       ||> postcardStatsTitleStyle
@@ -132,8 +133,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel, self.fundingSubtitleLabel]
       ||> postcardStatsSubtitleStyle
 
-    _ = [self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel,
-         self.deadlineSubtitleLabel]
+    _ = [
+      self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel,
+      self.deadlineSubtitleLabel
+    ]
       ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
 
     _ = self.backersSubtitleLabel
@@ -212,8 +215,10 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.alignment .~ .center
       |> UIStackView.lens.spacing .~ Styles.grid(1)
       |> UIStackView.lens.layoutMargins
-         .~ .init(top: 0.0, left: Styles.grid(4),
-                 bottom:  Styles.grid(2), right: Styles.grid(2))
+      .~ .init(
+        top: 0.0, left: Styles.grid(4),
+        bottom: Styles.grid(2), right: Styles.grid(2)
+      )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
   }
 
@@ -242,9 +247,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.socialLabel.rac.text = self.viewModel.outputs.socialLabelText
     self.socialStackView.rac.hidden = self.viewModel.outputs.socialStackViewHidden
     self.saveButton.rac.selected = self.watchProjectViewModel.outputs.saveButtonSelected
-    self.projectIsStaffPickView.rac.hidden = viewModel.outputs.projectIsStaffPickLabelHidden
-    self.projectCategoryView.rac.hidden = viewModel.outputs.projectCategoryViewHidden
-    self.projectCategoriesStackView.rac.hidden = viewModel.outputs.projectCategoryStackViewHidden
+    self.projectIsStaffPickView.rac.hidden = self.viewModel.outputs.projectIsStaffPickLabelHidden
+    self.projectCategoryView.rac.hidden = self.viewModel.outputs.projectCategoryViewHidden
+    self.projectCategoriesStackView.rac.hidden = self.viewModel.outputs.projectCategoryStackViewHidden
 
     self.projectIsStaffPickView.configureWith(
       name: Strings.Projects_We_Love(), imageNameString: "icon--small-k"
@@ -254,7 +259,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] in
         self?.saveButton.generateImpactFeedback(style: .light)
-    }
+      }
 
     self.watchProjectViewModel.outputs.generateSuccessFeedback
       .observeForUI()
@@ -264,14 +269,14 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.watchProjectViewModel.outputs.generateSelectionFeedback
       .observeForUI()
-      .observeValues { [weak self]  in
+      .observeValues { [weak self] in
         self?.saveButton.generateSelectionFeedback()
-    }
+      }
 
     self.viewModel.outputs.projectCategoryName
       .signal
       .observeForUI()
-      .observeValues { [weak self] (name) in
+      .observeValues { [weak self] name in
         self?.projectCategoryView.configureWith(name: name, imageNameString: "icon--compass")
       }
 
@@ -279,7 +284,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] icon in
         self?.metadataIconImageView.image = icon
-     }
+      }
 
     self.viewModel.outputs.progressPercentage
       .observeForUI()
@@ -287,49 +292,49 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         let anchorX = progress == 0 ? 0 : 0.5 / progress
         self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
         self?.fundingProgressBarView.transform = CGAffineTransform(scaleX: CGFloat(progress), y: 1.0)
-    }
+      }
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
       .on(event: { [weak self] _ in
         self?.projectImageView.af_cancelImageRequest()
         self?.projectImageView.image = nil
-        })
+      })
       .skipNil()
       .observeValues { [weak self] url in
         self?.projectImageView.ksr_setImageWithURL(url)
-    }
+      }
 
     self.watchProjectViewModel.outputs.showNotificationDialog
       .observeForUI()
       .observeValues { n in
         NotificationCenter.default.post(n)
-    }
+      }
 
     self.viewModel.outputs.socialImageURL
       .observeForUI()
       .on(event: { [weak self] _ in
         self?.socialAvatarImageView.af_cancelImageRequest()
         self?.socialAvatarImageView.image = nil
-        })
+      })
       .skipNil()
       .observeValues { [weak self] url in
         self?.socialAvatarImageView.ksr_setRoundedImageWith(url)
-    }
+      }
 
     self.watchProjectViewModel.outputs.showProjectSavedAlert
       .observeForUI()
       .observeValues { [weak self] in
         guard let _self = self else { return }
         _self.delegate?.discoveryPostcardCellProjectSaveAlert()
-    }
+      }
 
     self.watchProjectViewModel.outputs.goToLoginTout
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let _self = self else { return }
         _self.delegate?.discoveryPostcardCellGoToLoginTout()
-    }
+      }
   }
 
   internal func configureWith(value: DiscoveryProjectCellRowValue) {
@@ -349,7 +354,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     }
   }
 
-  @objc fileprivate func saveButtonPressed(_ button: UIButton) {
+  @objc fileprivate func saveButtonPressed(_: UIButton) {
     self.watchProjectViewModel.inputs.saveButtonTouched()
   }
 

@@ -1,12 +1,12 @@
-import XCTest
 @testable import Library
+import XCTest
 
 final class UIColorTests: XCTestCase {
   func testColors() {
     let red = UIColor.hex(0xFF0000)
     let green = UIColor.hex(0x00FF00)
     let blue = UIColor.hex(0x0000FF)
-    let redAlpha = UIColor.hexa(0x80FF0000)
+    let redAlpha = UIColor.hexa(0x80FF_0000)
 
     XCTAssertEqual(UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0), red)
     XCTAssertEqual(UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0), green)
@@ -16,9 +16,9 @@ final class UIColorTests: XCTestCase {
     redAlpha.getRed(&r, green: &g, blue: &b, alpha: &a)
     XCTAssertEqual(0.5, a, accuracy: 0.01)
 
-    XCTAssertEqual(UIColor.hex(0xA6000000), UIColor.hex(0x000000))
+    XCTAssertEqual(UIColor.hex(0xA600_0000), UIColor.hex(0x000000))
 
-    XCTAssertNotEqual(UIColor.hexa(0xA6000000), UIColor.hex(0x000000))
-    XCTAssertNotEqual(UIColor.hexa(0xA6000000), UIColor.hexa(0x80000000))
+    XCTAssertNotEqual(UIColor.hexa(0xA600_0000), UIColor.hex(0x000000))
+    XCTAssertNotEqual(UIColor.hexa(0xA600_0000), UIColor.hexa(0x8000_0000))
   }
 }

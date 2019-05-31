@@ -10,7 +10,6 @@ extension String {
      - returns: The truncated string.
    */
   public func truncated(maxLength: Int, suffix: String = "…") -> String {
-
     guard self.count > maxLength else { return self }
 
     let advancedBy = maxLength - suffix.count

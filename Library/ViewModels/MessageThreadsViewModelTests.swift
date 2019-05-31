@@ -1,8 +1,8 @@
-import XCTest
+@testable import KsApi
 @testable import Library
 import ReactiveExtensions_TestHelpers
-@testable import KsApi
 import ReactiveSwift
+import XCTest
 
 internal final class MessageThreadsViewModelTests: TestCase {
   fileprivate let vm: MessageThreadsViewModelType = MessageThreadsViewModel()
@@ -34,13 +34,17 @@ internal final class MessageThreadsViewModelTests: TestCase {
     self.loadingFooterIsHidden.assertValues([false], "Loading footer is visible at beginning.")
     self.refreshControlEndRefreshing.assertValueCount(0, "Doesn't emit at beginning.")
     self.hasMessageThreads.assertValues([], "No threads emit.")
-    XCTAssertEqual(["Viewed Message Inbox", "Message Threads View", "Message Inbox View"],
-                   self.trackingClient.events,
-                   "View event and its deprecated version are tracked.")
+    XCTAssertEqual(
+      ["Viewed Message Inbox", "Message Threads View", "Message Inbox View"],
+      self.trackingClient.events,
+      "View event and its deprecated version are tracked."
+    )
     // swiftlint:disable force_cast
-    XCTAssertEqual([nil, true, true],
-                   self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
-                   "Deprecated property is tracked in deprecated event.")
+    XCTAssertEqual(
+      [nil, true, true],
+      self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
+      "Deprecated property is tracked in deprecated event."
+    )
     // swiftlint:enable force_cast
 
     // Wait enough time to get API response
@@ -128,17 +132,23 @@ internal final class MessageThreadsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.scheduler.advance()
 
-    XCTAssertEqual(["Viewed Message Inbox", "Message Threads View", "Message Inbox View"],
-                   self.trackingClient.events,
-                   "View event and its deprecated version are tracked.")
+    XCTAssertEqual(
+      ["Viewed Message Inbox", "Message Threads View", "Message Inbox View"],
+      self.trackingClient.events,
+      "View event and its deprecated version are tracked."
+    )
     // swiftlint:disable force_cast
-    XCTAssertEqual([nil, true, true],
-                   self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
-                   "Deprecated property is tracked in deprecated event.")
+    XCTAssertEqual(
+      [nil, true, true],
+      self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
+      "Deprecated property is tracked in deprecated event."
+    )
     // swiftlint:enable force_cast
 
-    self.loadingFooterIsHidden.assertValues([false, true],
-                                            "Loading footer is shown/hidden while loading threads.")
+    self.loadingFooterIsHidden.assertValues(
+      [false, true],
+      "Loading footer is shown/hidden while loading threads."
+    )
     self.refreshControlEndRefreshing.assertValueCount(1, "Refresh control isn't refershing.")
     self.hasMessageThreads.assertValues([true], "Threads are emitted.")
     self.emptyStateIsVisible.assertValues([false])
@@ -160,11 +170,14 @@ internal final class MessageThreadsViewModelTests: TestCase {
         "Viewed Sent Messages", "Message Threads View", "Message Inbox View"
       ],
       self.trackingClient.events,
-      "View event and its deprecated version are tracked.")
+      "View event and its deprecated version are tracked."
+    )
     // swiftlint:disable force_cast
-    XCTAssertEqual([nil, true, true, nil, true, true],
-                   self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
-                   "Deprecated property is tracked in deprecated event.")
+    XCTAssertEqual(
+      [nil, true, true, nil, true, true],
+      self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
+      "Deprecated property is tracked in deprecated event."
+    )
     // swiftlint:enable force_cast
 
     self.scheduler.advance()

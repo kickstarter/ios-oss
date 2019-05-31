@@ -62,16 +62,16 @@ public enum Newsletter: CaseIterable {
 
   public var trackingString: String {
     switch self {
-    case .arts:               return "arts"
-    case .games:              return "games"
-    case .happening:          return "happening"
-    case .invent:             return "invent"
-    case .promo:              return "promo"
-    case .weekly:             return "weekly"
-    case .films:              return "films"
-    case .publishing:         return "publishing"
-    case .alumni:             return "alumni"
-    case .music:              return "music"
+    case .arts: return "arts"
+    case .games: return "games"
+    case .happening: return "happening"
+    case .invent: return "invent"
+    case .promo: return "promo"
+    case .weekly: return "weekly"
+    case .films: return "films"
+    case .publishing: return "publishing"
+    case .alumni: return "alumni"
+    case .music: return "music"
     }
   }
 }

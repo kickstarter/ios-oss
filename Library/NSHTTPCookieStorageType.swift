@@ -9,8 +9,7 @@ public protocol HTTPCookieStorageProtocol {
   func setCookie(_ cookie: HTTPCookie)
 }
 
-extension HTTPCookieStorage: HTTPCookieStorageProtocol {
-}
+extension HTTPCookieStorage: HTTPCookieStorageProtocol {}
 
 internal final class MockCookieStorage: HTTPCookieStorageProtocol {
   fileprivate var storage: Set<HTTPCookie> = []

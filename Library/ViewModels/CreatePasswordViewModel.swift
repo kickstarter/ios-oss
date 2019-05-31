@@ -36,7 +36,7 @@ public protocol CreatePasswordViewModelType {
 }
 
 public class CreatePasswordViewModel: CreatePasswordViewModelType,
-CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
+  CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
   public init() {
     self.newPasswordTextFieldDidBecomeFirstResponder = self.viewDidAppearProperty.signal
     self.newPasswordConfirmationTextFieldDidBecomeFirstResponder = self.newPasswordDidReturnProperty.signal
@@ -104,7 +104,7 @@ CreatePasswordViewModelInputs, CreatePasswordViewModelOutputs {
         AppEnvironment.current.apiService.createPassword(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.createPasswordFailure = createPasswordEvent.errors().map { $0.localizedDescription }
     self.createPasswordSuccess = createPasswordEvent.values().ignoreValues()

@@ -3,8 +3,8 @@ import Prelude
 import UIKit
 
 final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
-  @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var arrowImageView: UIImageView!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -16,18 +16,18 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     _ = self
       |> \.accessibilityTraits .~ cellType.accessibilityTraits
 
-    _ = titleLabel
+    _ = self.titleLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text .~ cellType.title
       |> UILabel.lens.textColor .~ cellType.textColor
 
-    _ = arrowImageView
+    _ = self.arrowImageView
       |> settingsArrowViewStyle
       |> UIImageView.lens.isHidden
       .~ !cellType.showArrowImageView
   }
 
-   override func bindStyles() {
+  override func bindStyles() {
     super.bindStyles()
   }
 

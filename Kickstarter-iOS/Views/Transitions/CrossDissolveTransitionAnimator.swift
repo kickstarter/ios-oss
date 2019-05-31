@@ -1,8 +1,7 @@
 import UIKit
 
 internal final class CrossDissolveTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-
-  internal func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?)
+  internal func transitionDuration(using _: UIViewControllerContextTransitioning?)
     -> TimeInterval {
     return 0.15
   }
@@ -22,11 +21,12 @@ internal final class CrossDissolveTransitionAnimator: NSObject, UIViewController
     UIView.animate(
       withDuration: self.transitionDuration(using: transitionContext),
       animations: {
-      toVC.view.alpha = 1.0
-    },
+        toVC.view.alpha = 1.0
+      },
       completion: { _ in
-      fromVC.view.removeFromSuperview()
-      transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-    }
-  )}
+        fromVC.view.removeFromSuperview()
+        transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+      }
+    )
+  }
 }

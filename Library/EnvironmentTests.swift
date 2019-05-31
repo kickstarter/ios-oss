@@ -1,8 +1,7 @@
-import XCTest
 @testable import Library
+import XCTest
 
 final class EnvironmentTests: XCTestCase {
-
   func testInit() {
     let env = Environment()
 

@@ -24,8 +24,7 @@ public protocol DiscoveryExpandableRowCellViewModelType {
 }
 
 public final class DiscoveryExpandableRowCellViewModel: DiscoveryExpandableRowCellViewModelType,
-DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
-
+  DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
   public init() {
     let expandableRowAndCategoryId = self.expandableRowAndCategoryIdProperty.signal.skipNil()
       .takeWhen(self.willDisplayProperty.signal)
@@ -46,8 +45,9 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
     self.cellAccessibilityLabel = expandableRow
       .map {
         Strings.Filter_name_project_count_live_projects(
-          filter_name: ($0.params.category?.name ?? ""),
-          project_count: ($0.params.category?.totalProjectCount ?? 0))
+          filter_name: $0.params.category?.name ?? "",
+          project_count: $0.params.category?.totalProjectCount ?? 0
+        )
       }
 
     self.projectsCountLabelText = expandableRow
@@ -58,7 +58,6 @@ DiscoveryExpandableRowCellInputs, DiscoveryExpandableRowCellOutputs {
 
     self.projectsCountLabelAlpha = expandableRowAndCategoryId
       .map { expandableRow, categoryId in categoryId == nil || expandableRow.isExpanded ? 1.0 : 0.4 }
-
   }
 
   fileprivate let expandableRowAndCategoryIdProperty = MutableProperty<(ExpandableRow, Int?)?>(nil)

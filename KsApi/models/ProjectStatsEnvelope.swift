@@ -91,7 +91,7 @@ extension ProjectStatsEnvelope.CumulativeStats: Argo.Decodable {
 extension ProjectStatsEnvelope.CumulativeStats: Equatable {}
 public func == (lhs: ProjectStatsEnvelope.CumulativeStats, rhs: ProjectStatsEnvelope.CumulativeStats)
   -> Bool {
-    return lhs.averagePledge == rhs.averagePledge
+  return lhs.averagePledge == rhs.averagePledge
 }
 
 extension ProjectStatsEnvelope.FundingDateStats: Argo.Decodable {
@@ -108,24 +108,26 @@ extension ProjectStatsEnvelope.FundingDateStats: Argo.Decodable {
 extension ProjectStatsEnvelope.FundingDateStats: Equatable {}
 public func == (lhs: ProjectStatsEnvelope.FundingDateStats, rhs: ProjectStatsEnvelope.FundingDateStats)
   -> Bool {
-    return lhs.date == rhs.date
+  return lhs.date == rhs.date
 }
 
 extension ProjectStatsEnvelope.ReferralAggregateStats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferralAggregateStats> {
     return curry(ProjectStatsEnvelope.ReferralAggregateStats.init)
-    <^> json <| "custom"
-    <*> (json <| "external" >>- stringToDouble)
-    <*> json <| "internal"
+      <^> json <| "custom"
+      <*> (json <| "external" >>- stringToDouble)
+      <*> json <| "internal"
   }
 }
 
 extension ProjectStatsEnvelope.ReferralAggregateStats: Equatable {}
-public func == (lhs: ProjectStatsEnvelope.ReferralAggregateStats,
-                rhs: ProjectStatsEnvelope.ReferralAggregateStats) -> Bool {
+public func == (
+  lhs: ProjectStatsEnvelope.ReferralAggregateStats,
+  rhs: ProjectStatsEnvelope.ReferralAggregateStats
+) -> Bool {
   return lhs.custom == rhs.custom &&
-  lhs.external == rhs.external &&
-  lhs.kickstarter == rhs.kickstarter
+    lhs.external == rhs.external &&
+    lhs.kickstarter == rhs.kickstarter
 }
 
 extension ProjectStatsEnvelope.ReferrerStats: Argo.Decodable {
@@ -148,14 +150,14 @@ public func == (lhs: ProjectStatsEnvelope.ReferrerStats, rhs: ProjectStatsEnvelo
 
 extension ProjectStatsEnvelope.ReferrerStats.ReferrerType: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferrerStats.ReferrerType> {
-    if case .string(let referrerType) = json {
+    if case let .string(referrerType) = json {
       switch referrerType.lowercased() {
       case "custom":
         return .success(.custom)
       case "external":
         return .success(.external)
       case "kickstarter":
-        return .success(.`internal`)
+        return .success(.internal)
       default:
         return .success(.unknown)
       }
@@ -214,8 +216,8 @@ private func decodeSuccessfulFundingStats(_ json: JSON) -> Decoded<[ProjectStats
 private func stringToIntOrZero(_ string: String) -> Decoded<Int> {
   return
     Double(string).flatMap(Int.init).map(Decoded.success)
-      ?? Int(string).map(Decoded.success)
-      ?? .success(0)
+    ?? Int(string).map(Decoded.success)
+    ?? .success(0)
 }
 
 private func stringToInt(_ string: String?) -> Decoded<Int?> {
@@ -223,8 +225,8 @@ private func stringToInt(_ string: String?) -> Decoded<Int?> {
 
   return
     Double(string).flatMap(Int.init).map(Decoded.success)
-      ?? Int(string).map(Decoded<Int?>.success)
-      ?? .failure(.custom("Could not parse string into int."))
+    ?? Int(string).map(Decoded<Int?>.success)
+    ?? .failure(.custom("Could not parse string into int."))
 }
 
 private func stringToDouble(_ string: String?) -> Decoded<Double?> {

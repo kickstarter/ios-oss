@@ -28,8 +28,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(
     _ application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
@@ -58,14 +58,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         self?.viewModel.inputs.currentUserUpdatedInEnvironment()
-    }
+      }
 
     self.viewModel.outputs.forceLogout
       .observeForUI()
       .observeValues {
         AppEnvironment.logout()
         NotificationCenter.default.post(.init(name: .ksr_sessionEnded, object: nil))
-    }
+      }
 
     self.viewModel.outputs.updateConfigInEnvironment
       .observeForUI()
@@ -80,7 +80,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeValues { [weak self] in
         self?.rootTabBarController?.dismiss(animated: true, completion: nil)
         self?.rootTabBarController?.present($0, animated: true, completion: nil)
-    }
+      }
 
     self.viewModel.outputs.goToDiscovery
       .observeForUI()
@@ -108,7 +108,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in
         self?.goToProjectActivities($0)
-    }
+      }
 
     self.viewModel.outputs.goToSearch
       .observeForUI()
@@ -126,19 +126,19 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues {
         print("📲 [Push Registration] Push token registration started 🚀")
-    }
+      }
 
     self.viewModel.outputs.pushTokenSuccessfullyRegistered
       .observeForUI()
       .observeValues { token in
         print("📲 [Push Registration] Push token successfully registered (\(token)) ✨")
-    }
+      }
 
     self.viewModel.outputs.showAlert
       .observeForUI()
       .observeValues { [weak self] in
         self?.presentContextualPermissionAlert($0)
-    }
+      }
 
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
@@ -157,30 +157,30 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         manager.userName = data.userName
         manager.start()
         manager.authenticator.authenticateInstallation()
-    }
+      }
 
     #if RELEASE || HOCKEY
-    self.viewModel.outputs.configureFabric
-      .observeForUI()
-      .observeValues {
-        Fabric.with([Crashlytics.self])
-        AppEnvironment.current.koala.logEventCallback = { event, _ in
-          CLSLogv("%@", getVaList([event]))
+      self.viewModel.outputs.configureFabric
+        .observeForUI()
+        .observeValues {
+          Fabric.with([Crashlytics.self])
+          AppEnvironment.current.koala.logEventCallback = { event, _ in
+            CLSLogv("%@", getVaList([event]))
+          }
         }
-    }
     #endif
 
     self.viewModel.outputs.synchronizeUbiquitousStore
       .observeForUI()
       .observeValues {
         _ = AppEnvironment.current.ubiquitousStore.synchronize()
-    }
+      }
 
     self.viewModel.outputs.setApplicationShortcutItems
       .observeForUI()
       .observeValues { shortcutItems in
         UIApplication.shared.shortcutItems = shortcutItems.map { $0.applicationShortcutItem }
-    }
+      }
 
     self.viewModel.outputs.findRedirectUrl
       .observeForUI()
@@ -190,92 +190,107 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-    }
+      }
 
     NotificationCenter.default
       .addObserver(
-        forName: Notification.Name.ksr_showNotificationsDialog, object: nil, queue: nil) { [weak self] in
+        forName: Notification.Name.ksr_showNotificationsDialog, object: nil, queue: nil
+      ) { [weak self] in
         self?.viewModel.inputs.showNotificationDialog(notification: $0)
-    }
+      }
 
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
-    }
+      }
     // swiftlint:enable discarded_notification_center_observer
 
     self.window?.tintColor = .ksr_green_700
 
-    self.viewModel.inputs.applicationDidFinishLaunching(application: application,
-                                                        launchOptions: launchOptions)
+    self.viewModel.inputs.applicationDidFinishLaunching(
+      application: application,
+      launchOptions: launchOptions
+    )
 
     UNUserNotificationCenter.current().delegate = self
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
 
-  func applicationWillEnterForeground(_ application: UIApplication) {
+  func applicationWillEnterForeground(_: UIApplication) {
     self.viewModel.inputs.applicationWillEnterForeground()
   }
 
-  func applicationDidEnterBackground(_ application: UIApplication) {
+  func applicationDidEnterBackground(_: UIApplication) {
     self.viewModel.inputs.applicationDidEnterBackground()
   }
 
-  func application(_ application: UIApplication,
-                   continue userActivity: NSUserActivity,
-                   restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-
+  func application(
+    _: UIApplication,
+    continue userActivity: NSUserActivity,
+    restorationHandler _: @escaping ([UIUserActivityRestoring]?) -> Void
+  ) -> Bool {
     return self.viewModel.inputs.applicationContinueUserActivity(userActivity)
   }
 
-  func application(_ app: UIApplication, open url: URL,
-                   options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+  func application(
+    _ app: UIApplication, open url: URL,
+    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+  ) -> Bool {
     guard let sourceApplication = options[.sourceApplication] as? String else { return false }
 
-    return self.viewModel.inputs.applicationOpenUrl(application: app,
-                                                    url: url,
-                                                    sourceApplication: sourceApplication,
-                                                    annotation: options[.annotation] as Any)
+    return self.viewModel.inputs.applicationOpenUrl(
+      application: app,
+      url: url,
+      sourceApplication: sourceApplication,
+      annotation: options[.annotation] as Any
+    )
   }
 
-  func application(_ application: UIApplication,
-                   open url: URL,
-                   sourceApplication: String?,
-                   annotation: Any) -> Bool {
-
-    return self.viewModel.inputs.applicationOpenUrl(application: application,
-                                                    url: url,
-                                                    sourceApplication: sourceApplication,
-                                                    annotation: annotation)
+  func application(
+    _ application: UIApplication,
+    open url: URL,
+    sourceApplication: String?,
+    annotation: Any
+  ) -> Bool {
+    return self.viewModel.inputs.applicationOpenUrl(
+      application: application,
+      url: url,
+      sourceApplication: sourceApplication,
+      annotation: annotation
+    )
   }
 
   // MARK: - Remote notifications
 
-  internal func application(_ application: UIApplication,
-                            didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+  internal func application(
+    _: UIApplication,
+    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+  ) {
     self.viewModel.inputs.didRegisterForRemoteNotifications(withDeviceTokenData: deviceToken)
   }
 
-  internal func application(_ application: UIApplication,
-                            didFailToRegisterForRemoteNotificationsWithError error: Error) {
+  internal func application(
+    _: UIApplication,
+    didFailToRegisterForRemoteNotificationsWithError error: Error
+  ) {
     print("🔴 Failed to register for remote notifications: \(error.localizedDescription)")
   }
 
-  internal func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+  internal func applicationDidReceiveMemoryWarning(_: UIApplication) {
     self.viewModel.inputs.applicationDidReceiveMemoryWarning()
   }
 
-  internal func application(_ application: UIApplication,
-                            performActionFor shortcutItem: UIApplicationShortcutItem,
-                            completionHandler: @escaping (Bool) -> Void) {
-
+  internal func application(
+    _: UIApplication,
+    performActionFor shortcutItem: UIApplicationShortcutItem,
+    completionHandler: @escaping (Bool) -> Void
+  ) {
     self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
     completionHandler(true)
   }
 
   fileprivate func presentContextualPermissionAlert(_ notification: Notification) {
-
     guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else {
       return
     }
@@ -324,17 +339,19 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: BITHockeyManagerDelegate {
-  func crashManagerDidFinishSendingCrashReport(_ crashManager: BITCrashManager!) {
+  func crashManagerDidFinishSendingCrashReport(_: BITCrashManager!) {
     self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
   }
 }
 
 extension AppDelegate: URLSessionTaskDelegate {
-  public func urlSession(_ session: URLSession,
-                         task: URLSessionTask,
-                         willPerformHTTPRedirection response: HTTPURLResponse,
-                         newRequest request: URLRequest,
-                         completionHandler: @escaping (URLRequest?) -> Void) {
+  public func urlSession(
+    _: URLSession,
+    task _: URLSessionTask,
+    willPerformHTTPRedirection _: HTTPURLResponse,
+    newRequest request: URLRequest,
+    completionHandler: @escaping (URLRequest?) -> Void
+  ) {
     request.url.doIfSome(self.viewModel.inputs.foundRedirectUrl)
     completionHandler(nil)
   }
@@ -347,7 +364,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     _: UNUserNotificationCenter,
     willPresent _: UNNotification,
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
-    ) {
+  ) {
     completionHandler(.alert)
   }
 
@@ -355,7 +372,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     _: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
-    ) {
+  ) {
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
     completion()
   }

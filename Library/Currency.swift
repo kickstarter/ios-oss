@@ -1,5 +1,5 @@
-import UIKit
 import KsApi
+import UIKit
 
 public enum Currency: String, Encodable, CaseIterable, Equatable {
   case EUR

@@ -1,9 +1,8 @@
-import XCTest
-@testable import Library
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
-import KsApi
+@testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class DeprecatedWebViewModelTests: TestCase {
   fileprivate let vm: DeprecatedWebViewModelType = DeprecatedWebViewModel()

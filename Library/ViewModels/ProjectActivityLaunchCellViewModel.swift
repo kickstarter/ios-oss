@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ProjectActivityLaunchCellViewModelInputs {
   /// Call to set the activity and project.
@@ -22,8 +22,7 @@ public protocol ProjectActivityLaunchCellViewModelType {
 }
 
 public final class ProjectActivityLaunchCellViewModel: ProjectActivityLaunchCellViewModelType,
-ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutputs {
-
+  ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutputs {
   public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let project = activityAndProject.map(second)
@@ -33,8 +32,10 @@ ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutp
     self.title = project.map { project in
       Strings.dashboard_activity_project_name_launched(
         project_name: project.name,
-        launch_date: Format.date(secondsInUTC: project.dates.launchedAt,
-          dateStyle: .long, timeStyle: .none).nonBreakingSpaced(),
+        launch_date: Format.date(
+          secondsInUTC: project.dates.launchedAt,
+          dateStyle: .long, timeStyle: .none
+        ).nonBreakingSpaced(),
         goal: Format.currency(project.stats.goal, country: project.country).nonBreakingSpaced()
       )
     }
