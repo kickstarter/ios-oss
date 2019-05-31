@@ -89,6 +89,7 @@
 		3757D107228E521600241AE6 /* UIFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3757D106228E521600241AE6 /* UIFontTests.swift */; };
 		37637ED8224AA03D00777AD2 /* CreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */; };
 		37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */; };
+		3772A4C6229C9E2000EDDC6F /* String+Attributed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3772A4C5229C9E2000EDDC6F /* String+Attributed.swift */; };
 		3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */; };
 		379C00012242DAFF00F6F0C2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFF12242DAC400F6F0C2 /* WebViewController.swift */; };
 		379CFFFA2242DAD500F6F0C2 /* DeprecatedWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFED2242DAC300F6F0C2 /* DeprecatedWebViewController.swift */; };
@@ -1344,6 +1345,7 @@
 		3757D106228E521600241AE6 /* UIFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontTests.swift; sourceTree = "<group>"; };
 		37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewController.swift; sourceTree = "<group>"; };
 		37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedHeaderView.swift; sourceTree = "<group>"; };
+		3772A4C5229C9E2000EDDC6F /* String+Attributed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Attributed.swift"; sourceTree = "<group>"; };
 		3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextInputCell.swift; sourceTree = "<group>"; };
 		379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+URL.swift"; sourceTree = "<group>"; };
 		379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle-Framework.swift"; sourceTree = "<group>"; };
@@ -2927,6 +2929,7 @@
 				A710573A1DC2B2DF00A69552 /* SharedFunctions.swift */,
 				A7ED1F1F1E830FDC00BFFA01 /* SharedFunctionsTests.swift */,
 				A718885C1DE0DDCE0094856D /* ShortcutItem.swift */,
+				3772A4C5229C9E2000EDDC6F /* String+Attributed.swift */,
 				D79D61141FD0979D000F958B /* String+Base64.swift */,
 				D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */,
 				A7C725921C85D36D005A016B /* String+SimpleHTML.swift */,
@@ -4265,6 +4268,7 @@
 				59392C1E1D7095B3001C99A4 /* ProjectUpdatesViewModel.swift in Sources */,
 				A760780A1CAEE0A6001B39D0 /* IsValidEmail.swift in Sources */,
 				D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */,
+				3772A4C6229C9E2000EDDC6F /* String+Attributed.swift in Sources */,
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
 				A7F441AD1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */,
 				A75A9DBF1D6F3A3000603D1D /* RewardShippingPickerViewModel.swift in Sources */,
