@@ -4,7 +4,7 @@ import class UIKit.UIColor
 
 public extension UIColor {
   @nonobjc static func hexa(_ value: UInt32) -> UIColor {
-    let a = CGFloat((value & 0xFF00_0000) >> 24) / 255.0
+    let a = CGFloat((value & 0xFF000000) >> 24) / 255.0
     let r = CGFloat((value & 0xFF0000) >> 16) / 255.0
     let g = CGFloat((value & 0xFF00) >> 8) / 255.0
     let b = CGFloat(value & 0xFF) / 255.0
