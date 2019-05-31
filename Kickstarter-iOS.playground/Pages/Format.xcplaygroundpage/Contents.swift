@@ -1,5 +1,5 @@
-import UIKit
 @testable import Library
+import UIKit
 
 let defaultAttributes: String.Attributes = [
   .font: UIFont.ksr_title1(),
