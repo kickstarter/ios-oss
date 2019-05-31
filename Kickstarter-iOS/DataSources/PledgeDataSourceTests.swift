@@ -56,5 +56,60 @@ final class PledgeDataSourceTests: XCTestCase {
     XCTAssertEqual(PledgeRowCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 2))
     XCTAssertEqual(PledgeContinueCell.defaultReusableId, self.dataSource.reusableId(item: 1, section: 2))
   }
+
+  func testLoadSelectedShippingRule_requiresShipping_isTrue() {
+    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
+                                   isLoggedIn: false, requiresShippingRules: true)
+    let selectedShippingData = SelectedShippingRuleData(location: "Brooklyn", shippingCost: 1.0,
+                                                        project: Project.template)
+
+    self.dataSource.load(data: data)
+    self.dataSource.loadSelectedShippingRule(data: selectedShippingData)
+
+    let indexPath = IndexPath(item: 1, section: PledgeDataSource.Section.inputs.rawValue)
+    let shippingCellData = PledgeDataSource.PledgeInputRow.shippingLocation(location: "Brooklyn",
+                                                                            shippingCost: 1.0,
+                                                                            project: .template)
+
+    XCTAssertEqual(shippingCellData, self.dataSource[indexPath] as? PledgeDataSource.PledgeInputRow)
+    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: PledgeDataSource.Section.inputs.rawValue))
+  }
+
+  func testLoadSelectedShippingRule_requiresShipping_isFalse() {
+    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
+                                   isLoggedIn: false, requiresShippingRules: false)
+    let selectedShippingData = SelectedShippingRuleData(location: "Brooklyn", shippingCost: 1.0,
+                                                        project: Project.template)
+
+    self.dataSource.load(data: data)
+    self.dataSource.loadSelectedShippingRule(data: selectedShippingData)
+
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: PledgeDataSource.Section.inputs.rawValue))
+  }
+
+  func testShippingCellIndexPath_isNil() {
+    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
+                                   isLoggedIn: false, requiresShippingRules: false)
+
+    self.dataSource.load(data: data)
+
+    XCTAssertNil(self.dataSource.shippingCellIndexPath())
+  }
+
+  func testShippingCellIndexPath_isNotNil() {
+    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
+                                   isLoggedIn: false, requiresShippingRules: true)
+
+    self.dataSource.load(data: data)
+
+    let indexPath = self.dataSource.shippingCellIndexPath()
+
+    XCTAssertNotNil(indexPath)
+    XCTAssertEqual(indexPath, IndexPath(item: 1, section: PledgeDataSource.Section.inputs.rawValue))
+  }
   // swiftlint:enable line_length
 }

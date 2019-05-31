@@ -10,7 +10,7 @@ final class PledgeDataSource: ValueCellDataSource {
     case summary
   }
 
-  enum PledgeInputRow {
+  enum PledgeInputRow: Equatable {
     case pledgeAmount(amount: Double, currencySymbol: String)
     case shippingLocation(location: String, shippingCost: Double, project: Project)
 
@@ -29,6 +29,8 @@ final class PledgeDataSource: ValueCellDataSource {
     }
   }
 
+  // MARK: - Load
+
   func load(data: PledgeTableViewData) {
     self.loadProjectSection(delivery: data.estimatedDelivery)
 
@@ -42,6 +44,9 @@ final class PledgeDataSource: ValueCellDataSource {
     self.loadSummarySection(isLoggedIn: data.isLoggedIn)
   }
 
+
+  // MARK: - Update Shipping Location Cell
+
   func loadSelectedShippingRule(data: SelectedShippingRuleData) {
     guard self.numberOfItems(in: PledgeDataSource.Section.inputs.rawValue) > 1 else { return }
 
@@ -53,6 +58,8 @@ final class PledgeDataSource: ValueCellDataSource {
              row: 1)
   }
 
+  // MARK: - Index
+
   func shippingCellIndexPath() -> IndexPath? {
     let inputsRowCount = self.numberOfItems(in: PledgeDataSource.Section.inputs.rawValue)
     let shippingIndexPath = IndexPath(item: inputsRowCount - 1,
@@ -62,6 +69,8 @@ final class PledgeDataSource: ValueCellDataSource {
 
     return shippingIndexPath
   }
+
+  // MARK: - Private
 
   private func loadProjectSection(delivery: String) {
     self.appendRow(
