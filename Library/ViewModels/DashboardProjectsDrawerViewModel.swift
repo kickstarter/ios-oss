@@ -1,6 +1,5 @@
 import KsApi
 import Prelude
-import Result
 import ReactiveSwift
 import ReactiveExtensions
 
@@ -26,19 +25,19 @@ public protocol DashboardProjectsDrawerViewModelInputs {
 
 public protocol DashboardProjectsDrawerViewModelOutputs {
   /// Emits when to shift screen reader focus on first project cell.
-  var focusScreenReaderOnFirstProject: Signal<(), NoError> { get }
+  var focusScreenReaderOnFirstProject: Signal<(), Never> { get }
 
   /// Emits projects to display in tableview.
-  var projectsDrawerData: Signal<[ProjectsDrawerData], NoError> { get }
+  var projectsDrawerData: Signal<[ProjectsDrawerData], Never> { get }
 
   /// Emits to notify delegate to close the drawer on background tap.
-  var notifyDelegateToCloseDrawer: Signal<(), NoError> { get }
+  var notifyDelegateToCloseDrawer: Signal<(), Never> { get }
 
   /// Emits to notify delegate when view controller completed animating out.
-  var notifyDelegateDidAnimateOut: Signal<(), NoError> { get }
+  var notifyDelegateDidAnimateOut: Signal<(), Never> { get }
 
   /// Emits to notify delegate when project cell was tapped with project.
-  var notifyDelegateProjectCellTapped: Signal<Project, NoError> { get }
+  var notifyDelegateProjectCellTapped: Signal<Project, Never> { get }
 }
 
 public protocol DashboardProjectsDrawerViewModelType {
@@ -66,11 +65,11 @@ DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs 
   public var inputs: DashboardProjectsDrawerViewModelInputs { return self }
   public var outputs: DashboardProjectsDrawerViewModelOutputs { return self }
 
-  public let focusScreenReaderOnFirstProject: Signal<(), NoError>
-  public let projectsDrawerData: Signal<[ProjectsDrawerData], NoError>
-  public let notifyDelegateDidAnimateOut: Signal<(), NoError>
-  public var notifyDelegateToCloseDrawer: Signal<(), NoError>
-  public let notifyDelegateProjectCellTapped: Signal<Project, NoError>
+  public let focusScreenReaderOnFirstProject: Signal<(), Never>
+  public let projectsDrawerData: Signal<[ProjectsDrawerData], Never>
+  public let notifyDelegateDidAnimateOut: Signal<(), Never>
+  public var notifyDelegateToCloseDrawer: Signal<(), Never>
+  public let notifyDelegateProjectCellTapped: Signal<Project, Never>
 
   fileprivate let animateInCompletedProperty = MutableProperty(())
   public func animateInCompleted() {

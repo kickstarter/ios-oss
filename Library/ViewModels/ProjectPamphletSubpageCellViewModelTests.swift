@@ -1,6 +1,5 @@
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import XCTest
 import Prelude
 @testable import KsApi
@@ -10,14 +9,14 @@ import ReactiveExtensions_TestHelpers
 internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   private let vm: ProjectPamphletSubpageCellViewModelType = ProjectPamphletSubpageCellViewModel()
 
-  private let countLabelBackgroundColor = TestObserver<UIColor, NoError>()
-  private let countLabelBorderColor = TestObserver<UIColor, NoError>()
-  private let countLabelText = TestObserver<String, NoError>()
-  private let countLabelTextColor = TestObserver<UIColor, NoError>()
-  private let labelText = TestObserver<String, NoError>()
-  private let labelTextColor = TestObserver<UIColor, NoError>()
-  private let topSeparatorViewHidden = TestObserver<Bool, NoError>()
-  private let separatorViewHidden = TestObserver<Bool, NoError>()
+  private let countLabelBackgroundColor = TestObserver<UIColor, Never>()
+  private let countLabelBorderColor = TestObserver<UIColor, Never>()
+  private let countLabelText = TestObserver<String, Never>()
+  private let countLabelTextColor = TestObserver<UIColor, Never>()
+  private let labelText = TestObserver<String, Never>()
+  private let labelTextColor = TestObserver<UIColor, Never>()
+  private let topSeparatorViewHidden = TestObserver<Bool, Never>()
+  private let separatorViewHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

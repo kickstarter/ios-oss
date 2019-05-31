@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 private struct CheckoutRetryError: Error {}
 
@@ -13,10 +12,10 @@ public protocol CheckoutRacingViewModelInputs {
 
 public protocol CheckoutRacingViewModelOutputs {
   /// Emits when an alert should be shown.
-  var showAlert: Signal<String, NoError> { get }
+  var showAlert: Signal<String, Never> { get }
 
   /// Emits when the checkout's state is successful.
-  var goToThanks: Signal<Void, NoError> { get }
+  var goToThanks: Signal<Void, Never> { get }
 }
 
 public protocol CheckoutRacingViewModelType: CheckoutRacingViewModelInputs, CheckoutRacingViewModelOutputs {
@@ -74,8 +73,8 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
     self.initialURLProperty.value = url
   }
 
-  public let goToThanks: Signal<Void, NoError>
-  public let showAlert: Signal<String, NoError>
+  public let goToThanks: Signal<Void, Never>
+  public let showAlert: Signal<String, Never>
 
   public var inputs: CheckoutRacingViewModelInputs { return self }
   public var outputs: CheckoutRacingViewModelOutputs { return self }

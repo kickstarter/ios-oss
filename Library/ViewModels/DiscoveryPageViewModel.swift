@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol DiscoveryPageViewModelInputs {
   /// Call with the sort provided to the view.
@@ -52,41 +51,41 @@ public protocol DiscoveryPageViewModelInputs {
 
 public protocol DiscoveryPageViewModelOutputs {
   /// Emits a list of activities to be displayed in the sample.
-  var activitiesForSample: Signal<[Activity], NoError> { get }
+  var activitiesForSample: Signal<[Activity], Never> { get }
 
   /// Hack to emit when we should asynchronously reload the table view's data to properly display postcards.
   /// Hopefully in the future we can remove this when we can resolve postcard display issues.
-  var asyncReloadData: Signal<Void, NoError> { get }
+  var asyncReloadData: Signal<Void, Never> { get }
 
   /// Emits a project and ref tag that we should go to from the activity sample.
-  var goToActivityProject: Signal<(Project, RefTag), NoError> { get }
+  var goToActivityProject: Signal<(Project, RefTag), Never> { get }
 
   /// Emits a project, playlist, ref tag that we should go to from discovery.
-  var goToProjectPlaylist: Signal<(Project, [Project], RefTag), NoError> { get }
+  var goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never> { get }
 
   /// Emits a project and update when should go to update.
-  var goToProjectUpdate: Signal<(Project, Update), NoError> { get }
+  var goToProjectUpdate: Signal<(Project, Update), Never> { get }
 
   /// Emits when we should dismiss the empty state controller.
-  var hideEmptyState: Signal<(), NoError> { get }
+  var hideEmptyState: Signal<(), Never> { get }
 
   /// Emits a list of projects that should be shown, and the corresponding filter request params
-  var projectsLoaded: Signal<([Project], DiscoveryParams?), NoError> { get }
+  var projectsLoaded: Signal<([Project], DiscoveryParams?), Never> { get }
 
   /// Emits a boolean that determines if projects are currently loading or not.
-  var projectsAreLoadingAnimated: Signal<(Bool, Bool), NoError> { get }
+  var projectsAreLoadingAnimated: Signal<(Bool, Bool), Never> { get }
 
   /// Emits when should scroll to project with row number.
-  var scrollToProjectRow: Signal<Int, NoError> { get }
+  var scrollToProjectRow: Signal<Int, Never> { get }
 
   /// Emits a bool to allow status bar tap to scroll the table view to the top.
-  var setScrollsToTop: Signal<Bool, NoError> { get }
+  var setScrollsToTop: Signal<Bool, Never> { get }
 
   /// Emits to show the empty state controller.
-  var showEmptyState: Signal<EmptyState, NoError> { get }
+  var showEmptyState: Signal<EmptyState, Never> { get }
 
   /// Emits a boolean that determines of the onboarding should be shown.
-  var showOnboarding: Signal<Bool, NoError> { get }
+  var showOnboarding: Signal<Bool, Never> { get }
 }
 
 public protocol DiscoveryPageViewModelType {
@@ -149,9 +148,9 @@ DiscoveryPageViewModelOutputs {
       (firstPageParams.takeWhen(environmentChanged)),
       firstPageParams.takeWhen(self.pulledToRefreshProperty.signal))
 
-    let paginatedProjects: Signal<[Project], NoError>
-    let pageCount: Signal<Int, NoError>
-    let isLoading: Signal<Bool, NoError>
+    let paginatedProjects: Signal<[Project], Never>
+    let pageCount: Signal<Int, Never>
+    let isLoading: Signal<Bool, Never>
     (paginatedProjects, isLoading, pageCount) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
@@ -238,7 +237,7 @@ DiscoveryPageViewModelOutputs {
 
     self.goToProjectUpdate = self.tappedActivity.signal.skipNil()
       .filter { $0.category == .update }
-      .flatMap { activity -> SignalProducer<(Project, Update), NoError> in
+      .flatMap { activity -> SignalProducer<(Project, Update), Never> in
         guard let project = activity.project, let update = activity.update else {
           return .empty
         }
@@ -349,18 +348,18 @@ DiscoveryPageViewModelOutputs {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let activitiesForSample: Signal<[Activity], NoError>
-  public let asyncReloadData: Signal<Void, NoError>
-  public let goToActivityProject: Signal<(Project, RefTag), NoError>
-  public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), NoError>
-  public let goToProjectUpdate: Signal<(Project, Update), NoError>
-  public let hideEmptyState: Signal<Void, NoError>
-  public let projectsLoaded: Signal<([Project], DiscoveryParams?), NoError>
-  public let projectsAreLoadingAnimated: Signal<(Bool, Bool), NoError>
-  public let setScrollsToTop: Signal<Bool, NoError>
-  public let scrollToProjectRow: Signal<Int, NoError>
-  public let showEmptyState: Signal<EmptyState, NoError>
-  public let showOnboarding: Signal<Bool, NoError>
+  public let activitiesForSample: Signal<[Activity], Never>
+  public let asyncReloadData: Signal<Void, Never>
+  public let goToActivityProject: Signal<(Project, RefTag), Never>
+  public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>
+  public let goToProjectUpdate: Signal<(Project, Update), Never>
+  public let hideEmptyState: Signal<Void, Never>
+  public let projectsLoaded: Signal<([Project], DiscoveryParams?), Never>
+  public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
+  public let setScrollsToTop: Signal<Bool, Never>
+  public let scrollToProjectRow: Signal<Int, Never>
+  public let showEmptyState: Signal<EmptyState, Never>
+  public let showOnboarding: Signal<Bool, Never>
 
   public var inputs: DiscoveryPageViewModelInputs { return self }
   public var outputs: DiscoveryPageViewModelOutputs { return self }

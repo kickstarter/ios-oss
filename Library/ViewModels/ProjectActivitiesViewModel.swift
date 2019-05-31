@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public enum ProjectActivitiesGoTo {
   case backing(Project, User)
@@ -49,16 +48,16 @@ public protocol ProjectActivitiesViewModelInputs {
 
 public protocol ProjectActivitiesViewModelOutputs {
   /// Emits when another screen should be loaded.
-  var goTo: Signal<ProjectActivitiesGoTo, NoError> { get }
+  var goTo: Signal<ProjectActivitiesGoTo, Never> { get }
 
   /// Emits a boolean that indicates whether the view is refreshing.
-  var isRefreshing: Signal<Bool, NoError> { get }
+  var isRefreshing: Signal<Bool, Never> { get }
 
   /// Emits project activity data.
-  var projectActivityData: Signal<ProjectActivityData, NoError> { get }
+  var projectActivityData: Signal<ProjectActivityData, Never> { get }
 
   /// Emits `true` when the empty state should be shown, and `false` when it should be hidden.
-  var showEmptyState: Signal<Bool, NoError> { get }
+  var showEmptyState: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectActivitiesViewModelType {
@@ -86,8 +85,8 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
         )
     )
 
-    let activities: Signal<[Activity], NoError>
-    let pageCount: Signal<Int, NoError>
+    let activities: Signal<[Activity], Never>
+    let pageCount: Signal<Int, Never>
     (activities, self.isRefreshing, pageCount) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
@@ -111,7 +110,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       .skipRepeats()
 
     let cellTappedGoTo = self.activityAndProjectCellTappedProperty.signal.skipNil()
-      .flatMap { activity, project -> SignalProducer<(ProjectActivitiesGoTo), NoError> in
+      .flatMap { activity, project -> SignalProducer<(ProjectActivitiesGoTo), Never> in
         switch activity.category {
         case .backing, .backingAmount, .backingCanceled, .backingReward:
           guard let user = activity.user else { return .empty }
@@ -215,10 +214,10 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let goTo: Signal<ProjectActivitiesGoTo, NoError>
-  public let isRefreshing: Signal<Bool, NoError>
-  public let projectActivityData: Signal<ProjectActivityData, NoError>
-  public let showEmptyState: Signal<Bool, NoError>
+  public let goTo: Signal<ProjectActivitiesGoTo, Never>
+  public let isRefreshing: Signal<Bool, Never>
+  public let projectActivityData: Signal<ProjectActivityData, Never>
+  public let showEmptyState: Signal<Bool, Never>
 
   public var inputs: ProjectActivitiesViewModelInputs { return self }
   public var outputs: ProjectActivitiesViewModelOutputs { return self }

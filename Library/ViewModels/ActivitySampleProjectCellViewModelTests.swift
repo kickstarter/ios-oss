@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,11 +8,11 @@ import ReactiveExtensions_TestHelpers
 
 internal final class ActivitySampleProjectCellViewModelTests: TestCase {
   internal let vm = ActivitySampleProjectCellViewModel()
-  internal let cellAccessibilityHint = TestObserver<String, NoError>()
-  internal let goToActivity = TestObserver<Void, NoError>()
-  internal let projectSubtitleText = TestObserver<String, NoError>()
-  internal let projectTitleText = TestObserver<String, NoError>()
-  internal let projectImage = TestObserver<String?, NoError>()
+  internal let cellAccessibilityHint = TestObserver<String, Never>()
+  internal let goToActivity = TestObserver<Void, Never>()
+  internal let projectSubtitleText = TestObserver<String, Never>()
+  internal let projectTitleText = TestObserver<String, Never>()
+  internal let projectImage = TestObserver<String?, Never>()
 
   internal override func setUp() {
     super.setUp()

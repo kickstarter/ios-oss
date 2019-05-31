@@ -1,7 +1,6 @@
 import KsApi
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 import Prelude
 
 public protocol FindFriendsHeaderCellViewModelInputs {
@@ -17,10 +16,10 @@ public protocol FindFriendsHeaderCellViewModelInputs {
 
 public protocol FindFriendsHeaderCellViewModelOutputs {
   /// Emits when should notify delegate to go to Find Friends screen
-  var notifyDelegateGoToFriends: Signal<(), NoError> { get }
+  var notifyDelegateGoToFriends: Signal<(), Never> { get }
 
   /// Emits when should notify delegate to dismiss this view
-  var notifyDelegateToDismissHeader: Signal<(), NoError> { get }
+  var notifyDelegateToDismissHeader: Signal<(), Never> { get }
 }
 
 public protocol FindFriendsHeaderCellViewModelType {
@@ -56,6 +55,6 @@ public final class FindFriendsHeaderCellViewModel: FindFriendsHeaderCellViewMode
     self.findFriendsButtonTappedProperty.value = ()
   }
 
-  public let notifyDelegateGoToFriends: Signal<(), NoError>
-  public let notifyDelegateToDismissHeader: Signal<(), NoError>
+  public let notifyDelegateGoToFriends: Signal<(), Never>
+  public let notifyDelegateToDismissHeader: Signal<(), Never>
 }

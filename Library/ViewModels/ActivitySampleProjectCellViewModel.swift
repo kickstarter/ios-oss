@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol ActivitySampleProjectCellViewModelInputs {
   /// Call to configure cell with activity value.
@@ -14,19 +13,19 @@ public protocol ActivitySampleProjectCellViewModelInputs {
 
 public protocol ActivitySampleProjectCellViewModelOutputs {
   /// Emits the cell accessibility hint for voiceover.
-  var cellAccessibilityHint: Signal<String, NoError> { get }
+  var cellAccessibilityHint: Signal<String, Never> { get }
 
   /// Emits when should go to activities screen.
-  var goToActivity: Signal<Void, NoError> { get }
+  var goToActivity: Signal<Void, Never> { get }
 
   /// Emits the project image url to be displayed.
-  var projectImageURL: Signal<URL?, NoError> { get }
+  var projectImageURL: Signal<URL?, Never> { get }
 
   /// Emits the project subtitle message to be displayed.
-  var projectSubtitleText: Signal<String, NoError> { get }
+  var projectSubtitleText: Signal<String, Never> { get }
 
   /// Emits the project name title to be displayed.
-  var projectTitleText: Signal<String, NoError> { get }
+  var projectTitleText: Signal<String, Never> { get }
 }
 
 public protocol ActivitySampleProjectCellViewModelType {
@@ -82,11 +81,11 @@ public final class ActivitySampleProjectCellViewModel: ActivitySampleProjectCell
     self.seeAllActivityTappedProperty.value = ()
   }
 
-  public let cellAccessibilityHint: Signal<String, NoError>
-  public let goToActivity: Signal<Void, NoError>
-  public let projectImageURL: Signal<URL?, NoError>
-  public let projectSubtitleText: Signal<String, NoError>
-  public let projectTitleText: Signal<String, NoError>
+  public let cellAccessibilityHint: Signal<String, Never>
+  public let goToActivity: Signal<Void, Never>
+  public let projectImageURL: Signal<URL?, Never>
+  public let projectSubtitleText: Signal<String, Never>
+  public let projectTitleText: Signal<String, Never>
 
   public var inputs: ActivitySampleProjectCellViewModelInputs { return self }
   public var outputs: ActivitySampleProjectCellViewModelOutputs { return self }

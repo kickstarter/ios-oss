@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ProjectNavBarViewModelInputs {
   func closeButtonTapped()
@@ -14,30 +13,30 @@ public protocol ProjectNavBarViewModelInputs {
 }
 
 public protocol ProjectNavBarViewModelOutputs {
-  var backgroundOpaqueAndAnimate: Signal<(opaque: Bool, animate: Bool), NoError> { get }
+  var backgroundOpaqueAndAnimate: Signal<(opaque: Bool, animate: Bool), Never> { get }
 
   /// Emits the category button's title text.
-  var categoryButtonText: Signal<String, NoError> { get }
+  var categoryButtonText: Signal<String, Never> { get }
 
   /// Emits the tint color of the category button.
-  var categoryButtonTintColor: Signal<UIColor, NoError> { get }
+  var categoryButtonTintColor: Signal<UIColor, Never> { get }
 
   /// Emits the color of the category button's title.
-  var categoryButtonTitleColor: Signal<UIColor, NoError> { get }
+  var categoryButtonTitleColor: Signal<UIColor, Never> { get }
 
   /// Emits two booleans that determine if the category is hidden, and if that change should be animated.
-  var categoryHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError> { get }
+  var categoryHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), Never> { get }
 
   /// Emits when the controller should be dismissed.
-  var dismissViewController: Signal<(), NoError> { get }
+  var dismissViewController: Signal<(), Never> { get }
 
   /// Emits a boolean that determines if the navBar should show dropShadow.
-  var navBarShadowVisible: Signal<Bool, NoError> { get }
+  var navBarShadowVisible: Signal<Bool, Never> { get }
 
   /// Emits the name of the project
-  var projectName: Signal<String, NoError> { get }
+  var projectName: Signal<String, Never> { get }
 
-  var titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError> { get }
+  var titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), Never> { get }
 }
 
 public protocol ProjectNavBarViewModelType {
@@ -151,15 +150,15 @@ ProjectNavBarViewModelInputs, ProjectNavBarViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let backgroundOpaqueAndAnimate: Signal<(opaque: Bool, animate: Bool), NoError>
-  public let categoryButtonText: Signal<String, NoError>
-  public let categoryButtonTintColor: Signal<UIColor, NoError>
-  public let categoryButtonTitleColor: Signal<UIColor, NoError>
-  public let categoryHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>
-  public let dismissViewController: Signal<(), NoError>
-  public let navBarShadowVisible: Signal<Bool, NoError>
-  public let projectName: Signal<String, NoError>
-  public let titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), NoError>
+  public let backgroundOpaqueAndAnimate: Signal<(opaque: Bool, animate: Bool), Never>
+  public let categoryButtonText: Signal<String, Never>
+  public let categoryButtonTintColor: Signal<UIColor, Never>
+  public let categoryButtonTitleColor: Signal<UIColor, Never>
+  public let categoryHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), Never>
+  public let dismissViewController: Signal<(), Never>
+  public let navBarShadowVisible: Signal<Bool, Never>
+  public let projectName: Signal<String, Never>
+  public let titleHiddenAndAnimate: Signal<(hidden: Bool, animate: Bool), Never>
 
   public var inputs: ProjectNavBarViewModelInputs { return self }
   public var outputs: ProjectNavBarViewModelOutputs { return self }

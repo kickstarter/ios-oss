@@ -3,20 +3,19 @@ import XCTest
 import ReactiveExtensions_TestHelpers
 @testable import KsApi
 import ReactiveSwift
-import Result
 import Prelude
 
 final class CommentCellViewModelTest: TestCase {
   let vm: CommentCellViewModelType = CommentCellViewModel()
 
-  let avatarUrl = TestObserver<URL?, NoError>()
-  let body = TestObserver<String, NoError>()
-  let bodyColor = TestObserver<UIColor, NoError>()
-  let bodyFont = TestObserver<UIFont, NoError>()
-  let creatorHidden = TestObserver<Bool, NoError>()
-  let commenterName = TestObserver<String, NoError>()
-  let timestamp = TestObserver<String, NoError>()
-  let youHidden = TestObserver<Bool, NoError>()
+  let avatarUrl = TestObserver<URL?, Never>()
+  let body = TestObserver<String, Never>()
+  let bodyColor = TestObserver<UIColor, Never>()
+  let bodyFont = TestObserver<UIFont, Never>()
+  let creatorHidden = TestObserver<Bool, Never>()
+  let commenterName = TestObserver<String, Never>()
+  let timestamp = TestObserver<String, Never>()
+  let youHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

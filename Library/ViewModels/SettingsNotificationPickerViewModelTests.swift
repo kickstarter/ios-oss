@@ -1,6 +1,5 @@
 import Library
 import Prelude
-import Result
 import XCTest
 @testable import KsApi
 import ReactiveExtensions_TestHelpers
@@ -8,7 +7,7 @@ import ReactiveExtensions_TestHelpers
 final class SettingsNotificationPickerViewModelTests: TestCase {
   private let vm = SettingsNotificationPickerViewModel()
 
-  let frequencyValueText = TestObserver<String, NoError>()
+  let frequencyValueText = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

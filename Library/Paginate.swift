@@ -1,5 +1,4 @@
 import ReactiveSwift
-import Result
 import Prelude
 import ReactiveExtensions
 
@@ -38,8 +37,8 @@ import ReactiveExtensions
             or error). Finally, `pageCount` emits the number of the page that loaded, starting at 1.
  */
 public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestParams> (
-  requestFirstPageWith requestFirstPage: Signal<RequestParams, NoError>,
-  requestNextPageWhen  requestNextPage: Signal<(), NoError>,
+  requestFirstPageWith requestFirstPage: Signal<RequestParams, Never>,
+  requestNextPageWhen  requestNextPage: Signal<(), Never>,
   clearOnNewRequest: Bool,
   skipRepeats: Bool = true,
   valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
@@ -48,9 +47,9 @@ public func paginate <Cursor, Value: Equatable, Envelope, ErrorEnvelope, Request
   requestFromCursor: @escaping ((Cursor) -> SignalProducer<Envelope, ErrorEnvelope>),
   concater: @escaping (([Value], [Value]) -> [Value]) = (+))
   ->
-  (paginatedValues: Signal<[Value], NoError>,
-   isLoading: Signal<Bool, NoError>,
-   pageCount: Signal<Int, NoError>) {
+  (paginatedValues: Signal<[Value], Never>,
+   isLoading: Signal<Bool, Never>,
+   pageCount: Signal<Int, Never>) {
 
     let cursor = MutableProperty<Cursor?>(nil)
     let isLoading = MutableProperty<Bool>(false)

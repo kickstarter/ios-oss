@@ -1,6 +1,5 @@
 import KsApi
 import Prelude
-import Result
 import ReactiveSwift
 import ReactiveExtensions
 
@@ -14,25 +13,25 @@ public protocol DashboardTitleViewViewModelInputs {
 
 public protocol DashboardTitleViewViewModelOutputs {
   /// Emits whether should hide arrow icon.
-  var hideArrow: Signal<Bool, NoError> { get }
+  var hideArrow: Signal<Bool, Never> { get }
 
   /// Emits when the delegate should show/hide the projects drawer when the title is tapped.
-  var notifyDelegateShowHideProjectsDrawer: Signal<(), NoError> { get }
+  var notifyDelegateShowHideProjectsDrawer: Signal<(), Never> { get }
 
   /// Emits a11y label for title view.
-  var titleAccessibilityLabel: Signal<String, NoError> { get }
+  var titleAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits a11y hint for title view.
-  var titleAccessibilityHint: Signal<String, NoError> { get }
+  var titleAccessibilityHint: Signal<String, Never> { get }
 
   /// Emits whether title should be tappable.
-  var titleButtonIsEnabled: Signal<Bool, NoError> { get }
+  var titleButtonIsEnabled: Signal<Bool, Never> { get }
 
   /// Emits the text for the title view.
-  var titleText: Signal<String, NoError> { get }
+  var titleText: Signal<String, Never> { get }
 
   /// Emits to update arrow icon to open or closed state.
-  var updateArrowState: Signal<DrawerState, NoError> { get }
+  var updateArrowState: Signal<DrawerState, Never> { get }
 }
 
 public protocol DashboardTitleViewViewModelType {
@@ -77,13 +76,13 @@ public final class DashboardTitleViewViewModel: DashboardTitleViewViewModelType,
   public var inputs: DashboardTitleViewViewModelInputs { return self }
   public var outputs: DashboardTitleViewViewModelOutputs { return self }
 
-  public let updateArrowState: Signal<DrawerState, NoError>
-  public let hideArrow: Signal<Bool, NoError>
-  public let notifyDelegateShowHideProjectsDrawer: Signal<(), NoError>
-  public let titleAccessibilityLabel: Signal<String, NoError>
-  public let titleAccessibilityHint: Signal<String, NoError>
-  public let titleText: Signal<String, NoError>
-  public let titleButtonIsEnabled: Signal<Bool, NoError>
+  public let updateArrowState: Signal<DrawerState, Never>
+  public let hideArrow: Signal<Bool, Never>
+  public let notifyDelegateShowHideProjectsDrawer: Signal<(), Never>
+  public let titleAccessibilityLabel: Signal<String, Never>
+  public let titleAccessibilityHint: Signal<String, Never>
+  public let titleText: Signal<String, Never>
+  public let titleButtonIsEnabled: Signal<Bool, Never>
 
   fileprivate let currentProjectIndexProperty = MutableProperty<Int?>(nil)
   fileprivate let updateDrawerStateHideArrowProperty = MutableProperty<(DrawerState, Bool)?>(nil)

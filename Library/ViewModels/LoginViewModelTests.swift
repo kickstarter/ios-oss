@@ -5,24 +5,23 @@ import XCTest
 import ReactiveSwift
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
 
 final class LoginViewModelTests: TestCase {
   fileprivate let vm: LoginViewModelType = LoginViewModel()
-  fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let isFormValid = TestObserver<Bool, NoError>()
-  fileprivate let dismissKeyboard = TestObserver<(), NoError>()
-  fileprivate let postNotificationName = TestObserver<(Notification.Name, Notification.Name), NoError>()
-  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  fileprivate let showError = TestObserver<String, NoError>()
-  fileprivate let tfaChallenge = TestObserver<String, NoError>()
-  fileprivate let emailText = TestObserver<String, NoError>()
-  fileprivate let tfaChallengePasswordText = TestObserver<String, NoError>()
-  fileprivate let onePasswordButtonIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-  fileprivate let passwordText = TestObserver<String, NoError>()
-  fileprivate let showHidePassword = TestObserver<Bool, NoError>()
+  fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let isFormValid = TestObserver<Bool, Never>()
+  fileprivate let dismissKeyboard = TestObserver<(), Never>()
+  fileprivate let postNotificationName = TestObserver<(Notification.Name, Notification.Name), Never>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let showError = TestObserver<String, Never>()
+  fileprivate let tfaChallenge = TestObserver<String, Never>()
+  fileprivate let emailText = TestObserver<String, Never>()
+  fileprivate let tfaChallengePasswordText = TestObserver<String, Never>()
+  fileprivate let onePasswordButtonIsHidden = TestObserver<Bool, Never>()
+  fileprivate let onePasswordFindLoginForURLString = TestObserver<String, Never>()
+  fileprivate let passwordText = TestObserver<String, Never>()
+  fileprivate let showHidePassword = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

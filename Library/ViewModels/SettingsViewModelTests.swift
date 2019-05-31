@@ -1,6 +1,5 @@
 import Prelude
 import XCTest
-import Result
 @testable import KsApi
 @testable import Library
 @testable import Kickstarter_Framework
@@ -9,12 +8,12 @@ import ReactiveExtensions_TestHelpers
 internal final class SettingsViewModelTests: TestCase {
   let vm = SettingsViewModel(SettingsViewController.viewController(for:))
 
-  private let findFriendsDisabled = TestObserver<Bool, NoError>()
-  private let goToAppStoreRating = TestObserver<String, NoError>()
-  private let logout = TestObserver<DiscoveryParams, NoError>()
-  private let reloadDataWithUser = TestObserver<User, NoError>()
-  private let showConfirmLogout = TestObserver<Void, NoError>()
-  private let transitionToViewController = TestObserver<UIViewController, NoError>()
+  private let findFriendsDisabled = TestObserver<Bool, Never>()
+  private let goToAppStoreRating = TestObserver<String, Never>()
+  private let logout = TestObserver<DiscoveryParams, Never>()
+  private let reloadDataWithUser = TestObserver<User, Never>()
+  private let showConfirmLogout = TestObserver<Void, Never>()
+  private let transitionToViewController = TestObserver<UIViewController, Never>()
 
   internal override func setUp() {
     super.setUp()

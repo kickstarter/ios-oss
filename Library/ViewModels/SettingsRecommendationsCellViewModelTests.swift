@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,10 +8,10 @@ import ReactiveExtensions_TestHelpers
 
 internal final class SettingsRecommendationsCellViewModelTests: TestCase {
   internal let vm = SettingsRecommendationsCellViewModel()
-  internal let postNotification = TestObserver<Notification, NoError>()
-  internal let recommendationsOn = TestObserver<Bool, NoError>()
-  internal let unableToSaveError = TestObserver<String, NoError>()
-  internal let updateCurrentUser = TestObserver<User, NoError>()
+  internal let postNotification = TestObserver<Notification, Never>()
+  internal let recommendationsOn = TestObserver<Bool, Never>()
+  internal let unableToSaveError = TestObserver<String, Never>()
+  internal let updateCurrentUser = TestObserver<User, Never>()
 
   internal override func setUp() {
     super.setUp()

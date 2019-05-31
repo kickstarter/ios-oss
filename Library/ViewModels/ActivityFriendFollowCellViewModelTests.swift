@@ -3,16 +3,15 @@ import ReactiveSwift
 import UIKit.UIActivity
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
 @testable import KsApi
 @testable import Library
 import Prelude
 
 final class ActivityFriendFollowCellViewModelTests: TestCase {
   let vm: ActivityFriendFollowCellViewModel = ActivityFriendFollowCellViewModel()
-  let hideFollowButton = TestObserver<Bool, NoError>()
-  let friendImageURL = TestObserver<String?, NoError>()
-  let title = TestObserver<String, NoError>()
+  let hideFollowButton = TestObserver<Bool, Never>()
+  let friendImageURL = TestObserver<String?, Never>()
+  let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

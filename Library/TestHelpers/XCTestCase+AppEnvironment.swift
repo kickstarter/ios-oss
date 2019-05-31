@@ -3,7 +3,6 @@ import XCTest
 import Foundation
 import KsApi
 import ReactiveSwift
-import Result
 import KsApi
 
 extension XCTestCase {

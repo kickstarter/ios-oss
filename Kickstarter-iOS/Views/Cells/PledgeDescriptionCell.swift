@@ -226,7 +226,7 @@ private func attributedLearnMoreText() -> NSAttributedString? {
   // swiftlint:enable line_length
 
   guard let attributedString = try? NSMutableAttributedString(
-    data: Data(bytes: string.utf8),
+    data: Data(string.utf8),
     options: [.documentType: NSAttributedString.DocumentType.html],
     documentAttributes: nil
   ) else { return nil }

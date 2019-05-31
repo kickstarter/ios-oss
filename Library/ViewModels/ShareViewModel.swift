@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public struct ShareActivityCompletionData {
   internal let activityType: UIActivity.ActivityType?
@@ -40,7 +39,7 @@ public protocol ShareViewModelInputs {
 
 public protocol ShareViewModelOutputs {
   /// Emits when the share sheet should be presented.
-  var showShareSheet: Signal<(UIActivityViewController, UIView?), NoError> { get }
+  var showShareSheet: Signal<(UIActivityViewController, UIView?), Never> { get }
 }
 
 public protocol ShareViewModelType {
@@ -133,7 +132,7 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
     self.shareActivityCompletionProperty.value = data
   }
 
-  public let showShareSheet: Signal<(UIActivityViewController, UIView?), NoError>
+  public let showShareSheet: Signal<(UIActivityViewController, UIView?), Never>
 
   public var inputs: ShareViewModelInputs { return self }
   public var outputs: ShareViewModelOutputs { return self }

@@ -3,7 +3,6 @@ import Foundation
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import Result
 import PlaygroundSupport
 
 func query(withSlug slug: String) -> NonEmptySet<Query> {
@@ -27,7 +26,7 @@ struct ProjectEnvelope: Decodable {
 let client = Service()
 let signal: SignalProducer<ProjectEnvelope, GraphError> =
   client.fetchGraph(query: query(withSlug:"splatware-unique-ceramic-tableware"))
-let (fakeTaps, sink) = Signal<Void, NoError>.pipe()
+let (fakeTaps, sink) = Signal<Void, Never>.pipe()
 
 let project = fakeTaps.switchMap {
   signal.materialize()

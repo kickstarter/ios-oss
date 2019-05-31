@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -9,22 +8,22 @@ import ReactiveExtensions_TestHelpers
 internal final class AddNewCardViewModelTests: TestCase {
   private let vm: AddNewCardViewModelType = AddNewCardViewModel()
 
-  private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
-  private let addNewCardFailure = TestObserver<String, NoError>()
-  private let addNewCardSuccess = TestObserver<String, NoError>()
-  private let creditCardValidationErrorContainerHidden = TestObserver<Bool, NoError>()
-  private let cardholderNameBecomeFirstResponder = TestObserver<Void, NoError>()
-  private let dismissKeyboard = TestObserver<Void, NoError>()
-  private let cardholderName = TestObserver<String, NoError>()
-  private let cardNumber = TestObserver<String, NoError>()
-  private let cardExpMonth = TestObserver<Month, NoError>()
-  private let cardExpYear = TestObserver<Year, NoError>()
-  private let cardCVC = TestObserver<String, NoError>()
-  private let paymentDetailsBecomeFirstResponder = TestObserver<Void, NoError>()
-  private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
-  private let setStripePublishableKey = TestObserver<String, NoError>()
-  private let zipcode = TestObserver<String, NoError>()
-  private let zipcodeTextFieldBecomeFirstResponder = TestObserver<Void, NoError>()
+  private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
+  private let addNewCardFailure = TestObserver<String, Never>()
+  private let addNewCardSuccess = TestObserver<String, Never>()
+  private let creditCardValidationErrorContainerHidden = TestObserver<Bool, Never>()
+  private let cardholderNameBecomeFirstResponder = TestObserver<Void, Never>()
+  private let dismissKeyboard = TestObserver<Void, Never>()
+  private let cardholderName = TestObserver<String, Never>()
+  private let cardNumber = TestObserver<String, Never>()
+  private let cardExpMonth = TestObserver<Month, Never>()
+  private let cardExpYear = TestObserver<Year, Never>()
+  private let cardCVC = TestObserver<String, Never>()
+  private let paymentDetailsBecomeFirstResponder = TestObserver<Void, Never>()
+  private let saveButtonIsEnabled = TestObserver<Bool, Never>()
+  private let setStripePublishableKey = TestObserver<String, Never>()
+  private let zipcode = TestObserver<String, Never>()
+  private let zipcodeTextFieldBecomeFirstResponder = TestObserver<Void, Never>()
 
   override func setUp() {
     super.setUp()

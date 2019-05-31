@@ -5,17 +5,16 @@ import ReactiveExtensions_TestHelpers
 @testable import KsApi
 import KsApi
 import ReactiveSwift
-import Result
 import Prelude
 
 internal final class MessagesSearchViewModelTests: TestCase {
   fileprivate let vm: MessagesSearchViewModelType = MessagesSearchViewModel()
 
-  fileprivate let emptyStateIsVisible = TestObserver<Bool, NoError>()
-  fileprivate let isSearching = TestObserver<Bool, NoError>()
-  fileprivate let hasMessageThreads = TestObserver<Bool, NoError>()
-  fileprivate let showKeyboard = TestObserver<Bool, NoError>()
-  fileprivate let goToMessageThread = TestObserver<MessageThread, NoError>()
+  fileprivate let emptyStateIsVisible = TestObserver<Bool, Never>()
+  fileprivate let isSearching = TestObserver<Bool, Never>()
+  fileprivate let hasMessageThreads = TestObserver<Bool, Never>()
+  fileprivate let showKeyboard = TestObserver<Bool, Never>()
+  fileprivate let goToMessageThread = TestObserver<MessageThread, Never>()
 
   override func setUp() {
     super.setUp()

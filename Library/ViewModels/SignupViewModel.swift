@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol SignupViewModelInputs {
   /// Call when the user enters a new email address.
@@ -38,28 +37,28 @@ public protocol SignupViewModelInputs {
 
 public protocol SignupViewModelOutputs {
   /// Sets whether the email text field is the first responder.
-  var emailTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
+  var emailTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 
   /// Emits true when the signup button should be enabled, false otherwise.
-  var isSignupButtonEnabled: Signal<Bool, NoError> { get }
+  var isSignupButtonEnabled: Signal<Bool, Never> { get }
 
   /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
+  var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
 
   /// Sets whether the password text field is the first responder.
-  var passwordTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
+  var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 
   /// Emits when a notification should be posted.
-  var postNotification: Signal<Notification, NoError> { get }
+  var postNotification: Signal<Notification, Never> { get }
 
   /// Sets whether the name text field is the first responder.
-  var nameTextFieldBecomeFirstResponder: Signal<(), NoError> { get }
+  var nameTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 
   /// Emits the value for the weekly newsletter.
-  var setWeeklyNewsletterState: Signal<Bool, NoError> { get }
+  var setWeeklyNewsletterState: Signal<Bool, Never> { get }
 
   /// Emits when a signup error has occurred and a message should be displayed.
-  var showError: Signal<String, NoError> { get }
+  var showError: Signal<String, Never> { get }
 }
 
 public protocol SignupViewModelType {
@@ -204,14 +203,14 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.weeklyNewsletterChangedProperty.value = weeklyNewsletter
   }
 
-  public let emailTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let isSignupButtonEnabled: Signal<Bool, NoError>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public let nameTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let passwordTextFieldBecomeFirstResponder: Signal<(), NoError>
-  public let postNotification: Signal<Notification, NoError>
-  public let setWeeklyNewsletterState: Signal<Bool, NoError>
-  public let showError: Signal<String, NoError>
+  public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
+  public let isSignupButtonEnabled: Signal<Bool, Never>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let nameTextFieldBecomeFirstResponder: Signal<(), Never>
+  public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
+  public let postNotification: Signal<Notification, Never>
+  public let setWeeklyNewsletterState: Signal<Bool, Never>
+  public let showError: Signal<String, Never>
 
   public var inputs: SignupViewModelInputs { return self }
   public var outputs: SignupViewModelOutputs { return self }

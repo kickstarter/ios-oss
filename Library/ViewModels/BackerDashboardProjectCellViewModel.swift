@@ -1,7 +1,6 @@
 import Foundation
 import KsApi
 import ReactiveSwift
-import Result
 import UIKit
 
 public protocol BackerDashboardProjectCellViewModelInputs {
@@ -11,31 +10,31 @@ public protocol BackerDashboardProjectCellViewModelInputs {
 
 public protocol BackerDashboardProjectCellViewModelOutputs {
   /// Emits a boolean whether to show the metadata timer icon.
-  var metadataIconIsHidden: Signal<Bool, NoError> { get }
+  var metadataIconIsHidden: Signal<Bool, Never> { get }
 
   /// Emits text for the metadata label.
-  var metadataText: Signal<String, NoError> { get }
+  var metadataText: Signal<String, Never> { get }
 
   /// Emits a color for the metadata background view.
-  var metadataBackgroundColor: Signal<UIColor, NoError> { get }
+  var metadataBackgroundColor: Signal<UIColor, Never> { get }
 
   /// Emits attributed text for the percent funded label.
-  var percentFundedText: Signal<NSAttributedString, NoError> { get }
+  var percentFundedText: Signal<NSAttributedString, Never> { get }
 
   /// Emits the project's photo URL to be displayed.
-  var photoURL: Signal<URL?, NoError> { get }
+  var photoURL: Signal<URL?, Never> { get }
 
   /// Emits the project's funding progress amount to be displayed.
-  var progress: Signal<Float, NoError> { get }
+  var progress: Signal<Float, Never> { get }
 
   /// Emits a color for the progress bar.
-  var progressBarColor: Signal<UIColor, NoError> { get }
+  var progressBarColor: Signal<UIColor, Never> { get }
 
   /// Emits the project name to be displayed.
-  var projectTitleText: Signal<NSAttributedString, NoError> { get }
+  var projectTitleText: Signal<NSAttributedString, Never> { get }
 
   /// Emits a boolean when the saved icon is hidden or not.
-  var savedIconIsHidden: Signal<Bool, NoError> { get }
+  var savedIconIsHidden: Signal<Bool, Never> { get }
 }
 
 public protocol BackerDashboardProjectCellViewModelType {
@@ -72,15 +71,15 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
     self.projectProperty.value = project
   }
 
-  public let metadataBackgroundColor: Signal<UIColor, NoError>
-  public let metadataIconIsHidden: Signal<Bool, NoError>
-  public let metadataText: Signal<String, NoError>
-  public let percentFundedText: Signal<NSAttributedString, NoError>
-  public let photoURL: Signal<URL?, NoError>
-  public let progress: Signal<Float, NoError>
-  public let progressBarColor: Signal<UIColor, NoError>
-  public let projectTitleText: Signal<NSAttributedString, NoError>
-  public let savedIconIsHidden: Signal<Bool, NoError>
+  public let metadataBackgroundColor: Signal<UIColor, Never>
+  public let metadataIconIsHidden: Signal<Bool, Never>
+  public let metadataText: Signal<String, Never>
+  public let percentFundedText: Signal<NSAttributedString, Never>
+  public let photoURL: Signal<URL?, Never>
+  public let progress: Signal<Float, Never>
+  public let progressBarColor: Signal<UIColor, Never>
+  public let projectTitleText: Signal<NSAttributedString, Never>
+  public let savedIconIsHidden: Signal<Bool, Never>
 
   public var inputs: BackerDashboardProjectCellViewModelInputs { return self }
   public var outputs: BackerDashboardProjectCellViewModelOutputs { return self }

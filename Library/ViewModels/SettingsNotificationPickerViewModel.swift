@@ -1,10 +1,9 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol SettingsNotificationPickerViewModelOutputs {
-  var frequencyValueText: Signal<String, NoError> { get }
+  var frequencyValueText: Signal<String, Never> { get }
 }
 
 public protocol SettingsNotificationPickerViewModelInputs {
@@ -39,7 +38,7 @@ public final class SettingsNotificationPickerViewModel: SettingsNotificationPick
     self.initialUserProperty.value = cellValue.user
   }
 
-  public let frequencyValueText: Signal<String, NoError>
+  public let frequencyValueText: Signal<String, Never>
 
   public var outputs: SettingsNotificationPickerViewModelOutputs {
     return self

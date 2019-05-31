@@ -2,7 +2,6 @@
 @testable import KsApi
 @testable import Library
 import Prelude
-import Result
 import XCTest
 
 internal final class EmptyStatesViewControllerTests: TestCase {

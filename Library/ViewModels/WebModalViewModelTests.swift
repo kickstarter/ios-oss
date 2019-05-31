@@ -1,6 +1,5 @@
 import Prelude
 import ReactiveSwift
-import Result
 import WebKit
 import XCTest
 @testable import KsApi
@@ -10,9 +9,9 @@ import ReactiveExtensions_TestHelpers
 internal final class WebModalViewModelTests: TestCase {
   fileprivate let vm: WebModalViewModelType = WebModalViewModel()
 
-  fileprivate let dismissViewController = TestObserver<Void, NoError>()
-  fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
-  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
+  fileprivate let dismissViewController = TestObserver<Void, Never>()
+  fileprivate let webViewLoadRequest = TestObserver<URLRequest, Never>()
+  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

@@ -1,5 +1,4 @@
 import ReactiveSwift
-import Result
 import KsApi
 import Prelude
 
@@ -10,16 +9,16 @@ public protocol SettingsNotificationCellViewModelInputs {
 }
 
 public protocol SettingsNotificationCellViewModelOutputs {
-  var enableButtonAnimation: Signal<Bool, NoError> { get }
-  var emailNotificationsButtonAccessibilityLabel: Signal<String, NoError> { get }
-  var emailNotificationsEnabled: Signal<Bool, NoError> { get }
-  var emailNotificationButtonIsHidden: Signal<Bool, NoError> { get }
-  var projectCountText: Signal<String, NoError> { get }
-  var pushNotificationsButtonAccessibilityLabel: Signal<String, NoError> { get }
-  var pushNotificationButtonIsHidden: Signal<Bool, NoError> { get }
-  var pushNotificationsEnabled: Signal<Bool, NoError> { get }
-  var unableToSaveError: Signal<String, NoError> { get }
-  var updateCurrentUser: Signal<User, NoError> { get }
+  var enableButtonAnimation: Signal<Bool, Never> { get }
+  var emailNotificationsButtonAccessibilityLabel: Signal<String, Never> { get }
+  var emailNotificationsEnabled: Signal<Bool, Never> { get }
+  var emailNotificationButtonIsHidden: Signal<Bool, Never> { get }
+  var projectCountText: Signal<String, Never> { get }
+  var pushNotificationsButtonAccessibilityLabel: Signal<String, Never> { get }
+  var pushNotificationButtonIsHidden: Signal<Bool, Never> { get }
+  var pushNotificationsEnabled: Signal<Bool, Never> { get }
+  var unableToSaveError: Signal<String, Never> { get }
+  var updateCurrentUser: Signal<User, Never> { get }
 }
 
 public protocol SettingsNotificationCellViewModelType {
@@ -172,16 +171,16 @@ SettingsNotificationCellViewModelType {
     self.initialUserProperty.value = cellValue.user
   }
 
-  public let enableButtonAnimation: Signal<Bool, NoError>
-  public let emailNotificationsButtonAccessibilityLabel: Signal<String, NoError>
-  public let emailNotificationsEnabled: Signal<Bool, NoError>
-  public let emailNotificationButtonIsHidden: Signal<Bool, NoError>
-  public var pushNotificationsButtonAccessibilityLabel: Signal<String, NoError>
-  public let pushNotificationButtonIsHidden: Signal<Bool, NoError>
-  public let pushNotificationsEnabled: Signal<Bool, NoError>
-  public let projectCountText: Signal<String, NoError>
-  public let unableToSaveError: Signal<String, NoError>
-  public let updateCurrentUser: Signal<User, NoError>
+  public let enableButtonAnimation: Signal<Bool, Never>
+  public let emailNotificationsButtonAccessibilityLabel: Signal<String, Never>
+  public let emailNotificationsEnabled: Signal<Bool, Never>
+  public let emailNotificationButtonIsHidden: Signal<Bool, Never>
+  public var pushNotificationsButtonAccessibilityLabel: Signal<String, Never>
+  public let pushNotificationButtonIsHidden: Signal<Bool, Never>
+  public let pushNotificationsEnabled: Signal<Bool, Never>
+  public let projectCountText: Signal<String, Never>
+  public let unableToSaveError: Signal<String, Never>
+  public let updateCurrentUser: Signal<User, Never>
 
   public var inputs: SettingsNotificationCellViewModelInputs { return self }
   public var outputs: SettingsNotificationCellViewModelOutputs { return self }

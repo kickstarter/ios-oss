@@ -1,7 +1,6 @@
 // swiftlint:disable force_unwrapping
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 @testable import KsApi
 @testable import Library
@@ -10,12 +9,12 @@ import ReactiveExtensions_TestHelpers
 final class ProjectCreatorViewModelTests: TestCase {
   fileprivate let vm: ProjectCreatorViewModelType = ProjectCreatorViewModel()
 
-  fileprivate let goBackToProject = TestObserver<(), NoError>()
-  fileprivate let goToLoginTout = TestObserver<LoginIntent, NoError>()
-  fileprivate let goToMessageDialogContext = TestObserver<Koala.MessageDialogContext, NoError>()
-  fileprivate let goToMessageDialogSubject = TestObserver<MessageSubject, NoError>()
-  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
-  fileprivate let loadWebViewRequest = TestObserver<URLRequest, NoError>()
+  fileprivate let goBackToProject = TestObserver<(), Never>()
+  fileprivate let goToLoginTout = TestObserver<LoginIntent, Never>()
+  fileprivate let goToMessageDialogContext = TestObserver<Koala.MessageDialogContext, Never>()
+  fileprivate let goToMessageDialogSubject = TestObserver<MessageSubject, Never>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
+  fileprivate let loadWebViewRequest = TestObserver<URLRequest, Never>()
 
   override func setUp() {
     super.setUp()

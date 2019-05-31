@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 public protocol ActivitySampleFollowCellViewModelInputs {
   /// Call to configure cell with activity value.
@@ -14,13 +13,13 @@ public protocol ActivitySampleFollowCellViewModelInputs {
 
 public protocol ActivitySampleFollowCellViewModelOutputs {
   /// Emits the friend follow to be displayed.
-  var friendFollowText: Signal<String, NoError> { get }
+  var friendFollowText: Signal<String, Never> { get }
 
   /// Emits the friend image url to be displayed.
-  var friendImageURL: Signal<URL?, NoError> { get }
+  var friendImageURL: Signal<URL?, Never> { get }
 
   /// Emits when should go to activities screen.
-  var goToActivity: Signal<Void, NoError> { get }
+  var goToActivity: Signal<Void, Never> { get }
 }
 
 public protocol ActivitySampleFollowCellViewModelType {
@@ -53,9 +52,9 @@ public final class ActivitySampleFollowCellViewModel: ActivitySampleFollowCellVi
     self.seeAllActivityTappedProperty.value = ()
   }
 
-  public let friendFollowText: Signal<String, NoError>
-  public let friendImageURL: Signal<URL?, NoError>
-  public let goToActivity: Signal<Void, NoError>
+  public let friendFollowText: Signal<String, Never>
+  public let friendImageURL: Signal<URL?, Never>
+  public let goToActivity: Signal<Void, Never>
 
   public var inputs: ActivitySampleFollowCellViewModelInputs { return self }
   public var outputs: ActivitySampleFollowCellViewModelOutputs { return self }

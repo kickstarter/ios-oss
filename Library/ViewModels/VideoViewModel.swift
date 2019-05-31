@@ -3,7 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 import ReactiveExtensions
-import Result
 
 private let playRate = 1.0
 private let pauseRate = 0.0
@@ -39,43 +38,43 @@ public protocol VideoViewModelInputs {
 
 public protocol VideoViewModelOutputs {
   /// Emits when should add a boundary observer for the 85% completion time.
-  var addCompletionObserver: Signal<CMTime, NoError> { get }
+  var addCompletionObserver: Signal<CMTime, Never> { get }
 
   /// Emits with the video url to be played.
-  var configurePlayerWithURL: Signal<URL, NoError> { get }
+  var configurePlayerWithURL: Signal<URL, Never> { get }
 
   /// Emits for testing when the video complete stat is incremented.
-  var incrementVideoCompletion: Signal<VoidEnvelope, NoError> { get }
+  var incrementVideoCompletion: Signal<VoidEnvelope, Never> { get }
 
   /// Emits for testing when the video start stat is incremented.
-  var incrementVideoStart: Signal<VoidEnvelope, NoError> { get }
+  var incrementVideoStart: Signal<VoidEnvelope, Never> { get }
 
-  var notifyDelegateThatVideoDidFinish: Signal<(), NoError> { get }
-  var notifyDelegateThatVideoDidStart: Signal<(), NoError> { get }
+  var notifyDelegateThatVideoDidFinish: Signal<(), Never> { get }
+  var notifyDelegateThatVideoDidStart: Signal<(), Never> { get }
 
   /// Emits alpha value for play button and video overlay for transitioning.
-  var opacityForViews: Signal<CGFloat, NoError> { get }
+  var opacityForViews: Signal<CGFloat, Never> { get }
 
   /// Emits when the video should be paused.
-  var pauseVideo: Signal<Void, NoError> { get }
+  var pauseVideo: Signal<Void, Never> { get }
 
   /// Emits when the video should be played.
-  var playVideo: Signal<Void, NoError> { get }
+  var playVideo: Signal<Void, Never> { get }
 
   /// Emits a boolean to determine whether or not the play button should be hidden.
-  var playButtonHidden: Signal<Bool, NoError> { get }
+  var playButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean to determine whether or not the project image should be hidden.
-  var projectImageHidden: Signal<Bool, NoError> { get }
+  var projectImageHidden: Signal<Bool, Never> { get }
 
   /// Emits with the project image url to be displayed.
-  var projectImageURL: Signal<URL?, NoError> { get }
+  var projectImageURL: Signal<URL?, Never> { get }
 
   /// Emits when should seek video back to beginning.
-  var seekToBeginning: Signal<Void, NoError> { get }
+  var seekToBeginning: Signal<Void, Never> { get }
 
   /// Emits a boolean to determine whether or not the video player should be hidden.
-  var videoViewHidden: Signal<Bool, NoError> { get }
+  var videoViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol VideoViewModelType {
@@ -244,20 +243,20 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.viewWillDisappearProperty.value = ()
   }
 
-  public let addCompletionObserver: Signal<CMTime, NoError>
-  public let configurePlayerWithURL: Signal<URL, NoError>
-  public let incrementVideoCompletion: Signal<VoidEnvelope, NoError>
-  public let incrementVideoStart: Signal<VoidEnvelope, NoError>
-  public let notifyDelegateThatVideoDidFinish: Signal<(), NoError>
-  public let notifyDelegateThatVideoDidStart: Signal<(), NoError>
-  public let opacityForViews: Signal<CGFloat, NoError>
-  public let pauseVideo: Signal<Void, NoError>
-  public let playVideo: Signal<Void, NoError>
-  public var playButtonHidden: Signal<Bool, NoError>
-  public var projectImageHidden: Signal<Bool, NoError>
-  public let projectImageURL: Signal<URL?, NoError>
-  public let seekToBeginning: Signal<Void, NoError>
-  public var videoViewHidden: Signal<Bool, NoError>
+  public let addCompletionObserver: Signal<CMTime, Never>
+  public let configurePlayerWithURL: Signal<URL, Never>
+  public let incrementVideoCompletion: Signal<VoidEnvelope, Never>
+  public let incrementVideoStart: Signal<VoidEnvelope, Never>
+  public let notifyDelegateThatVideoDidFinish: Signal<(), Never>
+  public let notifyDelegateThatVideoDidStart: Signal<(), Never>
+  public let opacityForViews: Signal<CGFloat, Never>
+  public let pauseVideo: Signal<Void, Never>
+  public let playVideo: Signal<Void, Never>
+  public var playButtonHidden: Signal<Bool, Never>
+  public var projectImageHidden: Signal<Bool, Never>
+  public let projectImageURL: Signal<URL?, Never>
+  public let seekToBeginning: Signal<Void, Never>
+  public var videoViewHidden: Signal<Bool, Never>
 
   public var inputs: VideoViewModelInputs { return self }
   public var outputs: VideoViewModelOutputs { return self }

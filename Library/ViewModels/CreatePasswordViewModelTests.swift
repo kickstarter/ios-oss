@@ -1,5 +1,4 @@
 import Foundation
-import Result
 import XCTest
 
 @testable import KsApi
@@ -9,18 +8,18 @@ import ReactiveExtensions_TestHelpers
 final class CreatePasswordViewModelTests: TestCase {
   private let vm: CreatePasswordViewModelType = CreatePasswordViewModel()
 
-  private let accessibilityFocusValidationLabel = TestObserver<Void, NoError>()
-  private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
-  private let cellAtIndexPathDidBecomeFirstResponder = TestObserver<IndexPath, NoError>()
-  private let createPasswordFailure = TestObserver<String, NoError>()
-  private let createPasswordSuccess = TestObserver<Void, NoError>()
-  private let dismissKeyboard = TestObserver<Void, NoError>()
-  private let newPasswordTextFieldBecomeFirstResponder = TestObserver<Void, NoError>()
-  private let newPasswordConfirmationTextFieldBecomeFirstResponder = TestObserver<Void, NoError>()
-  private let newPasswordConfirmationTextFieldResignFirstResponder = TestObserver<Void, NoError>()
-  private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
-  private let validationLabelIsHidden = TestObserver<Bool, NoError>()
-  private let validationLabelText = TestObserver<String?, NoError>()
+  private let accessibilityFocusValidationLabel = TestObserver<Void, Never>()
+  private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
+  private let cellAtIndexPathDidBecomeFirstResponder = TestObserver<IndexPath, Never>()
+  private let createPasswordFailure = TestObserver<String, Never>()
+  private let createPasswordSuccess = TestObserver<Void, Never>()
+  private let dismissKeyboard = TestObserver<Void, Never>()
+  private let newPasswordTextFieldBecomeFirstResponder = TestObserver<Void, Never>()
+  private let newPasswordConfirmationTextFieldBecomeFirstResponder = TestObserver<Void, Never>()
+  private let newPasswordConfirmationTextFieldResignFirstResponder = TestObserver<Void, Never>()
+  private let saveButtonIsEnabled = TestObserver<Bool, Never>()
+  private let validationLabelIsHidden = TestObserver<Bool, Never>()
+  private let validationLabelText = TestObserver<String?, Never>()
 
   override func setUp() {
     super.setUp()

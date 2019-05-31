@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 import ReactiveSwift
-import Result
 import Prelude
 @testable import KsApi
 @testable import Library
@@ -10,7 +9,7 @@ import ReactiveExtensions_TestHelpers
 internal final class SettingsNewslettersViewModelTests: TestCase {
   let vm = SettingsNewslettersViewModel()
 
-  let currentUser = TestObserver<User, NoError>()
+  let currentUser = TestObserver<User, Never>()
 
   internal override func setUp() {
     super.setUp()

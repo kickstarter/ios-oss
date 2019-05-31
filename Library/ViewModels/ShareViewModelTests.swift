@@ -4,13 +4,12 @@ import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import Prelude
 import ReactiveSwift
-import Result
 import XCTest
 
 internal final class ShareViewModelTests: TestCase {
   internal let vm: ShareViewModelType = ShareViewModel()
 
-  fileprivate let showShareSheet = TestObserver<(UIActivityViewController, UIView?), NoError>()
+  fileprivate let showShareSheet = TestObserver<(UIActivityViewController, UIView?), Never>()
 
   override func setUp() {
     super.setUp()

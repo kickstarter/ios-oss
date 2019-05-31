@@ -3,18 +3,17 @@ import XCTest
 import ReactiveExtensions_TestHelpers
 @testable import KsApi
 import ReactiveSwift
-import Result
 
 internal final class MessageThreadsViewModelTests: TestCase {
   fileprivate let vm: MessageThreadsViewModelType = MessageThreadsViewModel()
 
-  fileprivate let emptyStateIsVisible = TestObserver<Bool, NoError>()
-  fileprivate let loadingFooterIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let goToSearch = TestObserver<(), NoError>()
-  fileprivate let mailboxName = TestObserver<String, NoError>()
-  fileprivate let hasMessageThreads = TestObserver<Bool, NoError>()
-  fileprivate let refreshControlEndRefreshing = TestObserver<(), NoError>()
-  fileprivate let showMailboxChooserActionSheet = TestObserver<(), NoError>()
+  fileprivate let emptyStateIsVisible = TestObserver<Bool, Never>()
+  fileprivate let loadingFooterIsHidden = TestObserver<Bool, Never>()
+  fileprivate let goToSearch = TestObserver<(), Never>()
+  fileprivate let mailboxName = TestObserver<String, Never>()
+  fileprivate let hasMessageThreads = TestObserver<Bool, Never>()
+  fileprivate let refreshControlEndRefreshing = TestObserver<(), Never>()
+  fileprivate let showMailboxChooserActionSheet = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
