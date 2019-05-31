@@ -140,10 +140,6 @@ final class NumberFormatterTests: TestCase {
   }
 }
 
-private func == (lhs: String.Attributes, rhs: String.Attributes) -> Bool {
-  return NSDictionary(dictionary: lhs).isEqual(to: rhs)
-}
-
 private extension NSAttributedString {
   func range(of substring: String, options: NSString.CompareOptions = .caseInsensitive) -> NSRange {
     return (self.string as NSString).range(of: substring, options: options)
