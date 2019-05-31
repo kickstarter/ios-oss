@@ -1,9 +1,9 @@
-import Prelude
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class BackerDashboardProjectsViewModelTests: TestCase {
   private let vm: BackerDashboardProjectsViewModelType = BackerDashboardProjectsViewModel()
@@ -177,7 +177,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
         self.scheduler.advance()
 
         self.scrollToProjectRow.assertValues([5, 6, 7, 8])
-        self.projects.assertValues([playlist, (playlist + playlist2)], "More projects are loaded.")
+        self.projects.assertValues([playlist, playlist + playlist2], "More projects are loaded.")
 
         self.vm.inputs.transitionedToProject(at: 7, outOf: playlist2.count)
 

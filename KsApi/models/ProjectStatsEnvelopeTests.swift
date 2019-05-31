@@ -1,6 +1,6 @@
-import XCTest
-@testable import KsApi
 import Argo
+@testable import KsApi
+import XCTest
 
 final class ProjectStatsEnvelopeTests: XCTestCase {
   func testJSONDecoding() {
@@ -9,18 +9,18 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
         "cumulative_backers_count": 7,
         "cumulative_pledged": "30",
         "pledged": "38.0",
-        "date": 555444333,
+        "date": 555_444_333,
         "backers_count": 13
       ],
       [
         "cumulative_backers_count": 14,
-        "cumulative_pledged": 1000,
+        "cumulative_pledged": 1_000,
         "pledged": "909.0",
-        "date": 333222111,
+        "date": 333_222_111,
         "backers_count": 1
       ],
-      ["date": 555444334],
-      ["date": 555444335]
+      ["date": 555_444_334],
+      ["date": 555_444_335]
     ]
     let json: [String: Any] = [
       "referral_aggregates": [
@@ -54,13 +54,13 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
         ],
         [
           "pledged": "25.0",
-          "reward_id": 123456,
+          "reward_id": 123_456,
           "backers_count": 10,
           "minimum": 5.0
         ],
         [
           "pledged": "25.0",
-          "reward_id": 57393985,
+          "reward_id": 57_393_985,
           "backers_count": 20,
           "minimum": "25.0"
         ]
@@ -106,15 +106,19 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
     XCTAssertEqual("my_wonderful_referrer_code", referralDistribution[0].code)
     XCTAssertEqual(8, referralDistribution[0].backersCount)
     XCTAssertEqual(20.5, referralDistribution[0].pledged)
-    XCTAssertEqual(ProjectStatsEnvelope.ReferrerStats.ReferrerType.external,
-                   referralDistribution[0].referrerType)
+    XCTAssertEqual(
+      ProjectStatsEnvelope.ReferrerStats.ReferrerType.external,
+      referralDistribution[0].referrerType
+    )
     XCTAssertEqual("my_okay_referrer_code", referralDistribution[1].code)
     XCTAssertEqual(1, referralDistribution[1].backersCount)
-    XCTAssertEqual(ProjectStatsEnvelope.ReferrerStats.ReferrerType.internal,
-                   referralDistribution[1].referrerType)
+    XCTAssertEqual(
+      ProjectStatsEnvelope.ReferrerStats.ReferrerType.internal,
+      referralDistribution[1].referrerType
+    )
 
     XCTAssertEqual(0, rewardDistribution[0].rewardId)
-    XCTAssertEqual(123456, rewardDistribution[1].rewardId)
+    XCTAssertEqual(123_456, rewardDistribution[1].rewardId)
     XCTAssertEqual(1, rewardDistribution[0].pledged)
     XCTAssertEqual(25, rewardDistribution[1].pledged)
     XCTAssertEqual(5, rewardDistribution[0].backersCount)

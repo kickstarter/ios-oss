@@ -1,8 +1,7 @@
 import Foundation
 import KsApi
-import ReactiveSwift
-import KsApi
 import Prelude
+import ReactiveSwift
 
 public protocol MessagesSearchViewModelInputs {
   /// Call when the search clear button is tapped.
@@ -50,9 +49,8 @@ public protocol MessagesSearchViewModelType {
 }
 
 public final class MessagesSearchViewModel: MessagesSearchViewModelType, MessagesSearchViewModelInputs,
-MessagesSearchViewModelOutputs {
-
-    public init() {
+  MessagesSearchViewModelOutputs {
+  public init() {
     let isLoading = MutableProperty(false)
 
     let project = self.projectProperty.producer
@@ -74,11 +72,13 @@ MessagesSearchViewModelOutputs {
       .combineLatest(with: project)
       .switchMap { query, project in
         AppEnvironment.current.apiService.searchMessages(query: query, project: project)
-          .on(starting: { isLoading.value = true },
-              terminated: { isLoading.value = false })
+          .on(
+            starting: { isLoading.value = true },
+            terminated: { isLoading.value = false }
+          )
           .map { $0.messageThreads }
           .materialize()
-    }
+      }
 
     self.messageThreads = Signal.merge(clears, searchResults.values())
       .skip(while: { $0.isEmpty })
@@ -108,7 +108,7 @@ MessagesSearchViewModelOutputs {
       .filter { query, _, _ in !query.isEmpty }
       .observeValues {
         AppEnvironment.current.koala.trackViewedMessageSearchResults(term: $0, project: $1, hasResults: $2)
-    }
+      }
 
     project
       .takeWhen(self.clearSearchTextProperty.signal)
@@ -119,26 +119,32 @@ MessagesSearchViewModelOutputs {
   public func clearSearchText() {
     self.clearSearchTextProperty.value = ()
   }
+
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project?) {
     self.projectProperty.value = project
   }
+
   fileprivate let searchTextChangedProperty = MutableProperty<String>("")
   public func searchTextChanged(_ searchText: String?) {
     self.searchTextChangedProperty.value = searchText ?? ""
   }
+
   fileprivate let tappedMessageThreadProperty = MutableProperty<MessageThread?>(nil)
   public func tappedMessageThread(_ messageThread: MessageThread) {
     self.tappedMessageThreadProperty.value = messageThread
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+
   fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
+
   fileprivate let viewWillDisappearProperty = MutableProperty(())
   public func viewWillDisappear() {
     self.viewWillDisappearProperty.value = ()

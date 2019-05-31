@@ -1,8 +1,8 @@
-import XCTest
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
+@testable import Library
 import Prelude
+import XCTest
 
 final class DiscoveryProjectsDataSourceTests: XCTestCase {
   let dataSource = DiscoveryProjectsDataSource()
@@ -13,13 +13,13 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
 
     self.dataSource.show(onboarding: true)
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
-    XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
 
     self.dataSource.show(onboarding: false)
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
   }
 
   func testActivitySample() {
@@ -27,13 +27,13 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
 
     self.dataSource.load(activities: [.template])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
-    XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
 
     self.dataSource.load(activities: [])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
   }
 
   func testProjects() {
@@ -41,12 +41,12 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
 
     self.dataSource.load(projects: [.template, .template, .template])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
-    XCTAssertEqual(3, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(3, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
 
     self.dataSource.load(projects: [])
 
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
-    XCTAssertEqual(0, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
   }
 }

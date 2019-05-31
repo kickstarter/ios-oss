@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol SettingsDeleteAccountCellViewModelInputs {
   func configureWith(user: User)
@@ -20,14 +20,13 @@ public protocol SettingsDeleteAccountCellViewModelType {
 
 public final class SettingsDeleteAccountCellViewModel: SettingsDeleteAccountCellViewModelType,
   SettingsDeleteAccountCellViewModelInputs, SettingsDeleteAccountCellViewModelOutputs {
-
   public init() {
     self.notifyDeleteAccountTapped = self.deleteAccountTappedProperty.signal
       .map {
         AppEnvironment.current.apiService.serverConfig.webBaseUrl
           .appendingPathComponent("profile")
           .appendingPathComponent("destroy")
-    }
+      }
   }
 
   fileprivate let deleteAccountTappedProperty = MutableProperty(())

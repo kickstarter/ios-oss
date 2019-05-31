@@ -25,7 +25,7 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
   }
 
   internal func controllerFor(index: Int) -> UIViewController? {
-    guard index >= 0 && index < self.viewControllers.count else { return nil }
+    guard index >= 0, index < self.viewControllers.count else { return nil }
     return self.viewControllers[index]
   }
 
@@ -35,9 +35,9 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
   }
 
   internal func pageViewController(
-    _ pageViewController: UIPageViewController,
-    viewControllerAfter viewController: UIViewController) -> UIViewController? {
-
+    _: UIPageViewController,
+    viewControllerAfter viewController: UIViewController
+  ) -> UIViewController? {
     guard let pageIdx = self.viewControllers.firstIndex(of: viewController) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
@@ -51,9 +51,9 @@ internal final class DiscoveryPagesDataSource: NSObject, UIPageViewControllerDat
   }
 
   internal func pageViewController(
-    _ pageViewController: UIPageViewController,
-    viewControllerBefore viewController: UIViewController) -> UIViewController? {
-
+    _: UIPageViewController,
+    viewControllerBefore viewController: UIViewController
+  ) -> UIViewController? {
     guard let pageIdx = self.viewControllers.firstIndex(of: viewController) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }

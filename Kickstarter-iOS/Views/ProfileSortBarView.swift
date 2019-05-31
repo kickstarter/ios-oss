@@ -1,5 +1,3 @@
 import UIKit
 
-internal class ProfileSortBarView: UIView {
-
-}
+internal class ProfileSortBarView: UIView {}

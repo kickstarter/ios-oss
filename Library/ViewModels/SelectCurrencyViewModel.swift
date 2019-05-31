@@ -31,9 +31,8 @@ public protocol SelectCurrencyViewModelType {
   var outputs: SelectCurrencyViewModelOutputs { get }
 }
 
-final public class SelectCurrencyViewModel: SelectCurrencyViewModelType, SelectCurrencyViewModelInputs,
-SelectCurrencyViewModelOutputs {
-
+public final class SelectCurrencyViewModel: SelectCurrencyViewModelType, SelectCurrencyViewModelInputs,
+  SelectCurrencyViewModelOutputs {
   public init() {
     let initialChosenCurrency = Signal.combineLatest(
       self.selectedCurrencySignal,
@@ -84,7 +83,7 @@ SelectCurrencyViewModelOutputs {
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { _ in input }
           .materialize()
-    }
+      }
 
     self.updateCurrencyDidSucceed = updateCurrencyEvent.values().ignoreValues()
 
@@ -164,5 +163,5 @@ internal func currencies(orderedBySelected selected: Currency) -> [Currency] {
 
 internal func selectedCurrencyData(with currencies: [Currency], selected: Currency)
   -> [SelectedCurrencyData] {
-    return currencies.map { currency in .init(currency: currency, selected: currency == selected) }
+  return currencies.map { currency in .init(currency: currency, selected: currency == selected) }
 }

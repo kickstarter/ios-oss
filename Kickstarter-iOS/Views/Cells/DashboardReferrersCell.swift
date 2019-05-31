@@ -4,7 +4,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal protocol DashboardReferrersCellDelegate: class {
+internal protocol DashboardReferrersCellDelegate: AnyObject {
   /// Call when referrer stack view rows are added to expand the cell size.
   func dashboardReferrersCellDidAddReferrerRows(_ cell: DashboardReferrersCell?)
 }
@@ -13,30 +13,30 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   internal weak var delegate: DashboardReferrersCellDelegate?
   fileprivate let viewModel: DashboardReferrersCellViewModelType = DashboardReferrersCellViewModel()
 
-  @IBOutlet fileprivate weak var averagePledgeAmountSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var averagePledgeAmountTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var averageStackView: UIStackView!
-  @IBOutlet fileprivate weak var backersColumnTitleButton: UIButton!
-  @IBOutlet fileprivate weak var cumulativeStackView: UIStackView!
-  @IBOutlet fileprivate weak var customPercentLabel: UILabel!
-  @IBOutlet fileprivate weak var customPercentIndicatorLabel: UILabel!
-  @IBOutlet fileprivate weak var customPledgedAmountSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var customPledgedAmountTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var externalPercentLabel: UILabel!
-  @IBOutlet fileprivate weak var externalPercentIndicatorLabel: UILabel!
-  @IBOutlet fileprivate weak var externalPledgedAmountSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var externalPledgedAmountTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var internalPercentLabel: UILabel!
-  @IBOutlet fileprivate weak var internalPercentIndicatorLabel: UILabel!
-  @IBOutlet fileprivate weak var internalPledgedAmountSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var internalPledgedAmountTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var pledgedColumnTitleButton: UIButton!
-  @IBOutlet fileprivate weak var referralChartView: ReferralChartView!
-  @IBOutlet fileprivate weak var referrersTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var referrersStackView: UIStackView!
-  @IBOutlet fileprivate weak var showMoreReferrersButton: UIButton!
-  @IBOutlet fileprivate weak var sourceColumnTitleButton: UIButton!
-  @IBOutlet fileprivate weak var chartCardView: UIView!
+  @IBOutlet fileprivate var averagePledgeAmountSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var averagePledgeAmountTitleLabel: UILabel!
+  @IBOutlet fileprivate var averageStackView: UIStackView!
+  @IBOutlet fileprivate var backersColumnTitleButton: UIButton!
+  @IBOutlet fileprivate var cumulativeStackView: UIStackView!
+  @IBOutlet fileprivate var customPercentLabel: UILabel!
+  @IBOutlet fileprivate var customPercentIndicatorLabel: UILabel!
+  @IBOutlet fileprivate var customPledgedAmountSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var customPledgedAmountTitleLabel: UILabel!
+  @IBOutlet fileprivate var externalPercentLabel: UILabel!
+  @IBOutlet fileprivate var externalPercentIndicatorLabel: UILabel!
+  @IBOutlet fileprivate var externalPledgedAmountSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var externalPledgedAmountTitleLabel: UILabel!
+  @IBOutlet fileprivate var internalPercentLabel: UILabel!
+  @IBOutlet fileprivate var internalPercentIndicatorLabel: UILabel!
+  @IBOutlet fileprivate var internalPledgedAmountSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var internalPledgedAmountTitleLabel: UILabel!
+  @IBOutlet fileprivate var pledgedColumnTitleButton: UIButton!
+  @IBOutlet fileprivate var referralChartView: ReferralChartView!
+  @IBOutlet fileprivate var referrersTitleLabel: UILabel!
+  @IBOutlet fileprivate var referrersStackView: UIStackView!
+  @IBOutlet fileprivate var showMoreReferrersButton: UIButton!
+  @IBOutlet fileprivate var sourceColumnTitleButton: UIButton!
+  @IBOutlet fileprivate var chartCardView: UIView!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
   internal override func awakeFromNib() {
@@ -44,32 +44,32 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
 
     self.backersColumnTitleButton.addTarget(
       self,
-      action: #selector(backersButtonTapped),
+      action: #selector(self.backersButtonTapped),
       for: .touchUpInside
     )
 
     self.pledgedColumnTitleButton.addTarget(
       self,
-      action: #selector(pledgedButtonTapped),
+      action: #selector(self.pledgedButtonTapped),
       for: .touchUpInside
     )
 
     self.showMoreReferrersButton.addTarget(
       self,
-      action: #selector(showMoreReferrersTapped),
+      action: #selector(self.showMoreReferrersTapped),
       for: .touchUpInside
     )
 
     self.sourceColumnTitleButton.addTarget(
       self,
-      action: #selector(sourceButtonTapped),
+      action: #selector(self.sourceButtonTapped),
       for: .touchUpInside
     )
 
     self.viewModel.inputs.awakeFromNib()
   }
 
-    internal override func bindStyles() {
+  internal override func bindStyles() {
     _ = self |> baseTableViewCellStyle()
 
     _ = self.averagePledgeAmountSubtitleLabel
@@ -164,13 +164,13 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.delegate?.dashboardReferrersCellDidAddReferrerRows(self)
-    }
+      }
 
     self.viewModel.outputs.referrersRowData
       .observeForUI()
       .observeValues { [weak self] data in
         self?.addReferrerRows(withData: data)
-    }
+      }
 
     self.showMoreReferrersButton.rac.hidden = self.viewModel.outputs.showMoreReferrersButtonHidden
 
@@ -184,14 +184,10 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
   }
 
   internal func addReferrerRows(withData data: ReferrersRowData) {
-    referrersStackView.subviews.forEach { $0.removeFromSuperview() }
+    self.referrersStackView.subviews.forEach { $0.removeFromSuperview() }
 
     let referrers = data.referrers
-      .map { DashboardReferrerRowStackView(
-        frame: self.frame,
-        country: data.country,
-        referrer: $0)
-      }
+      .map { DashboardReferrerRowStackView(frame: self.frame, country: data.country, referrer: $0) }
 
     let refsCount = referrers.count
     (0..<refsCount).forEach {
@@ -207,10 +203,14 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
     }
   }
 
-  internal func configureWith(value: (ProjectStatsEnvelope.CumulativeStats, Project,
-    ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats])) {
-    self.viewModel.inputs.configureWith(cumulative: value.0, project: value.1,
-                                        referralAggregates: value.2, referrers: value.3 )
+  internal func configureWith(value: (
+    ProjectStatsEnvelope.CumulativeStats, Project,
+    ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats]
+  )) {
+    self.viewModel.inputs.configureWith(
+      cumulative: value.0, project: value.1,
+      referralAggregates: value.2, referrers: value.3
+    )
   }
 
   @objc fileprivate func backersButtonTapped() {

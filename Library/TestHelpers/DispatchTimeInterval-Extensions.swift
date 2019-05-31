@@ -1,7 +1,6 @@
 import Foundation
 
 extension DispatchTimeInterval {
-
   public func scale(by scale: Float) -> DispatchTimeInterval {
     #if swift(>=3.2)
       switch self {
@@ -37,26 +36,26 @@ extension DispatchTimeInterval {
   fileprivate var nanoseconds: Int64 {
     #if swift(>=3.2)
       switch self {
-      case .seconds(let s):
+      case let .seconds(s):
         return Int64(s) * Int64(NSEC_PER_SEC)
-      case .milliseconds(let ms):
+      case let .milliseconds(ms):
         return Int64(ms) * Int64(NSEC_PER_MSEC)
-      case .microseconds(let us):
+      case let .microseconds(us):
         return Int64(us) * Int64(NSEC_PER_USEC)
-      case .nanoseconds(let ns):
+      case let .nanoseconds(ns):
         return Int64(ns)
       case .never:
         return Int64(0)
       }
     #else
       switch self {
-      case .seconds(let s):
+      case let .seconds(s):
         return Int64(s) * Int64(NSEC_PER_SEC)
-      case .milliseconds(let ms):
+      case let .milliseconds(ms):
         return Int64(ms) * Int64(NSEC_PER_MSEC)
-      case .microseconds(let us):
+      case let .microseconds(us):
         return Int64(us) * Int64(NSEC_PER_USEC)
-      case .nanoseconds(let ns):
+      case let .nanoseconds(ns):
         return Int64(ns)
       }
     #endif

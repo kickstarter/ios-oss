@@ -1,8 +1,8 @@
-import Prelude
-import XCTest
-@testable import Library
 @testable import KsApi
+@testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ActivityUpdateViewModelTests: TestCase {
   fileprivate let vm: ActivityUpdateViewModelType = ActivityUpdateViewModel()
@@ -45,7 +45,7 @@ internal final class ActivityUpdateViewModelTests: TestCase {
         space: " ",
         update_number: Format.wholeNumber(activity.update?.sequence ?? 1),
         time_count_days_ago: Format.relative(secondsInUTC: activity.createdAt)
-      ).htmlStripped()  ?? ""
+      ).htmlStripped() ?? ""
     ])
     self.title.assertValues([update.title])
   }
@@ -61,11 +61,11 @@ internal final class ActivityUpdateViewModelTests: TestCase {
 
     self.cellAccessibilityLabel.assertValues([
       "\(project.name) "
-      + (Strings.dashboard_activity_update_number_posted_time_count_days_ago(
-        space: " ",
-        update_number: Format.wholeNumber(activity.update?.sequence ?? 1),
-        time_count_days_ago: Format.relative(secondsInUTC: activity.createdAt)
-      ).htmlStripped() ?? "")
+        + (Strings.dashboard_activity_update_number_posted_time_count_days_ago(
+          space: " ",
+          update_number: Format.wholeNumber(activity.update?.sequence ?? 1),
+          time_count_days_ago: Format.relative(secondsInUTC: activity.createdAt)
+        ).htmlStripped() ?? "")
     ], "Cell a11y label emits sequence title.")
   }
 

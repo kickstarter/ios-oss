@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import UIKit
 
 struct DiscoveryProjectCellRowValue {
@@ -46,9 +46,11 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   }
 
   func show(onboarding: Bool) {
-    self.set(values: onboarding ? [()] : [],
-             cellClass: DiscoveryOnboardingCell.self,
-             inSection: Section.onboarding.rawValue)
+    self.set(
+      values: onboarding ? [()] : [],
+      cellClass: DiscoveryOnboardingCell.self,
+      inSection: Section.onboarding.rawValue
+    )
   }
 
   internal func activityAtIndexPath(_ indexPath: IndexPath) -> Activity? {
@@ -64,7 +66,6 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   }
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
-
     switch (cell, value) {
     case let (cell as ActivitySampleBackingCell, value as Activity):
       cell.configureWith(value: value)

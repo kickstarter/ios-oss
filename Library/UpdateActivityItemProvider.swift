@@ -2,7 +2,6 @@ import KsApi
 import UIKit
 
 public final class UpdateActivityItemProvider: UIActivityItemProvider {
-
   fileprivate var update: Update?
 
   public convenience init(update: Update) {
@@ -13,8 +12,8 @@ public final class UpdateActivityItemProvider: UIActivityItemProvider {
 
   public override func activityViewController(
     _ activityViewController: UIActivityViewController,
-    itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-
+    itemForActivityType activityType: UIActivity.ActivityType?
+  ) -> Any? {
     guard let update = self.update, let type = activityType else {
       return self.activityViewControllerPlaceholderItem(activityViewController)
     }

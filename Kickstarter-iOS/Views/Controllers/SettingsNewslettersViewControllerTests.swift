@@ -1,8 +1,8 @@
+@testable import Kickstarter_Framework
+@testable import KsApi
 import Library
 import Prelude
 import XCTest
-@testable import Kickstarter_Framework
-@testable import KsApi
 
 internal final class SettingsNewslettersViewControllerTests: TestCase {
   override func setUp() {
@@ -16,7 +16,6 @@ internal final class SettingsNewslettersViewControllerTests: TestCase {
   }
 
   func testSettingsNewslettersViewController() {
-
     let currentUser = User.template
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {

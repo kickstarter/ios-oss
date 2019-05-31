@@ -1,9 +1,8 @@
+@testable import KsApi
 import Prelude
 import XCTest
-@testable import KsApi
 
 final class ItemTests: XCTestCase {
-
   func testDecoding() {
     let decoded = Item.decodeJSONDictionary([
       "description": "Hello",

@@ -1,10 +1,9 @@
-import XCTest
-@testable import KsApi
 import Argo
+@testable import KsApi
 import Prelude
+import XCTest
 
-final internal class UpdateTests: XCTestCase {
-
+internal final class UpdateTests: XCTestCase {
   func testEquatable() {
     XCTAssertEqual(Update.template, Update.template)
     XCTAssertNotEqual(Update.template, Update.template |> Update.lens.id %~ { $0 + 1 })
@@ -12,8 +11,8 @@ final internal class UpdateTests: XCTestCase {
 
   func testJSONDecoding_WithBadData() {
     let update = Update.decodeJSONDictionary([
-      "body": "world",
-      ])
+      "body": "world"
+    ])
 
     XCTAssertNotNil(update.error)
   }
@@ -32,7 +31,7 @@ final internal class UpdateTests: XCTestCase {
           "update": "https://www.kickstarter.com/projects/udoo/udoo-x86/posts/1571540"
         ]
       ]
-      ])
+    ])
 
     XCTAssertNil(update.error)
     XCTAssertEqual(1, update.value?.id)
@@ -52,7 +51,7 @@ final internal class UpdateTests: XCTestCase {
         "avatar": [
           "medium": "img.jpg",
           "small": "img.jpg",
-          "large": "img.jpg",
+          "large": "img.jpg"
         ]
       ],
       "visible": true,
@@ -61,12 +60,14 @@ final internal class UpdateTests: XCTestCase {
           "update": "https://www.kickstarter.com/projects/udoo/udoo-x86/posts/1571540"
         ]
       ]
-      ])
+    ])
 
     XCTAssertNil(update.error)
     XCTAssertEqual(1, update.value?.id)
     XCTAssertEqual(2, update.value?.user?.id)
-    XCTAssertEqual("https://www.kickstarter.com/projects/udoo/udoo-x86/posts/1571540",
-                   update.value?.urls.web.update)
+    XCTAssertEqual(
+      "https://www.kickstarter.com/projects/udoo/udoo-x86/posts/1571540",
+      update.value?.urls.web.update
+    )
   }
 }

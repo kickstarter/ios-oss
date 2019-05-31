@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public struct FundingGraphData {
   public let project: Project
@@ -19,8 +19,10 @@ public func == (lhs: FundingGraphData, rhs: FundingGraphData) -> Bool {
 
 public protocol DashboardFundingCellViewModelInputs {
   /// Call to configure cell with funding stats and project data.
-  func configureWith(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats],
-                     project: Project)
+  func configureWith(
+    fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats],
+    project: Project
+  )
 }
 
 public protocol DashboardFundingCellViewModelOutputs {
@@ -68,10 +70,9 @@ public protocol DashboardFundingCellViewModelType {
 
 public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelInputs,
   DashboardFundingCellViewModelOutputs, DashboardFundingCellViewModelType {
-
   public static let tickCount = 4
 
-    public init() {
+  public init() {
     let statsProject = self.statsProjectProperty.signal.skipNil()
 
     self.backersText = statsProject.map { _, project in Format.wholeNumber(project.stats.backersCount) }
@@ -96,7 +97,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
           stats: stats,
           yAxisTickSize: tickSize(DashboardFundingCellViewModel.tickCount, range: range)
         )
-    }
+      }
 
     self.graphYAxisBottomLabelText = self.graphData
       .map { data in Format.currency(Int(data.yAxisTickSize), country: data.project.country) }
@@ -110,7 +111,7 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
     self.launchDateText = statsProject
       .map { _, project in
         Format.date(secondsInUTC: project.dates.launchedAt, dateStyle: .short, timeStyle: .none)
-    }
+      }
 
     self.pledgedText = statsProject
       .map { _, project in Format.currency(project.stats.pledged, country: project.country) }
@@ -137,13 +138,15 @@ public final class DashboardFundingCellViewModel: DashboardFundingCellViewModelI
           ) :
           Strings.dashboard_graphs_funding_accessibility_non_live_stat_value(
             pledged: pledged, goal: goal, backers_count: backersCount, time_left: timeLeft
-        )
-    }
+          )
+      }
   }
 
   private let statsProjectProperty = MutableProperty<([ProjectStatsEnvelope.FundingDateStats], Project)?>(nil)
-  public func configureWith(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats],
-                            project: Project) {
+  public func configureWith(
+    fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats],
+    project: Project
+  ) {
     self.statsProjectProperty.value = (stats, project)
   }
 

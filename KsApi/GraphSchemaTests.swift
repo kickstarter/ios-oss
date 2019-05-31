@@ -4,7 +4,6 @@ import Prelude
 import XCTest
 
 class GraphSchemaTests: XCTestCase {
-
   func testRootCategoriesQuery() {
     let query = Query.rootCategories(
       .id +| [
@@ -24,10 +23,12 @@ class GraphSchemaTests: XCTestCase {
         ),
         .totalProjectCount
       ]
-      )
-    XCTAssertEqual("rootCategories { id name parentCategory { id name } " +
-                   "subcategories { nodes { id name parentId totalProjectCount } totalCount } " +
-                   "totalProjectCount }", query.description)
+    )
+    XCTAssertEqual(
+      "rootCategories { id name parentCategory { id name } " +
+        "subcategories { nodes { id name parentId totalProjectCount } totalCount } " +
+        "totalProjectCount }", query.description
+    )
   }
 
   func testUserQuery() {
@@ -40,13 +41,13 @@ class GraphSchemaTests: XCTestCase {
       .newletterSubscriptions(.alumniNewsletter +| [.artsCultureNewsletter]),
       .savedProjects([], .totalCount +| []),
       .url
-      ])
+    ])
 
     let expectedQuery = """
-                        me { avatarSmall: imageUrl(width: 25) biography email id name \
-                        newslettersSubscriptions { alumniNewsletter artsCultureNewsletter } \
-                        savedProjects { totalCount } uid url }
-                        """
+    me { avatarSmall: imageUrl(width: 25) biography email id name \
+    newslettersSubscriptions { alumniNewsletter artsCultureNewsletter } \
+    savedProjects { totalCount } uid url }
+    """
 
     XCTAssertEqual(expectedQuery, query.description)
   }

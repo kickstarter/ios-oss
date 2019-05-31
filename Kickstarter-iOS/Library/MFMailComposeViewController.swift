@@ -4,7 +4,7 @@ import MessageUI
 import UIKit
 
 internal extension MFMailComposeViewController {
-  internal static func support() -> MFMailComposeViewController {
+  static func support() -> MFMailComposeViewController {
     let mcvc = MFMailComposeViewController()
 
     mcvc.setSubject(

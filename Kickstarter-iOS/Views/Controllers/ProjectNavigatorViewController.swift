@@ -3,13 +3,12 @@ import Library
 import Prelude
 import UIKit
 
-internal protocol ProjectNavigatorDelegate: class {
+internal protocol ProjectNavigatorDelegate: AnyObject {
   /// Called when a page view controller has completed transitioning.
   func transitionedToProject(at index: Int)
 }
 
 internal final class ProjectNavigatorViewController: UIPageViewController {
-
   fileprivate let transitionAnimator = ProjectNavigatorTransitionAnimator()
   fileprivate weak var navigatorDelegate: ProjectNavigatorDelegate?
   fileprivate let pageDataSource: ProjectNavigatorPagesDataSource!
@@ -17,19 +16,20 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
 
   internal static func configuredWith(project: Project, refTag: RefTag)
     -> ProjectNavigatorViewController {
-
-      return self.configuredWith(project: project,
-                                 refTag: refTag,
-                                 initialPlaylist: nil,
-                                 navigatorDelegate: nil)
+    return self.configuredWith(
+      project: project,
+      refTag: refTag,
+      initialPlaylist: nil,
+      navigatorDelegate: nil
+    )
   }
 
   internal static func configuredWith(
     project: Project,
     refTag: RefTag,
     initialPlaylist: [Project]? = nil,
-    navigatorDelegate: ProjectNavigatorDelegate?) -> ProjectNavigatorViewController {
-
+    navigatorDelegate: ProjectNavigatorDelegate?
+  ) -> ProjectNavigatorViewController {
     let vc = ProjectNavigatorViewController(
       initialProject: project,
       initialPlaylist: initialPlaylist,
@@ -46,27 +46,34 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     return vc
   }
 
-  private init(initialProject: Project,
-               initialPlaylist: [Project]?,
-               refTag: RefTag,
-               navigatorDelegate: ProjectNavigatorDelegate?) {
-
-    self.pageDataSource = ProjectNavigatorPagesDataSource(refTag: refTag,
-                                                          initialPlaylist: initialPlaylist,
-                                                          initialProject: initialProject)
+  private init(
+    initialProject: Project,
+    initialPlaylist: [Project]?,
+    refTag: RefTag,
+    navigatorDelegate: ProjectNavigatorDelegate?
+  ) {
+    self.pageDataSource = ProjectNavigatorPagesDataSource(
+      refTag: refTag,
+      initialPlaylist: initialPlaylist,
+      initialProject: initialProject
+    )
     self.navigatorDelegate = navigatorDelegate
 
     self.viewModel.inputs.configureWith(project: initialProject, refTag: refTag)
 
-    super.init(transitionStyle: .scroll,
-               navigationOrientation: .horizontal,
-               options: convertToOptionalUIPageViewControllerOptionsKeyDictionary(
-                [convertFromUIPageViewControllerOptionsKey(
-                  UIPageViewController.OptionsKey.interPageSpacing): Styles.grid(1)]
-                ))
+    super.init(
+      transitionStyle: .scroll,
+      navigationOrientation: .horizontal,
+      options: convertToOptionalUIPageViewControllerOptionsKeyDictionary(
+        [
+          convertFromUIPageViewControllerOptionsKey(
+            UIPageViewController.OptionsKey.interPageSpacing): Styles.grid(1)
+        ]
+      )
+    )
   }
 
-  internal required init?(coder: NSCoder) {
+  internal required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -90,31 +97,31 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.transitionAnimator.cancel()
-    }
+      }
 
     self.viewModel.outputs.dismissViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.dismiss(animated: true, completion: nil)
-    }
+      }
 
     self.viewModel.outputs.finishInteractiveTransition
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.transitionAnimator.finish()
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateTransitionedToProjectIndex
       .observeForUI()
       .observeValues { [weak self] in
         self?.navigatorDelegate?.transitionedToProject(at: $0)
-    }
+      }
 
     self.viewModel.outputs.setTransitionAnimatorIsInFlight
       .observeForUI()
       .observeValues { [weak self] in
         self?.transitionAnimator.isInFlight = $0
-    }
+      }
 
     self.viewModel.outputs.setNeedsStatusBarAppearanceUpdate
       .observeForUI()
@@ -125,7 +132,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
       .observeValues { [weak self] translation in
         guard let _self = self else { return }
         self?.transitionAnimator.update(translation / _self.view.bounds.height)
-    }
+      }
   }
 
   internal override var childForStatusBarStyle: UIViewController? {
@@ -137,9 +144,9 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
   }
 
   /**
-   View Controllers that present this View Controller should call this method whenever it loads an 
+   View Controllers that present this View Controller should call this method whenever it loads an
    updated playlist of projects.
-  */
+   */
   internal func updatePlaylist(_ playlist: [Project]) {
     self.pageDataSource.updatePlaylist(playlist)
   }
@@ -147,7 +154,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
   fileprivate func setInitialPagerViewController() {
     guard let navController = self.pageDataSource.initialController(),
       let projectController = self.pageDataSource.initialPamphletController() else {
-        return
+      return
     }
 
     projectController.delegate = self
@@ -156,30 +163,34 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
 }
 
 extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate {
-  internal func projectPamphlet(_ controller: ProjectPamphletViewController,
-                                panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer) {
-
+  internal func projectPamphlet(
+    _: ProjectPamphletViewController,
+    panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer
+  ) {
     guard let scrollView = recognizer.view as? UIScrollView else { return }
 
-    self.viewModel.inputs.panning(contentOffset: scrollView.contentOffset,
-                                  translation: recognizer.translation(in: scrollView),
-                                  velocity: recognizer.velocity(in: scrollView),
-                                  isDragging: scrollView.isTracking)
+    self.viewModel.inputs.panning(
+      contentOffset: scrollView.contentOffset,
+      translation: recognizer.translation(in: scrollView),
+      velocity: recognizer.velocity(in: scrollView),
+      isDragging: scrollView.isTracking
+    )
   }
 }
 
 extension ProjectNavigatorViewController: UIGestureRecognizerDelegate {
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+  func gestureRecognizer(_: UIGestureRecognizer, shouldReceive _: UITouch) -> Bool {
     return true
   }
 }
 
 extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
-  internal func pageViewController(_ pageViewController: UIPageViewController,
-                                   didFinishAnimating finished: Bool,
-                                   previousViewControllers: [UIViewController],
-                                   transitionCompleted completed: Bool) {
-
+  internal func pageViewController(
+    _: UIPageViewController,
+    didFinishAnimating _: Bool,
+    previousViewControllers: [UIViewController],
+    transitionCompleted completed: Bool
+  ) {
     guard let prevController = previousViewControllers.first else { return }
 
     let previousIndex = self.pageDataSource.indexFor(controller: prevController)
@@ -187,9 +198,9 @@ extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
   }
 
   internal func pageViewController(
-    _ pageViewController: UIPageViewController,
-    willTransitionTo pendingViewControllers: [UIViewController]) {
-
+    _: UIPageViewController,
+    willTransitionTo pendingViewControllers: [UIViewController]
+  ) {
     guard let nav = pendingViewControllers.first as? UINavigationController,
       let vc = nav.viewControllers.first as? ProjectPamphletViewController,
       let project = self.pageDataSource.projectFor(controller: nav) else {
@@ -204,37 +215,39 @@ extension ProjectNavigatorViewController: UIPageViewControllerDelegate {
 }
 
 extension ProjectNavigatorViewController: UIViewControllerTransitioningDelegate {
-  internal func animationController(forDismissed dismissed: UIViewController)
+  internal func animationController(forDismissed _: UIViewController)
     -> UIViewControllerAnimatedTransitioning? {
-
-      return self.transitionAnimator
-  }
-
-  func animationController(
-    forPresented presented: UIViewController,
-    presenting: UIViewController,
-    source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-
     return self.transitionAnimator
   }
 
-  func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning)
-    -> UIViewControllerInteractiveTransitioning? {
+  func animationController(
+    forPresented _: UIViewController,
+    presenting _: UIViewController,
+    source _: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
+    return self.transitionAnimator
+  }
 
-      return self.transitionAnimator.isInFlight ? self.transitionAnimator : nil
+  func interactionControllerForDismissal(using _: UIViewControllerAnimatedTransitioning)
+    -> UIViewControllerInteractiveTransitioning? {
+    return self.transitionAnimator.isInFlight ? self.transitionAnimator : nil
   }
 }
 
 // Helper function inserted by Swift 4.2 migrator.
 private func convertToOptionalUIPageViewControllerOptionsKeyDictionary(
-  _ input: [String: Any]?) -> [UIPageViewController.OptionsKey: Any]? {
-	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input
-                                            .map { key, value in
-                                              (UIPageViewController.OptionsKey(rawValue: key), value)})
+  _ input: [String: Any]?
+) -> [UIPageViewController.OptionsKey: Any]? {
+  guard let input = input else { return nil }
+  return Dictionary(
+    uniqueKeysWithValues: input
+      .map { key, value in
+        (UIPageViewController.OptionsKey(rawValue: key), value)
+      }
+  )
 }
 
 // Helper function inserted by Swift 4.2 migrator.
 private func convertFromUIPageViewControllerOptionsKey(_ input: UIPageViewController.OptionsKey) -> String {
-	return input.rawValue
+  return input.rawValue
 }

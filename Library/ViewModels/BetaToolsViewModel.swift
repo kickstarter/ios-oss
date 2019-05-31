@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol BetaToolsViewModelInputs {
   func betaFeedbackButtonTapped(canSendMail: Bool)
@@ -25,7 +25,7 @@ public protocol BetaToolsViewModelType {
 }
 
 public final class BetaToolsViewModel: BetaToolsViewModelType,
-BetaToolsViewModelInputs, BetaToolsViewModelOutputs {
+  BetaToolsViewModelInputs, BetaToolsViewModelOutputs {
   public var inputs: BetaToolsViewModelInputs {
     return self
   }
@@ -49,10 +49,10 @@ BetaToolsViewModelInputs, BetaToolsViewModelOutputs {
 
     self.environmentSwitcherButtonTitle = Signal.merge(
       updateEnvironment.ignoreValues(),
-      viewDidLoadProperty.signal.ignoreValues()
-      ).map { _ in
-        return AppEnvironment.current.apiService.serverConfig.environment.rawValue
-      }.skipRepeats()
+      self.viewDidLoadProperty.signal.ignoreValues()
+    ).map { _ in
+      AppEnvironment.current.apiService.serverConfig.environment.rawValue
+    }.skipRepeats()
 
     self.logoutWithParams = updateEnvironment.ignoreValues()
       .map {

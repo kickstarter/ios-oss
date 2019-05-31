@@ -4,8 +4,7 @@ private let dismissedOverlayColor = UIColor(white: 1, alpha: 0)
 private let presentedOverlayColor = UIColor(white: 1, alpha: 1)
 
 internal final class ProjectNavigatorTransitionAnimator: UIPercentDrivenInteractiveTransition,
-UIViewControllerAnimatedTransitioning {
-
+  UIViewControllerAnimatedTransitioning {
   fileprivate let darkOverlayView = UIView()
 
   /// Determines if the transition animation is currently "in flight", i.e. the user is actively interacting
@@ -14,30 +13,33 @@ UIViewControllerAnimatedTransitioning {
 
   internal func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?)
     -> TimeInterval {
-
-      return transitionContext?.isInteractive == .some(true) ? 0.6 : 0.4
+    return transitionContext?.isInteractive == .some(true) ? 0.6 : 0.4
   }
 
   internal func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
     guard
       let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from),
       let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)
-      else {
-        return
+    else {
+      return
     }
 
     let containerView = transitionContext.containerView
 
     if toVC.isBeingPresented {
-      self.animatePresentation(fromViewController: fromVC,
-                               toViewController: toVC,
-                               containerView: containerView,
-                               transitionContext: transitionContext)
+      self.animatePresentation(
+        fromViewController: fromVC,
+        toViewController: toVC,
+        containerView: containerView,
+        transitionContext: transitionContext
+      )
     } else {
-      self.animateDismissal(fromViewController: fromVC,
-                            toViewController: toVC,
-                            containerView: containerView,
-                            transitionContext: transitionContext)
+      self.animateDismissal(
+        fromViewController: fromVC,
+        toViewController: toVC,
+        containerView: containerView,
+        transitionContext: transitionContext
+      )
     }
   }
 
@@ -45,8 +47,8 @@ UIViewControllerAnimatedTransitioning {
     fromViewController fromVC: UIViewController,
     toViewController toVC: UIViewController,
     containerView: UIView,
-    transitionContext: UIViewControllerContextTransitioning) {
-
+    transitionContext: UIViewControllerContextTransitioning
+  ) {
     containerView.insertSubview(toVC.view, aboveSubview: fromVC.view)
     containerView.insertSubview(self.darkOverlayView, belowSubview: toVC.view)
 
@@ -72,11 +74,12 @@ UIViewControllerAnimatedTransitioning {
     )
   }
 
-  fileprivate func animateDismissal(fromViewController fromVC: UIViewController,
-                                    toViewController toVC: UIViewController,
-                                    containerView: UIView,
-                                    transitionContext: UIViewControllerContextTransitioning) {
-
+  fileprivate func animateDismissal(
+    fromViewController fromVC: UIViewController,
+    toViewController toVC: UIViewController,
+    containerView: UIView,
+    transitionContext: UIViewControllerContextTransitioning
+  ) {
     containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
     containerView.insertSubview(self.darkOverlayView, belowSubview: fromVC.view)
 

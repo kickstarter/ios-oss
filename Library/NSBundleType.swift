@@ -52,7 +52,7 @@ extension NSBundleType {
   }
 
   public var kickstarterBundleId: KickstarterBundleIdentifier? {
-    return KickstarterBundleIdentifier(rawValue: identifier)
+    return KickstarterBundleIdentifier(rawValue: self.identifier)
   }
 
   public var hockeyAppId: String? {
@@ -82,8 +82,7 @@ extension Bundle: NSBundleType {
 public struct LanguageDoubler: NSBundleType {
   fileprivate static let mainBundle = Bundle.main
 
-  public init() {
-  }
+  public init() {}
 
   public let bundleIdentifier: String? = "com.language.doubler"
 
@@ -105,10 +104,11 @@ public struct LanguageDoubler: NSBundleType {
 }
 
 public final class DoublerBundle: Bundle {
-  public override func localizedString(forKey key: String,
-                                       value: String?,
-                                       table tableName: String?) -> String {
-
+  public override func localizedString(
+    forKey key: String,
+    value: String?,
+    table tableName: String?
+  ) -> String {
     let s = super.localizedString(forKey: key, value: value, table: tableName)
     return "\(s) \(s)"
   }

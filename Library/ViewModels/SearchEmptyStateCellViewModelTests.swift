@@ -1,10 +1,10 @@
-import Prelude
-import ReactiveSwift
-import ReactiveExtensions
-import XCTest
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 import Library
+import Prelude
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class SearchEmptyStateCellViewModelTests: TestCase {
   fileprivate let vm: SearchEmptyStateCellViewModelType = SearchEmptyStateCellViewModel()

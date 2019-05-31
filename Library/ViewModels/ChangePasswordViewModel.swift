@@ -40,11 +40,13 @@ public protocol ChangePasswordViewModelType {
 }
 
 public class ChangePasswordViewModel: ChangePasswordViewModelType,
-ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
+  ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
   public init() {
     let currentPasswordSignal: Signal<String, Never> = Signal
-      .merge(self.currentPasswordProperty.signal,
-             self.onePasswordPrefillPasswordProperty.signal.skipNil())
+      .merge(
+        self.currentPasswordProperty.signal,
+        self.onePasswordPrefillPasswordProperty.signal.skipNil()
+      )
 
     let combinedPasswords = Signal.combineLatest(
       self.newPasswordProperty.signal,
@@ -82,7 +84,7 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
         AppEnvironment.current.apiService.changePassword(input: $0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     passwordUpdateEvent.values()
       .observeValues { _ in AppEnvironment.current.koala.trackChangePassword() }
@@ -94,10 +96,12 @@ ChangePasswordViewModelInputs, ChangePasswordViewModelOutputs {
       triggerSaveAction.signal.mapConst(true),
       self.changePasswordSuccess.mapConst(false),
       self.changePasswordFailure.mapConst(false)
-      )
+    )
 
-    self.dismissKeyboard = Signal.merge(self.saveButtonTappedProperty.signal,
-                                        self.confirmNewPasswordDoneEditingProperty.signal)
+    self.dismissKeyboard = Signal.merge(
+      self.saveButtonTappedProperty.signal,
+      self.confirmNewPasswordDoneEditingProperty.signal
+    )
 
     self.currentPasswordBecomeFirstResponder = self.viewDidAppearProperty.signal
     self.newPasswordBecomeFirstResponder = self.currentPasswordDoneEditingProperty.signal

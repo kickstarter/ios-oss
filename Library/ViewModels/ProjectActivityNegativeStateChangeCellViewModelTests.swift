@@ -1,8 +1,8 @@
-import XCTest
 @testable import KsApi
 @testable import Library
-import ReactiveExtensions_TestHelpers
 import Prelude
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityNegativeStateChangeCellViewModel =

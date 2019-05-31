@@ -3,11 +3,11 @@ import Prelude
 import ReactiveSwift
 
 public enum EmptyState: String {
-  case activity = "activity"
-  case recommended = "recommended"
+  case activity
+  case recommended
   case socialNoPledges = "social_no_pledges"
   case socialDisabled = "social_disabled"
-  case starred = "starred"
+  case starred
 }
 
 public protocol EmptyStatesViewModelInputs {
@@ -51,8 +51,7 @@ public protocol EmptyStatesViewModelType {
 
 public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesViewModelInputs,
   EmptyStatesViewModelOutputs {
-
-    public init() {
+  public init() {
     let emptyState = Signal.combineLatest(
       self.emptyStateProperty.signal.skipNil(),
       self.viewWillAppearProperty.signal.take(first: 1)
@@ -71,7 +70,7 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
       .map { emptyState -> DiscoveryParams? in
         guard emptyState != .activity else { return nil }
         return DiscoveryParams.defaults |> DiscoveryParams.lens.sort .~ .magic
-    }
+      }
 
     self.notifyDelegateToGoToFriends = emptyState
       .takeWhen(self.mainButtonTappedProperty.signal)
@@ -93,13 +92,16 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
   public func configureWith(emptyState: EmptyState?) {
     self.emptyStateProperty.value = emptyState
   }
+
   fileprivate let mainButtonTappedProperty = MutableProperty(())
   public func mainButtonTapped() {
     self.mainButtonTappedProperty.value = ()
   }
+
   public func setEmptyState(_ emptyState: EmptyState) {
     self.emptyStateProperty.value = emptyState
   }
+
   fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()

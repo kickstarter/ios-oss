@@ -4,7 +4,6 @@ import Prelude_UIKit
 import UIKit
 
 final class SelectCurrencyTableViewHeader: UIView {
-
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -12,7 +11,7 @@ final class SelectCurrencyTableViewHeader: UIView {
     self.headerStackView.constrainEdges(to: self)
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -34,14 +33,14 @@ final class SelectCurrencyTableViewHeader: UIView {
 
   public var text: String? {
     didSet {
-      _ = self.headerLabel |> \.text .~ text
+      _ = self.headerLabel |> \.text .~ self.text
     }
   }
 
   // MARK: Subviews
 
   private lazy var headerStackView: UIStackView = {
-    return UIStackView(arrangedSubviews: [
+    UIStackView(arrangedSubviews: [
       self.headerImageView,
       self.headerLabel
     ])

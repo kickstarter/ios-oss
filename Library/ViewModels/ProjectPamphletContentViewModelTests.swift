@@ -1,9 +1,9 @@
-import Prelude
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class ProjectPamphletContentViewModelTests: TestCase {
   fileprivate let vm: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
@@ -165,7 +165,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ .noReward
-    )
+      )
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
@@ -185,7 +185,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ .template
-    )
+      )
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()

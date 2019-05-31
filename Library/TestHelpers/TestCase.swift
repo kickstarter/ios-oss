@@ -1,10 +1,10 @@
 import AVFoundation
 import FBSnapshotTestCase
+@testable import KsApi
+@testable import Library
 import Prelude
 import ReactiveSwift
 import XCTest
-@testable import KsApi
-@testable import Library
 
 internal class TestCase: FBSnapshotTestCase {
   internal static let interval = DispatchTimeInterval.milliseconds(1)
@@ -47,7 +47,7 @@ internal class TestCase: FBSnapshotTestCase {
       cookieStorage: self.cookieStorage,
       countryCode: "US",
       currentUser: nil,
-      dateType: dateType,
+      dateType: self.dateType,
       debounceInterval: .seconds(0),
       device: MockDevice(),
       facebookAppDelegate: self.facebookAppDelegate,
@@ -57,7 +57,7 @@ internal class TestCase: FBSnapshotTestCase {
       language: .en,
       launchedCountries: .init(),
       locale: .init(identifier: "en_US"),
-      mainBundle: mainBundle,
+      mainBundle: self.mainBundle,
       pushRegistrationType: MockPushRegistration.self,
       reachability: self.reachability.producer,
       scheduler: self.scheduler,

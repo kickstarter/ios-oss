@@ -17,7 +17,7 @@ internal final class MockTrackingClient: TrackingClientType {
     return self.properties(forKey: key, as: String.self)
   }
 
-  internal func properties <A> (forKey key: String, as klass: A.Type) -> [A?] {
+  internal func properties<A>(forKey key: String, as _: A.Type) -> [A?] {
     return self.tracks.map { $0.properties[key] as? A }
   }
 }

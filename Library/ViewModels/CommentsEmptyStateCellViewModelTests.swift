@@ -1,10 +1,10 @@
-import XCTest
-import ReactiveSwift
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Prelude
+import ReactiveSwift
+import XCTest
 
 internal final class CommentsEmptyStateCellViewModelTest: TestCase {
   fileprivate let vm: CommentsEmptyStateCellViewModelType = CommentsEmptyStateCellViewModel()
@@ -37,7 +37,7 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
   internal func testGoBackToProject() {
     let project = .template
       |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.creator .~ creator
+      |> Project.lens.creator .~ self.creator
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
@@ -106,7 +106,7 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
 
     let projectBacking = .template
       |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.creator .~ creator
+      |> Project.lens.creator .~ self.creator
 
     self.vm.inputs.configureWith(project: project, update: nil)
 
@@ -131,14 +131,16 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
     self.leaveACommentButtonHidden.assertValues([true, true])
     self.loginButtonHidden.assertValues([false, true])
     self.subtitleIsHidden.assertValues([false, false])
-    self.subtitleText.assertValues([Strings.Log_in_to_leave_a_comment(),
-      Strings.Become_a_backer_to_leave_a_comment()])
+    self.subtitleText.assertValues([
+      Strings.Log_in_to_leave_a_comment(),
+      Strings.Become_a_backer_to_leave_a_comment()
+    ])
   }
 
   internal func testLoggedInNonBacking() {
     let project = .template
       |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.creator .~ creator
+      |> Project.lens.creator .~ self.creator
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
@@ -197,9 +199,9 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
   internal func testLoggedInCreator() {
     let project = .template
       |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.creator .~ creator
+      |> Project.lens.creator .~ self.creator
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: self.creator))
 
     self.vm.inputs.configureWith(project: project, update: nil)
 

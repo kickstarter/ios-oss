@@ -1,10 +1,10 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import UIKit
-import PlaygroundSupport
 
 let loggedOut: User? = nil
 let loggedIn = User.brando
@@ -13,8 +13,8 @@ let member = User.brando |> \.stats.memberProjectsCount .~ 1
 //: Set the currentUser value to one of the states below.
 
 let currentUser = loggedOut
-//let currentUser = loggedIn
-//let currentUser = member
+// let currentUser = loggedIn
+// let currentUser = member
 
 initialize()
 AppEnvironment.replaceCurrentEnvironment(currentUser: currentUser, mainBundle: Bundle.framework)

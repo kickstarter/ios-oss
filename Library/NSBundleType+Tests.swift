@@ -1,5 +1,5 @@
-import XCTest
 @testable import Library
+import XCTest
 
 class NSBundleTests: XCTestCase {
   func testDebugAppVersionString() {

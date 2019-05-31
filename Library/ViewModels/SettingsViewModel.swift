@@ -1,6 +1,6 @@
+import KsApi
 import Prelude
 import ReactiveSwift
-import KsApi
 
 public protocol SettingsViewModelInputs {
   func currentUserUpdated()
@@ -28,19 +28,19 @@ public protocol SettingsViewModelType {
 }
 
 public final class SettingsViewModel: SettingsViewModelInputs,
-SettingsViewModelOutputs, SettingsViewModelType {
-
+  SettingsViewModelOutputs, SettingsViewModelType {
   public init(_ viewControllerFactory: @escaping (SettingsCellType) -> UIViewController?) {
     let user = Signal.merge(
-      viewDidLoadProperty.signal,
-      currentUserUpdatedProperty.signal)
-      .flatMap {
-        AppEnvironment.current.apiService.fetchUserSelf()
-          .wrapInOptional()
-          .prefix(value: AppEnvironment.current.currentUser)
-          .demoteErrors()
-      }
-      .skipNil()
+      self.viewDidLoadProperty.signal,
+      self.currentUserUpdatedProperty.signal
+    )
+    .flatMap {
+      AppEnvironment.current.apiService.fetchUserSelf()
+        .wrapInOptional()
+        .prefix(value: AppEnvironment.current.currentUser)
+        .demoteErrors()
+    }
+    .skipNil()
 
     let isFollowingEnabled = user
       .map { $0 |> (\User.social).view }
@@ -50,28 +50,29 @@ SettingsViewModelOutputs, SettingsViewModelType {
 
     self.reloadDataWithUser = Signal.zip(user, self.findFriendsDisabledProperty.signal).map(first)
 
-    self.showConfirmLogoutPrompt = selectedCellTypeProperty.signal
+    self.showConfirmLogoutPrompt = self.selectedCellTypeProperty.signal
       .skipNil()
       .filter { $0 == .logout }
       .map { _ in
-        (message: Strings.profile_settings_logout_alert_message(),
-         cancel: Strings.profile_settings_logout_alert_cancel_button(),
-         confirm: Strings.profile_settings_logout_alert_confirm_button()
+        (
+          message: Strings.profile_settings_logout_alert_message(),
+          cancel: Strings.profile_settings_logout_alert_cancel_button(),
+          confirm: Strings.profile_settings_logout_alert_confirm_button()
         )
-    }
+      }
 
     self.logoutWithParams = self.logoutConfirmedProperty.signal
       .map { .defaults
         |> DiscoveryParams.lens.includePOTD .~ true
         |> DiscoveryParams.lens.sort .~ .magic
-    }
+      }
 
-    self.goToAppStoreRating = selectedCellTypeProperty.signal
+    self.goToAppStoreRating = self.selectedCellTypeProperty.signal
       .skipNil()
       .filter { $0 == .rateInAppStore }
       .map { _ in AppEnvironment.current.config?.iTunesLink ?? "" }
 
-    self.transitionToViewController = selectedCellTypeProperty.signal
+    self.transitionToViewController = self.selectedCellTypeProperty.signal
       .skipNil()
       .map(viewControllerFactory)
       .skipNil()
@@ -113,7 +114,7 @@ SettingsViewModelOutputs, SettingsViewModelType {
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
-     self.viewDidLoadProperty.value = ()
+    self.viewDidLoadProperty.value = ()
   }
 
   fileprivate let viewWillAppearProperty = MutableProperty(())
@@ -133,6 +134,7 @@ SettingsViewModelOutputs, SettingsViewModelType {
 }
 
 // MARK: Helpers
+
 extension SettingsViewModel {
   public func shouldSelectRow(for cellType: SettingsCellType) -> Bool {
     switch cellType {

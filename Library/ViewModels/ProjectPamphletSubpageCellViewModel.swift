@@ -1,6 +1,6 @@
+import KsApi
 import Prelude
 import ReactiveSwift
-import KsApi
 
 public protocol ProjectPamphletSubpageCellViewModelInputs {
   /// Call with the ProjectPamphletSubpage
@@ -39,8 +39,7 @@ public protocol ProjectPamphletSubpageCellViewModelType {
 }
 
 public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCellViewModelType,
-ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOutputs {
-
+  ProjectPamphletSubpageCellViewModelInputs, ProjectPamphletSubpageCellViewModelOutputs {
   public init() {
     let commentsSubpage = self.subpageProperty.signal.skipNil().filter { $0.isComments }
     let updatesSubpage = self.subpageProperty.signal.skipNil().filter { $0.isUpdates }
@@ -138,7 +137,6 @@ public enum ProjectPamphletSubpage {
 
 extension ProjectPamphletSubpage: Equatable {}
 public func == (lhs: ProjectPamphletSubpage, rhs: ProjectPamphletSubpage) -> Bool {
-
   switch (lhs, rhs) {
   case let (.comments(lhsCount, lhsPos), .comments(rhsCount, rhsPos)):
     return lhsCount == rhsCount && lhsPos == rhsPos

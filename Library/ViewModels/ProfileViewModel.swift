@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ProfileViewModelInputs {
   /// Call when a project cell is tapped.
@@ -55,22 +55,22 @@ public protocol ProfileViewModelType {
 public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInputs, ProfileViewModelOutputs {
   public init() {
     let requestFirstPageWith = Signal.merge(
-      viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
-      refreshProperty.signal
-      ).mapConst(
-        DiscoveryParams.defaults
-          |> DiscoveryParams.lens.backed .~ true
-          |> DiscoveryParams.lens.sort .~ .endingSoon
+      self.viewWillAppearProperty.signal.filter(isFalse).ignoreValues(),
+      self.refreshProperty.signal
+    ).mapConst(
+      DiscoveryParams.defaults
+        |> DiscoveryParams.lens.backed .~ true
+        |> DiscoveryParams.lens.sort .~ .endingSoon
     )
 
     let requestNextPageWhen = Signal.merge(
       self.willDisplayRowProperty.signal.skipNil(),
       self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
-      )
-      .map { row, total in row >= total - 3 }
-      .skipRepeats()
-      .filter(isTrue)
-      .ignoreValues()
+    )
+    .map { row, total in row >= total - 3 }
+    .skipRepeats()
+    .filter(isTrue)
+    .ignoreValues()
 
     let isLoading: Signal<Bool, Never>
     (self.backedProjects, isLoading, _) = paginate(
@@ -80,20 +80,21 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
-      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) })
+      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) }
+    )
 
     self.isRefreshing = isLoading
 
-    self.user = viewWillAppearProperty.signal
+    self.user = self.viewWillAppearProperty.signal
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchUserSelf()
           .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
           .demoteErrors()
-    }
+      }
 
-    self.showEmptyState = backedProjects.map { $0.isEmpty }
+    self.showEmptyState = self.backedProjects.map { $0.isEmpty }
 
-    self.goToSettings = settingsButtonTappedProperty.signal
+    self.goToSettings = self.settingsButtonTappedProperty.signal
 
     self.goToProject = self.backedProjects
       .takePairWhen(self.projectTappedProperty.signal.skipNil())
@@ -107,7 +108,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
 
   fileprivate let projectTappedProperty = MutableProperty<Project?>(nil)
   public func projectTapped(_ project: Project) {
-    projectTappedProperty.value = project
+    self.projectTappedProperty.value = project
   }
 
   fileprivate let refreshProperty = MutableProperty(())

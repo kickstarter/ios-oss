@@ -4,7 +4,6 @@ import UIKit
 import UserNotifications
 
 public struct PushRegistration: PushRegistrationType {
-
   /**
    Returns a signal producer that emits an option `Bool` value representing whether or not the user
    granted the requested push notification permissions. This value is not returned on iOS versions < 10.0.
@@ -38,11 +37,11 @@ public struct PushRegistration: PushRegistrationType {
    - returns: A signal producer.
    */
   public static func hasAuthorizedNotifications() -> SignalProducer<Bool, Never> {
-      return SignalProducer { observer, _ in
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-          observer.send(value: settings.authorizationStatus == .authorized)
-          observer.sendCompleted()
-        }
+    return SignalProducer { observer, _ in
+      UNUserNotificationCenter.current().getNotificationSettings { settings in
+        observer.send(value: settings.authorizationStatus == .authorized)
+        observer.sendCompleted()
       }
+    }
   }
 }

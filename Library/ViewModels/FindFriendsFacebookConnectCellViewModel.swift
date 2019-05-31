@@ -1,8 +1,8 @@
-import KsApi
-import ReactiveSwift
-import ReactiveExtensions
-import Prelude
 import FBSDKLoginKit
+import KsApi
+import Prelude
+import ReactiveExtensions
+import ReactiveSwift
 
 public protocol FindFriendsFacebookConnectCellViewModelInputs {
   /// Call when close button tapped to dismiss this view if used as a header
@@ -66,7 +66,7 @@ public protocol FindFriendsFacebookConnectCellViewModelType {
 
 public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookConnectCellViewModelType,
   FindFriendsFacebookConnectCellViewModelInputs, FindFriendsFacebookConnectCellViewModelOutputs {
-    public init() {
+  public init() {
     self.notifyDelegateToDismissHeader = self.closeButtonTappedProperty.signal
 
     let isLoading: MutableProperty<Bool> = MutableProperty(false)
@@ -87,10 +87,11 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
             },
             terminated: {
               isLoading.value = false
-          })
+            }
+          )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.updateUserInEnvironment = facebookConnect.values()
 
@@ -101,7 +102,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 
     let genericFacebookErrorAlert = facebookConnect.errors()
       .filter { env in
-          env.ksrCode != .FacebookInvalidAccessToken &&
+        env.ksrCode != .FacebookInvalidAccessToken &&
           env.ksrCode != .FacebookConnectAccountTaken &&
           env.ksrCode != .FacebookConnectEmailTaken
       }
@@ -133,8 +134,8 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
       facebookLoginAttemptFailAlert
     ])
 
-    let source = configureWithProperty.signal.skipNil().map { $0 }
-    let connectionType = configureWithProperty.signal.skipNil().map { _ in
+    let source = self.configureWithProperty.signal.skipNil().map { $0 }
+    let connectionType = self.configureWithProperty.signal.skipNil().map { _ in
       FindFriendsFacebookConnectCellViewModel.connectionType(user: AppEnvironment.current.currentUser)
     }
 
@@ -168,17 +169,17 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 
   fileprivate let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() {
-    closeButtonTappedProperty.value = ()
+    self.closeButtonTappedProperty.value = ()
   }
 
   fileprivate let configureWithProperty = MutableProperty<FriendsSource?>(nil)
   public func configureWith(source: FriendsSource) {
-    configureWithProperty.value = source
+    self.configureWithProperty.value = source
   }
 
   fileprivate let facebookConnectButtonTappedProperty = MutableProperty(())
   public func facebookConnectButtonTapped() {
-    facebookConnectButtonTappedProperty.value = ()
+    self.facebookConnectButtonTappedProperty.value = ()
   }
 
   fileprivate let facebookLoginFailProperty = MutableProperty<Error?>(nil)
@@ -193,7 +194,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
 
   fileprivate let userUpdatedProperty = MutableProperty(())
   public func userUpdated() {
-    userUpdatedProperty.value = ()
+    self.userUpdatedProperty.value = ()
   }
 
   public let attemptFacebookLogin: Signal<(), Never>
@@ -229,7 +230,7 @@ extension FindFriendsFacebookConnectCellViewModel {
 
     let needsRefresh = user?.needsFreshFacebookToken ?? false
 
-    if isFacebookConnected && needsRefresh {
+    if isFacebookConnected, needsRefresh {
       return .reconnect
     }
 

@@ -13,31 +13,41 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
   }
 
   internal func load(topRows rows: [SelectableRow], categoryId: Int?) {
-    self.set(values: [(title: Strings.Collections(), categoryId: categoryId)],
-             cellClass: DiscoveryFiltersStaticRowCell.self,
-             inSection: Section.collectionsHeader.rawValue)
+    self.set(
+      values: [(title: Strings.Collections(), categoryId: categoryId)],
+      cellClass: DiscoveryFiltersStaticRowCell.self,
+      inSection: Section.collectionsHeader.rawValue
+    )
 
     let rowsAndId = rows.map { (row: $0, categoryId: categoryId) }
-    self.set(values: rowsAndId,
-             cellClass: DiscoverySelectableRowCell.self,
-             inSection: Section.collections.rawValue)
+    self.set(
+      values: rowsAndId,
+      cellClass: DiscoverySelectableRowCell.self,
+      inSection: Section.collections.rawValue
+    )
   }
 
   internal func load(favoriteRows rows: [SelectableRow], categoryId: Int?) {
-    self.set(values: [(title: Strings.Bookmarks(), categoryId: categoryId)],
-             cellClass: DiscoveryFiltersStaticRowCell.self,
-             inSection: Section.favoritesHeader.rawValue)
+    self.set(
+      values: [(title: Strings.Bookmarks(), categoryId: categoryId)],
+      cellClass: DiscoveryFiltersStaticRowCell.self,
+      inSection: Section.favoritesHeader.rawValue
+    )
 
     let rowsAndId = rows.map { (row: $0, categoryId: categoryId) }
-    self.set(values: rowsAndId,
-             cellClass: DiscoverySelectableRowCell.self,
-             inSection: Section.favorites.rawValue)
+    self.set(
+      values: rowsAndId,
+      cellClass: DiscoverySelectableRowCell.self,
+      inSection: Section.favorites.rawValue
+    )
   }
 
   internal func load(categoryRows rows: [ExpandableRow], categoryId: Int?) {
-    self.set(values: [(title: Strings.discovery_filters_categories_title(), categoryId: categoryId)],
-             cellClass: DiscoveryFiltersStaticRowCell.self,
-             inSection: Section.categoriesHeader.rawValue)
+    self.set(
+      values: [(title: Strings.discovery_filters_categories_title(), categoryId: categoryId)],
+      cellClass: DiscoveryFiltersStaticRowCell.self,
+      inSection: Section.categoriesHeader.rawValue
+    )
 
     self.clearValues(section: Section.categories.rawValue)
 
@@ -61,14 +71,16 @@ internal final class DiscoveryFiltersDataSource: ValueCellDataSource {
   }
 
   internal func loadCategoriesLoaderRow() {
-    self.set(values: [()],
-             cellClass: DiscoveryFiltersLoaderCell.self,
-             inSection: Section.categoriesLoader.rawValue)
+    self.set(
+      values: [()],
+      cellClass: DiscoveryFiltersLoaderCell.self,
+      inSection: Section.categoriesLoader.rawValue
+    )
   }
 
   internal func deleteCategoriesLoaderRow(_ tableView: UITableView) -> [IndexPath]? {
-    if self.numberOfSections(in: tableView) > Section.categoriesLoader.rawValue
-      && !self[section: Section.categoriesLoader.rawValue].isEmpty {
+    if self.numberOfSections(in: tableView) > Section.categoriesLoader.rawValue,
+      !self[section: Section.categoriesLoader.rawValue].isEmpty {
       self.clearValues(section: Section.categoriesLoader.rawValue)
 
       return [IndexPath(row: 0, section: Section.categoriesLoader.rawValue)]

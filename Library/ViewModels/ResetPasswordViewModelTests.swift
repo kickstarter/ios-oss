@@ -1,8 +1,8 @@
-import XCTest
-import ReactiveSwift
-import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import Library
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class ResetPasswordViewModelTests: TestCase {
   internal let vm: ResetPasswordViewModelType = ResetPasswordViewModel()
@@ -100,12 +100,16 @@ final class ResetPasswordViewModelTests: TestCase {
     self.vm.inputs.resetButtonPressed()
 
     self.showResetSuccess.assertValues(
-      [Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
-        email: "lisa@kickstarter.com")
+      [
+        Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
+          email: "lisa@kickstarter.com"
+        )
       ]
     )
-    XCTAssertEqual(["Forgot Password View", "Viewed Forgot Password", "Forgot Password Requested",
-      "Requested Password Reset"], trackingClient.events)
+    XCTAssertEqual([
+      "Forgot Password View", "Viewed Forgot Password", "Forgot Password Requested",
+      "Requested Password Reset"
+    ], trackingClient.events)
   }
 
   func testResetConfirmation() {
@@ -128,8 +132,10 @@ final class ResetPasswordViewModelTests: TestCase {
       self.vm.inputs.emailChanged("bad@email")
       self.vm.inputs.resetButtonPressed()
 
-      self.showError.assertValues([Strings.forgot_password_error()],
-                                  "Error alert is shown on bad request")
+      self.showError.assertValues(
+        [Strings.forgot_password_error()],
+        "Error alert is shown on bad request"
+      )
     }
   }
 

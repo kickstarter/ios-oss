@@ -32,8 +32,7 @@ public protocol MostPopularSearchProjectCellViewModelType {
 }
 
 public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProjectCellViewModelType,
-MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewModelOutputs {
-
+  MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewModelOutputs {
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
@@ -43,7 +42,7 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
 
     self.progress = project.map { $0.stats.fundingProgress }
 
-    self.progressBarColor = project.map(progressBarColor(for:))
+    self.progressBarColor = project.map(progressBarColorForProject)
 
     self.percentFundedText = project.map(percentFundedString(for:))
 
@@ -84,16 +83,16 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
     return NSAttributedString(string: percentage, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1().bolded,
       NSAttributedString.Key.foregroundColor: UIColor.ksr_text_green_700
-      ])
+    ])
   default:
     return NSAttributedString(string: percentage, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1().bolded,
       NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400
-      ])
+    ])
   }
 }
 
-private func progressBarColor(for project: Project) -> UIColor {
+private func progressBarColorForProject(_ project: Project) -> UIColor {
   switch project.state {
   case .live, .successful:
     return .ksr_green_500
@@ -108,12 +107,12 @@ private func titleString(for project: Project) -> NSAttributedString {
     return NSAttributedString(string: project.name, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1(size: 13),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-      ])
+    ])
   default:
     return NSAttributedString(string: project.name, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1(size: 13),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400
-      ])
+    ])
   }
 }
 

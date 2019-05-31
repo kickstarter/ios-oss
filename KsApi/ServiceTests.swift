@@ -1,8 +1,7 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class ServiceTests: XCTestCase {
-
   func testDefaults() {
     XCTAssertTrue(Service().serverConfig == ServerConfig.production)
     XCTAssertNil(Service().oauthToken)

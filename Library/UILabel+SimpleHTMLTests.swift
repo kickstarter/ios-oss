@@ -1,8 +1,7 @@
-import XCTest
 @testable import Library
+import XCTest
 
 final class UILabelSimpleHTMLTests: XCTestCase {
-
   func testSetHTML() {
     let label = UILabel()
     label.textColor = .red

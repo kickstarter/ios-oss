@@ -45,8 +45,10 @@ public protocol SortPagerViewModelOutputs {
   var setSelectedButton: Signal<Int, Never> { get }
 
   /// Emits a category id to update style on sort change (e.g. filter selection).
-  var updateSortStyle: Signal<(categoryId: Int?, sorts: [DiscoveryParams.Sort], animated: Bool),
-    Never> { get }
+  var updateSortStyle: Signal<
+    (categoryId: Int?, sorts: [DiscoveryParams.Sort], animated: Bool),
+    Never
+  > { get }
 }
 
 public protocol SortPagerViewModelType {
@@ -55,9 +57,8 @@ public protocol SortPagerViewModelType {
 }
 
 public final class SortPagerViewModel: SortPagerViewModelType, SortPagerViewModelInputs,
-SortPagerViewModelOutputs {
-
-    public init() {
+  SortPagerViewModelOutputs {
+  public init() {
     let sorts: Signal<[DiscoveryParams.Sort], Never> = self.sortsProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)
 
@@ -66,16 +67,16 @@ SortPagerViewModelOutputs {
     self.updateSortStyle = Signal.merge(
       sorts.map { ($0, nil, false) }.take(first: 1),
       sorts.takePairWhen(self.updateStyleProperty.signal).map { ($0, $1, true) }
-      )
-      .map { sorts, id, animated in (categoryId: id, sorts: sorts, animated: animated) }
+    )
+    .map { sorts, id, animated in (categoryId: id, sorts: sorts, animated: animated) }
 
     let selectedPage: Signal<(Int, Int), Never> = Signal.combineLatest(
       sorts,
       self.selectSortProperty.signal.skipNil()
     )
-      .map { (arg) -> (Int, Int) in
-        let (sorts, sort) = arg
-        return (sorts.firstIndex(of: sort) ?? 0, sorts.count)
+    .map { (arg) -> (Int, Int) in
+      let (sorts, sort) = arg
+      return (sorts.firstIndex(of: sort) ?? 0, sorts.count)
     }
 
     let pageIndex: Signal<Int, Never> = sorts.mapConst(0)
@@ -84,13 +85,13 @@ SortPagerViewModelOutputs {
       pageIndex.take(first: 1),
       self.sortButtonTappedIndexProperty.signal.skipNil(),
       selectedPage.map { index, _ in index }
-      )
-      .skipRepeats(==)
+    )
+    .skipRepeats(==)
 
     let selectedPageOnRotate = Signal.merge(pageIndex, selectedPage.map(first))
       .takeWhen(self.didRotateProperty.signal)
 
-    self.pinSelectedIndicatorToPage =  Signal.merge(
+    self.pinSelectedIndicatorToPage = Signal.merge(
       pageIndex
         .takeWhen(self.viewDidAppearProperty.signal)
         .take(first: 1)
@@ -105,8 +106,8 @@ SortPagerViewModelOutputs {
     self.notifyDelegateOfSelectedSort = Signal.combineLatest(
       sorts.take(first: 1),
       self.sortButtonTappedIndexProperty.signal.skipNil()
-      )
-      .map { sorts, sortIndex in sorts[sortIndex] }
+    )
+    .map { sorts, sortIndex in sorts[sortIndex] }
 
     self.indicatorViewIsHidden = Signal.merge(
       self.viewWillAppearProperty.signal
@@ -127,30 +128,37 @@ SortPagerViewModelOutputs {
   public func didRotateFromInterfaceOrientation() {
     self.didRotateProperty.value = ()
   }
+
   fileprivate let sortsProperty = MutableProperty<[DiscoveryParams.Sort]?>(nil)
   public func configureWith(sorts: [DiscoveryParams.Sort]) {
     self.sortsProperty.value = sorts
   }
+
   fileprivate let selectSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
   public func select(sort: DiscoveryParams.Sort) {
     self.selectSortProperty.value = sort
   }
+
   fileprivate let sortButtonTappedIndexProperty = MutableProperty<Int?>(nil)
   public func sortButtonTapped(index: Int) {
     self.sortButtonTappedIndexProperty.value = index
   }
+
   fileprivate let updateStyleProperty = MutableProperty<Int?>(nil)
   public func updateStyle(categoryId: Int?) {
     self.updateStyleProperty.value = categoryId
   }
+
   fileprivate let willRotateProperty = MutableProperty(())
   public func willRotateToInterfaceOrientation() {
     self.willRotateProperty.value = ()
   }
+
   fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
+
   fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
@@ -161,8 +169,10 @@ SortPagerViewModelOutputs {
   public let notifyDelegateOfSelectedSort: Signal<DiscoveryParams.Sort, Never>
   public let pinSelectedIndicatorToPage: Signal<(Int, Bool), Never>
   public let setSelectedButton: Signal<Int, Never>
-  public let updateSortStyle: Signal<(categoryId: Int?, sorts: [DiscoveryParams.Sort], animated: Bool),
-    Never>
+  public let updateSortStyle: Signal<
+    (categoryId: Int?, sorts: [DiscoveryParams.Sort], animated: Bool),
+    Never
+  >
 
   public var inputs: SortPagerViewModelInputs { return self }
   public var outputs: SortPagerViewModelOutputs { return self }

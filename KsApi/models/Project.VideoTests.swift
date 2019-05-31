@@ -1,8 +1,7 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class ProjectVideoTests: XCTestCase {
-
   func testJsonParsing_WithFullData() {
     let video = Project.Video.decodeJSONDictionary([
       "id": 1,

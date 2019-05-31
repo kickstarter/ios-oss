@@ -1,10 +1,10 @@
 import Foundation
-import XCTest
-import ReactiveSwift
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class SettingsPrivacyViewModelTests: TestCase {
   let vm = SettingsPrivacyViewModel()
@@ -43,7 +43,7 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
   func testResetFollowingSection_WhenCancelingSocialOptOut() {
     let user = User.template
-    |> \.social .~ true
+      |> \.social .~ true
 
     let mockService = MockService(fetchUserSelfResponse: user)
 
@@ -91,7 +91,6 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testFollowingSwitchTapped_updatesCurrentUser() {
-
     self.vm.viewDidLoad()
 
     self.vm.didCancelSocialOptOut()
@@ -105,7 +104,6 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testUpdateCurrentUser() {
-
     let mockService = MockService(fetchUserSelfResponse: User.template)
 
     withEnvironment(apiService: mockService) {

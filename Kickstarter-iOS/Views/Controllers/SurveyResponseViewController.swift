@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-internal protocol SurveyResponseViewControllerDelegate: class {
+internal protocol SurveyResponseViewControllerDelegate: AnyObject {
   /// Called when the delegate should notify the parent that self was dismissed.
   func surveyResponseViewControllerDismissed()
 }
@@ -14,19 +14,21 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
 
   internal static func configuredWith(surveyResponse: SurveyResponse)
     -> SurveyResponseViewController {
-      let vc = SurveyResponseViewController()
-      vc.viewModel.inputs.configureWith(surveyResponse: surveyResponse)
-      return vc
+    let vc = SurveyResponseViewController()
+    vc.viewModel.inputs.configureWith(surveyResponse: surveyResponse)
+    return vc
   }
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.navigationItem.leftBarButtonItem =
-      UIBarButtonItem(title: Strings.general_navigation_buttons_close(),
-                      style: .plain,
-                      target: self,
-                      action: #selector(closeButtonTapped))
+      UIBarButtonItem(
+        title: Strings.general_navigation_buttons_close(),
+        style: .plain,
+        target: self,
+        action: #selector(self.closeButtonTapped)
+      )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -39,19 +41,19 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
       .observeValues { [weak self] in
         self?.navigationController?.dismiss(animated: true, completion: nil)
         self?.delegate?.surveyResponseViewControllerDismissed()
-    }
+      }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] param, refTag in
         self?.goToProject(param: param, refTag: refTag)
-    }
+      }
 
     self.viewModel.outputs.showAlert
       .observeForControllerAction()
       .observeValues { [weak self] message in
         self?.showAlert(message: message)
-    }
+      }
 
     self.navigationItem.rac.title = self.viewModel.outputs.title
 
@@ -59,7 +61,7 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
       .observeForControllerAction()
       .observeValues { [weak self] request in
         self?.webView.loadRequest(request)
-    }
+      }
   }
 
   @objc fileprivate func closeButtonTapped() {
@@ -85,9 +87,11 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
     )
   }
 
-  internal func webView(_ webView: UIWebView,
-                        shouldStartLoadWith request: URLRequest,
-                        navigationType: UIWebView.NavigationType) -> Bool {
+  internal func webView(
+    _: UIWebView,
+    shouldStartLoadWith request: URLRequest,
+    navigationType: UIWebView.NavigationType
+  ) -> Bool {
     let result = self.viewModel.inputs.shouldStartLoad(withRequest: request, navigationType: navigationType)
     return result
   }

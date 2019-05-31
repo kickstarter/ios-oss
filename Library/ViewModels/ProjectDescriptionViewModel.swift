@@ -52,8 +52,7 @@ public protocol ProjectDescriptionViewModelType {
 }
 
 public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
-ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
-
+  ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
   public init() {
     let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
       .map(first)
@@ -96,10 +95,10 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
         guard
           case let (.project(param, .root, _))? = navigation,
           String(project.id) == param.slug || project.slug == param.slug
-          else { return nil }
+        else { return nil }
 
         return project
-    }
+      }
 
     self.showErrorAlert = self.webViewDidFailProvisionalNavigationProperty.signal.skipNil()
 
@@ -110,17 +109,17 @@ ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
 
     self.goToSafariBrowser = Signal.zip(
       navigationActionLink, possiblyGoToMessageDialog, possiblyGoBackToProject
-      )
-      .filter { $1 == nil && $2 == nil }
-      .filter { navigationAction, _, _ in navigationAction.navigationType == .linkActivated }
-      .map { navigationAction, _, _ in navigationAction.request.url }
-      .skipNil()
+    )
+    .filter { $1 == nil && $2 == nil }
+    .filter { navigationAction, _, _ in navigationAction.navigationType == .linkActivated }
+    .map { navigationAction, _, _ in navigationAction.request.url }
+    .skipNil()
 
     project
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectDescription)
-    }
+      }
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)

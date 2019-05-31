@@ -5,7 +5,6 @@ import ReactiveSwift
 import WebKit
 
 public protocol ProjectUpdatesViewModelInputs {
-
   /// Call to set whether Mail can be composed.
   func canSendEmail(_ canSend: Bool)
 
@@ -61,8 +60,7 @@ public protocol ProjectUpdatesViewModelType {
 }
 
 public final class ProjectUpdatesViewModel: ProjectUpdatesViewModelType, ProjectUpdatesViewModelInputs,
-ProjectUpdatesViewModelOutputs {
-
+  ProjectUpdatesViewModelOutputs {
   public init() {
     let navigationAction = self.navigationAction.signal.skipNil()
 
@@ -99,16 +97,16 @@ ProjectUpdatesViewModelOutputs {
         action.navigationType == .other || action.targetFrame?.mainFrame == .some(false)
           ? .allow
           : .cancel
-    }
+      }
 
     self.goToSafariBrowser = navigationAction
       .filter {
         $0.navigationType == .linkActivated &&
-        !isGoToCommentsRequest(request: $0.request) &&
-        !isGoToUpdateRequest(request: $0.request) &&
-        !isUpdatesRequest(request: $0.request) &&
-        !isPhoneLink(action: $0) &&
-        !isEmailLink(action: $0)
+          !isGoToCommentsRequest(request: $0.request) &&
+          !isGoToUpdateRequest(request: $0.request) &&
+          !isUpdatesRequest(request: $0.request) &&
+          !isPhoneLink(action: $0) &&
+          !isEmailLink(action: $0)
       }
       .map { $0.request.url }
       .skipNil()
@@ -153,8 +151,8 @@ ProjectUpdatesViewModelOutputs {
     self.goToUpdateComments = goToCommentsRequest
       .switchMap { projectParam, updateId in
         AppEnvironment.current.apiService.fetchUpdate(updateId: updateId, projectParam: projectParam)
-        .demoteErrors()
-    }
+          .demoteErrors()
+      }
 
     self.isActivityIndicatorHidden = Signal.merge(
       self.webViewDidFinishNavigationProperty.signal.mapConst(true),
@@ -168,7 +166,7 @@ ProjectUpdatesViewModelOutputs {
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdates)
-    }
+      }
   }
 
   fileprivate let canSendEmailProperty = MutableProperty<Bool?>(nil)
@@ -184,7 +182,7 @@ ProjectUpdatesViewModelOutputs {
   fileprivate let navigationAction = MutableProperty<WKNavigationActionData?>(nil)
   fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.cancel)
   public func decidePolicy(forNavigationAction action: WKNavigationActionData)
-          -> WKNavigationActionPolicy {
+    -> WKNavigationActionPolicy {
     self.navigationAction.value = action
     return self.decidedPolicy.value
   }

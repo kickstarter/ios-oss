@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ProjectActivityUpdateCellViewModelInputs {
   /// Call to set the activity and project.
@@ -37,7 +37,7 @@ public protocol ProjectActivityUpdateCellViewModelType {
 }
 
 public final class ProjectActivityUpdateCellViewModel: ProjectActivityUpdateCellViewModelType,
-ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutputs {
+  ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutputs {
   public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
@@ -50,7 +50,7 @@ ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutp
     }
 
     self.cellAccessibilityLabel = activity.map { activity in
-      return updateNumber(activity: activity).htmlStripped() ?? ""
+      updateNumber(activity: activity).htmlStripped() ?? ""
     }
 
     self.cellAccessibilityValue = activity.map(title(activity:))

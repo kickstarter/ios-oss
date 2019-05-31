@@ -1,6 +1,6 @@
+@testable import Kickstarter_Framework
 import Library
 import PlaygroundSupport
-@testable import Kickstarter_Framework
 
 // Instantiate the Signup view controller.
 initialize()

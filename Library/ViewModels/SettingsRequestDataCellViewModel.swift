@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol SettingsRequestDataCellViewModelInputs {
   func awakeFromNib()
@@ -31,7 +31,6 @@ public protocol SettingsRequestDataCellViewModelType {
 
 public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellViewModelType,
   SettingsRequestDataCellViewModelInputs, SettingsRequestDataCellViewModelOutputs {
-
   public init() {
     let initialUser = Signal.combineLatest(
       self.configureWithUserProperty.signal.skipNil(),
@@ -41,12 +40,13 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     let userEmailEvent = self.configureWithUserProperty.signal.skipNil()
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphUserEmailFields(
-          query: NonEmptySet(Query.user(changeEmailQueryFields())))
+          query: NonEmptySet(Query.user(changeEmailQueryFields()))
+        )
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
-    }
+      }
 
-     let requestDataAlertText = userEmailEvent.values().map {
+    let requestDataAlertText = userEmailEvent.values().map {
       Strings.Youll_receive_an_email_at_email_when_your_download_is_ready(email: $0.me.email)
     }
 
@@ -54,7 +54,7 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
       .switchMap { _ in
         AppEnvironment.current.apiService.exportDataState()
           .demoteErrors()
-    }
+      }
 
     self.showRequestDataPrompt = Signal.combineLatest(exportEnvelope, requestDataAlertText)
       .filter { canRequestData($0.0) }
@@ -66,12 +66,12 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
         AppEnvironment.current.apiService.exportData()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.unableToRequestDataError = requestDataEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.Unable_to_request()
-    }
+      }
 
     self.requestDataLoadingIndicator = Signal.merge(
       self.configureWithUserProperty.signal.mapConst(false),
@@ -92,13 +92,14 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
     self.requestDataButtonEnabled = self.requestDataLoadingIndicator.signal.negate()
 
     self.requestedDataExpirationDate = exportEnvelope.map {
-        dateFormatter(for: $0.expiresAt, state: $0.state)
-      }
+      dateFormatter(for: $0.expiresAt, state: $0.state)
+    }
 
     self.dataExpirationAndChevronHidden = Signal.merge(
       self.awakeFromNibProperty.signal.mapConst(true),
       exportEnvelope
-      .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil })
+        .map { $0.state == .expired || $0.expiresAt == nil || $0.dataUrl == nil }
+    )
 
     self.goToSafari = exportEnvelope
       .filter { $0.state != .expired || $0.expiresAt != nil }
@@ -118,14 +119,17 @@ public final class SettingsRequestDataCellViewModel: SettingsRequestDataCellView
   public func awakeFromNib() {
     self.awakeFromNibProperty.value = ()
   }
+
   fileprivate let configureWithUserProperty = MutableProperty<User?>(nil)
   public func configureWith(user: User) {
     self.configureWithUserProperty.value = user
   }
+
   fileprivate let exportDataTappedProperty = MutableProperty(())
   public func exportDataTapped() {
     self.exportDataTappedProperty.value = ()
   }
+
   fileprivate let startRequestDataTappedProperty = MutableProperty(())
   public func startRequestDataTapped() {
     self.startRequestDataTappedProperty.value = ()

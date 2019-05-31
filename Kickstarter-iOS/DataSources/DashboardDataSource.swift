@@ -1,7 +1,7 @@
 import Foundation
+import KsApi
 import Library
 import UIKit
-import KsApi
 
 internal final class DashboardDataSource: ValueCellDataSource {
   fileprivate enum Section: Int {
@@ -22,7 +22,6 @@ internal final class DashboardDataSource: ValueCellDataSource {
   }
 
   internal func load(fundingDateStats stats: [ProjectStatsEnvelope.FundingDateStats], project: Project) {
-
     self.set(
       values: [(stats, project)],
       cellClass: DashboardFundingCell.self,
@@ -30,20 +29,26 @@ internal final class DashboardDataSource: ValueCellDataSource {
     )
   }
 
-  internal func load(cumulative: ProjectStatsEnvelope.CumulativeStats,
-                     project: Project,
-                     aggregate: ProjectStatsEnvelope.ReferralAggregateStats,
-                     referrers: [ProjectStatsEnvelope.ReferrerStats]) {
-
-    self.set(values: [(cumulative, project, aggregate, referrers)], cellClass: DashboardReferrersCell.self,
-             inSection: Section.referrers.rawValue)
+  internal func load(
+    cumulative: ProjectStatsEnvelope.CumulativeStats,
+    project: Project,
+    aggregate: ProjectStatsEnvelope.ReferralAggregateStats,
+    referrers: [ProjectStatsEnvelope.ReferrerStats]
+  ) {
+    self.set(
+      values: [(cumulative, project, aggregate, referrers)], cellClass: DashboardReferrersCell.self,
+      inSection: Section.referrers.rawValue
+    )
   }
 
-  internal func load(rewardStats: [ProjectStatsEnvelope.RewardStats],
-                     project: Project) {
-
-    self.set(values: [(rewardStats: rewardStats, project: project)], cellClass: DashboardRewardsCell.self,
-             inSection: Section.rewards.rawValue)
+  internal func load(
+    rewardStats: [ProjectStatsEnvelope.RewardStats],
+    project: Project
+  ) {
+    self.set(
+      values: [(rewardStats: rewardStats, project: project)], cellClass: DashboardRewardsCell.self,
+      inSection: Section.rewards.rawValue
+    )
   }
 
   internal func load(videoStats: ProjectStatsEnvelope.VideoStats) {
@@ -58,15 +63,17 @@ internal final class DashboardDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as DashboardFundingCell, value as ([ProjectStatsEnvelope.FundingDateStats], Project)):
       cell.configureWith(value: value)
-    case let (cell as DashboardReferrersCell, value as (ProjectStatsEnvelope.CumulativeStats, Project,
-      ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats])):
-        cell.configureWith(value: value)
+    case let (cell as DashboardReferrersCell, value as (
+      ProjectStatsEnvelope.CumulativeStats, Project,
+      ProjectStatsEnvelope.ReferralAggregateStats, [ProjectStatsEnvelope.ReferrerStats]
+    )):
+      cell.configureWith(value: value)
     case let (cell as DashboardVideoCell, value as ProjectStatsEnvelope.VideoStats):
       cell.configureWith(value: value)
     case let (
       cell as DashboardRewardsCell,
       value as ([ProjectStatsEnvelope.RewardStats], Project)
-      ):
+    ):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return

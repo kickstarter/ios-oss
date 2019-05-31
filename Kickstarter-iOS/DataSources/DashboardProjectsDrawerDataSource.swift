@@ -1,13 +1,15 @@
 import Foundation
-import Library
 import KsApi
+import Library
 import UIKit
 
 internal final class DashboardProjectsDrawerDataSource: ValueCellDataSource {
   internal func load(data: [ProjectsDrawerData]) {
-    self.set(values: data,
-             cellClass: DashboardProjectsDrawerCell.self,
-             inSection: 0)
+    self.set(
+      values: data,
+      cellClass: DashboardProjectsDrawerCell.self,
+      inSection: 0
+    )
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

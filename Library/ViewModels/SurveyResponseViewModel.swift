@@ -1,6 +1,6 @@
 import KsApi
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol SurveyResponseViewModelInputs {
   /// Call when the alert OK button is tapped.
@@ -42,8 +42,7 @@ public protocol SurveyResponseViewModelType: SurveyResponseViewModelInputs, Surv
 }
 
 public final class SurveyResponseViewModel: SurveyResponseViewModelType {
-
-    public init() {
+  public init() {
     let initialRequest = self.surveyResponseProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { surveyResponse -> URLRequest? in
@@ -96,8 +95,8 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
       postRequest
-      )
-      .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
+    )
+    .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
   }
 
   fileprivate let alertButtonTappedProperty = MutableProperty(())
@@ -108,8 +107,10 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
   fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebView.NavigationType)?>(nil)
   fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
-  public func shouldStartLoad(withRequest request: URLRequest,
-                              navigationType: UIWebView.NavigationType) -> Bool {
+  public func shouldStartLoad(
+    withRequest request: URLRequest,
+    navigationType: UIWebView.NavigationType
+  ) -> Bool {
     self.shouldStartLoadProperty.value = (request, navigationType)
     return self.shouldStartLoadResponseProperty.value
   }

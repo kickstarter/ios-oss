@@ -7,7 +7,7 @@ import WebKit
 internal final class UpdatePreviewViewController: WebViewController {
   fileprivate let viewModel: UpdatePreviewViewModelType = UpdatePreviewViewModel()
 
-  @IBOutlet fileprivate weak var publishBarButtonItem: UIBarButtonItem!
+  @IBOutlet fileprivate var publishBarButtonItem: UIBarButtonItem!
 
   internal static func configuredWith(draft: UpdateDraft) -> UpdatePreviewViewController {
     let vc = Storyboard.UpdateDraft.instantiate(UpdatePreviewViewController.self)
@@ -19,7 +19,7 @@ internal final class UpdatePreviewViewController: WebViewController {
     super.viewDidLoad()
 
     _ = self.publishBarButtonItem
-      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(publishButtonTapped))
+      |> UIBarButtonItem.lens.targetAction .~ (self, #selector(self.publishButtonTapped))
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -49,10 +49,11 @@ internal final class UpdatePreviewViewController: WebViewController {
       .observeValues { [weak self] in self?.goTo(update: $1, forProject: $0) }
   }
 
-  internal func webView(_ webView: WKWebView,
-                        decidePolicyFor navigationAction: WKNavigationAction,
-                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-
+  internal func webView(
+    _: WKWebView,
+    decidePolicyFor navigationAction: WKNavigationAction,
+    decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+  ) {
     decisionHandler(
       self.viewModel.inputs.decidePolicyFor(navigationAction: .init(navigationAction: navigationAction))
     )
@@ -71,15 +72,17 @@ internal final class UpdatePreviewViewController: WebViewController {
     alert.addAction(
       UIAlertAction(
         title: Strings.dashboard_post_update_preview_confirmation_alert_confirm_button(),
-        style: .default) { _ in
-          self.viewModel.inputs.publishConfirmationButtonTapped()
+        style: .default
+      ) { _ in
+        self.viewModel.inputs.publishConfirmationButtonTapped()
       }
     )
     alert.addAction(
       UIAlertAction(
         title: Strings.dashboard_post_update_preview_confirmation_alert_cancel_button(),
-        style: .cancel) { _ in
-          self.viewModel.inputs.publishCancelButtonTapped()
+        style: .cancel
+      ) { _ in
+        self.viewModel.inputs.publishCancelButtonTapped()
       }
     )
     self.present(alert, animated: true, completion: nil)

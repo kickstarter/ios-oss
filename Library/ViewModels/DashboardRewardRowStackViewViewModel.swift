@@ -1,13 +1,15 @@
 import KsApi
-import ReactiveSwift
-import ReactiveExtensions
 import Prelude
+import ReactiveExtensions
+import ReactiveSwift
 
 public protocol DashboardRewardRowStackViewViewModelInputs {
   /// Call to configure view model with Country, RewardsStats, and total pledged.
-  func configureWith(country: Project.Country,
-                     reward: ProjectStatsEnvelope.RewardStats,
-                     totalPledged: Int)
+  func configureWith(
+    country: Project.Country,
+    reward: ProjectStatsEnvelope.RewardStats,
+    totalPledged: Int
+  )
 }
 
 public protocol DashboardRewardRowStackViewViewModelOutputs {
@@ -28,7 +30,6 @@ public protocol DashboardRewardRowStackViewViewModelType {
 
 public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStackViewViewModelType,
   DashboardRewardRowStackViewViewModelInputs, DashboardRewardRowStackViewViewModelOutputs {
-
   public init() {
     let countryRewardPledged = self.countryRewardPledgedProperty.signal.skipNil()
 
@@ -43,7 +44,7 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
         reward.rewardId == Reward.noReward.id
           ? Strings.dashboard_graphs_rewards_no_reward()
           : Format.currency(reward.minimum ?? 0, country: country)
-    }
+      }
   }
 
   public var inputs: DashboardRewardRowStackViewViewModelInputs { return self }
@@ -55,17 +56,21 @@ public final class DashboardRewardRowStackViewViewModel: DashboardRewardRowStack
 
   fileprivate let countryRewardPledgedProperty =
     MutableProperty<(Project.Country, ProjectStatsEnvelope.RewardStats, Int)?>(nil)
-  public func configureWith(country: Project.Country,
-                            reward: ProjectStatsEnvelope.RewardStats,
-                            totalPledged: Int) {
-    countryRewardPledgedProperty.value = (country, reward, totalPledged)
+  public func configureWith(
+    country: Project.Country,
+    reward: ProjectStatsEnvelope.RewardStats,
+    totalPledged: Int
+  ) {
+    self.countryRewardPledgedProperty.value = (country, reward, totalPledged)
   }
 }
 
-private func pledgedWithPercentText(country: Project.Country,
-                                    reward: ProjectStatsEnvelope.RewardStats,
-                                    totalPledged: Int) -> String {
-    let percent = Double(reward.pledged) / Double(totalPledged)
-    let percentText = (percent > 0.01 || percent == 0) ? Format.percentage(percent) : "<1%"
-    return Format.currency(reward.pledged, country: country) + " (\(percentText))"
+private func pledgedWithPercentText(
+  country: Project.Country,
+  reward: ProjectStatsEnvelope.RewardStats,
+  totalPledged: Int
+) -> String {
+  let percent = Double(reward.pledged) / Double(totalPledged)
+  let percentText = (percent > 0.01 || percent == 0) ? Format.percentage(percent) : "<1%"
+  return Format.currency(reward.pledged, country: country) + " (\(percentText))"
 }

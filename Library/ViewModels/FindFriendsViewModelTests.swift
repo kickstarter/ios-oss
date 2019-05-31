@@ -1,12 +1,12 @@
-// swiftlint:disable force_cast
-import XCTest
-import ReactiveSwift
-import UIKit.UIActivity
-import ReactiveExtensions
-import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import Library
 import Prelude
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import UIKit.UIActivity
+// swiftlint:disable force_cast
+import XCTest
 
 final class FindFriendsViewModelTests: TestCase {
   let vm: FindFriendsViewModelType = FindFriendsViewModel()
@@ -23,60 +23,78 @@ final class FindFriendsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    vm.outputs.friends.map { $0.0 }.observe(friends.observer)
-    vm.outputs.goToDiscovery.observe(goToDiscovery.observer)
-    vm.outputs.showErrorAlert.observe(showErrorAlert.observer)
-    vm.outputs.showFacebookConnect.map { $0.1 }.observe(showFacebookConnect.observer)
-    vm.outputs.showFollowAllFriendsAlert.observe(showFollowAllFriendsAlert.observer)
-    vm.outputs.showLoadingIndicatorView.observe(showLoadingIndicatorView.observer)
-    vm.outputs.stats.map { env, _ in env }.observe(stats.observer)
-    vm.outputs.stats.map { _, source in source }.observe(statsSource.observer)
+    self.vm.outputs.friends.map { $0.0 }.observe(self.friends.observer)
+    self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
+    self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
+    self.vm.outputs.showFacebookConnect.map { $0.1 }.observe(self.showFacebookConnect.observer)
+    self.vm.outputs.showFollowAllFriendsAlert.observe(self.showFollowAllFriendsAlert.observer)
+    self.vm.outputs.showLoadingIndicatorView.observe(self.showLoadingIndicatorView.observer)
+    self.vm.outputs.stats.map { env, _ in env }.observe(self.stats.observer)
+    self.vm.outputs.stats.map { _, source in source }.observe(self.statsSource.observer)
   }
 
   func testSource() {
-    vm.inputs.configureWith(source: FriendsSource.findFriends)
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(source: FriendsSource.findFriends)
+    self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
-    XCTAssertEqual(["find-friends", "find-friends"],
-      self.trackingClient.properties.map { $0["source"] as! String? })
+    XCTAssertEqual(
+      ["find-friends", "find-friends"],
+      self.trackingClient.properties.map { $0["source"] as! String? }
+    )
 
     XCTAssertEqual([true, nil], self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? })
 
-    vm.inputs.configureWith(source: FriendsSource.activity)
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(source: FriendsSource.activity)
+    self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Find Friends View", "Viewed Find Friends",
-                    "Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
+    XCTAssertEqual([
+      "Find Friends View", "Viewed Find Friends",
+      "Find Friends View", "Viewed Find Friends"
+    ], self.trackingClient.events)
 
-    XCTAssertEqual(["find-friends", "find-friends",
-                    "activity", "activity"],
-                   self.trackingClient.properties.map { $0["source"] as! String? })
+    XCTAssertEqual(
+      [
+        "find-friends", "find-friends",
+        "activity", "activity"
+      ],
+      self.trackingClient.properties.map { $0["source"] as! String? }
+    )
 
-    vm.inputs.configureWith(source: FriendsSource.discovery)
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(source: FriendsSource.discovery)
+    self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Find Friends View", "Viewed Find Friends",
-                    "Find Friends View", "Viewed Find Friends",
-                    "Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
+    XCTAssertEqual([
+      "Find Friends View", "Viewed Find Friends",
+      "Find Friends View", "Viewed Find Friends",
+      "Find Friends View", "Viewed Find Friends"
+    ], self.trackingClient.events)
 
-    XCTAssertEqual(["find-friends", "find-friends",
-                    "activity", "activity",
-                    "discovery", "discovery"],
-                   self.trackingClient.properties.map { $0["source"] as! String? })
+    XCTAssertEqual(
+      [
+        "find-friends", "find-friends",
+        "activity", "activity",
+        "discovery", "discovery"
+      ],
+      self.trackingClient.properties.map { $0["source"] as! String? }
+    )
 
-    vm.inputs.configureWith(source: FriendsSource.settings)
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.configureWith(source: FriendsSource.settings)
+    self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Find Friends View", "Viewed Find Friends",
-                    "Find Friends View", "Viewed Find Friends",
-                    "Find Friends View", "Viewed Find Friends",
-                    "Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
+    XCTAssertEqual([
+      "Find Friends View", "Viewed Find Friends",
+      "Find Friends View", "Viewed Find Friends",
+      "Find Friends View", "Viewed Find Friends",
+      "Find Friends View", "Viewed Find Friends"
+    ], self.trackingClient.events)
 
-    XCTAssertEqual(["find-friends", "find-friends",
-                    "activity", "activity",
-                    "discovery", "discovery",
-                    "settings", "settings"], self.trackingClient.properties.map { $0["source"] as! String? })
+    XCTAssertEqual([
+      "find-friends", "find-friends",
+      "activity", "activity",
+      "discovery", "discovery",
+      "settings", "settings"
+    ], self.trackingClient.properties.map { $0["source"] as! String? })
   }
 
   func testGoToDiscovery() {
@@ -251,38 +269,54 @@ final class FindFriendsViewModelTests: TestCase {
 
       self.friends.assertValues([friendsResponse.users], "Initial friends load.")
       XCTAssertEqual(["Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity"],
-        self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(
+        ["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
 
-      self.vm.inputs.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: 1000)
+      self.vm.inputs.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: 1_000)
 
-      self.showFollowAllFriendsAlert.assertValues([1000], "Show Follow All Friends alert with friend count")
+      self.showFollowAllFriendsAlert.assertValues([1_000], "Show Follow All Friends alert with friend count")
 
       self.vm.inputs.declineFollowAllFriends()
 
-      XCTAssertEqual(["Find Friends View", "Viewed Find Friends",
-                      "Facebook Friend Decline Follow All", "Declined Follow All Facebook Friends"],
-        self.trackingClient.events)
+      XCTAssertEqual(
+        [
+          "Find Friends View", "Viewed Find Friends",
+          "Facebook Friend Decline Follow All", "Declined Follow All Facebook Friends"
+        ],
+        self.trackingClient.events
+      )
 
-      XCTAssertEqual(["activity", "activity",
-                      "activity", "activity"],
-        self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(
+        [
+          "activity", "activity",
+          "activity", "activity"
+        ],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
 
-      self.vm.inputs.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: 1000)
+      self.vm.inputs.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: 1_000)
 
-      self.showFollowAllFriendsAlert.assertValues([1000, 1000])
+      self.showFollowAllFriendsAlert.assertValues([1_000, 1_000])
 
       self.vm.inputs.confirmFollowAllFriends()
 
       XCTAssertEqual(
-        ["Find Friends View", "Viewed Find Friends",
-         "Facebook Friend Decline Follow All", "Declined Follow All Facebook Friends",
-         "Facebook Friend Follow All", "Followed All Facebook Friends"], self.trackingClient.events
+        [
+          "Find Friends View", "Viewed Find Friends",
+          "Facebook Friend Decline Follow All", "Declined Follow All Facebook Friends",
+          "Facebook Friend Follow All", "Followed All Facebook Friends"
+        ], self.trackingClient.events
       )
-      XCTAssertEqual(["activity", "activity",
-                      "activity", "activity",
-                      "activity", "activity"],
-        self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(
+        [
+          "activity", "activity",
+          "activity", "activity",
+          "activity", "activity"
+        ],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
 
       // Test the 2 second "Follow all" debounce.
       self.scheduler.advance(by: .seconds(1))
@@ -325,32 +359,41 @@ final class FindFriendsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
-      //This call should NOT trigger next page request and reporting
+      // This call should NOT trigger next page request and reporting
       self.vm.inputs.willDisplayRow(5, outOf: 10)
       self.scheduler.advance()
 
       XCTAssertEqual(
-        ["Find Friends View", "Viewed Find Friends"], self.trackingClient.events)
+        ["Find Friends View", "Viewed Find Friends"], self.trackingClient.events
+      )
 
-      XCTAssertEqual(["activity", "activity"],
-                     self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(
+        ["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
 
-      XCTAssertEqual([nil, nil],
-                     self.trackingClient.properties.map { $0["page_count"] as! String? })
+      XCTAssertEqual(
+        [nil, nil],
+        self.trackingClient.properties.map { $0["page_count"] as! String? }
+      )
 
-      //This call should trigger next page request and reporting
+      // This call should trigger next page request and reporting
       self.vm.inputs.willDisplayRow(8, outOf: 10)
       self.scheduler.advance()
 
       XCTAssertEqual(
-        ["Find Friends View", "Viewed Find Friends", "Loaded More Friends"], self.trackingClient.events)
+        ["Find Friends View", "Viewed Find Friends", "Loaded More Friends"], self.trackingClient.events
+      )
 
-      XCTAssertEqual(["activity", "activity", "activity"],
-                     self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(
+        ["activity", "activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
 
-      XCTAssertEqual([nil, nil, 2],
-        self.trackingClient.properties.map { $0["page_count"] as! Int? })
-
+      XCTAssertEqual(
+        [nil, nil, 2],
+        self.trackingClient.properties.map { $0["page_count"] as! Int? }
+      )
     }
   }
 
@@ -367,20 +410,19 @@ final class FindFriendsViewModelTests: TestCase {
       self.scheduler.advance()
 
       showLoadingIndicatorView.assertDidNotEmitValue()
-
     }
   }
 
   func testFacebookErrorAlerts() {
-    vm.inputs.configureWith(source: FriendsSource.discovery)
+    self.vm.inputs.configureWith(source: FriendsSource.discovery)
 
-    showFacebookConnect.assertValueCount(0, "Show Facebook Connect does not emit")
+    self.showFacebookConnect.assertValueCount(0, "Show Facebook Connect does not emit")
 
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
     self.scheduler.advance()
 
-    showFacebookConnect.assertValues([true], "Show Facebook Connect")
+    self.showFacebookConnect.assertValues([true], "Show Facebook Connect")
 
     let alertTokenFail = AlertError.facebookTokenFail
 

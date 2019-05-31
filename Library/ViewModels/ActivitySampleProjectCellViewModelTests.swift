@@ -1,10 +1,10 @@
-import Prelude
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class ActivitySampleProjectCellViewModelTests: TestCase {
   internal let vm = ActivitySampleProjectCellViewModel()
@@ -113,8 +113,12 @@ internal final class ActivitySampleProjectCellViewModelTests: TestCase {
     self.projectImage.assertValues([project.photo.med])
     self.projectTitleText.assertValues([project.name])
     self.projectSubtitleText.assertValues(
-      [Strings.activity_posted_update_number_title(update_number: Format.wholeNumber(update.sequence),
-                                                   update_title: update.title)]
+      [
+        Strings.activity_posted_update_number_title(
+          update_number: Format.wholeNumber(update.sequence),
+          update_title: update.title
+        )
+      ]
     )
   }
 }

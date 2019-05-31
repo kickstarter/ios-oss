@@ -1,9 +1,9 @@
-// swiftlint:disable force_unwrapping
-import Prelude
-import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+// swiftlint:disable force_unwrapping
+import Prelude
+import XCTest
 
 internal final class ProjectPamphletContentViewControllerTests: TestCase {
   fileprivate var cosmicSurgery: Project!
@@ -14,7 +14,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let launchedAt = self.dateType.init().timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 14.0
     let project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.dates.launchedAt .~ launchedAt
 
@@ -34,7 +34,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   func testNonBacker_LiveProject() {
     let project = self.cosmicSurgery
       |> Project.lens.state .~ .live
-      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3/4)
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
@@ -69,7 +69,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   func testBacker_LiveProject() {
     let endsAt = AppEnvironment.current.dateType.init()
-      .addingTimeInterval(60*60*24*3)
+      .addingTimeInterval(60 * 60 * 24 * 3)
       .timeIntervalSince1970
 
     let project = self.cosmicSurgery
@@ -84,19 +84,18 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         ]
       }
       |> Project.lens.state .~ .live
-      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3/4)
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
         .template
           |> Backing.lens.amount .~ (project.rewards.first!.minimum + 5.00)
           |> Backing.lens.rewardId .~ project.rewards.first?.id
           |> Backing.lens.reward .~ project.rewards.first
-    }
+      }
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_600 : 1_350
@@ -111,19 +110,19 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.rewards %~ { rewards in [rewards[0]] }
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing %~~ { _, project in
+      |> Project.lens.personalization.backing %~~ { _, _ in
         .template
           |> Backing.lens.amount .~ 5
           |> Backing.lens.rewardId .~ nil
           |> Backing.lens.reward .~ nil
-    }
+      }
 
     Language.allLanguages.forEach { language in
       withEnvironment(
-      apiService: MockService(fetchProjectResponse: project),
-      language: language,
-      locale: .init(identifier: language.rawValue)) {
-
+        apiService: MockService(fetchProjectResponse: project),
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 1_200
@@ -152,7 +151,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_600 : 1_350
@@ -167,14 +165,14 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let project = self.cosmicSurgery
       |> Project.lens.rewards .~ [soldOutReward]
       |> Project.lens.state .~ .live
-      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3/4)
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing %~~ { _, project in
         .template
           |> Backing.lens.amount .~ (project.rewards.first!.minimum + 5.00)
           |> Backing.lens.rewardId .~ project.rewards.first?.id
           |> Backing.lens.reward .~ project.rewards.first
-    }
+      }
 
     let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
@@ -185,8 +183,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   func testFailedProject() {
     let project = self.cosmicSurgery
-      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3/4)
-      |> Project.lens.dates.stateChangedAt .~ 1234567890.0
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
+      |> Project.lens.dates.stateChangedAt .~ 1_234_567_890.0
       |> Project.lens.state .~ .failed
 
     Language.allLanguages.forEach { language in

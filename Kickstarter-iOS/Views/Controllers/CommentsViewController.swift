@@ -1,9 +1,9 @@
 import Foundation
-import UIKit
 import KsApi
 import Library
-import ReactiveSwift
 import Prelude
+import ReactiveSwift
+import UIKit
 
 internal final class CommentsViewController: UITableViewController {
   fileprivate let viewModel: CommentsViewModelType = CommentsViewModel()
@@ -16,10 +16,9 @@ internal final class CommentsViewController: UITableViewController {
 
   internal static func configuredWith(project: Project? = nil, update: Update? = nil)
     -> CommentsViewController {
-
-      let vc = Storyboard.Comments.instantiate(CommentsViewController.self)
-      vc.viewModel.inputs.configureWith(project: project, update: update)
-      return vc
+    let vc = Storyboard.Comments.instantiate(CommentsViewController.self)
+    vc.viewModel.inputs.configureWith(project: project, update: update)
+    return vc
   }
 
   internal override func viewDidLoad() {
@@ -30,12 +29,12 @@ internal final class CommentsViewController: UITableViewController {
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-    }
+      }
 
     self.navigationItem.title = Strings.project_menu_buttons_comments()
 
     if self.traitCollection.userInterfaceIdiom == .pad {
-      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonTapped))
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonTapped))
     }
 
     self.viewModel.inputs.viewDidLoad()
@@ -60,39 +59,40 @@ internal final class CommentsViewController: UITableViewController {
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_comment() }
       |> UIBarButtonItem.lens.accessibilityHint %~ { _ in
         Strings.accessibility_dashboard_buttons_post_update_hint()
-    }
+      }
   }
 
-    internal override func bindViewModel() {
-
+  internal override func bindViewModel() {
     self.viewModel.outputs.closeLoginTout
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.loginToutViewController?.dismiss(animated: true, completion: nil)
-    }
+      }
 
     self.viewModel.outputs.commentBarButtonVisible
       .observeForUI()
       .observeValues { [weak self] visible in
         self?.navigationItem.rightBarButtonItem = visible ? self?.commentBarButton : nil
-    }
+      }
 
     self.viewModel.outputs.commentsAreLoading
       .observeForUI()
       .observeValues { [weak self] in
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
-    }
+      }
 
     self.viewModel.outputs.dataSource
       .observeForUI()
       .observeValues { [weak self] comments, project, update, user, shouldShowEmptyState in
-        self?.dataSource.load(comments: comments,
-                              project: project,
-                              update: update,
-                              loggedInUser: user,
-                              shouldShowEmptyState: shouldShowEmptyState)
+        self?.dataSource.load(
+          comments: comments,
+          project: project,
+          update: update,
+          loggedInUser: user,
+          shouldShowEmptyState: shouldShowEmptyState
+        )
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.openLoginTout
       .observeForControllerAction()
@@ -102,25 +102,30 @@ internal final class CommentsViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project, update in
         self?.presentCommentDialog(project: project, update: update)
-    }
+      }
   }
 
-  override func tableView(_ tableView: UITableView,
-                          willDisplay cell: UITableViewCell,
-                          forRowAt indexPath: IndexPath) {
-
+  override func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
     if let emptyCell = cell as? CommentsEmptyStateCell {
       emptyCell.delegate = self
     }
 
-    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
-                                         outOf: self.dataSource.numberOfItems())
+    self.viewModel.inputs.willDisplayRow(
+      self.dataSource.itemIndexAt(indexPath),
+      outOf: self.dataSource.numberOfItems()
+    )
   }
 
   internal func presentCommentDialog(project: Project, update: Update?) {
     let dialog = CommentDialogViewController
-      .configuredWith(project: project, update: update, recipient: nil,
-                      context: update == nil ? .projectComments : .updateComments)
+      .configuredWith(
+        project: project, update: update, recipient: nil,
+        context: update == nil ? .projectComments : .updateComments
+      )
     dialog.delegate = self
     let nav = UINavigationController(rootViewController: dialog)
     nav.modalPresentationStyle = .formSheet
@@ -153,7 +158,7 @@ extension CommentsViewController: CommentDialogDelegate {
     dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func commentDialog(_ dialog: CommentDialogViewController, postedComment comment: Comment) {
+  internal func commentDialog(_: CommentDialogViewController, postedComment comment: Comment) {
     self.viewModel.inputs.commentPosted(comment)
   }
 }

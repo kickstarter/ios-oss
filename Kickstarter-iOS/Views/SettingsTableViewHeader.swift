@@ -2,7 +2,7 @@ import Library
 import Prelude
 
 final class SettingsTableViewHeader: UIView, NibLoading {
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   func configure(with title: String) {
     _ = self.titleLabel
@@ -14,10 +14,12 @@ final class SettingsTableViewHeader: UIView, NibLoading {
 
     _ = self
       |> \.backgroundColor .~ .ksr_grey_200
-      |> \.layoutMargins .~ .init(top: Styles.grid(5),
-                                  left: Styles.grid(2),
-                                  bottom: Styles.grid(3),
-                                  right: Styles.grid(2))
+      |> \.layoutMargins .~ .init(
+        top: Styles.grid(5),
+        left: Styles.grid(2),
+        bottom: Styles.grid(3),
+        right: Styles.grid(2)
+      )
 
     _ = self.titleLabel
       |> settingsDescriptionLabelStyle

@@ -1,6 +1,6 @@
 import KsApi
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol DashboardActionCellViewModelInputs {
   /// Call when the activity button is tapped.
@@ -70,7 +70,6 @@ public protocol DashboardActionCellViewModelType {
 
 public final class DashboardActionCellViewModel: DashboardActionCellViewModelInputs,
   DashboardActionCellViewModelOutputs, DashboardActionCellViewModelType {
-
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
@@ -93,7 +92,7 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
         } else {
           return Strings.No_one_has_posted_an_update_yet()
         }
-    }
+      }
 
     self.postUpdateButtonAccessibilityValue = self.lastUpdatePublishedAt
 
@@ -105,12 +104,12 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
     self.activityButtonAccessibilityLabel = self.unseenActivitiesCount
       .map {
         Strings.activity_navigation_title_activity() + ", " + $0 + " unseen"
-    }
+      }
 
     self.messagesButtonAccessibilityLabel = self.unreadMessagesCount
       .map {
         Strings.profile_buttons_messages() + ", " + $0 + " unread"
-    }
+      }
 
     self.lastUpdatePublishedLabelHidden = project.map { !$0.memberData.permissions.contains(.post) }
     self.postUpdateButtonHidden = self.lastUpdatePublishedLabelHidden
@@ -122,17 +121,17 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
 
   fileprivate let activityTappedProperty = MutableProperty(())
   public func activityTapped() {
-    activityTappedProperty.value = ()
+    self.activityTappedProperty.value = ()
   }
 
   fileprivate let messagesTappedProperty = MutableProperty(())
   public func messagesTapped() {
-    messagesTappedProperty.value = ()
+    self.messagesTappedProperty.value = ()
   }
 
   fileprivate let postUpdateTappedProperty = MutableProperty(())
   public func postUpdateTapped() {
-    postUpdateTappedProperty.value = ()
+    self.postUpdateTappedProperty.value = ()
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)

@@ -1,7 +1,7 @@
-import Library
-import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
+import Library
+import Prelude
 
 final class BetaToolsViewControllerTests: TestCase {
   override func setUp() {
@@ -20,12 +20,12 @@ final class BetaToolsViewControllerTests: TestCase {
     let service = MockService(serverConfig: ServerConfig.staging)
 
     withEnvironment(apiService: service, language: .en) {
-        let controller = BetaToolsViewController.instantiate()
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+      let controller = BetaToolsViewController.instantiate()
+      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+      self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view)
+      FBSnapshotVerifyView(parent.view)
     }
   }
 }

@@ -1,8 +1,8 @@
-import XCTest
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ProjectActivitySuccessViewModelTests: TestCase {
   fileprivate let vm: ProjectActivitySuccessCellViewModelType = ProjectActivitySuccessCellViewModel()
@@ -33,9 +33,9 @@ internal final class ProjectActivitySuccessViewModelTests: TestCase {
 
   func testTitle() {
     let country = Project.Country.us
-    let backersCount = 12345
+    let backersCount = 12_345
     let deadline = Date().timeIntervalSince1970
-    let pledged = 5000
+    let pledged = 5_000
 
     let project = .template
       |> Project.lens.country .~ country

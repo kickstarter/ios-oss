@@ -14,7 +14,7 @@ public struct DiscoveryEnvelope {
       public let moreProjects: String
 
       public init(more_projects: String) {
-        moreProjects = more_projects
+        self.moreProjects = more_projects
       }
     }
   }
@@ -28,7 +28,7 @@ extension DiscoveryEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<DiscoveryEnvelope> {
     return curry(DiscoveryEnvelope.init)
       <^> json <|| "projects"
-      <*> json <|  "urls"
+      <*> json <| "urls"
       <*> json <| "stats"
   }
 }

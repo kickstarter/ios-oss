@@ -1,9 +1,9 @@
-import XCTest
-import ReactiveSwift
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class DashboardTitleViewViewModelTests: TestCase {
   internal let vm: DashboardTitleViewViewModelType = DashboardTitleViewViewModel()
@@ -19,22 +19,24 @@ internal final class DashboardTitleViewViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.hideArrow.observe(hideArrow.observer)
+    self.vm.outputs.hideArrow.observe(self.hideArrow.observer)
     self.vm.outputs.notifyDelegateShowHideProjectsDrawer
-      .observe(notifyDelegateShowHideProjectsDrawer.observer)
-    self.vm.outputs.titleText.observe(titleText.observer)
-    self.vm.outputs.titleButtonIsEnabled.observe(titleButtonIsEnabled.observer)
-    self.vm.outputs.updateArrowState.observe(updateArrowState.observer)
-    self.vm.outputs.titleAccessibilityLabel.observe(titleAccessibilityLabel.observer)
-    self.vm.outputs.titleAccessibilityHint.observe(titleAccessibilityHint.observer)
+      .observe(self.notifyDelegateShowHideProjectsDrawer.observer)
+    self.vm.outputs.titleText.observe(self.titleText.observer)
+    self.vm.outputs.titleButtonIsEnabled.observe(self.titleButtonIsEnabled.observer)
+    self.vm.outputs.updateArrowState.observe(self.updateArrowState.observer)
+    self.vm.outputs.titleAccessibilityLabel.observe(self.titleAccessibilityLabel.observer)
+    self.vm.outputs.titleAccessibilityHint.observe(self.titleAccessibilityHint.observer)
   }
 
   func testTitleText() {
     withEnvironment(apiService: MockService(fetchProjectsResponse: [.template])) {
       self.titleText.assertValueCount(0)
 
-      self.vm.inputs.updateData(DashboardTitleViewData(drawerState: .closed, isArrowHidden: true,
-        currentProjectIndex: 0))
+      self.vm.inputs.updateData(DashboardTitleViewData(
+        drawerState: .closed, isArrowHidden: true,
+        currentProjectIndex: 0
+      ))
 
       self.titleText.assertValues(["Project #1"])
     }
@@ -44,8 +46,10 @@ internal final class DashboardTitleViewViewModelTests: TestCase {
     self.hideArrow.assertValueCount(0)
     self.titleButtonIsEnabled.assertValueCount(0)
 
-    self.vm.inputs.updateData(DashboardTitleViewData(drawerState: .closed, isArrowHidden: true,
-      currentProjectIndex: 0))
+    self.vm.inputs.updateData(DashboardTitleViewData(
+      drawerState: .closed, isArrowHidden: true,
+      currentProjectIndex: 0
+    ))
 
     self.hideArrow.assertValues([true])
     self.titleButtonIsEnabled.assertValues([false])
@@ -62,8 +66,10 @@ internal final class DashboardTitleViewViewModelTests: TestCase {
     self.titleAccessibilityLabel.assertValueCount(0)
     self.titleAccessibilityHint.assertValueCount(0)
 
-    self.vm.inputs.updateData(DashboardTitleViewData(drawerState: .closed, isArrowHidden: false,
-      currentProjectIndex: 0))
+    self.vm.inputs.updateData(DashboardTitleViewData(
+      drawerState: .closed, isArrowHidden: false,
+      currentProjectIndex: 0
+    ))
 
     self.hideArrow.assertValues([false])
     self.titleButtonIsEnabled.assertValues([true])
@@ -76,8 +82,10 @@ internal final class DashboardTitleViewViewModelTests: TestCase {
 
     self.notifyDelegateShowHideProjectsDrawer.assertValueCount(1)
 
-    self.vm.inputs.updateData(DashboardTitleViewData(drawerState: .open, isArrowHidden: false,
-      currentProjectIndex: 0))
+    self.vm.inputs.updateData(DashboardTitleViewData(
+      drawerState: .open, isArrowHidden: false,
+      currentProjectIndex: 0
+    ))
 
     self.titleText.assertValues(["Project #1", "Project #1"])
     self.updateArrowState.assertValues([DrawerState.closed, DrawerState.open])
@@ -88,40 +96,62 @@ internal final class DashboardTitleViewViewModelTests: TestCase {
 
     self.notifyDelegateShowHideProjectsDrawer.assertValueCount(2)
 
-    self.vm.inputs.updateData(DashboardTitleViewData(drawerState: .closed, isArrowHidden: false,
-      currentProjectIndex: 0))
+    self.vm.inputs.updateData(DashboardTitleViewData(
+      drawerState: .closed, isArrowHidden: false,
+      currentProjectIndex: 0
+    ))
 
     self.titleText.assertValues(["Project #1", "Project #1", "Project #1"])
     self.updateArrowState.assertValues([DrawerState.closed, DrawerState.open, DrawerState.closed])
-    self.titleAccessibilityLabel.assertValues(["Dashboard, Project #1", "Dashboard, Project #1",
-      "Dashboard, Project #1"])
-    self.titleAccessibilityHint.assertValues(["Opens list of projects.", "Closes list of projects.",
-      "Opens list of projects."])
+    self.titleAccessibilityLabel.assertValues([
+      "Dashboard, Project #1", "Dashboard, Project #1",
+      "Dashboard, Project #1"
+    ])
+    self.titleAccessibilityHint.assertValues([
+      "Opens list of projects.", "Closes list of projects.",
+      "Opens list of projects."
+    ])
 
     self.vm.inputs.titleButtonTapped()
 
     self.notifyDelegateShowHideProjectsDrawer.assertValueCount(3)
 
-    self.vm.inputs.updateData(DashboardTitleViewData(drawerState: .open, isArrowHidden: false,
-      currentProjectIndex: 0))
+    self.vm.inputs.updateData(DashboardTitleViewData(
+      drawerState: .open, isArrowHidden: false,
+      currentProjectIndex: 0
+    ))
 
     self.titleText.assertValues(["Project #1", "Project #1", "Project #1", "Project #1"])
-    self.updateArrowState.assertValues([DrawerState.closed, DrawerState.open, DrawerState.closed,
-      DrawerState.open])
-    self.titleAccessibilityLabel.assertValues(["Dashboard, Project #1", "Dashboard, Project #1",
-      "Dashboard, Project #1", "Dashboard, Project #1"])
-    self.titleAccessibilityHint.assertValues(["Opens list of projects.", "Closes list of projects.",
-      "Opens list of projects.", "Closes list of projects."])
+    self.updateArrowState.assertValues([
+      DrawerState.closed, DrawerState.open, DrawerState.closed,
+      DrawerState.open
+    ])
+    self.titleAccessibilityLabel.assertValues([
+      "Dashboard, Project #1", "Dashboard, Project #1",
+      "Dashboard, Project #1", "Dashboard, Project #1"
+    ])
+    self.titleAccessibilityHint.assertValues([
+      "Opens list of projects.", "Closes list of projects.",
+      "Opens list of projects.", "Closes list of projects."
+    ])
 
-    self.vm.inputs.updateData(DashboardTitleViewData(drawerState: .closed, isArrowHidden: false,
-      currentProjectIndex: 2))
+    self.vm.inputs.updateData(DashboardTitleViewData(
+      drawerState: .closed, isArrowHidden: false,
+      currentProjectIndex: 2
+    ))
 
     self.titleText.assertValues(["Project #1", "Project #1", "Project #1", "Project #1", "Project #3"])
-    self.updateArrowState.assertValues([DrawerState.closed, DrawerState.open, DrawerState.closed,
-      DrawerState.open, DrawerState.closed])
-    self.titleAccessibilityLabel.assertValues(["Dashboard, Project #1", "Dashboard, Project #1",
-      "Dashboard, Project #1", "Dashboard, Project #1", "Dashboard, Project #3"])
-    self.titleAccessibilityHint.assertValues(["Opens list of projects.", "Closes list of projects.",
-      "Opens list of projects.", "Closes list of projects.", "Opens list of projects."])
+    self.updateArrowState.assertValues([
+      DrawerState.closed, DrawerState.open, DrawerState.closed,
+      DrawerState.open, DrawerState.closed
+    ])
+    self.titleAccessibilityLabel.assertValues([
+      "Dashboard, Project #1", "Dashboard, Project #1",
+      "Dashboard, Project #1", "Dashboard, Project #1", "Dashboard, Project #3"
+    ])
+    self.titleAccessibilityHint.assertValues([
+      "Opens list of projects.", "Closes list of projects.",
+      "Opens list of projects.", "Closes list of projects.", "Opens list of projects."
+    ])
   }
 }

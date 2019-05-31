@@ -10,6 +10,6 @@ extension UIButton {
   }
 
   public func generateImpactFeedback(style: UIImpactFeedbackGenerator.FeedbackStyle) {
-      UIFeedbackGenerator.ksr_impact(style: style)
+    UIFeedbackGenerator.ksr_impact(style: style)
   }
 }

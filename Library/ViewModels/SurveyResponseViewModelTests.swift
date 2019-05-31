@@ -1,9 +1,9 @@
-import XCTest
-@testable import Library
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
+@testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
 import WebKit
+import XCTest
 
 final class SurveyResponseViewModelTests: TestCase {
   fileprivate let vm: SurveyResponseViewModelType = SurveyResponseViewModel()

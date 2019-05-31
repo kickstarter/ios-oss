@@ -3,19 +3,18 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-protocol FindFriendsHeaderCellDelegate: class {
+protocol FindFriendsHeaderCellDelegate: AnyObject {
   func findFriendsHeaderCellDismissHeader()
   func findFriendsHeaderCellGoToFriends()
 }
 
 internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
-
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var closeButton: UIButton!
-  @IBOutlet fileprivate weak var containerView: UIView!
-  @IBOutlet fileprivate weak var findFriendsButton: UIButton!
-  @IBOutlet fileprivate weak var subtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var closeButton: UIButton!
+  @IBOutlet fileprivate var containerView: UIView!
+  @IBOutlet fileprivate var findFriendsButton: UIButton!
+  @IBOutlet fileprivate var subtitleLabel: UILabel!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   internal weak var delegate: FindFriendsHeaderCellDelegate?
 
@@ -29,12 +28,12 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.notifyDelegateGoToFriends
       .observeForUI()
       .observeValues { [weak self] in self?.delegate?.findFriendsHeaderCellGoToFriends()
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateToDismissHeader
       .observeForUI()
       .observeValues { [weak self] in self?.delegate?.findFriendsHeaderCellDismissHeader()
-    }
+      }
   }
 
   internal override func bindStyles() {
@@ -62,11 +61,13 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
     _ = self.closeButton
       |> UIButton.lens.tintColor .~ .ksr_soft_black
       |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .touchUpInside)]
-      |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(1), left: Styles.grid(3),
-                                                  bottom: Styles.grid(3), right: Styles.grid(2))
+      |> UIButton.lens.contentEdgeInsets .~ .init(
+        top: Styles.grid(1), left: Styles.grid(3),
+        bottom: Styles.grid(3), right: Styles.grid(2)
+      )
       |> UIButton.lens.accessibilityLabel %~ { _ in
         Strings.social_following_header_accessibility_button_close_find_friends_header_label()
-    }
+      }
 
     _ = self.findFriendsButton
       |> navyButtonStyle
@@ -75,7 +76,7 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
       |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.grid(4))
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.social_following_header_button_find_your_friends()
-    }
+      }
   }
 
   @objc func closeButtonTapped() {

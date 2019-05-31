@@ -3,48 +3,52 @@ import Foundation
 import Library
 import MessageUI
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 import UIKit
 
 internal final class FacebookConfirmationViewController: UIViewController,
   MFMailComposeViewControllerDelegate {
-
-  @IBOutlet private weak var confirmationLabel: UILabel!
-  @IBOutlet private weak var createAccountButton: UIButton!
-  @IBOutlet private weak var emailLabel: UILabel!
-  @IBOutlet private weak var loginButton: UIButton!
-  @IBOutlet private weak var loginLabel: UILabel!
-  @IBOutlet private weak var newsletterLabel: UILabel!
-  @IBOutlet private weak var newsletterSwitch: UISwitch!
-  @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet private var confirmationLabel: UILabel!
+  @IBOutlet private var createAccountButton: UIButton!
+  @IBOutlet private var emailLabel: UILabel!
+  @IBOutlet private var loginButton: UIButton!
+  @IBOutlet private var loginLabel: UILabel!
+  @IBOutlet private var newsletterLabel: UILabel!
+  @IBOutlet private var newsletterSwitch: UISwitch!
+  @IBOutlet private var rootStackView: UIStackView!
 
   private let helpViewModel = HelpViewModel()
   fileprivate let viewModel: FacebookConfirmationViewModelType = FacebookConfirmationViewModel()
 
   internal static func configuredWith(facebookUserEmail email: String, facebookAccessToken token: String)
     -> FacebookConfirmationViewController {
-
-      let vc = Storyboard.Login.instantiate(FacebookConfirmationViewController.self)
-      vc.viewModel.inputs.email(email)
-      vc.viewModel.inputs.facebookToken(token)
-      vc.helpViewModel.inputs.configureWith(helpContext: .facebookConfirmation)
-      vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
-      return vc
+    let vc = Storyboard.Login.instantiate(FacebookConfirmationViewController.self)
+    vc.viewModel.inputs.email(email)
+    vc.viewModel.inputs.facebookToken(token)
+    vc.helpViewModel.inputs.configureWith(helpContext: .facebookConfirmation)
+    vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
+    return vc
   }
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.createAccountButton.addTarget(self, action: #selector(createAccountButtonPressed),
-                                       for: .touchUpInside)
+    self.createAccountButton.addTarget(
+      self, action: #selector(self.createAccountButtonPressed),
+      for: .touchUpInside
+    )
 
-    self.loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
+    self.loginButton.addTarget(self, action: #selector(self.loginButtonPressed), for: .touchUpInside)
 
-    self.newsletterSwitch.addTarget(self, action: #selector(newsletterSwitchChanged),
-                                    for: .valueChanged)
+    self.newsletterSwitch.addTarget(
+      self, action: #selector(self.newsletterSwitchChanged),
+      for: .valueChanged
+    )
 
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(newsletterLabelTapped))
+    let tapGestureRecognizer = UITapGestureRecognizer(
+      target: self, action: #selector(self.newsletterLabelTapped)
+    )
     self.newsletterLabel.addGestureRecognizer(tapGestureRecognizer)
 
     self.viewModel.inputs.viewDidLoad()
@@ -75,23 +79,23 @@ internal final class FacebookConfirmationViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] email in
         self?.emailLabel.text = email
-    }
+      }
 
     self.viewModel.outputs.sendNewsletters
       .observeForUI()
       .observeValues { [weak self] send in self?.newsletterSwitch.setOn(send, animated: false)
-    }
+      }
 
     self.viewModel.outputs.showLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in self?.goToLoginViewController()
-    }
+      }
 
     self.viewModel.outputs.logIntoEnvironment
       .observeValues { [weak self] env in
         AppEnvironment.login(env)
         self?.viewModel.inputs.environmentLoggedIn()
-    }
+      }
 
     self.viewModel.outputs.postNotification
       .observeForUI()
@@ -101,13 +105,13 @@ internal final class FacebookConfirmationViewController: UIViewController,
       .observeForControllerAction()
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
-    }
+      }
 
     self.helpViewModel.outputs.showHelpSheet
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showHelpSheet(helpTypes: $0)
-    }
+      }
 
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
@@ -116,19 +120,19 @@ internal final class FacebookConfirmationViewController: UIViewController,
         let controller = MFMailComposeViewController.support()
         controller.mailComposeDelegate = _self
         _self.present(controller, animated: true, completion: nil)
-    }
+      }
 
     self.helpViewModel.outputs.showNoEmailError
       .observeForControllerAction()
       .observeValues { [weak self] alert in
         self?.present(alert, animated: true, completion: nil)
-    }
+      }
 
     self.helpViewModel.outputs.showWebHelp
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
         self?.goToHelpType(helpType)
-    }
+      }
   }
 
   fileprivate func goToHelpType(_ helpType: HelpType) {
@@ -160,7 +164,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
       }
     )
 
-    //iPad provision
+    // iPad provision
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
     self.present(helpSheet, animated: true, completion: nil)
@@ -182,9 +186,11 @@ internal final class FacebookConfirmationViewController: UIViewController,
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
-  @objc internal func mailComposeController(_ controller: MFMailComposeViewController,
-                                            didFinishWith result: MFMailComposeResult,
-                                            error: Error?) {
+  @objc internal func mailComposeController(
+    _: MFMailComposeViewController,
+    didFinishWith result: MFMailComposeResult,
+    error _: Error?
+  ) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
     self.dismiss(animated: true, completion: nil)
   }

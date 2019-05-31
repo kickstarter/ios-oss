@@ -1,6 +1,6 @@
 /**
  A type that holds an API client id, which provides anonymous authentication to the API.
-*/
+ */
 public protocol ClientAuthType {
   var clientId: String { get }
 }

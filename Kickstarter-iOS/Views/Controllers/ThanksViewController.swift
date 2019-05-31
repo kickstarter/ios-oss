@@ -1,21 +1,20 @@
 import KsApi
 import Library
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 import StoreKit
 import UIKit
 
 internal final class ThanksViewController: UIViewController, UITableViewDelegate {
-
-  @IBOutlet fileprivate weak var closeButton: UIButton!
-  @IBOutlet fileprivate weak var shareMoreButton: UIButton!
-  @IBOutlet fileprivate weak var projectsTableView: UITableView!
-  @IBOutlet fileprivate weak var backedLabel: UILabel!
-  @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
-  @IBOutlet fileprivate weak var separatorView: UIView!
-  @IBOutlet fileprivate weak var thankYouLabel: UILabel!
-  @IBOutlet fileprivate weak var headerView: UIView!
+  @IBOutlet fileprivate var closeButton: UIButton!
+  @IBOutlet fileprivate var shareMoreButton: UIButton!
+  @IBOutlet fileprivate var projectsTableView: UITableView!
+  @IBOutlet fileprivate var backedLabel: UILabel!
+  @IBOutlet fileprivate var recommendationsLabel: UILabel!
+  @IBOutlet fileprivate var separatorView: UIView!
+  @IBOutlet fileprivate var thankYouLabel: UILabel!
+  @IBOutlet fileprivate var headerView: UIView!
 
   fileprivate let viewModel: ThanksViewModelType = ThanksViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -37,9 +36,11 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.projectsTableView.dataSource = self.dataSource
     self.projectsTableView.delegate = self
 
-    self.closeButton.addTarget(self,
-                               action: #selector(closeButtonTapped),
-                               for: .touchUpInside)
+    self.closeButton.addTarget(
+      self,
+      action: #selector(self.closeButtonTapped),
+      for: .touchUpInside
+    )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -94,8 +95,8 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UIButton.lens.layer.cornerRadius .~ 0
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in
-          Strings.project_accessibility_button_share_label()
-        }
+        Strings.project_accessibility_button_share_label()
+      }
 
     if let navigationController = self.navigationController {
       _ = navigationController
@@ -103,28 +104,28 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     }
   }
 
-    override func bindViewModel() {
+  override func bindViewModel() {
     super.bindViewModel()
 
     self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
     self.viewModel.outputs.dismissToRootViewController
-    .observeForControllerAction()
+      .observeForControllerAction()
       .observeValues { [weak self] in
         self?.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
-    }
+      }
 
     self.viewModel.outputs.goToDiscovery
       .observeForControllerAction()
       .observeValues { [weak self] params in
         self?.goToDiscovery(params: params)
-    }
+      }
 
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, refTag in
         self?.goToProject(project, projects: projects, refTag: refTag)
-    }
+      }
 
     self.viewModel.outputs.postContextualNotification
       .observeForUI()
@@ -132,9 +133,11 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
         NotificationCenter.default.post(
           Notification(
             name: .ksr_showNotificationsDialog,
-            userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.pledge,
-                       UserInfoKeys.viewController: self]
-         )
+            userInfo: [
+              UserInfoKeys.context: PushNotificationDialog.Context.pledge,
+              UserInfoKeys.viewController: self
+            ]
+          )
         )
       }
 
@@ -142,25 +145,25 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showRatingAlert()
-    }
+      }
 
     self.viewModel.outputs.showGamesNewsletterAlert
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showGamesNewsletterAlert()
-    }
+      }
 
     self.viewModel.outputs.showGamesNewsletterOptInAlert
       .observeForControllerAction()
       .observeValues { [weak self] title in
         self?.showGamesNewsletterOptInAlert(title: title)
-    }
+      }
 
     self.viewModel.outputs.updateUserInEnvironment
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         self?.viewModel.inputs.userUpdated()
-    }
+      }
 
     self.viewModel.outputs.postUserUpdatedNotification
       .observeValues(NotificationCenter.default.post)
@@ -170,11 +173,11 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       .observeValues { [weak self] projects, category in
         self?.dataSource.loadData(projects: projects, category: category)
         self?.projectsTableView.reloadData()
-    }
+      }
 
     self.shareViewModel.outputs.showShareSheet
       .observeForControllerAction()
-      .observeValues { [weak self]  controller, _ in self?.showShareSheet(controller) }
+      .observeValues { [weak self] controller, _ in self?.showShareSheet(controller) }
   }
 
   private func updateHeaderView(height: CGFloat) {
@@ -200,10 +203,12 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   }
 
   fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
-    let vc = ProjectNavigatorViewController.configuredWith(project: project,
-                                                           refTag: refTag,
-                                                           initialPlaylist: projects,
-                                                           navigatorDelegate: self)
+    let vc = ProjectNavigatorViewController.configuredWith(
+      project: project,
+      refTag: refTag,
+      initialPlaylist: projects,
+      navigatorDelegate: self
+    )
     self.present(vc, animated: true, completion: nil)
   }
 
@@ -216,7 +221,8 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       UIAlertController.games(
         subscribeHandler: { [weak self] _ in
           self?.viewModel.inputs.gamesNewsletterSignupButtonTapped()
-      }),
+        }
+      ),
       animated: true,
       completion: nil
     )
@@ -231,14 +237,15 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
-
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
 
       self?.shareViewModel.inputs.shareActivityCompletion(
-        with: .init(activityType: activityType,
-                    completed: completed,
-                    returnedItems: returnedItems,
-                    activityError: error)
+        with: .init(
+          activityType: activityType,
+          completed: completed,
+          returnedItems: returnedItems,
+          activityError: error
+        )
       )
     }
 
@@ -251,8 +258,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.present(controller, animated: true, completion: nil)
   }
 
-  internal func tableView(_ tableView: UITableView,
-                          didSelectRowAt indexPath: IndexPath) {
+  internal func tableView(
+    _: UITableView,
+    didSelectRowAt indexPath: IndexPath
+  ) {
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
       self.viewModel.inputs.projectTapped(project)
     } else if let category = self.dataSource.categoryAtIndexPath(indexPath) {
@@ -270,5 +279,5 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 }
 
 extension ThanksViewController: ProjectNavigatorDelegate {
-  func transitionedToProject(at index: Int) {}
+  func transitionedToProject(at _: Int) {}
 }

@@ -45,8 +45,7 @@ internal protocol UpdatePreviewViewModelType {
 
 internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
   UpdatePreviewViewModelOutputs, UpdatePreviewViewModelType {
-
-    internal init() {
+  internal init() {
     let draft = self.draftProperty.signal.skipNil()
 
     let initialRequest = draft
@@ -70,13 +69,13 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
         action.navigationType == .other || action.targetFrame?.mainFrame == .some(false)
           ? .allow
           : .cancel
-    }
+      }
 
     let projectEvent = draft
       .switchMap {
         AppEnvironment.current.apiService.fetchProject(param: .id($0.update.projectId))
           .materialize()
-    }
+      }
     let project = projectEvent
       .values()
 
@@ -93,7 +92,7 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
         AppEnvironment.current.apiService.publish(draft: $0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
     let update = publishEvent
       .values()
 
@@ -108,32 +107,32 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
       .takeWhen(self.publishButtonTappedProperty.signal)
       .observeValues {
         AppEnvironment.current.koala.trackTriggeredPublishConfirmationModal(forProject: $0)
-    }
+      }
 
     project
       .takeWhen(self.publishConfirmationButtonTappedProperty.signal)
       .observeValues {
         AppEnvironment.current.koala.trackConfirmedPublishUpdate(forProject: $0)
-    }
+      }
 
     project
       .takeWhen(self.publishCancelButtonTappedProperty.signal)
       .observeValues {
         AppEnvironment.current.koala.trackCanceledPublishUpdate(forProject: $0)
-    }
+      }
 
     self.goToUpdate
       .observeValues {
         AppEnvironment.current.koala.trackPublishedUpdate(forProject: $0, isPublic: $1.isPublic)
-    }
+      }
   }
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
   fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)
   internal func decidePolicyFor(navigationAction: WKNavigationActionData)
     -> WKNavigationActionPolicy {
-      self.policyForNavigationActionProperty.value = navigationAction
-      return self.policyDecisionProperty.value
+    self.policyForNavigationActionProperty.value = navigationAction
+    return self.policyDecisionProperty.value
   }
 
   fileprivate let publishButtonTappedProperty = MutableProperty(())
