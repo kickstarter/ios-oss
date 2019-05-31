@@ -389,8 +389,7 @@ private func pledgeTitle(for _: Project, backing: Backing, backerIsCurrentUser: 
       NSAttributedString.Key.font: UIFont.ksr_headline(size: 15),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ]
-  )
-    ?? .init()
+  ) ?? .init()
 }
 
 private func rewardTitle(for reward: Reward?, project _: Project, backerIsCurrentUser: Bool)
@@ -416,6 +415,5 @@ private func rewardTitle(for reward: Reward?, project _: Project, backerIsCurren
       NSAttributedString.Key.font: UIFont.ksr_headline(size: 15),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ]
-  )
-    ?? .init()
+  ) ?? .init()
 }

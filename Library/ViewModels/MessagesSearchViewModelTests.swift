@@ -3,9 +3,9 @@
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-// swiftlint:disable force_cast
 import XCTest
 
+// swiftlint:disable force_cast
 internal final class MessagesSearchViewModelTests: TestCase {
   fileprivate let vm: MessagesSearchViewModelType = MessagesSearchViewModel()
 

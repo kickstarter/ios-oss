@@ -110,8 +110,7 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
       NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
     ]
-  )
-    ?? .init(string: "")
+  ) ?? .init(string: "")
 
   let mutableString = NSMutableAttributedString(attributedString: attributedString)
 

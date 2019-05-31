@@ -163,7 +163,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     self.initialTopConstantProperty <~ self.beganPanGestureProperty.signal
       .skipNil()
-      // n.b. This min value accounts for when the header is collapsed by panning the header view
+      // NB: This min value accounts for when the header is collapsed by panning the header view
       // instead of the tableView.
       .map { headerTopConstant, scrollViewYOffset in
         min(headerTopConstant, -scrollViewYOffset)
