@@ -1,3 +1,4 @@
+import KsApi
 import Library
 import Prelude
 import UIKit
@@ -87,9 +88,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     }
 
     self.countryButton.setTitle(location, for: .normal)
-    self.amountLabel.text = Format.currency(shippingCost,
-                                            country: project.country,
-                                            omitCurrencyCode: project.stats.omitUSCurrencyCode)
+    self.amountLabel.attributedText = shippingValue(for: shippingCost, project: project)
   }
 
   // MARK: - Public Functions
@@ -121,12 +120,12 @@ private let countryButtonTitleLabelStyle: LabelStyle = { (label: UILabel) in
 
 // MARK: - Functions
 
-private func shippingValue(for project: Project) -> NSAttributedString? {
+private func shippingValue(for shippingCost: Double, project: Project) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
     let attributedCurrency = Format.attributedCurrency(
-      7.5,
+      shippingCost,
       country: project.country,
       omitCurrencyCode: project.stats.omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
