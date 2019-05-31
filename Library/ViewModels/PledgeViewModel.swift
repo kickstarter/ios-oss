@@ -22,10 +22,10 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
-  var reloadWithData: Signal<PledgeTableViewData, NoError> { get }
-  var selectedShippingRuleData: Signal<SelectedShippingRuleData, NoError> { get }
-  var shippingIsLoading: Signal<Bool, NoError> { get }
-  var shippingRulesError: Signal<String, NoError> { get }
+  var reloadWithData: Signal<PledgeTableViewData, Never> { get }
+  var selectedShippingRuleData: Signal<SelectedShippingRuleData, Never> { get }
+  var shippingIsLoading: Signal<Bool, Never> { get }
+  var shippingRulesError: Signal<String, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -55,7 +55,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let shouldLoadShippingRules = reward.map { $0.shipping.enabled }
 
-    let pledgeViewData: Signal<PledgeTableViewData, NoError> = Signal
+    let pledgeViewData: Signal<PledgeTableViewData, Never> = Signal
       .combineLatest(project, amountCurrencySymbolDeliveryShipping, isLoggedIn, shouldLoadShippingRules)
       .map { project, amountCurrencySymbolDeliveryShipping, isLoggedIn, requiresShippingRules in
         let (amount, currencySymbol, estimatedDelivery, shippingLocation, shippingAmount)
@@ -76,7 +76,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let shippingRulesEvent = projectAndReward
       .filter { _, reward in reward.shipping.enabled }
       .switchMap { (project, reward)
-        -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, NoError> in
+        -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
         return AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id,
                                                                           rewardId: reward.id)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -125,10 +125,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let reloadWithData: Signal<PledgeTableViewData, NoError>
-  public let selectedShippingRuleData: Signal<SelectedShippingRuleData, NoError>
-  public let shippingIsLoading: Signal<Bool, NoError>
-  public let shippingRulesError: Signal<String, NoError>
+  public let reloadWithData: Signal<PledgeTableViewData, Never>
+  public let selectedShippingRuleData: Signal<SelectedShippingRuleData, Never>
+  public let shippingIsLoading: Signal<Bool, Never>
+  public let shippingRulesError: Signal<String, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }

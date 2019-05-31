@@ -27,19 +27,19 @@ private let shippingRules = locations
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
-  private let amount = TestObserver<Double, NoError>()
-  private let currencySymbol = TestObserver<String, NoError>()
-  private let estimatedDelivery = TestObserver<String, NoError>()
-  private let isLoggedIn = TestObserver<Bool, NoError>()
-  private let project = TestObserver<Project, NoError>()
-  private let requiresShippingRules = TestObserver<Bool, NoError>()
-  private let selectedShippingRuleLocation = TestObserver<String, NoError>()
-  private let selectedShippingCost = TestObserver<Double, NoError>()
-  private let selectedShippingRuleProject = TestObserver<Project, NoError>()
-  private let shippingCost = TestObserver<Double, NoError>()
-  private let shippingIsLoading = TestObserver<Bool, NoError>()
-  private let shippingLocation = TestObserver<String, NoError>()
-  private let shippingRulesError = TestObserver<String, NoError>()
+  private let amount = TestObserver<Double, Never>()
+  private let currencySymbol = TestObserver<String, Never>()
+  private let estimatedDelivery = TestObserver<String, Never>()
+  private let isLoggedIn = TestObserver<Bool, Never>()
+  private let project = TestObserver<Project, Never>()
+  private let requiresShippingRules = TestObserver<Bool, Never>()
+  private let selectedShippingRuleLocation = TestObserver<String, Never>()
+  private let selectedShippingCost = TestObserver<Double, Never>()
+  private let selectedShippingRuleProject = TestObserver<Project, Never>()
+  private let shippingCost = TestObserver<Double, Never>()
+  private let shippingIsLoading = TestObserver<Bool, Never>()
+  private let shippingLocation = TestObserver<String, Never>()
+  private let shippingRulesError = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -160,7 +160,7 @@ final class PledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.first(where: { $0.location == .australia })!
     let project = Project.template
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: .success(shippingRules)),
                     config: .template |> Config.lens.countryCode .~ "AU") {
 
         self.vm.inputs.configureWith(project: project, reward: reward)
@@ -192,7 +192,7 @@ final class PledgeViewModelTests: TestCase {
     let project = Project.template
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
+      apiService: MockService(fetchShippingRulesResult: .success(shippingRules)),
       config: .template |> Config.lens.countryCode .~ "XYZ") {
 
         self.vm.inputs.configureWith(project: project, reward: reward)
@@ -231,7 +231,7 @@ final class PledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.last!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(error: error)),
+      apiService: MockService(fetchShippingRulesResult: .failure(error)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
 
         self.vm.inputs.configureWith(project: .template, reward: reward)
