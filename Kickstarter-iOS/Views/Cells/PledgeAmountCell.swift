@@ -71,14 +71,14 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   func configureWith(value: PledgeDataSource.PledgeInputRow) {
-    guard case .pledgeAmount(let amount, let currency) = value else {
+    guard case .pledgeAmount(let amount, let currencySymbol) = value else {
       return
     }
 
     self.amountInputView.configureWith(
       amount: String(format: "%i", amount),
       placeholder: "\(0)",
-      currency: currency
+      currency: currencySymbol
     )
   }
 }

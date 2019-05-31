@@ -7,7 +7,7 @@ class PledgeTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let dataSource: PledgeDataSource = PledgeDataSource()
-  private var shippingLocationCell: PledgeShippingLocationCell?
+  private weak var shippingLocationCell: PledgeShippingLocationCell?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
   // MARK: - Lifecycle
@@ -57,7 +57,7 @@ class PledgeTableViewController: UITableViewController {
 
         self?.tableView.reloadData()
 
-        self?.viewModel.inputs.reloadData()
+        self?.viewModel.inputs.didReloadData()
     }
 
     self.viewModel.outputs.selectedShippingRuleData

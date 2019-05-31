@@ -1,4 +1,3 @@
-import KsApi
 import Library
 import Prelude
 import UIKit
@@ -83,12 +82,14 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   func configureWith(value: PledgeDataSource.PledgeInputRow) {
-    guard case .shippingLocation(let location, let amount) = value else {
+    guard case .shippingLocation(let location, let shippingCost, let project) = value else {
       return
     }
 
-    self.countryButton.setTitle(value.location, for: .normal)
-    self.amountLabel.attributedText = value.amount
+    self.countryButton.setTitle(location, for: .normal)
+    self.amountLabel.text = Format.currency(shippingCost,
+                                            country: project.country,
+                                            omitCurrencyCode: project.stats.omitUSCurrencyCode)
   }
 
   // MARK: - Public Functions

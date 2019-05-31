@@ -8,15 +8,16 @@ public typealias PledgeTableViewData = (amount: Double,
                                         currencySymbol: String,
                                         estimatedDelivery: String,
                                         shippingLocation: String,
-                                        shippingAmount: NSAttributedString?,
+                                        shippingCost: Double,
+                                        project: Project,
                                         isLoggedIn: Bool,
                                         requiresShippingRules: Bool)
 
-public typealias SelectedShippingRuleData = (location: String, amount: NSAttributedString?)
+public typealias SelectedShippingRuleData = (location: String, shippingCost: Double, project: Project)
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
-  func reloadData()
+  func didReloadData()
   func viewDidLoad()
 }
 
@@ -45,7 +46,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let amountCurrencySymbolDeliveryShipping = projectAndReward.signal
       .map { (project, reward) in
-        return amountCurrencySymbolEstimatedDeliveryAndShipping(project: project, reward: reward)
+        return projectAndRewardData(project: project, reward: reward)
     }
 
     let isLoggedIn = projectAndReward
@@ -55,11 +56,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let shouldLoadShippingRules = reward.map { $0.shipping.enabled }
 
     let pledgeViewData: Signal<PledgeTableViewData, NoError> = Signal
-      .combineLatest(amountCurrencySymbolDeliveryShipping, isLoggedIn, shouldLoadShippingRules)
-      .map { amountCurrencySymbolDeliveryShipping, isLoggedIn, requiresShippingRules in
-        let (amount, currencySymbol, estimatedDelivery, shippingLocation, shippingAmount) = amountCurrencySymbolDeliveryShipping
+      .combineLatest(project, amountCurrencySymbolDeliveryShipping, isLoggedIn, shouldLoadShippingRules)
+      .map { project, amountCurrencySymbolDeliveryShipping, isLoggedIn, requiresShippingRules in
+        let (amount, currencySymbol, estimatedDelivery, shippingLocation, shippingAmount)
+          = amountCurrencySymbolDeliveryShipping
 
-        return (amount, currencySymbol, estimatedDelivery, shippingLocation, shippingAmount, isLoggedIn, requiresShippingRules)
+        return (amount,
+                currencySymbol,
+                estimatedDelivery,
+                shippingLocation,
+                shippingAmount,
+                project,
+                isLoggedIn,
+                requiresShippingRules)
     }
 
     self.reloadWithData = pledgeViewData
@@ -81,16 +90,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.selectedShippingRuleData = Signal.combineLatest(project,
                                                          defaultSelectedShippingRule.skipNil(),
-                                                         self.reloadDataProperty.signal)
+                                                         self.didReloadDataProperty.signal)
       .map { project, shippingRule, _ -> SelectedShippingRuleData in
-        let formattedShippingAmount = Format.attributedCurrency(shippingRule.cost,
-                                                                country: project.country,
-                                                                omitCurrencyCode: project.stats.omitUSCurrencyCode,
-                                                                defaultAttributes: checkoutCurrencyDefaultAttributes(),
-                                                                superscriptAttributes: checkoutCurrencySuperscriptAttributes()
-                                                              )
-
-        return (shippingRule.location.localizedName, formattedShippingAmount)
+        return (shippingRule.location.localizedName, shippingRule.cost, project)
       }
 
     let shippingShouldBeginLoading = shouldLoadShippingRules
@@ -100,7 +102,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
                                          shippingRulesEvent.filter { $0.isTerminating }.mapConst(false))
 
     // Ensure that table view's reloadData has completed at least once before triggering loading events
-    self.shippingIsLoading = Signal.combineLatest(self.reloadDataProperty.signal, shippingIsLoading)
+    self.shippingIsLoading = Signal.combineLatest(self.didReloadDataProperty.signal, shippingIsLoading)
       .map(second)
 
     self.shippingRulesError = shippingRulesEvent.errors().map { _ in
@@ -113,9 +115,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.configureProjectAndRewardProperty.value = (project, reward)
   }
 
-  private let reloadDataProperty = MutableProperty<Void>(())
-  public func reloadData() {
-    self.reloadDataProperty.value = ()
+  private let didReloadDataProperty = MutableProperty<Void>(())
+  public func didReloadData() {
+    self.didReloadDataProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -132,13 +134,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public var outputs: PledgeViewModelOutputs { return self }
 }
 
-private func amountCurrencySymbolEstimatedDeliveryAndShipping(project: Project, reward: Reward) -> (Double, String, String, String, NSAttributedString?) {
+private func projectAndRewardData(project: Project, reward: Reward)
+  -> (Double, String, String, String, Double) {
   let amount = reward.minimum
-  let currencySymbol = SharedFunctions.currencySymbol(forCountry: project.country).trimmed()
+  let currency = currencySymbol(forCountry: project.country).trimmed()
   let estimatedDelivery = reward.estimatedDeliveryOn
     .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? ""
   let shippingLocation = ""
-  let shippingAmount: NSAttributedString? = nil
+  let shippingAmount = 0.0
 
-  return (amount, currencySymbol, estimatedDelivery, shippingLocation, shippingAmount)
+  return (amount, currency, estimatedDelivery, shippingLocation, shippingAmount)
 }

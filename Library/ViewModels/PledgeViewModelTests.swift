@@ -28,39 +28,37 @@ final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
   private let amount = TestObserver<Double, NoError>()
-  private let currency = TestObserver<String, NoError>()
-  private let currencyCode = TestObserver<String, NoError>()
+  private let currencySymbol = TestObserver<String, NoError>()
   private let estimatedDelivery = TestObserver<String, NoError>()
-  private let shippingLocation = TestObserver<String, NoError>()
-  private let shippingAmount = TestObserver<String, NoError>()
   private let isLoggedIn = TestObserver<Bool, NoError>()
+  private let project = TestObserver<Project, NoError>()
   private let requiresShippingRules = TestObserver<Bool, NoError>()
   private let selectedShippingRuleLocation = TestObserver<String, NoError>()
-  private let selectedShippingRuleAmount = TestObserver<Double, NoError>()
-  private let selectedShippingRuleCurrency = TestObserver<String, NoError>()
+  private let selectedShippingCost = TestObserver<Double, NoError>()
+  private let selectedShippingRuleProject = TestObserver<Project, NoError>()
+  private let shippingCost = TestObserver<Double, NoError>()
   private let shippingIsLoading = TestObserver<Bool, NoError>()
+  private let shippingLocation = TestObserver<String, NoError>()
   private let shippingRulesError = TestObserver<String, NoError>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.reloadWithData.map { $0.amount }.observe(self.amount.observer)
-    self.vm.outputs.reloadWithData.map { $0.currency }.observe(self.currency.observer)
-    self.vm.outputs.reloadWithData.map { $0.currencyCode }.observe(self.currencyCode.observer)
-    self.vm.outputs.reloadWithData.map { $0.delivery }.observe(self.estimatedDelivery.observer)
-    self.vm.outputs.reloadWithData.map { $0.shipping }.map { $0.location }
-      .observe(self.shippingLocation.observer)
-    self.vm.outputs.reloadWithData.map { $0.shipping }.map { $0.amount }.skipNil().map { $0.string }
-      .observe(self.shippingAmount.observer)
+    self.vm.outputs.reloadWithData.map { $0.currencySymbol }.observe(self.currencySymbol.observer)
+    self.vm.outputs.reloadWithData.map { $0.estimatedDelivery }.observe(self.estimatedDelivery.observer)
+    self.vm.outputs.reloadWithData.map { $0.shippingLocation }.observe(self.shippingLocation.observer)
+    self.vm.outputs.reloadWithData.map { $0.shippingCost }.observe(self.shippingCost.observer)
+    self.vm.outputs.reloadWithData.map { $0.project }.observe(self.project.observer)
     self.vm.outputs.reloadWithData.map { $0.isLoggedIn }.observe(self.isLoggedIn.observer)
     self.vm.outputs.reloadWithData.map { $0.requiresShippingRules }
       .observe(self.requiresShippingRules.observer)
     self.vm.outputs.selectedShippingRuleData.map { $0.location }
       .observe(self.selectedShippingRuleLocation.observer)
-    self.vm.outputs.selectedShippingRuleData.map { $0.amount }
-      .observe(self.selectedShippingRuleAmount.observer)
-    self.vm.outputs.selectedShippingRuleData.map { $0.currencyCode }
-      .observe(self.selectedShippingRuleCurrency.observer)
+    self.vm.outputs.selectedShippingRuleData.map { $0.shippingCost }
+      .observe(self.selectedShippingCost.observer)
+    self.vm.outputs.selectedShippingRuleData.map { $0.project }
+      .observe(self.selectedShippingRuleProject.observer)
     self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
 
     self.vm.outputs.shippingIsLoading.observe(self.shippingIsLoading.observer)
@@ -76,13 +74,15 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.amount.assertValues([10])
-      self.currency.assertValues(["$"])
+      self.currencySymbol.assertValues(["$"])
       self.estimatedDelivery.assertValues(
         [Format.date(secondsInUTC: estimatedDelivery, template: "MMMMyyyy", timeZone: UTCTimeZone)]
       )
-      self.shippingLocation.assertValues(["Brooklyn"])
-      self.shippingAmount.assertValues(["$7.50"])
+      self.shippingLocation.assertValues([""])
+      self.shippingCost.assertValues([0.0], "Initial shipping cost value")
+      self.project.assertValues([project])
       self.isLoggedIn.assertValues([false])
+      self.requiresShippingRules.assertValues([false])
     }
   }
 
@@ -97,35 +97,42 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.amount.assertValues([10])
-      self.currency.assertValues(["$"])
+      self.currencySymbol.assertValues(["$"])
       self.estimatedDelivery.assertValues(
         [Format.date(secondsInUTC: estimatedDelivery, template: "MMMMyyyy", timeZone: UTCTimeZone)]
       )
-      self.shippingLocation.assertValues(["Brooklyn"])
-      self.shippingAmount.assertValues(["$7.50"])
+      self.shippingLocation.assertValues([""])
+      self.shippingCost.assertValues([0.0], "Initial shipping cost value")
+      self.project.assertValues([project])
       self.isLoggedIn.assertValues([true])
+      self.requiresShippingRules.assertValues([false])
     }
   }
 
-  func testReloadData_currencyCode() {
-    let project = Project.template
-      |> \.stats.currency .~ "CAD"
-
-    self.vm.inputs.configureWith(project: project, reward: .template)
-    self.vm.inputs.viewDidLoad()
-
-    self.currencyCode.assertValues(["CAD"])
-  }
-
   func testReloadData_requiresShippingRules() {
+    let estimatedDelivery = 1_468_527_587.32843
     let project = Project.template
     let reward = Reward.template
+      |> Reward.lens.estimatedDeliveryOn .~ estimatedDelivery
       |> Reward.lens.shipping.enabled .~ true
 
-    self.vm.inputs.configureWith(project: project, reward: reward)
-    self.vm.inputs.viewDidLoad()
+    let user = User.template
 
-    self.requiresShippingRules.assertValues([true])
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.amount.assertValues([10])
+      self.currencySymbol.assertValues(["$"])
+      self.estimatedDelivery.assertValues(
+        [Format.date(secondsInUTC: estimatedDelivery, template: "MMMMyyyy", timeZone: UTCTimeZone)]
+      )
+      self.shippingLocation.assertValues([""])
+      self.shippingCost.assertValues([0.0], "Initial shipping cost value")
+      self.project.assertValues([project])
+      self.isLoggedIn.assertValues([true])
+      self.requiresShippingRules.assertValues([true])
+    }
   }
 
   func testSelectedShippingInfo_shippingDisabled() {
@@ -138,11 +145,11 @@ final class PledgeViewModelTests: TestCase {
 
     self.requiresShippingRules.assertValues([false])
 
-    self.vm.inputs.reloadData()
+    self.vm.inputs.didReloadData()
 
     self.selectedShippingRuleLocation.assertDidNotEmitValue()
-    self.selectedShippingRuleCurrency.assertDidNotEmitValue()
-    self.selectedShippingRuleAmount.assertDidNotEmitValue()
+    self.selectedShippingCost.assertDidNotEmitValue()
+    self.selectedShippingRuleProject.assertDidNotEmitValue()
     self.shippingIsLoading.assertDidNotEmitValue()
   }
 
@@ -151,28 +158,28 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
     // swiftlint:disable:next force_unwrapping
     let defaultShippingRule = shippingRules.first(where: { $0.location == .australia })!
-    let projectCurrency = Project.template.stats.currency
+    let project = Project.template
 
     withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
                     config: .template |> Config.lens.countryCode .~ "AU") {
 
-        self.vm.inputs.configureWith(project: .template, reward: reward)
+        self.vm.inputs.configureWith(project: project, reward: reward)
         self.vm.inputs.viewDidLoad()
 
         self.selectedShippingRuleLocation.assertDidNotEmitValue()
-        self.selectedShippingRuleCurrency.assertDidNotEmitValue()
-        self.selectedShippingRuleAmount.assertDidNotEmitValue()
+        self.selectedShippingCost.assertDidNotEmitValue()
+        self.selectedShippingRuleProject.assertDidNotEmitValue()
         self.shippingIsLoading.assertDidNotEmitValue()
 
-        self.vm.inputs.reloadData()
+        self.vm.inputs.didReloadData()
 
         self.shippingIsLoading.assertValues([true])
 
         self.scheduler.run()
 
         self.selectedShippingRuleLocation.assertValues(["Local Australia"])
-        self.selectedShippingRuleAmount.assertValues([defaultShippingRule.cost])
-        self.selectedShippingRuleCurrency.assertValues([projectCurrency])
+        self.selectedShippingCost.assertValues([defaultShippingRule.cost])
+        self.selectedShippingRuleProject.assertValues([project])
         self.shippingIsLoading.assertValues([true, false])
     }
   }
@@ -182,29 +189,29 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
     // swiftlint:disable:next force_unwrapping
     let defaultShippingRule = shippingRules.first(where: { $0.location == .usa })!
-    let projectCurrency = Project.template.stats.currency
+    let project = Project.template
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(shippingRules)),
       config: .template |> Config.lens.countryCode .~ "XYZ") {
 
-        self.vm.inputs.configureWith(project: .template, reward: reward)
+        self.vm.inputs.configureWith(project: project, reward: reward)
         self.vm.inputs.viewDidLoad()
 
         self.selectedShippingRuleLocation.assertDidNotEmitValue()
-        self.selectedShippingRuleCurrency.assertDidNotEmitValue()
-        self.selectedShippingRuleAmount.assertDidNotEmitValue()
+        self.selectedShippingCost.assertDidNotEmitValue()
+        self.selectedShippingRuleProject.assertDidNotEmitValue()
         self.shippingIsLoading.assertDidNotEmitValue()
 
-        self.vm.inputs.reloadData()
+        self.vm.inputs.didReloadData()
 
         self.shippingIsLoading.assertValues([true])
 
         self.scheduler.run()
 
         self.selectedShippingRuleLocation.assertValues(["Local United States"])
-        self.selectedShippingRuleAmount.assertValues([defaultShippingRule.cost])
-        self.selectedShippingRuleCurrency.assertValues([projectCurrency])
+        self.selectedShippingCost.assertValues([defaultShippingRule.cost])
+        self.selectedShippingRuleProject.assertValues([project])
         self.shippingIsLoading.assertValues([true, false])
     }
   }
@@ -231,11 +238,11 @@ final class PledgeViewModelTests: TestCase {
         self.vm.inputs.viewDidLoad()
 
         self.selectedShippingRuleLocation.assertDidNotEmitValue()
-        self.selectedShippingRuleCurrency.assertDidNotEmitValue()
-        self.selectedShippingRuleAmount.assertDidNotEmitValue()
+        self.selectedShippingCost.assertDidNotEmitValue()
+        self.selectedShippingRuleProject.assertDidNotEmitValue()
         self.shippingIsLoading.assertDidNotEmitValue()
 
-        self.vm.inputs.reloadData()
+        self.vm.inputs.didReloadData()
 
         self.shippingIsLoading.assertValues([true])
 
@@ -243,6 +250,10 @@ final class PledgeViewModelTests: TestCase {
 
         self.shippingIsLoading.assertValues([true, false])
         self.shippingRulesError.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
+
+        self.selectedShippingRuleLocation.assertDidNotEmitValue()
+        self.selectedShippingCost.assertDidNotEmitValue()
+        self.selectedShippingRuleProject.assertDidNotEmitValue()
     }
   }
 }
