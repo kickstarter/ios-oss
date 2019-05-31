@@ -90,7 +90,7 @@ private func shippingValue(for project: Project) -> NSAttributedString? {
       superscriptAttributes: superscriptAttributes
     ) else { return nil }
 
-  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { (_, new) in new }
+  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { _, new in new }
 
   return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }
