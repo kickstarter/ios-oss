@@ -1,10 +1,9 @@
-import XCTest
 import Foundation
-@testable import Library
 @testable import KsApi
+@testable import Library
+import XCTest
 
 final class AppEnvironmentTests: XCTestCase {
-
   func testPushAndPopEnvironment() {
     let lang = AppEnvironment.current.language
 
@@ -27,7 +26,6 @@ final class AppEnvironmentTests: XCTestCase {
   }
 
   func testReplaceCurrentEnvironment() {
-
     AppEnvironment.pushEnvironment(language: .es)
     XCTAssertEqual(AppEnvironment.current.language, Language.es)
 
@@ -44,11 +42,14 @@ final class AppEnvironmentTests: XCTestCase {
   }
 
   func testPersistenceKey() {
-
-    XCTAssertEqual("com.kickstarter.AppEnvironment.current", AppEnvironment.environmentStorageKey,
-                   "Failing this test means users will get logged out, so you better have a good reason.")
-    XCTAssertEqual("com.kickstarter.AppEnvironment.oauthToken", AppEnvironment.oauthTokenStorageKey,
-                   "Failing this means user's token will be lost, so you better have a good reason.")
+    XCTAssertEqual(
+      "com.kickstarter.AppEnvironment.current", AppEnvironment.environmentStorageKey,
+      "Failing this test means users will get logged out, so you better have a good reason."
+    )
+    XCTAssertEqual(
+      "com.kickstarter.AppEnvironment.oauthToken", AppEnvironment.oauthTokenStorageKey,
+      "Failing this means user's token will be lost, so you better have a good reason."
+    )
   }
 
   func testUserSession() {
@@ -100,7 +101,8 @@ final class AppEnvironmentTests: XCTestCase {
         "apiService.language": "en",
         "currentUser": user.encode()
       ],
-      forKey: AppEnvironment.environmentStorageKey)
+      forKey: AppEnvironment.environmentStorageKey
+    )
 
     let env = AppEnvironment.fromStorage(ubiquitousStore: ubiquitousStore, userDefaults: userDefaults)
 
@@ -113,8 +115,10 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual(user, env.currentUser)
     XCTAssertEqual(user, env.koala.loggedInUser)
 
-    let differentEnv = AppEnvironment.fromStorage(ubiquitousStore: MockKeyValueStore(),
-                                                  userDefaults: MockKeyValueStore())
+    let differentEnv = AppEnvironment.fromStorage(
+      ubiquitousStore: MockKeyValueStore(),
+      userDefaults: MockKeyValueStore()
+    )
     XCTAssertNil(differentEnv.apiService.oauthToken?.token)
     XCTAssertEqual(nil, differentEnv.currentUser)
   }
@@ -146,9 +150,11 @@ final class AppEnvironmentTests: XCTestCase {
     let userDefaults = MockKeyValueStore()
     let ubiquitousStore = MockKeyValueStore()
 
-    AppEnvironment.saveEnvironment(environment: Environment(apiService: apiService, currentUser: currentUser),
-                                   ubiquitousStore: ubiquitousStore,
-                                   userDefaults: userDefaults)
+    AppEnvironment.saveEnvironment(
+      environment: Environment(apiService: apiService, currentUser: currentUser),
+      ubiquitousStore: ubiquitousStore,
+      userDefaults: userDefaults
+    )
 
     // swiftlint:disable:next force_unwrapping
     let result = userDefaults.dictionary(forKey: AppEnvironment.environmentStorageKey)!
@@ -160,39 +166,53 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("en", result["apiService.language"] as? String)
     XCTAssertEqual(User.template.id, (result["currentUser"] as? [String: AnyObject])?["id"] as? Int)
 
-    XCTAssertEqual(nil, ubiquitousStore.string(forKey: AppEnvironment.oauthTokenStorageKey),
-                   "No token stored.")
+    XCTAssertEqual(
+      nil, ubiquitousStore.string(forKey: AppEnvironment.oauthTokenStorageKey),
+      "No token stored."
+    )
   }
 
   func testRestoreFromEnvironment() {
-    let apiService = MockService(serverConfig: ServerConfig.production,
-                                 oauthToken: OauthToken(token: "deadbeef"))
+    let apiService = MockService(
+      serverConfig: ServerConfig.production,
+      oauthToken: OauthToken(token: "deadbeef")
+    )
 
     let currentUser = User.template
     let userDefaults = MockKeyValueStore()
     let ubiquitousStore = MockKeyValueStore()
 
-    AppEnvironment.saveEnvironment(environment: Environment(apiService: apiService, currentUser: currentUser),
-                                   ubiquitousStore: ubiquitousStore,
-                                   userDefaults: userDefaults)
+    AppEnvironment.saveEnvironment(
+      environment: Environment(apiService: apiService, currentUser: currentUser),
+      ubiquitousStore: ubiquitousStore,
+      userDefaults: userDefaults
+    )
 
     let env = AppEnvironment.fromStorage(ubiquitousStore: ubiquitousStore, userDefaults: userDefaults)
 
     XCTAssertEqual("deadbeef", env.apiService.oauthToken?.token)
-    XCTAssertEqual(ServerConfig.production.apiBaseUrl.absoluteString,
-                   env.apiService.serverConfig.apiBaseUrl.absoluteString)
-    XCTAssertEqual(ServerConfig.production.apiClientAuth.clientId,
-                   env.apiService.serverConfig.apiClientAuth.clientId)
+    XCTAssertEqual(
+      ServerConfig.production.apiBaseUrl.absoluteString,
+      env.apiService.serverConfig.apiBaseUrl.absoluteString
+    )
+    XCTAssertEqual(
+      ServerConfig.production.apiClientAuth.clientId,
+      env.apiService.serverConfig.apiClientAuth.clientId
+    )
     XCTAssertNil(ServerConfig.production.basicHTTPAuth)
-    XCTAssertEqual(ServerConfig.production.webBaseUrl.absoluteString,
-                   env.apiService.serverConfig.webBaseUrl.absoluteString)
+    XCTAssertEqual(
+      ServerConfig.production.webBaseUrl.absoluteString,
+      env.apiService.serverConfig.webBaseUrl.absoluteString
+    )
     XCTAssertEqual(currentUser, env.currentUser)
     XCTAssertEqual(currentUser, env.koala.loggedInUser)
   }
 
   func testPushPopSave() {
-    AppEnvironment.pushEnvironment(ubiquitousStore: MockKeyValueStore(),
-                                   userDefaults: MockKeyValueStore())
+    AppEnvironment.pushEnvironment(
+      ubiquitousStore: MockKeyValueStore(),
+      userDefaults: MockKeyValueStore()
+    )
 
     AppEnvironment.pushEnvironment(currentUser: User.template)
 

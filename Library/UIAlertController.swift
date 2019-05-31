@@ -1,16 +1,16 @@
-import class UIKit.UIAlertController
-import class UIKit.UIAlertAction
 import FBSDKLoginKit
 import Foundation
 import KsApi
+import class UIKit.UIAlertAction
+import class UIKit.UIAlertController
 
 public extension UIAlertController {
-
-  public static func alert(title: String,
-                           message: String? = nil,
-                           preferredStyle: UIAlertController.Style,
-                           sourceView: UIView? = nil) -> UIAlertController {
-
+  static func alert(
+    title: String,
+    message: String? = nil,
+    preferredStyle: UIAlertController.Style,
+    sourceView: UIView? = nil
+  ) -> UIAlertController {
     let alert = UIAlertController(
       title: title,
       message: message,
@@ -25,9 +25,11 @@ public extension UIAlertController {
     return alert
   }
 
-  public static func alert(_ title: String? = nil,
-                           message: String? = nil,
-                           handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertController {
+  static func alert(
+    _ title: String? = nil,
+    message: String? = nil,
+    handler: ((UIAlertAction) -> Void)? = nil
+  ) -> UIAlertController {
     let alertController = UIAlertController(
       title: title,
       message: message,
@@ -44,11 +46,11 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func requiresPopOverConfiguration(_ preferredStyle: UIAlertController.Style) -> Bool {
+  static func requiresPopOverConfiguration(_ preferredStyle: UIAlertController.Style) -> Bool {
     return preferredStyle == .actionSheet && AppEnvironment.current.device.userInterfaceIdiom == .pad
   }
 
-  public static func alertController(forError error: AlertError) -> UIAlertController {
+  static func alertController(forError error: AlertError) -> UIAlertController {
     switch error {
     case let .genericError(message):
       return self.genericError(message)
@@ -65,7 +67,7 @@ public extension UIAlertController {
     }
   }
 
-  public static func genericError(_ message: String) -> UIAlertController {
+  static func genericError(_ message: String) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.general_error_oops(),
       message: message,
@@ -82,7 +84,7 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func games(subscribeHandler: @escaping ((UIAlertAction) -> Void))
+  static func games(subscribeHandler: @escaping ((UIAlertAction) -> Void))
     -> UIAlertController {
     let alertController = UIAlertController(
       title: nil,
@@ -107,7 +109,7 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func newsletterOptIn(_ newsletter: String) -> UIAlertController {
+  static func newsletterOptIn(_ newsletter: String) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.profile_settings_newsletter_opt_in_title(),
       message: Strings.profile_settings_newsletter_opt_in_message(newsletter: newsletter),
@@ -124,12 +126,12 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func projectCopiedToPasteboard(projectURL url: String) -> UIAlertController {
+  static func projectCopiedToPasteboard(projectURL url: String) -> UIAlertController {
     let alertController = UIAlertController(
       title: nil,
       message: Strings.project_checkout_share_link_the_project_url_has_been_copied_to_your_clipboard(
         project_url: url
-        ),
+      ),
       preferredStyle: .alert
     )
     alertController.addAction(
@@ -143,12 +145,12 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func updateCopiedToPasteboard(updateURL url: String) -> UIAlertController {
+  static func updateCopiedToPasteboard(updateURL url: String) -> UIAlertController {
     let alertController = UIAlertController(
       title: nil,
       message: Strings.project_checkout_share_link_the_update_url_has_been_copied_to_your_clipboard(
         update_url: url
-        ),
+      ),
       preferredStyle: .alert
     )
     alertController.addAction(
@@ -162,11 +164,11 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func confirmFollowAllFriends(
+  static func confirmFollowAllFriends(
     friendsCount: Int,
     yesHandler: @escaping ((UIAlertAction) -> Void),
-    noHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
-
+    noHandler: @escaping ((UIAlertAction) -> Void)
+  ) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.social_following_stats_button_follow_all_friends(remote_friends_count: friendsCount),
       message: Strings.social_following_nice_youre_about_to_follow_all_friends(),
@@ -190,10 +192,10 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func turnOffPrivacyFollowing(
+  static func turnOffPrivacyFollowing(
     cancelHandler: @escaping ((UIAlertAction) -> Void),
-    turnOffHandler: @escaping ((UIAlertAction) -> Void)) -> UIAlertController {
-
+    turnOffHandler: @escaping ((UIAlertAction) -> Void)
+  ) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.Are_you_sure(),
       message: Strings.If_you_turn_following_off(),
@@ -217,11 +219,12 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func followingPrivacyInfo() -> UIAlertController {
+  static func followingPrivacyInfo() -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.Following(),
       message: Strings.When_following_is_on_you_can_follow_the_acticity_of_others(),
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
 
     alertController.addAction(
       UIAlertAction(
@@ -234,7 +237,7 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func facebookTokenFail() -> UIAlertController {
+  static func facebookTokenFail() -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_invalid_token_title(),
       message: Strings.login_tout_errors_facebook_invalid_token_message(),
@@ -251,7 +254,7 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func facebookLoginAttemptFail(_ error: NSError) -> UIAlertController {
+  static func facebookLoginAttemptFail(_ error: NSError) -> UIAlertController {
     let alertController = UIAlertController(
       title: error.userInfo[FBSDKErrorLocalizedTitleKey] as? String ??
         Strings.login_tout_errors_facebook_settings_disabled_title(),
@@ -270,7 +273,7 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func genericFacebookError(_ envelope: ErrorEnvelope) -> UIAlertController {
+  static func genericFacebookError(_ envelope: ErrorEnvelope) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_generic_error_title(),
       message: envelope.errorMessages.first ?? Strings.login_tout_errors_facebook_generic_error_message(),
@@ -287,7 +290,7 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func facebookConnectAccountTaken(_ envelope: ErrorEnvelope) -> UIAlertController {
+  static func facebookConnectAccountTaken(_ envelope: ErrorEnvelope) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_generic_error_title(),
       message: envelope.errorMessages.first ??
@@ -305,7 +308,7 @@ public extension UIAlertController {
     return alertController
   }
 
-  public static func facebookConnectEmailTaken(_ envelope: ErrorEnvelope) -> UIAlertController {
+  static func facebookConnectEmailTaken(_ envelope: ErrorEnvelope) -> UIAlertController {
     let alertController = UIAlertController(
       title: Strings.login_tout_errors_facebook_generic_error_title(),
       message: envelope.errorMessages.first ??

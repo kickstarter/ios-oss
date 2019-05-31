@@ -1,10 +1,10 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal protocol ProjectActivityCommentCellDelegate: class {
+internal protocol ProjectActivityCommentCellDelegate: AnyObject {
   func projectActivityCommentCellGoToBacking(project: Project, user: User)
   func projectActivityCommentCellGoToSendReply(project: Project, update: Update?, comment: Comment)
 }
@@ -13,19 +13,19 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: ProjectActivityCommentCellViewModelType = ProjectActivityCommentCellViewModel()
   internal weak var delegate: ProjectActivityCommentCellDelegate?
 
-  @IBOutlet fileprivate weak var authorImageView: UIImageView!
-  @IBOutlet fileprivate weak var backingButton: UIButton!
-  @IBOutlet fileprivate weak var bodyLabel: UILabel!
-  @IBOutlet fileprivate weak var bodyView: UIView!
-  @IBOutlet fileprivate weak var bulletSeparatorView: UIView!
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var containerStackView: UIStackView!
-  @IBOutlet fileprivate weak var footerDividerView: UIView!
-  @IBOutlet fileprivate weak var footerStackView: UIStackView!
-  @IBOutlet fileprivate weak var headerDividerView: UIView!
-  @IBOutlet fileprivate weak var headerStackView: UIStackView!
-  @IBOutlet fileprivate weak var replyButton: UIButton!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var authorImageView: UIImageView!
+  @IBOutlet fileprivate var backingButton: UIButton!
+  @IBOutlet fileprivate var bodyLabel: UILabel!
+  @IBOutlet fileprivate var bodyView: UIView!
+  @IBOutlet fileprivate var bulletSeparatorView: UIView!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var containerStackView: UIStackView!
+  @IBOutlet fileprivate var footerDividerView: UIView!
+  @IBOutlet fileprivate var footerStackView: UIStackView!
+  @IBOutlet fileprivate var headerDividerView: UIView!
+  @IBOutlet fileprivate var headerStackView: UIStackView!
+  @IBOutlet fileprivate var replyButton: UIButton!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -38,8 +38,10 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
-    self.viewModel.inputs.configureWith(activity: activityAndProject.0,
-                                        project: activityAndProject.1)
+    self.viewModel.inputs.configureWith(
+      activity: activityAndProject.0,
+      project: activityAndProject.1
+    )
   }
 
   internal override func bindViewModel() {
@@ -52,11 +54,11 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       .on(event: { [weak self] _ in
         self?.authorImageView.af_cancelImageRequest()
         self?.authorImageView.image = nil
-        })
+      })
       .skipNil()
       .observeValues { [weak self] url in
         self?.authorImageView.ksr_setImageWithURL(url)
-    }
+      }
 
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
     self.rac.accessibilityValue = self.viewModel.outputs.cellAccessibilityValue
@@ -65,7 +67,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] project, user in
         self?.delegate?.projectActivityCommentCellGoToBacking(project: project, user: user)
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateGoToSendReply
       .observeForUI()
@@ -73,7 +75,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
         self?.delegate?.projectActivityCommentCellGoToSendReply(
           project: project, update: update, comment: comment
         )
-    }
+      }
 
     self.bodyLabel.rac.text = self.viewModel.outputs.body
 
@@ -92,9 +94,9 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
             NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
           ],
           italic: nil
-          )
+        )
           ?? .init()
-    }
+      }
   }
 
   internal override func bindStyles() {
@@ -119,9 +121,9 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
     _ = self.bodyLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.font %~~ { _, label in
-          label.traitCollection.isRegularRegular
-            ? UIFont.ksr_body()
-            : UIFont.ksr_body(size: 14)
+        label.traitCollection.isRegularRegular
+          ? UIFont.ksr_body()
+          : UIFont.ksr_body(size: 14)
       }
 
     _ = self.bodyView
@@ -150,15 +152,15 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       |> projectActivityFooterButton
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_reply() }
 
-    _ = titleLabel
+    _ = self.titleLabel
       |> UILabel.lens.numberOfLines .~ 2
   }
 
-  @objc fileprivate func backingButtonPressed(_ button: UIButton) {
+  @objc fileprivate func backingButtonPressed(_: UIButton) {
     self.viewModel.inputs.backingButtonPressed()
   }
 
-  @objc fileprivate func replyButtonPressed(_ button: UIButton) {
+  @objc fileprivate func replyButtonPressed(_: UIButton) {
     self.viewModel.inputs.replyButtonPressed()
   }
 }

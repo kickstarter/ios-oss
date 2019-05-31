@@ -1,6 +1,6 @@
-import Foundation
 import Argo
 import Curry
+import Foundation
 import Runes
 
 public struct Activity {
@@ -14,23 +14,23 @@ public struct Activity {
   public let user: User?
 
   public enum Category: String {
-    case backing          = "backing"
-    case backingAmount    = "backing-amount"
-    case backingCanceled  = "backing-canceled"
-    case backingDropped   = "backing-dropped"
-    case backingReward    = "backing-reward"
-    case cancellation     = "cancellation"
-    case commentPost      = "comment-post"
-    case commentProject   = "comment-project"
-    case failure          = "failure"
-    case follow           = "follow"
-    case funding          = "funding"
-    case launch           = "launch"
-    case success          = "success"
-    case suspension       = "suspension"
-    case update           = "update"
-    case watch            = "watch"
-    case unknown          = "unknown"
+    case backing
+    case backingAmount = "backing-amount"
+    case backingCanceled = "backing-canceled"
+    case backingDropped = "backing-dropped"
+    case backingReward = "backing-reward"
+    case cancellation
+    case commentPost = "comment-post"
+    case commentProject = "comment-project"
+    case failure
+    case follow
+    case funding
+    case launch
+    case success
+    case suspension
+    case update
+    case watch
+    case unknown
   }
 
   public struct MemberData {
@@ -44,8 +44,8 @@ public struct Activity {
   }
 }
 
-extension Activity: Equatable {
-}
+extension Activity: Equatable {}
+
 public func == (lhs: Activity, rhs: Activity) -> Bool {
   return lhs.id == rhs.id
 }
@@ -53,10 +53,10 @@ public func == (lhs: Activity, rhs: Activity) -> Bool {
 extension Activity: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity> {
     let tmp = curry(Activity.init)
-      <^> json <|  "category"
+      <^> json <| "category"
       <*> json <|? "comment"
-      <*> json <|  "created_at"
-      <*> json <|  "id"
+      <*> json <| "created_at"
+      <*> json <| "id"
     return tmp
       <*> Activity.MemberData.decode(json)
       <*> json <|? "project"

@@ -92,7 +92,7 @@ public func == (lhs: User, rhs: User) -> Bool {
 
 extension User: CustomDebugStringConvertible {
   public var debugDescription: String {
-    return "User(id: \(id), name: \"\(name)\")"
+    return "User(id: \(self.id), name: \"\(self.name)\")"
   }
 }
 
@@ -162,7 +162,6 @@ extension User.Avatar: EncodableType {
 
 extension User.NewsletterSubscriptions: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.NewsletterSubscriptions> {
-
     return curry(User.NewsletterSubscriptions.init)
       <^> json <|? "arts_culture_newsletter"
       <*> json <|? "games_newsletter"
@@ -292,12 +291,12 @@ extension User.Stats: Argo.Decodable {
 extension User.Stats: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
-    result["backed_projects_count"] =  self.backedProjectsCount
+    result["backed_projects_count"] = self.backedProjectsCount
     result["created_projects_count"] = self.createdProjectsCount
     result["member_projects_count"] = self.memberProjectsCount
     result["starred_projects_count"] = self.starredProjectsCount
     result["unanswered_surveys_count"] = self.unansweredSurveysCount
-    result["unread_messages_count"] =  self.unreadMessagesCount
+    result["unread_messages_count"] = self.unreadMessagesCount
     return result
   }
 }

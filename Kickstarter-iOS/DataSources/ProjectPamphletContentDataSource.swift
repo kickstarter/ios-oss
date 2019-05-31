@@ -55,21 +55,26 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 
     if !rewardData.isEmpty {
       if visible {
-      self.set(values: [project],
-               cellClass: RewardsTitleCell.self,
-               inSection: Section.rewardsTitle.rawValue)
+        self.set(
+          values: [project],
+          cellClass: RewardsTitleCell.self,
+          inSection: Section.rewardsTitle.rawValue
+        )
       }
-      self.set(values: availableRewards(for: project),
-               cellClass: RewardCell.self,
-               inSection: Section.availableRewards.rawValue)
-      self.set(values: unavailableRewards(for: project),
-               cellClass: RewardCell.self,
-               inSection: Section.unavailableRewards.rawValue)
+      self.set(
+        values: self.availableRewards(for: project),
+        cellClass: RewardCell.self,
+        inSection: Section.availableRewards.rawValue
+      )
+      self.set(
+        values: self.unavailableRewards(for: project),
+        cellClass: RewardCell.self,
+        inSection: Section.unavailableRewards.rawValue
+      )
     }
   }
 
   private func availableRewards(for project: Project) -> [(Project, Either<Reward, Backing>)] {
-
     return project.rewards
       .filter { isMainReward(reward: $0, project: project) }
       .filter { $0.remaining == nil || $0.remaining != 0 }
@@ -78,7 +83,6 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   }
 
   private func unavailableRewards(for project: Project) -> [(Project, Either<Reward, Backing>)] {
-
     return project.rewards
       .filter { isMainReward(reward: $0, project: project) }
       .filter { $0.remaining != nil && $0.remaining == 0 }
@@ -87,14 +91,16 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   }
 
   private func setRewardTitleArea(project: Project) {
-    if project.personalization.isBacking != true && project.state == .live {
+    if project.personalization.isBacking != true, project.state == .live {
       self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
       self.set(values: [project], cellClass: NoRewardCell.self, inSection: Section.calloutReward.rawValue)
     } else if let backing = project.personalization.backing {
       self.set(values: [project], cellClass: PledgeTitleCell.self, inSection: Section.pledgeTitle.rawValue)
-      self.set(values: [(project, .right(backing))],
-               cellClass: RewardCell.self,
-               inSection: Section.calloutReward.rawValue)
+      self.set(
+        values: [(project, .right(backing))],
+        cellClass: RewardCell.self,
+        inSection: Section.calloutReward.rawValue
+      )
     }
   }
 
@@ -122,7 +128,6 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
-
     switch (cell, value) {
     case let (cell as RewardCell, value as (Project, Either<Reward, Backing>)):
       cell.configureWith(value: value)
@@ -145,7 +150,6 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
 }
 
 private func backingReward(fromProject project: Project) -> Reward? {
-
   guard let backing = project.personalization.backing else {
     return nil
   }

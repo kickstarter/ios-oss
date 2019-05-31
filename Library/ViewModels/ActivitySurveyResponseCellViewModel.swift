@@ -36,8 +36,7 @@ public protocol ActivitySurveyResponseCellViewModelType {
 }
 
 public final class ActivitySurveyResponseCellViewModel: ActivitySurveyResponseCellViewModelType,
-ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOutputs {
-
+  ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOutputs {
   public init() {
     let surveyResponseAndCountAndPosition = self.surveyResponseCountPositionProperty.signal.skipNil()
     let project = surveyResponseAndCountAndPosition
@@ -61,7 +60,8 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
         bold: [
           NSAttributedString.Key.font: UIFont.ksr_headline(size: 14),
           NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-        ])
+        ]
+      )
         ?? NSAttributedString(string: "")
     }
 
@@ -81,6 +81,7 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
   public func configureWith(surveyResponse: SurveyResponse, count: Int, position: Int) {
     self.surveyResponseCountPositionProperty.value = (surveyResponse, count, position)
   }
+
   fileprivate let respondNowButtonTappedProperty = MutableProperty(())
   public func respondNowButtonTapped() {
     self.respondNowButtonTappedProperty.value = ()

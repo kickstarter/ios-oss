@@ -1,7 +1,7 @@
 @testable import KsApi
 @testable import Library
-import ReactiveExtensions_TestHelpers
 import Prelude
+import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import UIKit
 import XCTest
@@ -124,8 +124,10 @@ internal final class SortPagerViewModelTests: TestCase {
 
     self.vm.inputs.sortButtonTapped(index: 3)
 
-    self.pinSelectedIndicatorToPage.assertValues([0, 1],
-                                                 "Tapping sort button does not cause indicator to change.")
+    self.pinSelectedIndicatorToPage.assertValues(
+      [0, 1],
+      "Tapping sort button does not cause indicator to change."
+    )
     self.pinSelectedIndicatorAnimated.assertValues([false, true])
 
     self.vm.inputs.viewWillAppear()
@@ -179,8 +181,10 @@ internal final class SortPagerViewModelTests: TestCase {
 
     self.scheduler.advance(by: .seconds(1))
 
-    self.indicatorViewIsHidden.assertValues([true, false, true, false, true, false],
-                                            "Indicator shows after delay.")
+    self.indicatorViewIsHidden.assertValues(
+      [true, false, true, false, true, false],
+      "Indicator shows after delay."
+    )
 
     self.vm.inputs.select(sort: .newest)
 
@@ -214,13 +218,17 @@ internal final class SortPagerViewModelTests: TestCase {
 
     self.vm.inputs.sortButtonTapped(index: 1)
 
-    self.notifyDelegateOfSelectedSort.assertValues([.magic, .popular],
-                                                   "Tapping sort button notifies the delegate.")
+    self.notifyDelegateOfSelectedSort.assertValues(
+      [.magic, .popular],
+      "Tapping sort button notifies the delegate."
+    )
 
     self.vm.inputs.sortButtonTapped(index: 3)
 
-    self.notifyDelegateOfSelectedSort.assertValues([.magic, .popular, .endingSoon],
-                                                   "Tapping sort button notifies the delegate.")
+    self.notifyDelegateOfSelectedSort.assertValues(
+      [.magic, .popular, .endingSoon],
+      "Tapping sort button notifies the delegate."
+    )
 
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()

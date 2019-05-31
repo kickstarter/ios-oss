@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol SettingsRecommendationsCellViewModelInputs {
   func configureWith(user: User)
@@ -22,15 +22,15 @@ public protocol SettingsRecommendationsCellViewModelType {
 }
 
 public final class SettingsRecommendationsCellViewModel: SettingsRecommendationsCellViewModelType,
-SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModelOutputs {
+  SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModelOutputs {
   public init() {
-    let initialUser = configureWithProperty.signal
+    let initialUser = self.configureWithProperty.signal
       .skipNil()
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), Never> =
       self.recommendationsTappedProperty.signal.map {
-      (UserAttribute.privacy(UserAttribute.Privacy.recommendations), !$0)
-    }
+        (UserAttribute.privacy(UserAttribute.Privacy.recommendations), !$0)
+      }
 
     let updatedUser = initialUser
       .switchMap { user in
@@ -38,14 +38,14 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
           let (attribute, on) = attributeAndOn
           return user |> attribute.keyPath .~ on
         }
-    }
+      }
 
     let updateEvent = updatedUser
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.postNotification = updateEvent.values()
       .map { _ in
@@ -53,12 +53,12 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
           name: .ksr_recommendationsSettingChanged,
           userInfo: nil
         )
-    }
+      }
 
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
-    }
+      }
 
     let previousUserOnError = Signal.merge(initialUser, updatedUser)
       .combinePrevious()
@@ -71,7 +71,7 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
       .map { $0.optedOutOfRecommendations }.skipNil().map { $0 ? false : true }.skipRepeats()
 
     self.recommendationsTappedProperty.signal
-      .observeValues { _ in  AppEnvironment.current.koala.trackRecommendationsOptIn() }
+      .observeValues { _ in AppEnvironment.current.koala.trackRecommendationsOptIn() }
   }
 
   fileprivate let configureWithProperty = MutableProperty<User?>(nil)

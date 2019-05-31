@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol SettingsPrivacyViewModelInputs {
   func didCancelSocialOptOut()
@@ -26,8 +26,7 @@ public protocol SettingsPrivacyViewModelType {
 }
 
 public final class SettingsPrivacyViewModel: SettingsPrivacyViewModelType,
-SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
-
+  SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
   public init() {
     let initialUser = self.viewDidLoadProperty.signal
       .flatMap {
@@ -35,8 +34,8 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
           .wrapInOptional()
           .prefix(value: AppEnvironment.current.currentUser)
           .demoteErrors()
-    }
-    .skipNil()
+      }
+      .skipNil()
 
     self.reloadData = initialUser
 
@@ -47,7 +46,7 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
     let followingAttributeChanged = self.didConfirmSocialOptOutProperty.signal
       .map {
         (UserAttribute.privacy(UserAttribute.Privacy.following), false)
-    }
+      }
 
     let userAttributeChanged = Signal.merge(privateProfileAttributeChanged, followingAttributeChanged)
 
@@ -57,21 +56,21 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
           let (attribute, on) = attributeAndOn
           return user |> attribute.keyPath .~ on
         }
-    }
+      }
 
     let updateEvent = Signal.merge(updatedUser, self.updateUserProperty.signal.skipNil())
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     let updatedFetchedUser = updateEvent.values()
 
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
-    }
+      }
 
     let previousUserOnError = Signal.merge(initialUser, updatedUser)
       .combinePrevious()

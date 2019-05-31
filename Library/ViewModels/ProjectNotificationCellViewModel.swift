@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ProjectNotificationCellViewModelInputs {
   /// Call with the initial cell notification value.
@@ -29,8 +29,7 @@ public protocol ProjectNotificationCellViewModelType {
 
 public final class ProjectNotificationCellViewModel: ProjectNotificationCellViewModelType,
   ProjectNotificationCellViewModelInputs, ProjectNotificationCellViewModelOutputs {
-
-    public init() {
+  public init() {
     let notification = self.notificationProperty.signal.skipNil()
       .map(cached(notification:))
 
@@ -38,23 +37,23 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
 
     let toggledNotification = notification
       .takePairWhen(self.notificationTappedProperty.signal)
-      .map { (notification, on) in
+      .map { notification, on in
         notification
           |> ProjectNotification.lens.email .~ on
           |> ProjectNotification.lens.mobile .~ on
-    }
+      }
 
     let updateEvent = toggledNotification
       .switchMap {
         AppEnvironment.current.apiService.updateProjectNotification($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.notifyDelegateOfSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
-    }
+      }
 
     let previousNotificationOnError = notification
       .switchMap {
@@ -74,9 +73,9 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
       notification,
       toggledNotification,
       previousNotificationOnError
-      )
-      .map { $0.email && $0.mobile }
-      .skipRepeats()
+    )
+    .map { $0.email && $0.mobile }
+    .skipRepeats()
 
     notification
       .takeWhen(self.notificationTappedProperty.signal)

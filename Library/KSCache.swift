@@ -9,8 +9,7 @@ public final class KSCache {
   public static let ksr_messageThreadHasUnreadMessages = "message_thread_has_unread_messages"
   public static let ksr_projectSaved = "project_saved"
 
-  public init() {
-  }
+  public init() {}
 
   public subscript(key: String) -> Any? {
     get {

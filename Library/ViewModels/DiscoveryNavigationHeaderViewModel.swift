@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol DiscoveryNavigationHeaderViewModelInputs {
   /// Call to configure with Discovery params.
@@ -88,8 +88,7 @@ public protocol DiscoveryNavigationHeaderViewModelType {
 }
 
 public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeaderViewModelType,
-DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutputs {
-
+  DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutputs {
   public init() {
     let currentParams = Signal.merge(
       self.paramsProperty.signal.skipNil().skipRepeats(),
@@ -99,13 +98,15 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
     let paramsAndFiltersAreHidden = Signal.merge(
       currentParams.map { ($0, false) },
       currentParams.takeWhen(self.titleButtonTappedProperty.signal).map { ($0, true) }
+    )
+    .scan(nil) { (data, paramsAndFiltersHidden) -> (params: DiscoveryParams, filtersAreHidden: Bool)? in
+      let (params, filtersAreHidden) = paramsAndFiltersHidden
+      return (
+        params: params,
+        filtersAreHidden: filtersAreHidden ? !(data?.filtersAreHidden ?? true) : true
       )
-      .scan(nil) { (data, paramsAndFiltersHidden) -> (params: DiscoveryParams, filtersAreHidden: Bool)? in
-        let (params, filtersAreHidden) = paramsAndFiltersHidden
-        return (params: params,
-                filtersAreHidden: filtersAreHidden ? !(data?.filtersAreHidden ?? true) : true)
-      }
-      .skipNil()
+    }
+    .skipNil()
 
     let strings = paramsAndFiltersAreHidden.map(first).map(stringsForTitle)
     let filtersAreHidden = paramsAndFiltersAreHidden.map(second)
@@ -117,7 +118,7 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
       .skipRepeats()
 
     self.exploreLabelIsHidden = self.filtersSelectedRowProperty.signal.map {
-      return shouldHideLabel($0?.params)
+      shouldHideLabel($0?.params)
     }
 
     self.debugContainerViewIsHidden = self.viewDidLoadProperty.signal
@@ -146,8 +147,8 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
 
     self.primaryLabelFont = paramsAndFiltersAreHidden
       .map { params, filtersAreHidden in
-        ((params.category?.isRoot ?? true) && filtersAreHidden)
-    }
+        (params.category?.isRoot ?? true) && filtersAreHidden
+      }
 
     self.primaryLabelOpacityAnimated = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst((0.0, false)),
@@ -181,7 +182,7 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
 
     self.titleButtonAccessibilityHint = self.animateArrowToDown
       .map { $0 ? Strings.Opens_filters() : Strings.Closes_filters()
-    }
+      }
 
     self.titleButtonAccessibilityLabel = paramsAndFiltersAreHidden
       .map(first)
@@ -198,22 +199,22 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
     self.updateFavoriteButton = Signal.merge(
       categoryIdOnParamsUpdated.map { ($0, false) },
       categoryIdOnFavoriteTap.map { ($0, true) }
-      )
-      .map { id, animated in (selected: isFavoriteCategoryStored(withId: id), animated: animated) }
+    )
+    .map { id, animated in (selected: isFavoriteCategoryStored(withId: id), animated: animated) }
 
     self.favoriteButtonAccessibilityLabel = self.updateFavoriteButton
       .map {
         $0.selected
           ? Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
           : Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
-    }
+      }
 
     self.showFavoriteOnboardingAlert = strings
       .map { Strings.category_name_saved(category_name: $0.subcategory ?? $0.filter) }
       .takeWhen(self.favoriteButtonTappedProperty.signal)
       .filter { _ in
         !AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert ||
-        !AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert
+          !AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert
       }
       .on(value: { _ in
         AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert = true
@@ -224,7 +225,7 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
       .takePairWhen(categoryIdOnFavoriteTap.map(isFavoriteCategoryStored(withId:)))
       .observeValues {
         AppEnvironment.current.koala.trackDiscoveryFavoritedCategory(params: $0, isFavorited: $1)
-    }
+      }
 
     paramsAndFiltersAreHidden
       .takeWhen(self.titleButtonTappedProperty.signal)
@@ -237,18 +238,22 @@ DiscoveryNavigationHeaderViewModelInputs, DiscoveryNavigationHeaderViewModelOutp
   public func configureWith(params: DiscoveryParams) {
     self.paramsProperty.value = params
   }
+
   fileprivate let favoriteButtonTappedProperty = MutableProperty(())
   public func favoriteButtonTapped() {
     self.favoriteButtonTappedProperty.value = ()
   }
+
   fileprivate let filtersSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
   public func filtersSelected(row: SelectableRow) {
     self.filtersSelectedRowProperty.value = row
   }
+
   fileprivate let titleButtonTappedProperty = MutableProperty(())
   public func titleButtonTapped() {
     self.titleButtonTappedProperty.value = ()
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -320,8 +325,10 @@ private func accessibilityLabelForTitleButton(params: DiscoveryParams) -> String
   } else if let category = params.category {
     return category.isRoot
       ? Strings.Filter_by_category_name(category_name: category.name)
-      : Strings.Filter_by_subcategory_name_in_category_name(subcategory_name: category.name,
-                                                            category_name: category.root?.name ?? "")
+      : Strings.Filter_by_subcategory_name_in_category_name(
+        subcategory_name: category.name,
+        category_name: category.root?.name ?? ""
+      )
   } else if params.recommended == true {
     return Strings.Filter_by_projects_recommended_for_you()
   } else {

@@ -48,23 +48,22 @@ public protocol WatchProjectViewModelType {
 }
 
 public final class WatchProjectViewModel: WatchProjectViewModelType,
-WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
-
+  WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
   public init() {
     let viewReady = Signal.merge(self.viewDidLoadProperty.signal, self.awakeFromNibProperty.signal)
 
     let configuredProject = Signal.combineLatest(
       self.projectProperty.signal.skipNil(),
       viewReady
-      )
-      .map(first)
-      .map(cached(project:))
+    )
+    .map(first)
+    .map(cached(project:))
 
     let currentUser = Signal.merge([
       viewReady,
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal
-      ])
+    ])
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
@@ -107,7 +106,7 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
           .map { _ in (project, project.personalization.isStarred ?? false, success: true) }
           .flatMapError { _ in .init(value: (project, !shouldWatch, success: false)) }
           .take(until: saveButtonTapped.ignoreValues())
-    }
+      }
 
     let projectOnSaveButtonToggleSuccess = watchProjectResult
       .filter(third)
@@ -135,7 +134,7 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
 
     self.showProjectSavedAlert = project
       .takeWhen(saveButtonTapped)
-      .filter { !$0.endsIn48Hours(today: AppEnvironment.current.dateType.init().date ) }
+      .filter { !$0.endsIn48Hours(today: AppEnvironment.current.dateType.init().date) }
       .filter { _ in
         !AppEnvironment.current.ubiquitousStore.hasSeenSaveProjectAlert ||
           !AppEnvironment.current.userDefaults.hasSeenSaveProjectAlert
@@ -159,7 +158,7 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
           name: .ksr_showNotificationsDialog,
           userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.save]
         )
-    }
+      }
 
     self.saveButtonSelected = project
       .map { $0.personalization.isStarred == true }
@@ -231,12 +230,12 @@ WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
 
   public var inputs: WatchProjectViewModelInputs { return self }
   public var outputs: WatchProjectViewModelOutputs { return self }
-
 }
 
 private func watchProjectProducer(
   with project: Project,
-  shouldWatch: Bool) -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+  shouldWatch: Bool
+) -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
   guard shouldWatch else {
     return AppEnvironment.current.apiService.unwatchProject(input: .init(id: project.graphID))
   }
@@ -248,7 +247,7 @@ private func cached(project: Project) -> Project {
   guard
     let projectCache = AppEnvironment.current.cache[KSCache.ksr_projectSaved] as? [Int: Bool],
     let isSaved = projectCache[project.id] ?? project.personalization.isStarred
-    else { return project }
+  else { return project }
 
   return project |> Project.lens.personalization.isStarred .~ isSaved
 }

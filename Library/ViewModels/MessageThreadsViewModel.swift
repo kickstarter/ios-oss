@@ -55,9 +55,8 @@ public protocol MessageThreadsViewModelType {
 }
 
 public final class MessageThreadsViewModel: MessageThreadsViewModelType, MessageThreadsViewModelInputs,
-MessageThreadsViewModelOutputs {
-
-    public init() {
+  MessageThreadsViewModelOutputs {
+  public init() {
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .filter { _, total in total > 1 }
       .map { row, total in row >= total - 3 }
@@ -92,16 +91,17 @@ MessageThreadsViewModelOutputs {
           .promoteError(ErrorEnvelope.self)
           .flatMap { project in
             AppEnvironment.current.apiService.fetchMessageThreads(mailbox: mailbox, project: project)
-        }
+          }
       },
       requestFromCursor: {
         AppEnvironment.current.apiService.fetchMessageThreads(paginationUrl: $0)
-    })
+      }
+    )
 
     self.mailboxName = mailbox.map {
       switch $0 {
-      case .inbox:  return Strings.messages_navigation_inbox()
-      case .sent:   return Strings.messages_navigation_sent()
+      case .inbox: return Strings.messages_navigation_inbox()
+      case .sent: return Strings.messages_navigation_sent()
       }
     }
 
@@ -118,7 +118,7 @@ MessageThreadsViewModelOutputs {
       self.viewDidLoadProperty.signal.take(first: 1).mapConst(false),
       isCloseToBottom.mapConst(false),
       mailbox.mapConst(false),
-      isLoading.filter(isFalse).mapConst(true),
+      isLoading.filter(isFalse).mapConst(true)
     ]).skipRepeats()
 
     self.showMailboxChooserActionSheet = self.mailboxButtonPressedProperty.signal
@@ -128,10 +128,11 @@ MessageThreadsViewModelOutputs {
     configData
       .takePairWhen(mailbox)
       .observeValues { configData, mailbox in
-        AppEnvironment.current.koala.trackMessageThreadsView(mailbox: mailbox,
-                                                             project: configData.project,
-                                                             refTag: configData.refTag ?? .unrecognized(""))
-
+        AppEnvironment.current.koala.trackMessageThreadsView(
+          mailbox: mailbox,
+          project: configData.project,
+          refTag: configData.refTag ?? .unrecognized("")
+        )
       }
   }
 
@@ -139,26 +140,32 @@ MessageThreadsViewModelOutputs {
   public func mailboxButtonPressed() {
     self.mailboxButtonPressedProperty.value = ()
   }
+
   fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
   public func configureWith(project: Project?, refTag: RefTag?) {
     self.configDataProperty.value = ConfigData(project: project, refTag: refTag)
   }
+
   fileprivate let refreshProperty = MutableProperty(())
   public func refresh() {
     self.refreshProperty.value = ()
   }
+
   fileprivate let searchButtonPressedProperty = MutableProperty(())
   public func searchButtonPressed() {
     self.searchButtonPressedProperty.value = ()
   }
+
   fileprivate let switchToMailbox = MutableProperty<Mailbox?>(nil)
   public func switchTo(mailbox: Mailbox) {
     self.switchToMailbox.value = mailbox
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+
   fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)

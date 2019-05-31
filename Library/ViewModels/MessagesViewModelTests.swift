@@ -1,10 +1,9 @@
-import XCTest
+@testable import KsApi
 @testable import Library
-import ReactiveExtensions_TestHelpers
-@testable import KsApi
-@testable import KsApi
-import ReactiveSwift
 import Prelude
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class MessagesViewModelTests: TestCase {
   fileprivate let vm: MessagesViewModelType = MessagesViewModel()
@@ -55,8 +54,10 @@ internal final class MessagesViewModelTests: TestCase {
     self.messages.assertValueCount(1)
 
     XCTAssertEqual(["Message Thread View", "Viewed Message Thread"], self.trackingClient.events)
-    XCTAssertEqual([true, nil],
-                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+    XCTAssertEqual(
+      [true, nil],
+      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
+    )
   }
 
   func testOutputs_ConfiguredWithThread_AndBacking() {
@@ -274,7 +275,7 @@ internal final class MessagesViewModelTests: TestCase {
     let project = .template
       |> Project.lens.id .~ 42
       |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.creator..User.lens.id .~ 20
+      |> Project.lens.creator .. User.lens.id .~ 20
     let backing = .template
       |> Backing.lens.backer .~ .template
 
@@ -322,7 +323,7 @@ internal final class MessagesViewModelTests: TestCase {
   func testEmptyStateIsVisibleAndMessage_CurrentUserIsCollaboratorAndBacker() {
     let collaborator = User.template |> \.id .~ 20
     let project = .template
-      |> Project.lens.creator..User.lens.id .~ 40
+      |> Project.lens.creator .. User.lens.id .~ 40
       |> Project.lens.memberData.permissions .~ [.viewPledges]
     let backing = .template
       |> Backing.lens.backer .~ collaborator

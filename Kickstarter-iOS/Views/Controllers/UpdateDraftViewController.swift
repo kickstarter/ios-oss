@@ -6,7 +6,7 @@ import Prelude_UIKit
 import SafariServices
 import UIKit
 
-internal protocol UpdateDraftViewControllerDelegate: class {
+internal protocol UpdateDraftViewControllerDelegate: AnyObject {
   func updateDraftViewControllerWantsDismissal(_ updateDraftViewController: UpdateDraftViewController)
 }
 
@@ -14,18 +14,18 @@ internal final class UpdateDraftViewController: UIViewController {
   fileprivate let viewModel: UpdateDraftViewModelType = UpdateDraftViewModel()
   internal weak var delegate: UpdateDraftViewControllerDelegate?
 
-  @IBOutlet fileprivate weak var addAttachmentButton: UIButton!
-  @IBOutlet fileprivate weak var addAttachmentExpandedButton: UIButton!
-  @IBOutlet fileprivate weak var attachmentsSeparatorView: UIView!
-  @IBOutlet fileprivate weak var attachmentsScrollView: UIScrollView!
-  @IBOutlet fileprivate weak var attachmentsStackView: UIStackView!
-  @IBOutlet fileprivate weak var bodyPlaceholderTextView: UITextView!
-  @IBOutlet fileprivate weak var bodyTextView: UITextView!
-  @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
-  @IBOutlet fileprivate weak var closeBarButtonItem: UIBarButtonItem!
-  @IBOutlet fileprivate weak var isBackersOnlyButton: UIButton!
-  @IBOutlet fileprivate weak var previewBarButtonItem: UIBarButtonItem!
-  @IBOutlet fileprivate weak var titleTextField: UITextField!
+  @IBOutlet fileprivate var addAttachmentButton: UIButton!
+  @IBOutlet fileprivate var addAttachmentExpandedButton: UIButton!
+  @IBOutlet fileprivate var attachmentsSeparatorView: UIView!
+  @IBOutlet fileprivate var attachmentsScrollView: UIScrollView!
+  @IBOutlet fileprivate var attachmentsStackView: UIStackView!
+  @IBOutlet fileprivate var bodyPlaceholderTextView: UITextView!
+  @IBOutlet fileprivate var bodyTextView: UITextView!
+  @IBOutlet fileprivate var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate var closeBarButtonItem: UIBarButtonItem!
+  @IBOutlet fileprivate var isBackersOnlyButton: UIButton!
+  @IBOutlet fileprivate var previewBarButtonItem: UIBarButtonItem!
+  @IBOutlet fileprivate var titleTextField: UITextField!
 
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
@@ -58,7 +58,7 @@ internal final class UpdateDraftViewController: UIViewController {
     _ = self.separatorViews ||> separatorStyle
   }
 
-    internal override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.addAttachmentExpandedButton.rac.hidden =
@@ -81,14 +81,14 @@ internal final class UpdateDraftViewController: UIViewController {
         guard let attachmentsStackView = self?.attachmentsStackView else { return }
         _ = attachmentsStackView |>
           UIStackView.lens.arrangedSubviews .~ attachments.compactMap { self?.imageView(forAttachment: $0) }
-    }
+      }
 
     self.viewModel.outputs.notifyPresenterViewControllerWantsDismissal
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let _self = self else { return }
         _self.delegate?.updateDraftViewControllerWantsDismissal(_self)
-    }
+      }
 
     self.viewModel.outputs.showAttachmentActions
       .observeForControllerAction()
@@ -110,7 +110,7 @@ internal final class UpdateDraftViewController: UIViewController {
           guard offset >= scrollView.contentOffset.x else { return }
           scrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
         }
-    }
+      }
 
     self.viewModel.outputs.showRemoveAttachmentConfirmation
       .observeForControllerAction()
@@ -123,14 +123,14 @@ internal final class UpdateDraftViewController: UIViewController {
         UIView.animate(withDuration: 0.2) {
           _self.attachmentsStackView.viewWithTag(attachment.id)?.removeFromSuperview()
         }
-    }
+      }
 
     self.viewModel.outputs.goToPreview
       .observeForControllerAction()
       .observeValues { [weak self] draft in
         let vc = UpdatePreviewViewController.configuredWith(draft: draft)
         self?.navigationController?.pushViewController(vc, animated: true)
-    }
+      }
 
     self.viewModel.outputs.showAddAttachmentFailure
       .observeForControllerAction()
@@ -138,7 +138,7 @@ internal final class UpdateDraftViewController: UIViewController {
         let alert = UIAlertController
           .genericError(Strings.Couldnt_add_attachment())
         self?.present(alert, animated: true, completion: nil)
-    }
+      }
 
     self.viewModel.outputs.showRemoveAttachmentFailure
       .observeForControllerAction()
@@ -146,7 +146,7 @@ internal final class UpdateDraftViewController: UIViewController {
         let alert = UIAlertController
           .genericError(Strings.Couldnt_remove_attachment())
         self?.present(alert, animated: true, completion: nil)
-    }
+      }
 
     self.viewModel.outputs.showSaveFailure
       .observeForControllerAction()
@@ -154,7 +154,7 @@ internal final class UpdateDraftViewController: UIViewController {
         let alert = UIAlertController
           .genericError(Strings.dashboard_post_update_compose_error_could_not_save_update())
         self?.present(alert, animated: true, completion: nil)
-    }
+      }
 
     Keyboard.change.observeForUI()
       .observeValues { [weak self] in self?.animateBottomConstraint($0) }
@@ -163,17 +163,27 @@ internal final class UpdateDraftViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.addAttachmentButton.addTarget(self, action: #selector(addAttachmentButtonTapped),
-                                       for: .touchUpInside)
-    self.addAttachmentExpandedButton.addTarget(self, action: #selector(addAttachmentButtonTapped),
-                                               for: .touchUpInside)
+    self.addAttachmentButton.addTarget(
+      self, action: #selector(self.addAttachmentButtonTapped),
+      for: .touchUpInside
+    )
+    self.addAttachmentExpandedButton.addTarget(
+      self, action: #selector(self.addAttachmentButtonTapped),
+      for: .touchUpInside
+    )
     self.bodyTextView.delegate = self
-    self.isBackersOnlyButton.addTarget(self, action: #selector(isBackersOnlyButtonTapped),
-                                       for: .touchUpInside)
-    self.titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange),
-                                  for: .editingChanged)
-    self.titleTextField.addTarget(self, action: #selector(titleTextFieldDoneEditing),
-                                  for: .editingDidEndOnExit)
+    self.isBackersOnlyButton.addTarget(
+      self, action: #selector(self.isBackersOnlyButtonTapped),
+      for: .touchUpInside
+    )
+    self.titleTextField.addTarget(
+      self, action: #selector(self.titleTextFieldDidChange),
+      for: .editingChanged
+    )
+    self.titleTextField.addTarget(
+      self, action: #selector(self.titleTextFieldDoneEditing),
+      for: .editingDidEndOnExit
+    )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -197,8 +207,10 @@ internal final class UpdateDraftViewController: UIViewController {
   }
 
   @objc fileprivate func addAttachmentButtonTapped() {
-    self.viewModel.inputs.addAttachmentButtonTapped(availableSources: [.camera, .cameraRoll]
-      .filter { UIImagePickerController.isSourceTypeAvailable($0.sourceType) })
+    self.viewModel.inputs.addAttachmentButtonTapped(
+      availableSources: [.camera, .cameraRoll]
+        .filter { UIImagePickerController.isSourceTypeAvailable($0.sourceType) }
+    )
   }
 
   @objc fileprivate func titleTextFieldDidChange() {
@@ -215,11 +227,13 @@ internal final class UpdateDraftViewController: UIViewController {
     for action in actions {
       attachmentSheet.addAction(.init(title: action.title, style: .default, handler: { [weak self] _ in
         self?.viewModel.inputs.addAttachmentSheetButtonTapped(action)
-        }))
+      }))
     }
-    attachmentSheet.addAction(.init(title: Strings.dashboard_post_update_compose_attachment_buttons_cancel(),
+    attachmentSheet.addAction(.init(
+      title: Strings.dashboard_post_update_compose_attachment_buttons_cancel(),
       style: .cancel,
-      handler: nil))
+      handler: nil
+    ))
 
     // iPad provision
     attachmentSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
@@ -237,7 +251,7 @@ internal final class UpdateDraftViewController: UIViewController {
   fileprivate func animateBottomConstraint(_ change: Keyboard.Change) {
     UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
       self.bottomConstraint.constant = self.view.frame.maxY - change.frame.minY
-      }, completion: nil)
+    }, completion: nil)
   }
 
   fileprivate func imageView(forAttachment attachment: UpdateDraft.Attachment) -> UIImageView {
@@ -249,7 +263,7 @@ internal final class UpdateDraftViewController: UIViewController {
       imageView.ksr_setImageWithURL(url)
     }
 
-    let tap = UITapGestureRecognizer(target: self, action: #selector(attachmentTapped))
+    let tap = UITapGestureRecognizer(target: self, action: #selector(self.attachmentTapped))
     tap.cancelsTouchesInView = false
     imageView.addGestureRecognizer(tap)
 
@@ -297,23 +311,26 @@ extension UpdateDraftViewController: UITextViewDelegate {
 extension UpdateDraftViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   @objc internal func imagePickerController(
     _ picker: UIImagePickerController,
-    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-// Local variable inserted by Swift 4.2 migrator.
+    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+  ) {
+    // Local variable inserted by Swift 4.2 migrator.
     let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
 
     guard
       let image = info[
-          convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)
-        ] as? UIImage,
+        convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)
+      ] as? UIImage,
       let imageData = image.jpegData(compressionQuality: 0.9),
       let caches = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
-      else { fatalError() }
+    else { fatalError() }
 
     let file = URL(fileURLWithPath: caches).appendingPathComponent("\(image.hash).jpg")
     try? imageData.write(to: file, options: [.atomic])
 
-    self.viewModel.inputs.imagePicked(url: file,
-                                      fromSource: AttachmentSource(sourceType: picker.sourceType))
+    self.viewModel.inputs.imagePicked(
+      url: file,
+      fromSource: AttachmentSource(sourceType: picker.sourceType)
+    )
     picker.dismiss(animated: true, completion: nil)
   }
 
@@ -323,10 +340,11 @@ extension UpdateDraftViewController: UIImagePickerControllerDelegate, UINavigati
   }
 }
 
-private func after(_ seconds: TimeInterval,
-                   queue: DispatchQueue = DispatchQueue.main,
-                   body: @escaping () -> Void) {
-
+private func after(
+  _ seconds: TimeInterval,
+  queue: DispatchQueue = DispatchQueue.main,
+  body: @escaping () -> Void
+) {
   queue.asyncAfter(
     deadline: DispatchTime.now() + Double(Int64(seconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC),
     execute: body
@@ -335,14 +353,14 @@ private func after(_ seconds: TimeInterval,
 
 // Helper function inserted by Swift 4.2 migrator.
 private func convertFromUIImagePickerControllerInfoKeyDictionary(
-  _ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
-
-  return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+  _ input: [UIImagePickerController.InfoKey: Any]
+) -> [String: Any] {
+  return Dictionary(uniqueKeysWithValues: input.map { key, value in (key.rawValue, value) })
 }
 
 // Helper function inserted by Swift 4.2 migrator.
 private func convertFromUIImagePickerControllerInfoKey(
-  _ input: UIImagePickerController.InfoKey) -> String {
-
+  _ input: UIImagePickerController.InfoKey
+) -> String {
   return input.rawValue
 }

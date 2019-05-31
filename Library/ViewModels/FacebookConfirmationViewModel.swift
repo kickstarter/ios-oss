@@ -1,6 +1,6 @@
 import KsApi
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol FacebookConfirmationViewModelInputs {
   /// Call when view controller's viewDidLoad() is called
@@ -45,15 +45,16 @@ public protocol FacebookConfirmationViewModelType {
 }
 
 public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelType,
-FacebookConfirmationViewModelInputs, FacebookConfirmationViewModelOutputs,
-FacebookConfirmationViewModelErrors {
-
+  FacebookConfirmationViewModelInputs, FacebookConfirmationViewModelOutputs,
+  FacebookConfirmationViewModelErrors {
   // MARK: FacebookConfirmationViewModelType
+
   public var inputs: FacebookConfirmationViewModelInputs { return self }
   public var outputs: FacebookConfirmationViewModelOutputs { return self }
   public var errors: FacebookConfirmationViewModelErrors { return self }
 
   // MARK: FacebookConfirmationViewModelInputs
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -90,6 +91,7 @@ FacebookConfirmationViewModelErrors {
   }
 
   // MARK: FacebookConfirmationViewModelOutputs
+
   public let displayEmail: Signal<String, Never>
   public let sendNewsletters: Signal<Bool, Never>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
@@ -98,6 +100,7 @@ FacebookConfirmationViewModelErrors {
   public let isLoading: Signal<Bool, Never>
 
   // MARK: FacebookConfirmationViewModelErrors
+
   public let showSignupError: Signal<String, Never>
 
   public init() {
@@ -122,10 +125,11 @@ FacebookConfirmationViewModelErrors {
             },
             terminated: {
               isLoading.value = false
-          })
+            }
+          )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.logIntoEnvironment = signupEvent.values()
 
@@ -135,8 +139,8 @@ FacebookConfirmationViewModelErrors {
     self.showSignupError = signupEvent.errors()
       .map { error in
         error.errorMessages.first ??
-            Strings.facebook_confirmation_could_not_log_in()
-    }
+          Strings.facebook_confirmation_could_not_log_in()
+      }
 
     self.showLogin = self.loginButtonPressedProperty.signal
 
@@ -156,6 +160,6 @@ FacebookConfirmationViewModelErrors {
         AppEnvironment.current.koala.trackChangeNewsletter(
           newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .facebookSignup
         )
-    }
+      }
   }
 }

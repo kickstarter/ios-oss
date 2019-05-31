@@ -1,9 +1,9 @@
 import Foundation
+@testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
-@testable import Library
-import ReactiveExtensions_TestHelpers
 
 internal final class MessageBannerViewModelTests: TestCase {
   let vm = MessageBannerViewModel()
@@ -19,13 +19,13 @@ internal final class MessageBannerViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.bannerBackgroundColor.observe(bannerBackgroundColor.observer)
-    self.vm.outputs.bannerMessage.observe(bannerMessage.observer)
-    self.vm.outputs.iconIsHidden.observe(iconIsHidden.observer)
-    self.vm.outputs.iconTintColor.observe(iconTintColor.observer)
-    self.vm.outputs.messageBannerViewIsHidden.observe(messageBannerViewIsHidden.observer)
-    self.vm.outputs.messageTextAlignment.observe(messageTextAlignment.observer)
-    self.vm.outputs.messageTextColor.observe(messageTextColor.observer)
+    self.vm.outputs.bannerBackgroundColor.observe(self.bannerBackgroundColor.observer)
+    self.vm.outputs.bannerMessage.observe(self.bannerMessage.observer)
+    self.vm.outputs.iconIsHidden.observe(self.iconIsHidden.observer)
+    self.vm.outputs.iconTintColor.observe(self.iconTintColor.observer)
+    self.vm.outputs.messageBannerViewIsHidden.observe(self.messageBannerViewIsHidden.observer)
+    self.vm.outputs.messageTextAlignment.observe(self.messageTextAlignment.observer)
+    self.vm.outputs.messageTextColor.observe(self.messageTextColor.observer)
   }
 
   func testWithSuccessConfiguration() {
@@ -72,7 +72,6 @@ internal final class MessageBannerViewModelTests: TestCase {
 
       self.messageBannerViewIsHidden.assertValues([false, true], "Message banner should hide")
     }
-
   }
 
   func testShowHideFiltersRepeats() {

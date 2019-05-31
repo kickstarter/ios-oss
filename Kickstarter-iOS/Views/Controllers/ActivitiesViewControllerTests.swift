@@ -130,8 +130,10 @@ internal final class ActivitiesViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(
-        apiService: MockService(fetchActivitiesResponse: activities,
-        fetchUnansweredSurveyResponsesResponse: [survey]),
+        apiService: MockService(
+          fetchActivitiesResponse: activities,
+          fetchUnansweredSurveyResponsesResponse: [survey]
+        ),
         currentUser: .template |> \.facebookConnected .~ true,
         language: language,
         userDefaults: MockKeyValueStore()
@@ -139,7 +141,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
         let vc = ActivitiesViewController.instantiate()
         vc.viewWillAppear(true)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = 2360
+        parent.view.frame.size.height = 2_360
 
         self.scheduler.run()
 
@@ -166,8 +168,10 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchActivitiesResponse: [launch],
-          fetchUnansweredSurveyResponsesResponse: [survey, survey2]),
+        apiService: MockService(
+          fetchActivitiesResponse: [launch],
+          fetchUnansweredSurveyResponsesResponse: [survey, survey2]
+        ),
         currentUser: you |> \.facebookConnected .~ false |> \.needsFreshFacebookToken .~ true,
         language: language,
         userDefaults: MockKeyValueStore()
@@ -199,8 +203,10 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchActivitiesResponse: [launch],
-                                fetchUnansweredSurveyResponsesResponse: [survey, survey2]),
+        apiService: MockService(
+          fetchActivitiesResponse: [launch],
+          fetchUnansweredSurveyResponsesResponse: [survey, survey2]
+        ),
         currentUser: you |> \.facebookConnected .~ true |> \.needsFreshFacebookToken .~ true,
         language: language,
         userDefaults: MockKeyValueStore()

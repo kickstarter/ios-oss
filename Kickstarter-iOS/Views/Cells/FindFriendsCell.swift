@@ -4,8 +4,8 @@ import Library
 import Prelude
 
 final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
-  @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var arrowImageView: UIImageView!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   private let viewModel: FindFriendsCellViewModelType = FindFriendsCellViewModel()
 
@@ -21,19 +21,19 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
 
     self.viewModel.outputs.isDisabled
       .observeForUI()
-      .observeValues { [weak self] (isDisabled) in
+      .observeValues { [weak self] isDisabled in
         self?.updateStyles(isDisabled: isDisabled)
-    }
+      }
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = titleLabel
+    _ = self.titleLabel
       |> settingsTitleLabelStyle
       |> \.text .~ SettingsCellType.findFriends.title
 
-    _ = arrowImageView
+    _ = self.arrowImageView
       |> settingsArrowViewStyle
   }
 

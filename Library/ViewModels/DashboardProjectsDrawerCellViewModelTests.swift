@@ -1,11 +1,11 @@
-import XCTest
-import ReactiveSwift
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
-  internal final class DashboardProjectsDrawerCellViewModelTests: TestCase {
+internal final class DashboardProjectsDrawerCellViewModelTests: TestCase {
   internal let vm: DashboardProjectsDrawerCellViewModelType = DashboardProjectsDrawerCellViewModel()
 
   let isCheckmarkHidden = TestObserver<Bool, Never>()

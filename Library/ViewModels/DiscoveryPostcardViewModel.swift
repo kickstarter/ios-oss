@@ -15,15 +15,20 @@ private enum PostcardMetadataType {
   fileprivate func data(forProject project: Project) -> PostcardMetadataData? {
     switch self {
     case .backing:
-      return PostcardMetadataData(iconImage: image(named: "metadata-backing"),
-                                  labelText: Strings.discovery_baseball_card_metadata_backer(),
-                                  iconAndTextColor: .ksr_green_700)
+      return PostcardMetadataData(
+        iconImage: image(named: "metadata-backing"),
+        labelText: Strings.discovery_baseball_card_metadata_backer(),
+        iconAndTextColor: .ksr_green_700
+      )
     case .featured:
       guard let rootCategory = project.category.parent?.name else { return nil }
-      return PostcardMetadataData(iconImage: image(named: "metadata-featured"),
-                                  labelText: Strings.discovery_baseball_card_metadata_featured_project(
-                                    category_name: rootCategory),
-                                  iconAndTextColor: .ksr_soft_black)
+      return PostcardMetadataData(
+        iconImage: image(named: "metadata-featured"),
+        labelText: Strings.discovery_baseball_card_metadata_featured_project(
+          category_name: rootCategory
+        ),
+        iconAndTextColor: .ksr_soft_black
+      )
     }
   }
 }
@@ -132,7 +137,6 @@ public protocol DiscoveryPostcardViewModelType {
 
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   DiscoveryPostcardViewModelInputs, DiscoveryPostcardViewModelOutputs {
-
   public init() {
     let configuredProject = self.projectProperty.signal.skipNil()
 
@@ -150,7 +154,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
         $0.state == .live
           ? Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
           : ("", "")
-    }
+      }
 
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
     self.deadlineSubtitleLabelText = deadlineTitleAndSubtitle.map(second)
@@ -188,7 +192,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
         $0.state != .live
           ? Format.date(secondsInUTC: $0.dates.stateChangedAt, dateStyle: .medium, timeStyle: .none)
           : ""
-    }
+      }
 
     self.projectStateTitleLabelColor = configuredProject
       .map { $0.state == .successful ? .ksr_green_700 : .ksr_soft_black }
@@ -203,20 +207,20 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
     self.projectCategoryViewHidden = Signal.combineLatest(
       self.projectProperty.signal.skipNil(),
       self.categoryProperty.signal
-      ).map { (project, category) in
-        guard let category = category else {
-          // Always show category when filter category is nil
-          return false
-        }
-
-        // if we are in a subcategory, compare categories
-        if !category.isRoot {
-          return Int(project.category.id) == category.intID
-        }
-
-        // otherwise, always show category
+    ).map { project, category in
+      guard let category = category else {
+        // Always show category when filter category is nil
         return false
       }
+
+      // if we are in a subcategory, compare categories
+      if !category.isRoot {
+        return Int(project.category.id) == category.intID
+      }
+
+      // otherwise, always show category
+      return false
+    }
 
     self.projectIsStaffPickLabelHidden = configuredProject
       .map { $0.staffPick }
@@ -224,11 +228,12 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     let projectCategoryViewsHidden = Signal.combineLatest(
       self.projectCategoryViewHidden.signal,
-      self.projectIsStaffPickLabelHidden.signal)
+      self.projectIsStaffPickLabelHidden.signal
+    )
 
     self.projectCategoryStackViewHidden = projectCategoryViewsHidden
       .map { projectCategoryViews in
-          return projectCategoryViews.0 && projectCategoryViews.1
+        projectCategoryViews.0 && projectCategoryViews.1
       }
 
     self.projectStatsStackViewHidden = self.projectStateStackViewHidden.map(negate)
@@ -303,13 +308,17 @@ private func socialText(forFriends friends: [User]) -> String? {
   if friends.count == 1 {
     return Strings.project_social_friend_is_backer(friend_name: friends[0].name)
   } else if friends.count == 2 {
-    return Strings.project_social_friend_and_friend_are_backers(friend_name: friends[0].name,
-                                                                second_friend_name: friends[1].name)
+    return Strings.project_social_friend_and_friend_are_backers(
+      friend_name: friends[0].name,
+      second_friend_name: friends[1].name
+    )
   } else if friends.count > 2 {
     let remainingCount = max(0, friends.count - 2)
-    return Strings.discovery_baseball_card_social_friends_are_backers(friend_name: friends[0].name,
-                                                                      second_friend_name: friends[1].name,
-                                                                      remaining_count: remainingCount)
+    return Strings.discovery_baseball_card_social_friends_are_backers(
+      friend_name: friends[0].name,
+      second_friend_name: friends[1].name,
+      remaining_count: remainingCount
+    )
   } else {
     return nil
   }

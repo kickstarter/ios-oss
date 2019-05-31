@@ -8,7 +8,7 @@ private typealias Line = (start: CGPoint, end: CGPoint)
 public final class FundingGraphView: UIView {
   fileprivate let goalLabel = UILabel()
 
-  override public init(frame: CGRect) {
+  public override init(frame: CGRect) {
     super.init(frame: frame)
     self.setUp()
   }
@@ -58,18 +58,20 @@ public final class FundingGraphView: UIView {
     }
   }
 
-    public override func draw(_ rect: CGRect) {
+  public override func draw(_ rect: CGRect) {
     super.draw(rect)
 
     // Map the date and pledged amount to (dayNumber, pledgedAmount).
-    let datePledgedPoints = stats
+    let datePledgedPoints = self.stats
       .enumerated()
       .map { index, stat in CGPoint(x: index, y: stat.cumulativePledged) }
 
-    let durationInDays = dateToDayNumber(launchDate: project.dates.launchedAt,
-                                         currentDate: project.dates.deadline)
+    let durationInDays = dateToDayNumber(
+      launchDate: project.dates.launchedAt,
+      currentDate: self.project.dates.deadline
+    )
 
-    let goal = project.stats.goal
+    let goal = self.project.stats.goal
 
     let pointsPerDay = (self.bounds.width - self.layoutMargins.left) / durationInDays
 
@@ -100,10 +102,9 @@ public final class FundingGraphView: UIView {
     UIColor.ksr_navy_400.setFill()
     line.fill(with: .color, alpha: 0.4)
 
-    let projectHasFunded = stats.last?.cumulativePledged ?? 0 >= goal
+    let projectHasFunded = self.stats.last?.cumulativePledged ?? 0 >= goal
     if projectHasFunded {
-
-      let rightFundedStat = stats.split { $0.cumulativePledged < goal }.last?.first
+      let rightFundedStat = self.stats.split { $0.cumulativePledged < goal }.last?.first
       let rightFundedPoint = CGPoint(
         x: dateToDayNumber(
           launchDate: stats.first?.date ?? 0,
@@ -112,15 +113,16 @@ public final class FundingGraphView: UIView {
         y: CGFloat(rightFundedStat?.cumulativePledged ?? 0)
       )
 
-      let leftFundedStat = stats.filter { $0.cumulativePledged < goal }.last
+      let leftFundedStat = self.stats.filter { $0.cumulativePledged < goal }.last
       let leftFundedPoint = isNil(leftFundedStat) ?
         CGPoint(x: 0.0, y: 0.0) :
         CGPoint(
           x: dateToDayNumber(
-            launchDate: stats.first?.date ?? 0,
-            currentDate: leftFundedStat?.date ?? 0),
+            launchDate: self.stats.first?.date ?? 0,
+            currentDate: leftFundedStat?.date ?? 0
+          ),
           y: CGFloat(leftFundedStat?.cumulativePledged ?? 0)
-      )
+        )
 
       let leftPointX = leftFundedPoint.x * pointsPerDay + self.layoutMargins.left
       let leftPointY = self.bounds.height - min(leftFundedPoint.y * pointsPerDollar, self.bounds.height)
@@ -134,12 +136,16 @@ public final class FundingGraphView: UIView {
       let lineA = Line(start: lineAPoint1, end: lineAPoint2)
 
       // Intersecting funded horizontal line.
-      let lineBPoint1 = CGPoint(x: self.layoutMargins.left,
-                                y: self.bounds.height -
-                                  min(CGFloat(goal) * pointsPerDollar, self.bounds.height))
-      let lineBPoint2 = CGPoint(x: self.bounds.width,
-                                y: self.bounds.height -
-                                  min(CGFloat(goal) * pointsPerDollar, self.bounds.height))
+      let lineBPoint1 = CGPoint(
+        x: self.layoutMargins.left,
+        y: self.bounds.height -
+          min(CGFloat(goal) * pointsPerDollar, self.bounds.height)
+      )
+      let lineBPoint2 = CGPoint(
+        x: self.bounds.width,
+        y: self.bounds.height -
+          min(CGFloat(goal) * pointsPerDollar, self.bounds.height)
+      )
       let lineB = Line(start: lineBPoint1, end: lineBPoint2)
 
       let fundedPoint = intersection(ofLine: lineA, withLine: lineB)
@@ -194,9 +200,13 @@ public final class FundingGraphView: UIView {
       fundedDotFill.fill()
 
     } else {
-      let goalLine = Line(start: CGPoint(x: 0.0, y: self.bounds.height - CGFloat(goal) * pointsPerDollar),
-                          end: CGPoint(x: self.bounds.width,
-                            y: self.bounds.height - CGFloat(goal) * pointsPerDollar))
+      let goalLine = Line(
+        start: CGPoint(x: 0.0, y: self.bounds.height - CGFloat(goal) * pointsPerDollar),
+        end: CGPoint(
+          x: self.bounds.width,
+          y: self.bounds.height - CGFloat(goal) * pointsPerDollar
+        )
+      )
       let goalPath = UIBezierPath()
       goalPath.lineWidth = self.lineThickness / 2
       goalPath.move(to: goalLine.start)
@@ -210,8 +220,10 @@ public final class FundingGraphView: UIView {
 
       self.goalLabel.frame = self.goalLabel.frame.insetBy(dx: -6, dy: -3).integral
 
-      self.goalLabel.center = CGPoint(x: self.bounds.width - 16 - self.goalLabel.frame.width / 2,
-                                      y: goalLine.end.y - self.goalLabel.frame.height / 2)
+      self.goalLabel.center = CGPoint(
+        x: self.bounds.width - 16 - self.goalLabel.frame.width / 2,
+        y: goalLine.end.y - self.goalLabel.frame.height / 2
+      )
     }
 
     self.goalLabel.isHidden = projectHasFunded
@@ -250,9 +262,10 @@ private func slope(ofLine line: Line) -> CGFloat {
 }
 
 // Returns the day number, given the start and current date in seconds.
-private func dateToDayNumber(launchDate: TimeInterval,
-                             currentDate: TimeInterval,
-                             calendar: Calendar = AppEnvironment.current.calendar) -> CGFloat {
-
+private func dateToDayNumber(
+  launchDate: TimeInterval,
+  currentDate: TimeInterval,
+  calendar _: Calendar = AppEnvironment.current.calendar
+) -> CGFloat {
   return CGFloat((currentDate - launchDate) / 60.0 / 60.0 / 24.0)
 }

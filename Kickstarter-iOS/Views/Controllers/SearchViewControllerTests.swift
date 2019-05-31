@@ -1,11 +1,10 @@
+@testable import Kickstarter_Framework
+@testable import KsApi
 import Library
 import Prelude
 import XCTest
-@testable import Kickstarter_Framework
-@testable import KsApi
 
 internal final class SearchViewContollerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
@@ -34,8 +33,8 @@ internal final class SearchViewContollerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
-          apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
-
+          apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
+        ) {
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
           controller.viewWillAppear(true)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -43,8 +42,8 @@ internal final class SearchViewContollerTests: TestCase {
           self.scheduler.run()
 
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        }
       }
-    }
   }
 
   func testView_EmptyState() {
@@ -54,8 +53,8 @@ internal final class SearchViewContollerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
-        apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
-
+          apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
+        ) {
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
@@ -64,8 +63,8 @@ internal final class SearchViewContollerTests: TestCase {
           self.scheduler.run()
 
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        }
       }
-    }
   }
 
   func testView_SearchState() {
@@ -84,8 +83,8 @@ internal final class SearchViewContollerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
         withEnvironment(
-        apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language) {
-
+          apiService: MockService(fetchDiscoveryResponse: discoveryResponse), language: language
+        ) {
           let controller = Storyboard.Search.instantiate(SearchViewController.self)
           controller.viewWillAppear(true)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -95,8 +94,8 @@ internal final class SearchViewContollerTests: TestCase {
           self.scheduler.run()
 
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        }
       }
-    }
   }
 
   func testScrollToTop() {

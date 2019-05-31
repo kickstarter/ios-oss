@@ -13,10 +13,12 @@ public struct WKNavigationActionData {
     self.targetFrame = navigationAction.targetFrame.map(WKFrameInfoData.init(frameInfo:))
   }
 
-  internal init(navigationType: WKNavigationType,
-                request: URLRequest,
-                sourceFrame: WKFrameInfoData,
-                targetFrame: WKFrameInfoData?) {
+  internal init(
+    navigationType: WKNavigationType,
+    request: URLRequest,
+    sourceFrame _: WKFrameInfoData,
+    targetFrame: WKFrameInfoData?
+  ) {
     self.navigationAction = WKNavigationAction()
     self.navigationType = navigationType
     self.request = request
@@ -33,7 +35,7 @@ public struct WKFrameInfoData {
     self.mainFrame = frameInfo.isMainFrame
   }
 
-  public init(mainFrame: Bool, request: URLRequest) {
+  public init(mainFrame: Bool, request _: URLRequest) {
     self.frameInfo = WKFrameInfo()
     self.mainFrame = mainFrame
   }

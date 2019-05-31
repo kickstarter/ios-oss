@@ -366,8 +366,10 @@ final class CreatePasswordViewModelTests: TestCase {
 
       self.createPasswordSuccess.assertValueCount(1)
 
-      XCTAssertEqual([Koala.CreatePasswordTrackingEvent.viewed.rawValue,
-                      Koala.CreatePasswordTrackingEvent.passwordCreated.rawValue], client.events)
+      XCTAssertEqual([
+        Koala.CreatePasswordTrackingEvent.viewed.rawValue,
+        Koala.CreatePasswordTrackingEvent.passwordCreated.rawValue
+      ], client.events)
     }
   }
 }

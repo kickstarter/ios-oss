@@ -1,11 +1,9 @@
-import XCTest
 @testable import KsApi
 import Prelude
+import XCTest
 
 final class UpdateDraftTests: XCTestCase {
-
   func testJSONParsing_WithCompleteData() {
-
     let decoded = UpdateDraft.decodeJSONDictionary([
       "body": "world",
       "id": 1,
@@ -21,7 +19,7 @@ final class UpdateDraftTests: XCTestCase {
       ],
       "images": [["id": 3, "thumb": "thumb.jpg", "full": "full.jpg"]],
       "video": ["id": 4, "frame": "frame.jpg", "status": "successful"]
-      ])
+    ])
 
     XCTAssertNil(decoded.error)
     let draft = decoded.value
@@ -31,7 +29,6 @@ final class UpdateDraftTests: XCTestCase {
   }
 
   func testAttachmentThumbUrl() {
-
     let image = UpdateDraft.Attachment.image(.template |> UpdateDraft.Image.lens.full .~ "full.jpg")
     XCTAssertEqual("full.jpg", image.thumbUrl)
 

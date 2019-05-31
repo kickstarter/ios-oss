@@ -7,11 +7,11 @@ import UIKit
 internal final class MessageCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: MessageCellViewModelType = MessageCellViewModel()
 
-  @IBOutlet private weak var avatarImageView: UIImageView!
-  @IBOutlet private weak var dividerView: UIView!
-  @IBOutlet private weak var nameLabel: UILabel!
-  @IBOutlet private weak var timestampLabel: UILabel!
-  @IBOutlet private weak var bodyTextView: UITextView!
+  @IBOutlet private var avatarImageView: UIImageView!
+  @IBOutlet private var dividerView: UIView!
+  @IBOutlet private var nameLabel: UILabel!
+  @IBOutlet private var timestampLabel: UILabel!
+  @IBOutlet private var bodyTextView: UITextView!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -34,7 +34,7 @@ internal final class MessageCell: UITableViewCell, ValueCell {
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
           : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
-    }
+      }
 
     _ = self.avatarImageView
       |> ignoresInvertColorsImageViewStyle
@@ -70,6 +70,6 @@ internal final class MessageCell: UITableViewCell, ValueCell {
       .skipNil()
       .observeValues { [weak self] in
         self?.avatarImageView.af_setImage(withURL: $0)
-    }
+      }
   }
 }

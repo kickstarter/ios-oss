@@ -37,7 +37,6 @@ public protocol ActivityProjectStatusViewModelType {
 
 public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewModelType,
   ActivityProjectStatusViewModelInputs, ActivityProjectStatusViewModelOutputs {
-
   public init() {
     let activity = self.activityProperty.signal.skipNil()
     let project = activity.map { $0.project }.skipNil()
@@ -107,8 +106,10 @@ private func metadataColor(forActivityCategory category: Activity.Category) -> U
   }
 }
 
-private func metadataString(forActivityCategory category: Activity.Category,
-                            isCreatorUser: Bool, friendName: String) -> String {
+private func metadataString(
+  forActivityCategory category: Activity.Category,
+  isCreatorUser: Bool, friendName: String
+) -> String {
   switch category {
   case .cancellation:
     return Strings.Project_Cancelled()
@@ -135,5 +136,5 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
   return NSAttributedString(string: percentage, attributes: [
     NSAttributedString.Key.font: UIFont.ksr_caption1(size: 10),
     NSAttributedString.Key.foregroundColor: UIColor.ksr_green_700
-    ])
+  ])
 }

@@ -1,11 +1,11 @@
 import UIKit
 
 public extension UIPress.Phase {
-  public var isStartingPhase: Bool {
+  var isStartingPhase: Bool {
     return self == .began
   }
 
-  public var isTerminatingPhase: Bool {
+  var isTerminatingPhase: Bool {
     return self == .cancelled || self == .ended
   }
 }

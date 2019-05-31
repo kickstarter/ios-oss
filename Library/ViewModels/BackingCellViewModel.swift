@@ -5,6 +5,7 @@ import UIKit
 public protocol BackingCellViewModelInputs {
   func configureWith(backing: Backing, project: Project, isFromBacking: Bool)
 }
+
 public protocol BackingCellViewModelOutputs {
   /// Emits a boolean whether the backing info button is hidden or not.
   var backingInfoButtonIsHidden: Signal<Bool, Never> { get }
@@ -21,8 +22,7 @@ public protocol BackingCellViewModelType {
 }
 
 public final class BackingCellViewModel: BackingCellViewModelType, BackingCellViewModelInputs,
-BackingCellViewModelOutputs {
-
+  BackingCellViewModelOutputs {
   public init() {
     let backingAndProjectAndIsFromBacking = self.backingAndProjectAndIsFromBackingProperty.signal.skipNil()
     let backing = backingAndProjectAndIsFromBacking.map { $0.0 }
@@ -31,8 +31,9 @@ BackingCellViewModelOutputs {
       .map { _, _, isFromBacking in isFromBacking }
 
     self.pledged = backingAndProjectAndIsFromBacking.map { backing, project, _ in
-        Strings.backing_info_pledged_backing_amount(
-            backing_amount: Format.currency(backing.amount, country: project.country))
+      Strings.backing_info_pledged_backing_amount(
+        backing_amount: Format.currency(backing.amount, country: project.country)
+      )
     }
 
     self.reward = backing.map { $0.reward?.description ?? "" }
@@ -40,7 +41,8 @@ BackingCellViewModelOutputs {
     self.delivery = backing.map { backing in
       backing.reward?.estimatedDeliveryOn.map {
         Strings.backing_info_estimated_delivery_date(
-          delivery_date: Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone))
+          delivery_date: Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone)
+        )
       }
     }
     .map { $0 ?? "" }

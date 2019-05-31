@@ -1,7 +1,7 @@
-import Library
 import KsApi
-import UIKit
+import Library
 import Prelude
+import UIKit
 
 internal final class DashboardRewardRowStackView: UIStackView {
   fileprivate let vm: DashboardRewardRowStackViewViewModelType = DashboardRewardRowStackViewViewModel()
@@ -10,11 +10,12 @@ internal final class DashboardRewardRowStackView: UIStackView {
   fileprivate let backersLabel: UILabel = UILabel()
   fileprivate let pledgedLabel: UILabel = UILabel()
 
-  internal init(frame: CGRect,
-                country: Project.Country,
-                reward: ProjectStatsEnvelope.RewardStats,
-                totalPledged: Int) {
-
+  internal init(
+    frame: CGRect,
+    country: Project.Country,
+    reward: ProjectStatsEnvelope.RewardStats,
+    totalPledged: Int
+  ) {
     super.init(frame: frame)
 
     _ = self
@@ -40,7 +41,7 @@ internal final class DashboardRewardRowStackView: UIStackView {
     self.vm.inputs.configureWith(country: country, reward: reward, totalPledged: totalPledged)
   }
 
-  required init(coder: NSCoder) {
+  required init(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 }

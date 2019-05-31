@@ -16,9 +16,9 @@ public protocol FindFriendsCellViewModelType {
 }
 
 public final class FindFriendsCellViewModel: FindFriendsCellViewModelInputs,
-FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
+  FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
   public init() {
-    let isFollowingEnabled = userProperty.signal
+    let isFollowingEnabled = self.userProperty.signal
       .skipNil()
       .map { $0 |> User.lens.social.view }
       .skipNil()

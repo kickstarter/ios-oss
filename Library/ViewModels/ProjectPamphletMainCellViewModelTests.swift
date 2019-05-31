@@ -1,10 +1,10 @@
-import Prelude
-import ReactiveSwift
-import ReactiveExtensions
-import XCTest
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 @testable import Library
+import Prelude
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class ProjectPamphletMainCellViewModelTests: TestCase {
   fileprivate let vm: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
@@ -78,8 +78,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: nonUSProject)
 
     self.statsStackViewAccessibilityLabel.assertValues(
-      [ "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
-        "$1,200 of $2,400 goal, 10 backers so far, 10 days to go to go"]
+      [
+        "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
+        "$1,200 of $2,400 goal, 10 backers so far, 10 days to go to go"
+      ]
     )
 
     let nonUSUserCurrency = project
@@ -89,10 +91,11 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: nonUSUserCurrency)
 
     self.statsStackViewAccessibilityLabel.assertValues(
-      [ "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
+      [
+        "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
         "$1,200 of $2,400 goal, 10 backers so far, 10 days to go to go",
         "£2,000 of £4,000 goal, 10 backers so far, 10 days to go to go"
-        ]
+      ]
     )
   }
 
@@ -164,7 +167,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testCreatorImageUrl() {
     let project = .template
-      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ "hello.jpg"
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ "hello.jpg"
     self.vm.inputs.configureWith(project: project)
     self.creatorImageUrl.assertValues(["hello.jpg"])
   }
@@ -217,8 +220,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testConversionLabel_WhenConversionNeeded_US_Project_NonUS_User() {
     let project = .template
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.pledged .~ 1000
-      |> Project.lens.stats.goal .~ 2000
+      |> Project.lens.stats.pledged .~ 1_000
+      |> Project.lens.stats.goal .~ 2_000
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.ca.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 1.3

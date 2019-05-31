@@ -24,7 +24,7 @@ public final class RootTabBarViewController: UITabBarController {
 
   fileprivate let viewModel: RootViewModelType = RootViewModel()
 
-  override public func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
     self.delegate = self
 
@@ -32,28 +32,30 @@ public final class RootTabBarViewController: UITabBarController {
       .default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-    }
+      }
 
     self.sessionEndedObserver = NotificationCenter
       .default
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
-    }
+      }
 
     self.userUpdatedObserver = NotificationCenter
       .default
       .addObserver(forName: Notification.Name.ksr_userUpdated, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.currentUserUpdated()
-    }
+      }
 
     self.userLocalePreferencesChanged = NotificationCenter
       .default
-      .addObserver(forName: Notification.Name.ksr_userLocalePreferencesChanged,
-                   object: nil,
-                   queue: nil,
-                   using: { [weak self] _ in
-        self?.viewModel.inputs.userLocalePreferencesChanged()
-      })
+      .addObserver(
+        forName: Notification.Name.ksr_userLocalePreferencesChanged,
+        object: nil,
+        queue: nil,
+        using: { [weak self] _ in
+          self?.viewModel.inputs.userLocalePreferencesChanged()
+        }
+      )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -64,7 +66,7 @@ public final class RootTabBarViewController: UITabBarController {
     self.userUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
-  override public func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self.tabBar
@@ -72,7 +74,7 @@ public final class RootTabBarViewController: UITabBarController {
       |> UITabBar.lens.barTintColor .~ tabBarTintColor
   }
 
-  override public func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.setViewControllers
@@ -81,7 +83,7 @@ public final class RootTabBarViewController: UITabBarController {
       .map { $0.map(UINavigationController.init(rootViewController:)) }
       .observeValues { [weak self] in
         self?.setViewControllers($0, animated: false)
-    }
+      }
 
     self.viewModel.outputs.selectedIndex
       .observeForUI()
@@ -184,7 +186,7 @@ public final class RootTabBarViewController: UITabBarController {
 
     self.presentedViewController?.dismiss(animated: false, completion: nil)
 
-     dashboardVC.navigateToProjectMessageThread(projectId: projectId, messageThread: messageThread)
+    dashboardVC.navigateToProjectMessageThread(projectId: projectId, messageThread: messageThread)
   }
 
   public func switchToProjectActivities(projectId: Param) {
@@ -220,14 +222,13 @@ public final class RootTabBarViewController: UITabBarController {
           data.isLoggedIn == true,
           let avatarUrl = avatarUrl,
           let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
-          else { return }
+        else { return }
 
         let hash = avatarUrl.absoluteString.hashValue
         let imagePath = "\(dir)/tabbar-avatar-image-\(hash).dat"
         let imageUrl = URL(fileURLWithPath: imagePath)
 
         if let imageData = try? Data(contentsOf: imageUrl) {
-
           let (defaultImage, selectedImage) = tabbarAvatarImageFromData(imageData)
           _ = self.tabBarItem(atIndex: index)
             ?|> profileTabBarItemStyle(isLoggedIn: true, isMember: data.isMember)
@@ -263,22 +264,27 @@ public final class RootTabBarViewController: UITabBarController {
 }
 
 extension RootTabBarViewController: UITabBarControllerDelegate {
-  public func tabBarController(_ tabBarController: UITabBarController,
-                               shouldSelect viewController: UIViewController) -> Bool {
+  public func tabBarController(
+    _ tabBarController: UITabBarController,
+    shouldSelect viewController: UIViewController
+  ) -> Bool {
     let index = tabBarController.viewControllers?.firstIndex(of: viewController)
     self.viewModel.inputs.shouldSelect(index: index)
     return true
   }
 
-  public func tabBarController(_ tabBarController: UITabBarController,
-                               didSelect viewController: UIViewController) {
+  public func tabBarController(
+    _ tabBarController: UITabBarController,
+    didSelect _: UIViewController
+  ) {
     self.viewModel.inputs.didSelect(index: tabBarController.selectedIndex)
   }
 
-  public func tabBarController(_ tabBarController: UITabBarController,
-                               animationControllerForTransitionFrom fromVC: UIViewController,
-                               to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-
+  public func tabBarController(
+    _: UITabBarController,
+    animationControllerForTransitionFrom _: UIViewController,
+    to _: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
     return CrossDissolveTransitionAnimator()
   }
 }
@@ -295,22 +301,27 @@ private func tabbarAvatarImageFromData(_ data: Data) -> (defaultImage: UIImage?,
     .af_imageAspectScaled(toFit: tabBarAvatarSize)
   avatar?.af_inflate()
 
-  let deselectedImage = strokedRoundImage(fromImage: avatar,
-                                          size: tabBarAvatarSize,
-                                          color: tabBarDeselectedColor)
-  let selectedImage = strokedRoundImage(fromImage: avatar,
-                                        size: tabBarAvatarSize,
-                                        color: tabBarSelectedColor,
-                                        lineWidth: 2.0)
+  let deselectedImage = strokedRoundImage(
+    fromImage: avatar,
+    size: tabBarAvatarSize,
+    color: tabBarDeselectedColor
+  )
+  let selectedImage = strokedRoundImage(
+    fromImage: avatar,
+    size: tabBarAvatarSize,
+    color: tabBarSelectedColor,
+    lineWidth: 2.0
+  )
 
   return (defaultImage: deselectedImage, selectedImage: selectedImage)
 }
 
-private func strokedRoundImage(fromImage image: UIImage?,
-                               size: CGSize,
-                               color: UIColor,
-                               lineWidth: CGFloat = 2.0) -> UIImage? {
-
+private func strokedRoundImage(
+  fromImage image: UIImage?,
+  size: CGSize,
+  color: UIColor,
+  lineWidth: CGFloat = 2.0
+) -> UIImage? {
   UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
   defer { UIGraphicsEndImageContext() }
 

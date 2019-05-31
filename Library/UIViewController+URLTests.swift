@@ -1,7 +1,7 @@
+@testable import Library
 import SafariServices
 import UIKit
 import XCTest
-@testable import Library
 
 final class UIViewControllerURLTests: TestCase {
   func testSupportedSchemes() {

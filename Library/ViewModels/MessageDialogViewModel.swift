@@ -48,9 +48,8 @@ public protocol MessageDialogViewModelType {
 }
 
 public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDialogViewModelInputs,
-MessageDialogViewModelOutputs {
-
-    public init() {
+  MessageDialogViewModelOutputs {
+  public init() {
     let messageSubject = self.messageSubjectProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
@@ -59,7 +58,7 @@ MessageDialogViewModelOutputs {
       .skipNil()
       .flatMap {
         AppEnvironment.current.apiService.fetchProject(param: .id($0.projectId)).demoteErrors()
-    }
+      }
 
     let project = Signal.merge(
       projectFromBacking,
@@ -81,13 +80,13 @@ MessageDialogViewModelOutputs {
     let sendMessageResult = Signal.combineLatest(
       body,
       messageSubject
-      )
-      .takeWhen(self.postButtonPressedProperty.signal)
-      .switchMap { body, messageSubject in
+    )
+    .takeWhen(self.postButtonPressedProperty.signal)
+    .switchMap { body, messageSubject in
 
-        AppEnvironment.current.apiService.sendMessage(body: body, toSubject: messageSubject)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
+      AppEnvironment.current.apiService.sendMessage(body: body, toSubject: messageSubject)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
     }
 
     self.notifyPresenterCommentWasPostedSuccesfully = sendMessageResult.values()
@@ -118,7 +117,7 @@ MessageDialogViewModelOutputs {
         case let .project(project):
           return .init(value: project.creator.name)
         }
-    }
+      }
 
     self.keyboardIsVisible = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
@@ -137,21 +136,27 @@ MessageDialogViewModelOutputs {
   public func bodyTextChanged(_ body: String) {
     self.bodyTextChangedProperty.value = body
   }
+
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
   }
+
   fileprivate let messageSubjectProperty = MutableProperty<MessageSubject?>(nil)
   fileprivate let contextProperty = MutableProperty<Koala.MessageDialogContext?>(nil)
-  public func configureWith(messageSubject: MessageSubject,
-                            context: Koala.MessageDialogContext) {
+  public func configureWith(
+    messageSubject: MessageSubject,
+    context: Koala.MessageDialogContext
+  ) {
     self.messageSubjectProperty.value = messageSubject
     self.contextProperty.value = context
   }
+
   fileprivate let postButtonPressedProperty = MutableProperty(())
   public func postButtonPressed() {
     self.postButtonPressedProperty.value = ()
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()

@@ -3,7 +3,7 @@ import Prelude
 import UIKit
 
 internal final class DiscoverySelectableRowCell: UITableViewCell, ValueCell {
-  @IBOutlet private weak var filterTitleLabel: UILabel!
+  @IBOutlet private var filterTitleLabel: UILabel!
 
   private var rowIsSelected: Bool = false
 

@@ -1,10 +1,10 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal protocol ProjectActivityBackingCellDelegate: class {
+internal protocol ProjectActivityBackingCellDelegate: AnyObject {
   func projectActivityBackingCellGoToBacking(project: Project, user: User)
   func projectActivityBackingCellGoToSendMessage(project: Project, backing: Backing)
 }
@@ -13,24 +13,24 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: ProjectActivityBackingCellViewModelType = ProjectActivityBackingCellViewModel()
   internal weak var delegate: ProjectActivityBackingCellDelegate?
 
-  @IBOutlet fileprivate weak var backerImageView: CircleAvatarImageView!
-  @IBOutlet fileprivate weak var backingButton: UIButton!
-  @IBOutlet fileprivate weak var bulletSeparatorView: UIView!
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var footerDividerView: UIView!
-  @IBOutlet fileprivate weak var footerStackView: UIStackView!
-  @IBOutlet fileprivate weak var headerDividerView: UIView!
-  @IBOutlet fileprivate weak var headerStackView: UIStackView!
-  @IBOutlet fileprivate weak var pledgeAmountLabel: UILabel!
-  @IBOutlet fileprivate weak var pledgeAmountLabelsStackView: UIStackView!
-  @IBOutlet fileprivate weak var pledgeAmountsStackView: UIView!
-  @IBOutlet fileprivate weak var pledgeDetailsSeparatorView: UIView!
-  @IBOutlet fileprivate weak var pledgeDetailsStackView: UIStackView!
-  @IBOutlet fileprivate weak var previousPledgeAmountLabel: UILabel!
-  @IBOutlet fileprivate weak var previousPledgeStrikethroughView: UIView!
-  @IBOutlet fileprivate weak var rewardLabel: UILabel!
-  @IBOutlet fileprivate weak var sendMessageButton: UIButton!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var backerImageView: CircleAvatarImageView!
+  @IBOutlet fileprivate var backingButton: UIButton!
+  @IBOutlet fileprivate var bulletSeparatorView: UIView!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var footerDividerView: UIView!
+  @IBOutlet fileprivate var footerStackView: UIStackView!
+  @IBOutlet fileprivate var headerDividerView: UIView!
+  @IBOutlet fileprivate var headerStackView: UIStackView!
+  @IBOutlet fileprivate var pledgeAmountLabel: UILabel!
+  @IBOutlet fileprivate var pledgeAmountLabelsStackView: UIStackView!
+  @IBOutlet fileprivate var pledgeAmountsStackView: UIView!
+  @IBOutlet fileprivate var pledgeDetailsSeparatorView: UIView!
+  @IBOutlet fileprivate var pledgeDetailsStackView: UIStackView!
+  @IBOutlet fileprivate var previousPledgeAmountLabel: UILabel!
+  @IBOutlet fileprivate var previousPledgeStrikethroughView: UIView!
+  @IBOutlet fileprivate var rewardLabel: UILabel!
+  @IBOutlet fileprivate var sendMessageButton: UIButton!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
@@ -43,11 +43,13 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
-    self.viewModel.inputs.configureWith(activity: activityAndProject.0,
-                                        project: activityAndProject.1)
+    self.viewModel.inputs.configureWith(
+      activity: activityAndProject.0,
+      project: activityAndProject.1
+    )
   }
 
-    internal override func bindViewModel() {
+  internal override func bindViewModel() {
     super.bindViewModel()
 
     self.rac.accessibilityLabel = self.viewModel.outputs.cellAccessibilityLabel
@@ -58,23 +60,23 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       .on(event: { [weak self] _ in
         self?.backerImageView.af_cancelImageRequest()
         self?.backerImageView.image = nil
-        })
+      })
       .skipNil()
       .observeValues { [weak self] url in
         self?.backerImageView.af_setImage(withURL: url)
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateGoToBacking
       .observeForUI()
       .observeValues { [weak self] project, user in
         self?.delegate?.projectActivityBackingCellGoToBacking(project: project, user: user)
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateGoToSendMessage
       .observeForUI()
       .observeValues { [weak self] project, backing in
         self?.delegate?.projectActivityBackingCellGoToSendMessage(project: project, backing: backing)
-    }
+      }
 
     self.pledgeAmountLabel.rac.hidden = self.viewModel.outputs.pledgeAmountLabelIsHidden
 
@@ -108,7 +110,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
         _ = rewardLabel
           |> UILabel.lens.numberOfLines .~ 0
           |> UILabel.lens.textColor .~ .ksr_text_navy_600
-    }
+      }
 
     self.viewModel.outputs.title.observeForUI()
       .observeValues { [weak titleLabel] title in
@@ -124,9 +126,9 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
             NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
           ],
           italic: nil
-          )
+        )
           ?? .init()
-    }
+      }
   }
 
   internal override func bindStyles() {
@@ -190,11 +192,11 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_send_message() }
   }
 
-  @objc fileprivate func backingButtonPressed(_ button: UIButton) {
+  @objc fileprivate func backingButtonPressed(_: UIButton) {
     self.viewModel.inputs.backingButtonPressed()
   }
 
-  @objc fileprivate func sendMessageButtonPressed(_ button: UIButton) {
+  @objc fileprivate func sendMessageButtonPressed(_: UIButton) {
     self.viewModel.inputs.sendMessageButtonPressed()
   }
 }

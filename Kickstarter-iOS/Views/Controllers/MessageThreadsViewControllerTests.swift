@@ -1,11 +1,10 @@
+@testable import Kickstarter_Framework
+@testable import KsApi
 import Library
 import Prelude
 import XCTest
-@testable import Kickstarter_Framework
-@testable import KsApi
 
 internal final class MessageThreadViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     UIView.setAnimationsEnabled(false)
@@ -42,11 +41,11 @@ internal final class MessageThreadViewControllerTests: TestCase {
       |> Message.lens.body .~ "Hey there. You replied to this message."
       |> Message.lens.sender .~ backer
 
-    let unreadMessageThread =  .template
+    let unreadMessageThread = .template
       |> MessageThread.lens.participant .~ nativeSquadTheCreator
       |> MessageThread.lens.lastMessage .~ unreadMessage
 
-    let readMessageThread =  .template
+    let readMessageThread = .template
       |> MessageThread.lens.participant .~ bobTheCreator
       |> MessageThread.lens.lastMessage .~ readMessage
       |> MessageThread.lens.unreadMessagesCount .~ 0

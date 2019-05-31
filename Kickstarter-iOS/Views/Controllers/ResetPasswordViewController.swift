@@ -1,15 +1,15 @@
 import Library
 import Prelude
 import Prelude_UIKit
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 import UIKit
 
 internal final class ResetPasswordViewController: UIViewController {
-  @IBOutlet private weak var emailTextFieldBackgroundView: UIView!
-  @IBOutlet private weak var emailTextField: UITextField!
-  @IBOutlet private weak var resetPasswordButton: UIButton!
-  @IBOutlet private weak var rootStackView: UIStackView!
+  @IBOutlet private var emailTextFieldBackgroundView: UIView!
+  @IBOutlet private var emailTextField: UITextField!
+  @IBOutlet private var resetPasswordButton: UIButton!
+  @IBOutlet private var rootStackView: UIStackView!
 
   fileprivate let viewModel: ResetPasswordViewModelType = ResetPasswordViewModel()
 
@@ -54,7 +54,8 @@ internal final class ResetPasswordViewController: UIViewController {
           message: message,
           handler: { _ in
             self?.viewModel.inputs.confirmResetButtonPressed()
-          }), animated: true, completion: nil)
+          }
+        ), animated: true, completion: nil)
       }
 
     self.viewModel.outputs.returnToLogin
@@ -76,7 +77,7 @@ internal final class ResetPasswordViewController: UIViewController {
   }
 
   @IBAction
-  internal func resetPasswordPressed(_ sender: UIButton) {
+  internal func resetPasswordPressed(_: UIButton) {
     self.emailTextField.resignFirstResponder()
     self.viewModel.inputs.resetButtonPressed()
   }

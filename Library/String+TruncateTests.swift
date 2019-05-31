@@ -1,8 +1,7 @@
-import XCTest
 @testable import Library
+import XCTest
 
 final class StringTruncateTests: XCTestCase {
-
   func testTruncates() {
     XCTAssertEqual("Hel…", "Hello".truncated(maxLength: 4))
     XCTAssertEqual("Hello", "Hello".truncated(maxLength: 5))

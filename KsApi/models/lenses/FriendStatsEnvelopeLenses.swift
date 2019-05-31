@@ -11,10 +11,10 @@ extension FriendStatsEnvelope {
 
 extension Lens where Whole == FriendStatsEnvelope, Part == FriendStatsEnvelope.Stats {
   public var friendProjectsCount: Lens<FriendStatsEnvelope, Int> {
-    return FriendStatsEnvelope.lens.stats..FriendStatsEnvelope.Stats.lens.friendProjectsCount
+    return FriendStatsEnvelope.lens.stats .. FriendStatsEnvelope.Stats.lens.friendProjectsCount
   }
 
   public var remoteFriendsCount: Lens<FriendStatsEnvelope, Int> {
-    return FriendStatsEnvelope.lens.stats..FriendStatsEnvelope.Stats.lens.remoteFriendsCount
+    return FriendStatsEnvelope.lens.stats .. FriendStatsEnvelope.Stats.lens.remoteFriendsCount
   }
 }

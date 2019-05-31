@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import ReactiveSwift
 import UIKit
@@ -20,11 +20,11 @@ internal enum RootViewControllerData: Equatable {
       return DiscoveryViewController.instantiate()
     case .activities:
       return ActivitiesViewController.instantiate()
-    case.search:
+    case .search:
       return SearchViewController.instantiate()
-    case .dashboard(let isMember):
+    case let .dashboard(isMember):
       return isMember ? DashboardViewController.instantiate() : nil
-    case .profile(let isLoggedIn):
+    case let .profile(isLoggedIn):
       return isLoggedIn
         ? BackerDashboardViewController.instantiate()
         : LoginToutViewController.configuredWith(loginIntent: .generic)
@@ -36,9 +36,9 @@ internal enum RootViewControllerData: Equatable {
     case (.discovery, .discovery): return true
     case (.activities, .activities): return true
     case (.search, .search): return true
-    case (.dashboard(let lhsIsMember), .dashboard(let rhsIsMember)):
+    case let (.dashboard(lhsIsMember), .dashboard(rhsIsMember)):
       return lhsIsMember == rhsIsMember
-    case (.profile(let lhsIsLoggedIn), .profile(let rhsIsLoggedIn)):
+    case let (.profile(lhsIsLoggedIn), .profile(rhsIsLoggedIn)):
       return lhsIsLoggedIn == rhsIsLoggedIn
     default:
       return false
@@ -47,7 +47,7 @@ internal enum RootViewControllerData: Equatable {
 
   var isNil: Bool {
     switch self {
-    case .dashboard(let isMember):
+    case let .dashboard(isMember):
       return !isMember
     default:
       return false
@@ -158,15 +158,14 @@ internal protocol RootViewModelType {
 }
 
 internal final class RootViewModel: RootViewModelType, RootViewModelInputs, RootViewModelOutputs {
-
   internal init() {
     let currentUser = Signal.merge(
       self.viewDidLoadProperty.signal,
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal,
       self.currentUserUpdatedProperty.signal
-      )
-      .map { AppEnvironment.current.currentUser }
+    )
+    .map { AppEnvironment.current.currentUser }
 
     let userState: Signal<(isLoggedIn: Bool, isMember: Bool), Never> = currentUser
       .map { ($0 != nil, ($0?.stats.memberProjectsCount ?? 0) > 0) }
@@ -217,12 +216,12 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     self.switchDashboardProject = Signal
       .combineLatest(dashboardControllerIndex, self.switchToDashboardProperty.signal.skipNil(), loginState)
-        .filter { _, _, loginState in
-          isTrue(loginState)
-        }
-        .map { dashboard, param, _ in
-          (dashboard, param)
-    }
+      .filter { _, _, loginState in
+        isTrue(loginState)
+      }
+      .map { dashboard, param, _ in
+        (dashboard, param)
+      }
 
     self.selectedIndex = Signal.combineLatest(
       .merge(
@@ -257,12 +256,14 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .filter { prev, next in prev == next }
       .map { $1 }
 
-    self.tabBarItemsData = Signal.combineLatest(currentUser, .merge(
-      self.viewDidLoadProperty.signal,
-      self.userLocalePreferencesChangedProperty.signal.ignoreValues())
+    self.tabBarItemsData = Signal.combineLatest(
+      currentUser, .merge(
+        self.viewDidLoadProperty.signal,
+        self.userLocalePreferencesChangedProperty.signal.ignoreValues()
       )
-      .map(first)
-      .map(tabData(forUser:))
+    )
+    .map(first)
+    .map(tabData(forUser:))
   }
 
   fileprivate let currentUserUpdatedProperty = MutableProperty(())
@@ -319,6 +320,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
+
   fileprivate let userSessionEndedProperty = MutableProperty(())
   internal func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
@@ -354,14 +356,20 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
   let isMember = (user?.stats.memberProjectsCount ?? 0) > 0
 
   let items: [TabBarItem] = isMember
-    ? [.home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
-       .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)]
-    : [.home(index: 0), .activity(index: 1), .search(index: 2),
-       .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)]
+    ? [
+      .home(index: 0), .activity(index: 1), .search(index: 2), .dashboard(index: 3),
+      .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 4)
+    ]
+    : [
+      .home(index: 0), .activity(index: 1), .search(index: 2),
+      .profile(avatarUrl: (user?.avatar.small).flatMap(URL.init(string:)), index: 3)
+    ]
 
-  return TabBarItemsData(items: items,
-                         isLoggedIn: user != nil,
-                         isMember: isMember)
+  return TabBarItemsData(
+    items: items,
+    isLoggedIn: user != nil,
+    isMember: isMember
+  )
 }
 
 extension TabBarItemsData: Equatable {

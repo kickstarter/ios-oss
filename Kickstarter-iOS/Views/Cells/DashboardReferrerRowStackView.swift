@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import UIKit
 
@@ -11,10 +11,11 @@ internal final class DashboardReferrerRowStackView: UIStackView {
   fileprivate let pledgedLabel: UILabel = UILabel()
   fileprivate let sourceLabel: UILabel = UILabel()
 
-  internal init(frame: CGRect,
-                country: Project.Country,
-                referrer: ProjectStatsEnvelope.ReferrerStats) {
-
+  internal init(
+    frame: CGRect,
+    country: Project.Country,
+    referrer: ProjectStatsEnvelope.ReferrerStats
+  ) {
     super.init(frame: frame)
 
     _ = self |> dashboardStatsRowStackViewStyle

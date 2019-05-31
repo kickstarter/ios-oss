@@ -1,8 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol SettingsFollowCellViewModelInputs {
   func configureWith(user: User)
@@ -21,15 +21,14 @@ public protocol SettingsFollowCellViewModelType {
 }
 
 public final class SettingsFollowCellViewModel: SettingsFollowCellViewModelType,
-SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
-
+  SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
   public init() {
-    let initialUser = configureWithProperty.signal.skipNil()
+    let initialUser = self.configureWithProperty.signal.skipNil()
 
     let userAttributeChanged: Signal<(UserAttribute, Bool), Never> =
       self.followTappedProperty.signal.filter { $0 == true }.map {
         (UserAttribute.privacy(UserAttribute.Privacy.following), $0)
-    }
+      }
 
     self.updateCurrentUser = initialUser
       .switchMap { user in
@@ -37,7 +36,7 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
           let (attribute, on) = attributeAndOn
           return user |> attribute.keyPath .~ on
         }
-    }
+      }
 
     self.followingPrivacyOn = initialUser
       .map { $0.social }.skipNil()

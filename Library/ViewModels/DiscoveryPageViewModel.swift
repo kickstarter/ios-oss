@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol DiscoveryPageViewModelInputs {
   /// Call with the sort provided to the view.
@@ -94,38 +94,37 @@ public protocol DiscoveryPageViewModelType {
 }
 
 public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, DiscoveryPageViewModelInputs,
-DiscoveryPageViewModelOutputs {
-
+  DiscoveryPageViewModelOutputs {
   public init() {
     let currentUser = Signal.merge(
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal,
       self.viewWillAppearProperty.signal
-      )
-      .map { AppEnvironment.current.currentUser }
-      .skipRepeats(==)
+    )
+    .map { AppEnvironment.current.currentUser }
+    .skipRepeats(==)
 
     let paramsChanged = Signal.combineLatest(
       self.sortProperty.signal.skipNil(),
       self.selectedFilterProperty.signal.skipNil()
-      )
-      .map(DiscoveryParams.lens.sort.set)
+    )
+    .map(DiscoveryParams.lens.sort.set)
 
     let isCloseToBottom = Signal.merge(
       self.willDisplayRowProperty.signal.skipNil(),
       self.transitionedToProjectRowAndTotalProperty.signal.skipNil()
-      )
-      .map { row, total in
-        row >= total - 3 && row > 0
-      }
-      .skipRepeats()
-      .filter(isTrue)
-      .ignoreValues()
+    )
+    .map { row, total in
+      row >= total - 3 && row > 0
+    }
+    .skipRepeats()
+    .filter(isTrue)
+    .ignoreValues()
 
     let isVisible = Signal.merge(
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
-      ).skipRepeats()
+    ).skipRepeats()
 
     let environmentChanged = self.currentEnvironmentChangedProperty.signal
       .skipNil()
@@ -134,19 +133,21 @@ DiscoveryPageViewModelOutputs {
     let firstPageParams = Signal.combineLatest(
       currentUser,
       paramsChanged,
-      isVisible)
-      .filter { _, _, visible in
-        return visible
-      }
-      .skipRepeats { lhs, rhs in
-        return lhs.0 == rhs.0 && lhs.1 == rhs.1
-      }
-      .map { $0.1 }
+      isVisible
+    )
+    .filter { _, _, visible in
+      visible
+    }
+    .skipRepeats { lhs, rhs in
+      lhs.0 == rhs.0 && lhs.1 == rhs.1
+    }
+    .map { $0.1 }
 
     let requestFirstPageWith = Signal.merge(
       firstPageParams,
-      (firstPageParams.takeWhen(environmentChanged)),
-      firstPageParams.takeWhen(self.pulledToRefreshProperty.signal))
+      firstPageParams.takeWhen(environmentChanged),
+      firstPageParams.takeWhen(self.pulledToRefreshProperty.signal)
+    )
 
     let paginatedProjects: Signal<[Project], Never>
     let pageCount: Signal<Int, Never>
@@ -160,16 +161,17 @@ DiscoveryPageViewModelOutputs {
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: { AppEnvironment.current.apiService.fetchDiscovery(params: $0) },
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) },
-      concater: { ($0 + $1).distincts() })
+      concater: { ($0 + $1).distincts() }
+    )
 
     let projects = Signal.merge(
       paginatedProjects,
       self.selectedFilterProperty.signal.skipNil().skipRepeats().mapConst([])
-      )
-      .skip { $0.isEmpty }
-      .skipRepeats(==)
+    )
+    .skip { $0.isEmpty }
+    .skipRepeats(==)
 
-    self.projectsLoaded =  self.selectedFilterProperty.signal
+    self.projectsLoaded = self.selectedFilterProperty.signal
       .takePairWhen(projects)
       .map { ($1, $0) }
 
@@ -195,13 +197,14 @@ DiscoveryPageViewModelOutputs {
     self.showEmptyState = Signal.combineLatest(
       paramsChanged,
       self.projectsAreLoadingAnimated.map(first),
-      paginatedProjects)
-      .filter { _, projectsAreLoading, projects in projectsAreLoading == false && projects.isEmpty }
-      .map { params, _, _ in
-        emptyState(forParams: params)
-      }
-      .skipNil()
-      .skipRepeats()
+      paginatedProjects
+    )
+    .filter { _, projectsAreLoading, projects in projectsAreLoading == false && projects.isEmpty }
+    .map { params, _, _ in
+      emptyState(forParams: params)
+    }
+    .skipNil()
+    .skipRepeats()
 
     self.hideEmptyState = Signal.merge(
       self.viewWillAppearProperty.signal.take(first: 1),
@@ -216,7 +219,7 @@ DiscoveryPageViewModelOutputs {
         AppEnvironment.current.apiService.fetchActivities(count: 1)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     let activitySampleTapped = self.tappedActivity.signal.skipNil()
       .filter { $0.category != .update }
@@ -242,7 +245,7 @@ DiscoveryPageViewModelOutputs {
           return .empty
         }
         return SignalProducer(value: (project, update))
-    }
+      }
 
     let activities = fetchActivityEvent.values()
       .map { $0.activities }
@@ -259,16 +262,16 @@ DiscoveryPageViewModelOutputs {
       self.goToProjectUpdate.mapConst(false),
       self.viewDidDisappearProperty.signal.filter(isFalse),
       self.viewDidAppearProperty.signal.mapConst(true)
-      )
-      .takeWhen(self.viewDidDisappearProperty.signal)
-      .filter(isTrue)
+    )
+    .takeWhen(self.viewDidDisappearProperty.signal)
+    .filter(isTrue)
 
     self.activitiesForSample = Signal.merge(
       activities,
       clearActivitySampleOnLogout.mapConst([]),
       clearActivitySampleOnNavigate.mapConst([])
-      )
-      .skipRepeats(==)
+    )
+    .skipRepeats(==)
 
     self.showOnboarding = Signal.combineLatest(currentUser, self.sortProperty.signal.skipNil())
       .map { $0 == nil && $1 == .magic }
@@ -280,7 +283,7 @@ DiscoveryPageViewModelOutputs {
       .takePairWhen(pageCount)
       .observeValues { params, page in
         AppEnvironment.current.koala.trackDiscovery(params: params, page: page)
-    }
+      }
 
     self.setScrollsToTop = Signal.merge(
       self.viewDidAppearProperty.signal.mapConst(true),
@@ -290,7 +293,7 @@ DiscoveryPageViewModelOutputs {
     self.pulledToRefreshProperty.signal
       .observeValues {
         AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
-    }
+      }
   }
 
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
@@ -307,42 +310,52 @@ DiscoveryPageViewModelOutputs {
   public func configureWith(sort: DiscoveryParams.Sort) {
     self.sortProperty.value = sort
   }
+
   fileprivate let selectedFilterProperty = MutableProperty<DiscoveryParams?>(nil)
   public func selectedFilter(_ params: DiscoveryParams) {
     self.selectedFilterProperty.value = params
   }
+
   fileprivate let tappedActivity = MutableProperty<Activity?>(nil)
   public func tapped(activity: Activity) {
     self.tappedActivity.value = activity
   }
+
   fileprivate let tappedProject = MutableProperty<Project?>(nil)
   public func tapped(project: Project) {
     self.tappedProject.value = project
   }
+
   private let transitionedToProjectRowAndTotalProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func transitionedToProject(at row: Int, outOf totalRows: Int) {
     self.transitionedToProjectRowAndTotalProperty.value = (row, totalRows)
   }
+
   fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
+
   fileprivate let userSessionEndedProperty = MutableProperty(())
   public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
+
   fileprivate let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
   }
+
   fileprivate let viewDidDisappearProperty = MutableProperty(false)
   public func viewDidDisappear(animated: Bool) {
     self.viewDidDisappearProperty.value = animated
   }
+
   fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
+
   fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
@@ -375,8 +388,7 @@ private func saveSeen(activities: [Activity]) {
   }
 }
 
-private func refTag(fromParams params: DiscoveryParams, project: Project) -> RefTag {
-
+private func refTag(fromParams params: DiscoveryParams, project _: Project) -> RefTag {
   if params.category != nil {
     return .categoryWithSort(params.sort ?? .magic)
   } else if params.recommended == .some(true) {
@@ -392,7 +404,6 @@ private func refTag(fromParams params: DiscoveryParams, project: Project) -> Ref
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
-
   if params.starred == .some(true) {
     return .starred
   } else if params.recommended == .some(true) {

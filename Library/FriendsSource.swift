@@ -6,10 +6,10 @@ public enum FriendsSource {
 
   public var trackingString: String {
     switch self {
-    case .activity:     return "activity"
-    case .discovery:    return "discovery"
-    case .findFriends:  return "find-friends"
-    case .settings:     return "settings"
+    case .activity: return "activity"
+    case .discovery: return "discovery"
+    case .findFriends: return "find-friends"
+    case .settings: return "settings"
     }
   }
 }

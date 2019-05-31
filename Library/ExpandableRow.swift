@@ -6,7 +6,7 @@ public struct ExpandableRow {
   public let params: DiscoveryParams
   public let selectableRows: [SelectableRow]
 
-    public enum lens {
+  public enum lens {
     public static let isExpanded = Lens<ExpandableRow, Bool>(
       view: { $0.isExpanded },
       set: { ExpandableRow(isExpanded: $0, params: $1.params, selectableRows: $1.selectableRows) }
@@ -25,17 +25,20 @@ public struct ExpandableRow {
 }
 
 public extension Lens where Whole == ExpandableRow, Part == DiscoveryParams {
-  public var social: Lens<ExpandableRow, Bool?> {
-    return ExpandableRow.lens.params..DiscoveryParams.lens.social
+  var social: Lens<ExpandableRow, Bool?> {
+    return ExpandableRow.lens.params .. DiscoveryParams.lens.social
   }
-  public var staffPicks: Lens<ExpandableRow, Bool?> {
-    return ExpandableRow.lens.params..DiscoveryParams.lens.staffPicks
+
+  var staffPicks: Lens<ExpandableRow, Bool?> {
+    return ExpandableRow.lens.params .. DiscoveryParams.lens.staffPicks
   }
-  public var starred: Lens<ExpandableRow, Bool?> {
-    return ExpandableRow.lens.params..DiscoveryParams.lens.starred
+
+  var starred: Lens<ExpandableRow, Bool?> {
+    return ExpandableRow.lens.params .. DiscoveryParams.lens.starred
   }
-  public var category: Lens<ExpandableRow, KsApi.Category?> {
-    return ExpandableRow.lens.params..DiscoveryParams.lens.category
+
+  var category: Lens<ExpandableRow, KsApi.Category?> {
+    return ExpandableRow.lens.params .. DiscoveryParams.lens.category
   }
 }
 

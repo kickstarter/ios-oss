@@ -28,7 +28,7 @@ internal struct MockDevice: UIDeviceType {
   internal let systemVersion: String = "MockSystemVersion"
   internal let userInterfaceIdiom: UIUserInterfaceIdiom
 
-  internal init (userInterfaceIdiom: UIUserInterfaceIdiom = .phone) {
+  internal init(userInterfaceIdiom: UIUserInterfaceIdiom = .phone) {
     self.userInterfaceIdiom = userInterfaceIdiom
   }
 }

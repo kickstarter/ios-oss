@@ -8,7 +8,6 @@ import UIKit
  the type of value the table/collection cell can handle.
  */
 open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableViewDataSource {
-
   private var values: [[(value: Any, reusableId: String)]] = []
 
   /**
@@ -19,8 +18,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
    - parameter cell:  A cell that is about to be displayed.
    - parameter value: A value that is associated with the cell.
    */
-  open func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
-  }
+  open func configureCell(collectionCell _: UICollectionViewCell, withValue _: Any) {}
 
   /**
    Override this method to destructure `cell` and `value` in order to call the `configureWith(value:)` method
@@ -30,8 +28,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
    - parameter cell:  A cell that is about to be displayed.
    - parameter value: A value that is associated with the cell.
    */
-  open func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
-  }
+  open func configureCell(tableCell _: UITableViewCell, withValue _: Any) {}
 
   /**
    Override this to perform any registrations of cell classes and nibs. Call this method from your controller
@@ -40,8 +37,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
 
    - parameter collectionView: A collection view that needs to have cells registered.
    */
-  open func registerClasses(collectionView: UICollectionView?) {
-  }
+  open func registerClasses(collectionView _: UICollectionView?) {}
 
   /**
    Override this to perform any registrations of cell classes and nibs. Call this method from your controller
@@ -50,8 +46,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
 
    - parameter tableView: A table view that needs to have cells registered.
    */
-  open func registerClasses(tableView: UITableView?) {
-  }
+  open func registerClasses(tableView _: UITableView?) {}
 
   /**
    Removes all values from the data source.
@@ -80,15 +75,16 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
    - returns: The index path of the prepended row.
    */
   @discardableResult
-  public final func prependRow <
+  public final func prependRow<
     Cell: ValueCell,
-    Value: Any>
-    (value: Value, cellClass: Cell.Type, toSection section: Int) -> IndexPath
+    Value: Any
+  >
+  (value: Value, cellClass _: Cell.Type, toSection section: Int) -> IndexPath
     where
     Cell.Value == Value {
-      self.padValuesForSection(section)
-      self.values[section].insert((value, Cell.defaultReusableId), at: 0)
-      return IndexPath(row: 0, section: section)
+    self.padValuesForSection(section)
+    self.values[section].insert((value, Cell.defaultReusableId), at: 0)
+    return IndexPath(row: 0, section: section)
   }
 
   /**
@@ -97,19 +93,20 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
    - parameter value:     A value to append.
    - parameter cellClass: The type of cell associated with the value.
    - parameter section:   The section to append the value to.
-   
+
    - returns: The index path of the appended row.
    */
   @discardableResult
-  public final func appendRow <
+  public final func appendRow<
     Cell: ValueCell,
-    Value: Any>
-    (value: Value, cellClass: Cell.Type, toSection section: Int) -> IndexPath
+    Value: Any
+  >
+  (value: Value, cellClass _: Cell.Type, toSection section: Int) -> IndexPath
     where
     Cell.Value == Value {
-      self.padValuesForSection(section)
-      self.values[section].append((value, Cell.defaultReusableId))
-      return IndexPath(row: self.values[section].count - 1, section: section)
+    self.padValuesForSection(section)
+    self.values[section].append((value, Cell.defaultReusableId))
+    return IndexPath(row: self.values[section].count - 1, section: section)
   }
 
   /**
@@ -124,28 +121,32 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
    */
 
   @discardableResult
-  public final func insertRow<Cell: ValueCell, Value: Any>(value: Value,
-                                                           cellClass: Cell.Type,
-                                                           atIndex index: Int,
-                                                           inSection section: Int) -> IndexPath
+  public final func insertRow<Cell: ValueCell, Value: Any>(
+    value: Value,
+    cellClass _: Cell.Type,
+    atIndex index: Int,
+    inSection section: Int
+  ) -> IndexPath
     where Cell.Value == Value {
-      self.padValuesForSection(section)
+    self.padValuesForSection(section)
 
-      self.values[section].insert((value, Cell.defaultReusableId), at: index)
+    self.values[section].insert((value, Cell.defaultReusableId), at: index)
 
-      return IndexPath(row: index, section: section)
+    return IndexPath(row: index, section: section)
   }
 
-  public final func deleteRow<Cell: ValueCell, Value: Any>(value: Value,
-                                                           cellClass: Cell.Type,
-                                                           atIndex index: Int,
-                                                           inSection section: Int) -> IndexPath
+  public final func deleteRow<Cell: ValueCell, Value: Any>(
+    value _: Value,
+    cellClass _: Cell.Type,
+    atIndex index: Int,
+    inSection section: Int
+  ) -> IndexPath
     where Cell.Value == Value {
-      self.padValuesForSection(section)
+    self.padValuesForSection(section)
 
-      self.values[section].remove(at: index)
+    self.values[section].remove(at: index)
 
-      return IndexPath(row: index, section: section)
+    return IndexPath(row: index, section: section)
   }
 
   /**
@@ -177,15 +178,15 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
    - parameter values:    An array of values that make up the section.
    - parameter cellClass: The type of cell associated with all the values.
    */
-  public final func appendSection <
+  public final func appendSection<
     Cell: ValueCell,
-    Value: Any>
-    (values: [Value], cellClass: Cell.Type)
+    Value: Any
+  >
+  (values: [Value], cellClass _: Cell.Type)
     where
     Cell.Value == Value {
-
-    self.values.append(values.map { ($0, Cell.defaultReusableId) })
-  }
+      self.values.append(values.map { ($0, Cell.defaultReusableId) })
+    }
 
   /**
    Replaces a section with values.
@@ -194,16 +195,16 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
    - parameter cellClass: The type of cell associated with the values.
    - parameter section:   The section to replace.
    */
-  public final func set <
+  public final func set<
     Cell: ValueCell,
-    Value: Any>
-    (values: [Value], cellClass: Cell.Type, inSection section: Int)
+    Value: Any
+  >
+  (values: [Value], cellClass _: Cell.Type, inSection section: Int)
     where
     Cell.Value == Value {
-
-    self.padValuesForSection(section)
-    self.values[section] = values.map { ($0, Cell.defaultReusableId) }
-  }
+      self.padValuesForSection(section)
+      self.values[section] = values.map { ($0, Cell.defaultReusableId) }
+    }
 
   /**
    Replaces a row with a value.
@@ -213,15 +214,15 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
    - parameter section:   The section for the row.
    - parameter row:       The row to replace.
    */
-  public final func set <
+  public final func set<
     Cell: ValueCell,
-    Value: Any>
-    (value: Value, cellClass: Cell.Type, inSection section: Int, row: Int)
+    Value: Any
+  >
+  (value: Value, cellClass _: Cell.Type, inSection section: Int, row: Int)
     where
     Cell.Value == Value {
-
-    self.values[section][row] = (value, Cell.defaultReusableId)
-  }
+      self.values[section][row] = (value, Cell.defaultReusableId)
+    }
 
   /**
    - parameter indexPath: An index path to retrieve a value.
@@ -277,18 +278,21 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
 
   // MARK: UICollectionViewDataSource methods
 
-  public final func numberOfSections(in collectionView: UICollectionView) -> Int {
+  public final func numberOfSections(in _: UICollectionView) -> Int {
     return self.values.count
   }
 
-  public final func collectionView(_ collectionView: UICollectionView,
-                                   numberOfItemsInSection section: Int) -> Int {
+  public final func collectionView(
+    _: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
     return self.values[section].count
   }
 
-  public final func collectionView(_ collectionView: UICollectionView,
-                                   cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
+  public final func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
     let (value, reusableId) = self.values[indexPath.section][indexPath.item]
 
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableId, for: indexPath)
@@ -300,17 +304,18 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
 
   // MARK: UITableViewDataSource methods
 
-  public final func numberOfSections(in tableView: UITableView) -> Int {
+  public final func numberOfSections(in _: UITableView) -> Int {
     return self.values.count
   }
 
-  public final func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  public final func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.values[section].count
   }
 
-  public final func tableView(_ tableView: UITableView,
-                              cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+  public final func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     let (value, reusableId) = self.values[indexPath.section][indexPath.row]
 
     let cell = tableView.dequeueReusableCell(withIdentifier: reusableId, for: indexPath)
@@ -328,9 +333,8 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
               only useful for testing.
    */
   internal final func reusableId(item: Int, section: Int) -> String? {
-    if !self.values.isEmpty && self.values.count >= section &&
-      !self.values[section].isEmpty && self.values[section].count >= item {
-
+    if !self.values.isEmpty, self.values.count >= section,
+      !self.values[section].isEmpty, self.values[section].count >= item {
       return self.values[section][item].reusableId
     }
     return nil
@@ -346,8 +350,8 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
   internal final subscript(testItemSection itemSection: (item: Int, section: Int)) -> Any? {
     let (item, section) = itemSection
 
-    if !self.values.isEmpty && self.values.count >= section &&
-      !self.values[section].isEmpty && self.values[section].count >= item {
+    if !self.values.isEmpty, self.values.count >= section,
+      !self.values[section].isEmpty, self.values[section].count >= item {
       return self.values[itemSection.section][itemSection.item].value
     }
     return nil

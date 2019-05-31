@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
@@ -39,15 +39,11 @@ internal class WebViewController: UIViewController {
   }
 }
 
-extension WebViewController: WKUIDelegate {
+extension WebViewController: WKUIDelegate {}
 
-}
+extension WebViewController: WKNavigationDelegate {}
 
-extension WebViewController: WKNavigationDelegate {
-}
-
-extension WebViewController: UIScrollViewDelegate {
-}
+extension WebViewController: UIScrollViewDelegate {}
 
 internal protocol WebViewControllerProtocol: UIViewControllerProtocol {
   var webView: WKWebView { get }
@@ -66,6 +62,6 @@ extension LensHolder where Object: WebViewControllerProtocol {
 
 extension Lens where Whole: WebViewControllerProtocol, Part == WKWebView {
   internal var scrollView: Lens<Whole, UIScrollView> {
-    return Whole.lens.webView..Part.lens.scrollView
+    return Whole.lens.webView .. Part.lens.scrollView
   }
 }

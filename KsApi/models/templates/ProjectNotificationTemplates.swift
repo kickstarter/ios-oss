@@ -4,7 +4,7 @@ extension ProjectNotification {
     id: 1,
     mobile: false,
     project: ProjectNotification.Project(
-      id: 1738,
+      id: 1_738,
       name: "The Project"
     )
   )

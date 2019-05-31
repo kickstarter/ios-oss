@@ -26,10 +26,10 @@ extension ProjectNotification {
 
 extension Lens where Whole == ProjectNotification, Part == ProjectNotification.Project {
   public var id: Lens<ProjectNotification, Int> {
-    return ProjectNotification.lens.project..ProjectNotification.Project.lens.id
+    return ProjectNotification.lens.project .. ProjectNotification.Project.lens.id
   }
 
   public var name: Lens<ProjectNotification, String> {
-    return ProjectNotification.lens.project..ProjectNotification.Project.lens.name
+    return ProjectNotification.lens.project .. ProjectNotification.Project.lens.name
   }
 }

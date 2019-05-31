@@ -1,8 +1,8 @@
-import Prelude
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 /* swiftlint:disable force_unwrapping */
 internal final class DiscoveryPostcardViewModelTests: TestCase {
@@ -101,8 +101,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
 
     let featuredProject = .template
-      |> Project.lens.category.parent .~ ParentCategory(id: Category.art.id,
-                                                        name: Category.art.name)
+      |> Project.lens.category.parent .~ ParentCategory(
+        id: Category.art.id,
+        name: Category.art.name
+      )
       |> Project.lens.dates.featuredAt .~ featuredAt
 
     let backedColor: UIColor = .ksr_green_700
@@ -128,8 +130,9 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
       self.metadataLabelText.assertValues(
         [
-          Strings.discovery_baseball_card_metadata_backer(),
-        ], "Starred metadata takes precedence.")
+          Strings.discovery_baseball_card_metadata_backer()
+        ], "Starred metadata takes precedence."
+      )
 
       self.metadataViewHidden.assertValues([true, false])
       self.metadataIcon.assertValues([backedImage])
@@ -143,7 +146,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           Strings.discovery_baseball_card_metadata_featured_project(
             category_name: featuredProject.category.name
           )
-        ], "Featured metadata emits.")
+        ], "Featured metadata emits."
+      )
 
       self.metadataViewHidden.assertValues([true, false, false])
       self.metadataIcon.assertValues([backedImage, featuredImage])
@@ -153,7 +157,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       AppEnvironment.logout()
 
       // Implement when updating DiscoveryPageVC logout behavior.
-       self.metadataViewHidden.assertValues([true, false, false])
+      self.metadataViewHidden.assertValues([true, false, false])
     }
   }
 
@@ -233,32 +237,44 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: projectOneFriend, category: nil)
     self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium])
     self.socialLabelText.assertValues(
-      [ "", "", Strings.project_social_friend_is_backer(friend_name: oneFriend[0].name) ]
+      ["", "", Strings.project_social_friend_is_backer(friend_name: oneFriend[0].name)]
     )
     self.socialStackViewHidden.assertValues([true, false])
 
     self.vm.inputs.configureWith(project: projectTwoFriends, category: nil)
-    self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium],
-                                     "First friend's avatar emits.")
+    self.socialImageURL.assertValues(
+      [nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium],
+      "First friend's avatar emits."
+    )
     self.socialLabelText.assertValues(
-      [ "", "",
+      [
+        "", "",
         Strings.project_social_friend_is_backer(friend_name: oneFriend.first?.name ?? ""),
-        Strings.project_social_friend_and_friend_are_backers(friend_name: twoFriends[0].name,
-          second_friend_name: twoFriends[1].name)
+        Strings.project_social_friend_and_friend_are_backers(
+          friend_name: twoFriends[0].name,
+          second_friend_name: twoFriends[1].name
+        )
       ]
     )
     self.socialStackViewHidden.assertValues([true, false])
 
     self.vm.inputs.configureWith(project: projectManyFriends, category: nil)
-    self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium,
-      manyFriends[0].avatar.medium], "First friend's avatar emits.")
+    self.socialImageURL.assertValues([
+      nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium,
+      manyFriends[0].avatar.medium
+    ], "First friend's avatar emits.")
     self.socialLabelText.assertValues(
-      [ "", "",
+      [
+        "", "",
         Strings.project_social_friend_is_backer(friend_name: oneFriend.first?.name ?? ""),
-        Strings.project_social_friend_and_friend_are_backers(friend_name: twoFriends[0].name,
-          second_friend_name: twoFriends[1].name),
-        Strings.discovery_baseball_card_social_friends_are_backers(friend_name: manyFriends[0].name,
-          second_friend_name: manyFriends[1].name, remaining_count: manyFriends.count - 2)
+        Strings.project_social_friend_and_friend_are_backers(
+          friend_name: twoFriends[0].name,
+          second_friend_name: twoFriends[1].name
+        ),
+        Strings.discovery_baseball_card_social_friends_are_backers(
+          friend_name: manyFriends[0].name,
+          second_friend_name: manyFriends[1].name, remaining_count: manyFriends.count - 2
+        )
       ]
     )
     self.socialStackViewHidden.assertValues([true, false])
@@ -284,8 +300,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: canceled, category: nil)
     self.projectStateIconHidden.assertValues([true, true])
     self.projectStateSubtitleLabelText.assertValueCount(2)
-    self.projectStateTitleLabelText.assertValues(["",
-      Strings.Project_cancelled()])
+    self.projectStateTitleLabelText.assertValues([
+      "",
+      Strings.Project_cancelled()
+    ])
     self.projectStateTitleLabelColor.assertValues([navyColor])
     self.projectStateStackViewHidden.assertValues([true, false])
     self.projectStatsStackViewHidden.assertValues([false, true])
@@ -345,6 +363,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   }
 
   // MARK: Project Category View
+
   func testShowsCategoryLabels_ParentCategorySelected() {
     let staffPickProject = Project.template
       |> Project.lens.staffPick .~ true

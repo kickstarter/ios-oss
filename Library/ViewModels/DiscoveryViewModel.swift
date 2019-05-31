@@ -1,12 +1,11 @@
 import Argo
-import Runes
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
+import Runes
 
 public protocol DiscoveryViewModelInputs {
-
   /// Call when Recommendations setting changes on Settings > Account > Privacy > Recommendations.
   func didChangeRecommendationsSetting()
 
@@ -46,8 +45,10 @@ public protocol DiscoveryViewModelOutputs {
   var loadFilterIntoDataSource: Signal<DiscoveryParams, Never> { get }
 
   /// Emits when we should manually navigate to a sort's page.
-  var navigateToSort: Signal<(DiscoveryParams.Sort, UIPageViewController.NavigationDirection),
-    Never> { get }
+  var navigateToSort: Signal<
+    (DiscoveryParams.Sort, UIPageViewController.NavigationDirection),
+    Never
+  > { get }
 
   /// Emits a sort that should be passed on to the sort pager view controller.
   var selectSortPage: Signal<DiscoveryParams.Sort, Never> { get }
@@ -65,8 +66,7 @@ public protocol DiscoveryViewModelType {
 }
 
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
-DiscoveryViewModelOutputs {
-
+  DiscoveryViewModelOutputs {
   private static func initialParams() -> DiscoveryParams {
     guard AppEnvironment.current.currentUser?.optedOutOfRecommendations == .some(false) else {
       return DiscoveryParams.defaults
@@ -89,14 +89,14 @@ DiscoveryViewModelOutputs {
       self.didChangeRecommendationsSettingProperty.signal
         .takeWhen(self.viewWillAppearProperty.signal)
     )
-      .map(DiscoveryViewModel.initialParams)
-      .skipRepeats()
+    .map(DiscoveryViewModel.initialParams)
+    .skipRepeats()
 
     let currentParams = Signal.merge(
       initialParams,
       self.filterWithParamsProperty.signal.skipNil()
-      )
-      .skipRepeats()
+    )
+    .skipRepeats()
 
     self.configureNavigationHeader = currentParams
     self.loadFilterIntoDataSource = currentParams
@@ -124,9 +124,9 @@ DiscoveryViewModelOutputs {
       .filter { _, next in !next.ignore }
       .map { previous, next in
         let lhs = sorts.firstIndex(of: next.sort) ?? -1
-        let rhs = sorts.firstIndex(of: previous.sort) ?? 9999
+        let rhs = sorts.firstIndex(of: previous.sort) ?? 9_999
         return (next.sort, lhs < rhs ? .reverse : .forward)
-    }
+      }
 
     self.updateSortPagerStyle = self.filterWithParamsProperty.signal.skipNil()
       .map { $0.category?.intID }
@@ -141,7 +141,7 @@ DiscoveryViewModelOutputs {
     swipeToSort
       .observeValues {
         AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .swipe)
-    }
+      }
 
     currentParams
       .takeWhen(self.viewWillAppearProperty.signal.skipNil().filter(isFalse))
@@ -157,22 +157,27 @@ DiscoveryViewModelOutputs {
   public func filter(withParams params: DiscoveryParams) {
     self.filterWithParamsProperty.value = params
   }
+
   fileprivate let pageTransitionCompletedProperty = MutableProperty(false)
   public func pageTransition(completed: Bool) {
     self.pageTransitionCompletedProperty.value = completed
   }
+
   fileprivate let sortPagerSelectedSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
   public func sortPagerSelected(sort: DiscoveryParams.Sort) {
     self.sortPagerSelectedSortProperty.value = sort
   }
+
   fileprivate let setSortsEnabledProperty = MutableProperty<Bool?>(nil)
   public func setSortsEnabled(_ enabled: Bool) {
     self.setSortsEnabledProperty.value = enabled
   }
+
   fileprivate let willTransitionToPageProperty = MutableProperty<Int>(0)
   public func willTransition(toPage nextPage: Int) {
     self.willTransitionToPageProperty.value = nextPage
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()

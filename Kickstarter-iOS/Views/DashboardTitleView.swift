@@ -1,10 +1,10 @@
-import UIKit
 import KsApi
 import Library
 import Prelude
 import Prelude_UIKit
+import UIKit
 
-internal protocol DashboardTitleViewDelegate: class {
+internal protocol DashboardTitleViewDelegate: AnyObject {
   /// Call when dashboard should show/hide the projects drawer view controller.
   func dashboardTitleViewShowHideProjectsDrawer()
 }
@@ -12,9 +12,9 @@ internal protocol DashboardTitleViewDelegate: class {
 internal final class DashboardTitleView: UIView {
   fileprivate let viewModel: DashboardTitleViewViewModelType = DashboardTitleViewViewModel()
 
-  @IBOutlet fileprivate weak var titleButton: UIButton!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
-  @IBOutlet fileprivate weak var arrowImageView: UIImageView!
+  @IBOutlet fileprivate var titleButton: UIButton!
+  @IBOutlet fileprivate var titleLabel: UILabel!
+  @IBOutlet fileprivate var arrowImageView: UIImageView!
 
   internal weak var delegate: DashboardTitleViewDelegate?
 
@@ -48,19 +48,19 @@ internal final class DashboardTitleView: UIView {
         if !hide {
           _ = _self.titleButton |> UIView.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
         }
-    }
+      }
 
     self.viewModel.outputs.updateArrowState
       .observeForUI()
       .observeValues { [weak self] drawerState in
         self?.animateArrow(forDrawerState: drawerState)
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateShowHideProjectsDrawer
       .observeForUI()
       .observeValues { [weak self] in
         self?.delegate?.dashboardTitleViewShowHideProjectsDrawer()
-    }
+      }
 
     self.viewModel.outputs.titleButtonIsEnabled
       .observeForUI()
@@ -69,7 +69,7 @@ internal final class DashboardTitleView: UIView {
         if isEnabled {
           _ = _titleLabel |> dashboardTitleViewTextEnabledStyle
         }
-    }
+      }
   }
 
   internal func updateData(_ data: DashboardTitleViewData) {
@@ -87,7 +87,7 @@ internal final class DashboardTitleView: UIView {
 
     UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut, animations: {
       self.arrowImageView.transform = CGAffineTransform(scaleX: 1.0, y: scale)
-      }, completion: nil)
+    }, completion: nil)
   }
 
   @objc fileprivate func titleButtonTapped() {

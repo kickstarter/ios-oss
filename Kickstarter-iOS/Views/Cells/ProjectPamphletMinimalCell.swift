@@ -4,10 +4,10 @@ import Prelude
 import UIKit
 
 internal final class ProjectPamphletMinimalCell: UITableViewCell, ValueCell {
-  @IBOutlet fileprivate weak var activityIndicator: UIActivityIndicatorView!
-  @IBOutlet fileprivate weak var projectImageView: UIImageView!
-  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
-  @IBOutlet fileprivate weak var projectNameStackView: UIStackView!
+  @IBOutlet fileprivate var activityIndicator: UIActivityIndicatorView!
+  @IBOutlet fileprivate var projectImageView: UIImageView!
+  @IBOutlet fileprivate var projectNameLabel: UILabel!
+  @IBOutlet fileprivate var projectNameStackView: UIStackView!
 
   internal func configureWith(value project: Project) {
     self.projectNameLabel.text = project.name

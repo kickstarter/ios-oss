@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ActivitySampleProjectCellViewModelInputs {
   /// Call to configure cell with activity value.
@@ -35,7 +35,6 @@ public protocol ActivitySampleProjectCellViewModelType {
 
 public final class ActivitySampleProjectCellViewModel: ActivitySampleProjectCellViewModelInputs,
   ActivitySampleProjectCellViewModelOutputs, ActivitySampleProjectCellViewModelType {
-
   public init() {
     let activity = self.activityProperty.signal.skipNil()
 
@@ -64,11 +63,12 @@ public final class ActivitySampleProjectCellViewModel: ActivitySampleProjectCell
         case .update:
           return Strings.activity_posted_update_number_title(
             update_number: Format.wholeNumber(activity.update?.sequence ?? 0),
-            update_title: activity.update?.title ?? "")
+            update_title: activity.update?.title ?? ""
+          )
         default:
           return ""
         }
-    }
+      }
   }
 
   fileprivate let activityProperty = MutableProperty<Activity?>(nil)

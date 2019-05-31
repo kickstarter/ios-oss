@@ -3,15 +3,15 @@ import Library
 import Prelude
 import UIKit
 
-internal protocol DiscoveryFiltersViewControllerDelegate: class {
+internal protocol DiscoveryFiltersViewControllerDelegate: AnyObject {
   func discoveryFilters(_ viewController: DiscoveryFiltersViewController, selectedRow: SelectableRow)
   func discoveryFiltersDidClose(_ viewController: DiscoveryFiltersViewController)
 }
 
 internal final class DiscoveryFiltersViewController: UIViewController, UITableViewDelegate {
-  @IBOutlet private weak var bgView: UIView!
-  @IBOutlet private weak var closeButton: UIButton!
-  @IBOutlet private weak var filtersTableView: UITableView!
+  @IBOutlet private var bgView: UIView!
+  @IBOutlet private var closeButton: UIButton!
+  @IBOutlet private var filtersTableView: UITableView!
 
   private let dataSource = DiscoveryFiltersDataSource()
   private let viewModel: DiscoveryFiltersViewModelType = DiscoveryFiltersViewModel()
@@ -20,10 +20,9 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
 
   internal static func configuredWith(selectedRow: SelectableRow)
     -> DiscoveryFiltersViewController {
-
-      let vc = Storyboard.Discovery.instantiate(DiscoveryFiltersViewController.self)
-      vc.viewModel.inputs.configureWith(selectedRow: selectedRow)
-      return vc
+    let vc = Storyboard.Discovery.instantiate(DiscoveryFiltersViewController.self)
+    vc.viewModel.inputs.configureWith(selectedRow: selectedRow)
+    return vc
   }
 
   override func viewDidLoad() {
@@ -32,7 +31,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     self.filtersTableView.dataSource = self.dataSource
     self.filtersTableView.delegate = self
 
-    self.closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+    self.closeButton.addTarget(self, action: #selector(self.closeButtonTapped), for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -50,7 +49,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
       .observeForUI()
       .observeValues { [weak self] in
         self?.animateIn()
-    }
+      }
 
     self.viewModel.outputs.loadingIndicatorIsVisible
       .observeForUI()
@@ -62,28 +61,28 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
         } else {
           _self.deleteCategoriesLoaderRow(_self.filtersTableView)
         }
-    }
+      }
 
     self.viewModel.outputs.loadTopRows
       .observeForUI()
       .observeValues { [weak self] rows, id in
         self?.dataSource.load(topRows: rows, categoryId: id)
         self?.filtersTableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.loadFavoriteRows
       .observeForUI()
       .observeValues { [weak self] rows, id in
         self?.dataSource.load(favoriteRows: rows, categoryId: id)
         self?.filtersTableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.loadCategoryRows
       .observeForUI()
       .observeValues { [weak self] rows, id, selectedRowId in
         self?.dataSource.load(categoryRows: rows, categoryId: id)
         self?.reloadCategories(selectedRowId: selectedRowId)
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateOfSelectedRow
       .observeForControllerAction()
@@ -91,7 +90,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
         guard let _self = self else { return }
         _self.animateOut()
         _self.delegate?.discoveryFilters(_self, selectedRow: selectedRow)
-    }
+      }
   }
 
   internal override func bindStyles() {
@@ -109,7 +108,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Closes_filters() }
   }
 
-  internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  internal func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let expandableRow = self.dataSource.expandableRow(indexPath: indexPath) {
       self.viewModel.inputs.tapped(expandableRow: expandableRow)
     } else if let selectableRow = self.dataSource.selectableRow(indexPath: indexPath) {
@@ -117,10 +116,11 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     }
   }
 
-  internal func tableView(_ tableView: UITableView,
-                          willDisplay cell: UITableViewCell,
-                          forRowAt indexPath: IndexPath) {
-
+  internal func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
     if let cell = cell as? DiscoverySelectableRowCell {
       cell.willDisplay()
     } else if let cell = cell as? DiscoveryExpandableRowCell {
@@ -177,7 +177,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     )
   }
 
-  @objc private func closeButtonTapped(_ button: UIButton) {
+  @objc private func closeButtonTapped(_: UIButton) {
     self.animateOut()
     self.delegate?.discoveryFiltersDidClose(self)
   }
@@ -203,7 +203,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     guard let
       deleteCategoriesLoaderRow = self.dataSource.deleteCategoriesLoaderRow(tableView),
       !deleteCategoriesLoaderRow.isEmpty else {
-        return
+      return
     }
 
     self.filtersTableView.beginUpdates()

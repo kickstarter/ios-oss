@@ -1,9 +1,9 @@
-import Prelude
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class BackerDashboardProjectCellViewModelTests: TestCase {
   private let vm: BackerDashboardProjectCellViewModelType = BackerDashboardProjectCellViewModel()
@@ -107,5 +107,4 @@ internal final class BackerDashboardProjectCellViewModelTests: TestCase {
     self.projectTitleText.assertValues(["Best of Lazy Bathtub Cat"])
     self.savedIconIsHidden.assertValues([false])
   }
-
 }

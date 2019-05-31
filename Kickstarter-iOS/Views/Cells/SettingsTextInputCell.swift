@@ -22,7 +22,7 @@ final class SettingsTextInputCell: UITableViewCell {
   }
 
   public func configure(with targetActions: [TextFieldTargetAction]) {
-    targetActions.forEach { (target, action, event) in
+    targetActions.forEach { target, action, event in
       self.textField.addTarget(target, action: action, for: event)
     }
   }
@@ -43,7 +43,7 @@ final class SettingsTextInputCell: UITableViewCell {
     self.contentView.addSubviewConstrainedToMargins(self.stackView)
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 

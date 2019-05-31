@@ -39,8 +39,7 @@ public protocol ActivityFriendBackingViewModelType {
 }
 
 public final class ActivityFriendBackingViewModel: ActivityFriendBackingViewModelType,
-ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
-
+  ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
   public init() {
     let activity = self.activityProperty.signal.skipNil()
     let project = activity.map { $0.project }.skipNil()
@@ -67,9 +66,10 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
           italic: [
             NSAttributedString.Key.font: UIFont.ksr_subhead(size: 12),
             NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-          ])
+          ]
+        )
           ?? .init()
-    }
+      }
 
     self.fundingBarColor = activity.map { progressBarColor(forActivityCategory: $0.category) }
 
@@ -120,21 +120,21 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
 private func string(forCategoryId id: String, friendName: String) -> String {
   let root = RootCategory(categoryId: Int(id) ?? -1)
   switch root {
-  case .art:          return Strings.Friend_backed_art_project(friend_name: friendName)
-  case .comics:       return Strings.Friend_backed_comics_project(friend_name: friendName)
-  case .dance:        return Strings.Friend_backed_dance_project(friend_name: friendName)
-  case .design:       return Strings.Friend_backed_design_project(friend_name: friendName)
-  case .fashion:      return Strings.Friend_backed_fashion_project(friend_name: friendName)
-  case .food:         return Strings.Friend_backed_food_project(friend_name: friendName)
-  case .film:         return Strings.Friend_backed_film_project(friend_name: friendName)
-  case .games:        return Strings.Friend_backed_games_project(friend_name: friendName)
-  case .journalism:   return Strings.Friend_backed_journalism_project(friend_name: friendName)
-  case .music:        return Strings.Friend_backed_music_project(friend_name: friendName)
-  case .photography:  return Strings.Friend_backed_photography_project(friend_name: friendName)
-  case .tech:         return Strings.Friend_backed_tech_project(friend_name: friendName)
-  case .theater:      return Strings.Friend_backed_theater_project(friend_name: friendName)
-  case .publishing:   return Strings.Friend_backed_publishing_project(friend_name: friendName)
-  case .crafts:       return Strings.Friend_backed_crafts_project(friend_name: friendName)
+  case .art: return Strings.Friend_backed_art_project(friend_name: friendName)
+  case .comics: return Strings.Friend_backed_comics_project(friend_name: friendName)
+  case .dance: return Strings.Friend_backed_dance_project(friend_name: friendName)
+  case .design: return Strings.Friend_backed_design_project(friend_name: friendName)
+  case .fashion: return Strings.Friend_backed_fashion_project(friend_name: friendName)
+  case .food: return Strings.Friend_backed_food_project(friend_name: friendName)
+  case .film: return Strings.Friend_backed_film_project(friend_name: friendName)
+  case .games: return Strings.Friend_backed_games_project(friend_name: friendName)
+  case .journalism: return Strings.Friend_backed_journalism_project(friend_name: friendName)
+  case .music: return Strings.Friend_backed_music_project(friend_name: friendName)
+  case .photography: return Strings.Friend_backed_photography_project(friend_name: friendName)
+  case .tech: return Strings.Friend_backed_tech_project(friend_name: friendName)
+  case .theater: return Strings.Friend_backed_theater_project(friend_name: friendName)
+  case .publishing: return Strings.Friend_backed_publishing_project(friend_name: friendName)
+  case .crafts: return Strings.Friend_backed_crafts_project(friend_name: friendName)
   case .unrecognized: return ""
   }
 }
@@ -144,8 +144,8 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
 
   let percentage = Format.percentage(project.stats.percentFunded)
 
-    return NSAttributedString(string: percentage, attributes: [
-      NSAttributedString.Key.font: UIFont.ksr_caption1(size: 10),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_green_700
-      ])
+  return NSAttributedString(string: percentage, attributes: [
+    NSAttributedString.Key.font: UIFont.ksr_caption1(size: 10),
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_green_700
+  ])
 }

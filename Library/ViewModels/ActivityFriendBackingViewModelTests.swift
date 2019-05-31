@@ -1,8 +1,8 @@
-import XCTest
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ActivityFriendBackingViewModelTests: TestCase {
   fileprivate let vm: ActivityFriendBackingViewModelType = ActivityFriendBackingViewModel()
@@ -24,11 +24,11 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
       |> \.subcategories
       .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.tabletopGames])
 
-    self.vm.inputs.configureWith(activity:
+    self.vm.inputs.configureWith(
+      activity:
       .template
         |> Activity.lens.category .~ .backing
         |> Activity.lens.project .~ (.template |> Project.lens.category .~ games)
-
     )
 
     self.friendTitleLabel.assertValues(["Blob backed a Games project."])
@@ -41,11 +41,11 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
       |> \.parentId .~ "1"
       |> Category.lens.parent .~ ParentCategory(id: "1", name: "Art")
 
-    self.vm.inputs.configureWith(activity:
+    self.vm.inputs.configureWith(
+      activity:
       .template
         |> Activity.lens.category .~ .backing
         |> Activity.lens.project .~ (.template |> Project.lens.category .~ illustration)
-
     )
 
     self.friendTitleLabel.assertValues(["Blob backed an Art project."])
@@ -58,7 +58,8 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
       |> \.subcategories
       .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.tabletopGames])
 
-    self.vm.inputs.configureWith(activity:
+    self.vm.inputs.configureWith(
+      activity:
       .template
         |> Activity.lens.category .~ .backing
         |> Activity.lens.project .~ (.template |> Project.lens.category .~ games)

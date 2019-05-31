@@ -20,8 +20,7 @@ public protocol LoadingBarButtonItemViewModelType {
 }
 
 public final class LoadingBarButtonItemViewModel: LoadingBarButtonItemViewModelType,
-LoadingBarButtonItemViewModelInputs, LoadingBarButtonItemViewModelOutputs {
-
+  LoadingBarButtonItemViewModelInputs, LoadingBarButtonItemViewModelOutputs {
   public init() {
     self.activityIndicatorIsLoading = self.isAnimatingProperty.signal
     self.titleButtonIsEnabled = self.isEnabledProperty.signal

@@ -43,8 +43,8 @@ internal final class ProjectDescriptionViewController: WebViewController {
     _ = self
       |> baseControllerStyle()
       <> WebViewController.lens.title %~ { _ in Strings.project_menu_buttons_campaign() }
-      <> (WebViewController.lens.webView.scrollView..UIScrollView.lens.delaysContentTouches) .~ false
-      <> (WebViewController.lens.webView.scrollView..UIScrollView.lens.canCancelContentTouches) .~ true
+      <> (WebViewController.lens.webView.scrollView .. UIScrollView.lens.delaysContentTouches) .~ false
+      <> (WebViewController.lens.webView.scrollView .. UIScrollView.lens.canCancelContentTouches) .~ true
 
     _ = self.loadingIndicator
       |> baseActivityIndicatorStyle
@@ -61,13 +61,13 @@ internal final class ProjectDescriptionViewController: WebViewController {
       .observeForControllerAction()
       .observeValues { [weak self] _ in
         _ = self?.navigationController?.popViewController(animated: true)
-    }
+      }
 
     self.viewModel.outputs.goToSafariBrowser
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goTo(url: $0)
-    }
+      }
 
     self.loadingIndicator.rac.animating = self.viewModel.outputs.isLoading
 
@@ -75,7 +75,7 @@ internal final class ProjectDescriptionViewController: WebViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         _ = self?.webView.load($0)
-    }
+      }
 
     self.viewModel.outputs.showErrorAlert
       .observeForControllerAction()
@@ -85,38 +85,42 @@ internal final class ProjectDescriptionViewController: WebViewController {
           animated: true,
           completion: nil
         )
-    }
+      }
   }
 
-  internal func webView(_ webView: WKWebView,
-                        decidePolicyFor navigationAction: WKNavigationAction,
-                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-
+  internal func webView(
+    _: WKWebView,
+    decidePolicyFor navigationAction: WKNavigationAction,
+    decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+  ) {
     self.viewModel.inputs.decidePolicyFor(navigationAction: .init(navigationAction: navigationAction))
     decisionHandler(self.viewModel.outputs.decidedPolicyForNavigationAction)
   }
 
-  internal func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+  internal func webView(_: WKWebView, didStartProvisionalNavigation _: WKNavigation!) {
     self.viewModel.inputs.webViewDidStartProvisionalNavigation()
   }
 
-  internal func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+  internal func webView(_: WKWebView, didFinish _: WKNavigation!) {
     self.viewModel.inputs.webViewDidFinishNavigation()
   }
 
-  internal func webView(_ webView: WKWebView,
-                        didFailProvisionalNavigation navigation: WKNavigation!,
-                        withError error: Error) {
-
+  internal func webView(
+    _: WKWebView,
+    didFailProvisionalNavigation _: WKNavigation!,
+    withError error: Error
+  ) {
     self.viewModel.inputs.webViewDidFailProvisionalNavigation(withError: error)
   }
 
   fileprivate func goToMessageDialog(subject: MessageSubject, context: Koala.MessageDialogContext) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: subject, context: context)
     vc.delegate = self
-    self.present(UINavigationController(rootViewController: vc),
-                 animated: true,
-                 completion: nil)
+    self.present(
+      UINavigationController(rootViewController: vc),
+      animated: true,
+      completion: nil
+    )
   }
 }
 
@@ -125,6 +129,5 @@ extension ProjectDescriptionViewController: MessageDialogViewControllerDelegate 
     dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func messageDialog(_ dialog: MessageDialogViewController, postedMessage message: Message) {
-  }
+  internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
 }

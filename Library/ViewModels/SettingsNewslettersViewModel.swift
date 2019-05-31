@@ -17,10 +17,8 @@ public protocol SettingsNewslettersViewModelType {
 }
 
 public final class SettingsNewslettersViewModel: SettingsNewslettersViewModelType,
-SettingsNewslettersViewModelInputs, SettingsNewslettersViewModelOutputs {
-
+  SettingsNewslettersViewModelInputs, SettingsNewslettersViewModelOutputs {
   public init() {
-
     let initialUser = self.viewDidLoadProperty.signal
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()

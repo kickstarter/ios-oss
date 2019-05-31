@@ -1,7 +1,7 @@
-import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import Prelude
 import XCTest
 
 final class ChangePasswordViewControllerTests: TestCase {

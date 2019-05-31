@@ -1,9 +1,9 @@
-import Prelude
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class ProjectNavBarViewModelTests: TestCase {
   fileprivate let vm: ProjectNavBarViewModelType = ProjectNavBarViewModel()

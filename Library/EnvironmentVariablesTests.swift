@@ -1,5 +1,5 @@
-import XCTest
 @testable import Library
+import XCTest
 
 final class EnvironmentVariablesTests: XCTestCase {
   func testKoalaTrackingVariable() {
@@ -20,7 +20,7 @@ final class EnvironmentVariablesTests: XCTestCase {
 private struct MockProcessInfo: ProcessInfoType {
   let environment: [String: String]
 
-  internal init (environment: [String: String] = [:]) {
+  internal init(environment: [String: String] = [:]) {
     self.environment = environment
   }
 }

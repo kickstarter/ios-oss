@@ -6,35 +6,35 @@ import ReactiveSwift
 import UIKit
 
 internal final class BackingViewController: UIViewController {
-  @IBOutlet fileprivate weak var actionsStackView: UIStackView!
-  @IBOutlet fileprivate weak var backerAvatarImageView: UIImageView!
-  @IBOutlet fileprivate weak var backerNameLabel: UILabel!
-  @IBOutlet fileprivate weak var backerPledgeAmountLabel: UILabel!
-  @IBOutlet fileprivate weak var backerRewardDescriptionLabel: UILabel!
-  @IBOutlet fileprivate weak var backerSequenceLabel: UILabel!
-  @IBOutlet fileprivate weak var backerShippingAmountLabel: UILabel!
-  @IBOutlet fileprivate weak var contentView: UIView!
-  @IBOutlet fileprivate weak var dividerView: UIView!
-  @IBOutlet fileprivate weak var loadingIndicatorView: UIActivityIndicatorView!
-  @IBOutlet fileprivate weak var markAsReceivedStackView: UIStackView!
-  @IBOutlet fileprivate weak var markAsReceivedLabelStackView: UIStackView!
-  @IBOutlet fileprivate weak var messageCreatorButton: UIButton!
-  @IBOutlet fileprivate weak var pledgeContainerView: UIView!
-  @IBOutlet fileprivate weak var pledgeLabel: UILabel!
-  @IBOutlet fileprivate weak var pledgeSectionTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var rewardContainerView: UIView!
-  @IBOutlet fileprivate weak var rewardDeliveredLabel: UILabel!
-  @IBOutlet fileprivate weak var rewardReceivedSwitch: UISwitch!
-  @IBOutlet fileprivate weak var rewardSectionTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var rewardTitleWithAmountLabel: UILabel!
-  @IBOutlet fileprivate weak var shippingLabel: UILabel!
-  @IBOutlet fileprivate weak var shippingPlusLabel: UILabel!
-  @IBOutlet fileprivate weak var shippingStackView: UIStackView!
-  @IBOutlet fileprivate weak var statusDescriptionLabel: UILabel!
-  @IBOutlet fileprivate weak var totalPledgedAmountLabel: UILabel!
-  @IBOutlet fileprivate weak var totalPledgedLabel: UILabel!
-  @IBOutlet fileprivate weak var useThisToKeepTrackLabel: UILabel!
-  @IBOutlet fileprivate weak var viewMessagesButton: UIButton!
+  @IBOutlet fileprivate var actionsStackView: UIStackView!
+  @IBOutlet fileprivate var backerAvatarImageView: UIImageView!
+  @IBOutlet fileprivate var backerNameLabel: UILabel!
+  @IBOutlet fileprivate var backerPledgeAmountLabel: UILabel!
+  @IBOutlet fileprivate var backerRewardDescriptionLabel: UILabel!
+  @IBOutlet fileprivate var backerSequenceLabel: UILabel!
+  @IBOutlet fileprivate var backerShippingAmountLabel: UILabel!
+  @IBOutlet fileprivate var contentView: UIView!
+  @IBOutlet fileprivate var dividerView: UIView!
+  @IBOutlet fileprivate var loadingIndicatorView: UIActivityIndicatorView!
+  @IBOutlet fileprivate var markAsReceivedStackView: UIStackView!
+  @IBOutlet fileprivate var markAsReceivedLabelStackView: UIStackView!
+  @IBOutlet fileprivate var messageCreatorButton: UIButton!
+  @IBOutlet fileprivate var pledgeContainerView: UIView!
+  @IBOutlet fileprivate var pledgeLabel: UILabel!
+  @IBOutlet fileprivate var pledgeSectionTitleLabel: UILabel!
+  @IBOutlet fileprivate var rewardContainerView: UIView!
+  @IBOutlet fileprivate var rewardDeliveredLabel: UILabel!
+  @IBOutlet fileprivate var rewardReceivedSwitch: UISwitch!
+  @IBOutlet fileprivate var rewardSectionTitleLabel: UILabel!
+  @IBOutlet fileprivate var rewardTitleWithAmountLabel: UILabel!
+  @IBOutlet fileprivate var shippingLabel: UILabel!
+  @IBOutlet fileprivate var shippingPlusLabel: UILabel!
+  @IBOutlet fileprivate var shippingStackView: UIStackView!
+  @IBOutlet fileprivate var statusDescriptionLabel: UILabel!
+  @IBOutlet fileprivate var totalPledgedAmountLabel: UILabel!
+  @IBOutlet fileprivate var totalPledgedLabel: UILabel!
+  @IBOutlet fileprivate var useThisToKeepTrackLabel: UILabel!
+  @IBOutlet fileprivate var viewMessagesButton: UIButton!
 
   fileprivate let viewModel: BackingViewModelType = BackingViewModel()
 
@@ -56,7 +56,7 @@ internal final class BackingViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
 
     if self.traitCollection.userInterfaceIdiom == .pad {
-      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonTapped))
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonTapped))
     }
   }
 
@@ -91,28 +91,29 @@ internal final class BackingViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project, backing in
         self?.goToMessages(project: project, backing: backing)
-    }
+      }
 
     self.viewModel.outputs.goToMessageCreator
       .observeForControllerAction()
       .observeValues { [weak self] messageSubject, context in
         self?.goToMessageCreator(messageSubject: messageSubject, context: context)
-    }
+      }
 
     self.viewModel.outputs.opacityForContainers
       .observeForUI()
       .observeValues { [weak self] alpha in
         guard let _self = self else { return }
         UIView.animate(
-          withDuration: (alpha == 0.0 ? 0.0 : 0.3),
+          withDuration: alpha == 0.0 ? 0.0 : 0.3,
           delay: 0.0,
           options: .curveEaseOut,
           animations: {
             _self.pledgeContainerView.alpha = alpha
             _self.rewardContainerView.alpha = alpha
           },
-          completion: nil)
-    }
+          completion: nil
+        )
+      }
   }
 
   internal override func bindStyles() {
@@ -126,8 +127,10 @@ internal final class BackingViewController: UIViewController {
       |> ignoresInvertColorsImageViewStyle
 
     _ = self.contentView
-      |> UIView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.grid(5), left: Styles.grid(2),
-                                                   bottom: Styles.grid(4), right: Styles.grid(2))
+      |> UIView.lens.layoutMargins .~ UIEdgeInsets(
+        top: Styles.grid(5), left: Styles.grid(2),
+        bottom: Styles.grid(4), right: Styles.grid(2)
+      )
 
     _ = self.backerAvatarImageView
       |> UIImageView.lens.accessibilityElementsHidden .~ true
@@ -144,7 +147,7 @@ internal final class BackingViewController: UIViewController {
       |> navyButtonStyle
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 14)
       |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
-      |> UIButton.lens.accessibilityHint %~ {  _ in Strings.Opens_message_composer() }
+      |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_message_composer() }
 
     _ = self.viewMessagesButton
       |> borderButtonStyle
@@ -158,8 +161,10 @@ internal final class BackingViewController: UIViewController {
     _ = [self.pledgeContainerView, self.rewardContainerView]
       ||> cardStyle(cornerRadius: 2.0)
       ||> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
-      ||> UIView.lens.layoutMargins .~ UIEdgeInsets(top: Styles.gridHalf(5), left: Styles.gridHalf(5),
-                                                    bottom: Styles.gridHalf(5), right: Styles.grid(2))
+      ||> UIView.lens.layoutMargins .~ UIEdgeInsets(
+        top: Styles.gridHalf(5), left: Styles.gridHalf(5),
+        bottom: Styles.gridHalf(5), right: Styles.grid(2)
+      )
 
     _ = self.totalPledgedLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 15)
@@ -231,11 +236,11 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
   }
 
-  @objc fileprivate func messageCreatorTapped(_ button: UIButton) {
+  @objc fileprivate func messageCreatorTapped(_: UIButton) {
     self.viewModel.inputs.messageCreatorTapped()
   }
 
-  @objc fileprivate func viewMessagesTapped(_ button: UIButton) {
+  @objc fileprivate func viewMessagesTapped(_: UIButton) {
     self.viewModel.inputs.viewMessagesTapped()
   }
 
@@ -251,8 +256,10 @@ internal final class BackingViewController: UIViewController {
     nav.pushViewController(vc, animated: true)
   }
 
-  fileprivate func goToMessageCreator(messageSubject: MessageSubject,
-                                      context: Koala.MessageDialogContext) {
+  fileprivate func goToMessageCreator(
+    messageSubject: MessageSubject,
+    context: Koala.MessageDialogContext
+  ) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: messageSubject, context: context)
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
@@ -274,6 +281,5 @@ extension BackingViewController: MessageDialogViewControllerDelegate {
     dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func messageDialog(_ dialog: MessageDialogViewController, postedMessage message: Message) {
-  }
+  internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
 }

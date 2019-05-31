@@ -1,6 +1,6 @@
-import Foundation
 import Argo
 import Curry
+import Foundation
 import Runes
 
 public struct Author: Swift.Decodable {
@@ -22,7 +22,6 @@ public struct Author: Swift.Decodable {
 }
 
 extension Author.Url: Swift.Decodable {
-
   enum CodingKeys: String, CodingKey {
     case api
     case user

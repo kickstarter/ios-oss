@@ -12,15 +12,19 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
   }
 
   internal func facebookConnect(source: FriendsSource, visible: Bool) {
-    self.set(values: visible ? [source] : [],
-             cellClass: FindFriendsFacebookConnectCell.self,
-             inSection: Section.facebookConnect.rawValue)
+    self.set(
+      values: visible ? [source] : [],
+      cellClass: FindFriendsFacebookConnectCell.self,
+      inSection: Section.facebookConnect.rawValue
+    )
   }
 
   internal func findFriends(source: FriendsSource, visible: Bool) {
-    self.set(values: visible ? [source] : [],
-             cellClass: FindFriendsHeaderCell.self,
-             inSection: Section.findFriends.rawValue)
+    self.set(
+      values: visible ? [source] : [],
+      cellClass: FindFriendsHeaderCell.self,
+      inSection: Section.findFriends.rawValue
+    )
   }
 
   internal func removeFacebookConnectRows() -> [IndexPath] {
@@ -40,9 +44,11 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
       (surveyResponse: survey, count: surveys.count, position: idx)
     }
 
-    self.set(values: surveysWithPosition,
-             cellClass: ActivitySurveyResponseCell.self,
-             inSection: Section.surveys.rawValue)
+    self.set(
+      values: surveysWithPosition,
+      cellClass: ActivitySurveyResponseCell.self,
+      inSection: Section.surveys.rawValue
+    )
   }
 
   internal func load(activities: [Activity]) {

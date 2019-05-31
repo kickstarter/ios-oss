@@ -1,7 +1,7 @@
-import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import Prelude
 import XCTest
 
 final class ChangeEmailViewControllerTests: TestCase {
@@ -51,9 +51,11 @@ final class ChangeEmailViewControllerTests: TestCase {
     let userEmailFields = UserEmailFields.template |> \.isEmailVerified .~ false
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: MockService(fetchGraphUserEmailFieldsResponse: userEmailFields),
-                      currentUser: creator,
-                      language: language) {
+      withEnvironment(
+        apiService: MockService(fetchGraphUserEmailFieldsResponse: userEmailFields),
+        currentUser: creator,
+        language: language
+      ) {
         let controller = ChangeEmailViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
@@ -88,8 +90,8 @@ final class ChangeEmailViewControllerTests: TestCase {
       .compactMap { $0 as? MessageBannerViewController }.first
 
     guard let view = messageBannerViewController?.view else {
-        XCTFail("View should be created")
-        return
+      XCTFail("View should be created")
+      return
     }
 
     XCTAssertTrue(view.isHidden)
