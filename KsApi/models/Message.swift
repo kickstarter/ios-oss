@@ -3,7 +3,7 @@ import Curry
 import Foundation
 import Runes
 
-public struct Message {
+public struct Message: Equatable {
   public let body: String
   public let createdAt: TimeInterval
   public let id: Int

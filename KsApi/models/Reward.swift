@@ -3,7 +3,7 @@ import Curry
 import Prelude
 import Runes
 
-public struct Reward {
+public struct Reward: Equatable {
   public let backersCount: Int?
   public let description: String
   public let endsAt: TimeInterval?
@@ -22,7 +22,7 @@ public struct Reward {
     return self.id == Reward.noReward.id
   }
 
-  public struct Shipping {
+  public struct Shipping: Equatable {
     public let enabled: Bool
     public let preference: Preference?
     public let summary: String?
@@ -33,11 +33,6 @@ public struct Reward {
       case unrestricted
     }
   }
-}
-
-extension Reward: Equatable {}
-public func == (lhs: Reward, rhs: Reward) -> Bool {
-  return lhs.id == rhs.id
 }
 
 private let minimumAndIdComparator = Reward.lens.minimum.comparator <> Reward.lens.id.comparator

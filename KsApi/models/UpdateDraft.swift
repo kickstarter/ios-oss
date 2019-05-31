@@ -2,23 +2,23 @@ import Argo
 import Curry
 import Runes
 
-public struct UpdateDraft {
+public struct UpdateDraft: Equatable {
   public let update: Update
   public let images: [Image]
   public let video: Video?
 
-  public enum Attachment {
+  public enum Attachment: Equatable {
     case image(Image)
     case video(Video)
   }
 
-  public struct Image {
+  public struct Image: Equatable {
     public let id: Int
     public let thumb: String
     public let full: String
   }
 
-  public struct Video {
+  public struct Video: Equatable {
     public let id: Int
     public let status: Status
     public let frame: String
@@ -29,11 +29,6 @@ public struct UpdateDraft {
       case successful
     }
   }
-}
-
-extension UpdateDraft: Equatable {}
-public func == (lhs: UpdateDraft, rhs: UpdateDraft) -> Bool {
-  return lhs.update.id == rhs.update.id
 }
 
 extension UpdateDraft.Attachment {
@@ -54,11 +49,6 @@ extension UpdateDraft.Attachment {
       return video.frame
     }
   }
-}
-
-extension UpdateDraft.Attachment: Equatable {}
-public func == (lhs: UpdateDraft.Attachment, rhs: UpdateDraft.Attachment) -> Bool {
-  return lhs.id == rhs.id
 }
 
 extension UpdateDraft: Argo.Decodable {

@@ -446,7 +446,6 @@
 		A7ED1F3A1E830FDC00BFFA01 /* UILabel+SimpleHTMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F251E830FDC00BFFA01 /* UILabel+SimpleHTMLTests.swift */; };
 		A7ED1F3D1E831B4F00BFFA01 /* ValueCellDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F3C1E831B4F00BFFA01 /* ValueCellDataSourceTests.swift */; };
 		A7ED1F411E831B8900BFFA01 /* KoalaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F401E831B8900BFFA01 /* KoalaTests.swift */; };
-		A7ED1F481E831BA200BFFA01 /* AlertError+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F431E831BA200BFFA01 /* AlertError+Equatable.swift */; };
 		A7ED1F491E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F441E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift */; };
 		A7ED1F4A1E831BA200BFFA01 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F451E831BA200BFFA01 /* MockBundle.swift */; };
 		A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F461E831BA200BFFA01 /* TestCase.swift */; };
@@ -1652,7 +1651,6 @@
 		A7ED1F251E830FDC00BFFA01 /* UILabel+SimpleHTMLTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+SimpleHTMLTests.swift"; sourceTree = "<group>"; };
 		A7ED1F3C1E831B4F00BFFA01 /* ValueCellDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueCellDataSourceTests.swift; sourceTree = "<group>"; };
 		A7ED1F401E831B8900BFFA01 /* KoalaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoalaTests.swift; sourceTree = "<group>"; };
-		A7ED1F431E831BA200BFFA01 /* AlertError+Equatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AlertError+Equatable.swift"; sourceTree = "<group>"; };
 		A7ED1F441E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchTimeInterval-Extensions.swift"; sourceTree = "<group>"; };
 		A7ED1F451E831BA200BFFA01 /* MockBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBundle.swift; sourceTree = "<group>"; };
 		A7ED1F461E831BA200BFFA01 /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
@@ -2979,7 +2977,6 @@
 		A7ED1F421E831BA200BFFA01 /* TestHelpers */ = {
 			isa = PBXGroup;
 			children = (
-				A7ED1F431E831BA200BFFA01 /* AlertError+Equatable.swift */,
 				A7ED1F441E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift */,
 				A7ED1F451E831BA200BFFA01 /* MockBundle.swift */,
 				A7ED1F461E831BA200BFFA01 /* TestCase.swift */,
@@ -4383,7 +4380,6 @@
 				A7ED1FED1E831C5C00BFFA01 /* DashboardProjectsDrawerCellViewModelTests.swift in Sources */,
 				A7ED1FC01E831C5C00BFFA01 /* BackingViewModelTests.swift in Sources */,
 				A7ED1FE01E831C5C00BFFA01 /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */,
-				A7ED1F481E831BA200BFFA01 /* AlertError+Equatable.swift in Sources */,
 				A7ED1FF91E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift in Sources */,
 				A7ED1F361E830FDC00BFFA01 /* String+TruncateTests.swift in Sources */,
 				D723708E2118CD9C001EA4CA /* SettingsRequestDataCellViewModelTests.swift in Sources */,

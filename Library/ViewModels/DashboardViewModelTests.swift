@@ -557,10 +557,16 @@ internal final class DashboardViewModelTests: TestCase {
         titleViewDataClosed1, titleViewDataOpen1, titleViewDataClosed1,
         titleViewDataOpen1, titleViewDataClosed2, titleViewDataOpen2
       ], "Update title with open data")
-      self.presentProjectsDrawer.assertValues([
+
+      let presentProjectDrawerProjectIds = self.presentProjectsDrawer.values
+        .flatMap { $0.map { $0.project.id } }
+      let projectDataIds = [
         [projectData1, projectData2], [projectData1, projectData2],
         [projectData1, projectData2]
-      ])
+      ]
+      .flatMap { $0.map { $0.project.id } }
+      XCTAssertEqual(presentProjectDrawerProjectIds, projectDataIds)
+
       self.animateOutProjectsDrawer.assertValueCount(2, "Animate out drawer emits")
       self.dismissProjectsDrawer.assertValueCount(2, "Dismiss drawer does not emit")
       XCTAssertEqual([

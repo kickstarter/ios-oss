@@ -112,8 +112,8 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual("hola", env.apiService.serverConfig.basicHTTPAuth?.username)
     XCTAssertEqual("mundo", env.apiService.serverConfig.basicHTTPAuth?.password)
     XCTAssertEqual("http://ksr.com", env.apiService.serverConfig.webBaseUrl.absoluteString)
-    XCTAssertEqual(user, env.currentUser)
-    XCTAssertEqual(user, env.koala.loggedInUser)
+    XCTAssertEqual(user.id, env.currentUser?.id)
+    XCTAssertEqual(user.id, env.koala.loggedInUser?.id)
 
     let differentEnv = AppEnvironment.fromStorage(
       ubiquitousStore: MockKeyValueStore(),
@@ -204,8 +204,8 @@ final class AppEnvironmentTests: XCTestCase {
       ServerConfig.production.webBaseUrl.absoluteString,
       env.apiService.serverConfig.webBaseUrl.absoluteString
     )
-    XCTAssertEqual(currentUser, env.currentUser)
-    XCTAssertEqual(currentUser, env.koala.loggedInUser)
+    XCTAssertEqual(currentUser.id, env.currentUser?.id)
+    XCTAssertEqual(currentUser.id, env.koala.loggedInUser?.id)
   }
 
   func testPushPopSave() {

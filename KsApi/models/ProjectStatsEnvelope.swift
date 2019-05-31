@@ -10,7 +10,7 @@ public struct ProjectStatsEnvelope {
   public let rewardDistribution: [RewardStats]
   public let videoStats: VideoStats?
 
-  public struct CumulativeStats {
+  public struct CumulativeStats: Equatable {
     public let averagePledge: Int
     public let backersCount: Int
     public let goal: Int
@@ -18,7 +18,7 @@ public struct ProjectStatsEnvelope {
     public let pledged: Int
   }
 
-  public struct FundingDateStats {
+  public struct FundingDateStats: Equatable {
     public let backersCount: Int
     public let cumulativePledged: Int
     public let cumulativeBackersCount: Int
@@ -26,13 +26,13 @@ public struct ProjectStatsEnvelope {
     public let pledged: Int
   }
 
-  public struct ReferralAggregateStats {
+  public struct ReferralAggregateStats: Equatable {
     public let custom: Double
     public let external: Double
     public let kickstarter: Double
   }
 
-  public struct ReferrerStats {
+  public struct ReferrerStats: Equatable {
     public let backersCount: Int
     public let code: String
     public let percentageOfDollars: Double
@@ -48,7 +48,7 @@ public struct ProjectStatsEnvelope {
     }
   }
 
-  public struct RewardStats {
+  public struct RewardStats: Equatable {
     public let backersCount: Int
     public let rewardId: Int
     public let minimum: Double?
@@ -57,7 +57,7 @@ public struct ProjectStatsEnvelope {
     public static let zero = RewardStats(backersCount: 0, rewardId: 0, minimum: 0.00, pledged: 0)
   }
 
-  public struct VideoStats {
+  public struct VideoStats: Equatable {
     public let externalCompletions: Int
     public let externalStarts: Int
     public let internalCompletions: Int
@@ -88,12 +88,6 @@ extension ProjectStatsEnvelope.CumulativeStats: Argo.Decodable {
   }
 }
 
-extension ProjectStatsEnvelope.CumulativeStats: Equatable {}
-public func == (lhs: ProjectStatsEnvelope.CumulativeStats, rhs: ProjectStatsEnvelope.CumulativeStats)
-  -> Bool {
-  return lhs.averagePledge == rhs.averagePledge
-}
-
 extension ProjectStatsEnvelope.FundingDateStats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.FundingDateStats> {
     return curry(ProjectStatsEnvelope.FundingDateStats.init)
@@ -105,12 +99,6 @@ extension ProjectStatsEnvelope.FundingDateStats: Argo.Decodable {
   }
 }
 
-extension ProjectStatsEnvelope.FundingDateStats: Equatable {}
-public func == (lhs: ProjectStatsEnvelope.FundingDateStats, rhs: ProjectStatsEnvelope.FundingDateStats)
-  -> Bool {
-  return lhs.date == rhs.date
-}
-
 extension ProjectStatsEnvelope.ReferralAggregateStats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferralAggregateStats> {
     return curry(ProjectStatsEnvelope.ReferralAggregateStats.init)
@@ -118,16 +106,6 @@ extension ProjectStatsEnvelope.ReferralAggregateStats: Argo.Decodable {
       <*> (json <| "external" >>- stringToDouble)
       <*> json <| "internal"
   }
-}
-
-extension ProjectStatsEnvelope.ReferralAggregateStats: Equatable {}
-public func == (
-  lhs: ProjectStatsEnvelope.ReferralAggregateStats,
-  rhs: ProjectStatsEnvelope.ReferralAggregateStats
-) -> Bool {
-  return lhs.custom == rhs.custom &&
-    lhs.external == rhs.external &&
-    lhs.kickstarter == rhs.kickstarter
 }
 
 extension ProjectStatsEnvelope.ReferrerStats: Argo.Decodable {
@@ -141,11 +119,6 @@ extension ProjectStatsEnvelope.ReferrerStats: Argo.Decodable {
       <*> json <| "referrer_name"
       <*> json <| "referrer_type"
   }
-}
-
-extension ProjectStatsEnvelope.ReferrerStats: Equatable {}
-public func == (lhs: ProjectStatsEnvelope.ReferrerStats, rhs: ProjectStatsEnvelope.ReferrerStats) -> Bool {
-  return lhs.code == rhs.code
 }
 
 extension ProjectStatsEnvelope.ReferrerStats.ReferrerType: Argo.Decodable {
@@ -176,12 +149,6 @@ extension ProjectStatsEnvelope.RewardStats: Argo.Decodable {
   }
 }
 
-extension ProjectStatsEnvelope.RewardStats: Equatable {}
-public func == (lhs: ProjectStatsEnvelope.RewardStats, rhs: ProjectStatsEnvelope.RewardStats)
-  -> Bool {
-  return lhs.rewardId == rhs.rewardId
-}
-
 extension ProjectStatsEnvelope.VideoStats: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.VideoStats> {
     return curry(ProjectStatsEnvelope.VideoStats.init)
@@ -190,15 +157,6 @@ extension ProjectStatsEnvelope.VideoStats: Argo.Decodable {
       <*> json <| "internal_completions"
       <*> json <| "internal_starts"
   }
-}
-
-extension ProjectStatsEnvelope.VideoStats: Equatable {}
-public func == (lhs: ProjectStatsEnvelope.VideoStats, rhs: ProjectStatsEnvelope.VideoStats) -> Bool {
-  return
-    lhs.externalCompletions == rhs.externalCompletions &&
-    lhs.externalStarts == rhs.externalStarts &&
-    lhs.internalCompletions == rhs.internalCompletions &&
-    lhs.internalStarts == rhs.internalStarts
 }
 
 private func decodeSuccessfulFundingStats(_ json: JSON) -> Decoded<[ProjectStatsEnvelope.FundingDateStats]> {

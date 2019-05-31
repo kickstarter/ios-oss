@@ -9,7 +9,7 @@ import KsApi
  - thanks:           Sharing a project from the checkout-thanks screen.
  - update:           Sharing an update from the update screen.
  */
-public enum ShareContext {
+public enum ShareContext: Equatable {
   case creatorDashboard(Project)
   case discovery(Project)
   case project(Project)
@@ -44,25 +44,6 @@ public enum ShareContext {
     switch self {
     case let .update(_, update): return update
     default: return nil
-    }
-  }
-}
-
-extension ShareContext: Equatable {
-  public static func == (lhs: ShareContext, rhs: ShareContext) -> Bool {
-    switch (lhs, rhs) {
-    case let (.creatorDashboard(lhs), .creatorDashboard(rhs)):
-      return lhs == rhs
-    case let (.discovery(lhs), .discovery(rhs)):
-      return lhs == rhs
-    case let (.project(lhs), .project(rhs)):
-      return lhs == rhs
-    case let (.thanks(lhs), .thanks(rhs)):
-      return lhs == rhs
-    case let (.update(lhs), .update(rhs)):
-      return lhs == rhs
-    case (.creatorDashboard, _), (.discovery, _), (.project, _), (.thanks, _), (.update, _):
-      return false
     }
   }
 }

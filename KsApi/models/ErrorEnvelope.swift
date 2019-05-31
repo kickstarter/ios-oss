@@ -2,7 +2,7 @@ import Argo
 import Curry
 import Runes
 
-public struct ErrorEnvelope {
+public struct ErrorEnvelope: Equatable {
   public let errorMessages: [String]
   public let ksrCode: KsrCode?
   public let httpCode: Int
@@ -42,12 +42,12 @@ public struct ErrorEnvelope {
     case InvalidPaginationUrl = "invalid_pagination_url"
   }
 
-  public struct Exception {
+  public struct Exception: Equatable {
     public let backtrace: [String]?
     public let message: String?
   }
 
-  public struct FacebookUser {
+  public struct FacebookUser: Equatable {
     public let id: Int64
     public let name: String
     public let email: String

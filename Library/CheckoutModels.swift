@@ -1,16 +1,16 @@
 import KsApi
 import PassKit
 
-public struct PaymentData {
+public struct PaymentData: Equatable {
   public let tokenData: PaymentTokenData
 }
 
-public struct PaymentTokenData {
+public struct PaymentTokenData: Equatable {
   public let paymentMethodData: PaymentMethodData
   public let transactionIdentifier: String
 }
 
-public struct PaymentMethodData {
+public struct PaymentMethodData: Equatable {
   public let displayName: String?
   public let network: PKPaymentNetwork?
   public let type: PKPaymentMethodType
@@ -39,22 +39,4 @@ extension PaymentMethodData {
       type: paymentMethod.type
     )
   }
-}
-
-extension PaymentData: Equatable {}
-public func == (lhs: PaymentData, rhs: PaymentData) -> Bool {
-  return lhs.tokenData == rhs.tokenData
-}
-
-extension PaymentTokenData: Equatable {}
-public func == (lhs: PaymentTokenData, rhs: PaymentTokenData) -> Bool {
-  return lhs.paymentMethodData == rhs.paymentMethodData
-    && lhs.transactionIdentifier == rhs.transactionIdentifier
-}
-
-extension PaymentMethodData: Equatable {}
-public func == (lhs: PaymentMethodData, rhs: PaymentMethodData) -> Bool {
-  return lhs.displayName == rhs.displayName
-    && lhs.network == rhs.network
-    && lhs.type == rhs.type
 }

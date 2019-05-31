@@ -2,7 +2,7 @@ import Argo
 import Curry
 import Runes
 
-public struct MessageThread {
+public struct MessageThread: Equatable {
   public let backing: Backing?
   public let closed: Bool
   public let id: Int
@@ -24,9 +24,4 @@ extension MessageThread: Argo.Decodable {
       <*> json <| "project"
       <*> json <| "unread_messages_count"
   }
-}
-
-extension MessageThread: Equatable {}
-public func == (lhs: MessageThread, rhs: MessageThread) -> Bool {
-  return lhs.id == rhs.id
 }

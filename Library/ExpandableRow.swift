@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
 
-public struct ExpandableRow {
+public struct ExpandableRow: Equatable {
   public let isExpanded: Bool
   public let params: DiscoveryParams
   public let selectableRows: [SelectableRow]
@@ -40,11 +40,4 @@ public extension Lens where Whole == ExpandableRow, Part == DiscoveryParams {
   var category: Lens<ExpandableRow, KsApi.Category?> {
     return ExpandableRow.lens.params .. DiscoveryParams.lens.category
   }
-}
-
-extension ExpandableRow: Equatable {}
-public func == (lhs: ExpandableRow, rhs: ExpandableRow) -> Bool {
-  return lhs.isExpanded == rhs.isExpanded &&
-    lhs.params == rhs.params &&
-    lhs.selectableRows == rhs.selectableRows
 }

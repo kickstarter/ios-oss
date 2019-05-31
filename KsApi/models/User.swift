@@ -2,7 +2,7 @@ import Argo
 import Curry
 import Runes
 
-public struct User {
+public struct User: Equatable {
   public var avatar: Avatar
   public var facebookConnected: Bool?
   public var id: Int
@@ -17,13 +17,13 @@ public struct User {
   public var social: Bool?
   public var stats: Stats
 
-  public struct Avatar {
+  public struct Avatar: Equatable {
     public var large: String?
     public var medium: String
     public var small: String
   }
 
-  public struct NewsletterSubscriptions {
+  public struct NewsletterSubscriptions: Equatable {
     public var arts: Bool?
     public var games: Bool?
     public var happening: Bool?
@@ -51,7 +51,7 @@ public struct User {
     }
   }
 
-  public struct Notifications {
+  public struct Notifications: Equatable {
     public var backings: Bool?
     public var commentReplies: Bool?
     public var comments: Bool?
@@ -71,7 +71,7 @@ public struct User {
     public var updates: Bool?
   }
 
-  public struct Stats {
+  public struct Stats: Equatable {
     public var backedProjectsCount: Int?
     public var createdProjectsCount: Int?
     public var memberProjectsCount: Int?
@@ -83,11 +83,6 @@ public struct User {
   public var isCreator: Bool {
     return (self.stats.createdProjectsCount ?? 0) > 0
   }
-}
-
-extension User: Equatable {}
-public func == (lhs: User, rhs: User) -> Bool {
-  return lhs.id == rhs.id
 }
 
 extension User: CustomDebugStringConvertible {
@@ -193,19 +188,6 @@ extension User.NewsletterSubscriptions: EncodableType {
   }
 }
 
-extension User.NewsletterSubscriptions: Equatable {}
-public func == (lhs: User.NewsletterSubscriptions, rhs: User.NewsletterSubscriptions) -> Bool {
-  return lhs.arts == rhs.arts &&
-    lhs.games == rhs.games &&
-    lhs.happening == rhs.happening &&
-    lhs.invent == rhs.invent &&
-    lhs.promo == rhs.promo &&
-    lhs.weekly == rhs.weekly &&
-    lhs.films == rhs.films &&
-    lhs.publishing == rhs.publishing &&
-    lhs.alumni == rhs.alumni
-}
-
 extension User.Notifications: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Notifications> {
     let tmp1 = curry(User.Notifications.init)
@@ -253,27 +235,6 @@ extension User.Notifications: EncodableType {
     result["notify_mobile_of_backings"] = self.mobileBackings
     return result
   }
-}
-
-extension User.Notifications: Equatable {}
-public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
-  return lhs.backings == rhs.backings &&
-    lhs.commentReplies == rhs.commentReplies &&
-    lhs.comments == rhs.comments &&
-    lhs.creatorDigest == rhs.creatorDigest &&
-    lhs.creatorTips == rhs.creatorTips &&
-    lhs.follower == rhs.follower &&
-    lhs.friendActivity == rhs.friendActivity &&
-    lhs.messages == rhs.messages &&
-    lhs.mobileBackings == rhs.mobileBackings &&
-    lhs.mobileComments == rhs.mobileComments &&
-    lhs.mobileFollower == rhs.mobileFollower &&
-    lhs.mobileFriendActivity == rhs.mobileFriendActivity &&
-    lhs.mobileMessages == rhs.mobileMessages &&
-    lhs.mobilePostLikes == rhs.mobilePostLikes &&
-    lhs.mobileUpdates == rhs.mobileUpdates &&
-    lhs.postLikes == rhs.postLikes &&
-    lhs.updates == rhs.updates
 }
 
 extension User.Stats: Argo.Decodable {

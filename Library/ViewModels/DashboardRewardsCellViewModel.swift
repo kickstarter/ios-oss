@@ -3,18 +3,10 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public struct RewardsRowData {
+public struct RewardsRowData: Equatable {
   public let country: Project.Country
   public let rewardsStats: [ProjectStatsEnvelope.RewardStats]
   public let totalPledged: Int
-}
-
-extension RewardsRowData: Equatable {}
-public func == (lhs: RewardsRowData, rhs: RewardsRowData) -> Bool {
-  return
-    lhs.country == rhs.country &&
-    lhs.rewardsStats == rhs.rewardsStats &&
-    lhs.totalPledged == rhs.totalPledged
 }
 
 public protocol DashboardRewardsCellViewModelInputs {

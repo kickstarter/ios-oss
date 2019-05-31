@@ -3,7 +3,7 @@ import Curry
 import Foundation
 import Runes
 
-public struct Activity {
+public struct Activity: Equatable {
   public let category: Activity.Category
   public let comment: Comment?
   public let createdAt: TimeInterval
@@ -13,7 +13,7 @@ public struct Activity {
   public let update: Update?
   public let user: User?
 
-  public enum Category: String {
+  public enum Category: String, Equatable {
     case backing
     case backingAmount = "backing-amount"
     case backingCanceled = "backing-canceled"
@@ -33,7 +33,7 @@ public struct Activity {
     case unknown
   }
 
-  public struct MemberData {
+  public struct MemberData: Equatable {
     public let amount: Int?
     public let backing: Backing?
     public let oldAmount: Int?
@@ -42,12 +42,6 @@ public struct Activity {
     public let newRewardId: Int?
     public let rewardId: Int?
   }
-}
-
-extension Activity: Equatable {}
-
-public func == (lhs: Activity, rhs: Activity) -> Bool {
-  return lhs.id == rhs.id
 }
 
 extension Activity: Argo.Decodable {

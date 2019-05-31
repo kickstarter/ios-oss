@@ -43,13 +43,3 @@ public enum Language: String {
     }
   }
 }
-
-extension Language: Equatable {}
-public func == (lhs: Language, rhs: Language) -> Bool {
-  switch (lhs, rhs) {
-  case (.en, .en), (.es, .es), (.fr, .fr), (.de, .de), (.ja, .ja):
-    return true
-  default:
-    return false
-  }
-}

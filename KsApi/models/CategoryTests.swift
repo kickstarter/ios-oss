@@ -58,7 +58,7 @@ class CategoryTests: XCTestCase {
   }
 
   func testParent() {
-    XCTAssertEqual(Category.illustration.parent, Category.art)
+    XCTAssertEqual(Category.illustration.parent?.id, Category.art.id)
     XCTAssertEqual(Category.art.parent, nil)
   }
 
@@ -76,7 +76,7 @@ class CategoryTests: XCTestCase {
   }
 
   func testRoot() {
-    XCTAssertEqual(Category.illustration.root, Category.art)
+    XCTAssertEqual(Category.illustration.root?.id, Category.art.id)
     XCTAssertEqual(Category.illustration.isRoot, false)
     XCTAssertEqual(Category.art.root, Category.art)
     XCTAssertEqual(Category.art.isRoot, true)

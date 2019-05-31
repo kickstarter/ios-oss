@@ -1,5 +1,5 @@
 extension Project {
-  public struct Country {
+  public struct Country: Equatable {
     public let countryCode: String
     public let currencyCode: String
     public let currencySymbol: String
@@ -96,7 +96,6 @@ extension Project.Country {
   }
 }
 
-extension Project.Country: Equatable {}
 public func == (lhs: Project.Country, rhs: Project.Country) -> Bool {
   return lhs.countryCode == rhs.countryCode
     && lhs.currencySymbol == rhs.currencySymbol

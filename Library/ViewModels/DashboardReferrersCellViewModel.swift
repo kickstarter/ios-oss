@@ -3,14 +3,9 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public struct ReferrersRowData {
+public struct ReferrersRowData: Equatable {
   public let country: Project.Country
   public let referrers: [ProjectStatsEnvelope.ReferrerStats]
-}
-
-extension ReferrersRowData: Equatable {}
-public func == (lhs: ReferrersRowData, rhs: ReferrersRowData) -> Bool {
-  return lhs.country == rhs.country && lhs.referrers == rhs.referrers
 }
 
 public protocol DashboardReferrersCellViewModelInputs {

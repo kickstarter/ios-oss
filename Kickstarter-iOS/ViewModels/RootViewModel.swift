@@ -30,20 +30,6 @@ internal enum RootViewControllerData: Equatable {
     }
   }
 
-  static func == (lhs: RootViewControllerData, rhs: RootViewControllerData) -> Bool {
-    switch (lhs, rhs) {
-    case (.discovery, .discovery): return true
-    case (.activities, .activities): return true
-    case (.search, .search): return true
-    case let (.dashboard(lhsIsMember), .dashboard(rhsIsMember)):
-      return lhsIsMember == rhsIsMember
-    case let (.profile(lhsIsLoggedIn), .profile(rhsIsLoggedIn)):
-      return lhsIsLoggedIn == rhsIsLoggedIn
-    default:
-      return false
-    }
-  }
-
   var isNil: Bool {
     switch self {
     case let .dashboard(isMember):
@@ -72,13 +58,13 @@ internal enum RootViewControllerData: Equatable {
   }
 }
 
-internal struct TabBarItemsData {
+internal struct TabBarItemsData: Equatable {
   internal let items: [TabBarItem]
   internal let isLoggedIn: Bool
   internal let isMember: Bool
 }
 
-internal enum TabBarItem {
+internal enum TabBarItem: Equatable {
   case activity(index: RootViewControllerIndex)
   case dashboard(index: RootViewControllerIndex)
   case home(index: RootViewControllerIndex)
@@ -356,30 +342,4 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
     isLoggedIn: user != nil,
     isMember: isMember
   )
-}
-
-extension TabBarItemsData: Equatable {
-  static func == (lhs: TabBarItemsData, rhs: TabBarItemsData) -> Bool {
-    return lhs.items == rhs.items
-      && lhs.isLoggedIn == rhs.isLoggedIn
-      && lhs.isMember == rhs.isMember
-  }
-}
-
-extension TabBarItem: Equatable {
-  static func == (lhs: TabBarItem, rhs: TabBarItem) -> Bool {
-    switch (lhs, rhs) {
-    case let (.activity(lhs), .activity(rhs)):
-      return lhs == rhs
-    case let (.dashboard(lhs), .dashboard(rhs)):
-      return lhs == rhs
-    case let (.home(lhs), .home(rhs)):
-      return lhs == rhs
-    case let (.profile(lhs), .profile(rhs)):
-      return lhs.avatarUrl == rhs.avatarUrl && lhs.index == rhs.index
-    case let (.search(lhs), .search(rhs)):
-      return lhs == rhs
-    default: return false
-    }
-  }
 }

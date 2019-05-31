@@ -2,24 +2,19 @@ import Argo
 import Curry
 import Runes
 
-public struct SurveyResponse {
+public struct SurveyResponse: Equatable {
   public let answeredAt: TimeInterval?
   public let id: Int
   public let project: Project?
   public let urls: UrlsEnvelope
 
-  public struct UrlsEnvelope {
+  public struct UrlsEnvelope: Equatable {
     public let web: WebEnvelope
 
-    public struct WebEnvelope {
+    public struct WebEnvelope: Equatable {
       public let survey: String
     }
   }
-}
-
-extension SurveyResponse: Equatable {}
-public func == (lhs: SurveyResponse, rhs: SurveyResponse) -> Bool {
-  return lhs.id == rhs.id
 }
 
 extension SurveyResponse: Argo.Decodable {

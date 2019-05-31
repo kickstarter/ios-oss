@@ -86,23 +86,13 @@ public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCe
   public var outputs: ProjectPamphletSubpageCellViewModelOutputs { return self }
 }
 
-public enum ProjectPamphletSubpageCellPosition {
+public enum ProjectPamphletSubpageCellPosition: Equatable {
   case first
   case middle
   case last
 }
 
-extension ProjectPamphletSubpageCellPosition: Equatable {}
-public func == (lhs: ProjectPamphletSubpageCellPosition, rhs: ProjectPamphletSubpageCellPosition) -> Bool {
-  switch (lhs, rhs) {
-  case (.first, .first), (.middle, .middle), (.last, .last):
-    return true
-  default:
-    return false
-  }
-}
-
-public enum ProjectPamphletSubpage {
+public enum ProjectPamphletSubpage: Equatable {
   case comments(Int?, ProjectPamphletSubpageCellPosition)
   case updates(Int?, ProjectPamphletSubpageCellPosition)
 
@@ -132,17 +122,5 @@ public enum ProjectPamphletSubpage {
     case .updates: return true
     default: return false
     }
-  }
-}
-
-extension ProjectPamphletSubpage: Equatable {}
-public func == (lhs: ProjectPamphletSubpage, rhs: ProjectPamphletSubpage) -> Bool {
-  switch (lhs, rhs) {
-  case let (.comments(lhsCount, lhsPos), .comments(rhsCount, rhsPos)):
-    return lhsCount == rhsCount && lhsPos == rhsPos
-  case let (.updates(lhsCount, lhsPos), .updates(rhsCount, rhsPos)):
-    return lhsCount == rhsCount && lhsPos == rhsPos
-  default:
-    return false
   }
 }

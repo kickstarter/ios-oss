@@ -2,7 +2,7 @@ import Argo
 import Curry
 import Runes
 
-public struct Backing {
+public struct Backing: Equatable {
   public let amount: Double
   public let backer: User?
   public let backerId: Int
@@ -26,12 +26,6 @@ public struct Backing {
     case pledged
     case preauth
   }
-}
-
-extension Backing: Equatable {}
-
-public func == (lhs: Backing, rhs: Backing) -> Bool {
-  return lhs.id == rhs.id
 }
 
 extension Backing: Argo.Decodable {

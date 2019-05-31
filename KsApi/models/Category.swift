@@ -1,5 +1,5 @@
 import Foundation
-public struct ParentCategory: Swift.Decodable {
+public struct ParentCategory: Swift.Decodable, Equatable {
   public let id: String
   public let name: String
 
@@ -10,7 +10,7 @@ public struct ParentCategory: Swift.Decodable {
 
 private let unrecognizedCategoryId: Int = -1
 
-public struct Category: Swift.Decodable {
+public struct Category: Swift.Decodable, Equatable {
   public static let gamesId: Int = 12
   public var id: String
   public var name: String
@@ -53,7 +53,7 @@ public struct Category: Swift.Decodable {
     return self._parent?.categoryType
   }
 
-  public struct SubcategoryConnection: Swift.Decodable {
+  public struct SubcategoryConnection: Swift.Decodable, Equatable {
     public let totalCount: Int
     public let nodes: [Category]
   }
@@ -104,12 +104,6 @@ extension ParentCategory: Hashable {
   }
 }
 
-extension ParentCategory: Equatable {
-  public static func == (lhs: ParentCategory, rhs: ParentCategory) -> Bool {
-    return lhs.id == rhs.id
-  }
-}
-
 extension Category: Comparable {}
 public func < (lhs: Category, rhs: Category) -> Bool {
   if lhs.id == rhs.id {
@@ -129,12 +123,6 @@ public func < (lhs: Category, rhs: Category) -> Bool {
   }
 
   return lhs.parent == nil
-}
-
-extension Category: Equatable {
-  public static func == (lhs: Category, rhs: Category) -> Bool {
-    return lhs.id == rhs.id
-  }
 }
 
 extension Category: Hashable {

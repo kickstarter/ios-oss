@@ -2,7 +2,7 @@ import Argo
 import Curry
 import Runes
 
-public struct Comment {
+public struct Comment: Equatable {
   public let author: Author
   public let body: String
   public let createdAt: TimeInterval
@@ -39,12 +39,6 @@ extension Comment: Argo.Decodable {
       <*> (json <|? "deleted_at" >>- decodePositiveTimeInterval)
       <*> json <| "id"
   }
-}
-
-extension Comment: Equatable {}
-
-public func == (lhs: Comment, rhs: Comment) -> Bool {
-  return lhs.id == rhs.id
 }
 
 // Decode a time interval so that non-positive values are coalesced to `nil`. We do this because the API

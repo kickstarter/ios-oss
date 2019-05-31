@@ -3,7 +3,7 @@ import Curry
 import Prelude
 import Runes
 
-public struct DiscoveryParams {
+public struct DiscoveryParams: Equatable {
   public var backed: Bool?
   public var category: Category?
   public var collaborated: Bool?
@@ -64,11 +64,6 @@ public struct DiscoveryParams {
 
     return params
   }
-}
-
-extension DiscoveryParams: Equatable {}
-public func == (a: DiscoveryParams, b: DiscoveryParams) -> Bool {
-  return a.queryParams == b.queryParams
 }
 
 extension DiscoveryParams: Hashable {

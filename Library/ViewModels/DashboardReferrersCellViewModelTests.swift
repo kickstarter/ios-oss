@@ -192,25 +192,40 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
 
     self.vm.inputs.backersButtonTapped()
     self.referrersRowReferrers.assertValues(
-      [[stats3, stats5, stats1, stats2, stats4]],
+      [
+        [stats2, stats1, stats3, stats5, stats4],
+        [stats3, stats5, stats1, stats2, stats4]
+      ],
       "Stats emit sorted by descending backers count."
     )
 
     self.vm.inputs.percentButtonTapped()
     self.referrersRowReferrers.assertValues(
-      [[stats2, stats1, stats3, stats5, stats4]],
+      [
+        [stats2, stats1, stats3, stats5, stats4],
+        [stats3, stats5, stats1, stats2, stats4],
+        [stats2, stats1, stats3, stats5, stats4]
+      ],
       "Stats emit sorted by descending percent pledged amount."
     )
 
     self.vm.inputs.pledgedButtonTapped()
     self.referrersRowReferrers.assertValues(
-      [[stats2, stats1, stats3, stats5, stats4]],
+      [
+        [stats2, stats1, stats3, stats5, stats4],
+        [stats3, stats5, stats1, stats2, stats4],
+        [stats2, stats1, stats3, stats5, stats4]
+      ],
       "Stats emit sorted by descending pledge amount."
     )
 
     self.vm.inputs.sourceButtonTapped()
     self.referrersRowReferrers.assertValues(
-      [[stats2, stats1, stats3, stats5, stats4]],
+      [
+        [stats2, stats1, stats3, stats5, stats4],
+        [stats3, stats5, stats1, stats2, stats4],
+        [stats2, stats1, stats3, stats5, stats4]
+      ],
       "Stats emit sorted alphabetically."
     )
     self.notifyDelegateAddedReferrerRows.assertDidNotEmitValue("Delegate should not have added any rows.")

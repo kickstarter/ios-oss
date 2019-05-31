@@ -13,12 +13,6 @@ public struct HockeyConfigData {
 }
 
 extension HockeyConfigData: Equatable {}
-public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
-  return lhs.appIdentifier == rhs.appIdentifier
-    && lhs.disableUpdates == rhs.disableUpdates
-    && lhs.userId == rhs.userId
-    && lhs.userName == rhs.userName
-}
 
 public enum NotificationAuthorizationStatus {
   case authorized

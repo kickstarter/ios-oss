@@ -2,7 +2,7 @@ import Argo
 import KsApi
 import Runes
 
-public enum RefTag {
+public enum RefTag: Equatable {
   case activity
   case activitySample
   case category
@@ -158,8 +158,6 @@ public enum RefTag {
     }
   }
 }
-
-extension RefTag: Equatable {}
 
 extension RefTag: CustomStringConvertible {
   public var description: String {

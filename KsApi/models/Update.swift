@@ -3,7 +3,7 @@ import Curry
 import Foundation
 import Runes
 
-public struct Update {
+public struct Update: Equatable {
   public let body: String?
   public let commentsCount: Int?
   public let hasLiked: Bool?
@@ -18,19 +18,13 @@ public struct Update {
   public let user: User?
   public let visible: Bool?
 
-  public struct UrlsEnvelope {
+  public struct UrlsEnvelope: Equatable {
     public let web: WebEnvelope
 
-    public struct WebEnvelope {
+    public struct WebEnvelope: Equatable {
       public let update: String
     }
   }
-}
-
-extension Update: Equatable {}
-
-public func == (lhs: Update, rhs: Update) -> Bool {
-  return lhs.id == rhs.id
 }
 
 extension Update: Argo.Decodable {

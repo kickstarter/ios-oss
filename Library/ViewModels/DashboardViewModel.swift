@@ -3,7 +3,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public enum DrawerState {
+public enum DrawerState: Equatable {
   case open
   case closed
 
@@ -12,13 +12,13 @@ public enum DrawerState {
   }
 }
 
-public struct DashboardTitleViewData {
+public struct DashboardTitleViewData: Equatable {
   public let drawerState: DrawerState
   public let isArrowHidden: Bool
   public let currentProjectIndex: Int
 }
 
-public struct ProjectsDrawerData {
+public struct ProjectsDrawerData: Equatable {
   public let project: Project
   public let indexNum: Int
   public let isChecked: Bool
@@ -411,18 +411,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
   public var inputs: DashboardViewModelInputs { return self }
   public var outputs: DashboardViewModelOutputs { return self }
-}
-
-extension ProjectsDrawerData: Equatable {}
-public func == (lhs: ProjectsDrawerData, rhs: ProjectsDrawerData) -> Bool {
-  return lhs.project.id == rhs.project.id
-}
-
-extension DashboardTitleViewData: Equatable {}
-public func == (lhs: DashboardTitleViewData, rhs: DashboardTitleViewData) -> Bool {
-  return lhs.drawerState == rhs.drawerState &&
-    lhs.currentProjectIndex == rhs.currentProjectIndex &&
-    lhs.isArrowHidden == rhs.isArrowHidden
 }
 
 private func find(projectForParam param: Param?, in projects: [Project]) -> Project? {

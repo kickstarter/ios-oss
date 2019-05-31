@@ -1,7 +1,7 @@
 import Foundation
 import KsApi
 
-public enum AlertError {
+public enum AlertError: Equatable {
   case genericError(message: String)
   case facebookTokenFail
   case facebookLoginAttemptFail(error: NSError)

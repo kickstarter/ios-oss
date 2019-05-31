@@ -576,16 +576,6 @@ public enum AttachmentSource: String {
   }
 }
 
-extension AttachmentSource: Equatable {}
-public func == (lhs: AttachmentSource, rhs: AttachmentSource) -> Bool {
-  switch (lhs, rhs) {
-  case (.camera, .camera), (.cameraRoll, .cameraRoll):
-    return true
-  default:
-    return false
-  }
-}
-
 private enum SaveAction {
   case dismiss
   case preview

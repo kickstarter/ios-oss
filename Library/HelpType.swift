@@ -1,6 +1,6 @@
 import UIKit
 
-public enum HelpType: SettingsCellTypeProtocol {
+public enum HelpType: SettingsCellTypeProtocol, Equatable {
   case helpCenter
   case contact
   case howItWorks
@@ -67,16 +67,5 @@ public enum HelpType: SettingsCellTypeProtocol {
     case .trust:
       return "Trust & Safety"
     }
-  }
-}
-
-extension HelpType: Equatable {}
-public func == (lhs: HelpType, rhs: HelpType) -> Bool {
-  switch (lhs, rhs) {
-  case (.contact, .contact), (.cookie, .cookie), (.helpCenter, .helpCenter), (.howItWorks, .howItWorks),
-       (.privacy, .privacy), (.terms, .terms), (.trust, .trust):
-    return true
-  default:
-    return false
   }
 }

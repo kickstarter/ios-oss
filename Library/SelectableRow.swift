@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
 
-public struct SelectableRow {
+public struct SelectableRow: Equatable {
   public let isSelected: Bool
   public let params: DiscoveryParams
 
@@ -46,9 +46,4 @@ public extension Lens where Whole == SelectableRow, Part == DiscoveryParams {
   var backed: Lens<SelectableRow, Bool?> {
     return SelectableRow.lens.params .. DiscoveryParams.lens.backed
   }
-}
-
-extension SelectableRow: Equatable {}
-public func == (lhs: SelectableRow, rhs: SelectableRow) -> Bool {
-  return lhs.isSelected == rhs.isSelected && lhs.params == rhs.params
 }

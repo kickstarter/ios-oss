@@ -1,7 +1,7 @@
 import Argo
 
 /// Represents a way to paramterize a model by either an `id` integer or `slug` string.
-public enum Param {
+public enum Param: Equatable {
   case id(Int)
   case slug(String)
 
@@ -38,20 +38,6 @@ public enum Param {
     case let .slug(slug):
       return encodeForRFC3986(slug) ?? ""
     }
-  }
-}
-
-extension Param: Equatable {}
-public func == (lhs: Param, rhs: Param) -> Bool {
-  switch (lhs, rhs) {
-  case let (.id(lhs), .id(rhs)):
-    return lhs == rhs
-  case let (.slug(lhs), .slug(rhs)):
-    return lhs == rhs
-  case let (.id(lhs), .slug(rhs)):
-    return String(lhs) == rhs
-  case let (.slug(lhs), .id(rhs)):
-    return lhs == String(rhs)
   }
 }
 

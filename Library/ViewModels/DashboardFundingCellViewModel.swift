@@ -3,18 +3,10 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public struct FundingGraphData {
+public struct FundingGraphData: Equatable {
   public let project: Project
   public let stats: [ProjectStatsEnvelope.FundingDateStats]
   public let yAxisTickSize: CGFloat
-}
-
-extension FundingGraphData: Equatable {}
-public func == (lhs: FundingGraphData, rhs: FundingGraphData) -> Bool {
-  return
-    lhs.project == rhs.project &&
-    lhs.stats == rhs.stats &&
-    lhs.yAxisTickSize == rhs.yAxisTickSize
 }
 
 public protocol DashboardFundingCellViewModelInputs {

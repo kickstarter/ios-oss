@@ -3,13 +3,13 @@ import Curry
 import Foundation
 import Runes
 
-public struct ProjectNotification {
+public struct ProjectNotification: Equatable {
   public let email: Bool
   public let id: Int
   public let mobile: Bool
   public let project: Project
 
-  public struct Project {
+  public struct Project: Equatable {
     public let id: Int
     public let name: String
   }
@@ -31,14 +31,4 @@ extension ProjectNotification.Project: Argo.Decodable {
       <^> json <| "id"
       <*> json <| "name"
   }
-}
-
-extension ProjectNotification: Equatable {}
-public func == (lhs: ProjectNotification, rhs: ProjectNotification) -> Bool {
-  return lhs.id == rhs.id
-}
-
-extension ProjectNotification.Project: Equatable {}
-public func == (lhs: ProjectNotification.Project, rhs: ProjectNotification.Project) -> Bool {
-  return lhs.id == rhs.id
 }

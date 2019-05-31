@@ -1,4 +1,4 @@
-public enum ShortcutItem {
+public enum ShortcutItem: Equatable {
   case creatorDashboard
   case projectsWeLove
   case recommendedForYou
@@ -30,16 +30,5 @@ public enum ShortcutItem {
     case .search:
       return "search"
     }
-  }
-}
-
-extension ShortcutItem: Equatable {}
-public func == (lhs: ShortcutItem, rhs: ShortcutItem) -> Bool {
-  switch (lhs, rhs) {
-  case (.creatorDashboard, .creatorDashboard), (.projectsWeLove, .projectsWeLove),
-       (.recommendedForYou, .recommendedForYou), (.search, .search):
-    return true
-  default:
-    return false
   }
 }

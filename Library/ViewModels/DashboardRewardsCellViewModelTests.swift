@@ -79,7 +79,9 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
   }
 
   func testRewards() {
-    let rewards = [reward1, reward2, reward3]
+    let r2 = self.reward2
+      |> Reward.lens.minimum .~ 1
+    let rewards = [reward1, r2, reward3]
     let project = .template
       |> Project.lens.rewards .~ rewards
       |> Project.lens.stats.pledged .~ 1_500
@@ -99,25 +101,12 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     self.rewardsRowCountry.assertValues([.us])
     self.rewardsRowTotalPledged.assertValues([1_500])
     self.hideSeeAllTiersButton.assertValues([true])
-
-    // switched project
-//    let rewards2 = [reward2, reward3, reward7]
-//    let project2 = Project.template
-//      |> Project.lens.rewards .~ rewards2
-//      |> Project.lens.stats.pledged .~ 1_000
-//    let stats2 = [stat2]
-//
-//    self.vm.inputs.configureWith(project: project2, rewardStats: stats2, totalPledged: 1000)
-//
-//    self.rewardsRowRewards.assertValues([[stat2, stat1, zeroPledgedStat1],
-//      [zeroPledgedStat2, stat2, zeroPledgedStat1]])
-//    self.rewardsRowCountry.assertValues([.us, .us])
-//    self.rewardsRowTotalPledged.assertValues([1500, 1000])
-//    self.hideSeeAllTiersButton.assertValues([true])
   }
 
   func testShowAllRewards() {
-    let rewards = [reward1, reward2, reward3, reward4, reward5, reward6, reward7]
+    let r2 = self.reward2
+      |> Reward.lens.minimum .~ 1
+    let rewards = [reward1, r2, reward3, reward4, reward5, reward6, reward7]
     let project = .template
       |> Project.lens.rewards .~ rewards
       |> Project.lens.stats.pledged .~ 5_000

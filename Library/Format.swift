@@ -346,7 +346,7 @@ public enum Format {
 
 public let defaultThresholdInDays = 30 // days
 
-internal struct DateFormatterConfig {
+internal struct DateFormatterConfig: Equatable {
   let dateFormat: String?
   fileprivate let dateStyle: DateFormatter.Style?
   fileprivate let locale: Locale
@@ -392,16 +392,7 @@ extension DateFormatterConfig: Hashable {
   }
 }
 
-func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool {
-  return
-    lhs.template == rhs.template
-    && lhs.dateStyle == rhs.dateStyle
-    && lhs.locale == rhs.locale
-    && lhs.timeStyle == rhs.timeStyle
-    && lhs.timeZone == rhs.timeZone
-}
-
-private struct NumberFormatterConfig {
+private struct NumberFormatterConfig: Equatable {
   fileprivate let numberStyle: NumberFormatter.Style
   fileprivate let roundingMode: NumberFormatter.RoundingMode
   fileprivate let maximumFractionDigits: Int
@@ -465,16 +456,6 @@ extension NumberFormatterConfig: Hashable {
     hasher.combine(self.locale)
     hasher.combine(self.currencySymbol)
   }
-}
-
-private func == (lhs: NumberFormatterConfig, rhs: NumberFormatterConfig) -> Bool {
-  return
-    lhs.numberStyle == rhs.numberStyle
-    && lhs.roundingMode == rhs.roundingMode
-    && lhs.maximumFractionDigits == rhs.maximumFractionDigits
-    && lhs.generatesDecimalNumbers == rhs.generatesDecimalNumbers
-    && lhs.locale == rhs.locale
-    && lhs.currencySymbol == rhs.currencySymbol
 }
 
 extension NumberFormatterConfig {

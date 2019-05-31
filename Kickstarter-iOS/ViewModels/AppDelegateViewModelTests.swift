@@ -650,7 +650,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     let params = .defaults
       |> DiscoveryParams.lens.sort .~ .newest
-    self.goToDiscovery.assertValues([params])
+    XCTAssertEqual(self.goToDiscovery.values.first??.queryParams, params.queryParams)
   }
 
   func testGoToDiscovery_NoParams() {
@@ -1199,7 +1199,7 @@ final class AppDelegateViewModelTests: TestCase {
     let params = .defaults
       |> DiscoveryParams.lens.staffPicks .~ true
       |> DiscoveryParams.lens.sort .~ .magic
-    self.goToDiscovery.assertValues([params])
+    XCTAssertEqual(self.goToDiscovery.values.first??.queryParams, params.queryParams)
   }
 
   func testLaunchShortcutItem_ProjectsWeLove() {
@@ -1213,7 +1213,7 @@ final class AppDelegateViewModelTests: TestCase {
     let params = .defaults
       |> DiscoveryParams.lens.staffPicks .~ true
       |> DiscoveryParams.lens.sort .~ .magic
-    self.goToDiscovery.assertValues([params])
+    XCTAssertEqual(self.goToDiscovery.values.first??.queryParams, params.queryParams)
     XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
   }
 
@@ -1232,7 +1232,7 @@ final class AppDelegateViewModelTests: TestCase {
     let params = .defaults
       |> DiscoveryParams.lens.recommended .~ true
       |> DiscoveryParams.lens.sort .~ .magic
-    self.goToDiscovery.assertValues([params])
+    XCTAssertEqual(self.goToDiscovery.values.first??.queryParams, params.queryParams)
   }
 
   func testLaunchShortcutItem_RecommendedForYou() {
@@ -1246,7 +1246,7 @@ final class AppDelegateViewModelTests: TestCase {
     let params = .defaults
       |> DiscoveryParams.lens.recommended .~ true
       |> DiscoveryParams.lens.sort .~ .magic
-    self.goToDiscovery.assertValues([params])
+    XCTAssertEqual(self.goToDiscovery.values.first??.queryParams, params.queryParams)
     XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
   }
 

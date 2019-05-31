@@ -3,19 +3,19 @@ import Curry
 import Foundation
 import Runes
 
-public struct Author: Swift.Decodable {
+public struct Author: Swift.Decodable, Equatable {
   public var avatar: Avatar
   public var id: Int
   public var name: String
   public var urls: Url
 
-  public struct Avatar: Swift.Decodable {
+  public struct Avatar: Swift.Decodable, Equatable {
     public var medium: String?
     public var small: String
     public var thumb: String
   }
 
-  public struct Url {
+  public struct Url: Equatable {
     public var api: String
     public var web: String
   }

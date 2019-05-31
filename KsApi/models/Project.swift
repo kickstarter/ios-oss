@@ -3,7 +3,7 @@ import Curry
 import Prelude
 import Runes
 
-public struct Project {
+public struct Project: Equatable {
   public var blurb: String
   public var category: Category
   public var country: Country
@@ -23,22 +23,22 @@ public struct Project {
   public var urls: UrlsEnvelope
   public var video: Video?
 
-  public struct UrlsEnvelope {
+  public struct UrlsEnvelope: Equatable {
     public var web: WebEnvelope
 
-    public struct WebEnvelope {
+    public struct WebEnvelope: Equatable {
       public var project: String
       public var updates: String?
     }
   }
 
-  public struct Video {
+  public struct Video: Equatable {
     public var id: Int
     public var high: String
     public var hls: String?
   }
 
-  public enum State: String, Argo.Decodable {
+  public enum State: String, Argo.Decodable, Equatable {
     case canceled
     case failed
     case live
@@ -49,7 +49,7 @@ public struct Project {
     case suspended
   }
 
-  public struct Stats {
+  public struct Stats: Equatable {
     public var backersCount: Int
     public var commentsCount: Int?
     /// The currency code of the project ex. USD
@@ -119,7 +119,7 @@ public struct Project {
     }
   }
 
-  public struct MemberData {
+  public struct MemberData: Equatable {
     public var lastUpdatePublishedAt: TimeInterval?
     public var permissions: [Permission]
     public var unreadMessagesCount: Int?
@@ -136,21 +136,21 @@ public struct Project {
     }
   }
 
-  public struct Dates {
+  public struct Dates: Equatable {
     public var deadline: TimeInterval
     public var featuredAt: TimeInterval?
     public var launchedAt: TimeInterval
     public var stateChangedAt: TimeInterval
   }
 
-  public struct Personalization {
+  public struct Personalization: Equatable {
     public var backing: Backing?
     public var friends: [User]?
     public var isBacking: Bool?
     public var isStarred: Bool?
   }
 
-  public struct Photo {
+  public struct Photo: Equatable {
     public var full: String
     public var med: String
     public var size1024x768: String?
@@ -171,11 +171,6 @@ public struct Project {
     let startOfToday = calendar.startOfDay(for: today)
     return abs(startOfToday.timeIntervalSince1970 - date) < 60.0 * 60.0 * 24.0
   }
-}
-
-extension Project: Equatable {}
-public func == (lhs: Project, rhs: Project) -> Bool {
-  return lhs.id == rhs.id
 }
 
 extension Project: CustomDebugStringConvertible {

@@ -1,4 +1,4 @@
-public struct Location {
+public struct Location: Equatable {
   public let country: String
   public let displayableName: String
   public let id: Int
@@ -25,9 +25,4 @@ extension Location: Swift.Decodable {
     self.localizedName = try values.decode(String.self, forKey: .localizedName)
     self.name = try values.decode(String.self, forKey: .name)
   }
-}
-
-extension Location: Equatable {}
-public func == (lhs: Location, rhs: Location) -> Bool {
-  return lhs.id == rhs.id
 }

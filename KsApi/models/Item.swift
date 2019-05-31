@@ -2,7 +2,7 @@ import Argo
 import Curry
 import Runes
 
-public struct Item {
+public struct Item: Equatable {
   public let description: String?
   public let id: Int
   public let name: String

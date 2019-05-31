@@ -556,6 +556,8 @@ final class UpdateDraftViewModelTests: TestCase {
 
   func testPreviewTappedWithEdits() {
     let draft = UpdateDraft.template
+    let updatedDraft = draft
+      |> UpdateDraft.lens.update.title .~ "Hello, world!"
     withEnvironment(apiService: MockService(fetchDraftResponse: draft)) {
       self.vm.inputs.configureWith(project: .template)
       self.vm.inputs.viewDidLoad()
@@ -574,7 +576,7 @@ final class UpdateDraftViewModelTests: TestCase {
         self.trackingClient.events, "Koala previewed update is tracked"
       )
 
-      self.goToPreview.assertValues([draft])
+      self.goToPreview.assertValues([updatedDraft])
     }
   }
 

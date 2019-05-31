@@ -9,7 +9,7 @@ public enum Experiment {
   }
 }
 
-public struct Config {
+public struct Config: Equatable {
   public var abExperiments: [String: String]
   public var appId: Int
   public var applePayCountries: [String]
@@ -59,18 +59,4 @@ extension Config: Swift.Decodable {
       .nestedContainer(keyedBy: CodingKeys.StripeCodingKeys.self, forKey: .stripe)
       .decode(String.self, forKey: .stripePublishableKey)
   }
-}
-
-extension Config: Equatable {}
-
-public func == (lhs: Config, rhs: Config) -> Bool {
-  return lhs.abExperiments == rhs.abExperiments &&
-    lhs.appId == rhs.appId &&
-    lhs.applePayCountries == rhs.applePayCountries &&
-    lhs.countryCode == rhs.countryCode &&
-    lhs.features == rhs.features &&
-    lhs.iTunesLink == rhs.iTunesLink &&
-    lhs.launchedCountries == rhs.launchedCountries &&
-    lhs.locale == rhs.locale &&
-    lhs.stripePublishableKey == rhs.stripePublishableKey
 }
