@@ -12,6 +12,8 @@ final class RootViewModelTests: TestCase {
   let viewControllerNames = TestObserver<[String], Never>()
   let filterDiscovery = TestObserver<DiscoveryParams, Never>()
   let selectedIndex = TestObserver<RootViewControllerIndex, Never>()
+  let setBadgeValueAtIndexValue = TestObserver<String?, Never>()
+  let setBadgeValueAtIndexIndex = TestObserver<RootViewControllerIndex, Never>()
   let scrollToTopControllerName = TestObserver<String, Never>()
   let switchDashboardProject = TestObserver<Param, Never>()
   let tabBarItemsData = TestObserver<TabBarItemsData, Never>()
@@ -25,6 +27,8 @@ final class RootViewModelTests: TestCase {
 
     self.vm.outputs.filterDiscovery.map(second).observe(self.filterDiscovery.observer)
     self.vm.outputs.selectedIndex.observe(self.selectedIndex.observer)
+    self.vm.outputs.setBadgeValueAtIndex.map { $0.0 }.observe(self.setBadgeValueAtIndexValue.observer)
+    self.vm.outputs.setBadgeValueAtIndex.map { $0.1 }.observe(self.setBadgeValueAtIndexIndex.observer)
     self.vm.outputs.switchDashboardProject.map(second).observe(self.switchDashboardProject.observer)
 
     let viewControllers = self.vm.outputs.setViewControllers
@@ -36,6 +40,51 @@ final class RootViewModelTests: TestCase {
       .observe(self.scrollToTopControllerName.observer)
 
     self.vm.outputs.tabBarItemsData.observe(self.tabBarItemsData.observer)
+  }
+
+  func testSetBadgeValueAtIndex_NoValue() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 0
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_ValueSet() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 5
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["5"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_MaxValueSet() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 100
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
   }
 
   func testSetViewControllers() {
