@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public typealias PledgeTableViewData = (amount: Double,
                                         currencySymbol: String,
