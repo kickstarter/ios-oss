@@ -133,6 +133,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public var outputs: PledgeViewModelOutputs { return self }
 }
 
+// MARK: - Functions
+
 private func projectAndRewardData(project: Project, reward: Reward)
   -> (Double, String, String, String, Double) {
   let amount = reward.minimum
