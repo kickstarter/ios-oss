@@ -1,7 +1,7 @@
 import Foundation
 import KsApi
-import MessageUI
 import Library
+import MessageUI
 import Prelude
 import SafariServices
 import WebKit
@@ -50,25 +50,25 @@ internal final class ProjectUpdatesViewController: WebViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goTo(url: $0)
-    }
+      }
 
     self.viewModel.outputs.makePhoneCall
       .observeForUI()
       .observeValues { [weak self] number in
         self?.call(number: number)
-    }
+      }
 
     self.viewModel.outputs.showMailCompose
       .observeForUI()
       .observeValues { [weak self] recipient in
         self?.openMailComposer(recipient: recipient)
-    }
+      }
 
     self.viewModel.outputs.showNoEmailError
       .observeForUI()
       .observeValues { [weak self] alertController in
         self?.present(alertController, animated: true)
-    }
+      }
 
     self.viewModel.outputs.goToUpdate
       .observeForControllerAction()
@@ -114,27 +114,32 @@ internal final class ProjectUpdatesViewController: WebViewController {
     UIApplication.shared.open(url)
   }
 
-  internal func webView(_ webView: WKWebView,
-                        decidePolicyFor navigationAction: WKNavigationAction,
-                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+  internal func webView(
+    _: WKWebView,
+    decidePolicyFor navigationAction: WKNavigationAction,
+    decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+  ) {
     decisionHandler(
-      self.viewModel.inputs.decidePolicy(forNavigationAction: .init(navigationAction: navigationAction)
-    ))
+      self.viewModel.inputs.decidePolicy(
+        forNavigationAction: .init(navigationAction: navigationAction)
+      ))
   }
 
-  func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+  func webView(_: WKWebView, didStartProvisionalNavigation _: WKNavigation!) {
     self.viewModel.inputs.webViewDidStartProvisionalNavigation()
   }
 
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+  func webView(_: WKWebView, didFinish _: WKNavigation!) {
     self.viewModel.inputs.webViewDidFinishNavigation()
   }
 }
 
 extension ProjectUpdatesViewController: MFMailComposeViewControllerDelegate {
-  internal func mailComposeController(_ controller: MFMailComposeViewController,
-                                      didFinishWith result: MFMailComposeResult,
-                                      error: Error?) {
+  internal func mailComposeController(
+    _ controller: MFMailComposeViewController,
+    didFinishWith result: MFMailComposeResult,
+    error _: Error?
+  ) {
     self.viewModel.inputs.mailComposeCompletion(result: result)
     controller.dismiss(animated: true, completion: nil)
   }

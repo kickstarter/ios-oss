@@ -1,10 +1,10 @@
-import Prelude
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
   internal let vm = DashboardReferrerRowStackViewViewModel()
@@ -27,7 +27,7 @@ internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
       |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.125
       |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 100
       |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "search"
-      |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .`internal`
+      |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .internal
     let country = Project.Country.us
 
     self.vm.inputs.configureWith(country: country, referrer: referrer)

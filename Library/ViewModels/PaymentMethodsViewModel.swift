@@ -32,8 +32,7 @@ public protocol PaymentMethodsViewModelType {
 }
 
 public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
-PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
-
+  PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   public init() {
     self.reloadData = self.viewDidLoadProperty.signal
 
@@ -54,7 +53,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
         AppEnvironment.current.apiService.deletePaymentMethod(input: .init(paymentSourceId: creditCard.id))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     let deletePaymentMethodEventsErrors = deletePaymentMethodEvents.errors()
 
@@ -62,7 +61,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       .ignoreValues()
       .map {
         Strings.Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again()
-    }
+      }
 
     let initialPaymentMethodsValues = paymentMethodsEvent
       .values().map { $0.me.storedCards.nodes }
@@ -138,8 +137,10 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   private let tableViewIsEditingProperty = MutableProperty<Bool>(false)
 
   fileprivate let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) =
-    Signal<(GraphUserCreditCard.CreditCard, Int),
-    Never>.pipe()
+    Signal<
+      (GraphUserCreditCard.CreditCard, Int),
+      Never
+    >.pipe()
   public func didDelete(_ creditCard: GraphUserCreditCard.CreditCard, visibleCellCount: Int) {
     self.didDeleteCreditCardObserver.send(value: (creditCard, visibleCellCount))
   }

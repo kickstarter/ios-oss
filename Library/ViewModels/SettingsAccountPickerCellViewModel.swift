@@ -18,8 +18,7 @@ protocol SettingsAccountPickerCellViewModelType {
 }
 
 final class SettingsAccountPickerCellViewModel: SettingsAccountPickerCellViewModelOutputs,
-SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType {
-
+  SettingsAccountPickerCellViewModelInputs, SettingsAccountPickerCellViewModelType {
   public init() {
     self.notifyCurrencyPickerCellRemoved = self.selectedCurrencyProperty.signal.mapConst(true)
 

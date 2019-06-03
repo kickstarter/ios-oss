@@ -19,7 +19,7 @@ extension ActivityEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ActivityEnvelope> {
     return curry(ActivityEnvelope.init)
       <^> json <|| "activities"
-      <*> json <|  "urls"
+      <*> json <| "urls"
   }
 }
 

@@ -1,6 +1,6 @@
 import KsApi
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 import WebKit
 
 public protocol WebModalViewModelInputs {
@@ -31,7 +31,6 @@ public protocol WebModalViewModelType: WebModalViewModelInputs, WebModalViewMode
 }
 
 public final class WebModalViewModel: WebModalViewModelType {
-
   public init() {
     self.dismissViewController = self.closeButtonTappedProperty.signal
 
@@ -43,7 +42,7 @@ public final class WebModalViewModel: WebModalViewModelType {
       .map { request in
         AppEnvironment.current.apiService.isPrepared(request: request)
           ? request : AppEnvironment.current.apiService.preparedRequest(forRequest: request)
-    }
+      }
   }
 
   fileprivate let closeButtonTappedProperty = MutableProperty(())
@@ -57,8 +56,8 @@ public final class WebModalViewModel: WebModalViewModelType {
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
   fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)
   public func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy {
-      self.policyForNavigationActionProperty.value = navigationAction
-      return self.policyDecisionProperty.value
+    self.policyForNavigationActionProperty.value = navigationAction
+    return self.policyDecisionProperty.value
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

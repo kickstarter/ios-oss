@@ -1,6 +1,6 @@
-import ReactiveSwift
-import ReactiveExtensions
 import KsApi
+import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ResetPasswordViewModelInputs {
   /// Call when the view loads
@@ -35,12 +35,11 @@ public protocol ResetPasswordViewModelType {
 
 public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPasswordViewModelInputs,
   ResetPasswordViewModelOutputs {
-
   public init() {
     self.emailTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
 
     self.setEmailInitial = self.emailProperty.signal.skipNil()
-      .takeWhen(viewDidLoadProperty.signal)
+      .takeWhen(self.viewDidLoadProperty.signal)
       .take(first: 1)
 
     self.formIsValid = self.viewDidLoadProperty.signal
@@ -50,17 +49,17 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
       .skipRepeats()
 
     let resetEvent = self.emailProperty.signal.skipNil()
-      .takeWhen(resetButtonPressedProperty.signal)
+      .takeWhen(self.resetButtonPressedProperty.signal)
       .switchMap { email in
         AppEnvironment.current.apiService.resetPassword(email: email)
           .mapConst(email)
           .materialize()
-    }
+      }
 
     self.showResetSuccess = resetEvent.values().map { email in
-        Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
-            email: email
-        )
+      Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
+        email: email
+      )
     }
 
     self.showError = resetEvent.errors()
@@ -70,7 +69,7 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
         } else {
           return Strings.general_error_something_wrong()
         }
-    }
+      }
 
     self.returnToLogin = self.confirmResetButtonPressedProperty.signal
 

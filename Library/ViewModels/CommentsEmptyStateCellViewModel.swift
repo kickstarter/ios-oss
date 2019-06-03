@@ -1,6 +1,6 @@
 import KsApi
-import ReactiveSwift
 import Prelude
+import ReactiveSwift
 
 public protocol CommentsEmptyStateCellViewModelInputs {
   /// Call when back this project button is tapped.
@@ -48,8 +48,7 @@ public protocol CommentsEmptyStateCellViewModelType {
 }
 
 public final class CommentsEmptyStateCellViewModel: CommentsEmptyStateCellViewModelType,
-CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
-
+  CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
   public init() {
     let project = self.projectAndUpdateProperty.signal.skipNil().map(first)
 
@@ -74,7 +73,7 @@ CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
       .map { $0.isLoggedIn
         ? Strings.Become_a_backer_to_leave_a_comment()
         : Strings.Log_in_to_leave_a_comment()
-    }
+      }
 
     self.goToCommentDialog = self.leaveACommentTappedProperty.signal
 

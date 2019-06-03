@@ -1,10 +1,10 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import ReactiveSwift
 
 final class SettingsViewController: UIViewController {
-  @IBOutlet fileprivate weak var tableView: UITableView!
+  @IBOutlet fileprivate var tableView: UITableView!
 
   private let dataSource = SettingsDataSource()
   private var userUpdatedObserver: Any?
@@ -19,7 +19,7 @@ final class SettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.dataSource = dataSource
+    self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
 
     self.tableView.register(nib: .SettingsTableViewCell)
@@ -32,10 +32,12 @@ final class SettingsViewController: UIViewController {
     }
 
     self.userUpdatedObserver = NotificationCenter.default
-      .addObserver(forName: Notification.Name.ksr_userUpdated,
-                   object: nil, queue: nil) { [weak self] _ in
-                    self?.viewModel.inputs.currentUserUpdated()
-    }
+      .addObserver(
+        forName: Notification.Name.ksr_userUpdated,
+        object: nil, queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.currentUserUpdated()
+      }
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -51,7 +53,7 @@ final class SettingsViewController: UIViewController {
       |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in Strings.profile_buttons_settings() }
 
-    _ = tableView
+    _ = self.tableView
       |> settingsTableViewStyle
       |> settingsTableViewSeparatorStyle
   }
@@ -62,19 +64,19 @@ final class SettingsViewController: UIViewController {
       .observeValues { [weak self] user in
         self?.dataSource.configureRows(with: user)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.transitionToViewController
       .observeForControllerAction()
       .observeValues { [weak self] viewController in
         self?.navigationController?.pushViewController(viewController, animated: true)
-    }
+      }
 
     self.viewModel.outputs.showConfirmLogoutPrompt
       .observeForControllerAction()
-      .observeValues { [weak self] (message, cancel, confirm) in
+      .observeValues { [weak self] message, cancel, confirm in
         self?.showLogoutPrompt(message: message, cancel: cancel, confirm: confirm)
-    }
+      }
 
     self.viewModel.outputs.logoutWithParams
       .observeForControllerAction()
@@ -86,11 +88,12 @@ final class SettingsViewController: UIViewController {
   }
 
   // MARK: - Private Functions
+
   private func shouldHideFooter(for section: Int) -> Bool {
     guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return true }
 
-    if section == SettingsSectionType.findFriends
-      && !self.viewModel.outputs.findFriendsDisabledProperty.value {
+    if section == SettingsSectionType.findFriends,
+      !self.viewModel.outputs.findFriendsDisabledProperty.value {
       return true
     }
 
@@ -102,10 +105,10 @@ final class SettingsViewController: UIViewController {
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: self,
-      action: #selector(closeButtonPressed)
+      action: #selector(self.closeButtonPressed)
     )
-    |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
-    |> \.width .~ 44
+      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+      |> \.width .~ 44
   }
 
   @objc fileprivate func closeButtonPressed() {
@@ -126,7 +129,7 @@ final class SettingsViewController: UIViewController {
 
           self?.dismiss(animated: false, completion: nil)
         })
-    }
+      }
   }
 
   private func goToAppStore(link: String) {
@@ -162,19 +165,19 @@ final class SettingsViewController: UIViewController {
 }
 
 extension SettingsViewController: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
     return SettingsSectionType.sectionHeaderHeight
   }
 
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection _: Int) -> UIView? {
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+  func tableView(_: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return self.shouldHideFooter(for: section) ? 0.1 : UITableView.automaticDimension
   }
 
-  func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+  func tableView(_: UITableView, estimatedHeightForFooterInSection _: Int) -> CGFloat {
     return SettingsFooterView.defaultHeight
   }
 
@@ -194,7 +197,7 @@ extension SettingsViewController: UITableViewDelegate {
     return footerView
   }
 
-  func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+  func tableView(_: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
     guard let cellType = dataSource.cellTypeForIndexPath(indexPath: indexPath) else {
       return false
     }

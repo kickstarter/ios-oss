@@ -67,8 +67,7 @@ public protocol SignupViewModelType {
 }
 
 public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, SignupViewModelOutputs {
-
-    public init() {
+  public init() {
     let initialText = self.viewDidLoadProperty.signal.mapConst("")
     let name = Signal.merge(
       self.nameChangedProperty.signal,
@@ -115,15 +114,16 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
           email: email,
           password: password,
           passwordConfirmation: password,
-          sendNewsletters: newsletter)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
+          sendNewsletters: newsletter
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
       }
 
     let signupError = signupEvent.errors()
       .map {
         $0.errorMessages.first ?? Strings.signup_error_something_wrong()
-    }
+      }
 
     self.showError = signupError
 
@@ -144,7 +144,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
         AppEnvironment.current.koala.trackChangeNewsletter(
           newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .signup
         )
-    }
+      }
 
     signupEvent.values()
       .observeValues { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email) }

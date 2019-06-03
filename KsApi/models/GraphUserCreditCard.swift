@@ -1,5 +1,4 @@
 public struct GraphUserCreditCard: Swift.Decodable {
-
   public var storedCards: CreditCardConnection
 
   public struct CreditCard: Swift.Decodable, Equatable {
@@ -9,14 +8,14 @@ public struct GraphUserCreditCard: Swift.Decodable {
     public var type: CreditCardType?
 
     public var formattedExpirationDate: String {
-      return String(expirationDate.dropLast(3))
+      return String(self.expirationDate.dropLast(3))
     }
 
     public var imageName: String {
       switch self.type {
       case nil, .some(.generic):
         return "icon--generic"
-      case .some(let type):
+      case let .some(type):
         return "icon--\(type.rawValue.lowercased())"
       }
     }

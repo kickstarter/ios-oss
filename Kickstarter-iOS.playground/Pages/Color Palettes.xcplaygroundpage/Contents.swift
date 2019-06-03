@@ -1,8 +1,8 @@
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import UIKit
-import PlaygroundSupport
 
 let groups = [
   ["Green", "Grey"],
@@ -14,10 +14,10 @@ func paletteItemStackView(colorView colorView: UIView, labelsView: UIView) -> UI
   colorView
     |> roundedStyle()
     |> UIView.lens.frame %~~ { _, view in
-        view.widthAnchor.constraint(equalToConstant: 120.0).isActive = true
-        view.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
+      view.widthAnchor.constraint(equalToConstant: 120.0).isActive = true
+      view.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
       return view.frame
-  }
+    }
 
   return UIStackView()
     |> UIStackView.lens.axis .~ .horizontal
@@ -48,7 +48,7 @@ func labelsStackView(colorName colorName: String, startColor: UIColor, endColor:
         |> UILabel.lens.text .~ "#\(startColor.hexString)\(endColorValue)"
         |> UILabel.lens.font .~ .ksr_subhead(size: 14)
         |> UILabel.lens.textColor .~ .ksr_dark_grey_400
-  ]
+    ]
 }
 
 //: A solid color block with labels in a stack view.
@@ -56,10 +56,12 @@ func labelsStackView(colorName colorName: String, startColor: UIColor, endColor:
 func colorBlockStackView(color color: UIColor, colorName: String, weight: Int? = nil) -> UIStackView {
   let view = UIView() |> UIView.lens.backgroundColor .~ color
 
-  return paletteItemStackView(colorView: view, labelsView: labelsStackView(colorName: colorName,
-                                                                           startColor: color,
-                                                                           endColor: nil,
-                                                                           weight: weight))
+  return paletteItemStackView(colorView: view, labelsView: labelsStackView(
+    colorName: colorName,
+    startColor: color,
+    endColor: nil,
+    weight: weight
+  ))
 }
 
 //: A gradient color block with labels in a stack view.
@@ -70,9 +72,11 @@ func gradientBlockStackView(colorName colorName: String, startColor: UIColor, en
   view.endPoint = CGPoint(x: 1.0, y: 0.0)
   view.setGradient([(startColor, 0.0), (endColor, 1.0)])
 
-  return paletteItemStackView(colorView: view, labelsView: labelsStackView(colorName: colorName,
-                                                                           startColor: startColor,
-                                                                           endColor: endColor))
+  return paletteItemStackView(colorView: view, labelsView: labelsStackView(
+    colorName: colorName,
+    startColor: startColor,
+    endColor: endColor
+  ))
 }
 
 let paletteStackView = UIStackView()
@@ -98,24 +102,29 @@ let paletteStackView = UIStackView()
           |> UIStackView.lens.arrangedSubviews .~ weights.keys.sorted().map { weight in
             let color = weights[weight]!
             return colorBlockStackView(color: color, colorName: colorName, weight: weight)
-        }
-    }
-}
+          }
+      }
+  }
 
 let dropShadowView = colorBlockStackView(color: .ksr_grey_100, colorName: "Drop Shadow")
 
+let gradient1 = gradientBlockStackView(
+  colorName: "Lavender / Powder",
+  startColor: .ksr_grey_500,
+  endColor: .ksr_text_dark_grey_500
+)
 
-let gradient1 = gradientBlockStackView(colorName: "Lavender / Powder",
-                                       startColor: .ksr_grey_500,
-                                       endColor: .ksr_text_dark_grey_500)
+let gradient2 = gradientBlockStackView(
+  colorName: "Peach / Blush",
+  startColor: .ksr_orange_400,
+  endColor: .ksr_text_dark_grey_400
+)
 
-let gradient2 = gradientBlockStackView(colorName: "Peach / Blush",
-                                       startColor: .ksr_orange_400,
-                                       endColor: .ksr_text_dark_grey_400)
-
-let gradient3 = gradientBlockStackView(colorName: "Sand / Sage",
-                                       startColor: .ksr_text_navy_600,
-                                       endColor: .ksr_violet_500)
+let gradient3 = gradientBlockStackView(
+  colorName: "Sand / Sage",
+  startColor: .ksr_text_navy_600,
+  endColor: .ksr_violet_500
+)
 
 let miscStackView = UIStackView()
   |> UIStackView.lens.axis .~ .vertical
@@ -127,7 +136,7 @@ let miscStackView = UIStackView()
 paletteStackView.addArrangedSubview(miscStackView)
 
 let size = paletteStackView.systemLayoutSizeFitting(
-  CGSize(width: 1150, height: 1100),
+  CGSize(width: 1_150, height: 1_100),
   withHorizontalFittingPriority: .defaultHigh,
   verticalFittingPriority: .defaultHigh
 )

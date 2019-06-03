@@ -1,7 +1,7 @@
-import Library
-import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
+import Library
+import Prelude
 
 final class SettingsNotificationsViewControllerTests: TestCase {
   override func setUp() {
@@ -20,7 +20,7 @@ final class SettingsNotificationsViewControllerTests: TestCase {
     let currentUser = .template
       |> UserAttribute.notification(.friendActivity).keyPath .~ true
       |> UserAttribute.notification(.mobileFollower).keyPath .~ true
-      |> \.stats.backedProjectsCount .~ 1234
+      |> \.stats.backedProjectsCount .~ 1_234
       |> \.stats.memberProjectsCount .~ 2
 
     let mockService = MockService(fetchUserSelfResponse: currentUser)
@@ -28,9 +28,11 @@ final class SettingsNotificationsViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
 
-      withEnvironment(apiService: mockService,
-                      currentUser: currentUser,
-                      language: language) {
+      withEnvironment(
+        apiService: mockService,
+        currentUser: currentUser,
+        language: language
+      ) {
         let controller = Storyboard.SettingsNotifications.instantiate(
           SettingsNotificationsViewController.self
         )
@@ -56,9 +58,11 @@ final class SettingsNotificationsViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
 
-      withEnvironment(apiService: mockService,
-                      currentUser: currentUser,
-                      language: language) {
+      withEnvironment(
+        apiService: mockService,
+        currentUser: currentUser,
+        language: language
+      ) {
         let controller = Storyboard.SettingsNotifications.instantiate(
           SettingsNotificationsViewController.self
         )

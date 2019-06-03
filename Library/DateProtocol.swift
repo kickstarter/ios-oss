@@ -18,7 +18,7 @@ internal struct MockDate: DateProtocol {
   private let time: TimeInterval
 
   internal init() {
-    self.time = 1475361315
+    self.time = 1_475_361_315
   }
 
   internal init(timeIntervalSince1970 time: TimeInterval) {

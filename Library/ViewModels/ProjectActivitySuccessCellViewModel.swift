@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ProjectActivitySuccessCellViewModelInputs {
   /// Call to set the activity and project.
@@ -22,8 +22,7 @@ public protocol ProjectActivitySuccessCellViewModelType {
 }
 
 public final class ProjectActivitySuccessCellViewModel: ProjectActivitySuccessCellViewModelType,
-ProjectActivitySuccessCellViewModelInputs, ProjectActivitySuccessCellViewModelOutputs {
-
+  ProjectActivitySuccessCellViewModelInputs, ProjectActivitySuccessCellViewModelOutputs {
   public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let project = activityAndProject.map(second)
@@ -35,8 +34,10 @@ ProjectActivitySuccessCellViewModelInputs, ProjectActivitySuccessCellViewModelOu
         pledged: Format.currency(project.stats.pledged, country: project.country).nonBreakingSpaced(),
         backers: Strings.general_backer_count_backers(backer_count: project.stats.backersCount)
           .nonBreakingSpaced(),
-        deadline: Format.date(secondsInUTC: project.dates.deadline, dateStyle: .long,
-          timeStyle: .none).nonBreakingSpaced()
+        deadline: Format.date(
+          secondsInUTC: project.dates.deadline, dateStyle: .long,
+          timeStyle: .none
+        ).nonBreakingSpaced()
       )
     }
   }

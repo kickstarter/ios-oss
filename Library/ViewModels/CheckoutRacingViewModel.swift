@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 private struct CheckoutRetryError: Error {}
 
@@ -25,8 +25,7 @@ public protocol CheckoutRacingViewModelType: CheckoutRacingViewModelInputs, Chec
 
 public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
   public init() {
-
-    let envelope = initialURLProperty.signal.skipNil()
+    let envelope = self.initialURLProperty.signal.skipNil()
       .map { $0.absoluteString }
       .promoteError(CheckoutRetryError.self)
       .switchMap { url in
@@ -35,7 +34,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
           .flatMap {
             AppEnvironment.current.apiService.fetchCheckout(checkoutUrl: url)
               .flatMapError { _ in
-                return SignalProducer(error: CheckoutRetryError())
+                SignalProducer(error: CheckoutRetryError())
               }
               .flatMap { envelope -> SignalProducer<CheckoutEnvelope, CheckoutRetryError> in
 
@@ -45,7 +44,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
                 case .failed, .successful:
                   return SignalProducer(value: envelope)
                 }
-            }
+              }
           }
           .retry(upTo: 9)
           .timeout(after: 10, raising: CheckoutRetryError(), on: AppEnvironment.current.scheduler)

@@ -1,33 +1,36 @@
 import UIKit
 
 private func swizzle(_ v: UIView.Type) {
-
   [(#selector(v.traitCollectionDidChange(_:)), #selector(v.ksr_traitCollectionDidChange(_:)))]
     .forEach { original, swizzled in
 
       guard let originalMethod = class_getInstanceMethod(v, original),
         let swizzledMethod = class_getInstanceMethod(v, swizzled) else { return }
 
-      let didAddViewDidLoadMethod = class_addMethod(v,
-                                                    original,
-                                                    method_getImplementation(swizzledMethod),
-                                                    method_getTypeEncoding(swizzledMethod))
+      let didAddViewDidLoadMethod = class_addMethod(
+        v,
+        original,
+        method_getImplementation(swizzledMethod),
+        method_getTypeEncoding(swizzledMethod)
+      )
 
       if didAddViewDidLoadMethod {
-        class_replaceMethod(v,
-                            swizzled,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod))
+        class_replaceMethod(
+          v,
+          swizzled,
+          method_getImplementation(originalMethod),
+          method_getTypeEncoding(originalMethod)
+        )
       } else {
         method_exchangeImplementations(originalMethod, swizzledMethod)
       }
-  }
+    }
 }
 
 private var hasSwizzled = false
 
 extension UIView {
-  final public class func doBadSwizzleStuff() {
+  public final class func doBadSwizzleStuff() {
     guard !hasSwizzled else { return }
 
     hasSwizzled = true
@@ -39,11 +42,9 @@ extension UIView {
     self.bindViewModel()
   }
 
-  @objc open func bindStyles() {
-  }
+  @objc open func bindStyles() {}
 
-  @objc open func bindViewModel() {
-  }
+  @objc open func bindViewModel() {}
 
   public static var defaultReusableId: String {
     return self.description()

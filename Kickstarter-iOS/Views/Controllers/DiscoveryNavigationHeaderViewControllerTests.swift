@@ -5,7 +5,6 @@ import Prelude
 import XCTest
 
 internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
-
   let initialParams = .defaults
     |> DiscoveryParams.lens.includePOTD .~ true
 

@@ -1,14 +1,13 @@
 import Argo
-import Runes
 import Curry
 import Foundation
 import KsApi
 import PassKit
+import Runes
 
 extension PKPaymentNetwork: Argo.Decodable {}
 
 extension PKPaymentSummaryItem: Argo.Decodable {
-
   public static func decode(_ json: JSON) -> Decoded<PKPaymentSummaryItem> {
     return curry(PKPaymentSummaryItem.init(label:amount:type:))
       <^> json <| "label"
@@ -18,14 +17,14 @@ extension PKPaymentSummaryItem: Argo.Decodable {
 }
 
 extension PKPaymentRequest: Argo.Decodable {
-
-  fileprivate convenience init(countryCode: String, currencyCode: String,
-                               merchantCapabilities: PKMerchantCapability,
-                               merchantIdentifier: String,
-                               paymentSummaryItems: [PKPaymentSummaryItem],
-                               shippingType: PKShippingType,
-                               supportedNetworks: [PKPaymentNetwork]) {
-
+  fileprivate convenience init(
+    countryCode: String, currencyCode: String,
+    merchantCapabilities: PKMerchantCapability,
+    merchantIdentifier: String,
+    paymentSummaryItems: [PKPaymentSummaryItem],
+    shippingType: PKShippingType,
+    supportedNetworks: [PKPaymentNetwork]
+  ) {
     self.init()
     self.countryCode = countryCode
     self.currencyCode = currencyCode
@@ -38,24 +37,24 @@ extension PKPaymentRequest: Argo.Decodable {
 
   public static func decode(_ json: JSON) -> Decoded<PKPaymentRequest> {
     let tmp = curry(PKPaymentRequest.init)
-      <^> json <|  "country_code"
-      <*> json <|  "currency_code"
+      <^> json <| "country_code"
+      <*> json <| "currency_code"
       <*> (json <| "merchant_capabilities" <|> .success(.capability3DS))
     let snakeCase = tmp
-      <*> json <|  "merchant_identifier"
+      <*> json <| "merchant_identifier"
       <*> json <|| "payment_summary_items"
-      <*> (json <|  "shipping_type" <|> .success(.shipping))
+      <*> (json <| "shipping_type" <|> .success(.shipping))
       <*> json <|| "supported_networks"
 
     let camelCase = { () -> Decoded<PKPaymentRequest> in
       let tmp = curry(PKPaymentRequest.init)
-        <^> json <|  "countryCode"
-        <*> json <|  "currencyCode"
+        <^> json <| "countryCode"
+        <*> json <| "currencyCode"
         <*> (json <| "merchantCapabilities" <|> .success(.capability3DS))
       return tmp
-        <*> json <|  "merchantIdentifier"
+        <*> json <| "merchantIdentifier"
         <*> json <|| "paymentSummaryItems"
-        <*> (json <|  "shippingType" <|> .success(.shipping))
+        <*> (json <| "shippingType" <|> .success(.shipping))
         <*> json <|| "supportedNetworks"
     }
 
@@ -106,11 +105,11 @@ extension PKMerchantCapability: Argo.Decodable {
     switch json {
     case let .string(string):
       switch string {
-      case "Capability3DS":     return .success(.capability3DS)
-      case "CapabilityEMV":     return .success(.capabilityEMV)
-      case "CapabilityCredit":  return .success(.capabilityCredit)
-      case "CapabilityDebit":   return .success(.capabilityDebit)
-      default:                  return .failure(.custom("Unrecognized merchant capability: \(string)"))
+      case "Capability3DS": return .success(.capability3DS)
+      case "CapabilityEMV": return .success(.capabilityEMV)
+      case "CapabilityCredit": return .success(.capabilityCredit)
+      case "CapabilityDebit": return .success(.capabilityDebit)
+      default: return .failure(.custom("Unrecognized merchant capability: \(string)"))
       }
 
     case let .number(number):
@@ -207,6 +206,7 @@ extension PKPaymentSummaryItemType: Argo.Decodable {
     }
   }
 }
+
 // swiftlint:enable cyclomatic_complexity
 
 extension UInt {
@@ -214,7 +214,7 @@ extension UInt {
    - returns: An array of bitmask values for an integer.
    */
   fileprivate func bitComponents() -> [UInt] {
-    let range: CountableRange<UInt> = 0 ..< UInt(8 * MemoryLayout<UInt>.size)
+    let range: CountableRange<UInt> = 0..<UInt(8 * MemoryLayout<UInt>.size)
     return range
       .map { 1 << $0 }
       .filter { self & $0 != 0 }

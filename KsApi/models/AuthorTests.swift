@@ -1,12 +1,10 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class CommentTests: XCTestCase {
-
   func testJSONParsing_WithCompleteData() {
-
     let author = Author.decodeJSONDictionary([
-      "id": 382491714,
+      "id": 382_491_714,
       "name": "Nino Teixeira",
       "avatar": [
         "thumb": "https://ksr-qa-ugc.imgix.net/thumb.jpg",
@@ -21,28 +19,26 @@ final class CommentTests: XCTestCase {
           "user": "https://api-staging.kickstarter.com/v1/users/382491714"
         ]
       ]
-      ])
+    ])
 
     XCTAssertNil(author.error)
-    XCTAssertEqual(382491714, author.value?.id)
+    XCTAssertEqual(382_491_714, author.value?.id)
   }
 
   func testJSONParsing_WithIncompleteData() {
-
     let author = Comment.decodeJSONDictionary([
-        "id": 1,
-        "name": "Blob",
-        "avatar": [
-          "medium": "http://www.kickstarter.com/medium.jpg",
-          "small": "http://www.kickstarter.com/small.jpg"
-          ]
-      ])
+      "id": 1,
+      "name": "Blob",
+      "avatar": [
+        "medium": "http://www.kickstarter.com/medium.jpg",
+        "small": "http://www.kickstarter.com/small.jpg"
+      ]
+    ])
     XCTAssertNil(author.value)
     XCTAssertNotNil(author.error)
   }
 
   func testJSONParsing_SwiftDecoder() {
-
     let jsonString = """
     {
       "id": 382491714,
@@ -65,9 +61,9 @@ final class CommentTests: XCTestCase {
 
     // swiftlint:disable:next force_unwrapping
     let data = jsonString.data(using: .utf8)!
-    let  author = try? JSONDecoder().decode(Author.self, from: data)
+    let author = try? JSONDecoder().decode(Author.self, from: data)
 
-    XCTAssertEqual(author?.id, 382491714)
+    XCTAssertEqual(author?.id, 382_491_714)
     XCTAssertEqual(author?.name, "Nino Teixeira")
   }
 }

@@ -1,10 +1,8 @@
-import XCTest
 @testable import Library
+import XCTest
 
 final class LanguageTests: XCTestCase {
-
   func testEquality() {
-
     XCTAssertEqual(Language.en, Language.en)
     XCTAssertEqual(Language.de, Language.de)
     XCTAssertEqual(Language.fr, Language.fr)

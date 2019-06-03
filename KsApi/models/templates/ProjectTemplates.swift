@@ -14,11 +14,12 @@ extension Project {
       unseenActivityCount: nil
     ),
     dates: Project.Dates(
-      deadline: Date(timeIntervalSince1970: 1475361315).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 15.0,
+      deadline: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 15.0,
       featuredAt: nil,
-      launchedAt: Date(timeIntervalSince1970: 1475361315).timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 15.0,
+      launchedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 15.0,
       stateChangedAt: Date(
-        timeIntervalSince1970: 1475361315).timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 15.0
+        timeIntervalSince1970: 1_475_361_315
+      ).timeIntervalSince1970 - 60.0 * 60.0 * 24.0 * 15.0
     ),
     id: 1,
     location: .template,
@@ -69,7 +70,7 @@ extension Project {
     |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
     |> Project.lens.stats.currentCurrency .~ "USD"
     |> Project.lens.stats.currentCurrencyRate .~ 1.31
-    |> (Project.lens.location..Location.lens.displayableName) .~ "Hastings, UK"
+    |> (Project.lens.location .. Location.lens.displayableName) .~ "Hastings, UK"
     |> Project.lens.rewards .~ [
       .template
         |> Reward.lens.id .~ 20
@@ -131,8 +132,8 @@ extension Project {
                 |> Item.lens.name .~ "Invite to book launch party."
             )
             |> RewardsItem.lens.quantity .~ 1
-            |> RewardsItem.lens.rewardId .~ 3,
-      ]
+            |> RewardsItem.lens.rewardId .~ 3
+        ]
     ]
     |> Project.lens.country .~ .gb
     |> Project.lens.creator .~ (
@@ -154,5 +155,5 @@ extension Project {
     |> Project.lens.stats.backersCount .~ 5_770
     |> Project.lens.stats.pledged .~ 406_237
     |> Project.lens.stats.goal .~ 200_000
-    |> (Project.lens.location..Location.lens.displayableName) .~ "Burbank, CA"
+    |> (Project.lens.location .. Location.lens.displayableName) .~ "Burbank, CA"
 }

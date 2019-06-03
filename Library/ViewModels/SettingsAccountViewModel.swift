@@ -22,15 +22,14 @@ public protocol SettingsAccountViewModelType {
 }
 
 public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
-SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
-
+  SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public init(_ viewControllerFactory: @escaping (SettingsAccountCellType, Currency) -> UIViewController?) {
     let userAccountFields = self.viewWillAppearProperty.signal
       .switchMap { _ in
-        return AppEnvironment.current.apiService
+        AppEnvironment.current.apiService
           .fetchGraphUserAccountFields(query: UserQueries.account.query)
           .materialize()
-    }
+      }
 
     self.fetchAccountFieldsError = userAccountFields.errors().ignoreValues()
 
@@ -38,11 +37,11 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .map { response -> Bool in
         guard let isEmailVerified = response.me.isEmailVerified,
           let isDeliverable = response.me.isDeliverable else {
-            return true
+          return true
         }
 
         return isEmailVerified && isDeliverable
-    }
+      }
 
     let shouldHideEmailPasswordSection = userAccountFields.values()
       .map { $0.me.hasPassword == .some(false) }

@@ -81,9 +81,7 @@ public protocol LoginToutViewModelType {
 
 public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewModelInputs,
   LoginToutViewModelOutputs {
-
-    public init() {
-
+  public init() {
     let intent: Signal<LoginIntent, Never> = self.loginIntentProperty.signal.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal)
 
@@ -112,10 +110,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
             },
             terminated: {
               isLoading.value = false
-          })
+            }
+          )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.logIntoEnvironment = facebookLogin.values()
 
@@ -126,11 +125,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .filter { $0.ksrCode == .ConfirmFacebookSignup }
 
     let genericFacebookErrorAlert = facebookLogin.errors()
-      .filter { env in (
+      .filter { env in
         env.ksrCode != .TfaRequired &&
           env.ksrCode != .ConfirmFacebookSignup &&
           env.ksrCode != .FacebookInvalidAccessToken
-      )}
+      }
       .map { AlertError.genericFacebookError(envelope: $0) }
 
     let facebookTokenFailAlert = facebookLogin.errors()
@@ -150,9 +149,13 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .map { token, error in (error.facebookUser ?? nil, token) }
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst((Notification(name: .ksr_sessionStarted),
-                 Notification(name: .ksr_showNotificationsDialog,
-                              userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login])))
+      .mapConst((
+        Notification(name: .ksr_sessionStarted),
+        Notification(
+          name: .ksr_showNotificationsDialog,
+          userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
+        )
+      ))
 
     self.dismissViewController = self.viewIsPresentedProperty.signal
       .filter(isTrue)
@@ -172,7 +175,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: .facebook) }
 
     self.loginIntentProperty.producer.skipNil()
-      .takeWhen(viewWillAppearProperty.signal.take(first: 1))
+      .takeWhen(self.viewWillAppearProperty.signal.take(first: 1))
       .observeValues { AppEnvironment.current.koala.trackLoginTout(intent: $0) }
   }
 
@@ -183,30 +186,37 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
   }
+
   fileprivate let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)
   public func loginIntent(_ intent: LoginIntent) {
     self.loginIntentProperty.value = intent
   }
+
   fileprivate let loginButtonPressedProperty = MutableProperty(())
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
   }
+
   fileprivate let signupButtonPressedProperty = MutableProperty(())
   public func signupButtonPressed() {
     self.signupButtonPressedProperty.value = ()
   }
+
   fileprivate let facebookLoginButtonPressedProperty = MutableProperty(())
   public func facebookLoginButtonPressed() {
     self.facebookLoginButtonPressedProperty.value = ()
   }
+
   fileprivate let facebookLoginSuccessProperty = MutableProperty<FBSDKLoginManagerLoginResult?>(nil)
   public func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult) {
     self.facebookLoginSuccessProperty.value = result
   }
+
   fileprivate let facebookLoginFailProperty = MutableProperty<Error?>(nil)
   public func facebookLoginFail(error: Error?) {
     self.facebookLoginFailProperty.value = error
   }
+
   fileprivate let environmentLoggedInProperty = MutableProperty(())
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
@@ -216,6 +226,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
+
   fileprivate let viewIsPresentedProperty = MutableProperty<Bool>(false)
   public func view(isPresented: Bool) {
     self.viewIsPresentedProperty.value = isPresented

@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol DashboardProjectsDrawerViewModelInputs {
   /// Call when the view has completed animating in.
@@ -46,8 +46,7 @@ public protocol DashboardProjectsDrawerViewModelType {
 }
 
 public final class DashboardProjectsDrawerViewModel: DashboardProjectsDrawerViewModelType,
-DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs {
-
+  DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs {
   public init() {
     self.projectsDrawerData = self.projectsDrawerDataProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
@@ -75,22 +74,27 @@ DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs 
   public func animateInCompleted() {
     self.animateInCompletedProperty.value = ()
   }
+
   fileprivate let animateOutCompletedProperty = MutableProperty(())
   public func animateOutCompleted() {
     self.animateOutCompletedProperty.value = ()
   }
+
   fileprivate let backgroundTappedProperty = MutableProperty(())
   public func backgroundTapped() {
     self.backgroundTappedProperty.value = ()
   }
+
   fileprivate let projectsDrawerDataProperty = MutableProperty<[ProjectsDrawerData]?>(nil)
   public func configureWith(data: [ProjectsDrawerData]) {
     self.projectsDrawerDataProperty.value = data
   }
+
   fileprivate let projectCellTappedProperty = MutableProperty<Project?>(nil)
   public func projectCellTapped(_ project: Project) {
     self.projectCellTappedProperty.value = project
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()

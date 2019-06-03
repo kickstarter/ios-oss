@@ -28,7 +28,7 @@ public protocol MessageBannerViewModelType {
 }
 
 public class MessageBannerViewModel: MessageBannerViewModelType,
-MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
+  MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
   public init() {
     let bannerType = self.messageBannerConfiguration.signal
       .skipNil()

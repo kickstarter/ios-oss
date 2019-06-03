@@ -19,7 +19,7 @@ internal final class HelpWebViewController: WebViewController {
         title: Strings.general_navigation_buttons_close(),
         style: .plain,
         target: self,
-        action: #selector(closeButtonTapped)
+        action: #selector(self.closeButtonTapped)
       )
     }
 

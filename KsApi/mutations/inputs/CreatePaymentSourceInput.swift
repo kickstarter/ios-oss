@@ -12,9 +12,10 @@ public struct CreatePaymentSourceInput: GraphMutationInput {
   }
 
   public func toInputDictionary() -> [String: Any] {
-    return ["paymentType": paymentType.rawValue,
-            "stripeToken": stripeToken,
-            "stripeCardId": stripeCardId
+    return [
+      "paymentType": paymentType.rawValue,
+      "stripeToken": stripeToken,
+      "stripeCardId": stripeCardId
     ]
   }
 }

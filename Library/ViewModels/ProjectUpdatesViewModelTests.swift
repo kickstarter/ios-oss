@@ -1,11 +1,11 @@
-// swiftlint:disable force_unwrapping
-import Prelude
-import ReactiveSwift
-import XCTest
-import WebKit
 @testable import KsApi
 @testable import Library
+// swiftlint:disable force_unwrapping
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import WebKit
+import XCTest
 
 final class ProjectUpdatesViewModelTests: TestCase {
   fileprivate let vm: ProjectUpdatesViewModelType = ProjectUpdatesViewModel()
@@ -42,8 +42,10 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
     let navigationAction = self.navigationAction(with: googleURL)
 
-    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
-                   self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.cancel.rawValue,
+      self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue
+    )
 
     self.goToSafariBrowser.assertValues([googleURL])
     XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
@@ -52,20 +54,23 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
   func testGoToUpdate() {
     let project = Project.template
-      |> (Project.lens.urls.web..Project.UrlsEnvelope.WebEnvelope.lens.updates)
+      |> (Project.lens.urls.web .. Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/milk/duds/posts"
 
-    let updateId = 11235
+    let updateId = 11_235
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
-    let navigationAction = self.navigationAction(with:
+    let navigationAction = self.navigationAction(
+      with:
       URL(string: "\(project.urls.web.updates!)/\(updateId)")!
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
-                   self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.cancel.rawValue,
+      self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue
+    )
 
     self.goToUpdateId.assertValues([updateId])
 
@@ -78,26 +83,28 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
   func testGoToUpdateComments() {
     let project = Project.template
-      |> (Project.lens.urls.web..Project.UrlsEnvelope.WebEnvelope.lens.updates)
+      |> (Project.lens.urls.web .. Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/smh/lol/posts"
 
-    let updateId = 123456
+    let updateId = 123_456
 
     self.vm.inputs.configureWith(project: project)
     self.vm.inputs.viewDidLoad()
 
-    let navigationAction = self.navigationAction(with:
+    let navigationAction = self.navigationAction(
+      with:
       URL(string: "\(project.urls.web.updates!)/\(updateId)/comments")!
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
-                   self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.cancel.rawValue,
+      self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue
+    )
 
     self.goToUpdateCommentId.assertValues([updateId])
   }
 
   func testShowMailComposeEmits_WhenEmailLinkIsTapped() {
-
     let navigationAction = self.navigationAction(with: URL(string: "mailto:dead@beef.com")!)
 
     self.vm.inputs.canSendEmail(true)
@@ -107,7 +114,6 @@ final class ProjectUpdatesViewModelTests: TestCase {
   }
 
   func testShowEmailErrorEmits_WhenEmailLinkIsTapped_AndCantSendEmail() {
-
     let navigationAction = self.navigationAction(with: URL(string: "mailto:dead@beef.com")!)
 
     self.vm.inputs.canSendEmail(false)
@@ -117,7 +123,6 @@ final class ProjectUpdatesViewModelTests: TestCase {
   }
 
   func testMakePhoneCallEmits_WhenPhoneLinkIsTapped() {
-
     let phoneUrl = URL(string: "tel://5551234567")!
     let navigationAction = self.navigationAction(with: phoneUrl)
 
@@ -128,7 +133,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
   func testWebViewLoadRequests() {
     let project = Project.template
-      |> (Project.lens.urls.web..Project.UrlsEnvelope.WebEnvelope.lens.updates)
+      |> (Project.lens.urls.web .. Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/shrimp/ijc/posts"
 
     let updatesIndexRequest = AppEnvironment.current.apiService.preparedRequest(
@@ -143,7 +148,7 @@ final class ProjectUpdatesViewModelTests: TestCase {
 
   func testIFrameRequest() {
     let project = Project.template
-      |> (Project.lens.urls.web..Project.UrlsEnvelope.WebEnvelope.lens.updates)
+      |> (Project.lens.urls.web .. Project.UrlsEnvelope.WebEnvelope.lens.updates)
       .~ "https://www.kickstarter.com/projects/shrimp/ijc/posts"
 
     let updatesIndexRequest = AppEnvironment.current.apiService.preparedRequest(
@@ -163,14 +168,15 @@ final class ProjectUpdatesViewModelTests: TestCase {
       targetFrame: WKFrameInfoData.init(mainFrame: false, request: updateRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue,
-                   self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.allow.rawValue,
+      self.vm.inputs.decidePolicy(forNavigationAction: navigationAction).rawValue
+    )
 
     self.webViewLoadRequest.assertValues([updatesIndexRequest], "Update loaded in VC, not web view.")
   }
 
   private func navigationAction(with url: URL) -> WKNavigationActionData {
-
     let request = URLRequest(url: url)
     return WKNavigationActionData(
       navigationType: .linkActivated,

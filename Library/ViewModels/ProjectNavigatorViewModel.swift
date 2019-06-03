@@ -10,10 +10,12 @@ public protocol ProjectNavigatorViewModelInputs {
   func pageTransition(completed: Bool, from index: Int?)
 
   /// Call with panning data.
-  func panning(contentOffset: CGPoint,
-               translation: CGPoint,
-               velocity: CGPoint,
-               isDragging: Bool)
+  func panning(
+    contentOffset: CGPoint,
+    translation: CGPoint,
+    velocity: CGPoint,
+    isDragging: Bool
+  )
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -54,14 +56,13 @@ public protocol ProjectNavigatorViewModelType {
 }
 
 public final class ProjectNavigatorViewModel: ProjectNavigatorViewModelType,
-ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
-
+  ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      )
-      .map(first)
+    )
+    .map(first)
 
     let pageTransitionCompletedFromIndex = self.pageTransitionCompletedFromIndexProperty.signal.skipNil()
       .filter { completed, _ in completed }
@@ -84,20 +85,20 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
         if data.contentOffset.y > 0 {
           return phase == .none ? .none : .canceling
         }
-        if data.isDragging && data.translation.y > 0 && !phase.active {
+        if data.isDragging, data.translation.y > 0, !phase.active {
           return .started
         }
-        if data.isDragging && data.translation.y > 0 && phase.active {
+        if data.isDragging, data.translation.y > 0, phase.active {
           return .updating
         }
-        if data.isDragging && data.translation.y < 0 && phase.active {
+        if data.isDragging, data.translation.y < 0, phase.active {
           return .canceling
         }
-        if !data.isDragging && data.translation.y > 0 && phase.active {
+        if !data.isDragging, data.translation.y > 0, phase.active {
           return data.velocity.y > 0 ? .finishing : .canceling
         }
         return phase
-    }
+      }
 
     self.setInitialPagerViewController = self.viewDidLoadProperty.signal
 
@@ -140,7 +141,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       .observeValues { configData, pii in
         let type = swipeType(currentIndex: pii.currentIndex, previousIndex: pii.previousIndex)
         AppEnvironment.current.koala.trackSwipedProject(pii.project, refTag: configData.refTag, type: type)
-    }
+      }
 
     Signal.combineLatest(configData, currentProject)
       .takeWhen(self.finishInteractiveTransition)
@@ -150,7 +151,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
           refTag: configData.refTag,
           gestureType: .swipe
         )
-    }
+      }
   }
 
   fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
@@ -174,14 +175,18 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
   }
 
   fileprivate let panningDataProperty = MutableProperty<PanningData?>(nil)
-  public func panning(contentOffset: CGPoint,
-                      translation: CGPoint,
-                      velocity: CGPoint,
-                      isDragging: Bool) {
-    self.panningDataProperty.value = PanningData(contentOffset: contentOffset,
-                                                 isDragging: isDragging,
-                                                 translation: translation,
-                                                 velocity: velocity)
+  public func panning(
+    contentOffset: CGPoint,
+    translation: CGPoint,
+    velocity: CGPoint,
+    isDragging: Bool
+  ) {
+    self.panningDataProperty.value = PanningData(
+      contentOffset: contentOffset,
+      isDragging: isDragging,
+      translation: translation,
+      velocity: velocity
+    )
   }
 
   public let cancelInteractiveTransition: Signal<(), Never>

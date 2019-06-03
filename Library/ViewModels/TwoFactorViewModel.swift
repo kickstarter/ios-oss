@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol TwoFactorViewModelInputs {
   /// Call when code textfield is updated
@@ -59,7 +59,6 @@ public protocol TwoFactorViewModelType {
 
 public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewModelInputs,
   TwoFactorViewModelOutputs {
-
   // A simple type to hold all the data needed to login.
   fileprivate struct TfaData {
     fileprivate let email: String?
@@ -67,7 +66,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     fileprivate let facebookToken: String?
     fileprivate let code: String?
 
-        fileprivate enum lens {
+    fileprivate enum lens {
       fileprivate static let code = Lens<TfaData, String?>(
         view: { $0.code },
         set: { TfaData(email: $1.email, password: $1.password, facebookToken: $1.facebookToken, code: $0) }
@@ -75,7 +74,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     }
   }
 
-    public init() {
+  public init() {
     let isLoading = MutableProperty(false)
 
     let loginData = SignalProducer.combineLatest(
@@ -83,8 +82,8 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
       self.passwordProperty.producer,
       self.facebookTokenProperty.producer,
       self.codeProperty.producer
-      )
-      .map(TfaData.init)
+    )
+    .map(TfaData.init)
 
     let resendData = loginData.map(TfaData.lens.code .~ nil)
 
@@ -93,7 +92,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
       .switchMap { data in
         login(data, apiService: AppEnvironment.current.apiService, isLoading: isLoading)
           .materialize()
-    }
+      }
 
     self.codeTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
 
@@ -114,7 +113,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     self.isFormValid = Signal.merge([
       codeProperty.signal.map { code in code?.count == 6 },
       viewWillAppearProperty.signal.mapConst(false)
-      ])
+    ])
       .skipRepeats()
 
     let codeMismatch = loginEvent.errors()
@@ -128,9 +127,13 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
     self.showError = Signal.merge([codeMismatch, genericFail])
 
     self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst((Notification(name: .ksr_sessionStarted),
-                 Notification(name: .ksr_showNotificationsDialog,
-                              userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login])))
+      .mapConst((
+        Notification(name: .ksr_sessionStarted),
+        Notification(
+          name: .ksr_showNotificationsDialog,
+          userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
+        )
+      ))
 
     self.viewWillAppearProperty.signal
       .observeValues { AppEnvironment.current.koala.trackTfa() }
@@ -209,10 +212,11 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
   public var outputs: TwoFactorViewModelOutputs { return self }
 }
 
-private func login(_ tfaData: TwoFactorViewModel.TfaData,
-                   apiService: ServiceType,
-                   isLoading: MutableProperty<Bool>) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-
+private func login(
+  _ tfaData: TwoFactorViewModel.TfaData,
+  apiService: ServiceType,
+  isLoading: MutableProperty<Bool>
+) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
   let login: SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
 
   if let email = tfaData.email, let password = tfaData.password {
@@ -224,6 +228,8 @@ private func login(_ tfaData: TwoFactorViewModel.TfaData,
   }
 
   return login
-    .on(starting: { isLoading.value = true },
-      terminated: { isLoading.value = false })
+    .on(
+      starting: { isLoading.value = true },
+      terminated: { isLoading.value = false }
+    )
 }

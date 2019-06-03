@@ -1,10 +1,9 @@
-import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import Prelude
 
 internal final class FindFriendsViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
@@ -53,7 +52,7 @@ internal final class FindFriendsViewControllerTests: TestCase {
     let friend1 = friendNoAvatar
       |> \.name .~ "Ron Swanson"
       |> \.location .~
-        (.template |> Location.lens.displayableName .~ "Pawnee, IN")
+      (.template |> Location.lens.displayableName .~ "Pawnee, IN")
       |> \.stats.backedProjectsCount .~ 42
       |> \.stats.createdProjectsCount .~ 0
       |> \.isFriend .~ true
@@ -61,7 +60,7 @@ internal final class FindFriendsViewControllerTests: TestCase {
     let friend2 = friendNoAvatar
       |> \.name .~ "David Byrne"
       |> \.location .~
-        (.template |> Location.lens.displayableName .~ "New York, NY")
+      (.template |> Location.lens.displayableName .~ "New York, NY")
       |> \.stats.backedProjectsCount .~ 365
       |> \.stats.createdProjectsCount .~ 5
 
@@ -73,9 +72,10 @@ internal final class FindFriendsViewControllerTests: TestCase {
       |> FriendStatsEnvelope.lens.stats.remoteFriendsCount .~ 5
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch]).forEach { language, device in
-      withEnvironment(apiService: MockService(fetchFriendsResponse: friendsResponse,
-        fetchFriendStatsResponse: friendStats), currentUser: currentUser, language: language) {
-
+      withEnvironment(apiService: MockService(
+        fetchFriendsResponse: friendsResponse,
+        fetchFriendStatsResponse: friendStats
+      ), currentUser: currentUser, language: language) {
         let controller = FindFriendsViewController.configuredWith(source: FriendsSource.settings)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 

@@ -1,8 +1,8 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class FindFriendsEnvelopeTests: XCTestCase {
-    func testJsonDecoding() {
+  func testJsonDecoding() {
     let json: [String: Any] = [
       "contacts_imported": true,
       "urls": [
@@ -58,8 +58,10 @@ final class FindFriendsEnvelopeTests: XCTestCase {
     let users = friends.value?.users ?? []
 
     XCTAssertEqual(true, friends.value?.contactsImported)
-    XCTAssertEqual("http://api.dev/v1/users/self/friends/find?count=10",
-                   friends.value?.urls.api.moreUsers)
+    XCTAssertEqual(
+      "http://api.dev/v1/users/self/friends/find?count=10",
+      friends.value?.urls.api.moreUsers
+    )
     XCTAssertEqual(false, users[0].isFriend)
     XCTAssertEqual(true, users[1].isFriend)
   }

@@ -1,18 +1,16 @@
+@testable import Kickstarter_Framework
 @testable import KsApi
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import UIKit
-import PlaygroundSupport
-@testable import Kickstarter_Framework
 
 // Setting `isVoiceOverRunning` to `true` outputs a date before every activity.
 let isVoiceOverRunning = false
 
 let device = Device.phone5_5inch
 let orientation = Orientation.portrait
-
-
 
 let project = Project.cosmicSurgery
 
@@ -33,7 +31,7 @@ let baseActivity = .template
   |> Activity.lens.memberData.backing .~ (
     .template
       |> Backing.lens.amount .~ 25
-    )
+  )
 
 let backingActivity = baseActivity
   |> Activity.lens.category .~ .backing
@@ -57,19 +55,23 @@ let backingRewardActivity = baseActivity
   |> Activity.lens.memberData.newRewardId .~ 1
   |> Activity.lens.memberData.oldRewardId .~ 2
 
-let activityCategories: [Activity.Category] = [.update,
-                                               .suspension,
-                                               .cancellation,
-                                               .failure,
-                                               .success,
-                                               .launch,
-                                               .commentPost,
-                                               .commentProject]
+let activityCategories: [Activity.Category] = [
+  .update,
+  .suspension,
+  .cancellation,
+  .failure,
+  .success,
+  .launch,
+  .commentPost,
+  .commentProject
+]
 
-let backingActivities = [backingActivity,
-                         backingAmountActivity,
-                         backingCanceledActivity,
-                         backingRewardActivity]
+let backingActivities = [
+  backingActivity,
+  backingAmountActivity,
+  backingCanceledActivity,
+  backingRewardActivity
+]
 
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
@@ -77,7 +79,7 @@ AppEnvironment.replaceCurrentEnvironment(
     fetchProjectActivitiesResponse: activityCategories.map { baseActivity |> Activity.lens.category .~ $0 } + backingActivities
   ),
   currentUser: Project.cosmicSurgery.creator,
-  isVoiceOverRunning: { return isVoiceOverRunning }
+  isVoiceOverRunning: { isVoiceOverRunning }
 )
 
 initialize()

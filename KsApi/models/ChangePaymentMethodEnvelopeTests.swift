@@ -1,8 +1,7 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class ChangePaymentMethodEnvelopeTests: XCTestCase {
-
   func testDecodingWithStringStatus() {
     let decoded = ChangePaymentMethodEnvelope.decodeJSONDictionary(["status": "200"])
     XCTAssertNil(decoded.error)

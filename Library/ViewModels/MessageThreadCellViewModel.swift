@@ -17,7 +17,6 @@ public protocol MessageThreadCellViewModelOutputs {
   var projectName: Signal<String, Never> { get }
   var replyIndicatorHidden: Signal<Bool, Never> { get }
   var unreadIndicatorHidden: Signal<Bool, Never> { get }
-
 }
 
 public protocol MessageThreadCellViewModelType {
@@ -27,7 +26,6 @@ public protocol MessageThreadCellViewModelType {
 
 public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
   MessageThreadCellViewModelInputs, MessageThreadCellViewModelOutputs {
-
   public init() {
     let messageThread = self.messageThreadProperty.signal.skipNil()
     self.date = messageThread.map {
@@ -73,6 +71,7 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
   public func configureWith(messageThread: MessageThread) {
     self.messageThreadProperty.value = messageThread
   }
+
   fileprivate let setSelectedProperty = MutableProperty<Bool>(false)
   public func setSelected(_ selected: Bool) {
     self.setSelectedProperty.value = selected

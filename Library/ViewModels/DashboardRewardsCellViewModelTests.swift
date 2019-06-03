@@ -1,8 +1,8 @@
-import XCTest
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class DashboardRewardsCellViewModelTests: TestCase {
   let vm: DashboardRewardsCellViewModelType = DashboardRewardsCellViewModel()
@@ -43,7 +43,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 120
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ 2
     |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 20
-    |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 1000
+    |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 1_000
 
   let stat3 = .template
     |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 4
@@ -55,13 +55,13 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 25
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ 4
     |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 35
-    |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 1750
+    |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 1_750
 
   let stat5 = .template
     |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 16
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ 5
     |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 30
-    |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 1500
+    |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 1_500
 
   let zeroPledgedStat1 = ProjectStatsEnvelope.RewardStats.unPledged
   let zeroPledgedStat2 = ProjectStatsEnvelope.RewardStats.unPledged
@@ -71,11 +71,11 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    vm.outputs.hideSeeAllTiersButton.observe(hideSeeAllTiersButton.observer)
-    vm.outputs.notifyDelegateAddedRewardRows.observe(notifyDelegateAddedRewardRows.observer)
-    vm.outputs.rewardsRowData.map { $0.country }.observe(rewardsRowCountry.observer)
-    vm.outputs.rewardsRowData.map { $0.rewardsStats }.observe(rewardsRowRewards.observer)
-    vm.outputs.rewardsRowData.map { $0.totalPledged }.observe(rewardsRowTotalPledged.observer)
+    self.vm.outputs.hideSeeAllTiersButton.observe(self.hideSeeAllTiersButton.observer)
+    self.vm.outputs.notifyDelegateAddedRewardRows.observe(self.notifyDelegateAddedRewardRows.observer)
+    self.vm.outputs.rewardsRowData.map { $0.country }.observe(self.rewardsRowCountry.observer)
+    self.vm.outputs.rewardsRowData.map { $0.rewardsStats }.observe(self.rewardsRowRewards.observer)
+    self.vm.outputs.rewardsRowData.map { $0.totalPledged }.observe(self.rewardsRowTotalPledged.observer)
   }
 
   func testRewards() {
@@ -92,13 +92,15 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(rewardStats: stats, project: project)
 
-    self.rewardsRowRewards.assertValues([[stat2, stat1, zeroPledgedStat1]],
-                                        "Emits initial reward stats sorted by minimum value")
+    self.rewardsRowRewards.assertValues(
+      [[stat2, stat1, zeroPledgedStat1]],
+      "Emits initial reward stats sorted by minimum value"
+    )
     self.rewardsRowCountry.assertValues([.us])
-    self.rewardsRowTotalPledged.assertValues([1500])
+    self.rewardsRowTotalPledged.assertValues([1_500])
     self.hideSeeAllTiersButton.assertValues([true])
 
-    //switched project
+    // switched project
 //    let rewards2 = [reward2, reward3, reward7]
 //    let project2 = Project.template
 //      |> Project.lens.rewards .~ rewards2
@@ -126,21 +128,24 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(rewardStats: stats, project: project)
 
-    self.rewardsRowRewards.assertValues([[stat4, stat5, stat2]],
-                                        "Emits 4 initial rewards sorted by minimum value")
+    self.rewardsRowRewards.assertValues(
+      [[stat4, stat5, stat2]],
+      "Emits 4 initial rewards sorted by minimum value"
+    )
 
     self.rewardsRowCountry.assertValues([.us])
-    self.rewardsRowTotalPledged.assertValues([5000])
+    self.rewardsRowTotalPledged.assertValues([5_000])
     self.hideSeeAllTiersButton.assertValues([false])
     self.notifyDelegateAddedRewardRows.assertDidNotEmitValue("No additional rewards were added.")
 
     self.vm.inputs.seeAllTiersButtonTapped()
 
-    self.rewardsRowRewards.assertValues([[stat4, stat5, stat2],
+    self.rewardsRowRewards.assertValues([
+      [stat4, stat5, stat2],
       [stat4, stat5, stat2, stat1, stat3, zeroPledgedStat1, zeroPledgedStat2]
     ], "Emit all rewards sorted by minimum value")
     self.rewardsRowCountry.assertValues([.us, .us])
-    self.rewardsRowTotalPledged.assertValues([5000, 5000])
+    self.rewardsRowTotalPledged.assertValues([5_000, 5_000])
     self.hideSeeAllTiersButton.assertValues([false, true])
     self.notifyDelegateAddedRewardRows.assertValueCount(1, "Additional rewards were added.")
     XCTAssertEqual(["Showed All Rewards"], self.trackingClient.events)
@@ -156,33 +161,41 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(rewardStats: stats, project: project)
 
-    self.rewardsRowRewards.assertValues([[stat4, stat5, stat2]],
-                                        "Emits 4 initial rewards sorted by minimum value")
+    self.rewardsRowRewards.assertValues(
+      [[stat4, stat5, stat2]],
+      "Emits 4 initial rewards sorted by minimum value"
+    )
     self.vm.inputs.backersButtonTapped()
 
-    self.rewardsRowRewards.assertValues([
-      [stat4, stat5, stat2],
-      [stat2, stat1, stat4]
-    ],
-    "Emits rewards sorted by backers count")
+    self.rewardsRowRewards.assertValues(
+      [
+        [stat4, stat5, stat2],
+        [stat2, stat1, stat4]
+      ],
+      "Emits rewards sorted by backers count"
+    )
 
     self.vm.inputs.topRewardsButtonTapped()
 
-    self.rewardsRowRewards.assertValues([
-      [stat4, stat5, stat2],
-      [stat2, stat1, stat4],
-      [zeroPledgedStat2, stat4, stat5],
-    ],
-    "Emits rewards sorted by min value")
+    self.rewardsRowRewards.assertValues(
+      [
+        [stat4, stat5, stat2],
+        [stat2, stat1, stat4],
+        [zeroPledgedStat2, stat4, stat5]
+      ],
+      "Emits rewards sorted by min value"
+    )
 
     self.vm.inputs.pledgedButtonTapped()
 
-    self.rewardsRowRewards.assertValues([
-      [stat4, stat5, stat2],
-      [stat2, stat1, stat4],
-      [zeroPledgedStat2, stat4, stat5],
-      [stat4, stat5, stat2]
-    ],
-    "Emits rewards sorted by pledged count")
+    self.rewardsRowRewards.assertValues(
+      [
+        [stat4, stat5, stat2],
+        [stat2, stat1, stat4],
+        [zeroPledgedStat2, stat4, stat5],
+        [stat4, stat5, stat2]
+      ],
+      "Emits rewards sorted by pledged count"
+    )
   }
 }

@@ -4,11 +4,10 @@ import Prelude
 import UIKit
 
 internal final class SettingsNewslettersViewController: UIViewController {
-
   fileprivate let dataSource = SettingsNewslettersDataSource()
   fileprivate let viewModel: SettingsNewslettersViewModelType = SettingsNewslettersViewModel()
 
-  @IBOutlet fileprivate weak var tableView: UITableView!
+  @IBOutlet fileprivate var tableView: UITableView!
 
   internal static func instantiate() -> SettingsNewslettersViewController {
     return Storyboard.SettingsNewsletters.instantiate(SettingsNewslettersViewController.self)
@@ -21,7 +20,7 @@ internal final class SettingsNewslettersViewController: UIViewController {
 
     self.tableView.register(nib: .SettingsNewslettersTopCell)
     self.tableView.register(nib: .SettingsNewslettersCell)
-    self.tableView.dataSource = dataSource
+    self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.tableHeaderView = nil
     self.tableView.tableFooterView = nil
@@ -47,15 +46,16 @@ internal final class SettingsNewslettersViewController: UIViewController {
         AppEnvironment.updateCurrentUser(user)
         self?.dataSource.load(newsletters: Newsletter.allCases, user: user)
         self?.tableView.reloadData()
-    }
+      }
   }
 }
 
 extension SettingsNewslettersViewController: UITableViewDelegate {
-  internal func tableView(_ tableView: UITableView,
-                          willDisplay cell: UITableViewCell,
-                          forRowAt indexPath: IndexPath) {
-
+  internal func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt _: IndexPath
+  ) {
     if let cell = cell as? SettingsNewslettersTopCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? SettingsNewslettersCell, cell.delegate == nil {
@@ -65,7 +65,6 @@ extension SettingsNewslettersViewController: UITableViewDelegate {
 }
 
 extension SettingsNewslettersViewController: SettingsNewslettersCellDelegate {
-
   func failedToUpdateUser(_ message: String) {
     let errorAlert = UIAlertController.genericError(message)
     self.present(errorAlert, animated: true, completion: nil)
@@ -82,7 +81,6 @@ extension SettingsNewslettersViewController: SettingsNewslettersCellDelegate {
 }
 
 extension SettingsNewslettersViewController: SettingsNewslettersTopCellDelegate {
-
   func didUpdateAllNewsletters(user: User) {
     self.viewModel.inputs.didUpdate(user: user)
   }

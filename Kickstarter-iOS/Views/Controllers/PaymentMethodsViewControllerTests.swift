@@ -1,10 +1,9 @@
-import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import Prelude
 
 class PaymentMethodsViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
@@ -18,7 +17,6 @@ class PaymentMethodsViewControllerTests: TestCase {
   }
 
   func testView_WithCreditCards() {
-
     let response = UserEnvelope<GraphUserCreditCard>(
       me: GraphUserCreditCard.template
     )
@@ -27,7 +25,6 @@ class PaymentMethodsViewControllerTests: TestCase {
   }
 
   func testView_NoCreditCards() {
-
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.emptyTemplate)
 
     self.generateSnapshots(with: response)
@@ -35,23 +32,26 @@ class PaymentMethodsViewControllerTests: TestCase {
 
   private func generateSnapshots(with response: UserEnvelope<GraphUserCreditCard>) {
     combos(Language.allLanguages, Device.allCases).forEach {
-      (arg) in
+      arg in
 
       let (language, device) = arg
-      withEnvironment(apiService: MockService(fetchGraphCreditCardsResponse: response),
-                      language: language,
-                      userDefaults: MockKeyValueStore()) {
+      withEnvironment(
+        apiService: MockService(fetchGraphCreditCardsResponse: response),
+        language: language,
+        userDefaults: MockKeyValueStore()
+      ) {
+        let controller = PaymentMethodsViewController.instantiate()
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        let controller = PaymentMethodsViewController.instantiate()
-                        let (parent, _) = traitControllers(device: device,
-                                                           orientation: .portrait,
-                                                           child: controller)
+        parent.view.layoutIfNeeded()
 
-                        parent.view.layoutIfNeeded()
+        self.scheduler.run()
 
-                        self.scheduler.run()
-
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }

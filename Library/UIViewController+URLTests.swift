@@ -1,7 +1,7 @@
+@testable import Library
 import SafariServices
 import UIKit
 import XCTest
-@testable import Library
 
 final class UIViewControllerURLTests: TestCase {
   func testSupportedSchemes() {
@@ -49,13 +49,13 @@ private final class MockApplication: UIApplicationType {
   var canOpenURLWasCalled = false
   var openUrlWasCalled = false
 
-  func canOpenURL(_ url: URL) -> Bool {
+  func canOpenURL(_: URL) -> Bool {
     self.canOpenURLWasCalled = true
     return self.canOpenURL
   }
 
   // swiftlint:disable:next line_length
-  func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?) {
+  func open(_: URL, options _: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler _: ((Bool) -> Void)?) {
     self.openUrlWasCalled = true
   }
 }

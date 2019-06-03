@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol DashboardProjectsDrawerCellViewModelInputs {
   /// Call when configuring cell with Project and order of creation
@@ -32,7 +32,6 @@ public protocol DashboardProjectsDrawerCellViewModelType {
 
 public final class DashboardProjectsDrawerCellViewModel: DashboardProjectsDrawerCellViewModelType,
   DashboardProjectsDrawerCellViewModelInputs, DashboardProjectsDrawerCellViewModelOutputs {
-
   public init() {
     self.projectNameText = self.projectProperty.signal.skipNil().map { $0.name }
 

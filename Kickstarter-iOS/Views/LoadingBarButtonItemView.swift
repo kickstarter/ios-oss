@@ -3,8 +3,8 @@ import Library
 import Prelude
 
 final class LoadingBarButtonItemView: UIView, NibLoading {
-  @IBOutlet fileprivate weak var activityIndicator: UIActivityIndicatorView!
-  @IBOutlet fileprivate weak var titleButton: UIButton!
+  @IBOutlet fileprivate var activityIndicator: UIActivityIndicatorView!
+  @IBOutlet fileprivate var titleButton: UIButton!
 
   private let viewModel: LoadingBarButtonItemViewModelType = LoadingBarButtonItemViewModel()
 
@@ -43,9 +43,9 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
 
     self.viewModel.outputs.activityIndicatorIsLoading
       .observeForUI()
-      .observeValues { [weak self] (isLoading) in
+      .observeValues { [weak self] isLoading in
         self?.animateActivityIndicator(isLoading)
-    }
+      }
   }
 
   // MARK: - Public Functions
@@ -74,13 +74,13 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
 
   private func animateActivityIndicator(_ isAnimating: Bool) {
     if isAnimating {
-      bringSubviewToFront(activityIndicator)
+      bringSubviewToFront(self.activityIndicator)
 
-      activityIndicator.startAnimating()
+      self.activityIndicator.startAnimating()
     } else {
-      activityIndicator.stopAnimating()
+      self.activityIndicator.stopAnimating()
 
-      bringSubviewToFront(titleButton)
+      bringSubviewToFront(self.titleButton)
     }
   }
 }

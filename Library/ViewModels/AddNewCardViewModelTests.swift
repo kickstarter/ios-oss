@@ -1,9 +1,9 @@
-import Prelude
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class AddNewCardViewModelTests: TestCase {
   private let vm: AddNewCardViewModelType = AddNewCardViewModel()
@@ -41,7 +41,8 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.outputs.paymentDetails.map { $0.3 }.observe(self.cardExpYear.observer)
     self.vm.outputs.paymentDetails.map { $0.4 }.observe(self.cardCVC.observer)
     self.vm.outputs.paymentDetails.map { $0.5 }.observe(self.zipcode.observer)
-  self.vm.outputs.paymentDetailsBecomeFirstResponder.observe(self.paymentDetailsBecomeFirstResponder.observer)
+    self.vm.outputs.paymentDetailsBecomeFirstResponder
+      .observe(self.paymentDetailsBecomeFirstResponder.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
     self.vm.outputs.zipcodeTextFieldBecomeFirstResponder
@@ -150,7 +151,6 @@ internal final class AddNewCardViewModelTests: TestCase {
 
       self.addNewCardFailure.assertValues([error.localizedDescription])
       self.activityIndicatorShouldShow.assertValues([true, false])
-
     }
   }
 

@@ -1,6 +1,6 @@
+import KsApi
 import Library
 import UIKit
-import KsApi
 
 internal final class SelectCurrencyDataSource: ValueCellDataSource {
   internal enum Section: Int {
@@ -8,9 +8,11 @@ internal final class SelectCurrencyDataSource: ValueCellDataSource {
   }
 
   internal func load(currencies: [SelectedCurrencyData]) {
-    self.set(values: currencies,
-             cellClass: SelectCurrencyCell.self,
-             inSection: Section.currencies.rawValue)
+    self.set(
+      values: currencies,
+      cellClass: SelectCurrencyCell.self,
+      inSection: Section.currencies.rawValue
+    )
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

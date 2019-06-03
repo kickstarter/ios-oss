@@ -22,8 +22,7 @@ public protocol ActivityFriendFollowCellViewModelOutputs {
 }
 
 public final class ActivityFriendFollowCellViewModel: ActivityFriendFollowCellViewModelInputs,
-ActivityFriendFollowCellViewModelOutputs {
-
+  ActivityFriendFollowCellViewModelOutputs {
   public init() {
     let friend = self.activityProperty.signal.skipNil()
       .map(Activity.lens.user.view)
@@ -34,22 +33,24 @@ ActivityFriendFollowCellViewModelOutputs {
 
     self.title = friend.map {
       let string = Strings.activity_user_name_is_now_following_you(user_name: "<b>\($0.name)</b>")
-      return string.simpleHtmlAttributedString(base: [
-        NSAttributedString.Key.font: UIFont.ksr_subhead(size: 14.0),
-        NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+      return string.simpleHtmlAttributedString(
+        base: [
+          NSAttributedString.Key.font: UIFont.ksr_subhead(size: 14.0),
+          NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
         ],
         bold: [
           NSAttributedString.Key.font: UIFont.ksr_headline(size: 14.0),
           NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-        ]) ?? NSAttributedString(string: "")
+        ]
+      ) ?? NSAttributedString(string: "")
     }
 
     let followFriendEvent = friend.takeWhen(self.followButtonTappedProperty.signal)
       .switchMap { user in
         AppEnvironment.current.apiService.followFriend(userId: user.id)
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
-    }
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
 
     let followFriendSuccess = followFriendEvent.values()
       .on(value: { cache(friend: $0, isFriend: true) })
@@ -66,6 +67,7 @@ ActivityFriendFollowCellViewModelOutputs {
   public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
+
   fileprivate let followButtonTappedProperty = MutableProperty(())
   public func followButtonTapped() {
     self.followButtonTappedProperty.value = ()

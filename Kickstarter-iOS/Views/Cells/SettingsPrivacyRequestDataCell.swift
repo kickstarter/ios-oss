@@ -5,7 +5,7 @@ import Prelude_UIKit
 import ReactiveSwift
 import UIKit
 
-internal protocol SettingsRequestDataCellDelegate: class {
+internal protocol SettingsRequestDataCellDelegate: AnyObject {
   func settingsRequestDataCellDidPresentPrompt(_ cell: SettingsPrivacyRequestDataCell, alertMessage: String)
   func settingsRequestDataCell(_ cell: SettingsPrivacyRequestDataCell, requestedDataWith url: String)
 }
@@ -14,14 +14,14 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
   fileprivate let viewModel = SettingsRequestDataCellViewModel()
   internal weak var delegate: SettingsRequestDataCellDelegate?
 
-  @IBOutlet fileprivate weak var containerView: UIView!
-  @IBOutlet fileprivate weak var chevron: UIImageView!
-  @IBOutlet fileprivate weak var preparingDataLabel: UILabel!
-  @IBOutlet fileprivate weak var checkBackLaterLabel: UILabel!
-  @IBOutlet fileprivate weak var requestDataActivityIndicator: UIActivityIndicatorView!
-  @IBOutlet fileprivate weak var requestDataButton: UIButton!
-  @IBOutlet fileprivate weak var requestDataLabel: UILabel!
-  @IBOutlet fileprivate weak var requestedDataStatusAndDateLabel: UILabel!
+  @IBOutlet fileprivate var containerView: UIView!
+  @IBOutlet fileprivate var chevron: UIImageView!
+  @IBOutlet fileprivate var preparingDataLabel: UILabel!
+  @IBOutlet fileprivate var checkBackLaterLabel: UILabel!
+  @IBOutlet fileprivate var requestDataActivityIndicator: UIActivityIndicatorView!
+  @IBOutlet fileprivate var requestDataButton: UIButton!
+  @IBOutlet fileprivate var requestDataLabel: UILabel!
+  @IBOutlet fileprivate var requestedDataStatusAndDateLabel: UILabel!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
   private var requestDataObserver: Any?
@@ -29,11 +29,12 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.requestDataButton.addTarget(self, action: #selector(exportButtonTapped), for: .touchUpInside)
+    self.requestDataButton.addTarget(self, action: #selector(self.exportButtonTapped), for: .touchUpInside)
 
     self.requestDataObserver = NotificationCenter.default.addObserver(
       forName: Notification.Name.ksr_dataRequested,
-      object: nil, queue: nil) { [weak self] _ in self?.viewModel.inputs.startRequestDataTapped() }
+      object: nil, queue: nil
+    ) { [weak self] _ in self?.viewModel.inputs.startRequestDataTapped() }
 
     self.viewModel.inputs.awakeFromNib()
   }
@@ -54,9 +55,10 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
-          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2)) }
+          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+      }
 
-    _ = separatorViews
+    _ = self.separatorViews
       ||> settingsSeparatorStyle
 
     _ = self.requestDataButton
@@ -96,14 +98,14 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
       .observeValues { [weak self] requestDataAlertText in
         guard let _self = self else { return }
         self?.delegate?.settingsRequestDataCellDidPresentPrompt(_self, alertMessage: requestDataAlertText)
-    }
+      }
 
     self.viewModel.outputs.goToSafari
       .observeForUI()
       .observeValues { [weak self] url in
         guard let _self = self else { return }
         self?.delegate?.settingsRequestDataCell(_self, requestedDataWith: url)
-    }
+      }
 
     self.requestDataButton.rac.enabled = self.viewModel.outputs.requestDataButtonEnabled
     self.requestDataActivityIndicator.rac.animating = self.viewModel.outputs.requestDataLoadingIndicator

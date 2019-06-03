@@ -10,9 +10,9 @@ protocol MessageBannerViewControllerPresenting {
 }
 
 final class MessageBannerViewController: UIViewController, NibLoading {
-  @IBOutlet fileprivate weak var backgroundView: UIView!
-  @IBOutlet fileprivate weak var iconImageView: UIImageView!
-  @IBOutlet fileprivate weak var messageLabel: UILabel!
+  @IBOutlet fileprivate var backgroundView: UIView!
+  @IBOutlet fileprivate var iconImageView: UIImageView!
+  @IBOutlet fileprivate var messageLabel: UILabel!
 
   internal var bottomConstraint: NSLayoutConstraint?
   private let viewModel: MessageBannerViewModelType = MessageBannerViewModel()
@@ -59,32 +59,32 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.showViewAndAnimate(isHidden)
-    }
+      }
 
     self.viewModel.outputs.iconTintColor
       .observeForUI()
       .observeValues { [weak self] color in
         _ = self?.iconImageView
           ?|> \.tintColor .~ color
-    }
+      }
 
     self.viewModel.outputs.iconImageName
       .observeForUI()
       .map { image(named: $0, inBundle: Bundle.framework) }
       .observeValues { [weak self] image in
-        guard let `self` = self else { return }
+        guard let self = self else { return }
         _ = self.iconImageView
           |> UIImageView.lens.image .~ image
-    }
+      }
 
     self.viewModel.outputs.messageTextAlignment
       .observeForUI()
       .observeValues { [weak self] textAlignment in
-        guard let `self` = self else { return }
+        guard let self = self else { return }
 
         _ = self.messageLabel
-         |> UILabel.lens.textAlignment .~ textAlignment
-    }
+          |> UILabel.lens.textAlignment .~ textAlignment
+      }
   }
 
   func showBanner(with type: MessageBannerType, message: String) {
@@ -139,7 +139,8 @@ final class MessageBannerViewController: UIViewController, NibLoading {
             )
           }
         }
-    })
+      }
+    )
   }
 
   @IBAction private func bannerViewPanned(_ sender: UIPanGestureRecognizer) {
@@ -163,16 +164,15 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     } else if yPos < -heightLimit {
       // "rubber band" effect
       let absYPos = abs(yPos)
-      let adjustedYPos =  heightLimit * (1 + log10(absYPos / heightLimit))
+      let adjustedYPos = heightLimit * (1 + log10(absYPos / heightLimit))
 
       self.bottomConstraint?.constant = -adjustedYPos
     } else {
-
       self.bottomConstraint?.constant = yPos
     }
   }
 
-  @IBAction private func bannerViewTapped(_ sender: Any) {
+  @IBAction private func bannerViewTapped(_: Any) {
     self.viewModel.inputs.bannerViewWillShow(false)
   }
 }
@@ -181,10 +181,12 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
   func configureMessageBannerViewController(on parentViewController: UIViewController)
     -> MessageBannerViewController? {
     let nibName = Nib.MessageBannerViewController.rawValue
-    let messageBannerViewController = MessageBannerViewController(nibName: nibName,
-                                                                  bundle: .framework)
+    let messageBannerViewController = MessageBannerViewController(
+      nibName: nibName,
+      bundle: .framework
+    )
 
-      guard let messageBannerView = messageBannerViewController.view else {
+    guard let messageBannerView = messageBannerViewController.view else {
       return nil
     }
 
@@ -203,8 +205,8 @@ extension MessageBannerViewControllerPresenting where Self: UIViewController {
     parentViewController.view.addConstraints([
       bottomViewBannerConstraint,
       messageBannerView.leftAnchor.constraint(equalTo: parentViewController.view.leftAnchor),
-      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor),
-      ])
+      messageBannerView.rightAnchor.constraint(equalTo: parentViewController.view.rightAnchor)
+    ])
 
     return messageBannerViewController
   }

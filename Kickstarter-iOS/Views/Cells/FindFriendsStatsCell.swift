@@ -4,18 +4,17 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-protocol FindFriendsStatsCellDelegate: class {
+protocol FindFriendsStatsCellDelegate: AnyObject {
   func findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: Int)
 }
 
 internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
-
-  @IBOutlet fileprivate weak var backedProjectsLabel: UILabel!
-  @IBOutlet fileprivate weak var bulletSeparatorView: UIView!
-  @IBOutlet fileprivate weak var friendsLabel: UILabel!
-  @IBOutlet fileprivate weak var friendsCountLabel: UILabel!
-  @IBOutlet fileprivate weak var backedProjectsCountLabel: UILabel!
-  @IBOutlet fileprivate weak var followAllButton: UIButton!
+  @IBOutlet fileprivate var backedProjectsLabel: UILabel!
+  @IBOutlet fileprivate var bulletSeparatorView: UIView!
+  @IBOutlet fileprivate var friendsLabel: UILabel!
+  @IBOutlet fileprivate var friendsCountLabel: UILabel!
+  @IBOutlet fileprivate var backedProjectsCountLabel: UILabel!
+  @IBOutlet fileprivate var followAllButton: UIButton!
 
   internal weak var delegate: FindFriendsStatsCellDelegate?
 
@@ -40,7 +39,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] count in
         self?.delegate?.findFriendsStatsCellShowFollowAllFriendsAlert(friendCount: count)
-    }
+      }
   }
 
   override func bindStyles() {
@@ -79,7 +78,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(20))
           : .init(all: Styles.grid(4))
-    }
+      }
   }
 
   @objc func followAllButtonTapped() {

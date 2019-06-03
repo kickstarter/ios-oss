@@ -1,6 +1,6 @@
-import XCTest
 @testable import KsApi
 import Prelude
+import XCTest
 
 final class PushEnvelopeTests: XCTestCase {
   func testDecode_Update_WithUpdateKey() {
@@ -30,7 +30,7 @@ final class PushEnvelopeTests: XCTestCase {
         "id": 1,
         "project_id": 2
       ]
-      ])
+    ])
     let envelope = decodedEnvelope.value
 
     XCTAssertNil(decodedEnvelope.error)

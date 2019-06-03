@@ -1,13 +1,12 @@
+@testable import Kickstarter_Framework
+@testable import KsApi
 // swiftlint:disable force_unwrapping
 import Library
 import Prelude
-import XCTest
-@testable import Kickstarter_Framework
-@testable import KsApi
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class FundingGraphViewTests: TestCase {
-
   fileprivate let vm: DashboardFundingCellViewModelType = DashboardFundingCellViewModel()
   fileprivate let graphData = TestObserver<FundingGraphData, Never>()
 
@@ -76,8 +75,8 @@ internal final class FundingGraphViewTests: TestCase {
       "Back Under Funded": backUnderFundedStats,
       "Back Over Funded": backOverFunded,
       "One Day Left": oneDayLeft,
-      "Completed": completedStats,
-      ]
+      "Completed": completedStats
+    ]
 
     for (key, stats) in statStates {
       self.vm.inputs.configureWith(
@@ -96,16 +95,16 @@ internal final class FundingGraphViewTests: TestCase {
   func testOneDayProject() {
     let oneDayProject = .template
       |> Project.lens.stats.goal .~ 2_000
-      |> Project.lens.dates.launchedAt .~ 123456789
-      |> Project.lens.dates.deadline .~ (123456789 + 60 * 60 * 24)
+      |> Project.lens.dates.launchedAt .~ 123_456_789
+      |> Project.lens.dates.deadline .~ (123_456_789 + 60 * 60 * 24)
 
     let graphView = FundingGraphView(frame: CGRect(x: 0, y: 0, width: 300, height: 225))
 
     let statStates = [
       "Under Funded": [200, 1_000],
       "Just Funded": [200, 2_100],
-      "Way Over Funded": [3_000, 6_000],
-      ]
+      "Way Over Funded": [3_000, 6_000]
+    ]
 
     for (key, stats) in statStates {
       self.vm.inputs.configureWith(
@@ -124,16 +123,15 @@ internal final class FundingGraphViewTests: TestCase {
 
 private let project = .template
   |> Project.lens.stats.goal .~ 22_000
-  |> Project.lens.dates.launchedAt .~ 1477494745
-  |> Project.lens.dates.deadline .~ 1480187443
+  |> Project.lens.dates.launchedAt .~ 1_477_494_745
+  |> Project.lens.dates.deadline .~ 1_480_187_443
 
 private func fundingStats(forProject project: Project, pledgeValues: [Int])
   -> [ProjectStatsEnvelope.FundingDateStats] {
-
-    return pledgeValues.enumerated().map { idx, pledged in
-      .template
-        |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
-        |> ProjectStatsEnvelope.FundingDateStats.lens.date
-          .~ (project.dates.launchedAt + TimeInterval(idx * 60 * 60 * 24))
-    }
+  return pledgeValues.enumerated().map { idx, pledged in
+    .template
+      |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
+      |> ProjectStatsEnvelope.FundingDateStats.lens.date
+      .~ (project.dates.launchedAt + TimeInterval(idx * 60 * 60 * 24))
+  }
 }

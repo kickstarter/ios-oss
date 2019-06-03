@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 
 public final class GradientView: UIView {
-
   public override class var layerClass: AnyClass {
     return CAGradientLayer.self
   }

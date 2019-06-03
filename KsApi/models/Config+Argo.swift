@@ -5,7 +5,7 @@ import Runes
 extension Config: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Config> {
     let tmp = curry(Config.init)
-      <^> (decodeDictionary(json <| "ab_experiments"))
+      <^> decodeDictionary(json <| "ab_experiments")
       <*> json <| "app_id"
       <*> json <|| "apple_pay_countries"
       <*> json <| "country_code"
@@ -39,8 +39,8 @@ extension Config: EncodableType {
 // function does it manually.
 private func decodeDictionary<T: Argo.Decodable>(_ j: Decoded<JSON>)
   -> Decoded<[String: T]> where T.DecodedType == T {
-    switch j {
-    case let .success(json): return [String: T].decode(json)
-    case let .failure(e): return .failure(e)
-    }
+  switch j {
+  case let .success(json): return [String: T].decode(json)
+  case let .failure(e): return .failure(e)
+  }
 }

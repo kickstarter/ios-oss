@@ -19,14 +19,14 @@ public protocol SettingsPrivacySwitchCellViewModelType {
 }
 
 public final class SettingsPrivacySwitchCellViewModel: SettingsPrivacySwitchCellViewModelType,
-SettingsPrivacySwitchCellViewModelInputs, SettingsPrivacySwitchCellViewModelOutputs {
+  SettingsPrivacySwitchCellViewModelInputs, SettingsPrivacySwitchCellViewModelOutputs {
   public init() {
-    self.privacySwitchIsOn = userProperty.signal
+    self.privacySwitchIsOn = self.userProperty.signal
       .skipNil()
       .map { ($0 |> (\User.showPublicProfile).view) ?? false }
       .negate()
 
-    self.privacySwitchToggledOn = switchToggledProperty.signal
+    self.privacySwitchToggledOn = self.switchToggledProperty.signal
   }
 
   private let userProperty = MutableProperty<User?>(nil)

@@ -1,8 +1,7 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class SubmitApplePayEnvelopeTests: XCTestCase {
-
   func testDecodingWithStringStatus() {
     let decoded = SubmitApplePayEnvelope.decodeJSONDictionary(
       [
@@ -32,7 +31,6 @@ final class SubmitApplePayEnvelopeTests: XCTestCase {
   }
 
   func testDecodingWithMissingStatus() {
-
     let decoded = SubmitApplePayEnvelope.decodeJSONDictionary(
       [
         "data": [

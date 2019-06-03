@@ -45,7 +45,7 @@ public protocol BackerDashboardProjectCellViewModelType {
 public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCellViewModelType,
   BackerDashboardProjectCellViewModelInputs, BackerDashboardProjectCellViewModelOutputs {
   public init() {
-    let project = projectProperty.signal.skipNil()
+    let project = self.projectProperty.signal.skipNil()
 
     self.projectTitleText = project.map(titleString(for:))
 
@@ -53,7 +53,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
     self.progress = project.map { $0.stats.fundingProgress }
 
-    self.metadataBackgroundColor = project.map(metadataBackgroundColor(for:))
+    self.metadataBackgroundColor = project.map(metadataBackgroundColorForProject)
 
     self.metadataText = project.map(metadataString(for:))
 
@@ -61,7 +61,7 @@ public final class BackerDashboardProjectCellViewModel: BackerDashboardProjectCe
 
     self.percentFundedText = project.map(percentFundedString(for:))
 
-    self.progressBarColor = project.map(progressBarColor(for:))
+    self.progressBarColor = project.map(progressBarColorForProject)
 
     self.savedIconIsHidden = project.map { $0.personalization.isStarred != .some(true) }
   }
@@ -112,7 +112,7 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
   }
 }
 
-private func progressBarColor(for project: Project) -> UIColor {
+private func progressBarColorForProject(_ project: Project) -> UIColor {
   switch project.state {
   case .live, .successful:
     return .ksr_green_700
@@ -121,7 +121,7 @@ private func progressBarColor(for project: Project) -> UIColor {
   }
 }
 
-private func metadataBackgroundColor(for project: Project) -> UIColor {
+private func metadataBackgroundColorForProject(_ project: Project) -> UIColor {
   switch project.state {
   case .live, .successful:
     return .ksr_green_500

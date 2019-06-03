@@ -1,11 +1,11 @@
-import XCTest
-import ReactiveSwift
-import UIKit
-import ReactiveExtensions
-import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import Library
 import Prelude
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import UIKit
+import XCTest
 
 final class ThanksViewModelTests: TestCase {
   let vm: ThanksViewModelType = ThanksViewModel()
@@ -28,29 +28,31 @@ final class ThanksViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    vm.outputs.backedProjectText.map { $0.string }.observe(backedProjectText.observer)
-    vm.outputs.dismissToRootViewController.observe(dismissToRootViewController.observer)
-    vm.outputs.goToDiscovery.map { params in params.category ?? Category.filmAndVideo }
-      .observe(goToDiscovery.observer)
-    vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
-    vm.outputs.goToProject.map { $0.1 }.observe(goToProjects.observer)
-    vm.outputs.goToProject.map { $0.2 }.observe(goToRefTag.observer)
-    vm.outputs.postContextualNotification.observe(postContextualNotification.observer)
-    vm.outputs.postUserUpdatedNotification.map { $0.name }.observe(postUserUpdatedNotification.observer)
-    vm.outputs.showGamesNewsletterAlert.observe(showGamesNewsletterAlert.observer)
-    vm.outputs.showGamesNewsletterOptInAlert.observe(showGamesNewsletterOptInAlert.observer)
-    vm.outputs.showRatingAlert.observe(showRatingAlert.observer)
-    vm.outputs.showRecommendations.map { projects, _ in projects }.observe(showRecommendations.observer)
-    vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
+    self.vm.outputs.backedProjectText.map { $0.string }.observe(self.backedProjectText.observer)
+    self.vm.outputs.dismissToRootViewController.observe(self.dismissToRootViewController.observer)
+    self.vm.outputs.goToDiscovery.map { params in params.category ?? Category.filmAndVideo }
+      .observe(self.goToDiscovery.observer)
+    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
+    self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToProjects.observer)
+    self.vm.outputs.goToProject.map { $0.2 }.observe(self.goToRefTag.observer)
+    self.vm.outputs.postContextualNotification.observe(self.postContextualNotification.observer)
+    self.vm.outputs.postUserUpdatedNotification.map { $0.name }
+      .observe(self.postUserUpdatedNotification.observer)
+    self.vm.outputs.showGamesNewsletterAlert.observe(self.showGamesNewsletterAlert.observer)
+    self.vm.outputs.showGamesNewsletterOptInAlert.observe(self.showGamesNewsletterOptInAlert.observer)
+    self.vm.outputs.showRatingAlert.observe(self.showRatingAlert.observer)
+    self.vm.outputs.showRecommendations.map { projects, _ in projects }
+      .observe(self.showRecommendations.observer)
+    self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
   }
 
   func testdismissToRootViewController() {
-    vm.inputs.project(.template)
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.project(.template)
+    self.vm.inputs.viewDidLoad()
 
-    vm.inputs.closeButtonTapped()
+    self.vm.inputs.closeButtonTapped()
 
-    dismissToRootViewController.assertValueCount(1)
+    self.dismissToRootViewController.assertValueCount(1)
   }
 
   func testGoToDiscovery() {
@@ -74,20 +76,24 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.categoryCellTapped(.illustration)
 
       goToDiscovery.assertValues([.illustration])
-      XCTAssertEqual(["Triggered App Store Rating Dialog", "Checkout Finished Discover More"],
-                     self.trackingClient.events)
+      XCTAssertEqual(
+        ["Triggered App Store Rating Dialog", "Checkout Finished Discover More"],
+        self.trackingClient.events
+      )
     }
   }
 
   func testDisplayBackedProjectText() {
     let project = .template |> Project.lens.category .~ .games
-    vm.inputs.project(project)
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.project(project)
+    self.vm.inputs.viewDidLoad()
 
-    backedProjectText.assertValues(
-      ["You have successfully backed The Project. " +
-      "This project is now one step closer to a reality, thanks to you. Spread the word!"
-      ], "Name of project emits")
+    self.backedProjectText.assertValues(
+      [
+        "You have successfully backed The Project. " +
+          "This project is now one step closer to a reality, thanks to you. Spread the word!"
+      ], "Name of project emits"
+    )
   }
 
   func testRatingAlert_Initial() {
@@ -106,16 +112,20 @@ final class ThanksViewModelTests: TestCase {
 
   func testGamesAlert_ShowsOnce() {
     withEnvironment(currentUser: .template) {
-      XCTAssertEqual(false, AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
-                     "Newsletter pref is not set")
+      XCTAssertEqual(
+        false, AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
+        "Newsletter pref is not set"
+      )
 
       vm.inputs.project(.template |> Project.lens.category .~ .games)
       vm.inputs.viewDidLoad()
 
       showRatingAlert.assertValueCount(0, "Rating alert does not show on games project")
       showGamesNewsletterAlert.assertValueCount(1, "Games alert shows on games project")
-      XCTAssertEqual(true, AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
-                     "Newsletter pref saved")
+      XCTAssertEqual(
+        true, AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt,
+        "Newsletter pref saved"
+      )
 
       let secondVM: ThanksViewModelType = ThanksViewModel()
       let secondShowRatingAlert = TestObserver<(), Never>()
@@ -160,13 +170,14 @@ final class ThanksViewModelTests: TestCase {
 
       vm.inputs.userUpdated()
 
-      postUserUpdatedNotification.assertValues([Notification.Name.ksr_userUpdated],
-                                               "User updated notification emits")
+      postUserUpdatedNotification.assertValues(
+        [Notification.Name.ksr_userUpdated],
+        "User updated notification emits"
+      )
     }
   }
 
   func testContextualNotificationEmitsWhen_userPledgedFirstProject() {
-
     let user = User.template |> \.stats.backedProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
@@ -176,7 +187,6 @@ final class ThanksViewModelTests: TestCase {
   }
 
   func testContextualNotificationDoesNotEmitWhen_userPledgedMoreThanOneProject() {
-
     let user = User.template |> \.stats.backedProjectsCount .~ 2
 
     withEnvironment(currentUser: user) {
@@ -222,8 +232,10 @@ final class ThanksViewModelTests: TestCase {
       goToProject.assertValues([project])
       goToProjects.assertValueCount(1)
       goToRefTag.assertValues([.thanks])
-      XCTAssertEqual(["Triggered App Store Rating Dialog", "Checkout Finished Discover Open Project"],
-                     self.trackingClient.events)
+      XCTAssertEqual(
+        ["Triggered App Store Rating Dialog", "Checkout Finished Discover Open Project"],
+        self.trackingClient.events
+      )
     }
   }
 

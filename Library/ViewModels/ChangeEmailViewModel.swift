@@ -44,7 +44,7 @@ public protocol ChangeEmailViewModelType {
 }
 
 public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailViewModelInputs,
-ChangeEmailViewModelOutputs {
+  ChangeEmailViewModelOutputs {
   public init() {
     self.dismissKeyboard = Signal.merge(
       self.textFieldShouldReturnProperty.signal.skipNil()
@@ -61,14 +61,14 @@ ChangeEmailViewModelOutputs {
     let changeEmailEvent = Signal.combineLatest(
       self.newEmailProperty.signal.skipNil(),
       self.passwordProperty.signal.skipNil()
-      )
-      .takeWhen(triggerSaveAction)
-      .map(ChangeEmailInput.init(email:currentPassword:))
-      .switchMap { input in
-        AppEnvironment.current.apiService.changeEmail(input: input)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { _ in input.email }
-          .materialize()
+    )
+    .takeWhen(triggerSaveAction)
+    .map(ChangeEmailInput.init(email:currentPassword:))
+    .switchMap { input in
+      AppEnvironment.current.apiService.changeEmail(input: input)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map { _ in input.email }
+        .materialize()
     }
 
     let clearValues = changeEmailEvent.values().map { _ -> String? in nil }
@@ -82,14 +82,14 @@ ChangeEmailViewModelOutputs {
           .fetchGraphUserEmailFields(query: NonEmptySet(Query.user(changeEmailQueryFields())))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     let resendEmailVerificationEvent = self.resendVerificationEmailButtonProperty.signal
       .switchMap { _ in
         AppEnvironment.current.apiService.sendVerificationEmail(input: EmptyInput())
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     resendEmailVerificationEvent.values()
       .observeValues { _ in AppEnvironment.current.koala.trackResentVerificationEmail() }
@@ -109,8 +109,10 @@ ChangeEmailViewModelOutputs {
     let emailVerifiedAndDeliverable = Signal.combineLatest(isEmailVerified, isEmailDeliverable)
       .map { $0 && $1 }
 
-    self.resendVerificationEmailViewIsHidden = Signal.merge(viewDidLoadProperty.signal.mapConst(true),
-                                                            emailVerifiedAndDeliverable).skipRepeats()
+    self.resendVerificationEmailViewIsHidden = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      emailVerifiedAndDeliverable
+    ).skipRepeats()
 
     self.unverifiedEmailLabelHidden = Signal
       .combineLatest(isEmailVerified, isEmailDeliverable)
@@ -134,9 +136,9 @@ ChangeEmailViewModelOutputs {
     .map(shouldEnableSaveButton(email:newEmail:password:))
 
     self.passwordFieldBecomeFirstResponder = self.textFieldShouldReturnProperty.signal
-                                              .skipNil()
-                                              .filter { $0 == .next }
-                                              .ignoreValues()
+      .skipNil()
+      .filter { $0 == .next }
+      .ignoreValues()
 
     self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.map(negate)
       .map(is1PasswordButtonHidden)
@@ -155,11 +157,11 @@ ChangeEmailViewModelOutputs {
     self.didChangeEmail = changeEmailEvent.values().ignoreValues()
 
     self.resetFields = changeEmailEvent.values()
-                        .ignoreValues()
-                        .mapConst("")
+      .ignoreValues()
+      .mapConst("")
 
     self.didFailToChangeEmail = changeEmailEvent.errors()
-      .map { $0.localizedDescription  }
+      .map { $0.localizedDescription }
 
     self.verificationEmailButtonTitle = self.viewDidLoadProperty.signal.map { _ in
       guard let user = AppEnvironment.current.currentUser else { return "" }
@@ -269,7 +271,7 @@ private func shouldEnableSaveButton(email: String?, newEmail: String?, password:
     email != newEmail,
     password != nil
 
-    else { return false  }
+  else { return false }
 
   return ![newEmail, password]
     .compact()

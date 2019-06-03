@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol ProjectActivityCommentCellViewModelInputs {
   /// Call when the backing button is pressed.
@@ -46,8 +46,7 @@ public protocol ProjectActivityCommentCellViewModelType {
 }
 
 public final class ProjectActivityCommentCellViewModel: ProjectActivityCommentCellViewModelType,
-ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOutputs {
-
+  ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOutputs {
   public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
@@ -69,14 +68,14 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
       .flatMap { activity, project -> SignalProducer<(Project, Update?, Comment), Never> in
         guard let comment = activity.comment else { return .empty }
         return .init(value: (project, nil, comment))
-    }
+      }
 
     let updateComment = activityAndProject
       .filter { activity, _ in activity.category == .commentPost }
       .flatMap { activity, project -> SignalProducer<(Project, Update?, Comment), Never> in
         guard let update = activity.update, let comment = activity.comment else { return .empty }
         return .init(value: (project, update, comment))
-    }
+      }
 
     self.notifyDelegateGoToSendReply = Signal.merge(projectComment, updateComment)
       .takeWhen(self.replyButtonPressedProperty.signal)
@@ -99,7 +98,7 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
       .map { activity, project in
         activity.user == AppEnvironment.current.currentUser
           && project.creator == AppEnvironment.current.currentUser
-    }
+      }
   }
 
   fileprivate let backingButtonPressedProperty = MutableProperty(())

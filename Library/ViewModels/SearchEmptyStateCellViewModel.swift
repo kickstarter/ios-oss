@@ -15,8 +15,7 @@ public protocol SearchEmptyStateCellViewModelType {
 }
 
 public final class SearchEmptyStateCellViewModel: SearchEmptyStateCellViewModelType,
-SearchEmptyStateCellViewModelInputs, SearchEmptyStateCellViewModelOutputs {
-
+  SearchEmptyStateCellViewModelInputs, SearchEmptyStateCellViewModelOutputs {
   public init() {
     self.searchTermNotFoundLabelText = self.paramProperty.signal
       .skipNil()

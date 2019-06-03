@@ -1,9 +1,8 @@
-import XCTest
 @testable import KsApi
 import Prelude
+import XCTest
 
 final class UserTests: XCTestCase {
-
   func testEquatable() {
     XCTAssertEqual(User.template, User.template)
     XCTAssertNotEqual(User.template, User.template |> \.id %~ { $0 + 1 })

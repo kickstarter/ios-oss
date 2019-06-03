@@ -1,8 +1,8 @@
-@testable import Library
-@testable import KsApi
 @testable import Kickstarter_Framework
-import ReactiveExtensions_TestHelpers
+@testable import KsApi
+@testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
@@ -19,7 +19,6 @@ internal final class HelpWebViewModelTests: TestCase {
   }
 
   func testWebRequestURLString() {
-
     self.vm.inputs.configureWith(helpType: .cookie)
 
     self.webViewLoadRequest.assertValueCount(0)
@@ -48,7 +47,9 @@ internal final class HelpWebViewModelTests: TestCase {
     self.vm.inputs.configureWith(helpType: .terms)
     self.vm.inputs.viewDidLoad()
 
-    self.webViewLoadRequest.assertValues(["/cookies", "/help", "/about", "/privacy",
-      "/terms-of-use"])
+    self.webViewLoadRequest.assertValues([
+      "/cookies", "/help", "/about", "/privacy",
+      "/terms-of-use"
+    ])
   }
 }

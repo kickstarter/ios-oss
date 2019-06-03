@@ -23,7 +23,6 @@ public protocol ProjectPamphletMainCellViewModelInputs {
 }
 
 public protocol ProjectPamphletMainCellViewModelOutputs {
-
   /// Emits a string to use for the backer subtitle label.
   var backersSubtitleLabelText: Signal<String, Never> { get }
 
@@ -115,9 +114,8 @@ public protocol ProjectPamphletMainCellViewModelType {
 }
 
 public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellViewModelType,
-ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs {
-
-    public init() {
+  ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs {
+  public init() {
     let project = self.projectProperty.signal.skipNil()
 
     self.projectNameLabelText = project.map(Project.lens.name.view)
@@ -144,11 +142,13 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
 
     self.projectUnsuccessfulLabelTextColor = project
       .map { $0.state == .successful || $0.state == .live ?
-        UIColor.ksr_text_dark_grey_500 : UIColor.ksr_text_dark_grey_500 }
+        UIColor.ksr_text_dark_grey_500 : UIColor.ksr_text_dark_grey_500
+      }
 
     self.pledgedTitleLabelTextColor = project
-      .map { $0.state == .successful  || $0.state == .live ?
-        UIColor.ksr_green_700 : UIColor.ksr_text_dark_grey_500 }
+      .map { $0.state == .successful || $0.state == .live ?
+        UIColor.ksr_green_700 : UIColor.ksr_text_dark_grey_500
+      }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
 
@@ -171,12 +171,12 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     }
 
     self.backersTitleLabelText = backersTitleAndSubtitleText.map { title, _ in title ?? "" }
-    self.backersSubtitleLabelText =  backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
+    self.backersSubtitleLabelText = backersTitleAndSubtitleText.map { _, subtitle in subtitle ?? "" }
 
     self.categoryNameLabelText = project.map { $0.category.name }
 
     let deadlineTitleAndSubtitle = project.map {
-      return Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
+      Format.duration(secondsInUTC: $0.dates.deadline, useToGo: true)
     }
 
     self.deadlineTitleLabelText = deadlineTitleAndSubtitle.map(first)
@@ -194,19 +194,19 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.locationNameLabelText = project.map { $0.location.displayableName }
 
     self.pledgedTitleLabelText = projectAndNeedsConversion.map { project, needsConversion in
-      return pledgedText(for: project, needsConversion)
+      pledgedText(for: project, needsConversion)
     }
 
     self.pledgedSubtitleLabelText = projectAndNeedsConversion.map { project, needsConversion in
-      return goalText(for: project, needsConversion)
+      goalText(for: project, needsConversion)
     }
 
     self.conversionLabelText = projectAndNeedsConversion.filter(second).map(first).map { project in
-      return conversionText(for: project)
+      conversionText(for: project)
     }
 
     self.statsStackViewAccessibilityLabel = projectAndNeedsConversion
-      .map(statsStackViewAccessibilityLabel(forProject:needsConversion:))
+      .map(statsStackViewAccessibilityLabelForProject(_:needsConversion:))
 
     self.progressPercentage = project
       .map(Project.lens.stats.fundingProgress.view)
@@ -296,16 +296,22 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public var outputs: ProjectPamphletMainCellViewModelOutputs { return self }
 }
 
-private func statsStackViewAccessibilityLabel(forProject project: Project, needsConversion: Bool) -> String {
-  let projectCurrencyData = pledgeAmountAndGoalAndCountry(forProject: project,
-                                                         needsConversion: needsConversion)
+private func statsStackViewAccessibilityLabelForProject(_ project: Project, needsConversion: Bool) -> String {
+  let projectCurrencyData = pledgeAmountAndGoalAndCountry(
+    forProject: project,
+    needsConversion: needsConversion
+  )
 
-  let pledged = Format.currency(projectCurrencyData.pledgedAmount,
-                                country: projectCurrencyData.country,
-                                omitCurrencyCode: project.stats.omitUSCurrencyCode)
-  let goal = Format.currency(projectCurrencyData.goalAmount,
-                             country: projectCurrencyData.country,
-                             omitCurrencyCode: project.stats.omitUSCurrencyCode)
+  let pledged = Format.currency(
+    projectCurrencyData.pledgedAmount,
+    country: projectCurrencyData.country,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode
+  )
+  let goal = Format.currency(
+    projectCurrencyData.goalAmount,
+    country: projectCurrencyData.country,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode
+  )
 
   let backersCount = project.stats.backersCount
   let (time, unit) = Format.duration(secondsInUTC: project.dates.deadline, useToGo: true)
@@ -314,16 +320,18 @@ private func statsStackViewAccessibilityLabel(forProject project: Project, needs
   return project.state == .live
     ? Strings.dashboard_graphs_funding_accessibility_live_stat_value(
       pledged: pledged, goal: goal, backers_count: backersCount, time_left: timeLeft
-      )
+    )
     : Strings.dashboard_graphs_funding_accessibility_non_live_stat_value(
       pledged: pledged, goal: goal, backers_count: backersCount, time_left: timeLeft
-  )
+    )
 }
 
 private func fundingStatus(forProject project: Project) -> String {
-  let date = Format.date(secondsInUTC: project.dates.stateChangedAt,
-                         dateStyle: .medium,
-                         timeStyle: .none)
+  let date = Format.date(
+    secondsInUTC: project.dates.stateChangedAt,
+    dateStyle: .medium,
+    timeStyle: .none
+  )
 
   switch project.state {
   case .canceled:
@@ -341,8 +349,10 @@ private func fundingStatus(forProject project: Project) -> String {
 
 typealias ConvertedCurrrencyProjectData = (pledgedAmount: Int, goalAmount: Int, country: Project.Country)
 
-private func pledgeAmountAndGoalAndCountry(forProject project: Project,
-                                           needsConversion: Bool) -> ConvertedCurrrencyProjectData {
+private func pledgeAmountAndGoalAndCountry(
+  forProject project: Project,
+  needsConversion: Bool
+) -> ConvertedCurrrencyProjectData {
   guard needsConversion else {
     return (project.stats.pledged, project.stats.goal, project.country)
   }
@@ -350,39 +360,52 @@ private func pledgeAmountAndGoalAndCountry(forProject project: Project,
   guard let goalCurrentCurrency = project.stats.goalCurrentCurrency,
     let pledgedCurrentCurrency = project.stats.pledgedCurrentCurrency,
     let currentCountry = project.stats.currentCountry else {
-      return (project.stats.pledgedUsd, project.stats.goalUsd, Project.Country.us)
+    return (project.stats.pledgedUsd, project.stats.goalUsd, Project.Country.us)
   }
 
   return (pledgedCurrentCurrency, goalCurrentCurrency, currentCountry)
 }
 
 private func goalText(for project: Project, _ needsConversion: Bool) -> String {
-  let projectCurrencyData = pledgeAmountAndGoalAndCountry(forProject: project,
-                                                         needsConversion: needsConversion)
+  let projectCurrencyData = pledgeAmountAndGoalAndCountry(
+    forProject: project,
+    needsConversion: needsConversion
+  )
 
   return Strings.activity_project_state_change_pledged_of_goal(
-    goal: Format.currency(projectCurrencyData.goalAmount,
-                          country: projectCurrencyData.country,
-                          omitCurrencyCode: project.stats.omitUSCurrencyCode))
+    goal: Format.currency(
+      projectCurrencyData.goalAmount,
+      country: projectCurrencyData.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode
+    )
+  )
 }
 
 private func pledgedText(for project: Project, _ needsConversion: Bool) -> String {
-  let projectCurrencyData = pledgeAmountAndGoalAndCountry(forProject: project,
-                                                          needsConversion: needsConversion)
+  let projectCurrencyData = pledgeAmountAndGoalAndCountry(
+    forProject: project,
+    needsConversion: needsConversion
+  )
 
-  return Format.currency(projectCurrencyData.pledgedAmount,
-                         country: projectCurrencyData.country,
-                         omitCurrencyCode: project.stats.omitUSCurrencyCode)
+  return Format.currency(
+    projectCurrencyData.pledgedAmount,
+    country: projectCurrencyData.country,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode
+  )
 }
 
 private func conversionText(for project: Project) -> String {
   return Strings.discovery_baseball_card_stats_convert_from_pledged_of_goal(
-    pledged: Format.currency(project.stats.pledged,
-                             country: project.country,
-                             omitCurrencyCode: project.stats.omitUSCurrencyCode),
-    goal: Format.currency(project.stats.goal,
-                          country: project.country,
-                          omitCurrencyCode: project.stats.omitUSCurrencyCode)
+    pledged: Format.currency(
+      project.stats.pledged,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode
+    ),
+    goal: Format.currency(
+      project.stats.goal,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode
+    )
   )
 }
 

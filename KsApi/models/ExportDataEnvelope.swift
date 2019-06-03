@@ -18,12 +18,10 @@ public struct ExportDataEnvelope {
 extension ExportDataEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ExportDataEnvelope> {
     return curry(ExportDataEnvelope.init)
-    <^> json <|? "expires_at"
-    <*> json <| "state"
-    <*> json <|? "data_url"
+      <^> json <|? "expires_at"
+      <*> json <| "state"
+      <*> json <|? "data_url"
   }
 }
 
-extension ExportDataEnvelope.State: Argo.Decodable {
-
-}
+extension ExportDataEnvelope.State: Argo.Decodable {}

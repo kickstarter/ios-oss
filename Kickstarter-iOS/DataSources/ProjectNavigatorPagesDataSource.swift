@@ -3,7 +3,6 @@ import Library
 import UIKit
 
 internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewControllerDataSource {
-
   fileprivate let initialProject: Project
   fileprivate var playlist: [Project] = []
   fileprivate let refTag: RefTag
@@ -33,7 +32,7 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
   }
 
   internal func controllerFor(index: Int) -> UIViewController? {
-    guard index >= 0 && index < self.playlist.count else { return nil }
+    guard index >= 0, index < self.playlist.count else { return nil }
 
     let project = self.playlist[index]
     self.padControllers(toLength: index)
@@ -58,9 +57,9 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
   }
 
   internal func pageViewController(
-    _ pageViewController: UIPageViewController,
-    viewControllerAfter viewController: UIViewController) -> UIViewController? {
-
+    _: UIPageViewController,
+    viewControllerAfter viewController: UIViewController
+  ) -> UIViewController? {
     guard let pageIdx = self.viewControllers.firstIndex(where: { $0 == viewController }) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
@@ -81,10 +80,10 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
   }
 
   internal func pageViewController(
-    _ pageViewController: UIPageViewController,
+    _: UIPageViewController,
     viewControllerBefore
-    viewController: UIViewController) -> UIViewController? {
-
+    viewController: UIViewController
+  ) -> UIViewController? {
     guard let pageIdx = self.viewControllers.firstIndex(where: { $0 == viewController }) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
@@ -118,7 +117,7 @@ internal final class ProjectNavigatorPagesDataSource: NSObject, UIPageViewContro
       .filter { abs($0 - index) >= 3 }
       .forEach { idx in
         self.viewControllers[idx] = nil
-    }
+      }
   }
 
   fileprivate func padControllers(toLength length: Int) {

@@ -4,26 +4,34 @@ extension Project.Dates {
   public enum lens {
     public static let deadline = Lens<Project.Dates, TimeInterval>(
       view: { $0.deadline },
-      set: { Project.Dates(deadline: $0, featuredAt: $1.featuredAt, launchedAt: $1.launchedAt,
-        stateChangedAt: $1.stateChangedAt) }
+      set: { Project.Dates(
+        deadline: $0, featuredAt: $1.featuredAt, launchedAt: $1.launchedAt,
+        stateChangedAt: $1.stateChangedAt
+      ) }
     )
 
     public static let featuredAt = Lens<Project.Dates, TimeInterval?>(
       view: { $0.featuredAt },
-      set: { Project.Dates(deadline: $1.deadline, featuredAt: $0, launchedAt: $1.launchedAt,
-         stateChangedAt: $1.stateChangedAt) }
+      set: { Project.Dates(
+        deadline: $1.deadline, featuredAt: $0, launchedAt: $1.launchedAt,
+        stateChangedAt: $1.stateChangedAt
+      ) }
     )
 
     public static let launchedAt = Lens<Project.Dates, TimeInterval>(
       view: { $0.launchedAt },
-      set: { Project.Dates(deadline: $1.deadline, featuredAt: $1.featuredAt, launchedAt: $0,
-        stateChangedAt: $1.stateChangedAt) }
+      set: { Project.Dates(
+        deadline: $1.deadline, featuredAt: $1.featuredAt, launchedAt: $0,
+        stateChangedAt: $1.stateChangedAt
+      ) }
     )
 
     public static let stateChangedAt = Lens<Project.Dates, TimeInterval>(
       view: { $0.stateChangedAt },
-      set: { Project.Dates(deadline: $1.deadline, featuredAt: $1.featuredAt, launchedAt: $1.launchedAt,
-        stateChangedAt: $0) }
+      set: { Project.Dates(
+        deadline: $1.deadline, featuredAt: $1.featuredAt, launchedAt: $1.launchedAt,
+        stateChangedAt: $0
+      ) }
     )
   }
 }

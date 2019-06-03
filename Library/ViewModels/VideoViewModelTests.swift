@@ -1,10 +1,9 @@
 import AVFoundation
-import Library
-import Prelude
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class VideoViewModelTests: TestCase {
   internal let vm = VideoViewModel()
@@ -51,7 +50,7 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
 
     self.vm.inputs.playButtonTapped()
-    self.vm.inputs.durationChanged(toNew: duration)
+    self.vm.inputs.durationChanged(toNew: self.duration)
 
     self.addCompletionObserver.assertValues([completedThreshold], "Observer added to completion threshold.")
   }
@@ -123,15 +122,17 @@ internal final class VideoViewModelTests: TestCase {
     // Go back to the project and start playing the video.
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.playButtonTapped()
-    self.vm.inputs.durationChanged(toNew: duration)
-    self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
+    self.vm.inputs.durationChanged(toNew: self.duration)
+    self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
     self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
 
     // Player pauses the video.
-    self.vm.inputs.rateChanged(toNew: pauseRate, atTime: halfwayTime)
+    self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.halfwayTime)
     self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
-    XCTAssertEqual(["Project Video Start", "Started Project Video", "Project Video Pause",
-      "Paused Project Video"], self.trackingClient.events)
+    XCTAssertEqual([
+      "Project Video Start", "Started Project Video", "Project Video Pause",
+      "Paused Project Video"
+    ], self.trackingClient.events)
 
     // Leave the project magazine.
     self.vm.inputs.viewWillDisappear()
@@ -153,19 +154,19 @@ internal final class VideoViewModelTests: TestCase {
     self.videoViewHidden.assertValues([true])
 
     self.vm.inputs.playButtonTapped()
-    self.vm.inputs.durationChanged(toNew: duration)
-    self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
+    self.vm.inputs.durationChanged(toNew: self.duration)
+    self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
 
     self.playVideo.assertValueCount(1)
     self.playButtonHidden.assertValues([false, true])
     self.projectImageHidden.assertValues([false, true], "Overlaid views hidden when video starts.")
     self.videoViewHidden.assertValues([true, false])
 
-    self.vm.inputs.rateChanged(toNew: pauseRate, atTime: halfwayTime)
+    self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.halfwayTime)
     self.playButtonHidden.assertValues([false, true])
     self.projectImageHidden.assertValues([false, true], "Overlaid views still hidden on pause.")
 
-    self.vm.inputs.rateChanged(toNew: pauseRate, atTime: duration)
+    self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.duration)
     self.playButtonHidden.assertValues([false, true, false])
     self.projectImageHidden.assertValues([false, true, false], "Overlaid views reappear at end.")
     self.videoViewHidden.assertValues([true, false, true])
@@ -204,11 +205,11 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
 
     self.vm.inputs.playButtonTapped()
-    self.vm.inputs.durationChanged(toNew: duration)
-    self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
+    self.vm.inputs.durationChanged(toNew: self.duration)
+    self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
 
     self.vm.inputs.crossedCompletionThreshold()
-    self.vm.inputs.rateChanged(toNew: pauseRate, atTime: duration)
+    self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.duration)
 
     self.seekToBeginning.assertValueCount(1)
   }
@@ -221,25 +222,31 @@ internal final class VideoViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
 
     self.vm.inputs.playButtonTapped()
-    self.vm.inputs.durationChanged(toNew: duration)
+    self.vm.inputs.durationChanged(toNew: self.duration)
 
-    self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
+    self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
     XCTAssertEqual(["Project Video Start", "Started Project Video"], self.trackingClient.events)
 
-    self.vm.inputs.rateChanged(toNew: pauseRate, atTime: halfwayTime)
-    XCTAssertEqual(["Project Video Start", "Started Project Video",
-                    "Project Video Pause", "Paused Project Video"], self.trackingClient.events)
+    self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.halfwayTime)
+    XCTAssertEqual([
+      "Project Video Start", "Started Project Video",
+      "Project Video Pause", "Paused Project Video"
+    ], self.trackingClient.events)
 
-    self.vm.inputs.rateChanged(toNew: playRate, atTime: halfwayTime)
-    XCTAssertEqual(["Project Video Start", "Started Project Video",
-                    "Project Video Pause", "Paused Project Video",
-                    "Project Video Resume", "Resumed Project Video"], self.trackingClient.events)
+    self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.halfwayTime)
+    XCTAssertEqual([
+      "Project Video Start", "Started Project Video",
+      "Project Video Pause", "Paused Project Video",
+      "Project Video Resume", "Resumed Project Video"
+    ], self.trackingClient.events)
 
     self.vm.inputs.crossedCompletionThreshold()
-    XCTAssertEqual(["Project Video Start", "Started Project Video",
-                    "Project Video Pause", "Paused Project Video",
-                    "Project Video Resume", "Resumed Project Video",
-                    "Project Video Complete", "Completed Project Video"], self.trackingClient.events)
+    XCTAssertEqual([
+      "Project Video Start", "Started Project Video",
+      "Project Video Pause", "Paused Project Video",
+      "Project Video Resume", "Resumed Project Video",
+      "Project Video Complete", "Completed Project Video"
+    ], self.trackingClient.events)
 
     self.vm.inputs.crossedCompletionThreshold()
     XCTAssertEqual(
@@ -250,12 +257,12 @@ internal final class VideoViewModelTests: TestCase {
       self.trackingClient.events, "Video completion not tracked again."
     )
 
-    self.vm.inputs.rateChanged(toNew: pauseRate, atTime: duration)
+    self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.duration)
     self.seekToBeginning.assertValueCount(1)
 
     // Play video again.
     self.vm.inputs.playButtonTapped()
-    self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
+    self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
 
     self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
 
@@ -274,18 +281,20 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
 
     self.vm.inputs.playButtonTapped()
-    self.vm.inputs.durationChanged(toNew: duration)
+    self.vm.inputs.durationChanged(toNew: self.duration)
 
-    self.vm.inputs.rateChanged(toNew: playRate, atTime: startTime)
+    self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
     XCTAssertEqual(["Project Video Start", "Started Project Video"], self.trackingClient.events)
 
     // Scrub video through to completion.
-    self.vm.inputs.rateChanged(toNew: pauseRate, atTime: halfwayTime)
-    self.vm.inputs.rateChanged(toNew: playRate, atTime: completedThreshold)
-    XCTAssertEqual(["Project Video Start", "Started Project Video",
-                    "Project Video Pause", "Paused Project Video",
-                    "Project Video Complete", "Completed Project Video",
-                    "Project Video Resume", "Resumed Project Video"], self.trackingClient.events)
+    self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.halfwayTime)
+    self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.completedThreshold)
+    XCTAssertEqual([
+      "Project Video Start", "Started Project Video",
+      "Project Video Pause", "Paused Project Video",
+      "Project Video Complete", "Completed Project Video",
+      "Project Video Resume", "Resumed Project Video"
+    ], self.trackingClient.events)
   }
 
   func testViewTransition() {

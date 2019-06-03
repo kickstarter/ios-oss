@@ -1,10 +1,10 @@
+@testable import Kickstarter_Framework
 @testable import KsApi
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import UIKit
-import PlaygroundSupport
-@testable import Kickstarter_Framework
 
 initialize()
 let controller = DashboardViewController.instantiate()
@@ -25,6 +25,7 @@ let externalReferrerStats = (1...3).map {
     |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "Direct traffic"
     |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .external
 }
+
 let internalReferrerStats = (1...3).map {
   .template
     |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ ($0 * 10)
@@ -32,8 +33,9 @@ let internalReferrerStats = (1...3).map {
     |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.3
     |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 3
     |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "Search"
-    |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .`internal`
+    |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .internal
 }
+
 let customReferrerStats = (1...3).map {
   .template
     |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ ($0 * 10)
@@ -41,7 +43,7 @@ let customReferrerStats = (1...3).map {
     |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.01
     |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 3
     |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "Search"
-    |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .`custom`
+    |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .custom
 }
 
 let referrerStats = externalReferrerStats + internalReferrerStats + customReferrerStats
@@ -58,7 +60,7 @@ let videoStats = .template
   |> ProjectStatsEnvelope.VideoStats.lens.externalCompletions .~ 51
   |> ProjectStatsEnvelope.VideoStats.lens.externalStarts .~ 212
   |> ProjectStatsEnvelope.VideoStats.lens.internalCompletions .~ 751
-  |> ProjectStatsEnvelope.VideoStats.lens.internalStarts .~ 1000
+  |> ProjectStatsEnvelope.VideoStats.lens.internalStarts .~ 1_000
 
 let cumulativeStats = .template
   |> ProjectStatsEnvelope.CumulativeStats.lens.pledged .~ rewardStats.reduce(0) { $0 + $1.pledged }
@@ -85,12 +87,12 @@ let fundingStats = stats.enumerated().map { idx, pledged in
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
     fetchProjectsResponse: [
-        cosmicSurgery
-            |> Project.lens.memberData.lastUpdatePublishedAt .~ NSDate().timeIntervalSince1970
-            |> Project.lens.memberData.unreadMessagesCount .~ 42
-            |> Project.lens.memberData.unseenActivityCount .~ 1_299
-            |> Project.lens.memberData.permissions .~ [.post, .viewPledges]
-            |> Project.lens.rewards .~ rewards
+      cosmicSurgery
+        |> Project.lens.memberData.lastUpdatePublishedAt .~ NSDate().timeIntervalSince1970
+        |> Project.lens.memberData.unreadMessagesCount .~ 42
+        |> Project.lens.memberData.unseenActivityCount .~ 1_299
+        |> Project.lens.memberData.permissions .~ [.post, .viewPledges]
+        |> Project.lens.rewards .~ rewards
     ],
     fetchProjectStatsResponse: .template
       |> ProjectStatsEnvelope.lens.cumulativeStats .~ cumulativeStats
@@ -98,7 +100,7 @@ AppEnvironment.replaceCurrentEnvironment(
       |> ProjectStatsEnvelope.lens.rewardDistribution .~ rewardStats
       |> ProjectStatsEnvelope.lens.videoStats .~ videoStats
       |> ProjectStatsEnvelope.lens.fundingDistribution .~ fundingStats
-    ),
+  ),
 
   currentUser: cosmicSurgery.creator,
   language: .en,

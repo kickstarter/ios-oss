@@ -4,9 +4,8 @@ import Prelude
 import UIKit
 
 internal final class MessagesEmptyStateCell: UITableViewCell, ValueCell {
-
-  @IBOutlet private weak var titleLabel: UILabel!
-  @IBOutlet private weak var subTitleLabel: UILabel!
+  @IBOutlet private var titleLabel: UILabel!
+  @IBOutlet private var subTitleLabel: UILabel!
 
   internal func configureWith(value: String) {
     _ = self.subTitleLabel
@@ -24,7 +23,7 @@ internal final class MessagesEmptyStateCell: UITableViewCell, ValueCell {
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(5), leftRight: Styles.grid(12))
           : .init(topBottom: Styles.grid(4), leftRight: Styles.grid(2))
-    }
+      }
 
     _ = self.titleLabel
       |> UILabel.lens.textColor .~ .ksr_soft_black

@@ -3,7 +3,7 @@ import Foundation
 
 /**
  A type that knows the location of a Kickstarter API and web server.
-*/
+ */
 public protocol ServerConfigType {
   var apiBaseUrl: URL { get }
   var webBaseUrl: URL { get }
@@ -16,16 +16,15 @@ public protocol ServerConfigType {
 public func == (lhs: ServerConfigType, rhs: ServerConfigType) -> Bool {
   return
     type(of: lhs) == type(of: rhs) &&
-      lhs.apiBaseUrl == rhs.apiBaseUrl &&
-      lhs.webBaseUrl == rhs.webBaseUrl &&
-      lhs.apiClientAuth == rhs.apiClientAuth &&
-      lhs.basicHTTPAuth == rhs.basicHTTPAuth &&
-      lhs.graphQLEndpointUrl == rhs.graphQLEndpointUrl &&
-      lhs.environment == rhs.environment
+    lhs.apiBaseUrl == rhs.apiBaseUrl &&
+    lhs.webBaseUrl == rhs.webBaseUrl &&
+    lhs.apiClientAuth == rhs.apiClientAuth &&
+    lhs.basicHTTPAuth == rhs.basicHTTPAuth &&
+    lhs.graphQLEndpointUrl == rhs.graphQLEndpointUrl &&
+    lhs.environment == rhs.environment
 }
 
 public enum EnvironmentType: String {
-
   public static let allCases: [EnvironmentType] = [.production, .staging, .local]
 
   case production = "Production"
@@ -36,7 +35,6 @@ public enum EnvironmentType: String {
 private let gqlPath = "graph"
 
 public struct ServerConfig: ServerConfigType {
-
   public var apiBaseUrl: URL
   public var webBaseUrl: URL
   public var apiClientAuth: ClientAuthType
@@ -73,13 +71,14 @@ public struct ServerConfig: ServerConfigType {
     environment: EnvironmentType.local
   )
 
-  public init(apiBaseUrl: URL,
-              webBaseUrl: URL,
-              apiClientAuth: ClientAuthType,
-              basicHTTPAuth: BasicHTTPAuthType?,
-              graphQLEndpointUrl: URL,
-              environment: EnvironmentType = .production) {
-
+  public init(
+    apiBaseUrl: URL,
+    webBaseUrl: URL,
+    apiClientAuth: ClientAuthType,
+    basicHTTPAuth: BasicHTTPAuthType?,
+    graphQLEndpointUrl: URL,
+    environment: EnvironmentType = .production
+  ) {
     self.apiBaseUrl = apiBaseUrl
     self.webBaseUrl = webBaseUrl
     self.apiClientAuth = apiClientAuth
@@ -89,7 +88,6 @@ public struct ServerConfig: ServerConfigType {
   }
 
   public static func config(for environment: EnvironmentType) -> ServerConfigType {
-
     switch environment {
     case .local:
       return ServerConfig.local

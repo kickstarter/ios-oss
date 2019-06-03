@@ -1,11 +1,10 @@
+@testable import Kickstarter_Framework
+@testable import KsApi
 import Library
 import Prelude
 import XCTest
-@testable import Kickstarter_Framework
-@testable import KsApi
 
 internal final class CommentsViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     UIView.setAnimationsEnabled(false)
@@ -17,7 +16,6 @@ internal final class CommentsViewControllerTests: TestCase {
   }
 
   func testView() {
-
     let backer = User.brando
       |> \.avatar.large .~ ""
       |> \.avatar.medium .~ ""
@@ -35,23 +33,23 @@ internal final class CommentsViewControllerTests: TestCase {
       |> Project.lens.creator .~ creator
 
     let defaultComment = .template
-      |> Comment.lens.createdAt .~ 1473461640
+      |> Comment.lens.createdAt .~ 1_473_461_640
 
     let backerComment = .template
       |> Comment.lens.author .~ author
       |> Comment.lens.body .~ "I have never seen such a beautiful project."
-      |> Comment.lens.createdAt .~ 1473461640
+      |> Comment.lens.createdAt .~ 1_473_461_640
 
     let creatorComment = .template
       |> Comment.lens.author .~ (author |> \.id .~ creator.id)
       |> Comment.lens.body .~ "Thank you kindly for your feedback!"
-      |> Comment.lens.createdAt .~ 1473461640
+      |> Comment.lens.createdAt .~ 1_473_461_640
 
     let deletedComment = .template
       |> Comment.lens.author .~ (.template |> \.name .~ "Naughty Blob")
       |> Comment.lens.body .~ "This comment has been deleted by Kickstarter."
-      |> Comment.lens.createdAt .~ 1473461640
-      |> Comment.lens.deletedAt .~ 1473461640
+      |> Comment.lens.createdAt .~ 1_473_461_640
+      |> Comment.lens.deletedAt .~ 1_473_461_640
 
     let comments = [defaultComment, backerComment, creatorComment, deletedComment]
 

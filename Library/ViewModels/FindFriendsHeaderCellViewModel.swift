@@ -1,7 +1,7 @@
 import KsApi
-import ReactiveSwift
-import ReactiveExtensions
 import Prelude
+import ReactiveExtensions
+import ReactiveSwift
 
 public protocol FindFriendsHeaderCellViewModelInputs {
   /// Call when close button is tapped to dismiss this view
@@ -29,7 +29,6 @@ public protocol FindFriendsHeaderCellViewModelType {
 
 public final class FindFriendsHeaderCellViewModel: FindFriendsHeaderCellViewModelType,
   FindFriendsHeaderCellViewModelInputs, FindFriendsHeaderCellViewModelOutputs {
-
   public init() {
     self.notifyDelegateGoToFriends = self.findFriendsButtonTappedProperty.signal
     self.notifyDelegateToDismissHeader = self.closeButtonTappedProperty.signal
@@ -46,10 +45,12 @@ public final class FindFriendsHeaderCellViewModel: FindFriendsHeaderCellViewMode
   public func closeButtonTapped() {
     self.closeButtonTappedProperty.value = ()
   }
+
   fileprivate let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.activity)
   public func configureWith(source: FriendsSource) {
     self.configureWithProperty.value = source
   }
+
   fileprivate let findFriendsButtonTappedProperty = MutableProperty(())
   public func findFriendsButtonTapped() {
     self.findFriendsButtonTappedProperty.value = ()

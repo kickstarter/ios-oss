@@ -22,7 +22,6 @@ public func accountQueryFields() -> NonEmptySet<Query.User> {
 }
 
 public func storedCardsQueryFields() -> NonEmptySet<Query.User> {
-
   return .id +| [
     .storedCards(
       [],
