@@ -49,7 +49,10 @@ final class PledgeDataSource: ValueCellDataSource {
   // MARK: - Update Shipping Location Cell
 
   func loadSelectedShippingRule(data: SelectedShippingRuleData) {
-    guard self.numberOfItems(in: PledgeDataSource.Section.inputs.rawValue) > 1 else { return }
+    guard let shippingCellIndex = shippingCellIndexPath(),
+    self.numberOfItems(in: PledgeDataSource.Section.inputs.rawValue) > shippingCellIndex.row else {
+        return
+    }
 
     self.set(
       value: PledgeInputRow.shippingLocation(
@@ -59,7 +62,7 @@ final class PledgeDataSource: ValueCellDataSource {
       ),
       cellClass: PledgeShippingLocationCell.self,
       inSection: Section.inputs.rawValue,
-      row: 1
+      row: shippingCellIndex.row
     )
   }
 
@@ -104,7 +107,8 @@ final class PledgeDataSource: ValueCellDataSource {
     if requiresShippingRules {
       self.appendRow(
         value: PledgeInputRow.shippingLocation(
-          location: shippingLocation, shippingCost: shippingCost,
+          location: shippingLocation,
+          shippingCost: shippingCost,
           project: project
         ),
         cellClass: PledgeShippingLocationCell.self,

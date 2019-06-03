@@ -54,13 +54,13 @@ final class PledgeDataSourceTests: XCTestCase {
     self.dataSource.load(data: data)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
-    XCTAssertEqual(PledgeDescriptionCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 0))
-    XCTAssertEqual(PledgeAmountCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 1))
-    XCTAssertEqual(PledgeRowCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 2))
-    XCTAssertEqual(PledgeContinueCell.defaultReusableId, self.dataSource.reusableId(item: 1, section: 2))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: PledgeDataSource.Section.project.rawValue))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: PledgeDataSource.Section.inputs.rawValue))
+    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: PledgeDataSource.Section.summary.rawValue))
+    XCTAssertEqual(PledgeDescriptionCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: PledgeDataSource.Section.project.rawValue))
+    XCTAssertEqual(PledgeAmountCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: PledgeDataSource.Section.inputs.rawValue))
+    XCTAssertEqual(PledgeRowCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: PledgeDataSource.Section.summary.rawValue))
+    XCTAssertEqual(PledgeContinueCell.defaultReusableId, self.dataSource.reusableId(item: 1, section: PledgeDataSource.Section.summary.rawValue))
   }
 
   func testLoadSelectedShippingRule_requiresShipping_isTrue() {
@@ -74,10 +74,20 @@ final class PledgeDataSourceTests: XCTestCase {
       project: Project.template
     )
 
+    let indexPath = IndexPath(item: 1, section: PledgeDataSource.Section.inputs.rawValue)
+
+    let initialShippingCellData = PledgeDataSource.PledgeInputRow.shippingLocation(
+      location: "",
+      shippingCost: 0.0,
+      project: .template
+    )
+
     self.dataSource.load(data: data)
+
+    XCTAssertEqual(initialShippingCellData, self.dataSource[indexPath] as? PledgeDataSource.PledgeInputRow)
+
     self.dataSource.loadSelectedShippingRule(data: selectedShippingData)
 
-    let indexPath = IndexPath(item: 1, section: PledgeDataSource.Section.inputs.rawValue)
     let shippingCellData = PledgeDataSource.PledgeInputRow.shippingLocation(
       location: "Brooklyn",
       shippingCost: 1.0,
