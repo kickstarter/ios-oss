@@ -3,14 +3,16 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias PledgeTableViewData = (amount: Double,
-                                        currencySymbol: String,
-                                        estimatedDelivery: String,
-                                        shippingLocation: String,
-                                        shippingCost: Double,
-                                        project: Project,
-                                        isLoggedIn: Bool,
-                                        requiresShippingRules: Bool)
+public typealias PledgeTableViewData = (
+  amount: Double,
+  currencySymbol: String,
+  estimatedDelivery: String,
+  shippingLocation: String,
+  shippingCost: Double,
+  project: Project,
+  isLoggedIn: Bool,
+  requiresShippingRules: Bool
+)
 
 public typealias SelectedShippingRuleData = (location: String, shippingCost: Double, project: Project)
 
@@ -44,9 +46,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let reward = projectAndReward.map(second)
 
     let amountCurrencySymbolDeliveryShipping = projectAndReward.signal
-      .map { (project, reward) in
-        return projectAndRewardData(project: project, reward: reward)
-    }
+      .map { project, reward in
+        projectAndRewardData(project: project, reward: reward)
+      }
 
     let isLoggedIn = projectAndReward
       .map { _ in AppEnvironment.current.currentUser }
@@ -60,15 +62,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         let (amount, currencySymbol, estimatedDelivery, shippingLocation, shippingAmount)
           = amountCurrencySymbolDeliveryShipping
 
-        return (amount,
-                currencySymbol,
-                estimatedDelivery,
-                shippingLocation,
-                shippingAmount,
-                project,
-                isLoggedIn,
-                requiresShippingRules)
-    }
+        return (
+          amount,
+          currencySymbol,
+          estimatedDelivery,
+          shippingLocation,
+          shippingAmount,
+          project,
+          isLoggedIn,
+          requiresShippingRules
+        )
+      }
 
     self.reloadWithData = pledgeViewData
 
@@ -76,29 +80,35 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .filter { _, reward in reward.shipping.enabled }
       .switchMap { (project, reward)
         -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
-        return AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id,
-                                                                          rewardId: reward.id)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map(ShippingRulesEnvelope.lens.shippingRules.view)
-          .retry(upTo: 3)
-          .materialize()
+        AppEnvironment.current.apiService.fetchRewardShippingRules(
+          projectId: project.id,
+          rewardId: reward.id
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map(ShippingRulesEnvelope.lens.shippingRules.view)
+        .retry(upTo: 3)
+        .materialize()
       }
 
     let defaultSelectedShippingRule = shippingRulesEvent.values()
       .map(defaultShippingRule(fromShippingRules:))
 
-    self.selectedShippingRuleData = Signal.combineLatest(project,
-                                                         defaultSelectedShippingRule.skipNil(),
-                                                         self.didReloadDataProperty.signal)
-      .map { project, shippingRule, _ -> SelectedShippingRuleData in
-        return (shippingRule.location.localizedName, shippingRule.cost, project)
-      }
+    self.selectedShippingRuleData = Signal.combineLatest(
+      project,
+      defaultSelectedShippingRule.skipNil(),
+      self.didReloadDataProperty.signal
+    )
+    .map { project, shippingRule, _ -> SelectedShippingRuleData in
+      (shippingRule.location.localizedName, shippingRule.cost, project)
+    }
 
     let shippingShouldBeginLoading = shouldLoadShippingRules
       .filter(isTrue)
 
-    let shippingIsLoading = Signal.merge(shippingShouldBeginLoading,
-                                         shippingRulesEvent.filter { $0.isTerminating }.mapConst(false))
+    let shippingIsLoading = Signal.merge(
+      shippingShouldBeginLoading,
+      shippingRulesEvent.filter { $0.isTerminating }.mapConst(false)
+    )
 
     // Ensure that table view's reloadData has completed at least once before triggering loading events
     self.shippingIsLoading = Signal.combineLatest(self.didReloadDataProperty.signal, shippingIsLoading)

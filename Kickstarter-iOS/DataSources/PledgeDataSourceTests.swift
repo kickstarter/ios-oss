@@ -9,9 +9,11 @@ final class PledgeDataSourceTests: XCTestCase {
 
   // swiftlint:disable line_length
   func testLoad_loggedIn() {
-    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
-                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
-                                   isLoggedIn: true, requiresShippingRules: true)
+    let data = PledgeTableViewData(
+      amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+      shippingLocation: "", shippingCost: 0.0, project: Project.template,
+      isLoggedIn: true, requiresShippingRules: true
+    )
     self.dataSource.load(data: data)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
@@ -25,9 +27,11 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoad_loggedOut() {
-    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
-                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
-                                   isLoggedIn: false, requiresShippingRules: true)
+    let data = PledgeTableViewData(
+      amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+      shippingLocation: "", shippingCost: 0.0, project: Project.template,
+      isLoggedIn: false, requiresShippingRules: true
+    )
     self.dataSource.load(data: data)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
@@ -42,9 +46,11 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoad_requiresShippingRules_isFalse() {
-    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
-                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
-                                   isLoggedIn: false, requiresShippingRules: false)
+    let data = PledgeTableViewData(
+      amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+      shippingLocation: "", shippingCost: 0.0, project: Project.template,
+      isLoggedIn: false, requiresShippingRules: false
+    )
     self.dataSource.load(data: data)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
@@ -58,30 +64,40 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoadSelectedShippingRule_requiresShipping_isTrue() {
-    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
-                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
-                                   isLoggedIn: false, requiresShippingRules: true)
-    let selectedShippingData = SelectedShippingRuleData(location: "Brooklyn", shippingCost: 1.0,
-                                                        project: Project.template)
+    let data = PledgeTableViewData(
+      amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+      shippingLocation: "", shippingCost: 0.0, project: Project.template,
+      isLoggedIn: false, requiresShippingRules: true
+    )
+    let selectedShippingData = SelectedShippingRuleData(
+      location: "Brooklyn", shippingCost: 1.0,
+      project: Project.template
+    )
 
     self.dataSource.load(data: data)
     self.dataSource.loadSelectedShippingRule(data: selectedShippingData)
 
     let indexPath = IndexPath(item: 1, section: PledgeDataSource.Section.inputs.rawValue)
-    let shippingCellData = PledgeDataSource.PledgeInputRow.shippingLocation(location: "Brooklyn",
-                                                                            shippingCost: 1.0,
-                                                                            project: .template)
+    let shippingCellData = PledgeDataSource.PledgeInputRow.shippingLocation(
+      location: "Brooklyn",
+      shippingCost: 1.0,
+      project: .template
+    )
 
     XCTAssertEqual(shippingCellData, self.dataSource[indexPath] as? PledgeDataSource.PledgeInputRow)
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: PledgeDataSource.Section.inputs.rawValue))
   }
 
   func testLoadSelectedShippingRule_requiresShipping_isFalse() {
-    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
-                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
-                                   isLoggedIn: false, requiresShippingRules: false)
-    let selectedShippingData = SelectedShippingRuleData(location: "Brooklyn", shippingCost: 1.0,
-                                                        project: Project.template)
+    let data = PledgeTableViewData(
+      amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+      shippingLocation: "", shippingCost: 0.0, project: Project.template,
+      isLoggedIn: false, requiresShippingRules: false
+    )
+    let selectedShippingData = SelectedShippingRuleData(
+      location: "Brooklyn", shippingCost: 1.0,
+      project: Project.template
+    )
 
     self.dataSource.load(data: data)
     self.dataSource.loadSelectedShippingRule(data: selectedShippingData)
@@ -90,9 +106,11 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testShippingCellIndexPath_isNil() {
-    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
-                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
-                                   isLoggedIn: false, requiresShippingRules: false)
+    let data = PledgeTableViewData(
+      amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+      shippingLocation: "", shippingCost: 0.0, project: Project.template,
+      isLoggedIn: false, requiresShippingRules: false
+    )
 
     self.dataSource.load(data: data)
 
@@ -100,9 +118,11 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testShippingCellIndexPath_isNotNil() {
-    let data = PledgeTableViewData(amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
-                                   shippingLocation: "", shippingCost: 0.0, project: Project.template,
-                                   isLoggedIn: false, requiresShippingRules: true)
+    let data = PledgeTableViewData(
+      amount: 100, currencySymbol: "$", estimatedDelivery: "May 2020",
+      shippingLocation: "", shippingCost: 0.0, project: Project.template,
+      isLoggedIn: false, requiresShippingRules: true
+    )
 
     self.dataSource.load(data: data)
 
@@ -111,5 +131,6 @@ final class PledgeDataSourceTests: XCTestCase {
     XCTAssertNotNil(indexPath)
     XCTAssertEqual(indexPath, IndexPath(item: 1, section: PledgeDataSource.Section.inputs.rawValue))
   }
+
   // swiftlint:enable line_length
 }

@@ -21,7 +21,7 @@ private let shippingRules = locations
     .template
       |> ShippingRule.lens.location .~ location
       |> ShippingRule.lens.cost .~ Double(idx + 1)
-  } ||> ShippingRule.lens.location..Location.lens.localizedName %~ { "Local " + $0 }
+  } ||> ShippingRule.lens.location .. Location.lens.localizedName %~ { "Local " + $0 }
 
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
@@ -159,27 +159,28 @@ final class PledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.first(where: { $0.location == .australia })!
     let project = Project.template
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: .success(shippingRules)),
-                    config: .template |> Config.lens.countryCode .~ "AU") {
+    withEnvironment(
+      apiService: MockService(fetchShippingRulesResult: .success(shippingRules)),
+      config: .template |> Config.lens.countryCode .~ "AU"
+    ) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
 
-        self.vm.inputs.configureWith(project: project, reward: reward)
-        self.vm.inputs.viewDidLoad()
+      self.selectedShippingRuleLocation.assertDidNotEmitValue()
+      self.selectedShippingCost.assertDidNotEmitValue()
+      self.selectedShippingRuleProject.assertDidNotEmitValue()
+      self.shippingIsLoading.assertDidNotEmitValue()
 
-        self.selectedShippingRuleLocation.assertDidNotEmitValue()
-        self.selectedShippingCost.assertDidNotEmitValue()
-        self.selectedShippingRuleProject.assertDidNotEmitValue()
-        self.shippingIsLoading.assertDidNotEmitValue()
+      self.vm.inputs.didReloadData()
 
-        self.vm.inputs.didReloadData()
+      self.shippingIsLoading.assertValues([true])
 
-        self.shippingIsLoading.assertValues([true])
+      self.scheduler.run()
 
-        self.scheduler.run()
-
-        self.selectedShippingRuleLocation.assertValues(["Local Australia"])
-        self.selectedShippingCost.assertValues([defaultShippingRule.cost])
-        self.selectedShippingRuleProject.assertValues([project])
-        self.shippingIsLoading.assertValues([true, false])
+      self.selectedShippingRuleLocation.assertValues(["Local Australia"])
+      self.selectedShippingCost.assertValues([defaultShippingRule.cost])
+      self.selectedShippingRuleProject.assertValues([project])
+      self.shippingIsLoading.assertValues([true, false])
     }
   }
 
@@ -192,26 +193,26 @@ final class PledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: .success(shippingRules)),
-      config: .template |> Config.lens.countryCode .~ "XYZ") {
+      config: .template |> Config.lens.countryCode .~ "XYZ"
+    ) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
 
-        self.vm.inputs.configureWith(project: project, reward: reward)
-        self.vm.inputs.viewDidLoad()
+      self.selectedShippingRuleLocation.assertDidNotEmitValue()
+      self.selectedShippingCost.assertDidNotEmitValue()
+      self.selectedShippingRuleProject.assertDidNotEmitValue()
+      self.shippingIsLoading.assertDidNotEmitValue()
 
-        self.selectedShippingRuleLocation.assertDidNotEmitValue()
-        self.selectedShippingCost.assertDidNotEmitValue()
-        self.selectedShippingRuleProject.assertDidNotEmitValue()
-        self.shippingIsLoading.assertDidNotEmitValue()
+      self.vm.inputs.didReloadData()
 
-        self.vm.inputs.didReloadData()
+      self.shippingIsLoading.assertValues([true])
 
-        self.shippingIsLoading.assertValues([true])
+      self.scheduler.run()
 
-        self.scheduler.run()
-
-        self.selectedShippingRuleLocation.assertValues(["Local United States"])
-        self.selectedShippingCost.assertValues([defaultShippingRule.cost])
-        self.selectedShippingRuleProject.assertValues([project])
-        self.shippingIsLoading.assertValues([true, false])
+      self.selectedShippingRuleLocation.assertValues(["Local United States"])
+      self.selectedShippingCost.assertValues([defaultShippingRule.cost])
+      self.selectedShippingRuleProject.assertValues([project])
+      self.shippingIsLoading.assertValues([true, false])
     }
   }
 
@@ -231,28 +232,28 @@ final class PledgeViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: .failure(error)),
-      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country) {
+      config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
+    ) {
+      self.vm.inputs.configureWith(project: .template, reward: reward)
+      self.vm.inputs.viewDidLoad()
 
-        self.vm.inputs.configureWith(project: .template, reward: reward)
-        self.vm.inputs.viewDidLoad()
+      self.selectedShippingRuleLocation.assertDidNotEmitValue()
+      self.selectedShippingCost.assertDidNotEmitValue()
+      self.selectedShippingRuleProject.assertDidNotEmitValue()
+      self.shippingIsLoading.assertDidNotEmitValue()
 
-        self.selectedShippingRuleLocation.assertDidNotEmitValue()
-        self.selectedShippingCost.assertDidNotEmitValue()
-        self.selectedShippingRuleProject.assertDidNotEmitValue()
-        self.shippingIsLoading.assertDidNotEmitValue()
+      self.vm.inputs.didReloadData()
 
-        self.vm.inputs.didReloadData()
+      self.shippingIsLoading.assertValues([true])
 
-        self.shippingIsLoading.assertValues([true])
+      self.scheduler.run()
 
-        self.scheduler.run()
+      self.shippingIsLoading.assertValues([true, false])
+      self.shippingRulesError.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
 
-        self.shippingIsLoading.assertValues([true, false])
-        self.shippingRulesError.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
-
-        self.selectedShippingRuleLocation.assertDidNotEmitValue()
-        self.selectedShippingCost.assertDidNotEmitValue()
-        self.selectedShippingRuleProject.assertDidNotEmitValue()
+      self.selectedShippingRuleLocation.assertDidNotEmitValue()
+      self.selectedShippingCost.assertDidNotEmitValue()
+      self.selectedShippingRuleProject.assertDidNotEmitValue()
     }
   }
 }

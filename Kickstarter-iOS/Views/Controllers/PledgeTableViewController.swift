@@ -58,7 +58,7 @@ class PledgeTableViewController: UITableViewController {
         self?.tableView.reloadData()
 
         self?.viewModel.inputs.didReloadData()
-    }
+      }
 
     self.viewModel.outputs.selectedShippingRuleData
       .observeForUI()
@@ -70,13 +70,13 @@ class PledgeTableViewController: UITableViewController {
         }
 
         self?.tableView.reloadRows(at: [shippingIndexPath], with: .automatic)
-    }
+      }
 
     self.viewModel.outputs.shippingIsLoading
       .observeForUI()
       .observeValues { [weak self] isLoading in
         self?.shippingLocationCell?.animate(isLoading)
-    }
+      }
   }
 
   // MARK: - UITableViewDelegate

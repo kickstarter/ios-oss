@@ -4,7 +4,6 @@ import Prelude
 import UIKit
 
 final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
-
   // MARK: - Properties
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -83,7 +82,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   func configureWith(value: PledgeDataSource.PledgeInputRow) {
-    guard case .shippingLocation(let location, let shippingCost, let project) = value else {
+    guard case let .shippingLocation(location, shippingCost, project) = value else {
       return
     }
 
@@ -93,7 +92,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Public Functions
 
-  func animate(_ isLoading: Bool) {}
+  func animate(_: Bool) {}
 }
 
 // MARK: - Styles
@@ -132,7 +131,7 @@ private func shippingValue(for shippingCost: Double, project: Project) -> NSAttr
       superscriptAttributes: superscriptAttributes
     ) else { return nil }
 
-  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { (_, new) in new }
+  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { _, new in new }
 
   return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }
