@@ -5,14 +5,12 @@ import Prelude
 import ReactiveSwift
 import UserNotifications
 
-public struct HockeyConfigData {
+public struct HockeyConfigData: Equatable {
   public let appIdentifier: String
   public let disableUpdates: Bool
   public let userId: String
   public let userName: String
 }
-
-extension HockeyConfigData: Equatable {}
 
 public enum NotificationAuthorizationStatus {
   case authorized
