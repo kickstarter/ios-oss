@@ -85,16 +85,6 @@ ProjectPamphletViewModelOutputs {
     let project = freshProjectAndLiveStreamsAndRefTag
       .map { project, _, _ in project }
 
-    let projectAndUser = Signal.combineLatest(project, user)
-//
-    let backing = projectAndUser
-      .switchMap { project, user in
-           AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
-            .demoteErrors()
-    }
-//
-    self.projectAndBacking = Signal.combineLatest(projectAndUser, backing).map(unpack)
-
     self.projectAndUser = Signal.combineLatest(project, user)
 
     self.configureChildViewControllersWithProjectAndLiveStreams = freshProjectAndLiveStreamsAndRefTag
