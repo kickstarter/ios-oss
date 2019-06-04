@@ -50,8 +50,8 @@ final class PledgeDataSource: ValueCellDataSource {
 
   func loadSelectedShippingRule(data: SelectedShippingRuleData) {
     guard let shippingCellIndex = shippingCellIndexPath(),
-    self.numberOfItems(in: PledgeDataSource.Section.inputs.rawValue) > shippingCellIndex.row else {
-        return
+      self.numberOfItems(in: PledgeDataSource.Section.inputs.rawValue) > shippingCellIndex.row else {
+      return
     }
 
     self.set(
